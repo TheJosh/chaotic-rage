@@ -1,37 +1,27 @@
 #include <iostream>
 #include <SDL.h>
-#include "entity.h"
-#include "unit.h"
-#include "player.h"
-#include "gamestate.h"
+#include "rage.h"
+
 
 using namespace std;
 
 
 
 int main (int argc, char ** argv) {
+	SDL_Surface *screen = SDL_SetVideoMode(800, 600, 32, 0);
 	
-	Player *u = new Player();
-	
-	u->x = 100;
-	u->getSprite();
-	u->update(5);
-	
-	
-	GameState *st = new GameState();
-	st->addUnit(u);
-	
-	int i;
-	for (i = 0; i < st->numUnits(); i++) {
-		st->getUnit(i)->update(5);
+	if (screen == NULL) {
+		fprintf(stderr, "Unable to set %ix%i video: %s\n", 800, 600, SDL_GetError());
+		exit(1);
 	}
 	
-	printf("%i\n", st->getUnit(0)->x);
+	GameState *st = new GameState();
+	st->addUnit(new Player());
 	
-	st->getUnit(0)->update(5);
-	printf("%i\n", st->getUnit(0)->x);
+	gameLoop(st, screen);
+	
+	exit(0);
 }
-
 
 
 

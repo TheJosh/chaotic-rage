@@ -1,7 +1,6 @@
 #include <iostream>
-#include <vector>
-#include "gamestate.h"
-#include "unit.h"
+#include <SDL.h>
+#include "rage.h"
 
 using namespace std;
 

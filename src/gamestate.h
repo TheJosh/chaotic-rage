@@ -1,8 +1,7 @@
-#include <iostream>
-#include <vector>
-#include <SDL.h>
-#include "unit.h"
 #pragma once
+#include <iostream>
+#include <SDL.h>
+#include "rage.h"
 
 using namespace std;
 

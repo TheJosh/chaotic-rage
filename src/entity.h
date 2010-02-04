@@ -1,6 +1,7 @@
+#pragma once
 #include <iostream>
 #include <SDL.h>
-#pragma once
+#include "rage.h"
 
 using namespace std;
 

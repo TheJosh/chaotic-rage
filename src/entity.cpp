@@ -1,5 +1,6 @@
 #include <iostream>
-#include "entity.h"
+#include <SDL.h>
+#include "rage.h"
 
 using namespace std;
 

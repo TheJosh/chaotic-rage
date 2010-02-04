@@ -1,7 +1,7 @@
+#pragma once
 #include <iostream>
 #include <SDL.h>
-#include "entity.h"
-#pragma once
+#include "rage.h"
 
 using namespace std;
 
@@ -19,6 +19,6 @@ class Unit: public Entity
 		~Unit();
 		
 	public:
-		virtual SDL_Surface *getSprite();
+		virtual SDL_Surface* getSprite();
 		virtual void update(int msdelta);
 };
