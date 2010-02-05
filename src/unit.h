@@ -20,5 +20,5 @@ class Unit: public Entity
 		
 	public:
 		virtual SDL_Surface* getSprite();
-		virtual void update(int msdelta);
+		virtual void update(int usdelta);
 };

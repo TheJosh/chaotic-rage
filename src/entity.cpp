@@ -7,6 +7,8 @@ using namespace std;
 
 Entity::Entity()
 {
+	this->x = 0;
+	this->y = 0;
 	return;
 }
 

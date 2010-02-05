@@ -9,7 +9,7 @@ using namespace std;
 class Player : public Unit
 {
 	private:
-		SDL_Surface* sprites;
+		SDL_Surface** sprites;
 		int curr_sprite;
 		
 	public:

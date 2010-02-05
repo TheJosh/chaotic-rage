@@ -21,6 +21,13 @@ class Entity
 		;
 		
 	public:
+		/**
+		* Return a sprite to render this entity as
+		**/
 		virtual SDL_Surface* getSprite() = 0;
-		virtual void update(int msdelta) = 0;
+		
+		/**
+		* Update the entity. Time is provided in micro-seconds (µs)
+		**/
+		virtual void update(int usdelta) = 0;
 };

@@ -23,10 +23,10 @@ int GameState::numUnits()
 
 void GameState::addUnit(Unit* unit)
 {
-	this->units.push_back(*unit);
+	this->units.push_back(unit);
 }
 
 Unit* GameState::getUnit(int idx)
 {
-	return &this->units.at(idx);
+	return this->units.at(idx);
 }

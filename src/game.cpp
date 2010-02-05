@@ -10,6 +10,7 @@ static void handleEvents(GameState *st);
 static void renderState(GameState *st);
 
 static bool running;
+static int delay = 50;
 
 
 void gameLoop(GameState *st, SDL_Surface *screen)
@@ -18,24 +19,24 @@ void gameLoop(GameState *st, SDL_Surface *screen)
 	
 	running = true;
 	while (running) {
-		updateState(st, end - start);
+		updateState(st, (end - start) * 1000);
 		
 		start = SDL_GetTicks();
 		
 		handleEvents(st);
 		render(st, screen);
-		SDL_Delay(1);
+		SDL_Delay(delay);
 		
 		end = SDL_GetTicks();
 	}
 }
 
-static void updateState(GameState *st, int ms_delta)
+static void updateState(GameState *st, int usdelta)
 {
 	int i;
 	
 	for (i = 0; i < st->numUnits(); i++) {
-		st->getUnit(i)->update(ms_delta);
+		st->getUnit(i)->update(usdelta);
 	}
 }
 
@@ -46,6 +47,19 @@ static void handleEvents(GameState *st)
 	while (SDL_PollEvent(&event)) {
 		if (event.type == SDL_QUIT) {
 			running = false;
+			
+		} else if (event.type == SDL_KEYUP) {
+			if (event.key.keysym.sym == SDLK_j) {
+				delay--;
+				printf("delay: %i\n", delay);
+			}
+			
+			if (event.key.keysym.sym == SDLK_k) {
+				delay++;
+				printf("delay: %i\n", delay);
+			}
+			
+			if (delay < 1) delay = 1;
 		}
 	}
 }

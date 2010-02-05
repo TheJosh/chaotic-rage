@@ -9,7 +9,7 @@ using namespace std;
 class GameState
 {
 	private:
-		vector<Unit> units;
+		vector<Unit*> units;
 		
 	public:
 		GameState();
