@@ -9,10 +9,17 @@ using namespace std;
 class Unit: public Entity
 {
 	public:
+		static const int TURN_SPEED = 20;
+		
+	public:
 		string name;
-		int angle;
+		
+	protected:
 		int speed;
 		int health;
+		
+	private:
+		int angle;
 		
 	public:
 		Unit();
@@ -21,4 +28,7 @@ class Unit: public Entity
 	public:
 		virtual SDL_Surface* getSprite();
 		virtual void update(int usdelta);
+		
+	public:
+		void setAngle(int angle);
 };

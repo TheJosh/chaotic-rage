@@ -12,6 +12,9 @@ class GameState
 		vector<Unit*> units;
 		
 	public:
+		Player* curr_player;
+		
+	public:
 		GameState();
 		~GameState();
 		

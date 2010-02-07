@@ -15,8 +15,12 @@ int main (int argc, char ** argv) {
 		exit(1);
 	}
 	
+	Player *p = new Player();
+	
 	GameState *st = new GameState();
-	st->addUnit(new Player());
+	st->addUnit(p);
+	
+	st->curr_player = p;
 	
 	gameLoop(st, screen);
 	

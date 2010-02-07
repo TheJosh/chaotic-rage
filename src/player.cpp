@@ -10,20 +10,46 @@ Player::Player()
 	this->sprites = (SDL_Surface**) malloc(sizeof(SDL_Surface*));
 	
 	this->sprites[0] = SDL_LoadBMP("sprites/player/player_180deg_static.bmp");
+	this->sprites[0] = SDL_DisplayFormat(this->sprites[0]);  // leak !!
 	
-	// leak !!
-	this->sprites[0] = SDL_DisplayFormat(this->sprites[0]);
-	
-	return;
+	this->key[KEY_FWD] = 0;
+	this->key[KEY_REV] = 0;
 }
 
 Player::~Player()
 {
-	return;
+	SDL_FreeSurface(this->sprites[0]);
+}
+
+
+void Player::keyPress(int idx)
+{
+	this->key[idx] = 1;
+}
+
+void Player::keyRelease(int idx)
+{
+	this->key[idx] = 0;
 }
 
 
 SDL_Surface* Player::getSprite()
 {
 	return this->sprites[0];
+}
+
+void Player::update(int usdelta)
+{
+	if (this->key[KEY_FWD]) {
+		this->speed++;
+	} else if (this->key[KEY_REV]) {
+		this->speed--;
+	} else {
+		this->speed = 0;
+	}
+	
+	if (this->speed > 20) this->speed = 20;
+	if (this->speed < -20) this->speed = -20;
+	
+	Unit::update(usdelta);
 }

@@ -48,18 +48,41 @@ static void handleEvents(GameState *st)
 		if (event.type == SDL_QUIT) {
 			running = false;
 			
+		} else if (event.type == SDL_KEYDOWN) {
+			// Key press
+			switch (event.key.keysym.sym) {
+				case SDLK_w:
+					st->curr_player->keyPress(Player::KEY_FWD);
+					break;
+					
+				case SDLK_s:
+					st->curr_player->keyPress(Player::KEY_REV);
+					break;
+					
+				case SDLK_ESCAPE:
+					running = false;
+					break;
+					
+			}
+			
+			
 		} else if (event.type == SDL_KEYUP) {
-			if (event.key.keysym.sym == SDLK_j) {
-				delay--;
-				printf("delay: %i\n", delay);
+			// Key Release
+			switch (event.key.keysym.sym) {
+				case SDLK_w:
+					st->curr_player->keyRelease(Player::KEY_FWD);
+					break;
+					
+				case SDLK_s:
+					st->curr_player->keyRelease(Player::KEY_REV);
+					break;
+					
+				case SDLK_ESCAPE:
+					running = false;
+					break;
+					
 			}
 			
-			if (event.key.keysym.sym == SDLK_k) {
-				delay++;
-				printf("delay: %i\n", delay);
-			}
-			
-			if (delay < 1) delay = 1;
 		}
 	}
 }
