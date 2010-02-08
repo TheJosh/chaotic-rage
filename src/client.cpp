@@ -15,14 +15,19 @@ int main (int argc, char ** argv) {
 		exit(1);
 	}
 	
-	Player *p = new Player();
+	
+	loadAllAreaTypes();
+	
 	
 	GameState *st = new GameState();
+	
+	Player *p = new Player();
+	st->curr_player = p;
 	st->addUnit(p);
 	
-	st->curr_player = p;
 	
 	gameLoop(st, screen);
+	
 	
 	exit(0);
 }

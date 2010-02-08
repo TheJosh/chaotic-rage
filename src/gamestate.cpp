@@ -7,12 +7,10 @@ using namespace std;
 
 GameState::GameState()
 {
-	return;
 }
 
 GameState::~GameState()
 {
-	return;
 }
 
 

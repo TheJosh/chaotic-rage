@@ -7,7 +7,6 @@ using namespace std;
 
 static void updateState(GameState *st, int ms_delta);
 static void handleEvents(GameState *st);
-static void renderState(GameState *st);
 
 static bool running;
 static int delay = 50;
@@ -63,6 +62,7 @@ static void handleEvents(GameState *st)
 					running = false;
 					break;
 					
+				default: break;
 			}
 			
 			
@@ -81,6 +81,7 @@ static void handleEvents(GameState *st)
 					running = false;
 					break;
 					
+				default: break;
 			}
 			
 			
