@@ -17,6 +17,7 @@ class Unit: public Entity
 	protected:
 		int speed;
 		int health;
+		int desired_angle;
 		
 	private:
 		int angle;
@@ -28,7 +29,4 @@ class Unit: public Entity
 	public:
 		virtual SDL_Surface* getSprite();
 		virtual void update(int usdelta);
-		
-	public:
-		void setAngle(int angle);
 };

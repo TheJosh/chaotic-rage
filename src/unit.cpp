@@ -22,22 +22,10 @@ SDL_Surface* Unit::getSprite()
 
 void Unit::update(int usdelta)
 {
-	//this->x += usdelta / 1200;
-	
-	//if (this->x >= 600) this->x -= 600;
-	
-	this->x += this->speed;
-}
-
-
-void Unit::setAngle(int angle)
-{
-	// Calculate anti-clockwise difference
-	int diff_anti = angle;
+	// Calculate clockwise and anti-clockwise difference
+	int diff_anti = this->desired_angle;
 	if (diff_anti < this->angle) diff_anti += 360;
 	diff_anti -= this->angle;
-	
-	// clockwise is easy
 	int diff_clock = 360 - diff_anti;
 	
 	// the shortest distance - go in that direction
@@ -50,4 +38,10 @@ void Unit::setAngle(int angle)
 	// clamp to legal values
 	if (this->angle < 0) this->angle += 360;
 	if (this->angle > 360) this->angle -= 360;
+	
+	
+	this->x = pointPlusAngleX(this->x, this->angle, this->speed);
+	this->y = pointPlusAngleY(this->y, this->angle, this->speed);
 }
+
+

@@ -1,0 +1,15 @@
+#pragma once
+#include <iostream>
+#include <SDL.h>
+#include "rage.h"
+
+using namespace std;
+
+#define PI 3.1415
+
+int getAngleBetweenPoints (int point1_x, int point1_y, int point2_x, int point2_y);
+int pointPlusAngleX (int point_x, int angle, int distance);
+int pointPlusAngleY (int point_y, int angle, int distance);
+
+int intersect (SDL_Rect one, SDL_Rect two);
+int inside (SDL_Rect rect, int x, int y);

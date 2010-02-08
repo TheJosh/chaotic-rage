@@ -83,6 +83,10 @@ static void handleEvents(GameState *st)
 					
 			}
 			
+			
+		} else if (event.type == SDL_MOUSEMOTION) {
+			st->curr_player->angleFromMouse(event.motion.x, event.motion.y);
+			
 		}
 	}
 }

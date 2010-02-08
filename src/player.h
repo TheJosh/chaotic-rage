@@ -24,6 +24,7 @@ class Player : public Unit
 	public:
 		void keyPress(int idx);
 		void keyRelease(int idx);
+		void angleFromMouse(int x, int y);
 		
 	public:
 		virtual SDL_Surface* getSprite();

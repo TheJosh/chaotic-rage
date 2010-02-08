@@ -32,6 +32,11 @@ void Player::keyRelease(int idx)
 	this->key[idx] = 0;
 }
 
+void Player::angleFromMouse(int x, int y)
+{
+	this->desired_angle = getAngleBetweenPoints(this->x, this->y, x, y);
+}
+
 
 SDL_Surface* Player::getSprite()
 {
@@ -53,3 +58,5 @@ void Player::update(int usdelta)
 	
 	Unit::update(usdelta);
 }
+
+
