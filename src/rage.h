@@ -16,11 +16,13 @@
 #include "entity.h"
 #include "unit.h"
 #include "player.h"
+#include "areatypes.h"
+#include "map.h"
 #include "gamestate.h"
+
 #include "game.h"
 #include "video.h"
 #include "util.h"
-#include "areatypes.h"
 #include "spriteutil.h"
 
 #include "SDL_rwops_zzip.h"

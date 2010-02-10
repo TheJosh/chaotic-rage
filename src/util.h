@@ -5,6 +5,7 @@
 
 using namespace std;
 
+
 #define PI 3.1415
 
 int getAngleBetweenPoints (int point1_x, int point1_y, int point2_x, int point2_y);

@@ -13,6 +13,7 @@ class GameState
 		
 	public:
 		Player* curr_player;
+		Map* map;
 		
 	public:
 		GameState();

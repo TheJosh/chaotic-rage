@@ -9,7 +9,9 @@ void render(GameState *st, SDL_Surface *screen)
 {
 	int i;
 	
-	SDL_FillRect(screen, NULL, 1000);
+	//SDL_FillRect(screen, NULL, 1000);
+	
+	SDL_BlitSurface(st->map->renderWallFrame(0), NULL, screen, 0);
 	
 	for (i = 0; i < st->numUnits(); i++) {
 		Player *e = (Player*) st->getUnit(i);

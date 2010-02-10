@@ -25,7 +25,7 @@ static cfg_opt_t areatype_opts[] =
 // Main config
 static cfg_opt_t opts[] =
 {
-	CFG_SEC((char*) "areatype", areatype_opts, CFGF_MULTI | CFGF_TITLE),
+	CFG_SEC((char*) "areatype", areatype_opts, CFGF_MULTI),
 	CFG_END()
 };
 
@@ -116,4 +116,11 @@ AreaType* loadAreaType(cfg_t *cfg_areatype)
 	
 	return at;
 }
+
+
+AreaType* getAreaTypeByID(int id)
+{
+	return areatypes.at(id);
+}
+
 

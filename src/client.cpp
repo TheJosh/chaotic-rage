@@ -25,6 +25,10 @@ int main (int argc, char ** argv) {
 	st->curr_player = p;
 	st->addUnit(p);
 	
+	Map *m = new Map();
+	m->load("arena");
+	st->map = m;
+	
 	
 	gameLoop(st, screen);
 	

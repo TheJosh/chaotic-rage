@@ -18,3 +18,4 @@ class AreaType
 
 
 bool loadAllAreaTypes();
+AreaType* getAreaTypeByID(int id);
