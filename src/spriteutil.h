@@ -6,6 +6,6 @@
 using namespace std;
 
 
-SDL_Surface *loadSprite (const char *filename);
+SDL_Surface *loadSprite (string filename);
 
 bool wasLoadSpriteError();

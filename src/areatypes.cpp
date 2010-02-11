@@ -19,6 +19,7 @@ AreaType* loadAreaType(cfg_t *cfg_areatype);
 static cfg_opt_t areatype_opts[] =
 {
 	CFG_STR((char*) "tex", 0, CFGF_NONE),
+	CFG_INT((char*) "stretch", 0, CFGF_NONE),		// 0 = tile, 1 = stretch
 	CFG_END()
 };
 
@@ -113,6 +114,7 @@ AreaType* loadAreaType(cfg_t *cfg_areatype)
 	
 	at = new AreaType();
 	at->surf = loadSprite(filename.c_str());
+	at->stretch = cfg_getint(cfg_areatype, "stretch");
 	
 	return at;
 }

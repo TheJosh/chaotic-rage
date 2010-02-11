@@ -10,6 +10,8 @@ class AreaType
 {
 	public:
 		string tex;
+		bool stretch;
+		
 		SDL_Surface *surf;
 		
 	public:

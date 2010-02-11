@@ -34,6 +34,8 @@ static void updateState(GameState *st, int usdelta)
 {
 	int i;
 	
+	DEBUG("Updating gamestate using delta: %i\n", usdelta);
+	
 	for (i = 0; i < st->numUnits(); i++) {
 		st->getUnit(i)->update(usdelta);
 	}

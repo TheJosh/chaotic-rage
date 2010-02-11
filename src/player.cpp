@@ -9,8 +9,7 @@ Player::Player()
 {
 	this->sprites = (SDL_Surface**) malloc(sizeof(SDL_Surface*));
 	
-	this->sprites[0] = SDL_LoadBMP("sprites/player/player_180deg_static.bmp");
-	this->sprites[0] = SDL_DisplayFormat(this->sprites[0]);  // leak !!
+	this->sprites[0] = loadSprite("sprites/player/player_180deg_static.bmp");
 	
 	this->key[KEY_FWD] = 0;
 	this->key[KEY_REV] = 0;
