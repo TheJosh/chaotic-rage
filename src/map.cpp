@@ -5,6 +5,10 @@
 
 using namespace std;
 
+
+SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data);
+
+
 /**
 * Load a file (simulated)
 **/
@@ -71,6 +75,7 @@ int Map::load(string name)
 SDL_Surface* Map::renderWallFrame(int frame)
 {
 	SDL_Surface* surf = SDL_CreateRGBSurface(SDL_SWSURFACE, this->width, this->height, 32, 0,0,0,0);
+	SDL_Surface* data = SDL_CreateRGBSurface(SDL_SWSURFACE, this->width, this->height, 32, 0,0,0,0);
 	
 	
 	Area *a;
@@ -81,7 +86,7 @@ SDL_Surface* Map::renderWallFrame(int frame)
 		a = this->areas[i];
 		
 		SDL_Surface *areasurf = a->type->surf;
-		SDL_Surface *datasurf = createDataSurface(&a->type);
+		SDL_Surface *datasurf = createDataSurface(a->width, a->height, a->type->id * 5000);
 		
 		if (a->type->stretch)  {
 			areasurf = rotozoomSurfaceXY(areasurf, 0, ((double)a->width) / ((double)areasurf->w), ((double)a->height) / ((double)areasurf->h), 0);
@@ -98,14 +103,27 @@ SDL_Surface* Map::renderWallFrame(int frame)
 			areasurf = rotozoomSurfaceXY(temp, a->angle, 1, 1, 0);
 			SDL_FreeSurface(temp);
 			if (areasurf == NULL) continue;
+			
+			temp = datasurf;
+			datasurf = rotozoomSurfaceXY(temp, a->angle, 1, 1, 0);
+			SDL_FreeSurface(temp);
+			if (datasurf == NULL) continue;
 		}
 		
 		dest.x = a->x;
 		dest.y = a->y;
 		
+		cross_mask(datasurf, areasurf);
+		
 		SDL_BlitSurface(areasurf, NULL, surf, &dest);
+		SDL_BlitSurface(datasurf, NULL, data, &dest);
+		
 		SDL_FreeSurface(areasurf);
+		SDL_FreeSurface(datasurf);
 	}
+	
+	// TODO: transpose data surface into the map array
+	SDL_FreeSurface(data);
 	
 	return surf;
 }

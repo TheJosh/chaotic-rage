@@ -8,10 +8,10 @@ using namespace std;
 
 
 int main (int argc, char ** argv) {
-	SDL_Surface *screen = SDL_SetVideoMode(1000, 1000, 32, SDL_SWSURFACE);
+	SDL_Surface *screen = SDL_SetVideoMode(800, 800, 32, SDL_SWSURFACE);
 	
 	if (screen == NULL) {
-		fprintf(stderr, "Unable to set %ix%i video: %s\n", 800, 600, SDL_GetError());
+		fprintf(stderr, "Unable to set %ix%i video: %s\n", 800, 800, SDL_GetError());
 		exit(1);
 	}
 	

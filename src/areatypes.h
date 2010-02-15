@@ -9,6 +9,7 @@ using namespace std;
 class AreaType
 {
 	public:
+		int id;
 		string tex;
 		bool stretch;
 		

@@ -87,6 +87,7 @@ bool loadAllAreaTypes()
 		AreaType* at = loadAreaType(cfg_areatype);
 		if (at != NULL) {
 			areatypes.push_back(at);
+			at->id = areatypes.size() - 1;
 		}
 	}
 	
