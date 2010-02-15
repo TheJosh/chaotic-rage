@@ -1,0 +1,25 @@
+Three classes:
+ - Small maniac type, ADD kid. Kamakazee. Listed in this doc as 'maniac'.
+ - Regular fighter. Good at fighting, stealth. Listed in this doc as 'marine'.
+ - Big fat guy. Big weapons. Big Armor. Listed in this doc as 'fatty'.
+ 
+Attributes:
+ - Maniac; small, fast, bad with weapons
+ - Marine; medium size, medium speed, good with weapons
+ - Fatty; slow, large, average with weapons
+ 
+Invisibility cloak:
+Makes player invisible for a set amount of time.
+ - Maniac: Average, probably 20 secs
+ - Marine; Good, probably 40 secs
+ - Fatty; Bad; probably 10 secs
+ 
+Shields:
+Very good defence but only safe from one side (180 degrees). Unlimited time.
+ - Maniac; Slows player right down
+ - Marine; Slows player to fatty's normal speed
+ - Fatty; No speed difference
+ 
+Energy drink:
+Makes player move much faster. Decreases accuracy. Set amount of time.
+
