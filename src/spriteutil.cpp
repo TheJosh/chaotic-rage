@@ -53,3 +53,25 @@ bool wasLoadSpriteError()
 	return load_err;
 }
 
+
+/**
+* Tiles a sprite
+**/
+SDL_Surface *tileSprite (SDL_Surface *orig, int w, int h)
+{
+	SDL_Surface* surf = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, 32, 0,0,0,0);
+	
+	for (int x = 0; x <= w; x += orig->w) {
+		for (int y = 0; y <= h; y += orig->h) {
+			SDL_Rect dest;
+			
+			dest.x = x;
+			dest.y = y;
+			
+			SDL_BlitSurface(orig, NULL, surf, &dest);
+		}
+	}
+	
+	return surf;
+}
+

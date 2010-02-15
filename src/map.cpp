@@ -48,6 +48,15 @@ int Map::load(string name)
 	a->y = 0;
 	a->width = 200;
 	a->height = 1000;
+	a->angle = 2;
+	a->type = getAreaTypeByID(3);
+	this->areas.push_back(a);
+	
+	a = new Area();
+	a->x = 400;
+	a->y = 30;
+	a->width = 200;
+	a->height = 30;
 	a->angle = 0;
 	a->type = getAreaTypeByID(3);
 	this->areas.push_back(a);
@@ -66,50 +75,36 @@ SDL_Surface* Map::renderWallFrame(int frame)
 	
 	Area *a;
 	unsigned int i;
-	SDL_Rect src;
+	//SDL_Rect src;
 	SDL_Rect dest;
-	int free_surf = 0;
 	
 	for (i = 0; i < this->areas.size(); i++) {
 		a = this->areas[i];
 		
 		SDL_Surface *areasurf = a->type->surf;
 		
-		free_surf = 0;
 		if (a->type->stretch)  {
 			areasurf = rotozoomSurfaceXY(areasurf, 0, ((double)a->width) / ((double)areasurf->w), ((double)a->height) / ((double)areasurf->h), 0);
 			if (areasurf == NULL) continue;
-			free_surf = 1;
+			
+		} else {
+			areasurf = tileSprite(areasurf, a->width, a->height);
+			if (areasurf == NULL) continue;
 		}
 		
-		src.x = 0;
-		src.y = 0;
-		src.w = a->width;
-		src.h = a->height;
+		if (a->angle != 0)  {
+			SDL_Surface* temp = areasurf;
+			
+			areasurf = rotozoomSurfaceXY(temp, a->angle, 1, 1, 0);
+			SDL_FreeSurface(temp);
+			if (areasurf == NULL) continue;
+		}
 		
 		dest.x = a->x;
 		dest.y = a->y;
 		
-		if (a->angle != 0)  {
-			SDL_Surface* temp = SDL_CreateRGBSurface(SDL_SWSURFACE, a->width, a->height, 32, 0,0,0,0);
-			
-			SDL_BlitSurface(areasurf, NULL, temp, NULL);
-			
-			areasurf = rotozoomSurfaceXY(temp, a->angle, 1, 1, 0);
-			if (areasurf == NULL) continue;
-			free_surf = 1;
-			
-			SDL_BlitSurface(areasurf, NULL, surf, &dest);
-			
-			SDL_FreeSurface(temp);
-			
-		} else {
-			SDL_BlitSurface(areasurf, &src, surf, &dest);
-		}
-		
-		if (free_surf) {
-			SDL_FreeSurface(areasurf);
-		}
+		SDL_BlitSurface(areasurf, NULL, surf, &dest);
+		SDL_FreeSurface(areasurf);
 	}
 	
 	return surf;
