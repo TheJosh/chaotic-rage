@@ -75,13 +75,13 @@ SDL_Surface* Map::renderWallFrame(int frame)
 	
 	Area *a;
 	unsigned int i;
-	//SDL_Rect src;
 	SDL_Rect dest;
 	
 	for (i = 0; i < this->areas.size(); i++) {
 		a = this->areas[i];
 		
 		SDL_Surface *areasurf = a->type->surf;
+		SDL_Surface *datasurf = createDataSurface(&a->type);
 		
 		if (a->type->stretch)  {
 			areasurf = rotozoomSurfaceXY(areasurf, 0, ((double)a->width) / ((double)areasurf->w), ((double)a->height) / ((double)areasurf->h), 0);
@@ -110,3 +110,12 @@ SDL_Surface* Map::renderWallFrame(int frame)
 	return surf;
 }
 
+
+SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data)
+{
+	SDL_Surface *surf = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, 32, 0,0,0,0);
+	
+	SDL_FillRect(surf, NULL, initial_data);
+	
+	return surf;
+}
