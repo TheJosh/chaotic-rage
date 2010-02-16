@@ -9,10 +9,13 @@ using namespace std;
 class AreaType
 {
 	public:
-		int id;
+		// from data file
 		string tex;
 		bool stretch;
+		bool wall;
 		
+		// dynamic
+		int id;
 		SDL_Surface *surf;
 		
 	public:

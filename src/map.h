@@ -29,5 +29,6 @@ class Map {
 		
 	public:
 		int load(string name);
-		SDL_Surface* renderWallFrame(int frame);
+		SDL_Surface* renderWallFrame(int frame, bool wall);
+		SDL_Surface* renderDataSurface();
 };

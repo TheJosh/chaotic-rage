@@ -65,6 +65,15 @@ int Map::load(string name)
 	a->type = getAreaTypeByID(3);
 	this->areas.push_back(a);
 	
+	a = new Area();
+	a->x = 100;
+	a->y = 600;
+	a->width = 600;
+	a->height = 70;
+	a->angle = 0;
+	a->type = getAreaTypeByID(4);
+	this->areas.push_back(a);
+	
 	return 1;
 }
 
@@ -73,30 +82,68 @@ int Map::load(string name)
 * Render a single frame of the wall animation.
 *
 * It is the responsibility of the caller to free the returned surface.
-*
-* @param int frame The frame to render. Use frame -1 to get the data surface
 **/
-SDL_Surface* Map::renderWallFrame(int frame)
+SDL_Surface* Map::renderWallFrame(int frame, bool wall)
 {
-	// Data + background surfaces: special
-	bool return_data = false;
-	if (frame == RENDER_FRAME_DATA) {
-		frame = 0;
-		return_data = true;
-		
-	} else if (frame == RENDER_FRAME_BG) {
-		return tileSprite(this->areas[0]->type->surf, this->areas[0]->width, this->areas[0]->height);
-	}
-	
 	// Create
 	SDL_Surface* surf = SDL_CreateRGBSurface(SDL_SWSURFACE, this->width, this->height, 32, 0,0,0,0);
 	
 	// Colour key for frame surfaces
-	if (! return_data) {
-		int colourkey = SDL_MapRGB(surf->format, 255, 0, 255);
-		SDL_SetColorKey(surf, SDL_SRCCOLORKEY, colourkey);
-		SDL_FillRect(surf, NULL, colourkey);
+	int colourkey = SDL_MapRGB(surf->format, 255, 0, 255);
+	SDL_SetColorKey(surf, SDL_SRCCOLORKEY, colourkey);
+	SDL_FillRect(surf, NULL, colourkey);
+	
+	Area *a;
+	unsigned int i;
+	SDL_Rect dest;
+	
+	// Iterate through the areas
+	for (i = 0; i < this->areas.size(); i++) {
+		a = this->areas[i];
+		
+		if (a->type->wall != wall) continue;
+		
+		
+		// Transforms (either streches or tiles)
+		SDL_Surface *areasurf = a->type->surf;
+		if (a->type->stretch)  {
+			areasurf = rotozoomSurfaceXY(areasurf, 0, ((double)a->width) / ((double)areasurf->w), ((double)a->height) / ((double)areasurf->h), 0);
+			if (areasurf == NULL) continue;
+			
+		} else {
+			areasurf = tileSprite(areasurf, a->width, a->height);
+			if (areasurf == NULL) continue;
+		}
+		
+		// Rotates
+		if (a->angle != 0)  {
+			SDL_Surface* temp = areasurf;
+			
+			areasurf = rotozoomSurfaceXY(temp, a->angle, 1, 1, 0);
+			SDL_FreeSurface(temp);
+			if (areasurf == NULL) continue;
+		}
+		
+		dest.x = a->x;
+		dest.y = a->y;
+		
+		SDL_BlitSurface(areasurf, NULL, surf, &dest);
+		SDL_FreeSurface(areasurf);
 	}
+	
+	return surf;
+}
+
+
+/**
+* Render teh data surface for this map
+*
+* It is the responsibility of the caller to free the returned surface.
+**/
+SDL_Surface* Map::renderDataSurface()
+{
+	// Create
+	SDL_Surface* surf = SDL_CreateRGBSurface(SDL_SWSURFACE, this->width, this->height, 32, 0,0,0,0);
 	
 	Area *a;
 	unsigned int i;
@@ -104,12 +151,10 @@ SDL_Surface* Map::renderWallFrame(int frame)
 	SDL_Surface *datasurf;
 	
 	// Iterate through the areas
-	for (i = 1; i < this->areas.size(); i++) {
+	for (i = 0; i < this->areas.size(); i++) {
 		a = this->areas[i];
 		
-		if (return_data) {
-			datasurf = createDataSurface(a->width, a->height, a->type->id * 5000);
-		}
+		datasurf = createDataSurface(a->width, a->height, a->type->id * 5000);
 		
 		// Transforms (either streches or tiles)
 		SDL_Surface *areasurf = a->type->surf;
@@ -130,29 +175,20 @@ SDL_Surface* Map::renderWallFrame(int frame)
 			SDL_FreeSurface(temp);
 			if (areasurf == NULL) continue;
 			
-			if (return_data) {
-				temp = datasurf;
-				datasurf = rotozoomSurfaceXY(temp, a->angle, 1, 1, 0);
-				SDL_FreeSurface(temp);
-				if (datasurf == NULL) continue;
-			}
+			temp = datasurf;
+			datasurf = rotozoomSurfaceXY(temp, a->angle, 1, 1, 0);
+			SDL_FreeSurface(temp);
+			if (datasurf == NULL) continue;
 		}
 		
 		dest.x = a->x;
 		dest.y = a->y;
 		
-		if (return_data) {
-			// Data surface
-			cross_mask(datasurf, areasurf);
-			SDL_BlitSurface(datasurf, NULL, surf, &dest);
-			SDL_FreeSurface(datasurf);
-			
-		} else {
-			// Video surface
-			SDL_BlitSurface(areasurf, NULL, surf, &dest);
-		}
-		
+		cross_mask(datasurf, areasurf);
 		SDL_FreeSurface(areasurf);
+		
+		SDL_BlitSurface(datasurf, NULL, surf, &dest);
+		SDL_FreeSurface(datasurf);
 	}
 	
 	return surf;
