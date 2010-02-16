@@ -6,22 +6,22 @@
 using namespace std;
 
 
-Unit::Unit() {
+Unit::Unit(UnitClass *unit_class)
+{
+	this->uc = unit_class;
 	this->angle = 0;
 	this->speed = 0;
 	this->health = 100;
 }
 
-Unit::~Unit() {
+Unit::~Unit()
+{
 }
 
-SDL_Surface* Unit::getSprite()
+void Unit::update(int delta, UnitClassSettings *ucs)
 {
-	return NULL;
-}
-
-void Unit::update(int delta)
-{
+	int turn_speed = ppsDelta(ucs->turn_speed, delta);
+	
 	// Calculate clockwise and anti-clockwise difference
 	int diff_anti = this->desired_angle;
 	if (diff_anti < this->angle) diff_anti += 360;
@@ -30,9 +30,9 @@ void Unit::update(int delta)
 	
 	// the shortest distance - go in that direction
 	if (diff_anti < diff_clock) {
-		this->angle += (TURN_SPEED < diff_anti ? TURN_SPEED : diff_anti);
+		this->angle += (turn_speed < diff_anti ? turn_speed : diff_anti);
 	} else if (diff_clock < diff_anti) {
-		this->angle -= (TURN_SPEED < diff_clock ? TURN_SPEED : diff_clock);
+		this->angle -= (turn_speed < diff_clock ? turn_speed : diff_clock);
 	}
 	
 	// clamp to legal values

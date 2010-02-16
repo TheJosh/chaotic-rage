@@ -5,11 +5,11 @@
 using namespace std;
 
 
-Player::Player()
+Player::Player(UnitClass *uc) : Unit(uc)
 {
 	this->sprites = (SDL_Surface**) malloc(sizeof(SDL_Surface*));
 	
-	this->sprites[0] = loadSprite("sprites/player/player_180deg_static.bmp");
+	this->sprites[0] = loadSprite("unitclass/marine/player_180deg_static.bmp");
 	
 	this->key[KEY_FWD] = 0;
 	this->key[KEY_REV] = 0;
@@ -44,18 +44,29 @@ SDL_Surface* Player::getSprite()
 
 void Player::update(int delta)
 {
-	if (this->key[KEY_FWD]) {
-		this->speed += 30;
-	} else if (this->key[KEY_REV]) {
-		this->speed -= 30;
-	} else {
-		this->speed = 0;
+	UnitClassSettings *ucs = this->uc->getSettings(0);
+	
+	if (this->key[KEY_FWD]) {	// fwd key pressed
+		this->speed += ppsDelta(ucs->lin_accel, delta);
+		
+	} else if (this->key[KEY_REV]) {	// rev key pressed
+		this->speed -= ppsDelta(ucs->lin_accel, delta);
+		
+	} else if (speed > 0) {		// nothing pressed, slow down (forwards)
+		this->speed -= (speed > 100 ? 100 : speed);
+		
+	} else if (speed < 0) {		// nothing pressed, slow down (reverse)
+		this->speed += (0 - speed > 100 ? 100 : 0 - speed);
 	}
 	
-	if (this->speed > 350) this->speed = 350;
-	if (this->speed < -150) this->speed = -150;
 	
-	Unit::update(delta);
+	// Bound to limits
+	if (this->speed > ucs->lin_speed) this->speed = ucs->lin_speed;
+	if (this->speed < 0 - ucs->lin_speed) this->speed = 0 - ucs->lin_speed;
+	
+	Unit::update(delta, ucs);
+	
+	delete ucs;
 }
 
 

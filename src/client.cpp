@@ -17,11 +17,12 @@ int main (int argc, char ** argv) {
 	
 	
 	loadAllAreaTypes();
+	loadAllUnitClasses();
 	
 	
 	GameState *st = new GameState();
 	
-	Player *p = new Player();
+	Player *p = new Player(getUnitClassByID(0));
 	st->curr_player = p;
 	st->addUnit(p);
 	

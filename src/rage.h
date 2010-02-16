@@ -14,6 +14,7 @@
 #endif
 
 #include "entity.h"
+#include "unitclass.h"
 #include "unit.h"
 #include "player.h"
 #include "areatypes.h"

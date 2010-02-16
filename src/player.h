@@ -18,7 +18,7 @@ class Player : public Unit
 		bool key[1];
 		
 	public:
-		Player();
+		Player(UnitClass *uc);
 		~Player();
 		
 	public:
