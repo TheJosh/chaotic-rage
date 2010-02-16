@@ -86,10 +86,13 @@ bool loadAllAreaTypes()
 		cfg_areatype = cfg_getnsec(cfg, "areatype", j);
 		
 		AreaType* at = loadAreaType(cfg_areatype);
-		if (at != NULL) {
-			areatypes.push_back(at);
-			at->id = areatypes.size() - 1;
+		if (at == NULL) {
+			cerr << "Bad area type at index " << j << endl;
+			return false;
 		}
+		
+		areatypes.push_back(at);
+		at->id = areatypes.size() - 1;
 	}
 	
 	// If there was sprite errors, exit the game

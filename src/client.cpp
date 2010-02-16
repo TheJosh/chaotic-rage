@@ -16,8 +16,15 @@ int main (int argc, char ** argv) {
 	}
 	
 	
-	loadAllAreaTypes();
-	loadAllUnitClasses();
+	if (! loadAllAreaTypes()) {
+		cerr << "Unable to load areatypes datafile.\n";
+		exit(1);
+	}
+	
+	if (! loadAllUnitClasses()) {
+		cerr << "Unable to load unitclasses datafile.\n";
+		exit(1);
+	}
 	
 	
 	GameState *st = new GameState();

@@ -10,15 +10,22 @@ using namespace std;
 /* Variables */
 static vector<UnitClass*> unitclasses;
 
-/* Functions */
-UnitClass* loadUnitClass(cfg_t *cfg);
-
 
 /* Config file definition */
-// Areatype section
+// Settings section
+static cfg_opt_t settings_opts[] =
+{
+	CFG_INT((char*) "lin_speed", 0, CFGF_NONE),
+	CFG_INT((char*) "lin_accel", 0, CFGF_NONE),
+	CFG_INT((char*) "turn_speed", 0, CFGF_NONE),
+	CFG_END()
+};
+
+// Unitclass section
 static cfg_opt_t unitclass_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
+	CFG_SEC((char*) "settings", settings_opts, CFGF_MULTI),
 	CFG_END()
 };
 
@@ -76,10 +83,13 @@ bool loadAllUnitClasses()
 		cfg_unitclass = cfg_getnsec(cfg, "unitclass", j);
 		
 		UnitClass* uc = loadUnitClass(cfg_unitclass);
-		if (uc != NULL) {
-			unitclasses.push_back(uc);
-			uc->id = unitclasses.size() - 1;
+		if (uc == NULL) {
+			cerr << "Bad unit class at index " << j << endl;
+			return false;
 		}
+		
+		unitclasses.push_back(uc);
+		uc->id = unitclasses.size() - 1;
 	}
 	
 	// If there was sprite errors, exit the game
@@ -89,19 +99,9 @@ bool loadAllUnitClasses()
 	}
 	
 	
-	
-	// TODO: actual loading of actual values
-	UnitClass *uc = unitclasses.at(0);
-	uc->initial.lin_speed = 320;
-	uc->initial.lin_accel = 1000;
-	uc->initial.turn_speed = 360;
-	
-	uc->mod[0].lin_speed = 0;		// cloak
-	uc->mod[1].lin_speed = -2;		// shield
-	uc->mod[2].lin_speed = 3;		// speed
-	
 	return true;
 }
+
 
 
 /**
@@ -110,9 +110,35 @@ bool loadAllUnitClasses()
 UnitClass* loadUnitClass(cfg_t *cfg)
 {
 	UnitClass* uc;
+	cfg_t *cfg_settings;
+	
 	
 	uc = new UnitClass();
 	uc->name = cfg_getstr(cfg, "name");
+	
+	
+	int num_settings = cfg_size(cfg, "settings");
+	if (num_settings - 1 != UNIT_NUM_MODIFIERS) return NULL;
+	
+	// Load initial config
+	cfg_settings = cfg_getnsec(cfg, "settings", 0);
+	uc->initial.lin_speed = cfg_getint(cfg_settings, "lin_speed");
+	uc->initial.lin_accel = cfg_getint(cfg_settings, "lin_accel");
+	uc->initial.turn_speed = cfg_getint(cfg_settings, "turn_speed");
+	
+	if (uc->initial.lin_speed == 0) return NULL;
+	if (uc->initial.lin_accel == 0) return NULL;
+	if (uc->initial.turn_speed == 0) return NULL;
+	
+	// load modifiers
+	int j;
+	for (j = 1; j < num_settings; j++) {
+		cfg_settings = cfg_getnsec(cfg, "settings", j);
+		
+		uc->mod[j].lin_speed = cfg_getint(cfg_settings, "lin_speed");
+		uc->mod[j].lin_accel = cfg_getint(cfg_settings, "lin_accel");
+		uc->mod[j].turn_speed = cfg_getint(cfg_settings, "turn_speed");
+	}
 	
 	return uc;
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <SDL.h>
+#include <confuse.h>
 #include "rage.h"
 
 using namespace std;
@@ -17,6 +18,7 @@ class UnitClass;
 
 
 bool loadAllUnitClasses();
+UnitClass* loadUnitClass(cfg_t *cfg);
 UnitClass* getUnitClassByID(int id);
 
 
@@ -30,7 +32,7 @@ class UnitClassSettings
 
 class UnitClass
 {
-	friend bool loadAllUnitClasses();
+	friend UnitClass* loadUnitClass(cfg_t *cfg);
 	
 	public:
 		string name;
