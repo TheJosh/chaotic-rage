@@ -78,6 +78,7 @@ int Map::load(string name)
 **/
 SDL_Surface* Map::renderWallFrame(int frame)
 {
+	// Data + background surfaces: special
 	bool return_data = false;
 	if (frame == RENDER_FRAME_DATA) {
 		frame = 0;
@@ -87,17 +88,22 @@ SDL_Surface* Map::renderWallFrame(int frame)
 		return tileSprite(this->areas[0]->type->surf, this->areas[0]->width, this->areas[0]->height);
 	}
 	
+	// Create
 	SDL_Surface* surf = SDL_CreateRGBSurface(SDL_SWSURFACE, this->width, this->height, 32, 0,0,0,0);
 	
-	int colourkey = SDL_MapRGB(surf->format, 255, 0, 255);
-	SDL_SetColorKey(surf, SDL_SRCCOLORKEY, colourkey);
-	SDL_FillRect(surf, NULL, colourkey);
+	// Colour key for frame surfaces
+	if (! return_data) {
+		int colourkey = SDL_MapRGB(surf->format, 255, 0, 255);
+		SDL_SetColorKey(surf, SDL_SRCCOLORKEY, colourkey);
+		SDL_FillRect(surf, NULL, colourkey);
+	}
 	
 	Area *a;
 	unsigned int i;
 	SDL_Rect dest;
 	SDL_Surface *datasurf;
 	
+	// Iterate through the areas
 	for (i = 1; i < this->areas.size(); i++) {
 		a = this->areas[i];
 		
@@ -153,6 +159,9 @@ SDL_Surface* Map::renderWallFrame(int frame)
 }
 
 
+/**
+* Creates a data surface and fills it with the defined data
+**/
 SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data)
 {
 	SDL_Surface *surf = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, 32, 0,0,0,0);
