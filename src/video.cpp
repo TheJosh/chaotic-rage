@@ -11,14 +11,12 @@ void render(GameState *st, SDL_Surface *screen)
 	SDL_Surface *surf;
 	
 	// dirt layer
-	surf = st->map->renderWallFrame(0, false);
+	surf = st->map->ground;
 	SDL_BlitSurface(surf, NULL, screen, 0);
-	SDL_FreeSurface(surf);
 	
 	// wall layer
-	surf = st->map->renderWallFrame(0, true);
+	surf = st->map->walls;
 	SDL_BlitSurface(surf, NULL, screen, 0);
-	SDL_FreeSurface(surf);
 	
 	// data (testing)
 	//surf = st->map->renderDataSurface();

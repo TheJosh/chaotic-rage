@@ -9,38 +9,47 @@ static void updateState(GameState *st, int ms_delta);
 static void handleEvents(GameState *st);
 
 static bool running;
-static int delay = 50;
 
 
+/**
+* The main game loop
+**/
 void gameLoop(GameState *st, SDL_Surface *screen)
 {
 	int start = 0, end = 0;
 	
 	running = true;
 	while (running) {
-		updateState(st, (end - start) * 1000);
+		updateState(st, end - start);
 		
 		start = SDL_GetTicks();
 		
 		handleEvents(st);
 		render(st, screen);
-		SDL_Delay(delay);
+		SDL_Delay(10);
 		
 		end = SDL_GetTicks();
 	}
 }
 
-static void updateState(GameState *st, int usdelta)
+/**
+* Updates the state of everything
+**/
+static void updateState(GameState *st, int delta)
 {
 	int i;
 	
-	DEBUG("Updating gamestate using delta: %i\n", usdelta);
+	DEBUG("Updating gamestate using delta: %i\n", delta);
 	
 	for (i = 0; i < st->numUnits(); i++) {
-		st->getUnit(i)->update(usdelta);
+		st->getUnit(i)->update(delta);
 	}
 }
 
+
+/**
+* Handles local events (keyboard, mouse)
+**/
 static void handleEvents(GameState *st)
 {
 	SDL_Event event;

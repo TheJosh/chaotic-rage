@@ -111,3 +111,16 @@ int inside (SDL_Rect rect, int x, int y)
 }
 
 
+/**
+* Converts a pps distance, and a delta into a fixed pixel distance.
+*
+* pps is 'pixels per second'.
+* deltas are in miliseconds.
+* return value is in pixels.
+**/
+int ppsDelta(int pps, int delta)
+{
+	return ceil(pps * delta / 1000);
+}
+
+

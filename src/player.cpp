@@ -42,20 +42,20 @@ SDL_Surface* Player::getSprite()
 	return this->sprites[0];
 }
 
-void Player::update(int usdelta)
+void Player::update(int delta)
 {
 	if (this->key[KEY_FWD]) {
-		this->speed++;
+		this->speed += 30;
 	} else if (this->key[KEY_REV]) {
-		this->speed--;
+		this->speed -= 30;
 	} else {
 		this->speed = 0;
 	}
 	
-	if (this->speed > 20) this->speed = 20;
-	if (this->speed < -20) this->speed = -20;
+	if (this->speed > 350) this->speed = 350;
+	if (this->speed < -150) this->speed = -150;
 	
-	Unit::update(usdelta);
+	Unit::update(delta);
 }
 
 

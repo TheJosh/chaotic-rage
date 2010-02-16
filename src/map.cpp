@@ -9,6 +9,19 @@ using namespace std;
 SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data);
 
 
+Map::Map()
+{
+	this->ground = NULL;
+	this->walls = NULL;
+}
+
+Map::~Map()
+{
+	SDL_FreeSurface(this->ground);
+	SDL_FreeSurface(this->walls);
+}
+
+
 /**
 * Load a file (simulated)
 **/
@@ -74,6 +87,10 @@ int Map::load(string name)
 	a->type = getAreaTypeByID(4);
 	this->areas.push_back(a);
 	
+	
+	this->ground = this->renderFrame(0, false);
+	this->walls = this->renderFrame(0, true);
+	
 	return 1;
 }
 
@@ -83,7 +100,7 @@ int Map::load(string name)
 *
 * It is the responsibility of the caller to free the returned surface.
 **/
-SDL_Surface* Map::renderWallFrame(int frame, bool wall)
+SDL_Surface* Map::renderFrame(int frame, bool wall)
 {
 	// Create
 	SDL_Surface* surf = SDL_CreateRGBSurface(SDL_SWSURFACE, this->width, this->height, 32, 0,0,0,0);

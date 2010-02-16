@@ -28,5 +28,5 @@ class Player : public Unit
 		
 	public:
 		virtual SDL_Surface* getSprite();
-		virtual void update(int usdelta);
+		virtual void update(int delta);
 };

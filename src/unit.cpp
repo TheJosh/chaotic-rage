@@ -20,7 +20,7 @@ SDL_Surface* Unit::getSprite()
 	return NULL;
 }
 
-void Unit::update(int usdelta)
+void Unit::update(int delta)
 {
 	// Calculate clockwise and anti-clockwise difference
 	int diff_anti = this->desired_angle;
@@ -40,8 +40,8 @@ void Unit::update(int usdelta)
 	if (this->angle > 360) this->angle -= 360;
 	
 	
-	this->x = pointPlusAngleX(this->x, this->angle, this->speed);
-	this->y = pointPlusAngleY(this->y, this->angle, this->speed);
+	this->x = pointPlusAngleX(this->x, this->angle, ppsDelta(this->speed, delta));
+	this->y = pointPlusAngleY(this->y, this->angle, ppsDelta(this->speed, delta));
 }
 
 

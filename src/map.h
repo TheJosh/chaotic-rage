@@ -28,7 +28,15 @@ class Map {
 		int height;
 		
 	public:
+		SDL_Surface *ground;
+		SDL_Surface *walls;
+		
+	public:
+		Map();
+		~Map();
+		
+	public:
 		int load(string name);
-		SDL_Surface* renderWallFrame(int frame, bool wall);
+		SDL_Surface* renderFrame(int frame, bool wall);
 		SDL_Surface* renderDataSurface();
 };

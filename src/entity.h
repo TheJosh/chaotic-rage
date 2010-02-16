@@ -27,7 +27,7 @@ class Entity
 		virtual SDL_Surface* getSprite() = 0;
 		
 		/**
-		* Update the entity. Time is provided in micro-seconds (µs)
+		* Update the entity. Time is provided in milliseconds (ms)
 		**/
-		virtual void update(int usdelta) = 0;
+		virtual void update(int delta) = 0;
 };
