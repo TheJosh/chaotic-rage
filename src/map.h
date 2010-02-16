@@ -6,6 +6,10 @@
 using namespace std;
 
 
+#define RENDER_FRAME_DATA -1
+#define RENDER_FRAME_BG -2
+
+
 class Area {
 	public:
 		int x;

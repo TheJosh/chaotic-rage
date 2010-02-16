@@ -8,8 +8,13 @@ using namespace std;
 void render(GameState *st, SDL_Surface *screen)
 {
 	int i;
+	SDL_Surface *surf;
 	
-	SDL_Surface *surf = st->map->renderWallFrame(0);
+	surf = st->map->renderWallFrame(RENDER_FRAME_BG);
+	SDL_BlitSurface(surf, NULL, screen, 0);
+	SDL_FreeSurface(surf);
+	
+	surf = st->map->renderWallFrame(0);
 	SDL_BlitSurface(surf, NULL, screen, 0);
 	SDL_FreeSurface(surf);
 	
