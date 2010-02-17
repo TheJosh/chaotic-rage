@@ -9,7 +9,13 @@ Player::Player(UnitClass *uc) : Unit(uc)
 {
 	this->sprites = (SDL_Surface**) malloc(sizeof(SDL_Surface*));
 	
-	this->sprites[0] = loadSprite("unitclass/marine/player_180deg_static.bmp");
+	this->sprites[0] = loadSprite("unitclass/" + uc->name + "/static_0deg_fr0.bmp");
+	
+	uc->loadAllSprites();
+	if (wasLoadSpriteError()) {
+		cerr << "Unable to load required player sprites; exiting.\n";
+		exit(1);
+	}
 	
 	this->key[KEY_FWD] = 0;
 	this->key[KEY_REV] = 0;

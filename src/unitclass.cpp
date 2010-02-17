@@ -21,11 +21,21 @@ static cfg_opt_t settings_opts[] =
 	CFG_END()
 };
 
+// State section
+static cfg_opt_t state_opts[] =
+{
+	CFG_STR((char*) "name", 0, CFGF_NONE),
+	CFG_INT((char*) "type", 0, CFGF_NONE),
+	CFG_INT((char*) "num_frames", 0, CFGF_NONE),
+	CFG_END()
+};
+
 // Unitclass section
 static cfg_opt_t unitclass_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_SEC((char*) "settings", settings_opts, CFGF_MULTI),
+	CFG_SEC((char*) "state", state_opts, CFGF_MULTI),
 	CFG_END()
 };
 
@@ -35,6 +45,16 @@ static cfg_opt_t opts[] =
 	CFG_SEC((char*) "unitclass", unitclass_opts, CFGF_MULTI),
 	CFG_END()
 };
+
+
+
+UnitClass::UnitClass()
+{
+}
+
+UnitClass::~UnitClass()
+{
+}
 
 
 /**
@@ -110,13 +130,15 @@ bool loadAllUnitClasses()
 UnitClass* loadUnitClass(cfg_t *cfg)
 {
 	UnitClass* uc;
-	cfg_t *cfg_settings;
+	cfg_t *cfg_settings, *cfg_state;
+	int j;
 	
 	
 	uc = new UnitClass();
 	uc->name = cfg_getstr(cfg, "name");
 	
 	
+	/// Settings ///
 	int num_settings = cfg_size(cfg, "settings");
 	if (num_settings - 1 != UNIT_NUM_MODIFIERS) return NULL;
 	
@@ -131,14 +153,33 @@ UnitClass* loadUnitClass(cfg_t *cfg)
 	if (uc->initial.turn_speed == 0) return NULL;
 	
 	// load modifiers
-	int j;
 	for (j = 1; j < num_settings; j++) {
 		cfg_settings = cfg_getnsec(cfg, "settings", j);
 		
-		uc->mod[j].lin_speed = cfg_getint(cfg_settings, "lin_speed");
-		uc->mod[j].lin_accel = cfg_getint(cfg_settings, "lin_accel");
-		uc->mod[j].turn_speed = cfg_getint(cfg_settings, "turn_speed");
+		uc->mod[j - 1].lin_speed = cfg_getint(cfg_settings, "lin_speed");
+		uc->mod[j - 1].lin_accel = cfg_getint(cfg_settings, "lin_accel");
+		uc->mod[j - 1].turn_speed = cfg_getint(cfg_settings, "turn_speed");
 	}
+	
+	
+	
+	/// States ///
+	int num_states = cfg_size(cfg, "state");
+	if (num_states < 1) return NULL;
+	
+	// load modifiers
+	for (j = 0; j < num_states; j++) {
+		cfg_state = cfg_getnsec(cfg, "state", j);
+		
+		UnitClassState* uct = new UnitClassState();
+		
+		uct->name = cfg_getstr(cfg_state, "name");
+		uct->type = cfg_getint(cfg_state, "type");
+		uct->num_frames = cfg_getint(cfg_state, "num_frames");
+		
+		uc->states.push_back(uct);
+	}
+	
 	
 	return uc;
 }
@@ -167,9 +208,58 @@ UnitClassSettings* UnitClass::getSettings(Uint8 modifier_flags)
 	
 	for (int i = 0; i < UNIT_NUM_MODIFIERS; i++) {
 		if ((modifier_flags & (1 << i)) != 0) {
-			ret->lin_speed += this->mod[i].lin_speed;
-			ret->lin_accel += this->mod[i].lin_accel;
-			ret->turn_speed += this->mod[i].turn_speed;
+			ret->lin_speed += this->mod[i - 1].lin_speed;
+			ret->lin_accel += this->mod[i - 1].lin_accel;
+			ret->turn_speed += this->mod[i - 1].turn_speed;
+		}
+	}
+	
+	return ret;
+}
+
+
+/**
+* Returns a random state which matches the specified type.
+* If no state for the specified type is found, uses a state from the UNIT_STATE_STATIC type.
+* The returned object should be freed by the caller.
+**/
+UnitClassState* UnitClass::getState(int type)
+{
+	// TODO: STUB!
+	return this->states.at(0);
+}
+
+
+/**
+* Loads all of the required state sprites into SDL_Surface's.
+* The returned object should be freed by the caller.
+**/
+vector<SDL_Surface*>* UnitClass::loadAllSprites()
+{
+	vector<SDL_Surface*>* ret = new vector<SDL_Surface*>();
+	
+	unsigned int state;
+	unsigned int angle;
+	unsigned int frame;
+	
+	UnitClassState* state_info;
+	char buff[255];
+	
+	for (state = 0; state < this->states.size(); state++) {
+		state_info = this->states.at(state);
+		
+		for (angle = 0; angle < 8; angle++) {
+			for (frame = 0; frame < state_info->num_frames; frame++) {
+				
+				sprintf(buff, "unitclass/%s/%s_%ideg_fr%i.bmp", this->name.c_str(), state_info->name.c_str(), angle * 45, frame);
+				
+				DEBUG("Loading unit class sprite: %s\n", buff);
+				
+				SDL_Surface *surf = loadSprite(buff);
+				if (surf) {
+					ret->push_back(surf);
+				}
+			}
 		}
 	}
 	

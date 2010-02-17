@@ -30,8 +30,8 @@ int main (int argc, char ** argv) {
 	GameState *st = new GameState();
 	
 	Player *p = new Player(getUnitClassByID(0));
-	st->curr_player = p;
 	st->addUnit(p);
+	st->curr_player = p;
 	
 	Map *m = new Map();
 	m->load("arena");
