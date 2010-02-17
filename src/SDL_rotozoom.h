@@ -1,17 +1,11 @@
 
 /*
 
- SDL_rotozoom - rotozoomer
+SDL_rotozoom - rotozoomer
 
- LGPL (c) A. Schiffler
+LGPL (c) A. Schiffler
 
 */
-
-
-/**
-*** CHECK THE LICENCE OF THIS FILE - MAY NEED TO PACKAGE INTO A DLL
-**/
-
 
 #ifndef _SDL_rotozoom_h
 #define _SDL_rotozoom_h
@@ -29,26 +23,19 @@ extern "C" {
 
 #include "SDL.h"
 
-/* ---- Defines */
+	/* ---- Defines */
 
+	/*!
+	\brief Disable anti-aliasing (no smoothing).
+	*/
 #define SMOOTHING_OFF		0
+
+	/*!
+	\brief Enable anti-aliasing (smoothing).
+	*/
 #define SMOOTHING_ON		1
 
-/* ---- Structures */
-
-    typedef struct tColorRGBA {
-	Uint8 r;
-	Uint8 g;
-	Uint8 b;
-	Uint8 a;
-    } tColorRGBA;
-
-    typedef struct tColorY {
-	Uint8 y;
-    } tColorY;
-
-
-/* ---- Prototypes */
+	/* ---- Prototypes */
 
 #ifdef WIN32
 #  ifdef DLL_EXPORT
@@ -63,70 +50,52 @@ extern "C" {
 #  define SDL_ROTOZOOM_SCOPE extern
 #endif
 
-/* 
- 
- rotozoomSurface()
+	/* 
 
- Rotates and zoomes a 32bit or 8bit 'src' surface to newly created 'dst' surface.
- 'angle' is the rotation in degrees. 'zoom' a scaling factor. If 'smooth' is 1
- then the destination 32bit surface is anti-aliased. If the surface is not 8bit
- or 32bit RGBA/ABGR it will be converted into a 32bit RGBA format on the fly.
+	Rotozoom functions
 
-*/
+	*/
 
-    SDL_ROTOZOOM_SCOPE SDL_Surface *rotozoomSurface(SDL_Surface * src, double angle, double zoom, int smooth);
+	SDL_ROTOZOOM_SCOPE SDL_Surface *rotozoomSurface(SDL_Surface * src, double angle, double zoom, int smooth);
 
-    SDL_ROTOZOOM_SCOPE SDL_Surface *rotozoomSurfaceXY
-    (SDL_Surface * src, double angle, double zoomx, double zoomy, int smooth);
-
-/* Returns the size of the target surface for a rotozoomSurface() call */
-
-    SDL_ROTOZOOM_SCOPE void rotozoomSurfaceSize(int width, int height, double angle, double zoom, int *dstwidth,
-					  int *dstheight);
-
-    SDL_ROTOZOOM_SCOPE void rotozoomSurfaceSizeXY
-    (int width, int height, double angle, double zoomx, double zoomy, 
-     int *dstwidth, int *dstheight);
-
-/* 
- 
- zoomSurface()
-
- Zoomes a 32bit or 8bit 'src' surface to newly created 'dst' surface.
- 'zoomx' and 'zoomy' are scaling factors for width and height. If 'smooth' is 1
- then the destination 32bit surface is anti-aliased. If the surface is not 8bit
- or 32bit RGBA/ABGR it will be converted into a 32bit RGBA format on the fly.
-
-*/
-
-    SDL_ROTOZOOM_SCOPE SDL_Surface *zoomSurface(SDL_Surface * src, double zoomx, double zoomy, int smooth);
-
-/* Returns the size of the target surface for a zoomSurface() call */
-
-    SDL_ROTOZOOM_SCOPE void zoomSurfaceSize(int width, int height, double zoomx, double zoomy, int *dstwidth, int *dstheight);
+	SDL_ROTOZOOM_SCOPE SDL_Surface *rotozoomSurfaceXY
+		(SDL_Surface * src, double angle, double zoomx, double zoomy, int smooth);
 
 
-/* 
-    shrinkSurface()
+	SDL_ROTOZOOM_SCOPE void rotozoomSurfaceSize(int width, int height, double angle, double zoom, int *dstwidth,
+		int *dstheight);
 
-    Shrinks a 32bit or 8bit 'src' surface ti a newly created 'dst' surface.
-    'factorx' and 'factory' are the shrinking ratios (i.e. 2=1/2 the size,
-    3=1/3 the size, etc.) The destination surface is antialiased by averaging
-    the source box RGBA or Y information. If the surface is not 8bit
-    or 32bit RGBA/ABGR it will be converted into a 32bit RGBA format on the fly.
-*/     
-    
-    SDL_ROTOZOOM_SCOPE SDL_Surface *shrinkSurface(SDL_Surface * src, int factorx, int factory);
+	SDL_ROTOZOOM_SCOPE void rotozoomSurfaceSizeXY
+		(int width, int height, double angle, double zoomx, double zoomy, 
+		int *dstwidth, int *dstheight);
 
-/* 
+	/* 
 
-    Other functions
-    
-*/
+	Zooming functions
 
-    SDL_ROTOZOOM_SCOPE SDL_Surface* rotateSurface90Degrees(SDL_Surface* pSurf, int numClockwiseTurns);
+	*/
 
-/* Ends C function definitions when using C++ */
+	SDL_ROTOZOOM_SCOPE SDL_Surface *zoomSurface(SDL_Surface * src, double zoomx, double zoomy, int smooth);
+
+	SDL_ROTOZOOM_SCOPE void zoomSurfaceSize(int width, int height, double zoomx, double zoomy, int *dstwidth, int *dstheight);
+
+	/* 
+
+	Shrinking functions
+
+	*/     
+
+	SDL_ROTOZOOM_SCOPE SDL_Surface *shrinkSurface(SDL_Surface * src, int factorx, int factory);
+
+	/* 
+
+	Specialized rotation functions
+
+	*/
+
+	SDL_ROTOZOOM_SCOPE SDL_Surface* rotateSurface90Degrees(SDL_Surface* src, int numClockwiseTurns);
+
+	/* Ends C function definitions when using C++ */
 #ifdef __cplusplus
 }
 #endif
