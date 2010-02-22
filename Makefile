@@ -1,11 +1,36 @@
-all: general
+
+CXX=g++
+CFLAGS=`sdl-config --cflags` `pkg-config zziplib libconfuse --cflags` -Werror -Wall
+LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse --libs` -Werror -Wall
+
+OBJPATH=build
+SRCPATH=src
+
+OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(wildcard $(SRCPATH)/*.cpp))
+
+
+default: all
+
+.PHONY: all client clean
+
+all: client
+
+client: $(OBJFILES)
+	@echo -n [LINK] $< ...\ 
+	@$(CXX) $(CFLAGS) $(OBJFILES) -o chaoticrage $(LIBS) -ggdb 
+	@echo  OK
 	
-general:
-	g++ src/*.cpp \
-	`sdl-config --libs --cflags` `pkg-config zziplib libconfuse --libs --cflags` \
-	-o chaoticrage -Werror -Wall -O2
+$(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h
+	@echo -n [CC] $< ...\ 
+	@$(CXX) $(CFLAGS) -o $@ -c $<
+	@echo  OK
 	
-debug:
-	g++ src/*.cpp \
-	`sdl-config --libs --cflags` `pkg-config zziplib libconfuse --libs --cflags` \
-	-o chaoticrage -Werror -Wall -ggdb -DDEBUG_MODE
+clean:
+	rm -f chaoticrage
+	rm -f $(OBJFILES)
+	
+	
+	
+ifeq ($(wildcard $(OBJPATH)/),)
+$(shell mkdir -p $(OBJPATH))
+endif
