@@ -37,6 +37,7 @@ class UnitClassSettings
 class UnitClassState
 {
 	public:
+		int id;
 		string name;
 		int type;
 		unsigned int num_frames;
@@ -53,8 +54,8 @@ class UnitClass
 	private:
 		UnitClassSettings initial;
 		UnitClassSettings mod[UNIT_NUM_MODIFIERS];
-		int j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z;
 		vector<UnitClassState*> states;
+		unsigned int max_frames;
 		
 	public:
 		UnitClass();
@@ -64,6 +65,7 @@ class UnitClass
 		UnitClassSettings* getSettings(Uint8 modifier_flags);
 		UnitClassState* getState(int type);
 		vector<SDL_Surface*>* loadAllSprites();
+		unsigned int getMaxFrames();
 };
 
 

@@ -16,7 +16,7 @@ default: all
 all: client
 
 client: $(OBJFILES)
-	@echo -n [LINK] $< ...\ 
+	@echo -n [LINK] $@ ...\ 
 	@$(CXX) $(CFLAGS) $(OBJFILES) -o chaoticrage $(LIBS) -ggdb 
 	@echo  OK
 	

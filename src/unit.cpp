@@ -6,18 +6,35 @@
 using namespace std;
 
 
-Unit::Unit(UnitClass *unit_class)
+Unit::Unit(UnitClass *uc)
 {
-	this->uc = unit_class;
+	this->uc = uc;
 	this->angle = 0;
+	this->desired_angle = 0;
 	this->speed = 0;
 	this->health = 100;
+	
+	this->sprites = uc->loadAllSprites();
+	if (wasLoadSpriteError()) {
+		cerr << "Unable to load required player sprites; exiting.\n";
+		exit(1);
+	}
 }
 
 Unit::~Unit()
 {
+	unsigned int j;
+	for (j = 0; j < this->sprites->size(); j++) {
+		SDL_FreeSurface(this->sprites->at(j));
+	}
+	
+	delete(this->sprites);
 }
 
+
+/**
+* Moves units around
+**/
 void Unit::update(int delta, UnitClassSettings *ucs)
 {
 	int turn_speed = ppsDelta(ucs->turn_speed, delta);

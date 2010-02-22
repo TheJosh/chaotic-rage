@@ -15,10 +15,10 @@ class Unit: public Entity
 		int speed;
 		int health;
 		int desired_angle;
-		UnitClass* uc;
-		
-	private:
 		int angle;
+		
+		UnitClass* uc;
+		vector<SDL_Surface*>* sprites;
 		
 	public:
 		Unit(UnitClass *unit_class);

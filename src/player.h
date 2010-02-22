@@ -13,8 +13,6 @@ class Player : public Unit
 		static const int KEY_REV = 1;
 		
 	private:
-		SDL_Surface** sprites;
-		int curr_sprite;
 		bool key[1];
 		
 	public:

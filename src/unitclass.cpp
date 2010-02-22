@@ -167,7 +167,7 @@ UnitClass* loadUnitClass(cfg_t *cfg)
 	int num_states = cfg_size(cfg, "state");
 	if (num_states < 1) return NULL;
 	
-	// load modifiers
+	// load states
 	for (j = 0; j < num_states; j++) {
 		cfg_state = cfg_getnsec(cfg, "state", j);
 		
@@ -178,8 +178,10 @@ UnitClass* loadUnitClass(cfg_t *cfg)
 		uct->num_frames = cfg_getint(cfg_state, "num_frames");
 		
 		uc->states.push_back(uct);
+		uct->id = uc->states.size() - 1;
+		
+		uc->max_frames = MAX(uc->max_frames, uct->num_frames);
 	}
-	
 	
 	return uc;
 }
@@ -221,14 +223,42 @@ UnitClassSettings* UnitClass::getSettings(Uint8 modifier_flags)
 /**
 * Returns a random state which matches the specified type.
 * If no state for the specified type is found, uses a state from the UNIT_STATE_STATIC type.
-* The returned object should be freed by the caller.
 **/
 UnitClassState* UnitClass::getState(int type)
 {
-	// TODO: STUB!
-	return this->states.at(0);
+	unsigned int j = 0;
+	unsigned int num = 0;
+	
+	// Find out how many of this time exist
+	for (j = 0; j < this->states.size(); j++) {
+		if (this->states.at(j)->type == type) num++;
+	}
+	
+	// Randomly choose one
+	num = getRandom(0, num);
+	for (j = 0; j < this->states.size(); j++) {
+		if (this->states.at(j)->type == type) {
+			if (num == 0) {
+				return this->states.at(j);
+			}
+			num--;
+		}
+	}
+	
+	// If no state of this type found, do a search for a static type
+	if (type == UNIT_STATE_STATIC) {
+		cerr << "Cannot find state of type UNIT_STATE_STATIC for unit.\n";
+		exit(1);
+	}
+	
+	return this->getState(UNIT_STATE_STATIC);
 }
 
+
+unsigned int UnitClass::getMaxFrames()
+{
+	return this->max_frames;
+}
 
 /**
 * Loads all of the required state sprites into SDL_Surface's.
@@ -259,6 +289,11 @@ vector<SDL_Surface*>* UnitClass::loadAllSprites()
 				if (surf) {
 					ret->push_back(surf);
 				}
+			}
+			
+			while (frame < this->max_frames) {
+				ret->push_back(NULL);
+				frame++;
 			}
 		}
 	}

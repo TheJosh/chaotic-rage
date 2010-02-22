@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL.h>
 #include <math.h>
+#include <time.h>
 #include "rage.h"
 
 using namespace std;
@@ -123,4 +124,15 @@ int ppsDelta(int pps, int delta)
 	return ceil(pps * delta / 1000);
 }
 
+
+void seedRandom()
+{
+	srand (time(NULL));
+}
+
+int getRandom(int low, int high)
+{
+	if (high < low) swap(low, high);
+	return rand() % (high-low) + low;
+}
 

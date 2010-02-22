@@ -7,47 +7,59 @@ using namespace std;
 
 Player::Player(UnitClass *uc) : Unit(uc)
 {
-	this->sprites = (SDL_Surface**) malloc(sizeof(SDL_Surface*));
-	
-	this->sprites[0] = loadSprite("unitclass/" + uc->name + "/static_0deg_fr0.bmp");
-	
-	uc->loadAllSprites();
-	if (wasLoadSpriteError()) {
-		cerr << "Unable to load required player sprites; exiting.\n";
-		exit(1);
-	}
-	
 	this->key[KEY_FWD] = 0;
 	this->key[KEY_REV] = 0;
 }
 
 Player::~Player()
 {
-	SDL_FreeSurface(this->sprites[0]);
 }
 
 
+/**
+* Sets a key press
+**/
 void Player::keyPress(int idx)
 {
 	this->key[idx] = 1;
 }
 
+
+/**
+* Sets a key release
+**/
 void Player::keyRelease(int idx)
 {
 	this->key[idx] = 0;
 }
 
+
+/**
+* Sets the player angle to point towards the mouse
+**/
 void Player::angleFromMouse(int x, int y)
 {
 	this->desired_angle = getAngleBetweenPoints(this->x, this->y, x, y);
 }
 
 
+/**
+* Determines the player sprite
+**/
 SDL_Surface* Player::getSprite()
 {
-	return this->sprites[0];
+	int idx = round(this->angle / 45);
+	
+	idx *= this->uc->getMaxFrames();
+	//todo: idx += current_frame;
+	
+	return this->sprites->at(idx);
 }
 
+
+/**
+* Uses the currently pressed keys to change the player movement
+**/
 void Player::update(int delta)
 {
 	UnitClassSettings *ucs = this->uc->getSettings(0);
