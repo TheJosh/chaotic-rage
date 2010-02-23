@@ -19,6 +19,8 @@ SDL_Surface *loadSprite (string filename)
 	Uint32 colourkey;
 	SDL_RWops *rw;
 	
+	DEBUG("Loading bitmap '%s'.\n", filename.c_str());
+	
 	rw = SDL_RWFromZZIP(filename.c_str(), "r");
 	if (rw == NULL) {
 		fprintf(stderr, "Couldn't load sprite '%s'.\n", filename.c_str());

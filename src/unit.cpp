@@ -16,9 +16,11 @@ Unit::Unit(UnitClass *uc)
 	
 	this->sprites = uc->loadAllSprites();
 	if (wasLoadSpriteError()) {
-		cerr << "Unable to load required player sprites; exiting.\n";
+		cerr << "Unable to load required unit sprites; exiting.\n";
 		exit(1);
 	}
+	
+	cout << "sprites loaded";
 }
 
 Unit::~Unit()

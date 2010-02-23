@@ -16,7 +16,7 @@ static bool running;
 **/
 void gameLoop(GameState *st, SDL_Surface *screen)
 {
-	int start = 1, end = 0;
+	int start = 0, end = 1;
 	
 	running = true;
 	while (running) {

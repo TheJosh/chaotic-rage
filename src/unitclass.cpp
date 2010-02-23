@@ -168,6 +168,7 @@ UnitClass* loadUnitClass(cfg_t *cfg)
 	if (num_states < 1) return NULL;
 	
 	// load states
+	uc->max_frames = 0;
 	for (j = 0; j < num_states; j++) {
 		cfg_state = cfg_getnsec(cfg, "state", j);
 		
@@ -283,12 +284,10 @@ vector<SDL_Surface*>* UnitClass::loadAllSprites()
 				
 				sprintf(buff, "unitclass/%s/%s_%ideg_fr%i.bmp", this->name.c_str(), state_info->name.c_str(), angle * 45, frame);
 				
-				DEBUG("Loading unit class sprite: %s\n", buff);
+				DEBUG("Loading unit class sprite; name = '%s', angle = %i, frame = %i\n", state_info->name.c_str(), angle * 45, frame);
 				
 				SDL_Surface *surf = loadSprite(buff);
-				if (surf) {
-					ret->push_back(surf);
-				}
+				ret->push_back(surf);
 			}
 			
 			while (frame < this->max_frames) {
