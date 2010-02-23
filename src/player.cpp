@@ -51,7 +51,7 @@ SDL_Surface* Player::getSprite()
 	int idx = round(this->angle / 45);
 	
 	idx *= this->uc->getMaxFrames();
-	//todo: idx += current_frame;
+	idx += this->current_frame;
 	
 	return this->sprites->at(idx);
 }

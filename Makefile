@@ -1,7 +1,7 @@
 
 CXX=g++
 CFLAGS=`sdl-config --cflags` `pkg-config zziplib libconfuse --cflags` -Werror -Wall
-LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse --libs` -Werror -Wall
+LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse --libs`
 
 OBJPATH=build
 SRCPATH=src
@@ -20,7 +20,7 @@ client: $(OBJFILES)
 	@$(CXX) $(CFLAGS) $(OBJFILES) -o chaoticrage $(LIBS) -ggdb 
 	@echo  OK
 	
-$(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h
+$(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h Makefile
 	@echo -n [CC] $< ...\ 
 	@$(CXX) $(CFLAGS) -o $@ -c $<
 	@echo  OK

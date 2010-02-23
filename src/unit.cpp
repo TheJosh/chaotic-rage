@@ -13,6 +13,7 @@ Unit::Unit(UnitClass *uc)
 	this->desired_angle = 0;
 	this->speed = 0;
 	this->health = 100;
+	this->current_frame = 0;
 	
 	this->sprites = uc->loadAllSprites();
 	if (wasLoadSpriteError()) {
@@ -56,7 +57,7 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	
 	// clamp to legal values
 	if (this->angle < 0) this->angle += 360;
-	if (this->angle > 360) this->angle -= 360;
+	if (this->angle > 359) this->angle -= 360;
 	
 	
 	this->x = pointPlusAngleX(this->x, this->angle, ppsDelta(this->speed, delta));

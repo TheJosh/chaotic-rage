@@ -16,6 +16,7 @@ class Unit: public Entity
 		int health;
 		int desired_angle;
 		int angle;
+		int current_frame;
 		
 		UnitClass* uc;
 		vector<SDL_Surface*>* sprites;
