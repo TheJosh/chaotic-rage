@@ -14,14 +14,14 @@ Unit::Unit(UnitClass *uc)
 	this->speed = 0;
 	this->health = 100;
 	this->current_frame = 0;
+	this->current_state_type = UNIT_STATE_STATIC;
+	this->current_state = uc->getState(UNIT_STATE_STATIC);
 	
 	this->sprites = uc->loadAllSprites();
 	if (wasLoadSpriteError()) {
 		cerr << "Unable to load required unit sprites; exiting.\n";
 		exit(1);
 	}
-	
-	cout << "sprites loaded";
 }
 
 Unit::~Unit()
@@ -32,6 +32,15 @@ Unit::~Unit()
 	}
 	
 	delete(this->sprites);
+}
+
+
+void Unit::updateState(int new_type)
+{
+	if (this->current_state_type == new_type) return;
+	
+	this->current_state_type = new_type;
+	this->current_state = this->uc->getState(new_type);
 }
 
 

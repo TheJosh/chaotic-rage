@@ -53,6 +53,8 @@ SDL_Surface* Player::getSprite()
 	idx *= this->uc->getMaxFrames();
 	idx += this->current_frame;
 	
+	idx += this->current_state->sprite_offset;
+	
 	return this->sprites->at(idx);
 }
 
@@ -66,9 +68,11 @@ void Player::update(int delta)
 	
 	if (this->key[KEY_FWD]) {	// fwd key pressed
 		this->speed += ppsDelta(ucs->lin_accel, delta);
+		this->updateState(UNIT_STATE_RUNNING);
 		
 	} else if (this->key[KEY_REV]) {	// rev key pressed
 		this->speed -= ppsDelta(ucs->lin_accel, delta);
+		this->updateState(UNIT_STATE_RUNNING);
 		
 	} else if (speed > 0) {		// nothing pressed, slow down (forwards)
 		this->speed -= (speed > 100 ? 100 : speed);
@@ -77,6 +81,10 @@ void Player::update(int delta)
 		this->speed += (0 - speed > 100 ? 100 : 0 - speed);
 	}
 	
+	// Standing still...
+	if (this->speed == 0) {
+		this->updateState(UNIT_STATE_STATIC);
+	}
 	
 	// Bound to limits
 	if (this->speed > ucs->lin_speed) this->speed = ucs->lin_speed;

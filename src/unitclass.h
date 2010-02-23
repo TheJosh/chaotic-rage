@@ -13,7 +13,7 @@ using namespace std;
 #define UNIT_MOD_SPEED (1 << 2)
 
 #define UNIT_STATE_STATIC 1
-#define UNIT_STATE_RUN 2
+#define UNIT_STATE_RUNNING 2
 
 
 class UnitClassSettings;
@@ -41,6 +41,7 @@ class UnitClassState
 		string name;
 		int type;
 		unsigned int num_frames;
+		unsigned int sprite_offset;
 };
 
 class UnitClass

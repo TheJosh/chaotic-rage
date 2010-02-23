@@ -168,12 +168,14 @@ UnitClass* loadUnitClass(cfg_t *cfg)
 	if (num_states < 1) return NULL;
 	
 	// load states
+	unsigned int sprite_offset = 0;
 	uc->max_frames = 0;
 	for (j = 0; j < num_states; j++) {
 		cfg_state = cfg_getnsec(cfg, "state", j);
 		
 		UnitClassState* uct = new UnitClassState();
 		
+		uct->sprite_offset = sprite_offset;
 		uct->name = cfg_getstr(cfg_state, "name");
 		uct->type = cfg_getint(cfg_state, "type");
 		uct->num_frames = cfg_getint(cfg_state, "num_frames");
@@ -182,6 +184,7 @@ UnitClass* loadUnitClass(cfg_t *cfg)
 		uct->id = uc->states.size() - 1;
 		
 		uc->max_frames = MAX(uc->max_frames, uct->num_frames);
+		sprite_offset += uct->num_frames * 8;
 	}
 	
 	return uc;

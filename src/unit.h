@@ -17,6 +17,8 @@ class Unit: public Entity
 		int desired_angle;
 		int angle;
 		int current_frame;
+		UnitClassState* current_state;
+		int current_state_type;
 		
 		UnitClass* uc;
 		vector<SDL_Surface*>* sprites;
@@ -31,4 +33,5 @@ class Unit: public Entity
 	
 	protected:
 		void update(int delta, UnitClassSettings *ucs);
+		void updateState(int new_type);
 };
