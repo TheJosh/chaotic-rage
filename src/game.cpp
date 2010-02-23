@@ -9,6 +9,7 @@ static void updateState(GameState *st, int ms_delta);
 static void handleEvents(GameState *st);
 
 static bool running;
+static int fps;
 
 
 /**
@@ -16,17 +17,21 @@ static bool running;
 **/
 void gameLoop(GameState *st, SDL_Surface *screen)
 {
-	int start = 0, end = 1;
+	int start = 0, end = 1, delta = 0;
+	int curr_frame = 0, total_time = 0;
 	
 	running = true;
 	while (running) {
-		updateState(st, end - start);
-		
+		delta = end - start;
 		start = SDL_GetTicks();
 		
+		curr_frame++;
+		total_time += delta;
+		fps = round(((float) curr_frame) / ((float) total_time / 1000.0));
+		
+		updateState(st, delta);
 		handleEvents(st);
 		render(st, screen);
-		SDL_Delay(10);
 		
 		end = SDL_GetTicks();
 	}

@@ -121,7 +121,7 @@ int inside (SDL_Rect rect, int x, int y)
 **/
 int ppsDelta(int pps, int delta)
 {
-	return ceil(pps * delta / 1000);
+	return ceil(((float)pps) * ((float)delta) / 1000.0);
 }
 
 
