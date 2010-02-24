@@ -14,11 +14,11 @@ class Entity
 		int layer;
 		
 	protected:
-		Entity();
-		~Entity();
+		GameState* st;
 		
-	public:
-		;
+	protected:
+		Entity(GameState *st);
+		~Entity();
 		
 	public:
 		/**

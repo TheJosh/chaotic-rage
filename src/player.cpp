@@ -5,7 +5,7 @@
 using namespace std;
 
 
-Player::Player(UnitClass *uc) : Unit(uc)
+Player::Player(UnitClass *uc, GameState *st) : Unit(uc, st)
 {
 	this->key[KEY_FWD] = 0;
 	this->key[KEY_REV] = 0;
@@ -50,8 +50,11 @@ SDL_Surface* Player::getSprite()
 {
 	int idx = round(this->angle / 45);
 	
+	int frame = this->st->anim_frame - this->animation_start;
+	frame = frame % this->current_state->num_frames;
+	
 	idx *= this->uc->getMaxFrames();
-	idx += this->current_frame;
+	idx += frame;
 	
 	idx += this->current_state->sprite_offset;
 	

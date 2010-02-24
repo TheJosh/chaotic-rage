@@ -16,15 +16,15 @@ class Unit: public Entity
 		int health;
 		int desired_angle;
 		int angle;
-		int current_frame;
 		UnitClassState* current_state;
 		int current_state_type;
+		unsigned int animation_start;
 		
 		UnitClass* uc;
 		vector<SDL_Surface*>* sprites;
 		
 	public:
-		Unit(UnitClass *unit_class);
+		Unit(UnitClass *uc, GameState *st);
 		~Unit();
 		
 	public:

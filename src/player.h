@@ -16,7 +16,7 @@ class Player : public Unit
 		bool key[1];
 		
 	public:
-		Player(UnitClass *uc);
+		Player(UnitClass *uc, GameState *st);
 		~Player();
 		
 	public:

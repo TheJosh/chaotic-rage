@@ -14,6 +14,8 @@ class GameState
 	public:
 		Player* curr_player;
 		Map* map;
+		unsigned int anim_frame;
+		unsigned int game_time;
 		
 	public:
 		GameState();

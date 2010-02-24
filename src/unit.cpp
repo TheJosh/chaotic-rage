@@ -6,16 +6,16 @@
 using namespace std;
 
 
-Unit::Unit(UnitClass *uc)
+Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 {
 	this->uc = uc;
 	this->angle = 0;
 	this->desired_angle = 0;
 	this->speed = 0;
 	this->health = 100;
-	this->current_frame = 0;
-	this->current_state_type = UNIT_STATE_STATIC;
-	this->current_state = uc->getState(UNIT_STATE_STATIC);
+	
+	this->current_state_type = 0;
+	this->updateState(UNIT_STATE_STATIC);
 	
 	this->sprites = uc->loadAllSprites();
 	if (wasLoadSpriteError()) {
@@ -41,6 +41,7 @@ void Unit::updateState(int new_type)
 	
 	this->current_state_type = new_type;
 	this->current_state = this->uc->getState(new_type);
+	this->animation_start = this->st->anim_frame;
 }
 
 

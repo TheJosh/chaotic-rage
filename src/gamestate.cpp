@@ -7,6 +7,8 @@ using namespace std;
 
 GameState::GameState()
 {
+	this->anim_frame = 0;
+	this->game_time = 0;
 }
 
 GameState::~GameState()

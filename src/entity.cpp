@@ -5,14 +5,13 @@
 using namespace std;
 
 
-Entity::Entity()
+Entity::Entity(GameState *st)
 {
 	this->x = 0;
 	this->y = 0;
-	return;
+	this->st = st;
 }
 
 Entity::~Entity()
 {
-	return;
 }

@@ -49,6 +49,9 @@ static void updateState(GameState *st, int delta)
 	for (i = 0; i < st->numUnits(); i++) {
 		st->getUnit(i)->update(delta);
 	}
+	
+	st->game_time += delta;
+	st->anim_frame = floor(st->game_time / ANIMATION_FPS);
 }
 
 

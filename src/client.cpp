@@ -31,7 +31,7 @@ int main (int argc, char ** argv) {
 	
 	GameState *st = new GameState();
 	
-	Player *p = new Player(getUnitClassByID(0));
+	Player *p = new Player(getUnitClassByID(0), st);
 	st->addUnit(p);
 	st->curr_player = p;
 	

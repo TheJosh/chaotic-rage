@@ -13,6 +13,13 @@
 	#define DEBUG(_fmt, ...) /* nothing! */
 #endif
 
+class GameState;
+class UnitClass;
+class Unit;
+class Player;
+class AreaType;
+class Map;
+
 #include "entity.h"
 #include "unitclass.h"
 #include "unit.h"
@@ -28,4 +35,9 @@
 
 #include "SDL_rwops_zzip.h"
 #include "SDL_rotozoom.h"
+
+
+// Frames-per-second to run all in-game animations at.
+// Specified as a float to help out some arithmatic
+#define ANIMATION_FPS	6.0
 
