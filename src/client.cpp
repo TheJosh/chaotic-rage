@@ -40,6 +40,14 @@ int main (int argc, char ** argv) {
 	st->addUnit(p);
 	st->curr_player = p;
 	
+	Particle *pt;
+	for (int i = 0; i < 150; i++) {
+		pt = new Particle(getParticleTypeByID(0), st);
+		pt->x = getRandom(50, 100);
+		pt->y = getRandom(50, 100);
+		st->addParticle(pt);
+	}
+	
 	Map *m = new Map();
 	m->load("arena");
 	st->map = m;

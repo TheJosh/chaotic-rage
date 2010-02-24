@@ -14,10 +14,11 @@
 #endif
 
 class UnitClass;
-class Unit;
-class Player;
 class AreaType;
 class ParticleType;
+class Unit;
+class Player;
+class Particle;
 class Map;
 class GameState;
 
@@ -28,6 +29,7 @@ class GameState;
 #include "entity.h"
 #include "unit.h"
 #include "player.h"
+#include "particle.h"
 
 #include "map.h"
 #include "gamestate.h"

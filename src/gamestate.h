@@ -8,8 +8,11 @@ using namespace std;
 
 class GameState
 {
-	private:
+	friend void render(GameState *st, SDL_Surface *screen);
+	
+	protected:
 		vector<Unit*> units;
+		vector<Particle*> particles;
 		
 	public:
 		Player* curr_player;
@@ -22,8 +25,9 @@ class GameState
 		~GameState();
 		
 	public:
-		int numUnits();
 		void addUnit(Unit* unit);
-		Unit* getUnit(int idx);
+		void addParticle(Particle* particle);
 		
+	public:
+		void update(int delta);
 };
