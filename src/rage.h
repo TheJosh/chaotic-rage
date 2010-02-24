@@ -13,18 +13,22 @@
 	#define DEBUG(_fmt, ...) /* nothing! */
 #endif
 
-class GameState;
 class UnitClass;
 class Unit;
 class Player;
 class AreaType;
+class ParticleType;
 class Map;
+class GameState;
+
+#include "areatypes.h"
+#include "particletypes.h"
+#include "unitclass.h"
 
 #include "entity.h"
-#include "unitclass.h"
 #include "unit.h"
 #include "player.h"
-#include "areatypes.h"
+
 #include "map.h"
 #include "gamestate.h"
 

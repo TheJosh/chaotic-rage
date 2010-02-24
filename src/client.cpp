@@ -26,6 +26,11 @@ int main (int argc, char ** argv) {
 		exit(1);
 	}
 	
+	if (! loadAllParticleTypes()) {
+		cerr << "Unable to load particletypes datafile.\n";
+		exit(1);
+	}
+	
 	seedRandom();
 	
 	
