@@ -14,6 +14,10 @@ class ParticleType
 		bool directional;
 		int num_frames;
 		
+		int lin_speed;
+		int lin_accel;
+		int range;
+		
 		// dynamic
 		int id;
 		vector<SDL_Surface*> sprites;
@@ -22,6 +26,30 @@ class ParticleType
 		ParticleType();
 };
 
+class GenSpew
+{
+	public:
+		ParticleType *pt;
+		int angle_range;
+		int qty;
+		int time;
+};
+
+class ParticleGenType
+{
+	public:
+		// from data file
+		string name;
+		
+		// dynamic
+		int id;
+		vector<GenSpew*> spewers;
+};
+
 
 bool loadAllParticleTypes();
+
 ParticleType* getParticleTypeByID(int id);
+ParticleGenType* getParticleGenTypeByID(int id);
+
+

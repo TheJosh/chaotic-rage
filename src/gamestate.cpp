@@ -26,6 +26,11 @@ void GameState::addParticle(Particle* particle)
 	this->particles.push_back(particle);
 }
 
+void GameState::addParticleGenerator(ParticleGenerator* generator)
+{
+	this->particlegenerators.push_back(generator);
+}
+
 
 /**
 * Updates the state of everything
@@ -46,6 +51,12 @@ void GameState::update(int delta)
 	for (i = 0; i < this->particles.size(); i++) {
 		Particle *e = this->particles.at(i);
 		e->update(delta);
+	}
+	
+	// Particle Generators
+	for (i = 0; i < this->particlegenerators.size(); i++) {
+		ParticleGenerator *g = this->particlegenerators.at(i);
+		g->update(delta);
 	}
 	
 	this->game_time += delta;

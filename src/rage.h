@@ -19,6 +19,8 @@ class ParticleType;
 class Unit;
 class Player;
 class Particle;
+class ParticleGenType;
+class ParticleGenerator;
 class Map;
 class GameState;
 
@@ -30,6 +32,7 @@ class GameState;
 #include "unit.h"
 #include "player.h"
 #include "particle.h"
+#include "particlegenerator.h"
 
 #include "map.h"
 #include "gamestate.h"

@@ -8,6 +8,11 @@ using namespace std;
 
 class Particle: public Entity
 {
+	public:
+		int speed;
+		int angle;
+		int range;
+		
 	protected:
 		ParticleType* pt;
 		

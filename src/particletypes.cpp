@@ -9,13 +9,14 @@ using namespace std;
 
 /* Variables */
 static vector<ParticleType*> particletypes;
+static vector<ParticleGenType*> generatortypes;
 
 /* Functions */
 ParticleType* loadParticleType(cfg_t *cfg_particletype);
-
+ParticleGenType* loadParticleGenType(cfg_t *cfg_generatortype);
 
 /* Config file definition */
-// Areatype section
+// Particle section
 static cfg_opt_t particletype_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
@@ -23,6 +24,25 @@ static cfg_opt_t particletype_opts[] =
 	CFG_INT((char*) "num_frames", 1, CFGF_NONE),
 	CFG_INT((char*) "lin_speed", 0, CFGF_NONE),
 	CFG_INT((char*) "lin_accel", 0, CFGF_NONE),
+	CFG_INT((char*) "range", 0, CFGF_NONE),
+	CFG_END()
+};
+
+// Particle generator spewage
+static cfg_opt_t spew_opts[] =
+{
+	CFG_INT((char*) "type", 0, CFGF_NONE),
+	CFG_INT((char*) "angle_range", 0, CFGF_NONE),
+	CFG_INT((char*) "qty", 0, CFGF_NONE),
+	CFG_INT((char*) "time", 0, CFGF_NONE),
+	CFG_END()
+};
+
+// Particle generator section
+static cfg_opt_t generatortype_opts[] =
+{
+	CFG_STR((char*) "name", 0, CFGF_NONE),
+	CFG_SEC((char*) "spew", spew_opts, CFGF_MULTI),
 	CFG_END()
 };
 
@@ -30,6 +50,7 @@ static cfg_opt_t particletype_opts[] =
 static cfg_opt_t opts[] =
 {
 	CFG_SEC((char*) "particle", particletype_opts, CFGF_MULTI),
+	CFG_SEC((char*) "generator", generatortype_opts, CFGF_MULTI),
 	CFG_END()
 };
 
@@ -48,7 +69,7 @@ bool loadAllParticleTypes()
 {
 	char *buffer;
 	ZZIP_FILE *fp;
-	cfg_t *cfg, *cfg_particletype;
+	cfg_t *cfg, *cfg_particletype, *cfg_generatortype;
 	
 	
 	// Load the 'info.conf' file
@@ -78,10 +99,11 @@ bool loadAllParticleTypes()
 	cfg = cfg_init(opts, CFGF_NONE);
 	cfg_parse_buf(cfg, buffer);
 	
+	
 	int num_types = cfg_size(cfg, "particle");
 	if (num_types == 0) return false;
 	
-	// Process area type sections
+	// Process particle type sections
 	int j;
 	for (j = 0; j < num_types; j++) {
 		cfg_particletype = cfg_getnsec(cfg, "particle", j);
@@ -96,6 +118,26 @@ bool loadAllParticleTypes()
 		pt->id = particletypes.size() - 1;
 	}
 	
+	
+	// Process generaor type sections
+	num_types = cfg_size(cfg, "generator");
+	if (num_types == 0) return false;
+	
+	for (j = 0; j < num_types; j++) {
+		cfg_generatortype = cfg_getnsec(cfg, "generator", j);
+		
+		ParticleGenType* gt = loadParticleGenType(cfg_generatortype);
+		if (gt == NULL) {
+			cerr << "Bad particle generator type at index " << j << endl;
+			return false;
+		}
+		
+		generatortypes.push_back(gt);
+		gt->id = particletypes.size() - 1;
+	}
+	
+	
+	
 	// If there was sprite errors, exit the game
 	if (wasLoadSpriteError()) {
 		cerr << "Error loading particle types; game will now exit.\n";
@@ -107,24 +149,27 @@ bool loadAllParticleTypes()
 
 
 /**
-* Loads a single area type
+* Loads a single particle type
 **/
 ParticleType* loadParticleType(cfg_t *cfg_particletype)
 {
 	ParticleType* pt;
-	string filename;
 	char buff[255];
 	
 	if (cfg_size(cfg_particletype, "name") == 0) return NULL;
 	if (cfg_getint(cfg_particletype, "num_frames") < 1) return NULL;
 	if (cfg_getint(cfg_particletype, "lin_speed") == 0) return NULL;
 	if (cfg_getint(cfg_particletype, "lin_accel") == 0) return NULL;
+	if (cfg_getint(cfg_particletype, "range") == 0) return NULL;
 	
 	// Load settings
 	pt = new ParticleType();
 	pt->name = cfg_getstr(cfg_particletype, "name");
 	pt->directional = cfg_getint(cfg_particletype, "directional");
 	pt->num_frames = cfg_getint(cfg_particletype, "num_frames");
+	pt->lin_speed = cfg_getint(cfg_particletype, "lin_speed");
+	pt->lin_accel = cfg_getint(cfg_particletype, "lin_accel");
+	pt->range = cfg_getint(cfg_particletype, "range");
 	
 	// Load sprites
 	int angle;
@@ -148,9 +193,49 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype)
 }
 
 
+/**
+* Loads a single particle generator type
+**/
+ParticleGenType* loadParticleGenType(cfg_t *cfg_generatortype)
+{
+	ParticleGenType* gt;
+	cfg_t *cfg_spew;
+	int j;
+	
+	if (cfg_size(cfg_generatortype, "name") == 0) return NULL;
+	if (cfg_size(cfg_generatortype, "spew") == 0) return NULL;
+	
+	gt = new ParticleGenType();
+	
+	int num_types = cfg_size(cfg_generatortype, "spew");
+	for (j = 0; j < num_types; j++) {
+		cfg_spew = cfg_getnsec(cfg_generatortype, "spew", j);
+		
+		if (cfg_getint(cfg_spew, "angle_range") == 0) return NULL;
+		if (cfg_getint(cfg_spew, "qty") == 0) return NULL;
+		if (cfg_getint(cfg_spew, "time") == 0) return NULL;
+		
+		GenSpew* spew = new GenSpew();
+		spew->pt = getParticleTypeByID(cfg_getint(cfg_spew, "type"));
+		spew->angle_range = cfg_getint(cfg_spew, "angle_range");
+		spew->qty = cfg_getint(cfg_spew, "qty");
+		spew->time = cfg_getint(cfg_spew, "time");
+		
+		gt->spewers.push_back(spew);
+	}
+	
+	return gt;
+}
+
+
 ParticleType* getParticleTypeByID(int id)
 {
 	return particletypes.at(id);
+}
+
+ParticleGenType* getParticleGenTypeByID(int id)
+{
+	return generatortypes.at(id);
 }
 
 

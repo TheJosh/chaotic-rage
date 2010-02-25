@@ -45,12 +45,13 @@ int pointPlusAngleX (int point_x, int angle, int distance)
 	float angle_rads;
 	float point;
 	
-	if (angle < 0) angle = 360 - angle;
-	if (angle > 360) angle = angle - 360;
+	if (angle < 0) angle += 360;
+	if (angle > 360) angle -= 360;
+	
+	angle_rads = angle * (PI / 180.0);
 	
 	point = point_x;
-	angle_rads = angle * (PI / 180);
-	point -= sin(angle_rads) * distance;
+	point -= round(sin(angle_rads) * distance);
 	
 	return round(point);
 }
@@ -65,12 +66,13 @@ int pointPlusAngleY (int point_y, int angle, int distance)
 	float angle_rads;
 	float point;
 	
-	if (angle < 0) angle = 360 - angle;
-	if (angle > 360) angle = angle - 360;
+	if (angle < 0) angle += 360;
+	if (angle > 360) angle -= 360;
+	
+	angle_rads = angle * (PI / 180.0);
 	
 	point = point_y;
-	angle_rads = angle * (PI / 180);
-	point -= cos(angle_rads) * distance;
+	point -= round(cos(angle_rads) * distance);
 	
 	return point;
 }
