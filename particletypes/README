@@ -1,0 +1,32 @@
+
+TODO: We need an editor for this data.
+
+This defines individual particle types:
+
+particle {
+	name					Sprite name
+	directional				1 = particle sprite is influenced by direction, default = 0
+	num_frames				Number of frames in animation
+	lin_speed				Initial speed
+	lin_accel				Initial acceleration
+	range					Maximum range
+}
+
+
+This defines available particle generators.
+Each generator can be spwe out with multiple particle types:
+
+generator {
+	name					Name, used in editors, etc
+	
+	spew {
+		type				The particle ID, see above
+		angle_range			Range of angles to spew from
+		qty					Total number to spew out
+		time				How much time the spewing has
+	}
+	
+	spew {
+		...
+	}
+}
