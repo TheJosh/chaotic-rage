@@ -1,0 +1,12 @@
+Animations run at 6fps
+
+unitclass.conf defines everything about the unit classes.
+
+Each class has its own directory for sprites. Sprite filename is STATENAME_ANGLEdeg_frFRAME.bmp
+ - STATENAME is the name of the state, as defined in the config file
+ - ANGLE is the angle, in degrees. Values = 0, 45, 90, 135, 180, 225, 270, 315.
+ - FRAME is the 0-based frame number for the sprite.
+ 
+State types:
+1 = static
+2 = running

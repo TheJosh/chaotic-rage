@@ -34,6 +34,9 @@ void Particle::update(int delta)
 	
 	this->x = pointPlusAngleX(this->x, this->angle, ppsDelta(this->speed, delta));
 	this->y = pointPlusAngleY(this->y, this->angle, ppsDelta(this->speed, delta));
+	
+	this->x += getRandom(-3, 3);
+	this->y += getRandom(-3, 3);
 }
 
 SDL_Surface* Particle::getSprite()
