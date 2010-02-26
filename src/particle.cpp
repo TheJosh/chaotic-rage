@@ -9,6 +9,7 @@ using namespace std;
 Particle::Particle(ParticleType *pt, GameState *st) : Entity(st)
 {
 	this->pt = pt;
+	this->animation_start = st->anim_frame;
 	
 	this->speed = pt->lin_speed + getRandom(-100, 100);
 	this->range = pt->range + getRandom(-20, 20);
@@ -41,7 +42,14 @@ void Particle::update(int delta)
 
 SDL_Surface* Particle::getSprite()
 {
-	return this->pt->sprites.at(0);
+	int idx = 0;
+	if (this->pt->directional) idx = round(this->angle / 45);
+	
+	int frame = this->st->anim_frame - this->animation_start;
+	frame = frame % this->pt->num_frames;
+	idx += frame;
+	
+	return this->pt->sprites.at(idx);
 }
 
 

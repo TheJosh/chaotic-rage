@@ -40,11 +40,6 @@ int main (int argc, char ** argv) {
 	st->addUnit(p);
 	st->curr_player = p;
 	
-	ParticleGenerator *pg = new ParticleGenerator(getParticleGenTypeByID(0), st);
-	pg->x = 400;
-	pg->y = 200;
-	st->addParticleGenerator(pg);
-	
 	Map *m = new Map();
 	m->load("arena");
 	st->map = m;
