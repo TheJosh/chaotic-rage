@@ -17,6 +17,7 @@ class ParticleType
 		int lin_speed;
 		int lin_accel;
 		int range;
+		int age;
 		
 		// dynamic
 		int id;

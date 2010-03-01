@@ -12,6 +12,7 @@ class Particle: public Entity
 		int speed;
 		int angle;
 		int range;
+		int age;
 		
 	protected:
 		ParticleType* pt;

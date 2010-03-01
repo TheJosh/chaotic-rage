@@ -9,6 +9,7 @@ using namespace std;
 class Entity
 {
 	public:
+		bool del;
 		int x;
 		int y;
 		int layer;

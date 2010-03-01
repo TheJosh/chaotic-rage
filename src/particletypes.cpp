@@ -25,6 +25,7 @@ static cfg_opt_t particletype_opts[] =
 	CFG_INT((char*) "lin_speed", 0, CFGF_NONE),
 	CFG_INT((char*) "lin_accel", 0, CFGF_NONE),
 	CFG_INT((char*) "range", 0, CFGF_NONE),
+	CFG_INT((char*) "age", 0, CFGF_NONE),
 	CFG_END()
 };
 
@@ -170,6 +171,7 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype)
 	pt->lin_speed = cfg_getint(cfg_particletype, "lin_speed");
 	pt->lin_accel = cfg_getint(cfg_particletype, "lin_accel");
 	pt->range = cfg_getint(cfg_particletype, "range");
+	pt->age = cfg_getint(cfg_particletype, "age");
 	
 	// Load sprites
 	int angle;

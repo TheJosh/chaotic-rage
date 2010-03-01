@@ -50,7 +50,13 @@ void GameState::update(int delta)
 	// Particles
 	for (i = 0; i < this->particles.size(); i++) {
 		Particle *e = this->particles.at(i);
-		e->update(delta);
+		
+		if (e->del) {
+			delete (e);
+			this->particles.erase(this->particles.begin() + i);
+		} else {
+			e->update(delta);
+		}
 	}
 	
 	// Particle Generators

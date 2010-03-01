@@ -13,6 +13,7 @@ Particle::Particle(ParticleType *pt, GameState *st) : Entity(st)
 	
 	this->speed = pt->lin_speed + getRandom(-100, 100);
 	this->range = pt->range + getRandom(-20, 20);
+	this->age = getRandom(-600, 100);
 	
 	this->angle = 0;
 }
@@ -24,6 +25,11 @@ Particle::~Particle()
 
 void Particle::update(int delta)
 {
+	this->age += delta;
+	if (this->pt->age != 0 and this->age >= this->pt->age) {
+		this->del = true;
+	}
+	
 	this->speed += ppsDelta(this->pt->lin_accel, delta);
 	this->range -= ppsDelta(this->speed, delta);
 	
