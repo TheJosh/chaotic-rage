@@ -13,6 +13,11 @@
 	#define DEBUG(_fmt, ...) /* nothing! */
 #endif
 
+typedef struct range {
+	int min;
+	int max;
+} Range;
+
 class UnitClass;
 class AreaType;
 class ParticleType;

@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <math.h>
 #include <time.h>
+#include <confuse.h>
 #include "rage.h"
 
 using namespace std;
@@ -136,5 +137,26 @@ int getRandom(int low, int high)
 {
 	if (high < low) swap(low, high);
 	return rand() % (high-low) + low;
+}
+
+
+/**
+* Gets a range for a libconfuse config option.
+* A range is a min-max value pair in a list
+**/
+Range cfg_getrange(cfg_t *cfg, const char * name)
+{
+	Range res;
+	
+	if (cfg_size(cfg, name) == 1) {
+		res.min = cfg_getnint(cfg, name, 0);
+		res.max = res.min;
+		
+	} else {
+		res.min = cfg_getnint(cfg, name, 0);
+		res.max = cfg_getnint(cfg, name, 1);
+	}
+	
+	return res;
 }
 

@@ -14,10 +14,9 @@ class ParticleType
 		bool directional;
 		int num_frames;
 		
-		int lin_speed;
-		int lin_accel;
-		int range;
-		int age;
+		Range lin_speed;
+		Range lin_accel;
+		Range age;
 		
 		// dynamic
 		int id;

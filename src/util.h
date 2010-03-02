@@ -26,3 +26,6 @@ int ppsDelta(int pps, int delta);
 // Random numbers
 void seedRandom();
 int getRandom(int low, int high);
+
+// libconfuse helpers
+Range cfg_getrange(cfg_t *cfg, const char * name);

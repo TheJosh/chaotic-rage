@@ -9,9 +9,13 @@ using namespace std;
 class Particle: public Entity
 {
 	public:
+		// copied from particle type
 		int speed;
+		int lin_accel;
+		int max_age;
+		
+		// general instance variables
 		int angle;
-		int range;
 		int age;
 		
 	protected:
