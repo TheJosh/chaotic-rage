@@ -62,7 +62,13 @@ void GameState::update(int delta)
 	// Particle Generators
 	for (i = 0; i < this->particlegenerators.size(); i++) {
 		ParticleGenerator *g = this->particlegenerators.at(i);
-		g->update(delta);
+		
+		if (g->del) {
+			delete (g);
+			this->particlegenerators.erase(this->particlegenerators.begin() + i);
+		} else {
+			g->update(delta);
+		}
 	}
 	
 	this->game_time += delta;

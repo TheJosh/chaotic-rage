@@ -29,10 +29,11 @@ void ParticleGenerator::update(int delta)
 	GenSpew *spew;
 	int gennum;
 	
+	bool useful = false;
 	for (unsigned int i = 0; i < this->type->spewers.size(); i++) {
 		spew = this->type->spewers.at(i);
 		
-		if (spew->time < this->age) continue;
+		if (spew->time != 0 && spew->time < this->age) continue;
 		
 		gennum = ceil(((float)spew->qty) / ((float)spew->time) * delta);
 		
@@ -44,9 +45,15 @@ void ParticleGenerator::update(int delta)
 			
 			st->addParticle(pa);
 		}
+		
+		useful = true;
 	}
 	
 	this->age += delta;
+	
+	if (! useful) {
+		this->del = true;
+	}
 }
 
 
