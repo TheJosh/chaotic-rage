@@ -38,7 +38,7 @@ class UnitClassState
 {
 	public:
 		int id;
-		string name;
+		string image;
 		int type;
 		unsigned int num_frames;
 		unsigned int sprite_offset;

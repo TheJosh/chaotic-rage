@@ -10,7 +10,7 @@ class ParticleType
 {
 	public:
 		// from data file
-		string name;
+		string image;
 		bool directional;
 		int num_frames;
 		

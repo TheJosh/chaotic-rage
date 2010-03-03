@@ -24,7 +24,7 @@ static cfg_opt_t settings_opts[] =
 // State section
 static cfg_opt_t state_opts[] =
 {
-	CFG_STR((char*) "name", 0, CFGF_NONE),
+	CFG_STR((char*) "image", 0, CFGF_NONE),
 	CFG_INT((char*) "type", 0, CFGF_NONE),
 	CFG_INT((char*) "num_frames", 0, CFGF_NONE),
 	CFG_END()
@@ -178,7 +178,7 @@ UnitClass* loadUnitClass(cfg_t *cfg)
 		UnitClassState* uct = new UnitClassState();
 		
 		uct->sprite_offset = sprite_offset;
-		uct->name = cfg_getstr(cfg_state, "name");
+		uct->image = cfg_getstr(cfg_state, "image");
 		uct->type = cfg_getint(cfg_state, "type");
 		uct->num_frames = cfg_getint(cfg_state, "num_frames");
 		
@@ -287,9 +287,9 @@ vector<SDL_Surface*>* UnitClass::loadAllSprites()
 		for (angle = 0; angle < 8; angle++) {
 			for (frame = 0; frame < state_info->num_frames; frame++) {
 				
-				sprintf(buff, "unitclass/%s/%s_%ideg_fr%i.bmp", this->name.c_str(), state_info->name.c_str(), angle * 45, frame);
+				sprintf(buff, "unitclass/%s/%s_%ideg_fr%i.bmp", this->name.c_str(), state_info->image.c_str(), angle * 45, frame);
 				
-				DEBUG("Loading unit class sprite; name = '%s', angle = %i, frame = %i\n", state_info->name.c_str(), angle * 45, frame);
+				DEBUG("Loading unit class sprite; image = '%s', angle = %i, frame = %i\n", state_info->image.c_str(), angle * 45, frame);
 				
 				SDL_Surface *surf = loadSprite(buff);
 				ret->push_back(surf);

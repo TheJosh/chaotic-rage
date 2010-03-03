@@ -10,7 +10,6 @@ class AreaType
 {
 	public:
 		// from data file
-		string tex;
 		bool stretch;
 		bool wall;
 		

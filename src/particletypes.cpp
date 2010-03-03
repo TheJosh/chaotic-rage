@@ -19,7 +19,7 @@ ParticleGenType* loadParticleGenType(cfg_t *cfg_generatortype);
 // Particle section
 static cfg_opt_t particletype_opts[] =
 {
-	CFG_STR((char*) "name", 0, CFGF_NONE),
+	CFG_STR((char*) "image", 0, CFGF_NONE),
 	CFG_INT((char*) "directional", 0, CFGF_NONE),		// 1 = use direction info, 0 = only use angle 0deg
 	CFG_INT((char*) "num_frames", 1, CFGF_NONE),
 	CFG_INT_LIST((char*) "lin_speed", 0, CFGF_NONE),
@@ -156,7 +156,7 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype)
 	ParticleType* pt;
 	char buff[255];
 	
-	if (cfg_size(cfg_particletype, "name") == 0) return NULL;
+	if (cfg_size(cfg_particletype, "image") == 0) return NULL;
 	if (cfg_getint(cfg_particletype, "num_frames") < 1) return NULL;
 	if (cfg_getint(cfg_particletype, "lin_speed") == 0) return NULL;
 	if (cfg_getint(cfg_particletype, "lin_accel") == 0) return NULL;
@@ -164,7 +164,7 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype)
 	
 	// Load settings
 	pt = new ParticleType();
-	pt->name = cfg_getstr(cfg_particletype, "name");
+	pt->image = cfg_getstr(cfg_particletype, "image");
 	pt->directional = cfg_getint(cfg_particletype, "directional");
 	pt->num_frames = cfg_getint(cfg_particletype, "num_frames");
 	pt->lin_speed = cfg_getrange(cfg_particletype, "lin_speed");
@@ -177,9 +177,9 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype)
 	for (angle = 0; angle < 8; angle++) {
 		for (frame = 0; frame < pt->num_frames; frame++) {
 			
-			sprintf(buff, "particletypes/%s/%ideg_fr%i.bmp", pt->name.c_str(), angle * 45, frame);
+			sprintf(buff, "particletypes/%s/%ideg_fr%i.bmp", pt->image.c_str(), angle * 45, frame);
 			
-			DEBUG("Loading particle type sprite; name = '%s', angle = %i, frame = %i\n", pt->name.c_str(), angle * 45, frame);
+			DEBUG("Loading particle type sprite; image = '%s', angle = %i, frame = %i\n", pt->image.c_str(), angle * 45, frame);
 			
 			SDL_Surface *surf = loadSprite(buff);
 			pt->sprites.push_back(surf);
