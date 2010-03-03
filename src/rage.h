@@ -21,6 +21,7 @@ typedef struct range {
 class UnitClass;
 class AreaType;
 class ParticleType;
+class WeaponType;
 class Unit;
 class Player;
 class Particle;
@@ -32,6 +33,7 @@ class GameState;
 #include "areatypes.h"
 #include "particletypes.h"
 #include "unitclass.h"
+#include "weapontypes.h"
 
 #include "entity.h"
 #include "unit.h"
@@ -52,6 +54,6 @@ class GameState;
 
 
 // Frames-per-second to run all in-game animations at.
-// Specified as a float to help out some arithmatic
+// Specified as a float to help out some arithmetic
 #define ANIMATION_FPS	6.0
 

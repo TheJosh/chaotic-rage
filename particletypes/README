@@ -22,7 +22,7 @@ generator {
 	spew {
 		type				The particle ID, see above
 		angle_range			Range of angles to spew from
-		qty					Total number to spew out
+		rate				Number to spew per second
 		time				How much time the spewing has
 	}
 	

@@ -14,8 +14,12 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	this->speed = 0;
 	this->health = 100;
 	
+	this->weapon = NULL;
+	this->weapon_gen = NULL;
+	this->firing = false;
+	
 	this->current_state_type = 0;
-	this->updateState(UNIT_STATE_STATIC);
+	this->setState(UNIT_STATE_STATIC);
 	
 	this->sprites = uc->loadAllSprites();
 	if (wasLoadSpriteError()) {
@@ -35,13 +39,35 @@ Unit::~Unit()
 }
 
 
-void Unit::updateState(int new_type)
+void Unit::setState(int new_type)
 {
 	if (this->current_state_type == new_type) return;
 	
 	this->current_state_type = new_type;
 	this->current_state = this->uc->getState(new_type);
 	this->animation_start = this->st->anim_frame;
+}
+
+
+void Unit::setWeapon(WeaponType* wt)
+{
+	this->weapon = wt;
+	this->firing = false;
+	
+	delete this->weapon_gen;
+	this->weapon_gen = new ParticleGenerator(wt->pg, this->st);
+}
+
+
+void Unit::beginFiring()
+{
+	this->weapon_gen->age = 0;
+	this->firing = true;
+}
+
+void Unit::endFiring()
+{
+	this->firing = false;
 }
 
 
@@ -70,16 +96,26 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	if (this->angle > 359) this->angle -= 360;
 	
 	
+	// Move
 	int newx = pointPlusAngleX(this->x, this->angle, ppsDelta(this->speed, delta));
 	int newy = pointPlusAngleY(this->y, this->angle, ppsDelta(this->speed, delta));
 	
+	// Collision detection
 	if (collideWall(this->st, newx, newy, this->uc->width, this->uc->height)) {
 		this->speed = 0;
-		this->updateState(UNIT_STATE_STATIC);
+		this->setState(UNIT_STATE_STATIC);
 		
 	} else {
 		this->x = newx;
 		this->y = newy;
+	}
+	
+	// Fire bullets
+	if (this->firing) {
+		this->weapon_gen->x = this->x;
+		this->weapon_gen->y = this->y;
+		
+		this->weapon_gen->update(delta);
 	}
 }
 

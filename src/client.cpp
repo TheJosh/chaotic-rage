@@ -31,6 +31,12 @@ int main (int argc, char ** argv) {
 		exit(1);
 	}
 	
+	if (! loadAllWeaponTypes()) {
+		cerr << "Unable to load weapontypes datafile.\n";
+		exit(1);
+	}
+	
+	
 	seedRandom();
 	
 	
@@ -39,6 +45,8 @@ int main (int argc, char ** argv) {
 	Player *p = new Player(getUnitClassByID(0), st);
 	st->addUnit(p);
 	st->curr_player = p;
+	
+	p->setWeapon(getWeaponTypeByID(0));
 	
 	Map *m = new Map();
 	m->load("arena");

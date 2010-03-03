@@ -12,7 +12,6 @@ class Entity
 		bool del;
 		int x;
 		int y;
-		int layer;
 		
 	protected:
 		GameState* st;

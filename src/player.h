@@ -11,9 +11,10 @@ class Player : public Unit
 	public:
 		static const int KEY_FWD = 0;
 		static const int KEY_REV = 1;
+		static const int KEY_FIRE = 2;
 		
 	private:
-		bool key[1];
+		bool key[2];
 		
 	public:
 		Player(UnitClass *uc, GameState *st);

@@ -87,13 +87,19 @@ static void handleEvents(GameState *st)
 			
 			
 		} else if (event.type == SDL_MOUSEMOTION) {
+			// Mouse motion
 			st->curr_player->angleFromMouse(event.motion.x, event.motion.y);
 			
+			
+		} else if (event.type == SDL_MOUSEBUTTONDOWN) {
+			// Mouse down
+			st->curr_player->keyPress(Player::KEY_FIRE);
+			
+			
 		} else if (event.type == SDL_MOUSEBUTTONUP) {
-			ParticleGenerator *pg = new ParticleGenerator(getParticleGenTypeByID(0), st);
-			pg->x = event.button.x;
-			pg->y = event.button.y;
-			st->addParticleGenerator(pg);
+			// Mouse up
+			st->curr_player->keyRelease(Player::KEY_FIRE);
+			
 			
 		}
 	}

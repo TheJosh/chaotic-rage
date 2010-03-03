@@ -31,7 +31,7 @@ class GenSpew
 	public:
 		ParticleType *pt;
 		int angle_range;
-		int qty;
+		int rate;
 		int time;
 };
 

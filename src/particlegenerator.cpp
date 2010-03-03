@@ -35,12 +35,14 @@ void ParticleGenerator::update(int delta)
 		
 		if (spew->time != 0 && spew->time < this->age) continue;
 		
-		gennum = ceil(((float)spew->qty) / ((float)spew->time) * delta);
+		gennum = ceil(((float)spew->rate) / 1000.0 * delta);
 		
 		for (int j = 0; j < gennum; j++) {
 			pa = new Particle(spew->pt, this->st);
 			pa->x = this->x;
 			pa->y = this->y;
+			
+			//TODO: needs love
 			pa->angle = getRandom(0, spew->angle_range);
 			
 			st->addParticle(pa);

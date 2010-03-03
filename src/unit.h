@@ -16,11 +16,16 @@ class Unit: public Entity
 		int health;
 		int desired_angle;
 		int angle;
-		UnitClassState* current_state;
-		int current_state_type;
-		unsigned int animation_start;
+		
+		WeaponType* weapon;
+		ParticleGenerator* weapon_gen;
+		bool firing;
 		
 		UnitClass* uc;
+		UnitClassState* current_state;
+		int current_state_type;
+		
+		unsigned int animation_start;
 		vector<SDL_Surface*>* sprites;
 		
 	public:
@@ -30,8 +35,12 @@ class Unit: public Entity
 	public:
 		virtual SDL_Surface* getSprite() = 0;
 		virtual void update(int delta) = 0;
-	
+		void setWeapon(WeaponType* wt);
+		
 	protected:
 		void update(int delta, UnitClassSettings *ucs);
-		void updateState(int new_type);
+		void setState(int new_type);
+		void beginFiring();
+		void endFiring();
+		
 };
