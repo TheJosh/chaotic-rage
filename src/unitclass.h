@@ -14,6 +14,7 @@ using namespace std;
 
 #define UNIT_STATE_STATIC 1
 #define UNIT_STATE_RUNNING 2
+#define UNIT_STATE_FIRING 3
 
 
 class UnitClassSettings;

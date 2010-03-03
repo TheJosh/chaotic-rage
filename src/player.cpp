@@ -44,30 +44,7 @@ void Player::angleFromMouse(int x, int y)
 
 
 /**
-* Determines the player sprite
-*
-* TODO: move into unit.cpp
-**/
-SDL_Surface* Player::getSprite()
-{
-	int idx = round(this->angle / 45);
-	
-	int frame = this->st->anim_frame - this->animation_start;
-	frame = frame % this->current_state->num_frames;
-	
-	idx *= this->uc->getMaxFrames();
-	idx += frame;
-	
-	idx += this->current_state->sprite_offset;
-	
-	return this->sprites->at(idx);
-}
-
-
-/**
 * Uses the currently pressed keys to change the player movement
-*
-* TODO: move stuff into unit.cpp if appropriate
 **/
 void Player::update(int delta)
 {
@@ -83,26 +60,16 @@ void Player::update(int delta)
 		
 	} else if (speed > 0) {		// nothing pressed, slow down (forwards)
 		this->speed -= (speed > 100 ? 100 : speed);
+		this->setState(UNIT_STATE_STATIC);
 		
 	} else if (speed < 0) {		// nothing pressed, slow down (reverse)
 		this->speed += (0 - speed > 100 ? 100 : 0 - speed);
-	}
-	
-	// Standing still...
-	if (this->speed == 0) {
 		this->setState(UNIT_STATE_STATIC);
 	}
 	
 	// Bound to limits
 	if (this->speed > ucs->lin_speed) this->speed = ucs->lin_speed;
 	if (this->speed < 0 - ucs->lin_speed) this->speed = 0 - ucs->lin_speed;
-	
-	// Firing
-	if (this->key[KEY_FIRE]) {
-		this->beginFiring();
-	} else {
-		this->endFiring();
-	}
 	
 	Unit::update(delta, ucs);
 	

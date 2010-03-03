@@ -11,6 +11,7 @@ class ParticleGenerator : public Entity {
 		ParticleGenType* type;
 		int x;
 		int y;
+		int angle;
 		int age;
 		
 	public:

@@ -11,10 +11,9 @@ class Player : public Unit
 	public:
 		static const int KEY_FWD = 0;
 		static const int KEY_REV = 1;
-		static const int KEY_FIRE = 2;
 		
 	private:
-		bool key[2];
+		bool key[1];
 		
 	public:
 		Player(UnitClass *uc, GameState *st);
@@ -26,6 +25,5 @@ class Player : public Unit
 		void angleFromMouse(int x, int y);
 		
 	public:
-		virtual SDL_Surface* getSprite();
 		virtual void update(int delta);
 };

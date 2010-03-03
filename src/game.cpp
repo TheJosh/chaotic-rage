@@ -93,12 +93,12 @@ static void handleEvents(GameState *st)
 			
 		} else if (event.type == SDL_MOUSEBUTTONDOWN) {
 			// Mouse down
-			st->curr_player->keyPress(Player::KEY_FIRE);
+			st->curr_player->beginFiring();
 			
 			
 		} else if (event.type == SDL_MOUSEBUTTONUP) {
 			// Mouse up
-			st->curr_player->keyRelease(Player::KEY_FIRE);
+			st->curr_player->endFiring();
 			
 			
 		}

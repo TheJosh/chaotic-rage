@@ -39,9 +39,15 @@ Unit::~Unit()
 }
 
 
+/**
+* Sets the unit state. If the unit state type changes, a new state is randomly
+* chosen with the specified state type
+**/
 void Unit::setState(int new_type)
 {
 	if (this->current_state_type == new_type) return;
+	
+	if (new_type == UNIT_STATE_STATIC && this->firing) new_type = UNIT_STATE_FIRING;
 	
 	this->current_state_type = new_type;
 	this->current_state = this->uc->getState(new_type);
@@ -49,6 +55,9 @@ void Unit::setState(int new_type)
 }
 
 
+/**
+* Sets the unit weapon
+**/
 void Unit::setWeapon(WeaponType* wt)
 {
 	this->weapon = wt;
@@ -63,11 +72,38 @@ void Unit::beginFiring()
 {
 	this->weapon_gen->age = 0;
 	this->firing = true;
+	
+	if (this->speed == 0) {
+		this->setState(UNIT_STATE_FIRING);
+	}
 }
 
 void Unit::endFiring()
 {
 	this->firing = false;
+	
+	if (this->speed == 0) {
+		this->setState(UNIT_STATE_STATIC);
+	}
+}
+
+
+/**
+* Determines the unit sprite
+**/
+SDL_Surface* Unit::getSprite()
+{
+	int idx = round(this->angle / 45);
+	
+	int frame = this->st->anim_frame - this->animation_start;
+	frame = frame % this->current_state->num_frames;
+	
+	idx *= this->uc->getMaxFrames();
+	idx += frame;
+	
+	idx += this->current_state->sprite_offset;
+	
+	return this->sprites->at(idx);
 }
 
 
@@ -96,24 +132,27 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	if (this->angle > 359) this->angle -= 360;
 	
 	
-	// Move
-	int newx = pointPlusAngleX(this->x, this->angle, ppsDelta(this->speed, delta));
-	int newy = pointPlusAngleY(this->y, this->angle, ppsDelta(this->speed, delta));
+	// Movement
+	if (this->speed != 0) {
+		int newx = pointPlusAngleX(this->x, this->angle, ppsDelta(this->speed, delta));
+		int newy = pointPlusAngleY(this->y, this->angle, ppsDelta(this->speed, delta));
 	
-	// Collision detection
-	if (collideWall(this->st, newx, newy, this->uc->width, this->uc->height)) {
-		this->speed = 0;
-		this->setState(UNIT_STATE_STATIC);
+		// Collision detection
+		if (collideWall(this->st, newx, newy, this->uc->width, this->uc->height)) {
+			this->speed = 0;
+			this->setState(UNIT_STATE_STATIC);
 		
-	} else {
-		this->x = newx;
-		this->y = newy;
+		} else {
+			this->x = newx;
+			this->y = newy;
+		}
 	}
 	
 	// Fire bullets
 	if (this->firing) {
-		this->weapon_gen->x = this->x;
-		this->weapon_gen->y = this->y;
+		this->weapon_gen->x = this->x + this->uc->width / 2;
+		this->weapon_gen->y = this->y + this->uc->height / 2;
+		this->weapon_gen->angle = this->angle;
 		
 		this->weapon_gen->update(delta);
 	}

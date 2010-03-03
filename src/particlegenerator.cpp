@@ -12,6 +12,7 @@ ParticleGenerator::ParticleGenerator(ParticleGenType* type, GameState *st) : Ent
 	this->type = type;
 	this->x = x;
 	this->y = y;
+	this->angle = 0;
 	this->age = 0;
 }
 
@@ -43,7 +44,7 @@ void ParticleGenerator::update(int delta)
 			pa->y = this->y;
 			
 			//TODO: needs love
-			pa->angle = getRandom(0, spew->angle_range);
+			pa->angle = this->angle + getRandom(0 - spew->angle_range / 2, spew->angle_range / 2);
 			
 			st->addParticle(pa);
 		}

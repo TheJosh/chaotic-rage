@@ -158,6 +158,7 @@ void seedRandom()
 int getRandom(int low, int high)
 {
 	if (high < low) swap(low, high);
+	if (high == low) return low;
 	return rand() % (high-low) + low;
 }
 

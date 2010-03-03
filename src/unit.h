@@ -33,14 +33,14 @@ class Unit: public Entity
 		~Unit();
 		
 	public:
-		virtual SDL_Surface* getSprite() = 0;
+		virtual SDL_Surface* getSprite();
 		virtual void update(int delta) = 0;
 		void setWeapon(WeaponType* wt);
+		void beginFiring();
+		void endFiring();
 		
 	protected:
 		void update(int delta, UnitClassSettings *ucs);
 		void setState(int new_type);
-		void beginFiring();
-		void endFiring();
 		
 };
