@@ -51,6 +51,7 @@ class UnitClass
 	public:
 		string name;
 		int id;
+		int width, height;
 		
 	private:
 		UnitClassSettings initial;

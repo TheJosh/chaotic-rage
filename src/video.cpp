@@ -42,3 +42,5 @@ void render(GameState *st, SDL_Surface *screen)
 	
 	SDL_Flip(screen);
 }
+
+

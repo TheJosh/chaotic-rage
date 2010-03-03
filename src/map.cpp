@@ -13,12 +13,14 @@ Map::Map()
 {
 	this->ground = NULL;
 	this->walls = NULL;
+	this->data = NULL;
 }
 
 Map::~Map()
 {
 	SDL_FreeSurface(this->ground);
 	SDL_FreeSurface(this->walls);
+	free(this->data);
 }
 
 
@@ -28,6 +30,7 @@ Map::~Map()
 int Map::load(string name)
 {
 	Area *a;
+	SDL_Surface *datasurf;
 	
 	this->width = 1000;
 	this->height = 1000;
@@ -90,6 +93,16 @@ int Map::load(string name)
 	
 	this->ground = this->renderFrame(0, false);
 	this->walls = this->renderFrame(0, true);
+	datasurf = this->renderDataSurface();
+	
+	this->data = (Uint32*) malloc(width * height* sizeof(Uint32));
+	
+	for (int x = 0; x < this->width; x++) {
+		for (int y = 0; y < this->height; y++) {
+			this->data[x * this->height + y] = getPixel(datasurf, x, y);
+		}
+	}
+	
 	
 	return 1;
 }
@@ -171,7 +184,7 @@ SDL_Surface* Map::renderDataSurface()
 	for (i = 0; i < this->areas.size(); i++) {
 		a = this->areas[i];
 		
-		datasurf = createDataSurface(a->width, a->height, a->type->id * 5000);
+		datasurf = createDataSurface(a->width, a->height, a->type->id);
 		
 		// Transforms (either streches or tiles)
 		SDL_Surface *areasurf = a->type->surf;
@@ -222,6 +235,12 @@ SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data)
 	SDL_FillRect(surf, NULL, initial_data);
 	
 	return surf;
+}
+
+
+Uint32 Map::getDataAt(int x, int y)
+{
+	return this->data[x * this->height + y];
 }
 
 

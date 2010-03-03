@@ -19,6 +19,7 @@ int pointPlusAngleY (int point_y, int angle, int distance);
 // Boxes and stuff
 int intersect (SDL_Rect one, SDL_Rect two);
 int inside (SDL_Rect rect, int x, int y);
+int collideWall(GameState *st, int x, int y, int w, int h);
 
 // Time
 int ppsDelta(int pps, int delta);

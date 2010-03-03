@@ -50,6 +50,8 @@ static cfg_opt_t opts[] =
 
 UnitClass::UnitClass()
 {
+	this->width = 0;
+	this->height = 0;
 }
 
 UnitClass::~UnitClass()
@@ -291,6 +293,11 @@ vector<SDL_Surface*>* UnitClass::loadAllSprites()
 				
 				SDL_Surface *surf = loadSprite(buff);
 				ret->push_back(surf);
+				
+				if (this->width == 0) {
+					this->width = surf->w;
+					this->height = surf->h;
+				}
 			}
 			
 			while (frame < this->max_frames) {

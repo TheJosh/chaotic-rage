@@ -45,6 +45,8 @@ void Player::angleFromMouse(int x, int y)
 
 /**
 * Determines the player sprite
+*
+* TODO: move into unit.cpp
 **/
 SDL_Surface* Player::getSprite()
 {
@@ -64,6 +66,8 @@ SDL_Surface* Player::getSprite()
 
 /**
 * Uses the currently pressed keys to change the player movement
+*
+* TODO: move stuff into unit.cpp if appropriate
 **/
 void Player::update(int delta)
 {

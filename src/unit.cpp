@@ -70,8 +70,17 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	if (this->angle > 359) this->angle -= 360;
 	
 	
-	this->x = pointPlusAngleX(this->x, this->angle, ppsDelta(this->speed, delta));
-	this->y = pointPlusAngleY(this->y, this->angle, ppsDelta(this->speed, delta));
+	int newx = pointPlusAngleX(this->x, this->angle, ppsDelta(this->speed, delta));
+	int newy = pointPlusAngleY(this->y, this->angle, ppsDelta(this->speed, delta));
+	
+	if (collideWall(this->st, newx, newy, this->uc->width, this->uc->height)) {
+		this->speed = 0;
+		this->updateState(UNIT_STATE_STATIC);
+		
+	} else {
+		this->x = newx;
+		this->y = newy;
+	}
 }
 
 
