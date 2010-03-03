@@ -40,6 +40,13 @@ void Particle::update(int delta)
 	
 	this->x += getRandom(-3, 3);
 	this->y += getRandom(-3, 3);
+	
+	
+	AreaType *at = getAreaTypeByID(this->st->map->getDataAt(this->x, this->y));
+	if (at->wall) {
+		this->del = true;
+	}
+	
 }
 
 SDL_Surface* Particle::getSprite()

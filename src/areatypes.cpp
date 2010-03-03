@@ -126,8 +126,9 @@ AreaType* loadAreaType(cfg_t *cfg_areatype)
 }
 
 
-AreaType* getAreaTypeByID(int id)
+AreaType* getAreaTypeByID(unsigned int id)
 {
+	if (id < 0 or id > areatypes.size()) return areatypes.at(0);
 	return areatypes.at(id);
 }
 

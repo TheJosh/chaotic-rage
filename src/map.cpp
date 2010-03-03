@@ -240,6 +240,11 @@ SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data)
 
 Uint32 Map::getDataAt(int x, int y)
 {
+	if (x < 0) return 0;
+	if (y < 0) return 0;
+	if (x >= this->width) return 0;
+	if (x >= this->height) return 0;
+	
 	return this->data[x * this->height + y];
 }
 
