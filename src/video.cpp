@@ -40,6 +40,8 @@ void render(GameState *st, SDL_Surface *screen)
 		SDL_BlitSurface(e->getSprite(), NULL, screen, &r);
 	}
 	
+	st->hud->render(screen);
+	
 	SDL_Flip(screen);
 }
 

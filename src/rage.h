@@ -28,6 +28,7 @@ class Particle;
 class ParticleGenType;
 class ParticleGenerator;
 class Map;
+class HUD;
 class GameState;
 
 #include "areatypes.h"
@@ -46,6 +47,7 @@ class GameState;
 
 #include "game.h"
 #include "video.h"
+#include "hud.h"
 #include "util.h"
 #include "spriteutil.h"
 

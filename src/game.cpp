@@ -45,6 +45,8 @@ static void handleEvents(GameState *st)
 	SDL_Event event;
 	
 	while (SDL_PollEvent(&event)) {
+		if (st->hud->handleEvent(&event) == HUD::EVENT_PREVENT) continue;
+		
 		if (event.type == SDL_QUIT) {
 			running = false;
 			

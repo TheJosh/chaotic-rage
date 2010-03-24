@@ -20,6 +20,7 @@ class GameState
 		Map* map;
 		unsigned int anim_frame;
 		unsigned int game_time;
+		HUD* hud;
 		
 	public:
 		GameState();
