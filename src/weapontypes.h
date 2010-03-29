@@ -10,6 +10,7 @@ class WeaponType
 {
 	public:
 		ParticleGenType *pg;
+		SDL_Surface *icon_large;
 		
 		// dynamic
 		int id;
@@ -21,3 +22,5 @@ class WeaponType
 
 bool loadAllWeaponTypes();
 WeaponType* getWeaponTypeByID(unsigned int id);
+unsigned int getNumWeaponTypes();
+

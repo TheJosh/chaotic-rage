@@ -22,4 +22,6 @@ class HUD {
 		void render(SDL_Surface *screen);
 		int handleEvent(SDL_Event *event);
 		
+	private:
+		void tryChangeWeapon(int x, int y);
 };

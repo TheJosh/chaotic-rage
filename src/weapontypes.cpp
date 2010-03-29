@@ -7,6 +7,12 @@
 using namespace std;
 
 
+// It is expected you will change the HUD code if you change these values
+#define WEAPON_LARGE_W 125
+#define WEAPON_LARGE_H 125
+
+
+
 /* Variables */
 static vector<WeaponType*> weapons;
 
@@ -36,6 +42,7 @@ static cfg_opt_t opts[] =
 WeaponType::WeaponType()
 {
 	this->pg = NULL;
+	this->icon_large = NULL;
 }
 
 
@@ -110,11 +117,24 @@ bool loadAllWeaponTypes()
 WeaponType* loadWeaponType(cfg_t *cfg_weapon)
 {
 	WeaponType* wt;
+	string filename;
 	
 	if (cfg_getint(cfg_weapon, "particlegen") == -1) return NULL;
 	
 	wt = new WeaponType();
 	wt->pg = getParticleGenTypeByID(cfg_getint(cfg_weapon, "particlegen"));
+	
+	// Load large icon
+	filename.append("weapontypes/");
+	filename.append(cfg_getstr(cfg_weapon, "name"));
+	filename.append("/icon_large.bmp");
+	wt->icon_large = loadSprite(filename);
+	SDL_SetAlpha(wt->icon_large, SDL_SRCALPHA, 200);
+	
+	if (wt->icon_large->w != WEAPON_LARGE_W && wt->icon_large->h != WEAPON_LARGE_H) {
+		cout << "Bad image size for large icon\n";
+		return NULL;
+	}
 	
 	return wt;
 }
@@ -124,6 +144,11 @@ WeaponType* getWeaponTypeByID(unsigned int id)
 {
 	if (id < 0 or id > weapons.size()) return NULL;
 	return weapons.at(id);
+}
+
+unsigned int getNumWeaponTypes()
+{
+	return weapons.size();
 }
 
 
