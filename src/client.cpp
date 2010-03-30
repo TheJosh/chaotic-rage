@@ -46,7 +46,8 @@ int main (int argc, char ** argv) {
 	st->addUnit(p);
 	st->curr_player = p;
 	
-	p->setWeapon(getWeaponTypeByID(0));
+	p->pickupWeapon(getWeaponTypeByID(1));
+	p->pickupWeapon(getWeaponTypeByID(2));
 	
 	Map *m = new Map();
 	m->load("arena");

@@ -18,6 +18,8 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	this->weapon_gen = NULL;
 	this->firing = false;
 	
+	this->pickupWeapon(getWeaponTypeByID(0));
+	
 	this->current_state_type = 0;
 	this->setState(UNIT_STATE_STATIC);
 	
@@ -64,14 +66,23 @@ void Unit::setWeapon(WeaponType* wt)
 	this->firing = false;
 	
 	delete this->weapon_gen;
-	this->weapon_gen = new ParticleGenerator(wt->pg, this->st);
+	this->weapon_gen = NULL;
+	
+	if (wt->pg) {
+		this->weapon_gen = new ParticleGenerator(wt->pg, this->st);
+	}
 }
 
 
 void Unit::beginFiring()
 {
-	this->weapon_gen->age = 0;
+	if (this->weapon == NULL) return;
+	
 	this->firing = true;
+	
+	if (this->weapon_gen) {
+		this->weapon_gen->age = 0;
+	}
 	
 	if (this->speed == 0) {
 		this->setState(UNIT_STATE_FIRING);
@@ -80,11 +91,32 @@ void Unit::beginFiring()
 
 void Unit::endFiring()
 {
+	if (this->weapon == NULL) return;
+	
 	this->firing = false;
 	
 	if (this->speed == 0) {
 		this->setState(UNIT_STATE_STATIC);
 	}
+}
+
+void Unit::pickupWeapon(WeaponType* wt)
+{
+	this->avail_weapons.push_back(wt);
+	
+	if (this->weapon == NULL) {
+		this->setWeapon(wt);
+	}
+}
+
+unsigned int Unit::getNumWeapons()
+{
+	return this->avail_weapons.size();
+}
+
+WeaponType* Unit::getWeaponByID(unsigned int id)
+{
+	return this->avail_weapons.at(id);
 }
 
 
@@ -149,7 +181,7 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	}
 	
 	// Fire bullets
-	if (this->firing) {
+	if (this->firing and this->weapon_gen) {
 		this->weapon_gen->x = this->x + this->uc->width / 2;
 		this->weapon_gen->y = this->y + this->uc->height / 2;
 		this->weapon_gen->angle = this->angle;

@@ -20,10 +20,10 @@ void HUD::render(SDL_Surface *screen)
 {
 	if (this->weapon_menu) {
 		SDL_Rect r = {100, 100, 125, 125};
-		unsigned int i, num = getNumWeaponTypes();
+		unsigned int i, num = this->st->curr_player->getNumWeapons();
 		
 		for (i = 0; i < num; i++) {
-			WeaponType *wt = getWeaponTypeByID(i);
+			WeaponType *wt = this->st->curr_player->getWeaponByID(i);
 			
 			SDL_BlitSurface(wt->icon_large, NULL, screen, &r);
 			
@@ -43,11 +43,11 @@ void HUD::render(SDL_Surface *screen)
 void HUD::tryChangeWeapon(int x, int y)
 {
 	SDL_Rect r = {100, 100, 125, 125};
-	unsigned int i, num = getNumWeaponTypes();
+	unsigned int i, num = this->st->curr_player->getNumWeapons();
 	
 	for (i = 0; i < num; i++) {
 		if (inside(r, x, y)) {
-			WeaponType *wt = getWeaponTypeByID(i);
+			WeaponType *wt = this->st->curr_player->getWeaponByID(i);
 			this->st->curr_player->setWeapon(wt);
 			return;
 		}

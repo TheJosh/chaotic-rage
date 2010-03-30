@@ -119,10 +119,11 @@ WeaponType* loadWeaponType(cfg_t *cfg_weapon)
 	WeaponType* wt;
 	string filename;
 	
-	if (cfg_getint(cfg_weapon, "particlegen") == -1) return NULL;
-	
 	wt = new WeaponType();
-	wt->pg = getParticleGenTypeByID(cfg_getint(cfg_weapon, "particlegen"));
+	
+	if (cfg_getint(cfg_weapon, "particlegen") != -1) {
+		wt->pg = getParticleGenTypeByID(cfg_getint(cfg_weapon, "particlegen"));
+	}
 	
 	// Load large icon
 	filename.append("weapontypes/");
