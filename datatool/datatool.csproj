@@ -57,6 +57,12 @@
     </Compile>
     <Compile Include="base_item.cs" />
     <Compile Include="areatype_item.cs" />
+    <Compile Include="areatype_edit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="areatype_edit.Designer.cs">
+      <DependentUpon>areatype_edit.cs</DependentUpon>
+    </Compile>
     <Compile Include="form_main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,6 +71,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="areatype_edit.resx">
+      <DependentUpon>areatype_edit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="base_list.resx">
       <DependentUpon>base_list.cs</DependentUpon>
     </EmbeddedResource>

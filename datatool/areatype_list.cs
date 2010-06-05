@@ -41,7 +41,10 @@ namespace datatool
          **/
         override protected void doEdit(base_item item)
         {
-            MessageBox.Show("Editing item " + item.getName());
+            AreatypeEdit form;
+
+            form = new AreatypeEdit((areatype_item) item);
+            form.ShowDialog();
         }
     }
 }
