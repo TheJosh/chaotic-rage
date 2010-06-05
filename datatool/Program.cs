@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace WindowsFormsApplication1
+namespace datatool
 {
     static class Program
     {

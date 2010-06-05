@@ -43,6 +43,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="base_list.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="base_list.Designer.cs">
+      <DependentUpon>base_list.cs</DependentUpon>
+    </Compile>
+    <Compile Include="areatype_list.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="areatype_list.Designer.cs">
+      <DependentUpon>areatype_list.cs</DependentUpon>
+    </Compile>
+    <Compile Include="base_item.cs" />
+    <Compile Include="areatype_item.cs" />
     <Compile Include="form_main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -51,6 +65,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="base_list.resx">
+      <DependentUpon>base_list.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="areatype_list.resx">
+      <DependentUpon>areatype_list.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="form_main.resx">
       <DependentUpon>form_main.cs</DependentUpon>
     </EmbeddedResource>
@@ -74,6 +94,30 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\list-remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\list-add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\edit-delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\document-open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\document-new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\go-next.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\image-x-generic.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

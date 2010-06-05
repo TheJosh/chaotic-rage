@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace WindowsFormsApplication1
+namespace datatool
 {
     public partial class Main : Form
     {
@@ -18,6 +18,12 @@ namespace WindowsFormsApplication1
         private void Main_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            AreatypeList f = new AreatypeList();
+            f.Show();
         }
     }
 }
