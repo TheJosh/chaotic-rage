@@ -89,10 +89,12 @@ namespace datatool
 
             LinkedListViewItem lvi = (LinkedListViewItem) this.listview.SelectedItems[0];
 
-            this.doEdit(lvi.Item);
+            lvi.Item = this.doEdit(lvi.Item);
+
+            lvi.Text = lvi.Item.getName();
         }
 
-        virtual protected void doEdit(base_item item) { }
+        virtual protected base_item doEdit(base_item item) { return null; }
 
 
         /**

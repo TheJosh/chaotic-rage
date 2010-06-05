@@ -5,6 +5,7 @@ using System.ComponentModel;
 
 namespace datatool
 {
+
     public class areatype_item : base_item
     {
         private string name;
@@ -23,6 +24,16 @@ namespace datatool
             return this.name;
         }
 
+        public areatype_item clone()
+        {
+            areatype_item ret;
+            ret = new areatype_item(this.name);
+            ret.image = this.image;
+            ret.stretch = this.stretch;
+            ret.wall = this.wall;
+            return ret;
+        }
+
 
         /**
          * The name
@@ -38,6 +49,7 @@ namespace datatool
          * The image to show
          **/
         [DescriptionAttribute("The name of the image to use for this areatype")]
+        [Editor(typeof(image_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
         public string Image
         {
             get { return this.image; }

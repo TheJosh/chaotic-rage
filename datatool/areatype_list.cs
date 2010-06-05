@@ -32,19 +32,27 @@ namespace datatool
          **/
         override protected base_item doAdd()
         {
-            MessageBox.Show("Add");
-            return new areatype_item("Dodgemcar");
+            AreatypeEdit form;
+
+            areatype_item item = new areatype_item("No name");
+
+            form = new AreatypeEdit(item);
+            form.ShowDialog();
+
+            return form.Item;
         }
 
         /**
          * Shows edit form
          **/
-        override protected void doEdit(base_item item)
+        override protected base_item doEdit(base_item item)
         {
             AreatypeEdit form;
 
             form = new AreatypeEdit((areatype_item) item);
             form.ShowDialog();
+
+            return form.Item;
         }
     }
 }

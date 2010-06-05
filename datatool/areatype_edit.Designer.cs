@@ -34,6 +34,7 @@
             // 
             // btnSave
             // 
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnSave.Location = new System.Drawing.Point(358, 331);
             this.btnSave.Name = "btnSave";
@@ -45,6 +46,7 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(277, 331);
             this.btnCancel.Name = "btnCancel";
@@ -55,9 +57,12 @@
             // 
             // grid
             // 
+            this.grid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.grid.Location = new System.Drawing.Point(12, 12);
             this.grid.Name = "grid";
-            this.grid.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
+            this.grid.PropertySort = System.Windows.Forms.PropertySort.NoSort;
             this.grid.Size = new System.Drawing.Size(421, 313);
             this.grid.TabIndex = 3;
             // 

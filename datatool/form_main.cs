@@ -15,15 +15,15 @@ namespace datatool
             InitializeComponent();
         }
 
-        private void Main_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             AreatypeList f = new AreatypeList();
             f.Show();
+        }
+
+        private void Main_Load(object sender, EventArgs e)
+        {
+            this.labDatapath.Text = Program.datapath;
         }
     }
 }

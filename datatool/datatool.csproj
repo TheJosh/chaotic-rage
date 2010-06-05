@@ -69,6 +69,13 @@
     <Compile Include="form_main.Designer.cs">
       <DependentUpon>form_main.cs</DependentUpon>
     </Compile>
+    <Compile Include="image_ui_editor.cs" />
+    <Compile Include="image_ui_form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="image_ui_form.Designer.cs">
+      <DependentUpon>image_ui_form.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="areatype_edit.resx">
@@ -82,6 +89,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="form_main.resx">
       <DependentUpon>form_main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="image_ui_form.resx">
+      <DependentUpon>image_ui_form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
