@@ -18,6 +18,7 @@ AreaType* loadAreaType(cfg_t *cfg_areatype);
 // Areatype section
 static cfg_opt_t areatype_opts[] =
 {
+	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_STR((char*) "image", 0, CFGF_NONE),
 	CFG_INT((char*) "stretch", 0, CFGF_NONE),		// 0 = tile, 1 = stretch
 	CFG_INT((char*) "wall", 0, CFGF_NONE),			// 0 = ground, 1 = wall

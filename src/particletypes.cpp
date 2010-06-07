@@ -19,6 +19,7 @@ ParticleGenType* loadParticleGenType(cfg_t *cfg_generatortype);
 // Particle section
 static cfg_opt_t particletype_opts[] =
 {
+	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_STR((char*) "image", 0, CFGF_NONE),
 	CFG_INT((char*) "directional", 0, CFGF_NONE),		// 1 = use direction info, 0 = only use angle 0deg
 	CFG_INT((char*) "num_frames", 1, CFGF_NONE),
