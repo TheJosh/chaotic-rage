@@ -32,13 +32,15 @@
             this.list = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.labAdding = new System.Windows.Forms.Label();
+            this.picPreview = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnSave.Location = new System.Drawing.Point(301, 261);
+            this.btnSave.Location = new System.Drawing.Point(484, 261);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 1;
@@ -50,7 +52,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(220, 261);
+            this.btnCancel.Location = new System.Drawing.Point(403, 261);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 2;
@@ -68,6 +70,7 @@
             this.list.Name = "list";
             this.list.Size = new System.Drawing.Size(364, 176);
             this.list.TabIndex = 3;
+            this.list.SelectedIndexChanged += new System.EventHandler(this.list_SelectedIndexChanged);
             this.list.DoubleClick += new System.EventHandler(this.btnSave_Click);
             // 
             // label1
@@ -86,9 +89,21 @@
             this.labAdding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labAdding.Location = new System.Drawing.Point(12, 213);
             this.labAdding.Name = "labAdding";
-            this.labAdding.Size = new System.Drawing.Size(364, 45);
+            this.labAdding.Size = new System.Drawing.Size(547, 45);
             this.labAdding.TabIndex = 5;
             this.labAdding.Text = "Not sure";
+            // 
+            // picPreview
+            // 
+            this.picPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.picPreview.BackColor = System.Drawing.SystemColors.Window;
+            this.picPreview.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.picPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.picPreview.Location = new System.Drawing.Point(383, 12);
+            this.picPreview.Name = "picPreview";
+            this.picPreview.Size = new System.Drawing.Size(176, 176);
+            this.picPreview.TabIndex = 6;
+            this.picPreview.TabStop = false;
             // 
             // image_ui_form
             // 
@@ -96,7 +111,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(388, 296);
+            this.ClientSize = new System.Drawing.Size(571, 296);
+            this.Controls.Add(this.picPreview);
             this.Controls.Add(this.labAdding);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.list);
@@ -108,6 +124,7 @@
             this.Name = "image_ui_form";
             this.Text = "Select image";
             this.Load += new System.EventHandler(this.image_ui_form_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.picPreview)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -120,5 +137,6 @@
         private System.Windows.Forms.ListBox list;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labAdding;
+        private System.Windows.Forms.PictureBox picPreview;
     }
 }

@@ -81,6 +81,13 @@ namespace datatool.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap error_large {
+            get {
+                object obj = ResourceManager.GetObject("error_large", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap select {
             get {
                 object obj = ResourceManager.GetObject("select", resourceCulture);
