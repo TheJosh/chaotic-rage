@@ -11,6 +11,11 @@ using namespace std;
 #define MAX(a,b) ((a) >= (b) ? (a) : (b))
 #define MIN(a,b) ((a) <= (b) ? (a) : (b))
 
+#define DF_AREATYPES 1
+#define DF_UNITCLASS 2
+#define DF_PARTICLES 3
+#define DF_WEAPONS 4
+
 // Trig
 int getAngleBetweenPoints (int point1_x, int point1_y, int point2_x, int point2_y);
 int pointPlusAngleX (int point_x, int angle, int distance);
@@ -30,3 +35,6 @@ int getRandom(int low, int high);
 
 // libconfuse helpers
 Range cfg_getrange(cfg_t *cfg, const char * name);
+
+// Game mods
+string getDataDirectory(int datafile);

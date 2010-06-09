@@ -52,7 +52,9 @@ bool loadAllAreaTypes()
 	
 	
 	// Load the 'info.conf' file
-	fp = zzip_open("areatypes/areatypes.conf", 0);
+	string filename = getDataDirectory(DF_AREATYPES);
+	filename.append("areatypes.conf");
+	fp = zzip_open(filename.c_str(), 0);
 	if (! fp) {
 		cerr << "Can't read areatypes.conf file\n";
 		return false;
@@ -114,7 +116,7 @@ AreaType* loadAreaType(cfg_t *cfg_areatype)
 	AreaType* at;
 	string filename;
 	
-	filename = "areatypes/";
+	filename = getDataDirectory(DF_AREATYPES);
 	filename.append(cfg_getstr(cfg_areatype, "image"));
 	filename.append("-fr0.bmp");
 	

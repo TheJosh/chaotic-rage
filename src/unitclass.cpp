@@ -70,7 +70,9 @@ bool loadAllUnitClasses()
 	
 	
 	// Load the 'info.conf' file
-	fp = zzip_open("unitclass/unitclass.conf", 0);
+	string filename = getDataDirectory(DF_UNITCLASS);
+	filename.append("unitclass.conf");
+	fp = zzip_open(filename.c_str(), 0);
 	if (! fp) {
 		cerr << "Can't read unitclass.conf file\n";
 		return false;
@@ -289,7 +291,7 @@ vector<SDL_Surface*>* UnitClass::loadAllSprites()
 		for (angle = 0; angle < 8; angle++) {
 			for (frame = 0; frame < state_info->num_frames; frame++) {
 				
-				sprintf(buff, "unitclass/%s/%s_%ideg_fr%i.bmp", this->name.c_str(), state_info->image.c_str(), angle * 45, frame);
+				sprintf(buff, "%s%s/%s_%ideg_fr%i.bmp", getDataDirectory(DF_UNITCLASS).c_str(), this->name.c_str(), state_info->image.c_str(), angle * 45, frame);
 				
 				DEBUG("Loading unit class sprite; image = '%s', angle = %i, frame = %i\n", state_info->image.c_str(), angle * 45, frame);
 				

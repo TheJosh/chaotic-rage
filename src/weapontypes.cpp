@@ -57,7 +57,9 @@ bool loadAllWeaponTypes()
 	
 	
 	// Load the 'info.conf' file
-	fp = zzip_open("weapontypes/weapontypes.conf", 0);
+	string filename = getDataDirectory(DF_WEAPONS);
+	filename.append("weapontypes.conf");
+	fp = zzip_open(filename.c_str(), 0);
 	if (! fp) {
 		cerr << "Can't read weapontypes.conf file\n";
 		return false;
@@ -126,7 +128,7 @@ WeaponType* loadWeaponType(cfg_t *cfg_weapon)
 	}
 	
 	// Load large icon
-	filename.append("weapontypes/");
+	filename = getDataDirectory(DF_WEAPONS);
 	filename.append(cfg_getstr(cfg_weapon, "name"));
 	filename.append("/icon_large.bmp");
 	wt->icon_large = loadSprite(filename);

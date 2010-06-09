@@ -74,7 +74,9 @@ bool loadAllParticleTypes()
 	
 	
 	// Load the 'info.conf' file
-	fp = zzip_open("particletypes/particletypes.conf", 0);
+	string filename = getDataDirectory(DF_PARTICLES);
+	filename.append("particletypes.conf");
+	fp = zzip_open(filename.c_str(), 0);
 	if (! fp) {
 		cerr << "Can't read particletypes.conf file\n";
 		return false;
@@ -178,7 +180,7 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype)
 	for (angle = 0; angle < 8; angle++) {
 		for (frame = 0; frame < pt->num_frames; frame++) {
 			
-			sprintf(buff, "particletypes/%s/%ideg_fr%i.bmp", pt->image.c_str(), angle * 45, frame);
+			sprintf(buff, "%s%s/%ideg_fr%i.bmp", getDataDirectory(DF_PARTICLES).c_str(), pt->image.c_str(), angle * 45, frame);
 			
 			DEBUG("Loading particle type sprite; image = '%s', angle = %i, frame = %i\n", pt->image.c_str(), angle * 45, frame);
 			

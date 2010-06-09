@@ -183,3 +183,31 @@ Range cfg_getrange(cfg_t *cfg, const char * name)
 	return res;
 }
 
+
+/**
+* Gets the name of the directory to load data from
+* Ends in trailing slash.
+* Datafile should be one of the DF_ constants in util.h
+**/
+string getDataDirectory(int datafile)
+{
+	switch (datafile) {
+		case DF_AREATYPES:
+			return "data/cr/areatypes/";
+			
+		case DF_UNITCLASS:
+			return "data/cr/unitclass/";
+		
+		case DF_PARTICLES:
+			return "data/cr/particletypes/";
+			
+		case DF_WEAPONS:
+			return "data/cr/weapontypes/";
+	}
+	
+	cerr << "Cannot find data directory for type = " << datafile << "\n";
+	exit(1);
+	
+	return "";
+}
+
