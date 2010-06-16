@@ -11,6 +11,7 @@ class GameState
 	friend void render(GameState *st, SDL_Surface *screen);
 	
 	protected:
+		vector<Entity*> entities;
 		vector<Unit*> units;
 		vector<Particle*> particles;
 		vector<ParticleGenerator*> particlegenerators;

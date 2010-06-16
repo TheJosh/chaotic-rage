@@ -49,6 +49,16 @@ int main (int argc, char ** argv) {
 	p->pickupWeapon(getWeaponTypeByID(1));
 	p->pickupWeapon(getWeaponTypeByID(2));
 	
+	p = new Player(getUnitClassByID(0), st);
+	st->addUnit(p);
+	p->x = 50;
+	p->y = 50;
+	
+	p = new Player(getUnitClassByID(0), st);
+	st->addUnit(p);
+	p->x = 100;
+	p->y = 100;
+	
 	Map *m = new Map();
 	m->load("arena");
 	st->map = m;

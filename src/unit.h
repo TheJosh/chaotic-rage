@@ -48,4 +48,6 @@ class Unit: public Entity
 		void update(int delta, UnitClassSettings *ucs);
 		void setState(int new_type);
 		
+	public:
+		virtual int getHeight() { return 32; }		// used for proper z-indexing
 };

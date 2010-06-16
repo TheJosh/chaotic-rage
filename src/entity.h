@@ -12,12 +12,15 @@ class Entity
 		bool del;
 		int x;
 		int y;
+		int height;		// for proper z-indexing
 		
 	protected:
 		GameState* st;
 		
 	protected:
 		Entity(GameState *st);
+	
+	public:
 		~Entity();
 		
 	public:
@@ -30,4 +33,5 @@ class Entity
 		* Update the entity. Time is provided in milliseconds (ms)
 		**/
 		virtual void update(int delta) = 0;
+		
 };
