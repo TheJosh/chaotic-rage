@@ -32,6 +32,7 @@ static cfg_opt_t particletype_opts[] =
 // Particle generator spewage
 static cfg_opt_t spew_opts[] =
 {
+	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_INT((char*) "type", 0, CFGF_NONE),
 	CFG_INT((char*) "angle_range", 0, CFGF_NONE),
 	CFG_INT((char*) "rate", 0, CFGF_NONE),
@@ -47,14 +48,19 @@ static cfg_opt_t generatortype_opts[] =
 	CFG_END()
 };
 
-// Main config
-static cfg_opt_t opts[] =
+// Main config - particletypes.conf
+static cfg_opt_t opts_particles[] =
 {
 	CFG_SEC((char*) "particle", particletype_opts, CFGF_MULTI),
-	CFG_SEC((char*) "generator", generatortype_opts, CFGF_MULTI),
 	CFG_END()
 };
 
+// Main config - particlegenerators.conf
+static cfg_opt_t opts_generators[] =
+{
+	CFG_SEC((char*) "generator", generatortype_opts, CFGF_MULTI),
+	CFG_END()
+};
 
 
 
@@ -69,12 +75,14 @@ ParticleType::ParticleType()
 bool loadAllParticleTypes()
 {
 	char *buffer;
+	int len;
+	string filename;
 	ZZIP_FILE *fp;
 	cfg_t *cfg, *cfg_particletype, *cfg_generatortype;
 	
 	
-	// Load the 'info.conf' file
-	string filename = getDataDirectory(DF_PARTICLES);
+	// Load the 'particletypes.conf' file
+	filename = getDataDirectory(DF_PARTICLES);
 	filename.append("particletypes.conf");
 	fp = zzip_open(filename.c_str(), 0);
 	if (! fp) {
@@ -84,7 +92,7 @@ bool loadAllParticleTypes()
 	
 	// Read the contents of the file into a buffer
 	zzip_seek (fp, 0, SEEK_END);
-	int len = zzip_tell (fp);
+	len = zzip_tell (fp);
 	zzip_seek (fp, 0, SEEK_SET);
 	
 	buffer = (char*) malloc(len + 1);
@@ -99,7 +107,7 @@ bool loadAllParticleTypes()
 	
 	
 	// Parse config file
-	cfg = cfg_init(opts, CFGF_NONE);
+	cfg = cfg_init(opts_particles, CFGF_NONE);
 	cfg_parse_buf(cfg, buffer);
 	
 	
@@ -122,7 +130,37 @@ bool loadAllParticleTypes()
 	}
 	
 	
-	// Process generaor type sections
+	
+	// Load the 'particletypes.conf' file
+	filename = getDataDirectory(DF_PARTICLES);
+	filename.append("particlegenerators.conf");
+	fp = zzip_open(filename.c_str(), 0);
+	if (! fp) {
+		cerr << "Can't read particletypes.conf file\n";
+		return false;
+	}
+	
+	// Read the contents of the file into a buffer
+	zzip_seek (fp, 0, SEEK_END);
+	len = zzip_tell (fp);
+	zzip_seek (fp, 0, SEEK_SET);
+	
+	buffer = (char*) malloc(len + 1);
+	if (buffer == NULL) {
+		cerr << "Can't read particletypes.conf file\n";
+		return false;
+	}
+	buffer[len] = '\0';
+	
+	zzip_read(fp, buffer, len);
+	zzip_close(fp);
+	
+	
+	// Parse config file
+	cfg = cfg_init(opts_generators, CFGF_NONE);
+	cfg_parse_buf(cfg, buffer);
+	
+	// Process generator type sections
 	num_types = cfg_size(cfg, "generator");
 	if (num_types == 0) return false;
 	

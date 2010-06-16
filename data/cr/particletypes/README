@@ -1,29 +1,34 @@
-
-TODO: We need an editor for this data.
-
-This defines individual particle types:
+This defines individual particle types (particletypes.conf):
 
 particle {
-	name					Sprite name
-	directional				1 = particle sprite is influenced by direction, default = 0
-	num_frames				Number of frames in animation
-	lin_speed				Initial speed
-	lin_accel				Initial acceleration
-	range					Maximum range
+	name             Name, used in editors, etc
+	image            Sprite name
+	directional      1 = particle sprite is influenced by direction, default = 0
+	num_frames       Number of frames in animation
+	lin_speed        Initial speed
+	lin_accel        Initial acceleration
+	age              The age of the particle
 }
 
+Filenames are "<image>/<angle>deg_fr<frame>.bmp", where
+   <image> is the image name specified in the particle config
+   <angle> is the angle number, 0 - 270 in increments of 45 for directional, 0 for non-directional
+   <frame> is the zero-based frame number, upto num_frames - 1
 
-This defines available particle generators.
-Each generator can be spwe out with multiple particle types:
+
+This defines available particle generators (particlegenerators.conf):
+
+Each generator can spew out with multiple particle types
 
 generator {
-	name					Name, used in editors, etc
+	name             Name, used in editors, etc
 	
 	spew {
-		type				The particle ID, see above
-		angle_range			Range of angles to spew from
-		rate				Number to spew per second
-		time				How much time the spewing has
+		name             Name, used in editors, etc
+		type             The particle ID, 0-based index based on the order of the 'particle' sections
+		angle_range      Range of angles to spew from
+		rate             Number to spew per second
+		time             How much time the spewing has
 	}
 	
 	spew {
