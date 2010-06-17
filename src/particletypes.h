@@ -18,12 +18,15 @@ class ParticleType
 		Range lin_accel;
 		Range age;
 		
+		vector<Action*>* actions;
+		
 		// dynamic
 		int id;
 		vector<SDL_Surface*> sprites;
 		
 	public:
 		ParticleType();
+		~ParticleType();
 };
 
 class GenSpew

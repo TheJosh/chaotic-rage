@@ -31,6 +31,7 @@ class Map;
 class HUD;
 class GameState;
 
+#include "actions.h"
 #include "areatypes.h"
 #include "particletypes.h"
 #include "unitclass.h"
