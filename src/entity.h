@@ -34,4 +34,7 @@ class Entity
 		**/
 		virtual void update(int delta) = 0;
 		
+		
+	public:
+		GameState * getGameState();
 };

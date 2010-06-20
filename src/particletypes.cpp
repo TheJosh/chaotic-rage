@@ -71,12 +71,10 @@ static cfg_opt_t opts_generators[] =
 
 ParticleType::ParticleType()
 {
-	this->actions = NULL;
 }
 
 ParticleType::~ParticleType()
 {
-	delete(this->actions);
 }
 
 
@@ -120,6 +118,7 @@ bool loadAllParticleTypes()
 	// Parse config file
 	cfg = cfg_init(opts_particles, CFGF_NONE);
 	cfg_parse_buf(cfg, buffer);
+	
 	
 	
 	int num_types = cfg_size(cfg, "particle");

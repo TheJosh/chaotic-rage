@@ -18,20 +18,24 @@ typedef struct range {
 	int max;
 } Range;
 
+class Action;
+class EntityType;
 class UnitClass;
 class AreaType;
 class ParticleType;
+class ParticleGenType;
 class WeaponType;
+class Entity;
 class Unit;
 class Player;
 class Particle;
-class ParticleGenType;
 class ParticleGenerator;
 class Map;
 class HUD;
 class GameState;
 
 #include "actions.h"
+#include "entitytype.h"
 #include "areatypes.h"
 #include "particletypes.h"
 #include "unitclass.h"

@@ -17,3 +17,8 @@ Entity::Entity(GameState *st)
 Entity::~Entity()
 {
 }
+
+GameState * Entity::getGameState()
+{
+	return this->st;
+}

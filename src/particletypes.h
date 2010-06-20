@@ -6,7 +6,7 @@
 using namespace std;
 
 
-class ParticleType
+class ParticleType : public EntityType
 {
 	public:
 		// from data file
@@ -17,8 +17,6 @@ class ParticleType
 		Range lin_speed;
 		Range lin_accel;
 		Range age;
-		
-		vector<Action*>* actions;
 		
 		// dynamic
 		int id;

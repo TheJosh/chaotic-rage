@@ -31,11 +31,13 @@ enum ActionType {
 	REMOVE           = 4,
 };
 
+#define MAX_ACTION_ARGS 1
 
 class Action {
 	public:
 		ActionEvent event;
 		ActionType type;
+		int args[MAX_ACTION_ARGS];
 };
 
 
