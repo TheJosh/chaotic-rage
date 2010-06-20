@@ -10,6 +10,7 @@ using namespace std;
 /* Variables */
 static vector<UnitClass*> unitclasses;
 
+extern cfg_opt_t g_action_opts;
 
 /* Config file definition */
 // Settings section
@@ -36,6 +37,9 @@ static cfg_opt_t unitclass_opts[] =
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_SEC((char*) "settings", settings_opts, CFGF_MULTI),
 	CFG_SEC((char*) "state", state_opts, CFGF_MULTI),
+	
+	CFG_SEC((char*) "action", &g_action_opts, CFGF_MULTI),
+	
 	CFG_END()
 };
 
@@ -48,7 +52,7 @@ static cfg_opt_t opts[] =
 
 
 
-UnitClass::UnitClass()
+UnitClass::UnitClass() : EntityType()
 {
 	this->width = 0;
 	this->height = 0;
@@ -140,6 +144,8 @@ UnitClass* loadUnitClass(cfg_t *cfg)
 	
 	uc = new UnitClass();
 	uc->name = cfg_getstr(cfg, "name");
+	
+	uc->actions = loadActions(cfg);
 	
 	
 	/// Settings ///

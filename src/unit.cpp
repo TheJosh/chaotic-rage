@@ -13,7 +13,7 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	this->desired_angle = 0;
 	this->speed = 0;
 	this->health = 100;
-	this->height = 32;
+	this->height = this->uc->height;
 	
 	this->weapon = NULL;
 	this->weapon_gen = NULL;
@@ -180,6 +180,19 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 			this->y = newy;
 		}
 	}
+	
+	// Have we been hit?
+	vector<Particle*> * particles = this->st->particlesInside(this->x, this->y, this->uc->width, this->uc->height);
+	
+	unsigned int i;
+	for (i = 0; i < particles->size(); i++) {
+		Particle *p = particles->at(i);
+		
+		p->pt->doActions(p, HIT_UNIT);
+		this->uc->doActions(this, HIT_PARTICLE);
+	}
+	
+	delete (particles);
 	
 	// Fire bullets
 	if (this->firing and this->weapon_gen) {

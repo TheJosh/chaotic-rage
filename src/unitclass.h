@@ -45,7 +45,7 @@ class UnitClassState
 		unsigned int sprite_offset;
 };
 
-class UnitClass
+class UnitClass : public EntityType
 {
 	friend UnitClass* loadUnitClass(cfg_t *cfg);
 	

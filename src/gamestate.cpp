@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <SDL.h>
 #include "rage.h"
 
@@ -27,6 +28,7 @@ void GameState::addUnit(Unit* unit)
 void GameState::addParticle(Particle* particle)
 {
 	this->entities.push_back(particle);
+	this->particles.push_back(particle);
 }
 
 void GameState::addParticleGenerator(ParticleGenerator* generator)
@@ -51,6 +53,13 @@ void GameState::update(int delta)
 		if (e->del) {
 			delete (e);
 			this->entities.erase(this->entities.begin() + i);
+			
+			vector<Particle*>::iterator it;
+			it = find (this->particles.begin(), this->particles.end(), e);
+			if (it != this->particles.end()) {
+				this->particles.erase(it);
+			}
+			
 		} else {
 			e->update(delta);
 		}
@@ -60,4 +69,21 @@ void GameState::update(int delta)
 	this->anim_frame = floor(this->game_time / ANIMATION_FPS);
 }
 
+
+
+vector<Particle*> * GameState::particlesInside(int x, int y, int w, int h)
+{
+	unsigned int i;
+	vector<Particle*> * ret = new vector<Particle*>();
+	
+	for (i = 0; i < this->particles.size(); i++) {
+		Particle *p = this->particles.at(i);
+		
+		if (p->x >= x && p->x <= x + w && p->y >= y && p->y <= y + h) {
+			ret->push_back(p);
+		}
+	}
+	
+	return ret;
+}
 

@@ -12,9 +12,9 @@ class GameState
 	
 	protected:
 		vector<Entity*> entities;
-		vector<Unit*> units;
+		//vector<Unit*> units;
 		vector<Particle*> particles;
-		vector<ParticleGenerator*> particlegenerators;
+		//vector<ParticleGenerator*> particlegenerators;
 		
 	public:
 		Player* curr_player;
@@ -31,6 +31,8 @@ class GameState
 		void addUnit(Unit* unit);
 		void addParticle(Particle* particle);
 		void addParticleGenerator(ParticleGenerator* generator);
+		
+		vector<Particle*> * particlesInside(int x, int y, int w, int h);
 		
 	public:
 		void update(int delta);

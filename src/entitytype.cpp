@@ -42,15 +42,6 @@ void EntityType::doActions(Entity * entity, ActionEvent event)
 				}
 				break;
 				
-			case ADD_PARTICLE:
-				break;
-				
-			case CHANGE_HP:
-				break;
-				
-			case REMOVE:
-				break;
-				
 			default:
 				break;
 		}

@@ -9,6 +9,8 @@ using namespace std;
 class Particle: public Entity
 {
 	public:
+		ParticleType* pt;
+		
 		// copied from particle type
 		int speed;
 		int lin_accel;
@@ -19,7 +21,6 @@ class Particle: public Entity
 		int age;
 		
 	protected:
-		ParticleType* pt;
 		unsigned int animation_start;
 		
 	public:
