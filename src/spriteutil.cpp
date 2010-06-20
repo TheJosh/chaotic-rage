@@ -29,7 +29,7 @@ SDL_Surface *loadSprite (string filename)
 	}
 	
 	sprite = SDL_LoadBMP_RW(rw, 0);
-	SDL_FreeRW(rw);
+	SDL_RWclose (rw);
 	
 	if (sprite == NULL) {
 		fprintf(stderr, "Couldn't load sprite '%s'.\n", filename.c_str());
