@@ -22,48 +22,54 @@ GameState::~GameState()
 
 void GameState::addUnit(Unit* unit)
 {
-	this->entities.push_back(unit);
+	this->entities_add.push_back(unit);
 }
 
 void GameState::addParticle(Particle* particle)
 {
-	this->entities.push_back(particle);
+	this->entities_add.push_back(particle);
 	this->particles.push_back(particle);
 }
 
 void GameState::addParticleGenerator(ParticleGenerator* generator)
 {
-	this->entities.push_back(generator);
+	this->entities_add.push_back(generator);
 }
 
+
+
+bool EntityEraser(Entity *e)
+{
+	return e->del;
+}
 
 /**
 * Updates the state of everything
 **/
 void GameState::update(int delta)
 {
-	unsigned int i;
-	
 	DEBUG("Updating gamestate using delta: %i\n", delta);
 	
-	// Update all entities
-	for (i = 0; i < this->entities.size(); i++) {
-		Entity *e = this->entities.at(i);
-		
-		if (e->del) {
-			delete (e);
-			this->entities.erase(this->entities.begin() + i);
-			
-			vector<Particle*>::iterator it;
-			it = find (this->particles.begin(), this->particles.end(), e);
-			if (it != this->particles.end()) {
-				this->particles.erase(it);
-			}
-			
-		} else {
-			e->update(delta);
-		}
+	vector<Entity*>::iterator it;
+	vector<Entity*>::iterator newend;
+	
+	// Add new entities
+	for (it = this->entities_add.begin(); it < this->entities_add.end(); it++) {
+		Entity *e = (*it);
+		this->entities.push_back(e);
 	}
+	this->entities_add.clear();
+	
+	// Update entities
+	for (it = this->entities.begin(); it < this->entities.end(); it++) {
+		Entity *e = (*it);
+		e->update(delta);
+	}
+	
+	// Remove entities
+	// I'm fairly sure this leaks because it doesn't actually delete the entity
+	newend = remove_if(this->entities.begin(), this->entities.end(), EntityEraser);
+	this->entities.erase(newend, this->entities.end());
 	
 	this->game_time += delta;
 	this->anim_frame = floor(this->game_time / ANIMATION_FPS);

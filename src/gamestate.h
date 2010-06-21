@@ -12,6 +12,7 @@ class GameState
 	
 	protected:
 		vector<Entity*> entities;
+		vector<Entity*> entities_add;
 		//vector<Unit*> units;
 		vector<Particle*> particles;
 		//vector<ParticleGenerator*> particlegenerators;
