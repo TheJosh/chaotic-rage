@@ -27,6 +27,8 @@ void EntityType::doActions(Entity * entity, ActionEvent event)
 	
 	GameState *st = entity->getGameState();
 	
+	DEBUG("Event %i from entity %p (type = %i, x = %i, y = %i, del = %i)\n", event, entity, entity->klass(), entity->x, entity->y, entity->del);
+	
 	for (i = 0; i < this->actions->size(); i++) {
 		Action *ac = this->actions->at(i);
 		

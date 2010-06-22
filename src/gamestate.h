@@ -35,6 +35,5 @@ class GameState
 		
 		vector<Particle*> * particlesInside(int x, int y, int w, int h);
 		
-	public:
 		void update(int delta);
 };

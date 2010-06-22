@@ -6,7 +6,11 @@
 using namespace std;
 
 
-class ParticleGenerator : public Entity {
+class ParticleGenerator : public Entity
+{
+	public:
+		virtual EntityClass klass() const { return PGENERATOR; }
+		
 	public:
 		ParticleGenType* type;
 		int x;

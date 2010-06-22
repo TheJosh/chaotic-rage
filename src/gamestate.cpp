@@ -6,6 +6,9 @@
 using namespace std;
 
 
+static bool EntityEraser(Entity *e);
+
+
 GameState::GameState()
 {
 	this->anim_frame = 0;
@@ -38,7 +41,12 @@ void GameState::addParticleGenerator(ParticleGenerator* generator)
 
 
 
-bool EntityEraser(Entity *e)
+static bool EntityEraser(Entity *e)
+{
+	return e->del;
+}
+
+static bool ParticleEraser(Particle *e)
 {
 	return e->del;
 }
@@ -63,7 +71,9 @@ void GameState::update(int delta)
 	// Update entities
 	for (it = this->entities.begin(); it < this->entities.end(); it++) {
 		Entity *e = (*it);
-		e->update(delta);
+		if (! e->del) {
+			e->update(delta);
+		}
 	}
 	
 	// Remove entities
@@ -71,10 +81,15 @@ void GameState::update(int delta)
 	newend = remove_if(this->entities.begin(), this->entities.end(), EntityEraser);
 	this->entities.erase(newend, this->entities.end());
 	
+	// Remove particles from the particles list
+	{
+		vector<Particle*>::iterator it = remove_if(this->particles.begin(), this->particles.end(), ParticleEraser);
+		this->particles.erase(it, this->particles.end());
+	}
+	
 	this->game_time += delta;
 	this->anim_frame = floor(this->game_time / ANIMATION_FPS);
 }
-
 
 
 vector<Particle*> * GameState::particlesInside(int x, int y, int w, int h)
@@ -92,4 +107,5 @@ vector<Particle*> * GameState::particlesInside(int x, int y, int w, int h)
 	
 	return ret;
 }
+
 

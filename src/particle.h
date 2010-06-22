@@ -9,6 +9,9 @@ using namespace std;
 class Particle: public Entity
 {
 	public:
+		virtual EntityClass klass() const { return PARTICLE; }
+		
+	public:
 		ParticleType* pt;
 		
 		// copied from particle type

@@ -6,8 +6,18 @@
 using namespace std;
 
 
+enum EntityClass {
+	UNIT = 1,
+	PARTICLE = 2,
+	PGENERATOR = 3,
+};
+
+
 class Entity
 {
+	public:
+		virtual EntityClass klass() const = 0;
+		
 	public:
 		bool del;
 		int x;

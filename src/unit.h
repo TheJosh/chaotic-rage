@@ -9,6 +9,9 @@ using namespace std;
 class Unit: public Entity
 {
 	public:
+		virtual EntityClass klass() const { return UNIT; }
+		
+	public:
 		string name;
 		
 	protected:
