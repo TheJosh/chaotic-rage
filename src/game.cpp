@@ -14,7 +14,7 @@ static int fps;
 /**
 * The main game loop
 **/
-void gameLoop(GameState *st, SDL_Surface *screen)
+void gameLoop(GameState *st, Render *render)
 {
 	int start = 0, end = 1, delta = 0;
 	int curr_frame = 0, total_time = 0;
@@ -30,7 +30,7 @@ void gameLoop(GameState *st, SDL_Surface *screen)
 		
 		st->update(delta);
 		handleEvents(st);
-		render(st, screen);
+		render->render(st);
 		
 		end = SDL_GetTicks();
 	}

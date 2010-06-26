@@ -18,6 +18,7 @@ typedef struct range {
 	int max;
 } Range;
 
+class Render;
 class Action;
 class EntityType;
 class UnitClass;
@@ -50,8 +51,10 @@ class GameState;
 #include "map.h"
 #include "gamestate.h"
 
+#include "render.h"
+#include "render_sdl.h"
+
 #include "game.h"
-#include "video.h"
 #include "hud.h"
 #include "util.h"
 #include "spriteutil.h"

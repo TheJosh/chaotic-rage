@@ -4,4 +4,4 @@
 #include "rage.h"
 
 
-void gameLoop(GameState *st, SDL_Surface *screen);
+void gameLoop(GameState *st, Render *render);

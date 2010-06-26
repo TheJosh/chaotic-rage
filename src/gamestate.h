@@ -8,7 +8,7 @@ using namespace std;
 
 class GameState
 {
-	friend void render(GameState *st, SDL_Surface *screen);
+	friend class RenderSDL;
 	
 	protected:
 		vector<Entity*> entities;

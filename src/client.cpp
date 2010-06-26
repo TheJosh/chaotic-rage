@@ -8,13 +8,9 @@ using namespace std;
 
 
 int main (int argc, char ** argv) {
-	SDL_Surface *screen = SDL_SetVideoMode(800, 800, 32, SDL_SWSURFACE);
 	
-	if (screen == NULL) {
-		fprintf(stderr, "Unable to set %ix%i video: %s\n", 800, 800, SDL_GetError());
-		exit(1);
-	}
-	
+	Render * render = new RenderSDL();
+	render->setScreenSize(1000, 600, false);
 	
 	if (! loadAllAreaTypes()) {
 		cerr << "Unable to load areatypes datafile.\n";
@@ -64,7 +60,7 @@ int main (int argc, char ** argv) {
 	st->map = m;
 	
 	
-	gameLoop(st, screen);
+	gameLoop(st, render);
 	
 	
 	exit(0);
