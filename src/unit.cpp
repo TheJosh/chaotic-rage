@@ -12,7 +12,7 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	this->angle = 0;
 	this->desired_angle = 0;
 	this->speed = 0;
-	this->health = 100;
+	this->health = 10000;
 	this->height = this->uc->height;
 	
 	this->weapon = NULL;

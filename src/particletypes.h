@@ -36,6 +36,7 @@ class GenSpew
 		int angle_range;
 		int rate;
 		int time;
+		int offset;
 };
 
 class ParticleGenType

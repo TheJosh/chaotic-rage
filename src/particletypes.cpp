@@ -44,6 +44,7 @@ static cfg_opt_t spew_opts[] =
 	CFG_INT((char*) "angle_range", 0, CFGF_NONE),
 	CFG_INT((char*) "rate", 0, CFGF_NONE),
 	CFG_INT((char*) "time", 0, CFGF_NONE),
+	CFG_INT((char*) "offset", 0, CFGF_NONE),
 	CFG_END()
 };
 
@@ -276,6 +277,7 @@ ParticleGenType* loadParticleGenType(cfg_t *cfg_generatortype)
 		spew->angle_range = cfg_getint(cfg_spew, "angle_range");
 		spew->rate = cfg_getint(cfg_spew, "rate");
 		spew->time = cfg_getint(cfg_spew, "time");
+		spew->offset = cfg_getint(cfg_spew, "offset");
 		
 		gt->spewers.push_back(spew);
 	}

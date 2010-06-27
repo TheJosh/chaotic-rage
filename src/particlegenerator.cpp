@@ -46,6 +46,9 @@ void ParticleGenerator::update(int delta)
 			//TODO: needs love
 			pa->angle = this->angle + getRandom(0 - spew->angle_range / 2, spew->angle_range / 2);
 			
+			pa->x = pointPlusAngleX(pa->x, pa->angle, spew->offset);
+			pa->y = pointPlusAngleY(pa->y, pa->angle, spew->offset);
+			
 			st->addParticle(pa);
 		}
 		
