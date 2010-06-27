@@ -17,7 +17,7 @@ using namespace std;
 static vector<WeaponType*> weapons;
 
 /* Functions */
-WeaponType* loadWeaponType(cfg_t *cfg_weapon);
+WeaponType* loadWeaponType(cfg_t *cfg_weapon, Render * render);
 
 
 /* Config file definition */
@@ -49,7 +49,7 @@ WeaponType::WeaponType()
 /**
 * Loads the area types
 **/
-bool loadAllWeaponTypes()
+bool loadAllWeaponTypes(Render * render)
 {
 	char *buffer;
 	ZZIP_FILE *fp;
@@ -93,7 +93,7 @@ bool loadAllWeaponTypes()
 	for (j = 0; j < num_types; j++) {
 		cfg_weapon = cfg_getnsec(cfg, "weapon", j);
 		
-		WeaponType* wt = loadWeaponType(cfg_weapon);
+		WeaponType* wt = loadWeaponType(cfg_weapon, render);
 		if (wt == NULL) {
 			cerr << "Bad weapon type at index " << j << endl;
 			return false;
@@ -104,7 +104,7 @@ bool loadAllWeaponTypes()
 	}
 	
 	// If there was sprite errors, exit the game
-	if (wasLoadSpriteError()) {
+	if (render->wasLoadSpriteError()) {
 		cerr << "Error loading weapon types; game will now exit.\n";
 		exit(1);
 	}
@@ -116,7 +116,7 @@ bool loadAllWeaponTypes()
 /**
 * Loads a single area type
 **/
-WeaponType* loadWeaponType(cfg_t *cfg_weapon)
+WeaponType* loadWeaponType(cfg_t *cfg_weapon, Render * render)
 {
 	WeaponType* wt;
 	string filename;
@@ -131,7 +131,7 @@ WeaponType* loadWeaponType(cfg_t *cfg_weapon)
 	filename = getDataDirectory(DF_WEAPONS);
 	filename.append(cfg_getstr(cfg_weapon, "name"));
 	filename.append("/icon_large.bmp");
-	wt->icon_large = loadSprite(filename);
+	wt->icon_large = render->loadSprite(filename);
 	SDL_SetAlpha(wt->icon_large, SDL_SRCALPHA, 200);
 	
 	if (wt->icon_large->w != WEAPON_LARGE_W && wt->icon_large->h != WEAPON_LARGE_H) {

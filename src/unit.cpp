@@ -25,10 +25,6 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	this->setState(UNIT_STATE_STATIC);
 	
 	this->sprites = uc->loadAllSprites();
-	if (wasLoadSpriteError()) {
-		cerr << "Unable to load required unit sprites; exiting.\n";
-		exit(1);
-	}
 }
 
 Unit::~Unit()

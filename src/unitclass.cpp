@@ -66,7 +66,7 @@ UnitClass::~UnitClass()
 /**
 * Loads the area types
 **/
-bool loadAllUnitClasses()
+bool loadAllUnitClasses(Render * render)
 {
 	char *buffer;
 	ZZIP_FILE *fp;
@@ -110,7 +110,7 @@ bool loadAllUnitClasses()
 	for (j = 0; j < num_types; j++) {
 		cfg_unitclass = cfg_getnsec(cfg, "unitclass", j);
 		
-		UnitClass* uc = loadUnitClass(cfg_unitclass);
+		UnitClass* uc = loadUnitClass(cfg_unitclass, render);
 		if (uc == NULL) {
 			cerr << "Bad unit class at index " << j << endl;
 			return false;
@@ -121,7 +121,7 @@ bool loadAllUnitClasses()
 	}
 	
 	// If there was sprite errors, exit the game
-	if (wasLoadSpriteError()) {
+	if (render->wasLoadSpriteError()) {
 		cerr << "Error loading unit classes; game will now exit.\n";
 		exit(1);
 	}
@@ -135,7 +135,7 @@ bool loadAllUnitClasses()
 /**
 * Loads a single area type
 **/
-UnitClass* loadUnitClass(cfg_t *cfg)
+UnitClass* loadUnitClass(cfg_t *cfg, Render * render)
 {
 	UnitClass* uc;
 	cfg_t *cfg_settings, *cfg_state;
@@ -144,6 +144,7 @@ UnitClass* loadUnitClass(cfg_t *cfg)
 	
 	uc = new UnitClass();
 	uc->name = cfg_getstr(cfg, "name");
+	uc->render = render;
 	
 	uc->actions = loadActions(cfg);
 	
@@ -301,7 +302,7 @@ vector<SpritePtr>* UnitClass::loadAllSprites()
 				
 				DEBUG("Loading unit class sprite; image = '%s', angle = %i, frame = %i\n", state_info->image.c_str(), angle * 45, frame);
 				
-				SpritePtr surf = loadSprite(buff);
+				SpritePtr surf = this->render->loadSprite(buff);
 				ret->push_back(surf);
 				
 				if (this->width == 0) {
@@ -315,6 +316,11 @@ vector<SpritePtr>* UnitClass::loadAllSprites()
 				frame++;
 			}
 		}
+	}
+	
+	if (this->render->wasLoadSpriteError()) {
+		cerr << "Unable to load required unit sprites; exiting.\n";
+		exit(1);
 	}
 	
 	return ret;

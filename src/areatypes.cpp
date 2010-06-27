@@ -11,7 +11,7 @@ using namespace std;
 static vector<AreaType*> areatypes;
 
 /* Functions */
-AreaType* loadAreaType(cfg_t *cfg_areatype);
+AreaType* loadAreaType(cfg_t *cfg_areatype, Render * render);
 
 
 /* Config file definition */
@@ -44,7 +44,7 @@ AreaType::AreaType()
 /**
 * Loads the area types
 **/
-bool loadAllAreaTypes()
+bool loadAllAreaTypes(Render * render)
 {
 	char *buffer;
 	ZZIP_FILE *fp;
@@ -88,7 +88,7 @@ bool loadAllAreaTypes()
 	for (j = 0; j < num_types; j++) {
 		cfg_areatype = cfg_getnsec(cfg, "areatype", j);
 		
-		AreaType* at = loadAreaType(cfg_areatype);
+		AreaType* at = loadAreaType(cfg_areatype, render);
 		if (at == NULL) {
 			cerr << "Bad area type at index " << j << endl;
 			return false;
@@ -99,7 +99,7 @@ bool loadAllAreaTypes()
 	}
 	
 	// If there was sprite errors, exit the game
-	if (wasLoadSpriteError()) {
+	if (render->wasLoadSpriteError()) {
 		cerr << "Error loading area types; game will now exit.\n";
 		exit(1);
 	}
@@ -111,7 +111,7 @@ bool loadAllAreaTypes()
 /**
 * Loads a single area type
 **/
-AreaType* loadAreaType(cfg_t *cfg_areatype)
+AreaType* loadAreaType(cfg_t *cfg_areatype, Render * render)
 {
 	AreaType* at;
 	string filename;
@@ -121,7 +121,7 @@ AreaType* loadAreaType(cfg_t *cfg_areatype)
 	filename.append("-fr0.bmp");
 	
 	at = new AreaType();
-	at->surf = loadSprite(filename.c_str());
+	at->surf = render->loadSprite(filename.c_str());
 	at->stretch = cfg_getint(cfg_areatype, "stretch");
 	at->wall = cfg_getint(cfg_areatype, "wall");
 	

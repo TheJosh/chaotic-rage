@@ -20,7 +20,7 @@ class WeaponType
 };
 
 
-bool loadAllWeaponTypes();
+bool loadAllWeaponTypes(Render * render);
 WeaponType* getWeaponTypeByID(unsigned int id);
 unsigned int getNumWeaponTypes();
 

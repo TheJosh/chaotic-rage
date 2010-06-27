@@ -12,22 +12,22 @@ int main (int argc, char ** argv) {
 	Render * render = new RenderSDL();
 	render->setScreenSize(1000, 600, false);
 	
-	if (! loadAllAreaTypes()) {
+	if (! loadAllAreaTypes(render)) {
 		cerr << "Unable to load areatypes datafile.\n";
 		exit(1);
 	}
 	
-	if (! loadAllUnitClasses()) {
+	if (! loadAllUnitClasses(render)) {
 		cerr << "Unable to load unitclasses datafile.\n";
 		exit(1);
 	}
 	
-	if (! loadAllParticleTypes()) {
+	if (! loadAllParticleTypes(render)) {
 		cerr << "Unable to load particletypes datafile.\n";
 		exit(1);
 	}
 	
-	if (! loadAllWeaponTypes()) {
+	if (! loadAllWeaponTypes(render)) {
 		cerr << "Unable to load weapontypes datafile.\n";
 		exit(1);
 	}

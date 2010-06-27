@@ -22,8 +22,8 @@ class UnitClassStates;
 class UnitClass;
 
 
-bool loadAllUnitClasses();
-UnitClass* loadUnitClass(cfg_t *cfg);
+bool loadAllUnitClasses(Render * render);
+UnitClass* loadUnitClass(cfg_t *cfg, Render * render);
 UnitClass* getUnitClassByID(int id);
 
 
@@ -47,7 +47,7 @@ class UnitClassState
 
 class UnitClass : public EntityType
 {
-	friend UnitClass* loadUnitClass(cfg_t *cfg);
+	friend UnitClass* loadUnitClass(cfg_t *cfg, Render * render);
 	
 	public:
 		string name;
@@ -59,6 +59,7 @@ class UnitClass : public EntityType
 		UnitClassSettings mod[UNIT_NUM_MODIFIERS];
 		vector<UnitClassState*> states;
 		unsigned int max_frames;
+		Render * render;
 		
 	public:
 		UnitClass();

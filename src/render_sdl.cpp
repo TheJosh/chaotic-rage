@@ -15,7 +15,7 @@ static bool ZIndexPredicate(const Entity * e1, const Entity * e2)
 }
 
 
-RenderSDL::RenderSDL()
+RenderSDL::RenderSDL() : Render()
 {
 	this->screen = NULL;
 }
@@ -25,6 +25,9 @@ RenderSDL::~RenderSDL()
 }
 
 
+/**
+* Sets the screen size
+**/
 void RenderSDL::setScreenSize(int width, int height, bool fullscreen)
 {
 	this->screen = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE);
@@ -36,6 +39,38 @@ void RenderSDL::setScreenSize(int width, int height, bool fullscreen)
 }
 
 
+/**
+* Internal sprite loading from a SDL_RWops
+**/
+SpritePtr RenderSDL::int_loadSprite(SDL_RWops *rw, string filename)
+{
+	SpritePtr sprite;
+	Uint32 colourkey;
+	
+	sprite = SDL_LoadBMP_RW(rw, 0);
+	
+	if (sprite == NULL) {
+		fprintf(stderr, "Couldn't load sprite '%s'.\n", filename.c_str());
+		load_err = true;
+		return NULL;
+	}
+	
+	if (sprite->format->BitsPerPixel != 24) {
+		DEBUG("Bitmap '%s' not in 24-bit colour; may have problem with colour-key\n", filename.c_str());
+	}
+	
+	sprite = SDL_DisplayFormat(sprite); // leak !!
+	
+	colourkey = SDL_MapRGB(sprite->format, 255, 0, 255);
+	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, colourkey);
+	
+	return sprite;
+}
+
+
+/**
+* Renders
+**/
 void RenderSDL::render(GameState *st)
 {
 	unsigned int i;

@@ -12,7 +12,7 @@ static vector<ParticleType*> particletypes;
 static vector<ParticleGenType*> generatortypes;
 
 /* Functions */
-ParticleType* loadParticleType(cfg_t *cfg_particletype);
+ParticleType* loadParticleType(cfg_t *cfg_particletype, Render * render);
 ParticleGenType* loadParticleGenType(cfg_t *cfg_generatortype);
 
 extern cfg_opt_t g_action_opts;
@@ -81,7 +81,7 @@ ParticleType::~ParticleType()
 /**
 * Loads the area types
 **/
-bool loadAllParticleTypes()
+bool loadAllParticleTypes(Render * render)
 {
 	char *buffer;
 	int len;
@@ -129,7 +129,7 @@ bool loadAllParticleTypes()
 	for (j = 0; j < num_types; j++) {
 		cfg_particletype = cfg_getnsec(cfg, "particle", j);
 		
-		ParticleType* pt = loadParticleType(cfg_particletype);
+		ParticleType* pt = loadParticleType(cfg_particletype, render);
 		if (pt == NULL) {
 			cerr << "Bad particle type at index " << j << endl;
 			return false;
@@ -190,7 +190,7 @@ bool loadAllParticleTypes()
 	
 	
 	// If there was sprite errors, exit the game
-	if (wasLoadSpriteError()) {
+	if (render->wasLoadSpriteError()) {
 		cerr << "Error loading particle types; game will now exit.\n";
 		exit(1);
 	}
@@ -202,7 +202,7 @@ bool loadAllParticleTypes()
 /**
 * Loads a single particle type
 **/
-ParticleType* loadParticleType(cfg_t *cfg_particletype)
+ParticleType* loadParticleType(cfg_t *cfg_particletype, Render * render)
 {
 	ParticleType* pt;
 	char buff[255];
@@ -234,7 +234,7 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype)
 			
 			DEBUG("Loading particle type sprite; image = '%s', angle = %i, frame = %i\n", pt->image.c_str(), angle * 45, frame);
 			
-			SpritePtr surf = loadSprite(buff);
+			SpritePtr surf = render->loadSprite(buff);
 			pt->sprites.push_back(surf);
 			
 		}

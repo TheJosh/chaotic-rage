@@ -6,9 +6,6 @@
 using namespace std;
 
 
-SpritePtr loadSprite (string filename);
-bool wasLoadSpriteError();
-
 SpritePtr tileSprite (SpritePtr orig, int w, int h);
 
 void cross_mask (SpritePtr dest, SpritePtr mask);

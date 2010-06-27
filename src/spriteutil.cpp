@@ -6,58 +6,6 @@
 using namespace std;
 
 
-static bool load_err = false;
-
-
-/**
-* Loads a sprite from file into memeory
-* Uses magneta for colour key
-**/
-SpritePtr loadSprite (string filename)
-{
-	SDL_Surface *sprite;
-	Uint32 colourkey;
-	SDL_RWops *rw;
-	
-	DEBUG("Loading bitmap '%s'.\n", filename.c_str());
-	
-	rw = SDL_RWFromZZIP(filename.c_str(), "r");
-	if (rw == NULL) {
-		fprintf(stderr, "Couldn't load sprite '%s'.\n", filename.c_str());
-		load_err = true;
-		return NULL;
-	}
-	
-	sprite = SDL_LoadBMP_RW(rw, 0);
-	SDL_RWclose (rw);
-	
-	if (sprite == NULL) {
-		fprintf(stderr, "Couldn't load sprite '%s'.\n", filename.c_str());
-		load_err = true;
-		return NULL;
-	}
-	
-	if (sprite->format->BitsPerPixel != 24) {
-		DEBUG("Bitmap '%s' not in 24-bit colour; may have problem with colour-key\n", filename.c_str());
-	}
-	
-	sprite = SDL_DisplayFormat(sprite); // leak !!
-	
-	colourkey = SDL_MapRGB(sprite->format, 255, 0, 255);
-	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, colourkey);
-	
-	return sprite;
-}
-
-
-/**
-* Sprite error
-**/
-bool wasLoadSpriteError()
-{
-	return load_err;
-}
-
 
 /**
 * Tiles a sprite
