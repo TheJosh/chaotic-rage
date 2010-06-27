@@ -277,12 +277,12 @@ unsigned int UnitClass::getMaxFrames()
 }
 
 /**
-* Loads all of the required state sprites into SDL_Surface's.
+* Loads all of the required state sprites into SpritePtrs.
 * The returned object should be freed by the caller.
 **/
-vector<SDL_Surface*>* UnitClass::loadAllSprites()
+vector<SpritePtr>* UnitClass::loadAllSprites()
 {
-	vector<SDL_Surface*>* ret = new vector<SDL_Surface*>();
+	vector<SpritePtr>* ret = new vector<SpritePtr>();
 	
 	unsigned int state;
 	unsigned int angle;
@@ -301,7 +301,7 @@ vector<SDL_Surface*>* UnitClass::loadAllSprites()
 				
 				DEBUG("Loading unit class sprite; image = '%s', angle = %i, frame = %i\n", state_info->image.c_str(), angle * 45, frame);
 				
-				SDL_Surface *surf = loadSprite(buff);
+				SpritePtr surf = loadSprite(buff);
 				ret->push_back(surf);
 				
 				if (this->width == 0) {

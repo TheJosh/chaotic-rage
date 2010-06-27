@@ -124,7 +124,7 @@ WeaponType* Unit::getWeaponByID(unsigned int id)
 /**
 * Determines the unit sprite
 **/
-SDL_Surface* Unit::getSprite()
+SpritePtr Unit::getSprite()
 {
 	int idx = round(this->angle / 45);
 	

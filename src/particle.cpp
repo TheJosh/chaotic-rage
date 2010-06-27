@@ -51,7 +51,7 @@ void Particle::update(int delta)
 	
 }
 
-SDL_Surface* Particle::getSprite()
+SpritePtr Particle::getSprite()
 {
 	int idx = 0;
 	if (this->pt->directional) idx = round(this->angle / 45);

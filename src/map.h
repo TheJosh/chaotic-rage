@@ -28,8 +28,8 @@ class Map {
 		int height;
 		
 	public:
-		SDL_Surface *ground;
-		SDL_Surface *walls;
+		SDL_Surface * ground;
+		SDL_Surface * walls;
 		Uint32 *data;
 		
 	public:
@@ -38,7 +38,7 @@ class Map {
 		
 	public:
 		int load(string name);
-		SDL_Surface* renderFrame(int frame, bool wall);
-		SDL_Surface* renderDataSurface();
+		SDL_Surface * renderFrame(int frame, bool wall);
+		SDL_Surface * renderDataSurface();
 		Uint32 getDataAt(int x, int y);
 };

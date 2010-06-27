@@ -13,7 +13,7 @@ static bool load_err = false;
 * Loads a sprite from file into memeory
 * Uses magneta for colour key
 **/
-SDL_Surface *loadSprite (string filename)
+SpritePtr loadSprite (string filename)
 {
 	SDL_Surface *sprite;
 	Uint32 colourkey;
@@ -62,7 +62,7 @@ bool wasLoadSpriteError()
 /**
 * Tiles a sprite
 **/
-SDL_Surface *tileSprite (SDL_Surface *orig, int w, int h)
+SpritePtr tileSprite (SpritePtr orig, int w, int h)
 {
 	SDL_Surface* surf = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, 32, 0,0,0,0);
 	
@@ -84,7 +84,7 @@ SDL_Surface *tileSprite (SDL_Surface *orig, int w, int h)
 /**
 * Apply the colourkey mask from one surface onto another
 **/
-void cross_mask (SDL_Surface *dest, SDL_Surface *mask)
+void cross_mask (SpritePtr dest, SpritePtr mask)
 {
 	SDL_LockSurface(dest);
 	SDL_LockSurface(mask);

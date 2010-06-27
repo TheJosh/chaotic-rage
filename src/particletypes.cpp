@@ -234,7 +234,7 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype)
 			
 			DEBUG("Loading particle type sprite; image = '%s', angle = %i, frame = %i\n", pt->image.c_str(), angle * 45, frame);
 			
-			SDL_Surface *surf = loadSprite(buff);
+			SpritePtr surf = loadSprite(buff);
 			pt->sprites.push_back(surf);
 			
 		}

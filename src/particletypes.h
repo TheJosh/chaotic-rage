@@ -20,7 +20,7 @@ class ParticleType : public EntityType
 		
 		// dynamic
 		int id;
-		vector<SDL_Surface*> sprites;
+		vector<SpritePtr> sprites;
 		
 	public:
 		ParticleType();

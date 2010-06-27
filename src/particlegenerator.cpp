@@ -60,7 +60,7 @@ void ParticleGenerator::update(int delta)
 }
 
 
-SDL_Surface* ParticleGenerator::getSprite()
+SpritePtr ParticleGenerator::getSprite()
 {
 	return NULL;
 }

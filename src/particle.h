@@ -31,6 +31,6 @@ class Particle: public Entity
 		~Particle();
 		
 	public:
-		virtual SDL_Surface* getSprite();
+		virtual SpritePtr getSprite();
 		virtual void update(int delta);
 };

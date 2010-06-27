@@ -67,7 +67,7 @@ class UnitClass : public EntityType
 	public:
 		UnitClassSettings* getSettings(Uint8 modifier_flags);
 		UnitClassState* getState(int type);
-		vector<SDL_Surface*>* loadAllSprites();
+		vector<SpritePtr>* loadAllSprites();
 		unsigned int getMaxFrames();
 };
 

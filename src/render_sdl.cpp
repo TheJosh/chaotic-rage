@@ -22,7 +22,6 @@ RenderSDL::RenderSDL()
 
 RenderSDL::~RenderSDL()
 {
-
 }
 
 
@@ -40,7 +39,7 @@ void RenderSDL::setScreenSize(int width, int height, bool fullscreen)
 void RenderSDL::render(GameState *st)
 {
 	unsigned int i;
-	SDL_Surface *surf;
+	SpritePtr surf;
 	
 	// Dirt layer
 	surf = st->map->ground;
@@ -59,7 +58,7 @@ void RenderSDL::render(GameState *st)
 		r.x = e->x;
 		r.y = e->y;
 		
-		SDL_Surface *surf = e->getSprite();
+		SpritePtr surf = e->getSprite();
 		if (surf == NULL) continue;
 		
 		SDL_BlitSurface(surf, NULL, this->screen, &r);

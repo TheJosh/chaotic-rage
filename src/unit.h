@@ -30,14 +30,14 @@ class Unit: public Entity
 		int current_state_type;
 		
 		unsigned int animation_start;
-		vector<SDL_Surface*>* sprites;
+		vector<SpritePtr>* sprites;
 		
 	public:
 		Unit(UnitClass *uc, GameState *st);
 		~Unit();
 		
 	public:
-		virtual SDL_Surface* getSprite();
+		virtual SpritePtr getSprite();
 		virtual void update(int delta) = 0;
 		
 		void setWeapon(WeaponType* wt);

@@ -15,7 +15,7 @@ class AreaType
 		
 		// dynamic
 		int id;
-		SDL_Surface *surf;
+		SpritePtr surf;
 		
 	public:
 		AreaType();

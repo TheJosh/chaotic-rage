@@ -10,7 +10,7 @@ class WeaponType
 {
 	public:
 		ParticleGenType *pg;
-		SDL_Surface *icon_large;
+		SpritePtr icon_large;
 		
 		// dynamic
 		int id;

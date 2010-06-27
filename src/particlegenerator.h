@@ -24,5 +24,5 @@ class ParticleGenerator : public Entity
 		
 	public:
 		virtual void update(int delta);
-		virtual SDL_Surface* getSprite();
+		virtual SpritePtr getSprite();
 };
