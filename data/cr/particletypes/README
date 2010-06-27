@@ -5,10 +5,17 @@ particle {
 	image            Sprite name
 	directional      1 = particle sprite is influenced by direction, default = 0
 	num_frames       Number of frames in animation
-	lin_speed        Initial speed
-	lin_accel        Initial acceleration
-	age              The age of the particle
+	lin_speed*       Initial speed
+	lin_accel*       Acceleration of the speed, in pixels/second
+	age*             The age of the particle
+	damage*          Initial amount of damage the particle causes upon impact
+	damage_accel*    Acceleration of the damage amount, in hp/second
 }
+
+The * values support an (optional) range in the format {min, max}, where a random value is chosen
+between those values.
+
+The accel options would normally be specified as negative values, but can still be positive if desired...
 
 Filenames are "<image>/<angle>deg_fr<frame>.bmp", where
    <image> is the image name specified in the particle config

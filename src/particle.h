@@ -18,6 +18,8 @@ class Particle: public Entity
 		int speed;
 		int lin_accel;
 		int max_age;
+		int damage;
+		int damage_accel;
 		
 		// general instance variables
 		int angle;

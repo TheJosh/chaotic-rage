@@ -186,6 +186,11 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 		
 		p->pt->doActions(p, HIT_UNIT);
 		this->uc->doActions(this, HIT_PARTICLE);
+		
+		this->health -= p->damage;
+		if (this->health <= 0) {
+			this->del = true;
+		}
 	}
 	
 	delete (particles);
