@@ -107,6 +107,13 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="range.cs" />
+    <Compile Include="range_ui_editor.cs" />
+    <Compile Include="range_ui_form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="range_ui_form.Designer.cs">
+      <DependentUpon>range_ui_form.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="areatype_edit.resx">
       <DependentUpon>areatype_edit.cs</DependentUpon>
     </EmbeddedResource>
@@ -135,6 +142,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="range_ui_form.resx">
+      <DependentUpon>range_ui_form.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

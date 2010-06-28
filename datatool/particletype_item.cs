@@ -23,9 +23,12 @@ namespace datatool
         {
             this.name = name;
 
-            this.lin_speed = new range(0);
-            this.lin_accel = new range(0);
-            this.age = new range(0);
+            this.directional = false;
+            this.num_frames = 1;
+
+            this.lin_speed = new range(1);
+            this.lin_accel = new range(1);
+            this.age = new range(1);
             this.damage = new range(0);
             this.damage_accel = new range(0);
         }
@@ -40,7 +43,13 @@ namespace datatool
             particletype_item ret;
             ret = new particletype_item(this.name);
             ret.image = this.image;
-            // TODO: proper cloning
+            ret.directional = this.directional;
+            ret.num_frames = this.num_frames;
+            ret.lin_speed = this.lin_speed;
+            ret.lin_accel = this.lin_accel;
+            ret.age = this.age;
+            ret.damage = this.damage;
+            ret.damage_accel = this.damage_accel;
             return ret;
         }
 
@@ -76,6 +85,7 @@ namespace datatool
         }
 
         [DescriptionAttribute("Initial speed")]
+        [Editor(typeof(range_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
         public string LinSpeed
         {
             get { return this.lin_speed.toString(); }
@@ -83,6 +93,7 @@ namespace datatool
         }
 
         [DescriptionAttribute("Acceleration of the speed, in pixels/second")]
+        [Editor(typeof(range_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
         public string LinAccel
         {
             get { return this.lin_accel.toString(); }
@@ -90,6 +101,7 @@ namespace datatool
         }
 
         [DescriptionAttribute("The max age of the particle")]
+        [Editor(typeof(range_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
         public string Age
         {
             get { return this.age.toString(); }
@@ -97,6 +109,7 @@ namespace datatool
         }
 
         [DescriptionAttribute("Initial amount of damage the particle causes upon impact")]
+        [Editor(typeof(range_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
         public string Damage
         {
             get { return this.damage.toString(); }
@@ -104,6 +117,7 @@ namespace datatool
         }
 
         [DescriptionAttribute("Acceleration of the damage amount, in hp/second")]
+        [Editor(typeof(range_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
         public string DamageAccel
         {
             get { return this.damage_accel.toString(); }

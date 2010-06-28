@@ -4,7 +4,7 @@ using System.Text;
 
 namespace datatool
 {
-    class range
+    public class range
     {
         public int min;
         public int max;
