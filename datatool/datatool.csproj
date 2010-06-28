@@ -78,6 +78,19 @@
     <Compile Include="areatype_edit.Designer.cs">
       <DependentUpon>areatype_edit.cs</DependentUpon>
     </Compile>
+    <Compile Include="particletype_edit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="particletype_edit.Designer.cs">
+      <DependentUpon>particletype_edit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="particletype_item.cs" />
+    <Compile Include="particletype_list.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="particletype_list.Designer.cs">
+      <DependentUpon>particletype_list.cs</DependentUpon>
+    </Compile>
     <Compile Include="form_main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +120,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="image_ui_form.resx">
       <DependentUpon>image_ui_form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="particletype_edit.resx">
+      <DependentUpon>particletype_edit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
