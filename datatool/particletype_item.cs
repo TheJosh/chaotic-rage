@@ -10,13 +10,24 @@ namespace datatool
     {
         private string name;
         private string image;
-        private bool stretch;
-        private bool wall;
+        private bool directional;
+        private int num_frames;
+        private range lin_speed;
+        private range lin_accel;
+        private range age;
+        private range damage;
+        private range damage_accel;
 
 
         public particletype_item(string name)
         {
             this.name = name;
+
+            this.lin_speed = new range(0);
+            this.lin_accel = new range(0);
+            this.age = new range(0);
+            this.damage = new range(0);
+            this.damage_accel = new range(0);
         }
 
         override public string getName()
@@ -29,27 +40,20 @@ namespace datatool
             particletype_item ret;
             ret = new particletype_item(this.name);
             ret.image = this.image;
-            ret.stretch = this.stretch;
-            ret.wall = this.wall;
+            // TODO: proper cloning
             return ret;
         }
 
 
 
-        /**
-         * The name
-         **/
-        [DescriptionAttribute("The name of this areatype, internal use only")]
+        [DescriptionAttribute("The name of this particletype, internal use only")]
         public string Name
         {
             get { return this.name; }
             set { this.name = value; }
         }
 
-        /**
-         * The image to show
-         **/
-        [DescriptionAttribute("The name of the image to use for this areatype")]
+        [DescriptionAttribute("The name of the image to use for this particletype")]
         [Editor(typeof(image_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
         public string Image
         {
@@ -57,24 +61,53 @@ namespace datatool
             set { this.image = value; }
         }
 
-        /**
-         * Stretch the image instead of tiling it
-         **/
-        [DescriptionAttribute("If set to true, the image will be stretched, otherwise it will be tiled")]
-        public Boolean Stretch
+        [DescriptionAttribute("If set to true, the sprite chosen is influenced by the angle of movement")]
+        public Boolean Directional
         {
-            get { return this.stretch; }
-            set { this.stretch = value; }
+            get { return this.directional; }
+            set { this.directional = value; }
         }
 
-        /**
-         * Is it a wall?
-         **/
-        [DescriptionAttribute("If set to true, the areatype will be a wall")]
-        public Boolean Wall
+        [DescriptionAttribute("The number of frames in the animation")]
+        public int NumFrames
         {
-            get { return this.wall; }
-            set { this.wall = value; }
+            get { return this.num_frames; }
+            set { this.num_frames = value; }
+        }
+
+        [DescriptionAttribute("Initial speed")]
+        public string LinSpeed
+        {
+            get { return this.lin_speed.toString(); }
+            set { this.lin_speed = range.fromString(value); }
+        }
+
+        [DescriptionAttribute("Acceleration of the speed, in pixels/second")]
+        public string LinAccel
+        {
+            get { return this.lin_accel.toString(); }
+            set { this.lin_accel = range.fromString(value); }
+        }
+
+        [DescriptionAttribute("The max age of the particle")]
+        public string Age
+        {
+            get { return this.age.toString(); }
+            set { this.age = range.fromString(value); }
+        }
+
+        [DescriptionAttribute("Initial amount of damage the particle causes upon impact")]
+        public string Damage
+        {
+            get { return this.damage.toString(); }
+            set { this.damage = range.fromString(value); }
+        }
+
+        [DescriptionAttribute("Acceleration of the damage amount, in hp/second")]
+        public string DamageAccel
+        {
+            get { return this.damage_accel.toString(); }
+            set { this.damage_accel = range.fromString(value); }
         }
     }
 }

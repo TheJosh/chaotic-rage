@@ -18,6 +18,8 @@ namespace datatool
 
             if (context.Instance is areatype_item) {
                 form.directory = "areatypes";
+            } else if (context.Instance is particletype_item) {
+                form.directory = "particletypes";
             } else {
                 return "ERROR: Unknown class";
             }
