@@ -19,6 +19,10 @@ namespace datatool
             InitializeComponent();
         }
 
+        /**
+         * Scans the data dir for files to show in the list
+         * Also called upon directory rescan button is clicked
+         **/
         private void image_ui_form_Load(object sender, EventArgs e)
         {
             string[] files;
@@ -31,6 +35,7 @@ namespace datatool
 
                     foreach (string f in files) {
                         string g = System.IO.Path.GetFileName(f);
+                        if (g.StartsWith(".")) continue;
                         g = g.Replace("-fr0.bmp", "");
                         this.list.Items.Add(g);
                     }
@@ -45,6 +50,7 @@ namespace datatool
 
                     foreach (string f in files) {
                         string g = System.IO.Path.GetFileName(f);
+                        if (g.StartsWith (".")) continue;
                         this.list.Items.Add(g);
                     }
 
@@ -61,6 +67,9 @@ namespace datatool
 
         }
 
+        /**
+         * OK button clicked
+         **/
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (this.list.SelectedItem == null) return;
@@ -70,6 +79,10 @@ namespace datatool
             this.Close();
         }
 
+
+        /**
+         * Show a preview
+         **/
         private void list_SelectedIndexChanged(object sender, EventArgs e)
         {
             string filename = string.Format(this.preview_filename, (string) this.list.SelectedItem);

@@ -33,6 +33,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.labAdding = new System.Windows.Forms.Label();
             this.picPreview = new System.Windows.Forms.PictureBox();
+            this.btnRescan = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
             this.SuspendLayout();
             // 
@@ -105,6 +106,16 @@
             this.picPreview.TabIndex = 6;
             this.picPreview.TabStop = false;
             // 
+            // btnRescan
+            // 
+            this.btnRescan.Location = new System.Drawing.Point(15, 261);
+            this.btnRescan.Name = "btnRescan";
+            this.btnRescan.Size = new System.Drawing.Size(118, 23);
+            this.btnRescan.TabIndex = 7;
+            this.btnRescan.Text = "Rescan directory";
+            this.btnRescan.UseVisualStyleBackColor = true;
+            this.btnRescan.Click += new System.EventHandler(this.image_ui_form_Load);
+            // 
             // image_ui_form
             // 
             this.AcceptButton = this.btnSave;
@@ -112,6 +123,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(571, 296);
+            this.Controls.Add(this.btnRescan);
             this.Controls.Add(this.picPreview);
             this.Controls.Add(this.labAdding);
             this.Controls.Add(this.label1);
@@ -138,5 +150,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labAdding;
         private System.Windows.Forms.PictureBox picPreview;
+        private System.Windows.Forms.Button btnRescan;
     }
 }
