@@ -78,6 +78,20 @@
     <Compile Include="areatype_edit.Designer.cs">
       <DependentUpon>areatype_edit.cs</DependentUpon>
     </Compile>
+    <Compile Include="particletype_ui_editor.cs" />
+    <Compile Include="particlegenerator_edit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="particlegenerator_edit.Designer.cs">
+      <DependentUpon>particlegenerator_edit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="particlegenerator_item.cs" />
+    <Compile Include="particlegenerator_list.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="particlegenerator_list.Designer.cs">
+      <DependentUpon>particlegenerator_list.cs</DependentUpon>
+    </Compile>
     <Compile Include="particletype_edit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +137,12 @@
     <EmbeddedResource Include="areatype_list.resx">
       <DependentUpon>areatype_list.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="particlegenerator_edit.resx">
+      <DependentUpon>particlegenerator_edit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="particlegenerator_list.resx">
+      <DependentUpon>particlegenerator_list.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="form_main.resx">
       <DependentUpon>form_main.cs</DependentUpon>
     </EmbeddedResource>
@@ -157,15 +177,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon-add.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\list-remove.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\list-add.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\edit-delete.png" />
   </ItemGroup>
   <ItemGroup>
@@ -176,9 +187,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\go-next.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\image-x-generic.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\dialog-error.png" />
