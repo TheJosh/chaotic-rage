@@ -10,6 +10,13 @@ using namespace std;
 #define RENDER_FRAME_BG -2
 
 
+typedef struct {
+	Uint32 type;
+	Uint8 hp;
+	char pad[3];
+} data_pixel;
+
+
 class Area {
 	public:
 		int x;
@@ -30,7 +37,7 @@ class Map {
 	public:
 		SDL_Surface * ground;
 		SDL_Surface * walls;
-		Uint32 *data;
+		data_pixel *data;
 		
 	public:
 		Map();
@@ -40,5 +47,5 @@ class Map {
 		int load(string name);
 		SDL_Surface * renderFrame(int frame, bool wall);
 		SDL_Surface * renderDataSurface();
-		Uint32 getDataAt(int x, int y);
+		data_pixel getDataAt(int x, int y);
 };

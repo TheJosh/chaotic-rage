@@ -93,13 +93,14 @@ int Map::load(string name)
 	
 	this->ground = this->renderFrame(0, false);
 	this->walls = this->renderFrame(0, true);
+	
+	this->data = (data_pixel*) malloc(width * height* sizeof(data_pixel));
+	
 	datasurf = this->renderDataSurface();
-	
-	this->data = (Uint32*) malloc(width * height* sizeof(Uint32));
-	
 	for (int x = 0; x < this->width; x++) {
 		for (int y = 0; y < this->height; y++) {
-			this->data[x * this->height + y] = getPixel(datasurf, x, y);
+			this->data[x * this->height + y].type = getPixel(datasurf, x, y);
+			this->data[x * this->height + y].hp = 0;
 		}
 	}
 	
@@ -238,12 +239,15 @@ SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data)
 }
 
 
-Uint32 Map::getDataAt(int x, int y)
+data_pixel Map::getDataAt(int x, int y)
 {
-	if (x < 0) return 0;
-	if (y < 0) return 0;
-	if (x >= this->width) return 0;
-	if (x >= this->height) return 0;
+	data_pixel ret;
+	ret.type = 0;
+	
+	if (x < 0) return ret;
+	if (y < 0) return ret;
+	if (x >= this->width) return ret;
+	if (x >= this->height) return ret;
 	
 	return this->data[x * this->height + y];
 }

@@ -121,16 +121,16 @@ int collideWall(GameState *st, int x, int y, int w, int h)
 {
 	AreaType *at;
 	
-	at = getAreaTypeByID(st->map->getDataAt(x, y));
+	at = getAreaTypeByID(st->map->getDataAt(x, y).type);
 	if (at->wall) return 1;
 	
-	at = getAreaTypeByID(st->map->getDataAt(x + w, y));
+	at = getAreaTypeByID(st->map->getDataAt(x + w, y).type);
 	if (at->wall) return 1;
 	
-	at = getAreaTypeByID(st->map->getDataAt(x, y + h));
+	at = getAreaTypeByID(st->map->getDataAt(x, y + h).type);
 	if (at->wall) return 1;
 	
-	at = getAreaTypeByID(st->map->getDataAt(x + w, y + h));
+	at = getAreaTypeByID(st->map->getDataAt(x + w, y + h).type);
 	if (at->wall) return 1;
 	
 	return 0;
