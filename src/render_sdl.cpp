@@ -55,6 +55,8 @@ SpritePtr RenderSDL::int_loadSprite(SDL_RWops *rw, string filename)
 		return NULL;
 	}
 	
+	SDL_WM_SetCaption("Chaotic Rage", "Chaotic Rage");
+	
 	if (sprite->format->BitsPerPixel != 24) {
 		DEBUG("Bitmap '%s' not in 24-bit colour; may have problem with colour-key\n", filename.c_str());
 	}

@@ -10,7 +10,7 @@ using namespace std;
 int main (int argc, char ** argv) {
 	
 	Render * render = new RenderSDL();
-	render->setScreenSize(1000, 600, false);
+	render->setScreenSize(1000, 800, false);
 	
 	if (! loadAllAreaTypes(render)) {
 		cerr << "Unable to load areatypes datafile.\n";
