@@ -93,6 +93,7 @@ int Map::load(string name)
 	
 	this->ground = this->renderFrame(0, false);
 	this->walls = this->renderFrame(0, true);
+	this->colourkey = SDL_MapRGB(walls->format, 255, 0, 255);
 	
 	this->data = (data_pixel*) malloc(width * height* sizeof(data_pixel));
 	
@@ -100,7 +101,7 @@ int Map::load(string name)
 	for (int x = 0; x < this->width; x++) {
 		for (int y = 0; y < this->height; y++) {
 			this->data[x * this->height + y].type = getPixel(datasurf, x, y);
-			this->data[x * this->height + y].hp = 0;
+			this->data[x * this->height + y].hp = 100;
 		}
 	}
 	
@@ -239,6 +240,9 @@ SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data)
 }
 
 
+/**
+* Gets a data pixel
+**/
 data_pixel Map::getDataAt(int x, int y)
 {
 	data_pixel ret;
@@ -250,6 +254,28 @@ data_pixel Map::getDataAt(int x, int y)
 	if (x >= this->height) return ret;
 	
 	return this->data[x * this->height + y];
+}
+
+/**
+* Sets a data pixel
+**/
+void Map::setDataHP(int x, int y, int newhp)
+{
+	if (x < 0) return;
+	if (y < 0) return;
+	if (x >= this->width) return;
+	if (x >= this->height) return;
+	
+	if (newhp <= 0) {
+		this->data[x * this->height + y].hp = 0;
+		this->data[x * this->height + y].type = 0;
+		
+		setPixel(this->walls, x, y, this->colourkey);
+		
+		return;
+	}
+	
+	this->data[x * this->height + y].hp = newhp;
 }
 
 

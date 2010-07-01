@@ -45,13 +45,15 @@ void Particle::update(int delta)
 	this->y += getRandom(-3, 3);
 	
 	
-	AreaType *at = getAreaTypeByID(this->st->map->getDataAt(this->x, this->y).type);
+	data_pixel pixel = this->st->map->getDataAt(this->x, this->y);
+	
+	AreaType *at = getAreaTypeByID(pixel.type);
 	if (at->wall) {
 		this->del = true;
 		
 		this->pt->doActions(this, HIT_WALL);
 		
-		
+		this->st->map->setDataHP(this->x, this->y, pixel.hp - this->damage);
 	}
 	
 }

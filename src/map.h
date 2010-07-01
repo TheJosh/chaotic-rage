@@ -33,6 +33,7 @@ class Map {
 		vector<Area*> areas;
 		int width;
 		int height;
+		int colourkey;
 		
 	public:
 		SDL_Surface * ground;
@@ -43,9 +44,12 @@ class Map {
 		Map();
 		~Map();
 		
+	private:
+		SDL_Surface * renderDataSurface();
+		
 	public:
 		int load(string name);
 		SDL_Surface * renderFrame(int frame, bool wall);
-		SDL_Surface * renderDataSurface();
 		data_pixel getDataAt(int x, int y);
+		void setDataHP(int x, int y, int newhp);
 };
