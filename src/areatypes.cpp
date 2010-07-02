@@ -22,6 +22,7 @@ static cfg_opt_t areatype_opts[] =
 	CFG_STR((char*) "image", 0, CFGF_NONE),
 	CFG_INT((char*) "stretch", 0, CFGF_NONE),		// 0 = tile, 1 = stretch
 	CFG_INT((char*) "wall", 0, CFGF_NONE),			// 0 = ground, 1 = wall
+	CFG_INT((char*) "ground_type", -1, CFGF_NONE),	// Ground to place underneath this wall
 	CFG_END()
 };
 
@@ -38,6 +39,7 @@ static cfg_opt_t opts[] =
 AreaType::AreaType()
 {
 	this->surf = NULL;
+	this->ground_type = NULL;
 }
 
 
@@ -125,13 +127,22 @@ AreaType* loadAreaType(cfg_t *cfg_areatype, Render * render)
 	at->stretch = cfg_getint(cfg_areatype, "stretch");
 	at->wall = cfg_getint(cfg_areatype, "wall");
 	
+	AreaType *ground = getAreaTypeByID(cfg_getint(cfg_areatype, "ground_type"));
+	if (ground != NULL && ground->wall == 0) {
+		at->ground_type = ground;
+	}
+	
 	return at;
 }
 
 
-AreaType* getAreaTypeByID(unsigned int id)
+/**
+* Gets an areatype
+* Returns NULL on error
+**/
+AreaType* getAreaTypeByID(int id)
 {
-	if (id < 0 or id > areatypes.size()) return areatypes.at(0);
+	if (id < 0 or ((unsigned int) id) > areatypes.size()) return NULL;
 	return areatypes.at(id);
 }
 

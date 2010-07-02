@@ -12,6 +12,7 @@ class AreaType
 		// from data file
 		bool stretch;
 		bool wall;
+		AreaType * ground_type;
 		
 		// dynamic
 		int id;
@@ -23,4 +24,4 @@ class AreaType
 
 
 bool loadAllAreaTypes(Render * render);
-AreaType* getAreaTypeByID(unsigned int id);
+AreaType* getAreaTypeByID(int id);

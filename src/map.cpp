@@ -87,7 +87,7 @@ int Map::load(string name)
 	a->width = 600;
 	a->height = 70;
 	a->angle = 0;
-	a->type = getAreaTypeByID(4);
+	a->type = getAreaTypeByID(5);
 	this->areas.push_back(a);
 	
 	
@@ -126,18 +126,30 @@ SDL_Surface* Map::renderFrame(int frame, bool wall)
 	SDL_FillRect(surf, NULL, colourkey);
 	
 	Area *a;
+	AreaType *at;
 	unsigned int i;
 	SDL_Rect dest;
 	
 	// Iterate through the areas
 	for (i = 0; i < this->areas.size(); i++) {
 		a = this->areas[i];
+		at = a->type;
 		
-		if (a->type->wall != wall) continue;
+		//if (wall != a->type->wall) continue;
+		
+		if (wall and ! at->wall) continue;
+		
+		if (! wall and at->wall) {
+			if (at->ground_type != NULL) {
+				at = at->ground_type;
+			} else {
+				continue;
+			}
+		}
 		
 		
 		// Transforms (either streches or tiles)
-		SDL_Surface *areasurf = a->type->surf;
+		SDL_Surface *areasurf = at->surf;
 		if (a->type->stretch)  {
 			areasurf = rotozoomSurfaceXY(areasurf, 0, ((double)a->width) / ((double)areasurf->w), ((double)a->height) / ((double)areasurf->h), 0);
 			if (areasurf == NULL) continue;
@@ -267,8 +279,10 @@ void Map::setDataHP(int x, int y, int newhp)
 	if (x >= this->height) return;
 	
 	if (newhp <= 0) {
+		AreaType *at = getAreaTypeByID(this->data[x * this->height + y].type);
+		
 		this->data[x * this->height + y].hp = 0;
-		this->data[x * this->height + y].type = 0;
+		this->data[x * this->height + y].type = (at->ground_type != NULL ? at->ground_type->id : 0);
 		
 		setPixel(this->walls, x, y, this->colourkey);
 		
