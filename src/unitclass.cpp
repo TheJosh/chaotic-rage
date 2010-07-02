@@ -332,4 +332,12 @@ vector<SpritePtr>* UnitClass::loadAllSprites()
 	return ret;
 }
 
-
+/**
+* Spawn particle generator
+**/
+Entity * UnitClass::spawn(GameState * st)
+{
+	Unit *u = new Player(this, st);
+	st->addUnit(u);
+	return u;
+}

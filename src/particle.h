@@ -24,7 +24,6 @@ class Particle: public Entity
 		int wall_hits;
 		
 		// general instance variables
-		int angle;
 		int age;
 		
 	protected:

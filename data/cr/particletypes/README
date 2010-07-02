@@ -36,7 +36,8 @@ generator {
 	
 	spew {
 		name             Name, used in editors, etc
-		type             The particle ID, 0-based index based on the order of the 'particle' sections
+		type             The entity type (1 = unit, 2 = particle, 3 = particle generator)
+		id               The entity ID, 0-based index based on the order of the 'particle' sections
 		angle_range      Range of angles to spew from
 		rate             Number to spew per second
 		time             How much time the spewing has

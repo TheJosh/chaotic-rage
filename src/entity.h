@@ -23,6 +23,7 @@ class Entity
 		int x;
 		int y;
 		int height;		// for proper z-indexing
+		int angle;
 		
 	protected:
 		GameState* st;
