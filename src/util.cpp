@@ -38,6 +38,38 @@ int getAngleBetweenPoints (int point1_x, int point1_y, int point2_x, int point2_
 
 
 /**
+* Calculates a new angle based on the original angle, desired angle and turn speed
+*
+* @param int current The current angle, degrees
+* @param int desired The desired angle, degrees
+* @param int turn_speed The max speed of the turn, in degrees
+**/
+int angleFromDesired(int current, int desired, int turn_speed)
+{
+	// Calculate clockwise and anti-clockwise difference
+	int diff_anti = desired;
+	
+	if (diff_anti < current) diff_anti += 360;
+	diff_anti -= current;
+	
+	int diff_clock = 360 - diff_anti;
+	
+	// the shortest distance - go in that direction
+	if (diff_anti < diff_clock) {
+		current += (turn_speed < diff_anti ? turn_speed : diff_anti);
+	} else {
+		current -= (turn_speed < diff_clock ? turn_speed : diff_clock);
+	}
+	
+	// clamp to legal values
+	if (current < 0) current += 360;
+	if (current > 359) current -= 360;
+	
+	return current;
+}
+
+
+/**
 * Returns a new X co-ord for a point that has had angle and distance added to it
 * Angle is specified in degrees
 **/

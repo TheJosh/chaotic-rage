@@ -54,11 +54,19 @@ static void handleEvents(GameState *st)
 			// Key press
 			switch (event.key.keysym.sym) {
 				case SDLK_w:
-					st->curr_player->keyPress(Player::KEY_FWD);
+					st->curr_player->keyPress(Player::KEY_UP);
+					break;
+					
+				case SDLK_a:
+					st->curr_player->keyPress(Player::KEY_LEFT);
 					break;
 					
 				case SDLK_s:
-					st->curr_player->keyPress(Player::KEY_REV);
+					st->curr_player->keyPress(Player::KEY_DOWN);
+					break;
+					
+				case SDLK_d:
+					st->curr_player->keyPress(Player::KEY_RIGHT);
 					break;
 					
 				case SDLK_ESCAPE:
@@ -73,11 +81,19 @@ static void handleEvents(GameState *st)
 			// Key Release
 			switch (event.key.keysym.sym) {
 				case SDLK_w:
-					st->curr_player->keyRelease(Player::KEY_FWD);
+					st->curr_player->keyRelease(Player::KEY_UP);
+					break;
+					
+				case SDLK_a:
+					st->curr_player->keyRelease(Player::KEY_LEFT);
 					break;
 					
 				case SDLK_s:
-					st->curr_player->keyRelease(Player::KEY_REV);
+					st->curr_player->keyRelease(Player::KEY_DOWN);
+					break;
+					
+				case SDLK_d:
+					st->curr_player->keyRelease(Player::KEY_RIGHT);
 					break;
 					
 				case SDLK_ESCAPE:

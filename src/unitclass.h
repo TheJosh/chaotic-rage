@@ -32,7 +32,8 @@ class UnitClassSettings
 	public:
 		int lin_speed;		// max pps unit can move
 		int lin_accel;		// pps/second
-		int turn_speed;		// degrees/second
+		int turn_move;		// degrees/second
+		int turn_aim;		// degrees/second
 };
 
 class UnitClassState

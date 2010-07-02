@@ -9,8 +9,10 @@ using namespace std;
 Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 {
 	this->uc = uc;
-	this->angle = 0;
-	this->desired_angle = 0;
+	this->angle_move = 0;
+	this->desired_angle_move = 0;
+	this->angle_aim = 0;
+	this->desired_angle_aim = 0;
 	this->speed = 0;
 	this->health = 10000;
 	this->height = this->uc->height;
@@ -122,7 +124,7 @@ WeaponType* Unit::getWeaponByID(unsigned int id)
 **/
 SpritePtr Unit::getSprite()
 {
-	int idx = round(this->angle / 45);
+	int idx = round(this->angle_aim / 45);
 	
 	int frame = this->st->anim_frame - this->animation_start;
 	frame = frame % this->current_state->num_frames;
@@ -141,30 +143,16 @@ SpritePtr Unit::getSprite()
 **/
 void Unit::update(int delta, UnitClassSettings *ucs)
 {
-	int turn_speed = ppsDelta(ucs->turn_speed, delta);
+	int turn_move = ppsDelta(ucs->turn_move, delta);
+	int turn_aim = ppsDelta(ucs->turn_aim, delta);
 	
-	// Calculate clockwise and anti-clockwise difference
-	int diff_anti = this->desired_angle;
-	if (diff_anti < this->angle) diff_anti += 360;
-	diff_anti -= this->angle;
-	int diff_clock = 360 - diff_anti;
-	
-	// the shortest distance - go in that direction
-	if (diff_anti < diff_clock) {
-		this->angle += (turn_speed < diff_anti ? turn_speed : diff_anti);
-	} else if (diff_clock < diff_anti) {
-		this->angle -= (turn_speed < diff_clock ? turn_speed : diff_clock);
-	}
-	
-	// clamp to legal values
-	if (this->angle < 0) this->angle += 360;
-	if (this->angle > 359) this->angle -= 360;
-	
+	this->angle_move = angleFromDesired(this->angle_move, this->desired_angle_move, turn_move);
+	this->angle_aim = angleFromDesired(this->angle_aim, this->desired_angle_aim, turn_aim);
 	
 	// Movement
 	if (this->speed != 0) {
-		int newx = pointPlusAngleX(this->x, this->angle, ppsDelta(this->speed, delta));
-		int newy = pointPlusAngleY(this->y, this->angle, ppsDelta(this->speed, delta));
+		int newx = pointPlusAngleX(this->x, this->angle_move, ppsDelta(this->speed, delta));
+		int newy = pointPlusAngleY(this->y, this->angle_move, ppsDelta(this->speed, delta));
 	
 		// Collision detection
 		if (collideWall(this->st, newx, newy, this->uc->width, this->uc->height)) {
@@ -202,7 +190,7 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	if (this->firing and this->weapon_gen) {
 		this->weapon_gen->x = this->x + this->uc->width / 2;
 		this->weapon_gen->y = this->y + this->uc->height / 2;
-		this->weapon_gen->angle = this->angle;
+		this->weapon_gen->angle = this->angle_aim;
 		
 		this->weapon_gen->update(delta);
 	}

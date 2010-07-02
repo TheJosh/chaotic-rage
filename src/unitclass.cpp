@@ -18,7 +18,8 @@ static cfg_opt_t settings_opts[] =
 {
 	CFG_INT((char*) "lin_speed", 0, CFGF_NONE),
 	CFG_INT((char*) "lin_accel", 0, CFGF_NONE),
-	CFG_INT((char*) "turn_speed", 0, CFGF_NONE),
+	CFG_INT((char*) "turn_move", 0, CFGF_NONE),
+	CFG_INT((char*) "turn_aim", 0, CFGF_NONE),
 	CFG_END()
 };
 
@@ -157,11 +158,13 @@ UnitClass* loadUnitClass(cfg_t *cfg, Render * render)
 	cfg_settings = cfg_getnsec(cfg, "settings", 0);
 	uc->initial.lin_speed = cfg_getint(cfg_settings, "lin_speed");
 	uc->initial.lin_accel = cfg_getint(cfg_settings, "lin_accel");
-	uc->initial.turn_speed = cfg_getint(cfg_settings, "turn_speed");
+	uc->initial.turn_move = cfg_getint(cfg_settings, "turn_move");
+	uc->initial.turn_aim = cfg_getint(cfg_settings, "turn_aim");
 	
 	if (uc->initial.lin_speed == 0) return NULL;
 	if (uc->initial.lin_accel == 0) return NULL;
-	if (uc->initial.turn_speed == 0) return NULL;
+	if (uc->initial.turn_move == 0) return NULL;
+	if (uc->initial.turn_aim == 0) return NULL;
 	
 	// load modifiers
 	for (j = 1; j < num_settings; j++) {
@@ -169,7 +172,8 @@ UnitClass* loadUnitClass(cfg_t *cfg, Render * render)
 		
 		uc->mod[j - 1].lin_speed = cfg_getint(cfg_settings, "lin_speed");
 		uc->mod[j - 1].lin_accel = cfg_getint(cfg_settings, "lin_accel");
-		uc->mod[j - 1].turn_speed = cfg_getint(cfg_settings, "turn_speed");
+		uc->mod[j - 1].turn_move = cfg_getint(cfg_settings, "turn_move");
+		uc->mod[j - 1].turn_aim = cfg_getint(cfg_settings, "turn_aim");
 	}
 	
 	
@@ -223,13 +227,15 @@ UnitClassSettings* UnitClass::getSettings(Uint8 modifier_flags)
 	
 	ret->lin_speed = this->initial.lin_speed;
 	ret->lin_accel = this->initial.lin_accel;
-	ret->turn_speed = this->initial.turn_speed;
+	ret->turn_move = this->initial.turn_move;
+	ret->turn_aim = this->initial.turn_aim;
 	
 	for (int i = 0; i < UNIT_NUM_MODIFIERS; i++) {
 		if ((modifier_flags & (1 << i)) != 0) {
 			ret->lin_speed += this->mod[i - 1].lin_speed;
 			ret->lin_accel += this->mod[i - 1].lin_accel;
-			ret->turn_speed += this->mod[i - 1].turn_speed;
+			ret->turn_move += this->mod[i - 1].turn_move;
+			ret->turn_aim += this->mod[i - 1].turn_aim;
 		}
 	}
 	

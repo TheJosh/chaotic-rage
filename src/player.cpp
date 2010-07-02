@@ -7,8 +7,7 @@ using namespace std;
 
 Player::Player(UnitClass *uc, GameState *st) : Unit(uc, st)
 {
-	this->key[KEY_FWD] = 0;
-	this->key[KEY_REV] = 0;
+	for (int i = 0; i < 4; i++) this->key[i] = 0;
 }
 
 Player::~Player()
@@ -39,7 +38,7 @@ void Player::keyRelease(int idx)
 **/
 void Player::angleFromMouse(int x, int y)
 {
-	this->desired_angle = getAngleBetweenPoints(this->x, this->y, x, y);
+	this->desired_angle_aim = getAngleBetweenPoints(this->x, this->y, x, y);
 }
 
 
@@ -49,13 +48,42 @@ void Player::angleFromMouse(int x, int y)
 void Player::update(int delta)
 {
 	UnitClassSettings *ucs = this->uc->getSettings(0);
+	bool keypressed = false;
 	
-	if (this->key[KEY_FWD]) {	// fwd key pressed
-		this->speed += ppsDelta(ucs->lin_accel, delta);
-		this->setState(UNIT_STATE_RUNNING);
+	// Up/Down
+	if (this->key[KEY_UP]) {
+		if (this->key[KEY_LEFT]) {
+			this->desired_angle_move = 45;
+		} else if (this->key[KEY_RIGHT]) {
+			this->desired_angle_move = 315;
+		} else {
+			this->desired_angle_move = 0;
+		}
+		keypressed = true;
 		
-	} else if (this->key[KEY_REV]) {	// rev key pressed
-		this->speed -= ppsDelta(ucs->lin_accel, delta);
+	} else if (this->key[KEY_DOWN]) {
+		if (this->key[KEY_LEFT]) {
+			this->desired_angle_move = 135;
+		} else if (this->key[KEY_RIGHT]) {
+			this->desired_angle_move = 225;
+		} else {
+			this->desired_angle_move = 180;
+		}
+		keypressed = true;
+		
+	} else if (this->key[KEY_LEFT]) {
+		this->desired_angle_move = 90;
+		keypressed = true;
+		
+	} else if (this->key[KEY_RIGHT]) {
+		this->desired_angle_move = 270;
+		keypressed = true;
+	}
+	
+	
+	// A key was pressed
+	if (keypressed) {
+		this->speed += ppsDelta(ucs->lin_accel, delta);
 		this->setState(UNIT_STATE_RUNNING);
 		
 	} else if (speed > 0) {		// nothing pressed, slow down (forwards)
@@ -66,6 +94,7 @@ void Player::update(int delta)
 		this->speed += (0 - speed > 100 ? 100 : 0 - speed);
 		this->setState(UNIT_STATE_STATIC);
 	}
+	
 	
 	// Bound to limits
 	if (this->speed > ucs->lin_speed) this->speed = ucs->lin_speed;

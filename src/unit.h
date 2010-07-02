@@ -17,8 +17,10 @@ class Unit: public Entity
 	protected:
 		int speed;
 		int health;
-		int desired_angle;
-		int angle;
+		int desired_angle_move;
+		int angle_move;
+		int desired_angle_aim;
+		int angle_aim;
 		
 		WeaponType* weapon;
 		ParticleGenerator* weapon_gen;
