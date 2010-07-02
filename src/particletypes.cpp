@@ -28,8 +28,8 @@ static cfg_opt_t particletype_opts[] =
 	CFG_INT_LIST((char*) "lin_speed", 0, CFGF_NONE),
 	CFG_INT_LIST((char*) "lin_accel", 0, CFGF_NONE),
 	CFG_INT_LIST((char*) "age", 0, CFGF_NONE),
-	CFG_INT_LIST((char*) "damage", 0, CFGF_NONE),
-	CFG_INT_LIST((char*) "damage_accel", 0, CFGF_NONE),
+	CFG_INT_LIST((char*) "unit_damage", 0, CFGF_NONE),
+	CFG_INT_LIST((char*) "wall_damage", 0, CFGF_NONE),
 	
 	CFG_SEC((char*) "action", &g_action_opts, CFGF_MULTI),
 	
@@ -224,8 +224,8 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype, Render * render)
 	pt->lin_speed = cfg_getrange(cfg_particletype, "lin_speed");
 	pt->lin_accel = cfg_getrange(cfg_particletype, "lin_accel");
 	pt->age = cfg_getrange(cfg_particletype, "age");
-	pt->damage = cfg_getrange(cfg_particletype, "damage");
-	pt->damage_accel = cfg_getrange(cfg_particletype, "damage_accel");
+	pt->unit_damage = cfg_getrange(cfg_particletype, "unit_damage");
+	pt->wall_damage = cfg_getrange(cfg_particletype, "wall_damage");
 	
 	pt->actions = loadActions(cfg_particletype);
 	

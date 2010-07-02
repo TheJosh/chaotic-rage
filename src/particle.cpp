@@ -14,8 +14,8 @@ Particle::Particle(ParticleType *pt, GameState *st) : Entity(st)
 	this->speed = getRandom(pt->lin_speed.min, pt->lin_speed.max);
 	this->lin_accel = getRandom(pt->lin_accel.min, pt->lin_accel.max);
 	this->max_age = getRandom(pt->age.min, pt->age.max);
-	this->damage = getRandom(pt->damage.min, pt->damage.max);
-	this->damage_accel = getRandom(pt->damage_accel.min, pt->damage_accel.max);
+	this->unit_damage = getRandom(pt->unit_damage.min, pt->unit_damage.max);
+	this->wall_damage = getRandom(pt->wall_damage.min, pt->wall_damage.max);
 	
 	this->angle = 0;
 	this->age = 0;
@@ -34,7 +34,6 @@ void Particle::update(int delta)
 	}
 	
 	this->speed += ppsDelta(this->lin_accel, delta);
-	this->damage += ppsDelta(this->damage_accel, delta);
 	
 	if (this->speed <= 0) return;
 	
@@ -45,6 +44,7 @@ void Particle::update(int delta)
 	this->y += getRandom(-3, 3);
 	
 	
+	// Hit a wall?
 	data_pixel pixel = this->st->map->getDataAt(this->x, this->y);
 	
 	AreaType *at = getAreaTypeByID(pixel.type);
@@ -53,7 +53,7 @@ void Particle::update(int delta)
 		
 		this->pt->doActions(this, HIT_WALL);
 		
-		this->st->map->setDataHP(this->x, this->y, pixel.hp - this->damage);
+		this->st->map->setDataHP(this->x, this->y, pixel.hp - this->wall_damage);
 	}
 	
 }
