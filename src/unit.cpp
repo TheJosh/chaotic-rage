@@ -191,6 +191,9 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 		if (this->health <= 0) {
 			this->del = true;
 		}
+		
+		p->unit_hits--;
+		if (p->unit_hits == 0) p->del = true;
 	}
 	
 	delete (particles);

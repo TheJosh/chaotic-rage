@@ -20,7 +20,8 @@ class Particle: public Entity
 		int max_age;
 		int unit_damage;
 		int wall_damage;
-		int hp;
+		int unit_hits;
+		int wall_hits;
 		
 		// general instance variables
 		int angle;

@@ -19,7 +19,8 @@ class ParticleType : public EntityType
 		Range age;
 		Range unit_damage;
 		Range wall_damage;
-		Range hp;
+		Range unit_hits;
+		Range wall_hits;
 		
 		// dynamic
 		int id;
