@@ -34,6 +34,7 @@ Map::~Map()
 int Map::load(string name)
 {
 	Area *a;
+	Zone *z;
 	SDL_Surface *datasurf;
 	
 	this->width = 1000;
@@ -94,6 +95,13 @@ int Map::load(string name)
 	a->type = getAreaTypeByID(5);
 	this->areas.push_back(a);
 	
+	z = new Zone(50,50,60,60);
+	z->spawn[FACTION_INDIVIDUAL] = 1;
+	this->zones.push_back(z);
+	
+	z = new Zone(500,500,560,560);
+	z->spawn[FACTION_INDIVIDUAL] = 1;
+	this->zones.push_back(z);
 	
 	this->ground = this->renderFrame(0, false);
 	this->walls = this->renderFrame(0, true);
@@ -294,6 +302,77 @@ void Map::setDataHP(int x, int y, int newhp)
 	}
 	
 	this->data[x * this->height + y].hp = newhp;
+}
+
+
+/**
+* Finds a spawn zone for a specific faction.
+* Returns NULL if none are found.
+* @todo Choose one randomly instead of grabbing the first one
+**/
+Zone * Map::getSpawnZone(Faction f)
+{
+	for (unsigned int i = 0; i < this->zones.size(); i++) {
+		if (this->zones[i]->spawn[f] == 1) return this->zones[i];
+	}
+	
+	return NULL;
+}
+
+/**
+* Finds a prison zone for a specific faction.
+* Returns NULL if none are found.
+* @todo Choose one randomly instead of grabbing the first one
+**/
+Zone * Map::getPrisonZone(Faction f)
+{
+	for (unsigned int i = 0; i < this->zones.size(); i++) {
+		if (this->zones[i]->prison[f] == 1) return this->zones[i];
+	}
+	
+	return NULL;
+}
+
+/**
+* Finds a collect zone for a specific faction.
+* Returns NULL if none are found.
+* @todo Choose one randomly instead of grabbing the first one
+**/
+Zone * Map::getCollectZone(Faction f)
+{
+	for (unsigned int i = 0; i < this->zones.size(); i++) {
+		if (this->zones[i]->collect[f] == 1) return this->zones[i];
+	}
+	
+	return NULL;
+}
+
+/**
+* Finds a destination zone for a specific faction.
+* Returns NULL if none are found.
+* @todo Choose one randomly instead of grabbing the first one
+**/
+Zone * Map::getDestZone(Faction f)
+{
+	for (unsigned int i = 0; i < this->zones.size(); i++) {
+		if (this->zones[i]->dest[f] == 1) return this->zones[i];
+	}
+	
+	return NULL;
+}
+
+/**
+* Finds a nearbase zone for a specific faction.
+* Returns NULL if none are found.
+* @todo Choose one randomly instead of grabbing the first one
+**/
+Zone * Map::getNearbaseZone(Faction f)
+{
+	for (unsigned int i = 0; i < this->zones.size(); i++) {
+		if (this->zones[i]->nearbase[f] == 1) return this->zones[i];
+	}
+	
+	return NULL;
 }
 
 

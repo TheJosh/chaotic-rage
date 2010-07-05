@@ -35,6 +35,7 @@ class Area {
 class Map {
 	private:
 		vector<Area*> areas;
+		vector<Zone*> zones;
 		int width;
 		int height;
 		int colourkey;
@@ -42,7 +43,7 @@ class Map {
 	public:
 		SDL_Surface * ground;
 		SDL_Surface * walls;
-		data_pixel *data;
+		data_pixel * data;
 		
 	public:
 		Map();
@@ -56,4 +57,10 @@ class Map {
 		SDL_Surface * renderFrame(int frame, bool wall);
 		data_pixel getDataAt(int x, int y);
 		void setDataHP(int x, int y, int newhp);
+		
+		Zone * getSpawnZone(Faction f);
+		Zone * getPrisonZone(Faction f);
+		Zone * getCollectZone(Faction f);
+		Zone * getDestZone(Faction f);
+		Zone * getNearbaseZone(Faction f);
 };

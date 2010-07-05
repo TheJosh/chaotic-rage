@@ -42,12 +42,24 @@ int main (int argc, char ** argv) {
 	
 	GameState *st = new GameState();
 	
+	Map *m = new Map();
+	m->load("arena");
+	st->map = m;
+	
 	Player *p = new Player(getUnitClassByID(0), st);
 	st->addUnit(p);
 	st->curr_player = p;
 	
 	p->pickupWeapon(getWeaponTypeByID(1));
 	p->pickupWeapon(getWeaponTypeByID(2));
+	
+	Zone *z = m->getSpawnZone(FACTION_INDIVIDUAL);
+	if (z == NULL) {
+		cerr << "Map does not have any spawnpoints\n";
+		exit(1);
+	}
+	p->x = z->getRandomX();
+	p->y = z->getRandomY();
 	
 	p = new Player(getUnitClassByID(0), st);
 	st->addUnit(p);
@@ -59,9 +71,7 @@ int main (int argc, char ** argv) {
 	p->x = 100;
 	p->y = 100;
 	
-	Map *m = new Map();
-	m->load("arena");
-	st->map = m;
+
 	
 	
 	gameLoop(st, render);

@@ -1,0 +1,19 @@
+There are a number of factions in the game
+
+The faction rules are used to determine which zones are active for
+which players.
+
+
+FACTION_TEAM1 - FACTION_TEAM8
+	Regular game teams.
+	When playing a team game these are used
+
+FACTION_INDIVIDUAL
+	Used when playing a non-team game
+
+FACTION_COMMON
+	Some team games involve a common goal - such as a single
+	flag which should spawn in the middle of the map.
+	This is different to tying the zone to all of the teams
+	because the zone will only be activated if playing a game
+	which uses common goals.

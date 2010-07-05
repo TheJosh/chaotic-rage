@@ -17,6 +17,12 @@
 	#define DEBUG(_fmt, ...) /* nothing! */
 #endif
 
+
+// Frames-per-second to run all in-game animations at.
+// Specified as a float to help out some arithmetic
+#define ANIMATION_FPS	6.0
+
+
 typedef struct range {
 	int min;
 	int max;
@@ -38,6 +44,7 @@ class Player;
 class Particle;
 class ParticleGenerator;
 class Map;
+class Zone;
 class HUD;
 class GameState;
 
@@ -54,6 +61,7 @@ class GameState;
 #include "particle.h"
 #include "particlegenerator.h"
 
+#include "zone.h"
 #include "map.h"
 #include "gamestate.h"
 
@@ -67,9 +75,4 @@ class GameState;
 
 #include "SDL_rwops_zzip.h"
 #include "SDL_rotozoom.h"
-
-
-// Frames-per-second to run all in-game animations at.
-// Specified as a float to help out some arithmetic
-#define ANIMATION_FPS	6.0
 
