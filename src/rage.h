@@ -71,8 +71,8 @@ class GameState;
 #include "game.h"
 #include "hud.h"
 #include "util.h"
-#include "spriteutil.h"
 
+#include "sdl_util.h"
 #include "SDL_rwops_zzip.h"
 #include "SDL_rotozoom.h"
 
