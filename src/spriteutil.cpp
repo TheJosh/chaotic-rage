@@ -14,7 +14,7 @@ using namespace std;
 /**
 * Tiles a sprite
 **/
-SpritePtr tileSprite (SpritePtr orig, int w, int h)
+SDL_Surface * tileSprite (SDL_Surface * orig, int w, int h)
 {
 	SDL_Surface* surf = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, 32, 0,0,0,0);
 	
@@ -36,7 +36,7 @@ SpritePtr tileSprite (SpritePtr orig, int w, int h)
 /**
 * Apply the colourkey mask from one surface onto another
 **/
-void cross_mask (SpritePtr dest, SpritePtr mask)
+void cross_mask (SDL_Surface * dest, SDL_Surface * mask)
 {
 	SDL_LockSurface(dest);
 	SDL_LockSurface(mask);

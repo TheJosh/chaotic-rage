@@ -316,8 +316,8 @@ vector<SpritePtr>* UnitClass::loadAllSprites()
 				ret->push_back(surf);
 				
 				if (this->width == 0) {
-					this->width = surf->w;
-					this->height = surf->h;
+					this->width = this->render->getSpriteWidth(surf);
+					this->height = this->render->getSpriteHeight(surf);
 				}
 			}
 			

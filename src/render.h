@@ -34,6 +34,39 @@ class Render
 		**/
 		SpritePtr loadSprite(string filename);
 		
+		/**
+		* Renders a sprite
+		**/
+		virtual void renderSprite(SpritePtr sprite, int x, int y) = 0;
+		
+		/**
+		* Renders the background for the map
+		**/
+		virtual SpritePtr renderMap(Map * map, int frame, bool wall) = 0;
+		
+		/**
+		* Clears all colour from a given pixel for a given sprite
+		**/
+		virtual void clearPixel(SpritePtr sprite, int x, int y) = 0;
+		
+		/**
+		* Free sprite memory
+		**/
+		virtual void freeSprite(SpritePtr sprite) = 0;
+		
+		/**
+		* Returns the width of a sprite
+		**/
+		virtual int getSpriteWidth(SpritePtr sprite) = 0;
+		
+		/**
+		* Returns the height of a sprite
+		**/
+		virtual int getSpriteHeight(SpritePtr sprite) = 0;
+		
+		/**
+		* Returns true if there were any sprite errors
+		**/
 		bool wasLoadSpriteError();
 		
 	public:

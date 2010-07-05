@@ -40,6 +40,8 @@ void RenderSDL::setScreenSize(int width, int height, bool fullscreen)
 		fprintf(stderr, "Unable to set %ix%i video: %s\n", width, height, SDL_GetError());
 		exit(1);
 	}
+	
+	this->colourkey = SDL_MapRGB(this->screen->format, 255, 0, 255);
 }
 
 
@@ -48,8 +50,7 @@ void RenderSDL::setScreenSize(int width, int height, bool fullscreen)
 **/
 SpritePtr RenderSDL::int_loadSprite(SDL_RWops *rw, string filename)
 {
-	SpritePtr sprite;
-	Uint32 colourkey;
+	SDL_Surface * sprite;
 	
 	sprite = SDL_LoadBMP_RW(rw, 0);
 	
@@ -67,12 +68,122 @@ SpritePtr RenderSDL::int_loadSprite(SDL_RWops *rw, string filename)
 	
 	sprite = SDL_DisplayFormat(sprite); // leak !!
 	
-	colourkey = SDL_MapRGB(sprite->format, 255, 0, 255);
-	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, colourkey);
+	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, this->colourkey);
 	
-	return sprite;
+	return (SpritePtr) sprite;
 }
 
+
+/**
+* Renders a sprite.
+**/
+void RenderSDL::renderSprite(SpritePtr sprite, int x, int y)
+{
+	SDL_Rect r;
+	r.x = x;
+	r.y = y;
+	
+	SDL_BlitSurface((SDL_Surface*) sprite, NULL, this->screen, &r);
+}
+
+
+/**
+* Render a single frame of the wall animation.
+**/
+SpritePtr RenderSDL::renderMap(Map * map, int frame, bool wall)
+{
+	// Create
+	SDL_Surface* surf = SDL_CreateRGBSurface(SDL_SWSURFACE, map->width, map->height, 32, 0,0,0,0);
+	
+	// Colour key for frame surfaces
+	SDL_SetColorKey(surf, SDL_SRCCOLORKEY, this->colourkey);
+	SDL_FillRect(surf, NULL, this->colourkey);
+	
+	Area *a;
+	AreaType *at;
+	unsigned int i;
+	SDL_Rect dest;
+	
+	// Iterate through the areas
+	for (i = 0; i < map->areas.size(); i++) {
+		a = map->areas[i];
+		at = a->type;
+		
+		//if (wall != a->type->wall) continue;
+		
+		if (wall and ! at->wall) continue;
+		
+		if (! wall and at->wall) {
+			if (at->ground_type != NULL) {
+				at = at->ground_type;
+			} else {
+				continue;
+			}
+		}
+		
+		
+		// Transforms (either streches or tiles)
+		SDL_Surface *areasurf = (SDL_Surface*)at->surf;
+		if (a->type->stretch)  {
+			areasurf = rotozoomSurfaceXY(areasurf, 0, ((double)a->width) / ((double)areasurf->w), ((double)a->height) / ((double)areasurf->h), 0);
+			if (areasurf == NULL) continue;
+			
+		} else {
+			areasurf = (SDL_Surface*)tileSprite(areasurf, a->width, a->height);
+			if (areasurf == NULL) continue;
+		}
+		
+		// Rotates
+		if (a->angle != 0)  {
+			SDL_Surface* temp = areasurf;
+			
+			areasurf = rotozoomSurfaceXY(temp, a->angle, 1, 1, 0);
+			SDL_FreeSurface(temp);
+			if (areasurf == NULL) continue;
+		}
+		
+		dest.x = a->x;
+		dest.y = a->y;
+		
+		SDL_BlitSurface(areasurf, NULL, surf, &dest);
+		SDL_FreeSurface(areasurf);
+	}
+	
+	return (SpritePtr) surf;
+}
+
+
+/**
+* Clears all colour from a given pixel for a given sprite
+**/
+void RenderSDL::clearPixel(SpritePtr sprite, int x, int y)
+{
+	setPixel((SDL_Surface*) sprite, x, y, this->colourkey);
+}
+
+/**
+* Free sprite memory
+**/
+void RenderSDL::freeSprite(SpritePtr sprite)
+{
+	SDL_FreeSurface((SDL_Surface*) sprite);
+}
+
+/**
+* Returns sprite width
+**/
+int RenderSDL::getSpriteWidth(SpritePtr sprite)
+{
+	return ((SDL_Surface*)sprite)->w;
+}
+
+/**
+* Returns sprite height
+**/
+int RenderSDL::getSpriteHeight(SpritePtr sprite)
+{
+	return ((SDL_Surface*)sprite)->h;
+}
 
 /**
 * Renders
@@ -84,11 +195,11 @@ void RenderSDL::render(GameState *st)
 	
 	// Dirt layer
 	surf = st->map->ground;
-	SDL_BlitSurface(surf, NULL, this->screen, 0);
+	SDL_BlitSurface((SDL_Surface*) surf, NULL, this->screen, 0);
 	
 	// Wall layer
 	surf = st->map->walls;
-	SDL_BlitSurface(surf, NULL, this->screen, 0);
+	SDL_BlitSurface((SDL_Surface*) surf, NULL, this->screen, 0);
 	
 	// Entities
 	std::sort(st->entities.begin(), st->entities.end(), ZIndexPredicate);
@@ -102,10 +213,10 @@ void RenderSDL::render(GameState *st)
 		SpritePtr surf = e->getSprite();
 		if (surf == NULL) continue;
 		
-		SDL_BlitSurface(surf, NULL, this->screen, &r);
+		SDL_BlitSurface((SDL_Surface*) surf, NULL, this->screen, &r);
 	}
 	
-	st->hud->render(this->screen);
+	st->hud->render(this);
 	
 	SDL_Flip(this->screen);
 }

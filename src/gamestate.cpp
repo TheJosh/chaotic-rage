@@ -20,6 +20,8 @@ GameState::GameState()
 	
 	this->hud = new HUD();
 	this->hud->st = this;
+	
+	this->render = NULL;
 }
 
 GameState::~GameState()

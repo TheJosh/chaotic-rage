@@ -41,9 +41,10 @@ int main (int argc, char ** argv) {
 	
 	
 	GameState *st = new GameState();
+	st->render = render;
 	
 	Map *m = new Map();
-	m->load("arena");
+	m->load("arena", render);
 	st->map = m;
 	
 	Player *p = new Player(getUnitClassByID(0), st);

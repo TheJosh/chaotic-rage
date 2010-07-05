@@ -136,9 +136,8 @@ WeaponType* loadWeaponType(cfg_t *cfg_weapon, Render * render)
 	filename.append(cfg_getstr(cfg_weapon, "name"));
 	filename.append("/icon_large.bmp");
 	wt->icon_large = render->loadSprite(filename);
-	SDL_SetAlpha(wt->icon_large, SDL_SRCALPHA, 200);
 	
-	if (wt->icon_large->w != WEAPON_LARGE_W && wt->icon_large->h != WEAPON_LARGE_H) {
+	if (render->getSpriteWidth(wt->icon_large) != WEAPON_LARGE_W && render->getSpriteHeight(wt->icon_large) != WEAPON_LARGE_H) {
 		cout << "Bad image size for large icon\n";
 		return NULL;
 	}

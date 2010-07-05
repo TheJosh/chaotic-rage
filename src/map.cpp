@@ -22,8 +22,8 @@ Map::Map()
 
 Map::~Map()
 {
-	SDL_FreeSurface(this->ground);
-	SDL_FreeSurface(this->walls);
+	this->render->freeSprite(this->ground);
+	this->render->freeSprite(this->walls);
 	free(this->data);
 }
 
@@ -31,12 +31,12 @@ Map::~Map()
 /**
 * Load a file (simulated)
 **/
-int Map::load(string name)
+int Map::load(string name, Render * render)
 {
 	Area *a;
 	Zone *z;
-	SDL_Surface *datasurf;
 	
+	this->render = render;
 	this->width = 1000;
 	this->height = 1000;
 	
@@ -103,19 +103,26 @@ int Map::load(string name)
 	z->spawn[FACTION_INDIVIDUAL] = 1;
 	this->zones.push_back(z);
 	
-	this->ground = this->renderFrame(0, false);
-	this->walls = this->renderFrame(0, true);
-	this->colourkey = SDL_MapRGB(walls->format, 255, 0, 255);
+	this->ground = this->render->renderMap(this, 0, false);
+	this->walls = this->render->renderMap(this, 0, true);
+	
+	
+	// This is a hack to use the SDL rotozoomer to manipulate the data surface
+	// The data surface is created using a 32-bit SDL_Surface
+	// which the areatypes are blitted onto (using rotozooming if required)
+	// This is then converted into a regular array using a loop and the getPixel
+	// function
+	SDL_Surface *datasurf = this->renderDataSurface();
 	
 	this->data = (data_pixel*) malloc(width * height* sizeof(data_pixel));
 	
-	datasurf = this->renderDataSurface();
 	for (int x = 0; x < this->width; x++) {
 		for (int y = 0; y < this->height; y++) {
 			this->data[x * this->height + y].type = getPixel(datasurf, x, y);
 			this->data[x * this->height + y].hp = 100;
 		}
 	}
+	// Hack end
 	
 	
 	return 1;
@@ -123,76 +130,7 @@ int Map::load(string name)
 
 
 /**
-* Render a single frame of the wall animation.
-*
-* It is the responsibility of the caller to free the returned surface.
-**/
-SDL_Surface* Map::renderFrame(int frame, bool wall)
-{
-	// Create
-	SDL_Surface* surf = SDL_CreateRGBSurface(SDL_SWSURFACE, this->width, this->height, 32, 0,0,0,0);
-	
-	// Colour key for frame surfaces
-	int colourkey = SDL_MapRGB(surf->format, 255, 0, 255);
-	SDL_SetColorKey(surf, SDL_SRCCOLORKEY, colourkey);
-	SDL_FillRect(surf, NULL, colourkey);
-	
-	Area *a;
-	AreaType *at;
-	unsigned int i;
-	SDL_Rect dest;
-	
-	// Iterate through the areas
-	for (i = 0; i < this->areas.size(); i++) {
-		a = this->areas[i];
-		at = a->type;
-		
-		//if (wall != a->type->wall) continue;
-		
-		if (wall and ! at->wall) continue;
-		
-		if (! wall and at->wall) {
-			if (at->ground_type != NULL) {
-				at = at->ground_type;
-			} else {
-				continue;
-			}
-		}
-		
-		
-		// Transforms (either streches or tiles)
-		SDL_Surface *areasurf = at->surf;
-		if (a->type->stretch)  {
-			areasurf = rotozoomSurfaceXY(areasurf, 0, ((double)a->width) / ((double)areasurf->w), ((double)a->height) / ((double)areasurf->h), 0);
-			if (areasurf == NULL) continue;
-			
-		} else {
-			areasurf = tileSprite(areasurf, a->width, a->height);
-			if (areasurf == NULL) continue;
-		}
-		
-		// Rotates
-		if (a->angle != 0)  {
-			SDL_Surface* temp = areasurf;
-			
-			areasurf = rotozoomSurfaceXY(temp, a->angle, 1, 1, 0);
-			SDL_FreeSurface(temp);
-			if (areasurf == NULL) continue;
-		}
-		
-		dest.x = a->x;
-		dest.y = a->y;
-		
-		SDL_BlitSurface(areasurf, NULL, surf, &dest);
-		SDL_FreeSurface(areasurf);
-	}
-	
-	return surf;
-}
-
-
-/**
-* Render teh data surface for this map
+* Render the data surface for this map
 *
 * It is the responsibility of the caller to free the returned surface.
 **/
@@ -213,13 +151,13 @@ SDL_Surface* Map::renderDataSurface()
 		datasurf = createDataSurface(a->width, a->height, a->type->id);
 		
 		// Transforms (either streches or tiles)
-		SDL_Surface *areasurf = a->type->surf;
+		SDL_Surface *areasurf = (SDL_Surface *)a->type->surf;
 		if (a->type->stretch)  {
 			areasurf = rotozoomSurfaceXY(areasurf, 0, ((double)a->width) / ((double)areasurf->w), ((double)a->height) / ((double)areasurf->h), 0);
 			if (areasurf == NULL) continue;
 			
 		} else {
-			areasurf = tileSprite(areasurf, a->width, a->height);
+			areasurf = (SDL_Surface *)tileSprite(areasurf, a->width, a->height);
 			if (areasurf == NULL) continue;
 		}
 		
@@ -257,9 +195,7 @@ SDL_Surface* Map::renderDataSurface()
 SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data)
 {
 	SDL_Surface *surf = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, 32, 0,0,0,0);
-	
 	SDL_FillRect(surf, NULL, initial_data);
-	
 	return surf;
 }
 
@@ -281,7 +217,7 @@ data_pixel Map::getDataAt(int x, int y)
 }
 
 /**
-* Sets a data pixel
+* Sets a data to a specific health value
 **/
 void Map::setDataHP(int x, int y, int newhp)
 {
@@ -296,7 +232,7 @@ void Map::setDataHP(int x, int y, int newhp)
 		this->data[x * this->height + y].hp = 0;
 		this->data[x * this->height + y].type = (at->ground_type != NULL ? at->ground_type->id : 0);
 		
-		setPixel(this->walls, x, y, this->colourkey);
+		this->render->clearPixel(this->walls, x, y);
 		
 		return;
 	}

@@ -37,7 +37,7 @@ Unit::~Unit()
 {
 	unsigned int j;
 	for (j = 0; j < this->sprites->size(); j++) {
-		SDL_FreeSurface(this->sprites->at(j));
+		st->render->freeSprite(this->sprites->at(j));
 	}
 	
 	delete(this->sprites);

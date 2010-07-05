@@ -23,7 +23,7 @@ class HUD {
 		HUD();
 	
 	public:
-		void render(SDL_Surface *screen);
+		void render(Render * render);
 		int handleEvent(SDL_Event *event);
 		
 	private:

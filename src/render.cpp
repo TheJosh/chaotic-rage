@@ -46,7 +46,6 @@ SpritePtr Render::loadSprite(string filename)
 	return sprite;
 }
 
-
 bool Render::wasLoadSpriteError()
 {
 	return load_err;

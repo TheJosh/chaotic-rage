@@ -28,7 +28,7 @@ typedef struct range {
 	int max;
 } Range;
 
-typedef SDL_Surface * SpritePtr;
+typedef void * SpritePtr;
 
 class Render;
 class Action;

@@ -20,7 +20,7 @@ HUD::HUD()
 /**
 * Render the heads up display
 **/
-void HUD::render(SDL_Surface *screen)
+void HUD::render(Render * render)
 {
 	if (this->weapon_menu) {
 		SDL_Rect r = {100, 100, 125, 125};
@@ -29,7 +29,7 @@ void HUD::render(SDL_Surface *screen)
 		for (i = 0; i < num; i++) {
 			WeaponType *wt = this->st->curr_player->getWeaponByID(i);
 			
-			SDL_BlitSurface(wt->icon_large, NULL, screen, &r);
+			render->renderSprite(wt->icon_large, r.x, r.y);
 			
 			r.x += 150;
 			if (r.x >= 600) {

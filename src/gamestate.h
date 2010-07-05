@@ -27,6 +27,7 @@ class GameState
 		unsigned int anim_frame;
 		unsigned int game_time;
 		HUD* hud;
+		Render* render;
 		
 	public:
 		GameState();
