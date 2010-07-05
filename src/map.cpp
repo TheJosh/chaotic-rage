@@ -312,11 +312,21 @@ void Map::setDataHP(int x, int y, int newhp)
 **/
 Zone * Map::getSpawnZone(Faction f)
 {
+	int num = 0;
+	Zone * candidates[20];
+	
 	for (unsigned int i = 0; i < this->zones.size(); i++) {
-		if (this->zones[i]->spawn[f] == 1) return this->zones[i];
+		if (this->zones[i]->spawn[f] == 1) {
+			candidates[num++] = this->zones[i];
+			if (num == 20) break;
+		}
 	}
 	
-	return NULL;
+	if (num == 0) return NULL;
+	
+	num = round(getRandom(0, num * 10) / 10);	//getRandom seems to have some problems with small values
+	
+	return candidates[num];
 }
 
 /**
