@@ -34,6 +34,7 @@ class Area {
 
 class Map {
 	friend class RenderSDL;
+	friend class RenderOpenGL;
 	
 	private:
 		vector<Area*> areas;

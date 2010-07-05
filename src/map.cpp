@@ -112,13 +112,13 @@ int Map::load(string name, Render * render)
 	// which the areatypes are blitted onto (using rotozooming if required)
 	// This is then converted into a regular array using a loop and the getPixel
 	// function
-	SDL_Surface *datasurf = this->renderDataSurface();
+	//SDL_Surface *datasurf = this->renderDataSurface();
 	
 	this->data = (data_pixel*) malloc(width * height* sizeof(data_pixel));
 	
 	for (int x = 0; x < this->width; x++) {
 		for (int y = 0; y < this->height; y++) {
-			this->data[x * this->height + y].type = getPixel(datasurf, x, y);
+			this->data[x * this->height + y].type = 0; //getPixel(datasurf, x, y);
 			this->data[x * this->height + y].hp = 100;
 		}
 	}

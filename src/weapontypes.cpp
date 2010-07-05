@@ -137,10 +137,10 @@ WeaponType* loadWeaponType(cfg_t *cfg_weapon, Render * render)
 	filename.append("/icon_large.bmp");
 	wt->icon_large = render->loadSprite(filename);
 	
-	if (render->getSpriteWidth(wt->icon_large) != WEAPON_LARGE_W && render->getSpriteHeight(wt->icon_large) != WEAPON_LARGE_H) {
-		cout << "Bad image size for large icon\n";
-		return NULL;
-	}
+	//if (render->getSpriteWidth(wt->icon_large) != WEAPON_LARGE_W && render->getSpriteHeight(wt->icon_large) != WEAPON_LARGE_H) {
+	//	cout << "Bad image size for large icon\n";
+	//	return NULL;
+	//}
 	
 	return wt;
 }

@@ -35,7 +35,8 @@ class Render
 		SpritePtr loadSprite(string filename);
 		
 		/**
-		* Renders a sprite
+		* Renders a sprite.
+		* Should only be used if the the caller was called by this classes 'Render' function.
 		**/
 		virtual void renderSprite(SpritePtr sprite, int x, int y) = 0;
 		

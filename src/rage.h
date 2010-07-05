@@ -6,6 +6,8 @@
 
 #include <iostream>
 #include <SDL.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include <vector>
 
 #ifdef DEBUG_MODE
@@ -28,7 +30,7 @@ typedef struct range {
 	int max;
 } Range;
 
-typedef void * SpritePtr;
+typedef GLuint SpritePtr;
 
 class Render;
 class Action;
@@ -67,6 +69,7 @@ class GameState;
 
 #include "render.h"
 #include "render_sdl.h"
+#include "render_opengl.h"
 
 #include "game.h"
 #include "hud.h"

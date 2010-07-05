@@ -13,6 +13,7 @@ using namespace std;
 class GameState
 {
 	friend class RenderSDL;
+	friend class RenderOpenGL;
 	
 	protected:
 		vector<Entity*> entities;

@@ -13,7 +13,9 @@ using namespace std;
 
 int main (int argc, char ** argv) {
 	
-	Render * render = new RenderSDL();
+	SDL_Init(SDL_INIT_VIDEO);
+	
+	Render * render = new RenderOpenGL();
 	render->setScreenSize(1000, 800, false);
 	
 	if (! loadAllAreaTypes(render)) {

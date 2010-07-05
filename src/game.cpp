@@ -36,6 +36,8 @@ void gameLoop(GameState *st, Render *render)
 		handleEvents(st);
 		render->render(st);
 		
+		SDL_Delay(10);
+		
 		end = SDL_GetTicks();
 	}
 }
