@@ -38,6 +38,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	// TODO: we need to keep track of all textures
 	// because when this method runs again, we need to re-load everything
 	// back into OpenGL
+	// Priority: Medium
 	
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	
@@ -50,6 +51,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	SDL_WM_SetCaption("Chaotic Rage", "Chaotic Rage");
 	
 	glEnable(GL_TEXTURE_2D);
+	glDisable(GL_DEPTH_TEST);
+	
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	
 	glViewport(0, 0, width, height);
@@ -68,7 +71,6 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 **/
 SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 {
-	GLuint texture;
 	GLenum texture_format;
 	GLint num_colors;
 	SDL_Surface * surf;
@@ -109,9 +111,14 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 		return NULL;
 	}
 	
+	SpritePtr sprite = new struct sprite();
+	sprite->w = surf->w;
+	sprite->h = surf->h;
+	sprite->orig = surf;
+	
 	// Open texture handle
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	glGenTextures(1, &sprite->pixels);
+	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
 	
 	// Set stretching properties
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -119,9 +126,9 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 	
 	glTexImage2D(GL_TEXTURE_2D, 0, num_colors, surf->w, surf->h, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
 	
-	SDL_FreeSurface(surf);
+	//SDL_FreeSurface(surf);
 	
-	return (SpritePtr) texture;
+	return sprite;
 }
 
 
@@ -131,27 +138,20 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 **/
 void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y)
 {
-	GLint width;
-	GLint height;
-	
-	glBindTexture(GL_TEXTURE_2D, (GLuint) sprite);
- 	
- 	// TODO: this is bad because it locks up the OpenGL render pipeline
- 	glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
- 	glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
+	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
  	
 	glBegin(GL_QUADS);
 		// Bottom-left vertex (corner)
 		glTexCoord2i( 0, 1 );
-		glVertex2i( x, y + height );
+		glVertex2i( x, y + sprite->w );
 		
 		// Bottom-right vertex (corner)
 		glTexCoord2i( 1, 1 );
-		glVertex2i( x + width, y + height );
+		glVertex2i( x + sprite->w, y + sprite->h );
 		
 		// Top-right vertex (corner)
 		glTexCoord2i( 1, 0 );
-		glVertex2i( x + width, y );
+		glVertex2i( x + sprite->w, y );
 		
 		// Top-left vertex (corner)
 		glTexCoord2i( 0, 0 );
@@ -165,17 +165,8 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y)
 **/
 SpritePtr RenderOpenGL::renderMap(Map * map, int frame, bool wall)
 {
-
-	// TODO: code this
-	
-	return 0;
-	/*
 	// Create
 	SDL_Surface* surf = SDL_CreateRGBSurface(SDL_SWSURFACE, map->width, map->height, 32, 0,0,0,0);
-	
-	// Colour key for frame surfaces
-	//SDL_SetColorKey(surf, SDL_SRCCOLORKEY, this->colourkey);
-	//SDL_FillRect(surf, NULL, this->colourkey);
 	
 	Area *a;
 	AreaType *at;
@@ -199,9 +190,8 @@ SpritePtr RenderOpenGL::renderMap(Map * map, int frame, bool wall)
 			}
 		}
 		
-		
 		// Transforms (either streches or tiles)
-		SDL_Surface *areasurf = (SDL_Surface*)at->surf;
+		SDL_Surface *areasurf = (SDL_Surface*)at->surf->orig;
 		if (a->type->stretch)  {
 			areasurf = rotozoomSurfaceXY(areasurf, 0, ((double)a->width) / ((double)areasurf->w), ((double)a->height) / ((double)areasurf->h), 0);
 			if (areasurf == NULL) continue;
@@ -227,7 +217,22 @@ SpritePtr RenderOpenGL::renderMap(Map * map, int frame, bool wall)
 		SDL_FreeSurface(areasurf);
 	}
 	
-	return (SpritePtr) surf;*/
+	SpritePtr sprite = new struct sprite;
+	sprite->w = map->width;
+	sprite->h = map->height;
+	sprite->orig = surf;
+	
+	// Open texture handle
+	glGenTextures(1, &sprite->pixels);
+	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
+	
+	// Set stretching properties
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	
+	glTexImage2D(GL_TEXTURE_2D, 0, 4, surf->w, surf->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, surf->pixels);
+	
+	return sprite;
 }
 
 
@@ -236,6 +241,8 @@ SpritePtr RenderOpenGL::renderMap(Map * map, int frame, bool wall)
 **/
 void RenderOpenGL::clearPixel(SpritePtr sprite, int x, int y)
 {
+	// TODO: code this
+	// Priority: Low
 	//setPixel((SDL_Surface*) sprite, x, y, this->colourkey);
 }
 
@@ -244,7 +251,8 @@ void RenderOpenGL::clearPixel(SpritePtr sprite, int x, int y)
 **/
 void RenderOpenGL::freeSprite(SpritePtr sprite)
 {
-	//glDeleteTextures(1, (GLuint*) sprite);
+	glDeleteTextures(1, &sprite->pixels);
+	delete(sprite);
 }
 
 /**
@@ -252,14 +260,7 @@ void RenderOpenGL::freeSprite(SpritePtr sprite)
 **/
 int RenderOpenGL::getSpriteWidth(SpritePtr sprite)
 {
-	GLint width;
-	
-	glBindTexture(GL_TEXTURE_2D, sprite);
-	
-	// TODO: this is bad because it locks up the OpenGL render pipeline
-	glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
-	
-	return width;
+	return sprite->w;
 }
 
 /**
@@ -267,14 +268,7 @@ int RenderOpenGL::getSpriteWidth(SpritePtr sprite)
 **/
 int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 {
-	GLint height;
-	
-	glBindTexture(GL_TEXTURE_2D, sprite);
-	
-	// TODO: this is bad because it locks up the OpenGL render pipeline
-	glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
-	
-	return height;
+	return sprite->h;
 }
 
 /**
@@ -283,46 +277,40 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 void RenderOpenGL::render(GameState *st)
 {
 	unsigned int i;
-	SpritePtr surf;
-	GLint width;
-	GLint height;
+	SpritePtr sprite;
 	
 	glClear(GL_COLOR_BUFFER_BIT);
 	
+	// TODO: render backgrounds
+	// Priority: High
 	// Dirt layer
-	//surf = st->map->ground;
-	//SDL_BlitSurface((SDL_Surface*) surf, NULL, this->screen, 0);
+	this->renderSprite(st->map->ground, 0, 0);
 	
 	// Wall layer
-	//surf = st->map->walls;
-	//SDL_BlitSurface((SDL_Surface*) surf, NULL, this->screen, 0);
+	//this->renderSprite(st->map->walls, 0, 0);
 	
 	// Entities
 	std::sort(st->entities.begin(), st->entities.end(), ZIndexPredicate);
 	for (i = 0; i < st->entities.size(); i++) {
 		Entity *e = st->entities.at(i);
 		
-		surf = e->getSprite();
-		//if (surf == NULL) continue;
+		sprite = e->getSprite();
+		if (sprite == NULL) continue;
 		
-		glBindTexture(GL_TEXTURE_2D, (GLuint) surf);
- 		
- 		// TODO: this is bad because it locks up the OpenGL render pipeline
- 		glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
- 		glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
+		glBindTexture(GL_TEXTURE_2D, sprite->pixels);
  		
 		glBegin(GL_QUADS);
 			// Bottom-left vertex (corner)
 			glTexCoord2i( 0, 1 );
-			glVertex2i( e->x, e->y + height );
+			glVertex2i( e->x, e->y + sprite->h );
 			
 			// Bottom-right vertex (corner)
 			glTexCoord2i( 1, 1 );
-			glVertex2i( e->x + width, e->y + height );
+			glVertex2i( e->x + sprite->w, e->y + sprite->h );
 			
 			// Top-right vertex (corner)
 			glTexCoord2i( 1, 0 );
-			glVertex2i( e->x + width, e->y );
+			glVertex2i( e->x + sprite->w, e->y );
 			
 			// Top-left vertex (corner)
 			glTexCoord2i( 0, 0 );

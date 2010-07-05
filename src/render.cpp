@@ -36,10 +36,9 @@ SpritePtr Render::loadSprite(string filename)
 	}
 	
 	sprite = this->int_loadSprite(rw, filename);
-	
-	//if (sprite == NULL) {
-	//	this->load_err = true;
-	//}
+	if (sprite == NULL) {
+		this->load_err = true;
+	}
 	
 	SDL_RWclose (rw);
 	

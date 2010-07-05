@@ -103,6 +103,7 @@ int Map::load(string name, Render * render)
 	z->spawn[FACTION_INDIVIDUAL] = 1;
 	this->zones.push_back(z);
 	
+	
 	this->ground = this->render->renderMap(this, 0, false);
 	this->walls = this->render->renderMap(this, 0, true);
 	
@@ -112,13 +113,13 @@ int Map::load(string name, Render * render)
 	// which the areatypes are blitted onto (using rotozooming if required)
 	// This is then converted into a regular array using a loop and the getPixel
 	// function
-	//SDL_Surface *datasurf = this->renderDataSurface();
+	SDL_Surface *datasurf = this->renderDataSurface();
 	
 	this->data = (data_pixel*) malloc(width * height* sizeof(data_pixel));
 	
 	for (int x = 0; x < this->width; x++) {
 		for (int y = 0; y < this->height; y++) {
-			this->data[x * this->height + y].type = 0; //getPixel(datasurf, x, y);
+			this->data[x * this->height + y].type = getPixel(datasurf, x, y);
 			this->data[x * this->height + y].hp = 100;
 		}
 	}
@@ -151,7 +152,7 @@ SDL_Surface* Map::renderDataSurface()
 		datasurf = createDataSurface(a->width, a->height, a->type->id);
 		
 		// Transforms (either streches or tiles)
-		SDL_Surface *areasurf = (SDL_Surface *)a->type->surf;
+		SDL_Surface *areasurf = a->type->surf->orig;
 		if (a->type->stretch)  {
 			areasurf = rotozoomSurfaceXY(areasurf, 0, ((double)a->width) / ((double)areasurf->w), ((double)a->height) / ((double)areasurf->h), 0);
 			if (areasurf == NULL) continue;

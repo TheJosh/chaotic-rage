@@ -30,8 +30,6 @@ typedef struct range {
 	int max;
 } Range;
 
-typedef GLuint SpritePtr;
-
 class Render;
 class Action;
 class EntityType;
@@ -50,6 +48,10 @@ class Zone;
 class HUD;
 class GameState;
 
+#include "render.h"
+#include "render_sdl.h"
+#include "render_opengl.h"
+
 #include "actions.h"
 #include "entitytype.h"
 #include "areatypes.h"
@@ -66,10 +68,6 @@ class GameState;
 #include "zone.h"
 #include "map.h"
 #include "gamestate.h"
-
-#include "render.h"
-#include "render_sdl.h"
-#include "render_opengl.h"
 
 #include "game.h"
 #include "hud.h"
