@@ -90,6 +90,23 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 		DEBUG("Bitmap '%s' height is not a power of 2.\n", filename.c_str());
 	}
 	
+	// Leak!
+	surf = SDL_ConvertSurface(surf, this->screen->format, SDL_SWSURFACE);
+	
+	// Colour-key the surface
+	unsigned int colourkey = SDL_MapRGB(surf->format, 255, 0, 255);
+	unsigned int trans = SDL_MapRGBA(surf->format, 0, 0, 0, 0);
+	
+	for (int y = 0; y < surf->h; y++) {
+		for (int x = 0; x < surf->w; x++) {
+			unsigned int pix = ((unsigned int*)surf->pixels)[y*(surf->pitch/sizeof(unsigned int)) + x];
+			if (pix == colourkey) {
+				((unsigned int*)surf->pixels)[y*(surf->pitch/sizeof(unsigned int)) + x] = trans;
+			}
+		}
+	}
+	
+	// Determine OpenGL import type
 	num_colors = surf->format->BytesPerPixel;
 	if (num_colors == 4) {
 		if (surf->format->Rmask == 0x000000ff) {
@@ -111,6 +128,7 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 		return NULL;
 	}
 	
+	// Create the sprite object
 	SpritePtr sprite = new struct sprite();
 	sprite->w = surf->w;
 	sprite->h = surf->h;
