@@ -42,6 +42,16 @@ int getAngleBetweenPoints (int point1_x, int point1_y, int point2_x, int point2_
 
 
 /**
+* Ensures angles are in the range 0 - 359
+**/
+int clampAngle(int angle)
+{
+	while (angle < 0) angle += 360;
+	while (angle > 359) angle -= 360;
+	return angle;
+}
+
+/**
 * Calculates a new angle based on the original angle, desired angle and turn speed
 *
 * @param int current The current angle, degrees

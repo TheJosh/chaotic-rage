@@ -49,6 +49,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	}
 	
 	SDL_WM_SetCaption("Chaotic Rage", "Chaotic Rage");
+	SDL_ShowCursor(SDL_DISABLE);
 	
 	glEnable(GL_TEXTURE_2D);
 	glDisable(GL_DEPTH_TEST);

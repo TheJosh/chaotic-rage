@@ -42,7 +42,7 @@ void Player::keyRelease(int idx)
 **/
 void Player::angleFromMouse(int x, int y)
 {
-	this->desired_angle_aim = getAngleBetweenPoints(this->x, this->y, x, y);
+	this->desired_angle_aim += (x - 400) / 2;		// 2 is the 'sensitivity' value
 }
 
 

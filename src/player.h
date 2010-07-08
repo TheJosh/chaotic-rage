@@ -20,6 +20,7 @@ class Player : public Unit
 		
 	private:
 		bool key[3];
+		int prev_x;
 		
 	public:
 		Player(UnitClass *uc, GameState *st);

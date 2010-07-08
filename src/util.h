@@ -22,6 +22,7 @@ using namespace std;
 
 // Trig
 int getAngleBetweenPoints (int point1_x, int point1_y, int point2_x, int point2_y);
+int clampAngle(int angle);
 int angleFromDesired(int current, int desired, int turn_speed);
 int pointPlusAngleX (int point_x, int angle, int distance);
 int pointPlusAngleY (int point_y, int angle, int distance);

@@ -150,6 +150,9 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	int turn_move = ppsDelta(ucs->turn_move, delta);
 	int turn_aim = ppsDelta(ucs->turn_aim, delta);
 	
+	this->desired_angle_move = clampAngle(this->desired_angle_move);
+	this->desired_angle_aim = clampAngle(this->desired_angle_aim);
+	
 	this->angle_move = angleFromDesired(this->angle_move, this->desired_angle_move, turn_move);
 	this->angle_aim = angleFromDesired(this->angle_aim, this->desired_angle_aim, turn_aim);
 	
