@@ -58,6 +58,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="actions.cs" />
+    <Compile Include="actions_edit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="actions_edit.Designer.cs">
+      <DependentUpon>actions_edit.cs</DependentUpon>
+    </Compile>
     <Compile Include="base_list.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +85,7 @@
     <Compile Include="areatype_edit.Designer.cs">
       <DependentUpon>areatype_edit.cs</DependentUpon>
     </Compile>
+    <Compile Include="particlegenerator_ui_editor.cs" />
     <Compile Include="particletype_ui_editor.cs" />
     <Compile Include="particlegenerator_edit.cs">
       <SubType>Form</SubType>
@@ -128,6 +136,9 @@
     <Compile Include="range_ui_form.Designer.cs">
       <DependentUpon>range_ui_form.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="actions_edit.resx">
+      <DependentUpon>actions_edit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="areatype_edit.resx">
       <DependentUpon>areatype_edit.cs</DependentUpon>
     </EmbeddedResource>

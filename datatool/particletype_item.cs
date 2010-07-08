@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace datatool
 {
 
-    public class particletype_item : base_item
+    public class particletype_item : actions_item
     {
         private string name;
         private string image;

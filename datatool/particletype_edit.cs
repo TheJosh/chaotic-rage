@@ -36,5 +36,11 @@ namespace datatool
         {
             this.item = this.internal_item;
         }
+
+        private void btnActions_Click(object sender, EventArgs e)
+        {
+            ActionsEditor f = new ActionsEditor(this.internal_item);
+            f.ShowDialog();
+        }
     }
 }

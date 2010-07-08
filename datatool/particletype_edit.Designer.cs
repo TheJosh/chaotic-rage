@@ -30,6 +30,7 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.grid = new System.Windows.Forms.PropertyGrid();
+            this.btnActions = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnSave
@@ -66,6 +67,16 @@
             this.grid.Size = new System.Drawing.Size(421, 313);
             this.grid.TabIndex = 3;
             // 
+            // btnActions
+            // 
+            this.btnActions.Location = new System.Drawing.Point(12, 331);
+            this.btnActions.Name = "btnActions";
+            this.btnActions.Size = new System.Drawing.Size(82, 23);
+            this.btnActions.TabIndex = 4;
+            this.btnActions.Text = "Ac&tions";
+            this.btnActions.UseVisualStyleBackColor = true;
+            this.btnActions.Click += new System.EventHandler(this.btnActions_Click);
+            // 
             // ParticletypeEdit
             // 
             this.AcceptButton = this.btnSave;
@@ -73,6 +84,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(445, 366);
+            this.Controls.Add(this.btnActions);
             this.Controls.Add(this.grid);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
@@ -88,5 +100,6 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.PropertyGrid grid;
+        private System.Windows.Forms.Button btnActions;
     }
 }
