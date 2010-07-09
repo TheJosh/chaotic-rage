@@ -60,23 +60,6 @@ void Unit::setState(int new_type)
 }
 
 
-/**
-* Sets the unit weapon
-**/
-void Unit::setWeapon(WeaponType* wt)
-{
-	this->weapon = wt;
-	this->firing = false;
-	
-	delete this->weapon_gen;
-	this->weapon_gen = NULL;
-	
-	if (wt->pg) {
-		this->weapon_gen = new ParticleGenerator(wt->pg, this->st);
-	}
-}
-
-
 void Unit::beginFiring()
 {
 	if (this->weapon == NULL) return;
@@ -103,12 +86,15 @@ void Unit::endFiring()
 	}
 }
 
+/**
+* Pick up a weapon
+**/
 void Unit::pickupWeapon(WeaponType* wt)
 {
 	this->avail_weapons.push_back(wt);
 	
 	if (this->weapon == NULL) {
-		this->setWeapon(wt);
+		this->setWeapon(0);
 	}
 }
 
@@ -117,9 +103,49 @@ unsigned int Unit::getNumWeapons()
 	return this->avail_weapons.size();
 }
 
-WeaponType* Unit::getWeaponByID(unsigned int id)
+WeaponType * Unit::getWeaponAt(unsigned int id)
 {
-	return this->avail_weapons.at(id);
+	return this->avail_weapons[id];
+}
+
+/**
+* Sets the unit weapon
+* id is the weapon id of the units personal weapon cache - not the weapontype id
+**/
+void Unit::setWeapon(int id)
+{
+	WeaponType *wt = this->avail_weapons.at(id);
+	
+	this->weapon = wt;
+	this->firing = false;
+	
+	delete this->weapon_gen;
+	this->weapon_gen = NULL;
+	
+	if (wt->pg) {
+		this->weapon_gen = new ParticleGenerator(wt->pg, this->st);
+	}
+	
+	curr_weapon_id = id;
+}
+
+unsigned int Unit::getCurrentWeaponID()
+{
+	return this->curr_weapon_id;
+}
+
+unsigned int Unit::getPrevWeaponID()
+{
+	int ret = this->curr_weapon_id - 1;
+	if (ret < 0) ret = this->avail_weapons.size() - 1;
+	return ret;
+}
+
+unsigned int Unit::getNextWeaponID()
+{
+	unsigned int ret = this->curr_weapon_id + 1;
+	if (ret > this->avail_weapons.size() - 1) ret = 0;
+	return ret;
 }
 
 

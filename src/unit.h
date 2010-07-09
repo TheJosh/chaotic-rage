@@ -30,6 +30,7 @@ class Unit: public Entity
 		ParticleGenerator* weapon_gen;
 		bool firing;
 		vector<WeaponType*> avail_weapons;
+		unsigned int curr_weapon_id;
 		
 		UnitClass* uc;
 		UnitClassState* current_state;
@@ -46,12 +47,17 @@ class Unit: public Entity
 		virtual SpritePtr getSprite();
 		virtual void update(int delta) = 0;
 		
-		void setWeapon(WeaponType* wt);
 		void beginFiring();
 		void endFiring();
+		
 		void pickupWeapon(WeaponType* wt);
 		unsigned int getNumWeapons();
-		WeaponType* getWeaponByID(unsigned int id);
+		WeaponType * getWeaponAt(unsigned int id);
+		
+		void setWeapon(int id);
+		unsigned int getCurrentWeaponID();
+		unsigned int getPrevWeaponID();
+		unsigned int getNextWeaponID();
 		
 	protected:
 		void update(int delta, UnitClassSettings *ucs);

@@ -27,39 +27,19 @@ void HUD::render(Render * render)
 		unsigned int i, num = this->st->curr_player->getNumWeapons();
 		
 		for (i = 0; i < num; i++) {
-			WeaponType *wt = this->st->curr_player->getWeaponByID(i);
+			WeaponType *wt = this->st->curr_player->getWeaponAt(i);
 			
 			render->renderSprite(wt->icon_large, r.x, r.y);
+			
+			if (i == this->st->curr_player->getCurrentWeaponID()) {
+				render->renderSprite(wt->icon_large, 500, 500);
+			}
 			
 			r.x += 150;
 			if (r.x >= 600) {
 				r.x = 100;
 				r.y += 150;
 			}
-		}
-	}
-}
-
-/**
-* Changes the weapon if it can
-* X + Y co-ordinates in the weapon menu
-**/
-void HUD::tryChangeWeapon(int x, int y)
-{
-	SDL_Rect r = {100, 100, 125, 125};
-	unsigned int i, num = this->st->curr_player->getNumWeapons();
-	
-	for (i = 0; i < num; i++) {
-		if (inside(r, x, y)) {
-			WeaponType *wt = this->st->curr_player->getWeaponByID(i);
-			this->st->curr_player->setWeapon(wt);
-			return;
-		}
-		
-		r.x += 150;
-		if (r.x >= 600) {
-			r.x = 100;
-			r.y += 150;
 		}
 	}
 }
@@ -78,12 +58,19 @@ int HUD::handleEvent(SDL_Event *event)
 		return HUD::EVENT_PREVENT;
 		
 	} else if (this->weapon_menu and event->type == SDL_MOUSEBUTTONDOWN) {
-		// Mouse click
-		this->tryChangeWeapon(event->button.x, event->button.y);
-		
-		this->weapon_menu = false;
-		return HUD::EVENT_BUBBLE;
-		
+		// MOUSE BUTTON + SCROLL
+		if (event->button.button == SDL_BUTTON_WHEELUP) {
+			this->st->curr_player->setWeapon(this->st->curr_player->getPrevWeaponID());
+			return HUD::EVENT_PREVENT;
+			
+		} else if (event->button.button == SDL_BUTTON_WHEELDOWN) {
+			this->st->curr_player->setWeapon(this->st->curr_player->getNextWeaponID());
+			return HUD::EVENT_PREVENT;
+			
+		} else {
+			this->weapon_menu = false;
+			return HUD::EVENT_BUBBLE;
+		}
 	}
 	
 	return HUD::EVENT_BUBBLE;
