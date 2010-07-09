@@ -75,9 +75,6 @@ class UnitClass : public EntityType
 		UnitClassState* getState(int type);
 		vector<SpritePtr>* loadAllSprites();
 		unsigned int getMaxFrames();
-		
-	public:
-		virtual Entity * spawn(GameState * st);
 };
 
 

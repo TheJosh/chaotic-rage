@@ -30,7 +30,7 @@ ParticleGenerator::~ParticleGenerator()
 **/
 void ParticleGenerator::update(int delta)
 {
-	Entity *e;
+	Particle *pa;
 	GenSpew *spew;
 	int gennum;
 	
@@ -43,15 +43,17 @@ void ParticleGenerator::update(int delta)
 		gennum = ceil(((float)spew->rate) / 1000.0 * delta);
 		
 		for (int j = 0; j < gennum; j++) {
-			e = spew->pt->spawn(this->st);
-			e->x = this->x;
-			e->y = this->y;
+			pa = new Particle(spew->pt, this->st);
+			pa->x = this->x;
+			pa->y = this->y;
 			
 			//TODO: needs love
-			e->angle = this->angle + getRandom(0 - spew->angle_range / 2, spew->angle_range / 2);
+			pa->angle = this->angle + getRandom(0 - spew->angle_range / 2, spew->angle_range / 2);
 			
-			e->x = pointPlusAngleX(e->x, e->angle, spew->offset);
-			e->y = pointPlusAngleY(e->y, e->angle, spew->offset);
+			pa->x = pointPlusAngleX(pa->x, pa->angle, spew->offset);
+			pa->y = pointPlusAngleY(pa->y, pa->angle, spew->offset);
+			
+			st->addParticle(pa);
 		}
 		
 		useful = true;

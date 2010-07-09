@@ -33,22 +33,19 @@ class ParticleType : public EntityType
 	public:
 		ParticleType();
 		~ParticleType();
-		
-	public:
-		virtual Entity * spawn(GameState * st);
 };
 
 class GenSpew
 {
 	public:
-		EntityType *pt;
+		ParticleType *pt;
 		int angle_range;
 		int rate;
 		int time;
 		int offset;
 };
 
-class ParticleGenType : public EntityType
+class ParticleGenType
 {
 	public:
 		// from data file
@@ -57,9 +54,6 @@ class ParticleGenType : public EntityType
 		// dynamic
 		int id;
 		vector<GenSpew*> spewers;
-		
-	public:
-		virtual Entity * spawn(GameState * st);
 };
 
 

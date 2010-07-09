@@ -47,7 +47,6 @@ static cfg_opt_t spew_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_INT((char*) "type", 0, CFGF_NONE),
-	CFG_INT((char*) "id", 0, CFGF_NONE),
 	CFG_INT((char*) "angle_range", 0, CFGF_NONE),
 	CFG_INT((char*) "rate", 0, CFGF_NONE),
 	CFG_INT((char*) "time", 0, CFGF_NONE),
@@ -278,28 +277,11 @@ ParticleGenType* loadParticleGenType(cfg_t *cfg_generatortype)
 	for (j = 0; j < num_types; j++) {
 		cfg_spew = cfg_getnsec(cfg_generatortype, "spew", j);
 		
-		if (cfg_getint(cfg_spew, "type") == 0) return NULL;
 		if (cfg_getint(cfg_spew, "angle_range") == 0) return NULL;
 		if (cfg_getint(cfg_spew, "rate") == 0) return NULL;
 		
 		GenSpew* spew = new GenSpew();
-		
-		switch (cfg_getint(cfg_spew, "type")) {
-			case UNIT:
-				spew->pt = getUnitClassByID(cfg_getint(cfg_spew, "id"));
-				break;
-				
-			case PARTICLE:
-				spew->pt = getParticleTypeByID(cfg_getint(cfg_spew, "id"));
-				break;
-				
-			case PGENERATOR:
-				spew->pt = getParticleGenTypeByID(cfg_getint(cfg_spew, "id"));
-				break;
-				
-		}
-		
-		
+		spew->pt = getParticleTypeByID(cfg_getint(cfg_spew, "type"));
 		spew->angle_range = cfg_getint(cfg_spew, "angle_range");
 		spew->rate = cfg_getint(cfg_spew, "rate");
 		spew->time = cfg_getint(cfg_spew, "time");
@@ -322,22 +304,4 @@ ParticleGenType* getParticleGenTypeByID(int id)
 	return generatortypes.at(id);
 }
 
-/**
-* Spawn particle
-**/
-Entity * ParticleType::spawn(GameState * st)
-{
-	Particle *p = new Particle(this, st);
-	st->addParticle(p);
-	return p;
-}
 
-/**
-* Spawn particle generator
-**/
-Entity * ParticleGenType::spawn(GameState * st)
-{
-	ParticleGenerator *pg = new ParticleGenerator(this, st);
-	st->addParticleGenerator(pg);
-	return pg;
-}
