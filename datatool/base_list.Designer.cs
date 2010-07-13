@@ -28,7 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BaseList));
             this.listview = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.icons16 = new System.Windows.Forms.ImageList(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,14 +47,32 @@
             this.listview.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.listview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.listview.FullRowSelect = true;
             this.listview.Location = new System.Drawing.Point(0, 27);
             this.listview.MultiSelect = false;
             this.listview.Name = "listview";
             this.listview.Size = new System.Drawing.Size(621, 361);
+            this.listview.SmallImageList = this.icons16;
             this.listview.TabIndex = 0;
             this.listview.UseCompatibleStateImageBehavior = false;
-            this.listview.View = System.Windows.Forms.View.List;
+            this.listview.View = System.Windows.Forms.View.Details;
             this.listview.DoubleClick += new System.EventHandler(this.editToolStripMenuItem_Click);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Name";
+            this.columnHeader1.Width = 400;
+            // 
+            // icons16
+            // 
+            this.icons16.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("icons16.ImageStream")));
+            this.icons16.TransparentColor = System.Drawing.Color.Transparent;
+            this.icons16.Images.SetKeyName(0, "image-x-generic.png");
+            this.icons16.Images.SetKeyName(1, "applications-system.png");
+            this.icons16.Images.SetKeyName(2, "face-smile.png");
+            this.icons16.Images.SetKeyName(3, "face-devilish.png");
             // 
             // menuStrip1
             // 
@@ -136,5 +158,7 @@
         private System.Windows.Forms.ToolStripMenuItem selectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cancelToolStripMenuItem;
+        private System.Windows.Forms.ImageList icons16;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }

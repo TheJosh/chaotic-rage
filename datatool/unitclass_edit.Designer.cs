@@ -1,6 +1,6 @@
-﻿namespace datatool
+namespace datatool
 {
-    partial class ParticleGeneratorEdit
+    partial class UnitclassEdit
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ParticleGeneratorEdit));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UnitclassEdit));
             this.gridSpew = new System.Windows.Forms.PropertyGrid();
             this.label1 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
@@ -85,7 +85,7 @@
             this.groupBox1.Size = new System.Drawing.Size(395, 259);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Spewer options";
+            this.groupBox1.Text = "Settings group";
             // 
             // btnOK
             // 
@@ -114,9 +114,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 38);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(51, 13);
+            this.label2.Size = new System.Drawing.Size(48, 13);
             this.label2.TabIndex = 11;
-            this.label2.Text = "Spewers:";
+            this.label2.Text = "Settings:";
             // 
             // btnAddSpew
             // 
@@ -157,7 +157,7 @@
             // 
             // columnHeader1
             // 
-            this.columnHeader1.Text = "Particle type";
+            this.columnHeader1.Text = "Settings group name";
             this.columnHeader1.Width = 300;
             // 
             // imgSmallIcons
@@ -166,7 +166,7 @@
             this.imgSmallIcons.TransparentColor = System.Drawing.Color.Transparent;
             this.imgSmallIcons.Images.SetKeyName(0, "document-properties.png");
             // 
-            // ParticleGeneratorEdit
+            // UnitclassEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -181,8 +181,8 @@
             this.Controls.Add(this.txtName);
             this.Controls.Add(this.label1);
             this.MinimumSize = new System.Drawing.Size(297, 437);
-            this.Name = "ParticleGeneratorEdit";
-            this.Text = "Edit particle generator";
+            this.Name = "UnitclassEdit";
+            this.Text = "Edit unit class";
             this.Load += new System.EventHandler(this.Form_Load);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);

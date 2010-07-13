@@ -10,7 +10,7 @@ namespace datatool
 {
     public partial class AreatypeList : BaseList
     {
-        public AreatypeList()
+        public AreatypeList() : base(0)
         {
             InitializeComponent();
         }

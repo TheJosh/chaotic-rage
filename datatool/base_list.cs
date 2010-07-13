@@ -13,8 +13,11 @@ namespace datatool
         private bool selectable = false;
         private base_item selected_item;
 
-        public BaseList()
+        private int icon_list_index;
+
+        public BaseList(int icon_list_index)
         {
+            this.icon_list_index = icon_list_index;
             InitializeComponent();
         }
 
@@ -56,6 +59,7 @@ namespace datatool
                 lvi = new LinkedListViewItem();
                 lvi.Text = i.getName();
                 lvi.Item = i;
+                lvi.ImageIndex = this.icon_list_index;
                 this.listview.Items.Add(lvi);
             }
         }
@@ -70,10 +74,12 @@ namespace datatool
             LinkedListViewItem lvi;
 
             i = this.doAdd();
+            if (i == null) return;
 
             lvi = new LinkedListViewItem();
             lvi.Text = i.getName();
             lvi.Item = i;
+            lvi.ImageIndex = this.icon_list_index;
             this.listview.Items.Add(lvi);
         }
 

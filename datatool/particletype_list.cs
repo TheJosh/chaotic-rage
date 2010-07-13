@@ -10,7 +10,7 @@ namespace datatool
 {
     public partial class ParticletypeList : BaseList
     {
-        public ParticletypeList()
+        public ParticletypeList() : base(1)
         {
             InitializeComponent();
         }

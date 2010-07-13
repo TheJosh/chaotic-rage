@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,18 +8,18 @@ using System.Windows.Forms;
 
 namespace datatool
 {
-    public partial class ParticleGeneratorEdit : Form
+    public partial class UnitclassEdit : Form
     {
-        private particlegenerator_item item;
-        private particlegenerator_item internal_item;
-        private SpewListItem sel_list_item;
+        private unitclass_item item;
+        private unitclass_item internal_item;
+        private SettingsListItem sel_list_item;
 
-        public particlegenerator_item Item
+        public unitclass_item Item
         {
             get { return this.item; }
         }
 
-        public ParticleGeneratorEdit(particlegenerator_item item)
+        public UnitclassEdit(unitclass_item item)
         {
             InitializeComponent();
             this.item = item;
@@ -36,9 +36,9 @@ namespace datatool
             this.Text = this.item.getName();
             this.txtName.Text = this.item.getName();
 
-            for (int i = 0; i < this.item.Spewers.Count; i++) {
-                SpewListItem item = new SpewListItem();
-                item.Spew = this.item.Spewers[i];
+            for (int i = 0; i < this.item.Settings.Count; i++) {
+                SettingsListItem item = new SettingsListItem();
+                item.Settings = this.item.Settings[i];
                 this.lstSpew.Items.Add(item);
             }
         }
@@ -68,8 +68,8 @@ namespace datatool
             if (lstSpew.SelectedItems.Count == 0) return;
 
             // Select new
-            SpewListItem item = (SpewListItem)lstSpew.SelectedItems[0];
-            gridSpew.SelectedObject = item.Spew;
+            SettingsListItem item = (SettingsListItem) lstSpew.SelectedItems[0];
+            gridSpew.SelectedObject = item.Settings;
             item.ImageIndex = 0;
 
             this.sel_list_item = item;
@@ -80,18 +80,18 @@ namespace datatool
          **/
         private void btnAddSpew_Click(object sender, EventArgs e)
         {
-            particlegenerator_spew spew = new particlegenerator_spew();
+            unitclass_settings settings = new unitclass_settings();
 
-            this.internal_item.Spewers.Add(spew);
+            this.internal_item.Settings.Add(settings);
 
-            SpewListItem item = new SpewListItem();
-            item.Spew = spew;
+            SettingsListItem item = new SettingsListItem();
+            item.Settings = settings;
             this.lstSpew.Items.Add(item);
         }
 
         private void gridSpew_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
-            if (e.ChangedItem.Label == "Type") {
+            if (e.ChangedItem.Label == "Name") {
                 this.sel_list_item.Text = e.ChangedItem.Value.ToString();
             }
         }
@@ -108,22 +108,22 @@ namespace datatool
     /**
      * Adds a property to the list item
      **/
-    public class SpewListItem : ListViewItem
+    public class SettingsListItem : ListViewItem
     {
-        private particlegenerator_spew spew;
+        private unitclass_settings settings;
 
-        public SpewListItem()
+        public SettingsListItem()
         {
             this.ImageIndex = -1;
         }
 
-        public particlegenerator_spew Spew
+        public unitclass_settings Settings
         {
-            get { return this.spew; }
+            get { return this.settings; }
             set {
-                this.spew = value;
-                if (value.Type != null) {
-                    this.Text = value.Type.Name;
+                this.settings = value;
+                if (value.Name != null) {
+                    this.Text = value.Name;
                 } else {
                     this.Text = "- Nothing -";
                 }

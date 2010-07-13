@@ -10,7 +10,7 @@ namespace datatool
 {
     public partial class ParticleGeneratorList : BaseList
     {
-        public ParticleGeneratorList()
+        public ParticleGeneratorList() : base(1)
         {
             InitializeComponent();
         }
