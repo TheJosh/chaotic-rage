@@ -16,7 +16,7 @@ int main (int argc, char ** argv) {
 	SDL_Init(SDL_INIT_VIDEO);
 	
 	Render * render = new RenderOpenGL();
-	render->setScreenSize(1000, 800, false);
+	render->setScreenSize(700, 700, false);
 	
 	if (! loadAllAreaTypes(render)) {
 		cerr << "Unable to load areatypes datafile.\n";

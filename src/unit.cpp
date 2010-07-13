@@ -182,6 +182,8 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	this->angle_move = angleFromDesired(this->angle_move, this->desired_angle_move, turn_move);
 	this->angle_aim = angleFromDesired(this->angle_aim, this->desired_angle_aim, turn_aim);
 	
+	this->angle = this->angle_aim;
+	
 	// Movement
 	if (this->speed != 0) {
 		int newx = pointPlusAngleX(this->x, this->angle_move, ppsDelta(this->speed, delta));

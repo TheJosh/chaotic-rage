@@ -295,10 +295,20 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 **/
 void RenderOpenGL::render(GameState *st)
 {
+	static int angle = 0.0;
+	angle +=  360.0 / 10.0;
+
 	unsigned int i;
 	SpritePtr sprite;
 	
 	glClear(GL_COLOR_BUFFER_BIT);
+	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	
+	glTranslatef(this->screen->w / 2, this->screen->h / 2, 0);
+	glRotatef(st->curr_player->angle, 0, 0, 1);
+	glTranslatef(0 - st->curr_player->x, 0 - st->curr_player->y, 0);
 	
 	// TODO: render backgrounds
 	// Priority: High
@@ -337,6 +347,7 @@ void RenderOpenGL::render(GameState *st)
 		glEnd();
 	}
 	
+	glLoadIdentity();
 	st->hud->render(this);
 	
 	SDL_GL_SwapBuffers();
