@@ -101,6 +101,15 @@ namespace datatool
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            if (this.sel_list_item == null) return;
+
+            this.internal_item.Settings.Remove(this.sel_list_item.Settings);
+            this.sel_list_item.Remove();
+            this.sel_list_item = null;
+        }
     }
 
 
