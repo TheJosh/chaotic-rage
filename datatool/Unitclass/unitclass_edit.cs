@@ -110,6 +110,12 @@ namespace datatool
             this.sel_list_item.Remove();
             this.sel_list_item = null;
         }
+
+        private void btnActions_Click(object sender, EventArgs e)
+        {
+            ActionsEditor f = new ActionsEditor(this.internal_item);
+            f.ShowDialog();
+        }
     }
 
 

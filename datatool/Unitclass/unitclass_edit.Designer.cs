@@ -41,6 +41,7 @@ namespace datatool
             this.lstSpew = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imgSmallIcons = new System.Windows.Forms.ImageList(this.components);
+            this.btnActions = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -167,11 +168,22 @@ namespace datatool
             this.imgSmallIcons.TransparentColor = System.Drawing.Color.Transparent;
             this.imgSmallIcons.Images.SetKeyName(0, "document-properties.png");
             // 
+            // btnActions
+            // 
+            this.btnActions.Location = new System.Drawing.Point(12, 465);
+            this.btnActions.Name = "btnActions";
+            this.btnActions.Size = new System.Drawing.Size(82, 23);
+            this.btnActions.TabIndex = 15;
+            this.btnActions.Text = "Ac&tions";
+            this.btnActions.UseVisualStyleBackColor = true;
+            this.btnActions.Click += new System.EventHandler(this.btnActions_Click);
+            // 
             // UnitclassEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(419, 500);
+            this.Controls.Add(this.btnActions);
             this.Controls.Add(this.lstSpew);
             this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.btnAddSpew);
@@ -205,5 +217,6 @@ namespace datatool
         private System.Windows.Forms.ListView lstSpew;
         private System.Windows.Forms.ImageList imgSmallIcons;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.Button btnActions;
     }
 }
