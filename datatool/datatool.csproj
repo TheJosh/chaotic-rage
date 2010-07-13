@@ -58,11 +58,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="actions.cs" />
-    <Compile Include="actions_edit.cs">
+    <Compile Include="Actions\actions.cs" />
+    <Compile Include="Actions\actions_edit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="actions_edit.Designer.cs">
+    <Compile Include="Actions\actions_edit.Designer.cs">
       <DependentUpon>actions_edit.cs</DependentUpon>
     </Compile>
     <Compile Include="base_list.cs">
@@ -71,53 +71,53 @@
     <Compile Include="base_list.Designer.cs">
       <DependentUpon>base_list.cs</DependentUpon>
     </Compile>
-    <Compile Include="areatype_list.cs">
+    <Compile Include="AreaType\areatype_list.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="areatype_list.Designer.cs">
+    <Compile Include="AreaType\areatype_list.Designer.cs">
       <DependentUpon>areatype_list.cs</DependentUpon>
     </Compile>
     <Compile Include="base_item.cs" />
-    <Compile Include="areatype_item.cs" />
-    <Compile Include="areatype_edit.cs">
+    <Compile Include="AreaType\areatype_item.cs" />
+    <Compile Include="AreaType\areatype_edit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="areatype_edit.Designer.cs">
+    <Compile Include="AreaType\areatype_edit.Designer.cs">
       <DependentUpon>areatype_edit.cs</DependentUpon>
     </Compile>
-    <Compile Include="unitclass_edit.cs">
+    <Compile Include="Unitclass\unitclass_edit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="unitclass_edit.Designer.cs">
+    <Compile Include="Unitclass\unitclass_edit.Designer.cs">
       <DependentUpon>unitclass_edit.cs</DependentUpon>
     </Compile>
-    <Compile Include="unitclass_item.cs" />
-    <Compile Include="particlegenerator_ui_editor.cs" />
-    <Compile Include="particletype_ui_editor.cs" />
-    <Compile Include="particlegenerator_edit.cs">
+    <Compile Include="Unitclass\unitclass_item.cs" />
+    <Compile Include="ParticleGenerator\particlegenerator_ui_editor.cs" />
+    <Compile Include="ParticleType\particletype_ui_editor.cs" />
+    <Compile Include="ParticleGenerator\particlegenerator_edit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="particlegenerator_edit.Designer.cs">
+    <Compile Include="ParticleGenerator\particlegenerator_edit.Designer.cs">
       <DependentUpon>particlegenerator_edit.cs</DependentUpon>
     </Compile>
-    <Compile Include="particlegenerator_item.cs" />
-    <Compile Include="particlegenerator_list.cs">
+    <Compile Include="ParticleGenerator\particlegenerator_item.cs" />
+    <Compile Include="ParticleGenerator\particlegenerator_list.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="particlegenerator_list.Designer.cs">
+    <Compile Include="ParticleGenerator\particlegenerator_list.Designer.cs">
       <DependentUpon>particlegenerator_list.cs</DependentUpon>
     </Compile>
-    <Compile Include="particletype_edit.cs">
+    <Compile Include="ParticleType\particletype_edit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="particletype_edit.Designer.cs">
+    <Compile Include="ParticleType\particletype_edit.Designer.cs">
       <DependentUpon>particletype_edit.cs</DependentUpon>
     </Compile>
-    <Compile Include="particletype_item.cs" />
-    <Compile Include="particletype_list.cs">
+    <Compile Include="ParticleType\particletype_item.cs" />
+    <Compile Include="ParticleType\particletype_list.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="particletype_list.Designer.cs">
+    <Compile Include="ParticleType\particletype_list.Designer.cs">
       <DependentUpon>particletype_list.cs</DependentUpon>
     </Compile>
     <Compile Include="form_main.cs">
@@ -126,57 +126,57 @@
     <Compile Include="form_main.Designer.cs">
       <DependentUpon>form_main.cs</DependentUpon>
     </Compile>
-    <Compile Include="image_ui_editor.cs" />
-    <Compile Include="image_ui_form.cs">
+    <Compile Include="Image\image_ui_editor.cs" />
+    <Compile Include="Image\image_ui_form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="image_ui_form.Designer.cs">
+    <Compile Include="Image\image_ui_form.Designer.cs">
       <DependentUpon>image_ui_form.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="range.cs" />
-    <Compile Include="range_ui_editor.cs" />
-    <Compile Include="range_ui_form.cs">
+    <Compile Include="Range\range.cs" />
+    <Compile Include="Range\range_ui_editor.cs" />
+    <Compile Include="Range\range_ui_form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="range_ui_form.Designer.cs">
+    <Compile Include="Range\range_ui_form.Designer.cs">
       <DependentUpon>range_ui_form.cs</DependentUpon>
     </Compile>
-    <Compile Include="unitclass_list.cs">
+    <Compile Include="Unitclass\unitclass_list.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="unitclass_list.Designer.cs">
+    <Compile Include="Unitclass\unitclass_list.Designer.cs">
       <DependentUpon>unitclass_list.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="actions_edit.resx">
+    <EmbeddedResource Include="Actions\actions_edit.resx">
       <DependentUpon>actions_edit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="areatype_edit.resx">
+    <EmbeddedResource Include="AreaType\areatype_edit.resx">
       <DependentUpon>areatype_edit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="base_list.resx">
       <DependentUpon>base_list.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="areatype_list.resx">
+    <EmbeddedResource Include="AreaType\areatype_list.resx">
       <DependentUpon>areatype_list.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="unitclass_edit.resx">
+    <EmbeddedResource Include="Unitclass\unitclass_edit.resx">
       <DependentUpon>unitclass_edit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="particlegenerator_edit.resx">
+    <EmbeddedResource Include="ParticleGenerator\particlegenerator_edit.resx">
       <DependentUpon>particlegenerator_edit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="particlegenerator_list.resx">
+    <EmbeddedResource Include="ParticleGenerator\particlegenerator_list.resx">
       <DependentUpon>particlegenerator_list.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="form_main.resx">
       <DependentUpon>form_main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="image_ui_form.resx">
+    <EmbeddedResource Include="Image\image_ui_form.resx">
       <DependentUpon>image_ui_form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="particletype_edit.resx">
+    <EmbeddedResource Include="ParticleType\particletype_edit.resx">
       <DependentUpon>particletype_edit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -189,10 +189,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="range_ui_form.resx">
+    <EmbeddedResource Include="Range\range_ui_form.resx">
       <DependentUpon>range_ui_form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="unitclass_list.resx">
+    <EmbeddedResource Include="Unitclass\unitclass_list.resx">
       <DependentUpon>unitclass_list.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
