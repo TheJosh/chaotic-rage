@@ -10,20 +10,9 @@ namespace datatool
 {
     public partial class AreatypeList : BaseList
     {
-        public AreatypeList() : base(0)
+        public AreatypeList() : base(0, Program.dp.AreaTypes)
         {
             InitializeComponent();
-        }
-
-        private void AreatypeList_Load(object sender, EventArgs e)
-        {
-            List<base_item> list;
-
-            list = new List<base_item>();
-            list.Add(new areatype_item("Pizza"));
-            list.Add(new areatype_item("Warren"));
-
-            this.populateList(list);
         }
 
 
@@ -37,7 +26,7 @@ namespace datatool
             areatype_item item = new areatype_item("No name");
 
             form = new AreatypeEdit(item);
-            form.ShowDialog();
+            if (form.ShowDialog() == DialogResult.Cancel) return null;
 
             return form.Item;
         }
@@ -50,7 +39,7 @@ namespace datatool
             AreatypeEdit form;
 
             form = new AreatypeEdit((areatype_item) item);
-            form.ShowDialog();
+            if (form.ShowDialog() == DialogResult.Cancel) return null;
 
             return form.Item;
         }

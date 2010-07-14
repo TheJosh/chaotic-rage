@@ -85,6 +85,7 @@
     <Compile Include="AreaType\areatype_edit.Designer.cs">
       <DependentUpon>areatype_edit.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataProvider.cs" />
     <Compile Include="Unitclass\unitclass_edit.cs">
       <SubType>Form</SubType>
     </Compile>

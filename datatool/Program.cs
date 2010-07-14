@@ -6,7 +6,7 @@ namespace datatool
 {
     static class Program
     {
-        public static string datapath;
+        public static DataProvider dp;
 
         /// <summary>
         /// The main entry point for the application.
@@ -14,12 +14,17 @@ namespace datatool
         [STAThread]
         static void Main()
         {
+            string datapath;
+
             // The datapath is the current directory,
             // unless if we are running out of the Debug directory for the datatool.
             // In that case, we assume a chaotic rage install is a couple directories above.
             datapath = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
             datapath = datapath.Replace("\\datatool\\bin\\Debug", "");
             datapath += "\\data\\cr";
+
+            dp = new DataProvider();
+            dp.load(datapath);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

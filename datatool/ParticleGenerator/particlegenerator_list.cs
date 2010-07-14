@@ -10,20 +10,9 @@ namespace datatool
 {
     public partial class ParticleGeneratorList : BaseList
     {
-        public ParticleGeneratorList() : base(1)
+        public ParticleGeneratorList() : base(1, Program.dp.ParticleGenerators)
         {
             InitializeComponent();
-        }
-
-        private void ParticleGeneratorList_Load(object sender, EventArgs e)
-        {
-            List<base_item> list;
-
-            list = new List<base_item>();
-            list.Add(new particlegenerator_item("Pizza"));
-            list.Add(new particlegenerator_item("Warren"));
-
-            this.populateList(list);
         }
 
         /**
@@ -36,7 +25,7 @@ namespace datatool
             particlegenerator_item item = new particlegenerator_item("No name");
 
             form = new ParticleGeneratorEdit(item);
-            form.ShowDialog();
+            if (form.ShowDialog() == System.Windows.Forms.DialogResult.Cancel) return null;
 
             return form.Item;
         }

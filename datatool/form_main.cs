@@ -17,8 +17,9 @@ namespace datatool
 
         private void Main_Load(object sender, EventArgs e)
         {
-            this.labDatapath.Text = Program.datapath;
+            this.labDatapath.Text = Program.dp.datapath;
         }
+
 
         private void button1_Click(object sender, EventArgs e)
         {

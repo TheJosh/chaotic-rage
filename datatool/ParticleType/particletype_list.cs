@@ -10,22 +10,10 @@ namespace datatool
 {
     public partial class ParticletypeList : BaseList
     {
-        public ParticletypeList() : base(1)
+        public ParticletypeList() : base(1, Program.dp.ParticleTypes)
         {
             InitializeComponent();
         }
-
-        private void ParticletypeList_Load(object sender, EventArgs e)
-        {
-            List<base_item> list;
-
-            list = new List<base_item>();
-            list.Add(new particletype_item("Pizza"));
-            list.Add(new particletype_item("Warren"));
-
-            this.populateList(list);
-        }
-
 
         /**
          * Shows add form
@@ -37,7 +25,7 @@ namespace datatool
             particletype_item item = new particletype_item("No name");
 
             form = new ParticletypeEdit(item);
-            form.ShowDialog();
+            if (form.ShowDialog() == System.Windows.Forms.DialogResult.Cancel) return null;
 
             return form.Item;
         }

@@ -14,10 +14,13 @@ namespace datatool
         private base_item selected_item;
 
         private int icon_list_index;
+        private List<base_item> items;
 
-        public BaseList(int icon_list_index)
+        public BaseList(int icon_list_index, List<base_item> items)
         {
             this.icon_list_index = icon_list_index;
+            this.items = items;
+
             InitializeComponent();
         }
 
@@ -28,6 +31,18 @@ namespace datatool
                 this.cancelToolStripMenuItem.Visible = true;
                 this.listview.DoubleClick -= new EventHandler(editToolStripMenuItem_Click);
                 this.listview.DoubleClick += new EventHandler(selectToolStripMenuItem_Click);
+            }
+
+
+            this.listview.Items.Clear();
+            foreach (base_item i in items) {
+                LinkedListViewItem lvi;
+
+                lvi = new LinkedListViewItem();
+                lvi.Text = i.getName();
+                lvi.Item = i;
+                lvi.ImageIndex = this.icon_list_index;
+                this.listview.Items.Add(lvi);
             }
         }
 
@@ -47,25 +62,6 @@ namespace datatool
 
 
         /**
-         * Populates the listview with items
-         **/
-        protected void populateList(List<base_item> items)
-        {
-            this.listview.Items.Clear();
-
-            foreach (base_item i in items) {
-                LinkedListViewItem lvi;
-
-                lvi = new LinkedListViewItem();
-                lvi.Text = i.getName();
-                lvi.Item = i;
-                lvi.ImageIndex = this.icon_list_index;
-                this.listview.Items.Add(lvi);
-            }
-        }
-
-
-        /**
          * Add button clicked
          **/
         private void addToolStripMenuItem_Click(object sender, EventArgs e)
@@ -75,6 +71,8 @@ namespace datatool
 
             i = this.doAdd();
             if (i == null) return;
+
+            this.items.Add(i);
 
             lvi = new LinkedListViewItem();
             lvi.Text = i.getName();
@@ -91,12 +89,17 @@ namespace datatool
          **/
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            base_item i;
+            LinkedListViewItem lvi;
+
             if (this.listview.SelectedItems.Count == 0) return;
 
-            LinkedListViewItem lvi = (LinkedListViewItem) this.listview.SelectedItems[0];
+            lvi = (LinkedListViewItem) this.listview.SelectedItems[0];
 
-            lvi.Item = this.doEdit(lvi.Item);
+            i = this.doEdit(lvi.Item);
+            if (i == null) return;
 
+            lvi.Item = i;
             lvi.Text = lvi.Item.getName();
         }
 

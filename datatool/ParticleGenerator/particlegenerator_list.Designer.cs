@@ -36,7 +36,6 @@
             this.ClientSize = new System.Drawing.Size(621, 389);
             this.Name = "ParticleGeneratorList";
             this.Text = "Particle Generators";
-            this.Load += new System.EventHandler(this.ParticleGeneratorList_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

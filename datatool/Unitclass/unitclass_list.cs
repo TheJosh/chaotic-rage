@@ -10,7 +10,7 @@ namespace datatool
 {
     public partial class UnitclassList : BaseList
     {
-        public UnitclassList() : base(2)
+        public UnitclassList() : base(2, Program.dp.UnitClasses)
         {
             InitializeComponent();
         }

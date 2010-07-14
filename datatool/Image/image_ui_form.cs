@@ -31,7 +31,7 @@ namespace datatool
 
             switch (this.directory) {
                 case "areatypes":
-                    files = System.IO.Directory.GetFiles(Program.datapath + "/areatypes", "*-fr0.bmp");
+                    files = System.IO.Directory.GetFiles(Program.dp.datapath + "/areatypes", "*-fr0.bmp");
 
                     foreach (string f in files) {
                         string g = System.IO.Path.GetFileName(f);
@@ -42,11 +42,11 @@ namespace datatool
 
                     labAdding.Text = "Copy images into the 'areatypes' directory, named <IMAGE>-fr0.bmp, where <IMAGE> is the image name, which should be in lowercase and without spaces.";
 
-                    this.preview_filename = Program.datapath + "/areatypes/{0}-fr0.bmp";
+                    this.preview_filename = Program.dp.datapath + "/areatypes/{0}-fr0.bmp";
                     break;
 
                 case "particletypes":
-                    files = System.IO.Directory.GetDirectories(Program.datapath + "/particletypes", "*");
+                    files = System.IO.Directory.GetDirectories(Program.dp.datapath + "/particletypes", "*");
 
                     foreach (string f in files) {
                         string g = System.IO.Path.GetFileName(f);
@@ -55,7 +55,7 @@ namespace datatool
                     }
 
                     labAdding.Text = "Create a directory in the 'particletypes' directory, named the same as the image name, which should be in lowercase and without spaces. Files should be named <ANGLE>deg_fr<FRAME>.bmp";
-                    this.preview_filename = Program.datapath + "/particletypes/{0}/0deg_fr0.bmp";
+                    this.preview_filename = Program.dp.datapath + "/particletypes/{0}/0deg_fr0.bmp";
                     break;
 
                 default:

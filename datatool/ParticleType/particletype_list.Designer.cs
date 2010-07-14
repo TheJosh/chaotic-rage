@@ -35,7 +35,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "ParticleList";
             this.Text = "Particle types";
-            this.Load += new System.EventHandler(this.ParticletypeList_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

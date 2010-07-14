@@ -11,7 +11,6 @@ namespace datatool
     public partial class AreatypeEdit : Form
     {
         private areatype_item item;
-        private areatype_item internal_item;
 
         public areatype_item Item
         {
@@ -27,14 +26,12 @@ namespace datatool
         private void AreatypeEdit_Load(object sender, EventArgs e)
         {
             this.Text = this.item.getName();
-
-            this.internal_item = this.item.clone();
-            this.grid.SelectedObject = this.internal_item;
+            this.grid.SelectedObject = this.item;
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.item = this.internal_item;
+            
         }
     }
 }
