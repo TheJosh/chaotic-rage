@@ -6,6 +6,7 @@ using System.ComponentModel;
 namespace datatool
 {
 
+    [Serializable]
     public class areatype_item : base_item
     {
         private string name;
@@ -22,16 +23,6 @@ namespace datatool
         override public string getName()
         {
             return this.name;
-        }
-
-        public areatype_item clone()
-        {
-            areatype_item ret;
-            ret = new areatype_item(this.name);
-            ret.image = this.image;
-            ret.stretch = this.stretch;
-            ret.wall = this.wall;
-            return ret;
         }
 
 

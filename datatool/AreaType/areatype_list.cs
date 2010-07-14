@@ -37,11 +37,12 @@ namespace datatool
         override protected base_item doEdit(base_item item)
         {
             AreatypeEdit form;
+            areatype_item editing = ObjectCopier.Clone<areatype_item>((areatype_item)item);
 
-            form = new AreatypeEdit((areatype_item) item);
+            form = new AreatypeEdit((areatype_item) editing);
             if (form.ShowDialog() == DialogResult.Cancel) return null;
 
-            return form.Item;
+            return editing;
         }
     }
 }

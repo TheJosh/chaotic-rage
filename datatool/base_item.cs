@@ -7,6 +7,7 @@ namespace datatool
     /**
      * Regular base items
      **/
+    [Serializable]
     public abstract class base_item
     {
         abstract public string getName();
@@ -21,6 +22,7 @@ namespace datatool
     /**
      * Base items which have actions
      **/
+    [Serializable]
     public abstract class actions_item : base_item
     {
         private List<action> actions;

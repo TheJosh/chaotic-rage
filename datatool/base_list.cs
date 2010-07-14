@@ -101,6 +101,11 @@ namespace datatool
 
             lvi.Item = i;
             lvi.Text = lvi.Item.getName();
+
+            // TODO: the returned item may be a new object
+            // so we need to push it back into the this.items list
+            // which is a reference to the list in the DataProvider
+            // this will allow changes to withstand the list window being closed
         }
 
         virtual protected base_item doEdit(base_item item) { return null; }
