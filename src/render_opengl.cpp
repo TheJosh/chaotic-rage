@@ -301,14 +301,20 @@ void RenderOpenGL::render(GameState *st)
 	unsigned int i;
 	SpritePtr sprite;
 	
+	int x, y;	// for general use
+	
 	glClear(GL_COLOR_BUFFER_BIT);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
+	sprite = st->curr_player->getSprite();
+	x = st->curr_player->x + getSpriteWidth(sprite) / 2;
+	y = st->curr_player->y + getSpriteHeight(sprite) / 2;
+		
 	glTranslatef(this->screen->w / 2, this->screen->h / 2, 0);
 	glRotatef(st->curr_player->angle, 0, 0, 1);
-	glTranslatef(0 - st->curr_player->x, 0 - st->curr_player->y, 0);
+	glTranslatef(0 - x, 0 - y, 0);
 	
 	// TODO: render backgrounds
 	// Priority: High
@@ -328,9 +334,12 @@ void RenderOpenGL::render(GameState *st)
 		
 		glPushMatrix();
 		
-		glTranslatef(e->x, e->y, 0);
+		x = e->x + getSpriteWidth(sprite) / 2;
+		y = e->y + getSpriteHeight(sprite) / 2;
+		
+		glTranslatef(x, y, 0);
 		glRotatef(0 - e->angle, 0, 0, 1);
-		glTranslatef(0 - e->x, 0 - e->y, 0);
+		glTranslatef(0 - x, 0 - y, 0);
 		
 		glBindTexture(GL_TEXTURE_2D, sprite->pixels);
  		
