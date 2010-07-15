@@ -326,6 +326,12 @@ void RenderOpenGL::render(GameState *st)
 		sprite = e->getSprite();
 		if (sprite == NULL) continue;
 		
+		glPushMatrix();
+		
+		glTranslatef(e->x, e->y, 0);
+		glRotatef(0 - e->angle, 0, 0, 1);
+		glTranslatef(0 - e->x, 0 - e->y, 0);
+		
 		glBindTexture(GL_TEXTURE_2D, sprite->pixels);
  		
 		glBegin(GL_QUADS);
@@ -345,6 +351,8 @@ void RenderOpenGL::render(GameState *st)
 			glTexCoord2i( 0, 0 );
 			glVertex2i( e->x, e->y );
 		glEnd();
+		
+		glPopMatrix();
 	}
 	
 	glLoadIdentity();

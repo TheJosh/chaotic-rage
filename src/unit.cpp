@@ -154,15 +154,10 @@ unsigned int Unit::getNextWeaponID()
 **/
 SpritePtr Unit::getSprite()
 {
-	int idx = round(this->angle_aim / 45);
-	
 	int frame = this->st->anim_frame - this->animation_start;
 	frame = frame % this->current_state->num_frames;
 	
-	idx *= this->uc->getMaxFrames();
-	idx += frame;
-	
-	idx += this->current_state->sprite_offset;
+	int idx = this->current_state->sprite_offset + frame;
 	
 	return this->sprites->at(idx);
 }

@@ -205,7 +205,7 @@ UnitClass* loadUnitClass(cfg_t *cfg, Render * render)
 	
 	// Assign sprite offsets
 	for (j = 0; j < num_states; j++) {
-		uc->states.at(j)->sprite_offset = j * uc->max_frames * 8;
+		uc->states.at(j)->sprite_offset = j * uc->max_frames;
 	}
 	
 	return uc;
@@ -296,7 +296,6 @@ vector<SpritePtr>* UnitClass::loadAllSprites()
 	vector<SpritePtr>* ret = new vector<SpritePtr>();
 	
 	unsigned int state;
-	unsigned int angle;
 	unsigned int frame;
 	
 	UnitClassState* state_info;
@@ -305,26 +304,23 @@ vector<SpritePtr>* UnitClass::loadAllSprites()
 	for (state = 0; state < this->states.size(); state++) {
 		state_info = this->states.at(state);
 		
-		for (angle = 0; angle < 8; angle++) {
-			for (frame = 0; frame < state_info->num_frames; frame++) {
-				
-				sprintf(buff, "%s%s/%s_%ideg_fr%i.bmp", getDataDirectory(DF_UNITCLASS).c_str(), this->name.c_str(), state_info->image.c_str(), angle * 45, frame);
-				
-				DEBUG("Loading unit class sprite; image = '%s', angle = %i, frame = %i\n", state_info->image.c_str(), angle * 45, frame);
-				
-				SpritePtr surf = this->render->loadSprite(buff);
-				ret->push_back(surf);
-				
-				if (this->width == 0) {
-					this->width = this->render->getSpriteWidth(surf);
-					this->height = this->render->getSpriteHeight(surf);
-				}
-			}
+		for (frame = 0; frame < state_info->num_frames; frame++) {
+			sprintf(buff, "%s%s/%s_0deg_fr%i.bmp", getDataDirectory(DF_UNITCLASS).c_str(), this->name.c_str(), state_info->image.c_str(), frame);
 			
-			while (frame < this->max_frames) {
-				ret->push_back(NULL);
-				frame++;
+			DEBUG("Loading unit class sprite; image = '%s', angle = %i, frame = %i\n", state_info->image.c_str(), angle * 45, frame);
+			
+			SpritePtr surf = this->render->loadSprite(buff);
+			ret->push_back(surf);
+			
+			if (this->width == 0) {
+				this->width = this->render->getSpriteWidth(surf);
+				this->height = this->render->getSpriteHeight(surf);
 			}
+		}
+		
+		while (frame < this->max_frames) {
+			ret->push_back(NULL);
+			frame++;
 		}
 	}
 	
