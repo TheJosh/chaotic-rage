@@ -1,0 +1,8 @@
+You will need at least these:
+
+SDL
+zziplib
+libconfuse
+gl
+glu
+
