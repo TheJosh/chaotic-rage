@@ -44,7 +44,7 @@ void Player::keyRelease(int idx)
 **/
 void Player::angleFromMouse(int x, int y)
 {
-	this->desired_angle_aim += (x - 400) / 2;		// 2 is the 'sensitivity' value
+	this->desired_angle_aim += (x - 400) / 10;		// 2 is the 'sensitivity' value
 }
 
 
@@ -86,6 +86,7 @@ void Player::update(int delta)
 		keypressed = true;
 	}
 	
+	this->desired_angle_move += this->angle_aim;
 	
 	// A key was pressed
 	if (keypressed) {
