@@ -27,8 +27,10 @@ class GameState
 		Map* map;
 		unsigned int anim_frame;
 		unsigned int game_time;
+		
 		HUD* hud;
 		Render* render;
+		Audio* audio;
 		
 	public:
 		GameState();

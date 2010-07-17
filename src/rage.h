@@ -31,6 +31,7 @@ typedef struct range {
 } Range;
 
 class Render;
+class Audio;
 class Action;
 class EntityType;
 class UnitClass;
@@ -51,6 +52,9 @@ class GameState;
 #include "render.h"
 #include "render_sdl.h"
 #include "render_opengl.h"
+
+#include "audio.h"
+#include "audio_sdlmixer.h"
 
 #include "actions.h"
 #include "entitytype.h"

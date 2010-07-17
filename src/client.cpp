@@ -15,8 +15,15 @@ int main (int argc, char ** argv) {
 	
 	SDL_Init(SDL_INIT_VIDEO);
 	
+	GameState *st = new GameState();
+	
+	
 	Render * render = new RenderOpenGL();
 	render->setScreenSize(700, 700, false);
+	st->render = render;
+	
+	new AudioSDLMixer(st);
+	
 	
 	if (! loadAllAreaTypes(render)) {
 		cerr << "Unable to load areatypes datafile.\n";
@@ -41,9 +48,6 @@ int main (int argc, char ** argv) {
 	
 	seedRandom();
 	
-	
-	GameState *st = new GameState();
-	st->render = render;
 	
 	Map *m = new Map();
 	m->load("arena", render);
