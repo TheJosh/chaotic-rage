@@ -20,7 +20,7 @@ static bool ZIndexPredicate(const Entity * e1, const Entity * e2)
 }
 
 
-RenderOpenGL::RenderOpenGL() : Render()
+RenderOpenGL::RenderOpenGL(GameState * st) : Render(st)
 {
 	this->screen = NULL;
 }
@@ -293,7 +293,7 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 /**
 * Renders
 **/
-void RenderOpenGL::render(GameState *st)
+void RenderOpenGL::render()
 {
 	static int angle = 0.0;
 	angle +=  360.0 / 10.0;

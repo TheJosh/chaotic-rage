@@ -23,6 +23,7 @@ class Render
 {
 	protected:
 		bool load_err;
+		GameState * st;
 		
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename) = 0;
@@ -36,7 +37,7 @@ class Render
 		/**
 		* Renders the provided game state
 		**/
-		virtual void render(GameState *st) = 0;
+		virtual void render() = 0;
 		
 		/**
 		* Loads a sprite from file into memeory
@@ -82,5 +83,5 @@ class Render
 		bool wasLoadSpriteError();
 		
 	public:
-		Render();
+		Render(GameState * st);
 };

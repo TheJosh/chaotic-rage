@@ -11,8 +11,11 @@ using namespace std;
 
 
 
-Render::Render()
+Render::Render(GameState * st)
 {
+	st->render = this;
+	this->st = st;
+	
 	this->load_err = false;
 }
 

@@ -18,7 +18,7 @@ class RenderOpenGL : public Render
 		
 	public:
 		virtual void setScreenSize(int width, int height, bool fullscreen);
-		virtual void render(GameState *st);
+		virtual void render();
 		virtual void renderSprite(SpritePtr sprite, int x, int y);
 		virtual SpritePtr renderMap(Map * map, int frame, bool wall);
 		virtual void clearPixel(SpritePtr sprite, int x, int y);
@@ -27,7 +27,7 @@ class RenderOpenGL : public Render
 		virtual int getSpriteHeight(SpritePtr sprite);
 		
 	public:
-		RenderOpenGL();
+		RenderOpenGL(GameState * st);
 		~RenderOpenGL();
 		
 };

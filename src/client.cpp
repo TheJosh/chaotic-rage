@@ -17,12 +17,11 @@ int main (int argc, char ** argv) {
 	
 	GameState *st = new GameState();
 	
-	
-	Render * render = new RenderOpenGL();
-	render->setScreenSize(700, 700, false);
-	st->render = render;
-	
+	new RenderOpenGL(st);
 	new AudioSDLMixer(st);
+	
+	Render * render = st->render;
+	render->setScreenSize(700, 700, false);
 	
 	
 	if (! loadAllAreaTypes(render)) {
