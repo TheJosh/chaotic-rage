@@ -45,6 +45,15 @@ Unit::~Unit()
 
 
 /**
+* Handle events
+**/
+void Unit::handleEvent(Event * ev)
+{
+	this->uc->doActions(this, ev->type);
+}
+
+
+/**
 * Sets the unit state. If the unit state type changes, a new state is randomly
 * chosen with the specified state type
 **/
@@ -202,8 +211,19 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	for (i = 0; i < particles->size(); i++) {
 		Particle *p = particles->at(i);
 		
-		p->pt->doActions(p, HIT_UNIT);
-		this->uc->doActions(this, HIT_PARTICLE);
+		// TODO: Should this be only one event?
+		Event *ev = new Event();
+		ev->type = HIT_UNIT;
+		ev->e1 = p;
+		ev->e2 = this;
+		fireEvent(ev);
+		
+		ev = new Event();
+		ev->type = HIT_PARTICLE;
+		ev->e1 = this;
+		ev->e2 = p;
+		fireEvent(ev);
+		// end todo
 		
 		this->health -= p->unit_damage;
 		if (this->health <= 0) {

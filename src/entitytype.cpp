@@ -22,8 +22,10 @@ EntityType::~EntityType()
 
 /**
 * Executes a set of actions for a given event for a given entity
+*
+* TODO: make arguments be an EVENT object.
 **/
-void EntityType::doActions(Entity * entity, ActionEvent event)
+void EntityType::doActions(Entity * entity, EventType event)
 {
 	unsigned int i;
 	

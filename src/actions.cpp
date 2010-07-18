@@ -43,7 +43,7 @@ vector<Action*>* loadActions(cfg_t *cfg)
 		cfg_action = cfg_getnsec(cfg, "action", i);
 		
 		ac = new Action();
-		ac->event = (ActionEvent) cfg_getint(cfg_action, "event");
+		ac->event = (EventType) cfg_getint(cfg_action, "event");
 		ac->type = (ActionType) cfg_getint(cfg_action, "type");
 		
 		int num_args = cfg_size(cfg_action, "args");

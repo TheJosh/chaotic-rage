@@ -31,6 +31,14 @@ Particle::~Particle()
 {
 }
 
+/**
+* Handle events
+**/
+void Particle::handleEvent(Event * ev)
+{
+	this->pt->doActions(this, ev->type);
+}
+
 
 void Particle::update(int delta)
 {
@@ -55,7 +63,10 @@ void Particle::update(int delta)
 	
 	AreaType *at = getAreaTypeByID(pixel.type);
 	if (at->wall) {
-		this->pt->doActions(this, HIT_WALL);
+		Event *ev = new Event();
+		ev->type = HIT_WALL;
+		ev->e1 = this;
+		fireEvent(ev);
 		
 		this->st->map->setDataHP(this->x, this->y, pixel.hp - this->wall_damage);
 		

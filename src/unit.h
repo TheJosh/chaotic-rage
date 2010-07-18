@@ -47,6 +47,10 @@ class Unit: public Entity
 		virtual SpritePtr getSprite();
 		virtual void update(int delta) = 0;
 		
+	public:
+		virtual void handleEvent(Event * ev);
+		
+	public:
 		void beginFiring();
 		void endFiring();
 		

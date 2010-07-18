@@ -30,24 +30,26 @@ typedef struct range {
 	int max;
 } Range;
 
-class Render;
-class Audio;
 class Action;
-class EntityType;
-class UnitClass;
 class AreaType;
-class ParticleType;
-class ParticleGenType;
-class WeaponType;
+class Audio;
 class Entity;
-class Unit;
-class Player;
+class EntityType;
+class Event;
+class EventListener;
+class GameState;
+class HUD;
+class Map;
 class Particle;
 class ParticleGenerator;
-class Map;
+class ParticleGenType;
+class ParticleType;
+class Player;
+class Render;
+class Unit;
+class UnitClass;
+class WeaponType;
 class Zone;
-class HUD;
-class GameState;
 
 #include "render.h"
 #include "render_sdl.h"
@@ -56,6 +58,7 @@ class GameState;
 #include "audio.h"
 #include "audio_sdlmixer.h"
 
+#include "event.h"
 #include "actions.h"
 #include "entitytype.h"
 #include "areatypes.h"

@@ -12,16 +12,6 @@ using namespace std;
 
 
 /**
-* Events which are processed by actions
-* Such as hitting a wall
-**/
-enum ActionEvent {
-	HIT_WALL       = 1,  // particles
-	HIT_UNIT       = 2,  // particles
-	HIT_PARTICLE   = 3,  // units
-};
-
-/**
 * Types of actions
 * Such as create particle generator
 **/
@@ -33,7 +23,7 @@ enum ActionType {
 
 class Action {
 	public:
-		ActionEvent event;
+		EventType event;
 		ActionType type;
 		int args[MAX_ACTION_ARGS];
 };

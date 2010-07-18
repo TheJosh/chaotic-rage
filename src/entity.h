@@ -17,7 +17,7 @@ enum EntityClass {
 };
 
 
-class Entity
+class Entity : public EventListener
 {
 	public:
 		virtual EntityClass klass() const = 0;

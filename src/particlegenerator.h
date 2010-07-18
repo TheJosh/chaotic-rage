@@ -28,4 +28,7 @@ class ParticleGenerator : public Entity
 	public:
 		virtual void update(int delta);
 		virtual SpritePtr getSprite();
+		
+	public:
+		virtual void handleEvent(Event * ev) {};
 };

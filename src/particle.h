@@ -40,4 +40,7 @@ class Particle: public Entity
 	public:
 		virtual SpritePtr getSprite();
 		virtual void update(int delta);
+		
+	public:
+		virtual void handleEvent(Event * ev);
 };
