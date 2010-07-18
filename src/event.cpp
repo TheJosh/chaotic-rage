@@ -23,8 +23,9 @@ Event::Event()
 void fireEvent (Event * ev)
 {
 	if (ev->e1 != NULL) ev->e1->handleEvent(ev);
-	
 	// TODO: should we also call the handleevent on e2?
+	
+	ev->e1->getGameState()->audio->handleEvent(ev);
 	
 	delete (ev);
 }

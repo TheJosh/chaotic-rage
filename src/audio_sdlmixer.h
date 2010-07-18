@@ -19,5 +19,8 @@ class AudioSDLMixer : Audio
 		virtual void play();
 		
 	public:
+		virtual void handleEvent(Event * ev);
+		
+	public:
 		AudioSDLMixer(GameState * st);
 };

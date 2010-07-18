@@ -10,7 +10,7 @@
 using namespace std;
 
 
-class Audio
+class Audio : public EventListener
 {
 	protected:
 		GameState * st;

@@ -51,6 +51,8 @@ class UnitClass;
 class WeaponType;
 class Zone;
 
+#include "event.h"
+
 #include "render.h"
 #include "render_sdl.h"
 #include "render_opengl.h"
@@ -58,7 +60,6 @@ class Zone;
 #include "audio.h"
 #include "audio_sdlmixer.h"
 
-#include "event.h"
 #include "actions.h"
 #include "entitytype.h"
 #include "areatypes.h"

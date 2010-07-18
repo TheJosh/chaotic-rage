@@ -17,6 +17,15 @@ AudioSDLMixer::AudioSDLMixer(GameState * st) : Audio(st)
 
 
 /**
+* Handles in-game events
+**/
+void AudioSDLMixer::handleEvent(Event * ev)
+{
+	// TODO: code this
+}
+
+
+/**
 * Plays sounds
 **/
 void AudioSDLMixer::play()
