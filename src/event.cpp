@@ -13,8 +13,6 @@ Event::Event()
 {
 	this->e1 = NULL;
 	this->e2 = NULL;
-	this->x = -1;
-	this->y = -1;
 }
 
 
