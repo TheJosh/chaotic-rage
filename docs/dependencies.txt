@@ -6,3 +6,5 @@ libconfuse
 gl
 glu
 
+You will need a recent linux to compile.
+
