@@ -11,7 +11,6 @@ namespace datatool
     public partial class ParticletypeEdit : Form
     {
         private particletype_item item;
-        private particletype_item internal_item;
 
         public particletype_item Item
         {
@@ -28,18 +27,16 @@ namespace datatool
         {
             this.Text = this.item.getName();
 
-            this.internal_item = this.item.clone();
-            this.grid.SelectedObject = this.internal_item;
+            this.grid.SelectedObject = this.item;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            this.item = this.internal_item;
         }
 
         private void btnActions_Click(object sender, EventArgs e)
         {
-            ActionsEditor f = new ActionsEditor(this.internal_item);
+            ActionsEditor f = new ActionsEditor(this.item);
             f.ShowDialog();
         }
     }

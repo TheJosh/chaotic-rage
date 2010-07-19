@@ -36,11 +36,12 @@ namespace datatool
         override protected base_item doEdit(base_item item)
         {
             UnitclassEdit form;
+            unitclass_item editing = ObjectCopier.Clone<unitclass_item>((unitclass_item)item);
 
-            form = new UnitclassEdit((unitclass_item)item);
-            form.ShowDialog();
+            form = new UnitclassEdit((unitclass_item)editing);
+            if (form.ShowDialog() == DialogResult.Cancel) return null;
 
-            return form.Item;
+            return editing;
         }
     }
 }

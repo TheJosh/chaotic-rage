@@ -11,7 +11,6 @@ namespace datatool
     public partial class ParticleGeneratorEdit : Form
     {
         private particlegenerator_item item;
-        private particlegenerator_item internal_item;
         private SpewListItem sel_list_item;
 
         public particlegenerator_item Item
@@ -31,8 +30,6 @@ namespace datatool
          **/
         private void Form_Load(object sender, EventArgs e)
         {
-            this.internal_item = this.item.clone();
-
             this.Text = this.item.getName();
             this.txtName.Text = this.item.getName();
 
@@ -48,7 +45,6 @@ namespace datatool
          **/
         private void btnSave_Click(object sender, EventArgs e)
         {
-            this.item = this.internal_item;
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
@@ -82,7 +78,7 @@ namespace datatool
         {
             particlegenerator_spew spew = new particlegenerator_spew();
 
-            this.internal_item.Spewers.Add(spew);
+            this.item.Spewers.Add(spew);
 
             SpewListItem item = new SpewListItem();
             item.Spew = spew;

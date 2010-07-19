@@ -36,11 +36,12 @@ namespace datatool
         override protected base_item doEdit(base_item item)
         {
             ParticletypeEdit form;
+            particletype_item editing = ObjectCopier.Clone<particletype_item>((particletype_item)item);
 
-            form = new ParticletypeEdit((particletype_item)item);
-            form.ShowDialog();
+            form = new ParticletypeEdit((particletype_item)editing);
+            if (form.ShowDialog() == DialogResult.Cancel) return null;
 
-            return form.Item;
+            return editing;
         }
     }
 }

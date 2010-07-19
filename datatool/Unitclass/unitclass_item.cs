@@ -5,6 +5,7 @@ using System.ComponentModel;
 
 namespace datatool
 {
+    [Serializable]
     public class unitclass_settings
     {
         private string name;
@@ -62,6 +63,7 @@ namespace datatool
 
     }
 
+    [Serializable]
     public class unitclass_item : actions_item 
     {
         private string name;

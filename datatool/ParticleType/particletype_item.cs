@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace datatool
 {
-
+    [Serializable]
     public class particletype_item : actions_item
     {
         private string name;

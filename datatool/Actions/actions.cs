@@ -22,6 +22,7 @@ namespace datatool
     /**
      * An action
      **/
+    [Serializable]
     public class action
     {
         protected action_event e;
@@ -45,6 +46,7 @@ namespace datatool
     }
 
 
+    [Serializable]
     public class action_pgenerator : action
     {
         public action_pgenerator(action_event e)

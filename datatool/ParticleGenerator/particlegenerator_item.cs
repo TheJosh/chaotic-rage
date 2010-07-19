@@ -5,6 +5,7 @@ using System.ComponentModel;
 
 namespace datatool
 {
+    [Serializable]
     public class particlegenerator_spew
     {
         private particletype_item type;
@@ -44,6 +45,7 @@ namespace datatool
 
     }
 
+    [Serializable]
     public class particlegenerator_item : base_item
     {
         private string name;

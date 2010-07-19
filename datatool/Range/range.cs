@@ -4,6 +4,7 @@ using System.Text;
 
 namespace datatool
 {
+    [Serializable]
     public class range
     {
         public int min;
