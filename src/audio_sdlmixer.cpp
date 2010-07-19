@@ -5,6 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include "rage.h"
 
 using namespace std;

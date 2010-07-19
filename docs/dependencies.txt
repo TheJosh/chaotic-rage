@@ -1,6 +1,7 @@
 You will need at least these:
 
 SDL
+SDL_Mixer
 zziplib
 libconfuse
 gl
