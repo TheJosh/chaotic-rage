@@ -15,6 +15,10 @@ Event::Event()
 	this->e2 = NULL;
 }
 
+static const char *events_str[]={ "",
+	"HIT_WALL      ",
+	"HIT_UNIT      ",
+	"HIT_PARTICLE  " };
 
 /**
 * Calls event listeners in the various subsystems
@@ -27,5 +31,7 @@ void fireEvent (Event * ev)
 	
 	ev->e1->getGameState()->audio->handleEvent(ev);
 	
+	// This is for testing only
+	cout << "fireEvent [" << events_str[ev->type] << "]  e1 = " << ev->e1 << "  e2 = " << ev->e2 << "  p1 = " << ev->p1 << "  p2 = " << ev->p2 << "\n";
 	delete (ev);
 }
