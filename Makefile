@@ -1,7 +1,7 @@
 
 CXX=g++
 CFLAGS=`sdl-config --cflags` `pkg-config zziplib libconfuse gl glu --cflags` -Werror -Wall -ggdb
-LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse gl glu --libs` -lSDL_mixer
+LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse gl glu --libs` -lSDL_mixer -lSDL_image
 
 OBJPATH=build
 SRCPATH=src

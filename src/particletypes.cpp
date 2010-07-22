@@ -244,7 +244,7 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype, Render * render)
 	for (angle = 0; angle < 8; angle++) {
 		for (frame = 0; frame < pt->num_frames; frame++) {
 			
-			sprintf(buff, "%s%s/%ideg_fr%i.bmp", getDataDirectory(DF_PARTICLES).c_str(), pt->image.c_str(), angle * 45, frame);
+			sprintf(buff, "%s%s/%ideg_fr%i.png", getDataDirectory(DF_PARTICLES).c_str(), pt->image.c_str(), angle * 45, frame);
 			
 			DEBUG("Loading particle type sprite; image = '%s', angle = %i, frame = %i\n", pt->image.c_str(), angle * 45, frame);
 			

@@ -134,7 +134,7 @@ WeaponType* loadWeaponType(cfg_t *cfg_weapon, Render * render)
 	// Load large icon
 	filename = getDataDirectory(DF_WEAPONS);
 	filename.append(cfg_getstr(cfg_weapon, "name"));
-	filename.append("/icon_large.bmp");
+	filename.append("/icon_large.png");
 	wt->icon_large = render->loadSprite(filename);
 	
 	if (render->getSpriteWidth(wt->icon_large) != WEAPON_LARGE_W && render->getSpriteHeight(wt->icon_large) != WEAPON_LARGE_H) {

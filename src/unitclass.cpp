@@ -305,7 +305,7 @@ vector<SpritePtr>* UnitClass::loadAllSprites()
 		state_info = this->states.at(state);
 		
 		for (frame = 0; frame < state_info->num_frames; frame++) {
-			sprintf(buff, "%s%s/%s_fr%i.bmp", getDataDirectory(DF_UNITCLASS).c_str(), this->name.c_str(), state_info->image.c_str(), frame);
+			sprintf(buff, "%s%s/%s_fr%i.png", getDataDirectory(DF_UNITCLASS).c_str(), this->name.c_str(), state_info->image.c_str(), frame);
 			
 			DEBUG("Loading unit class sprite; image = '%s', angle = %i, frame = %i\n", state_info->image.c_str(), angle * 45, frame);
 			

@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <SDL_image.h>
 #include "rage.h"
 
 using namespace std;
@@ -51,8 +52,14 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	SDL_WM_SetCaption("Chaotic Rage", "Chaotic Rage");
 	SDL_ShowCursor(SDL_DISABLE);
 	
-	glEnable(GL_TEXTURE_2D);
+	int flags = IMG_INIT_PNG;
+	int initted = IMG_Init(flags);
+	if ((initted & flags) != flags) {
+		fprintf(stderr, "Failed to init required png support!\n");
+		exit(1);
+	}
 	
+	glEnable(GL_TEXTURE_2D);
 	glDisable(GL_DEPTH_TEST);
 	
 	glBlendFunc(GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
@@ -79,7 +86,7 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 	GLint num_colors;
 	SDL_Surface * surf;
 	
-	surf = SDL_LoadBMP_RW(rw, 0);
+	surf = IMG_Load_RW(rw, 0);
 	if (surf == NULL) {
 		fprintf(stderr, "Couldn't load sprite '%s'.\n", filename.c_str());
 		load_err = true;

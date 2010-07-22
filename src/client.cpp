@@ -13,7 +13,7 @@ using namespace std;
 
 int main (int argc, char ** argv) {
 	
-	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 	
 	GameState *st = new GameState();
 	
@@ -76,8 +76,6 @@ int main (int argc, char ** argv) {
 	st->addUnit(p);
 	p->x = 100;
 	p->y = 100;
-	
-
 	
 	
 	gameLoop(st, render);

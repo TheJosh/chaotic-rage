@@ -124,7 +124,7 @@ AreaType* loadAreaType(cfg_t *cfg_areatype, Render * render)
 	
 	filename = getDataDirectory(DF_AREATYPES);
 	filename.append(cfg_getstr(cfg_areatype, "image"));
-	filename.append("-fr0.bmp");
+	filename.append("-fr0.png");
 	
 	at = new AreaType();
 	at->surf = render->loadSprite(filename.c_str());
