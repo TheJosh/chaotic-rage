@@ -19,7 +19,6 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	this->desired_angle_aim = 0;
 	this->speed = 0;
 	this->health = 10000;
-	this->height = this->uc->height;
 	
 	this->weapon = NULL;
 	this->weapon_gen = NULL;

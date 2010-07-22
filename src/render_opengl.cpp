@@ -14,10 +14,7 @@ using namespace std;
 
 static bool ZIndexPredicate(const Entity * e1, const Entity * e2)
 {
-	int e1_y = e1->y + (e1->height / 2);
-	int e2_y = e2->y + (e2->height / 2);
-	
-	return e1_y < e2_y;
+	return e1->y < e2->y;
 }
 
 
@@ -293,26 +290,20 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 **/
 void RenderOpenGL::render()
 {
-	static int angle = 0.0;
-	angle +=  360.0 / 10.0;
-
 	unsigned int i, j;
 	SpritePtr sprite;
 	
-	SpritePtr list [SPRITE_LIST_LEN] = {NULL, NULL, NULL, NULL};
-	
 	int x, y;	// for general use
+	
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
-	st->curr_player->getSprite(list);
-	sprite = list[0];
-	x = st->curr_player->x + getSpriteWidth(sprite) / 2;
-	y = st->curr_player->y + getSpriteHeight(sprite) / 2;
-		
+	x = st->curr_player->x + st->curr_player->getWidth() / 2;
+	y = st->curr_player->y + st->curr_player->getHeight() / 2;
+	
 	glTranslatef(this->screen->w / 2, this->screen->h / 2, 0);
 	glRotatef(st->curr_player->angle, 0, 0, 1);
 	glTranslatef(0 - x, 0 - y, 0);
@@ -330,22 +321,23 @@ void RenderOpenGL::render()
 	for (i = 0; i < st->entities.size(); i++) {
 		Entity *e = st->entities.at(i);
 		
-		SpritePtr list [SPRITE_LIST_LEN] = {NULL, NULL, NULL, NULL};
 		
+		glPushMatrix();
+		
+		x = e->x + e->getWidth() / 2;
+		y = e->y + e->getHeight() / 2;
+		
+		glTranslatef(x, y, 0);
+		glRotatef(0 - e->angle, 0, 0, 1);
+		glTranslatef(0 - x, 0 - y, 0);
+		
+		
+		SpritePtr list [SPRITE_LIST_LEN] = {NULL, NULL, NULL, NULL};
 		e->getSprite(list);
 		
 		for (j = 0; j < SPRITE_LIST_LEN; j++) {
 			sprite = list[j];
 			if (sprite == NULL) break;
-			
-			glPushMatrix();
-			
-			x = e->x + getSpriteWidth(sprite) / 2;
-			y = e->y + getSpriteHeight(sprite) / 2;
-			
-			glTranslatef(x, y, 0);
-			glRotatef(0 - e->angle, 0, 0, 1);
-			glTranslatef(0 - x, 0 - y, 0);
 			
 			glBindTexture(GL_TEXTURE_2D, sprite->pixels);
 	 		
@@ -366,9 +358,9 @@ void RenderOpenGL::render()
 				glTexCoord2i( 0, 0 );
 				glVertex2i( e->x, e->y );
 			glEnd();
-			
-			glPopMatrix();
 		}
+		
+		glPopMatrix();
 	}
 	
 	glLoadIdentity();

@@ -14,7 +14,6 @@ Entity::Entity(GameState *st)
 	this->del = false;
 	this->x = 0;
 	this->y = 0;
-	this->height = 0;
 	this->st = st;
 }
 

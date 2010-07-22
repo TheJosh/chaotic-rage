@@ -31,7 +31,6 @@ class Entity : public EventListener
 		bool del;
 		int x;
 		int y;
-		int height;		// for proper z-indexing
 		int angle;
 		
 	protected:
@@ -53,6 +52,16 @@ class Entity : public EventListener
 		* Update the entity. Time is provided in milliseconds (ms)
 		**/
 		virtual void update(int delta) = 0;
+		
+		/**
+		* Gets the entities actual width, in pixels
+		**/
+		virtual int getWidth() { return 1; };
+		
+		/**
+		* Gets the entities actual height, in pixels
+		**/
+		virtual int getHeight() { return 1; };
 		
 		
 	public:

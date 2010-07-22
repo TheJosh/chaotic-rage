@@ -48,6 +48,8 @@ class Unit: public Entity
 	public:
 		virtual void getSprite(SpritePtr list [SPRITE_LIST_LEN]);
 		virtual void update(int delta) = 0;
+		virtual int getWidth() { return 24; };		// todo: read from unitclass
+		virtual int getHeight() { return 24; };		// todo: read from unitclass
 		
 	public:
 		virtual void handleEvent(Event * ev);
@@ -68,7 +70,4 @@ class Unit: public Entity
 	protected:
 		void update(int delta, UnitClassSettings *ucs);
 		void setState(int new_type);
-		
-	public:
-		virtual int getHeight() { return 32; }		// used for proper z-indexing
 };
