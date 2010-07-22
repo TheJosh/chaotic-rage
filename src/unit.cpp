@@ -172,14 +172,14 @@ void Unit::getSprite(SpritePtr list [SPRITE_LIST_LEN])
 	frame = this->st->anim_frame - this->animation_start;
 	frame = frame % this->walk_state->num_frames;
 	
-	idx = this->walk_state->sprite_offset;// + frame;
+	idx = this->walk_state->sprite_offset + frame;
 	list[0] = this->sprites->at(idx);
 	
 	// Shoot
 	frame = this->st->anim_frame - this->animation_start;
 	frame = frame % this->current_state->num_frames;
 	
-	idx = this->current_state->sprite_offset;// + frame;
+	idx = this->current_state->sprite_offset + frame;
 	list[1] = this->sprites->at(idx);
 	
 	return;

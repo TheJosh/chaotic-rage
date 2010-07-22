@@ -62,7 +62,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	glEnable(GL_TEXTURE_2D);
 	glDisable(GL_DEPTH_TEST);
 	
-	glBlendFunc(GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
 	
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	
@@ -102,20 +103,7 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 	}
 	
 	// Leak!
-	surf = SDL_ConvertSurface(surf, this->screen->format, SDL_SWSURFACE);
-	
-	// Colour-key the surface
-	unsigned int colourkey = SDL_MapRGBA(surf->format, 255, 0, 255, 128);
-	unsigned int trans = SDL_MapRGBA(surf->format, 0, 0, 0, 0);
-	
-	for (int y = 0; y < surf->h; y++) {
-		for (int x = 0; x < surf->w; x++) {
-			unsigned int pix = ((unsigned int*)surf->pixels)[y*(surf->pitch/sizeof(unsigned int)) + x];
-			if (pix == colourkey) {
-				((unsigned int*)surf->pixels)[y*(surf->pitch/sizeof(unsigned int)) + x] = trans;
-			}
-		}
-	}
+	//surf = SDL_ConvertSurface(surf, this->screen->format, SDL_SWSURFACE);
 	
 	// Determine OpenGL import type
 	num_colors = surf->format->BytesPerPixel;
@@ -153,7 +141,7 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	
-	glTexImage2D(GL_TEXTURE_2D, 0, num_colors, surf->w, surf->h, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surf->w, surf->h, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
 	
 	//SDL_FreeSurface(surf);
 	
@@ -259,7 +247,7 @@ SpritePtr RenderOpenGL::renderMap(Map * map, int frame, bool wall)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	
-	glTexImage2D(GL_TEXTURE_2D, 0, 4, surf->w, surf->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, surf->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, surf->w, surf->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, surf->pixels);
 	
 	return sprite;
 }
@@ -315,7 +303,7 @@ void RenderOpenGL::render()
 	
 	int x, y;	// for general use
 	
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -351,7 +339,6 @@ void RenderOpenGL::render()
 			if (sprite == NULL) break;
 			
 			glPushMatrix();
-			glEnable(GL_BLEND);
 			
 			x = e->x + getSpriteWidth(sprite) / 2;
 			y = e->y + getSpriteHeight(sprite) / 2;
@@ -380,7 +367,6 @@ void RenderOpenGL::render()
 				glVertex2i( e->x, e->y );
 			glEnd();
 			
-			glDisable(GL_BLEND);
 			glPopMatrix();
 		}
 	}

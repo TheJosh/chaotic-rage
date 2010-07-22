@@ -12,8 +12,6 @@ using namespace std;
 Player::Player(UnitClass *uc, GameState *st) : Unit(uc, st)
 {
 	for (int i = 0; i < 4; i++) this->key[i] = 0;
-	
-	this->desired_angle_aim = 45;
 }
 
 Player::~Player()
