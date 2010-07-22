@@ -12,6 +12,7 @@
 using namespace std;
 
 
+
 static bool ZIndexPredicate(const Entity * e1, const Entity * e2)
 {
 	return e1->y < e2->y;
@@ -33,6 +34,8 @@ RenderOpenGL::~RenderOpenGL()
 **/
 void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 {
+	int flags;
+	
 	// TODO: we need to keep track of all textures
 	// because when this method runs again, we need to re-load everything
 	// back into OpenGL
@@ -40,16 +43,23 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	
-	this->screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
+	flags = SDL_OPENGL;
+	if (fullscreen) flags |= SDL_FULLSCREEN;
+	
+	this->screen = SDL_SetVideoMode(width, height, 32, flags);
 	if (screen == NULL) {
 		fprintf(stderr, "Unable to set %ix%i video: %s\n", width, height, SDL_GetError());
 		exit(1);
 	}
 	
+	// The 'virtual' size is 1000px high, with the proper width for your monitor.
+	this->virt_height = 1000;
+	this->virt_width = this->virt_height * (float)width / (float)height;
+	
 	SDL_WM_SetCaption("Chaotic Rage", "Chaotic Rage");
 	SDL_ShowCursor(SDL_DISABLE);
 	
-	int flags = IMG_INIT_PNG;
+	flags = IMG_INIT_PNG;
 	int initted = IMG_Init(flags);
 	if ((initted & flags) != flags) {
 		fprintf(stderr, "Failed to init required png support!\n");
@@ -68,7 +78,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(0.0f, width, height, 0.0f, -1.0f, 1.0f);
+	glOrtho(0.0f, this->virt_width, this->virt_height, 0.0f, -1.0f, 1.0f);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -98,9 +108,6 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 	if ((surf->h & (surf->h - 1)) != 0) {
 		DEBUG("Bitmap '%s' height is not a power of 2.\n", filename.c_str());
 	}
-	
-	// Leak!
-	//surf = SDL_ConvertSurface(surf, this->screen->format, SDL_SWSURFACE);
 	
 	// Determine OpenGL import type
 	num_colors = surf->format->BytesPerPixel;
@@ -304,7 +311,7 @@ void RenderOpenGL::render()
 	x = st->curr_player->x + st->curr_player->getWidth() / 2;
 	y = st->curr_player->y + st->curr_player->getHeight() / 2;
 	
-	glTranslatef(this->screen->w / 2, this->screen->h / 2, 0);
+	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
 	glRotatef(st->curr_player->angle, 0, 0, 1);
 	glTranslatef(0 - x, 0 - y, 0);
 	

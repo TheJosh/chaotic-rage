@@ -13,6 +13,10 @@ class RenderOpenGL : public Render
 	private:
 		SDL_Surface * screen;
 		
+		// Size of the 'virtual' screen.
+		int virt_width;
+		int virt_height;
+		
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
 		
