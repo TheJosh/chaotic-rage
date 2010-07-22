@@ -9,6 +9,7 @@
 
 using namespace std;
 
+#define MAX_SPEWERS 32
 
 class ParticleGenerator : public Entity
 {
@@ -20,6 +21,7 @@ class ParticleGenerator : public Entity
 		int x;
 		int y;
 		int age;
+		int spewdelay[MAX_SPEWERS];
 		
 	public:
 		ParticleGenerator(ParticleGenType* type, GameState *st);

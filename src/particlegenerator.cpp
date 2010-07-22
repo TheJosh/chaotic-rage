@@ -18,6 +18,10 @@ ParticleGenerator::ParticleGenerator(ParticleGenType* type, GameState *st) : Ent
 	this->y = y;
 	this->angle = 0;
 	this->age = 0;
+	
+	for (int i = 0; i < MAX_SPEWERS; i++) {
+		this->spewdelay[i] = 0;
+	}
 }
 
 ParticleGenerator::~ParticleGenerator()
@@ -36,27 +40,35 @@ void ParticleGenerator::update(int delta)
 	
 	bool useful = false;
 	for (unsigned int i = 0; i < this->type->spewers.size(); i++) {
+		if (i > MAX_SPEWERS) break;
 		spew = this->type->spewers.at(i);
 		
+		// If there is a time limit in force, check it hasn't been too long
 		if (spew->time != 0 && spew->time < this->age) continue;
+		useful = true;
 		
-		gennum = ceil(((float)spew->rate) / 1000.0 * delta);
+		// If there is a delay in force, check enough time has passed
+		if (spew->delay) {
+			this->spewdelay[i] -= delta;
+			if (this->spewdelay[i] > 0) continue;
+			this->spewdelay[i] = spew->delay;
+		}
 		
+		// Generate the particles according to the rate
+		gennum = ppsDelta(spew->rate, delta);
 		for (int j = 0; j < gennum; j++) {
 			pa = new Particle(spew->pt, this->st);
 			pa->x = this->x;
 			pa->y = this->y;
 			
-			//TODO: needs love
 			pa->angle = this->angle + getRandom(0 - spew->angle_range / 2, spew->angle_range / 2);
+			pa->angle = clampAngle(pa->angle);
 			
 			pa->x = pointPlusAngleX(pa->x, pa->angle, spew->offset);
 			pa->y = pointPlusAngleY(pa->y, pa->angle, spew->offset);
 			
 			st->addParticle(pa);
 		}
-		
-		useful = true;
 	}
 	
 	this->age += delta;

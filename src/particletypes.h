@@ -41,6 +41,7 @@ class GenSpew
 		ParticleType *pt;
 		int angle_range;
 		int rate;
+		int delay;
 		int time;
 		int offset;
 };
