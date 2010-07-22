@@ -17,6 +17,11 @@ enum EntityClass {
 };
 
 
+// Defines the length of a sprite-list
+// as returned by the getSprite method of entities
+#define SPRITE_LIST_LEN 4
+
+
 class Entity : public EventListener
 {
 	public:
@@ -42,7 +47,7 @@ class Entity : public EventListener
 		/**
 		* Return a sprite to render this entity as
 		**/
-		virtual SpritePtr getSprite() = 0;
+		virtual void getSprite(SpritePtr list [SPRITE_LIST_LEN]) = 0;
 		
 		/**
 		* Update the entity. Time is provided in milliseconds (ms)
@@ -52,4 +57,5 @@ class Entity : public EventListener
 		
 	public:
 		GameState * getGameState();
+		
 };

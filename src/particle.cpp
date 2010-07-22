@@ -76,7 +76,7 @@ void Particle::update(int delta)
 	
 }
 
-SpritePtr Particle::getSprite()
+void Particle::getSprite(SpritePtr list [SPRITE_LIST_LEN])
 {
 	int idx = 0;
 	if (this->pt->directional) idx = round(this->angle / 45);
@@ -85,7 +85,9 @@ SpritePtr Particle::getSprite()
 	frame = frame % this->pt->num_frames;
 	idx += frame;
 	
-	return this->pt->sprites.at(idx);
+	list[0] = this->pt->sprites.at(idx);
+	
+	return;
 }
 
 

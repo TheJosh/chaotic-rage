@@ -79,9 +79,9 @@ void ParticleGenerator::update(int delta)
 }
 
 
-SpritePtr ParticleGenerator::getSprite()
+void ParticleGenerator::getSprite(SpritePtr list [SPRITE_LIST_LEN])
 {
-	return NULL;
+	return;
 }
 
 

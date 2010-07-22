@@ -52,7 +52,10 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	SDL_ShowCursor(SDL_DISABLE);
 	
 	glEnable(GL_TEXTURE_2D);
+	
 	glDisable(GL_DEPTH_TEST);
+	
+	glBlendFunc(GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
 	
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	
@@ -95,7 +98,7 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 	surf = SDL_ConvertSurface(surf, this->screen->format, SDL_SWSURFACE);
 	
 	// Colour-key the surface
-	unsigned int colourkey = SDL_MapRGB(surf->format, 255, 0, 255);
+	unsigned int colourkey = SDL_MapRGBA(surf->format, 255, 0, 255, 128);
 	unsigned int trans = SDL_MapRGBA(surf->format, 0, 0, 0, 0);
 	
 	for (int y = 0; y < surf->h; y++) {
@@ -298,8 +301,10 @@ void RenderOpenGL::render()
 	static int angle = 0.0;
 	angle +=  360.0 / 10.0;
 
-	unsigned int i;
+	unsigned int i, j;
 	SpritePtr sprite;
+	
+	SpritePtr list [SPRITE_LIST_LEN] = {NULL, NULL, NULL, NULL};
 	
 	int x, y;	// for general use
 	
@@ -308,7 +313,8 @@ void RenderOpenGL::render()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
-	sprite = st->curr_player->getSprite();
+	st->curr_player->getSprite(list);
+	sprite = list[0];
 	x = st->curr_player->x + getSpriteWidth(sprite) / 2;
 	y = st->curr_player->y + getSpriteHeight(sprite) / 2;
 		
@@ -329,39 +335,47 @@ void RenderOpenGL::render()
 	for (i = 0; i < st->entities.size(); i++) {
 		Entity *e = st->entities.at(i);
 		
-		sprite = e->getSprite();
-		if (sprite == NULL) continue;
+		SpritePtr list [SPRITE_LIST_LEN] = {NULL, NULL, NULL, NULL};
 		
-		glPushMatrix();
+		e->getSprite(list);
 		
-		x = e->x + getSpriteWidth(sprite) / 2;
-		y = e->y + getSpriteHeight(sprite) / 2;
-		
-		glTranslatef(x, y, 0);
-		glRotatef(0 - e->angle, 0, 0, 1);
-		glTranslatef(0 - x, 0 - y, 0);
-		
-		glBindTexture(GL_TEXTURE_2D, sprite->pixels);
- 		
-		glBegin(GL_QUADS);
-			// Bottom-left vertex (corner)
-			glTexCoord2i( 0, 1 );
-			glVertex2i( e->x, e->y + sprite->h );
+		for (j = 0; j < SPRITE_LIST_LEN; j++) {
+			sprite = list[j];
+			if (sprite == NULL) break;
 			
-			// Bottom-right vertex (corner)
-			glTexCoord2i( 1, 1 );
-			glVertex2i( e->x + sprite->w, e->y + sprite->h );
+			glPushMatrix();
+			glEnable(GL_BLEND);
 			
-			// Top-right vertex (corner)
-			glTexCoord2i( 1, 0 );
-			glVertex2i( e->x + sprite->w, e->y );
+			x = e->x + getSpriteWidth(sprite) / 2;
+			y = e->y + getSpriteHeight(sprite) / 2;
 			
-			// Top-left vertex (corner)
-			glTexCoord2i( 0, 0 );
-			glVertex2i( e->x, e->y );
-		glEnd();
-		
-		glPopMatrix();
+			glTranslatef(x, y, 0);
+			glRotatef(0 - e->angle, 0, 0, 1);
+			glTranslatef(0 - x, 0 - y, 0);
+			
+			glBindTexture(GL_TEXTURE_2D, sprite->pixels);
+	 		
+			glBegin(GL_QUADS);
+				// Bottom-left vertex (corner)
+				glTexCoord2i( 0, 1 );
+				glVertex2i( e->x, e->y + sprite->h );
+				
+				// Bottom-right vertex (corner)
+				glTexCoord2i( 1, 1 );
+				glVertex2i( e->x + sprite->w, e->y + sprite->h );
+				
+				// Top-right vertex (corner)
+				glTexCoord2i( 1, 0 );
+				glVertex2i( e->x + sprite->w, e->y );
+				
+				// Top-left vertex (corner)
+				glTexCoord2i( 0, 0 );
+				glVertex2i( e->x, e->y );
+			glEnd();
+			
+			glDisable(GL_BLEND);
+			glPopMatrix();
+		}
 	}
 	
 	glLoadIdentity();

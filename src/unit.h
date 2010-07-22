@@ -46,7 +46,7 @@ class Unit: public Entity
 		~Unit();
 		
 	public:
-		virtual SpritePtr getSprite();
+		virtual void getSprite(SpritePtr list [SPRITE_LIST_LEN]);
 		virtual void update(int delta) = 0;
 		
 	public:
