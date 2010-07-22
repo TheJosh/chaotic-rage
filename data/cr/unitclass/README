@@ -12,6 +12,10 @@ Each class has its own directory for sprites. Sprite filename is <class_name>/<s
 Multiple states can be defined for each state type
 
 State types:
- 1 = static
- 2 = running
- 3 = firing
+0 = walking
+1 = static
+2 = running
+3 = firing
+
+The walking state sprite will be ADDED to the other sprite (drawn below it)
+

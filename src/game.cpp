@@ -41,7 +41,7 @@ void gameLoop(GameState *st, Render *render)
 		st->audio->play();
 		
 		SDL_WarpMouse(400, 30);
-		SDL_Delay(10);
+		SDL_Delay(2);
 		
 		end = SDL_GetTicks();
 	}

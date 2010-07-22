@@ -30,6 +30,8 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	this->current_state_type = 0;
 	this->setState(UNIT_STATE_STATIC);
 	
+	this->walk_state = uc->getState(UNIT_STATE_WALK);
+	
 	this->sprites = uc->loadAllSprites();
 }
 
@@ -163,10 +165,22 @@ unsigned int Unit::getNextWeaponID()
 **/
 SpritePtr Unit::getSprite()
 {
-	int frame = this->st->anim_frame - this->animation_start;
+	int frame;
+	int idx;
+	
+	frame = this->st->anim_frame - this->animation_start;
 	frame = frame % this->current_state->num_frames;
 	
-	int idx = this->current_state->sprite_offset + frame;
+	idx = this->current_state->sprite_offset + frame;
+	
+	frame = this->st->anim_frame - this->animation_start;
+	frame = frame % this->walk_state->num_frames;
+	
+	idx = this->walk_state->sprite_offset + frame;
+	
+	//if (this == st->curr_player) {
+	//	cout << "Walking frame: " << frame << "\n";
+	//}
 	
 	return this->sprites->at(idx);
 }
