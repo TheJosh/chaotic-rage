@@ -34,5 +34,6 @@ class RenderOpenGL : public Render
 		RenderOpenGL(GameState * st);
 		~RenderOpenGL();
 		
+		void renderSprite(SpritePtr sprite, int x, int y, int w, int h);
 };
 

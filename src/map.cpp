@@ -17,6 +17,7 @@ Map::Map()
 {
 	this->ground = NULL;
 	this->walls = NULL;
+	this->background = NULL;
 	this->data = NULL;
 }
 
@@ -125,6 +126,9 @@ int Map::load(string name, Render * render)
 	}
 	// Hack end
 	
+	
+	
+	this->background = this->render->loadSprite("maps/test/background.jpg");
 	
 	return 1;
 }

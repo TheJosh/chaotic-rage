@@ -21,7 +21,7 @@ int main (int argc, char ** argv) {
 	new AudioSDLMixer(st);
 	
 	Render * render = st->render;
-	render->setScreenSize(800, 800, false);
+	render->setScreenSize(800, 500, false);
 	
 	if (! loadAllAreaTypes(render)) {
 		cerr << "Unable to load areatypes datafile.\n";

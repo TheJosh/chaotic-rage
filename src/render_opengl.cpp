@@ -159,20 +159,29 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 **/
 void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y)
 {
+	renderSprite(sprite, x, y, sprite->w, sprite->h);
+}
+
+/**
+* Renders a sprite.
+* Should only be used if the the caller was called by this classes 'Render' function.
+**/
+void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
+{
 	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
  	
 	glBegin(GL_QUADS);
 		// Bottom-left vertex (corner)
 		glTexCoord2i( 0, 1 );
-		glVertex2i( x, y + sprite->w );
+		glVertex2i( x, y + w );
 		
 		// Bottom-right vertex (corner)
 		glTexCoord2i( 1, 1 );
-		glVertex2i( x + sprite->w, y + sprite->h );
+		glVertex2i( x + w, y + h );
 		
 		// Top-right vertex (corner)
 		glTexCoord2i( 1, 0 );
-		glVertex2i( x + sprite->w, y );
+		glVertex2i( x + w, y );
 		
 		// Top-left vertex (corner)
 		glTexCoord2i( 0, 0 );
@@ -300,27 +309,37 @@ void RenderOpenGL::render()
 	unsigned int i, j;
 	SpritePtr sprite;
 	
-	int x, y;	// for general use
+	int x, y, w, h;	// for general use
 	
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
 	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
 	
+	// Calcs for rotations
+	w = this->virt_width * 2;
+	h = this->virt_height * 2;
 	x = st->curr_player->x + st->curr_player->getWidth() / 2;
 	y = st->curr_player->y + st->curr_player->getHeight() / 2;
 	
+	// Background
+	glLoadIdentity();
+	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
+	glRotatef(st->curr_player->angle, 0, 0, 1);
+	glTranslatef(0 - w / 2, 0 - h / 2, 0);
+	this->renderSprite(st->map->background, 0, 0, w, h);
+	
+	// Main map rotation
+	glLoadIdentity();
 	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
 	glRotatef(st->curr_player->angle, 0, 0, 1);
 	glTranslatef(0 - x, 0 - y, 0);
 	
-	// TODO: render backgrounds
-	// Priority: High
+	// Render backgrounds
 	// Dirt layer
 	this->renderSprite(st->map->ground, 0, 0);
 	
 	// Wall layer
+	// TODO: Get working
 	//this->renderSprite(st->map->walls, 0, 0);
 	
 	// Entities
@@ -370,6 +389,7 @@ void RenderOpenGL::render()
 		glPopMatrix();
 	}
 	
+	// HUD
 	glLoadIdentity();
 	st->hud->render(this);
 	
