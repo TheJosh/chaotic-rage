@@ -205,12 +205,17 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	if (this->speed != 0) {
 		int newx = pointPlusAngleX(this->x, this->angle_move, ppsDelta(this->speed, delta));
 		int newy = pointPlusAngleY(this->y, this->angle_move, ppsDelta(this->speed, delta));
-	
+		
 		// Collision detection
 		if (collideWall(this->st, newx, newy, this->uc->width, this->uc->height)) {
 			this->speed = 0;
 			this->setState(UNIT_STATE_STATIC);
 		
+		} else if (newx < 0 || newy < 0
+				|| newx > this->st->map->width - this->getWidth() || newy > this->st->map->height - this->getHeight()) {
+			this->speed = 0;
+			this->setState(UNIT_STATE_STATIC);
+			
 		} else {
 			this->x = newx;
 			this->y = newy;

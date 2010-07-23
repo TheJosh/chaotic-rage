@@ -39,8 +39,6 @@ class Map {
 	private:
 		vector<Area*> areas;
 		vector<Zone*> zones;
-		int width;
-		int height;
 		Render * render;
 		
 	public:
@@ -49,6 +47,8 @@ class Map {
 		
 		data_pixel * data;
 		SpritePtr background;
+		int width;
+		int height;
 		
 	public:
 		Map();
