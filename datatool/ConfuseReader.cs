@@ -27,6 +27,7 @@ namespace datatool
 
     class ConfuseSection
     {
+        public string name;
         public List<ConfuseSection> subsections;
         public Dictionary<string, object> values;
 
@@ -34,6 +35,37 @@ namespace datatool
         {
             subsections = new List<ConfuseSection>();
             values = new Dictionary<string, object>();
+        }
+
+        /**
+         * Get a string value. If not available, returns the default
+         **/
+        public string get_string(string name, string def)
+        {
+            if (!(this.values.ContainsKey(name))) return def;
+            if (! (this.values[name] is string)) return def;
+            return (string)this.values[name];
+        }
+
+        /**
+         * Get a integer value. If not available, returns the default
+         **/
+        public int get_int(string name, int def)
+        {
+            if (!(this.values.ContainsKey(name))) return def;
+            if (!(this.values[name] is int)) return def;
+            return (int)this.values[name];
+        }
+
+        /**
+         * Get a bool value. If not available, returns the default
+         **/
+        public bool get_bool(string name, bool def)
+        {
+            if (!(this.values.ContainsKey(name))) return def;
+            if (!(this.values[name] is int)) return def;
+
+            return ((int)this.values[name] == 1) ? true : false;
         }
     }
 
@@ -48,8 +80,7 @@ namespace datatool
          **/
         public ConfuseSection Parse(string input)
         {
-            if (! lex(input)) return null;
-
+            lex(input);
             return dosect(tokens);
         }
 
@@ -60,6 +91,8 @@ namespace datatool
 
             string ident = null;
             bool eq = false;
+            bool list = false;
+
             int subcnt = 0;
             List<ConfuseToken> sub = null;
 
@@ -73,34 +106,70 @@ namespace datatool
                         if (subcnt == 0) {
                             ConfuseSection subsect = dosect(sub);
                             if (subsect == null) return null;
+                            subsect.name = ident;
                             sect.subsections.Add(subsect);
                             sub = null;
+                            ident = null;
+                            continue;
                         }
                     }
                     sub.Add(t);
                     continue;
                 }
 
-                // Regular
-                if (ident != null && ! eq && t.type == ConfuseTokenType.IDENTIFIER) {
+                // Indetifier
+                if (ident == null && !eq && !list && t.type == ConfuseTokenType.IDENTIFIER) {
                     ident = t.val;
 
-                } else if (ident != null && ! eq && t.type == ConfuseTokenType.EQUALS) {
+                // Equals
+                } else if (ident != null && !eq && !list && t.type == ConfuseTokenType.EQUALS) {
                     eq = true;
 
-                } else if (ident != null && eq && t.type == ConfuseTokenType.STRING) {
+                // Regular string, number
+                } else if (ident != null && eq && !list && t.type == ConfuseTokenType.STRING) {
                     sect.values.Add(ident, t.val);
                     ident = null;
                     eq = false;
 
-                } else if (ident != null && eq && t.type == ConfuseTokenType.NUMBER) {
+                } else if (ident != null && eq && !list && t.type == ConfuseTokenType.NUMBER) {
                     sect.values.Add(ident, int.Parse(t.val));
                     ident = null;
                     eq = false;
+                    
 
-                } else if (ident != null && ! eq && t.type == ConfuseTokenType.SECTSTART) {
+                // List start
+                } else if (ident != null && eq && !list && t.type == ConfuseTokenType.SECTSTART) {
+                    sect.values.Add(ident, new List<object>());
+                    list = true;
+
+                // List comma (do nothing)
+                } else if (ident != null && eq && list && t.type == ConfuseTokenType.COMMA) {
+
+                // List string, number
+                } else if (ident != null && eq && list && t.type == ConfuseTokenType.STRING) {
+                    List<object> obj = (List<object>)sect.values[ident];
+                    obj.Add(t.val);
+
+                } else if (ident != null && eq && list && t.type == ConfuseTokenType.NUMBER) {
+                    List<object> obj = (List<object>)sect.values[ident];
+                    obj.Add(int.Parse(t.val));
+
+                // List end
+                } else if (ident != null && eq && list && t.type == ConfuseTokenType.SECTEND) {
+                    ident = null;
+                    eq = false;
+                    list = false;
+
+
+                // Section start
+                } else if (ident != null && !eq && !list && t.type == ConfuseTokenType.SECTSTART) {
                     sub = new List<ConfuseToken>();
                     subcnt++;
+
+
+                // Not sure
+                } else {
+                    throw new Exception("Unexpected token " + t.type.ToString() + " while parsing config file. ident = " + ident + " eq=" + eq + " list=" + list);
                 }
             }
 
@@ -111,10 +180,12 @@ namespace datatool
         /**
          * Lexer
          **/
-        private bool lex(string input)
+        private void lex(string input)
         {
             int len = input.Length;
             Match m;
+
+            tokens = new List<ConfuseToken>();
 
             Dictionary<string,ConfuseTokenType> regexes = new Dictionary<string,ConfuseTokenType>();
 
@@ -123,43 +194,44 @@ namespace datatool
             regexes.Add("^{", ConfuseTokenType.SECTSTART);
             regexes.Add("^}", ConfuseTokenType.SECTEND);
             regexes.Add("^,", ConfuseTokenType.COMMA);
-            regexes.Add("^\"[^\"]+\"", ConfuseTokenType.STRING);
+            regexes.Add("^\"([^\"]+)\"", ConfuseTokenType.STRING);
             regexes.Add("^[-0-9]+", ConfuseTokenType.NUMBER);
             regexes.Add("^\\s+", ConfuseTokenType.NOTHING);
             regexes.Add("^//.*?\\n", ConfuseTokenType.NOTHING);
             regexes.Add("^/\\*.*\\*/", ConfuseTokenType.NOTHING);
             regexes.Add("^.", ConfuseTokenType.ERROR);
 
-            tokens = new List<ConfuseToken>();
-
             while (input.Length > 0) {
                 foreach (KeyValuePair<string, ConfuseTokenType> kvp in regexes) {
                     m = Regex.Match(input, kvp.Key, RegexOptions.Singleline);
                     if (m.Success) {
-                        if (!processMatch(m, kvp.Value)) return false;
+                        processMatch(m, kvp.Value);
                         input = input.Substring (m.Length);
                         break;
                     }
                 }
             }
-
-            return true;
         }
 
         /**
          * Creates a token
          **/
-        private bool processMatch(Match m, ConfuseTokenType type)
+        private void processMatch(Match m, ConfuseTokenType type)
         {
-            if (type == ConfuseTokenType.NOTHING) return true;
-            if (type == ConfuseTokenType.ERROR) return false;
+            if (type == ConfuseTokenType.NOTHING) return;
+            if (type == ConfuseTokenType.ERROR) throw new Exception("Unable to find a valid token for '" + m.Value + "'.");
 
             ConfuseToken t = new ConfuseToken();
             t.type = type;
-            t.val = m.Value;
             tokens.Add(t);
 
-            return true;
+            if (type == ConfuseTokenType.STRING) {
+                t.val = m.Groups[1].Value;
+            } else {
+                t.val = m.Value; 
+            }
+
+            return;
         }
     }
 }

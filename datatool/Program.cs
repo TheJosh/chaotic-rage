@@ -26,19 +26,20 @@ namespace datatool
             dp = new DataProvider();
             dp.load(datapath);
 
-            string file = System.IO.File.ReadAllText(datapath + "\\particletypes\\particletypes.conf");
+            string filename = datapath + "\\particletypes\\particletypes.conf";
+            string file = System.IO.File.ReadAllText(filename);
 
             ConfuseReader read = new ConfuseReader();
-            ConfuseSection sect = read.Parse(file);
-            if (sect == null) {
-                MessageBox.Show("Parse error");
+            try {
+                ConfuseSection sect = read.Parse(file);
+            } catch (Exception ex) {
+                MessageBox.Show("Error loading " + filename + "\n" + ex.Message);
+                Application.Exit();
             }
 
-            System.Diagnostics.Debug.WriteLine(sect);
-
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Main());
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Main());
         }
     }
 }
