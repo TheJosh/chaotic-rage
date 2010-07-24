@@ -65,6 +65,7 @@
     <Compile Include="Actions\actions_edit.Designer.cs">
       <DependentUpon>actions_edit.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfuseReader.cs" />
     <Compile Include="ObjectCopier.cs" />
     <Compile Include="base_list.cs">
       <SubType>Form</SubType>
