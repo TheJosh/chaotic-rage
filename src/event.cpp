@@ -27,7 +27,7 @@ static const char *events_str[]={ "",
 void fireEvent (Event * ev)
 {
 	if (ev->e1 != NULL) ev->e1->handleEvent(ev);
-	// TODO: should we also call the handleevent on e2?
+	if (ev->e2 != NULL) ev->e2->handleEvent(ev);
 	
 	ev->e1->getGameState()->audio->handleEvent(ev);
 	

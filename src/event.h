@@ -14,9 +14,26 @@ using namespace std;
 * Event types
 **/
 enum EventType {
-	HIT_WALL       = 1,  // particles
-	HIT_UNIT       = 2,  // particles
-	HIT_PARTICLE   = 3,  // units
+	EVENT_NONE,
+	
+	UNIT_SPAWN,
+	UNIT_WEP_PICKUP,
+	UNIT_WEP_CHANGE,
+	UNIT_WEP_BEG_FIRE,
+	UNIT_WEP_END_FIRE,
+	UNIT_PICKUP_OBJ,
+	UNIT_DROP_OBJ,
+	UNIT_DIED,
+	
+	UNIT_SCORE_KILL,
+	UNIT_SCORE_ASSIST,
+	UNIT_SCORE_SUISIDE,
+	
+	UNIT_ENTER_ZONE,
+	UNIT_EXIT_ZONE,
+	
+	PART_HIT_WALL,
+	PART_HIT_UNIT,
 };
 
 

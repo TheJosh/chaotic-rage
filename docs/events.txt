@@ -113,7 +113,7 @@ PART_HIT_WALL
 PART_HIT_UNIT
 	A particle has hit a unit
 	
-	e1 = The particle which did the hitting
+	e1 = The particle
 	e2 = The unit which was hit
 	
 	

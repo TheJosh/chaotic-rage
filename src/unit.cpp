@@ -229,19 +229,11 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	for (i = 0; i < particles->size(); i++) {
 		Particle *p = particles->at(i);
 		
-		// TODO: Should this be only one event?
 		Event *ev = new Event();
-		ev->type = HIT_UNIT;
-		ev->e1 = p;
-		ev->e2 = this;
-		fireEvent(ev);
-		
-		ev = new Event();
-		ev->type = HIT_PARTICLE;
+		ev->type = PART_HIT_UNIT;
 		ev->e1 = this;
 		ev->e2 = p;
 		fireEvent(ev);
-		// end todo
 		
 		this->health -= p->unit_damage;
 		if (this->health <= 0) {

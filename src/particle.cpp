@@ -64,7 +64,7 @@ void Particle::update(int delta)
 	AreaType *at = getAreaTypeByID(pixel.type);
 	if (at->wall) {
 		Event *ev = new Event();
-		ev->type = HIT_WALL;
+		ev->type = PART_HIT_WALL;
 		ev->e1 = this;
 		fireEvent(ev);
 		
