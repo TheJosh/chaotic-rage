@@ -1,11 +1,26 @@
 You will need at least these:
+ - A compiler. The makefiles are written for GCC
+ - SDL
+ - SDL_Mixer
+ - SDL_Image
+ - zziplib
+ - libconfuse
+ - gl
+ - glu
 
-SDL
-SDL_Mixer
-zziplib
-libconfuse
-gl
-glu
+For compiling on a recent Ubuntu:
+ - g++
+ - make
+ - libsdl1.2-dev
+ - libsdl-image1.2-dev
+ - libsdl-mixer1.2-dev
+ - libzzip-dev
+ - libconfuse-dev
+ - libgl1-mesa-dev
+ - libglu1-mesa-dev
 
-You will need a recent linux to compile.
+TODO: compiling on windows
 
+TODO: compiling on mac
+
+TODO: cross-compile for windows, mac
