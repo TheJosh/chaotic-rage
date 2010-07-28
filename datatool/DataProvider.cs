@@ -27,26 +27,20 @@ namespace datatool
             this.unitclasses = new List<base_item>();
 
             load_areatypes();
+            load_particletypes();
 
-            // Load particle types
-            
-            particletypes.Add(new particletype_item("Machine gun"));
-            particletypes.Add(new particletype_item("Blood"));
 
             // Load particle generators
-            
             particlegenerators.Add(new particlegenerator_item("Machine gun"));
             particlegenerators.Add(new particlegenerator_item("Blood"));
 
             // Load unit classes
-            
             unitclasses.Add(new unitclass_item("Maniac"));
             unitclasses.Add(new unitclass_item("Zombie"));
 
-            
-
             return true;
         }
+
 
         /**
          * Loads the areatypes
@@ -77,6 +71,69 @@ namespace datatool
                 i.Wall = s.get_bool("wall", false);
             }
         }
+
+
+        /**
+         * Loads the particletypes
+         **/
+        private void load_particletypes()
+        {
+            ConfuseSection sect = null;
+            string file = System.IO.File.ReadAllText(this.datapath + "\\particletypes\\particletypes.conf");
+
+            // Parse config
+            try {
+                sect = read.Parse(file);
+            } catch (Exception ex) {
+                MessageBox.Show("Error loading particletypes:\n" + ex.Message);
+                Application.Exit();
+            }
+
+            // Load areatypes
+            foreach (ConfuseSection s in sect.subsections) {
+                particletype_item i = new particletype_item("");
+                particletypes.Add(i);
+
+                if (!s.values.ContainsKey("name")) throw new Exception("Particletype defined without a name");
+                if (!s.values.ContainsKey("image")) throw new Exception("Particletype defined without an image");
+
+                i.Name = s.get_string("name", "");
+                i.Image = s.get_string("image", "");
+                i.NumFrames = s.get_int("num_frames", 1);
+                i.LinSpeed = s.get_range("lin_speed", new range(0)).toString();
+                i.LinAccel = s.get_range("lin_accel", new range(0)).toString();
+                i.Age = s.get_range("age", new range(0)).toString();
+
+                load_actions(i, s);
+            }
+        }
+
+
+        /**
+         * Loads the actions for something
+         * The specailised classes do not get loaded at this time - they will be swapped in later
+         **/
+        private void load_actions(actions_item i, ConfuseSection sect)
+        {
+            foreach (ConfuseSection s in sect.subsections) {
+                if (s.name != "action") continue;
+
+                int event_id = s.get_int("event", 0);
+                int type_id = s.get_int("type", 0);
+
+                action a = new action();
+                a.Event = (action_event) event_id;
+                a.Type = (action_type) type_id;
+                
+                if (s.values.ContainsKey("args")) {
+                    a.loadinfo = s.values["args"];
+                }
+
+                i.addAction (a);
+            }
+        }
+
+
 
         public List<base_item> AreaTypes
         {

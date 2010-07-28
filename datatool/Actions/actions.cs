@@ -25,6 +25,7 @@ namespace datatool
     [Serializable]
     public class action
     {
+        public object loadinfo;
         protected action_event e;
         protected action_type type;
 

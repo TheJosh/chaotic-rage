@@ -67,6 +67,22 @@ namespace datatool
 
             return ((int)this.values[name] == 1) ? true : false;
         }
+
+        /**
+         * Get a range value. If not available, returns the default
+         **/
+        public range get_range(string name, range def)
+        {
+            if (!(this.values.ContainsKey(name))) return def;
+
+            if (this.values[name] is List<object>) {
+                return new range((int)((List<object>)this.values[name])[0], (int)((List<object>)this.values[name])[1]);
+            } else if (this.values[name] is int) {
+                return new range((int) this.values[name]);
+            } else {
+                return def;
+            }
+        }
     }
 
 
