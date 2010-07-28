@@ -1,3 +1,5 @@
+These are only some ideas for now.
+
 Three classes:
  - Small maniac type, ADD kid. Kamakazee. Listed in this doc as 'maniac'.
  - Regular fighter. Good at fighting, stealth. Listed in this doc as 'marine'.
