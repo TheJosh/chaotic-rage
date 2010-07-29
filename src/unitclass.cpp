@@ -71,41 +71,23 @@ UnitClass::~UnitClass()
 /**
 * Loads the area types
 **/
-bool loadAllUnitClasses(Render * render)
+bool loadAllUnitClasses(Mod * mod)
 {
 	char *buffer;
-	ZZIP_FILE *fp;
 	cfg_t *cfg, *cfg_unitclass;
 	
 	
-	// Load the 'info.conf' file
-	string filename = getDataDirectory(DF_UNITCLASS);
-	filename.append("unitclass.conf");
-	fp = zzip_open(filename.c_str(), 0);
-	if (! fp) {
-		cerr << "Can't read unitclass.conf file\n";
-		return false;
-	}
-	
-	// Read the contents of the file into a buffer
-	zzip_seek (fp, 0, SEEK_END);
-	int len = zzip_tell (fp);
-	zzip_seek (fp, 0, SEEK_SET);
-	
-	buffer = (char*) malloc(len + 1);
+	// Load + parse the config file
+	buffer = mod->loadText("unitclass/unitclass.conf");
 	if (buffer == NULL) {
-		cerr << "Can't read unitclass.conf file\n";
 		return false;
 	}
-	buffer[len] = '\0';
 	
-	zzip_read(fp, buffer, len);
-	zzip_close(fp);
-	
-	
-	// Parse config file
 	cfg = cfg_init(opts, CFGF_NONE);
 	cfg_parse_buf(cfg, buffer);
+	
+	free(buffer);
+	
 	
 	int num_types = cfg_size(cfg, "unitclass");
 	if (num_types == 0) return false;
@@ -115,7 +97,7 @@ bool loadAllUnitClasses(Render * render)
 	for (j = 0; j < num_types; j++) {
 		cfg_unitclass = cfg_getnsec(cfg, "unitclass", j);
 		
-		UnitClass* uc = loadUnitClass(cfg_unitclass, render);
+		UnitClass* uc = loadUnitClass(cfg_unitclass, mod);
 		if (uc == NULL) {
 			cerr << "Bad unit class at index " << j << endl;
 			return false;
@@ -126,7 +108,7 @@ bool loadAllUnitClasses(Render * render)
 	}
 	
 	// If there was sprite errors, exit the game
-	if (render->wasLoadSpriteError()) {
+	if (mod->st->render->wasLoadSpriteError()) {
 		cerr << "Error loading unit classes; game will now exit.\n";
 		exit(1);
 	}
@@ -140,7 +122,7 @@ bool loadAllUnitClasses(Render * render)
 /**
 * Loads a single area type
 **/
-UnitClass* loadUnitClass(cfg_t *cfg, Render * render)
+UnitClass* loadUnitClass(cfg_t *cfg, Mod * mod)
 {
 	UnitClass* uc;
 	cfg_t *cfg_settings, *cfg_state;
@@ -149,7 +131,7 @@ UnitClass* loadUnitClass(cfg_t *cfg, Render * render)
 	
 	uc = new UnitClass();
 	uc->name = cfg_getstr(cfg, "name");
-	uc->render = render;
+	uc->mod = mod;
 	
 	uc->actions = loadActions(cfg);
 	
@@ -174,10 +156,10 @@ UnitClass* loadUnitClass(cfg_t *cfg, Render * render)
 	for (j = 1; j < num_settings; j++) {
 		cfg_settings = cfg_getnsec(cfg, "settings", j);
 		
-		uc->mod[j - 1].lin_speed = cfg_getint(cfg_settings, "lin_speed");
-		uc->mod[j - 1].lin_accel = cfg_getint(cfg_settings, "lin_accel");
-		uc->mod[j - 1].turn_move = cfg_getint(cfg_settings, "turn_move");
-		uc->mod[j - 1].turn_aim = cfg_getint(cfg_settings, "turn_aim");
+		uc->modifiers[j - 1].lin_speed = cfg_getint(cfg_settings, "lin_speed");
+		uc->modifiers[j - 1].lin_accel = cfg_getint(cfg_settings, "lin_accel");
+		uc->modifiers[j - 1].turn_move = cfg_getint(cfg_settings, "turn_move");
+		uc->modifiers[j - 1].turn_aim = cfg_getint(cfg_settings, "turn_aim");
 	}
 	
 	
@@ -236,10 +218,10 @@ UnitClassSettings* UnitClass::getSettings(Uint8 modifier_flags)
 	
 	for (int i = 0; i < UNIT_NUM_MODIFIERS; i++) {
 		if ((modifier_flags & (1 << i)) != 0) {
-			ret->lin_speed += this->mod[i - 1].lin_speed;
-			ret->lin_accel += this->mod[i - 1].lin_accel;
-			ret->turn_move += this->mod[i - 1].turn_move;
-			ret->turn_aim += this->mod[i - 1].turn_aim;
+			ret->lin_speed += this->modifiers[i - 1].lin_speed;
+			ret->lin_accel += this->modifiers[i - 1].lin_accel;
+			ret->turn_move += this->modifiers[i - 1].turn_move;
+			ret->turn_aim += this->modifiers[i - 1].turn_aim;
 		}
 	}
 	
@@ -309,12 +291,12 @@ vector<SpritePtr>* UnitClass::loadAllSprites()
 			
 			DEBUG("Loading unit class sprite; image = '%s', angle = %i, frame = %i\n", state_info->image.c_str(), angle * 45, frame);
 			
-			SpritePtr surf = this->render->loadSprite(buff);
+			SpritePtr surf = this->mod->st->render->loadSprite(buff, this->mod);
 			ret->push_back(surf);
 			
 			if (this->width == 0) {
-				this->width = this->render->getSpriteWidth(surf);
-				this->height = this->render->getSpriteHeight(surf);
+				this->width = this->mod->st->render->getSpriteWidth(surf);
+				this->height = this->mod->st->render->getSpriteHeight(surf);
 			}
 		}
 		
@@ -324,7 +306,7 @@ vector<SpritePtr>* UnitClass::loadAllSprites()
 		}
 	}
 	
-	if (this->render->wasLoadSpriteError()) {
+	if (this->mod->st->render->wasLoadSpriteError()) {
 		cerr << "Unable to load required unit sprites; exiting.\n";
 		exit(1);
 	}

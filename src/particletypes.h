@@ -58,7 +58,7 @@ class ParticleGenType
 };
 
 
-bool loadAllParticleTypes(Render * render);
+bool loadAllParticleTypes(Mod * mod);
 
 ParticleType* getParticleTypeByID(int id);
 ParticleGenType* getParticleGenTypeByID(int id);

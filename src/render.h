@@ -40,11 +40,9 @@ class Render
 		virtual void render() = 0;
 		
 		/**
-		* Loads a sprite from file into memeory
-		* Uses magneta for colour key
-		* The filename can be in a compressed ZIP file or a directory
+		* Loads a sprite from a mod into memeory
 		**/
-		SpritePtr loadSprite(string filename);
+		SpritePtr loadSprite(string filename, Mod * mod);
 		
 		/**
 		* Renders a sprite.

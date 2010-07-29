@@ -239,16 +239,16 @@ string getDataDirectory(int datafile)
 {
 	switch (datafile) {
 		case DF_AREATYPES:
-			return "data/cr/areatypes/";
+			return "areatypes/";
 			
 		case DF_UNITCLASS:
-			return "data/cr/unitclass/";
+			return "unitclass/";
 		
 		case DF_PARTICLES:
-			return "data/cr/particletypes/";
+			return "particletypes/";
 			
 		case DF_WEAPONS:
-			return "data/cr/weapontypes/";
+			return "weapontypes/";
 	}
 	
 	cerr << "Cannot find data directory for type = " << datafile << "\n";

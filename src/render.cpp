@@ -21,19 +21,18 @@ Render::Render(GameState * st)
 
 
 /**
-* Loads a sprite.
+* Loads a sprite from a mod
 * This just opens the SDL_RWops and then passes that to the actual renderer
 **/
-SpritePtr Render::loadSprite(string filename)
+SpritePtr Render::loadSprite(string filename, Mod * mod)
 {
 	SpritePtr sprite;
 	SDL_RWops *rw;
 	
-	DEBUG("Loading bitmap '%s'.\n", filename.c_str());
+	DEBUG("Loading sprite '%s'.\n", filename.c_str());
 	
-	rw = SDL_RWFromZZIP(filename.c_str(), "r");
+	rw = mod->loadRWops(filename);
 	if (rw == NULL) {
-		fprintf(stderr, "Couldn't load sprite '%s'.\n", filename.c_str());
 		load_err = true;
 		return NULL;
 	}

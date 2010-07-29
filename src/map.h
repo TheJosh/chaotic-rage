@@ -40,6 +40,7 @@ class Map {
 		vector<Area*> areas;
 		vector<Zone*> zones;
 		Render * render;
+		GameState * st;
 		
 	public:
 		SpritePtr ground;	// TODO: move these to the renderer
@@ -51,7 +52,7 @@ class Map {
 		int height;
 		
 	public:
-		Map();
+		Map(GameState * st);
 		~Map();
 		
 	private:

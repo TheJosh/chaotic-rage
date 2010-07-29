@@ -23,23 +23,25 @@ int main (int argc, char ** argv) {
 	Render * render = st->render;
 	render->setScreenSize(900, 900, false);
 	
-	if (! loadAllAreaTypes(render)) {
-		cerr << "Unable to load areatypes datafile.\n";
+	Mod * mod = new Mod(st, "data/cr/");
+	
+	if (! mod->loadAreaTypes()) {
+		cerr << "Unable to load area types.\n";
 		exit(1);
 	}
 	
-	if (! loadAllUnitClasses(render)) {
-		cerr << "Unable to load unitclasses datafile.\n";
+	if (! mod->loadUnitClasses()) {
+		cerr << "Unable to load unit classes.\n";
 		exit(1);
 	}
 	
-	if (! loadAllParticleTypes(render)) {
-		cerr << "Unable to load particletypes datafile.\n";
+	if (! mod->loadParticleTypes()) {
+		cerr << "Unable to load particle types.\n";
 		exit(1);
 	}
 	
-	if (! loadAllWeaponTypes(render)) {
-		cerr << "Unable to load weapontypes datafile.\n";
+	if (! mod->loadWeaponTypes()) {
+		cerr << "Unable to load weapon types.\n";
 		exit(1);
 	}
 	
@@ -47,7 +49,7 @@ int main (int argc, char ** argv) {
 	seedRandom();
 	
 	
-	Map *m = new Map();
+	Map *m = new Map(st);
 	m->load("arena", render);
 	st->map = m;
 	

@@ -13,8 +13,9 @@ using namespace std;
 SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data);
 
 
-Map::Map()
+Map::Map(GameState * st)
 {
+	this->st = st;
 	this->ground = NULL;
 	this->walls = NULL;
 	this->background = NULL;
@@ -127,8 +128,8 @@ int Map::load(string name, Render * render)
 	// Hack end
 	
 	
-	
-	this->background = this->render->loadSprite("maps/test/background.jpg");
+	Mod * mod = new Mod(st, "maps/test/");
+	this->background = this->render->loadSprite("background.jpg", mod);
 	
 	return 1;
 }

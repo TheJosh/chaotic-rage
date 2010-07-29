@@ -24,7 +24,7 @@ class WeaponType
 };
 
 
-bool loadAllWeaponTypes(Render * render);
+bool loadAllWeaponTypes(Mod * mod);
 WeaponType* getWeaponTypeByID(unsigned int id);
 unsigned int getNumWeaponTypes();
 

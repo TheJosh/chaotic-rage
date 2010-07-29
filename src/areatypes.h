@@ -27,5 +27,5 @@ class AreaType
 };
 
 
-bool loadAllAreaTypes(Render * render);
+bool loadAllAreaTypes(Mod * mod);
 AreaType* getAreaTypeByID(int id);

@@ -40,6 +40,7 @@ class EventListener;
 class GameState;
 class HUD;
 class Map;
+class Mod;
 class Particle;
 class ParticleGenerator;
 class ParticleGenType;
@@ -51,6 +52,7 @@ class UnitClass;
 class WeaponType;
 class Zone;
 
+#include "mod.h"
 #include "event.h"
 
 #include "render.h"

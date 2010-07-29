@@ -16,7 +16,7 @@ static vector<ParticleType*> particletypes;
 static vector<ParticleGenType*> generatortypes;
 
 /* Functions */
-ParticleType* loadParticleType(cfg_t *cfg_particletype, Render * render);
+ParticleType* loadParticleType(cfg_t *cfg_particletype, Mod * mod);
 ParticleGenType* loadParticleGenType(cfg_t *cfg_generatortype);
 
 extern cfg_opt_t g_action_opts;
@@ -91,44 +91,22 @@ ParticleType::~ParticleType()
 /**
 * Loads the area types
 **/
-bool loadAllParticleTypes(Render * render)
+bool loadAllParticleTypes(Mod * mod)
 {
 	char *buffer;
-	int len;
-	string filename;
-	ZZIP_FILE *fp;
 	cfg_t *cfg, *cfg_particletype, *cfg_generatortype;
 	
 	
-	// Load the 'particletypes.conf' file
-	filename = getDataDirectory(DF_PARTICLES);
-	filename.append("particletypes.conf");
-	fp = zzip_open(filename.c_str(), 0);
-	if (! fp) {
-		cerr << "Can't read particletypes.conf file\n";
-		return false;
-	}
-	
-	// Read the contents of the file into a buffer
-	zzip_seek (fp, 0, SEEK_END);
-	len = zzip_tell (fp);
-	zzip_seek (fp, 0, SEEK_SET);
-	
-	buffer = (char*) malloc(len + 1);
+	// Load + parse the config file
+	buffer = mod->loadText("particletypes/particletypes.conf");
 	if (buffer == NULL) {
-		cerr << "Can't read particletypes.conf file\n";
 		return false;
 	}
-	buffer[len] = '\0';
 	
-	zzip_read(fp, buffer, len);
-	zzip_close(fp);
-	
-	
-	// Parse config file
 	cfg = cfg_init(opts_particles, CFGF_NONE);
 	cfg_parse_buf(cfg, buffer);
 	
+	free(buffer);
 	
 	
 	int num_types = cfg_size(cfg, "particle");
@@ -139,7 +117,7 @@ bool loadAllParticleTypes(Render * render)
 	for (j = 0; j < num_types; j++) {
 		cfg_particletype = cfg_getnsec(cfg, "particle", j);
 		
-		ParticleType* pt = loadParticleType(cfg_particletype, render);
+		ParticleType* pt = loadParticleType(cfg_particletype, mod);
 		if (pt == NULL) {
 			cerr << "Bad particle type at index " << j << endl;
 			return false;
@@ -151,34 +129,17 @@ bool loadAllParticleTypes(Render * render)
 	
 	
 	
-	// Load the 'particletypes.conf' file
-	filename = getDataDirectory(DF_PARTICLES);
-	filename.append("particlegenerators.conf");
-	fp = zzip_open(filename.c_str(), 0);
-	if (! fp) {
-		cerr << "Can't read particletypes.conf file\n";
-		return false;
-	}
-	
-	// Read the contents of the file into a buffer
-	zzip_seek (fp, 0, SEEK_END);
-	len = zzip_tell (fp);
-	zzip_seek (fp, 0, SEEK_SET);
-	
-	buffer = (char*) malloc(len + 1);
+	// Load + parse the config file
+	buffer = mod->loadText("particletypes/particlegenerators.conf");
 	if (buffer == NULL) {
-		cerr << "Can't read particletypes.conf file\n";
 		return false;
 	}
-	buffer[len] = '\0';
 	
-	zzip_read(fp, buffer, len);
-	zzip_close(fp);
-	
-	
-	// Parse config file
 	cfg = cfg_init(opts_generators, CFGF_NONE);
 	cfg_parse_buf(cfg, buffer);
+	
+	free(buffer);
+	
 	
 	// Process generator type sections
 	num_types = cfg_size(cfg, "generator");
@@ -200,7 +161,7 @@ bool loadAllParticleTypes(Render * render)
 	
 	
 	// If there was sprite errors, exit the game
-	if (render->wasLoadSpriteError()) {
+	if (mod->st->render->wasLoadSpriteError()) {
 		cerr << "Error loading particle types; game will now exit.\n";
 		exit(1);
 	}
@@ -212,7 +173,7 @@ bool loadAllParticleTypes(Render * render)
 /**
 * Loads a single particle type
 **/
-ParticleType* loadParticleType(cfg_t *cfg_particletype, Render * render)
+ParticleType* loadParticleType(cfg_t *cfg_particletype, Mod * mod)
 {
 	ParticleType* pt;
 	char buff[255];
@@ -244,11 +205,11 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype, Render * render)
 	for (angle = 0; angle < 8; angle++) {
 		for (frame = 0; frame < pt->num_frames; frame++) {
 			
-			sprintf(buff, "%s%s/%ideg_fr%i.png", getDataDirectory(DF_PARTICLES).c_str(), pt->image.c_str(), angle * 45, frame);
+			sprintf(buff, "particletypes/%s/%ideg_fr%i.png", pt->image.c_str(), angle * 45, frame);
 			
 			DEBUG("Loading particle type sprite; image = '%s', angle = %i, frame = %i\n", pt->image.c_str(), angle * 45, frame);
 			
-			SpritePtr surf = render->loadSprite(buff);
+			SpritePtr surf = mod->st->render->loadSprite(buff, mod);
 			pt->sprites.push_back(surf);
 			
 		}
