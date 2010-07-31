@@ -38,21 +38,6 @@ namespace datatool
             return this.name;
         }
 
-        public particletype_item clone()
-        {
-            particletype_item ret;
-            ret = new particletype_item(this.name);
-            ret.image = this.image;
-            ret.directional = this.directional;
-            ret.num_frames = this.num_frames;
-            ret.lin_speed = this.lin_speed;
-            ret.lin_accel = this.lin_accel;
-            ret.age = this.age;
-            ret.damage = this.damage;
-            ret.damage_accel = this.damage_accel;
-            return ret;
-        }
-
 
 
         [DescriptionAttribute("The name of this particletype, internal use only")]

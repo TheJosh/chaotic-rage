@@ -14,18 +14,6 @@ namespace datatool
         private int turn_move;
         private int turn_aim;
 
-        public unitclass_settings clone()
-        {
-            unitclass_settings ret;
-            ret = new unitclass_settings();
-            ret.name = this.name;
-            ret.lin_speed = this.lin_speed;
-            ret.lin_accel = this.lin_accel;
-            ret.turn_aim = this.turn_aim;
-            ret.turn_move = this.turn_move;
-            return ret;
-        }
-
         [DescriptionAttribute("Internal use only")]
         public string Name
         {
@@ -81,19 +69,6 @@ namespace datatool
         override public string getName()
         {
             return this.name;
-        }
-
-        public unitclass_item clone()
-        {
-            unitclass_item ret;
-            ret = new unitclass_item(this.name);
-
-            ret.settings.Clear();
-            for (int i = 0; i < this.settings.Count; i++) {
-                ret.settings.Add(this.settings[i].clone());
-            }
-
-            return ret;
         }
 
 

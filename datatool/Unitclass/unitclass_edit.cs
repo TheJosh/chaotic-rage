@@ -31,7 +31,8 @@ namespace datatool
          **/
         private void Form_Load(object sender, EventArgs e)
         {
-            this.internal_item = this.item.clone();
+            throw new Exception("Needs update");
+            //this.internal_item = this.item.clone();
 
             this.Text = this.item.getName();
             this.txtName.Text = this.item.getName();

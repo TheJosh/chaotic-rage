@@ -26,12 +26,19 @@ namespace datatool
         private void AreatypeEdit_Load(object sender, EventArgs e)
         {
             this.Text = this.item.getName();
-
             this.grid.SelectedObject = this.item;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
         }
 
         private void btnActions_Click(object sender, EventArgs e)

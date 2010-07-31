@@ -65,14 +65,6 @@ namespace datatool
             return this.name;
         }
 
-        public particlegenerator_item clone()
-        {
-            particlegenerator_item ret;
-            ret = new particlegenerator_item(this.name);
-            return ret;
-        }
-
-
 
         [DescriptionAttribute("The name of this particletype, internal use only")]
         public string Name
