@@ -67,6 +67,13 @@ namespace datatool.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap audio {
+            get {
+                object obj = ResourceManager.GetObject("audio", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap delete {
             get {
                 object obj = ResourceManager.GetObject("delete", resourceCulture);
@@ -88,9 +95,37 @@ namespace datatool.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap image {
+            get {
+                object obj = ResourceManager.GetObject("image", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap script {
+            get {
+                object obj = ResourceManager.GetObject("script", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap select {
             get {
                 object obj = ResourceManager.GetObject("select", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap system {
+            get {
+                object obj = ResourceManager.GetObject("system", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap video {
+            get {
+                object obj = ResourceManager.GetObject("video", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

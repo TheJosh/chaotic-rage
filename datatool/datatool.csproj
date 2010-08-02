@@ -241,6 +241,21 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\image-x-generic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\application-x-executable.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\text-x-script.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\audio-x-generic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\video-display.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

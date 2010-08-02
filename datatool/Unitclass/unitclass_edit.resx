@@ -129,12 +129,12 @@
         ARADAAEBAQABIAYAARD/ABcAA1oBtAOBAf8DgQH/A4EB/wOBAf8DgQH/A4EB/wOBAf8DgQH/A4EB/wOB
         Af8DgQH/A4EB/wNWAajIAAOBMf8DgQH/yAADgQX/A+0B/wPtAf8D7gH/A+8B/wPvAf8D8AH/A/AB/wPg
         Af8DrQH/A7oF/wOBAf/IAAOBBf8D7QH/A8YB/wPHAf8DxwH/A8gB/wPIAf8DtQH/A5IB/wOeAf8DqwX/
-        A4EB/8gAA4EF/wPsAf8D7QH/A+4B/wPuAf8D7wH/A9QB/wN9Af8DhQH/A5AB/wOdBf8DgQH/yAADgQX/
-        A+wB/wOwAf8DXgH/A14B/wNeAf8DXgH/A18B/wNoAf8DcgH/A9wF/wOBAf/IAAOBBf8D7AH/A28B/wNv
-        Af8DbwH/A3AB/wNwAf8DcAH/A3AB/wPWAf8D8AX/A4EB/8gAA4EF/wPrAf8DXgH/A14B/wOwAf8DXgH/
-        A3AB/wNwAf8BzALSAf8D7gH/A/AF/wOBAf/IAAOBBf8D6wH/A28B/wPSAf8D7AH/A9IB/wNvAf8BbAJv
-        Af8D7AH/A+4B/wPwBf8DgQH/yAADgQX/A+sB/wPFAf8DxgH/A7AB/wNeAf8DXgH/A14B/wPGAf8DxwH/
-        A/AF/wOBAf/IAAOBBf8D6gH/A+sB/wPrAf8DbwH/A28B/wNvAf8D0gH/A+0B/wPuAf8D8AX/A4EB/8gA
+        A4EB/8gAA4EF/wPsAf8D7QH/A+4B/wPuAf8D7wH/A9QB/wOBAf8DhQH/A5AB/wOdBf8DgQH/yAADgQX/
+        A+wB/wOwAf8DbgH/A24B/wNuAf8DbgH/A28B/wN4Af8DgQH/A9wF/wOBAf/IAAOBBf8D7AH/A38B/wN/
+        Af8DfwH/A4AB/wOAAf8DgAH/A4AB/wPWAf8D8AX/A4EB/8gAA4EF/wPrAf8DbgH/A24B/wOwAf8DbgH/
+        A4AB/wOAAf8BzALSAf8D7gH/A/AF/wOBAf/IAAOBBf8D6wH/A38B/wPSAf8D7AH/A9IB/wN/Af8BfAJ/
+        Af8D7AH/A+4B/wPwBf8DgQH/yAADgQX/A+sB/wPFAf8DxgH/A7AB/wNuAf8DbgH/A24B/wPGAf8DxwH/
+        A/AF/wOBAf/IAAOBBf8D6gH/A+sB/wPrAf8DfwH/A38B/wN/Af8D0gH/A+0B/wPuAf8D8AX/A4EB/8gA
         A4EF/wPqAf8DxAH/A8UB/wPFAf8DxgH/A8YB/wPGAf8DxgH/A8cB/wPwBf8DgQH/yAADgQX/A+wB/wPq
         Af8D6gH/A+sB/wPrAf8D6wH/A+wB/wPsAf8D7QH/A/AF/wOBAf/IAAOBMf8DgQH/yAADVwGsA4EB/wOB
         Af8DgQH/A4EB/wOBAf8DgQH/A4EB/wOBAf8DgQH/A4EB/wOBAf8DgQH/AzYBVsQAAUIBTQE+BwABPgMA
@@ -143,6 +143,9 @@
         BgAL
 </value>
   </data>
+  <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>140, 17</value>
+  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>51</value>
   </metadata>

@@ -11,8 +11,7 @@ namespace datatool
     public partial class UnitclassEdit : Form
     {
         private unitclass_item item;
-        private unitclass_item internal_item;
-        private SettingsListItem sel_list_item;
+        private ExtraListItem sel_list_item;
 
         public unitclass_item Item
         {
@@ -31,16 +30,21 @@ namespace datatool
          **/
         private void Form_Load(object sender, EventArgs e)
         {
-            throw new Exception("Needs update");
-            //this.internal_item = this.item.clone();
-
             this.Text = this.item.getName();
             this.txtName.Text = this.item.getName();
 
+            for (int i = 0; i < this.item.States.Count; i++) {
+                ExtraListItem item = new ExtraListItem();
+                item.Extra = this.item.States[i];
+                item.Group = lstSettings.Groups[0];
+                this.lstSettings.Items.Add(item);
+            }
+
             for (int i = 0; i < this.item.Settings.Count; i++) {
-                SettingsListItem item = new SettingsListItem();
-                item.Settings = this.item.Settings[i];
-                this.lstSpew.Items.Add(item);
+                ExtraListItem item = new ExtraListItem();
+                item.Extra = this.item.Settings[i];
+                item.Group = lstSettings.Groups[1];
+                this.lstSettings.Items.Add(item);
             }
         }
 
@@ -49,45 +53,36 @@ namespace datatool
          **/
         private void btnSave_Click(object sender, EventArgs e)
         {
-            this.item = this.internal_item;
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
         /**
-         * An item is selected
+         * Deselects both lists
          **/
-        private void lstSpew_SelectedIndexChanged(object sender, EventArgs e)
+        private void deselectEverything()
         {
-            // Deselect existing
             if (this.sel_list_item != null) {
                 this.sel_list_item.ImageIndex = -1;
             }
-            gridSpew.SelectedObject = null;
+            grid.SelectedObject = null;
             this.sel_list_item = null;
-
-            if (lstSpew.SelectedItems.Count == 0) return;
-
-            // Select new
-            SettingsListItem item = (SettingsListItem) lstSpew.SelectedItems[0];
-            gridSpew.SelectedObject = item.Settings;
-            item.ImageIndex = 0;
-
-            this.sel_list_item = item;
         }
 
         /**
-         * Add button
+         * Settings item selected
          **/
-        private void btnAddSpew_Click(object sender, EventArgs e)
+        private void lstSettings_SelectedIndexChanged(object sender, EventArgs e)
         {
-            unitclass_settings settings = new unitclass_settings();
+            deselectEverything();
+            if (lstSettings.SelectedItems.Count == 0) return;
 
-            this.internal_item.Settings.Add(settings);
+            // Select new
+            ExtraListItem item = (ExtraListItem) lstSettings.SelectedItems[0];
+            grid.SelectedObject = item.Extra;
+            item.ImageIndex = 0;
 
-            SettingsListItem item = new SettingsListItem();
-            item.Settings = settings;
-            this.lstSpew.Items.Add(item);
+            this.sel_list_item = item;
         }
 
         private void gridSpew_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
@@ -103,19 +98,43 @@ namespace datatool
             this.Close();
         }
 
-        private void btnRemove_Click(object sender, EventArgs e)
-        {
-            if (this.sel_list_item == null) return;
-
-            this.internal_item.Settings.Remove(this.sel_list_item.Settings);
-            this.sel_list_item.Remove();
-            this.sel_list_item = null;
-        }
-
         private void btnActions_Click(object sender, EventArgs e)
         {
-            ActionsEditor f = new ActionsEditor(this.internal_item);
+            ActionsEditor f = new ActionsEditor(this.item);
             f.ShowDialog();
+        }
+
+        private void stateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            unitclass_state state = new unitclass_state();
+
+            this.item.States.Add(state);
+
+            ExtraListItem item = new ExtraListItem();
+            item.Extra = state;
+            item.Group = lstSettings.Groups[0];
+            this.lstSettings.Items.Add(item);
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            unitclass_settings settings = new unitclass_settings();
+
+            this.item.Settings.Add(settings);
+
+            ExtraListItem item = new ExtraListItem();
+            item.Extra = settings;
+            item.Group = lstSettings.Groups[1];
+            this.lstSettings.Items.Add(item);
+        }
+
+        private void toolStripSplitButton1_ButtonClick(object sender, EventArgs e)
+        {
+            if (lstSettings.SelectedItems.Count == 0) return;
+            base_item b = ((ExtraListItem)lstSettings.SelectedItems[0]).Extra;
+
+            if (b is unitclass_state) { stateToolStripMenuItem_Click(sender, e); return; }
+            if (b is unitclass_settings) { settingsToolStripMenuItem_Click(sender, e); return; }
         }
     }
 
@@ -124,22 +143,22 @@ namespace datatool
     /**
      * Adds a property to the list item
      **/
-    public class SettingsListItem : ListViewItem
+    class ExtraListItem : ListViewItem
     {
-        private unitclass_settings settings;
+        private base_item extra;
 
-        public SettingsListItem()
+        public ExtraListItem()
         {
             this.ImageIndex = -1;
         }
 
-        public unitclass_settings Settings
+        public base_item Extra
         {
-            get { return this.settings; }
+            get { return this.extra; }
             set {
-                this.settings = value;
-                if (value.Name != null) {
-                    this.Text = value.Name;
+                this.extra = value;
+                if (value.getName() != null) {
+                    this.Text = value.getName();
                 } else {
                     this.Text = "- Nothing -";
                 }

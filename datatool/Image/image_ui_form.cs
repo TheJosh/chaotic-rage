@@ -58,6 +58,19 @@ namespace datatool
                     this.preview_filename = Program.dp.datapath + "/particletypes/{0}/0deg_fr0.bmp";
                     break;
 
+                case "unitclass":
+                    files = System.IO.Directory.GetDirectories(Program.dp.datapath + "/unitclass", "*");
+
+                    foreach (string f in files) {
+                        string g = System.IO.Path.GetFileName(f);
+                        if (g.StartsWith (".")) continue;
+                        this.list.Items.Add(g);
+                    }
+
+                    labAdding.Text = "Create a directory in the 'unitclass' directory, named the same as the image name, which should be in lowercase and without spaces. Files should be named <STATE>_fr<FRAME>.bmp";
+                    this.preview_filename = Program.dp.datapath + "/unitclass/{0}/walk_fr0.bmp";
+                    break;
+
                 default:
                     this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
                     this.Close();
