@@ -22,6 +22,8 @@ class GameState
 		vector<Particle*> particles;
 		//vector<ParticleGenerator*> particlegenerators;
 		
+		vector<Mod*> mods;
+		
 	public:
 		Player* curr_player;
 		Map* map;
@@ -44,4 +46,7 @@ class GameState
 		vector<Particle*> * particlesInside(int x, int y, int w, int h);
 		
 		void update(int delta);
+		
+		void addMod(Mod * mod);
+		Mod * getMod(int id);
 };

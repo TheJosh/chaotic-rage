@@ -61,7 +61,7 @@ void Particle::update(int delta)
 	// Hit a wall?
 	data_pixel pixel = this->st->map->getDataAt(this->x, this->y);
 	
-	AreaType *at = getAreaTypeByID(pixel.type);
+	AreaType *at = pixel.type;
 	if (at->wall) {
 		Event *ev = new Event();
 		ev->type = PART_HIT_WALL;

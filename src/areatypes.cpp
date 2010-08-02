@@ -11,9 +11,6 @@
 using namespace std;
 
 
-/* Variables */
-static vector<AreaType*> areatypes;
-
 /* Functions */
 AreaType* loadAreaType(cfg_t *cfg_areatype, Mod * mod);
 
@@ -50,8 +47,10 @@ AreaType::AreaType()
 /**
 * Loads the area types
 **/
-bool loadAllAreaTypes(Mod * mod)
+vector<AreaType*> * loadAllAreaTypes(Mod * mod)
 {
+	vector<AreaType*> * areatypes = new vector<AreaType*>();
+	
 	char *buffer;
 	cfg_t *cfg, *cfg_areatype;
 	
@@ -59,7 +58,7 @@ bool loadAllAreaTypes(Mod * mod)
 	// Load + parse the config file
 	buffer = mod->loadText("areatypes/areatypes.conf");
 	if (buffer == NULL) {
-		return false;
+		return NULL;
 	}
 	
 	cfg = cfg_init(opts, CFGF_NONE);
@@ -69,7 +68,7 @@ bool loadAllAreaTypes(Mod * mod)
 	
 	
 	int num_types = cfg_size(cfg, "areatype");
-	if (num_types == 0) return false;
+	if (num_types == 0) return NULL;
 	
 	// Process area type sections
 	int j;
@@ -79,11 +78,11 @@ bool loadAllAreaTypes(Mod * mod)
 		AreaType* at = loadAreaType(cfg_areatype, mod);
 		if (at == NULL) {
 			cerr << "Bad area type at index " << j << endl;
-			return false;
+			return NULL;
 		}
 		
-		areatypes.push_back(at);
-		at->id = areatypes.size() - 1;
+		areatypes->push_back(at);
+		at->id = areatypes->size() - 1;
 	}
 	
 	// If there was sprite errors, exit the game
@@ -92,7 +91,7 @@ bool loadAllAreaTypes(Mod * mod)
 		exit(1);
 	}
 	
-	return true;
+	return areatypes;
 }
 
 
@@ -113,23 +112,13 @@ AreaType* loadAreaType(cfg_t *cfg_areatype, Mod * mod)
 	at->stretch = cfg_getint(cfg_areatype, "stretch");
 	at->wall = cfg_getint(cfg_areatype, "wall");
 	
-	AreaType *ground = getAreaTypeByID(cfg_getint(cfg_areatype, "ground_type"));
-	if (ground != NULL && ground->wall == 0) {
-		at->ground_type = ground;
-	}
+	// TODO: move to after the mod has loaded
+	//AreaType *ground = mod->getAreaType(cfg_getint(cfg_areatype, "ground_type"));
+	//if (ground != NULL && ground->wall == 0) {
+	//	at->ground_type = ground;
+	//}
 	
 	return at;
-}
-
-
-/**
-* Gets an areatype
-* Returns NULL on error
-**/
-AreaType* getAreaTypeByID(int id)
-{
-	if (id < 0 or ((unsigned int) id) > areatypes.size()) return NULL;
-	return areatypes.at(id);
 }
 
 

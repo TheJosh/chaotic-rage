@@ -27,5 +27,4 @@ class AreaType
 };
 
 
-bool loadAllAreaTypes(Mod * mod);
-AreaType* getAreaTypeByID(int id);
+vector<AreaType*> * loadAllAreaTypes(Mod * mod);

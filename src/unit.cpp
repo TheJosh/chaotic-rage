@@ -207,12 +207,12 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 		int newy = pointPlusAngleY(this->y, this->angle_move, ppsDelta(this->speed, delta));
 		
 		// Collision detection
-		if (collideWall(this->st, newx, newy, this->uc->width, this->uc->height)) {
+		if (newx < 0 || newy < 0
+				|| newx >= this->st->map->width - this->getWidth() || newy >= this->st->map->height - this->getHeight()) {
 			this->speed = 0;
 			this->setState(UNIT_STATE_STATIC);
-		
-		} else if (newx < 0 || newy < 0
-				|| newx > this->st->map->width - this->getWidth() || newy > this->st->map->height - this->getHeight()) {
+			
+		} else if (collideWall(this->st, newx, newy, this->uc->width, this->uc->height)) {
 			this->speed = 0;
 			this->setState(UNIT_STATE_STATIC);
 			

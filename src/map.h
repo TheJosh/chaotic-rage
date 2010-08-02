@@ -15,7 +15,7 @@ using namespace std;
 
 
 typedef struct {
-	Uint32 type;
+	AreaType * type;
 	Uint8 hp;
 	char pad[3];
 } data_pixel;

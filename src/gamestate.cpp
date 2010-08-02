@@ -115,3 +115,14 @@ vector<Particle*> * GameState::particlesInside(int x, int y, int w, int h)
 }
 
 
+void GameState::addMod(Mod * mod)
+{
+	mods.push_back(mod);
+}
+
+Mod * GameState::getMod(int id)
+{
+	return mods.at(id);
+}
+
+

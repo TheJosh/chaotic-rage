@@ -49,7 +49,7 @@ int Map::load(string name, Render * render)
 	a->width = this->width;
 	a->height = this->height;
 	a->angle = 0;
-	a->type = getAreaTypeByID(0);
+	a->type = this->st->getMod(0)->getAreaType(0);
 	this->areas.push_back(a);
 	
 	a = new Area();
@@ -58,7 +58,7 @@ int Map::load(string name, Render * render)
 	a->width = 100;
 	a->height = 100;
 	a->angle = 22;
-	a->type = getAreaTypeByID(2);
+	a->type = this->st->getMod(0)->getAreaType(2);
 	this->areas.push_back(a);
 	
 	a = new Area();
@@ -67,7 +67,7 @@ int Map::load(string name, Render * render)
 	a->width = 100;
 	a->height = 100;
 	a->angle = 0;
-	a->type = getAreaTypeByID(2);
+	a->type = this->st->getMod(0)->getAreaType(2);
 	this->areas.push_back(a);
 	
 	a = new Area();
@@ -76,7 +76,7 @@ int Map::load(string name, Render * render)
 	a->width = 200;
 	a->height = 1000;
 	a->angle = 2;
-	a->type = getAreaTypeByID(3);
+	a->type = this->st->getMod(0)->getAreaType(3);
 	this->areas.push_back(a);
 	
 	a = new Area();
@@ -85,7 +85,7 @@ int Map::load(string name, Render * render)
 	a->width = 200;
 	a->height = 30;
 	a->angle = 0;
-	a->type = getAreaTypeByID(3);
+	a->type = this->st->getMod(0)->getAreaType(3);
 	this->areas.push_back(a);
 	
 	a = new Area();
@@ -94,7 +94,7 @@ int Map::load(string name, Render * render)
 	a->width = 600;
 	a->height = 70;
 	a->angle = 0;
-	a->type = getAreaTypeByID(5);
+	a->type = this->st->getMod(0)->getAreaType(5);
 	this->areas.push_back(a);
 	
 	z = new Zone(50,50,60,60);
@@ -121,7 +121,7 @@ int Map::load(string name, Render * render)
 	
 	for (int x = 0; x < this->width; x++) {
 		for (int y = 0; y < this->height; y++) {
-			this->data[x * this->height + y].type = getPixel(datasurf, x, y);
+			this->data[x * this->height + y].type = this->st->getMod(0)->getAreaType(getPixel(datasurf, x, y));		// TODO getpixel should be a pointer to the AreaType
 			this->data[x * this->height + y].hp = 100;
 		}
 	}
@@ -233,10 +233,10 @@ void Map::setDataHP(int x, int y, int newhp)
 	if (x >= this->height) return;
 	
 	if (newhp <= 0) {
-		AreaType *at = getAreaTypeByID(this->data[x * this->height + y].type);
+		AreaType *at = this->data[x * this->height + y].type;
 		
 		this->data[x * this->height + y].hp = 0;
-		this->data[x * this->height + y].type = (at->ground_type != NULL ? at->ground_type->id : 0);
+		this->data[x * this->height + y].type = at->ground_type;
 		
 		this->render->clearPixel(this->walls, x, y);
 		

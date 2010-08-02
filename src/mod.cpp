@@ -14,28 +14,52 @@ using namespace std;
 Mod::Mod(GameState * st, string directory)
 {
 	this->st = st;
+	st->addMod(this);
+	
 	this->directory = directory;
 }
 
 
-bool Mod::loadAreaTypes()
+/**
+* Loads the mod
+**/
+bool Mod::load()
 {
-	return loadAllAreaTypes(this);
+	areatypes = loadAllAreaTypes(this);
+	if (areatypes == NULL) return false;
+	
+	if (! loadAllUnitClasses(this)) return false;
+	if (! loadAllParticleTypes(this)) return false;
+	if (! loadAllWeaponTypes(this)) return false;
+	
+	return true;
 }
 
-bool Mod::loadUnitClasses()
+
+AreaType * Mod::getAreaType(int id)
 {
-	return loadAllUnitClasses(this);
+	if (id < 0 or ((unsigned int) id) > areatypes->size()) return NULL;
+	return areatypes->at(id);
 }
 
-bool Mod::loadParticleTypes()
+UnitClass * Mod::getUnitClass(int id)
 {
-	return loadAllParticleTypes(this);
+	return getUnitClassByID(id);
 }
 
-bool Mod::loadWeaponTypes()
+ParticleType * Mod::getParticleType(int id)
 {
-	return loadAllWeaponTypes(this);
+	return NULL;
+}
+
+ParticleGenerator * Mod::getParticleGenerator(int id)
+{
+	return NULL;
+}
+
+WeaponType * Mod::getWeaponType(int id)
+{
+	return getWeaponTypeByID(id);
 }
 
 

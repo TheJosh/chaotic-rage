@@ -11,6 +11,9 @@ using namespace std;
 
 
 class Mod {
+	private:
+		vector<AreaType*> * areatypes;
+		
 	public:
 		GameState * st;
 		string name;
@@ -20,11 +23,15 @@ class Mod {
 		char * loadText(string filename);
 		SDL_RWops * loadRWops(string filename);
 		
-		bool loadAreaTypes();
-		bool loadUnitClasses();
-		bool loadParticleTypes();
-		bool loadWeaponTypes();
-		
 	public:
 		Mod(GameState * st, string directory);
+		
+	public:
+		bool load();
+		
+		AreaType * getAreaType(int id);
+		UnitClass * getUnitClass(int id);
+		ParticleType * getParticleType(int id);
+		ParticleGenerator * getParticleGenerator(int id);
+		WeaponType * getWeaponType(int id);
 };
