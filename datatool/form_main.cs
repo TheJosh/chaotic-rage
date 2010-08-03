@@ -44,5 +44,11 @@ namespace datatool
             UnitclassList f = new UnitclassList();
             f.Show();
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            ModifierList f = new ModifierList();
+            f.Show();
+        }
     }
 }

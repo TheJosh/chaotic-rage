@@ -9,6 +9,7 @@ namespace datatool
     public class unitclass_settings : base_item
     {
         private string name;
+        private modifier_item modifier;
         private int lin_speed;
         private int lin_accel;
         private int turn_move;
@@ -19,6 +20,14 @@ namespace datatool
         {
             get { return this.name; }
             set { this.name = value; }
+        }
+
+        [DescriptionAttribute("The modifier this settings group applies for")]
+        [Editor(typeof(modifier_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
+        public modifier_item Modifier
+        {
+            get { return this.modifier; }
+            set { this.modifier = value; }
         }
 
         [DescriptionAttribute("The maximum speed attainable, pixels/second")]
@@ -53,17 +62,36 @@ namespace datatool
     }
 
 
+    public enum unitclass_state_types
+    {
+        WALK = 0,
+        STATIC = 1,
+        RUNNING = 2,
+        FIRING = 3,
+    }
+
     [Serializable]
     public class unitclass_state : base_item
     {
         private string name;
+        private unitclass_state_types type;
         private string image;
+
+        public unitclass_state() { }
+        public unitclass_state(unitclass_state_types type) { this.name = type.ToString().ToLower();  this.type = type; }
 
         [DescriptionAttribute("Internal use only")]
         public string Name
         {
             get { return this.name; }
             set { this.name = value; }
+        }
+
+        [DescriptionAttribute("The unit state to use this animation for. If multiple animations are specified for a specific type, one is chosen at random")]
+        public unitclass_state_types Type
+        {
+            get { return this.type; }
+            set { this.type = value; }
         }
 
         [DescriptionAttribute("The name of the image to use for this animation")]

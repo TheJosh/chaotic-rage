@@ -11,6 +11,7 @@ namespace datatool
         public string datapath;
 
         private List<base_item> areatypes;
+        private List<base_item> modifiers;
         private List<base_item> particletypes;
         private List<base_item> particlegenerators;
         private List<base_item> unitclasses;
@@ -22,6 +23,7 @@ namespace datatool
             this.read = new ConfuseReader();
 
             this.areatypes = new List<base_item>();
+            this.modifiers = new List<base_item>();
             this.particletypes = new List<base_item>();
             this.particlegenerators = new List<base_item>();
             this.unitclasses = new List<base_item>();
@@ -29,6 +31,9 @@ namespace datatool
             load_areatypes();
             load_particletypes();
 
+            // Load modifiers
+            modifiers.Add(new modifier_item("Shield"));
+            modifiers.Add(new modifier_item("Speed"));
 
             // Load particle generators
             particlegenerators.Add(new particlegenerator_item("Machine gun"));
@@ -138,6 +143,11 @@ namespace datatool
         public List<base_item> AreaTypes
         {
             get { return areatypes; }
+        }
+
+        public List<base_item> Modifiers
+        {
+            get { return modifiers; }
         }
 
         public List<base_item> ParticleTypes

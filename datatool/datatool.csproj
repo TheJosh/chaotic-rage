@@ -66,6 +66,20 @@
       <DependentUpon>actions_edit.cs</DependentUpon>
     </Compile>
     <Compile Include="ConfuseReader.cs" />
+    <Compile Include="Modifiers\modifier_edit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modifiers\modifier_edit.Designer.cs">
+      <DependentUpon>modifier_edit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modifiers\modifier_item.cs" />
+    <Compile Include="Modifiers\modifier_list.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modifiers\modifier_list.Designer.cs">
+      <DependentUpon>modifier_list.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modifiers\modifier_ui_editor.cs" />
     <Compile Include="ObjectCopier.cs" />
     <Compile Include="base_list.cs">
       <SubType>Form</SubType>
@@ -164,6 +178,12 @@
     <EmbeddedResource Include="AreaType\areatype_list.resx">
       <DependentUpon>areatype_list.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modifiers\modifier_edit.resx">
+      <DependentUpon>modifier_edit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modifiers\modifier_list.resx">
+      <DependentUpon>modifier_list.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Unitclass\unitclass_edit.resx">
       <DependentUpon>unitclass_edit.cs</DependentUpon>
     </EmbeddedResource>
@@ -256,6 +276,7 @@
   <ItemGroup>
     <None Include="Resources\video-display.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

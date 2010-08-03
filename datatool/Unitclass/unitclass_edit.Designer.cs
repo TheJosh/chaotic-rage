@@ -29,7 +29,7 @@ namespace datatool
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Animations", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Settings modifiers", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Modifier settings", System.Windows.Forms.HorizontalAlignment.Left);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UnitclassEdit));
             this.grid = new System.Windows.Forms.PropertyGrid();
             this.label1 = new System.Windows.Forms.Label();
@@ -112,8 +112,8 @@ namespace datatool
             this.lstSettings.FullRowSelect = true;
             listViewGroup1.Header = "Animations";
             listViewGroup1.Name = "grpAnimations";
-            listViewGroup2.Header = "Settings modifiers";
-            listViewGroup2.Name = "grpSettingsModifiers";
+            listViewGroup2.Header = "Modifier settings";
+            listViewGroup2.Name = "grpModifierSettings";
             this.lstSettings.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
             listViewGroup1,
             listViewGroup2});
@@ -188,7 +188,7 @@ namespace datatool
             // 
             this.stateToolStripMenuItem.Image = global::datatool.Properties.Resources.video;
             this.stateToolStripMenuItem.Name = "stateToolStripMenuItem";
-            this.stateToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.stateToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.stateToolStripMenuItem.Text = "Animation";
             this.stateToolStripMenuItem.Click += new System.EventHandler(this.stateToolStripMenuItem_Click);
             // 
@@ -196,8 +196,8 @@ namespace datatool
             // 
             this.settingsToolStripMenuItem.Image = global::datatool.Properties.Resources.system;
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.settingsToolStripMenuItem.Text = "Settings modifier";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.settingsToolStripMenuItem.Text = "Modifier settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // toolStripButton1
