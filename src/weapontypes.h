@@ -24,7 +24,5 @@ class WeaponType
 };
 
 
-bool loadAllWeaponTypes(Mod * mod);
-WeaponType* getWeaponTypeByID(unsigned int id);
-unsigned int getNumWeaponTypes();
+vector<WeaponType*> * loadAllWeaponTypes(Mod * mod);
 

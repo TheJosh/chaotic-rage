@@ -24,7 +24,7 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	this->weapon_gen = NULL;
 	this->firing = false;
 	
-	this->pickupWeapon(getWeaponTypeByID(0));
+	this->pickupWeapon(this->uc->getMod()->getWeaponType(0));
 	
 	this->current_state_type = 0;
 	this->setState(UNIT_STATE_STATIC);

@@ -27,9 +27,8 @@ class UnitClassStates;
 class UnitClass;
 
 
-bool loadAllUnitClasses(Mod * mod);
+vector<UnitClass*> * loadAllUnitClasses(Mod * mod);
 UnitClass* loadUnitClass(cfg_t *cfg, Mod * mod);
-UnitClass* getUnitClassByID(int id);
 
 
 class UnitClassSettings
@@ -76,6 +75,7 @@ class UnitClass : public EntityType
 		UnitClassState* getState(int type);
 		vector<SpritePtr>* loadAllSprites();
 		unsigned int getMaxFrames();
+		Mod * getMod() { return this->mod; }
 };
 
 

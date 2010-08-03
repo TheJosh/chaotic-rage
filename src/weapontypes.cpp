@@ -16,10 +16,6 @@ using namespace std;
 #define WEAPON_LARGE_H 125
 
 
-
-/* Variables */
-static vector<WeaponType*> weapons;
-
 /* Functions */
 WeaponType* loadWeaponType(cfg_t *cfg_weapon, Mod * mod);
 
@@ -53,8 +49,10 @@ WeaponType::WeaponType()
 /**
 * Loads the area types
 **/
-bool loadAllWeaponTypes(Mod * mod)
+vector<WeaponType*> * loadAllWeaponTypes(Mod * mod)
 {
+	vector<WeaponType*> * weapons = new vector<WeaponType*>();
+	
 	char *buffer;
 	cfg_t *cfg, *cfg_weapon;
 	
@@ -62,7 +60,7 @@ bool loadAllWeaponTypes(Mod * mod)
 	// Load + parse the config file
 	buffer = mod->loadText("weapontypes/weapontypes.conf");
 	if (buffer == NULL) {
-		return false;
+		return NULL;
 	}
 	
 	cfg = cfg_init(opts, CFGF_NONE);
@@ -72,7 +70,7 @@ bool loadAllWeaponTypes(Mod * mod)
 	
 	
 	int num_types = cfg_size(cfg, "weapon");
-	if (num_types == 0) return false;
+	if (num_types == 0) return NULL;
 	
 	// Process area type sections
 	int j;
@@ -82,11 +80,11 @@ bool loadAllWeaponTypes(Mod * mod)
 		WeaponType* wt = loadWeaponType(cfg_weapon, mod);
 		if (wt == NULL) {
 			cerr << "Bad weapon type at index " << j << endl;
-			return false;
+			return NULL;
 		}
 		
-		weapons.push_back(wt);
-		wt->id = weapons.size() - 1;
+		weapons->push_back(wt);
+		wt->id = weapons->size() - 1;
 	}
 	
 	// If there was sprite errors, exit the game
@@ -95,7 +93,7 @@ bool loadAllWeaponTypes(Mod * mod)
 		exit(1);
 	}
 	
-	return true;
+	return weapons;
 }
 
 
@@ -110,7 +108,7 @@ WeaponType* loadWeaponType(cfg_t *cfg_weapon, Mod * mod)
 	wt = new WeaponType();
 	
 	if (cfg_getint(cfg_weapon, "particlegen") != -1) {
-		wt->pg = getParticleGenTypeByID(cfg_getint(cfg_weapon, "particlegen"));
+		wt->pg = mod->getParticleGenType(cfg_getint(cfg_weapon, "particlegen"));
 	}
 	
 	// Load large icon
@@ -125,18 +123,6 @@ WeaponType* loadWeaponType(cfg_t *cfg_weapon, Mod * mod)
 	}
 	
 	return wt;
-}
-
-
-WeaponType* getWeaponTypeByID(unsigned int id)
-{
-	if (id < 0 or id > weapons.size()) return NULL;
-	return weapons.at(id);
-}
-
-unsigned int getNumWeaponTypes()
-{
-	return weapons.size();
 }
 
 

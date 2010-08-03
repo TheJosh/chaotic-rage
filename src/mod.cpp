@@ -28,9 +28,17 @@ bool Mod::load()
 	areatypes = loadAllAreaTypes(this);
 	if (areatypes == NULL) return false;
 	
-	if (! loadAllUnitClasses(this)) return false;
-	if (! loadAllParticleTypes(this)) return false;
-	if (! loadAllWeaponTypes(this)) return false;
+	particletypes = loadAllParticleTypes(this);
+	if (particletypes == NULL) return false;
+	
+	pgeneratortypes = loadAllParticleGenTypes(this);
+	if (pgeneratortypes == NULL) return false;
+	
+	unitclasses = loadAllUnitClasses(this);
+	if (unitclasses == NULL) return false;
+	
+	weapontypes = loadAllWeaponTypes(this);
+	if (weapontypes == NULL) return false;
 	
 	return true;
 }
@@ -44,22 +52,26 @@ AreaType * Mod::getAreaType(int id)
 
 UnitClass * Mod::getUnitClass(int id)
 {
-	return getUnitClassByID(id);
+	if (id < 0 or ((unsigned int) id) > unitclasses->size()) return NULL;
+	return unitclasses->at(id);
 }
 
 ParticleType * Mod::getParticleType(int id)
 {
-	return NULL;
+	if (id < 0 or ((unsigned int) id) > particletypes->size()) return NULL;
+	return particletypes->at(id);
 }
 
-ParticleGenerator * Mod::getParticleGenerator(int id)
+ParticleGenType * Mod::getParticleGenType(int id)
 {
-	return NULL;
+	if (id < 0 or ((unsigned int) id) > pgeneratortypes->size()) return NULL;
+	return pgeneratortypes->at(id);
 }
 
 WeaponType * Mod::getWeaponType(int id)
 {
-	return getWeaponTypeByID(id);
+	if (id < 0 or ((unsigned int) id) > weapontypes->size()) return NULL;
+	return weapontypes->at(id);
 }
 
 

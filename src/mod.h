@@ -13,6 +13,10 @@ using namespace std;
 class Mod {
 	private:
 		vector<AreaType*> * areatypes;
+		vector<ParticleType*> * particletypes;
+		vector<ParticleGenType*> * pgeneratortypes;
+		vector<UnitClass*> * unitclasses;
+		vector<WeaponType*> * weapontypes;
 		
 	public:
 		GameState * st;
@@ -32,6 +36,6 @@ class Mod {
 		AreaType * getAreaType(int id);
 		UnitClass * getUnitClass(int id);
 		ParticleType * getParticleType(int id);
-		ParticleGenerator * getParticleGenerator(int id);
+		ParticleGenType * getParticleGenType(int id);
 		WeaponType * getWeaponType(int id);
 };

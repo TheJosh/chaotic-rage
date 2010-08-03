@@ -11,13 +11,9 @@
 using namespace std;
 
 
-/* Variables */
-static vector<ParticleType*> particletypes;
-static vector<ParticleGenType*> generatortypes;
-
 /* Functions */
 ParticleType* loadParticleType(cfg_t *cfg_particletype, Mod * mod);
-ParticleGenType* loadParticleGenType(cfg_t *cfg_generatortype);
+ParticleGenType* loadParticleGenType(cfg_t *cfg_generatortype, Mod * mod);
 
 extern cfg_opt_t g_action_opts;
 
@@ -91,16 +87,18 @@ ParticleType::~ParticleType()
 /**
 * Loads the area types
 **/
-bool loadAllParticleTypes(Mod * mod)
+vector<ParticleType*> * loadAllParticleTypes(Mod * mod)
 {
+	vector<ParticleType*> * particletypes = new vector<ParticleType*>();
+	
 	char *buffer;
-	cfg_t *cfg, *cfg_particletype, *cfg_generatortype;
+	cfg_t *cfg, *cfg_particletype;
 	
 	
 	// Load + parse the config file
 	buffer = mod->loadText("particletypes/particletypes.conf");
 	if (buffer == NULL) {
-		return false;
+		return NULL;
 	}
 	
 	cfg = cfg_init(opts_particles, CFGF_NONE);
@@ -110,29 +108,46 @@ bool loadAllParticleTypes(Mod * mod)
 	
 	
 	int num_types = cfg_size(cfg, "particle");
-	if (num_types == 0) return false;
+	if (num_types == 0) return NULL;
 	
 	// Process particle type sections
-	int j;
-	for (j = 0; j < num_types; j++) {
+	for (int j = 0; j < num_types; j++) {
 		cfg_particletype = cfg_getnsec(cfg, "particle", j);
 		
 		ParticleType* pt = loadParticleType(cfg_particletype, mod);
 		if (pt == NULL) {
 			cerr << "Bad particle type at index " << j << endl;
-			return false;
+			return NULL;
 		}
 		
-		particletypes.push_back(pt);
-		pt->id = particletypes.size() - 1;
+		particletypes->push_back(pt);
+		pt->id = particletypes->size() - 1;
 	}
 	
 	
+	// If there was sprite errors, exit the game
+	if (mod->st->render->wasLoadSpriteError()) {
+		cerr << "Error loading particle types; game will now exit.\n";
+		exit(1);
+	}
+	
+	return particletypes;
+}
+
+/**
+* Loads particle generators
+**/
+vector<ParticleGenType*> * loadAllParticleGenTypes(Mod * mod)
+{
+	vector<ParticleGenType*> * generatortypes = new vector<ParticleGenType*>();
+	
+	char *buffer;
+	cfg_t *cfg, *cfg_generatortype;
 	
 	// Load + parse the config file
 	buffer = mod->loadText("particletypes/particlegenerators.conf");
 	if (buffer == NULL) {
-		return false;
+		return NULL;
 	}
 	
 	cfg = cfg_init(opts_generators, CFGF_NONE);
@@ -142,31 +157,23 @@ bool loadAllParticleTypes(Mod * mod)
 	
 	
 	// Process generator type sections
-	num_types = cfg_size(cfg, "generator");
-	if (num_types == 0) return false;
+	int num_types = cfg_size(cfg, "generator");
+	if (num_types == 0) return NULL;
 	
-	for (j = 0; j < num_types; j++) {
+	for (int j = 0; j < num_types; j++) {
 		cfg_generatortype = cfg_getnsec(cfg, "generator", j);
 		
-		ParticleGenType* gt = loadParticleGenType(cfg_generatortype);
+		ParticleGenType* gt = loadParticleGenType(cfg_generatortype, mod);
 		if (gt == NULL) {
 			cerr << "Bad particle generator type at index " << j << endl;
-			return false;
+			return NULL;
 		}
 		
-		generatortypes.push_back(gt);
-		gt->id = particletypes.size() - 1;
+		generatortypes->push_back(gt);
+		gt->id = generatortypes->size() - 1;
 	}
 	
-	
-	
-	// If there was sprite errors, exit the game
-	if (mod->st->render->wasLoadSpriteError()) {
-		cerr << "Error loading particle types; game will now exit.\n";
-		exit(1);
-	}
-	
-	return true;
+	return generatortypes;
 }
 
 
@@ -224,7 +231,7 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype, Mod * mod)
 /**
 * Loads a single particle generator type
 **/
-ParticleGenType* loadParticleGenType(cfg_t *cfg_generatortype)
+ParticleGenType* loadParticleGenType(cfg_t *cfg_generatortype, Mod * mod)
 {
 	ParticleGenType* gt;
 	cfg_t *cfg_spew;
@@ -243,7 +250,7 @@ ParticleGenType* loadParticleGenType(cfg_t *cfg_generatortype)
 		if (cfg_getint(cfg_spew, "rate") == 0) return NULL;
 		
 		GenSpew* spew = new GenSpew();
-		spew->pt = getParticleTypeByID(cfg_getint(cfg_spew, "type"));
+		spew->pt = mod->getParticleType(cfg_getint(cfg_spew, "type"));
 		spew->angle_range = cfg_getint(cfg_spew, "angle_range");
 		spew->rate = cfg_getint(cfg_spew, "rate");
 		spew->delay = cfg_getint(cfg_spew, "delay");
@@ -254,17 +261,6 @@ ParticleGenType* loadParticleGenType(cfg_t *cfg_generatortype)
 	}
 	
 	return gt;
-}
-
-
-ParticleType* getParticleTypeByID(int id)
-{
-	return particletypes.at(id);
-}
-
-ParticleGenType* getParticleGenTypeByID(int id)
-{
-	return generatortypes.at(id);
 }
 
 

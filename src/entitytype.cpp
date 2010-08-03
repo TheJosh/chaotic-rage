@@ -31,7 +31,7 @@ void EntityType::doActions(Entity * entity, EventType event)
 	
 	if (this->actions == NULL) return;
 	
-	GameState *st = entity->getGameState();
+	//GameState *st = entity->getGameState();
 	
 	DEBUG("Event %i from entity %p (type = %i, x = %i, y = %i, del = %i)\n", event, entity, entity->klass(), entity->x, entity->y, entity->del);
 	
@@ -43,10 +43,15 @@ void EntityType::doActions(Entity * entity, EventType event)
 		switch (ac->type) {
 			case ADD_PGENERATOR:
 				{
+					// TODO: Fix this
+					// mod->getParticleGenType
+					// need a pointer to the mod
+					/*
 					ParticleGenerator *pg = new ParticleGenerator(getParticleGenTypeByID(ac->args[0]), st);
 					pg->x = entity->x;
 					pg->y = entity->y;
 					st->addParticleGenerator(pg);
+					*/
 				}
 				break;
 				

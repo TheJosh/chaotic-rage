@@ -12,8 +12,6 @@ using namespace std;
 
 
 /* Variables */
-static vector<UnitClass*> unitclasses;
-
 extern cfg_opt_t g_action_opts;
 
 /* Config file definition */
@@ -71,8 +69,10 @@ UnitClass::~UnitClass()
 /**
 * Loads the area types
 **/
-bool loadAllUnitClasses(Mod * mod)
+vector<UnitClass*> * loadAllUnitClasses(Mod * mod)
 {
+	vector<UnitClass*> * unitclasses = new vector<UnitClass*>();
+	
 	char *buffer;
 	cfg_t *cfg, *cfg_unitclass;
 	
@@ -80,7 +80,7 @@ bool loadAllUnitClasses(Mod * mod)
 	// Load + parse the config file
 	buffer = mod->loadText("unitclass/unitclass.conf");
 	if (buffer == NULL) {
-		return false;
+		return NULL;
 	}
 	
 	cfg = cfg_init(opts, CFGF_NONE);
@@ -90,7 +90,7 @@ bool loadAllUnitClasses(Mod * mod)
 	
 	
 	int num_types = cfg_size(cfg, "unitclass");
-	if (num_types == 0) return false;
+	if (num_types == 0) return NULL;
 	
 	// Process area type sections
 	int j;
@@ -103,8 +103,8 @@ bool loadAllUnitClasses(Mod * mod)
 			return false;
 		}
 		
-		unitclasses.push_back(uc);
-		uc->id = unitclasses.size() - 1;
+		unitclasses->push_back(uc);
+		uc->id = unitclasses->size() - 1;
 	}
 	
 	// If there was sprite errors, exit the game
@@ -114,7 +114,7 @@ bool loadAllUnitClasses(Mod * mod)
 	}
 	
 	
-	return true;
+	return unitclasses;
 }
 
 
@@ -191,12 +191,6 @@ UnitClass* loadUnitClass(cfg_t *cfg, Mod * mod)
 	}
 	
 	return uc;
-}
-
-
-UnitClass* getUnitClassByID(int id)
-{
-	return unitclasses.at(id);
 }
 
 
