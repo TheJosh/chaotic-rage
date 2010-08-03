@@ -22,23 +22,19 @@ EntityType::~EntityType()
 
 /**
 * Executes a set of actions for a given event for a given entity
-*
-* TODO: make arguments be an EVENT object.
 **/
-void EntityType::doActions(Entity * entity, EventType event)
+void EntityType::doActions(Event * ev)
 {
 	unsigned int i;
 	
 	if (this->actions == NULL) return;
 	
-	//GameState *st = entity->getGameState();
-	
-	DEBUG("Event %i from entity %p (type = %i, x = %i, y = %i, del = %i)\n", event, entity, entity->klass(), entity->x, entity->y, entity->del);
+	//GameState *st = ev->e1->getGameState();			// unused
 	
 	for (i = 0; i < this->actions->size(); i++) {
 		Action *ac = this->actions->at(i);
 		
-		if (ac->event != event) continue;
+		if (ac->event != ev->type) continue;
 		
 		switch (ac->type) {
 			case ADD_PGENERATOR:
@@ -48,8 +44,8 @@ void EntityType::doActions(Entity * entity, EventType event)
 					// need a pointer to the mod
 					/*
 					ParticleGenerator *pg = new ParticleGenerator(getParticleGenTypeByID(ac->args[0]), st);
-					pg->x = entity->x;
-					pg->y = entity->y;
+					pg->x = ev->e1->x;
+					pg->y = ev->e1->y;
 					st->addParticleGenerator(pg);
 					*/
 				}

@@ -36,7 +36,7 @@ Particle::~Particle()
 **/
 void Particle::handleEvent(Event * ev)
 {
-	this->pt->doActions(this, ev->type);
+	this->pt->doActions(ev);
 }
 
 

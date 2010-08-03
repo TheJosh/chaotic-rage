@@ -50,7 +50,7 @@ Unit::~Unit()
 **/
 void Unit::handleEvent(Event * ev)
 {
-	this->uc->doActions(this, ev->type);
+	this->uc->doActions(ev);
 }
 
 

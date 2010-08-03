@@ -11,6 +11,9 @@
 using namespace std;
 
 
+/**
+* Inits the mod. Does not load yet
+**/
 Mod::Mod(GameState * st, string directory)
 {
 	this->st = st;
@@ -44,35 +47,51 @@ bool Mod::load()
 }
 
 
+/**
+* Gets an areatype by ID
+**/
 AreaType * Mod::getAreaType(int id)
 {
 	if (id < 0 or ((unsigned int) id) > areatypes->size()) return NULL;
 	return areatypes->at(id);
 }
 
-UnitClass * Mod::getUnitClass(int id)
-{
-	if (id < 0 or ((unsigned int) id) > unitclasses->size()) return NULL;
-	return unitclasses->at(id);
-}
-
+/**
+* Gets a particle type by ID
+**/
 ParticleType * Mod::getParticleType(int id)
 {
 	if (id < 0 or ((unsigned int) id) > particletypes->size()) return NULL;
 	return particletypes->at(id);
 }
 
+/**
+* Gets a particle generator by ID
+**/
 ParticleGenType * Mod::getParticleGenType(int id)
 {
 	if (id < 0 or ((unsigned int) id) > pgeneratortypes->size()) return NULL;
 	return pgeneratortypes->at(id);
 }
 
+/**
+* Gets a unitclass by ID
+**/
+UnitClass * Mod::getUnitClass(int id)
+{
+	if (id < 0 or ((unsigned int) id) > unitclasses->size()) return NULL;
+	return unitclasses->at(id);
+}
+
+/**
+* Gets a weapon type by ID
+**/
 WeaponType * Mod::getWeaponType(int id)
 {
 	if (id < 0 or ((unsigned int) id) > weapontypes->size()) return NULL;
 	return weapontypes->at(id);
 }
+
 
 
 /**

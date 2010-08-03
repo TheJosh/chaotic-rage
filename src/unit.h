@@ -48,8 +48,8 @@ class Unit: public Entity
 	public:
 		virtual void getSprite(SpritePtr list [SPRITE_LIST_LEN]);
 		virtual void update(int delta) = 0;
-		virtual int getWidth() { return 24; };		// todo: read from unitclass
-		virtual int getHeight() { return 24; };		// todo: read from unitclass
+		virtual int getWidth() { return this->uc->width; };
+		virtual int getHeight() { return this->uc->height; };
 		
 	public:
 		virtual void handleEvent(Event * ev);

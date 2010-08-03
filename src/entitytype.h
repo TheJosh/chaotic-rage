@@ -20,7 +20,7 @@ class EntityType
 		~EntityType();
 		
 	public:
-		void doActions(Entity * entity, EventType event);
+		void doActions(Event * ev);
 };
 
 
