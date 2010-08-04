@@ -27,7 +27,7 @@ void gameLoop(GameState *st, Render *render)
 	
 	running = true;
 	while (running) {
-		delta = end - start;
+		delta = SDL_GetTicks() - start;
 		start = SDL_GetTicks();
 		
 		curr_frame++;
@@ -41,7 +41,13 @@ void gameLoop(GameState *st, Render *render)
 		st->audio->play();
 		
 		SDL_WarpMouse(400, 30);
-		SDL_Delay(2);
+		
+		end = SDL_GetTicks();
+		
+		delta = end - start;
+		if (delta < 10) {
+			SDL_Delay(10 - delta);
+		}
 		
 		end = SDL_GetTicks();
 	}
