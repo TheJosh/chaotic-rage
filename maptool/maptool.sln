@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "maptool", "maptool.csproj", "{C8D8B288-2C95-4516-BE09-18823ACEC469}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C8D8B288-2C95-4516-BE09-18823ACEC469}.Debug|x86.ActiveCfg = Debug|x86
+		{C8D8B288-2C95-4516-BE09-18823ACEC469}.Debug|x86.Build.0 = Debug|x86
+		{C8D8B288-2C95-4516-BE09-18823ACEC469}.Release|x86.ActiveCfg = Release|x86
+		{C8D8B288-2C95-4516-BE09-18823ACEC469}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
