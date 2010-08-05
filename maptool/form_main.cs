@@ -40,6 +40,7 @@ namespace Maptool
         {
             toolAreas.Checked = false;
             toolObjects.Checked = false;
+            toolParticleGenerators.Checked = false;
             toolZones.Checked = false;
             on.Checked = true;
         }
@@ -62,6 +63,14 @@ namespace Maptool
         }
 
         /**
+         * Engages the 'Particle Generators' tool
+         **/
+        private void toolParticleGenerators_Click(object sender, EventArgs e)
+        {
+            toggleOn(toolParticleGenerators);
+        }
+
+        /**
          * Engages the 'Zones' tool
          **/
         private void toolZones_Click(object sender, EventArgs e)
@@ -76,6 +85,12 @@ namespace Maptool
         private void mnuFileNew_Click(object sender, EventArgs e)
         {
             resetUI();
+        }
+
+        private void mnuEditMapsettings_Click(object sender, EventArgs e)
+        {
+            frmMapSettings f = new frmMapSettings();
+            f.ShowDialog();
         }
     }
 }
