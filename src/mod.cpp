@@ -40,6 +40,9 @@ bool Mod::load()
 	unitclasses = loadAllUnitClasses(this);
 	if (unitclasses == NULL) return false;
 	
+	songs = loadAllSongs(this);
+	if (songs == NULL) return false;
+	
 	weapontypes = loadAllWeaponTypes(this);
 	if (weapontypes == NULL) return false;
 	
@@ -81,6 +84,15 @@ UnitClass * Mod::getUnitClass(int id)
 {
 	if (id < 0 or ((unsigned int) id) > unitclasses->size()) return NULL;
 	return unitclasses->at(id);
+}
+
+/**
+* Gets a song by ID
+**/
+Song * Mod::getSong(int id)
+{
+	if (id < 0 or ((unsigned int) id) > songs->size()) return NULL;
+	return songs->at(id);
 }
 
 /**

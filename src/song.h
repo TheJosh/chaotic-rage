@@ -14,17 +14,15 @@ class Song
 {
 	public:
 		// from data file
-		bool stretch;
-		bool wall;
-		AreaType * ground_type;
+		string name;
 		
 		// dynamic
 		int id;
-		SpritePtr surf;
+		Mix_Music * music;
 		
 	public:
 		Song();
 };
 
 
-vector<Song*> * loadAllSong(Mod * mod);
+vector<Song*> * loadAllSongs(Mod * mod);

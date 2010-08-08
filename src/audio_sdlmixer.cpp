@@ -11,9 +11,12 @@
 using namespace std;
 
 
-
+/**
+* Init SDL_Mixer
+**/
 AudioSDLMixer::AudioSDLMixer(GameState * st) : Audio(st)
 {
+	// TODO: code this
 }
 
 
@@ -32,6 +35,10 @@ void AudioSDLMixer::handleEvent(Event * ev)
 void AudioSDLMixer::play()
 {
 	// TODO: code this
+	
+	// Ex:
+	// Song * sg = st->getMod(0)->getSong(0);
+	// Mix_PlayMusic(sg, 0);
 }
 
 

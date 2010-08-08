@@ -17,6 +17,7 @@ class Mod {
 		vector<ParticleGenType*> * pgeneratortypes;
 		vector<UnitClass*> * unitclasses;
 		vector<WeaponType*> * weapontypes;
+		vector<Song*> * songs;
 		
 	public:
 		GameState * st;
@@ -37,5 +38,6 @@ class Mod {
 		UnitClass * getUnitClass(int id);
 		ParticleType * getParticleType(int id);
 		ParticleGenType * getParticleGenType(int id);
+		Song * getSong(int id);
 		WeaponType * getWeaponType(int id);
 };

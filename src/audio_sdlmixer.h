@@ -13,6 +13,9 @@ using namespace std;
 
 class AudioSDLMixer : Audio
 {
+	private:
+		// put vars here
+		
 	public:
 		/**
 		* Plays sounds

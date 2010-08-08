@@ -12,7 +12,7 @@ using namespace std;
 
 
 /* Functions */
-Song* loadSong(cfg_t *cfg_Song, Mod * mod);
+Song* loadSong(cfg_t *cfg_song, Mod * mod);
 
 
 /* Config file definition */
@@ -20,10 +20,7 @@ Song* loadSong(cfg_t *cfg_Song, Mod * mod);
 static cfg_opt_t song_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
-	CFG_STR((char*) "image", 0, CFGF_NONE),
-	CFG_INT((char*) "stretch", 0, CFGF_NONE),		// 0 = tile, 1 = stretch
-	CFG_INT((char*) "wall", 0, CFGF_NONE),			// 0 = ground, 1 = wall
-	CFG_INT((char*) "ground_type", -1, CFGF_NONE),	// Ground to place underneath this wall
+	CFG_STR((char*) "file", 0, CFGF_NONE),
 	CFG_END()
 };
 
@@ -39,8 +36,6 @@ static cfg_opt_t opts[] =
 
 Song::Song()
 {
-	this->surf = NULL;
-	this->ground_type = NULL;
 }
 
 
@@ -52,11 +47,11 @@ vector<Song*> * loadAllSongs(Mod * mod)
 	vector<Song*> * songs = new vector<Song*>();
 	
 	char *buffer;
-	cfg_t *cfg, *cfg_songs;
+	cfg_t *cfg, *cfg_song;
 	
 	
 	// Load + parse the config file
-	buffer = mod->loadText("areatypes/areatypes.conf");
+	buffer = mod->loadText("music/music.conf");
 	if (buffer == NULL) {
 		return NULL;
 	}
@@ -75,8 +70,8 @@ vector<Song*> * loadAllSongs(Mod * mod)
 	for (j = 0; j < num_types; j++) {
 		cfg_song = cfg_getnsec(cfg, "song", j);
 		
-		Song* sg = loadAreaType(cfg_song, mod);
-		if (at == NULL) {
+		Song* sg = loadSong(cfg_song, mod);
+		if (sg == NULL) {
 			cerr << "Bad song at index " << j << endl;
 			return NULL;
 		}
@@ -94,21 +89,21 @@ vector<Song*> * loadAllSongs(Mod * mod)
 **/
 Song* loadSong(cfg_t *cfg_song, Mod * mod)
 {
-	Song* at;
+	Song* sg;
 	string filename;
 	
+	filename = "music/";
+	filename.append(cfg_getstr(cfg_song, "file"));
+	
+	SDL_RWops * rwops = mod->loadRWops(filename);
+	
 	sg = new Song();
-	sg->surf = mod->st->render->loadSprite(filename.c_str(), mod);
-	at->stretch = cfg_getint(cfg_areatype, "stretch");
-	at->wall = cfg_getint(cfg_areatype, "wall");
+	sg->name = cfg_getstr(cfg_song, "name");
+	sg->music = Mix_LoadMUS_RW(rwops);
 	
-	// TODO: move to after the mod has loaded
-	//AreaType *ground = mod->getAreaType(cfg_getint(cfg_areatype, "ground_type"));
-	//if (ground != NULL && ground->wall == 0) {
-	//	at->ground_type = ground;
-	//}
+	if (sg->music == NULL) return NULL;
 	
-	return at;
+	return sg;
 }
 
 
