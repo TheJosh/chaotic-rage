@@ -62,7 +62,7 @@ void Particle::update(int delta)
 	data_pixel pixel = this->st->map->getDataAt(this->x, this->y);
 	
 	AreaType *at = pixel.type;
-	if (at->wall) {
+	if (at != NULL && at->wall) {
 		Event *ev = new Event();
 		ev->type = PART_HIT_WALL;
 		ev->e1 = this;

@@ -204,7 +204,8 @@ SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data)
 data_pixel Map::getDataAt(int x, int y)
 {
 	data_pixel ret;
-	ret.type = 0;
+	ret.type = NULL;
+	ret.hp = 0;
 	
 	if (x < 0) return ret;
 	if (y < 0) return ret;
