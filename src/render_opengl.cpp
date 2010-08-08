@@ -196,12 +196,32 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 SpritePtr RenderOpenGL::renderMap(Map * map, int frame, bool wall)
 {
 	// Create
-	SDL_Surface* surf = SDL_CreateRGBSurface(SDL_SWSURFACE, map->width, map->height, 32, 0,0,0,0);
+	SDL_Surface* surf = SDL_CreateRGBSurface(SDL_SWSURFACE, map->width, map->height, 32, 0, 0, 0, 0);
 	
 	Area *a;
 	AreaType *at;
 	unsigned int i;
 	SDL_Rect dest;
+	
+	int num_colors = surf->format->BytesPerPixel;
+	int texture_format;
+	if (num_colors == 4) {
+		if (surf->format->Rmask == 0x000000ff) {
+			texture_format = GL_RGBA;
+		} else {
+			texture_format = GL_BGRA;
+		}
+		
+	} else if (num_colors == 3) {
+		if (surf->format->Rmask == 0x000000ff) {
+			texture_format = GL_RGB;
+		} else {
+			texture_format = GL_BGR;
+		}
+		
+	} else {
+		return NULL;
+	}
 	
 	// Iterate through the areas
 	for (i = 0; i < map->areas.size(); i++) {
@@ -260,7 +280,7 @@ SpritePtr RenderOpenGL::renderMap(Map * map, int frame, bool wall)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, surf->w, surf->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, surf->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, surf->w, surf->h, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
 	
 	return sprite;
 }
@@ -346,13 +366,48 @@ void RenderOpenGL::render()
 	glRotatef(st->curr_player->angle, 0, 0, 1);
 	glTranslatef(0 - x, 0 - y, 0);
 	
-	// Render backgrounds
-	// Dirt layer
-	this->renderSprite(this->ground, 0, 0);
-	
-	// Wall layer
-	// TODO: Get working
-	//this->renderSprite(this->walls, 0, 0);
+	// Render map
+	for (i = 0; i < st->map->areas.size(); i++) {
+		Area * a = st->map->areas[i];
+		
+		glPushMatrix();
+		
+		x = a->x + a->width / 2;
+		y = a->y + a->height / 2;
+		
+		glTranslatef(x, y, 0);
+		glRotatef(0 - a->angle, 0, 0, 1);
+		glTranslatef(0 - x, 0 - y, 0);
+		
+		glBindTexture(GL_TEXTURE_2D, a->type->surf->pixels);
+ 		
+ 		float texw = 1.0;
+ 		float texh = 1.0;
+ 		if (! a->type->stretch) {
+ 			texw = ((float)a->width) / ((float)a->type->surf->w);
+ 			texh = ((float)a->height) / ((float)a->type->surf->h);
+ 		}
+ 		
+		glBegin(GL_QUADS);
+			// Bottom-left vertex (corner)
+			glTexCoord2f( 0.0, texh );
+			glVertex2i( a->x, a->y + a->height );
+			
+			// Bottom-right vertex (corner)
+			glTexCoord2f( texw, texh );
+			glVertex2i( a->x + a->width, a->y + a->height );
+			
+			// Top-right vertex (corner)
+			glTexCoord2f( texw, 0.0 );
+			glVertex2i( a->x + a->width, a->y );
+			
+			// Top-left vertex (corner)
+			glTexCoord2f( 0.0, 0.0 );
+			glVertex2i( a->x, a->y );
+		glEnd();
+		
+		glPopMatrix();
+	}
 	
 	// Entities
 	std::sort(st->entities.begin(), st->entities.end(), ZIndexPredicate);
