@@ -117,3 +117,12 @@ PART_HIT_UNIT
 	e2 = The unit which was hit
 	
 	
+-------- GAME --------
+GAME_STARTED
+	The game has just started
+	
+	
+GAME_ENDED
+	The game has just ended
+	
+

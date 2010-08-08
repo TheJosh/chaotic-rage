@@ -27,6 +27,10 @@ void gameLoop(GameState *st, Render *render)
 	
 	st->render->preGame();
 	
+	Event * ev;
+	ev->type = GAME_STARTED;
+	fireEvent(ev);
+	
 	running = true;
 	while (running) {
 		delta = SDL_GetTicks() - start;
@@ -53,6 +57,10 @@ void gameLoop(GameState *st, Render *render)
 		
 		end = SDL_GetTicks();
 	}
+	
+	Event * ev;
+	ev->type = GAME_ENDED;
+	fireEvent(ev);
 	
 	st->render->postGame();
 }
