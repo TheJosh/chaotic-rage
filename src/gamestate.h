@@ -51,3 +51,8 @@ class GameState
 		void addMod(Mod * mod);
 		Mod * getMod(int id);
 };
+
+
+GameState * getGameState();
+
+

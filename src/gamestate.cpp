@@ -10,7 +10,19 @@
 using namespace std;
 
 
+static GameState *g_st;
+
+
 static bool EntityEraser(Entity *e);
+
+
+/**
+* Don't use unless if you are in global code
+**/
+GameState * getGameState()
+{
+	return g_st;
+}
 
 
 GameState::GameState()
@@ -22,6 +34,8 @@ GameState::GameState()
 	this->hud->st = this;
 	
 	this->render = NULL;
+	
+	g_st = this;
 }
 
 GameState::~GameState()

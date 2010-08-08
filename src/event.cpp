@@ -13,6 +13,8 @@ Event::Event()
 {
 	this->e1 = NULL;
 	this->e2 = NULL;
+	this->a1 = 0;
+	this->a2 = 0;
 }
 
 /**
@@ -24,7 +26,7 @@ void fireEvent (Event * ev)
 	if (ev->e1 != NULL) ev->e1->handleEvent(ev);
 	if (ev->e2 != NULL) ev->e2->handleEvent(ev);
 	
-	ev->e1->getGameState()->audio->handleEvent(ev);
+	getGameState()->audio->handleEvent(ev);
 	
 	// This is for testing only
 	cout << "fireEvent [" << ev->type << "]  e1 = " << ev->e1 << "  e2 = " << ev->e2 << "  a1 = " << ev->a1 << "  a2 = " << ev->a2 << "\n";

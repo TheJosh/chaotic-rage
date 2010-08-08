@@ -22,12 +22,13 @@ void gameLoop(GameState *st, Render *render)
 {
 	int start = 0, end = 1, delta = 0;
 	int curr_frame = 0, total_time = 0;
+	Event * ev;
 	
 	SDL_WarpMouse(400, 30);
 	
 	st->render->preGame();
 	
-	Event * ev;
+	ev = new Event();
 	ev->type = GAME_STARTED;
 	fireEvent(ev);
 	
@@ -58,7 +59,7 @@ void gameLoop(GameState *st, Render *render)
 		end = SDL_GetTicks();
 	}
 	
-	Event * ev;
+	ev = new Event();
 	ev->type = GAME_ENDED;
 	fireEvent(ev);
 	
