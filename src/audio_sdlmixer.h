@@ -14,8 +14,9 @@ using namespace std;
 class AudioSDLMixer : Audio
 {
 	private:
-		// put vars here
-		
+		bool audio_start;
+		bool audio_stop;		
+
 	public:
 		/**
 		* Plays sounds

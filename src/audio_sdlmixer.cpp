@@ -16,7 +16,9 @@ using namespace std;
 **/
 AudioSDLMixer::AudioSDLMixer(GameState * st) : Audio(st)
 {
-	// TODO: code this
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
+	this->audio_start = false;
+	this->audio_stop = false;
 }
 
 
@@ -25,7 +27,14 @@ AudioSDLMixer::AudioSDLMixer(GameState * st) : Audio(st)
 **/
 void AudioSDLMixer::handleEvent(Event * ev)
 {
-	// TODO: code this
+	if (ev->type == GAME_STARTED) {
+		this->audio_start = true;
+	}
+	
+	if (ev->type == GAME_ENDED) {
+		this->audio_stop = true;
+	}
+
 }
 
 
@@ -34,11 +43,17 @@ void AudioSDLMixer::handleEvent(Event * ev)
 **/
 void AudioSDLMixer::play()
 {
-	// TODO: code this
-	
-	// Ex:
-	// Song * sg = st->getMod(0)->getSong(0);
-	// Mix_PlayMusic(sg, 0);
+	if (this->audio_start) {
+		Song * sg = st->getMod(0)->getSong(0);
+		Mix_FadeInMusic(sg->music, 0, 1000);
+		Mix_VolumeMusic(50);
+		this->audio_start = false;
+	}
+
+	if (this->audio_stop) {
+		Mix_HaltMusic();
+		this->audio_stop = false;	
+	}
 }
 
 
