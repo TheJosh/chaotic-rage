@@ -14,7 +14,8 @@ class GameState
 {
 	friend class RenderSDL;
 	friend class RenderOpenGL;
-	
+	friend class AudioSDLMixer;	
+
 	protected:
 		vector<Entity*> entities;
 		vector<Entity*> entities_add;
