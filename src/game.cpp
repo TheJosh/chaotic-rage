@@ -25,6 +25,8 @@ void gameLoop(GameState *st, Render *render)
 	
 	SDL_WarpMouse(400, 30);
 	
+	st->render->preGame();
+	
 	running = true;
 	while (running) {
 		delta = SDL_GetTicks() - start;
@@ -51,6 +53,8 @@ void gameLoop(GameState *st, Render *render)
 		
 		end = SDL_GetTicks();
 	}
+	
+	st->render->postGame();
 }
 
 

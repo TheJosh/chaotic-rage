@@ -16,16 +16,12 @@ SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data);
 Map::Map(GameState * st)
 {
 	this->st = st;
-	this->ground = NULL;
-	this->walls = NULL;
 	this->background = NULL;
 	this->data = NULL;
 }
 
 Map::~Map()
 {
-	this->render->freeSprite(this->ground);
-	this->render->freeSprite(this->walls);
 	free(this->data);
 }
 
@@ -104,10 +100,6 @@ int Map::load(string name, Render * render)
 	z = new Zone(500,500,560,560);
 	z->spawn[FACTION_INDIVIDUAL] = 1;
 	this->zones.push_back(z);
-	
-	
-	this->ground = this->render->renderMap(this, 0, false);
-	this->walls = this->render->renderMap(this, 0, true);
 	
 	
 	// This is a hack to use the SDL rotozoomer to manipulate the data surface
@@ -238,7 +230,7 @@ void Map::setDataHP(int x, int y, int newhp)
 		this->data[x * this->height + y].hp = 0;
 		this->data[x * this->height + y].type = at->ground_type;
 		
-		this->render->clearPixel(this->walls, x, y);
+		this->render->clearPixel(x, y);
 		
 		return;
 	}

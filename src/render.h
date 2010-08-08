@@ -51,14 +51,19 @@ class Render
 		virtual void renderSprite(SpritePtr sprite, int x, int y) = 0;
 		
 		/**
-		* Renders the background for the map
+		* Prepare any surfaces needed before a game is played
 		**/
-		virtual SpritePtr renderMap(Map * map, int frame, bool wall) = 0;
+		virtual void preGame() = 0;
+		
+		/**
+		* Free any surfaces after the game is done
+		**/
+		virtual void postGame() = 0;
 		
 		/**
 		* Clears all colour from a given pixel for a given sprite
 		**/
-		virtual void clearPixel(SpritePtr sprite, int x, int y) = 0;
+		virtual void clearPixel(int x, int y) = 0;
 		
 		/**
 		* Free sprite memory

@@ -43,9 +43,6 @@ class Map {
 		GameState * st;
 		
 	public:
-		SpritePtr ground;	// TODO: move these to the renderer
-		SpritePtr walls;	// because the renderer may not cache this
-		
 		data_pixel * data;
 		SpritePtr background;
 		int width;

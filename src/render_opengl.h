@@ -17,15 +17,22 @@ class RenderOpenGL : public Render
 		int virt_width;
 		int virt_height;
 		
+		SpritePtr ground;
+		SpritePtr walls;
+		
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
+		
+	private:
+		SpritePtr renderMap(Map * map, int frame, bool wall);
 		
 	public:
 		virtual void setScreenSize(int width, int height, bool fullscreen);
 		virtual void render();
 		virtual void renderSprite(SpritePtr sprite, int x, int y);
-		virtual SpritePtr renderMap(Map * map, int frame, bool wall);
-		virtual void clearPixel(SpritePtr sprite, int x, int y);
+		virtual void preGame();
+		virtual void postGame();
+		virtual void clearPixel(int x, int y);
 		virtual void freeSprite(SpritePtr sprite);
 		virtual int getSpriteWidth(SpritePtr sprite);
 		virtual int getSpriteHeight(SpritePtr sprite);

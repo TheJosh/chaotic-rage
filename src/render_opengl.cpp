@@ -266,14 +266,26 @@ SpritePtr RenderOpenGL::renderMap(Map * map, int frame, bool wall)
 }
 
 
+void RenderOpenGL::preGame()
+{
+	ground = this->renderMap(st->map, 0, false);
+	walls = this->renderMap(st->map, 0, true);
+}
+
+void RenderOpenGL::postGame()
+{
+	this->freeSprite(this->ground);
+	this->freeSprite(this->walls);
+}
+
 /**
 * Clears all colour from a given pixel for a given sprite
 **/
-void RenderOpenGL::clearPixel(SpritePtr sprite, int x, int y)
+void RenderOpenGL::clearPixel(int x, int y)
 {
 	// TODO: code this
 	// Priority: Low
-	//setPixel((SDL_Surface*) sprite, x, y, this->colourkey);
+	//setPixel(walls->surf, x, y, this->colourkey);
 }
 
 /**
@@ -336,11 +348,11 @@ void RenderOpenGL::render()
 	
 	// Render backgrounds
 	// Dirt layer
-	this->renderSprite(st->map->ground, 0, 0);
+	this->renderSprite(this->ground, 0, 0);
 	
 	// Wall layer
 	// TODO: Get working
-	//this->renderSprite(st->map->walls, 0, 0);
+	//this->renderSprite(this->walls, 0, 0);
 	
 	// Entities
 	std::sort(st->entities.begin(), st->entities.end(), ZIndexPredicate);
