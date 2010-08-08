@@ -18,6 +18,8 @@ class AreaType
 		bool wall;
 		AreaType * ground_type;
 		
+		vector <AudioPtr> walk_sounds;
+		
 		// dynamic
 		int id;
 		SpritePtr surf;

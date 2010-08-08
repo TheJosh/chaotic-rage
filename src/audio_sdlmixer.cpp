@@ -23,6 +23,32 @@ AudioSDLMixer::AudioSDLMixer(GameState * st) : Audio(st)
 
 
 /**
+* Load a sound
+**/
+AudioPtr AudioSDLMixer::loadSound(string filename, Mod * mod)
+{
+	AudioPtr sound;
+	SDL_RWops *rw;
+	
+	DEBUG("Loading sound '%s'.\n", filename.c_str());
+	
+	rw = mod->loadRWops(filename);
+	if (rw == NULL) {
+		return NULL;
+	}
+	
+	sound = Mix_LoadWAV_RW(rw, 0);
+	if (sound == NULL) {
+		return NULL;
+	}
+	
+	SDL_RWclose (rw);
+	
+	return sound;
+}
+
+
+/**
 * Handles in-game events
 **/
 void AudioSDLMixer::handleEvent(Event * ev)
@@ -34,7 +60,6 @@ void AudioSDLMixer::handleEvent(Event * ev)
 	if (ev->type == GAME_ENDED) {
 		this->audio_stop = true;
 	}
-
 }
 
 
@@ -49,11 +74,17 @@ void AudioSDLMixer::play()
 		Mix_VolumeMusic(50);
 		this->audio_start = false;
 	}
-
+	
 	if (this->audio_stop) {
 		Mix_HaltMusic();
-		this->audio_stop = false;	
+		this->audio_stop = false;
 	}
+	
+	// Modify this to WORK!
+	/*AreaType * at = this->st->getMod(0)->getAreaType(0);
+	if (at->walk_sounds.size() > 0) {
+		Mix_PlayChannel(0, at->walk_sounds[0], 1);
+	}*/
 }
 
 

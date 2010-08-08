@@ -24,6 +24,7 @@ static cfg_opt_t areatype_opts[] =
 	CFG_INT((char*) "stretch", 0, CFGF_NONE),		// 0 = tile, 1 = stretch
 	CFG_INT((char*) "wall", 0, CFGF_NONE),			// 0 = ground, 1 = wall
 	CFG_INT((char*) "ground_type", -1, CFGF_NONE),	// Ground to place underneath this wall
+	CFG_STR_LIST((char*) "walk_sounds", 0, CFGF_NONE),
 	CFG_END()
 };
 
@@ -111,6 +112,18 @@ AreaType* loadAreaType(cfg_t *cfg_areatype, Mod * mod)
 	at->surf = mod->st->render->loadSprite(filename.c_str(), mod);
 	at->stretch = cfg_getint(cfg_areatype, "stretch");
 	at->wall = cfg_getint(cfg_areatype, "wall");
+	
+	// Load walk sounds
+	int size = cfg_size(cfg_areatype, "walk_sounds");
+	for (int j = 0; j < size; j++) {
+		filename = "areatypes/";
+		filename.append(cfg_getnstr(cfg_areatype, "walk_sounds", j));
+		filename.append(".wav");
+		
+		AudioPtr sound = mod->st->audio->loadSound(filename, mod);
+		if (sound == NULL) return NULL;
+		at->walk_sounds.push_back(sound);
+	}
 	
 	// TODO: move to after the mod has loaded
 	//AreaType *ground = mod->getAreaType(cfg_getint(cfg_areatype, "ground_type"));

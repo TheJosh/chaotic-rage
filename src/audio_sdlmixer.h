@@ -23,6 +23,11 @@ class AudioSDLMixer : Audio
 		**/
 		virtual void play();
 		
+		/**
+		* Loads a sound
+		**/
+		virtual AudioPtr loadSound(string filename, Mod * mod);
+		
 	public:
 		virtual void handleEvent(Event * ev);
 		
