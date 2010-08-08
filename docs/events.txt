@@ -12,32 +12,32 @@ UNIT_WEP_PICKUP
 	A weapon has been picked up by the unit
 	
 	e1 = The unit which picked up the weapon
-	p1 = WeaponType ID of the picked up weapon
-	p2 = Weapon slot the weapon was placed into
+	a1 = WeaponType ID of the picked up weapon
+	a2 = Weapon slot the weapon was placed into
 	
 	
 UNIT_WEP_CHANGE
 	The current weapon was changed
 	
 	e1 = The unit which changed it's current weapon
-	p1 = WeaponType ID of the selected weapon
-	p2 = Weapon slot of the weapon
+	a1 = WeaponType ID of the selected weapon
+	a2 = Weapon slot of the weapon
 	
 	
 UNIT_WEP_BEG_FIRE
 	Weapon firing begins
 	
 	e1 = The unit which changed it's current weapon
-	p1 = WeaponType ID of the selected weapon
-	p2 = Weapon slot of the weapon
+	a1 = WeaponType ID of the selected weapon
+	a2 = Weapon slot of the weapon
 	
 	
 UNIT_WEP_END_FIRE
 	Weapon firing ends
 	
 	e1 = The unit which changed it's current weapon
-	p1 = WeaponType ID of the selected weapon
-	p2 = Weapon slot of the weapon
+	a1 = WeaponType ID of the selected weapon
+	a2 = Weapon slot of the weapon
 	
 	
 UNIT_PICKUP_OBJ
@@ -67,7 +67,7 @@ UNIT_SCORE_KILL
 	
 	e1 = The unit which scored a point
 	e2 = The unit which this unit killed
-	p1 = The weapon type ID which was used for the kill
+	a1 = The weapon type ID which was used for the kill
 	
 	
 UNIT_SCORE_ASSIST
@@ -76,7 +76,7 @@ UNIT_SCORE_ASSIST
 	
 	e1 = The unit which scored a point
 	e2 = The unit which this unit killed
-	p1 = The weapon type ID which was used for the assist
+	a1 = The weapon type ID which was used for the assist
 	
 	
 UNIT_SCORE_SUISIDE
@@ -92,14 +92,14 @@ UNIT_ENTER_ZONE
 	A unit has entered a map zone
 	
 	e1 = The unit which entered the zone
-	p1 = The zone id
+	a1 = The zone id
 	
 	
 UNIT_EXIT_ZONE
 	A unit has left a map zone
 	
 	e1 = The unit which exited the zone
-	p1 = The zone id
+	a1 = The zone id
 	
 	
 -------- PARTICLES --------
@@ -107,7 +107,7 @@ PART_HIT_WALL
 	A particle has hit a wall
 	
 	e1 = The particle
-	p1 = The areatype id of the wall which was hit
+	a1 = The areatype id of the wall which was hit
 	
 	
 PART_HIT_UNIT

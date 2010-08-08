@@ -46,8 +46,8 @@ class Event
 		EventType type;
 		Entity * e1;    // Primary entity, typically the giver
 		Entity * e2;    // Secondary entity, typically the reciever
-		int p1;
-		int p2;
+		int a1;
+		int a2;
 		
 	public:
 		Event();
