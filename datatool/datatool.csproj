@@ -65,6 +65,7 @@
     <Compile Include="Actions\actions_edit.Designer.cs">
       <DependentUpon>actions_edit.cs</DependentUpon>
     </Compile>
+    <Compile Include="AreaType\areatype_ui_editor.cs" />
     <Compile Include="ConfuseReader.cs" />
     <Compile Include="Modifiers\modifier_edit.cs">
       <SubType>Form</SubType>
@@ -102,6 +103,7 @@
       <DependentUpon>areatype_edit.cs</DependentUpon>
     </Compile>
     <Compile Include="DataProvider.cs" />
+    <Compile Include="Sound\sound.cs" />
     <Compile Include="Unitclass\unitclass_edit.cs">
       <SubType>Form</SubType>
     </Compile>

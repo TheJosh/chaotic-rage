@@ -13,11 +13,14 @@ namespace datatool
         private string image;
         private bool stretch;
         private bool wall;
+        private areatype_item ground_type;
+        private List<sound> sounds;
 
 
         public areatype_item(string name)
         {
             this.name = name;
+            sounds = new List<sound>();
         }
 
         override public string getName()
@@ -65,6 +68,28 @@ namespace datatool
         {
             get { return this.wall; }
             set { this.wall = value; }
+        }
+
+        /**
+         * Is it a wall?
+         **/
+        [DescriptionAttribute("For walls only; what to show when the wall is destroyed")]
+        [Editor(typeof(areatype_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
+        public areatype_item GroundType
+        {
+            get { return this.ground_type; }
+            set { this.ground_type = value; }
+        }
+
+
+        /**
+         * Sounds
+         **/
+        [Browsable(false)]
+        public List<sound> Sounds
+        {
+            get { return this.sounds; }
+            set { this.sounds = value; }
         }
     }
 }

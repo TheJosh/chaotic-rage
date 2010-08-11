@@ -58,23 +58,17 @@ namespace datatool
         }
 
         /**
-         * Deselects both lists
-         **/
-        private void deselectEverything()
-        {
-            if (this.sel_list_item != null) {
-                this.sel_list_item.ImageIndex = -1;
-            }
-            grid.SelectedObject = null;
-            this.sel_list_item = null;
-        }
-
-        /**
          * Settings item selected
          **/
         private void lstSettings_SelectedIndexChanged(object sender, EventArgs e)
         {
-            deselectEverything();
+            if (this.sel_list_item != null)
+            {
+                this.sel_list_item.ImageIndex = -1;
+            }
+            grid.SelectedObject = null;
+            this.sel_list_item = null;
+
             if (lstSettings.SelectedItems.Count == 0) return;
 
             // Select new
@@ -135,34 +129,6 @@ namespace datatool
 
             if (b is unitclass_state) { stateToolStripMenuItem_Click(sender, e); return; }
             if (b is unitclass_settings) { settingsToolStripMenuItem_Click(sender, e); return; }
-        }
-    }
-
-
-
-    /**
-     * Adds a property to the list item
-     **/
-    class ExtraListItem : ListViewItem
-    {
-        private base_item extra;
-
-        public ExtraListItem()
-        {
-            this.ImageIndex = -1;
-        }
-
-        public base_item Extra
-        {
-            get { return this.extra; }
-            set {
-                this.extra = value;
-                if (value.getName() != null) {
-                    this.Text = value.getName();
-                } else {
-                    this.Text = "- Nothing -";
-                }
-            }
         }
     }
 
