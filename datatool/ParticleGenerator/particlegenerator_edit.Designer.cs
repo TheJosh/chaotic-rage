@@ -28,69 +28,41 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Spewers", System.Windows.Forms.HorizontalAlignment.Left);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ParticleGeneratorEdit));
-            this.gridSpew = new System.Windows.Forms.PropertyGrid();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtName = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.grid = new System.Windows.Forms.PropertyGrid();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.btnAddSpew = new System.Windows.Forms.Button();
-            this.btnRemove = new System.Windows.Forms.Button();
-            this.lstSpew = new System.Windows.Forms.ListView();
+            this.lstSections = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imgSmallIcons = new System.Windows.Forms.ImageList(this.components);
-            this.groupBox1.SuspendLayout();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolEditBase = new System.Windows.Forms.ToolStripButton();
+            this.spewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // gridSpew
+            // grid
             // 
-            this.gridSpew.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.grid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.gridSpew.Location = new System.Drawing.Point(6, 19);
-            this.gridSpew.Name = "gridSpew";
-            this.gridSpew.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.gridSpew.Size = new System.Drawing.Size(381, 234);
-            this.gridSpew.TabIndex = 4;
-            this.gridSpew.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.gridSpew_PropertyValueChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Name:";
-            // 
-            // txtName
-            // 
-            this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtName.Location = new System.Drawing.Point(79, 12);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(328, 20);
-            this.txtName.TabIndex = 6;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.gridSpew);
-            this.groupBox1.Location = new System.Drawing.Point(12, 180);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(395, 259);
-            this.groupBox1.TabIndex = 7;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Spewer options";
+            this.grid.Location = new System.Drawing.Point(291, 12);
+            this.grid.Name = "grid";
+            this.grid.PropertySort = System.Windows.Forms.PropertySort.NoSort;
+            this.grid.Size = new System.Drawing.Size(315, 353);
+            this.grid.TabIndex = 4;
+            this.grid.ToolbarVisible = false;
+            this.grid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.gridSpew_PropertyValueChanged);
             // 
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(325, 461);
+            this.btnOK.Location = new System.Drawing.Point(524, 371);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(82, 27);
             this.btnOK.TabIndex = 8;
@@ -101,7 +73,7 @@
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(238, 461);
+            this.btnCancel.Location = new System.Drawing.Point(437, 371);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(81, 27);
             this.btnCancel.TabIndex = 9;
@@ -109,56 +81,31 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // label2
+            // lstSections
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 38);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(51, 13);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "Spewers:";
-            // 
-            // btnAddSpew
-            // 
-            this.btnAddSpew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddSpew.Location = new System.Drawing.Point(325, 139);
-            this.btnAddSpew.Name = "btnAddSpew";
-            this.btnAddSpew.Size = new System.Drawing.Size(82, 26);
-            this.btnAddSpew.TabIndex = 12;
-            this.btnAddSpew.Text = "&Add";
-            this.btnAddSpew.UseVisualStyleBackColor = true;
-            this.btnAddSpew.Click += new System.EventHandler(this.btnAddSpew_Click);
-            // 
-            // btnRemove
-            // 
-            this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemove.Location = new System.Drawing.Point(238, 139);
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(81, 26);
-            this.btnRemove.TabIndex = 13;
-            this.btnRemove.Text = "&Remove";
-            this.btnRemove.UseVisualStyleBackColor = true;
-            // 
-            // lstSpew
-            // 
-            this.lstSpew.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.lstSections.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.lstSpew.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lstSections.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
-            this.lstSpew.FullRowSelect = true;
-            this.lstSpew.Location = new System.Drawing.Point(79, 38);
-            this.lstSpew.Name = "lstSpew";
-            this.lstSpew.Size = new System.Drawing.Size(328, 95);
-            this.lstSpew.SmallImageList = this.imgSmallIcons;
-            this.lstSpew.TabIndex = 14;
-            this.lstSpew.UseCompatibleStateImageBehavior = false;
-            this.lstSpew.View = System.Windows.Forms.View.Details;
-            this.lstSpew.SelectedIndexChanged += new System.EventHandler(this.lstSpew_SelectedIndexChanged);
+            this.lstSections.FullRowSelect = true;
+            listViewGroup1.Header = "Spewers";
+            listViewGroup1.Name = "listViewGroup1";
+            this.lstSections.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
+            listViewGroup1});
+            this.lstSections.Location = new System.Drawing.Point(0, 28);
+            this.lstSections.Name = "lstSections";
+            this.lstSections.Size = new System.Drawing.Size(273, 325);
+            this.lstSections.SmallImageList = this.imgSmallIcons;
+            this.lstSections.TabIndex = 14;
+            this.lstSections.UseCompatibleStateImageBehavior = false;
+            this.lstSections.View = System.Windows.Forms.View.Details;
+            this.lstSections.SelectedIndexChanged += new System.EventHandler(this.lstSections_SelectedIndexChanged);
             // 
             // columnHeader1
             // 
             this.columnHeader1.Text = "Particle type";
-            this.columnHeader1.Width = 300;
+            this.columnHeader1.Width = 255;
             // 
             // imgSmallIcons
             // 
@@ -166,43 +113,100 @@
             this.imgSmallIcons.TransparentColor = System.Drawing.Color.Transparent;
             this.imgSmallIcons.Images.SetKeyName(0, "document-properties.png");
             // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel1.Controls.Add(this.toolStrip1);
+            this.panel1.Controls.Add(this.lstSections);
+            this.panel1.Location = new System.Drawing.Point(12, 12);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(273, 353);
+            this.panel1.TabIndex = 15;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripSplitButton1,
+            this.toolStripButton1,
+            this.toolEditBase});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.toolStrip1.Size = new System.Drawing.Size(273, 25);
+            this.toolStrip1.TabIndex = 17;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripSplitButton1
+            // 
+            this.toolStripSplitButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.spewerToolStripMenuItem});
+            this.toolStripSplitButton1.Image = global::datatool.Properties.Resources.add;
+            this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripSplitButton1.Name = "toolStripSplitButton1";
+            this.toolStripSplitButton1.Size = new System.Drawing.Size(58, 22);
+            this.toolStripSplitButton1.Text = "Add";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.Image = global::datatool.Properties.Resources.delete;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(66, 22);
+            this.toolStripButton1.Text = "Remove";
+            // 
+            // toolEditBase
+            // 
+            this.toolEditBase.Image = global::datatool.Properties.Resources.system;
+            this.toolEditBase.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolEditBase.Name = "toolEditBase";
+            this.toolEditBase.Size = new System.Drawing.Size(71, 22);
+            this.toolEditBase.Text = "Edit base";
+            this.toolEditBase.Click += new System.EventHandler(this.editbase_Click);
+            // 
+            // spewerToolStripMenuItem
+            // 
+            this.spewerToolStripMenuItem.Image = global::datatool.Properties.Resources.system;
+            this.spewerToolStripMenuItem.Name = "spewerToolStripMenuItem";
+            this.spewerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.spewerToolStripMenuItem.Text = "Spewer";
+            this.spewerToolStripMenuItem.Click += new System.EventHandler(this.spewerToolStripMenuItem_Click);
+            // 
             // ParticleGeneratorEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(419, 500);
-            this.Controls.Add(this.lstSpew);
-            this.Controls.Add(this.btnRemove);
-            this.Controls.Add(this.btnAddSpew);
-            this.Controls.Add(this.label2);
+            this.ClientSize = new System.Drawing.Size(618, 410);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.grid);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.txtName);
-            this.Controls.Add(this.label1);
-            this.MinimumSize = new System.Drawing.Size(297, 437);
+            this.MinimumSize = new System.Drawing.Size(626, 437);
             this.Name = "ParticleGeneratorEdit";
             this.Text = "Edit particle generator";
             this.Load += new System.EventHandler(this.Form_Load);
-            this.groupBox1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.PropertyGrid gridSpew;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtName;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.PropertyGrid grid;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnAddSpew;
-        private System.Windows.Forms.Button btnRemove;
-        private System.Windows.Forms.ListView lstSpew;
+        private System.Windows.Forms.ListView lstSections;
         private System.Windows.Forms.ImageList imgSmallIcons;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolEditBase;
+        private System.Windows.Forms.ToolStripMenuItem spewerToolStripMenuItem;
     }
 }

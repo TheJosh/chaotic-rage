@@ -60,6 +60,7 @@ namespace datatool
             this.grid.PropertySort = System.Windows.Forms.PropertySort.NoSort;
             this.grid.Size = new System.Drawing.Size(342, 306);
             this.grid.TabIndex = 4;
+            this.grid.ToolbarVisible = false;
             this.grid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.gridSpew_PropertyValueChanged);
             // 
             // label1
