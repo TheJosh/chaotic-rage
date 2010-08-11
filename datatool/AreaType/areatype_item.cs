@@ -14,13 +14,13 @@ namespace datatool
         private bool stretch;
         private bool wall;
         private areatype_item ground_type;
-        private List<sound> sounds;
+        private List<areatype_sound> sounds;
 
 
         public areatype_item(string name)
         {
             this.name = name;
-            sounds = new List<sound>();
+            sounds = new List<areatype_sound>();
         }
 
         override public string getName()
@@ -86,10 +86,42 @@ namespace datatool
          * Sounds
          **/
         [Browsable(false)]
-        public List<sound> Sounds
+        public List<areatype_sound> Sounds
         {
             get { return this.sounds; }
             set { this.sounds = value; }
+        }
+    }
+
+
+    public enum areatype_sound_type {
+        WALK_OVER,
+    }
+
+    [Serializable]
+    public class areatype_sound : base_item
+    {
+        private string name;
+        private areatype_sound_type type;
+
+        override public string getName()
+        {
+            return this.name;
+        }
+
+
+        [DescriptionAttribute("The name of this sound, internal use only")]
+        public string Name
+        {
+            get { return this.name; }
+            set { this.name = value; }
+        }
+
+        [DescriptionAttribute("What this sound is for")]
+        public areatype_sound_type Type
+        {
+            get { return this.type; }
+            set { this.type = value; }
         }
     }
 }

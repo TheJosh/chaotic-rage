@@ -44,7 +44,7 @@ namespace datatool
 
         private void soundToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            sound sound = new sound();
+            areatype_sound sound = new areatype_sound();
 
             this.item.Sounds.Add(sound);
 

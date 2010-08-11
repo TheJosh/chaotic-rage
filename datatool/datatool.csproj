@@ -103,7 +103,6 @@
       <DependentUpon>areatype_edit.cs</DependentUpon>
     </Compile>
     <Compile Include="DataProvider.cs" />
-    <Compile Include="Sound\sound.cs" />
     <Compile Include="Unitclass\unitclass_edit.cs">
       <SubType>Form</SubType>
     </Compile>
