@@ -52,6 +52,11 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		exit(1);
 	}
 	
+	if (atof((char*) glGetString(GL_VERSION)) < 2.0) {
+		fprintf(stderr, "OpenGL 2.0 or later is required, but not supported on this system.");
+		exit(1);
+	}
+	
 	// The 'virtual' size is 1000px high, with the proper width for your monitor.
 	this->virt_height = 1000;
 	this->virt_width = this->virt_height * (float)width / (float)height;
