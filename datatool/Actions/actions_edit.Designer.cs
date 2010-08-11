@@ -34,17 +34,17 @@
             this.lstActions = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.imgSmallIcons = new System.Windows.Forms.ImageList(this.components);
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnRemove = new System.Windows.Forms.Button();
             this.grid = new System.Windows.Forms.PropertyGrid();
-            this.imgSmallIcons = new System.Windows.Forms.ImageList(this.components);
             this.SuspendLayout();
             // 
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(333, 478);
+            this.btnOk.Location = new System.Drawing.Point(349, 478);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(83, 27);
             this.btnOk.TabIndex = 0;
@@ -55,7 +55,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(244, 478);
+            this.btnCancel.Location = new System.Drawing.Point(260, 478);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(83, 27);
             this.btnCancel.TabIndex = 1;
@@ -73,7 +73,7 @@
             this.lstActions.Location = new System.Drawing.Point(12, 12);
             this.lstActions.MultiSelect = false;
             this.lstActions.Name = "lstActions";
-            this.lstActions.Size = new System.Drawing.Size(404, 174);
+            this.lstActions.Size = new System.Drawing.Size(420, 174);
             this.lstActions.SmallImageList = this.imgSmallIcons;
             this.lstActions.TabIndex = 2;
             this.lstActions.UseCompatibleStateImageBehavior = false;
@@ -90,10 +90,16 @@
             this.columnHeader2.Text = "Action";
             this.columnHeader2.Width = 120;
             // 
+            // imgSmallIcons
+            // 
+            this.imgSmallIcons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgSmallIcons.ImageStream")));
+            this.imgSmallIcons.TransparentColor = System.Drawing.Color.Transparent;
+            this.imgSmallIcons.Images.SetKeyName(0, "document-properties.png");
+            // 
             // btnAdd
             // 
             this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdd.Location = new System.Drawing.Point(341, 192);
+            this.btnAdd.Location = new System.Drawing.Point(357, 192);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(75, 23);
             this.btnAdd.TabIndex = 3;
@@ -104,7 +110,7 @@
             // btnRemove
             // 
             this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemove.Location = new System.Drawing.Point(260, 192);
+            this.btnRemove.Location = new System.Drawing.Point(276, 192);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(75, 23);
             this.btnRemove.TabIndex = 4;
@@ -118,15 +124,10 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.grid.Location = new System.Drawing.Point(12, 221);
             this.grid.Name = "grid";
-            this.grid.Size = new System.Drawing.Size(404, 251);
+            this.grid.Size = new System.Drawing.Size(420, 251);
             this.grid.TabIndex = 5;
+            this.grid.ToolbarVisible = false;
             this.grid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.grid_PropertyValueChanged);
-            // 
-            // imgSmallIcons
-            // 
-            this.imgSmallIcons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgSmallIcons.ImageStream")));
-            this.imgSmallIcons.TransparentColor = System.Drawing.Color.Transparent;
-            this.imgSmallIcons.Images.SetKeyName(0, "document-properties.png");
             // 
             // ActionsEditor
             // 
@@ -134,7 +135,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(428, 517);
+            this.ClientSize = new System.Drawing.Size(444, 517);
             this.Controls.Add(this.grid);
             this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.btnAdd);

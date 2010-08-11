@@ -10,27 +10,27 @@ namespace datatool
     {
         private string name;
         private string image;
-        private bool directional;
         private int num_frames;
         private range lin_speed;
         private range lin_accel;
         private range age;
-        private range damage;
-        private range damage_accel;
+        private range unit_damage;
+        private range wall_damage;
+        private range unit_hits;
+        private range wall_hits;
 
 
         public particletype_item(string name)
         {
             this.name = name;
-
-            this.directional = false;
             this.num_frames = 1;
-
             this.lin_speed = new range(1);
             this.lin_accel = new range(1);
             this.age = new range(1);
-            this.damage = new range(0);
-            this.damage_accel = new range(0);
+            this.unit_damage = new range(0);
+            this.wall_damage = new range(0);
+            this.unit_hits = new range(1);
+            this.wall_hits = new range(1);
         }
 
         override public string getName()
@@ -53,13 +53,6 @@ namespace datatool
         {
             get { return this.image; }
             set { this.image = value; }
-        }
-
-        [DescriptionAttribute("If set to true, the sprite chosen is influenced by the angle of movement")]
-        public Boolean Directional
-        {
-            get { return this.directional; }
-            set { this.directional = value; }
         }
 
         [DescriptionAttribute("The number of frames in the animation")]
@@ -93,20 +86,37 @@ namespace datatool
             set { this.age = range.fromString(value); }
         }
 
-        [DescriptionAttribute("Initial amount of damage the particle causes upon impact")]
+        [DescriptionAttribute("Damage against units")]
         [Editor(typeof(range_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
-        public string Damage
+        public string UnitDamage
         {
-            get { return this.damage.toString(); }
-            set { this.damage = range.fromString(value); }
+            get { return this.unit_damage.toString(); }
+            set { this.unit_damage = range.fromString(value); }
         }
 
-        [DescriptionAttribute("Acceleration of the damage amount, in hp/second")]
+        [DescriptionAttribute("Damage against walls and solid structures")]
         [Editor(typeof(range_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
-        public string DamageAccel
+        public string WallDamage
         {
-            get { return this.damage_accel.toString(); }
-            set { this.damage_accel = range.fromString(value); }
+            get { return this.wall_damage.toString(); }
+            set { this.wall_damage = range.fromString(value); }
+        }
+
+
+        [DescriptionAttribute("Number of hits against units before this particle is removed")]
+        [Editor(typeof(range_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
+        public string UnitHits
+        {
+            get { return this.unit_hits.toString(); }
+            set { this.unit_hits = range.fromString(value); }
+        }
+
+        [DescriptionAttribute("Number of hits against walls before this particle is removed")]
+        [Editor(typeof(range_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
+        public string WallHits
+        {
+            get { return this.wall_hits.toString(); }
+            set { this.wall_hits = range.fromString(value); }
         }
     }
 }

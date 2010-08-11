@@ -6,10 +6,24 @@ using System.ComponentModel;
 namespace datatool
 {
     public enum action_event {
-        UNDEFINED = 0,
-        HIT_WALL = 1,
-        HIT_UNIT = 2,
-        HIT_PARTICLE = 3,
+        NONE,
+        UNIT_SPAWN,
+        UNIT_WEP_PICKUP,
+        UNIT_WEP_CHANGE,
+        UNIT_WEP_BEG_FIRE,
+        UNIT_WEP_END_FIRE,
+        UNIT_PICKUP_OBJ,
+        UNIT_DROP_OBJ,
+        UNIT_DIED,
+        UNIT_SCORE_KILL,
+        UNIT_SCORE_ASSIST,
+        UNIT_SCORE_SUISIDE,
+        UNIT_ENTER_ZONE,
+        UNIT_EXIT_ZONE,
+        PART_HIT_WALL,
+        PART_HIT_UNIT,
+        GAME_STARTED,
+        GAME_ENDED,
     }
 
     public enum action_type
