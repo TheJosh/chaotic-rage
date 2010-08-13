@@ -37,6 +37,7 @@ class Unit: public Entity
 		int current_state_type;
 		
 		UnitClassState* walk_state;
+		unsigned int walk_time;
 		
 		unsigned int animation_start;
 		vector<SpritePtr>* sprites;

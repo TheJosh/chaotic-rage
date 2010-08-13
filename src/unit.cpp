@@ -30,6 +30,7 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	this->setState(UNIT_STATE_STATIC);
 	
 	this->walk_state = uc->getState(UNIT_STATE_WALK);
+	this->walk_time = 0;
 	
 	this->sprites = uc->loadAllSprites();
 }
@@ -168,9 +169,7 @@ void Unit::getSprite(SpritePtr list [SPRITE_LIST_LEN])
 	int idx;
 	
 	// Walk
-	frame = this->st->anim_frame - this->animation_start;
-	frame = frame % this->walk_state->num_frames;
-	
+	frame = (int)(this->walk_time / ANIMATION_FPS / 30) % this->walk_state->num_frames;
 	idx = this->walk_state->sprite_offset + frame;
 	list[0] = this->sprites->at(idx);
 	
@@ -220,6 +219,8 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 			this->x = newx;
 			this->y = newy;
 		}
+		
+		this->walk_time += delta;
 	}
 	
 	// Have we been hit?
