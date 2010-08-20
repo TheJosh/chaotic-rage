@@ -72,10 +72,10 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	}
 	
 	glEnable(GL_TEXTURE_2D);
-	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glEnable(GL_LIGHTING);
 	
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_BLEND);
 	
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	
@@ -365,11 +365,25 @@ void RenderOpenGL::render()
 	glTranslatef(0 - w / 2, 0 - h / 2, 0);
 	this->renderSprite(st->map->background, 0, 0, w, h);
 	
+	
 	// Main map rotation
 	glLoadIdentity();
 	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
 	glRotatef(st->curr_player->angle, 0, 0, 1);
 	glTranslatef(0 - x, 0 - y, 0);
+	
+	
+	// Set up lights
+	GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f };
+	GLfloat LightDiffuse[]= { 1.0f, 0.8f, 0.8f, 1.0f };
+	GLfloat LightPosition[]= { 2.0f, 0.0f, 250.0f, 1.0f };
+	
+	//glLoadIdentity();
+	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);
+	glLightfv(GL_LIGHT0, GL_POSITION,LightPosition);
+	glEnable(GL_LIGHT0);
+	
 	
 	// Render map
 	for (i = 0; i < st->map->areas.size(); i++) {
