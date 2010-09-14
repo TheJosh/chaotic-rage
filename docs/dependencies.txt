@@ -7,7 +7,8 @@ You will need at least these:
  - libconfuse
  - gl
  - glu
-
+ - flex
+ 
 For compiling on a recent Ubuntu:
  - g++
  - make
@@ -18,7 +19,8 @@ For compiling on a recent Ubuntu:
  - libconfuse-dev
  - libgl1-mesa-dev
  - libglu1-mesa-dev
-
+ - flex
+ 
 TODO: compiling on windows
 
 TODO: compiling on mac
