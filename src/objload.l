@@ -110,7 +110,6 @@ WavefrontObj * loadObj(string filename)
 {
 	yyin = fopen(filename.c_str(), "r");
 	if (yyin == NULL) {
-		cout << "File not found\n";
 		return NULL;
 	}
 	

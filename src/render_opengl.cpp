@@ -73,7 +73,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
-	glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHTING);
+	//glEnable(GL_DEPTH_TEST);
 	
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
@@ -83,7 +84,14 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(0.0f, this->virt_width, this->virt_height, 0.0f, -1.0f, 1.0f);
+	
+	gluPerspective(45.0f, 1, 1.f, 500.f);
+	glTranslatef(0, 0, -490.0f);
+	
+	//glOrtho(0.0f, this->virt_width, this->virt_height, 0.0f, -1.0f, 1.0f);
+	
+	//glFrustum(0.0f, this->virt_width, this->virt_height, 0.0f, 1, 500);
+	//glTranslatef(0, 0, -490.0f);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -348,9 +356,9 @@ void RenderOpenGL::render()
 	
 	int x, y, w, h;	// for general use
 	
-	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
+	
 	
 	// Calcs for rotations
 	w = this->virt_width * 2;
@@ -359,11 +367,11 @@ void RenderOpenGL::render()
 	y = st->curr_player->y + st->curr_player->getHeight() / 2;
 	
 	// Background
-	glLoadIdentity();
+	/*glLoadIdentity();
 	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
 	glRotatef(st->curr_player->angle, 0, 0, 1);
 	glTranslatef(0 - w / 2, 0 - h / 2, 0);
-	this->renderSprite(st->map->background, 0, 0, w, h);
+	this->renderSprite(st->map->background, 0, 0, w, h);*/
 	
 	
 	// Main map rotation
@@ -381,7 +389,7 @@ void RenderOpenGL::render()
 	//glLoadIdentity();
 	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);
-	glLightfv(GL_LIGHT0, GL_POSITION,LightPosition);
+	glLightfv(GL_LIGHT0, GL_POSITION, LightPosition);
 	glEnable(GL_LIGHT0);
 	
 	
@@ -427,6 +435,65 @@ void RenderOpenGL::render()
 		
 		glPopMatrix();
 	}
+	
+	
+	/*WavefrontObj * obj = loadObj("cube.obj");
+	if (obj != NULL) {
+		
+		glBegin(GL_TRIANGLES);
+		for (unsigned int i = 0; i < obj->faces.size(); i++) {
+			Face * f = &obj->faces.at(i);
+			Vertex * v;
+			TexUV * t;
+		
+			// Vertex 1
+			if (f->n1 != 0) {
+				v = &obj->normals.at(f->n1 - 1);
+				glNormal3f(v->x, v->y, v->z);
+			}
+		
+			if (f->t1 != 0) {
+				t = &obj->texuvs.at(f->t1 - 1);
+				glTexCoord2f(t->x, t->y);
+			}
+		
+			v = &obj->vertexes.at(f->v1 - 1);
+			glVertex3f(v->x, v->y, v->z);
+		
+		
+			// Vertex 2
+			if (f->n2 != 0) {
+				v = &obj->normals.at(f->n2 - 1);
+				glNormal3f(v->x, v->y, v->z);
+			}
+		
+			if (f->t2 != 0) {
+				t = &obj->texuvs.at(f->t2 - 1);
+				glTexCoord2f(t->x, t->y);
+			}
+		
+			v = &obj->vertexes.at(f->v2 - 1);
+			glVertex3f(v->x, v->y, v->z);
+		
+		
+			// Vertex 3
+			if (f->n3 != 0) {
+				v = &obj->normals.at(f->n3 - 1);
+				glNormal3f(v->x, v->y, v->z);
+			}
+		
+			if (f->t3 != 0) {
+				t = &obj->texuvs.at(f->t3 - 1);
+				glTexCoord2f(t->x, t->y);
+			}
+		
+			v = &obj->vertexes.at(f->v3 - 1);
+			glVertex3f(v->x, v->y, v->z);
+		}
+		glEnd();
+	
+	}*/
+	
 	
 	// Entities
 	std::sort(st->entities.begin(), st->entities.end(), ZIndexPredicate);
