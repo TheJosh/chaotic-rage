@@ -73,8 +73,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
-	//glEnable(GL_LIGHTING);
-	//glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_DEPTH_TEST);
 	
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
@@ -437,8 +437,15 @@ void RenderOpenGL::render()
 	}
 	
 	
-	/*WavefrontObj * obj = loadObj("cube.obj");
+	WavefrontObj * obj = loadObj("cube-big.obj");
 	if (obj != NULL) {
+		
+		glPushMatrix();
+		
+		SpritePtr list [SPRITE_LIST_LEN] = {NULL, NULL, NULL, NULL};
+		st->curr_player->getSprite(list);
+		
+		glBindTexture(GL_TEXTURE_2D, list[0]->pixels);
 		
 		glBegin(GL_TRIANGLES);
 		for (unsigned int i = 0; i < obj->faces.size(); i++) {
@@ -491,8 +498,11 @@ void RenderOpenGL::render()
 			glVertex3f(v->x, v->y, v->z);
 		}
 		glEnd();
-	
-	}*/
+		
+		delete(obj);
+		
+		glPopMatrix();
+	}
 	
 	
 	// Entities
