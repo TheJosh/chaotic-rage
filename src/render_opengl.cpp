@@ -85,8 +85,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
-	gluPerspective(45.0f, 1, 1.f, 500.f);
-	glTranslatef(0, 0, -490.0f);
+	gluPerspective(45.0f, 1, 1.f, 1500.f);
+	glTranslatef(-500, -500, -1490.0f);
 	
 	//glOrtho(0.0f, this->virt_width, this->virt_height, 0.0f, -1.0f, 1.0f);
 	
