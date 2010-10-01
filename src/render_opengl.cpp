@@ -419,23 +419,62 @@ void RenderOpenGL::render()
  			texh = ((float)a->height) / ((float)a->type->surf->h);
  		}
  		
-		glBegin(GL_QUADS);
-			// Bottom-left vertex (corner)
-			glTexCoord2f( 0.0, texh );
-			glVertex2i( a->x, a->y + a->height );
+ 		if (a->type->wall == 0) {
+			glBegin(GL_QUADS);
+				// Bottom-left vertex (corner)
+				glTexCoord2f( 0.0, texh );
+				glVertex3i( a->x, a->y + a->height, 0 );
 			
-			// Bottom-right vertex (corner)
-			glTexCoord2f( texw, texh );
-			glVertex2i( a->x + a->width, a->y + a->height );
+				// Bottom-right vertex (corner)
+				glTexCoord2f( texw, texh );
+				glVertex3i( a->x + a->width, a->y + a->height, 0 );
 			
-			// Top-right vertex (corner)
-			glTexCoord2f( texw, 0.0 );
-			glVertex2i( a->x + a->width, a->y );
+				// Top-right vertex (corner)
+				glTexCoord2f( texw, 0.0 );
+				glVertex3i( a->x + a->width, a->y, 0 );
 			
-			// Top-left vertex (corner)
-			glTexCoord2f( 0.0, 0.0 );
-			glVertex2i( a->x, a->y );
-		glEnd();
+				// Top-left vertex (corner)
+				glTexCoord2f( 0.0, 0.0 );
+				glVertex3i( a->x, a->y, 0 );
+			glEnd();
+		
+		} else {
+			glBegin(GL_QUADS);
+				// Bottom-left vertex (corner)
+				glTexCoord2f( 0.0, texh );
+				glVertex3i( a->x, a->y + a->height, 100 );
+			
+				// Bottom-right vertex (corner)
+				glTexCoord2f( texw, texh );
+				glVertex3i( a->x + a->width, a->y + a->height, 100 );
+			
+				// Top-right vertex (corner)
+				glTexCoord2f( texw, 0.0 );
+				glVertex3i( a->x + a->width, a->y, 100 );
+			
+				// Top-left vertex (corner)
+				glTexCoord2f( 0.0, 0.0 );
+				glVertex3i( a->x, a->y, 100 );
+			glEnd();
+		
+			glBegin(GL_QUADS);
+				// Bottom-left vertex (corner)
+				glTexCoord2f( 0.0, texh );
+				glVertex3i( a->x, a->y, 100 );
+			
+				// Bottom-right vertex (corner)
+				glTexCoord2f( texw, texh );
+				glVertex3i( a->x + a->width, a->y, 100 );
+			
+				// Top-right vertex (corner)
+				glTexCoord2f( texw, 0.0 );
+				glVertex3i( a->x + a->width, a->y, 0 );
+			
+				// Top-left vertex (corner)
+				glTexCoord2f( 0.0, 0.0 );
+				glVertex3i( a->x, a->y, 0 );
+			glEnd();
+		}
 		
 		glPopMatrix();
 	}
