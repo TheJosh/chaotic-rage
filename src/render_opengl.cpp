@@ -86,6 +86,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	glLoadIdentity();
 	
 	gluPerspective(45.0f, 1, 1.f, 1500.f);
+	glScalef (1.0f, -1.f, 1.0f);
 	glTranslatef(-500, -500, -1490.0f);
 	
 	//glOrtho(0.0f, this->virt_width, this->virt_height, 0.0f, -1.0f, 1.0f);
@@ -393,10 +394,13 @@ void RenderOpenGL::render()
 	glEnable(GL_LIGHT0);
 	
 	
+	glTranslatef(0, 0, 10);
+	
 	// Render map
 	for (i = 0; i < st->map->areas.size(); i++) {
 		Area * a = st->map->areas[i];
 		
+		glTranslatef(0, 0, 1);
 		glPushMatrix();
 		
 		x = a->x + a->width / 2;
@@ -436,6 +440,7 @@ void RenderOpenGL::render()
 		glPopMatrix();
 	}
 	
+	glTranslatef(0, 0, 10);
 	
 	WavefrontObj * obj = loadObj("cube-big.obj");
 	if (obj != NULL) {
@@ -504,6 +509,7 @@ void RenderOpenGL::render()
 		glPopMatrix();
 	}
 	
+	glTranslatef(0, 0, 10);
 	
 	// Entities
 	std::sort(st->entities.begin(), st->entities.end(), ZIndexPredicate);
@@ -554,6 +560,7 @@ void RenderOpenGL::render()
 	
 	// HUD
 	glLoadIdentity();
+	glTranslatef(0, 0, 50);
 	st->hud->render(this);
 	
 	SDL_GL_SwapBuffers();
