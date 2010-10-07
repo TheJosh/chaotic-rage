@@ -66,10 +66,10 @@ class Zone;
 
 #include "actions.h"
 #include "entitytype.h"
-#include "areatypes.h"
-#include "particletypes.h"
+#include "areatype.h"
+#include "particletype.h"
 #include "unitclass.h"
-#include "weapontypes.h"
+#include "weapontype.h"
 #include "song.h"
 
 #include "entity.h"
