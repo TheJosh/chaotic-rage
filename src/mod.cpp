@@ -28,6 +28,9 @@ Mod::Mod(GameState * st, string directory)
 **/
 bool Mod::load()
 {
+	animmodels = loadAllAnimModels(this);
+	if (animmodels == NULL) return false;
+	
 	areatypes = loadAllAreaTypes(this);
 	if (areatypes == NULL) return false;
 	
@@ -49,6 +52,15 @@ bool Mod::load()
 	return true;
 }
 
+
+/**
+* Gets an animmodel by ID
+**/
+AnimModel * Mod::getAnimModel(int id)
+{
+	if (id < 0 or ((unsigned int) id) > animmodels->size()) return NULL;
+	return animmodels->at(id);
+}
 
 /**
 * Gets an areatype by ID

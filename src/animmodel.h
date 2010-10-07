@@ -13,31 +13,33 @@ using namespace std;
 typedef int Mesh;
 typedef int Texture;
 
-class ModelFrame
+class MeshFrame			// TODO: naming
 {
 	public:
 		Mesh mesh;
 		Texture tex;
-		int px, py, pz;		// pos
-		int rx, ry, rz;		// rotate
-		int sx, sy, sz;		// scale
+		float px, py, pz;		// pos
+		float rx, ry, rz;		// rotate
+		float sx, sy, sz;		// scale
 		
 	public:
-		ModelFrame();
-}
+		MeshFrame();
+};
 
-class Model
+class AnimModel
 {
 	public:
 		// from data file
-		vector <ModelFrame *> frames;
+		string name;
+		int num_frames;
+		vector <MeshFrame *> meshframes;
 		
 		// dynamic
 		int id;
 		
 	public:
-		Model();
+		AnimModel();
 };
 
 
-vector<Model*> * loadAllModels(Mod * mod);
+vector<AnimModel*> * loadAllAnimModels(Mod * mod);

@@ -12,12 +12,13 @@ using namespace std;
 
 class Mod {
 	private:
+		vector<AnimModel*> * animmodels;
 		vector<AreaType*> * areatypes;
 		vector<ParticleType*> * particletypes;
 		vector<ParticleGenType*> * pgeneratortypes;
 		vector<UnitClass*> * unitclasses;
-		vector<WeaponType*> * weapontypes;
 		vector<Song*> * songs;
+		vector<WeaponType*> * weapontypes;
 		
 	public:
 		GameState * st;
@@ -34,6 +35,7 @@ class Mod {
 	public:
 		bool load();
 		
+		AnimModel * getAnimModel(int id);
 		AreaType * getAreaType(int id);
 		UnitClass * getUnitClass(int id);
 		ParticleType * getParticleType(int id);
