@@ -6,6 +6,7 @@
 #include <SDL.h>
 #include <confuse.h>
 #include <zzip/zzip.h>
+#include <map>
 #include "rage.h"
 
 using namespace std;
@@ -20,6 +21,15 @@ static cfg_opt_t meshframe_opts[] =
 	CFG_INT((char*) "frame", 0, CFGF_NONE),
 	CFG_STR((char*) "mesh", 0, CFGF_NONE),
 	CFG_STR((char*) "texture", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "px", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "py", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "pz", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "rx", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "ry", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "rz", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "sx", 1, CFGF_NONE),
+	CFG_FLOAT((char*) "sy", 1, CFGF_NONE),
+	CFG_FLOAT((char*) "sz", 1, CFGF_NONE),
 	CFG_END()
 };
 
@@ -40,10 +50,20 @@ static cfg_opt_t opts[] =
 };
 
 
+// This is to save loading the same mesh into memory multiple times
+// especially important for animation, etc.
+static map <string, WavefrontObj *> loaded_meshes;
+
 
 
 AnimModel::AnimModel()
 {
+}
+
+MeshFrame::MeshFrame()
+{
+	mesh = NULL;
+	texture = NULL;
 }
 
 
@@ -105,9 +125,45 @@ AnimModel* loadAnimModel(cfg_t *cfg_model, Mod * mod)
 {
 	AnimModel* am;
 	string filename;
+	cfg_t *cfg_meshframe;
 	
 	am = new AnimModel();
 	am->name = cfg_getstr(cfg_model, "name");
+	am->num_frames = cfg_getint(cfg_model, "num_frames");
+	
+	int num = cfg_size(cfg_model, "meshframe");
+	int j;
+	for (j = 0; j < num; j++) {
+		cfg_meshframe = cfg_getnsec(cfg_model, "meshframe", j);
+		
+		MeshFrame* mf = new MeshFrame();
+		
+		{
+			string name = cfg_getstr(cfg_meshframe, "mesh");
+			
+			map<string, WavefrontObj *>::iterator it = loaded_meshes.find(name);
+			if (it == loaded_meshes.end()) {
+				mf->mesh = loadObj(name);
+				loaded_meshes[name] = mf->mesh;
+			} else {
+				mf->mesh = it->second;
+			}
+		}
+		 
+		mf->texture_name = cfg_getstr(cfg_meshframe, "texture");
+		
+		mf->px = cfg_getfloat(cfg_meshframe, "px");
+		mf->py = cfg_getfloat(cfg_meshframe, "py");
+		mf->pz = cfg_getfloat(cfg_meshframe, "pz");
+		mf->rx = cfg_getfloat(cfg_meshframe, "rx");
+		mf->ry = cfg_getfloat(cfg_meshframe, "ry");
+		mf->rz = cfg_getfloat(cfg_meshframe, "rz");
+		mf->sx = cfg_getfloat(cfg_meshframe, "sx");
+		mf->sy = cfg_getfloat(cfg_meshframe, "sy");
+		mf->sz = cfg_getfloat(cfg_meshframe, "sz");
+		
+		am->meshframes.push_back(mf);
+	}
 	
 	return am;
 }

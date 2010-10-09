@@ -10,17 +10,20 @@
 using namespace std;
 
 
-typedef int Mesh;
-typedef int Texture;
-
-class MeshFrame			// TODO: naming
+class MeshFrame
 {
 	public:
-		Mesh mesh;
-		Texture tex;
+		// from data file
+		int frame;
+		string mesh_name;
+		string texture_name;
 		float px, py, pz;		// pos
 		float rx, ry, rz;		// rotate
 		float sx, sy, sz;		// scale
+		
+		// dynamic
+		WavefrontObj * mesh;
+		SpritePtr texture;
 		
 	public:
 		MeshFrame();
