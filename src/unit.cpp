@@ -183,6 +183,12 @@ void Unit::getSprite(SpritePtr list [SPRITE_LIST_LEN])
 	return;
 }
 
+void Unit::getAnimModel(AnimModel * list [SPRITE_LIST_LEN])
+{
+	list[0] = this->uc->getMod()->getAnimModel(0);
+	list[1] = NULL;
+}
+
 
 /**
 * Moves units around

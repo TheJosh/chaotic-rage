@@ -86,8 +86,10 @@ void Particle::getSprite(SpritePtr list [SPRITE_LIST_LEN])
 	idx += frame;
 	
 	list[0] = this->pt->sprites.at(idx);
-	
-	return;
 }
 
+void Particle::getAnimModel(AnimModel * list [SPRITE_LIST_LEN])
+{
+	list[0] = NULL;
+}
 

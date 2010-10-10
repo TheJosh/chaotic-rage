@@ -53,7 +53,7 @@ static cfg_opt_t opts[] =
 // This is to save loading the same mesh into memory multiple times
 // especially important for animation, etc.
 static map <string, WavefrontObj *> loaded_meshes;
-
+static map <string, SpritePtr> loaded_textures;
 
 
 AnimModel::AnimModel()
@@ -137,19 +137,41 @@ AnimModel* loadAnimModel(cfg_t *cfg_model, Mod * mod)
 		cfg_meshframe = cfg_getnsec(cfg_model, "meshframe", j);
 		
 		MeshFrame* mf = new MeshFrame();
+		mf->frame = cfg_getint(cfg_meshframe, "frame");
 		
 		{
 			string name = cfg_getstr(cfg_meshframe, "mesh");
 			
 			map<string, WavefrontObj *>::iterator it = loaded_meshes.find(name);
 			if (it == loaded_meshes.end()) {
-				mf->mesh = loadObj(name);
+				/**
+				* TODO: needs to use zzip!
+				**/
+				mf->mesh = loadObj("data/cr/animmodels/" + name + ".obj");
+				
+				if (mf->mesh == NULL) return NULL;
+				
 				loaded_meshes[name] = mf->mesh;
 			} else {
 				mf->mesh = it->second;
 			}
 		}
-		 
+		
+		{
+			string name = cfg_getstr(cfg_meshframe, "texture");
+			
+			map<string, SpritePtr>::iterator it = loaded_textures.find(name);
+			if (it == loaded_textures.end()) {
+				mf->texture = mod->st->render->loadSprite("animmodels/" + name + ".png", mod);
+				
+				if (mf->texture == NULL) return NULL;
+				
+				loaded_textures[name] = mf->texture;
+			} else {
+				mf->texture = it->second;
+			}
+		}
+		
 		mf->texture_name = cfg_getstr(cfg_meshframe, "texture");
 		
 		mf->px = cfg_getfloat(cfg_meshframe, "px");

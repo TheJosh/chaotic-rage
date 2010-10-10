@@ -57,10 +57,10 @@ class Zone;
 #include "mod.h"
 #include "event.h"
 
+#include "objload.h"
 #include "render.h"
 #include "render_sdl.h"
 #include "render_opengl.h"
-#include "objload.h"
 
 #include "audio.h"
 #include "audio_sdlmixer.h"

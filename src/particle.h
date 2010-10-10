@@ -39,6 +39,7 @@ class Particle: public Entity
 		
 	public:
 		virtual void getSprite(SpritePtr list [SPRITE_LIST_LEN]);
+		virtual void getAnimModel(AnimModel * list [SPRITE_LIST_LEN]);
 		virtual void update(int delta);
 		
 	public:

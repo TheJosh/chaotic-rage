@@ -44,9 +44,16 @@ class Entity : public EventListener
 		
 	public:
 		/**
-		* Return a sprite to render this entity as
+		* DEPRECATED: AnimModel is the new way...
+		*
+		* Return a SpritePtr to render this entity as
 		**/
 		virtual void getSprite(SpritePtr list [SPRITE_LIST_LEN]) = 0;
+		
+		/**
+		* Return an AnimModel to render this entity as
+		**/
+		virtual void getAnimModel(AnimModel * list [SPRITE_LIST_LEN]) = 0;
 		
 		/**
 		* Update the entity. Time is provided in milliseconds (ms)

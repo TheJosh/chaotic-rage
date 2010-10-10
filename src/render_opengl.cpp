@@ -87,7 +87,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	gluPerspective(45.0f, 1, 1.f, 1500.f);
 	glScalef (1.0f, -1.f, 1.0f);
-	glTranslatef(-500, -500, -1490.0f);
+	glTranslatef(-500, -500, -1250.0f);
 	
 	//glOrtho(0.0f, this->virt_width, this->virt_height, 0.0f, -1.0f, 1.0f);
 	
@@ -347,13 +347,75 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 	return sprite->h;
 }
 
+
+/**
+* Renders an object
+*
+* TODO: Something should be done some time to switch this to VBOs
+**/
+void RenderOpenGL::renderObj (WavefrontObj * obj)
+{
+	glBegin(GL_TRIANGLES);
+	for (unsigned int i = 0; i < obj->faces.size(); i++) {
+		Face * f = &obj->faces.at(i);
+		Vertex * v;
+		TexUV * t;
+		
+		// Vertex 1
+		if (f->n1 != 0) {
+			v = &obj->normals.at(f->n1 - 1);
+			glNormal3f(v->x, v->y, v->z);
+		}
+		
+		if (f->t1 != 0) {
+			t = &obj->texuvs.at(f->t1 - 1);
+			glTexCoord2f(t->x, t->y);
+		}
+		
+		v = &obj->vertexes.at(f->v1 - 1);
+		glVertex3f(v->x, v->y, v->z);
+		
+		
+		// Vertex 2
+		if (f->n2 != 0) {
+			v = &obj->normals.at(f->n2 - 1);
+			glNormal3f(v->x, v->y, v->z);
+		}
+		
+		if (f->t2 != 0) {
+			t = &obj->texuvs.at(f->t2 - 1);
+			glTexCoord2f(t->x, t->y);
+		}
+		
+		v = &obj->vertexes.at(f->v2 - 1);
+		glVertex3f(v->x, v->y, v->z);
+		
+		
+		// Vertex 3
+		if (f->n3 != 0) {
+			v = &obj->normals.at(f->n3 - 1);
+			glNormal3f(v->x, v->y, v->z);
+		}
+		
+		if (f->t3 != 0) {
+			t = &obj->texuvs.at(f->t3 - 1);
+			glTexCoord2f(t->x, t->y);
+		}
+		
+		v = &obj->vertexes.at(f->v3 - 1);
+		glVertex3f(v->x, v->y, v->z);
+	}
+	glEnd();
+}
+
+
 /**
 * Renders
 **/
 void RenderOpenGL::render()
 {
 	unsigned int i, j;
-	SpritePtr sprite;
+	AnimModel * model;
 	
 	int x, y, w, h;	// for general use
 	
@@ -481,75 +543,6 @@ void RenderOpenGL::render()
 	
 	glTranslatef(0, 0, 10);
 	
-	WavefrontObj * obj = loadObj("cube-big.obj");
-	if (obj != NULL) {
-		
-		glPushMatrix();
-		
-		SpritePtr list [SPRITE_LIST_LEN] = {NULL, NULL, NULL, NULL};
-		st->curr_player->getSprite(list);
-		
-		glBindTexture(GL_TEXTURE_2D, list[0]->pixels);
-		
-		glBegin(GL_TRIANGLES);
-		for (unsigned int i = 0; i < obj->faces.size(); i++) {
-			Face * f = &obj->faces.at(i);
-			Vertex * v;
-			TexUV * t;
-		
-			// Vertex 1
-			if (f->n1 != 0) {
-				v = &obj->normals.at(f->n1 - 1);
-				glNormal3f(v->x, v->y, v->z);
-			}
-		
-			if (f->t1 != 0) {
-				t = &obj->texuvs.at(f->t1 - 1);
-				glTexCoord2f(t->x, t->y);
-			}
-		
-			v = &obj->vertexes.at(f->v1 - 1);
-			glVertex3f(v->x, v->y, v->z);
-		
-		
-			// Vertex 2
-			if (f->n2 != 0) {
-				v = &obj->normals.at(f->n2 - 1);
-				glNormal3f(v->x, v->y, v->z);
-			}
-		
-			if (f->t2 != 0) {
-				t = &obj->texuvs.at(f->t2 - 1);
-				glTexCoord2f(t->x, t->y);
-			}
-		
-			v = &obj->vertexes.at(f->v2 - 1);
-			glVertex3f(v->x, v->y, v->z);
-		
-		
-			// Vertex 3
-			if (f->n3 != 0) {
-				v = &obj->normals.at(f->n3 - 1);
-				glNormal3f(v->x, v->y, v->z);
-			}
-		
-			if (f->t3 != 0) {
-				t = &obj->texuvs.at(f->t3 - 1);
-				glTexCoord2f(t->x, t->y);
-			}
-		
-			v = &obj->vertexes.at(f->v3 - 1);
-			glVertex3f(v->x, v->y, v->z);
-		}
-		glEnd();
-		
-		delete(obj);
-		
-		glPopMatrix();
-	}
-	
-	glTranslatef(0, 0, 10);
-	
 	// Entities
 	std::sort(st->entities.begin(), st->entities.end(), ZIndexPredicate);
 	for (i = 0; i < st->entities.size(); i++) {
@@ -563,36 +556,26 @@ void RenderOpenGL::render()
 		
 		glTranslatef(x, y, 0);
 		glRotatef(0 - e->angle, 0, 0, 1);
-		glTranslatef(0 - x, 0 - y, 0);
 		
 		
-		SpritePtr list [SPRITE_LIST_LEN] = {NULL, NULL, NULL, NULL};
-		e->getSprite(list);
+		AnimModel * list [SPRITE_LIST_LEN] = {NULL, NULL, NULL, NULL};
+		e->getAnimModel(list);
 		
 		for (j = 0; j < SPRITE_LIST_LEN; j++) {
-			sprite = list[j];
-			if (sprite == NULL) break;
+			model = list[j];
+			if (model == NULL) break;
 			
-			glBindTexture(GL_TEXTURE_2D, sprite->pixels);
-	 		
-			glBegin(GL_QUADS);
-				// Bottom-left vertex (corner)
-				glTexCoord2i( 0, 1 );
-				glVertex2i( e->x, e->y + sprite->h );
+			for (unsigned int d = 0; d < model->meshframes.size(); d++) {
+				if (model->meshframes[d]->frame != 0) continue;
+				if (model->meshframes[d]->mesh == NULL) continue;
+				if (model->meshframes[d]->texture == NULL) continue;
 				
-				// Bottom-right vertex (corner)
-				glTexCoord2i( 1, 1 );
-				glVertex2i( e->x + sprite->w, e->y + sprite->h );
+				glBindTexture(GL_TEXTURE_2D, model->meshframes[d]->texture->pixels);
 				
-				// Top-right vertex (corner)
-				glTexCoord2i( 1, 0 );
-				glVertex2i( e->x + sprite->w, e->y );
-				
-				// Top-left vertex (corner)
-				glTexCoord2i( 0, 0 );
-				glVertex2i( e->x, e->y );
-			glEnd();
+				renderObj(model->meshframes[d]->mesh);
+			}
 		}
+		
 		
 		glPopMatrix();
 	}

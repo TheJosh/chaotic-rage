@@ -48,6 +48,7 @@ class Unit: public Entity
 		
 	public:
 		virtual void getSprite(SpritePtr list [SPRITE_LIST_LEN]);
+		virtual void getAnimModel(AnimModel * list [SPRITE_LIST_LEN]);
 		virtual void update(int delta) = 0;
 		virtual int getWidth() { return this->uc->width; };
 		virtual int getHeight() { return this->uc->height; };

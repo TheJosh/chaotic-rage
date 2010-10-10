@@ -25,6 +25,7 @@ class RenderOpenGL : public Render
 		
 	private:
 		SpritePtr renderMap(Map * map, int frame, bool wall);
+		void renderObj (WavefrontObj * obj);
 		
 	public:
 		virtual void setScreenSize(int width, int height, bool fullscreen);
