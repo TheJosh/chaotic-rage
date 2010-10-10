@@ -572,6 +572,14 @@ void RenderOpenGL::render()
 				
 				glBindTexture(GL_TEXTURE_2D, model->meshframes[d]->texture->pixels);
 				
+				glPushMatrix();
+				
+				glTranslatef(model->meshframes[d]->px, model->meshframes[d]->py, model->meshframes[d]->pz);
+				glRotatef(model->meshframes[d]->rx, 1, 0, 0);
+				glRotatef(model->meshframes[d]->ry, 0, 1, 0);
+				glRotatef(model->meshframes[d]->rz, 0, 0, 1);
+				glScalef(model->meshframes[d]->sx, model->meshframes[d]->sy, model->meshframes[d]->sz);
+				
 				renderObj(model->meshframes[d]->mesh);
 			}
 		}
