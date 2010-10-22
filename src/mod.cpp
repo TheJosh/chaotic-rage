@@ -28,7 +28,7 @@ Mod::Mod(GameState * st, string directory)
 **/
 bool Mod::load()
 {
-	unsigned int i;
+	int i;
 	
 	animmodels = loadAllAnimModels(this);
 	if (animmodels == NULL) return false;
@@ -51,7 +51,7 @@ bool Mod::load()
 	weapontypes = loadAllWeaponTypes(this);
 	if (weapontypes == NULL) return false;
 	
-	for (i = animmodels->size() - 1; i > 0; --i) {
+	for (i = animmodels->size() - 1; i >= 0; --i) {
 		animmodels->at(i)->next = this->getAnimModel(animmodels->at(i)->next_name);
 	}
 	
@@ -71,8 +71,9 @@ AnimModel * Mod::getAnimModel(int id)
 AnimModel * Mod::getAnimModel(string name)
 {
 	if (name == "") return NULL;
-	unsigned int i;
-	for (i = animmodels->size() - 1; i > 0; --i) {
+	
+	int i;
+	for (i = animmodels->size() - 1; i >= 0; --i) {
 		if (animmodels->at(i)->name == name) return animmodels->at(i);
 	}
 	return NULL;
