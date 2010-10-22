@@ -30,7 +30,7 @@ class ParticleGenerator : public Entity
 	public:
 		virtual void update(int delta);
 		virtual void getSprite(SpritePtr list [SPRITE_LIST_LEN]);
-		virtual void getAnimModel(AnimModel * list [SPRITE_LIST_LEN]);
+		virtual void getAnimModel(AnimPlay * list [SPRITE_LIST_LEN]);
 		
 	public:
 		virtual void handleEvent(Event * ev) {};

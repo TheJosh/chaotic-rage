@@ -36,9 +36,11 @@ class AnimModel
 		string name;
 		int num_frames;
 		vector <MeshFrame *> meshframes;
+		AnimModel * next;
 		
 		// dynamic
 		int id;
+		string next_name;
 		
 	public:
 		AnimModel();

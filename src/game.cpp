@@ -20,7 +20,7 @@ static int fps;
 **/
 void gameLoop(GameState *st, Render *render)
 {
-	int start = 0, end = 1, delta = 0;
+	int start = 0, delta = 0;
 	int curr_frame = 0, total_time = 0;
 	Event * ev;
 	
@@ -49,14 +49,7 @@ void gameLoop(GameState *st, Render *render)
 		
 		SDL_WarpMouse(400, 30);
 		
-		end = SDL_GetTicks();
-		
-		delta = end - start;
-		if (delta < 10) {
-			SDL_Delay(10 - delta);
-		}
-		
-		end = SDL_GetTicks();
+		SDL_Delay(10);
 	}
 	
 	ev = new Event();

@@ -415,6 +415,7 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 void RenderOpenGL::render()
 {
 	unsigned int i, j;
+	AnimPlay * play;
 	AnimModel * model;
 	
 	int x, y, w, h;	// for general use
@@ -558,15 +559,18 @@ void RenderOpenGL::render()
 		glRotatef(0 - e->angle, 0, 0, 1);
 		
 		
-		AnimModel * list [SPRITE_LIST_LEN] = {NULL, NULL, NULL, NULL};
+		AnimPlay * list [SPRITE_LIST_LEN] = {NULL, NULL, NULL, NULL};
 		e->getAnimModel(list);
 		
 		for (j = 0; j < SPRITE_LIST_LEN; j++) {
-			model = list[j];
-			if (model == NULL) break;
+			play = list[j];
+			if (play == NULL) break;
+			
+			model = play->getModel();
+			if (model == NULL) continue;
 			
 			for (unsigned int d = 0; d < model->meshframes.size(); d++) {
-				if (model->meshframes[d]->frame != 0) continue;
+				if (model->meshframes[d]->frame != play->getFrame()) continue;
 				if (model->meshframes[d]->mesh == NULL) continue;
 				if (model->meshframes[d]->texture == NULL) continue;
 				

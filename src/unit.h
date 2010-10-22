@@ -42,13 +42,15 @@ class Unit: public Entity
 		unsigned int animation_start;
 		vector<SpritePtr>* sprites;
 		
+		AnimPlay * anim;
+		
 	public:
 		Unit(UnitClass *uc, GameState *st);
 		~Unit();
 		
 	public:
 		virtual void getSprite(SpritePtr list [SPRITE_LIST_LEN]);
-		virtual void getAnimModel(AnimModel * list [SPRITE_LIST_LEN]);
+		virtual void getAnimModel(AnimPlay * list [SPRITE_LIST_LEN]);
 		virtual void update(int delta) = 0;
 		virtual int getWidth() { return this->uc->width; };
 		virtual int getHeight() { return this->uc->height; };

@@ -39,6 +39,7 @@ static cfg_opt_t model_opts[] =
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_INT((char*) "num_frames", 0, CFGF_NONE),
 	CFG_SEC((char*) "meshframe", meshframe_opts, CFGF_MULTI),
+	CFG_STR((char*) "next", (char*)"", CFGF_NONE),
 	CFG_END()
 };
 
@@ -58,6 +59,7 @@ static map <string, SpritePtr> loaded_textures;
 
 AnimModel::AnimModel()
 {
+	next = NULL;
 }
 
 MeshFrame::MeshFrame()
@@ -130,6 +132,7 @@ AnimModel* loadAnimModel(cfg_t *cfg_model, Mod * mod)
 	am = new AnimModel();
 	am->name = cfg_getstr(cfg_model, "name");
 	am->num_frames = cfg_getint(cfg_model, "num_frames");
+	am->next_name = cfg_getstr(cfg_model, "next");
 	
 	int num = cfg_size(cfg_model, "meshframe");
 	int j;

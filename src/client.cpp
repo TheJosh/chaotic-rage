@@ -52,12 +52,12 @@ int main (int argc, char ** argv) {
 	p->y = z->getRandomY();
 	
 	p = new Player(mod->getUnitClass(0), st);
-	st->addUnit(p);
+	//st->addUnit(p);
 	p->x = 50;
 	p->y = 50;
 	
 	p = new Player(mod->getUnitClass(0), st);
-	st->addUnit(p);
+	//st->addUnit(p);
 	p->x = 100;
 	p->y = 100;
 	

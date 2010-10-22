@@ -42,4 +42,6 @@ class Mod {
 		ParticleGenType * getParticleGenType(int id);
 		Song * getSong(int id);
 		WeaponType * getWeaponType(int id);
+		
+		AnimModel * getAnimModel(string name);
 };

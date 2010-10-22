@@ -32,6 +32,7 @@ typedef struct range {
 
 class Action;
 class AnimModel;
+class AnimPlay;
 class AreaType;
 class Audio;
 class Entity;
@@ -69,6 +70,7 @@ class Zone;
 #include "entitytype.h"
 
 #include "animmodel.h"
+#include "animplay.h"
 #include "areatype.h"
 #include "particletype.h"
 #include "unitclass.h"

@@ -33,6 +33,10 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	this->walk_time = 0;
 	
 	this->sprites = uc->loadAllSprites();
+	
+	
+	this->anim = new AnimPlay(this->uc->getMod()->getAnimModel(0));
+	
 }
 
 Unit::~Unit()
@@ -183,9 +187,9 @@ void Unit::getSprite(SpritePtr list [SPRITE_LIST_LEN])
 	return;
 }
 
-void Unit::getAnimModel(AnimModel * list [SPRITE_LIST_LEN])
+void Unit::getAnimModel(AnimPlay * list [SPRITE_LIST_LEN])
 {
-	list[0] = this->uc->getMod()->getAnimModel(0);
+	list[0] = this->anim;
 	list[1] = NULL;
 }
 

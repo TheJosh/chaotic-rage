@@ -108,7 +108,7 @@ void GameState::update(int delta)
 	}
 	
 	this->game_time += delta;
-	this->anim_frame = floor(this->game_time / ANIMATION_FPS);
+	this->anim_frame = floor(this->game_time * ANIMATION_FPS / 1000.0);
 }
 
 

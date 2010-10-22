@@ -53,7 +53,7 @@ class Entity : public EventListener
 		/**
 		* Return an AnimModel to render this entity as
 		**/
-		virtual void getAnimModel(AnimModel * list [SPRITE_LIST_LEN]) = 0;
+		virtual void getAnimModel(AnimPlay * list [SPRITE_LIST_LEN]) = 0;
 		
 		/**
 		* Update the entity. Time is provided in milliseconds (ms)
