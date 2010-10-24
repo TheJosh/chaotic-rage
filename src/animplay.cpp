@@ -24,6 +24,18 @@ AnimModel * AnimPlay::getModel()
 	return this->model;
 }
 
+void AnimPlay::reset()
+{
+	this->start_frame = -1;
+}
+
+void AnimPlay::next()
+{
+	this->start_frame = -1;
+	this->model = this->model->next;
+}
+
+
 /**
 * Returns the currently playing frame number
 **/
@@ -48,16 +60,17 @@ int AnimPlay::getFrame()
 }
 
 /**
-* Return TRUE if the animation is playing, FALSE if it has stopped
+* Return TRUE if the animation is finished, FALSE if it is still going
 **/
-bool AnimPlay::isPlaying()
+bool AnimPlay::isDone()
 {
-	if (this->model->next == NULL) return true;
+	if (this->model->next == NULL) return false;
+	if (this->start_frame == -1) return false;
 	
 	int framenum = getGameState()->anim_frame - this->start_frame;
 	if (framenum > this->model->num_frames) {
-		return false;
+		return true;
 	}
 	
-	return true;
+	return false;
 }

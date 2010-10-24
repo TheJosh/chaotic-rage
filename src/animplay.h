@@ -22,5 +22,7 @@ class AnimPlay
 	public:
 		AnimModel * getModel();
 		int getFrame();
-		bool isPlaying();
+		bool isDone();
+		void reset();
+		void next();
 };

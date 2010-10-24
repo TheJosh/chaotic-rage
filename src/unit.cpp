@@ -265,6 +265,8 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 		
 		this->weapon_gen->update(delta);
 	}
+	
+	if (this->anim->isDone()) this->anim->next();
 }
 
 
