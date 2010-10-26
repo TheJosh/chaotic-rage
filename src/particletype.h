@@ -26,6 +26,8 @@ class ParticleType : public EntityType
 		Range unit_hits;
 		Range wall_hits;
 		
+		AnimModel * model;
+		
 		// dynamic
 		int id;
 		vector<SpritePtr> sprites;

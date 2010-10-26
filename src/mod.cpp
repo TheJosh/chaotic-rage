@@ -33,6 +33,10 @@ bool Mod::load()
 	animmodels = loadAllAnimModels(this);
 	if (animmodels == NULL) return false;
 	
+	for (i = animmodels->size() - 1; i >= 0; --i) {
+		animmodels->at(i)->next = this->getAnimModel(animmodels->at(i)->next_name);
+	}
+	
 	areatypes = loadAllAreaTypes(this);
 	if (areatypes == NULL) return false;
 	
@@ -50,10 +54,6 @@ bool Mod::load()
 	
 	weapontypes = loadAllWeaponTypes(this);
 	if (weapontypes == NULL) return false;
-	
-	for (i = animmodels->size() - 1; i >= 0; --i) {
-		animmodels->at(i)->next = this->getAnimModel(animmodels->at(i)->next_name);
-	}
 	
 	return true;
 }

@@ -32,6 +32,7 @@ class Particle: public Entity
 		
 	protected:
 		unsigned int animation_start;
+		AnimPlay * anim;
 		
 	public:
 		Particle(ParticleType *pt, GameState *st);

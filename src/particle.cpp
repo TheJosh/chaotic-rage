@@ -23,12 +23,15 @@ Particle::Particle(ParticleType *pt, GameState *st) : Entity(st)
 	this->unit_hits = getRandom(pt->unit_hits.min, pt->unit_hits.max);
 	this->wall_hits = getRandom(pt->wall_hits.min, pt->wall_hits.max);
 	
+	this->anim = new AnimPlay(pt->model);
+	
 	this->angle = 0;
 	this->age = 0;
 }
 
 Particle::~Particle()
 {
+	delete (this->anim);
 }
 
 /**
@@ -74,6 +77,7 @@ void Particle::update(int delta)
 		if (this->wall_hits == 0) this->del = true;
 	}
 	
+	if (this->anim->isDone()) this->anim->next();
 }
 
 void Particle::getSprite(SpritePtr list [SPRITE_LIST_LEN])
@@ -90,6 +94,7 @@ void Particle::getSprite(SpritePtr list [SPRITE_LIST_LEN])
 
 void Particle::getAnimModel(AnimPlay * list [SPRITE_LIST_LEN])
 {
-	list[0] = NULL;
+	list[0] = this->anim;
+	list[1] = NULL;
 }
 

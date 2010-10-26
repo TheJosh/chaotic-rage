@@ -23,6 +23,7 @@ static cfg_opt_t particletype_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_STR((char*) "image", 0, CFGF_NONE),
+	CFG_STR((char*) "model", 0, CFGF_NONE),
 	CFG_INT((char*) "directional", 0, CFGF_NONE),		// 1 = use direction info, 0 = only use angle 0deg
 	CFG_INT((char*) "num_frames", 1, CFGF_NONE),
 	CFG_INT_LIST((char*) "lin_speed", 0, CFGF_NONE),
@@ -186,6 +187,7 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype, Mod * mod)
 	char buff[255];
 	
 	if (cfg_size(cfg_particletype, "image") == 0) return NULL;
+	if (cfg_size(cfg_particletype, "model") == 0) return NULL;
 	if (cfg_getint(cfg_particletype, "num_frames") < 1) return NULL;
 	if (cfg_getint(cfg_particletype, "lin_speed") == 0) return NULL;
 	if (cfg_getint(cfg_particletype, "lin_accel") == 0) return NULL;
@@ -203,6 +205,11 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype, Mod * mod)
 	pt->wall_damage = cfg_getrange(cfg_particletype, "wall_damage");
 	pt->unit_hits = cfg_getrange(cfg_particletype, "unit_hits");
 	pt->wall_hits = cfg_getrange(cfg_particletype, "wall_hits");
+	
+	char * tmp = cfg_getstr(cfg_particletype, "model");
+	if (tmp == NULL) return NULL;
+	pt->model = mod->getAnimModel(tmp);
+	if (pt->model == NULL) return NULL;
 	
 	pt->actions = loadActions(cfg_particletype);
 	
