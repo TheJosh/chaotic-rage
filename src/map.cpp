@@ -95,13 +95,15 @@ int Map::load(string name, Render * render)
 	a->angle = 0;
 	this->areas.push_back(a);
 	
-	a = new Area(this->st->getMod(0)->getAreaType(5));
-	a->x = 100;
-	a->y = 600;
-	a->width = 600;
-	a->height = 70;
-	a->angle = 0;
-	this->areas.push_back(a);
+	for (int x = 100; x < 800; x += 50) {
+		a = new Area(this->st->getMod(0)->getAreaType(5));
+		a->x = x;
+		a->y = 600;
+		a->width = 25;
+		a->height = 25;
+		a->angle = 0;
+		this->areas.push_back(a);
+	}
 	
 	z = new Zone(50,50,60,60);
 	z->spawn[FACTION_INDIVIDUAL] = 1;
