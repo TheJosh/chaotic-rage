@@ -353,7 +353,7 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 *
 * TODO: Something should be done some time to switch this to VBOs
 **/
-void RenderOpenGL::renderObj (WavefrontObj * obj)
+static void renderObj (WavefrontObj * obj)
 {
 	glBegin(GL_TRIANGLES);
 	for (unsigned int i = 0; i < obj->faces.size(); i++) {
@@ -409,6 +409,34 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 }
 
 
+static void renderAnimPlay(AnimPlay * play)
+{
+	AnimModel * model;
+	
+	model = play->getModel();
+	if (model == NULL) return;
+	
+	int frame = play->getFrame();
+	
+	for (unsigned int d = 0; d < model->meshframes.size(); d++) {
+		if (model->meshframes[d]->frame != frame) continue;
+		if (model->meshframes[d]->mesh == NULL) continue;
+		if (model->meshframes[d]->texture == NULL) continue;
+		
+		glBindTexture(GL_TEXTURE_2D, model->meshframes[d]->texture->pixels);
+		
+		glPushMatrix();
+		
+		glTranslatef(model->meshframes[d]->px, model->meshframes[d]->py, model->meshframes[d]->pz);
+		glRotatef(model->meshframes[d]->rx, 1, 0, 0);
+		glRotatef(model->meshframes[d]->ry, 0, 1, 0);
+		glRotatef(model->meshframes[d]->rz, 0, 0, 1);
+		glScalef(model->meshframes[d]->sx, model->meshframes[d]->sy, model->meshframes[d]->sz);
+		
+		renderObj(model->meshframes[d]->mesh);
+	}
+}
+
 /**
 * Renders
 **/
@@ -416,7 +444,6 @@ void RenderOpenGL::render()
 {
 	unsigned int i, j;
 	AnimPlay * play;
-	AnimModel * model;
 	
 	int x, y, w, h;	// for general use
 	
@@ -482,7 +509,7 @@ void RenderOpenGL::render()
  			texh = ((float)a->height) / ((float)a->type->surf->h);
  		}
  		
- 		if (a->type->wall == 0) {
+ 		if (a->anim == NULL) {
 			glBegin(GL_QUADS);
 				// Bottom-left vertex (corner)
 				glTexCoord2f( 0.0, texh );
@@ -502,41 +529,10 @@ void RenderOpenGL::render()
 			glEnd();
 		
 		} else {
-			glBegin(GL_QUADS);
-				// Bottom-left vertex (corner)
-				glTexCoord2f( 0.0, texh );
-				glVertex3i( a->x, a->y + a->height, 100 );
+			glTranslatef(a->x, a->y, 0);
+			glRotatef(0 - a->angle, 0, 0, 1);
 			
-				// Bottom-right vertex (corner)
-				glTexCoord2f( texw, texh );
-				glVertex3i( a->x + a->width, a->y + a->height, 100 );
-			
-				// Top-right vertex (corner)
-				glTexCoord2f( texw, 0.0 );
-				glVertex3i( a->x + a->width, a->y, 100 );
-			
-				// Top-left vertex (corner)
-				glTexCoord2f( 0.0, 0.0 );
-				glVertex3i( a->x, a->y, 100 );
-			glEnd();
-		
-			glBegin(GL_QUADS);
-				// Bottom-left vertex (corner)
-				glTexCoord2f( 0.0, texh );
-				glVertex3i( a->x, a->y, 100 );
-			
-				// Bottom-right vertex (corner)
-				glTexCoord2f( texw, texh );
-				glVertex3i( a->x + a->width, a->y, 100 );
-			
-				// Top-right vertex (corner)
-				glTexCoord2f( texw, 0.0 );
-				glVertex3i( a->x + a->width, a->y, 0 );
-			
-				// Top-left vertex (corner)
-				glTexCoord2f( 0.0, 0.0 );
-				glVertex3i( a->x, a->y, 0 );
-			glEnd();
+			renderAnimPlay(a->anim);
 		}
 		
 		glPopMatrix();
@@ -566,26 +562,7 @@ void RenderOpenGL::render()
 			play = list[j];
 			if (play == NULL) break;
 			
-			model = play->getModel();
-			if (model == NULL) continue;
-			
-			for (unsigned int d = 0; d < model->meshframes.size(); d++) {
-				if (model->meshframes[d]->frame != play->getFrame()) continue;
-				if (model->meshframes[d]->mesh == NULL) continue;
-				if (model->meshframes[d]->texture == NULL) continue;
-				
-				glBindTexture(GL_TEXTURE_2D, model->meshframes[d]->texture->pixels);
-				
-				glPushMatrix();
-				
-				glTranslatef(model->meshframes[d]->px, model->meshframes[d]->py, model->meshframes[d]->pz);
-				glRotatef(model->meshframes[d]->rx, 1, 0, 0);
-				glRotatef(model->meshframes[d]->ry, 0, 1, 0);
-				glRotatef(model->meshframes[d]->rz, 0, 0, 1);
-				glScalef(model->meshframes[d]->sx, model->meshframes[d]->sy, model->meshframes[d]->sz);
-				
-				renderObj(model->meshframes[d]->mesh);
-			}
+			renderAnimPlay(play);
 		}
 		
 		

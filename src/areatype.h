@@ -14,11 +14,14 @@ class AreaType
 {
 	public:
 		// from data file
+		string name;
 		bool stretch;
 		bool wall;
 		AreaType * ground_type;
 		
 		vector <AudioPtr> walk_sounds;
+		
+		AnimModel * model;
 		
 		// dynamic
 		int id;

@@ -21,9 +21,9 @@ extern cfg_opt_t g_action_opts;
 // Particle section
 static cfg_opt_t particletype_opts[] =
 {
-	CFG_STR((char*) "name", 0, CFGF_NONE),
-	CFG_STR((char*) "image", 0, CFGF_NONE),
-	CFG_STR((char*) "model", 0, CFGF_NONE),
+	CFG_STR((char*) "name", (char*)"", CFGF_NONE),
+	CFG_STR((char*) "image", (char*)"", CFGF_NONE),
+	CFG_STR((char*) "model", (char*)"", CFGF_NONE),
 	CFG_INT((char*) "directional", 0, CFGF_NONE),		// 1 = use direction info, 0 = only use angle 0deg
 	CFG_INT((char*) "num_frames", 1, CFGF_NONE),
 	CFG_INT_LIST((char*) "lin_speed", 0, CFGF_NONE),

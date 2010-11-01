@@ -28,7 +28,12 @@ class Area {
 		int width;
 		int height;
 		int angle;
-		AreaType* type;
+		AreaType * type;
+		AnimPlay * anim;
+		
+	public:
+		Area(AreaType * type);
+		~Area();
 };
 
 

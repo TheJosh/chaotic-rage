@@ -19,8 +19,9 @@ AreaType* loadAreaType(cfg_t *cfg_areatype, Mod * mod);
 // Areatype section
 static cfg_opt_t areatype_opts[] =
 {
-	CFG_STR((char*) "name", 0, CFGF_NONE),
-	CFG_STR((char*) "image", 0, CFGF_NONE),
+	CFG_STR((char*) "name", (char*)"", CFGF_NONE),
+	CFG_STR((char*) "image", (char*)"", CFGF_NONE),
+	CFG_STR((char*) "model", (char*)"", CFGF_NONE),
 	CFG_INT((char*) "stretch", 0, CFGF_NONE),		// 0 = tile, 1 = stretch
 	CFG_INT((char*) "wall", 0, CFGF_NONE),			// 0 = ground, 1 = wall
 	CFG_INT((char*) "ground_type", -1, CFGF_NONE),	// Ground to place underneath this wall
@@ -109,9 +110,15 @@ AreaType* loadAreaType(cfg_t *cfg_areatype, Mod * mod)
 	filename.append("-fr0.png");
 	
 	at = new AreaType();
+	at->name = cfg_getstr(cfg_areatype, "name");
 	at->surf = mod->st->render->loadSprite(filename.c_str(), mod);
 	at->stretch = cfg_getint(cfg_areatype, "stretch");
 	at->wall = cfg_getint(cfg_areatype, "wall");
+	
+	char * tmp = cfg_getstr(cfg_areatype, "model");
+	if (tmp != NULL) {
+		at->model = mod->getAnimModel(tmp);
+	}
 	
 	// Load walk sounds
 	int size = cfg_size(cfg_areatype, "walk_sounds");

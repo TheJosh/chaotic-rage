@@ -13,6 +13,22 @@ using namespace std;
 SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data);
 
 
+Area::Area(AreaType * type)
+{
+	this->type = type;
+	
+	if (type->model != NULL) {
+		this->anim = new AnimPlay(type->model);
+	} else {
+		this->anim = NULL;
+	}
+}
+
+Area::~Area()
+{
+	delete(anim);
+}
+
 Map::Map(GameState * st)
 {
 	this->st = st;
@@ -39,58 +55,52 @@ int Map::load(string name, Render * render)
 	this->height = 1000;
 	
 	// Default area
-	a = new Area();
+	a = new Area(this->st->getMod(0)->getAreaType(0));
 	a->x = 0;
 	a->y = 0;
 	a->width = this->width;
 	a->height = this->height;
 	a->angle = 0;
-	a->type = this->st->getMod(0)->getAreaType(0);
 	this->areas.push_back(a);
 	
-	a = new Area();
+	a = new Area(this->st->getMod(0)->getAreaType(2));
 	a->x = 300;
 	a->y = 300;
 	a->width = 100;
 	a->height = 100;
 	a->angle = 22;
-	a->type = this->st->getMod(0)->getAreaType(2);
 	this->areas.push_back(a);
 	
-	a = new Area();
+	a = new Area(this->st->getMod(0)->getAreaType(2));
 	a->x = 150;
 	a->y = 170;
 	a->width = 100;
 	a->height = 100;
 	a->angle = 0;
-	a->type = this->st->getMod(0)->getAreaType(2);
 	this->areas.push_back(a);
 	
-	a = new Area();
+	a = new Area(this->st->getMod(0)->getAreaType(3));
 	a->x = 0;
 	a->y = 0;
 	a->width = 200;
 	a->height = 1000;
 	a->angle = 2;
-	a->type = this->st->getMod(0)->getAreaType(3);
 	this->areas.push_back(a);
 	
-	a = new Area();
+	a = new Area(this->st->getMod(0)->getAreaType(3));
 	a->x = 400;
 	a->y = 30;
 	a->width = 200;
 	a->height = 30;
 	a->angle = 0;
-	a->type = this->st->getMod(0)->getAreaType(3);
 	this->areas.push_back(a);
 	
-	a = new Area();
+	a = new Area(this->st->getMod(0)->getAreaType(5));
 	a->x = 100;
 	a->y = 600;
 	a->width = 600;
 	a->height = 70;
 	a->angle = 0;
-	a->type = this->st->getMod(0)->getAreaType(5);
 	this->areas.push_back(a);
 	
 	z = new Zone(50,50,60,60);
