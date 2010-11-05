@@ -30,10 +30,14 @@ class Area {
 		int angle;
 		AreaType * type;
 		AnimPlay * anim;
+		int health;
 		
 	public:
 		Area(AreaType * type);
 		~Area();
+		
+	public:
+		void takeDamage(int damage);
 };
 
 

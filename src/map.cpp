@@ -22,11 +22,21 @@ Area::Area(AreaType * type)
 	} else {
 		this->anim = NULL;
 	}
+	
+	this->health = 10000;
 }
 
 Area::~Area()
 {
 	delete(anim);
+}
+
+void Area::takeDamage(int damage)
+{
+	this->health -= damage;
+	if (this->health <= 0) {
+		this->anim = NULL;
+	}
 }
 
 Map::Map(GameState * st)

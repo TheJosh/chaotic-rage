@@ -70,7 +70,7 @@ void Particle::update(int delta)
 		fireEvent(ev);
 		
 		if (this->wall_damage > 0) {
-			//this->st->map->setDataHP(this->x, this->y, pixel.hp - this->wall_damage);
+			a->takeDamage(this->wall_damage);
 			
 			this->wall_hits--;
 			if (this->wall_hits == 0) this->del = true;
