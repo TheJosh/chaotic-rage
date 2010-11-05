@@ -16,6 +16,14 @@ AreaType* loadAreaType(cfg_t *cfg_areatype, Mod * mod);
 
 
 /* Config file definition */
+// Damage
+static cfg_opt_t damage_opts[] =
+{
+	CFG_INT((char*) "health", 0, CFGF_NONE),
+	CFG_STR((char*) "model", (char*)"", CFGF_NONE),
+	CFG_END()
+};
+
 // Areatype section
 static cfg_opt_t areatype_opts[] =
 {
@@ -26,6 +34,7 @@ static cfg_opt_t areatype_opts[] =
 	CFG_INT((char*) "wall", 0, CFGF_NONE),			// 0 = ground, 1 = wall
 	CFG_INT((char*) "ground_type", -1, CFGF_NONE),	// Ground to place underneath this wall
 	CFG_STR_LIST((char*) "walk_sounds", 0, CFGF_NONE),
+	CFG_SEC((char*) "damage", damage_opts, CFGF_MULTI),
 	CFG_END()
 };
 
@@ -104,6 +113,7 @@ AreaType* loadAreaType(cfg_t *cfg_areatype, Mod * mod)
 {
 	AreaType* at;
 	string filename;
+	int size;
 	
 	filename = "areatypes/";
 	filename.append(cfg_getstr(cfg_areatype, "image"));
@@ -120,8 +130,24 @@ AreaType* loadAreaType(cfg_t *cfg_areatype, Mod * mod)
 		at->model = mod->getAnimModel(tmp);
 	}
 	
+	// Load damage states
+	size = cfg_size(cfg_areatype, "damage");
+	for (int j = 0; j < size; j++) {
+		cfg_t *cfg_damage = cfg_getnsec(cfg_areatype, "damage", j);
+		
+		char * tmp = cfg_getstr(cfg_damage, "model");
+		if (tmp == NULL) return NULL;
+		
+		AreaTypeDamage * dam = new AreaTypeDamage();
+		
+		dam->health = cfg_getint(cfg_damage, "health");
+		dam->model = mod->getAnimModel(tmp);
+		
+		at->damage_models.push_back(dam);
+	}
+	
 	// Load walk sounds
-	int size = cfg_size(cfg_areatype, "walk_sounds");
+	size = cfg_size(cfg_areatype, "walk_sounds");
 	for (int j = 0; j < size; j++) {
 		filename = "areatypes/";
 		filename.append(cfg_getnstr(cfg_areatype, "walk_sounds", j));

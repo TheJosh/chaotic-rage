@@ -34,8 +34,16 @@ Area::~Area()
 void Area::takeDamage(int damage)
 {
 	this->health -= damage;
-	if (this->health <= 0) {
-		this->anim = NULL;
+	if (this->health < 0) this->health = 0;
+	
+	for (unsigned int j = 0; j < this->type->damage_models.size(); j++) {
+		AreaTypeDamage * dam = this->type->damage_models.at(j);
+		
+		if (this->health <= dam->health) {
+			delete(this->anim);
+			this->anim = new AnimPlay(dam->model);
+			break;
+		}
 	}
 }
 

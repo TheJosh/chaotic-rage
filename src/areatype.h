@@ -10,6 +10,12 @@
 using namespace std;
 
 
+class AreaTypeDamage {
+	public:
+		int health;
+		AnimModel * model;
+};
+
 class AreaType
 {
 	public:
@@ -19,6 +25,7 @@ class AreaType
 		bool wall;
 		AreaType * ground_type;
 		
+		vector <AreaTypeDamage *> damage_models;
 		vector <AudioPtr> walk_sounds;
 		
 		AnimModel * model;
