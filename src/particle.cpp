@@ -62,17 +62,22 @@ void Particle::update(int delta)
 	
 	
 	// Hit a wall?
-	AreaType *at = this->st->map->checkHit(this->x, this->y, 1);
-	if (at != NULL) {
+	Area *a = this->st->map->checkHit(this->x, this->y, 1);
+	if (a != NULL) {
 		Event *ev = new Event();
 		ev->type = PART_HIT_WALL;
 		ev->e1 = this;
 		fireEvent(ev);
 		
-		//this->st->map->setDataHP(this->x, this->y, pixel.hp - this->wall_damage);
-		
-		this->wall_hits--;
-		if (this->wall_hits == 0) this->del = true;
+		if (this->wall_damage > 0) {
+			//this->st->map->setDataHP(this->x, this->y, pixel.hp - this->wall_damage);
+			
+			this->wall_hits--;
+			if (this->wall_hits == 0) this->del = true;
+			
+		} else {
+			this->speed = 0;
+		}
 	}
 	
 	if (this->anim->isDone()) this->anim->next();

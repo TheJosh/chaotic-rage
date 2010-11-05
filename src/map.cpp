@@ -44,6 +44,8 @@ Map::~Map()
 
 /**
 * Load a file (simulated)
+*
+* @todo rehash for epicenter positioning
 **/
 int Map::load(string name, Render * render)
 {
@@ -217,9 +219,27 @@ SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data)
 * check radius.
 *
 * @tag good-for-optimise
+* @todo rehash for epicenter positioning
 **/
-AreaType * Map::checkHit(int x, int y, int check_radius)
+Area * Map::checkHit(float x, float y, int check_radius)
 {
+	unsigned int i;
+	
+	for (i = 0; i < st->map->areas.size(); i++) {
+		Area * a = st->map->areas[i];
+		if (a->type->wall == 0) continue;
+		
+		float cx = a->x + a->width / 2;
+		float cy = a->y + a->height / 2;
+		
+		int dist = ceil(sqrt(((x - cx) * (x - cx)) + ((y - cy) * (y - cy))));
+		
+		// TODO: 25 is our temporary version of saying wall_size/2
+		if (dist < (check_radius + 25)) {
+			return a;
+		}
+	}
+	
 	return NULL;
 }
 

@@ -67,7 +67,7 @@ class Map {
 		data_pixel getDataAt(int x, int y);
 		void setDataHP(int x, int y, int newhp);
 		
-		AreaType * checkHit(int x, int y, int check_radius);
+		Area * checkHit(float x, float y, int check_radius);
 		
 		Zone * getSpawnZone(Faction f);
 		Zone * getPrisonZone(Faction f);
