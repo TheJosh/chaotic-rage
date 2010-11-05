@@ -160,28 +160,6 @@ int inside (SDL_Rect rect, int x, int y)
 	return 0;
 }
 
-/**
-* Returns 1 if any of the points in the rectangle collides with a wall
-**/
-int collideWall(GameState *st, int x, int y, int w, int h)
-{
-	AreaType *at;
-	
-	at = st->map->getDataAt(x, y).type;
-	if (at->wall) return 1;
-	
-	at = st->map->getDataAt(x + w, y).type;
-	if (at->wall) return 1;
-	
-	at = st->map->getDataAt(x, y + h).type;
-	if (at->wall) return 1;
-	
-	at = st->map->getDataAt(x + w, y + h).type;
-	if (at->wall) return 1;
-	
-	return 0;
-}
-
 
 /**
 * Converts a pps distance, and a delta into a fixed pixel distance.

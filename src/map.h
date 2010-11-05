@@ -63,8 +63,11 @@ class Map {
 	public:
 		int load(string name, Render * render);
 		SDL_Surface * renderFrame(int frame, bool wall);
+		
 		data_pixel getDataAt(int x, int y);
 		void setDataHP(int x, int y, int newhp);
+		
+		AreaType * checkHit(int x, int y, int check_radius);
 		
 		Zone * getSpawnZone(Faction f);
 		Zone * getPrisonZone(Faction f);

@@ -211,6 +211,20 @@ SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data)
 
 
 /**
+* Returns an AreaType if we hit a wall, or NULL if we haven't
+*
+* Makes use of the AreaType check radius, as well as the checking objects'
+* check radius.
+*
+* @tag good-for-optimise
+**/
+AreaType * Map::checkHit(int x, int y, int check_radius)
+{
+	return NULL;
+}
+
+
+/**
 * Gets a data pixel
 **/
 data_pixel Map::getDataAt(int x, int y)

@@ -221,7 +221,7 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 			this->speed = 0;
 			this->setState(UNIT_STATE_STATIC);
 			
-		} else if (collideWall(this->st, newx, newy, this->uc->width, this->uc->height)) {
+		} else if (this->st->map->checkHit(newx, newy, this->uc->width) != NULL) {
 			this->speed = 0;
 			this->setState(UNIT_STATE_STATIC);
 			
