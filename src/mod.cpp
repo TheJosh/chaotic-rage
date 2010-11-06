@@ -52,6 +52,9 @@ bool Mod::load()
 	songs = loadAllSongs(this);
 	if (songs == NULL) return false;
 	
+	walltypes = loadAllWallTypes(this);
+	if (walltypes == NULL) return false;
+	
 	weapontypes = loadAllWeaponTypes(this);
 	if (weapontypes == NULL) return false;
 	
@@ -122,6 +125,15 @@ Song * Mod::getSong(int id)
 {
 	if (id < 0 or ((unsigned int) id) > songs->size()) return NULL;
 	return songs->at(id);
+}
+
+/**
+* Gets a wall type by ID
+**/
+WallType * Mod::getWallType(int id)
+{
+	if (id < 0 or ((unsigned int) id) > walltypes->size()) return NULL;
+	return walltypes->at(id);
 }
 
 /**

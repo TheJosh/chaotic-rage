@@ -49,9 +49,11 @@ class ParticleGenType;
 class ParticleType;
 class Player;
 class Render;
+class Song;
 class Unit;
 class UnitClass;
-class Song;
+class Wall;
+class WallType;
 class WeaponType;
 class Zone;
 
@@ -75,6 +77,7 @@ class Zone;
 #include "particletype.h"
 #include "unitclass.h"
 #include "song.h"
+#include "walltype.h"
 #include "weapontype.h"
 
 #include "entity.h"
@@ -82,6 +85,7 @@ class Zone;
 #include "player.h"
 #include "particle.h"
 #include "particlegenerator.h"
+#include "wall.h"
 
 #include "zone.h"
 #include "map.h"

@@ -43,6 +43,7 @@ class GameState
 		void addUnit(Unit* unit);
 		void addParticle(Particle* particle);
 		void addParticleGenerator(ParticleGenerator* generator);
+		void addWall(Wall* wall);
 		
 		vector<Particle*> * particlesInside(int x, int y, int w, int h);
 		
@@ -50,6 +51,8 @@ class GameState
 		
 		void addMod(Mod * mod);
 		Mod * getMod(int id);
+		
+		Wall * checkHitWall(float x, float y, int check_radius);
 };
 
 

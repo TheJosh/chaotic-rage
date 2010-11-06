@@ -35,9 +35,6 @@ class Area {
 	public:
 		Area(AreaType * type);
 		~Area();
-		
-	public:
-		void takeDamage(int damage);
 };
 
 
@@ -70,8 +67,6 @@ class Map {
 		
 		data_pixel getDataAt(int x, int y);
 		void setDataHP(int x, int y, int newhp);
-		
-		Area * checkHit(float x, float y, int check_radius);
 		
 		Zone * getSpawnZone(Faction f);
 		Zone * getPrisonZone(Faction f);

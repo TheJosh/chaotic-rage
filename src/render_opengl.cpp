@@ -494,47 +494,39 @@ void RenderOpenGL::render()
 		
 		glPushMatrix();
 		
- 		if (a->anim == NULL) {
- 			x = a->x + a->width / 2;
-			y = a->y + a->height / 2;
-			
-			glTranslatef(x, y, 0);
-			glRotatef(0 - a->angle, 0, 0, 1);
-			glTranslatef(0 - x, 0 - y, 0);
-			
- 			glBindTexture(GL_TEXTURE_2D, a->type->surf->pixels);
-	 		
-	 		float texw = 1.0;
-	 		float texh = 1.0;
-	 		if (! a->type->stretch) {
-	 			texw = ((float)a->width) / ((float)a->type->surf->w);
-	 			texh = ((float)a->height) / ((float)a->type->surf->h);
-	 		}
-	 		
-			glBegin(GL_QUADS);
-				// Bottom-left vertex (corner)
-				glTexCoord2f( 0.0, texh );
-				glVertex3i( a->x, a->y + a->height, 0 );
-				
-				// Bottom-right vertex (corner)
-				glTexCoord2f( texw, texh );
-				glVertex3i( a->x + a->width, a->y + a->height, 0 );
-				
-				// Top-right vertex (corner)
-				glTexCoord2f( texw, 0.0 );
-				glVertex3i( a->x + a->width, a->y, 0 );
-				
-				// Top-left vertex (corner)
-				glTexCoord2f( 0.0, 0.0 );
-				glVertex3i( a->x, a->y, 0 );
-			glEnd();
+		x = a->x + a->width / 2;
+		y = a->y + a->height / 2;
 		
-		} else {
-			glTranslatef(a->x, a->y, 0);
-			glRotatef(0 - a->angle, 0, 0, 1);
+		glTranslatef(x, y, 0);
+		glRotatef(0 - a->angle, 0, 0, 1);
+		glTranslatef(0 - x, 0 - y, 0);
+		
+		glBindTexture(GL_TEXTURE_2D, a->type->surf->pixels);
+ 		
+ 		float texw = 1.0;
+ 		float texh = 1.0;
+ 		if (! a->type->stretch) {
+ 			texw = ((float)a->width) / ((float)a->type->surf->w);
+ 			texh = ((float)a->height) / ((float)a->type->surf->h);
+ 		}
+ 		
+		glBegin(GL_QUADS);
+			// Bottom-left vertex (corner)
+			glTexCoord2f( 0.0, texh );
+			glVertex3i( a->x, a->y + a->height, 0 );
 			
-			renderAnimPlay(a->anim);
-		}
+			// Bottom-right vertex (corner)
+			glTexCoord2f( texw, texh );
+			glVertex3i( a->x + a->width, a->y + a->height, 0 );
+			
+			// Top-right vertex (corner)
+			glTexCoord2f( texw, 0.0 );
+			glVertex3i( a->x + a->width, a->y, 0 );
+			
+			// Top-left vertex (corner)
+			glTexCoord2f( 0.0, 0.0 );
+			glVertex3i( a->x, a->y, 0 );
+		glEnd();
 		
 		glPopMatrix();
 	}

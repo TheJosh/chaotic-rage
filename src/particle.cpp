@@ -62,15 +62,15 @@ void Particle::update(int delta)
 	
 	
 	// Hit a wall?
-	Area *a = this->st->map->checkHit(this->x, this->y, 1);
-	if (a != NULL) {
+	Wall *wa = this->st->checkHitWall(this->x, this->y, 1);
+	if (wa != NULL) {
 		Event *ev = new Event();
 		ev->type = PART_HIT_WALL;
 		ev->e1 = this;
 		fireEvent(ev);
 		
 		if (this->wall_damage > 0) {
-			a->takeDamage(this->wall_damage);
+			wa->takeDamage(this->wall_damage);
 			
 			this->wall_hits--;
 			if (this->wall_hits == 0) this->del = true;

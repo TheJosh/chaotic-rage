@@ -59,6 +59,10 @@ void GameState::addParticleGenerator(ParticleGenerator* generator)
 	this->entities_add.push_back(generator);
 }
 
+void GameState::addWall(Wall* wall)
+{
+	this->entities_add.push_back(wall);
+}
 
 
 static bool EntityEraser(Entity *e)
@@ -139,4 +143,32 @@ Mod * GameState::getMod(int id)
 	return mods.at(id);
 }
 
+
+/**
+* Returns an AreaType if we hit a wall, or NULL if we haven't
+*
+* Makes use of the AreaType check radius, as well as the checking objects'
+* check radius.
+*
+* @tag good-for-optimise
+* @todo rehash for epicenter positioning
+**/
+Wall * GameState::checkHitWall(float x, float y, int check_radius)
+{
+	vector<Entity*>::iterator it;
+	for (it = this->entities.begin(); it < this->entities.end(); it++) {
+		Entity *e = (*it);
+		if (e->klass() != WALL) continue;
+		if (((Wall*)e)->health == 0) continue;
+		
+		int dist = ceil(sqrt(((x - e->x) * (x - e->x)) + ((y - e->y) * (y - e->y))));
+		
+		// TODO: 25 is our temporary version of saying wall_size/2
+		if (dist < (check_radius + 25)) {
+			return (Wall*) e;
+		}
+	}
+	
+	return NULL;
+}
 

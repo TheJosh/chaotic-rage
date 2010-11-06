@@ -31,22 +31,6 @@ Area::~Area()
 	delete(anim);
 }
 
-void Area::takeDamage(int damage)
-{
-	this->health -= damage;
-	if (this->health < 0) this->health = 0;
-	
-	for (unsigned int j = 0; j < this->type->damage_models.size(); j++) {
-		AreaTypeDamage * dam = this->type->damage_models.at(j);
-		
-		if (this->health <= dam->health) {
-			delete(this->anim);
-			this->anim = new AnimPlay(dam->model);
-			break;
-		}
-	}
-}
-
 Map::Map(GameState * st)
 {
 	this->st = st;
@@ -115,14 +99,12 @@ int Map::load(string name, Render * render)
 	a->angle = 0;
 	this->areas.push_back(a);
 	
-	for (int x = 100; x < 800; x += 50) {
-		a = new Area(this->st->getMod(0)->getAreaType(5));
-		a->x = x;
-		a->y = 600;
-		a->width = 25;
-		a->height = 25;
-		a->angle = 0;
-		this->areas.push_back(a);
+	for (int x = 100; x < 800; x += 60) {
+		Wall * wa = new Wall(this->st->getMod(0)->getWallType(0), this->st);
+		wa->x = x;
+		wa->y = 600;
+		wa->angle = 0;
+		this->st->addWall(wa);
 	}
 	
 	z = new Zone(50,50,60,60);
@@ -227,38 +209,6 @@ SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data)
 	SDL_Surface *surf = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, 32, 0,0,0,0);
 	SDL_FillRect(surf, NULL, initial_data);
 	return surf;
-}
-
-
-/**
-* Returns an AreaType if we hit a wall, or NULL if we haven't
-*
-* Makes use of the AreaType check radius, as well as the checking objects'
-* check radius.
-*
-* @tag good-for-optimise
-* @todo rehash for epicenter positioning
-**/
-Area * Map::checkHit(float x, float y, int check_radius)
-{
-	unsigned int i;
-	
-	for (i = 0; i < st->map->areas.size(); i++) {
-		Area * a = st->map->areas[i];
-		if (a->type->wall == 0) continue;
-		
-		float cx = a->x + a->width / 2;
-		float cy = a->y + a->height / 2;
-		
-		int dist = ceil(sqrt(((x - cx) * (x - cx)) + ((y - cy) * (y - cy))));
-		
-		// TODO: 25 is our temporary version of saying wall_size/2
-		if (dist < (check_radius + 25)) {
-			return a;
-		}
-	}
-	
-	return NULL;
 }
 
 
