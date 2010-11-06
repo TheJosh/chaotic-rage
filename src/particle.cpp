@@ -27,6 +27,7 @@ Particle::Particle(ParticleType *pt, GameState *st) : Entity(st)
 	
 	this->angle = 0;
 	this->age = 0;
+	this->z = 20;		// in the air a little
 }
 
 Particle::~Particle()

@@ -15,7 +15,7 @@ using namespace std;
 
 static bool ZIndexPredicate(const Entity * e1, const Entity * e2)
 {
-	return e1->y < e2->y;
+	return e1->z < e2->z;
 }
 
 
@@ -541,10 +541,7 @@ void RenderOpenGL::render()
 		
 		glPushMatrix();
 		
-		x = e->x + e->getWidth() / 2;
-		y = e->y + e->getHeight() / 2;
-		
-		glTranslatef(x, y, 0);
+		glTranslatef(e->x, e->y, e->z);
 		glRotatef(0 - e->angle, 0, 0, 1);
 		
 		

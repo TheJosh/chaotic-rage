@@ -32,6 +32,7 @@ class Entity : public EventListener
 		bool del;
 		int x;
 		int y;
+		int z;
 		int angle;
 		
 	protected:
