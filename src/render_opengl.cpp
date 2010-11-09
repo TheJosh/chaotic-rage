@@ -454,8 +454,7 @@ void RenderOpenGL::render()
 	// Calcs for rotations
 	w = this->virt_width * 2;
 	h = this->virt_height * 2;
-	x = st->curr_player->x + st->curr_player->getWidth() / 2;
-	y = st->curr_player->y + st->curr_player->getHeight() / 2;
+	
 	
 	// Background
 	/*glLoadIdentity();
@@ -469,15 +468,15 @@ void RenderOpenGL::render()
 	glLoadIdentity();
 	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
 	glRotatef(st->curr_player->angle, 0, 0, 1);
-	glTranslatef(0 - x, 0 - y, 0);
+	glTranslatef(0 - st->curr_player->x, 0 - st->curr_player->y, 0);
 	
 	
 	// Set up lights
 	GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f };
-	GLfloat LightDiffuse[]= { 1.0f, 0.8f, 0.8f, 1.0f };
-	GLfloat LightPosition[]= { 2.0f, 0.0f, 250.0f, 1.0f };
+	GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat LightPosition[]= { 50.0f, 50.0f, 200.0f, 1.0f };
 	
-	//glLoadIdentity();
+	glEnable(GL_LIGHTING);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);
 	glLightfv(GL_LIGHT0, GL_POSITION, LightPosition);
@@ -561,7 +560,8 @@ void RenderOpenGL::render()
 	
 	// HUD
 	glLoadIdentity();
-	glTranslatef(0, 0, 50);
+	glTranslatef(0, 0, 200);
+	glDisable(GL_LIGHTING);
 	st->hud->render(this);
 	
 	SDL_GL_SwapBuffers();
