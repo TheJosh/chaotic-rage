@@ -434,6 +434,8 @@ static void renderAnimPlay(AnimPlay * play)
 		glScalef(model->meshframes[d]->sx, model->meshframes[d]->sy, model->meshframes[d]->sz);
 		
 		renderObj(model->meshframes[d]->mesh);
+		
+		glPopMatrix();
 	}
 }
 
