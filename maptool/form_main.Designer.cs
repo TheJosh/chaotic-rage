@@ -38,18 +38,19 @@
             this.mnuFileSaveas = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuEditMapsettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolAreas = new System.Windows.Forms.ToolStripButton();
+            this.toolWalls = new System.Windows.Forms.ToolStripButton();
+            this.toolObjects = new System.Windows.Forms.ToolStripButton();
+            this.toolParticleGenerators = new System.Windows.Forms.ToolStripButton();
+            this.toolZones = new System.Windows.Forms.ToolStripButton();
             this.splitRight = new System.Windows.Forms.SplitContainer();
             this.list = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.grid = new System.Windows.Forms.PropertyGrid();
             this.splitOuter = new System.Windows.Forms.SplitContainer();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuEditMapsettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolAreas = new System.Windows.Forms.ToolStripButton();
-            this.toolObjects = new System.Windows.Forms.ToolStripButton();
-            this.toolParticleGenerators = new System.Windows.Forms.ToolStripButton();
-            this.toolZones = new System.Windows.Forms.ToolStripButton();
             this.panOuter.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -83,6 +84,8 @@
             this.panMap.Name = "panMap";
             this.panMap.Size = new System.Drawing.Size(139, 127);
             this.panMap.TabIndex = 0;
+            this.panMap.Paint += new System.Windows.Forms.PaintEventHandler(this.panMap_Paint);
+            this.panMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseUp);
             // 
             // menuStrip1
             // 
@@ -144,10 +147,26 @@
             this.mnuFileExit.Size = new System.Drawing.Size(136, 22);
             this.mnuFileExit.Text = "E&xit";
             // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuEditMapsettings});
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.editToolStripMenuItem.Text = "&Edit";
+            // 
+            // mnuEditMapsettings
+            // 
+            this.mnuEditMapsettings.Name = "mnuEditMapsettings";
+            this.mnuEditMapsettings.Size = new System.Drawing.Size(147, 22);
+            this.mnuEditMapsettings.Text = "Map &Settings";
+            this.mnuEditMapsettings.Click += new System.EventHandler(this.mnuEditMapsettings_Click);
+            // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolAreas,
+            this.toolWalls,
             this.toolObjects,
             this.toolParticleGenerators,
             this.toolZones});
@@ -156,6 +175,53 @@
             this.toolStrip1.Size = new System.Drawing.Size(746, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolAreas
+            // 
+            this.toolAreas.Checked = true;
+            this.toolAreas.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolAreas.Image = global::Maptool.Properties.Resources.areas;
+            this.toolAreas.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolAreas.Name = "toolAreas";
+            this.toolAreas.Size = new System.Drawing.Size(55, 22);
+            this.toolAreas.Text = "Areas";
+            this.toolAreas.Click += new System.EventHandler(this.toolAreas_Click);
+            // 
+            // toolWalls
+            // 
+            this.toolWalls.Image = ((System.Drawing.Image)(resources.GetObject("toolWalls.Image")));
+            this.toolWalls.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolWalls.Name = "toolWalls";
+            this.toolWalls.Size = new System.Drawing.Size(52, 22);
+            this.toolWalls.Text = "Walls";
+            this.toolWalls.Click += new System.EventHandler(this.toolWalls_Click);
+            // 
+            // toolObjects
+            // 
+            this.toolObjects.Image = global::Maptool.Properties.Resources.objects;
+            this.toolObjects.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolObjects.Name = "toolObjects";
+            this.toolObjects.Size = new System.Drawing.Size(64, 22);
+            this.toolObjects.Text = "Objects";
+            this.toolObjects.Click += new System.EventHandler(this.toolObjects_Click);
+            // 
+            // toolParticleGenerators
+            // 
+            this.toolParticleGenerators.Image = ((System.Drawing.Image)(resources.GetObject("toolParticleGenerators.Image")));
+            this.toolParticleGenerators.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolParticleGenerators.Name = "toolParticleGenerators";
+            this.toolParticleGenerators.Size = new System.Drawing.Size(119, 22);
+            this.toolParticleGenerators.Text = "Particle Generators";
+            this.toolParticleGenerators.Click += new System.EventHandler(this.toolParticleGenerators_Click);
+            // 
+            // toolZones
+            // 
+            this.toolZones.Image = global::Maptool.Properties.Resources.zones;
+            this.toolZones.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolZones.Name = "toolZones";
+            this.toolZones.Size = new System.Drawing.Size(56, 22);
+            this.toolZones.Text = "Zones";
+            this.toolZones.Click += new System.EventHandler(this.toolZones_Click);
             // 
             // splitRight
             // 
@@ -222,59 +288,6 @@
             this.splitOuter.SplitterDistance = 563;
             this.splitOuter.TabIndex = 5;
             // 
-            // editToolStripMenuItem
-            // 
-            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuEditMapsettings});
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.editToolStripMenuItem.Text = "&Edit";
-            // 
-            // mnuEditMapsettings
-            // 
-            this.mnuEditMapsettings.Name = "mnuEditMapsettings";
-            this.mnuEditMapsettings.Size = new System.Drawing.Size(152, 22);
-            this.mnuEditMapsettings.Text = "Map &Settings";
-            this.mnuEditMapsettings.Click += new System.EventHandler(this.mnuEditMapsettings_Click);
-            // 
-            // toolAreas
-            // 
-            this.toolAreas.Checked = true;
-            this.toolAreas.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.toolAreas.Image = global::Maptool.Properties.Resources.areas;
-            this.toolAreas.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolAreas.Name = "toolAreas";
-            this.toolAreas.Size = new System.Drawing.Size(55, 22);
-            this.toolAreas.Text = "Areas";
-            this.toolAreas.Click += new System.EventHandler(this.toolAreas_Click);
-            // 
-            // toolObjects
-            // 
-            this.toolObjects.Image = global::Maptool.Properties.Resources.objects;
-            this.toolObjects.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolObjects.Name = "toolObjects";
-            this.toolObjects.Size = new System.Drawing.Size(64, 22);
-            this.toolObjects.Text = "Objects";
-            this.toolObjects.Click += new System.EventHandler(this.toolObjects_Click);
-            // 
-            // toolParticleGenerators
-            // 
-            this.toolParticleGenerators.Image = ((System.Drawing.Image)(resources.GetObject("toolParticleGenerators.Image")));
-            this.toolParticleGenerators.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolParticleGenerators.Name = "toolParticleGenerators";
-            this.toolParticleGenerators.Size = new System.Drawing.Size(119, 22);
-            this.toolParticleGenerators.Text = "Particle Generators";
-            this.toolParticleGenerators.Click += new System.EventHandler(this.toolParticleGenerators_Click);
-            // 
-            // toolZones
-            // 
-            this.toolZones.Image = global::Maptool.Properties.Resources.zones;
-            this.toolZones.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolZones.Name = "toolZones";
-            this.toolZones.Size = new System.Drawing.Size(56, 22);
-            this.toolZones.Text = "Zones";
-            this.toolZones.Click += new System.EventHandler(this.toolZones_Click);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -287,6 +300,7 @@
             this.Name = "frmMain";
             this.Text = "Chaotic Rage Maptool";
             this.Load += new System.EventHandler(this.frmMain_Load);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyUp);
             this.panOuter.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -329,6 +343,7 @@
         private System.Windows.Forms.ToolStripButton toolParticleGenerators;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mnuEditMapsettings;
+        private System.Windows.Forms.ToolStripButton toolWalls;
     }
 }
 
