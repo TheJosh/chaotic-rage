@@ -85,6 +85,8 @@
             this.panMap.Size = new System.Drawing.Size(139, 127);
             this.panMap.TabIndex = 0;
             this.panMap.Paint += new System.Windows.Forms.PaintEventHandler(this.panMap_Paint);
+            this.panMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseDown);
+            this.panMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseMove);
             this.panMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseUp);
             // 
             // menuStrip1

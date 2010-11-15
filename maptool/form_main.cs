@@ -8,19 +8,21 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 
+
 namespace Maptool
 {
     public partial class frmMain : Form
     {
         private Tool currTool = null;
         private Entity currEntity = null;
+        private int downX, downY;
         private List<Entity> entities;
-
 
         public frmMain()
         {
             InitializeComponent();
             entities = new List<Entity>();
+
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -122,65 +124,55 @@ namespace Maptool
 
 
         /**
-        * Dispatches various mouse events
+        * Mouse down logic
         **/
-        private void panMap_MouseUp(object sender, MouseEventArgs e)
+        private void panMap_MouseDown(object sender, MouseEventArgs e)
         {
+            downX = downY = -1;
+
             if (e.Button == System.Windows.Forms.MouseButtons.Left) {
-                add_or_edit(e.X, e.Y);
-            }
-        }
-
-
-        /**
-        * If there is an entity at the current location, select it for editing
-        * Else, just add something new
-        **/
-        private void add_or_edit(int mousex, int mousey)
-        {
-            Entity ent;
-
-            if (currTool == null) return;
-
-            currEntity = null;
-            foreach (Entity e in entities) {
-                if (! currTool.isThisOurs(e)) continue;
-
-                double dist = Math.Sqrt(((e.X - mousex) * (e.X - mousex)) + ((e.Y - mousey) * (e.Y - mousey)));
-                if (dist < 10) {
-                    setCurrEntity(e);
-                    break;
+                try_select(e.X, e.Y);
+                if (currEntity != null) {
+                    downX = e.X;
+                    downY = e.Y;
                 }
-            }
-
-            if (currEntity == null) {
-                ent = currTool.createEntity();
-                ent.X = mousex;
-                ent.Y = mousey;
-                entities.Add(ent);
-                setCurrEntity(ent);
             }
 
             panMap.Refresh();
+            grid.Refresh();
+        }
+
+        private void panMap_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (downX == -1) return;
+            if (currEntity == null) return;
+
+            currEntity.X = e.X;
+            currEntity.Y = e.Y;
+
+            panMap.Refresh();
+            grid.Refresh();
+        }
+
+        /**
+        * Mouse up logic
+        **/
+        private void panMap_MouseUp(object sender, MouseEventArgs e)
+        {
+            downX = downY = -1;
+
+            if (e.Button == System.Windows.Forms.MouseButtons.Left) {
+                try_add(e.X, e.Y);
+            }
+
+            panMap.Refresh();
+            grid.Refresh();
         }
 
 
         /**
-         * Draws everything
-         **/
-        private void panMap_Paint(object sender, PaintEventArgs e)
-        {
-            Graphics g = e.Graphics;
-
-            foreach (Entity ent in entities) {
-                if (ent == currEntity) {
-                    g.DrawEllipse(Pens.Red, ent.X - 5, ent.Y - 5, 10, 10);
-                } else {
-                    g.DrawEllipse(Pens.White, ent.X - 5, ent.Y - 5, 10, 10);
-                }
-            }
-        }
-
+        * Keyboard up logic
+        **/
         private void frmMain_KeyUp(object sender, KeyEventArgs e)
         {
             e.Handled = true;
@@ -219,6 +211,58 @@ namespace Maptool
 
             panMap.Refresh();
             grid.Refresh();
+        }
+
+
+        /**
+         * Draws everything
+         **/
+        private void panMap_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            
+            foreach (Entity ent in entities) {
+                if (ent == currEntity) {
+                    g.DrawEllipse(Pens.Red, ent.X - 5, ent.Y - 5, 10, 10);
+                } else {
+                    g.DrawEllipse(Pens.White, ent.X - 5, ent.Y - 5, 10, 10);
+                }
+            }
+        }
+
+        /**
+        * If there is an entity at the current location, select it for editing
+        **/
+        public void try_select(int mousex, int mousey)
+        {
+            if (currTool == null) return;
+
+            setCurrEntity(null);
+
+            foreach (Entity e in entities) {
+                if (!currTool.isThisOurs(e)) continue;
+
+                double dist = Math.Sqrt(((e.X - mousex) * (e.X - mousex)) + ((e.Y - mousey) * (e.Y - mousey)));
+                if (dist < 10) {
+                    setCurrEntity(e);
+                    return;
+                }
+            }
+        }
+
+        /**
+        * If there is nothing selected, do an add
+        **/
+        private void try_add(int mousex, int mousey)
+        {
+            if (currTool == null) return;
+            if (currEntity != null) return;
+
+            Entity ent = currTool.createEntity();
+            ent.X = mousex;
+            ent.Y = mousey;
+            entities.Add(ent);
+            setCurrEntity(ent);
         }
     }
 }
