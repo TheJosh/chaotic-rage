@@ -16,5 +16,15 @@ namespace Maptool
         {
             return (ent is WallEntity);
         }
+
+        public override List<EntityType> getTypes()
+        {
+            List<EntityType> ret = new List<EntityType>();
+
+            ret.Add(new WallEntityType("Block 1"));
+            ret.Add(new WallEntityType("Block 2"));
+
+            return ret;
+        }
     }
 }

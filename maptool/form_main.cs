@@ -15,6 +15,8 @@ namespace Maptool
     {
         private Tool currTool = null;
         private Entity currEntity = null;
+        private EntityType currEntityType = null;
+
         private int downX, downY;
         private List<Entity> entities;
 
@@ -72,7 +74,7 @@ namespace Maptool
         private void toolWalls_Click(object sender, EventArgs e)
         {
             toggleOn(toolWalls);
-            currTool = new WallTool();
+            setCurrTool(new WallTool());
         }
 
         /**
@@ -115,13 +117,72 @@ namespace Maptool
         }
 
 
+        /**
+         * Select a tool
+         **/
+        private void setCurrTool(Tool tool)
+        {
+            currTool = tool;
 
+            setCurrEntityType(null);
+
+            list.Items.Clear();
+            foreach (EntityType type in tool.getTypes()) {
+                EntityTypeListItem itm = new EntityTypeListItem();
+                itm.EntityType = type;
+                list.Items.Add(itm);
+            }
+
+            if (list.Items.Count > 0) {
+                setCurrEntityType(((EntityTypeListItem)list.Items[0]).EntityType);
+            }
+        }
+
+        /**
+         * Select an entity
+         **/
         private void setCurrEntity(Entity ent)
         {
             currEntity = ent;
             grid.SelectedObject = ent;
+
+            if (ent != null && list.Items.Count > 0) {
+                list.SelectedItems.Clear();
+
+                foreach (ListViewItem itm in list.Items) {
+                    if (((EntityTypeListItem)itm).EntityType == ent.Type) {
+                        itm.Selected = true;
+                    }
+                }
+            }
         }
 
+        /**
+         * Select an entity type
+         **/
+        private void setCurrEntityType(EntityType type)
+        {
+            currEntityType = type;
+        }
+
+
+
+        /**
+         * List selection change
+         **/
+        private void list_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setCurrEntityType(null);
+            if (list.SelectedItems.Count > 0) {
+                setCurrEntityType(((EntityTypeListItem)list.SelectedItems[0]).EntityType);
+            }
+
+            if (currEntity != null) {
+                currEntity.Type = currEntityType;
+                panMap.Refresh();
+                grid.Refresh();
+            }
+        }
 
         /**
         * Mouse down logic
@@ -257,12 +318,28 @@ namespace Maptool
         {
             if (currTool == null) return;
             if (currEntity != null) return;
+            if (currEntityType == null) return;
 
             Entity ent = currTool.createEntity();
             ent.X = mousex;
             ent.Y = mousey;
+            ent.Type = currEntityType;
             entities.Add(ent);
             setCurrEntity(ent);
+        }
+    }
+
+    class EntityTypeListItem : ListViewItem
+    {
+        private EntityType type;
+
+        public EntityType EntityType
+        {
+            get { return type; }
+            set {
+                this.type = value;
+                this.Text = value.Name;
+            }
         }
     }
 }

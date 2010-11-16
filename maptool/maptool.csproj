@@ -48,6 +48,8 @@
   <ItemGroup>
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\WallEntity.cs" />
+    <Compile Include="EntityTypes\EntityType.cs" />
+    <Compile Include="EntityTypes\WallEntityType.cs" />
     <Compile Include="form_main.cs">
       <SubType>Form</SubType>
     </Compile>

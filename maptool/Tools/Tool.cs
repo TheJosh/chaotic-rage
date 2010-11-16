@@ -10,5 +10,7 @@ namespace Maptool
         public abstract Entity createEntity();
 
         public abstract bool isThisOurs(Entity ent);
+
+        public abstract List<EntityType> getTypes();
     }
 }

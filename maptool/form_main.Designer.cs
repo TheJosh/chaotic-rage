@@ -257,6 +257,7 @@
             this.list.TabIndex = 0;
             this.list.UseCompatibleStateImageBehavior = false;
             this.list.View = System.Windows.Forms.View.Details;
+            this.list.SelectedIndexChanged += new System.EventHandler(this.list_SelectedIndexChanged);
             // 
             // columnHeader1
             // 
