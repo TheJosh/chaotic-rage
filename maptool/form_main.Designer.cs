@@ -250,6 +250,8 @@
             this.list.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
             this.list.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.list.FullRowSelect = true;
+            this.list.HideSelection = false;
             this.list.Location = new System.Drawing.Point(0, 0);
             this.list.MultiSelect = false;
             this.list.Name = "list";

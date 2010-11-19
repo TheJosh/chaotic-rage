@@ -134,6 +134,7 @@ namespace Maptool
             }
 
             if (list.Items.Count > 0) {
+                list.Items[0].Selected = true;
                 setCurrEntityType(((EntityTypeListItem)list.Items[0]).EntityType);
             }
         }
@@ -146,12 +147,12 @@ namespace Maptool
             currEntity = ent;
             grid.SelectedObject = ent;
 
-            if (ent != null && list.Items.Count > 0) {
-                list.SelectedItems.Clear();
-
-                foreach (ListViewItem itm in list.Items) {
-                    if (((EntityTypeListItem)itm).EntityType == ent.Type) {
-                        itm.Selected = true;
+            if (ent != null) {
+                foreach (EntityTypeListItem item in list.Items) {
+                    if (item.EntityType == ent.Type) {
+                        item.Selected = true;
+                        list.Refresh();
+                        break;
                     }
                 }
             }
