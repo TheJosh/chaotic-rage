@@ -52,6 +52,7 @@
             this.grid = new System.Windows.Forms.PropertyGrid();
             this.splitOuter = new System.Windows.Forms.SplitContainer();
             this.diaSave = new System.Windows.Forms.SaveFileDialog();
+            this.diaOpen = new System.Windows.Forms.OpenFileDialog();
             this.panOuter.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -126,6 +127,7 @@
             this.mnuFileOpen.Name = "mnuFileOpen";
             this.mnuFileOpen.Size = new System.Drawing.Size(152, 22);
             this.mnuFileOpen.Text = "&Open...";
+            this.mnuFileOpen.Click += new System.EventHandler(this.mnuFileOpen_Click);
             // 
             // mnuFileSave
             // 
@@ -299,6 +301,10 @@
             // 
             this.diaSave.Filter = "Maps|*.conf";
             // 
+            // diaOpen
+            // 
+            this.diaOpen.Filter = "Maps|*.conf";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -356,6 +362,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuEditMapsettings;
         private System.Windows.Forms.ToolStripButton toolWalls;
         private System.Windows.Forms.SaveFileDialog diaSave;
+        private System.Windows.Forms.OpenFileDialog diaOpen;
     }
 }
 

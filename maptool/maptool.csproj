@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Entities\ZoneEntity.cs" />
     <Compile Include="EntityTypes\ZoneEntityType.cs" />
+    <Compile Include="FromDatatool\range.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\WallEntity.cs" />
@@ -67,6 +68,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FromDatatool\ConfuseReader.cs" />
     <Compile Include="Tools\Tool.cs" />
     <Compile Include="Tools\WallTool.cs" />
     <Compile Include="Tools\ZoneTool.cs" />

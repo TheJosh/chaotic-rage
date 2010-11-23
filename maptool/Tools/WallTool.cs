@@ -26,7 +26,7 @@ namespace Maptool
         {
             List<EntityType> ret = new List<EntityType>();
 
-            ret.Add(new WallEntityType("Wall"));
+            ret.Add(new WallEntityType("wall"));
 
             return ret;
         }

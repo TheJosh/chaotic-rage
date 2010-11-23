@@ -48,6 +48,11 @@ namespace Maptool
             panMap.Size = new Size(1, 1);
             panMap.Size = new Size(2000, 2000);
             toggleOn(toolAreas);
+            setCurrEntity(null);
+            setCurrEntityType(null);
+            setCurrTool(null);
+            panMap.Refresh();
+            grid.Refresh();
         }
 
         /**
@@ -116,6 +121,16 @@ namespace Maptool
         private void mnuFileNew_Click(object sender, EventArgs e)
         {
             resetUI();
+        }
+
+        private void mnuFileOpen_Click(object sender, EventArgs e)
+        {
+            if (diaOpen.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+                Map m = new Map();
+                m.Load(diaOpen.FileName);
+                this.entities = m.Entities;
+                resetUI();
+            }
         }
 
         private void mnuFileSaveas_Click(object sender, EventArgs e)
