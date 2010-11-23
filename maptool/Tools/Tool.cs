@@ -11,6 +11,8 @@ namespace Maptool
 
         public abstract bool isThisOurs(Entity ent);
 
+        public abstract bool isAreaBased();
+
         public abstract List<EntityType> getTypes();
     }
 }

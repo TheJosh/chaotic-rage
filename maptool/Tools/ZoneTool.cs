@@ -5,29 +5,27 @@ using System.Text;
 
 namespace Maptool
 {
-    class WallTool : Tool
+    class ZoneTool : Tool
     {
         public override Entity createEntity()
         {
-            return new WallEntity();
+            return new ZoneEntity();
         }
 
         public override bool isThisOurs(Entity ent)
         {
-            return (ent is WallEntity);
+            return (ent is ZoneEntity);
         }
 
         public override bool isAreaBased()
         {
-            return false;
+            return true;
         }
 
         public override List<EntityType> getTypes()
         {
             List<EntityType> ret = new List<EntityType>();
-
-            ret.Add(new WallEntityType("Wall"));
-
+            ret.Add(new ZoneEntityType());
             return ret;
         }
     }

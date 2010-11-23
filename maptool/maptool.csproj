@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\ZoneEntity.cs" />
+    <Compile Include="EntityTypes\ZoneEntityType.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\WallEntity.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Tool.cs" />
     <Compile Include="Tools\WallTool.cs" />
+    <Compile Include="Tools\ZoneTool.cs" />
     <EmbeddedResource Include="form_main.resx">
       <DependentUpon>form_main.cs</DependentUpon>
     </EmbeddedResource>

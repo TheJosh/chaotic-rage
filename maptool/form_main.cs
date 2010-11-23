@@ -20,6 +20,10 @@ namespace Maptool
         private int downX, downY;
         private List<Entity> entities;
 
+        private WallTool tool_wall = new WallTool();
+        private ZoneTool tool_zone = new ZoneTool();
+
+
         public frmMain()
         {
             InitializeComponent();
@@ -66,6 +70,7 @@ namespace Maptool
         private void toolAreas_Click(object sender, EventArgs e)
         {
             toggleOn(toolAreas);
+            setCurrTool(null);
         }
 
         /**
@@ -74,7 +79,7 @@ namespace Maptool
         private void toolWalls_Click(object sender, EventArgs e)
         {
             toggleOn(toolWalls);
-            setCurrTool(new WallTool());
+            setCurrTool(this.tool_wall);
         }
 
         /**
@@ -83,6 +88,7 @@ namespace Maptool
         private void toolObjects_Click(object sender, EventArgs e)
         {
             toggleOn(toolObjects);
+            setCurrTool(null);
         }
 
         /**
@@ -91,6 +97,7 @@ namespace Maptool
         private void toolParticleGenerators_Click(object sender, EventArgs e)
         {
             toggleOn(toolParticleGenerators);
+            setCurrTool(null);
         }
 
         /**
@@ -99,6 +106,7 @@ namespace Maptool
         private void toolZones_Click(object sender, EventArgs e)
         {
             toggleOn(toolZones);
+            setCurrTool(this.tool_zone);
         }
 
 
@@ -133,9 +141,12 @@ namespace Maptool
         {
             currTool = tool;
 
+            setCurrEntity(null);
             setCurrEntityType(null);
-
             list.Items.Clear();
+
+            if (tool == null) return;
+
             foreach (EntityType type in tool.getTypes()) {
                 EntityTypeListItem itm = new EntityTypeListItem();
                 itm.EntityType = type;
@@ -291,13 +302,21 @@ namespace Maptool
         private void panMap_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            
+
+            // Zones
             foreach (Entity ent in entities) {
-                if (ent == currEntity) {
-                    g.DrawEllipse(Pens.Red, ent.X - 5, ent.Y - 5, 10, 10);
-                } else {
-                    g.DrawEllipse(Pens.White, ent.X - 5, ent.Y - 5, 10, 10);
-                }
+                if (!(ent is ZoneEntity)) continue;
+
+                ZoneEntity entc = (ZoneEntity) ent;
+
+                g.DrawRectangle((ent == currEntity ? Pens.Red : Pens.White), entc.X - entc.Width / 2, entc.Y - entc.Height / 2, entc.Width, entc.Height);
+            }
+
+            // Walls
+            foreach (Entity ent in entities) {
+                if (! (ent is WallEntity)) continue;
+
+                g.DrawEllipse((ent == currEntity ? Pens.Red : Pens.White), ent.X - 5, ent.Y - 5, 10, 10);
             }
         }
 
