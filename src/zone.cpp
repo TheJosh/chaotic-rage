@@ -10,12 +10,12 @@ using namespace std;
 
 
 
-Zone::Zone(int point1_x, int point1_y, int point2_x, int point2_y)
+Zone::Zone(int x, int y, int width, int height)
 {
-	this->x1 = point1_x;
-	this->y1 = point1_y;
-	this->x2 = point2_x;
-	this->y2 = point2_y;
+	this->x1 = x - width / 2;
+	this->y1 = y - height / 2;
+	this->x2 = x + width / 2;
+	this->y2 = y + height / 2;
 	
 	for (int i = 0; i < NUM_FACTIONS; i++) this->spawn[i] = 0;
 	for (int i = 0; i < NUM_FACTIONS; i++) this->prison[i] = 0;

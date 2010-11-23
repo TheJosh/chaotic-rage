@@ -21,10 +21,20 @@ static cfg_opt_t wall_opts[] =
 	CFG_END()
 };
 
+static cfg_opt_t zone_opts[] =
+{
+	CFG_INT((char*) "x", 0, CFGF_NONE),
+	CFG_INT((char*) "y", 0, CFGF_NONE),
+	CFG_INT((char*) "width", 0, CFGF_NONE),
+	CFG_INT((char*) "height", 0, CFGF_NONE),
+	CFG_END()
+};
+
 // Main config
 static cfg_opt_t opts[] =
 {
 	CFG_SEC((char*) "wall", wall_opts, CFGF_MULTI),
+	CFG_SEC((char*) "zone", zone_opts, CFGF_MULTI),
 	CFG_END()
 };
 
@@ -72,7 +82,6 @@ Map::~Map()
 int Map::load(string name, Render * render)
 {
 	Area *a;
-	Zone *z;
 	
 	this->render = render;
 	this->width = 1000;
@@ -119,14 +128,6 @@ int Map::load(string name, Render * render)
 	a->angle = 0;
 	this->areas.push_back(a);
 	
-	z = new Zone(50,50,60,60);
-	z->spawn[FACTION_INDIVIDUAL] = 1;
-	this->zones.push_back(z);
-	
-	z = new Zone(500,500,560,560);
-	z->spawn[FACTION_INDIVIDUAL] = 1;
-	this->zones.push_back(z);
-	
 	
 	// This is a hack to use the SDL rotozoomer to manipulate the data surface
 	// The data surface is created using a 32-bit SDL_Surface
@@ -151,6 +152,7 @@ int Map::load(string name, Render * render)
 	
 	{
 		cfg_t *cfg, *cfg_sub;
+		int num_types, j;
 		
 		char *buffer = mod->loadText("map.conf");
 		if (buffer == NULL) {
@@ -162,8 +164,8 @@ int Map::load(string name, Render * render)
 		
 		free(buffer);
 		
-		int num_types = cfg_size(cfg, "wall");
-		int j;
+		// Walls
+		num_types = cfg_size(cfg, "wall");
 		for (j = 0; j < num_types; j++) {
 			cfg_sub = cfg_getnsec(cfg, "wall", j);
 			
@@ -175,6 +177,19 @@ int Map::load(string name, Render * render)
 			
 			this->st->addWall(wa);
 		}
+		
+		// Zones
+		num_types = cfg_size(cfg, "zone");
+		for (j = 0; j < num_types; j++) {
+			cfg_sub = cfg_getnsec(cfg, "zone", j);
+			
+			Zone * z = new Zone(cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), cfg_getint(cfg_sub, "width"), cfg_getint(cfg_sub, "height"));
+			
+			z->spawn[FACTION_INDIVIDUAL] = 1;
+			
+			this->zones.push_back(z);
+		}
+		
 	}
 	
 	return 1;

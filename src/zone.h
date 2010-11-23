@@ -49,7 +49,7 @@ class Zone
 		bool nearbase[NUM_FACTIONS];   // somewhere near the team base - for generic use
 	
 	public:
-		Zone(int point1_x, int point1_y, int point2_x, int point2_y);
+		Zone(int x, int y, int width, int height);
 		~Zone();
 		
 	public:
