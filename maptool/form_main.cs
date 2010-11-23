@@ -110,6 +110,15 @@ namespace Maptool
             resetUI();
         }
 
+        private void mnuFileSaveas_Click(object sender, EventArgs e)
+        {
+            if (diaSave.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+                Map m = new Map();
+                m.Entities = this.entities;
+                m.Save(diaSave.FileName);
+            }
+        }
+
         private void mnuEditMapsettings_Click(object sender, EventArgs e)
         {
             frmMapSettings f = new frmMapSettings();

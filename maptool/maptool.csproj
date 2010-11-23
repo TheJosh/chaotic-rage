@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Map.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\WallEntity.cs" />
     <Compile Include="EntityTypes\EntityType.cs" />

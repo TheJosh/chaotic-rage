@@ -51,6 +51,7 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.grid = new System.Windows.Forms.PropertyGrid();
             this.splitOuter = new System.Windows.Forms.SplitContainer();
+            this.diaSave = new System.Windows.Forms.SaveFileDialog();
             this.panOuter.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -116,37 +117,38 @@
             // mnuFileNew
             // 
             this.mnuFileNew.Name = "mnuFileNew";
-            this.mnuFileNew.Size = new System.Drawing.Size(136, 22);
+            this.mnuFileNew.Size = new System.Drawing.Size(152, 22);
             this.mnuFileNew.Text = "&New";
             this.mnuFileNew.Click += new System.EventHandler(this.mnuFileNew_Click);
             // 
             // mnuFileOpen
             // 
             this.mnuFileOpen.Name = "mnuFileOpen";
-            this.mnuFileOpen.Size = new System.Drawing.Size(136, 22);
+            this.mnuFileOpen.Size = new System.Drawing.Size(152, 22);
             this.mnuFileOpen.Text = "&Open...";
             // 
             // mnuFileSave
             // 
             this.mnuFileSave.Name = "mnuFileSave";
-            this.mnuFileSave.Size = new System.Drawing.Size(136, 22);
+            this.mnuFileSave.Size = new System.Drawing.Size(152, 22);
             this.mnuFileSave.Text = "&Save";
             // 
             // mnuFileSaveas
             // 
             this.mnuFileSaveas.Name = "mnuFileSaveas";
-            this.mnuFileSaveas.Size = new System.Drawing.Size(136, 22);
+            this.mnuFileSaveas.Size = new System.Drawing.Size(152, 22);
             this.mnuFileSaveas.Text = "&Save As...";
+            this.mnuFileSaveas.Click += new System.EventHandler(this.mnuFileSaveas_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(133, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // mnuFileExit
             // 
             this.mnuFileExit.Name = "mnuFileExit";
-            this.mnuFileExit.Size = new System.Drawing.Size(136, 22);
+            this.mnuFileExit.Size = new System.Drawing.Size(152, 22);
             this.mnuFileExit.Text = "E&xit";
             // 
             // editToolStripMenuItem
@@ -293,6 +295,10 @@
             this.splitOuter.SplitterDistance = 563;
             this.splitOuter.TabIndex = 5;
             // 
+            // diaSave
+            // 
+            this.diaSave.Filter = "Maps|*.conf";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -349,6 +355,7 @@
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mnuEditMapsettings;
         private System.Windows.Forms.ToolStripButton toolWalls;
+        private System.Windows.Forms.SaveFileDialog diaSave;
     }
 }
 
