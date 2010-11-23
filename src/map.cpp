@@ -10,6 +10,26 @@
 using namespace std;
 
 
+/* Config file definition */
+// Wall
+static cfg_opt_t wall_opts[] =
+{
+	CFG_INT((char*) "x", 0, CFGF_NONE),
+	CFG_INT((char*) "y", 0, CFGF_NONE),
+	CFG_INT((char*) "angle", 0, CFGF_NONE),
+	CFG_STR((char*) "type", ((char*)""), CFGF_NONE),
+	CFG_END()
+};
+
+// Main config
+static cfg_opt_t opts[] =
+{
+	CFG_SEC((char*) "wall", wall_opts, CFGF_MULTI),
+	CFG_END()
+};
+
+
+
 SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data);
 
 
@@ -99,14 +119,6 @@ int Map::load(string name, Render * render)
 	a->angle = 0;
 	this->areas.push_back(a);
 	
-	for (int x = 100; x < 800; x += 60) {
-		Wall * wa = new Wall(this->st->getMod(0)->getWallType(0), this->st);
-		wa->x = x;
-		wa->y = 600;
-		wa->angle = 0;
-		this->st->addWall(wa);
-	}
-	
 	z = new Zone(50,50,60,60);
 	z->spawn[FACTION_INDIVIDUAL] = 1;
 	this->zones.push_back(z);
@@ -136,6 +148,34 @@ int Map::load(string name, Render * render)
 	
 	Mod * mod = new Mod(st, "maps/test/");
 	this->background = this->render->loadSprite("background.jpg", mod);
+	
+	{
+		cfg_t *cfg, *cfg_sub;
+		
+		char *buffer = mod->loadText("map.conf");
+		if (buffer == NULL) {
+			return NULL;
+		}
+		
+		cfg = cfg_init(opts, CFGF_NONE);
+		cfg_parse_buf(cfg, buffer);
+		
+		free(buffer);
+		
+		int num_types = cfg_size(cfg, "wall");
+		int j;
+		for (j = 0; j < num_types; j++) {
+			cfg_sub = cfg_getnsec(cfg, "wall", j);
+			
+			Wall * wa = new Wall(this->st->getMod(0)->getWallType(0), this->st);
+			
+			wa->x = cfg_getint(cfg_sub, "x");
+			wa->y = cfg_getint(cfg_sub, "y");
+			wa->angle = cfg_getint(cfg_sub, "angle");
+			
+			this->st->addWall(wa);
+		}
+	}
 	
 	return 1;
 }
