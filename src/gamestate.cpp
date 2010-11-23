@@ -163,8 +163,7 @@ Wall * GameState::checkHitWall(float x, float y, int check_radius)
 		
 		int dist = ceil(sqrt(((x - e->x) * (x - e->x)) + ((y - e->y) * (y - e->y))));
 		
-		// TODO: 35 is our temporary version of saying wall_size/2
-		if (dist < (check_radius + 35)) {
+		if (dist < (check_radius + ((Wall*)e)->wt->check_radius)) {
 			return (Wall*) e;
 		}
 	}

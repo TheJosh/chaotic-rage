@@ -125,6 +125,8 @@ WallType* loadWallType(cfg_t *cfg_walltype, Mod * mod)
 	wt->stretch = cfg_getint(cfg_walltype, "stretch");
 	wt->wall = cfg_getint(cfg_walltype, "wall");
 	
+	wt->check_radius = 30;	//TODO: dynamic
+	
 	char * tmp = cfg_getstr(cfg_walltype, "model");
 	if (tmp != NULL) {
 		wt->model = mod->getAnimModel(tmp);
