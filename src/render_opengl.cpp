@@ -471,6 +471,7 @@ void RenderOpenGL::render()
 	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
 	glRotatef(st->curr_player->angle, 0, 0, 1);
 	glTranslatef(0 - st->curr_player->x, 0 - st->curr_player->y, 0);
+	glTranslatef(0, 0, 700);
 	
 	
 	// Set up lights
@@ -484,8 +485,6 @@ void RenderOpenGL::render()
 	glLightfv(GL_LIGHT0, GL_POSITION, LightPosition);
 	glEnable(GL_LIGHT0);
 	
-	
-	glTranslatef(0, 0, 10);
 	
 	// Render map
 	for (i = 0; i < st->map->areas.size(); i++) {
@@ -562,7 +561,7 @@ void RenderOpenGL::render()
 	
 	// HUD
 	glLoadIdentity();
-	glTranslatef(0, 0, 200);
+	glTranslatef(0, 0, 900);
 	glDisable(GL_LIGHTING);
 	st->hud->render(this);
 	
