@@ -156,7 +156,7 @@ int Map::load(string name, Render * render)
 		
 		char *buffer = mod->loadText("map.conf");
 		if (buffer == NULL) {
-			return NULL;
+			return 0;
 		}
 		
 		cfg = cfg_init(opts, CFGF_NONE);
@@ -328,7 +328,7 @@ Zone * Map::getSpawnZone(Faction f)
 	
 	if (num == 0) return NULL;
 	
-	num = round(getRandom(0, num * 10) / 10);	//getRandom seems to have some problems with small values
+	num = (int) round(getRandom(0, num * 10) / 10);	//getRandom seems to have some problems with small values
 	
 	return candidates[num];
 }

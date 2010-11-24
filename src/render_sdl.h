@@ -29,7 +29,7 @@ class RenderSDL : public Render
 		
 	public:
 		RenderSDL();
-		~RenderSDL();
+		virtual ~RenderSDL();
 		
 };
 

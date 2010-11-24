@@ -87,7 +87,7 @@ void Particle::update(int delta)
 void Particle::getSprite(SpritePtr list [SPRITE_LIST_LEN])
 {
 	int idx = 0;
-	if (this->pt->directional) idx = round(this->angle / 45);
+	if (this->pt->directional) idx = (int) round(this->angle / 45);
 	
 	int frame = this->st->anim_frame - this->animation_start;
 	frame = frame % this->pt->num_frames;

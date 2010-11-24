@@ -42,7 +42,7 @@ class Entity : public EventListener
 		Entity(GameState *st);
 	
 	public:
-		~Entity();
+		virtual ~Entity();
 		
 	public:
 		/**

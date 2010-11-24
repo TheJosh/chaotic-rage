@@ -24,7 +24,7 @@ class Player : public Unit
 		
 	public:
 		Player(UnitClass *uc, GameState *st);
-		~Player();
+		virtual ~Player();
 		
 	public:
 		void keyPress(int idx);

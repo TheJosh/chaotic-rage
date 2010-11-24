@@ -36,7 +36,7 @@ class Particle: public Entity
 		
 	public:
 		Particle(ParticleType *pt, GameState *st);
-		~Particle();
+		virtual ~Particle();
 		
 	public:
 		virtual void getSprite(SpritePtr list [SPRITE_LIST_LEN]);

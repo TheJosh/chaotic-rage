@@ -46,7 +46,7 @@ class Unit: public Entity
 		
 	public:
 		Unit(UnitClass *uc, GameState *st);
-		~Unit();
+		virtual ~Unit();
 		
 	public:
 		virtual void getSprite(SpritePtr list [SPRITE_LIST_LEN]);

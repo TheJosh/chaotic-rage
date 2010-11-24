@@ -112,7 +112,7 @@ void GameState::update(int delta)
 	}
 	
 	this->game_time += delta;
-	this->anim_frame = floor(this->game_time * ANIMATION_FPS / 1000.0);
+	this->anim_frame = (int) floor(this->game_time * ANIMATION_FPS / 1000.0);
 }
 
 
@@ -161,7 +161,7 @@ Wall * GameState::checkHitWall(float x, float y, int check_radius)
 		if (e->klass() != WALL) continue;
 		if (((Wall*)e)->health == 0) continue;
 		
-		int dist = ceil(sqrt(((x - e->x) * (x - e->x)) + ((y - e->y) * (y - e->y))));
+		int dist = (int) ceil(sqrt(((x - e->x) * (x - e->x)) + ((y - e->y) * (y - e->y))));
 		
 		if (dist < (check_radius + ((Wall*)e)->wt->check_radius)) {
 			return (Wall*) e;

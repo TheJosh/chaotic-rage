@@ -12,7 +12,7 @@ using namespace std;
 static void handleEvents(GameState *st);
 
 static bool running;
-static int fps;
+static float fps;
 
 
 /**

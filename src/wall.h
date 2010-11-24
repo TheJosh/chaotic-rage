@@ -24,7 +24,7 @@ class Wall: public Entity
 		
 	public:
 		Wall(WallType *pt, GameState *st);
-		~Wall();
+		virtual ~Wall();
 		
 	public:
 		virtual void getSprite(SpritePtr list [SPRITE_LIST_LEN]);

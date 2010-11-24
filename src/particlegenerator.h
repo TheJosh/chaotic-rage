@@ -25,7 +25,7 @@ class ParticleGenerator : public Entity
 		
 	public:
 		ParticleGenerator(ParticleGenType* type, GameState *st);
-		~ParticleGenerator();
+		virtual ~ParticleGenerator();
 		
 	public:
 		virtual void update(int delta);
