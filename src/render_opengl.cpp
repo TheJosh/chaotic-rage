@@ -5,8 +5,12 @@
 #include <iostream>
 #include <algorithm>
 #include <GL/gl.h>
+#if defined(__WIN32__)
+	#include <GL/glext.h>
+#endif
 #include <GL/glu.h>
 #include <SDL_image.h>
+#include <math.h>
 #include "rage.h"
 
 using namespace std;
@@ -59,7 +63,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	// The 'virtual' size is 1000px high, with the proper width for your monitor.
 	this->virt_height = 1000;
-	this->virt_width = this->virt_height * (float)width / (float)height;
+	this->virt_width = (int) floor(this->virt_height * (float)width / (float)height);
 	
 	SDL_WM_SetCaption("Chaotic Rage", "Chaotic Rage");
 	SDL_ShowCursor(SDL_DISABLE);

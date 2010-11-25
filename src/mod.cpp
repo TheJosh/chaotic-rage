@@ -195,7 +195,7 @@ SDL_RWops * Mod::loadRWops(string resname)
 	string filename = directory;
 	filename.append(resname);
 	
-	rw = SDL_RWFromZZIP(filename.c_str(), "r");
+	rw = SDL_RWFromZZIP(filename.c_str(), "rb");
 	if (rw == NULL) {
 		fprintf(stderr, "Couldn't load resource '%s'.\n", resname.c_str());
 		return NULL;

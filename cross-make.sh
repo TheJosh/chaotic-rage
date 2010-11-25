@@ -17,5 +17,8 @@ PREFIX="$CROSSENV/environments/i386-mingw32"
 PATH="$PREFIX/bin:$PREFIX/local/bin:$PREFIX/$PLATFORM/bin:$PATH"
 export PATH
 
+LIBDIR="$CROSSENV/environments/i386-mingw32/lib"
+export LIBDIR
+
 make clean
-make CXX="i386-mingw32-g++" all
+make PLATFORM=i386-mingw32 all

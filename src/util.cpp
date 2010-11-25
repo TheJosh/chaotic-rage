@@ -37,7 +37,7 @@ int getAngleBetweenPoints (int point1_x, int point1_y, int point2_x, int point2_
 	
 	angle = angle * (180 / PI);
 	
-	return round(angle);
+	return (int) round(angle);
 }
 
 
@@ -100,7 +100,7 @@ int pointPlusAngleX (int point_x, int angle, int distance)
 	point = point_x;
 	point -= round(sin(angle_rads) * distance);
 	
-	return round(point);
+	return (int) round(point);
 }
 
 
@@ -121,7 +121,7 @@ int pointPlusAngleY (int point_y, int angle, int distance)
 	point = point_y;
 	point -= round(cos(angle_rads) * distance);
 	
-	return point;
+	return (int) round(point);
 }
 
 
@@ -170,7 +170,7 @@ int inside (SDL_Rect rect, int x, int y)
 **/
 int ppsDelta(int pps, int delta)
 {
-	return ceil(((float)pps) * ((float)delta) / 1000.0);
+	return (int) ceil(((float)pps) * ((float)delta) / 1000.0);
 }
 
 
