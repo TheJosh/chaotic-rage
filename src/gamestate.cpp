@@ -14,10 +14,14 @@ static GameState *g_st;
 
 
 static bool EntityEraser(Entity *e);
+static bool ParticleEraser(Particle *e);
+
 
 
 /**
 * Don't use unless if you are in global code
+*
+* Should this be removed?
 **/
 GameState * getGameState()
 {
@@ -40,40 +44,61 @@ GameState::GameState()
 
 GameState::~GameState()
 {
+	delete(this->hud);
 }
 
 
+/**
+* Add a unit
+**/
 void GameState::addUnit(Unit* unit)
 {
 	this->entities_add.push_back(unit);
 }
 
+/**
+* Add a particle
+**/
 void GameState::addParticle(Particle* particle)
 {
 	this->entities_add.push_back(particle);
 	this->particles.push_back(particle);
 }
 
+/**
+* Add a particle generator
+**/
 void GameState::addParticleGenerator(ParticleGenerator* generator)
 {
 	this->entities_add.push_back(generator);
 }
 
+/**
+* Add a wall
+**/
 void GameState::addWall(Wall* wall)
 {
 	this->entities_add.push_back(wall);
 }
 
 
+/**
+* Used for filtering
+**/
 static bool EntityEraser(Entity *e)
 {
 	return e->del;
 }
 
+/**
+* Used for filtering
+**/
 static bool ParticleEraser(Particle *e)
 {
 	return e->del;
 }
+
+
 
 /**
 * Updates the state of everything
@@ -116,6 +141,9 @@ void GameState::update(int delta)
 }
 
 
+/**
+* Are there particles within the area?
+**/
 vector<Particle*> * GameState::particlesInside(int x, int y, int w, int h)
 {
 	unsigned int i;
@@ -133,11 +161,17 @@ vector<Particle*> * GameState::particlesInside(int x, int y, int w, int h)
 }
 
 
+/**
+* Add a mod to the list
+**/
 void GameState::addMod(Mod * mod)
 {
 	mods.push_back(mod);
 }
 
+/**
+* Get a mod
+**/
 Mod * GameState::getMod(int id)
 {
 	return mods.at(id);
@@ -170,4 +204,5 @@ Wall * GameState::checkHitWall(float x, float y, int check_radius)
 	
 	return NULL;
 }
+
 

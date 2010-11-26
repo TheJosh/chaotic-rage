@@ -14,25 +14,24 @@ class GameState
 {
 	friend class RenderSDL;
 	friend class RenderOpenGL;
-	friend class AudioSDLMixer;	
-
+	friend class AudioSDLMixer;
+	
 	protected:
 		vector<Entity*> entities;
 		vector<Entity*> entities_add;
-		//vector<Unit*> units;
 		vector<Particle*> particles;
-		//vector<ParticleGenerator*> particlegenerators;
-		
 		vector<Mod*> mods;
 		
 	public:
-		Player* curr_player;
 		Map* map;
+		
+		Player* curr_player;
+		
 		unsigned int anim_frame;
 		unsigned int game_time;
 		
-		HUD* hud;
 		Render* render;
+		HUD* hud;
 		Audio* audio;
 		
 	public:
@@ -46,13 +45,12 @@ class GameState
 		void addWall(Wall* wall);
 		
 		vector<Particle*> * particlesInside(int x, int y, int w, int h);
+		Wall * checkHitWall(float x, float y, int check_radius);
 		
 		void update(int delta);
 		
 		void addMod(Mod * mod);
 		Mod * getMod(int id);
-		
-		Wall * checkHitWall(float x, float y, int check_radius);
 };
 
 
