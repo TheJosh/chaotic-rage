@@ -60,6 +60,7 @@ void RenderNull::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 **/
 void RenderNull::preGame()
 {
+	cout << "The game has just started.\n";
 }
 
 
@@ -68,6 +69,8 @@ void RenderNull::preGame()
 **/
 void RenderNull::postGame()
 {
+	cout << "======================================================\n";
+	cout << "The game has just ended.\n";
 }
 
 
@@ -106,10 +109,34 @@ int RenderNull::getSpriteHeight(SpritePtr sprite)
 
 
 /**
-* Renders
+* This is the render method for the game
+* For this renderer, we actually just dump a little bit of info about the game state
+* Every ~ 5000ms
 **/
 void RenderNull::render()
 {
+	static int last_render = st->game_time;
+	
+	if (st->game_time - last_render < 5000) return;
+	last_render = st->game_time;
+	
+	int c_unit = 0, c_particle = 0, c_pgenerator = 0, c_wall = 0;
+	for (unsigned int i = 0; i < st->entities.size(); i++) {
+		Entity *e = st->entities.at(i);
+		
+		if (e->klass() == UNIT) c_unit++;
+		if (e->klass() == PARTICLE) c_particle++;
+		if (e->klass() == PGENERATOR) c_pgenerator++;
+		if (e->klass() == WALL) c_wall++;
+	}
+	
+	cout << "======================================================\n";
+	cout << "  Current time: " << st->game_time << "\n";
+	cout << "  Total num entities: " << st->entities.size() << "\n";
+	cout << "  Units: " << c_unit << "\n";
+	cout << "  Particles: " << c_particle << "\n";
+	cout << "  Particle generators: " << c_pgenerator << "\n";
+	cout << "  Walls: " << c_wall << "\n";
 }
 
 

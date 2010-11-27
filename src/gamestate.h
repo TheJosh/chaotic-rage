@@ -14,6 +14,7 @@ class GameState
 {
 	friend class RenderSDL;
 	friend class RenderOpenGL;
+	friend class RenderNull;
 	friend class AudioSDLMixer;
 	
 	protected:
