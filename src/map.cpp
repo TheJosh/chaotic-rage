@@ -3,7 +3,6 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <iostream>
-#include <SDL.h>
 #include <math.h>
 #include "rage.h"
 
@@ -37,10 +36,6 @@ static cfg_opt_t opts[] =
 	CFG_SEC((char*) "zone", zone_opts, CFGF_MULTI),
 	CFG_END()
 };
-
-
-
-SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data);
 
 
 Area::Area(AreaType * type)
@@ -129,22 +124,18 @@ int Map::load(string name, Render * render)
 	this->areas.push_back(a);
 	
 	
-	// This is a hack to use the SDL rotozoomer to manipulate the data surface
-	// The data surface is created using a 32-bit SDL_Surface
-	// which the areatypes are blitted onto (using rotozooming if required)
-	// This is then converted into a regular array using a loop and the getPixel
-	// function
-	SDL_Surface *datasurf = this->renderDataSurface();
-	
+	// Prep the data surface
+	// We don't actually use this at the moment, but it may be used later for audio stuff
+	// to allow us to know the surface we are currently walking over
+	// TODO: get it to actually do something useful here
 	this->data = (data_pixel*) malloc(width * height* sizeof(data_pixel));
 	
 	for (int x = 0; x < this->width; x++) {
 		for (int y = 0; y < this->height; y++) {
-			this->data[x * this->height + y].type = this->st->getMod(0)->getAreaType(getPixel(datasurf, x, y));		// TODO getpixel should be a pointer to the AreaType
+			this->data[x * this->height + y].type = 0;
 			this->data[x * this->height + y].hp = 100;
 		}
 	}
-	// Hack end
 	
 	
 	Mod * mod = new Mod(st, "maps/test/");
@@ -193,77 +184,6 @@ int Map::load(string name, Render * render)
 	}
 	
 	return 1;
-}
-
-
-/**
-* Render the data surface for this map
-*
-* It is the responsibility of the caller to free the returned surface.
-**/
-SDL_Surface* Map::renderDataSurface()
-{
-	// Create
-	SDL_Surface* surf = SDL_CreateRGBSurface(SDL_SWSURFACE, this->width, this->height, 32, 0,0,0,0);
-	
-	Area *a;
-	unsigned int i;
-	SDL_Rect dest;
-	SDL_Surface *datasurf;
-	
-	// Iterate through the areas
-	for (i = 0; i < this->areas.size(); i++) {
-		a = this->areas[i];
-		
-		datasurf = createDataSurface(a->width, a->height, a->type->id);
-		
-		// Transforms (either streches or tiles)
-		SDL_Surface *areasurf = a->type->surf->orig;
-		if (a->type->stretch)  {
-			areasurf = rotozoomSurfaceXY(areasurf, 0, ((double)a->width) / ((double)areasurf->w), ((double)a->height) / ((double)areasurf->h), 0);
-			if (areasurf == NULL) continue;
-			
-		} else {
-			areasurf = (SDL_Surface *)tileSprite(areasurf, a->width, a->height);
-			if (areasurf == NULL) continue;
-		}
-		
-		// Rotates
-		if (a->angle != 0)  {
-			SDL_Surface* temp = areasurf;
-			
-			areasurf = rotozoomSurfaceXY(temp, a->angle, 1, 1, 0);
-			SDL_FreeSurface(temp);
-			if (areasurf == NULL) continue;
-			
-			temp = datasurf;
-			datasurf = rotozoomSurfaceXY(temp, a->angle, 1, 1, 0);
-			SDL_FreeSurface(temp);
-			if (datasurf == NULL) continue;
-		}
-		
-		dest.x = a->x;
-		dest.y = a->y;
-		
-		cross_mask(datasurf, areasurf);
-		SDL_FreeSurface(areasurf);
-		
-		SDL_BlitSurface(datasurf, NULL, surf, &dest);
-		SDL_FreeSurface(datasurf);
-	}
-	
-	return surf;
-}
-
-
-/**
-* Creates a data surface and fills it with the defined data
-**/
-SDL_Surface *createDataSurface(int w, int h, Uint32 initial_data)
-{
-	SDL_Surface *surf = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, 32, 0,0,0,0);
-	SDL_FillRect(surf, NULL, initial_data);
-	return surf;
 }
 
 
