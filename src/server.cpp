@@ -20,7 +20,7 @@ int main (int argc, char ** argv) {
 	GameState *st = new GameState();
 	
 	new RenderNull(st);
-	new AudioSDLMixer(st);
+	new AudioNull(st);
 	
 	st->render->setScreenSize(900, 900, false);
 	

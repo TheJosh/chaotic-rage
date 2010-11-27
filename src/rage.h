@@ -67,6 +67,7 @@ class Zone;
 
 #include "audio.h"
 #include "audio_sdlmixer.h"
+#include "audio_null.h"
 
 #include "actions.h"
 #include "entitytype.h"
