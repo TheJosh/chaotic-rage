@@ -51,6 +51,12 @@ class Render
 		virtual void renderSprite(SpritePtr sprite, int x, int y) = 0;
 		
 		/**
+		* Renders a sprite.
+		* Should only be used if the the caller was called by this classes 'Render' function.
+		**/
+		virtual void renderSprite(SpritePtr sprite, int x, int y, int w, int h) = 0;
+		
+		/**
 		* Prepare any surfaces needed before a game is played
 		**/
 		virtual void preGame() = 0;

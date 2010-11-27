@@ -62,8 +62,8 @@ class Zone;
 
 #include "objload.h"
 #include "render.h"
-#include "render_sdl.h"
 #include "render_opengl.h"
+#include "render_null.h"
 
 #include "audio.h"
 #include "audio_sdlmixer.h"

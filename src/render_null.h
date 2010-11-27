@@ -8,23 +8,10 @@
 #include "rage.h"
 
 
-class RenderOpenGL : public Render
+class RenderNull : public Render
 {
-	private:
-		SDL_Surface * screen;
-		
-		// Size of the 'virtual' screen.
-		int virt_width;
-		int virt_height;
-		
-		SpritePtr ground;
-		SpritePtr walls;
-		
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
-		
-	private:
-		SpritePtr renderMap(Map * map, int frame, bool wall);
 		
 	public:
 		virtual void setScreenSize(int width, int height, bool fullscreen);
@@ -39,7 +26,7 @@ class RenderOpenGL : public Render
 		virtual int getSpriteHeight(SpritePtr sprite);
 		
 	public:
-		RenderOpenGL(GameState * st);
-		virtual ~RenderOpenGL();
+		RenderNull(GameState * st);
+		virtual ~RenderNull();
 };
 

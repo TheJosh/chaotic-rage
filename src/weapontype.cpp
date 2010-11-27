@@ -11,11 +11,6 @@
 using namespace std;
 
 
-// It is expected you will change the HUD code if you change these values
-#define WEAPON_LARGE_W 125
-#define WEAPON_LARGE_H 125
-
-
 /* Functions */
 WeaponType* loadWeaponType(cfg_t *cfg_weapon, Mod * mod);
 
@@ -116,11 +111,6 @@ WeaponType* loadWeaponType(cfg_t *cfg_weapon, Mod * mod)
 	filename.append(cfg_getstr(cfg_weapon, "name"));
 	filename.append("/icon_large.png");
 	wt->icon_large = mod->st->render->loadSprite(filename, mod);
-	
-	if (mod->st->render->getSpriteWidth(wt->icon_large) != WEAPON_LARGE_W && mod->st->render->getSpriteHeight(wt->icon_large) != WEAPON_LARGE_H) {
-		cout << "Bad image size for large icon\n";
-		return NULL;
-	}
 	
 	return wt;
 }
