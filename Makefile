@@ -4,6 +4,7 @@ PLATFORM=linux
 ifeq ($(PLATFORM),linux)
 	CXX=g++
 	CLIENT=chaoticrage
+	SERVER=dedicatedserver
 	CFLAGS=`sdl-config --cflags` `pkg-config zziplib libconfuse gl glu --cflags` -Werror -Wall -ggdb
 	LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse --libs` -lGL -lGLU -lSDL_mixer -lSDL_image
 endif
@@ -11,6 +12,7 @@ endif
 ifeq ($(PLATFORM),i386-mingw32)
 	CXX=i386-mingw32-g++
 	CLIENT=chaoticrage.exe
+	SERVER=dedicatedserver.exe
 	CFLAGS=`sdl-config --cflags` `pkg-config zziplib libconfuse gl glu --cflags` -Werror -Wall -ggdb
 	LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse --libs` -lopengl32 -lglu32 -lSDL_mixer -lSDL_image
 endif
@@ -21,16 +23,23 @@ SRCPATH=src
 
 OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(wildcard $(SRCPATH)/*.cpp)) $(OBJPATH)/objload.o
 
+OBJFILES_CLIENT=$(filter-out build/server.o, $(OBJFILES))
+OBJFILES_SERVER=$(filter-out build/client.o, $(OBJFILES))
+
 
 default: all
 
 .PHONY: all client clean
 
-all: client
+all: client server
 
-client: $(OBJFILES)
+client: $(OBJFILES_CLIENT)
 	@echo [LINK] $@
-	@$(CXX) $(CFLAGS) $(OBJFILES) -o $(CLIENT) $(LIBS) -ggdb 
+	@$(CXX) $(CFLAGS) $(OBJFILES_CLIENT) -o $(CLIENT) $(LIBS) -ggdb 
+	
+server: $(OBJFILES_SERVER)
+	@echo [LINK] $@
+	@$(CXX) $(CFLAGS) $(OBJFILES_SERVER) -o $(SERVER) $(LIBS) -ggdb 
 	
 $(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h Makefile
 	@echo [CC] $<
@@ -40,7 +49,6 @@ clean:
 	rm -f chaoticrage chaoticrage.exe 
 	rm -f $(OBJFILES)
 	rm -f $(OBJPATH)/objload.cpp
-	
 	
 $(OBJPATH)/objload.o: $(SRCPATH)/objload.l $(SRCPATH)/objload.h Makefile
 	@echo [FLEX] $(SRCPATH)/objload.l
