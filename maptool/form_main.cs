@@ -318,6 +318,9 @@ namespace Maptool
         {
             Graphics g = e.Graphics;
 
+            Brush br_darkgray = new SolidBrush(Color.FromArgb(20, 20, 20));
+
+
             // Zones
             foreach (Entity ent in entities) {
                 if (!(ent is ZoneEntity)) continue;
@@ -331,6 +334,7 @@ namespace Maptool
             foreach (Entity ent in entities) {
                 if (! (ent is WallEntity)) continue;
 
+                g.FillEllipse(br_darkgray, ent.X - 30, ent.Y - 30, 60, 60);
                 g.DrawEllipse((ent == currEntity ? Pens.Red : Pens.White), ent.X - 5, ent.Y - 5, 10, 10);
             }
         }
