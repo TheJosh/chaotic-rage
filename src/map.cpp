@@ -24,6 +24,7 @@ static cfg_opt_t zone_opts[] =
 {
 	CFG_INT((char*) "x", 0, CFGF_NONE),
 	CFG_INT((char*) "y", 0, CFGF_NONE),
+	CFG_INT((char*) "angle", 0, CFGF_NONE),
 	CFG_INT((char*) "width", 0, CFGF_NONE),
 	CFG_INT((char*) "height", 0, CFGF_NONE),
 	CFG_END()
@@ -248,7 +249,7 @@ Zone * Map::getSpawnZone(Faction f)
 	
 	if (num == 0) return NULL;
 	
-	num = (int) round(getRandom(0, num * 10) / 10);	//getRandom seems to have some problems with small values
+	num = (int) round(getRandom(0, num * 10.0) / 10.0);	//getRandom seems to have some problems with small values
 	
 	return candidates[num];
 }
