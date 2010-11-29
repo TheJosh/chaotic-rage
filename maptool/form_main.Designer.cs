@@ -29,7 +29,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.panOuter = new System.Windows.Forms.Panel();
-            this.panMap = new System.Windows.Forms.Panel();
+            this.panMap = new Maptool.DoubleBufferPanel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -339,7 +339,7 @@
         #endregion
 
         private System.Windows.Forms.Panel panOuter;
-        private System.Windows.Forms.Panel panMap;
+        private Maptool.DoubleBufferPanel panMap;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mnuFileNew;

@@ -24,6 +24,7 @@ namespace Maptool
         private ZoneTool tool_zone = new ZoneTool();
 
 
+
         public frmMain()
         {
             InitializeComponent();
@@ -47,6 +48,7 @@ namespace Maptool
         {
             panMap.Size = new Size(1, 1);
             panMap.Size = new Size(2000, 2000);
+
             toggleOn(toolAreas);
             setCurrEntity(null);
             setCurrEntityType(null);
@@ -311,32 +313,37 @@ namespace Maptool
         }
 
 
-        /**
-         * Draws everything
-         **/
-        private void panMap_Paint(object sender, PaintEventArgs e)
+        private void do_paint(Graphics g)
         {
-            Graphics g = e.Graphics;
-
+            //g.Clear(Color.Black);
+            
             Brush br_darkgray = new SolidBrush(Color.FromArgb(20, 20, 20));
-
 
             // Zones
             foreach (Entity ent in entities) {
                 if (!(ent is ZoneEntity)) continue;
 
-                ZoneEntity entc = (ZoneEntity) ent;
+                ZoneEntity entc = (ZoneEntity)ent;
 
                 g.DrawRectangle((ent == currEntity ? Pens.Red : Pens.White), entc.X - entc.Width / 2, entc.Y - entc.Height / 2, entc.Width, entc.Height);
             }
 
             // Walls
             foreach (Entity ent in entities) {
-                if (! (ent is WallEntity)) continue;
+                if (!(ent is WallEntity)) continue;
 
                 g.FillEllipse(br_darkgray, ent.X - 30, ent.Y - 30, 60, 60);
                 g.DrawEllipse((ent == currEntity ? Pens.Red : Pens.White), ent.X - 5, ent.Y - 5, 10, 10);
             }
+        }
+
+
+        /**
+         * Draws everything
+         **/
+        private void panMap_Paint(object sender, PaintEventArgs e)
+        {
+            this.do_paint(e.Graphics);
         }
 
         /**
@@ -388,6 +395,20 @@ namespace Maptool
                 this.type = value;
                 this.Text = value.Name;
             }
+        }
+    }
+
+    public class DoubleBufferPanel : Panel
+    {
+        public DoubleBufferPanel()
+        {
+            this.SetStyle(
+                ControlStyles.DoubleBuffer |
+                ControlStyles.UserPaint |
+                ControlStyles.AllPaintingInWmPaint,
+                true
+            );
+            this.UpdateStyles();
         }
     }
 }
