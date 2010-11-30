@@ -16,7 +16,12 @@ namespace Maptool
         {
             Datapath = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
             Datapath = Datapath.Replace("\\maptool\\bin\\Debug", "");
-            Datapath += "\\data\\cr";
+            Datapath += System.IO.Path.DirectorySeparatorChar + "data" + System.IO.Path.DirectorySeparatorChar +  "cr";
+
+            if (! System.IO.Directory.Exists(Datapath)) {
+                MessageBox.Show("Invalid data directory '" + Datapath + "'");
+                return;
+            }
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
