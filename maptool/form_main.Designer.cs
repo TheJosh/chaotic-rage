@@ -56,11 +56,9 @@
             this.panOuter.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitRight)).BeginInit();
             this.splitRight.Panel1.SuspendLayout();
             this.splitRight.Panel2.SuspendLayout();
             this.splitRight.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitOuter)).BeginInit();
             this.splitOuter.Panel1.SuspendLayout();
             this.splitOuter.Panel2.SuspendLayout();
             this.splitOuter.SuspendLayout();
@@ -325,11 +323,9 @@
             this.toolStrip1.PerformLayout();
             this.splitRight.Panel1.ResumeLayout(false);
             this.splitRight.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitRight)).EndInit();
             this.splitRight.ResumeLayout(false);
             this.splitOuter.Panel1.ResumeLayout(false);
             this.splitOuter.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitOuter)).EndInit();
             this.splitOuter.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
