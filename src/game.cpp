@@ -24,6 +24,7 @@ void gameLoop(GameState *st, Render *render)
 	int curr_frame = 0, total_time = 0;
 	Event * ev;
 	
+	SDL_WM_GrabInput(SDL_GRAB_ON);
 	SDL_WarpMouse(400, 30);
 	
 	st->render->preGame();
@@ -55,6 +56,8 @@ void gameLoop(GameState *st, Render *render)
 	ev = new Event();
 	ev->type = GAME_ENDED;
 	fireEvent(ev);
+	
+	SDL_WM_GrabInput(SDL_GRAB_OFF);
 	
 	st->render->postGame();
 }
