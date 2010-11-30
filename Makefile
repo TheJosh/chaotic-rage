@@ -46,7 +46,8 @@ $(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h Makefile
 	@$(CXX) $(CFLAGS) -o $@ -c $<
 	
 clean:
-	rm -f chaoticrage chaoticrage.exe 
+	rm -f chaoticrage chaoticrage.exe
+	rm -f dedicatedserver dedicatedserver.exe 
 	rm -f $(OBJFILES)
 	rm -f $(OBJPATH)/objload.cpp
 	
