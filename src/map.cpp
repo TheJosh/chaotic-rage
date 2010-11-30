@@ -80,8 +80,8 @@ int Map::load(string name, Render * render)
 	Area *a;
 	
 	this->render = render;
-	this->width = 1000;
-	this->height = 1000;
+	this->width = 2000;
+	this->height = 2000;
 	
 	// Default area
 	a = new Area(this->st->getMod(0)->getAreaType(0));
@@ -89,38 +89,6 @@ int Map::load(string name, Render * render)
 	a->y = 0;
 	a->width = this->width;
 	a->height = this->height;
-	a->angle = 0;
-	this->areas.push_back(a);
-	
-	a = new Area(this->st->getMod(0)->getAreaType(2));
-	a->x = 300;
-	a->y = 300;
-	a->width = 100;
-	a->height = 100;
-	a->angle = 22;
-	this->areas.push_back(a);
-	
-	a = new Area(this->st->getMod(0)->getAreaType(2));
-	a->x = 150;
-	a->y = 170;
-	a->width = 100;
-	a->height = 100;
-	a->angle = 0;
-	this->areas.push_back(a);
-	
-	a = new Area(this->st->getMod(0)->getAreaType(3));
-	a->x = 0;
-	a->y = 0;
-	a->width = 200;
-	a->height = 1000;
-	a->angle = 2;
-	this->areas.push_back(a);
-	
-	a = new Area(this->st->getMod(0)->getAreaType(3));
-	a->x = 400;
-	a->y = 30;
-	a->width = 200;
-	a->height = 30;
 	a->angle = 0;
 	this->areas.push_back(a);
 	
