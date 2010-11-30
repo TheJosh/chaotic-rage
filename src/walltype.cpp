@@ -28,11 +28,7 @@ static cfg_opt_t damage_opts[] =
 static cfg_opt_t walltype_opts[] =
 {
 	CFG_STR((char*) "name", (char*)"", CFGF_NONE),
-	CFG_STR((char*) "image", (char*)"", CFGF_NONE),
 	CFG_STR((char*) "model", (char*)"", CFGF_NONE),
-	CFG_INT((char*) "stretch", 0, CFGF_NONE),		// 0 = tile, 1 = stretch
-	CFG_INT((char*) "wall", 0, CFGF_NONE),			// 0 = ground, 1 = wall
-	CFG_INT((char*) "ground_type", -1, CFGF_NONE),	// Ground to place underneath this wall
 	CFG_STR_LIST((char*) "walk_sounds", 0, CFGF_NONE),
 	CFG_SEC((char*) "damage", damage_opts, CFGF_MULTI),
 	CFG_END()
@@ -115,16 +111,8 @@ WallType* loadWallType(cfg_t *cfg_walltype, Mod * mod)
 	string filename;
 	int size;
 	
-	filename = "walltypes/";
-	filename.append(cfg_getstr(cfg_walltype, "image"));
-	filename.append("-fr0.png");
-	
 	wt = new WallType();
 	wt->name = cfg_getstr(cfg_walltype, "name");
-	wt->surf = mod->st->render->loadSprite(filename.c_str(), mod);
-	wt->stretch = cfg_getint(cfg_walltype, "stretch");
-	wt->wall = cfg_getint(cfg_walltype, "wall");
-	
 	wt->check_radius = 30;	//TODO: dynamic
 	
 	char * tmp = cfg_getstr(cfg_walltype, "model");
