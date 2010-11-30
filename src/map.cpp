@@ -161,7 +161,10 @@ int Map::load(string name, Render * render)
 		for (j = 0; j < num_types; j++) {
 			cfg_sub = cfg_getnsec(cfg, "wall", j);
 			
-			Wall * wa = new Wall(this->st->getMod(0)->getWallType(0), this->st);
+			string type = cfg_getstr(cfg_sub, "type");
+			if (type == "") continue;
+			
+			Wall * wa = new Wall(this->st->getMod(0)->getWallType(type), this->st);
 			
 			wa->x = cfg_getint(cfg_sub, "x");
 			wa->y = cfg_getint(cfg_sub, "y");

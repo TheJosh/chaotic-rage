@@ -46,4 +46,5 @@ class Mod {
 		WeaponType * getWeaponType(int id);
 		
 		AnimModel * getAnimModel(string name);
+		WallType * getWallType(string name);
 };

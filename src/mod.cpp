@@ -136,6 +136,17 @@ WallType * Mod::getWallType(int id)
 	return walltypes->at(id);
 }
 
+WallType * Mod::getWallType(string name)
+{
+	if (name == "") return NULL;
+	
+	int i;
+	for (i = walltypes->size() - 1; i >= 0; --i) {
+		if (walltypes->at(i)->name == name) return walltypes->at(i);
+	}
+	return NULL;
+}
+
 /**
 * Gets a weapon type by ID
 **/
