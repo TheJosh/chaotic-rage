@@ -14,7 +14,8 @@ namespace datatool
         COMMA,
         EQUALS,
         STRING,
-        NUMBER,
+        INTEGER,
+        FLOAT,
         SECTSTART,
         SECTEND,
     } 
@@ -147,11 +148,16 @@ namespace datatool
                     ident = null;
                     eq = false;
 
-                } else if (ident != null && eq && !list && t.type == ConfuseTokenType.NUMBER) {
+                } else if (ident != null && eq && !list && t.type == ConfuseTokenType.INTEGER) {
                     sect.values.Add(ident, int.Parse(t.val));
                     ident = null;
                     eq = false;
-                    
+
+                } else if (ident != null && eq && !list && t.type == ConfuseTokenType.FLOAT) {
+                    sect.values.Add(ident, float.Parse(t.val));
+                    ident = null;
+                    eq = false;
+
 
                 // List start
                 } else if (ident != null && eq && !list && t.type == ConfuseTokenType.SECTSTART) {
@@ -166,9 +172,14 @@ namespace datatool
                     List<object> obj = (List<object>)sect.values[ident];
                     obj.Add(t.val);
 
-                } else if (ident != null && eq && list && t.type == ConfuseTokenType.NUMBER) {
+                } else if (ident != null && eq && list && t.type == ConfuseTokenType.INTEGER) {
                     List<object> obj = (List<object>)sect.values[ident];
                     obj.Add(int.Parse(t.val));
+
+                } else if (ident != null && eq && list && t.type == ConfuseTokenType.FLOAT) {
+                    List<object> obj = (List<object>)sect.values[ident];
+                    obj.Add(float.Parse(t.val));
+
 
                 // List end
                 } else if (ident != null && eq && list && t.type == ConfuseTokenType.SECTEND) {
@@ -211,7 +222,8 @@ namespace datatool
             regexes.Add("^}", ConfuseTokenType.SECTEND);
             regexes.Add("^,", ConfuseTokenType.COMMA);
             regexes.Add("^\"([^\"]+)\"", ConfuseTokenType.STRING);
-            regexes.Add("^[-0-9]+", ConfuseTokenType.NUMBER);
+            regexes.Add("^[-.0-9]+", ConfuseTokenType.FLOAT);
+            regexes.Add("^[-0-9]+", ConfuseTokenType.INTEGER);
             regexes.Add("^\\s+", ConfuseTokenType.NOTHING);
             regexes.Add("^//.*?\\n", ConfuseTokenType.NOTHING);
             regexes.Add("^/\\*.*\\*/", ConfuseTokenType.NOTHING);

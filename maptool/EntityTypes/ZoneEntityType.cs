@@ -6,6 +6,9 @@ namespace Maptool
 {
     class ZoneEntityType : EntityType
     {
-        public ZoneEntityType() { this.name = "General"; }
+        public ZoneEntityType() {
+            this.name = "General";
+            this.image = null;
+        }
     }
 }

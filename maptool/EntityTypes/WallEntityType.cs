@@ -9,6 +9,7 @@ namespace Maptool
         public WallEntityType(string name)
         {
             this.name = name;
+            this.image = null;
         }
     }
 }

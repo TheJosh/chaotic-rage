@@ -121,6 +121,7 @@ namespace Maptool
          **/
         private void mnuFileNew_Click(object sender, EventArgs e)
         {
+            entities.Clear();
             resetUI();
         }
 
@@ -143,6 +144,11 @@ namespace Maptool
             }
         }
 
+        private void mnuFileExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
         private void mnuEditMapsettings_Click(object sender, EventArgs e)
         {
             frmMapSettings f = new frmMapSettings();
@@ -160,14 +166,24 @@ namespace Maptool
             setCurrEntity(null);
             setCurrEntityType(null);
             list.Items.Clear();
+            imgList.Images.Clear();
+            splitRight.Panel2Collapsed = true;
 
             if (tool == null) return;
 
+            int j = 0;
             foreach (EntityType type in tool.getTypes()) {
                 EntityTypeListItem itm = new EntityTypeListItem();
                 itm.EntityType = type;
                 list.Items.Add(itm);
+
+                if (type.Image != null) {
+                    imgList.Images.Add(type.Image);
+                    itm.ImageIndex = j++;
+                }
             }
+
+            splitRight.Panel2Collapsed = (list.Items.Count < 2);
 
             if (list.Items.Count > 0) {
                 list.Items[0].Selected = true;
@@ -220,6 +236,7 @@ namespace Maptool
                 }
             }
 
+            panMap.Focus();
             panMap.Refresh();
             grid.Refresh();
         }
@@ -368,6 +385,11 @@ namespace Maptool
         {
             panMap.Refresh();
         }
+
+        private void list_Resize(object sender, EventArgs e)
+        {
+            list.Columns[0].Width = list.Width - 10;
+        }
     }
 
     class EntityTypeListItem : ListViewItem
@@ -391,7 +413,8 @@ namespace Maptool
             this.SetStyle(
                 ControlStyles.DoubleBuffer |
                 ControlStyles.UserPaint |
-                ControlStyles.AllPaintingInWmPaint,
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.Selectable,
                 true
             );
             this.UpdateStyles();

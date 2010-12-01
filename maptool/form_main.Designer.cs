@@ -27,9 +27,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.panOuter = new System.Windows.Forms.Panel();
-            this.panMap = new Maptool.DoubleBufferPanel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,12 +47,14 @@
             this.toolParticleGenerators = new System.Windows.Forms.ToolStripButton();
             this.toolZones = new System.Windows.Forms.ToolStripButton();
             this.splitRight = new System.Windows.Forms.SplitContainer();
+            this.grid = new System.Windows.Forms.PropertyGrid();
             this.list = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.grid = new System.Windows.Forms.PropertyGrid();
+            this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.splitOuter = new System.Windows.Forms.SplitContainer();
             this.diaSave = new System.Windows.Forms.SaveFileDialog();
             this.diaOpen = new System.Windows.Forms.OpenFileDialog();
+            this.panMap = new Maptool.DoubleBufferPanel();
             this.panOuter.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -76,18 +78,6 @@
             this.panOuter.Name = "panOuter";
             this.panOuter.Size = new System.Drawing.Size(563, 453);
             this.panOuter.TabIndex = 0;
-            // 
-            // panMap
-            // 
-            this.panMap.BackColor = System.Drawing.Color.Black;
-            this.panMap.Location = new System.Drawing.Point(50, 50);
-            this.panMap.Name = "panMap";
-            this.panMap.Size = new System.Drawing.Size(139, 127);
-            this.panMap.TabIndex = 0;
-            this.panMap.Paint += new System.Windows.Forms.PaintEventHandler(this.panMap_Paint);
-            this.panMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseDown);
-            this.panMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseMove);
-            this.panMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseUp);
             // 
             // menuStrip1
             // 
@@ -129,6 +119,7 @@
             // 
             // mnuFileSave
             // 
+            this.mnuFileSave.Enabled = false;
             this.mnuFileSave.Name = "mnuFileSave";
             this.mnuFileSave.Size = new System.Drawing.Size(136, 22);
             this.mnuFileSave.Text = "&Save";
@@ -150,6 +141,7 @@
             this.mnuFileExit.Name = "mnuFileExit";
             this.mnuFileExit.Size = new System.Drawing.Size(136, 22);
             this.mnuFileExit.Text = "E&xit";
+            this.mnuFileExit.Click += new System.EventHandler(this.mnuFileExit_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -161,6 +153,7 @@
             // 
             // mnuEditMapsettings
             // 
+            this.mnuEditMapsettings.Enabled = false;
             this.mnuEditMapsettings.Name = "mnuEditMapsettings";
             this.mnuEditMapsettings.Size = new System.Drawing.Size(147, 22);
             this.mnuEditMapsettings.Text = "Map &Settings";
@@ -184,6 +177,7 @@
             // 
             this.toolAreas.Checked = true;
             this.toolAreas.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolAreas.Enabled = false;
             this.toolAreas.Image = global::Maptool.Properties.Resources.areas;
             this.toolAreas.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolAreas.Name = "toolAreas";
@@ -202,6 +196,7 @@
             // 
             // toolObjects
             // 
+            this.toolObjects.Enabled = false;
             this.toolObjects.Image = global::Maptool.Properties.Resources.objects;
             this.toolObjects.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolObjects.Name = "toolObjects";
@@ -211,6 +206,7 @@
             // 
             // toolParticleGenerators
             // 
+            this.toolParticleGenerators.Enabled = false;
             this.toolParticleGenerators.Image = ((System.Drawing.Image)(resources.GetObject("toolParticleGenerators.Image")));
             this.toolParticleGenerators.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolParticleGenerators.Name = "toolParticleGenerators";
@@ -237,36 +233,15 @@
             // splitRight.Panel1
             // 
             this.splitRight.Panel1.AutoScroll = true;
-            this.splitRight.Panel1.Controls.Add(this.list);
+            this.splitRight.Panel1.Controls.Add(this.grid);
             // 
             // splitRight.Panel2
             // 
             this.splitRight.Panel2.AutoScroll = true;
-            this.splitRight.Panel2.Controls.Add(this.grid);
+            this.splitRight.Panel2.Controls.Add(this.list);
             this.splitRight.Size = new System.Drawing.Size(179, 453);
             this.splitRight.SplitterDistance = 238;
             this.splitRight.TabIndex = 5;
-            // 
-            // list
-            // 
-            this.list.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
-            this.list.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.list.FullRowSelect = true;
-            this.list.HideSelection = false;
-            this.list.Location = new System.Drawing.Point(0, 0);
-            this.list.MultiSelect = false;
-            this.list.Name = "list";
-            this.list.Size = new System.Drawing.Size(179, 238);
-            this.list.TabIndex = 0;
-            this.list.UseCompatibleStateImageBehavior = false;
-            this.list.View = System.Windows.Forms.View.Details;
-            this.list.SelectedIndexChanged += new System.EventHandler(this.list_SelectedIndexChanged);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 184;
             // 
             // grid
             // 
@@ -274,10 +249,39 @@
             this.grid.Location = new System.Drawing.Point(0, 0);
             this.grid.Name = "grid";
             this.grid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
-            this.grid.Size = new System.Drawing.Size(179, 211);
+            this.grid.Size = new System.Drawing.Size(179, 238);
             this.grid.TabIndex = 0;
             this.grid.ToolbarVisible = false;
             this.grid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.grid_PropertyValueChanged);
+            // 
+            // list
+            // 
+            this.list.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.list.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.list.HideSelection = false;
+            this.list.LargeImageList = this.imgList;
+            this.list.Location = new System.Drawing.Point(0, 0);
+            this.list.MultiSelect = false;
+            this.list.Name = "list";
+            this.list.Size = new System.Drawing.Size(179, 211);
+            this.list.SmallImageList = this.imgList;
+            this.list.TabIndex = 0;
+            this.list.UseCompatibleStateImageBehavior = false;
+            this.list.View = System.Windows.Forms.View.Tile;
+            this.list.SelectedIndexChanged += new System.EventHandler(this.list_SelectedIndexChanged);
+            this.list.Resize += new System.EventHandler(this.list_Resize);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Name";
+            this.columnHeader1.Width = 184;
+            // 
+            // imgList
+            // 
+            this.imgList.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imgList.ImageSize = new System.Drawing.Size(32, 32);
+            this.imgList.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // splitOuter
             // 
@@ -303,6 +307,18 @@
             // diaOpen
             // 
             this.diaOpen.Filter = "Maps|*.conf";
+            // 
+            // panMap
+            // 
+            this.panMap.BackColor = System.Drawing.Color.Black;
+            this.panMap.Location = new System.Drawing.Point(50, 50);
+            this.panMap.Name = "panMap";
+            this.panMap.Size = new System.Drawing.Size(139, 127);
+            this.panMap.TabIndex = 0;
+            this.panMap.Paint += new System.Windows.Forms.PaintEventHandler(this.panMap_Paint);
+            this.panMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseDown);
+            this.panMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseMove);
+            this.panMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseUp);
             // 
             // frmMain
             // 
@@ -360,6 +376,7 @@
         private System.Windows.Forms.ToolStripButton toolWalls;
         private System.Windows.Forms.SaveFileDialog diaSave;
         private System.Windows.Forms.OpenFileDialog diaOpen;
+        private System.Windows.Forms.ImageList imgList;
     }
 }
 
