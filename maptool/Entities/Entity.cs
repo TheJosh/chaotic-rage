@@ -13,6 +13,15 @@ namespace Maptool
         private EntityType type;
 
 
+
+        [Category("General")]
+        [Description("The type of entity")]
+        public EntityType Type
+        {
+            get { return type; }
+            set { type = value; }
+        }
+
         [Category("General")]
         [Description("The X co-ordinate of the entity")]
         public int X
@@ -35,14 +44,6 @@ namespace Maptool
         {
             get { return angle; }
             set { angle = value; }
-        }
-
-        [Category("General")]
-        [ReadOnly (true)]
-        public EntityType Type
-        {
-            get { return type; }
-            set { type = value; }
         }
     }
 }

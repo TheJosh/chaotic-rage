@@ -39,9 +39,18 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\ZoneEntity.cs" />
+    <Compile Include="Entities\ZoneFactions\frmZoneFaction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Entities\ZoneFactions\frmZoneFaction.Designer.cs">
+      <DependentUpon>frmZoneFaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ZoneFactions\ZoneFactions.cs" />
+    <Compile Include="Entities\ZoneFactions\ZoneFactionUI.cs" />
     <Compile Include="EntityTypes\ZoneEntityType.cs" />
     <Compile Include="FromDatatool\range.cs" />
     <Compile Include="Map.cs" />
@@ -67,6 +76,9 @@
     <Compile Include="Tools\Tool.cs" />
     <Compile Include="Tools\WallTool.cs" />
     <Compile Include="Tools\ZoneTool.cs" />
+    <EmbeddedResource Include="Entities\ZoneFactions\frmZoneFaction.resx">
+      <DependentUpon>frmZoneFaction.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="form_main.resx">
       <DependentUpon>form_main.cs</DependentUpon>
     </EmbeddedResource>

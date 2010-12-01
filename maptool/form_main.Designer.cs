@@ -29,6 +29,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.panOuter = new System.Windows.Forms.Panel();
+            this.panMap = new Maptool.DoubleBufferPanel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,7 +53,6 @@
             this.splitOuter = new System.Windows.Forms.SplitContainer();
             this.diaSave = new System.Windows.Forms.SaveFileDialog();
             this.diaOpen = new System.Windows.Forms.OpenFileDialog();
-            this.panMap = new Maptool.DoubleBufferPanel();
             this.panOuter.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -76,6 +76,18 @@
             this.panOuter.Name = "panOuter";
             this.panOuter.Size = new System.Drawing.Size(563, 453);
             this.panOuter.TabIndex = 0;
+            // 
+            // panMap
+            // 
+            this.panMap.BackColor = System.Drawing.Color.Black;
+            this.panMap.Location = new System.Drawing.Point(50, 50);
+            this.panMap.Name = "panMap";
+            this.panMap.Size = new System.Drawing.Size(139, 127);
+            this.panMap.TabIndex = 0;
+            this.panMap.Paint += new System.Windows.Forms.PaintEventHandler(this.panMap_Paint);
+            this.panMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseDown);
+            this.panMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseMove);
+            this.panMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseUp);
             // 
             // menuStrip1
             // 
@@ -261,6 +273,7 @@
             this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grid.Location = new System.Drawing.Point(0, 0);
             this.grid.Name = "grid";
+            this.grid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
             this.grid.Size = new System.Drawing.Size(179, 211);
             this.grid.TabIndex = 0;
             this.grid.ToolbarVisible = false;
@@ -290,18 +303,6 @@
             // diaOpen
             // 
             this.diaOpen.Filter = "Maps|*.conf";
-            // 
-            // panMap
-            // 
-            this.panMap.BackColor = System.Drawing.Color.Black;
-            this.panMap.Location = new System.Drawing.Point(50, 50);
-            this.panMap.Name = "panMap";
-            this.panMap.Size = new System.Drawing.Size(139, 127);
-            this.panMap.TabIndex = 0;
-            this.panMap.Paint += new System.Windows.Forms.PaintEventHandler(this.panMap_Paint);
-            this.panMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseDown);
-            this.panMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseMove);
-            this.panMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseUp);
             // 
             // frmMain
             // 
