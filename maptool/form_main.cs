@@ -182,16 +182,6 @@ namespace Maptool
         {
             currEntity = ent;
             grid.SelectedObject = ent;
-
-            if (ent != null) {
-                foreach (EntityTypeListItem item in list.Items) {
-                    if (item.EntityType == ent.Type) {
-                        item.Selected = true;
-                        list.Refresh();
-                        break;
-                    }
-                }
-            }
         }
 
         /**
@@ -212,12 +202,6 @@ namespace Maptool
             setCurrEntityType(null);
             if (list.SelectedItems.Count > 0) {
                 setCurrEntityType(((EntityTypeListItem)list.SelectedItems[0]).EntityType);
-            }
-
-            if (currEntity != null) {
-                currEntity.Type = currEntityType;
-                panMap.Refresh();
-                grid.Refresh();
             }
         }
 
@@ -304,7 +288,7 @@ namespace Maptool
 
                 default:
                     e.Handled = false;
-                    break;
+                    return;
             }
 
             panMap.Refresh();
@@ -314,8 +298,6 @@ namespace Maptool
 
         private void do_paint(Graphics g)
         {
-            //g.Clear(Color.Black);
-            
             Brush br_darkgray = new SolidBrush(Color.FromArgb(20, 20, 20));
 
             // Zones
@@ -380,6 +362,11 @@ namespace Maptool
             ent.Type = currEntityType;
             entities.Add(ent);
             setCurrEntity(ent);
+        }
+
+        private void grid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            panMap.Refresh();
         }
     }
 

@@ -13,6 +13,7 @@ namespace Maptool
         private EntityType type;
 
 
+        [Category("General")]
         [Description("The X co-ordinate of the entity")]
         public int X
         {
@@ -20,6 +21,7 @@ namespace Maptool
             set { x = value; }
         }
 
+        [Category("General")]
         [Description("The Y co-ordinate of the entity")]
         public int Y
         {
@@ -27,6 +29,7 @@ namespace Maptool
             set { y = value; }
         }
 
+        [Category("General")]
         [Description("The angle of the entity, in degrees")]
         public int Angle
         {
@@ -34,6 +37,7 @@ namespace Maptool
             set { angle = value; }
         }
 
+        [Category("General")]
         [ReadOnly (true)]
         public EntityType Type
         {
