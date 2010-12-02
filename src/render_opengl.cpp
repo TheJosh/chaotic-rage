@@ -17,10 +17,10 @@ using namespace std;
 
 
 
-static bool ZIndexPredicate(const Entity * e1, const Entity * e2)
-{
-	return e1->z < e2->z;
-}
+//static bool ZIndexPredicate(const Entity * e1, const Entity * e2)
+//{
+//	return e1->z < e2->z;
+//}
 
 
 RenderOpenGL::RenderOpenGL(GameState * st) : Render(st)
@@ -538,7 +538,7 @@ void RenderOpenGL::render()
 	glTranslatef(0, 0, 10);
 	
 	// Entities
-	std::sort(st->entities.begin(), st->entities.end(), ZIndexPredicate);
+	//std::sort(st->entities.begin(), st->entities.end(), ZIndexPredicate);
 	for (i = 0; i < st->entities.size(); i++) {
 		Entity *e = st->entities.at(i);
 		
