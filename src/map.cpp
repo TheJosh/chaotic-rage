@@ -27,6 +27,7 @@ static cfg_opt_t zone_opts[] =
 	CFG_INT((char*) "angle", 0, CFGF_NONE),
 	CFG_INT((char*) "width", 0, CFGF_NONE),
 	CFG_INT((char*) "height", 0, CFGF_NONE),
+	CFG_INT_LIST((char*) "spawn", 0, CFGF_NONE),
 	CFG_END()
 };
 
@@ -112,7 +113,7 @@ int Map::load(string name, Render * render)
 	
 	{
 		cfg_t *cfg, *cfg_sub;
-		int num_types, j;
+		int num_types, j, k;
 		
 		char *buffer = mod->loadText("map.conf");
 		if (buffer == NULL) {
@@ -148,7 +149,12 @@ int Map::load(string name, Render * render)
 			
 			Zone * z = new Zone(cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), cfg_getint(cfg_sub, "width"), cfg_getint(cfg_sub, "height"));
 			
-			z->spawn[FACTION_INDIVIDUAL] = 1;
+			int num_spawn = cfg_size(cfg_sub, "spawn");
+			for (k = 0; k < num_spawn; k++) {
+				int f = cfg_getnint(cfg_sub, "spawn", k);
+				if (f < FACTION_INDIVIDUAL || f > FACTION_COMMON) continue;
+				z->spawn[f] = 1;
+			}
 			
 			this->zones.push_back(z);
 		}
