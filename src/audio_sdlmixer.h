@@ -15,7 +15,7 @@ class AudioSDLMixer : Audio
 {
 	private:
 		bool audio_start;
-		bool audio_stop;		
+		bool audio_stop;
 
 	public:
 		/**

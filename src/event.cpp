@@ -28,6 +28,8 @@ void fireEvent (Event * ev)
 	
 	getGameState()->audio->handleEvent(ev);
 	
+	getGameState()->logic->handleEvent(ev);
+	
 	// This is for testing only
 	cout << "fireEvent [" << ev->type << "]  e1 = " << ev->e1 << "  e2 = " << ev->e2 << "  a1 = " << ev->a1 << "  a2 = " << ev->a2 << "\n";
 	delete (ev);

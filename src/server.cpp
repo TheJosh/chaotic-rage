@@ -21,6 +21,7 @@ int main (int argc, char ** argv) {
 	
 	new RenderNull(st);
 	new AudioNull(st);
+	new GameLogic(st);
 	
 	st->render->setScreenSize(900, 900, false);
 	
@@ -36,24 +37,7 @@ int main (int argc, char ** argv) {
 	m->load("arena", st->render);
 	st->map = m;
 	
-	Player *p = new Player(mod->getUnitClass(0), st);
-	st->addUnit(p);
-	st->curr_player = p;
-	
-	p->pickupWeapon(mod->getWeaponType(1));
-	p->pickupWeapon(mod->getWeaponType(2));
-	
-	Zone *z = m->getSpawnZone(FACTION_INDIVIDUAL);
-	if (z == NULL) {
-		cerr << "Map does not have any spawnpoints\n";
-		exit(1);
-	}
-	p->x = z->getRandomX();
-	p->y = z->getRandomY();
-	
-	
 	gameLoop(st, st->render);
-	
 	
 	exit(0);
 }

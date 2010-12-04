@@ -34,6 +34,7 @@ class GameState
 		Render* render;
 		HUD* hud;
 		Audio* audio;
+		GameLogic* logic;
 		
 	public:
 		GameState();

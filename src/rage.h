@@ -39,6 +39,7 @@ class Entity;
 class EntityType;
 class Event;
 class EventListener;
+class GameLogic;
 class GameState;
 class HUD;
 class Map;
@@ -90,6 +91,7 @@ class Zone;
 
 #include "zone.h"
 #include "map.h"
+#include "gamelogic.h"
 #include "gamestate.h"
 
 #include "game.h"
