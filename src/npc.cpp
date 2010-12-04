@@ -27,6 +27,7 @@ void NPC::update(int delta)
 	UnitClassSettings *ucs = this->uc->getSettings(0);
 	
 	
+	// This should be moved into a function in the GameLogic class
 	if (st->game_time - vals[0] > 2500) {
 		vals[0] = st->game_time;
 		vals[1] = getAngleBetweenPoints(this->x, this->y, this->st->curr_player->x, this->st->curr_player->y);
@@ -38,8 +39,9 @@ void NPC::update(int delta)
 	
 	this->desired_angle_move = getRandom(vals[1] - 10, vals[1] + 10);
 	
-	this->speed = 1; //+= ppsDelta(ucs->lin_accel, delta);
+	this->speed += ppsDelta(ucs->lin_accel, delta);
 	this->setState(UNIT_STATE_RUNNING);
+	// End of stuff to move
 	
 	
 	Unit::update(delta, ucs);
