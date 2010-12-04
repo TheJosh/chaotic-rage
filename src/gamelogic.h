@@ -18,10 +18,19 @@ class GameLogic : public EventListener
 	public:
 		GameState *st;
 		
+	private:
+		Map *map;
+		Mod *mod;
+		
 	public:
 		GameLogic(GameState *st);
 		
 	public:
 		virtual void handleEvent(Event * ev);
+		
+	private:
+		Player * spawnPlayer(UnitClass *uc, Faction fac);
+		NPC * spawnNPC(UnitClass *uc, Faction fac);
+		
 };
 

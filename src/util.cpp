@@ -167,6 +167,12 @@ int inside (SDL_Rect rect, int x, int y)
 * pps is 'pixels per second'.
 * deltas are in miliseconds.
 * return value is in pixels.
+*
+* @todo Fix this function:
+*   The correct result from the function is often a floating-point value
+*   which is being rounded up to 1, so the game will actually work
+*   This needs to be fixed. Either accept pps values which are actually ppms (pixels per millisecond)
+*   for better accuracy, or change the whole engine to floats.
 **/
 int ppsDelta(int pps, int delta)
 {

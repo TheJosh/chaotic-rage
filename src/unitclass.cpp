@@ -271,6 +271,8 @@ vector<SpritePtr>* UnitClass::loadAllSprites()
 {
 	vector<SpritePtr>* ret = new vector<SpritePtr>();
 	
+	return ret;
+	
 	unsigned int state;
 	unsigned int frame;
 	

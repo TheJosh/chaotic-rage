@@ -1,0 +1,50 @@
+// This file is part of Chaotic Rage (c) 2010 Josh Heidenreich
+//
+// kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
+
+#include <iostream>
+#include <SDL.h>
+#include "rage.h"
+
+using namespace std;
+
+
+NPC::NPC(UnitClass *uc, GameState *st) : Unit(uc, st)
+{
+	vals[0] = vals[1] = vals[2] = vals[3] = 0;
+}
+
+NPC::~NPC()
+{
+}
+
+
+/**
+* Uses the currently pressed keys to change the player movement
+**/
+void NPC::update(int delta)
+{
+	UnitClassSettings *ucs = this->uc->getSettings(0);
+	
+	
+	if (st->game_time - vals[0] > 2500) {
+		vals[0] = st->game_time;
+		vals[1] = getAngleBetweenPoints(this->x, this->y, this->st->curr_player->x, this->st->curr_player->y);
+		vals[1] = getRandom(vals[1] - 50, vals[1] + 50);
+		
+		this->desired_angle_aim = getRandom(vals[1] - 50, vals[1] + 50);
+	}
+	
+	
+	this->desired_angle_move = getRandom(vals[1] - 10, vals[1] + 10);
+	
+	this->speed = 1; //+= ppsDelta(ucs->lin_accel, delta);
+	this->setState(UNIT_STATE_RUNNING);
+	
+	
+	Unit::update(delta, ucs);
+	
+	delete ucs;
+}
+
+

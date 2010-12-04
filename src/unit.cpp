@@ -210,10 +210,15 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	
 	this->angle = this->angle_aim;
 	
+	
+	if (this->speed > ucs->lin_speed) this->speed = ucs->lin_speed;
+	if (this->speed < 0 - ucs->lin_speed) this->speed = 0 - ucs->lin_speed;
+	
 	// Movement
 	if (this->speed != 0) {
 		int newx = pointPlusAngleX(this->x, this->angle_move, ppsDelta(this->speed, delta));
 		int newy = pointPlusAngleY(this->y, this->angle_move, ppsDelta(this->speed, delta));
+		
 		
 		// Collision detection
 		if (newx < 0 || newy < 0

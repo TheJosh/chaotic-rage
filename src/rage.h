@@ -44,6 +44,7 @@ class GameState;
 class HUD;
 class Map;
 class Mod;
+class NPC;
 class Particle;
 class ParticleGenerator;
 class ParticleGenType;
@@ -85,6 +86,7 @@ class Zone;
 #include "entity.h"
 #include "unit.h"
 #include "player.h"
+#include "npc.h"
 #include "particle.h"
 #include "particlegenerator.h"
 #include "wall.h"

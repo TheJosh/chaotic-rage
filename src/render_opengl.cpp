@@ -475,7 +475,7 @@ void RenderOpenGL::render()
 	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
 	glRotatef(st->curr_player->angle, 0, 0, 1);
 	glTranslatef(0 - st->curr_player->x, 0 - st->curr_player->y, 0);
-	glTranslatef(0, 0, 700);
+	glTranslatef(0, 0, 500);
 	
 	
 	// Set up lights

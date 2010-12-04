@@ -21,7 +21,6 @@ int main (int argc, char ** argv) {
 	
 	new RenderNull(st);
 	new AudioNull(st);
-	new GameLogic(st);
 	
 	st->render->setScreenSize(900, 900, false);
 	
@@ -36,6 +35,8 @@ int main (int argc, char ** argv) {
 	Map *m = new Map(st);
 	m->load("arena", st->render);
 	st->map = m;
+	
+	new GameLogic(st);
 	
 	gameLoop(st, st->render);
 	
