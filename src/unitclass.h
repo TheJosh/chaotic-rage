@@ -44,10 +44,8 @@ class UnitClassState
 {
 	public:
 		int id;
-		string image;
+		AnimModel * model;
 		int type;
-		unsigned int num_frames;
-		unsigned int sprite_offset;
 };
 
 class UnitClass : public EntityType
@@ -73,8 +71,6 @@ class UnitClass : public EntityType
 	public:
 		UnitClassSettings* getSettings(Uint8 modifier_flags);
 		UnitClassState* getState(int type);
-		vector<SpritePtr>* loadAllSprites();
-		unsigned int getMaxFrames();
 		Mod * getMod() { return this->mod; }
 };
 

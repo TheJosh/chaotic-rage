@@ -18,7 +18,7 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	this->angle_aim = 0;
 	this->desired_angle_aim = 0;
 	this->speed = 0;
-	this->health = 10000;
+	this->health = 10;
 	
 	this->weapon = NULL;
 	this->weapon_gen = NULL;
@@ -32,21 +32,14 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	this->walk_state = uc->getState(UNIT_STATE_WALK);
 	this->walk_time = 0;
 	
-	this->sprites = uc->loadAllSprites();
 	
-	
-	this->anim = new AnimPlay(this->uc->getMod()->getAnimModel(0));
+	this->anim = new AnimPlay(this->walk_state->model);
 	
 }
 
 Unit::~Unit()
 {
-	unsigned int j;
-	for (j = 0; j < this->sprites->size(); j++) {
-		st->render->freeSprite(this->sprites->at(j));
-	}
-	
-	delete(this->sprites);
+	delete(this->anim);
 }
 
 
@@ -169,21 +162,7 @@ unsigned int Unit::getNextWeaponID()
 **/
 void Unit::getSprite(SpritePtr list [SPRITE_LIST_LEN])
 {
-	int frame;
-	int idx;
-	
-	// Walk
-	frame = (int)(this->walk_time / ANIMATION_FPS / 30) % this->walk_state->num_frames;
-	idx = this->walk_state->sprite_offset + frame;
-	list[0] = this->sprites->at(idx);
-	
-	// Shoot
-	frame = this->st->anim_frame - this->animation_start;
-	frame = frame % this->current_state->num_frames;
-	
-	idx = this->current_state->sprite_offset + frame;
-	list[1] = this->sprites->at(idx);
-	
+	list[0] = NULL;
 	return;
 }
 

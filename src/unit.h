@@ -40,7 +40,6 @@ class Unit: public Entity
 		unsigned int walk_time;
 		
 		unsigned int animation_start;
-		vector<SpritePtr>* sprites;
 		
 		AnimPlay * anim;
 		

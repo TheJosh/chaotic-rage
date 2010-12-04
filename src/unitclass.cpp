@@ -28,9 +28,8 @@ static cfg_opt_t settings_opts[] =
 // State section
 static cfg_opt_t state_opts[] =
 {
-	CFG_STR((char*) "image", 0, CFGF_NONE),
+	CFG_STR((char*) "model", 0, CFGF_NONE),
 	CFG_INT((char*) "type", 0, CFGF_NONE),
-	CFG_INT((char*) "num_frames", 0, CFGF_NONE),
 	CFG_END()
 };
 
@@ -175,19 +174,14 @@ UnitClass* loadUnitClass(cfg_t *cfg, Mod * mod)
 		
 		UnitClassState* uct = new UnitClassState();
 		
-		uct->image = cfg_getstr(cfg_state, "image");
 		uct->type = cfg_getint(cfg_state, "type");
-		uct->num_frames = cfg_getint(cfg_state, "num_frames");
+		
+		char * tmp = cfg_getstr(cfg_state, "model");
+		if (tmp == NULL) return NULL;
+		uct->model = mod->getAnimModel(tmp);
 		
 		uc->states.push_back(uct);
 		uct->id = uc->states.size() - 1;
-		
-		uc->max_frames = MAX(uc->max_frames, uct->num_frames);
-	}
-	
-	// Assign sprite offsets
-	for (j = 0; j < num_states; j++) {
-		uc->states.at(j)->sprite_offset = j * uc->max_frames;
 	}
 	
 	return uc;
@@ -255,59 +249,6 @@ UnitClassState* UnitClass::getState(int type)
 	}
 	
 	return this->getState(UNIT_STATE_STATIC);
-}
-
-
-unsigned int UnitClass::getMaxFrames()
-{
-	return this->max_frames;
-}
-
-/**
-* Loads all of the required state sprites into SpritePtrs.
-* The returned object should be freed by the caller.
-**/
-vector<SpritePtr>* UnitClass::loadAllSprites()
-{
-	vector<SpritePtr>* ret = new vector<SpritePtr>();
-	
-	return ret;
-	
-	unsigned int state;
-	unsigned int frame;
-	
-	UnitClassState* state_info;
-	char buff[255];
-	
-	for (state = 0; state < this->states.size(); state++) {
-		state_info = this->states.at(state);
-		
-		for (frame = 0; frame < state_info->num_frames; frame++) {
-			sprintf(buff, "%s%s/%s_fr%i.png", getDataDirectory(DF_UNITCLASS).c_str(), this->name.c_str(), state_info->image.c_str(), frame);
-			
-			DEBUG("Loading unit class sprite; image = '%s', angle = %i, frame = %i\n", state_info->image.c_str(), angle * 45, frame);
-			
-			SpritePtr surf = this->mod->st->render->loadSprite(buff, this->mod);
-			ret->push_back(surf);
-			
-			if (this->width == 0) {
-				this->width = this->mod->st->render->getSpriteWidth(surf);
-				this->height = this->mod->st->render->getSpriteHeight(surf);
-			}
-		}
-		
-		while (frame < this->max_frames) {
-			ret->push_back(NULL);
-			frame++;
-		}
-	}
-	
-	if (this->mod->st->render->wasLoadSpriteError()) {
-		cerr << "Unable to load required unit sprites; exiting.\n";
-		exit(1);
-	}
-	
-	return ret;
 }
 
 

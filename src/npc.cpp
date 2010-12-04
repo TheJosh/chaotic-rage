@@ -36,7 +36,6 @@ void NPC::update(int delta)
 		this->desired_angle_aim = getRandom(vals[1] - 50, vals[1] + 50);
 	}
 	
-	
 	this->desired_angle_move = getRandom(vals[1] - 10, vals[1] + 10);
 	
 	this->speed += ppsDelta(ucs->lin_accel, delta);
