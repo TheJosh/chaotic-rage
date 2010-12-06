@@ -39,17 +39,10 @@ void EntityType::doActions(Event * ev)
 		switch (ac->type) {
 			case ADD_PGENERATOR:
 				{
-					cout << "Add a particle generator!!\n";
-					
-					// TODO: Fix this
-					// mod->getParticleGenType
-					// need a pointer to the mod
-					
 					ParticleGenerator *pg = new ParticleGenerator(st->getMod(0)->getParticleGenType(ac->args[0]), st);
 					pg->x = ev->e1->x;
 					pg->y = ev->e1->y;
 					st->addParticleGenerator(pg);
-					
 				}
 				break;
 				

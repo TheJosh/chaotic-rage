@@ -15,7 +15,7 @@ Particle::Particle(ParticleType *pt, GameState *st) : Entity(st)
 	this->pt = pt;
 	this->animation_start = st->anim_frame;
 	
-	this->speed = getRandom(pt->max_speed.min, pt->max_speed.max);
+	this->speed = getRandom(pt->begin_speed.min, pt->begin_speed.max);
 	this->accel = getRandom(pt->accel.min, pt->accel.max);
 	this->max_age = getRandom(pt->age.min, pt->age.max);
 	this->unit_damage = getRandom(pt->unit_damage.min, pt->unit_damage.max);
