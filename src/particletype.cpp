@@ -22,10 +22,7 @@ extern cfg_opt_t g_action_opts;
 static cfg_opt_t particletype_opts[] =
 {
 	CFG_STR((char*) "name", (char*)"", CFGF_NONE),
-	CFG_STR((char*) "image", (char*)"", CFGF_NONE),
 	CFG_STR((char*) "model", (char*)"", CFGF_NONE),
-	CFG_INT((char*) "directional", 0, CFGF_NONE),		// 1 = use direction info, 0 = only use angle 0deg
-	CFG_INT((char*) "num_frames", 1, CFGF_NONE),
 	CFG_INT_LIST((char*) "max_speed", 0, CFGF_NONE),
 	CFG_INT_LIST((char*) "begin_speed", 0, CFGF_NONE),
 	CFG_INT_LIST((char*) "accel", 0, CFGF_NONE),
@@ -185,18 +182,12 @@ vector<ParticleGenType*> * loadAllParticleGenTypes(Mod * mod)
 ParticleType* loadParticleType(cfg_t *cfg_particletype, Mod * mod)
 {
 	ParticleType* pt;
-	char buff[255];
 	
-	if (cfg_size(cfg_particletype, "image") == 0) return NULL;
 	if (cfg_size(cfg_particletype, "model") == 0) return NULL;
-	if (cfg_getint(cfg_particletype, "num_frames") < 1) return NULL;
 	if (cfg_getint(cfg_particletype, "age") == 0) return NULL;
 	
 	// Load settings
 	pt = new ParticleType();
-	pt->image = cfg_getstr(cfg_particletype, "image");
-	pt->directional = cfg_getint(cfg_particletype, "directional");
-	pt->num_frames = cfg_getint(cfg_particletype, "num_frames");
 	pt->max_speed = cfg_getrange(cfg_particletype, "max_speed");
 	pt->begin_speed = cfg_getrange(cfg_particletype, "begin_speed");
 	pt->accel = cfg_getrange(cfg_particletype, "accel");
@@ -212,24 +203,6 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype, Mod * mod)
 	if (pt->model == NULL) return NULL;
 	
 	pt->actions = loadActions(cfg_particletype);
-	
-	// Load sprites
-	int angle;
-	int frame;
-	for (angle = 0; angle < 8; angle++) {
-		for (frame = 0; frame < pt->num_frames; frame++) {
-			
-			sprintf(buff, "particletypes/%s/%ideg_fr%i.png", pt->image.c_str(), angle * 45, frame);
-			
-			DEBUG("Loading particle type sprite; image = '%s', angle = %i, frame = %i\n", pt->image.c_str(), angle * 45, frame);
-			
-			SpritePtr surf = mod->st->render->loadSprite(buff, mod);
-			pt->sprites.push_back(surf);
-			
-		}
-		
-		if (pt->directional == 0) angle = 8;
-	}
 	
 	return pt;
 }

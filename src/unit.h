@@ -70,6 +70,8 @@ class Unit: public Entity
 		unsigned int getPrevWeaponID();
 		unsigned int getNextWeaponID();
 		
+		void takeDamage(int damage);
+		
 	protected:
 		void update(int delta, UnitClassSettings *ucs);
 		void setState(int new_type);

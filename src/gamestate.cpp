@@ -14,7 +14,6 @@ static GameState *g_st;
 
 
 static bool EntityEraser(Entity *e);
-static bool ParticleEraser(Particle *e);
 
 
 
@@ -29,6 +28,9 @@ GameState * getGameState()
 }
 
 
+/**
+* New game state
+**/
 GameState::GameState()
 {
 	this->anim_frame = 0;
@@ -54,6 +56,7 @@ GameState::~GameState()
 void GameState::addUnit(Unit* unit)
 {
 	this->entities_add.push_back(unit);
+	this->units.push_back(unit);
 }
 
 /**
@@ -62,7 +65,6 @@ void GameState::addUnit(Unit* unit)
 void GameState::addParticle(Particle* particle)
 {
 	this->entities_add.push_back(particle);
-	this->particles.push_back(particle);
 }
 
 /**
@@ -86,14 +88,6 @@ void GameState::addWall(Wall* wall)
 * Used for filtering
 **/
 static bool EntityEraser(Entity *e)
-{
-	return e->del;
-}
-
-/**
-* Used for filtering
-**/
-static bool ParticleEraser(Particle *e)
 {
 	return e->del;
 }
@@ -130,34 +124,8 @@ void GameState::update(int delta)
 	newend = remove_if(this->entities.begin(), this->entities.end(), EntityEraser);
 	this->entities.erase(newend, this->entities.end());
 	
-	// Remove particles from the particles list
-	{
-		vector<Particle*>::iterator it = remove_if(this->particles.begin(), this->particles.end(), ParticleEraser);
-		this->particles.erase(it, this->particles.end());
-	}
-	
 	this->game_time += delta;
 	this->anim_frame = (int) floor(this->game_time * ANIMATION_FPS / 1000.0);
-}
-
-
-/**
-* Are there particles within the area?
-**/
-vector<Particle*> * GameState::particlesInside(int x, int y, int w, int h)
-{
-	unsigned int i;
-	vector<Particle*> * ret = new vector<Particle*>();
-	
-	for (i = 0; i < this->particles.size(); i++) {
-		Particle *p = this->particles.at(i);
-		
-		if (p->x >= x && p->x <= x + w && p->y >= y && p->y <= y + h) {
-			ret->push_back(p);
-		}
-	}
-	
-	return ret;
 }
 
 
@@ -189,20 +157,40 @@ Mod * GameState::getMod(int id)
 **/
 Wall * GameState::checkHitWall(float x, float y, int check_radius)
 {
-	vector<Entity*>::iterator it;
-	for (it = this->entities.begin(); it < this->entities.end(); it++) {
-		Entity *e = (*it);
-		if (e->klass() != WALL) continue;
-		if (((Wall*)e)->health == 0) continue;
+	vector<Wall*>::iterator it;
+	for (it = this->walls.begin(); it < this->walls.end(); it++) {
+		Wall *e = (*it);
+		if (e->health == 0) continue;
 		
 		int dist = (int) ceil(sqrt(((x - e->x) * (x - e->x)) + ((y - e->y) * (y - e->y))));
 		
-		if (dist < (check_radius + ((Wall*)e)->wt->check_radius)) {
-			return (Wall*) e;
+		if (dist < (check_radius + e->wt->check_radius)) {
+			return e;
 		}
 	}
 	
 	return NULL;
 }
 
+/**
+* Basically the same as above
+*
+* @todo Non-static 'check_radius' figure
+* @todo Merge into the above, and make awesome
+**/
+Unit * GameState::checkHitUnit(float x, float y, int check_radius)
+{
+	vector<Unit*>::iterator it;
+	for (it = this->units.begin(); it < this->units.end(); it++) {
+		Unit *e = (*it);
+		
+		int dist = (int) ceil(sqrt(((x - e->x) * (x - e->x)) + ((y - e->y) * (y - e->y))));
+		
+		if (dist < (check_radius + 30)) {
+			return e;
+		}
+	}
+	
+	return NULL;
+}
 

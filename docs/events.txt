@@ -107,7 +107,7 @@ PART_HIT_WALL
 	A particle has hit a wall
 	
 	e1 = The particle
-	a1 = The areatype id of the wall which was hit
+	e2 = The wall which was hit
 	
 	
 PART_HIT_UNIT

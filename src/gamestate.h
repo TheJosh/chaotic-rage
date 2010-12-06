@@ -20,8 +20,10 @@ class GameState
 	protected:
 		vector<Entity*> entities;
 		vector<Entity*> entities_add;
-		vector<Particle*> particles;
 		vector<Mod*> mods;
+		
+		vector<Unit*> units;		// leaks: items are not removed
+		vector<Wall*> walls;		// leaks: items are not removed
 		
 	public:
 		Map* map;
@@ -46,7 +48,7 @@ class GameState
 		void addParticleGenerator(ParticleGenerator* generator);
 		void addWall(Wall* wall);
 		
-		vector<Particle*> * particlesInside(int x, int y, int w, int h);
+		Unit * checkHitUnit(float x, float y, int check_radius);
 		Wall * checkHitWall(float x, float y, int check_radius);
 		
 		void update(int delta);

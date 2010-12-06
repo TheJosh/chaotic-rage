@@ -51,15 +51,38 @@ void Particle::update(int delta)
 		this->del = true;
 	}
 	
-	this->speed += ppsDelta(this->accel, delta);
-	
 	if (this->speed <= 0) return;
+	
+	this->speed += ppsDelta(this->accel, delta);
 	
 	this->x = pointPlusAngleX(this->x, this->angle, ppsDelta(this->speed, delta));
 	this->y = pointPlusAngleY(this->y, this->angle, ppsDelta(this->speed, delta));
 	
 	this->x += getRandom(-3, 3);
 	this->y += getRandom(-3, 3);
+	
+	if (this->unit_damage + this->wall_damage == 0) return;
+	
+	
+	// Hit a unit?
+	Unit *u = this->st->checkHitUnit(this->x, this->y, 1);
+	if (u != NULL) {
+		Event *ev = new Event();
+		ev->type = PART_HIT_UNIT;
+		ev->e1 = this;
+		ev->e2 = u;
+		fireEvent(ev);
+		
+		if (this->unit_damage > 0) {
+			u->takeDamage(this->unit_damage);
+			
+			this->unit_hits--;
+			if (this->unit_hits == 0) this->del = true;
+			
+		} else {
+			this->speed = 0;
+		}
+	}
 	
 	
 	// Hit a wall?
@@ -68,6 +91,7 @@ void Particle::update(int delta)
 		Event *ev = new Event();
 		ev->type = PART_HIT_WALL;
 		ev->e1 = this;
+		ev->e2 = wa;
 		fireEvent(ev);
 		
 		if (this->wall_damage > 0) {
@@ -80,6 +104,7 @@ void Particle::update(int delta)
 			this->speed = 0;
 		}
 	}
+	
 	
 	if (this->anim->isDone()) this->anim->next();
 }

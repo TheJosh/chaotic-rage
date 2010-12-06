@@ -217,30 +217,6 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 		this->walk_time += delta;
 	}
 	
-	// Have we been hit?
-	vector<Particle*> * particles = this->st->particlesInside(this->x, this->y, this->uc->width, this->uc->height);
-	
-	unsigned int i;
-	for (i = 0; i < particles->size(); i++) {
-		Particle *p = particles->at(i);
-		
-		Event *ev = new Event();
-		ev->type = PART_HIT_UNIT;
-		ev->e1 = this;
-		ev->e2 = p;
-		fireEvent(ev);
-		
-		this->health -= p->unit_damage;
-		if (this->health <= 0) {
-			this->del = true;
-		}
-		
-		p->unit_hits--;
-		if (p->unit_hits == 0) p->del = true;
-	}
-	
-	delete (particles);
-	
 	// Fire bullets
 	if (this->firing and this->weapon_gen) {
 		this->weapon_gen->x = this->x + this->uc->width / 2;
@@ -251,6 +227,18 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	}
 	
 	if (this->anim->isDone()) this->anim->next();
+}
+
+
+/**
+* We have been hit! Take some damage
+**/
+void Unit::takeDamage(int damage)
+{
+	this->health -= damage;
+	if (this->health < 0) {
+		this->del = 0;
+	}
 }
 
 
