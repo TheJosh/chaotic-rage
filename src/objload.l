@@ -115,7 +115,7 @@ WavefrontObj * loadObj(string filename)
 		return NULL;
 	}
 	
-	yyout = NULL;
+	//yyout = NULL;
 	
 	WavefrontObj * obj = yylex();
 	
