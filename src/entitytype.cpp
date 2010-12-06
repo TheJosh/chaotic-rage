@@ -29,7 +29,7 @@ void EntityType::doActions(Event * ev)
 	
 	if (this->actions == NULL) return;
 	
-	//GameState *st = ev->e1->getGameState();			// unused
+	GameState *st = getGameState();
 	
 	for (i = 0; i < this->actions->size(); i++) {
 		Action *ac = this->actions->at(i);
@@ -39,15 +39,17 @@ void EntityType::doActions(Event * ev)
 		switch (ac->type) {
 			case ADD_PGENERATOR:
 				{
+					cout << "Add a particle generator!!\n";
+					
 					// TODO: Fix this
 					// mod->getParticleGenType
 					// need a pointer to the mod
-					/*
-					ParticleGenerator *pg = new ParticleGenerator(getParticleGenTypeByID(ac->args[0]), st);
+					
+					ParticleGenerator *pg = new ParticleGenerator(st->getMod(0)->getParticleGenType(ac->args[0]), st);
 					pg->x = ev->e1->x;
 					pg->y = ev->e1->y;
 					st->addParticleGenerator(pg);
-					*/
+					
 				}
 				break;
 				
