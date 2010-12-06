@@ -373,7 +373,7 @@ static void renderObj (WavefrontObj * obj)
 		
 		if (f->t1 != 0) {
 			t = &obj->texuvs.at(f->t1 - 1);
-			glTexCoord2f(t->x, t->y);
+			glTexCoord2f(t->x, 1.0 - t->y);
 		}
 		
 		v = &obj->vertexes.at(f->v1 - 1);
@@ -388,7 +388,7 @@ static void renderObj (WavefrontObj * obj)
 		
 		if (f->t2 != 0) {
 			t = &obj->texuvs.at(f->t2 - 1);
-			glTexCoord2f(t->x, t->y);
+			glTexCoord2f(t->x, 1.0 - t->y);
 		}
 		
 		v = &obj->vertexes.at(f->v2 - 1);
@@ -403,7 +403,7 @@ static void renderObj (WavefrontObj * obj)
 		
 		if (f->t3 != 0) {
 			t = &obj->texuvs.at(f->t3 - 1);
-			glTexCoord2f(t->x, t->y);
+			glTexCoord2f(t->x, 1.0 - t->y);
 		}
 		
 		v = &obj->vertexes.at(f->v3 - 1);
@@ -479,9 +479,9 @@ void RenderOpenGL::render()
 	
 	
 	// Set up lights
-	GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f };
-	GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };
-	GLfloat LightPosition[]= { 50.0f, 50.0f, 200.0f, 1.0f };
+	GLfloat LightAmbient[] = { 0.3f, 0.3f, 0.3f, 1.0f };
+	GLfloat LightDiffuse[] = { 1.0f, 1.0f, 1.0f, 0.3f };
+	GLfloat LightPosition[] = { 1000.0f, 1000.0f, 150.0f, 0 };
 	
 	glEnable(GL_LIGHTING);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);
@@ -517,18 +517,22 @@ void RenderOpenGL::render()
 		glBegin(GL_QUADS);
 			// Bottom-left vertex (corner)
 			glTexCoord2f( 0.0, texh );
+			glNormal3f(a->x, a->y, 1);
 			glVertex3i( a->x, a->y + a->height, 0 );
 			
 			// Bottom-right vertex (corner)
 			glTexCoord2f( texw, texh );
+			glNormal3f(a->x, a->y, 1);
 			glVertex3i( a->x + a->width, a->y + a->height, 0 );
 			
 			// Top-right vertex (corner)
 			glTexCoord2f( texw, 0.0 );
+			glNormal3f(a->x, a->y, 1);
 			glVertex3i( a->x + a->width, a->y, 0 );
 			
 			// Top-left vertex (corner)
 			glTexCoord2f( 0.0, 0.0 );
+			glNormal3f(a->x, a->y, 1);
 			glVertex3i( a->x, a->y, 0 );
 		glEnd();
 		
