@@ -26,8 +26,8 @@ static cfg_opt_t particletype_opts[] =
 	CFG_STR((char*) "model", (char*)"", CFGF_NONE),
 	CFG_INT((char*) "directional", 0, CFGF_NONE),		// 1 = use direction info, 0 = only use angle 0deg
 	CFG_INT((char*) "num_frames", 1, CFGF_NONE),
-	CFG_INT_LIST((char*) "lin_speed", 0, CFGF_NONE),
-	CFG_INT_LIST((char*) "lin_accel", 0, CFGF_NONE),
+	CFG_INT_LIST((char*) "max_speed", 0, CFGF_NONE),
+	CFG_INT_LIST((char*) "accel", 0, CFGF_NONE),
 	CFG_INT_LIST((char*) "age", 0, CFGF_NONE),
 	CFG_INT_LIST((char*) "unit_damage", 0, CFGF_NONE),
 	CFG_INT_LIST((char*) "wall_damage", 0, CFGF_NONE),
@@ -189,8 +189,8 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype, Mod * mod)
 	if (cfg_size(cfg_particletype, "image") == 0) return NULL;
 	if (cfg_size(cfg_particletype, "model") == 0) return NULL;
 	if (cfg_getint(cfg_particletype, "num_frames") < 1) return NULL;
-	if (cfg_getint(cfg_particletype, "lin_speed") == 0) return NULL;
-	if (cfg_getint(cfg_particletype, "lin_accel") == 0) return NULL;
+	if (cfg_getint(cfg_particletype, "max_speed") == 0) return NULL;
+	if (cfg_getint(cfg_particletype, "accel") == 0) return NULL;
 	if (cfg_getint(cfg_particletype, "age") == 0) return NULL;
 	
 	// Load settings
@@ -198,8 +198,8 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype, Mod * mod)
 	pt->image = cfg_getstr(cfg_particletype, "image");
 	pt->directional = cfg_getint(cfg_particletype, "directional");
 	pt->num_frames = cfg_getint(cfg_particletype, "num_frames");
-	pt->lin_speed = cfg_getrange(cfg_particletype, "lin_speed");
-	pt->lin_accel = cfg_getrange(cfg_particletype, "lin_accel");
+	pt->max_speed = cfg_getrange(cfg_particletype, "max_speed");
+	pt->accel = cfg_getrange(cfg_particletype, "accel");
 	pt->age = cfg_getrange(cfg_particletype, "age");
 	pt->unit_damage = cfg_getrange(cfg_particletype, "unit_damage");
 	pt->wall_damage = cfg_getrange(cfg_particletype, "wall_damage");

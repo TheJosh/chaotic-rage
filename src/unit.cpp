@@ -190,8 +190,8 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	this->angle = this->angle_aim;
 	
 	
-	if (this->speed > ucs->lin_speed) this->speed = ucs->lin_speed;
-	if (this->speed < 0 - ucs->lin_speed) this->speed = 0 - ucs->lin_speed;
+	if (this->speed > ucs->max_speed) this->speed = ucs->max_speed;
+	if (this->speed < 0 - ucs->max_speed) this->speed = 0 - ucs->max_speed;
 	
 	// Movement
 	if (this->speed != 0) {

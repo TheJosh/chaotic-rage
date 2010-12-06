@@ -15,8 +15,8 @@ Particle::Particle(ParticleType *pt, GameState *st) : Entity(st)
 	this->pt = pt;
 	this->animation_start = st->anim_frame;
 	
-	this->speed = getRandom(pt->lin_speed.min, pt->lin_speed.max);
-	this->lin_accel = getRandom(pt->lin_accel.min, pt->lin_accel.max);
+	this->speed = getRandom(pt->max_speed.min, pt->max_speed.max);
+	this->accel = getRandom(pt->accel.min, pt->accel.max);
 	this->max_age = getRandom(pt->age.min, pt->age.max);
 	this->unit_damage = getRandom(pt->unit_damage.min, pt->unit_damage.max);
 	this->wall_damage = getRandom(pt->wall_damage.min, pt->wall_damage.max);
@@ -51,7 +51,7 @@ void Particle::update(int delta)
 		this->del = true;
 	}
 	
-	this->speed += ppsDelta(this->lin_accel, delta);
+	this->speed += ppsDelta(this->accel, delta);
 	
 	if (this->speed <= 0) return;
 	

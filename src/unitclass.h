@@ -34,8 +34,8 @@ UnitClass* loadUnitClass(cfg_t *cfg, Mod * mod);
 class UnitClassSettings
 {
 	public:
-		int lin_speed;		// max pps unit can move
-		int lin_accel;		// pps/second
+		int max_speed;		// max pps unit can move
+		int accel;		// pps/second
 		int turn_move;		// degrees/second
 		int turn_aim;		// degrees/second
 };

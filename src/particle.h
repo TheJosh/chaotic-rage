@@ -20,7 +20,7 @@ class Particle: public Entity
 		
 		// copied from particle type
 		int speed;
-		int lin_accel;
+		int accel;
 		int max_age;
 		int unit_damage;
 		int wall_damage;

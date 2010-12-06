@@ -18,8 +18,8 @@ extern cfg_opt_t g_action_opts;
 // Settings section
 static cfg_opt_t settings_opts[] =
 {
-	CFG_INT((char*) "lin_speed", 0, CFGF_NONE),
-	CFG_INT((char*) "lin_accel", 0, CFGF_NONE),
+	CFG_INT((char*) "max_speed", 0, CFGF_NONE),
+	CFG_INT((char*) "accel", 0, CFGF_NONE),
 	CFG_INT((char*) "turn_move", 0, CFGF_NONE),
 	CFG_INT((char*) "turn_aim", 0, CFGF_NONE),
 	CFG_END()
@@ -141,13 +141,13 @@ UnitClass* loadUnitClass(cfg_t *cfg, Mod * mod)
 	
 	// Load initial config
 	cfg_settings = cfg_getnsec(cfg, "settings", 0);
-	uc->initial.lin_speed = cfg_getint(cfg_settings, "lin_speed");
-	uc->initial.lin_accel = cfg_getint(cfg_settings, "lin_accel");
+	uc->initial.max_speed = cfg_getint(cfg_settings, "max_speed");
+	uc->initial.accel = cfg_getint(cfg_settings, "accel");
 	uc->initial.turn_move = cfg_getint(cfg_settings, "turn_move");
 	uc->initial.turn_aim = cfg_getint(cfg_settings, "turn_aim");
 	
-	if (uc->initial.lin_speed == 0) return NULL;
-	if (uc->initial.lin_accel == 0) return NULL;
+	if (uc->initial.max_speed == 0) return NULL;
+	if (uc->initial.accel == 0) return NULL;
 	if (uc->initial.turn_move == 0) return NULL;
 	if (uc->initial.turn_aim == 0) return NULL;
 	
@@ -155,8 +155,8 @@ UnitClass* loadUnitClass(cfg_t *cfg, Mod * mod)
 	for (j = 1; j < num_settings; j++) {
 		cfg_settings = cfg_getnsec(cfg, "settings", j);
 		
-		uc->modifiers[j - 1].lin_speed = cfg_getint(cfg_settings, "lin_speed");
-		uc->modifiers[j - 1].lin_accel = cfg_getint(cfg_settings, "lin_accel");
+		uc->modifiers[j - 1].max_speed = cfg_getint(cfg_settings, "max_speed");
+		uc->modifiers[j - 1].accel = cfg_getint(cfg_settings, "accel");
 		uc->modifiers[j - 1].turn_move = cfg_getint(cfg_settings, "turn_move");
 		uc->modifiers[j - 1].turn_aim = cfg_getint(cfg_settings, "turn_aim");
 	}
@@ -199,15 +199,15 @@ UnitClassSettings* UnitClass::getSettings(Uint8 modifier_flags)
 	
 	ret = new UnitClassSettings();
 	
-	ret->lin_speed = this->initial.lin_speed;
-	ret->lin_accel = this->initial.lin_accel;
+	ret->max_speed = this->initial.max_speed;
+	ret->accel = this->initial.accel;
 	ret->turn_move = this->initial.turn_move;
 	ret->turn_aim = this->initial.turn_aim;
 	
 	for (int i = 0; i < UNIT_NUM_MODIFIERS; i++) {
 		if ((modifier_flags & (1 << i)) != 0) {
-			ret->lin_speed += this->modifiers[i - 1].lin_speed;
-			ret->lin_accel += this->modifiers[i - 1].lin_accel;
+			ret->max_speed += this->modifiers[i - 1].max_speed;
+			ret->accel += this->modifiers[i - 1].accel;
 			ret->turn_move += this->modifiers[i - 1].turn_move;
 			ret->turn_aim += this->modifiers[i - 1].turn_aim;
 		}

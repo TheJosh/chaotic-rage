@@ -88,7 +88,7 @@ void Player::update(int delta)
 	
 	// A key was pressed
 	if (keypressed) {
-		this->speed += ppsDelta(ucs->lin_accel, delta);
+		this->speed += ppsDelta(ucs->accel, delta);
 		this->setState(UNIT_STATE_RUNNING);
 		
 	} else if (speed > 0) {		// nothing pressed, slow down (forwards)
@@ -102,8 +102,8 @@ void Player::update(int delta)
 	
 	
 	// Bound to limits
-	if (this->speed > ucs->lin_speed) this->speed = ucs->lin_speed;
-	if (this->speed < 0 - ucs->lin_speed) this->speed = 0 - ucs->lin_speed;
+	if (this->speed > ucs->max_speed) this->speed = ucs->max_speed;
+	if (this->speed < 0 - ucs->max_speed) this->speed = 0 - ucs->max_speed;
 	
 	Unit::update(delta, ucs);
 	

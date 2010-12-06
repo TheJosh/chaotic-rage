@@ -18,8 +18,9 @@ class ParticleType : public EntityType
 		bool directional;
 		int num_frames;
 		
-		Range lin_speed;
-		Range lin_accel;
+		Range begin_speed;
+		Range max_speed;
+		Range accel;
 		Range age;
 		Range unit_damage;
 		Range wall_damage;
