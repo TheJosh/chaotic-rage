@@ -56,8 +56,8 @@ static cfg_opt_t opts[] =
 
 UnitClass::UnitClass() : EntityType()
 {
-	this->width = 10;
-	this->height = 10;
+	this->width = 20;
+	this->height = 20;
 }
 
 UnitClass::~UnitClass()

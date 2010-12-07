@@ -81,6 +81,7 @@ void GameState::addParticleGenerator(ParticleGenerator* generator)
 void GameState::addWall(Wall* wall)
 {
 	this->entities_add.push_back(wall);
+	this->walls.push_back(wall);
 }
 
 
