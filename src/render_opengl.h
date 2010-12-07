@@ -23,9 +23,6 @@ class RenderOpenGL : public Render
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
 		
-	private:
-		SpritePtr renderMap(Map * map, int frame, bool wall);
-		
 	public:
 		virtual void setScreenSize(int width, int height, bool fullscreen);
 		virtual void render();

@@ -208,112 +208,12 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 }
 
 
-/**
-* Render a single frame of the wall animation.
-**/
-SpritePtr RenderOpenGL::renderMap(Map * map, int frame, bool wall)
-{
-	// Create
-	SDL_Surface* surf = SDL_CreateRGBSurface(SDL_SWSURFACE, map->width, map->height, 32, 0, 0, 0, 0);
-	
-	Area *a;
-	AreaType *at;
-	unsigned int i;
-	SDL_Rect dest;
-	
-	int num_colors = surf->format->BytesPerPixel;
-	int texture_format;
-	if (num_colors == 4) {
-		if (surf->format->Rmask == 0x000000ff) {
-			texture_format = GL_RGBA;
-		} else {
-			texture_format = GL_BGRA;
-		}
-		
-	} else if (num_colors == 3) {
-		if (surf->format->Rmask == 0x000000ff) {
-			texture_format = GL_RGB;
-		} else {
-			texture_format = GL_BGR;
-		}
-		
-	} else {
-		return NULL;
-	}
-	
-	// Iterate through the areas
-	for (i = 0; i < map->areas.size(); i++) {
-		a = map->areas[i];
-		at = a->type;
-		
-		//if (wall != a->type->wall) continue;
-		
-		if (wall and ! at->wall) continue;
-		
-		if (! wall and at->wall) {
-			if (at->ground_type != NULL) {
-				at = at->ground_type;
-			} else {
-				continue;
-			}
-		}
-		
-		// Transforms (either streches or tiles)
-		SDL_Surface *areasurf = (SDL_Surface*)at->surf->orig;
-		if (a->type->stretch)  {
-			areasurf = rotozoomSurfaceXY(areasurf, 0, ((double)a->width) / ((double)areasurf->w), ((double)a->height) / ((double)areasurf->h), 0);
-			if (areasurf == NULL) continue;
-			
-		} else {
-			areasurf = (SDL_Surface*)tileSprite(areasurf, a->width, a->height);
-			if (areasurf == NULL) continue;
-		}
-		
-		// Rotates
-		if (a->angle != 0)  {
-			SDL_Surface* temp = areasurf;
-			
-			areasurf = rotozoomSurfaceXY(temp, a->angle, 1, 1, 0);
-			SDL_FreeSurface(temp);
-			if (areasurf == NULL) continue;
-		}
-		
-		dest.x = a->x;
-		dest.y = a->y;
-		
-		SDL_BlitSurface(areasurf, NULL, surf, &dest);
-		SDL_FreeSurface(areasurf);
-	}
-	
-	SpritePtr sprite = new struct sprite;
-	sprite->w = map->width;
-	sprite->h = map->height;
-	sprite->orig = surf;
-	
-	// Open texture handle
-	glGenTextures(1, &sprite->pixels);
-	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
-	
-	// Set stretching properties
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, surf->w, surf->h, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
-	
-	return sprite;
-}
-
-
 void RenderOpenGL::preGame()
 {
-	ground = this->renderMap(st->map, 0, false);
-	walls = this->renderMap(st->map, 0, true);
 }
 
 void RenderOpenGL::postGame()
 {
-	this->freeSprite(this->ground);
-	this->freeSprite(this->walls);
 }
 
 /**
