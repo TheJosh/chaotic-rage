@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <GL/glew.h>
 #include <GL/gl.h>
 #if defined(__WIN32__)
 	#include <GL/glext.h>
@@ -58,6 +59,12 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	if (atof((char*) glGetString(GL_VERSION)) < 2.0) {
 		fprintf(stderr, "OpenGL 2.0 or later is required, but not supported on this system.");
+		exit(1);
+	}
+	
+	GLenum err = glewInit();
+	if (GLEW_OK != err) {
+		fprintf(stderr, "Glew Error: %s\n", glewGetErrorString(err));
 		exit(1);
 	}
 	
@@ -252,6 +259,78 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 }
 
 
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
+
+/**
+* Builds a VBO for this object
+**/
+static void createVBO (WavefrontObj * obj)
+{
+	GLuint vboid;
+	GLuint iboid;
+	
+	glGenBuffers(1, &vboid);
+	glBindBuffer(GL_ARRAY_BUFFER, vboid);
+	
+	VBOvertex vertexes[obj->faces.size() * 3];
+	Uint16 index[obj->faces.size() * 3];
+	
+	int j = 0;
+	for (unsigned int i = 0; i < obj->faces.size(); i++) {
+		Face * f = &obj->faces.at(i);
+		
+		Vertex * v;
+		Vertex * vn;
+		TexUV * t;
+		
+		v = &obj->vertexes.at(f->v1 - 1);
+		vn = &obj->normals.at(f->n1 - 1);
+		t = &obj->texuvs.at(f->t1 - 1);
+		
+		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
+		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
+		vertexes[j].tx = t->x; vertexes[j].ty = t->y;
+		index[j] = j;
+		j++;
+		
+		
+		v = &obj->vertexes.at(f->v2 - 1);
+		vn = &obj->normals.at(f->n2 - 1);
+		t = &obj->texuvs.at(f->t2 - 1);
+		
+		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
+		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
+		vertexes[j].tx = t->x; vertexes[j].ty = t->y;
+		index[j] = j;
+		j++;
+		
+		
+		v = &obj->vertexes.at(f->v3 - 1);
+		vn = &obj->normals.at(f->n3 - 1);
+		t = &obj->texuvs.at(f->t3 - 1);
+		
+		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
+		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
+		vertexes[j].tx = t->x; vertexes[j].ty = t->y;
+		index[j] = j;
+		j++;
+		
+	}
+	
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexes), &vertexes[0].x, GL_STATIC_DRAW);
+	
+	
+	glGenBuffers(1, &iboid);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboid);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index), &index, GL_STATIC_DRAW);
+	
+	obj->ibo_count = sizeof(index) / sizeof(index[0]);
+	obj->vbo = vboid;
+	obj->ibo = iboid;
+}
+
+
 /**
 * Renders an object
 *
@@ -259,6 +338,27 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 **/
 static void renderObj (WavefrontObj * obj)
 {
+	if (obj->ibo_count == 0) createVBO(obj);
+	
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, obj->vbo);
+	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
+	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
+	glClientActiveTexture(GL_TEXTURE0);
+	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
+	
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, obj->ibo);
+	glDrawElements(GL_TRIANGLES, obj->ibo_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
+	
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	
+	return;
+	
 	glBegin(GL_TRIANGLES);
 	for (unsigned int i = 0; i < obj->faces.size(); i++) {
 		Face * f = &obj->faces.at(i);

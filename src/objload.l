@@ -118,6 +118,7 @@ WavefrontObj * loadObj(string filename)
 	//yyout = NULL;
 	
 	WavefrontObj * obj = yylex();
+	obj->ibo_count = 0;
 	
 	fclose(yyin);
 	

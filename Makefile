@@ -6,7 +6,7 @@ ifeq ($(PLATFORM),linux)
 	CLIENT=chaoticrage
 	SERVER=dedicatedserver
 	CFLAGS=`sdl-config --cflags` `pkg-config zziplib libconfuse gl glu --cflags` -Werror -Wall -ggdb
-	LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse --libs` -lGL -lGLU -lSDL_mixer -lSDL_image
+	LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse --libs` -lGL -lGLU -lGLEW -lSDL_mixer -lSDL_image
 endif
 
 ifeq ($(PLATFORM),i386-mingw32)
@@ -14,7 +14,7 @@ ifeq ($(PLATFORM),i386-mingw32)
 	CLIENT=chaoticrage.exe
 	SERVER=dedicatedserver.exe
 	CFLAGS=`sdl-config --cflags` `pkg-config zziplib libconfuse gl glu --cflags` -Werror -Wall -ggdb
-	LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse --libs` -lopengl32 -lglu32 -lSDL_mixer -lSDL_image
+	LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse --libs` -lopengl32 -lglu32 -lGLEW -lSDL_mixer -lSDL_image
 endif
 
 

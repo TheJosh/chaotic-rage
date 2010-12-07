@@ -8,6 +8,14 @@
 #include "rage.h"
 
 
+struct VBOvertex
+{
+	float x, y, z;        // Vertex
+	float nx, ny, nz;     // Normal
+	float tx, ty;         // Tex
+};
+
+
 class RenderOpenGL : public Render
 {
 	private:
