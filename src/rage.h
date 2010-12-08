@@ -22,7 +22,7 @@
 
 // Frames-per-second to run all in-game animations at.
 // Specified as a float to help out some arithmetic
-#define ANIMATION_FPS	6.0
+#define ANIMATION_FPS	12.0
 
 
 typedef struct range {
