@@ -56,6 +56,7 @@ class UnitClass : public EntityType
 		string name;
 		int id;
 		int width, height;
+		int begin_health;
 		
 	private:
 		UnitClassSettings initial;
