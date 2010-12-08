@@ -26,6 +26,7 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	
 	this->pickupWeapon(this->uc->getMod()->getWeaponType(0));
 	
+	this->anim = NULL;
 	this->current_state_type = 0;
 	this->setState(UNIT_STATE_STATIC);
 	
@@ -33,8 +34,8 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	this->walk_time = 0;
 	
 	
-	this->anim = new AnimPlay(this->walk_state->model);
 	
+	this->remove_at = 0;
 }
 
 Unit::~Unit()
@@ -65,6 +66,9 @@ void Unit::setState(int new_type)
 	this->current_state_type = new_type;
 	this->current_state = this->uc->getState(new_type);
 	this->animation_start = this->st->anim_frame;
+	
+	delete (this->anim);
+	this->anim = new AnimPlay(this->current_state->model);
 }
 
 
@@ -178,6 +182,11 @@ void Unit::getAnimModel(AnimPlay * list [SPRITE_LIST_LEN])
 **/
 void Unit::update(int delta, UnitClassSettings *ucs)
 {
+	if (remove_at != 0) {
+		if (remove_at <= st->game_time) this->del = 1;
+		return;
+	}
+	
 	int turn_move = ppsDelta(ucs->turn_move, delta);
 	int turn_aim = ppsDelta(ucs->turn_aim, delta);
 	
@@ -236,8 +245,17 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 void Unit::takeDamage(int damage)
 {
 	this->health -= damage;
-	if (this->health <= 0) {
-		this->del = 1;
+	
+	if (this->health <= 0 && remove_at == 0) {
+		Event *ev = new Event();
+		ev->type = UNIT_DIED;
+		ev->e1 = this;
+		fireEvent(ev);
+		
+		this->speed = 0;
+		this->setState(UNIT_STATE_DIE);
+		
+		remove_at = st->game_time + 10000;
 	}
 }
 

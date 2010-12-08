@@ -42,6 +42,7 @@ void gameLoop(GameState *st, Render *render)
 		total_time += delta;
 		fps = round(((float) curr_frame) / ((float) total_time / 1000.0));
 		
+		st->logic->update(delta);
 		st->update(delta);
 		handleEvents(st);
 		

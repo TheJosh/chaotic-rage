@@ -43,6 +43,8 @@ class Unit: public Entity
 		
 		AnimPlay * anim;
 		
+		unsigned int remove_at;
+		
 	public:
 		Unit(UnitClass *uc, GameState *st);
 		virtual ~Unit();

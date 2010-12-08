@@ -12,6 +12,8 @@ using namespace std;
 NPC::NPC(UnitClass *uc, GameState *st) : Unit(uc, st)
 {
 	vals[0] = vals[1] = vals[2] = vals[3] = 0;
+	
+	this->setState(UNIT_STATE_RUNNING);
 }
 
 NPC::~NPC()
@@ -39,7 +41,6 @@ void NPC::update(int delta)
 	this->desired_angle_move = getRandom(vals[1] - 10, vals[1] + 10);
 	
 	this->speed += ppsDelta(ucs->accel, delta);
-	this->setState(UNIT_STATE_RUNNING);
 	// End of stuff to move
 	
 	

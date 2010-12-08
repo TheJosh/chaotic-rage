@@ -27,10 +27,18 @@ class GameLogic : public EventListener
 		
 	public:
 		virtual void handleEvent(Event * ev);
+		void update(int delta);
 		
 	private:
 		Player * spawnPlayer(UnitClass *uc, Faction fac);
 		NPC * spawnNPC(UnitClass *uc, Faction fac);
 		
+		
+	// When this gets switched to use lua, this will all leave
+	private:
+		int spawn_timer;
+		int num_zomb;
+		int num_wanted_zomb;
+		int num_killed;
 };
 
