@@ -27,7 +27,7 @@ Particle::Particle(ParticleType *pt, GameState *st) : Entity(st)
 	
 	this->angle = 0;
 	this->age = 0;
-	this->z = 20;		// in the air a little
+	this->z = 40;		// in the air a little
 }
 
 Particle::~Particle()
@@ -51,7 +51,10 @@ void Particle::update(int delta)
 		this->del = true;
 	}
 	
-	if (this->speed <= 0) return;
+	if (this->speed <= 0) {
+		this->z = 0;
+		return;
+	}
 	
 	this->speed += ppsDelta(this->accel, delta);
 	

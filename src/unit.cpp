@@ -18,7 +18,7 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	this->angle_aim = 0;
 	this->desired_angle_aim = 0;
 	this->speed = 0;
-	this->health = 10;
+	this->health = 10000;
 	
 	this->weapon = NULL;
 	this->weapon_gen = NULL;
@@ -236,8 +236,8 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 void Unit::takeDamage(int damage)
 {
 	this->health -= damage;
-	if (this->health < 0) {
-		this->del = 0;
+	if (this->health <= 0) {
+		this->del = 1;
 	}
 }
 

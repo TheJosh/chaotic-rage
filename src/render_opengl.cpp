@@ -290,7 +290,7 @@ static void createVBO (WavefrontObj * obj)
 		
 		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
-		vertexes[j].tx = t->x; vertexes[j].ty = t->y;
+		vertexes[j].tx = t->x; vertexes[j].ty = 1.0 - t->y;
 		index[j] = j;
 		j++;
 		
@@ -301,7 +301,7 @@ static void createVBO (WavefrontObj * obj)
 		
 		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
-		vertexes[j].tx = t->x; vertexes[j].ty = t->y;
+		vertexes[j].tx = t->x; vertexes[j].ty = 1.0 - t->y;
 		index[j] = j;
 		j++;
 		
@@ -312,7 +312,7 @@ static void createVBO (WavefrontObj * obj)
 		
 		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
-		vertexes[j].tx = t->x; vertexes[j].ty = t->y;
+		vertexes[j].tx = t->x; vertexes[j].ty = 1.0 - t->y;
 		index[j] = j;
 		j++;
 		
