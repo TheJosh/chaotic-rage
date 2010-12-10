@@ -478,10 +478,11 @@ void RenderOpenGL::render()
 	glTranslatef(0, 0, 600);
 	
 	
+	
 	// Set up lights
-	GLfloat LightAmbient[] = { 0.7f, 0.7f, 0.7f, 1.0f };
-	GLfloat LightDiffuse[] = { 1.0f, 1.0f, 1.0f, 0.5f };
-	GLfloat LightPosition[] = { 1000.0f, 1000.0f, 150.0f, 0 };
+	GLfloat LightAmbient[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	GLfloat LightDiffuse[] = { 0.0f, 1.0f, 0.0f, 1.0f };
+	GLfloat LightPosition[] = { 1000.0f, 1000.0f, 1000.0f, 0 };
 	
 	glEnable(GL_LIGHTING);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);
@@ -517,22 +518,22 @@ void RenderOpenGL::render()
 		glBegin(GL_QUADS);
 			// Bottom-left vertex (corner)
 			glTexCoord2f( 0.0, texh );
-			glNormal3f(a->x, a->y, 1);
+			glNormal3f( a->x, a->y + a->height, -1);
 			glVertex3i( a->x, a->y + a->height, 0 );
 			
 			// Bottom-right vertex (corner)
 			glTexCoord2f( texw, texh );
-			glNormal3f(a->x, a->y, 1);
+			glNormal3f( a->x + a->width, a->y + a->height, -1);
 			glVertex3i( a->x + a->width, a->y + a->height, 0 );
 			
 			// Top-right vertex (corner)
 			glTexCoord2f( texw, 0.0 );
-			glNormal3f(a->x, a->y, 1);
+			glNormal3f( a->x + a->width, a->y, -1);
 			glVertex3i( a->x + a->width, a->y, 0 );
 			
 			// Top-left vertex (corner)
 			glTexCoord2f( 0.0, 0.0 );
-			glNormal3f(a->x, a->y, 1);
+			glNormal3f( a->x, a->y, -1);
 			glVertex3i( a->x, a->y, 0 );
 		glEnd();
 		
