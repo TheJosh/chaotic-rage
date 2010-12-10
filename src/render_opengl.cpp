@@ -27,6 +27,9 @@ using namespace std;
 RenderOpenGL::RenderOpenGL(GameState * st) : Render(st)
 {
 	this->screen = NULL;
+	this->x = 1;
+	this->y = 1;
+	this->z = -4;
 }
 
 RenderOpenGL::~RenderOpenGL()
@@ -480,16 +483,20 @@ void RenderOpenGL::render()
 	
 	
 	// Set up lights
-	GLfloat LightAmbient[] = { 0.0f, 0.0f, 0.0f, 0.0f };
-	GLfloat LightDiffuse[] = { 0.0f, 1.0f, 0.0f, 1.0f };
-	GLfloat LightPosition[] = { 1000.0f, 1000.0f, 1000.0f, 0 };
-	
 	glEnable(GL_LIGHTING);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);
-	glLightfv(GL_LIGHT0, GL_POSITION, LightPosition);
 	glEnable(GL_LIGHT0);
 	
+	{
+		GLfloat ambientLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+		GLfloat diffuseLight[] = { 0.8f, 0.8f, 0.8, 1.0f };
+		GLfloat specularLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+		GLfloat position[] = { this->x, this->y, this->z, 1.0f };
+
+		glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
+		glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
+		glLightfv(GL_LIGHT0, GL_POSITION, position);
+	}
 	
 	// Render map
 	for (i = 0; i < st->map->areas.size(); i++) {

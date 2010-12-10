@@ -100,6 +100,31 @@ static void handleEvents(GameState *st)
 					running = false;
 					break;
 					
+					
+				case SDLK_x:
+					((RenderOpenGL*) st->render)->x++;
+					break;
+					
+				case SDLK_c:
+					((RenderOpenGL*) st->render)->x--;
+					break;
+					
+				case SDLK_y:
+					((RenderOpenGL*) st->render)->y++;
+					break;
+					
+				case SDLK_u:
+					((RenderOpenGL*) st->render)->y--;
+					break;
+					
+				case SDLK_z:
+					((RenderOpenGL*) st->render)->z++;
+					break;
+					
+				case SDLK_b:
+					((RenderOpenGL*) st->render)->z--;
+					break;
+					
 				default: break;
 			}
 			

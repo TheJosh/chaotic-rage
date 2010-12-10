@@ -32,6 +32,11 @@ class RenderOpenGL : public Render
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
 		
 	public:
+		int x;
+		int y;
+		int z;
+		
+	public:
 		virtual void setScreenSize(int width, int height, bool fullscreen);
 		virtual void render();
 		virtual void renderSprite(SpritePtr sprite, int x, int y);
