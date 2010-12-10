@@ -86,11 +86,13 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	}
 	
 	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_BLEND);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
 	
+	glDepthFunc(GL_LEQUAL);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	
@@ -99,12 +101,11 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
-	gluPerspective(45.0f, 1, 1.f, 1500.f);
-	glScalef (1.0f, -1.f, 1.0f);
+	gluPerspective(45.0f, 1.0f, 1.0f, 1500.f);
+	glScalef (1.0f, -1.0f, 1.0f);
 	glTranslatef(-500, -500, -1250.0f);
 	
 	//glOrtho(0.0f, this->virt_width, this->virt_height, 0.0f, -1.0f, 1.0f);
-	
 	//glFrustum(0.0f, this->virt_width, this->virt_height, 0.0f, 1, 500);
 	//glTranslatef(0, 0, -490.0f);
 	
@@ -324,6 +325,10 @@ static void createVBO (WavefrontObj * obj)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexes), &vertexes[0].x, GL_STATIC_DRAW);
 	
 	
+	// TODO:
+	// We don't need an index bugger of index[j] == j
+	// just use glDrawArrays
+	// (thanks ##OpenGL)
 	glGenBuffers(1, &iboid);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboid);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index), &index, GL_STATIC_DRAW);
@@ -465,6 +470,7 @@ void RenderOpenGL::render()
 	h = this->virt_height * 2;
 	
 	
+	
 	// Background
 	/*glLoadIdentity();
 	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
@@ -472,6 +478,9 @@ void RenderOpenGL::render()
 	glTranslatef(0 - w / 2, 0 - h / 2, 0);
 	this->renderSprite(st->map->background, 0, 0, w, h);*/
 	
+	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 	
 	// Main map rotation
 	glLoadIdentity();
@@ -481,23 +490,24 @@ void RenderOpenGL::render()
 	glTranslatef(0, 0, 600);
 	
 	
-	
-	// Set up lights
+	// Lights
 	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	
-	{
-		GLfloat ambientLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
-		GLfloat diffuseLight[] = { 0.8f, 0.8f, 0.8, 1.0f };
-		GLfloat specularLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-		GLfloat position[] = { this->x, this->y, this->z, 1.0f };
-
+	glPushMatrix();
+		glTranslatef(1000, 1000, 100);
+		
+		GLfloat ambientLight[] = { 0.4f, 0.4f, 0.4f, 1.0f };
+		GLfloat diffuseLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		GLfloat specularLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		
 		glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
 		glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
 		glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
 		glLightfv(GL_LIGHT0, GL_POSITION, position);
-	}
+		glEnable(GL_LIGHT0);
+	glPopMatrix();
 	
+
 	// Render map
 	for (i = 0; i < st->map->areas.size(); i++) {
 		Area * a = st->map->areas[i];
@@ -515,6 +525,8 @@ void RenderOpenGL::render()
 		
 		glBindTexture(GL_TEXTURE_2D, a->type->surf->pixels);
  		
+ 		a->width = a->height = 50;
+ 		
  		float texw = 1.0;
  		float texh = 1.0;
  		if (! a->type->stretch) {
@@ -522,26 +534,31 @@ void RenderOpenGL::render()
  			texh = ((float)a->height) / ((float)a->type->surf->h);
  		}
  		
+ 		
+ 		glNormal3f(0, 0, 1);
+ 		
 		glBegin(GL_QUADS);
-			// Bottom-left vertex (corner)
-			glTexCoord2f( 0.0, texh );
-			glNormal3f( a->x, a->y + a->height, -1);
-			glVertex3i( a->x, a->y + a->height, 0 );
-			
-			// Bottom-right vertex (corner)
-			glTexCoord2f( texw, texh );
-			glNormal3f( a->x + a->width, a->y + a->height, -1);
-			glVertex3i( a->x + a->width, a->y + a->height, 0 );
-			
-			// Top-right vertex (corner)
-			glTexCoord2f( texw, 0.0 );
-			glNormal3f( a->x + a->width, a->y, -1);
-			glVertex3i( a->x + a->width, a->y, 0 );
-			
-			// Top-left vertex (corner)
-			glTexCoord2f( 0.0, 0.0 );
-			glNormal3f( a->x, a->y, -1);
-			glVertex3i( a->x, a->y, 0 );
+			for (int x = 0; x < 2000; x += a->width) {
+			for (int y = 0; y < 2000; y += a->width) {
+				
+				// Bottom-left vertex (corner)
+				glTexCoord2f( 0.0, texh );
+				glVertex3i( x, y + a->height, 0 );
+				
+				// Bottom-right vertex (corner)
+				glTexCoord2f( texw, texh );
+				glVertex3i( x + a->width, y + a->height, 0 );
+				
+				// Top-right vertex (corner)
+				glTexCoord2f( texw, 0.0 );
+				glVertex3i( x + a->width, y, 0 );
+				
+				// Top-left vertex (corner)
+				glTexCoord2f( 0.0, 0.0 );
+				glVertex3i( x, y, 0 );
+				
+			}
+			}
 		glEnd();
 		
 		glPopMatrix();
