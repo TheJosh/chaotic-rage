@@ -74,7 +74,7 @@ void ParticleGenerator::update(int delta)
 	this->age += delta;
 	
 	if (! useful) {
-		this->del = true;
+		this->hasDied();
 	}
 }
 

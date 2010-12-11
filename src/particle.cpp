@@ -48,7 +48,7 @@ void Particle::update(int delta)
 {
 	this->age += delta;
 	if (this->age >= this->max_age) {
-		this->del = true;
+		this->hasDied();
 	}
 	
 	if (this->speed <= 0) {
@@ -80,7 +80,7 @@ void Particle::update(int delta)
 			u->takeDamage(this->unit_damage);
 			
 			this->unit_hits--;
-			if (this->unit_hits == 0) this->del = true;
+			if (this->unit_hits == 0) this->hasDied();
 			
 		} else {
 			this->speed = 0;
@@ -101,7 +101,7 @@ void Particle::update(int delta)
 			wa->takeDamage(this->wall_damage);
 			
 			this->wall_hits--;
-			if (this->wall_hits == 0) this->del = true;
+			if (this->wall_hits == 0) this->hasDied();
 			
 		} else {
 			this->speed = 0;

@@ -5,6 +5,7 @@
 #pragma once
 #include <iostream>
 #include <SDL.h>
+#include <list>
 #include "rage.h"
 
 using namespace std;
@@ -34,6 +35,8 @@ class Entity : public EventListener
 		int y;
 		int z;
 		int angle;
+		list<Entity*> hits;
+		int radius;
 		
 	protected:
 		GameState* st;
@@ -75,5 +78,16 @@ class Entity : public EventListener
 		
 	public:
 		GameState * getGameState();
+		
+		/**
+		* Called by the physics code
+		**/
+		void hasHit(Entity *e);
+		
+	protected:
+		/**
+		* Called by entity code to indicate the death of itself
+		**/
+		void hasDied();
 		
 };

@@ -120,13 +120,51 @@ void GameState::update(int delta)
 		}
 	}
 	
+	this->doCollisions();
+	
 	// Remove entities
 	// I'm fairly sure this leaks because it doesn't actually delete the entity
 	newend = remove_if(this->entities.begin(), this->entities.end(), EntityEraser);
 	this->entities.erase(newend, this->entities.end());
 	
+	// Update time
 	this->game_time += delta;
 	this->anim_frame = (int) floor(this->game_time * ANIMATION_FPS / 1000.0);
+}
+
+
+bool BookNumber100PredFn( const Entity * &e ) {
+  return book.number == 100;
+  }
+
+
+void GameState::doCollisions()
+{
+	vector<Entity*>::iterator it1;
+	vector<Entity*>::iterator it2;
+	int dist;
+	
+	for (it1 = this->entities.begin(); it1 < this->entities.end(); it1++) {
+		Entity *e1 = (*it1);
+		
+		for (it2 = this->entities.begin(); it2 < this->entities.end(); it2++) {
+			Entity *e2 = (*it2);
+			if (e2 == e1) continue;
+			
+			dist = (int) ceil(sqrt(((e1->x - e2->x) * (e1->x - e2->x)) + ((e1->y - e2->y) * (e1->y - e2->y))));
+			
+			if (dist < (e1->radius + e2->radius)) {
+				
+				if (e1->hits->con
+				e1->hasHit(e2);
+				e2->hasHit(e1);
+				
+				// TODO: Fire an event
+				list<Book>::iterator found = find_if( l.begin(), l.end(), BookNumber100PredFn );
+				
+			}
+		}
+	}
 }
 
 

@@ -16,6 +16,7 @@ Entity::Entity(GameState *st)
 	this->y = 0;
 	this->z = 0;
 	this->st = st;
+	this->radius = 30;		// Todo: Dynamic based on entity type
 }
 
 Entity::~Entity()
@@ -25,4 +26,22 @@ Entity::~Entity()
 GameState * Entity::getGameState()
 {
 	return this->st;
+}
+
+
+void Entity::hasDied()
+{
+	this->del = true;
+	
+	list<Entity *>::iterator it;
+	for (it = this->hits.begin(); it != this->hits.end(); it++) {
+		Entity *e = (*it);
+		e->hits.remove(this);
+	}
+}
+
+
+void Entity::hasHit(Entity *e)
+{
+	this->hits.push_back(e);
 }
