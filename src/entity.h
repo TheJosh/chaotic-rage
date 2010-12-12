@@ -83,6 +83,7 @@ class Entity : public EventListener
 		* Called by the physics code
 		**/
 		void hasHit(Entity *e);
+		void hasUnHit(Entity *e);
 		
 	protected:
 		/**

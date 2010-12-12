@@ -509,8 +509,8 @@ void RenderOpenGL::render()
 	
 
 	// Render map
-	for (i = 0; i < st->map->areas.size(); i++) {
-		Area * a = st->map->areas[i];
+	for (i = 0; i < st->curr_map->areas.size(); i++) {
+		Area * a = st->curr_map->areas[i];
 		
 		glTranslatef(0, 0, 1);
 		

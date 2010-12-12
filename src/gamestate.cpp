@@ -2,7 +2,9 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include <string.h>
 #include <iostream>
+#include <map>
 #include <algorithm>
 #include <SDL.h>
 #include "rage.h"
@@ -133,21 +135,23 @@ void GameState::update(int delta)
 }
 
 
-bool BookNumber100PredFn( const Entity * &e ) {
-  return book.number == 100;
-  }
-
-
+/**
+* Look for collissions of entities
+**/
 void GameState::doCollisions()
 {
-	vector<Entity*>::iterator it1;
-	vector<Entity*>::iterator it2;
 	int dist;
 	
-	for (it1 = this->entities.begin(); it1 < this->entities.end(); it1++) {
+	vector<Entity*>::iterator it1;
+	vector<Entity*>::iterator it2;
+	list<Entity*>::iterator it3;
+	map<Entity*,Entity*>::iterator it4;
+	map<Entity*,Entity*> rem;
+	
+	for (it1 = this->entities.begin(); it1 != this->entities.end(); it1++) {
 		Entity *e1 = (*it1);
 		
-		for (it2 = this->entities.begin(); it2 < this->entities.end(); it2++) {
+		for (it2 = this->entities.begin(); it2 != this->entities.end(); it2++) {
 			Entity *e2 = (*it2);
 			if (e2 == e1) continue;
 			
@@ -155,15 +159,28 @@ void GameState::doCollisions()
 			
 			if (dist < (e1->radius + e2->radius)) {
 				
-				if (e1->hits->con
-				e1->hasHit(e2);
-				e2->hasHit(e1);
-				
-				// TODO: Fire an event
-				list<Book>::iterator found = find_if( l.begin(), l.end(), BookNumber100PredFn );
-				
+				if (find(e1->hits.begin(), e1->hits.end(), e2) == e1->hits.end()) {
+					e1->hasHit(e2);
+					e2->hasHit(e1);
+				}
 			}
 		}
+		
+		if (rem.find(e1) == rem.end()) {
+			for (it3 = e1->hits.begin(); it3 != e1->hits.end(); it3++) {
+				Entity *e2 = (*it3);
+			
+				dist = (int) ceil(sqrt(((e1->x - e2->x) * (e1->x - e2->x)) + ((e1->y - e2->y) * (e1->y - e2->y))));
+				if (dist > (e1->radius + e2->radius)) {
+					rem[e1] = e2;
+					rem[e2] = e1;
+				}
+			}
+		}
+	}
+	
+	for (it4 = rem.begin(); it4 != rem.end(); it4++) {
+		(*it4).first->hits.remove((*it4).second);
 	}
 }
 

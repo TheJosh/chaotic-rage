@@ -34,7 +34,7 @@ int main (int argc, char ** argv) {
 	
 	Map *m = new Map(st);
 	m->load("arena", st->render);
-	st->map = m;
+	st->curr_map = m;
 	
 	new GameLogic(st);
 	

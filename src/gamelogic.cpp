@@ -19,7 +19,7 @@ GameLogic::GameLogic(GameState *st)
 	this->st = st;
 	
 	this->mod = st->getMod(0);
-	this->map = st->map;
+	this->map = st->curr_map;
 }
 
 

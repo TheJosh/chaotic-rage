@@ -45,3 +45,9 @@ void Entity::hasHit(Entity *e)
 {
 	this->hits.push_back(e);
 }
+
+void Entity::hasUnHit(Entity *e)
+{
+	
+}
+

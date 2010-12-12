@@ -210,7 +210,7 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 		
 		// Collision detection
 		if (newx < 0 || newy < 0
-				|| newx >= this->st->map->width - this->getWidth() || newy >= this->st->map->height - this->getHeight()) {
+				|| newx >= this->st->curr_map->width - this->getWidth() || newy >= this->st->curr_map->height - this->getHeight()) {
 			this->speed = 0;
 			this->setState(UNIT_STATE_STATIC);
 			

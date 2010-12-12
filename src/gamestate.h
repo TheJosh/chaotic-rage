@@ -26,8 +26,7 @@ class GameState
 		vector<Wall*> walls;		// leaks: items are not removed
 		
 	public:
-		Map* map;
-		
+		Map* curr_map;
 		Player* curr_player;
 		
 		unsigned int anim_frame;
