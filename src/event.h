@@ -33,6 +33,8 @@ enum EventType {
 	PART_HIT_UNIT,
 	GAME_STARTED,
 	GAME_ENDED,
+	ENTITY_HIT,
+	ENTITY_UNHIT,
 };
 
 

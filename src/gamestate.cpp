@@ -158,10 +158,15 @@ void GameState::doCollisions()
 			dist = (int) ceil(sqrt(((e1->x - e2->x) * (e1->x - e2->x)) + ((e1->y - e2->y) * (e1->y - e2->y))));
 			
 			if (dist < (e1->radius + e2->radius)) {
-				
 				if (find(e1->hits.begin(), e1->hits.end(), e2) == e1->hits.end()) {
 					e1->hasHit(e2);
 					e2->hasHit(e1);
+					
+					Event *ev = new Event();
+					ev->type = ENTITY_HIT;
+					ev->e1 = e1;
+					ev->e2 = e2;
+					fireEvent(ev);
 				}
 			}
 		}
@@ -174,6 +179,12 @@ void GameState::doCollisions()
 				if (dist > (e1->radius + e2->radius)) {
 					rem[e1] = e2;
 					rem[e2] = e1;
+					
+					Event *ev = new Event();
+					ev->type = ENTITY_UNHIT;
+					ev->e1 = e1;
+					ev->e2 = e2;
+					fireEvent(ev);
 				}
 			}
 		}

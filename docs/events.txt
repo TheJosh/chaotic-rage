@@ -125,4 +125,19 @@ GAME_STARTED
 GAME_ENDED
 	The game has just ended
 	
+	
+-------- ENTITIES --------
+ENTITY_HIT
+	An entity has hit another entity
+	
+	e1 = Entity involved in collision #1
+	e2 = Entity involved in collision #2
+	
+	
+ENTITY_UNHIT
+	An entity has detatched themself from another entity
+	
+	e1 = Entity involved in collision #1
+	e2 = Entity involved in collision #2
+
 
