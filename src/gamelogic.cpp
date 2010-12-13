@@ -75,6 +75,7 @@ Player * GameLogic::spawnPlayer(UnitClass *uc, Faction fac)
 	
 	p->x = z->getRandomX();
 	p->y = z->getRandomY();
+	p->fac = fac;
 	
 	return p;
 }
@@ -89,8 +90,8 @@ NPC * GameLogic::spawnNPC(UnitClass *uc, Faction fac)
 	p = new NPC(uc, st);
 	st->addUnit(p);
 	
-	p->pickupWeapon(mod->getWeaponType(1));
-	p->pickupWeapon(mod->getWeaponType(2));
+	p->pickupWeapon(mod->getWeaponType(3));
+	p->setWeapon(1);
 	
 	Zone *z = map->getSpawnZone(fac);
 	if (z == NULL) {
@@ -100,6 +101,7 @@ NPC * GameLogic::spawnNPC(UnitClass *uc, Faction fac)
 	
 	p->x = z->getRandomX();
 	p->y = z->getRandomY();
+	p->fac = fac;
 	
 	return p;
 }

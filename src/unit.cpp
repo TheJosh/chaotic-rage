@@ -233,14 +233,24 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 		this->walk_time += delta;
 	}
 	
-	// Fire bullets
-	if (this->firing and this->weapon_gen) {
-		this->weapon_gen->x = this->x + this->uc->width / 2;
-		this->weapon_gen->y = this->y + this->uc->height / 2;
-		this->weapon_gen->angle = this->angle_aim;
-		
-		this->weapon_gen->update(delta);
+	
+	if (this->firing && this->weapon != NULL) {
+		if (this->weapon->melee == 0) {
+			// Bullet-based weapon
+			this->weapon_gen->x = this->x + this->uc->width / 2;
+			this->weapon_gen->y = this->y + this->uc->height / 2;
+			this->weapon_gen->angle = this->angle_aim;
+			this->weapon_gen->update(delta);
+			
+		} else if (this->weapon->melee == 1) {
+			// Meele-based weapon
+			Unit * target = (Unit*) this->inContactWith(UNIT);
+			if (target != NULL) {
+				target->takeDamage(this->weapon->damage);
+			}
+		}
 	}
+	
 	
 	if (this->anim->isDone()) this->anim->next();
 }

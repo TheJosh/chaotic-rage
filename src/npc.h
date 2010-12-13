@@ -21,4 +21,5 @@ class NPC : public Unit
 		
 	public:
 		virtual void update(int delta);
+		virtual void handleEvent(Event * ev);
 };

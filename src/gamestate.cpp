@@ -199,6 +199,55 @@ void GameState::doCollisions()
 
 
 /**
+* Returns an AreaType if we hit a wall, or NULL if we haven't
+*
+* Makes use of the AreaType check radius, as well as the checking objects'
+* check radius.
+*
+* @todo Think about how this works with the new collission stuff,
+*       Rehash away if nessasary
+**/
+Wall * GameState::checkHitWall(float x, float y, int check_radius)
+{
+	vector<Wall*>::iterator it;
+	for (it = this->walls.begin(); it < this->walls.end(); it++) {
+		Wall *e = (*it);
+		if (e->health == 0) continue;
+		
+		int dist = (int) ceil(sqrt(((x - e->x) * (x - e->x)) + ((y - e->y) * (y - e->y))));
+		
+		if (dist < (check_radius + e->wt->check_radius)) {
+			return e;
+		}
+	}
+	
+	return NULL;
+}
+
+/**
+* Basically the same as above
+*
+* @todo Think about how this works with the new collission stuff,
+*       Rehash away if nessasary
+**/
+Unit * GameState::checkHitUnit(float x, float y, int check_radius)
+{
+	vector<Unit*>::iterator it;
+	for (it = this->units.begin(); it < this->units.end(); it++) {
+		Unit *e = (*it);
+		
+		int dist = (int) ceil(sqrt(((x - e->x) * (x - e->x)) + ((y - e->y) * (y - e->y))));
+		
+		if (dist < (check_radius + 30)) {
+			return e;
+		}
+	}
+	
+	return NULL;
+}
+
+
+/**
 * Add a mod to the list
 **/
 void GameState::addMod(Mod * mod)

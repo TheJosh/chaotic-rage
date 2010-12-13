@@ -21,6 +21,30 @@ NPC::~NPC()
 }
 
 
+/**
+* Hit player; attack!
+**/
+void NPC::handleEvent(Event * ev)
+{
+	if (ev->type == ENTITY_HIT) {
+		Entity *e = (ev->e1 == this ? ev->e2 : ev->e1);
+		
+		if (e->klass() == UNIT && ((Unit*)e)->fac != this->fac) {
+			this->beginFiring();
+		}
+		
+		
+	} else if (ev->type == ENTITY_UNHIT) {
+		Entity *e = (ev->e1 == this ? ev->e2 : ev->e1);
+		
+		if (e->klass() == UNIT) {
+			this->endFiring();
+		}
+	}
+	
+	Unit::handleEvent(ev);
+}
+
 
 /**
 * Uses the currently pressed keys to change the player movement

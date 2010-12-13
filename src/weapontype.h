@@ -15,6 +15,8 @@ class WeaponType
 	public:
 		ParticleGenType *pg;
 		SpritePtr icon_large;
+		bool melee;
+		int damage;
 		
 		// dynamic
 		int id;

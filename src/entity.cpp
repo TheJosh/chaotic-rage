@@ -47,14 +47,18 @@ void Entity::hasHit(Entity *e)
 	this->hits.push_back(e);
 }
 
-bool Entity::inContactWith(EntityClass klass)
+/**
+* Is there an entity of type 'klass' which we are in contact with?
+* If so, return it
+**/
+Entity* Entity::inContactWith(EntityClass klass)
 {
 	list<Entity *>::iterator it;
 	for (it = this->hits.begin(); it != this->hits.end(); it++) {
 		Entity *e = (*it);
-		if (e->klass() == klass) return true;
+		if (e->klass() == klass) return e;
 	}
-	return false;
+	return NULL;
 }
 
 

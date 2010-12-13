@@ -11,20 +11,6 @@ using namespace std;
 
 #define NUM_FACTIONS 10
 
-// See the document docs/factions.txt for info.
-enum Faction {
-	FACTION_INDIVIDUAL = 0,
-	FACTION_TEAM1 = 1,
-	FACTION_TEAM2 = 2,
-	FACTION_TEAM3 = 3,
-	FACTION_TEAM4 = 4,
-	FACTION_TEAM5 = 5,
-	FACTION_TEAM6 = 6,
-	FACTION_TEAM7 = 7,
-	FACTION_TEAM8 = 8,
-	FACTION_COMMON = 9,
-};
-
 class Zone
 {
 	private:

@@ -21,6 +21,8 @@ static cfg_opt_t weapon_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_INT((char*) "particlegen", -1, CFGF_NONE),
+	CFG_INT((char*) "melee", 0, CFGF_NONE),
+	CFG_INT((char*) "damage", 0, CFGF_NONE),
 	CFG_END()
 };
 
@@ -101,9 +103,17 @@ WeaponType* loadWeaponType(cfg_t *cfg_weapon, Mod * mod)
 	string filename;
 	
 	wt = new WeaponType();
+	wt->melee = cfg_getint(cfg_weapon, "melee");
 	
-	if (cfg_getint(cfg_weapon, "particlegen") != -1) {
-		wt->pg = mod->getParticleGenType(cfg_getint(cfg_weapon, "particlegen"));
+	if (wt->melee == 0) {
+		// Bullet
+		if (cfg_getint(cfg_weapon, "particlegen") != -1) {
+			wt->pg = mod->getParticleGenType(cfg_getint(cfg_weapon, "particlegen"));
+		}
+		
+	} else if (wt->melee == 1) {
+		// Melee
+		wt->damage = cfg_getint(cfg_weapon, "damage");
 	}
 	
 	// Load large icon

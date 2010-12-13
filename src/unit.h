@@ -17,6 +17,7 @@ class Unit: public Entity
 		
 	public:
 		string name;
+		Faction fac;
 		
 	protected:
 		float speed;

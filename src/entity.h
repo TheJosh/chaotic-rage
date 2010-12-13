@@ -88,7 +88,7 @@ class Entity : public EventListener
 		/**
 		* Is the unit currently in contact with anything of this type
 		**/
-		bool inContactWith(EntityClass type);
+		Entity* inContactWith(EntityClass type);
 		
 	protected:
 		/**
