@@ -50,6 +50,17 @@ Unit::~Unit()
 void Unit::handleEvent(Event * ev)
 {
 	this->uc->doActions(ev);
+	
+	if (ev->type == ENTITY_HIT) {
+		Entity *e = (ev->e1 == this ? ev->e2 : ev->e1);
+		
+		if (e->klass() == WALL) {
+			this->x = this->old_x;
+			this->y = this->old_y;
+			this->speed = 0;
+			this->setState(UNIT_STATE_STATIC);
+		}
+	}
 }
 
 
@@ -208,14 +219,15 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 		int newx = pointPlusAngleX(this->x, this->angle_move, ppsDelta(this->speed, delta));
 		int newy = pointPlusAngleY(this->y, this->angle_move, ppsDelta(this->speed, delta));
 		
-		
-		// Collision detection
+		// Fall off the map detection
 		if (newx < 0 || newy < 0
 				|| newx >= this->st->curr_map->width - this->getWidth() || newy >= this->st->curr_map->height - this->getHeight()) {
 			this->speed = 0;
 			this->setState(UNIT_STATE_STATIC);
 			
 		} else {
+			this->old_x = this->x;
+			this->old_y = this->y;
 			this->x = newx;
 			this->y = newy;
 		}

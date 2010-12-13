@@ -45,6 +45,9 @@ class Unit: public Entity
 		
 		unsigned int remove_at;
 		
+		float old_x;
+		float old_y;
+		
 	public:
 		Unit(UnitClass *uc, GameState *st);
 		virtual ~Unit();

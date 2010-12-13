@@ -21,6 +21,7 @@ NPC::~NPC()
 }
 
 
+
 /**
 * Uses the currently pressed keys to change the player movement
 **/
@@ -41,6 +42,11 @@ void NPC::update(int delta)
 	this->desired_angle_move = getRandom(vals[1] - 10, vals[1] + 10);
 	
 	this->speed += ppsDelta(ucs->accel, delta);
+	
+	if (this->inContactWith(WALL)) {
+		this->speed = 0;
+		this->setState(UNIT_STATE_STATIC);
+	}
 	// End of stuff to move
 	
 	
