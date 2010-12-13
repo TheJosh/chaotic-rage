@@ -51,7 +51,7 @@ void gameLoop(GameState *st, Render *render)
 		
 		SDL_WarpMouse(400, 30);
 		
-		SDL_Delay(10);
+		if (delta < 5) SDL_Delay(10);	// give up some CPU time if we have some to spare
 	}
 	
 	ev = new Event();
