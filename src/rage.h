@@ -30,7 +30,6 @@ typedef struct range {
 	int max;
 } Range;
 
-class Action;
 class AnimModel;
 class AnimPlay;
 class AreaType;
@@ -71,7 +70,6 @@ class Zone;
 #include "audio_sdlmixer.h"
 #include "audio_null.h"
 
-#include "actions.h"
 #include "entitytype.h"
 
 #include "animmodel.h"

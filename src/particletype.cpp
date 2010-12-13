@@ -31,9 +31,6 @@ static cfg_opt_t particletype_opts[] =
 	CFG_INT_LIST((char*) "wall_damage", 0, CFGF_NONE),
 	CFG_INT_LIST((char*) "unit_hits", 0, CFGF_NONE),
 	CFG_INT_LIST((char*) "wall_hits", 0, CFGF_NONE),
-	
-	CFG_SEC((char*) "action", &g_action_opts, CFGF_MULTI),
-	
 	CFG_END()
 };
 
@@ -201,8 +198,6 @@ ParticleType* loadParticleType(cfg_t *cfg_particletype, Mod * mod)
 	if (tmp == NULL) return NULL;
 	pt->model = mod->getAnimModel(tmp);
 	if (pt->model == NULL) return NULL;
-	
-	pt->actions = loadActions(cfg_particletype);
 	
 	return pt;
 }

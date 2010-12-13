@@ -12,15 +12,9 @@ using namespace std;
 
 class EntityType
 {
-	public:
-		vector<Action*>* actions;
-		
 	protected:
 		EntityType();
 		~EntityType();
-		
-	public:
-		void doActions(Event * ev);
 };
 
 

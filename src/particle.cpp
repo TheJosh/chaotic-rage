@@ -43,8 +43,6 @@ Particle::~Particle()
 **/
 void Particle::handleEvent(Event * ev)
 {
-	this->pt->doActions(ev);
-	
 	if (ev->type == ENTITY_HIT) {
 		Entity *e = (ev->e1 == this ? ev->e2 : ev->e1);
 		

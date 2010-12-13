@@ -41,8 +41,7 @@ static cfg_opt_t unitclass_opts[] =
 	CFG_SEC((char*) "state", state_opts, CFGF_MULTI),
 	
 	CFG_INT((char*) "begin_health", 0, CFGF_NONE),
-	
-	CFG_SEC((char*) "action", &g_action_opts, CFGF_MULTI),
+	CFG_INT((char*) "hit_generator", 0, CFGF_NONE),
 	
 	CFG_END()
 };
@@ -134,8 +133,7 @@ UnitClass* loadUnitClass(cfg_t *cfg, Mod * mod)
 	uc->name = cfg_getstr(cfg, "name");
 	uc->mod = mod;
 	uc->begin_health = cfg_getint(cfg, "begin_health");
-	
-	uc->actions = loadActions(cfg);
+	uc->hit_generator = mod->getParticleGenType(cfg_getint(cfg, "hit_generator"));
 	
 	
 	/// Settings ///

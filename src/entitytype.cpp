@@ -11,43 +11,8 @@ using namespace std;
 
 EntityType::EntityType()
 {
-	this->actions = NULL;
 }
 
 EntityType::~EntityType()
 {
-	delete(this->actions);
-}
-
-
-/**
-* Executes a set of actions for a given event for a given entity
-**/
-void EntityType::doActions(Event * ev)
-{
-	unsigned int i;
-	
-	if (this->actions == NULL) return;
-	
-	GameState *st = getGameState();
-	
-	for (i = 0; i < this->actions->size(); i++) {
-		Action *ac = this->actions->at(i);
-		
-		if (ac->event != ev->type) continue;
-		
-		switch (ac->type) {
-			case ADD_PGENERATOR:
-				{
-					ParticleGenerator *pg = new ParticleGenerator(st->getMod(0)->getParticleGenType(ac->args[0]), st);
-					pg->x = ev->e1->x;
-					pg->y = ev->e1->y;
-					st->addParticleGenerator(pg);
-				}
-				break;
-				
-			default:
-				break;
-		}
-	}
 }

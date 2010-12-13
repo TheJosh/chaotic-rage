@@ -19,3 +19,6 @@ State types:
 
 The walking state sprite will be ADDED to the other sprite (drawn below it)
 
+
+hit_generator = particlegenerator to create when unit has been hit by a particle
+

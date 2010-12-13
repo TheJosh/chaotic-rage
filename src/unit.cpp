@@ -49,8 +49,6 @@ Unit::~Unit()
 **/
 void Unit::handleEvent(Event * ev)
 {
-	this->uc->doActions(ev);
-	
 	if (ev->type == ENTITY_HIT) {
 		Entity *e = (ev->e1 == this ? ev->e2 : ev->e1);
 		
@@ -254,6 +252,13 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 void Unit::takeDamage(int damage)
 {
 	this->health -= damage;
+	
+	if (this->uc->hit_generator != NULL) {
+		ParticleGenerator *pg = new ParticleGenerator(this->uc->hit_generator, st);
+		pg->x = this->x;
+		pg->y = this->y;
+		st->addParticleGenerator(pg);
+	}
 	
 	if (this->health <= 0 && remove_at == 0) {
 		Event *ev = new Event();

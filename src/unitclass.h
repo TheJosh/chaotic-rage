@@ -58,6 +58,7 @@ class UnitClass : public EntityType
 		int id;
 		int width, height;
 		int begin_health;
+		ParticleGenType* hit_generator;
 		
 	private:
 		UnitClassSettings initial;
