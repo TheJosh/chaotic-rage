@@ -86,6 +86,11 @@ void Player::update(int delta)
 	
 	this->desired_angle_move += this->angle_aim;
 	
+	if (this->inContactWith(WALL)) {
+		this->speed = 0;
+		this->setState(UNIT_STATE_STATIC);
+	}
+	
 	// A key was pressed
 	if (keypressed) {
 		this->speed += ppsDelta(ucs->accel, delta);

@@ -202,6 +202,7 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	if (this->speed > ucs->max_speed) this->speed = ucs->max_speed;
 	if (this->speed < 0 - ucs->max_speed) this->speed = 0 - ucs->max_speed;
 	
+	
 	// Movement
 	if (this->speed != 0) {
 		int newx = pointPlusAngleX(this->x, this->angle_move, ppsDelta(this->speed, delta));
@@ -211,10 +212,6 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 		// Collision detection
 		if (newx < 0 || newy < 0
 				|| newx >= this->st->curr_map->width - this->getWidth() || newy >= this->st->curr_map->height - this->getHeight()) {
-			this->speed = 0;
-			this->setState(UNIT_STATE_STATIC);
-			
-		} else if (this->inContactWith(WALL)) {
 			this->speed = 0;
 			this->setState(UNIT_STATE_STATIC);
 			
