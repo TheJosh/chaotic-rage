@@ -17,6 +17,7 @@ Entity::Entity(GameState *st)
 	this->z = 0;
 	this->st = st;
 	this->radius = 30;		// Todo: Dynamic based on entity type
+	this->collide = true;
 }
 
 Entity::~Entity()

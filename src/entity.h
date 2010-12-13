@@ -37,6 +37,7 @@ class Entity : public EventListener
 		int angle;
 		list<Entity*> hits;
 		int radius;
+		bool collide;
 		
 	protected:
 		GameState* st;

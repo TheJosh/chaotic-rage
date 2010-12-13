@@ -140,7 +140,7 @@ void GameState::update(int delta)
 **/
 void GameState::doCollisions()
 {
-	int dist;
+	float dist;
 	
 	vector<Entity*>::iterator it1;
 	vector<Entity*>::iterator it2;
@@ -150,14 +150,16 @@ void GameState::doCollisions()
 	
 	for (it1 = this->entities.begin(); it1 != this->entities.end(); it1++) {
 		Entity *e1 = (*it1);
+		if (! e1->collide) continue;
 		
-		for (it2 = this->entities.begin(); it2 != this->entities.end(); it2++) {
+		for (it2 = it1; it2 != this->entities.end(); it2++) {
 			Entity *e2 = (*it2);
 			if (e2 == e1) continue;
+			if (! e2->collide) continue;
 			
-			dist = (int) ceil(sqrt(((e1->x - e2->x) * (e1->x - e2->x)) + ((e1->y - e2->y) * (e1->y - e2->y))));
+			dist = sqrt(((e1->x - e2->x) * (e1->x - e2->x)) + ((e1->y - e2->y) * (e1->y - e2->y)));
 			
-			if (dist < (e1->radius + e2->radius)) {
+			if (dist <= e1->radius + e2->radius) {
 				if (find(e1->hits.begin(), e1->hits.end(), e2) == e1->hits.end()) {
 					e1->hasHit(e2);
 					e2->hasHit(e1);
@@ -175,8 +177,8 @@ void GameState::doCollisions()
 			for (it3 = e1->hits.begin(); it3 != e1->hits.end(); it3++) {
 				Entity *e2 = (*it3);
 			
-				dist = (int) ceil(sqrt(((e1->x - e2->x) * (e1->x - e2->x)) + ((e1->y - e2->y) * (e1->y - e2->y))));
-				if (dist > (e1->radius + e2->radius)) {
+				dist = sqrt(((e1->x - e2->x) * (e1->x - e2->x)) + ((e1->y - e2->y) * (e1->y - e2->y)));
+				if (dist > e1->radius + e2->radius) {
 					rem[e1] = e2;
 					rem[e2] = e1;
 					
