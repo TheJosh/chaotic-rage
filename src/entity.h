@@ -84,7 +84,11 @@ class Entity : public EventListener
 		* Called by the physics code
 		**/
 		void hasHit(Entity *e);
-		void hasUnHit(Entity *e);
+		
+		/**
+		* Is the unit currently in contact with anything of this type
+		**/
+		bool inContactWith(EntityClass type);
 		
 	protected:
 		/**

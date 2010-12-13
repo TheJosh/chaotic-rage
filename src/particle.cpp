@@ -29,6 +29,7 @@ Particle::Particle(ParticleType *pt, GameState *st) : Entity(st)
 	this->age = 0;
 	this->z = 40;		// in the air a little
 	
+	this->radius = 2;
 	if (this->unit_damage + this->wall_damage == 0) this->collide = false;
 }
 
@@ -43,6 +44,36 @@ Particle::~Particle()
 void Particle::handleEvent(Event * ev)
 {
 	this->pt->doActions(ev);
+	
+	if (ev->type == ENTITY_HIT) {
+		Entity *e = (ev->e1 == this ? ev->e2 : ev->e1);
+		
+		if (e->klass() == UNIT) {
+			// We hit a unit
+			if (this->unit_damage > 0) {
+				((Unit*)e)->takeDamage(this->unit_damage);
+				
+				this->unit_hits--;
+				if (this->unit_hits == 0) this->hasDied();
+			
+			} else {
+				this->speed = 0;
+			}
+		
+		} else if (e->klass() == WALL) {
+			// We hit a wall
+			if (this->wall_damage > 0) {
+				((Wall*)e)->takeDamage(this->wall_damage);
+				
+				this->wall_hits--;
+				if (this->wall_hits == 0) this->hasDied();
+			
+			} else {
+				this->speed = 0;
+			}
+			
+		}
+	}
 }
 
 
@@ -67,48 +98,6 @@ void Particle::update(int delta)
 	this->y += getRandom(-3, 3);
 	
 	if (this->unit_damage + this->wall_damage == 0) return;
-	
-	
-	// Hit a unit?
-	Unit *u = this->st->checkHitUnit(this->x, this->y, 1);
-	if (u != NULL) {
-		Event *ev = new Event();
-		ev->type = PART_HIT_UNIT;
-		ev->e1 = this;
-		ev->e2 = u;
-		fireEvent(ev);
-		
-		if (this->unit_damage > 0) {
-			u->takeDamage(this->unit_damage);
-			
-			this->unit_hits--;
-			if (this->unit_hits == 0) this->hasDied();
-			
-		} else {
-			this->speed = 0;
-		}
-	}
-	
-	
-	// Hit a wall?
-	Wall *wa = this->st->checkHitWall(this->x, this->y, 1);
-	if (wa != NULL) {
-		Event *ev = new Event();
-		ev->type = PART_HIT_WALL;
-		ev->e1 = this;
-		ev->e2 = wa;
-		fireEvent(ev);
-		
-		if (this->wall_damage > 0) {
-			wa->takeDamage(this->wall_damage);
-			
-			this->wall_hits--;
-			if (this->wall_hits == 0) this->hasDied();
-			
-		} else {
-			this->speed = 0;
-		}
-	}
 	
 	
 	if (this->anim->isDone()) this->anim->next();

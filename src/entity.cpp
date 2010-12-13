@@ -47,8 +47,14 @@ void Entity::hasHit(Entity *e)
 	this->hits.push_back(e);
 }
 
-void Entity::hasUnHit(Entity *e)
+bool Entity::inContactWith(EntityClass klass)
 {
-	
+	list<Entity *>::iterator it;
+	for (it = this->hits.begin(); it != this->hits.end(); it++) {
+		Entity *e = (*it);
+		if (e->klass() == klass) return true;
+	}
+	return false;
 }
+
 
