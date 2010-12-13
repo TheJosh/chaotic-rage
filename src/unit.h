@@ -19,7 +19,7 @@ class Unit: public Entity
 		string name;
 		
 	protected:
-		int speed;
+		float speed;
 		int health;
 		int desired_angle_move;
 		int angle_move;

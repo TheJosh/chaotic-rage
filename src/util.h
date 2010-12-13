@@ -24,15 +24,16 @@ using namespace std;
 int getAngleBetweenPoints (int point1_x, int point1_y, int point2_x, int point2_y);
 int clampAngle(int angle);
 int angleFromDesired(int current, int desired, int turn_speed);
-int pointPlusAngleX (int point_x, int angle, int distance);
-int pointPlusAngleY (int point_y, int angle, int distance);
+float pointPlusAngleX (float point_x, int angle, float distance);
+float pointPlusAngleY (float point_y, int angle, float distance);
 
 // Boxes and stuff
 int intersect (SDL_Rect one, SDL_Rect two);
 int inside (SDL_Rect rect, int x, int y);
 
 // Time
-int ppsDelta(int pps, int delta);
+int ppsDeltai(int pps, int delta);
+float ppsDeltaf(float pps, int delta);
 
 // Random numbers
 void seedRandom();

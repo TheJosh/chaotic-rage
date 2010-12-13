@@ -93,7 +93,7 @@ void Player::update(int delta)
 	
 	// A key was pressed
 	if (keypressed) {
-		this->speed += ppsDelta(ucs->accel, delta);
+		this->speed += ppsDeltaf(ucs->accel, delta);
 		this->setState(UNIT_STATE_RUNNING);
 		
 	} else if (speed > 0) {		// nothing pressed, slow down (forwards)

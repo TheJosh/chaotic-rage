@@ -31,8 +31,8 @@ class Entity : public EventListener
 		
 	public:
 		bool del;
-		int x;
-		int y;
+		float x;
+		float y;
 		int z;
 		int angle;
 		list<Entity*> hits;

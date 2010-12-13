@@ -198,8 +198,8 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 		return;
 	}
 	
-	int turn_move = ppsDelta(ucs->turn_move, delta);
-	int turn_aim = ppsDelta(ucs->turn_aim, delta);
+	int turn_move = ppsDeltai(ucs->turn_move, delta);
+	int turn_aim = ppsDeltai(ucs->turn_aim, delta);
 	
 	this->desired_angle_move = clampAngle(this->desired_angle_move);
 	this->desired_angle_aim = clampAngle(this->desired_angle_aim);
@@ -215,12 +215,12 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	
 	
 	// Movement
-	if (this->speed != 0) {
-		int newx = pointPlusAngleX(this->x, this->angle_move, ppsDelta(this->speed, delta));
-		int newy = pointPlusAngleY(this->y, this->angle_move, ppsDelta(this->speed, delta));
+	if (this->speed != 0.0) {
+		float newx = pointPlusAngleX(this->x, this->angle_move, ppsDeltaf(this->speed, delta));
+		float newy = pointPlusAngleY(this->y, this->angle_move, ppsDeltaf(this->speed, delta));
 		
 		// Fall off the map detection
-		if (newx < 0 || newy < 0
+		if (newx < 0.0 || newy < 0.0
 				|| newx >= this->st->curr_map->width - this->getWidth() || newy >= this->st->curr_map->height - this->getHeight()) {
 			this->speed = 0;
 			this->setState(UNIT_STATE_STATIC);

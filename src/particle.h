@@ -19,7 +19,7 @@ class Particle: public Entity
 		ParticleType* pt;
 		
 		// copied from particle type
-		int speed;
+		float speed;
 		int accel;
 		int max_age;
 		int unit_damage;

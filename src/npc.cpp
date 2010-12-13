@@ -41,7 +41,7 @@ void NPC::update(int delta)
 	
 	this->desired_angle_move = getRandom(vals[1] - 10, vals[1] + 10);
 	
-	this->speed += ppsDelta(ucs->accel, delta);
+	this->speed += ppsDeltaf(ucs->accel, delta);
 	
 	if (this->inContactWith(WALL)) {
 		this->speed = 0;

@@ -87,20 +87,16 @@ int angleFromDesired(int current, int desired, int turn_speed)
 * Returns a new X co-ord for a point that has had angle and distance added to it
 * Angle is specified in degrees
 **/
-int pointPlusAngleX (int point_x, int angle, int distance)
+float pointPlusAngleX (float point_x, int angle, float distance)
 {
 	float angle_rads;
-	float point;
 	
 	if (angle < 0) angle += 360;
 	if (angle > 360) angle -= 360;
 	
 	angle_rads = angle * (PI / 180.0);
 	
-	point = point_x;
-	point -= round(sin(angle_rads) * distance);
-	
-	return (int) round(point);
+	return point_x - (sin(angle_rads) * distance);
 }
 
 
@@ -108,20 +104,16 @@ int pointPlusAngleX (int point_x, int angle, int distance)
 * Returns a new Y co-ord for a point that has had angle and distance added to it
 * Angle is specified in degrees
 **/
-int pointPlusAngleY (int point_y, int angle, int distance)
+float pointPlusAngleY (float point_y, int angle, float distance)
 {
 	float angle_rads;
-	float point;
 	
 	if (angle < 0) angle += 360;
 	if (angle > 360) angle -= 360;
 	
 	angle_rads = angle * (PI / 180.0);
 	
-	point = point_y;
-	point -= round(cos(angle_rads) * distance);
-	
-	return (int) round(point);
+	return point_y - (cos(angle_rads) * distance);
 }
 
 
@@ -163,22 +155,29 @@ int inside (SDL_Rect rect, int x, int y)
 
 /**
 * Converts a pps distance, and a delta into a fixed pixel distance.
+* INTEGER version of function, for speed, position, etc.
 *
 * pps is 'pixels per second'.
 * deltas are in miliseconds.
 * return value is in pixels.
-*
-* @todo Fix this function:
-*   The correct result from the function is often a floating-point value
-*   which is being rounded up to 1, so the game will actually work
-*   This needs to be fixed. Either accept pps values which are actually ppms (pixels per millisecond)
-*   for better accuracy, or change the whole engine to floats.
 **/
-int ppsDelta(int pps, int delta)
+int ppsDeltai(int pps, int delta)
 {
 	float ret = ((float)pps) * ((float)delta) / 1000.0;
-	
 	if (pps > 0) { return (int) ceil(ret); } else { return (int) floor(ret); }
+}
+
+/**
+* Converts a pps distance, and a delta into a fixed pixel distance.
+* FLOAT version of function, for angles, generators, etc.
+*
+* pps is 'pixels per second'.
+* deltas are in miliseconds.
+* return value is in pixels.
+**/
+float ppsDeltaf(float pps, int delta)
+{
+	return pps * ((float)delta) / 1000.0;
 }
 
 

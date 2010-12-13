@@ -55,7 +55,7 @@ void ParticleGenerator::update(int delta)
 		}
 		
 		// Generate the particles according to the rate
-		gennum = ppsDelta(spew->rate, delta);
+		gennum = ppsDeltai(spew->rate, delta);
 		for (int j = 0; j < gennum; j++) {
 			pa = new Particle(spew->pt, this->st);
 			pa->x = this->x;
