@@ -18,8 +18,6 @@ class ParticleGenerator : public Entity
 		
 	public:
 		ParticleGenType* type;
-		int x;
-		int y;
 		int age;
 		int spewdelay[MAX_SPEWERS];
 		

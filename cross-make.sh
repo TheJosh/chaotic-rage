@@ -11,6 +11,7 @@ CROSSENV="/home/josh/crossenv"
 #  - libsdl-mixer
 #  - libsdl-image
 #  - opengl
+#  - glew
 
 
 PREFIX="$CROSSENV/environments/i386-mingw32"
