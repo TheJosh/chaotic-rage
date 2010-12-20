@@ -1,1 +1,19 @@
-The first is always picked up by the player so it should be 'unarmed'.
+Each unitclass has a melee weapon and two starting weapons.
+
+The two starting weapons can be swapped with others,
+picked up and dropped. On death, all current weapons are dropped.
+There is a max of 2 weapons at a time.
+
+The player needs to choose their current weapon using an interfce of some description.
+
+Each unitclass also has a special ability which can be used at any time.
+
+Some generic weapons:
+ - Sheep gun
+ - Minigun
+ - Moatar - is a two player weapon, one carries weapon, the other carries ammo
+ - Energy sword
+
+
+ 
+ 

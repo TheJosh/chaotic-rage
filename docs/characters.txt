@@ -1,27 +1,64 @@
-These are only some ideas for now.
+M = Melee weapon, some sort of punch unless if mentioned
+1 = Initial weapon #1
+2 = Initial weapon #2
+A = Ability
 
-Three classes:
- - Small maniac type, ADD kid. Kamakazee. Listed in this doc as 'maniac'.
- - Regular fighter. Good at fighting, stealth. Listed in this doc as 'marine'.
- - Big fat guy. Big weapons. Big Armor. Listed in this doc as 'fatty'.
- 
-Attributes:
- - Maniac; small, fast, bad with weapons
- - Marine; medium size, medium speed, good with weapons
- - Fatty; slow, large, average with weapons
- 
-Invisibility cloak:
-Makes player invisible for a set amount of time.
- - Maniac: Average, probably 20 secs
- - Marine; Good, probably 40 secs
- - Fatty; Bad; probably 10 secs
- 
-Shields:
-Very good defence but only safe from one side (180 degrees). Unlimited time.
- - Maniac; Slows player right down
- - Marine; Slows player to fatty's normal speed
- - Fatty; No speed difference
- 
-Energy drink:
-Makes player move much faster. Decreases accuracy. Set amount of time.
+Simbot
+ - Metallic blobs
+ - M: Knife which comes out of arm
+ - 1: Anti-matter gun
+ - 2: Blob launcher, blobs are sticky and slow units which come into contact
+ - A: Mimic; gain the look and ability of another unit for a short period.
 
+Enock
+ - Suicidal, Kamakaze
+ - Melee: Chainsaw
+ - 1: Rocket Launcher
+ - 2: SMG
+ - A: Kamakaze, comes back together
+
+Wahcon
+ - Telepathic; psonic race
+ - M: Head crush
+ - 1: Psychic disrupter
+ - 2: Physic attractor mine
+
+Zidhask
+ - Mech w/ living host, can't remove host
+ - M: Pincer
+ - 1: Machine gun
+ - 2: Wall boring drill
+ - A: Death star dual laser, very powerful but takes ages to fire.
+
+Zapron
+ - Rocket pack guy, like reaper, floats slightly midair
+ - 1: Dual pistol
+ - 2: Tazer
+ - A: Vertical boost, shooting down
+
+Snydoob
+ - Stealth dude
+ - M: Bigg Nife - really large two handed weapon
+ - 1: Laser
+ - 2: Silenced pistol
+ - A: Invisibility
+
+Festoid
+ - Organic; claws; like a ling
+ - M: Tenticle whip
+ - 1: Poison tipped needle shooter
+ - 2: Net gun/box thorn gun
+ - A: Super chomp (gains health)
+
+Nechron
+ - Genetically modified human w/ biological stuff added
+ - M: Golf club
+ - 1: Grenade launcher
+ - 2: Generic disruptor - converts target to random race
+ - A: Tenticle wrap
+
+Zing
+ - Swarm of locusts, beetles, etc
+ - 1: Puss launcher
+ - 2: Locust gun - blinds the victim
+ - A: Splits up and launches a multiple directional attack on a single unit
