@@ -34,6 +34,7 @@ class Entity : public EventListener
 		float x;
 		float y;
 		int z;
+		float speed;
 		int angle;
 		list<Entity*> hits;
 		int radius;

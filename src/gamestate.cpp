@@ -151,6 +151,7 @@ void GameState::doCollisions()
 	for (it1 = this->entities.begin(); it1 != this->entities.end(); it1++) {
 		Entity *e1 = (*it1);
 		if (! e1->collide) continue;
+		if (e1->speed == 0.0) continue;
 		if (rem.find(e1) != rem.end()) continue;
 		
 		// Have we hit anything
