@@ -479,6 +479,10 @@ void RenderOpenGL::render()
 	this->renderSprite(st->map->background, 0, 0, w, h);*/
 	
 	
+	glEnable(GL_LIGHTING);
+	glEnable(GL_DEPTH_TEST);
+	
+	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
@@ -491,7 +495,6 @@ void RenderOpenGL::render()
 	
 	
 	// Lights
-	glEnable(GL_LIGHTING);
 	glPushMatrix();
 		glTranslatef(1000, 1000, 100);
 		
@@ -594,8 +597,9 @@ void RenderOpenGL::render()
 	
 	// HUD
 	glLoadIdentity();
-	glTranslatef(0, 0, 900);
+	glTranslatef(0, 0, 40);
 	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
 	st->hud->render(this);
 	
 	SDL_GL_SwapBuffers();
