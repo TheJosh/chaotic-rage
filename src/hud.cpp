@@ -22,7 +22,10 @@ HUD::HUD()
 **/
 void HUD::render(Render * render)
 {
-	if (this->weapon_menu) {
+	if (this->spawn_menu) {
+		// TODO: menu for spawning
+		
+	} else if (this->weapon_menu) {
 		SDL_Rect r = {100, 100, 125, 125};
 		unsigned int i, num = this->st->curr_player->getNumWeapons();
 		

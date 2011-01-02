@@ -459,15 +459,10 @@ void RenderOpenGL::render()
 	unsigned int i, j;
 	AnimPlay * play;
 	
-	int x, y, w, h;	// for general use
+	int x, y;	// for general use
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
-	
-	
-	// Calcs for rotations
-	w = this->virt_width * 2;
-	h = this->virt_height * 2;
 	
 	
 	
@@ -489,8 +484,12 @@ void RenderOpenGL::render()
 	// Main map rotation
 	glLoadIdentity();
 	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
-	glRotatef(st->curr_player->angle, 0, 0, 1);
-	glTranslatef(0 - st->curr_player->x, 0 - st->curr_player->y, 0);
+	
+	if (st->curr_player != NULL) {
+		glRotatef(st->curr_player->angle, 0, 0, 1);
+		glTranslatef(0 - st->curr_player->x, 0 - st->curr_player->y, 0);
+	}
+	
 	glTranslatef(0, 0, 600);
 	
 	

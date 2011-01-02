@@ -29,12 +29,12 @@ GameLogic::GameLogic(GameState *st)
 void GameLogic::handleEvent(Event * ev)
 {
 	if (ev->type == GAME_STARTED) {
-		st->curr_player = this->spawnPlayer(mod->getUnitClass(0), FACTION_TEAM1);
+		st->hud->spawn_menu = true;
 		
 		this->spawn_timer = 0;
 		this->num_zomb = 0;
 		this->num_killed = 0;
-		this->num_wanted_zomb = 100;
+		this->num_wanted_zomb = 10;
 		
 	} else if (ev->type == UNIT_DIED) {
 		this->num_killed++;
@@ -50,6 +50,11 @@ void GameLogic::update(int delta)
 		this->spawnNPC(mod->getUnitClass(1), FACTION_TEAM2);
 		this->num_zomb++;
 		this->spawn_timer -= 250;
+	}
+	
+	if (st->game_time > 5000 && st->curr_player == NULL) {
+		st->hud->spawn_menu = false;
+		st->curr_player = this->spawnPlayer(mod->getUnitClass(0), FACTION_TEAM1);
 	}
 }
 

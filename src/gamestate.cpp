@@ -37,6 +37,7 @@ GameState::GameState()
 {
 	this->anim_frame = 0;
 	this->game_time = 0;
+	this->curr_player = NULL;
 	
 	this->hud = new HUD();
 	this->hud->st = this;

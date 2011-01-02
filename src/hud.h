@@ -17,6 +17,7 @@ class HUD {
 	
 	public:
 		bool weapon_menu;
+		bool spawn_menu;
 		GameState *st;
 		
 	public:

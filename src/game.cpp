@@ -81,19 +81,19 @@ static void handleEvents(GameState *st)
 			// Key press
 			switch (event.key.keysym.sym) {
 				case SDLK_w:
-					st->curr_player->keyPress(Player::KEY_UP);
+					if (st->curr_player != NULL) st->curr_player->keyPress(Player::KEY_UP);
 					break;
 					
 				case SDLK_a:
-					st->curr_player->keyPress(Player::KEY_LEFT);
+					if (st->curr_player != NULL) st->curr_player->keyPress(Player::KEY_LEFT);
 					break;
 					
 				case SDLK_s:
-					st->curr_player->keyPress(Player::KEY_DOWN);
+					if (st->curr_player != NULL) st->curr_player->keyPress(Player::KEY_DOWN);
 					break;
 					
 				case SDLK_d:
-					st->curr_player->keyPress(Player::KEY_RIGHT);
+					if (st->curr_player != NULL) st->curr_player->keyPress(Player::KEY_RIGHT);
 					break;
 					
 				case SDLK_ESCAPE:
@@ -133,19 +133,19 @@ static void handleEvents(GameState *st)
 			// Key Release
 			switch (event.key.keysym.sym) {
 				case SDLK_w:
-					st->curr_player->keyRelease(Player::KEY_UP);
+					if (st->curr_player != NULL) st->curr_player->keyRelease(Player::KEY_UP);
 					break;
 					
 				case SDLK_a:
-					st->curr_player->keyRelease(Player::KEY_LEFT);
+					if (st->curr_player != NULL) st->curr_player->keyRelease(Player::KEY_LEFT);
 					break;
 					
 				case SDLK_s:
-					st->curr_player->keyRelease(Player::KEY_DOWN);
+					if (st->curr_player != NULL) st->curr_player->keyRelease(Player::KEY_DOWN);
 					break;
 					
 				case SDLK_d:
-					st->curr_player->keyRelease(Player::KEY_RIGHT);
+					if (st->curr_player != NULL) st->curr_player->keyRelease(Player::KEY_RIGHT);
 					break;
 					
 				case SDLK_ESCAPE:
@@ -158,17 +158,17 @@ static void handleEvents(GameState *st)
 			
 		} else if (event.type == SDL_MOUSEMOTION) {
 			// Mouse motion
-			st->curr_player->angleFromMouse(event.motion.x, event.motion.y);
+			if (st->curr_player != NULL) st->curr_player->angleFromMouse(event.motion.x, event.motion.y);
 			
 			
 		} else if (event.type == SDL_MOUSEBUTTONDOWN) {
 			// Mouse down
-			st->curr_player->beginFiring();
+			if (st->curr_player != NULL) st->curr_player->beginFiring();
 			
 			
 		} else if (event.type == SDL_MOUSEBUTTONUP) {
 			// Mouse up
-			st->curr_player->endFiring();
+			if (st->curr_player != NULL) st->curr_player->endFiring();
 			
 			
 		}

@@ -47,7 +47,7 @@ void NPC::handleEvent(Event * ev)
 
 
 /**
-* Uses the currently pressed keys to change the player movement
+* Try to find a player and attack them
 **/
 void NPC::update(int delta)
 {
@@ -55,6 +55,8 @@ void NPC::update(int delta)
 	
 	
 	// This should be moved into a function in the GameLogic class
+	if (st->curr_player == NULL) return;
+	
 	if (st->game_time - vals[0] > 2500) {
 		vals[0] = st->game_time;
 		vals[1] = getAngleBetweenPoints((int)round(this->x), (int)round(this->y), (int)round(this->st->curr_player->x), (int)round(this->st->curr_player->y));
