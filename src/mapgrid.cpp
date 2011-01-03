@@ -1,0 +1,54 @@
+// This file is part of Chaotic Rage (c) 2010 Josh Heidenreich
+//
+// kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
+
+#include <iostream>
+#include <SDL.h>
+#include <math.h>
+#include "rage.h"
+
+
+using namespace std;
+
+
+MapGrid::MapGrid(int map_width, int map_height)
+{
+	row_width = (int) ceil(map_width / MAPGRID_CELL_SIZE);
+	num_cells = row_width * (int) ceil(map_height / MAPGRID_CELL_SIZE);
+	
+	for (int i = 0; i < num_cells; i++) {
+		this->cells.push_back(new MapGridCell());
+	}
+}
+
+MapGrid::~MapGrid()
+{
+	for (int i = 0; i < num_cells; i++) {
+		delete (this->cells.at(i));
+	}
+}
+
+
+MapGridCell* MapGrid::getCellMC(int x, int y)
+{
+	x = (int) ceil(x / MAPGRID_CELL_SIZE);
+	y = (int) ceil(y / MAPGRID_CELL_SIZE);
+	
+	return this->cells[y * row_width + x];
+}
+
+
+vector<MapGridCell*>* MapGrid::getCellsMC(int x, int y, int radius)
+{
+	vector<MapGridCell*> * ret = new vector<MapGridCell*>();
+	
+	return ret;
+}
+
+
+vector<MapGridCell*>* MapGrid::getAllCells()
+{
+	return &(this->cells);
+}
+
+

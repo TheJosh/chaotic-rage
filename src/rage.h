@@ -59,6 +59,8 @@ class GameLogic;
 class GameState;
 class HUD;
 class Map;
+class MapGrid;
+class MapGridCell;
 class Mod;
 class NPC;
 class Particle;
@@ -107,6 +109,7 @@ class Zone;
 #include "wall.h"
 
 #include "zone.h"
+#include "mapgrid.h"
 #include "map.h"
 #include "gamelogic.h"
 #include "gamestate.h"
