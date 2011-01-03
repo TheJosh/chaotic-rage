@@ -269,7 +269,7 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 /**
 * Builds a VBO for this object
 **/
-static void createVBO (WavefrontObj * obj)
+void RenderOpenGL::createVBO (WavefrontObj * obj)
 {
 	GLuint vboid;
 	GLuint iboid;
@@ -341,12 +341,10 @@ static void createVBO (WavefrontObj * obj)
 
 /**
 * Renders an object
-*
-* TODO: Something should be done some time to switch this to VBOs
 **/
-static void renderObj (WavefrontObj * obj)
+void RenderOpenGL::renderObj (WavefrontObj * obj)
 {
-	if (obj->ibo_count == 0) createVBO(obj);
+	if (obj->ibo_count == 0) this->createVBO(obj);
 	
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
@@ -364,64 +362,10 @@ static void renderObj (WavefrontObj * obj)
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	
-	return;
-	
-	glBegin(GL_TRIANGLES);
-	for (unsigned int i = 0; i < obj->faces.size(); i++) {
-		Face * f = &obj->faces.at(i);
-		Vertex * v;
-		TexUV * t;
-		
-		// Vertex 1
-		if (f->n1 != 0) {
-			v = &obj->normals.at(f->n1 - 1);
-			glNormal3f(v->x, v->y, v->z);
-		}
-		
-		if (f->t1 != 0) {
-			t = &obj->texuvs.at(f->t1 - 1);
-			glTexCoord2f(t->x, 1.0 - t->y);
-		}
-		
-		v = &obj->vertexes.at(f->v1 - 1);
-		glVertex3f(v->x, v->y, v->z);
-		
-		
-		// Vertex 2
-		if (f->n2 != 0) {
-			v = &obj->normals.at(f->n2 - 1);
-			glNormal3f(v->x, v->y, v->z);
-		}
-		
-		if (f->t2 != 0) {
-			t = &obj->texuvs.at(f->t2 - 1);
-			glTexCoord2f(t->x, 1.0 - t->y);
-		}
-		
-		v = &obj->vertexes.at(f->v2 - 1);
-		glVertex3f(v->x, v->y, v->z);
-		
-		
-		// Vertex 3
-		if (f->n3 != 0) {
-			v = &obj->normals.at(f->n3 - 1);
-			glNormal3f(v->x, v->y, v->z);
-		}
-		
-		if (f->t3 != 0) {
-			t = &obj->texuvs.at(f->t3 - 1);
-			glTexCoord2f(t->x, 1.0 - t->y);
-		}
-		
-		v = &obj->vertexes.at(f->v3 - 1);
-		glVertex3f(v->x, v->y, v->z);
-	}
-	glEnd();
 }
 
 
-static void renderAnimPlay(AnimPlay * play)
+void RenderOpenGL::renderAnimPlay(AnimPlay * play)
 {
 	AnimModel * model;
 	
@@ -445,7 +389,7 @@ static void renderAnimPlay(AnimPlay * play)
 		glRotatef(model->meshframes[d]->rz, 0, 0, 1);
 		glScalef(model->meshframes[d]->sx, model->meshframes[d]->sy, model->meshframes[d]->sz);
 		
-		renderObj(model->meshframes[d]->mesh);
+		this->renderObj(model->meshframes[d]->mesh);
 		
 		glPopMatrix();
 	}
@@ -485,12 +429,15 @@ void RenderOpenGL::render()
 	glLoadIdentity();
 	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
 	
-	if (st->curr_player != NULL) {
+	if (st->curr_player == NULL) {
+		glRotatef(22, 0, 0, 1);
+		glRotatef(12, 1, 0, 0);
+		glTranslatef(0 - st->curr_map->width / 2, 0 - st->curr_map->height / 2, 0);
+		
+	} else {
 		glRotatef(st->curr_player->angle, 0, 0, 1);
-		glTranslatef(0 - st->curr_player->x, 0 - st->curr_player->y, 0);
+		glTranslatef(0 - st->curr_player->x, 0 - st->curr_player->y, 600);
 	}
-	
-	glTranslatef(0, 0, 600);
 	
 	
 	// Lights

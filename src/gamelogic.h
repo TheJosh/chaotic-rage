@@ -40,5 +40,7 @@ class GameLogic : public EventListener
 		int num_zomb;
 		int num_wanted_zomb;
 		int num_killed;
+		
+		int player_spawn;
 };
 

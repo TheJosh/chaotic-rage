@@ -24,8 +24,24 @@ void HUD::render(Render * render)
 {
 	if (this->spawn_menu) {
 		// TODO: menu for spawning
+		for (int i = 0; i <= 1; i++) {
+			UnitClass *uc = st->getMod(0)->getUnitClass(i);
+			UnitClassState *ucs = uc->getState(UNIT_STATE_STATIC);
+			
+			glPushMatrix();
+			glTranslatef(100 + i * 100, 500, 0);
+			glRotatef(90, 1, 0, 0);
+			glRotatef(180, 0, 0, 1);
+			
+			AnimPlay * play = new AnimPlay(ucs->model);
+			((RenderOpenGL*) render)->renderAnimPlay(play);
+			delete(play);
+			
+			glPopMatrix();
+		}
 		
-	} else if (this->weapon_menu) {
+		
+	} else if (this->weapon_menu && this->st->curr_player) {
 		SDL_Rect r = {100, 100, 125, 125};
 		unsigned int i, num = this->st->curr_player->getNumWeapons();
 		

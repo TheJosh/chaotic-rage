@@ -29,7 +29,7 @@ GameLogic::GameLogic(GameState *st)
 void GameLogic::handleEvent(Event * ev)
 {
 	if (ev->type == GAME_STARTED) {
-		st->hud->spawn_menu = true;
+		this->player_spawn = -1;
 		
 		this->spawn_timer = 0;
 		this->num_zomb = 0;
@@ -52,9 +52,17 @@ void GameLogic::update(int delta)
 		this->spawn_timer -= 250;
 	}
 	
-	if (st->game_time > 5000 && st->curr_player == NULL) {
+	if (st->curr_player == NULL && this->player_spawn == -1) {
+		// Player has died, show spawn menu
+		st->hud->spawn_menu = true;
+		this->player_spawn = st->game_time;
+		
+	} else if (st->curr_player == NULL && st->game_time - this->player_spawn > 5000) {
+		// Spawn time over, create player
 		st->hud->spawn_menu = false;
 		st->curr_player = this->spawnPlayer(mod->getUnitClass(0), FACTION_TEAM1);
+		this->player_spawn = -1;
+		
 	}
 }
 

@@ -18,6 +18,8 @@ struct VBOvertex
 
 class RenderOpenGL : public Render
 {
+	friend class HUD;
+	
 	private:
 		SDL_Surface * screen;
 		
@@ -51,5 +53,14 @@ class RenderOpenGL : public Render
 	public:
 		RenderOpenGL(GameState * st);
 		virtual ~RenderOpenGL();
+		
+		
+	protected:
+		void renderObj (WavefrontObj * obj);
+		void renderAnimPlay(AnimPlay * play);
+		
+	private:
+		void createVBO (WavefrontObj * obj);
+		
 };
 

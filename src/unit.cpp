@@ -280,6 +280,10 @@ void Unit::takeDamage(int damage)
 		this->setState(UNIT_STATE_DIE);
 		
 		remove_at = st->game_time + 10000;
+		
+		if (this == this->st->curr_player) {
+			this->st->curr_player = NULL;
+		}
 	}
 }
 
