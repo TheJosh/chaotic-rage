@@ -1,0 +1,62 @@
+When thinking of milestones, think of points in time where the game can be released as-is.
+
+While these theoretical releases would probably be quite poor, all of the release targets
+are at the same level as each other - it would be quite bad to have perfect gameplay, but
+lame graphics for example.
+
+Chaotic Rage has the following targets:
+ - Models & Textures
+ - Animations
+ - Sound
+ - Game engine features
+ - Game logic
+ - Map & datafile editors
+ - Engine configuration
+
+This brings us to the milestones.
+
+
+Milestone #1; Due Sat 29 Jan:
+ - Basic models all of characters, no textures
+ - Walking animations
+ - Footstep sounds
+ - New physics model
+ - Multiple waves of zombies
+ - AnimModel editing, finish UnitClass
+ - Load initial config for UnitClasses, Weapons
+
+-- Development will go on a short break ~ 25 Feb --
+
+Milestone #2; Due Sat 26 Mar:
+ - Improved models, basic textures
+ - Death & Shooting animations
+ - Weapon sounds
+ - Finalise UnitClasses (animations, sounds, etc)
+ - Multiplayer map editing
+ - Map editor in-game
+ - Add some maps
+ 
+Milestone #3: Due Sat 30 Apr:
+ - Character models finished and textured
+ - Additional animations where appropriate (incl. abilities)
+ - All other sounds
+ - Game logic in Lua
+ - Deathmatch mode
+ - Particle tools
+ - Special effects for abilities, etc (particles)
+
+Milestone #4: Due Sat 28 May:
+ - Weapon, Walltype models & Textures
+ - Network code
+ - Additional game modes
+ - Work on balance, and config
+ - Additional maps
+ 
+Milestone #5: Due Sat 25 June:
+ - By this stage it should be looking fairly good
+   It's a little difficult to judge how long various
+   tasks are going to take.
+   There are some things not on this list, but would
+   be good to do - and some which may be ditched.
+ 
+ 
