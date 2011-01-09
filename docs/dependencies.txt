@@ -7,6 +7,7 @@ You will need at least these:
  - libconfuse
  - gl
  - glu
+ - glew
  - flex
  
 For compiling on a recent Ubuntu:
@@ -19,6 +20,7 @@ For compiling on a recent Ubuntu:
  - libconfuse-dev
  - libgl1-mesa-dev
  - libglu1-mesa-dev
+ - libglew-dev
  - flex
  
 TODO: compiling on windows
