@@ -41,7 +41,6 @@ class MapGrid
 		**/
 		vector<MapGridCell*>* getAllCells();
 		
-		
 		//
 		// Functions which take map co-ordinates for arguments
 		//
@@ -55,6 +54,7 @@ class MapGrid
 		/**
 		* Gets all cells within a search radius
 		* Good for searching
+		* Don't forget to 'delete' the result when you are done.
 		**/
 		vector<MapGridCell*>* getCellsMC(int x, int y, int radius);
 };
@@ -65,10 +65,28 @@ class MapGrid
 **/
 class MapGridCell
 {
-	friend class MapGrid;
-	
-	protected:
-		list<int> collideboxes;
+	public:
+		list<CollideBox*> collideboxes;
+		
+	// TODO: Destructor to delete all refs
+};
+
+
+/**
+* A collide box.
+**/
+class CollideBox {
+	public:
+		int x;
+		int y;
+		int radius;
+		
+	public:
+		CollideBox(int x, int y, int radius) {
+			this->x = x;
+			this->y = y;
+			this->radius = radius;
+		};
 };
 
 

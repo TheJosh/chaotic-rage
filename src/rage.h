@@ -51,6 +51,7 @@ class AnimModel;
 class AnimPlay;
 class AreaType;
 class Audio;
+class CollideBox;
 class Entity;
 class EntityType;
 class Event;

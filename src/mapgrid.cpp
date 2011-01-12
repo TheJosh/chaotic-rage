@@ -29,6 +29,9 @@ MapGrid::~MapGrid()
 }
 
 
+/**
+* Good for adding
+**/
 MapGridCell* MapGrid::getCellMC(int x, int y)
 {
 	x = (int) ceil(x / MAPGRID_CELL_SIZE);
@@ -38,14 +41,33 @@ MapGridCell* MapGrid::getCellMC(int x, int y)
 }
 
 
+/**
+* Good for searching
+**/
 vector<MapGridCell*>* MapGrid::getCellsMC(int x, int y, int radius)
 {
 	vector<MapGridCell*> * ret = new vector<MapGridCell*>();
+	
+	x = (int) ceil(x / MAPGRID_CELL_SIZE);
+	y = (int) ceil(y / MAPGRID_CELL_SIZE);
+	radius = (int) ceil(radius / MAPGRID_CELL_SIZE);
+	
+	int x2 = x + radius;
+	int y2 = y + radius;
+	
+	for (x -= radius; x < x2; x++) {
+		for (y -= radius; y < y2; y++) {
+			ret->push_back(this->cells[y * row_width + x]);
+		}
+	}
 	
 	return ret;
 }
 
 
+/**
+* Good for base iteration
+**/
 vector<MapGridCell*>* MapGrid::getAllCells()
 {
 	return &(this->cells);

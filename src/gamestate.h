@@ -36,6 +36,7 @@ class GameState
 		HUD* hud;
 		Audio* audio;
 		GameLogic* logic;
+		MapGrid* collides;
 		
 	public:
 		GameState();
@@ -54,6 +55,8 @@ class GameState
 		
 		void addMod(Mod * mod);
 		Mod * getMod(int id);
+		
+		void addCollideBox(int x, int y, int radius);
 		
 	private:
 		void doCollisions();

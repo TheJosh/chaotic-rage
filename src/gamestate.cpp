@@ -108,6 +108,9 @@ void GameState::update(int delta)
 	vector<Entity*>::iterator it;
 	vector<Entity*>::iterator newend;
 	
+	this->collides = new MapGrid(curr_map->width, curr_map->height);
+	
+	
 	// Add new entities
 	for (it = this->entities_add.begin(); it < this->entities_add.end(); it++) {
 		Entity *e = (*it);
@@ -133,6 +136,9 @@ void GameState::update(int delta)
 	// Update time
 	this->game_time += delta;
 	this->anim_frame = (int) floor(this->game_time * ANIMATION_FPS / 1000.0);
+	
+	
+	delete(this->collides);
 }
 
 
@@ -267,4 +273,14 @@ Mod * GameState::getMod(int id)
 	return mods.at(id);
 }
 
+
+/**
+* Only run this if you are in en 'update' method for an entity
+**/
+void GameState::addCollideBox(int x, int y, int radius)
+{
+	MapGridCell* cell = this->collides->getCellMC(x, y);
+	
+	cell->collideboxes.push_back(new CollideBox(x, y, radius));
+}
 

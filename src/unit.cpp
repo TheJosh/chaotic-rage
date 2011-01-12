@@ -33,8 +33,6 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	this->walk_state = uc->getState(UNIT_STATE_WALK);
 	this->walk_time = 0;
 	
-	
-	
 	this->remove_at = 0;
 }
 
@@ -196,7 +194,7 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 		return;
 	}
 	
-	int turn_move = ppsDeltai(ucs->turn_move, delta);
+		int turn_move = ppsDeltai(ucs->turn_move, delta);
 	int turn_aim = ppsDeltai(ucs->turn_aim, delta);
 	
 	this->desired_angle_move = clampAngle(this->desired_angle_move);
@@ -206,7 +204,6 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	this->angle_aim = angleFromDesired(this->angle_aim, this->desired_angle_aim, turn_aim);
 	
 	this->angle = this->angle_aim;
-	
 	
 	if (this->speed > ucs->max_speed) this->speed = ucs->max_speed;
 	if (this->speed < 0 - ucs->max_speed) this->speed = 0 - ucs->max_speed;
@@ -232,6 +229,8 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 		
 		this->walk_time += delta;
 	}
+	
+	this->st->addCollideBox(this->x, this->y, 30);
 	
 	
 	if (this->firing && this->weapon != NULL) {
