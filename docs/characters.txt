@@ -32,6 +32,7 @@ Zidhask
 
 Zapron
  - Rocket pack guy, like reaper, floats slightly midair
+ - M: Double-sided Axe
  - 1: Dual pistol
  - 2: Tazer
  - A: Vertical boost, shooting down
