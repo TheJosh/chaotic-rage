@@ -1,4 +1,4 @@
-M = Melee weapon, some sort of punch unless if mentioned
+﻿M = Melee weapon, some sort of punch unless if mentioned
 1 = Initial weapon #1
 2 = Initial weapon #2
 A = Ability
