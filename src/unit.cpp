@@ -230,7 +230,7 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 		this->walk_time += delta;
 	}
 	
-	this->st->addCollideBox(this->x, this->y, 30);
+	this->st->addCollideBox((int) this->x, (int) this->y, 30);
 	
 	
 	if (this->firing && this->weapon != NULL) {
