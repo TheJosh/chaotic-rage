@@ -109,6 +109,7 @@ void GameState::update(int delta)
 	vector<Entity*>::iterator newend;
 	
 	this->collides = new MapGrid(curr_map->width, curr_map->height);
+	this->collideboxes.clear();
 	
 	
 	// Add new entities
@@ -148,6 +149,8 @@ void GameState::update(int delta)
 void GameState::doCollisions()
 {
 	float dist;
+	
+	cout << "Num collide boxes: " << this->collideboxes.size() << "\n";
 	
 	vector<Entity*>::iterator it1;
 	vector<Entity*>::iterator it2;
@@ -282,5 +285,7 @@ void GameState::addCollideBox(int x, int y, int radius)
 	MapGridCell* cell = this->collides->getCellMC(x, y);
 	
 	cell->collideboxes.push_back(new CollideBox(x, y, radius));
+	
+	this->collideboxes.push_back(new CollideBox(x, y, radius));
 }
 

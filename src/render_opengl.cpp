@@ -221,11 +221,15 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 
 void RenderOpenGL::preGame()
 {
+	AnimModel *model = st->getMod(0)->getAnimModel("cube");
+	this->test = new AnimPlay(model);
 }
 
 void RenderOpenGL::postGame()
 {
+	delete(this->test);
 }
+
 
 /**
 * Clears all colour from a given pixel for a given sprite
@@ -540,6 +544,20 @@ void RenderOpenGL::render()
 		
 		glPopMatrix();
 	}
+	
+	// Testing: show collide boxes
+	for (list<CollideBox*>::iterator it = st->collideboxes.begin(); it != st->collideboxes.end(); it++) {
+		CollideBox *c = (*it);
+		
+		glPushMatrix();
+		
+		glTranslatef(c->x, c->y, 100);
+		glScalef(0.3, 0.3, 0.3);
+		renderAnimPlay(this->test);
+		
+		glPopMatrix();
+	}
+	
 	
 	// HUD
 	glLoadIdentity();

@@ -30,6 +30,8 @@ class RenderOpenGL : public Render
 		SpritePtr ground;
 		SpritePtr walls;
 		
+		AnimPlay *test;
+		
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
 		

@@ -25,6 +25,8 @@ class GameState
 		vector<Unit*> units;		// leaks: items are not removed
 		vector<Wall*> walls;		// leaks: items are not removed
 		
+		list<CollideBox*> collideboxes;		// hmm
+		
 	public:
 		Map* curr_map;
 		Player* curr_player;
