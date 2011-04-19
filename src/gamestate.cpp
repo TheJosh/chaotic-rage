@@ -150,7 +150,39 @@ void GameState::doCollisions()
 {
 	float dist;
 	
+	cout << "\033[2J\033[1;1H";
 	cout << "Num collide boxes: " << this->collideboxes.size() << "\n";
+	
+	for (list<CollideBox*>::iterator ito = this->collideboxes.begin(); ito != this->collideboxes.end(); ito++) {
+		CollideBox *co = (*ito);
+		
+		list<CollideBox*>* tests = this->collides->getCollidesMC(co->x, co->y, co->radius);
+		if (tests->size() < 2) {
+			free(tests);
+			continue;
+		}
+		
+		cout << "Outer box: " << co << " at " << co->x << "x" << co->y << ":" << co->radius << "\n";
+		
+		for (list<CollideBox*>::iterator iti = tests->begin(); iti != tests->end(); iti++) {
+			CollideBox *ci = (*iti);
+			
+			if (ci == co) continue;
+			
+			cout << "      box: " << ci << " at " << ci->x << "x" << ci->y << ":" << ci->radius;
+			
+			dist = sqrt(((ci->x - co->x) * (ci->x - co->x)) + ((ci->y - co->y) * (ci->y - co->y)));
+			if (dist <= ci->radius + co->radius) {
+				cout << "\t\tHIT";
+			}
+			
+			cout << "\n";
+		}
+		
+		free(tests);
+	}
+	
+	return;
 	
 	vector<Entity*>::iterator it1;
 	vector<Entity*>::iterator it2;
@@ -284,8 +316,9 @@ void GameState::addCollideBox(int x, int y, int radius)
 {
 	MapGridCell* cell = this->collides->getCellMC(x, y);
 	
-	cell->collideboxes.push_back(new CollideBox(x, y, radius));
+	CollideBox * box = new CollideBox(x, y, radius);
 	
-	this->collideboxes.push_back(new CollideBox(x, y, radius));
+	cell->collideboxes.push_back(box);
+	this->collideboxes.push_back(box);
 }
 

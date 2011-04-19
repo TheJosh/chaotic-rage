@@ -56,7 +56,7 @@ class MapGrid
 		* Good for searching
 		* Don't forget to 'delete' the result when you are done.
 		**/
-		vector<MapGridCell*>* getCellsMC(int x, int y, int radius);
+		list<CollideBox*>* getCollidesMC(int x, int y, int radius);
 };
 
 

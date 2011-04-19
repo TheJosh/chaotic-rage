@@ -44,9 +44,9 @@ MapGridCell* MapGrid::getCellMC(int x, int y)
 /**
 * Good for searching
 **/
-vector<MapGridCell*>* MapGrid::getCellsMC(int x, int y, int radius)
+list<CollideBox*>* MapGrid::getCollidesMC(int x, int y, int radius)
 {
-	vector<MapGridCell*> * ret = new vector<MapGridCell*>();
+	list<CollideBox*> * ret = new list<CollideBox*>();
 	
 	x = (int) ceil(x / MAPGRID_CELL_SIZE);
 	y = (int) ceil(y / MAPGRID_CELL_SIZE);
@@ -57,7 +57,7 @@ vector<MapGridCell*>* MapGrid::getCellsMC(int x, int y, int radius)
 	
 	for (x -= radius; x < x2; x++) {
 		for (y -= radius; y < y2; y++) {
-			ret->push_back(this->cells[y * row_width + x]);
+			ret->insert (ret->end(), this->cells[y * row_width + x]->collideboxes.begin(), this->cells[y * row_width + x]->collideboxes.end());
 		}
 	}
 	
