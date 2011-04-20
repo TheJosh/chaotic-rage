@@ -27,11 +27,16 @@ NPC::~NPC()
 void NPC::handleEvent(Event * ev)
 {
 	if (ev->type == ENTITY_HIT) {
+		
+		
+		// This should be moved into a function in the GameLogic class
 		Entity *e = (ev->e1 == this ? ev->e2 : ev->e1);
 		
 		if (e->klass() == UNIT && ((Unit*)e)->fac != this->fac) {
 			this->beginFiring();
+			
 		}
+		// End of stuff to move
 		
 		
 	} else if (ev->type == ENTITY_UNHIT) {
@@ -68,11 +73,6 @@ void NPC::update(int delta)
 	this->desired_angle_move = getRandom(vals[1] - 10, vals[1] + 10);
 	
 	this->speed += ppsDeltaf(ucs->accel, delta);
-	
-	if (this->inContactWith(WALL)) {
-		this->speed = 0;
-		this->setState(UNIT_STATE_STATIC);
-	}
 	// End of stuff to move
 	
 	

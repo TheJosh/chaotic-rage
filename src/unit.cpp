@@ -243,10 +243,10 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 			
 		} else if (this->weapon->melee == 1) {
 			// Meele-based weapon
-			Unit * target = (Unit*) this->inContactWith(UNIT);
+			/*Unit * target = (Unit*) this->inContactWith(UNIT);
 			if (target != NULL) {
 				target->takeDamage(this->weapon->damage);
-			}
+			}*/
 		}
 	}
 	

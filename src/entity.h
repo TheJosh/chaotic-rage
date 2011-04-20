@@ -36,9 +36,6 @@ class Entity : public EventListener
 		int z;
 		float speed;
 		int angle;
-		list<Entity*> hits;
-		int radius;
-		bool collide;
 		
 	protected:
 		GameState* st;
@@ -77,19 +74,14 @@ class Entity : public EventListener
 		**/
 		virtual int getHeight() { return 1; };
 		
+		/**
+		* Called by the collission code when a collission has happened
+		**/
+		virtual void hasBeenHit(CollideBox * ours, CollideBox * theirs) {};
+		
 		
 	public:
 		GameState * getGameState();
-		
-		/**
-		* Called by the physics code
-		**/
-		void hasHit(Entity *e);
-		
-		/**
-		* Is the unit currently in contact with anything of this type
-		**/
-		Entity* inContactWith(EntityClass type);
 		
 	protected:
 		/**

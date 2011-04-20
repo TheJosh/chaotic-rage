@@ -28,9 +28,6 @@ Particle::Particle(ParticleType *pt, GameState *st) : Entity(st)
 	this->angle = 0;
 	this->age = 0;
 	this->z = 40;		// in the air a little
-	
-	this->radius = 2;
-	if (this->unit_damage + this->wall_damage == 0) this->collide = false;
 }
 
 Particle::~Particle()

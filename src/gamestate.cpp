@@ -175,6 +175,8 @@ void GameState::doCollisions()
 			if (dist <= ci->radius + co->radius) {
 				cout << "\t\tHIT";
 				
+				ci->e->hasBeenHit(co, ci);
+				
 				Event *ev = new Event();
 				ev->type = ENTITY_HIT;
 				ev->e1 = ci->e;
@@ -186,65 +188,6 @@ void GameState::doCollisions()
 		}
 		
 		free(tests);
-	}
-	
-	return;
-	
-	vector<Entity*>::iterator it1;
-	vector<Entity*>::iterator it2;
-	list<Entity*>::iterator it3;
-	map<Entity*,Entity*>::iterator it4;
-	map<Entity*,Entity*> rem;
-	
-	for (it1 = this->entities.begin(); it1 != this->entities.end(); it1++) {
-		Entity *e1 = (*it1);
-		if (! e1->collide) continue;
-		if (e1->speed == 0.0) continue;
-		if (rem.find(e1) != rem.end()) continue;
-		
-		// Have we hit anything
-		for (it2 = it1; it2 != this->entities.end(); it2++) {
-			Entity *e2 = (*it2);
-			if (e2 == e1) continue;
-			if (! e2->collide) continue;
-			
-			dist = sqrt(((e1->x - e2->x) * (e1->x - e2->x)) + ((e1->y - e2->y) * (e1->y - e2->y)));
-			
-			if (dist <= e1->radius + e2->radius) {
-				if (find(e1->hits.begin(), e1->hits.end(), e2) == e1->hits.end()) {
-					e1->hasHit(e2);
-					e2->hasHit(e1);
-					
-					Event *ev = new Event();
-					ev->type = ENTITY_HIT;
-					ev->e1 = e1;
-					ev->e2 = e2;
-					fireEvent(ev);
-				}
-			}
-		}
-		
-		// Have we UnHit anything?
-		for (it3 = e1->hits.begin(); it3 != e1->hits.end(); it3++) {
-			Entity *e2 = (*it3);
-			
-			dist = sqrt(((e1->x - e2->x) * (e1->x - e2->x)) + ((e1->y - e2->y) * (e1->y - e2->y)));
-			if (dist > e1->radius + e2->radius) {
-				rem[e1] = e2;
-				rem[e2] = e1;
-				
-				Event *ev = new Event();
-				ev->type = ENTITY_UNHIT;
-				ev->e1 = e1;
-				ev->e2 = e2;
-				fireEvent(ev);
-			}
-		}
-	}
-	
-	// Remove hits which should be removed
-	for (it4 = rem.begin(); it4 != rem.end(); it4++) {
-		(*it4).first->hits.remove((*it4).second);
 	}
 }
 
