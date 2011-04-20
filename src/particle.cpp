@@ -98,6 +98,9 @@ void Particle::update(int delta)
 	if (this->unit_damage + this->wall_damage == 0) return;
 	
 	
+	this->st->addCollideBox((int) this->x, (int) this->y, 2, this, true);
+	
+	
 	if (this->anim->isDone()) this->anim->next();
 }
 

@@ -552,7 +552,7 @@ void RenderOpenGL::render()
 		glPushMatrix();
 		
 		glTranslatef(c->x, c->y, 100);
-		glScalef(0.3, 0.3, 0.3);
+		glScalef(c->radius / 50.0, c->radius / 50.0, c->radius / 50.0);
 		renderAnimPlay(this->test);
 		
 		glPopMatrix();

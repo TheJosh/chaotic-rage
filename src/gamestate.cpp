@@ -316,15 +316,22 @@ Mod * GameState::getMod(int id)
 
 
 /**
-* Only run this if you are in en 'update' method for an entity
+* Only run this if you are in an 'update' method for an entity.
+*
+* @param x, y		The centerpoint of the collidebox
+* @param radius		The size of the collidebox
+* @param e			The entity assoc. with this collidebox
+* @param cares		If true, collissions send events to the entity
 **/
-void GameState::addCollideBox(int x, int y, int radius, Entity *e)
+void GameState::addCollideBox(int x, int y, int radius, Entity *e, bool cares)
 {
-	MapGridCell* cell = this->collides->getCellMC(x, y);
-	
 	CollideBox * box = new CollideBox(x, y, radius, e);
 	
+	MapGridCell* cell = this->collides->getCellMC(x, y);
 	cell->collideboxes.push_back(box);
-	this->collideboxes.push_back(box);
+	
+	//if (cares) {
+		this->collideboxes.push_back(box);
+	//}
 }
 
