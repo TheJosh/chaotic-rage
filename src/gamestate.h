@@ -58,7 +58,7 @@ class GameState
 		void addMod(Mod * mod);
 		Mod * getMod(int id);
 		
-		void addCollideBox(int x, int y, int radius);
+		void addCollideBox(int x, int y, int radius, Entity *e);
 		
 	private:
 		void doCollisions();

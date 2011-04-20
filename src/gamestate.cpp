@@ -174,6 +174,12 @@ void GameState::doCollisions()
 			dist = sqrt(((ci->x - co->x) * (ci->x - co->x)) + ((ci->y - co->y) * (ci->y - co->y)));
 			if (dist <= ci->radius + co->radius) {
 				cout << "\t\tHIT";
+				
+				Event *ev = new Event();
+				ev->type = ENTITY_HIT;
+				ev->e1 = ci->e;
+				ev->e2 = co->e;
+				fireEvent(ev);
 			}
 			
 			cout << "\n";
@@ -312,11 +318,11 @@ Mod * GameState::getMod(int id)
 /**
 * Only run this if you are in en 'update' method for an entity
 **/
-void GameState::addCollideBox(int x, int y, int radius)
+void GameState::addCollideBox(int x, int y, int radius, Entity *e)
 {
 	MapGridCell* cell = this->collides->getCellMC(x, y);
 	
-	CollideBox * box = new CollideBox(x, y, radius);
+	CollideBox * box = new CollideBox(x, y, radius, e);
 	
 	cell->collideboxes.push_back(box);
 	this->collideboxes.push_back(box);

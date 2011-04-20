@@ -30,7 +30,7 @@ void Wall::update(int delta)
 {
 	if (this->anim->isDone()) this->anim->next();
 	
-	this->st->addCollideBox((int) this->x, (int) this->y, 10);
+	this->st->addCollideBox((int) this->x, (int) this->y, 10, this);
 }
 
 /**
