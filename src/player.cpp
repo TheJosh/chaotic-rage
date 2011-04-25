@@ -43,17 +43,18 @@ void Player::keyRelease(int idx)
 **/
 void Player::angleFromMouse(int x, int y)
 {
+	float sensitivity = 10.0; // 1 = slow, 10 = nuts
 	
 	float changeDist = x-400;
-	changeDist /= 8;
+	changeDist /= (10.0/sensitivity);
 	
 	float changeAngle = asin(changeDist*(3.142/180.0))*(180/3.142);
 	
-		this->angle_aim = this->angle_aim - changeAngle;
+	this->angle_aim = this->angle_aim - changeAngle;
 			
 				
 	 
-	cout << "change" << changeDist << "\n" <<  "change angle B " << changeAngle << "\n" << "change in A" << changeAngle << "\n" ;
+	//cout << "change" << changeDist << "\n" <<  "change angle B " << changeAngle << "\n" << "change in A" << changeAngle << "\n" ;
 }
 
 
