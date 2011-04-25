@@ -52,6 +52,10 @@ void Wall::getAnimModel(AnimPlay * list [SPRITE_LIST_LEN])
 	list[1] = NULL;
 }
 
+void Wall::getSounds(Sound * list [SPRITE_LIST_LEN])
+{
+	list[0] = NULL;
+}
 
 
 /**

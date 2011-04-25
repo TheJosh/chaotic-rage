@@ -29,4 +29,5 @@ class ParticleGenerator : public Entity
 		virtual void update(int delta);
 		virtual void getSprite(SpritePtr list [SPRITE_LIST_LEN]);
 		virtual void getAnimModel(AnimPlay * list [SPRITE_LIST_LEN]);
+		virtual void getSounds(Sound * list [SPRITE_LIST_LEN]);
 };

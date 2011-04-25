@@ -89,3 +89,8 @@ void ParticleGenerator::getAnimModel(AnimPlay * list [SPRITE_LIST_LEN])
 	list[0] = NULL;
 }
 
+void ParticleGenerator::getSounds(Sound * list [SPRITE_LIST_LEN])
+{
+	list[0] = NULL;
+}
+

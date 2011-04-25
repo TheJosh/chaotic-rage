@@ -60,6 +60,11 @@ class Entity
 		virtual void getAnimModel(AnimPlay * list [SPRITE_LIST_LEN]) = 0;
 		
 		/**
+		* Return Sounds for this entity
+		**/
+		virtual void getSounds(Sound * list [SPRITE_LIST_LEN]) = 0;
+		
+		/**
 		* Update the entity. Time is provided in milliseconds (ms)
 		**/
 		virtual void update(int delta) = 0;

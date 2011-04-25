@@ -17,6 +17,7 @@ using namespace std;
 AudioSDLMixer::AudioSDLMixer(GameState * st) : Audio(st)
 {
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
+	Mix_AllocateChannels(100);
 	this->audio_start = false;
 	this->audio_stop = false;
 }
@@ -68,6 +69,10 @@ void AudioSDLMixer::handleEvent(Event * ev)
 **/
 void AudioSDLMixer::play()
 {
+	Sound * snd;
+	unsigned int i, j;
+	
+	
 	if (this->audio_start) {
 		Song * sg = st->getMod(0)->getSong(0);
 		Mix_FadeInMusic(sg->music, 0, 1000);
@@ -81,9 +86,20 @@ void AudioSDLMixer::play()
 	}
 	
 	
-	// TODO: Stuff
-	
-	
+	// Play sounds
+	for (i = 0; i < st->entities.size(); i++) {
+		Entity *e = st->entities.at(i);
+		
+		Sound * list [SPRITE_LIST_LEN] = {NULL, NULL, NULL, NULL};
+		e->getSounds(list);
+		
+		for (j = 0; j < SPRITE_LIST_LEN; j++) {
+			snd = list[j];
+			if (snd == NULL) break;
+			
+			Mix_PlayChannel(-1, snd->sound, 0);
+		}
+	}
 }
 
 

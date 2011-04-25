@@ -41,6 +41,7 @@ class Particle: public Entity
 	public:
 		virtual void getSprite(SpritePtr list [SPRITE_LIST_LEN]);
 		virtual void getAnimModel(AnimPlay * list [SPRITE_LIST_LEN]);
+		virtual void getSounds(Sound * list [SPRITE_LIST_LEN]);
 		virtual void update(int delta);
 		virtual void hasBeenHit(CollideBox * ours, CollideBox * theirs);
 };
