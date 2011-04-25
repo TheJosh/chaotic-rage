@@ -448,8 +448,8 @@ void RenderOpenGL::render()
 	glPushMatrix();
 		glTranslatef(1000, 1000, 100);
 		
-		GLfloat ambientLight[] = { 0.4f, 0.4f, 0.4f, 1.0f };
-		GLfloat diffuseLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		GLfloat ambientLight[] = { 0.1f, 0.1f, 0.1f, 1.0f };
+		GLfloat diffuseLight[] = { 0.4f, 0.4f, 0.4f, 1.0f };
 		GLfloat specularLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		
@@ -459,6 +459,25 @@ void RenderOpenGL::render()
 		glLightfv(GL_LIGHT0, GL_POSITION, position);
 		glEnable(GL_LIGHT0);
 	glPopMatrix();
+	
+	
+	// Torch
+	if (st->curr_player != NULL) {
+		glPushMatrix();
+			glTranslatef(st->curr_player->x, st->curr_player->y, 50);
+		
+			GLfloat ambientLight[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+			GLfloat diffuseLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+			GLfloat specularLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+			GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		
+			glLightfv(GL_LIGHT1, GL_AMBIENT, ambientLight);
+			glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuseLight);
+			glLightfv(GL_LIGHT1, GL_SPECULAR, specularLight);
+			glLightfv(GL_LIGHT1, GL_POSITION, position);
+			glEnable(GL_LIGHT1);
+		glPopMatrix();
+	}
 	
 
 	// Render map

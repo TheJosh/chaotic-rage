@@ -57,7 +57,7 @@ void GameLogic::update(int delta)
 		st->hud->showSpawnMenu();
 		this->player_spawn = st->game_time;
 		
-	} else if (st->curr_player == NULL && st->game_time - this->player_spawn > 5000) {
+	} else if (st->curr_player == NULL && st->game_time - this->player_spawn > 1000) {
 		// Spawn time over, create player
 		st->hud->hideSpawnMenu();
 		st->curr_player = this->spawnPlayer(mod->getUnitClass(0), FACTION_TEAM1);
