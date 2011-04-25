@@ -24,8 +24,6 @@ Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
 	this->weapon_gen = NULL;
 	this->firing = false;
 	
-	this->pickupWeapon(this->uc->getMod()->getWeaponType(0));
-	
 	this->anim = NULL;
 	this->current_state_type = 0;
 	this->setState(UNIT_STATE_STATIC);
@@ -227,7 +225,7 @@ void Unit::update(int delta, UnitClassSettings *ucs)
 	
 	
 	if (this->firing && this->weapon != NULL) {
-		if (this->weapon->melee == 0) {
+		if (this->weapon->melee == 0 && this->weapon_gen != NULL) {
 			// Bullet-based weapon
 			this->weapon_gen->x = (int) round(this->x + this->uc->width / 2);
 			this->weapon_gen->y = (int) round(this->y + this->uc->height / 2);

@@ -81,6 +81,7 @@ Player * GameLogic::spawnPlayer(UnitClass *uc, Faction fac)
 	p = new Player(uc, st);
 	st->addUnit(p);
 	
+	p->pickupWeapon(mod->getWeaponType(0));
 	p->pickupWeapon(mod->getWeaponType(1));
 	p->pickupWeapon(mod->getWeaponType(2));
 	
@@ -108,7 +109,6 @@ NPC * GameLogic::spawnNPC(UnitClass *uc, Faction fac)
 	st->addUnit(p);
 	
 	p->pickupWeapon(mod->getWeaponType(1));
-	p->setWeapon(1);
 	
 	Zone *z = map->getSpawnZone(fac);
 	if (z == NULL) {
