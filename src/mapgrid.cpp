@@ -38,14 +38,8 @@ MapGridCell::~MapGridCell() {
 **/
 MapGridCell* MapGrid::getCellMC(int x, int y)
 {
-	cout << "getCellMC: " << x << ", " << y << "\n";
-	
 	x = (int) floor(x / MAPGRID_CELL_SIZE);
 	y = (int) floor(y / MAPGRID_CELL_SIZE);
-	
-	cout << "         : " << x << ", " << y << "\n";
-	
-	cout << "         : " << (y * row_width + x) << "\n";
 	
 	return this->cells[y * row_width + x];
 }

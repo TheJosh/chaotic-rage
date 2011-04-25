@@ -156,37 +156,21 @@ void GameState::doCollisions()
 	for (list<CollideBox*>::iterator ito = this->collideboxes.begin(); ito != this->collideboxes.end(); ito++) {
 		CollideBox *co = (*ito);
 		
-		//cout << "Outer box: " << co << " at " << co->x << "x" << co->y << ":" << co->radius << "\n";
-		
 		list<CollideBox*>* tests = this->collides->getCollidesMC(co->x, co->y, co->radius);
 		if (tests->size() < 2) {
 			free(tests);
 			continue;
 		}
 		
-		//cout << "Outer box: " << co << " at " << co->x << "x" << co->y << ":" << co->radius << "\n";
-		
 		for (list<CollideBox*>::iterator iti = tests->begin(); iti != tests->end(); iti++) {
 			CollideBox *ci = (*iti);
 			
 			if (ci == co) continue;
 			
-			//cout << "      box: " << ci << " at " << ci->x << "x" << ci->y << ":" << ci->radius;
-			
 			dist = sqrt(((ci->x - co->x) * (ci->x - co->x)) + ((ci->y - co->y) * (ci->y - co->y)));
 			if (dist <= ci->radius + co->radius) {
-				//cout << "\t\tHIT";
-				
 				co->e->hasBeenHit(co, ci);
-				
-				/*Event *ev = new Event();
-				ev->type = ENTITY_HIT;
-				ev->e1 = ci->e;
-				ev->e2 = co->e;
-				fireEvent(ev);*/
 			}
-			
-			//cout << "\n";
 		}
 		
 		free(tests);

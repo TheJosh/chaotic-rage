@@ -84,14 +84,12 @@ void Particle::update(int delta)
 	this->x = pointPlusAngleX(this->x, this->angle, ppsDeltaf(this->speed, delta));
 	this->y = pointPlusAngleY(this->y, this->angle, ppsDeltaf(this->speed, delta));
 	
-	this->x += getRandom(-3, 3);
-	this->y += getRandom(-3, 3);
+	//this->x += getRandom(-3, 3);
+	//this->y += getRandom(-3, 3);
 	
-	if (this->unit_damage + this->wall_damage == 0) return;
-	
-	
-	this->st->addCollideBox((int) this->x, (int) this->y, 2, this, true);
-	
+	if (this->unit_damage + this->wall_damage > 0) {
+		this->st->addCollideBox((int) this->x, (int) this->y, 2, this, true);
+	}
 	
 	if (this->anim->isDone()) this->anim->next();
 }
