@@ -546,7 +546,7 @@ void RenderOpenGL::render()
 	}
 	
 	// Testing: show collide boxes
-	for (list<CollideBox*>::iterator it = st->collideboxes.begin(); it != st->collideboxes.end(); it++) {
+	/*for (list<CollideBox*>::iterator it = st->collideboxes.begin(); it != st->collideboxes.end(); it++) {
 		CollideBox *c = (*it);
 		
 		glPushMatrix();
@@ -556,7 +556,7 @@ void RenderOpenGL::render()
 		renderAnimPlay(this->test);
 		
 		glPopMatrix();
-	}
+	}*/
 	
 	
 	// HUD

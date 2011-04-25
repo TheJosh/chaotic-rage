@@ -30,6 +30,7 @@ class MapGrid
 		vector<MapGridCell*> cells;
 		int num_cells;
 		int row_width;
+		int row_height;
 		
 	public:
 		MapGrid(int map_width, int map_height);
@@ -56,7 +57,7 @@ class MapGrid
 		* Good for searching
 		* Don't forget to 'delete' the result when you are done.
 		**/
-		list<CollideBox*>* getCollidesMC(int x, int y, int radius);
+		list<CollideBox*>* getCollidesMC(float x, float y, float radius);
 };
 
 
@@ -67,8 +68,7 @@ class MapGridCell
 {
 	public:
 		list<CollideBox*> collideboxes;
-		
-	// TODO: Destructor to delete all refs
+		~MapGridCell();
 };
 
 

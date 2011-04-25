@@ -14,9 +14,10 @@ using namespace std;
 MapGrid::MapGrid(int map_width, int map_height)
 {
 	row_width = (int) ceil(map_width / MAPGRID_CELL_SIZE);
-	num_cells = row_width * (int) ceil(map_height / MAPGRID_CELL_SIZE);
+	row_height = (int) ceil(map_height / MAPGRID_CELL_SIZE);
+	num_cells = row_width * row_height;
 	
-	for (int i = 0; i < num_cells; i++) {
+	for (int i = 0; i <= num_cells; i++) {
 		this->cells.push_back(new MapGridCell());
 	}
 }
@@ -28,14 +29,23 @@ MapGrid::~MapGrid()
 	}
 }
 
+MapGridCell::~MapGridCell() {
+}
+
 
 /**
 * Good for adding
 **/
 MapGridCell* MapGrid::getCellMC(int x, int y)
 {
-	x = (int) ceil(x / MAPGRID_CELL_SIZE);
-	y = (int) ceil(y / MAPGRID_CELL_SIZE);
+	cout << "getCellMC: " << x << ", " << y << "\n";
+	
+	x = (int) floor(x / MAPGRID_CELL_SIZE);
+	y = (int) floor(y / MAPGRID_CELL_SIZE);
+	
+	cout << "         : " << x << ", " << y << "\n";
+	
+	cout << "         : " << (y * row_width + x) << "\n";
 	
 	return this->cells[y * row_width + x];
 }
@@ -44,20 +54,27 @@ MapGridCell* MapGrid::getCellMC(int x, int y)
 /**
 * Good for searching
 **/
-list<CollideBox*>* MapGrid::getCollidesMC(int x, int y, int radius)
+list<CollideBox*>* MapGrid::getCollidesMC(float x, float y, float radius)
 {
 	list<CollideBox*> * ret = new list<CollideBox*>();
 	
-	x = (int) ceil(x / MAPGRID_CELL_SIZE);
-	y = (int) ceil(y / MAPGRID_CELL_SIZE);
-	radius = (int) ceil(radius / MAPGRID_CELL_SIZE);
+	int x1 = (int) floor((x - radius) / MAPGRID_CELL_SIZE);
+	int y1 = (int) floor((y - radius) / MAPGRID_CELL_SIZE);
+	int x2 = (int) floor((x + radius) / MAPGRID_CELL_SIZE);
+	int y2 = (int) floor((y + radius) / MAPGRID_CELL_SIZE);
 	
-	int x2 = x + radius;
-	int y2 = y + radius;
+	if (x1 < 0) x1 = 0;
+	if (y1 < 0) y1 = 0;
+	if (x2 > row_width) x2 = row_width;
+	if (y2 > row_height) y2 = row_height;
 	
-	for (x -= radius; x < x2; x++) {
-		for (y -= radius; y < y2; y++) {
-			ret->insert (ret->end(), this->cells[y * row_width + x]->collideboxes.begin(), this->cells[y * row_width + x]->collideboxes.end());
+	for (x = x1; x < x2; x++) {
+		for (y = y1; y < y2; y++) {
+			ret->insert (
+				ret->end(),
+				this->cells[y * row_width + x]->collideboxes.begin(),
+				this->cells[y * row_width + x]->collideboxes.end()
+			);
 		}
 	}
 	

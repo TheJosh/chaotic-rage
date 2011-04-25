@@ -34,7 +34,7 @@ void GameLogic::handleEvent(Event * ev)
 		this->spawn_timer = 0;
 		this->num_zomb = 0;
 		this->num_killed = 0;
-		this->num_wanted_zomb = 10;
+		this->num_wanted_zomb = 100;
 		
 	} else if (ev->type == UNIT_DIED) {
 		this->num_killed++;
@@ -103,7 +103,7 @@ NPC * GameLogic::spawnNPC(UnitClass *uc, Faction fac)
 	p = new NPC(uc, st);
 	st->addUnit(p);
 	
-	p->pickupWeapon(mod->getWeaponType(3));
+	p->pickupWeapon(mod->getWeaponType(1));
 	p->setWeapon(1);
 	
 	Zone *z = map->getSpawnZone(fac);
