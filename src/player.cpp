@@ -5,6 +5,7 @@
 #include <iostream>
 #include <SDL.h>
 #include "rage.h"
+#include <math.h>
 
 using namespace std;
 
@@ -42,7 +43,17 @@ void Player::keyRelease(int idx)
 **/
 void Player::angleFromMouse(int x, int y)
 {
-	this->desired_angle_aim += (x - 400) / 10;		// 2 is the 'sensitivity' value
+	
+	float changeDist = x-400;
+	changeDist /= 8;
+	
+	float changeAngle = asin(changeDist*(3.142/180.0))*(180/3.142);
+	
+		this->angle_aim = this->angle_aim - changeAngle;
+			
+				
+	 
+	cout << "change" << changeDist << "\n" <<  "change angle B " << changeAngle << "\n" << "change in A" << changeAngle << "\n" ;
 }
 
 
