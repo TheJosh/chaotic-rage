@@ -80,11 +80,10 @@ void AudioSDLMixer::play()
 		this->audio_stop = false;
 	}
 	
-	// Modify this to WORK!
-	/*AreaType * at = this->st->getMod(0)->getAreaType(0);
-	if (at->walk_sounds.size() > 0) {
-		Mix_PlayChannel(0, at->walk_sounds[0], 1);
-	}*/
+	
+	// TODO: Stuff
+	
+	
 }
 
 
