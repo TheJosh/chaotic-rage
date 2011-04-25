@@ -64,6 +64,10 @@ void GameLogic::update(int delta)
 		this->player_spawn = -1;
 		
 	}
+	
+	if (this->num_zomb == this->num_killed) {
+		cout << "All zombies are dead\n";
+	}
 }
 
 

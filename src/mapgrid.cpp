@@ -62,8 +62,8 @@ list<CollideBox*>* MapGrid::getCollidesMC(float x, float y, float radius)
 	if (x2 > row_width) x2 = row_width;
 	if (y2 > row_height) y2 = row_height;
 	
-	for (x = x1; x < x2; x++) {
-		for (y = y1; y < y2; y++) {
+	for (x = x1; x <= x2; x++) {
+		for (y = y1; y <= y2; y++) {
 			ret->insert (
 				ret->end(),
 				this->cells[y * row_width + x]->collideboxes.begin(),

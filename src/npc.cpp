@@ -51,11 +51,11 @@ void NPC::update(int delta)
 		
 		this->desired_angle_aim = getRandom(vals[1] - 50, vals[1] + 50);
 		
-		if (firing) {
-			this->endFiring();
-		} else {
-			this->beginFiring();
-		}
+		//if (firing) {
+		//	this->endFiring();
+		//} else {
+		//	this->beginFiring();
+		//}
 	}
 	
 	this->desired_angle_move = getRandom(vals[1] - 10, vals[1] + 10);

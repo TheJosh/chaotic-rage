@@ -43,7 +43,7 @@ void Player::keyRelease(int idx)
 **/
 void Player::angleFromMouse(int x, int y)
 {
-	float sensitivity = 10.0; // 1 = slow, 10 = nuts
+	float sensitivity = 5.0; // 1 = slow, 10 = nuts
 	
 	float changeDist = x-400;
 	changeDist /= (10.0/sensitivity);

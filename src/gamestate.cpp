@@ -150,10 +150,11 @@ void GameState::update(int delta)
 **/
 void GameState::doCollisions()
 {
-	float dist;
+	int dist;
+	int search;
 	
-//	cout << "\033[2J\033[1;1H";
-//	cout << "Num collide boxes: " << this->collideboxes.size() << "\n";
+	cout << "\033[2J\033[1;1H";
+	cout << "Num collide boxes: " << this->collideboxes.size() << "\n";
 	
 	for (list<CollideBox*>::iterator ito = this->collideboxes.begin(); ito != this->collideboxes.end(); ito++) {
 		CollideBox *co = (*ito);
@@ -169,63 +170,16 @@ void GameState::doCollisions()
 			
 			if (ci == co) continue;
 			
-			dist = sqrt(((ci->x - co->x) * (ci->x - co->x)) + ((ci->y - co->y) * (ci->y - co->y)));
-			if (dist <= ci->radius + co->radius) {
+			dist = (int) floor(sqrt(((ci->x - co->x) * (ci->x - co->x)) + ((ci->y - co->y) * (ci->y - co->y))));
+			search = ci->radius + co->radius;
+			
+			if (dist <= (ci->radius + co->radius)) {
 				co->e->hasBeenHit(co, ci);
 			}
 		}
 		
 		free(tests);
 	}
-}
-
-
-/**
-* Returns an AreaType if we hit a wall, or NULL if we haven't
-*
-* Makes use of the AreaType check radius, as well as the checking objects'
-* check radius.
-*
-* @todo Think about how this works with the new collission stuff,
-*       Rehash away if nessasary
-**/
-Wall * GameState::checkHitWall(float x, float y, int check_radius)
-{
-	vector<Wall*>::iterator it;
-	for (it = this->walls.begin(); it < this->walls.end(); it++) {
-		Wall *e = (*it);
-		if (e->health == 0) continue;
-		
-		int dist = (int) ceil(sqrt(((x - e->x) * (x - e->x)) + ((y - e->y) * (y - e->y))));
-		
-		if (dist < (check_radius + e->wt->check_radius)) {
-			return e;
-		}
-	}
-	
-	return NULL;
-}
-
-/**
-* Basically the same as above
-*
-* @todo Think about how this works with the new collission stuff,
-*       Rehash away if nessasary
-**/
-Unit * GameState::checkHitUnit(float x, float y, int check_radius)
-{
-	vector<Unit*>::iterator it;
-	for (it = this->units.begin(); it < this->units.end(); it++) {
-		Unit *e = (*it);
-		
-		int dist = (int) ceil(sqrt(((x - e->x) * (x - e->x)) + ((y - e->y) * (y - e->y))));
-		
-		if (dist < (check_radius + 30)) {
-			return e;
-		}
-	}
-	
-	return NULL;
 }
 
 

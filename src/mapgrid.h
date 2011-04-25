@@ -14,7 +14,7 @@ using namespace std;
 /**
 * The cell size, in pixels
 **/
-#define MAPGRID_CELL_SIZE 20.0
+#define MAPGRID_CELL_SIZE 60.0
 
 
 /**
