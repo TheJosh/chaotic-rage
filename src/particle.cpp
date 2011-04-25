@@ -35,39 +35,34 @@ Particle::~Particle()
 	delete (this->anim);
 }
 
-/**
-* Handle events
-**/
-void Particle::handleEvent(Event * ev)
+void Particle::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 {
-	if (ev->type == ENTITY_HIT) {
-		Entity *e = (ev->e1 == this ? ev->e2 : ev->e1);
+	Entity *e = theirs->e;
+	
+	if (e->klass() == UNIT) {
+		// We hit a unit
+		if (this->unit_damage > 0) {
+			((Unit*)e)->takeDamage(this->unit_damage);
+			
+			this->unit_hits--;
+			if (this->unit_hits == 0) this->hasDied();
 		
-		if (e->klass() == UNIT) {
-			// We hit a unit
-			if (this->unit_damage > 0) {
-				((Unit*)e)->takeDamage(this->unit_damage);
-				
-				this->unit_hits--;
-				if (this->unit_hits == 0) this->hasDied();
-			
-			} else {
-				this->speed = 0;
-			}
-		
-		} else if (e->klass() == WALL) {
-			// We hit a wall
-			if (this->wall_damage > 0) {
-				((Wall*)e)->takeDamage(this->wall_damage);
-				
-				this->wall_hits--;
-				if (this->wall_hits == 0) this->hasDied();
-			
-			} else {
-				this->speed = 0;
-			}
-			
+		} else {
+			this->speed = 0;
 		}
+	
+	} else if (e->klass() == WALL) {
+		// We hit a wall
+		if (this->wall_damage > 0) {
+			((Wall*)e)->takeDamage(this->wall_damage);
+			
+			this->wall_hits--;
+			if (this->wall_hits == 0) this->hasDied();
+		
+		} else {
+			this->speed = 0;
+		}
+		
 	}
 }
 

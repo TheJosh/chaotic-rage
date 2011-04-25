@@ -42,20 +42,13 @@ Unit::~Unit()
 }
 
 
-/**
-* Handle events
-**/
-void Unit::handleEvent(Event * ev)
+void Unit::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 {
-	if (ev->type == ENTITY_HIT) {
-		Entity *e = (ev->e1 == this ? ev->e2 : ev->e1);
-		
-		if (e->klass() == WALL) {
-			this->x = this->old_x;
-			this->y = this->old_y;
-			this->speed = 0;
-			this->setState(UNIT_STATE_STATIC);
-		}
+	if (theirs->e->klass() == WALL) {
+		this->x = this->old_x;
+		this->y = this->old_y;
+		this->speed = 0;
+		this->setState(UNIT_STATE_STATIC);
 	}
 }
 

@@ -52,13 +52,6 @@ void Wall::getAnimModel(AnimPlay * list [SPRITE_LIST_LEN])
 	list[1] = NULL;
 }
 
-/**
-* Handle events
-**/
-void Wall::handleEvent(Event * ev)
-{
-}
-
 
 
 /**

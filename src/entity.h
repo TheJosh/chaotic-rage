@@ -24,7 +24,7 @@ enum EntityClass {
 #define SPRITE_LIST_LEN 4
 
 
-class Entity : public EventListener
+class Entity
 {
 	public:
 		virtual EntityClass klass() const = 0;

@@ -102,21 +102,6 @@ UNIT_EXIT_ZONE
 	a1 = The zone id
 	
 	
--------- PARTICLES --------
-PART_HIT_WALL
-	A particle has hit a wall
-	
-	e1 = The particle
-	e2 = The wall which was hit
-	
-	
-PART_HIT_UNIT
-	A particle has hit a unit
-	
-	e1 = The particle
-	e2 = The unit which was hit
-	
-	
 -------- GAME --------
 GAME_STARTED
 	The game has just started
@@ -126,18 +111,3 @@ GAME_ENDED
 	The game has just ended
 	
 	
--------- ENTITIES --------
-ENTITY_HIT
-	An entity has hit another entity
-	
-	e1 = Entity involved in collision #1
-	e2 = Entity involved in collision #2
-	
-	
-ENTITY_UNHIT
-	An entity has detatched themself from another entity
-	
-	e1 = Entity involved in collision #1
-	e2 = Entity involved in collision #2
-
-

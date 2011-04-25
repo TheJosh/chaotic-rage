@@ -21,33 +21,15 @@ NPC::~NPC()
 }
 
 
-/**
-* Hit player; attack!
-**/
-void NPC::handleEvent(Event * ev)
+void NPC::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 {
-	if (ev->type == ENTITY_HIT) {
-		
-		
-		// This should be moved into a function in the GameLogic class
-		Entity *e = (ev->e1 == this ? ev->e2 : ev->e1);
-		
-		if (e->klass() == UNIT && ((Unit*)e)->fac != this->fac) {
-			this->beginFiring();
-			
-		}
-		// End of stuff to move
-		
-		
-	} else if (ev->type == ENTITY_UNHIT) {
-		Entity *e = (ev->e1 == this ? ev->e2 : ev->e1);
-		
-		if (e->klass() == UNIT) {
-			this->endFiring();
-		}
-	}
+	Unit::hasBeenHit(ours, theirs);
 	
-	Unit::handleEvent(ev);
+	// This should be moved into a function in the GameLogic class
+	/*if (e->klass() == UNIT && ((Unit*)e)->fac != this->fac) {
+		this->beginFiring();	
+	}*/
+	// End of stuff to move
 }
 
 

@@ -175,13 +175,13 @@ void GameState::doCollisions()
 			if (dist <= ci->radius + co->radius) {
 				cout << "\t\tHIT";
 				
-				ci->e->hasBeenHit(co, ci);
+				co->e->hasBeenHit(co, ci);
 				
-				Event *ev = new Event();
+				/*Event *ev = new Event();
 				ev->type = ENTITY_HIT;
 				ev->e1 = ci->e;
 				ev->e2 = co->e;
-				fireEvent(ev);
+				fireEvent(ev);*/
 			}
 			
 			cout << "\n";

@@ -32,8 +32,5 @@ class Wall: public Entity
 		virtual void update(int delta);
 		
 	public:
-		virtual void handleEvent(Event * ev);
-		
-	public:
 		void takeDamage(int damage);
 };

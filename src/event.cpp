@@ -23,9 +23,6 @@ Event::Event()
 **/
 void fireEvent (Event * ev)
 {
-	if (ev->e1 != NULL) ev->e1->handleEvent(ev);
-	if (ev->e2 != NULL) ev->e2->handleEvent(ev);
-	
 	getGameState()->audio->handleEvent(ev);
 	getGameState()->logic->handleEvent(ev);
 	

@@ -59,9 +59,7 @@ class Unit: public Entity
 		virtual void update(int delta) = 0;
 		virtual int getWidth() { return this->uc->width; };
 		virtual int getHeight() { return this->uc->height; };
-		
-	public:
-		virtual void handleEvent(Event * ev);
+		virtual void hasBeenHit(CollideBox * ours, CollideBox * theirs);
 		
 	public:
 		void beginFiring();
