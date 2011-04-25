@@ -16,17 +16,19 @@ class HUD {
 		const static int EVENT_PREVENT = 2;
 	
 	public:
+		GameState *st;
+		
+	private:
 		bool weapon_menu;
 		bool spawn_menu;
-		GameState *st;
 		
 	public:
 		HUD();
-	
-	public:
 		void render(Render * render);
 		int handleEvent(SDL_Event *event);
 		
-	private:
-		void tryChangeWeapon(int x, int y);
+	public:
+		void showSpawnMenu();
+		void hideSpawnMenu();
+	
 };

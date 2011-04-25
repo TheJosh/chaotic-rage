@@ -17,6 +17,22 @@ HUD::HUD()
 }
 
 
+void HUD::showSpawnMenu()
+{
+	spawn_menu = true;
+	this->st->reset_mouse = false;
+	SDL_ShowCursor(SDL_ENABLE);
+}
+
+void HUD::hideSpawnMenu()
+{
+	spawn_menu = false;
+	
+	this->st->reset_mouse = true;
+	SDL_ShowCursor(SDL_DISABLE);
+}
+
+
 /**
 * Render the heads up display
 **/
@@ -27,6 +43,7 @@ void HUD::render(Render * render)
 		for (int i = 0; i <= 1; i++) {
 			UnitClass *uc = st->getMod(0)->getUnitClass(i);
 			UnitClassState *ucs = uc->getState(UNIT_STATE_STATIC);
+			if (! uc->playable) continue;
 			
 			glPushMatrix();
 			glTranslatef(100 + i * 100, 500, 0);

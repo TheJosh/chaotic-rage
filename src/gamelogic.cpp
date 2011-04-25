@@ -47,19 +47,19 @@ void GameLogic::update(int delta)
 {
 	spawn_timer += delta;
 	if (this->num_zomb < this->num_wanted_zomb && this->spawn_timer > 250) {
-		this->spawnNPC(mod->getUnitClass(1), FACTION_TEAM2);
+		this->spawnNPC(mod->getUnitClass(2), FACTION_TEAM2);
 		this->num_zomb++;
 		this->spawn_timer -= 250;
 	}
 	
 	if (st->curr_player == NULL && this->player_spawn == -1) {
 		// Player has died, show spawn menu
-		st->hud->spawn_menu = true;
+		st->hud->showSpawnMenu();
 		this->player_spawn = st->game_time;
 		
 	} else if (st->curr_player == NULL && st->game_time - this->player_spawn > 5000) {
 		// Spawn time over, create player
-		st->hud->spawn_menu = false;
+		st->hud->hideSpawnMenu();
 		st->curr_player = this->spawnPlayer(mod->getUnitClass(0), FACTION_TEAM1);
 		this->player_spawn = -1;
 		

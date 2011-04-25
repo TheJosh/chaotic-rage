@@ -44,6 +44,8 @@ GameState::GameState()
 	
 	this->render = NULL;
 	
+	this->reset_mouse = true;
+	
 	g_st = this;
 }
 

@@ -49,7 +49,7 @@ void gameLoop(GameState *st, Render *render)
 		st->render->render();
 		st->audio->play();
 		
-		SDL_WarpMouse(400, 30);
+		if (st->reset_mouse) SDL_WarpMouse(400, 30);
 		
 		if (delta < 5) SDL_Delay(10);	// give up some CPU time if we have some to spare
 	}

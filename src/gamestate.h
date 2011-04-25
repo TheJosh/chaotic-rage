@@ -39,6 +39,7 @@ class GameState
 		Audio* audio;
 		GameLogic* logic;
 		MapGrid* collides;
+		bool reset_mouse;
 		
 	public:
 		GameState();
