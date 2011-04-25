@@ -176,12 +176,13 @@ void Unit::getAnimModel(AnimPlay * list [SPRITE_LIST_LEN])
 
 void Unit::getSounds(Sound * list [SPRITE_LIST_LEN])
 {
+	int i = 0;
+	
 	if (this->firing && this->weapon != NULL) {
-		list[0] = this->weapon->sound_fire;
-		list[1] = NULL;
-	} else {
-		list[0] = NULL;
+		list[i++] = this->weapon->sound_fire;
 	}
+	
+	list[i] = NULL;
 }
 
 
