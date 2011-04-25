@@ -52,6 +52,9 @@ bool Mod::load()
 	songs = loadAllSongs(this);
 	if (songs == NULL) return false;
 	
+	sounds = loadAllSounds(this);
+	if (sounds == NULL) return false;
+	
 	walltypes = loadAllWallTypes(this);
 	if (walltypes == NULL) return false;
 	
@@ -82,6 +85,7 @@ AnimModel * Mod::getAnimModel(string name)
 	return NULL;
 }
 
+
 /**
 * Gets an areatype by ID
 **/
@@ -90,6 +94,7 @@ AreaType * Mod::getAreaType(int id)
 	if (id < 0 or ((unsigned int) id) > areatypes->size()) return NULL;
 	return areatypes->at(id);
 }
+
 
 /**
 * Gets a particle type by ID
@@ -100,6 +105,7 @@ ParticleType * Mod::getParticleType(int id)
 	return particletypes->at(id);
 }
 
+
 /**
 * Gets a particle generator by ID
 **/
@@ -108,6 +114,7 @@ ParticleGenType * Mod::getParticleGenType(int id)
 	if (id < 0 or ((unsigned int) id) > pgeneratortypes->size()) return NULL;
 	return pgeneratortypes->at(id);
 }
+
 
 /**
 * Gets a unitclass by ID
@@ -118,6 +125,7 @@ UnitClass * Mod::getUnitClass(int id)
 	return unitclasses->at(id);
 }
 
+
 /**
 * Gets a song by ID
 **/
@@ -126,6 +134,28 @@ Song * Mod::getSong(int id)
 	if (id < 0 or ((unsigned int) id) > songs->size()) return NULL;
 	return songs->at(id);
 }
+
+
+/**
+* Gets a sound by ID
+**/
+Sound * Mod::getSound(int id)
+{
+	if (id < 0 or ((unsigned int) id) > sounds->size()) return NULL;
+	return sounds->at(id);
+}
+
+Sound * Mod::getSound(string name)
+{
+	if (name == "") return NULL;
+	
+	int i;
+	for (i = sounds->size() - 1; i >= 0; --i) {
+		if (sounds->at(i)->name == name) return sounds->at(i);
+	}
+	return NULL;
+}
+
 
 /**
 * Gets a wall type by ID
@@ -146,6 +176,7 @@ WallType * Mod::getWallType(string name)
 	}
 	return NULL;
 }
+
 
 /**
 * Gets a weapon type by ID

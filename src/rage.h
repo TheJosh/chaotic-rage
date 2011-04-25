@@ -71,6 +71,7 @@ class ParticleType;
 class Player;
 class Render;
 class Song;
+class Sound;
 class Unit;
 class UnitClass;
 class Wall;
@@ -98,6 +99,7 @@ class Zone;
 #include "particletype.h"
 #include "unitclass.h"
 #include "song.h"
+#include "sound.h"
 #include "walltype.h"
 #include "weapontype.h"
 

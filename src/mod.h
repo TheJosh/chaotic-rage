@@ -18,6 +18,7 @@ class Mod {
 		vector<ParticleGenType*> * pgeneratortypes;
 		vector<UnitClass*> * unitclasses;
 		vector<Song*> * songs;
+		vector<Sound*> * sounds;
 		vector<WallType*> * walltypes;
 		vector<WeaponType*> * weapontypes;
 		
@@ -42,9 +43,11 @@ class Mod {
 		ParticleType * getParticleType(int id);
 		ParticleGenType * getParticleGenType(int id);
 		Song * getSong(int id);
+		Sound * getSound(int id);
 		WallType * getWallType(int id);
 		WeaponType * getWeaponType(int id);
 		
 		AnimModel * getAnimModel(string name);
+		Sound * getSound(string name);
 		WallType * getWallType(string name);
 };

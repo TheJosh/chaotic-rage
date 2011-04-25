@@ -10,23 +10,19 @@
 using namespace std;
 
 
-class WeaponType
+class Sound
 {
 	public:
-		ParticleGenType *pg;
-		SpritePtr icon_large;
-		bool melee;
-		int damage;
-		
-		Sound *sound_fire;
+		// from data file
+		string name;
 		
 		// dynamic
 		int id;
+		AudioPtr sound;
 		
 	public:
-		WeaponType();
+		Sound();
 };
 
 
-vector<WeaponType*> * loadAllWeaponTypes(Mod * mod);
-
+vector<Sound*> * loadAllSounds(Mod * mod);

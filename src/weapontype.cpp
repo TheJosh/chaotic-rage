@@ -23,6 +23,7 @@ static cfg_opt_t weapon_opts[] =
 	CFG_INT((char*) "particlegen", -1, CFGF_NONE),
 	CFG_INT((char*) "melee", 0, CFGF_NONE),
 	CFG_INT((char*) "damage", 0, CFGF_NONE),
+	CFG_STR((char*) "sound_fire", (char*)"", CFGF_NONE),
 	CFG_END()
 };
 
@@ -121,6 +122,11 @@ WeaponType* loadWeaponType(cfg_t *cfg_weapon, Mod * mod)
 	filename.append(cfg_getstr(cfg_weapon, "name"));
 	filename.append("/icon_large.png");
 	wt->icon_large = mod->st->render->loadSprite(filename, mod);
+	
+	// Load firing sound
+	char * tmp = cfg_getstr(cfg_weapon, "sound_fire");
+	if (tmp == NULL) return NULL;
+	wt->sound_fire = mod->getSound(tmp);
 	
 	return wt;
 }
