@@ -13,7 +13,7 @@ using namespace std;
 class Mod {
 	private:
 		vector<AnimModel*> * animmodels;
-		vector<AreaType*> * areatypes;
+		vector<FloorType*> * areatypes;
 		vector<ParticleType*> * particletypes;
 		vector<ParticleGenType*> * pgeneratortypes;
 		vector<UnitType*> * unitclasses;
@@ -38,7 +38,7 @@ class Mod {
 		bool load();
 		
 		AnimModel * getAnimModel(int id);
-		AreaType * getAreaType(int id);
+		FloorType * getFloorType(int id);
 		UnitType * getUnitType(int id);
 		ParticleType * getParticleType(int id);
 		ParticleGenType * getParticleGenType(int id);

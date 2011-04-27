@@ -10,22 +10,22 @@
 using namespace std;
 
 
-class AreaTypeDamage {
+class FloorTypeDamage {
 	public:
 		int health;
 		AnimModel * model;
 };
 
-class AreaType
+class FloorType
 {
 	public:
 		// from data file
 		string name;
 		bool stretch;
 		bool wall;
-		AreaType * ground_type;
+		FloorType * ground_type;
 		
-		vector <AreaTypeDamage *> damage_models;
+		vector <FloorTypeDamage *> damage_models;
 		vector <AudioPtr> walk_sounds;
 		
 		AnimModel * model;
@@ -35,8 +35,8 @@ class AreaType
 		SpritePtr surf;
 		
 	public:
-		AreaType();
+		FloorType();
 };
 
 
-vector<AreaType*> * loadAllAreaTypes(Mod * mod);
+vector<FloorType*> * loadAllFloorTypes(Mod * mod);

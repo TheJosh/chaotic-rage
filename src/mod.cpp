@@ -37,7 +37,7 @@ bool Mod::load()
 		animmodels->at(i)->next = this->getAnimModel(animmodels->at(i)->next_name);
 	}
 	
-	areatypes = loadAllAreaTypes(this);
+	areatypes = loadAllFloorTypes(this);
 	if (areatypes == NULL) return false;
 	
 	particletypes = loadAllParticleTypes(this);
@@ -89,7 +89,7 @@ AnimModel * Mod::getAnimModel(string name)
 /**
 * Gets an areatype by ID
 **/
-AreaType * Mod::getAreaType(int id)
+FloorType * Mod::getFloorType(int id)
 {
 	if (id < 0 or ((unsigned int) id) > areatypes->size()) return NULL;
 	return areatypes->at(id);

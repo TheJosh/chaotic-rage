@@ -40,7 +40,7 @@ static cfg_opt_t opts[] =
 };
 
 
-Area::Area(AreaType * type)
+Area::Area(FloorType * type)
 {
 	this->type = type;
 	
@@ -85,7 +85,7 @@ int Map::load(string name, Render * render)
 	this->height = 2000;
 	
 	// Default area
-	a = new Area(this->st->getMod(0)->getAreaType(0));
+	a = new Area(this->st->getMod(0)->getFloorType(0));
 	a->x = 0;
 	a->y = 0;
 	a->width = this->width;
@@ -193,7 +193,7 @@ void Map::setDataHP(int x, int y, int newhp)
 	if (x >= this->height) return;
 	
 	if (newhp <= 0) {
-		AreaType *at = this->data[x * this->height + y].type;
+		FloorType *at = this->data[x * this->height + y].type;
 		
 		this->data[x * this->height + y].hp = 0;
 		this->data[x * this->height + y].type = at->ground_type;

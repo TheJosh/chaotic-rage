@@ -15,7 +15,7 @@ using namespace std;
 
 
 typedef struct {
-	AreaType * type;
+	FloorType * type;
 	Uint8 hp;
 	char pad[3];
 } data_pixel;
@@ -28,12 +28,12 @@ class Area {
 		int width;
 		int height;
 		int angle;
-		AreaType * type;
+		FloorType * type;
 		AnimPlay * anim;
 		int health;
 		
 	public:
-		Area(AreaType * type);
+		Area(FloorType * type);
 		~Area();
 };
 

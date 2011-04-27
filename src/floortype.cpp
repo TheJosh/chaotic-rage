@@ -12,7 +12,7 @@ using namespace std;
 
 
 /* Functions */
-AreaType* loadAreaType(cfg_t *cfg_areatype, Mod * mod);
+FloorType* loadFloorType(cfg_t *cfg_areatype, Mod * mod);
 
 
 /* Config file definition */
@@ -48,7 +48,7 @@ static cfg_opt_t opts[] =
 
 
 
-AreaType::AreaType()
+FloorType::FloorType()
 {
 	this->surf = NULL;
 	this->ground_type = NULL;
@@ -58,9 +58,9 @@ AreaType::AreaType()
 /**
 * Loads the area types
 **/
-vector<AreaType*> * loadAllAreaTypes(Mod * mod)
+vector<FloorType*> * loadAllFloorTypes(Mod * mod)
 {
-	vector<AreaType*> * areatypes = new vector<AreaType*>();
+	vector<FloorType*> * areatypes = new vector<FloorType*>();
 	
 	char *buffer;
 	cfg_t *cfg, *cfg_areatype;
@@ -86,7 +86,7 @@ vector<AreaType*> * loadAllAreaTypes(Mod * mod)
 	for (j = 0; j < num_types; j++) {
 		cfg_areatype = cfg_getnsec(cfg, "areatype", j);
 		
-		AreaType* at = loadAreaType(cfg_areatype, mod);
+		FloorType* at = loadFloorType(cfg_areatype, mod);
 		if (at == NULL) {
 			cerr << "Bad area type at index " << j << endl;
 			return NULL;
@@ -109,9 +109,9 @@ vector<AreaType*> * loadAllAreaTypes(Mod * mod)
 /**
 * Loads a single area type
 **/
-AreaType* loadAreaType(cfg_t *cfg_areatype, Mod * mod)
+FloorType* loadFloorType(cfg_t *cfg_areatype, Mod * mod)
 {
-	AreaType* at;
+	FloorType* at;
 	string filename;
 	int size;
 	
@@ -119,7 +119,7 @@ AreaType* loadAreaType(cfg_t *cfg_areatype, Mod * mod)
 	filename.append(cfg_getstr(cfg_areatype, "image"));
 	filename.append("-fr0.png");
 	
-	at = new AreaType();
+	at = new FloorType();
 	at->name = cfg_getstr(cfg_areatype, "name");
 	at->surf = mod->st->render->loadSprite(filename.c_str(), mod);
 	at->stretch = cfg_getint(cfg_areatype, "stretch");
@@ -138,7 +138,7 @@ AreaType* loadAreaType(cfg_t *cfg_areatype, Mod * mod)
 		char * tmp = cfg_getstr(cfg_damage, "model");
 		if (tmp == NULL) return NULL;
 		
-		AreaTypeDamage * dam = new AreaTypeDamage();
+		FloorTypeDamage * dam = new FloorTypeDamage();
 		
 		dam->health = cfg_getint(cfg_damage, "health");
 		dam->model = mod->getAnimModel(tmp);
@@ -159,7 +159,7 @@ AreaType* loadAreaType(cfg_t *cfg_areatype, Mod * mod)
 	}
 	
 	// TODO: move to after the mod has loaded
-	//AreaType *ground = mod->getAreaType(cfg_getint(cfg_areatype, "ground_type"));
+	//FloorType *ground = mod->getFloorType(cfg_getint(cfg_areatype, "ground_type"));
 	//if (ground != NULL && ground->wall == 0) {
 	//	at->ground_type = ground;
 	//}

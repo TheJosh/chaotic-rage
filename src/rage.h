@@ -49,7 +49,7 @@ enum Faction {
 
 class AnimModel;
 class AnimPlay;
-class AreaType;
+class FloorType;
 class Audio;
 class CollideBox;
 class Entity;
@@ -95,7 +95,7 @@ class Zone;
 
 #include "animmodel.h"
 #include "animplay.h"
-#include "areatype.h"
+#include "floortype.h"
 #include "particletype.h"
 #include "unittype.h"
 #include "song.h"
