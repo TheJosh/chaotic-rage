@@ -1,6 +1,6 @@
-#line 2 "build/objload.cpp"
+#line 2 "objload.cpp"
 
-#line 4 "build/objload.cpp"
+#line 4 "objload.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -513,8 +513,8 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "src/objload.l"
-#line 2 "src/objload.l"
+#line 1 "objload.l"
+#line 2 "objload.l"
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <vector>
@@ -529,7 +529,7 @@ char *yytext;
 
 
 
-#line 533 "build/objload.cpp"
+#line 533 "objload.cpp"
 
 #define INITIAL 0
 #define vertex 1
@@ -724,7 +724,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 27 "src/objload.l"
+#line 27 "objload.l"
 
 
 	float coordsf[3];
@@ -736,7 +736,7 @@ YY_DECL
 	
 	
 	/* Vertex */
-#line 740 "build/objload.cpp"
+#line 740 "objload.cpp"
 
 	if ( !(yy_init) )
 		{
@@ -822,23 +822,23 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 38 "src/objload.l"
+#line 38 "objload.l"
 {BEGIN(vertex); num_coords = 0; coordsf[0] = coordsf[1] = coordsf[2] = 0.0;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 40 "src/objload.l"
+#line 40 "objload.l"
 {num_coords++; if (num_coords > 2) return NULL; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 41 "src/objload.l"
+#line 41 "objload.l"
 {coordsf[num_coords] = atof(yytext);}
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 42 "src/objload.l"
+#line 42 "objload.l"
 {
 		Vertex v = {coordsf[0], coordsf[1], coordsf[2]};
 		ret->vertexes.push_back(v);
@@ -848,23 +848,23 @@ YY_RULE_SETUP
 /* Texture */
 case 5:
 YY_RULE_SETUP
-#line 49 "src/objload.l"
+#line 49 "objload.l"
 {BEGIN(texture); num_coords = 0; coordsf[0] = coordsf[1] = coordsf[2] = 0.0;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 50 "src/objload.l"
+#line 50 "objload.l"
 {num_coords++; if (num_coords > 2) return NULL;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 51 "src/objload.l"
+#line 51 "objload.l"
 {coordsf[num_coords] = atof(yytext);}
 	YY_BREAK
 case 8:
 /* rule 8 can match eol */
 YY_RULE_SETUP
-#line 52 "src/objload.l"
+#line 52 "objload.l"
 {
 		TexUV v = {coordsf[0], coordsf[1]};
 		ret->texuvs.push_back(v);
@@ -874,23 +874,23 @@ YY_RULE_SETUP
 /* Normal */
 case 9:
 YY_RULE_SETUP
-#line 59 "src/objload.l"
+#line 59 "objload.l"
 {BEGIN(normal); num_coords = 0; coordsf[0] = coordsf[1] = coordsf[2] = 0.0;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 61 "src/objload.l"
+#line 61 "objload.l"
 {num_coords++; if (num_coords > 2) return NULL;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 62 "src/objload.l"
+#line 62 "objload.l"
 {coordsf[num_coords] = atof(yytext);}
 	YY_BREAK
 case 12:
 /* rule 12 can match eol */
 YY_RULE_SETUP
-#line 63 "src/objload.l"
+#line 63 "objload.l"
 {
 		Vertex v = {coordsf[0], coordsf[1], coordsf[2]};
 		ret->normals.push_back(v);
@@ -900,22 +900,22 @@ YY_RULE_SETUP
 /* Face */
 case 13:
 YY_RULE_SETUP
-#line 71 "src/objload.l"
+#line 71 "objload.l"
 {BEGIN(face); num_coords = 0; coordsi[0] = coordsi[1] = coordsi[2] = coordsi[3] = coordsi[4] = coordsi[5] = coordsi[6] = coordsi[7] = coordsi[8] = 0;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 73 "src/objload.l"
+#line 73 "objload.l"
 {num_coords++;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 74 "src/objload.l"
+#line 74 "objload.l"
 {coordsi[num_coords] = atoi(yytext);}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 75 "src/objload.l"
+#line 75 "objload.l"
 {
 	if (num_coords <= 2) {
 		num_coords = 3;
@@ -927,7 +927,7 @@ YY_RULE_SETUP
 case 17:
 /* rule 17 can match eol */
 YY_RULE_SETUP
-#line 82 "src/objload.l"
+#line 82 "objload.l"
 {
 		Face v = {coordsi[0], coordsi[3], coordsi[6], coordsi[1], coordsi[4], coordsi[7], coordsi[2], coordsi[5], coordsi[8], curr_mat};
 		ret->faces.push_back(v);
@@ -937,12 +937,12 @@ YY_RULE_SETUP
 /* Use material */
 case 18:
 YY_RULE_SETUP
-#line 90 "src/objload.l"
+#line 90 "objload.l"
 {BEGIN(material);}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 91 "src/objload.l"
+#line 91 "objload.l"
 {
 		ret->materials.push_back(yytext);
 		curr_mat = ret->materials.size() - 1;
@@ -955,18 +955,18 @@ case 20:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 99 "src/objload.l"
+#line 99 "objload.l"
 {}
 	YY_BREAK
 case 21:
 /* rule 21 can match eol */
 YY_RULE_SETUP
-#line 100 "src/objload.l"
+#line 100 "objload.l"
 {BEGIN(INITIAL);}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 101 "src/objload.l"
+#line 101 "objload.l"
 {}
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
@@ -975,17 +975,17 @@ case YY_STATE_EOF(texture):
 case YY_STATE_EOF(normal):
 case YY_STATE_EOF(face):
 case YY_STATE_EOF(material):
-#line 103 "src/objload.l"
+#line 103 "objload.l"
 {
 	return ret;
 }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 106 "src/objload.l"
+#line 106 "objload.l"
 ECHO;
 	YY_BREAK
-#line 989 "build/objload.cpp"
+#line 989 "objload.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1984,21 +1984,17 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 106 "src/objload.l"
+#line 106 "objload.l"
 
 
 
 
 WavefrontObj * loadObj(string filename)
 {
-	cout << "Loading mesh " << filename << "\n";
-	
 	yyin = fopen(filename.c_str(), "r");
 	if (yyin == NULL) {
 		return NULL;
 	}
-	
-	//yyout = NULL;
 	
 	WavefrontObj * obj = yylex();
 	obj->ibo_count = 0;

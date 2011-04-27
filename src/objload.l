@@ -108,14 +108,10 @@ SPACE [ \t]+
 
 WavefrontObj * loadObj(string filename)
 {
-	cout << "Loading mesh " << filename << "\n";
-	
 	yyin = fopen(filename.c_str(), "r");
 	if (yyin == NULL) {
 		return NULL;
 	}
-	
-	//yyout = NULL;
 	
 	WavefrontObj * obj = yylex();
 	obj->ibo_count = 0;
