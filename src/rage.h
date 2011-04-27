@@ -120,5 +120,4 @@ class Zone;
 
 #include "sdl_util.h"
 #include "SDL_rwops_zzip.h"
-#include "SDL_rotozoom.h"
 
