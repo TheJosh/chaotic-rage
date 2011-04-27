@@ -5,6 +5,9 @@
 #pragma once
 
 #include <iostream>
+#ifdef _MBCS
+	#include <windows.h>
+#endif
 #include <SDL.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
