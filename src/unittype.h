@@ -49,7 +49,7 @@ class UnitTypeState
 		int type;
 };
 
-class UnitType : public EntityType
+class UnitType
 {
 	friend UnitType* loadUnitType(cfg_t *cfg, Mod * mod);
 	

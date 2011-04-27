@@ -53,7 +53,6 @@ class FloorType;
 class Audio;
 class CollideBox;
 class Entity;
-class EntityType;
 class Event;
 class EventListener;
 class GameLogic;
@@ -91,8 +90,6 @@ class Zone;
 #include "audio_sdlmixer.h"
 #include "audio_null.h"
 
-#include "entitytype.h"
-
 #include "animmodel.h"
 #include "animplay.h"
 #include "floortype.h"
@@ -114,9 +111,9 @@ class Zone;
 #include "zone.h"
 #include "mapgrid.h"
 #include "map.h"
+
 #include "gamelogic.h"
 #include "gamestate.h"
-
 #include "game.h"
 #include "hud.h"
 #include "util.h"

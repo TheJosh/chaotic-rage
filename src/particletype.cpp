@@ -71,7 +71,7 @@ static cfg_opt_t opts_generators[] =
 
 
 
-ParticleType::ParticleType() : EntityType()
+ParticleType::ParticleType()
 {
 }
 

@@ -10,7 +10,7 @@
 using namespace std;
 
 
-class ParticleType : public EntityType
+class ParticleType
 {
 	public:
 		// from data file

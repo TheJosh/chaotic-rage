@@ -56,7 +56,7 @@ static cfg_opt_t opts[] =
 
 
 
-UnitType::UnitType() : EntityType()
+UnitType::UnitType()
 {
 	this->width = 20;
 	this->height = 20;
