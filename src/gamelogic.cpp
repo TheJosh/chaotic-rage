@@ -47,7 +47,7 @@ void GameLogic::update(int delta)
 {
 	spawn_timer += delta;
 	if (this->num_zomb < this->num_wanted_zomb && this->spawn_timer > 250) {
-		this->spawnNPC(mod->getUnitClass(2), FACTION_TEAM2);
+		this->spawnNPC(mod->getUnitType(2), FACTION_TEAM2);
 		this->num_zomb++;
 		this->spawn_timer -= 250;
 	}
@@ -60,7 +60,7 @@ void GameLogic::update(int delta)
 	} else if (st->curr_player == NULL && st->game_time - this->player_spawn > 1000) {
 		// Spawn time over, create player
 		st->hud->hideSpawnMenu();
-		st->curr_player = this->spawnPlayer(mod->getUnitClass(0), FACTION_TEAM1);
+		st->curr_player = this->spawnPlayer(mod->getUnitType(0), FACTION_TEAM1);
 		this->player_spawn = -1;
 		
 	}
@@ -74,7 +74,7 @@ void GameLogic::update(int delta)
 /**
 * Spawns a player into the specified faction
 **/
-Player * GameLogic::spawnPlayer(UnitClass *uc, Faction fac)
+Player * GameLogic::spawnPlayer(UnitType *uc, Faction fac)
 {
 	Player *p;
 	
@@ -101,7 +101,7 @@ Player * GameLogic::spawnPlayer(UnitClass *uc, Faction fac)
 /**
 * Spawns a player into the specified faction
 **/
-NPC * GameLogic::spawnNPC(UnitClass *uc, Faction fac)
+NPC * GameLogic::spawnNPC(UnitType *uc, Faction fac)
 {
 	NPC *p;
 	

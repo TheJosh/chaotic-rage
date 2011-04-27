@@ -9,7 +9,7 @@
 using namespace std;
 
 
-NPC::NPC(UnitClass *uc, GameState *st) : Unit(uc, st)
+NPC::NPC(UnitType *uc, GameState *st) : Unit(uc, st)
 {
 	vals[0] = vals[1] = vals[2] = vals[3] = 0;
 	
@@ -38,7 +38,7 @@ void NPC::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 **/
 void NPC::update(int delta)
 {
-	UnitClassSettings *ucs = this->uc->getSettings(0);
+	UnitTypeSettings *ucs = this->uc->getSettings(0);
 	
 	
 	// This should be moved into a function in the GameLogic class

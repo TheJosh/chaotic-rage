@@ -33,11 +33,11 @@ class Unit: public Entity
 		vector<WeaponType*> avail_weapons;
 		unsigned int curr_weapon_id;
 		
-		UnitClass* uc;
-		UnitClassState* current_state;
+		UnitType* uc;
+		UnitTypeState* current_state;
 		int current_state_type;
 		
-		UnitClassState* walk_state;
+		UnitTypeState* walk_state;
 		unsigned int walk_time;
 		
 		unsigned int animation_start;
@@ -50,7 +50,7 @@ class Unit: public Entity
 		float old_y;
 		
 	public:
-		Unit(UnitClass *uc, GameState *st);
+		Unit(UnitType *uc, GameState *st);
 		virtual ~Unit();
 		
 	public:
@@ -78,6 +78,6 @@ class Unit: public Entity
 		void takeDamage(int damage);
 		
 	protected:
-		void update(int delta, UnitClassSettings *ucs);
+		void update(int delta, UnitTypeSettings *ucs);
 		void setState(int new_type);
 };

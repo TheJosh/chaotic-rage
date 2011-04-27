@@ -13,7 +13,7 @@ using namespace std;
 class NPC : public Unit
 {
 	public:
-		NPC(UnitClass *uc, GameState *st);
+		NPC(UnitType *uc, GameState *st);
 		virtual ~NPC();
 		
 	private:

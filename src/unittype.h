@@ -23,16 +23,16 @@ using namespace std;
 #define UNIT_STATE_DIE 4
 
 
-class UnitClassSettings;
-class UnitClassStates;
-class UnitClass;
+class UnitTypeSettings;
+class UnitTypeStates;
+class UnitType;
 
 
-vector<UnitClass*> * loadAllUnitClasses(Mod * mod);
-UnitClass* loadUnitClass(cfg_t *cfg, Mod * mod);
+vector<UnitType*> * loadAllUnitTypees(Mod * mod);
+UnitType* loadUnitType(cfg_t *cfg, Mod * mod);
 
 
-class UnitClassSettings
+class UnitTypeSettings
 {
 	public:
 		int max_speed;		// max pps unit can move
@@ -41,7 +41,7 @@ class UnitClassSettings
 		int turn_aim;		// degrees/second
 };
 
-class UnitClassState
+class UnitTypeState
 {
 	public:
 		int id;
@@ -49,9 +49,9 @@ class UnitClassState
 		int type;
 };
 
-class UnitClass : public EntityType
+class UnitType : public EntityType
 {
-	friend UnitClass* loadUnitClass(cfg_t *cfg, Mod * mod);
+	friend UnitType* loadUnitType(cfg_t *cfg, Mod * mod);
 	
 	public:
 		string name;
@@ -62,19 +62,19 @@ class UnitClass : public EntityType
 		int playable;
 		
 	private:
-		UnitClassSettings initial;
-		UnitClassSettings modifiers[UNIT_NUM_MODIFIERS];
-		vector<UnitClassState*> states;
+		UnitTypeSettings initial;
+		UnitTypeSettings modifiers[UNIT_NUM_MODIFIERS];
+		vector<UnitTypeState*> states;
 		unsigned int max_frames;
 		Mod * mod;
 		
 	public:
-		UnitClass();
-		~UnitClass();
+		UnitType();
+		~UnitType();
 		
 	public:
-		UnitClassSettings* getSettings(Uint8 modifier_flags);
-		UnitClassState* getState(int type);
+		UnitTypeSettings* getSettings(Uint8 modifier_flags);
+		UnitTypeState* getState(int type);
 		Mod * getMod() { return this->mod; }
 };
 

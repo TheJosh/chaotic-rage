@@ -56,13 +56,13 @@ static cfg_opt_t opts[] =
 
 
 
-UnitClass::UnitClass() : EntityType()
+UnitType::UnitType() : EntityType()
 {
 	this->width = 20;
 	this->height = 20;
 }
 
-UnitClass::~UnitClass()
+UnitType::~UnitType()
 {
 }
 
@@ -70,9 +70,9 @@ UnitClass::~UnitClass()
 /**
 * Loads the area types
 **/
-vector<UnitClass*> * loadAllUnitClasses(Mod * mod)
+vector<UnitType*> * loadAllUnitTypees(Mod * mod)
 {
-	vector<UnitClass*> * unitclasses = new vector<UnitClass*>();
+	vector<UnitType*> * unitclasses = new vector<UnitType*>();
 	
 	char *buffer;
 	cfg_t *cfg, *cfg_unitclass;
@@ -98,7 +98,7 @@ vector<UnitClass*> * loadAllUnitClasses(Mod * mod)
 	for (j = 0; j < num_types; j++) {
 		cfg_unitclass = cfg_getnsec(cfg, "unitclass", j);
 		
-		UnitClass* uc = loadUnitClass(cfg_unitclass, mod);
+		UnitType* uc = loadUnitType(cfg_unitclass, mod);
 		if (uc == NULL) {
 			cerr << "Bad unit class at index " << j << endl;
 			return false;
@@ -123,14 +123,14 @@ vector<UnitClass*> * loadAllUnitClasses(Mod * mod)
 /**
 * Loads a single area type
 **/
-UnitClass* loadUnitClass(cfg_t *cfg, Mod * mod)
+UnitType* loadUnitType(cfg_t *cfg, Mod * mod)
 {
-	UnitClass* uc;
+	UnitType* uc;
 	cfg_t *cfg_settings, *cfg_state;
 	int j;
 	
 	
-	uc = new UnitClass();
+	uc = new UnitType();
 	uc->name = cfg_getstr(cfg, "name");
 	uc->mod = mod;
 	uc->begin_health = cfg_getint(cfg, "begin_health");
@@ -175,7 +175,7 @@ UnitClass* loadUnitClass(cfg_t *cfg, Mod * mod)
 	for (j = 0; j < num_states; j++) {
 		cfg_state = cfg_getnsec(cfg, "state", j);
 		
-		UnitClassState* uct = new UnitClassState();
+		UnitTypeState* uct = new UnitTypeState();
 		
 		uct->type = cfg_getint(cfg_state, "type");
 		
@@ -196,11 +196,11 @@ UnitClass* loadUnitClass(cfg_t *cfg, Mod * mod)
 * Returns the settings to use for any given set of modifier flags.
 * The returned object should be freed by the caller.
 **/
-UnitClassSettings* UnitClass::getSettings(Uint8 modifier_flags)
+UnitTypeSettings* UnitType::getSettings(Uint8 modifier_flags)
 {
-	UnitClassSettings *ret;
+	UnitTypeSettings *ret;
 	
-	ret = new UnitClassSettings();
+	ret = new UnitTypeSettings();
 	
 	ret->max_speed = this->initial.max_speed;
 	ret->accel = this->initial.accel;
@@ -224,7 +224,7 @@ UnitClassSettings* UnitClass::getSettings(Uint8 modifier_flags)
 * Returns a random state which matches the specified type.
 * If no state for the specified type is found, uses a state from the UNIT_STATE_STATIC type.
 **/
-UnitClassState* UnitClass::getState(int type)
+UnitTypeState* UnitType::getState(int type)
 {
 	unsigned int j = 0;
 	unsigned int num = 0;

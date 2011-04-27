@@ -16,7 +16,7 @@ class Mod {
 		vector<AreaType*> * areatypes;
 		vector<ParticleType*> * particletypes;
 		vector<ParticleGenType*> * pgeneratortypes;
-		vector<UnitClass*> * unitclasses;
+		vector<UnitType*> * unitclasses;
 		vector<Song*> * songs;
 		vector<Sound*> * sounds;
 		vector<WallType*> * walltypes;
@@ -39,7 +39,7 @@ class Mod {
 		
 		AnimModel * getAnimModel(int id);
 		AreaType * getAreaType(int id);
-		UnitClass * getUnitClass(int id);
+		UnitType * getUnitType(int id);
 		ParticleType * getParticleType(int id);
 		ParticleGenType * getParticleGenType(int id);
 		Song * getSong(int id);

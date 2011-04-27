@@ -46,7 +46,7 @@ bool Mod::load()
 	pgeneratortypes = loadAllParticleGenTypes(this);
 	if (pgeneratortypes == NULL) return false;
 	
-	unitclasses = loadAllUnitClasses(this);
+	unitclasses = loadAllUnitTypees(this);
 	if (unitclasses == NULL) return false;
 	
 	songs = loadAllSongs(this);
@@ -119,7 +119,7 @@ ParticleGenType * Mod::getParticleGenType(int id)
 /**
 * Gets a unitclass by ID
 **/
-UnitClass * Mod::getUnitClass(int id)
+UnitType * Mod::getUnitType(int id)
 {
 	if (id < 0 or ((unsigned int) id) > unitclasses->size()) return NULL;
 	return unitclasses->at(id);

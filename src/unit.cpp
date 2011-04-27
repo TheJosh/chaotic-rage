@@ -10,7 +10,7 @@
 using namespace std;
 
 
-Unit::Unit(UnitClass *uc, GameState *st) : Entity(st)
+Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 {
 	this->uc = uc;
 	this->angle_move = 0;
@@ -189,7 +189,7 @@ void Unit::getSounds(Sound * list [SPRITE_LIST_LEN])
 /**
 * Moves units around
 **/
-void Unit::update(int delta, UnitClassSettings *ucs)
+void Unit::update(int delta, UnitTypeSettings *ucs)
 {
 	if (remove_at != 0) {
 		if (remove_at <= st->game_time) this->del = 1;

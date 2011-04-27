@@ -23,7 +23,7 @@ class Player : public Unit
 		int prev_x;
 		
 	public:
-		Player(UnitClass *uc, GameState *st);
+		Player(UnitType *uc, GameState *st);
 		virtual ~Player();
 		
 	public:

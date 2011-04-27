@@ -41,8 +41,8 @@ void HUD::render(Render * render)
 	if (this->spawn_menu) {
 		// TODO: menu for spawning
 		for (int i = 0; i <= 1; i++) {
-			UnitClass *uc = st->getMod(0)->getUnitClass(i);
-			UnitClassState *ucs = uc->getState(UNIT_STATE_STATIC);
+			UnitType *uc = st->getMod(0)->getUnitType(i);
+			UnitTypeState *ucs = uc->getState(UNIT_STATE_STATIC);
 			if (! uc->playable) continue;
 			
 			glPushMatrix();

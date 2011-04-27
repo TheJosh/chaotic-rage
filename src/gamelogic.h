@@ -30,8 +30,8 @@ class GameLogic : public EventListener
 		void update(int delta);
 		
 	private:
-		Player * spawnPlayer(UnitClass *uc, Faction fac);
-		NPC * spawnNPC(UnitClass *uc, Faction fac);
+		Player * spawnPlayer(UnitType *uc, Faction fac);
+		NPC * spawnNPC(UnitType *uc, Faction fac);
 		
 		
 	// When this gets switched to use lua, this will all leave

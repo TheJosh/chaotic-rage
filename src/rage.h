@@ -73,7 +73,7 @@ class Render;
 class Song;
 class Sound;
 class Unit;
-class UnitClass;
+class UnitType;
 class Wall;
 class WallType;
 class WeaponType;
@@ -97,7 +97,7 @@ class Zone;
 #include "animplay.h"
 #include "areatype.h"
 #include "particletype.h"
-#include "unitclass.h"
+#include "unittype.h"
 #include "song.h"
 #include "sound.h"
 #include "walltype.h"

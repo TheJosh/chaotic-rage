@@ -10,7 +10,7 @@
 using namespace std;
 
 
-Player::Player(UnitClass *uc, GameState *st) : Unit(uc, st)
+Player::Player(UnitType *uc, GameState *st) : Unit(uc, st)
 {
 	for (int i = 0; i < 4; i++) this->key[i] = 0;
 }
@@ -63,7 +63,7 @@ void Player::angleFromMouse(int x, int y)
 **/
 void Player::update(int delta)
 {
-	UnitClassSettings *ucs = this->uc->getSettings(0);
+	UnitTypeSettings *ucs = this->uc->getSettings(0);
 	bool keypressed = false;
 	
 	// Up/Down
