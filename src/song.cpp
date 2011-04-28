@@ -51,7 +51,7 @@ vector<Song*> * loadAllSongs(Mod * mod)
 	
 	
 	// Load + parse the config file
-	buffer = mod->loadText("music.conf");
+	buffer = mod->loadText("songs.conf");
 	if (buffer == NULL) {
 		return NULL;
 	}
@@ -92,7 +92,7 @@ Song* loadSong(cfg_t *cfg_song, Mod * mod)
 	Song* sg;
 	string filename;
 	
-	filename = "music/";
+	filename = "songs/";
 	filename.append(cfg_getstr(cfg_song, "file"));
 	
 	SDL_RWops * rwops = mod->loadRWops(filename);

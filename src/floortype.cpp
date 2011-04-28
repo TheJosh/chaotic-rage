@@ -28,7 +28,7 @@ static cfg_opt_t areatype_opts[] =
 // Main config
 static cfg_opt_t opts[] =
 {
-	CFG_SEC((char*) "areatype", areatype_opts, CFGF_MULTI),
+	CFG_SEC((char*) "floortype", areatype_opts, CFGF_MULTI),
 	CFG_END()
 };
 
@@ -53,7 +53,7 @@ vector<FloorType*> * loadAllFloorTypes(Mod * mod)
 	
 	
 	// Load + parse the config file
-	buffer = mod->loadText("areatypes.conf");
+	buffer = mod->loadText("floortypes.conf");
 	if (buffer == NULL) {
 		return NULL;
 	}
@@ -64,13 +64,13 @@ vector<FloorType*> * loadAllFloorTypes(Mod * mod)
 	free(buffer);
 	
 	
-	int num_types = cfg_size(cfg, "areatype");
+	int num_types = cfg_size(cfg, "floortype");
 	if (num_types == 0) return NULL;
 	
 	// Process area type sections
 	int j;
 	for (j = 0; j < num_types; j++) {
-		cfg_areatype = cfg_getnsec(cfg, "areatype", j);
+		cfg_areatype = cfg_getnsec(cfg, "floortype", j);
 		
 		FloorType* at = loadFloorType(cfg_areatype, mod);
 		if (at == NULL) {
@@ -100,7 +100,7 @@ FloorType* loadFloorType(cfg_t *cfg_areatype, Mod * mod)
 	FloorType* at;
 	string filename;
 	
-	filename = "areatypes/";
+	filename = "floortypes/";
 	filename.append(cfg_getstr(cfg_areatype, "image"));
 	filename.append("-fr0.png");
 	

@@ -50,7 +50,7 @@ static cfg_opt_t unitclass_opts[] =
 // Main config
 static cfg_opt_t opts[] =
 {
-	CFG_SEC((char*) "unitclass", unitclass_opts, CFGF_MULTI),
+	CFG_SEC((char*) "unittype", unitclass_opts, CFGF_MULTI),
 	CFG_END()
 };
 
@@ -79,7 +79,7 @@ vector<UnitType*> * loadAllUnitTypees(Mod * mod)
 	
 	
 	// Load + parse the config file
-	buffer = mod->loadText("unitclass.conf");
+	buffer = mod->loadText("unittypes.conf");
 	if (buffer == NULL) {
 		return NULL;
 	}
@@ -90,17 +90,17 @@ vector<UnitType*> * loadAllUnitTypees(Mod * mod)
 	free(buffer);
 	
 	
-	int num_types = cfg_size(cfg, "unitclass");
+	int num_types = cfg_size(cfg, "unittype");
 	if (num_types == 0) return NULL;
 	
 	// Process area type sections
 	int j;
 	for (j = 0; j < num_types; j++) {
-		cfg_unitclass = cfg_getnsec(cfg, "unitclass", j);
+		cfg_unitclass = cfg_getnsec(cfg, "unittype", j);
 		
 		UnitType* uc = loadUnitType(cfg_unitclass, mod);
 		if (uc == NULL) {
-			cerr << "Bad unit class at index " << j << endl;
+			cerr << "Bad unit type at index " << j << endl;
 			return false;
 		}
 		
@@ -110,7 +110,7 @@ vector<UnitType*> * loadAllUnitTypees(Mod * mod)
 	
 	// If there was sprite errors, exit the game
 	if (mod->st->render->wasLoadSpriteError()) {
-		cerr << "Error loading unit classes; game will now exit.\n";
+		cerr << "Error loading unit types; game will now exit.\n";
 		exit(1);
 	}
 	
