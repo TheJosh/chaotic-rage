@@ -131,7 +131,7 @@ int Map::load(string name, Render * render)
 			cfg_sub = cfg_getnsec(cfg, "wall", j);
 			
 			string type = cfg_getstr(cfg_sub, "type");
-			if (type == "") continue;
+			if (type.empty()) continue;
 			
 			Wall * wa = new Wall(this->st->getMod(0)->getWallType(type), this->st);
 			

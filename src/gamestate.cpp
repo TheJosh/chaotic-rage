@@ -171,7 +171,7 @@ void GameState::doCollisions()
 			
 			if (ci == co) continue;
 			
-			dist = (int) floor(sqrt(((ci->x - co->x) * (ci->x - co->x)) + ((ci->y - co->y) * (ci->y - co->y))));
+			dist = (int) floor(sqrt((float)((ci->x - co->x) * (ci->x - co->x)) + ((ci->y - co->y) * (ci->y - co->y))));
 			search = ci->radius + co->radius;
 			
 			if (dist <= (ci->radius + co->radius)) {

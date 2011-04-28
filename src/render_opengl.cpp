@@ -281,9 +281,13 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 	glGenBuffers(1, &vboid);
 	glBindBuffer(GL_ARRAY_BUFFER, vboid);
 	
-	VBOvertex vertexes[obj->faces.size() * 3];
-	Uint16 index[obj->faces.size() * 3];
+	//VBOvertex vertexes[obj->faces.size() * 3];
+	//Uint16 index[obj->faces.size() * 3];
 	
+	VBOvertex* vertexes = (VBOvertex*) malloc(sizeof(VBOvertex) * obj->faces.size() * 3);
+	Uint16* index = (Uint16*) malloc(sizeof(Uint16) * obj->faces.size() * 3);
+	// todo: free these
+
 	int j = 0;
 	for (unsigned int i = 0; i < obj->faces.size(); i++) {
 		Face * f = &obj->faces.at(i);

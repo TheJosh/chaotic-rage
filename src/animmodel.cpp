@@ -3,6 +3,7 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <iostream>
+#include <string>
 #include <SDL.h>
 #include <confuse.h>
 #include <zzip/zzip.h>
@@ -150,7 +151,9 @@ AnimModel* loadAnimModel(cfg_t *cfg_model, Mod * mod)
 				/**
 				* TODO: needs to use zzip!
 				**/
-				mf->mesh = loadObj("data/cr/animmodels/" + name + ".obj");
+				string filename = "data/cr/animmodels/";
+				filename.append(name);
+				filename.append(".obj");
 				
 				if (mf->mesh == NULL) return NULL;
 				
@@ -165,7 +168,11 @@ AnimModel* loadAnimModel(cfg_t *cfg_model, Mod * mod)
 			
 			map<string, SpritePtr>::iterator it = loaded_textures.find(name);
 			if (it == loaded_textures.end()) {
-				mf->texture = mod->st->render->loadSprite("animmodels/" + name + ".png", mod);
+				string filename = "animmodels/";
+				filename.append(name);
+				filename.append(".png");
+
+				mf->texture = mod->st->render->loadSprite(filename, mod);
 				
 				if (mf->texture == NULL) return NULL;
 				

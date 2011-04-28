@@ -76,11 +76,11 @@ AnimModel * Mod::getAnimModel(int id)
 
 AnimModel * Mod::getAnimModel(string name)
 {
-	if (name == "") return NULL;
+	if (name.empty()) return NULL;
 	
 	int i;
 	for (i = animmodels->size() - 1; i >= 0; --i) {
-		if (animmodels->at(i)->name == name) return animmodels->at(i);
+		if (animmodels->at(i)->name.compare(name)) return animmodels->at(i);
 	}
 	return NULL;
 }
@@ -147,11 +147,11 @@ Sound * Mod::getSound(int id)
 
 Sound * Mod::getSound(string name)
 {
-	if (name == "") return NULL;
+	if (name.empty()) return NULL;
 	
 	int i;
 	for (i = sounds->size() - 1; i >= 0; --i) {
-		if (sounds->at(i)->name == name) return sounds->at(i);
+		if (sounds->at(i)->name.compare(name)) return sounds->at(i);
 	}
 	return NULL;
 }
@@ -168,11 +168,11 @@ WallType * Mod::getWallType(int id)
 
 WallType * Mod::getWallType(string name)
 {
-	if (name == "") return NULL;
+	if (name.empty()) return NULL;
 	
 	int i;
 	for (i = walltypes->size() - 1; i >= 0; --i) {
-		if (walltypes->at(i)->name == name) return walltypes->at(i);
+		if (walltypes->at(i)->name.compare(name)) return walltypes->at(i);
 	}
 	return NULL;
 }

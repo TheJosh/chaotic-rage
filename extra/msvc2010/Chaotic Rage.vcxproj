@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EA0FF0FC-87C1-4E50-B15F-05D74D0956AE}</ProjectGuid>
+    <RootNamespace>ChaoticRage</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../include</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;opengl32.lib;glu32.lib;glew32.lib;zziplib.lib;libConfuse.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>../include</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>../lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;opengl32.lib;glu32.lib;glew32.lib;zziplib.lib;libConfuse.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\animmodel.cpp" />
+    <ClCompile Include="..\..\src\animplay.cpp" />
+    <ClCompile Include="..\..\src\audio.cpp" />
+    <ClCompile Include="..\..\src\audio_null.cpp" />
+    <ClCompile Include="..\..\src\audio_sdlmixer.cpp" />
+    <ClCompile Include="..\..\src\client.cpp" />
+    <ClCompile Include="..\..\src\entity.cpp" />
+    <ClCompile Include="..\..\src\event.cpp" />
+    <ClCompile Include="..\..\src\floortype.cpp" />
+    <ClCompile Include="..\..\src\game.cpp" />
+    <ClCompile Include="..\..\src\gamelogic.cpp" />
+    <ClCompile Include="..\..\src\gamestate.cpp" />
+    <ClCompile Include="..\..\src\hud.cpp" />
+    <ClCompile Include="..\..\src\map.cpp" />
+    <ClCompile Include="..\..\src\mapgrid.cpp" />
+    <ClCompile Include="..\..\src\mod.cpp" />
+    <ClCompile Include="..\..\src\npc.cpp" />
+    <ClCompile Include="..\..\src\particle.cpp" />
+    <ClCompile Include="..\..\src\particlegenerator.cpp" />
+    <ClCompile Include="..\..\src\particletype.cpp" />
+    <ClCompile Include="..\..\src\player.cpp" />
+    <ClCompile Include="..\..\src\render.cpp" />
+    <ClCompile Include="..\..\src\render_null.cpp" />
+    <ClCompile Include="..\..\src\render_opengl.cpp" />
+    <ClCompile Include="..\..\src\SDL_rwops_zzip.cpp" />
+    <ClCompile Include="..\..\src\sdl_util.cpp" />
+    <ClCompile Include="..\..\src\song.cpp" />
+    <ClCompile Include="..\..\src\sound.cpp" />
+    <ClCompile Include="..\..\src\unit.cpp" />
+    <ClCompile Include="..\..\src\unittype.cpp" />
+    <ClCompile Include="..\..\src\util.cpp" />
+    <ClCompile Include="..\..\src\wall.cpp" />
+    <ClCompile Include="..\..\src\walltype.cpp" />
+    <ClCompile Include="..\..\src\weapontype.cpp" />
+    <ClCompile Include="..\..\src\zone.cpp" />
+    <ClCompile Include="..\flex\objload.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\animmodel.h" />
+    <ClInclude Include="..\..\src\animplay.h" />
+    <ClInclude Include="..\..\src\audio.h" />
+    <ClInclude Include="..\..\src\audio_null.h" />
+    <ClInclude Include="..\..\src\audio_sdlmixer.h" />
+    <ClInclude Include="..\..\src\entity.h" />
+    <ClInclude Include="..\..\src\event.h" />
+    <ClInclude Include="..\..\src\floortype.h" />
+    <ClInclude Include="..\..\src\game.h" />
+    <ClInclude Include="..\..\src\gamelogic.h" />
+    <ClInclude Include="..\..\src\gamestate.h" />
+    <ClInclude Include="..\..\src\hud.h" />
+    <ClInclude Include="..\..\src\map.h" />
+    <ClInclude Include="..\..\src\mapgrid.h" />
+    <ClInclude Include="..\..\src\mod.h" />
+    <ClInclude Include="..\..\src\npc.h" />
+    <ClInclude Include="..\..\src\particle.h" />
+    <ClInclude Include="..\..\src\particlegenerator.h" />
+    <ClInclude Include="..\..\src\particletype.h" />
+    <ClInclude Include="..\..\src\player.h" />
+    <ClInclude Include="..\..\src\rage.h" />
+    <ClInclude Include="..\..\src\render.h" />
+    <ClInclude Include="..\..\src\render_null.h" />
+    <ClInclude Include="..\..\src\render_opengl.h" />
+    <ClInclude Include="..\..\src\SDL_rwops_zzip.h" />
+    <ClInclude Include="..\..\src\sdl_util.h" />
+    <ClInclude Include="..\..\src\song.h" />
+    <ClInclude Include="..\..\src\sound.h" />
+    <ClInclude Include="..\..\src\unit.h" />
+    <ClInclude Include="..\..\src\unittype.h" />
+    <ClInclude Include="..\..\src\util.h" />
+    <ClInclude Include="..\..\src\wall.h" />
+    <ClInclude Include="..\..\src\walltype.h" />
+    <ClInclude Include="..\..\src\weapontype.h" />
+    <ClInclude Include="..\..\src\zone.h" />
+    <ClInclude Include="..\flex\objload.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
