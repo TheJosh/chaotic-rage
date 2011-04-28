@@ -12,8 +12,12 @@
 
 using namespace std;
 
-/* Functions */
-AnimModel* loadAnimModel(cfg_t *cfg_model, Mod * mod);
+
+/* Loader parameters */
+#define LDR_FILENAME "animmodels.conf"
+#define LDR_SECTION "animmodel"
+#define LDR_CLASS AnimModel*
+
 
 /* Config file definition */
 // MeshFrame
@@ -35,7 +39,7 @@ static cfg_opt_t meshframe_opts[] =
 };
 
 // AnimModel
-static cfg_opt_t model_opts[] =
+static cfg_opt_t item_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_INT((char*) "num_frames", 0, CFGF_NONE),
@@ -44,12 +48,6 @@ static cfg_opt_t model_opts[] =
 	CFG_END()
 };
 
-// Main config
-static cfg_opt_t opts[] =
-{
-	CFG_SEC((char*) "animmodel", model_opts, CFGF_MULTI),
-	CFG_END()
-};
 
 
 // This is to save loading the same mesh into memory multiple times
@@ -58,76 +56,10 @@ static map <string, WavefrontObj *> loaded_meshes;
 static map <string, SpritePtr> loaded_textures;
 
 
-AnimModel::AnimModel()
-{
-	next = NULL;
-}
-
-MeshFrame::MeshFrame()
-{
-	mesh = NULL;
-	texture = NULL;
-}
-
-
 /**
-* Loads the area types
+* Loads a single item
 **/
-vector<AnimModel*> * loadAllAnimModels(Mod * mod)
-{
-	vector<AnimModel*> * models = new vector<AnimModel*>();
-	
-	char *buffer;
-	cfg_t *cfg, *cfg_model;
-	
-	
-	// Load + parse the config file
-	buffer = mod->loadText("animmodels.conf");
-	if (buffer == NULL) {
-		return NULL;
-	}
-	
-	cfg = cfg_init(opts, CFGF_NONE);
-	cfg_parse_buf(cfg, buffer);
-	
-	free(buffer);
-	
-	
-	int num_types = cfg_size(cfg, "animmodel");
-	if (num_types == 0) {
-		cerr << "Definition file is empty\n";
-		return NULL;
-	}
-
-	// Process area type sections
-	int j;
-	for (j = 0; j < num_types; j++) {
-		cfg_model = cfg_getnsec(cfg, "animmodel", j);
-		
-		AnimModel* am = loadAnimModel(cfg_model, mod);
-		if (am == NULL) {
-			cerr << "Bad animation model at index " << j << endl;
-			return NULL;
-		}
-		
-		models->push_back(am);
-		am->id = models->size() - 1;
-	}
-	
-	// If there was sprite errors, exit the game
-	if (mod->st->render->wasLoadSpriteError()) {
-		cerr << "Error loading animation model sprites.\n";
-		return NULL;
-	}
-	
-	return models;
-}
-
-
-/**
-* Loads a single area type
-**/
-AnimModel* loadAnimModel(cfg_t *cfg_model, Mod * mod)
+AnimModel* loadItem(cfg_t *cfg_model, Mod * mod)
 {
 	AnimModel* am;
 	string filename;
@@ -157,9 +89,9 @@ AnimModel* loadAnimModel(cfg_t *cfg_model, Mod * mod)
 				string filename = "data/cr/animmodels/";
 				filename.append(name);
 				filename.append(".obj");
-
+				
 				mf->mesh = loadObj(filename);
-
+				
 				if (mf->mesh == NULL) { cerr << "Bad mesh: " << filename << "\n"; return NULL; }
 				
 				loaded_meshes[name] = mf->mesh;
@@ -176,7 +108,7 @@ AnimModel* loadAnimModel(cfg_t *cfg_model, Mod * mod)
 				string filename = "animmodels/";
 				filename.append(name);
 				filename.append(".png");
-
+				
 				mf->texture = mod->st->render->loadSprite(filename, mod);
 				
 				if (mf->texture == NULL) { cerr << "Bad texture: " << filename << "\n"; return NULL; }
@@ -205,4 +137,69 @@ AnimModel* loadAnimModel(cfg_t *cfg_model, Mod * mod)
 	return am;
 }
 
+
+
+/**
+* Loads the area types
+**/
+vector<LDR_CLASS> * loadAllAnimModels(Mod * mod)
+{
+	vector<LDR_CLASS> * models = new vector<LDR_CLASS>();
+	
+	char *buffer;
+	cfg_t *cfg, *cfg_item;
+	
+	cfg_opt_t opts[] =
+	{
+		CFG_SEC((char*) LDR_SECTION, item_opts, CFGF_MULTI),
+		CFG_END()
+	};
+	
+	// Load + parse the config file
+	buffer = mod->loadText(LDR_FILENAME);
+	if (buffer == NULL) {
+		return NULL;
+	}
+	
+	cfg = cfg_init(opts, CFGF_NONE);
+	cfg_parse_buf(cfg, buffer);
+	
+	free(buffer);
+	
+	
+	int num_types = cfg_size(cfg, LDR_SECTION);
+	if (num_types == 0) {
+		cerr << "Definition file is empty\n";
+		return NULL;
+	}
+
+	// Process area type sections
+	int j;
+	for (j = 0; j < num_types; j++) {
+		cfg_item = cfg_getnsec(cfg, LDR_SECTION, j);
+		
+		LDR_CLASS am = loadItem(cfg_item, mod);
+		if (am == NULL) {
+			cerr << "Bad item in file " << LDR_FILENAME << " at index " << j << endl;
+			return NULL;
+		}
+		
+		models->push_back(am);
+		am->id = models->size() - 1;
+	}
+	
+	return models;
+}
+
+
+AnimModel::AnimModel()
+{
+	next = NULL;
+}
+
+MeshFrame::MeshFrame()
+{
+	mesh = NULL;
+	texture = NULL;
+}
 
