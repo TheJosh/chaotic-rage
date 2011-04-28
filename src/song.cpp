@@ -51,7 +51,7 @@ vector<Song*> * loadAllSongs(Mod * mod)
 	
 	
 	// Load + parse the config file
-	buffer = mod->loadText("music/music.conf");
+	buffer = mod->loadText("music.conf");
 	if (buffer == NULL) {
 		return NULL;
 	}

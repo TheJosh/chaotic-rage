@@ -63,7 +63,7 @@ vector<WallType*> * loadAllWallTypes(Mod * mod)
 	
 	
 	// Load + parse the config file
-	buffer = mod->loadText("walltypes/walltypes.conf");
+	buffer = mod->loadText("walltypes.conf");
 	if (buffer == NULL) {
 		return NULL;
 	}

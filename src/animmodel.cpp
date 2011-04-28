@@ -82,7 +82,7 @@ vector<AnimModel*> * loadAllAnimModels(Mod * mod)
 	
 	
 	// Load + parse the config file
-	buffer = mod->loadText("animmodels/animmodels.conf");
+	buffer = mod->loadText("animmodels.conf");
 	if (buffer == NULL) {
 		return NULL;
 	}

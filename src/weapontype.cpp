@@ -56,7 +56,7 @@ vector<WeaponType*> * loadAllWeaponTypes(Mod * mod)
 	
 	
 	// Load + parse the config file
-	buffer = mod->loadText("weapontypes/weapontypes.conf");
+	buffer = mod->loadText("weapontypes.conf");
 	if (buffer == NULL) {
 		return NULL;
 	}

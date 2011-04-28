@@ -67,7 +67,7 @@ vector<FloorType*> * loadAllFloorTypes(Mod * mod)
 	
 	
 	// Load + parse the config file
-	buffer = mod->loadText("areatypes/areatypes.conf");
+	buffer = mod->loadText("areatypes.conf");
 	if (buffer == NULL) {
 		return NULL;
 	}
@@ -113,7 +113,6 @@ FloorType* loadFloorType(cfg_t *cfg_areatype, Mod * mod)
 {
 	FloorType* at;
 	string filename;
-	int size;
 	
 	filename = "areatypes/";
 	filename.append(cfg_getstr(cfg_areatype, "image"));
@@ -129,40 +128,6 @@ FloorType* loadFloorType(cfg_t *cfg_areatype, Mod * mod)
 	if (tmp != NULL) {
 		at->model = mod->getAnimModel(tmp);
 	}
-	
-	// Load damage states
-	size = cfg_size(cfg_areatype, "damage");
-	for (int j = 0; j < size; j++) {
-		cfg_t *cfg_damage = cfg_getnsec(cfg_areatype, "damage", j);
-		
-		char * tmp = cfg_getstr(cfg_damage, "model");
-		if (tmp == NULL) return NULL;
-		
-		FloorTypeDamage * dam = new FloorTypeDamage();
-		
-		dam->health = cfg_getint(cfg_damage, "health");
-		dam->model = mod->getAnimModel(tmp);
-		
-		at->damage_models.push_back(dam);
-	}
-	
-	// Load walk sounds
-	size = cfg_size(cfg_areatype, "walk_sounds");
-	for (int j = 0; j < size; j++) {
-		filename = "areatypes/";
-		filename.append(cfg_getnstr(cfg_areatype, "walk_sounds", j));
-		filename.append(".wav");
-		
-		AudioPtr sound = mod->st->audio->loadSound(filename, mod);
-		if (sound == NULL) return NULL;
-		at->walk_sounds.push_back(sound);
-	}
-	
-	// TODO: move to after the mod has loaded
-	//FloorType *ground = mod->getFloorType(cfg_getint(cfg_areatype, "ground_type"));
-	//if (ground != NULL && ground->wall == 0) {
-	//	at->ground_type = ground;
-	//}
 	
 	return at;
 }

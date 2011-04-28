@@ -79,7 +79,7 @@ vector<UnitType*> * loadAllUnitTypees(Mod * mod)
 	
 	
 	// Load + parse the config file
-	buffer = mod->loadText("unitclass/unitclass.conf");
+	buffer = mod->loadText("unitclass.conf");
 	if (buffer == NULL) {
 		return NULL;
 	}

@@ -51,7 +51,7 @@ vector<Sound*> * loadAllSounds(Mod * mod)
 	
 	
 	// Load + parse the config file
-	buffer = mod->loadText("sounds/sounds.conf");
+	buffer = mod->loadText("sounds.conf");
 	if (buffer == NULL) {
 		return NULL;
 	}

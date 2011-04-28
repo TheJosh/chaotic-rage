@@ -92,7 +92,7 @@ vector<ParticleType*> * loadAllParticleTypes(Mod * mod)
 	
 	
 	// Load + parse the config file
-	buffer = mod->loadText("particletypes/particletypes.conf");
+	buffer = mod->loadText("particletypes.conf");
 	if (buffer == NULL) {
 		return NULL;
 	}
@@ -141,7 +141,7 @@ vector<ParticleGenType*> * loadAllParticleGenTypes(Mod * mod)
 	cfg_t *cfg, *cfg_generatortype;
 	
 	// Load + parse the config file
-	buffer = mod->loadText("particletypes/particlegenerators.conf");
+	buffer = mod->loadText("particlegenerators.conf");
 	if (buffer == NULL) {
 		return NULL;
 	}
