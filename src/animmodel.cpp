@@ -94,8 +94,11 @@ vector<AnimModel*> * loadAllAnimModels(Mod * mod)
 	
 	
 	int num_types = cfg_size(cfg, "animmodel");
-	if (num_types == 0) return NULL;
-	
+	if (num_types == 0) {
+		cerr << "Definition file is empty\n";
+		return NULL;
+	}
+
 	// Process area type sections
 	int j;
 	for (j = 0; j < num_types; j++) {
@@ -113,8 +116,8 @@ vector<AnimModel*> * loadAllAnimModels(Mod * mod)
 	
 	// If there was sprite errors, exit the game
 	if (mod->st->render->wasLoadSpriteError()) {
-		cerr << "Error loading animation models; game will now exit.\n";
-		exit(1);
+		cerr << "Error loading animation model sprites.\n";
+		return NULL;
 	}
 	
 	return models;
@@ -151,11 +154,13 @@ AnimModel* loadAnimModel(cfg_t *cfg_model, Mod * mod)
 				/**
 				* TODO: needs to use zzip!
 				**/
-				string filename = "data/cr/animmodels/";
+				string filename = "data\\cr\\animmodels\\";
 				filename.append(name);
 				filename.append(".obj");
-				
-				if (mf->mesh == NULL) return NULL;
+
+				mf->mesh = loadObj(filename);
+
+				if (mf->mesh == NULL) { cerr << "Bad mesh: " << filename << "\n"; return NULL; }
 				
 				loaded_meshes[name] = mf->mesh;
 			} else {
@@ -174,7 +179,7 @@ AnimModel* loadAnimModel(cfg_t *cfg_model, Mod * mod)
 
 				mf->texture = mod->st->render->loadSprite(filename, mod);
 				
-				if (mf->texture == NULL) return NULL;
+				if (mf->texture == NULL) { cerr << "Bad texture: " << filename << "\n"; return NULL; }
 				
 				loaded_textures[name] = mf->texture;
 			} else {

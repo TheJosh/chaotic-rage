@@ -3,12 +3,19 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <iostream>
+#include <string>
 #include <SDL.h>
 #include <confuse.h>
 #include <zzip/zzip.h>
 #include "rage.h"
 
 using namespace std;
+
+
+void mod_load_error(string section)
+{
+	cerr << "Error loading section " << section << "\n";
+}
 
 
 /**
@@ -23,6 +30,7 @@ Mod::Mod(GameState * st, string directory)
 }
 
 
+
 /**
 * Loads the mod
 **/
@@ -31,35 +39,35 @@ bool Mod::load()
 	int i;
 	
 	animmodels = loadAllAnimModels(this);
-	if (animmodels == NULL) return false;
+	if (animmodels == NULL) { mod_load_error("animmodels"); return false; }
 	
 	for (i = animmodels->size() - 1; i >= 0; --i) {
 		animmodels->at(i)->next = this->getAnimModel(animmodels->at(i)->next_name);
 	}
 	
 	areatypes = loadAllFloorTypes(this);
-	if (areatypes == NULL) return false;
+	if (areatypes == NULL) { mod_load_error("floor types"); return false; }
 	
 	particletypes = loadAllParticleTypes(this);
-	if (particletypes == NULL) return false;
+	if (particletypes == NULL) { mod_load_error("particle types"); return false; }
 	
 	pgeneratortypes = loadAllParticleGenTypes(this);
-	if (pgeneratortypes == NULL) return false;
+	if (pgeneratortypes == NULL) { mod_load_error("particle generator types"); return false; }
 	
 	unitclasses = loadAllUnitTypees(this);
-	if (unitclasses == NULL) return false;
+	if (unitclasses == NULL) { mod_load_error("unit types"); return false; }
 	
 	songs = loadAllSongs(this);
-	if (songs == NULL) return false;
+	if (songs == NULL) { mod_load_error("songs"); return false; }
 	
 	sounds = loadAllSounds(this);
-	if (sounds == NULL) return false;
+	if (sounds == NULL) { mod_load_error("sounds"); return false; }
 	
 	walltypes = loadAllWallTypes(this);
-	if (walltypes == NULL) return false;
+	if (walltypes == NULL) { mod_load_error("wall types"); return false; }
 	
 	weapontypes = loadAllWeaponTypes(this);
-	if (weapontypes == NULL) return false;
+	if (weapontypes == NULL) { mod_load_error("weapon types"); return false; }
 	
 	return true;
 }
@@ -203,7 +211,7 @@ char * Mod::loadText(string resname)
 	
 	fp = zzip_open(filename.c_str(), 0);
 	if (! fp) {
-		fprintf(stderr, "Couldn't load resource '%s'.\n", resname.c_str());
+		cerr << "Couldn't load resource '" << resname << "'. Unable to locate resource.\n";
 		return NULL;
 	}
 	
@@ -214,7 +222,7 @@ char * Mod::loadText(string resname)
 	
 	buffer = (char*) malloc(len + 1);
 	if (buffer == NULL) {
-		fprintf(stderr, "Couldn't load resource '%s'.\n", resname.c_str());
+		cerr << "Couldn't load resource '" << resname << "'. Unable to allocate memory.\n";
 		return NULL;
 	}
 	buffer[len] = '\0';
