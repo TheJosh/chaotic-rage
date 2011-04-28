@@ -276,18 +276,12 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 void RenderOpenGL::createVBO (WavefrontObj * obj)
 {
 	GLuint vboid;
-	GLuint iboid;
 	
 	glGenBuffers(1, &vboid);
 	glBindBuffer(GL_ARRAY_BUFFER, vboid);
 	
-	//VBOvertex vertexes[obj->faces.size() * 3];
-	//Uint16 index[obj->faces.size() * 3];
+	VBOvertex* vertexes = new VBOvertex[obj->faces.size() * 3];
 	
-	VBOvertex* vertexes = (VBOvertex*) malloc(sizeof(VBOvertex) * obj->faces.size() * 3);
-	Uint16* index = (Uint16*) malloc(sizeof(Uint16) * obj->faces.size() * 3);
-	// todo: free these
-
 	int j = 0;
 	for (unsigned int i = 0; i < obj->faces.size(); i++) {
 		Face * f = &obj->faces.at(i);
@@ -303,7 +297,6 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
 		vertexes[j].tx = t->x; vertexes[j].ty = 1.0 - t->y;
-		index[j] = j;
 		j++;
 		
 		
@@ -314,7 +307,6 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
 		vertexes[j].tx = t->x; vertexes[j].ty = 1.0 - t->y;
-		index[j] = j;
 		j++;
 		
 		
@@ -325,25 +317,16 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
 		vertexes[j].tx = t->x; vertexes[j].ty = 1.0 - t->y;
-		index[j] = j;
 		j++;
 		
 	}
 	
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexes), &vertexes[0].x, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * obj->faces.size() * 3, vertexes, GL_STATIC_DRAW);
 	
-	
-	// TODO:
-	// We don't need an index bugger of index[j] == j
-	// just use glDrawArrays
-	// (thanks ##OpenGL)
-	glGenBuffers(1, &iboid);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboid);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index), &index, GL_STATIC_DRAW);
-	
-	obj->ibo_count = sizeof(index) / sizeof(index[0]);
+	obj->ibo_count = obj->faces.size() * 3;
 	obj->vbo = vboid;
-	obj->ibo = iboid;
+	
+	delete (vertexes);
 }
 
 
@@ -364,8 +347,7 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 	glClientActiveTexture(GL_TEXTURE0);
 	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
 	
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, obj->ibo);
-	glDrawElements(GL_TRIANGLES, obj->ibo_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
+	glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
 	
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);

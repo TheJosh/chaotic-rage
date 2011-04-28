@@ -88,11 +88,10 @@ AnimModel * Mod::getAnimModel(string name)
 	
 	int i;
 	for (i = animmodels->size() - 1; i >= 0; --i) {
-		if (animmodels->at(i)->name.compare(name)) return animmodels->at(i);
+		if (animmodels->at(i)->name.compare(name) == 0) return animmodels->at(i);
 	}
 	return NULL;
 }
-
 
 /**
 * Gets an areatype by ID
@@ -159,7 +158,7 @@ Sound * Mod::getSound(string name)
 	
 	int i;
 	for (i = sounds->size() - 1; i >= 0; --i) {
-		if (sounds->at(i)->name.compare(name)) return sounds->at(i);
+		if (sounds->at(i)->name.compare(name) == 0) return sounds->at(i);
 	}
 	return NULL;
 }
@@ -180,7 +179,7 @@ WallType * Mod::getWallType(string name)
 	
 	int i;
 	for (i = walltypes->size() - 1; i >= 0; --i) {
-		if (walltypes->at(i)->name.compare(name)) return walltypes->at(i);
+		if (walltypes->at(i)->name.compare(name) == 0) return walltypes->at(i);
 	}
 	return NULL;
 }

@@ -154,7 +154,7 @@ AnimModel* loadAnimModel(cfg_t *cfg_model, Mod * mod)
 				/**
 				* TODO: needs to use zzip!
 				**/
-				string filename = "data\\cr\\animmodels\\";
+				string filename = "data/cr/animmodels/";
 				filename.append(name);
 				filename.append(".obj");
 
