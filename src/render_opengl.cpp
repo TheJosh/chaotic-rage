@@ -481,15 +481,15 @@ void RenderOpenGL::render()
 		glRotatef(0 - a->angle, 0, 0, 1);
 		glTranslatef(0 - x, 0 - y, 0);
 		
-		glBindTexture(GL_TEXTURE_2D, a->type->surf->pixels);
+		glBindTexture(GL_TEXTURE_2D, a->type->texture->pixels);
  		
  		a->width = a->height = 50;
  		
  		float texw = 1.0;
  		float texh = 1.0;
  		if (! a->type->stretch) {
- 			texw = ((float)a->width) / ((float)a->type->surf->w);
- 			texh = ((float)a->height) / ((float)a->type->surf->h);
+ 			texw = ((float)a->width) / ((float)a->type->texture->w);
+ 			texh = ((float)a->height) / ((float)a->type->texture->h);
  		}
  		
  		

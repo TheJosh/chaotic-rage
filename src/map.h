@@ -14,13 +14,6 @@ using namespace std;
 #define RENDER_FRAME_BG -2
 
 
-typedef struct {
-	FloorType * type;
-	Uint8 hp;
-	char pad[3];
-} data_pixel;
-
-
 class Area {
 	public:
 		int x;
@@ -29,8 +22,6 @@ class Area {
 		int height;
 		int angle;
 		FloorType * type;
-		AnimPlay * anim;
-		int health;
 		
 	public:
 		Area(FloorType * type);
@@ -49,7 +40,6 @@ class Map {
 		GameState * st;
 		
 	public:
-		data_pixel * data;
 		SpritePtr background;
 		int width;
 		int height;
@@ -58,15 +48,8 @@ class Map {
 		Map(GameState * st);
 		~Map();
 		
-	private:
-		SDL_Surface * renderDataSurface();
-		
 	public:
 		int load(string name, Render * render);
-		SDL_Surface * renderFrame(int frame, bool wall);
-		
-		data_pixel getDataAt(int x, int y);
-		void setDataHP(int x, int y, int newhp);
 		
 		Zone * getSpawnZone(Faction f);
 		Zone * getPrisonZone(Faction f);

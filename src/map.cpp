@@ -43,31 +43,20 @@ static cfg_opt_t opts[] =
 Area::Area(FloorType * type)
 {
 	this->type = type;
-	
-	if (type->model != NULL) {
-		this->anim = new AnimPlay(type->model);
-	} else {
-		this->anim = NULL;
-	}
-	
-	this->health = 10000;
 }
 
 Area::~Area()
 {
-	delete(anim);
 }
 
 Map::Map(GameState * st)
 {
 	this->st = st;
 	this->background = NULL;
-	this->data = NULL;
 }
 
 Map::~Map()
 {
-	free(this->data);
 }
 
 
@@ -92,20 +81,6 @@ int Map::load(string name, Render * render)
 	a->height = this->height;
 	a->angle = 0;
 	this->areas.push_back(a);
-	
-	
-	// Prep the data surface
-	// We don't actually use this at the moment, but it may be used later for audio stuff
-	// to allow us to know the surface we are currently walking over
-	// TODO: get it to actually do something useful here
-	this->data = (data_pixel*) malloc(width * height* sizeof(data_pixel));
-	
-	for (int x = 0; x < this->width; x++) {
-		for (int y = 0; y < this->height; y++) {
-			this->data[x * this->height + y].type = 0;
-			this->data[x * this->height + y].hp = 100;
-		}
-	}
 	
 	
 	Mod * mod = new Mod(st, "maps/test/");
@@ -162,48 +137,6 @@ int Map::load(string name, Render * render)
 	}
 	
 	return 1;
-}
-
-
-/**
-* Gets a data pixel
-**/
-data_pixel Map::getDataAt(int x, int y)
-{
-	data_pixel ret;
-	ret.type = NULL;
-	ret.hp = 0;
-	
-	if (x < 0) return ret;
-	if (y < 0) return ret;
-	if (x >= this->width) return ret;
-	if (x >= this->height) return ret;
-	
-	return this->data[x * this->height + y];
-}
-
-/**
-* Sets a data to a specific health value
-**/
-void Map::setDataHP(int x, int y, int newhp)
-{
-	if (x < 0) return;
-	if (y < 0) return;
-	if (x >= this->width) return;
-	if (x >= this->height) return;
-	
-	if (newhp <= 0) {
-		FloorType *at = this->data[x * this->height + y].type;
-		
-		this->data[x * this->height + y].hp = 0;
-		this->data[x * this->height + y].type = at->ground_type;
-		
-		this->render->clearPixel(x, y);
-		
-		return;
-	}
-	
-	this->data[x * this->height + y].hp = newhp;
 }
 
 

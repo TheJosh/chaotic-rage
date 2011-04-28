@@ -16,25 +16,12 @@ FloorType* loadFloorType(cfg_t *cfg_areatype, Mod * mod);
 
 
 /* Config file definition */
-// Damage
-static cfg_opt_t damage_opts[] =
-{
-	CFG_INT((char*) "health", 0, CFGF_NONE),
-	CFG_STR((char*) "model", (char*)"", CFGF_NONE),
-	CFG_END()
-};
-
 // Areatype section
 static cfg_opt_t areatype_opts[] =
 {
 	CFG_STR((char*) "name", (char*)"", CFGF_NONE),
 	CFG_STR((char*) "image", (char*)"", CFGF_NONE),
-	CFG_STR((char*) "model", (char*)"", CFGF_NONE),
 	CFG_INT((char*) "stretch", 0, CFGF_NONE),		// 0 = tile, 1 = stretch
-	CFG_INT((char*) "wall", 0, CFGF_NONE),			// 0 = ground, 1 = wall
-	CFG_INT((char*) "ground_type", -1, CFGF_NONE),	// Ground to place underneath this wall
-	CFG_STR_LIST((char*) "walk_sounds", 0, CFGF_NONE),
-	CFG_SEC((char*) "damage", damage_opts, CFGF_MULTI),
 	CFG_END()
 };
 
@@ -50,8 +37,7 @@ static cfg_opt_t opts[] =
 
 FloorType::FloorType()
 {
-	this->surf = NULL;
-	this->ground_type = NULL;
+	this->texture = NULL;
 }
 
 
@@ -120,14 +106,8 @@ FloorType* loadFloorType(cfg_t *cfg_areatype, Mod * mod)
 	
 	at = new FloorType();
 	at->name = cfg_getstr(cfg_areatype, "name");
-	at->surf = mod->st->render->loadSprite(filename.c_str(), mod);
 	at->stretch = cfg_getint(cfg_areatype, "stretch");
-	at->wall = cfg_getint(cfg_areatype, "wall");
-	
-	char * tmp = cfg_getstr(cfg_areatype, "model");
-	if (tmp != NULL) {
-		at->model = mod->getAnimModel(tmp);
-	}
+	at->texture = mod->st->render->loadSprite(filename.c_str(), mod);
 	
 	return at;
 }
