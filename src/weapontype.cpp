@@ -120,7 +120,7 @@ WeaponType* loadWeaponType(cfg_t *cfg_weapon, Mod * mod)
 	// Load large icon
 	filename = getDataDirectory(DF_WEAPONS);
 	filename.append(cfg_getstr(cfg_weapon, "name"));
-	filename.append("/icon_large.png");
+	filename.append(".png");
 	wt->icon_large = mod->st->render->loadSprite(filename, mod);
 	
 	// Load firing sound
