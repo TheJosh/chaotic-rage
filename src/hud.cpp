@@ -88,11 +88,22 @@ void HUD::render(Render * render)
 **/
 int HUD::handleEvent(SDL_Event *event)
 {
-	if (event->type == SDL_KEYUP and event->key.keysym.sym == SDLK_LSHIFT) {
-		// SHIFT key
-		st->hud->weapon_menu = ! st->hud->weapon_menu;
-		return HUD::EVENT_PREVENT;
-		
+	if (event->type == SDL_KEYUP) {
+		if (event->key.keysym.sym == SDLK_LSHIFT) {
+			// SHIFT key
+			st->hud->weapon_menu = ! st->hud->weapon_menu;
+			return HUD::EVENT_PREVENT;
+
+		} else if (event->key.keysym.sym == SDLK_UP) {
+			this->st->curr_player->setWeapon(this->st->curr_player->getPrevWeaponID());
+			return HUD::EVENT_PREVENT;
+			
+		}  else if (event->key.keysym.sym == SDLK_DOWN) {
+			this->st->curr_player->setWeapon(this->st->curr_player->getNextWeaponID());
+			return HUD::EVENT_PREVENT;
+			
+		}
+
 	} else if (this->weapon_menu and event->type == SDL_MOUSEBUTTONDOWN) {
 		// MOUSE BUTTON + SCROLL
 		if (event->button.button == SDL_BUTTON_WHEELUP) {
