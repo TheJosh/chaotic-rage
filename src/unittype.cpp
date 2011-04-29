@@ -11,10 +11,9 @@
 using namespace std;
 
 
-/* Variables */
-extern cfg_opt_t g_action_opts;
-
-/* Config file definition */
+/**
+* Config file opts
+**/
 // Settings section
 static cfg_opt_t settings_opts[] =
 {
@@ -34,7 +33,7 @@ static cfg_opt_t state_opts[] =
 };
 
 // Unitclass section
-static cfg_opt_t unitclass_opts[] =
+cfg_opt_t unittype_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_SEC((char*) "settings", settings_opts, CFGF_MULTI),
@@ -47,83 +46,11 @@ static cfg_opt_t unitclass_opts[] =
 	CFG_END()
 };
 
-// Main config
-static cfg_opt_t opts[] =
-{
-	CFG_SEC((char*) "unittype", unitclass_opts, CFGF_MULTI),
-	CFG_END()
-};
-
-
-
-UnitType::UnitType()
-{
-	this->width = 20;
-	this->height = 20;
-}
-
-UnitType::~UnitType()
-{
-}
-
 
 /**
-* Loads the area types
+* Item loading function handler
 **/
-vector<UnitType*> * loadAllUnitTypees(Mod * mod)
-{
-	vector<UnitType*> * unitclasses = new vector<UnitType*>();
-	
-	char *buffer;
-	cfg_t *cfg, *cfg_unitclass;
-	
-	
-	// Load + parse the config file
-	buffer = mod->loadText("unittypes.conf");
-	if (buffer == NULL) {
-		return NULL;
-	}
-	
-	cfg = cfg_init(opts, CFGF_NONE);
-	cfg_parse_buf(cfg, buffer);
-	
-	free(buffer);
-	
-	
-	int num_types = cfg_size(cfg, "unittype");
-	if (num_types == 0) return NULL;
-	
-	// Process area type sections
-	int j;
-	for (j = 0; j < num_types; j++) {
-		cfg_unitclass = cfg_getnsec(cfg, "unittype", j);
-		
-		UnitType* uc = loadUnitType(cfg_unitclass, mod);
-		if (uc == NULL) {
-			cerr << "Bad unit type at index " << j << endl;
-			return false;
-		}
-		
-		unitclasses->push_back(uc);
-		uc->id = unitclasses->size() - 1;
-	}
-	
-	// If there was sprite errors, exit the game
-	if (mod->st->render->wasLoadSpriteError()) {
-		cerr << "Error loading unit types; game will now exit.\n";
-		exit(1);
-	}
-	
-	
-	return unitclasses;
-}
-
-
-
-/**
-* Loads a single area type
-**/
-UnitType* loadUnitType(cfg_t *cfg, Mod * mod)
+UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 {
 	UnitType* uc;
 	cfg_t *cfg_settings, *cfg_state;
@@ -131,19 +58,19 @@ UnitType* loadUnitType(cfg_t *cfg, Mod * mod)
 	
 	
 	uc = new UnitType();
-	uc->name = cfg_getstr(cfg, "name");
 	uc->mod = mod;
-	uc->begin_health = cfg_getint(cfg, "begin_health");
-	uc->hit_generator = mod->getParticleGenType(cfg_getint(cfg, "hit_generator"));
-	uc->playable = cfg_getint(cfg, "playable");
+	uc->name = cfg_getstr(cfg_item, "name");
+	uc->begin_health = cfg_getint(cfg_item, "begin_health");
+	uc->hit_generator = mod->getParticleGenType(cfg_getint(cfg_item, "hit_generator"));
+	uc->playable = cfg_getint(cfg_item, "playable");
 	
 	
 	/// Settings ///
-	int num_settings = cfg_size(cfg, "settings");
+	int num_settings = cfg_size(cfg_item, "settings");
 	if (num_settings - 1 != UNIT_NUM_MODIFIERS) return NULL;
 	
 	// Load initial config
-	cfg_settings = cfg_getnsec(cfg, "settings", 0);
+	cfg_settings = cfg_getnsec(cfg_item, "settings", 0);
 	uc->initial.max_speed = cfg_getint(cfg_settings, "max_speed");
 	uc->initial.accel = cfg_getint(cfg_settings, "accel");
 	uc->initial.turn_move = cfg_getint(cfg_settings, "turn_move");
@@ -156,7 +83,7 @@ UnitType* loadUnitType(cfg_t *cfg, Mod * mod)
 	
 	// load modifiers
 	for (j = 1; j < num_settings; j++) {
-		cfg_settings = cfg_getnsec(cfg, "settings", j);
+		cfg_settings = cfg_getnsec(cfg_item, "settings", j);
 		
 		uc->modifiers[j - 1].max_speed = cfg_getint(cfg_settings, "max_speed");
 		uc->modifiers[j - 1].accel = cfg_getint(cfg_settings, "accel");
@@ -165,15 +92,14 @@ UnitType* loadUnitType(cfg_t *cfg, Mod * mod)
 	}
 	
 	
-	
 	/// States ///
-	int num_states = cfg_size(cfg, "state");
+	int num_states = cfg_size(cfg_item, "state");
 	if (num_states < 1) return NULL;
 	
 	// load states
 	uc->max_frames = 0;
 	for (j = 0; j < num_states; j++) {
-		cfg_state = cfg_getnsec(cfg, "state", j);
+		cfg_state = cfg_getnsec(cfg_item, "state", j);
 		
 		UnitTypeState* uct = new UnitTypeState();
 		
@@ -255,3 +181,13 @@ UnitTypeState* UnitType::getState(int type)
 }
 
 
+
+UnitType::UnitType()
+{
+	this->width = 20;
+	this->height = 20;
+}
+
+UnitType::~UnitType()
+{
+}

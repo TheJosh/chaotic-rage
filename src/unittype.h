@@ -28,10 +28,6 @@ class UnitTypeStates;
 class UnitType;
 
 
-vector<UnitType*> * loadAllUnitTypees(Mod * mod);
-UnitType* loadUnitType(cfg_t *cfg, Mod * mod);
-
-
 class UnitTypeSettings
 {
 	public:
@@ -51,7 +47,7 @@ class UnitTypeState
 
 class UnitType
 {
-	friend UnitType* loadUnitType(cfg_t *cfg, Mod * mod);
+	friend UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod);
 	
 	public:
 		string name;
@@ -77,5 +73,12 @@ class UnitType
 		UnitTypeState* getState(int type);
 		Mod * getMod() { return this->mod; }
 };
+
+
+// Config file opts
+extern cfg_opt_t unittype_opts [];
+
+// Item loading function handler
+UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod);
 
 

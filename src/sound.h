@@ -25,4 +25,8 @@ class Sound
 };
 
 
-vector<Sound*> * loadAllSounds(Mod * mod);
+// Config file opts
+extern cfg_opt_t sound_opts [];
+
+// Item loading function handler
+Sound* loadItemSound(cfg_t* cfg_item, Mod* mod);

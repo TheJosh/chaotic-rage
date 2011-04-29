@@ -26,4 +26,9 @@ class FloorType
 };
 
 
-vector<FloorType*> * loadAllFloorTypes(Mod * mod);
+// Config file opts
+extern cfg_opt_t floortype_opts [];
+
+// Item loading function handler
+FloorType* loadItemFloorType(cfg_t* cfg_item, Mod* mod);
+

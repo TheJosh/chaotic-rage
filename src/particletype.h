@@ -32,10 +32,6 @@ class ParticleType
 		// dynamic
 		int id;
 		vector<SpritePtr> sprites;
-		
-	public:
-		ParticleType();
-		~ParticleType();
 };
 
 class GenSpew
@@ -61,7 +57,12 @@ class ParticleGenType
 };
 
 
-vector<ParticleType*> * loadAllParticleTypes(Mod * mod);
-vector<ParticleGenType*> * loadAllParticleGenTypes(Mod * mod);
+// Config file opts
+extern cfg_opt_t particletype_opts [];
+extern cfg_opt_t generatortype_opts [];
+
+// Item loading function handler
+ParticleType* loadItemParticleType(cfg_t* cfg_item, Mod* mod);
+ParticleGenType* loadItemParticleGenType(cfg_t* cfg_item, Mod* mod);
 
 

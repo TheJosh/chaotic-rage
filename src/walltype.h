@@ -41,4 +41,9 @@ class WallType
 };
 
 
-vector<WallType*> * loadAllWallTypes(Mod * mod);
+// Config file opts
+extern cfg_opt_t walltype_opts [];
+
+// Item loading function handler
+WallType* loadItemWallType(cfg_t* cfg_item, Mod* mod);
+

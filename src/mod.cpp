@@ -12,12 +12,6 @@
 using namespace std;
 
 
-void mod_load_error(string section)
-{
-	cerr << "Error loading section " << section << "\n";
-}
-
-
 /**
 * Inits the mod. Does not load yet
 **/
@@ -30,44 +24,116 @@ Mod::Mod(GameState * st, string directory)
 }
 
 
+/**
+* This function loads a mod from a file into a vector of a specified class.
+*
+* It's a templated function, so it needs type T to be specified in the function call.
+* e.g.
+*   loadModFile<AnimModel*>(...) to load into the AnimModel class
+*
+* Params:
+*   mod         The mod which is loading the data
+*   filename    The .conf filename to load data from, relative to the mod directory
+*   section     The section name to load from the file
+*   item_opts   The libconfuse option definition for the item
+*   item_f      Function pointer for the processing function for the item
+*
+*               This should have the signature:
+*                 T* loadItem(cfg_t* cfg_item, Mod* mod);
+*
+*               Example:
+*                 AnimModel* loadItemAnimModel(cfg_t* cfg_item, Mod* mod);
+**/
+template <class T>
+vector<T> * loadModFile(Mod* mod, const char* filename, const char* section, cfg_opt_t* item_opts, T (*item_f)(cfg_t*, Mod*))
+{
+	vector<T> * models = new vector<T>();
+	
+	char *buffer;
+	cfg_t *cfg, *cfg_item;
+	
+	cfg_opt_t opts[] =
+	{
+		CFG_SEC((char*) section, item_opts, CFGF_MULTI),
+		CFG_END()
+	};
+	
+	// Load + parse the config file
+	buffer = mod->loadText(filename);
+	if (buffer == NULL) {
+		cerr << "Error loading file " << filename << ". File is empty or missing.\n";
+		return NULL;
+	}
+	
+	cfg = cfg_init(opts, CFGF_NONE);
+	cfg_parse_buf(cfg, buffer);
+	
+	free(buffer);
+	
+	
+	int num_types = cfg_size(cfg, section);
+	if (num_types == 0) {
+		cerr << "Error loading file " << filename << ". File does not contain any '" << section << "' sections.\n";
+		return NULL;
+	}
+
+	// Process area type sections
+	int j;
+	for (j = 0; j < num_types; j++) {
+		cfg_item = cfg_getnsec(cfg, section, j);
+		
+		T am = (*item_f)(cfg_item, mod);
+		if (am == NULL) {
+			cerr << "Bad definition in file " << filename << " at index " << j << "\n";
+			return NULL;
+		}
+		
+		models->push_back(am);
+		am->id = models->size() - 1;
+	}
+	
+	return models;
+}
+
+
 
 /**
 * Loads the mod
 **/
 bool Mod::load()
 {
-	int i;
+	animmodels = loadModFile<AnimModel*>(this, "animmodels.conf", "animmodel", animmodel_opts, &loadItemAnimModel);
+	if (animmodels == NULL) return false;
 	
-	animmodels = loadAllAnimModels(this);
-	if (animmodels == NULL) { mod_load_error("animmodels"); return false; }
+	areatypes = loadModFile<FloorType*>(this, "floortypes.conf", "floortype", floortype_opts, &loadItemFloorType);
+	if (areatypes == NULL) return false;
 	
-	for (i = animmodels->size() - 1; i >= 0; --i) {
+	particletypes = loadModFile<ParticleType*>(this, "particletypes.conf", "particle", particletype_opts, &loadItemParticleType);
+	if (particletypes == NULL) return false;
+	
+	pgeneratortypes = loadModFile<ParticleGenType*>(this, "particlegenerators.conf", "generator", generatortype_opts, &loadItemParticleGenType);
+	if (pgeneratortypes == NULL) return false;
+	
+	unitclasses = loadModFile<UnitType*>(this, "unittypes.conf", "unittype", unittype_opts, &loadItemUnitType);
+	if (unitclasses == NULL) return false;
+	
+	songs = loadModFile<Song*>(this, "songs.conf", "song", song_opts, &loadItemSong);
+	if (songs == NULL) return false;
+	
+	sounds = loadModFile<Sound*>(this, "sounds.conf", "sound", sound_opts, &loadItemSound);
+	if (sounds == NULL) return false;
+	
+	walltypes = loadModFile<WallType*>(this, "walltypes.conf", "walltype", walltype_opts, &loadItemWallType);
+	if (walltypes == NULL) return false;
+	
+	weapontypes = loadModFile<WeaponType*>(this, "weapontypes.conf", "weapon", weapontype_opts, &loadItemWeaponType);
+	if (weapontypes == NULL) return false;
+	
+	
+	// Post-load logic
+	for (int i = animmodels->size() - 1; i >= 0; --i) {
 		animmodels->at(i)->next = this->getAnimModel(animmodels->at(i)->next_name);
 	}
-	
-	areatypes = loadAllFloorTypes(this);
-	if (areatypes == NULL) { mod_load_error("floor types"); return false; }
-	
-	particletypes = loadAllParticleTypes(this);
-	if (particletypes == NULL) { mod_load_error("particle types"); return false; }
-	
-	pgeneratortypes = loadAllParticleGenTypes(this);
-	if (pgeneratortypes == NULL) { mod_load_error("particle generator types"); return false; }
-	
-	unitclasses = loadAllUnitTypees(this);
-	if (unitclasses == NULL) { mod_load_error("unit types"); return false; }
-	
-	songs = loadAllSongs(this);
-	if (songs == NULL) { mod_load_error("songs"); return false; }
-	
-	sounds = loadAllSounds(this);
-	if (sounds == NULL) { mod_load_error("sounds"); return false; }
-	
-	walltypes = loadAllWallTypes(this);
-	if (walltypes == NULL) { mod_load_error("wall types"); return false; }
-	
-	weapontypes = loadAllWeaponTypes(this);
-	if (weapontypes == NULL) { mod_load_error("weapon types"); return false; }
 	
 	return true;
 }

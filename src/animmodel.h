@@ -5,6 +5,7 @@
 #pragma once
 #include <iostream>
 #include <SDL.h>
+#include <confuse.h>
 #include "rage.h"
 
 using namespace std;
@@ -47,4 +48,10 @@ class AnimModel
 };
 
 
-vector<AnimModel*> * loadAllAnimModels(Mod * mod);
+// Config file opts
+extern cfg_opt_t animmodel_opts [];
+
+// Item loading function handler
+AnimModel* loadItemAnimModel(cfg_t* cfg_item, Mod* mod);
+
+

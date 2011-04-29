@@ -25,4 +25,8 @@ class Song
 };
 
 
-vector<Song*> * loadAllSongs(Mod * mod);
+// Config file opts
+extern cfg_opt_t song_opts [];
+
+// Item loading function handler
+Song* loadItemSong(cfg_t* cfg_item, Mod* mod);
