@@ -64,16 +64,6 @@ class Entity
 		virtual void update(int delta) = 0;
 		
 		/**
-		* Gets the entities actual width, in pixels
-		**/
-		virtual int getWidth() { return 1; };
-		
-		/**
-		* Gets the entities actual height, in pixels
-		**/
-		virtual int getHeight() { return 1; };
-		
-		/**
 		* Called by the collission code when a collission has happened
 		**/
 		virtual void hasBeenHit(CollideBox * ours, CollideBox * theirs) {};

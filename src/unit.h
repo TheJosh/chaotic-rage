@@ -57,8 +57,6 @@ class Unit: public Entity
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta) = 0;
-		virtual int getWidth() { return this->uc->width; };
-		virtual int getHeight() { return this->uc->height; };
 		virtual void hasBeenHit(CollideBox * ours, CollideBox * theirs);
 		
 	public:

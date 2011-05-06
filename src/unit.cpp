@@ -207,7 +207,7 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		
 		// Fall off the map detection
 		if (newx < 0.0 || newy < 0.0
-				|| newx >= this->st->curr_map->width - this->getWidth() || newy >= this->st->curr_map->height - this->getHeight()) {
+				|| newx >= this->st->curr_map->width - this->uc->width || newy >= this->st->curr_map->height - this->uc->height) {
 			this->speed = 0;
 			this->setState(UNIT_STATE_STATIC);
 			
