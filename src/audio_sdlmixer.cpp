@@ -69,8 +69,7 @@ void AudioSDLMixer::handleEvent(Event * ev)
 **/
 void AudioSDLMixer::play()
 {
-	Sound * snd;
-	unsigned int i, j;
+	unsigned int i;
 	
 	
 	if (this->audio_start) {
@@ -90,13 +89,8 @@ void AudioSDLMixer::play()
 	for (i = 0; i < st->entities.size(); i++) {
 		Entity *e = st->entities.at(i);
 		
-		Sound * list [SPRITE_LIST_LEN] = {NULL, NULL, NULL, NULL};
-		e->getSounds(list);
-		
-		for (j = 0; j < SPRITE_LIST_LEN; j++) {
-			snd = list[j];
-			if (snd == NULL) break;
-			
+		Sound * snd = e->getSound();
+		if (snd != NULL) {
 			Mix_PlayChannel(-1, snd->sound, 0);
 		}
 	}
