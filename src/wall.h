@@ -28,7 +28,7 @@ class Wall: public Entity
 		
 	public:
 		virtual AnimPlay* getAnimModel();
-		virtual void getSounds(Sound * list [SPRITE_LIST_LEN]);
+		virtual Sound* getSound();
 		virtual void update(int delta);
 		
 	public:

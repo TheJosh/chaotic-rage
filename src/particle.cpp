@@ -97,8 +97,8 @@ AnimPlay* Particle::getAnimModel()
 	return this->anim;
 }
 
-void Particle::getSounds(Sound * list [SPRITE_LIST_LEN])
+Sound* Particle::getSound()
 {
-	list[0] = NULL;
+	return NULL;
 }
 

@@ -54,8 +54,9 @@ class Entity
 		
 		/**
 		* Return Sounds for this entity
+		* This is going to change some time soon!
 		**/
-		virtual void getSounds(Sound * list [SPRITE_LIST_LEN]) = 0;
+		virtual Sound* getSound() = 0;
 		
 		/**
 		* Update the entity. Time is provided in milliseconds (ms)

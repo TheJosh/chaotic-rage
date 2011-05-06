@@ -40,9 +40,9 @@ AnimPlay* Wall::getAnimModel()
 	return this->anim;
 }
 
-void Wall::getSounds(Sound * list [SPRITE_LIST_LEN])
+Sound* Wall::getSound()
 {
-	list[0] = NULL;
+	return NULL;
 }
 
 

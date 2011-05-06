@@ -55,7 +55,7 @@ class Unit: public Entity
 		
 	public:
 		virtual AnimPlay* getAnimModel();
-		virtual void getSounds(Sound * list [SPRITE_LIST_LEN]);
+		virtual Sound* getSound();
 		virtual void update(int delta) = 0;
 		virtual int getWidth() { return this->uc->width; };
 		virtual int getHeight() { return this->uc->height; };
