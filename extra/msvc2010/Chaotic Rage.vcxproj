@@ -96,6 +96,7 @@
     <ClCompile Include="..\..\src\particle.cpp" />
     <ClCompile Include="..\..\src\particlegenerator.cpp" />
     <ClCompile Include="..\..\src\particletype.cpp" />
+    <ClCompile Include="..\..\src\platform\win32.cpp" />
     <ClCompile Include="..\..\src\player.cpp" />
     <ClCompile Include="..\..\src\render.cpp" />
     <ClCompile Include="..\..\src\render_null.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="..\..\src\particle.h" />
     <ClInclude Include="..\..\src\particlegenerator.h" />
     <ClInclude Include="..\..\src\particletype.h" />
+    <ClInclude Include="..\..\src\platform\platform.h" />
     <ClInclude Include="..\..\src\player.h" />
     <ClInclude Include="..\..\src\rage.h" />
     <ClInclude Include="..\..\src\render.h" />

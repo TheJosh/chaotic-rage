@@ -29,7 +29,11 @@ string getUserDataDir()
 **/
 void reportFatalError(string msg)
 {
-	cerr << "FATAL ERROR: " << msg << "\n";
+	string out = "FATAL ERROR: ";
+	out.append(msg);
+
+	MessageBox(HWND_DESKTOP, out.c_str(), "Chaotic Rage", MB_OK);
+
 	exit(1);
 }
 
