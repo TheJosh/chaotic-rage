@@ -48,16 +48,9 @@ class Entity
 		
 	public:
 		/**
-		* DEPRECATED: AnimModel is the new way...
-		*
-		* Return a SpritePtr to render this entity as
-		**/
-		virtual void getSprite(SpritePtr list [SPRITE_LIST_LEN]) = 0;
-		
-		/**
 		* Return an AnimModel to render this entity as
 		**/
-		virtual void getAnimModel(AnimPlay * list [SPRITE_LIST_LEN]) = 0;
+		virtual AnimPlay* getAnimModel() = 0;
 		
 		/**
 		* Return Sounds for this entity

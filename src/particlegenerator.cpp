@@ -79,14 +79,9 @@ void ParticleGenerator::update(int delta)
 }
 
 
-void ParticleGenerator::getSprite(SpritePtr list [SPRITE_LIST_LEN])
+AnimPlay* ParticleGenerator::getAnimModel()
 {
-	list[0] = NULL;
-}
-
-void ParticleGenerator::getAnimModel(AnimPlay * list [SPRITE_LIST_LEN])
-{
-	list[0] = NULL;
+	return NULL;
 }
 
 void ParticleGenerator::getSounds(Sound * list [SPRITE_LIST_LEN])

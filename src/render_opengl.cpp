@@ -414,8 +414,7 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play)
 **/
 void RenderOpenGL::render()
 {
-	unsigned int i, j;
-	AnimPlay * play;
+	unsigned int i;
 	
 	int x, y;	// for general use
 	
@@ -552,27 +551,20 @@ void RenderOpenGL::render()
 	//std::sort(st->entities.begin(), st->entities.end(), ZIndexPredicate);
 	for (i = 0; i < st->entities.size(); i++) {
 		Entity *e = st->entities.at(i);
+		AnimPlay *play = e->getAnimModel();
 		
-		
-		glPushMatrix();
-		
-		glTranslatef(e->x, e->y, e->z);
-		glRotatef(0 - e->angle, 0, 0, 1);
-		
-		
-		AnimPlay * list [SPRITE_LIST_LEN] = {NULL, NULL, NULL, NULL};
-		e->getAnimModel(list);
-		
-		for (j = 0; j < SPRITE_LIST_LEN; j++) {
-			play = list[j];
-			if (play == NULL) break;
+		if (play != NULL) {
+			glPushMatrix();
+			
+			glTranslatef(e->x, e->y, e->z);
+			glRotatef(0 - e->angle, 0, 0, 1);
 			
 			renderAnimPlay(play);
+			
+			glPopMatrix();
 		}
-		
-		
-		glPopMatrix();
 	}
+		
 	
 	// Testing: show collide boxes
 	/*for (list<CollideBox*>::iterator it = st->collideboxes.begin(); it != st->collideboxes.end(); it++) {

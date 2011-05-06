@@ -92,22 +92,9 @@ void Particle::update(int delta)
 	if (this->anim->isDone()) this->anim->next();
 }
 
-void Particle::getSprite(SpritePtr list [SPRITE_LIST_LEN])
+AnimPlay* Particle::getAnimModel()
 {
-	int idx = 0;
-	if (this->pt->directional) idx = (int) round(this->angle / 45);
-	
-	int frame = this->st->anim_frame - this->animation_start;
-	frame = frame % this->pt->num_frames;
-	idx += frame;
-	
-	list[0] = this->pt->sprites.at(idx);
-}
-
-void Particle::getAnimModel(AnimPlay * list [SPRITE_LIST_LEN])
-{
-	list[0] = this->anim;
-	list[1] = NULL;
+	return this->anim;
 }
 
 void Particle::getSounds(Sound * list [SPRITE_LIST_LEN])

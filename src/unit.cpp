@@ -159,19 +159,9 @@ unsigned int Unit::getNextWeaponID()
 }
 
 
-/**
-* Determines the unit sprite
-**/
-void Unit::getSprite(SpritePtr list [SPRITE_LIST_LEN])
+AnimPlay* Unit::getAnimModel()
 {
-	list[0] = NULL;
-	return;
-}
-
-void Unit::getAnimModel(AnimPlay * list [SPRITE_LIST_LEN])
-{
-	list[0] = this->anim;
-	list[1] = NULL;
+	return this->anim;
 }
 
 void Unit::getSounds(Sound * list [SPRITE_LIST_LEN])

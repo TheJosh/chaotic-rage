@@ -35,21 +35,9 @@ void Wall::update(int delta)
 	}
 }
 
-/**
-* NOT USED
-**/
-void Wall::getSprite(SpritePtr list [SPRITE_LIST_LEN])
+AnimPlay* Wall::getAnimModel()
 {
-	list[0] = NULL;
-}
-
-/**
-* Draw something
-**/
-void Wall::getAnimModel(AnimPlay * list [SPRITE_LIST_LEN])
-{
-	list[0] = this->anim;
-	list[1] = NULL;
+	return this->anim;
 }
 
 void Wall::getSounds(Sound * list [SPRITE_LIST_LEN])

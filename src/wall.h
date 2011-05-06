@@ -27,8 +27,7 @@ class Wall: public Entity
 		virtual ~Wall();
 		
 	public:
-		virtual void getSprite(SpritePtr list [SPRITE_LIST_LEN]);
-		virtual void getAnimModel(AnimPlay * list [SPRITE_LIST_LEN]);
+		virtual AnimPlay* getAnimModel();
 		virtual void getSounds(Sound * list [SPRITE_LIST_LEN]);
 		virtual void update(int delta);
 		
