@@ -4,13 +4,7 @@
 
 #pragma once
 
-#ifdef _WIN32
-	#include <windows.h>
-	static inline double round(double val) { return floor(val + 0.5); }
-	#define or ||
-	#define and &&
-#endif
-
+#include "platform/platform.h"
 #include <iostream>
 #include <SDL.h>
 #include <GL/gl.h>

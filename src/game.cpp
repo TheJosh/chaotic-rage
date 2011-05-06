@@ -102,7 +102,11 @@ static void handleEvents(GameState *st)
 					
 					
 				case SDLK_PRINT:
-					((RenderOpenGL*) st->render)->saveScreenshot("/home/josh/test");
+					{
+						string filename = getUserDataDir();
+						filename.append("screenshot");
+						((RenderOpenGL*) st->render)->saveScreenshot(filename);
+					}
 					break;
 				
 					

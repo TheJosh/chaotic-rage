@@ -21,7 +21,7 @@ endif
 OBJPATH=build
 SRCPATH=src
 
-OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(wildcard $(SRCPATH)/*.cpp)) $(OBJPATH)/objload.o
+OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(wildcard $(SRCPATH)/*.cpp)) $(OBJPATH)/objload.o $(OBJPATH)/linux.o
 
 OBJFILES_CLIENT=$(filter-out build/server.o, $(OBJFILES))
 OBJFILES_SERVER=$(filter-out build/client.o, $(OBJFILES))
@@ -57,6 +57,10 @@ $(OBJPATH)/objload.o: $(SRCPATH)/objload.l $(SRCPATH)/objload.h Makefile
 	@echo [CC] $(OBJPATH)/objload.cpp
 	@$(CXX) $(CFLAGS) -o $(OBJPATH)/objload.o -c $(OBJPATH)/objload.cpp -Wno-unused-function -Wno-unused-variable -I src
 	
+	
+$(OBJPATH)/linux.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h Makefile
+	@echo [CC] $<
+	@$(CXX) $(CFLAGS) -o $@ -c $<
 	
 	
 	

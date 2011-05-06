@@ -2,7 +2,7 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
+#include <string>
 #include <SDL.h>
 #include "rage.h"
 
@@ -25,12 +25,9 @@ int main (int argc, char ** argv) {
 	st->render->setScreenSize(900, 900, false);
 	
 	Mod * mod = new Mod(st, "data/cr/");
-	
 	if (! mod->load()) {
-		cerr << "Unable to load datafile.\n";
-		exit(1);
+		reportFatalError("Unable to load data module 'cr'.");
 	}
-	
 	
 	Map *m = new Map(st);
 	m->load("arena", st->render);
