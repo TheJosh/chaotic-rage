@@ -23,6 +23,10 @@ class RenderOpenGL : public Render
 	private:
 		SDL_Surface * screen;
 		
+		// Size of the actual screen
+		int real_width;
+		int real_height;
+		
 		// Size of the 'virtual' screen.
 		int virt_width;
 		int virt_height;
@@ -34,11 +38,6 @@ class RenderOpenGL : public Render
 		
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
-		
-	public:
-		int x;
-		int y;
-		int z;
 		
 	public:
 		virtual void setScreenSize(int width, int height, bool fullscreen);
@@ -56,6 +55,7 @@ class RenderOpenGL : public Render
 		RenderOpenGL(GameState * st);
 		virtual ~RenderOpenGL();
 		
+		void saveScreenshot(string filename);
 		
 	protected:
 		void renderObj (WavefrontObj * obj);

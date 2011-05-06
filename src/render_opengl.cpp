@@ -27,9 +27,6 @@ using namespace std;
 RenderOpenGL::RenderOpenGL(GameState * st) : Render(st)
 {
 	this->screen = NULL;
-	this->x = 1;
-	this->y = 1;
-	this->z = -4;
 }
 
 RenderOpenGL::~RenderOpenGL()
@@ -43,6 +40,9 @@ RenderOpenGL::~RenderOpenGL()
 void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 {
 	int flags;
+	
+	this->real_width = width;
+	this->real_height = height;
 	
 	// TODO: we need to keep track of all textures
 	// because when this method runs again, we need to re-load everything
@@ -111,6 +111,28 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+
+/**
+* Saves a screenshot.
+* Filename does NOT include extension
+**/
+void RenderOpenGL::saveScreenshot(string filename)
+{
+	SDL_Surface * surf = SDL_CreateRGBSurface(SDL_SWSURFACE, this->real_width, this->real_height, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
+	if (surf == NULL) return;
+	
+	glReadPixels(0, 0, this->real_width, this->real_height, GL_RGB, GL_UNSIGNED_BYTE, surf->pixels);
+	
+	SDL_Surface * flip = flipVert(surf);
+	if (flip == NULL) return;
+	SDL_FreeSurface(surf);
+	
+	filename.append(".bmp");
+	SDL_SaveBMP(flip, filename.c_str());
+	
+	SDL_FreeSurface(flip);
 }
 
 

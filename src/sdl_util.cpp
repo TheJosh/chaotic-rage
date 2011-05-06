@@ -33,6 +33,27 @@ SDL_Surface * tileSprite (SDL_Surface * orig, int w, int h)
 }
 
 
+SDL_Surface* flipVert(SDL_Surface* sfc)
+{
+	SDL_Surface* result = SDL_CreateRGBSurface(sfc->flags, sfc->w, sfc->h,
+		sfc->format->BytesPerPixel * 8, sfc->format->Rmask, sfc->format->Gmask,
+		sfc->format->Bmask, sfc->format->Amask);
+	if (result == NULL) return NULL;
+	
+	Uint8* pixels = (Uint8*) sfc->pixels;
+	Uint8* rpixels = (Uint8*) result->pixels;
+	
+	Uint32 pitch = sfc->pitch;
+	Uint32 pxlength = pitch*sfc->h;
+	
+	for(int line = 0; line < sfc->h; ++line) {
+		Uint32 pos = line * pitch;
+		memcpy(&rpixels[pos], &pixels[(pxlength-pos)-pitch], pitch);
+	}
+	
+	return result;
+}
+
 /**
 * Apply the colourkey mask from one surface onto another
 **/
