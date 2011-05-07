@@ -13,6 +13,10 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Configs">
+      <UniqueIdentifier>{12f74984-14a9-43a7-b90e-1eeb78895122}</UniqueIdentifier>
+      <Extensions>*.conf</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\animmodel.cpp">
@@ -239,5 +243,34 @@
     <ClInclude Include="..\..\src\platform\platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\data\cr\animmodels.conf">
+      <Filter>Configs</Filter>
+    </None>
+    <None Include="..\..\data\cr\weapontypes.conf">
+      <Filter>Configs</Filter>
+    </None>
+    <None Include="..\..\data\cr\floortypes.conf">
+      <Filter>Configs</Filter>
+    </None>
+    <None Include="..\..\data\cr\particlegenerators.conf">
+      <Filter>Configs</Filter>
+    </None>
+    <None Include="..\..\data\cr\particletypes.conf">
+      <Filter>Configs</Filter>
+    </None>
+    <None Include="..\..\data\cr\songs.conf">
+      <Filter>Configs</Filter>
+    </None>
+    <None Include="..\..\data\cr\sounds.conf">
+      <Filter>Configs</Filter>
+    </None>
+    <None Include="..\..\data\cr\unittypes.conf">
+      <Filter>Configs</Filter>
+    </None>
+    <None Include="..\..\data\cr\walltypes.conf">
+      <Filter>Configs</Filter>
+    </None>
   </ItemGroup>
 </Project>

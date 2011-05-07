@@ -32,6 +32,14 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 	this->walk_time = 0;
 	
 	this->remove_at = 0;
+
+
+	// access sounds using this->uc->getSound(type)
+	// see unittype.h for types (e.g. UNIT_SOUND_DEATH)
+	// example:
+	// Sound* snd;
+	// snd = this->uc->getSound(UNIT_SOUND_DEATH);
+	// if (snd != NULL) this->st->audio->playSound(snd);
 }
 
 Unit::~Unit()

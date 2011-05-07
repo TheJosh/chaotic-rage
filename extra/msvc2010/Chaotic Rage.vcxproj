@@ -163,6 +163,17 @@
     <ClInclude Include="..\..\src\zone.h" />
     <ClInclude Include="..\flex\objload.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\data\cr\animmodels.conf" />
+    <None Include="..\..\data\cr\floortypes.conf" />
+    <None Include="..\..\data\cr\particlegenerators.conf" />
+    <None Include="..\..\data\cr\particletypes.conf" />
+    <None Include="..\..\data\cr\songs.conf" />
+    <None Include="..\..\data\cr\sounds.conf" />
+    <None Include="..\..\data\cr\unittypes.conf" />
+    <None Include="..\..\data\cr\walltypes.conf" />
+    <None Include="..\..\data\cr\weapontypes.conf" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -16,11 +16,19 @@ using namespace std;
 #define UNIT_MOD_SHIELD (1 << 1)
 #define UNIT_MOD_SPEED (1 << 2)
 
-#define UNIT_STATE_WALK 0
+#define UNIT_STATE_WALK 0		// this is going to be removed
 #define UNIT_STATE_STATIC 1
 #define UNIT_STATE_RUNNING 2
 #define UNIT_STATE_FIRING 3
 #define UNIT_STATE_DIE 4
+
+#define UNIT_SOUND_STATIC 1
+#define UNIT_SOUND_HIT 2
+#define UNIT_SOUND_DEATH 3
+#define UNIT_SOUND_SPAWN 4
+#define UNIT_SOUND_ABILITY 5
+#define UNIT_SOUND_CELEBRATE 6
+#define UNIT_SOUND_FAIL 7
 
 
 class UnitTypeSettings;
@@ -45,6 +53,14 @@ class UnitTypeState
 		int type;
 };
 
+class UnitTypeSound
+{
+	public:
+		int id;
+		Sound * snd;
+		int type;
+};
+
 class UnitType
 {
 	friend UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod);
@@ -61,6 +77,7 @@ class UnitType
 		UnitTypeSettings initial;
 		UnitTypeSettings modifiers[UNIT_NUM_MODIFIERS];
 		vector<UnitTypeState*> states;
+		vector<UnitTypeSound*> sounds;
 		unsigned int max_frames;
 		Mod * mod;
 		
@@ -71,6 +88,8 @@ class UnitType
 	public:
 		UnitTypeSettings* getSettings(Uint8 modifier_flags);
 		UnitTypeState* getState(int type);
+		Sound* getSound(int type);
+
 		Mod * getMod() { return this->mod; }
 };
 

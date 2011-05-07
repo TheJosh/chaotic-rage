@@ -32,12 +32,21 @@ static cfg_opt_t state_opts[] =
 	CFG_END()
 };
 
+// Sound section
+static cfg_opt_t sound_opts[] =
+{
+	CFG_STR((char*) "sound", 0, CFGF_NONE),
+	CFG_INT((char*) "type", 0, CFGF_NONE),
+	CFG_END()
+};
+
 // Unitclass section
 cfg_opt_t unittype_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_SEC((char*) "settings", settings_opts, CFGF_MULTI),
 	CFG_SEC((char*) "state", state_opts, CFGF_MULTI),
+	CFG_SEC((char*) "sound", sound_opts, CFGF_MULTI),
 	CFG_INT((char*) "playable", 1, CFGF_NONE),
 	
 	CFG_INT((char*) "begin_health", 0, CFGF_NONE),
@@ -53,7 +62,7 @@ cfg_opt_t unittype_opts[] =
 UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 {
 	UnitType* uc;
-	cfg_t *cfg_settings, *cfg_state;
+	cfg_t *cfg_settings, *cfg_state, *cfg_sound;
 	int j;
 	
 	
@@ -113,6 +122,26 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 		uct->id = uc->states.size() - 1;
 	}
 	
+
+	/// States ///
+	int num_sounds = cfg_size(cfg_item, "sound");
+	
+	// load states
+	for (j = 0; j < num_sounds; j++) {
+		cfg_sound = cfg_getnsec(cfg_item, "sound", j);
+		
+		UnitTypeSound* uts = new UnitTypeSound();
+		
+		uts->type = cfg_getint(cfg_sound, "type");
+		
+		char * tmp = cfg_getstr(cfg_sound, "sound");
+		if (tmp == NULL) return NULL;
+		uts->snd = mod->getSound(tmp);
+		
+		uc->sounds.push_back(uts);
+	}
+
+
 	return uc;
 }
 
@@ -178,6 +207,35 @@ UnitTypeState* UnitType::getState(int type)
 	}
 	
 	return this->getState(UNIT_STATE_STATIC);
+}
+
+
+/**
+* Returns a random sound which matches the specified type.
+* If it can't find a sound for that type, return NULL
+**/
+Sound* UnitType::getSound(int type)
+{
+	unsigned int j = 0;
+	unsigned int num = 0;
+	
+	// Find out how many of this time exist
+	for (j = 0; j < this->sounds.size(); j++) {
+		if (this->sounds.at(j)->type == type) num++;
+	}
+	
+	// Randomly choose one
+	num = getRandom(0, num);
+	for (j = 0; j < this->sounds.size(); j++) {
+		if (this->states.at(j)->type == type) {
+			if (num == 0) {
+				return this->sounds.at(j)->snd;
+			}
+			num--;
+		}
+	}
+	
+	return NULL;
 }
 
 

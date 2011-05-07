@@ -22,3 +22,13 @@ The walking state sprite will be ADDED to the other sprite (drawn below it)
 
 hit_generator = particlegenerator to create when unit has been hit by a particle
 
+
+Sound types:
+-------------
+UNIT_SOUND_STATIC 1
+UNIT_SOUND_HIT 2
+UNIT_SOUND_DEATH 3
+UNIT_SOUND_SPAWN 4
+UNIT_SOUND_ABILITY 5
+UNIT_SOUND_CELEBRATE 6
+UNIT_SOUND_FAIL 7
