@@ -455,29 +455,29 @@ void RenderOpenGL::render()
 	
 	// Lights
 	glPushMatrix();
-		glTranslatef(1000, 1000, 100);
+		glTranslatef(1000, 1000, 10);
 		
-		GLfloat ambientLight[] = { 0.1f, 0.1f, 0.1f, 1.0f };
-		GLfloat diffuseLight[] = { 0.4f, 0.4f, 0.4f, 1.0f };
-		GLfloat specularLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		GLfloat ambientLight[] = { 0.1f, 0.1f, 0.1f, 0.0f };
+		GLfloat diffuseLight[] = { 0.1f, 0.1f, 0.1f, 0.2f };
+		GLfloat specularLight[] = { 0.1f, 0.1f, 0.1f, 0.2f };
 		GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		
 		glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
 		glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
 		glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
 		glLightfv(GL_LIGHT0, GL_POSITION, position);
-		glEnable(GL_LIGHT0);
+		glDisable(GL_LIGHT0);
 	glPopMatrix();
 	
 	
 	// Torch
 	if (st->curr_player != NULL) {
 		glPushMatrix();
-			glTranslatef(st->curr_player->x, st->curr_player->y, 50);
+			glTranslatef(st->curr_player->x, st->curr_player->y, 10);
 		
-			GLfloat ambientLight[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-			GLfloat diffuseLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-			GLfloat specularLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+			GLfloat ambientLight[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+			GLfloat diffuseLight[] = { 0.5f, 0.5f, 0.5f, 0.5f };
+			GLfloat specularLight[] = { 0.5f, 0.5f, 0.5f, 0.5f };
 			GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		
 			glLightfv(GL_LIGHT1, GL_AMBIENT, ambientLight);

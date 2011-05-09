@@ -34,11 +34,13 @@ void GameLogic::handleEvent(Event * ev)
 		this->spawn_timer = 0;
 		this->num_zomb = 0;
 		this->num_killed = 0;
-		this->num_wanted_zomb = 100;
+		this->num_wanted_zomb = 10;
 		
 	} else if (ev->type == UNIT_DIED) {
 		this->num_killed++;
 		cout << "Num killed: " << this->num_killed << "\n";
+
+		if (this->num_killed == this->num_wanted_zomb) this->num_wanted_zomb += 10;
 	}
 }
 
