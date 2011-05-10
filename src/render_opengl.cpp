@@ -433,6 +433,7 @@ void RenderOpenGL::render()
 	
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_NORMALIZE);
 	
 	
 	glMatrixMode(GL_MODELVIEW);
@@ -517,7 +518,7 @@ void RenderOpenGL::render()
  		
  		
  		glNormal3f(0, 0, 1);
- 		
+		
 		glBegin(GL_QUADS);
 			for (int x = 0; x < 2000; x += a->width) {
 			for (int y = 0; y < 2000; y += a->width) {
@@ -541,6 +542,35 @@ void RenderOpenGL::render()
 			}
 			}
 		glEnd();
+		
+		// Debugging of the map ness
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glColor3f(0.5,0.5,0.5);
+		glDisable(GL_LIGHTING);
+		glDisable(GL_TEXTURE_2D); 
+		glBegin(GL_QUADS);
+			for (int x = 0; x < 2000; x += a->width) {
+			for (int y = 0; y < 2000; y += a->width) {
+				
+				// Bottom-left vertex (corner)
+				glVertex3i( x, y + a->height, 0 );
+				
+				// Bottom-right vertex (corner)
+				glVertex3i( x + a->width, y + a->height, 0 );
+				
+				// Top-right vertex (corner)
+				glVertex3i( x + a->width, y, 0 );
+				
+				// Top-left vertex (corner)
+				glVertex3i( x, y, 0 );
+				
+			}
+			}
+		glEnd();
+		glEnable(GL_LIGHTING);
+		glEnable(GL_TEXTURE_2D); 
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		
 		
 		glPopMatrix();
 	}

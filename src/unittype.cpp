@@ -15,7 +15,7 @@ using namespace std;
 * Config file opts
 **/
 // Settings section
-static cfg_opt_t settings_opts[] =
+static cfg_opt_t unitsettings_opts[] =
 {
 	CFG_INT((char*) "max_speed", 0, CFGF_NONE),
 	CFG_INT((char*) "accel", 0, CFGF_NONE),
@@ -25,7 +25,7 @@ static cfg_opt_t settings_opts[] =
 };
 
 // State section
-static cfg_opt_t state_opts[] =
+static cfg_opt_t unitstate_opts[] =
 {
 	CFG_STR((char*) "model", 0, CFGF_NONE),
 	CFG_INT((char*) "type", 0, CFGF_NONE),
@@ -33,7 +33,7 @@ static cfg_opt_t state_opts[] =
 };
 
 // Sound section
-static cfg_opt_t sound_opts[] =
+static cfg_opt_t unitsound_opts[] =
 {
 	CFG_STR((char*) "sound", 0, CFGF_NONE),
 	CFG_INT((char*) "type", 0, CFGF_NONE),
@@ -44,9 +44,9 @@ static cfg_opt_t sound_opts[] =
 cfg_opt_t unittype_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
-	CFG_SEC((char*) "settings", settings_opts, CFGF_MULTI),
-	CFG_SEC((char*) "state", state_opts, CFGF_MULTI),
-	CFG_SEC((char*) "sound", sound_opts, CFGF_MULTI),
+	CFG_SEC((char*) "settings", unitsettings_opts, CFGF_MULTI),
+	CFG_SEC((char*) "state", unitstate_opts, CFGF_MULTI),
+	CFG_SEC((char*) "sound", unitsound_opts, CFGF_MULTI),
 	CFG_INT((char*) "playable", 1, CFGF_NONE),
 	
 	CFG_INT((char*) "begin_health", 0, CFGF_NONE),
