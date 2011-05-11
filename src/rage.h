@@ -58,6 +58,7 @@ class Event;
 class EventListener;
 class GameLogic;
 class GameState;
+class GameType;
 class HUD;
 class Map;
 class MapGrid;
@@ -100,6 +101,7 @@ class Zone;
 #include "sound.h"
 #include "walltype.h"
 #include "weapontype.h"
+#include "gametype.h"
 
 #include "entity.h"
 #include "unit.h"

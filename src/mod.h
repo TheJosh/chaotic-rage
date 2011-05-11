@@ -14,11 +14,12 @@ class Mod {
 	private:
 		vector<AnimModel*> * animmodels;
 		vector<FloorType*> * areatypes;
+		vector<GameType*> * gametypes;
 		vector<ParticleType*> * particletypes;
 		vector<ParticleGenType*> * pgeneratortypes;
-		vector<UnitType*> * unitclasses;
 		vector<Song*> * songs;
 		vector<Sound*> * sounds;
+		vector<UnitType*> * unitclasses;
 		vector<WallType*> * walltypes;
 		vector<WeaponType*> * weapontypes;
 		
@@ -39,11 +40,12 @@ class Mod {
 		
 		AnimModel * getAnimModel(int id);
 		FloorType * getFloorType(int id);
-		UnitType * getUnitType(int id);
+		GameType * getGameType(int id);
 		ParticleType * getParticleType(int id);
 		ParticleGenType * getParticleGenType(int id);
 		Song * getSong(int id);
 		Sound * getSound(int id);
+		UnitType * getUnitType(int id);
 		WallType * getWallType(int id);
 		WeaponType * getWeaponType(int id);
 		

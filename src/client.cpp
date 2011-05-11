@@ -36,7 +36,8 @@ int main (int argc, char ** argv) {
 	new GameLogic(st);
 	
 	// TODO: make this run the gametype script instead
-	st->logic->execScript("debug('Hello world from Lua');");
+	GameType *gt = mod->getGameType(0);
+	st->logic->execScript(gt->script);
 	
 	gameLoop(st, st->render);
 	
