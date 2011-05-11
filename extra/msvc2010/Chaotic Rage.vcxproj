@@ -51,7 +51,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;opengl32.lib;glu32.lib;glew32.lib;zziplib.lib;libConfuse.lib;zdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;opengl32.lib;glu32.lib;glew32.lib;zziplib.lib;libConfuse.lib;zdll.lib;lua5.1.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <IgnoreSpecificDefaultLibraries>MSVCRTD.LIB;MSVCRT100D.LIB</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -98,6 +98,7 @@
     <ClCompile Include="..\..\src\game.cpp" />
     <ClCompile Include="..\..\src\gamelogic.cpp" />
     <ClCompile Include="..\..\src\gamestate.cpp" />
+    <ClCompile Include="..\..\src\gametype.cpp" />
     <ClCompile Include="..\..\src\hud.cpp" />
     <ClCompile Include="..\..\src\map.cpp" />
     <ClCompile Include="..\..\src\mapgrid.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="..\..\src\game.h" />
     <ClInclude Include="..\..\src\gamelogic.h" />
     <ClInclude Include="..\..\src\gamestate.h" />
+    <ClInclude Include="..\..\src\gametype.h" />
     <ClInclude Include="..\..\src\hud.h" />
     <ClInclude Include="..\..\src\map.h" />
     <ClInclude Include="..\..\src\mapgrid.h" />
