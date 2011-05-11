@@ -24,10 +24,20 @@ class GameLogic : public EventListener
 		
 	public:
 		GameLogic(GameState *st);
+		~GameLogic();
 		
 	public:
 		virtual void handleEvent(Event * ev);
 		void update(int delta);
+		
+	public:
+		/**
+		* Executes a script.
+		* The script execution basically binds functions to events.
+		* Returns false if there is an error
+		**/
+		bool execScript(string code);
+		
 		
 	private:
 		Player * spawnPlayer(UnitType *uc, Faction fac);

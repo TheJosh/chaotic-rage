@@ -7,7 +7,25 @@
 #include <SDL.h>
 #include "rage.h"
 
+extern "C" {
+	#include <lua.h>
+	#include <lauxlib.h>
+}
+
+
 using namespace std;
+
+
+/**
+* Lua vm state etc
+**/
+static lua_State *state;
+
+
+/**
+* Used right at the bottom - does registration of functions
+**/
+void register_lua_functions();
 
 
 /**
@@ -20,6 +38,32 @@ GameLogic::GameLogic(GameState *st)
 	
 	this->mod = st->getMod(0);
 	this->map = st->curr_map;
+	
+	state = lua_open();
+	register_lua_functions();
+}
+
+GameLogic::~GameLogic()
+{
+	lua_close(state);
+}
+
+
+/**
+* Executes a script.
+* The script execution basically binds functions to events.
+* Returns false if there is an error
+**/
+bool GameLogic::execScript(string code)
+{
+	int res = luaL_dostring(state, code.c_str());
+	
+	if (res != 0) {
+		cerr << lua_tostring(state, -1) << "\n";
+		return false;
+	}
+	
+	return true;
 }
 
 
@@ -124,4 +168,53 @@ NPC * GameLogic::spawnNPC(UnitType *uc, Faction fac)
 	
 	return p;
 }
+
+
+
+
+/*####################  LUA FUNCTIONS  ####################*/
+
+/**
+* Outputs one or more debug messages.
+* Messages will be outputted to standard-out, seperated by two spaces
+**/
+static int debug(lua_State *L)
+{
+	int n = lua_gettop(L);
+	int i;
+	
+	printf("Lua debug:");
+	
+	for (i = 1; i <= n; i++) {
+		if (lua_isstring(L, i)) {
+			printf("  %s", lua_tostring(L, i));
+			
+		} else if (lua_isnil(L, i)) {
+			printf("  %s", "nil");
+			
+		} else if (lua_isboolean(L,i)) {
+			printf("  %s", lua_toboolean(L, i) ? "true" : "false");
+			
+		} else {
+			printf("  %s:%p", luaL_typename(L, i), lua_topointer(L, i));
+		}   
+	}
+	
+	printf("\n");
+	
+	return 0;
+}
+
+
+
+#define LUA_FUNC(name) lua_register(state, #name, name)
+
+/**
+* Register all of the Lia functions listed above
+**/
+void register_lua_functions()
+{
+	LUA_FUNC(debug);
+}
+
 

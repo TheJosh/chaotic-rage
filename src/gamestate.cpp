@@ -154,9 +154,6 @@ void GameState::doCollisions()
 	int dist;
 	int search;
 	
-	cout << "\033[2J\033[1;1H";
-	cout << "Num collide boxes: " << this->collideboxes.size() << "\n";
-	
 	for (list<CollideBox*>::iterator ito = this->collideboxes.begin(); ito != this->collideboxes.end(); ito++) {
 		CollideBox *co = (*ito);
 		

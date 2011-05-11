@@ -9,6 +9,7 @@ You will need at least these:
  - glu
  - glew
  - flex
+ - Lua
  
 For compiling on a recent Ubuntu:
  - g++
@@ -22,6 +23,7 @@ For compiling on a recent Ubuntu:
  - libglu1-mesa-dev
  - libglew-dev
  - flex
+ - liblua5.1-0-dev
  
 TODO: compiling on windows
 
