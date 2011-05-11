@@ -15,7 +15,11 @@
     </Filter>
     <Filter Include="Configs">
       <UniqueIdentifier>{12f74984-14a9-43a7-b90e-1eeb78895122}</UniqueIdentifier>
-      <Extensions>*.conf</Extensions>
+      <Extensions>conf</Extensions>
+    </Filter>
+    <Filter Include="Gametypes">
+      <UniqueIdentifier>{da51fd0c-f7db-498f-b47c-5218200eec2f}</UniqueIdentifier>
+      <Extensions>lua</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +281,9 @@
     </None>
     <None Include="..\..\data\cr\walltypes.conf">
       <Filter>Configs</Filter>
+    </None>
+    <None Include="..\..\data\cr\gametypes\zombies.lua">
+      <Filter>Gametypes</Filter>
     </None>
   </ItemGroup>
 </Project>

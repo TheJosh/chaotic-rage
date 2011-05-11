@@ -21,6 +21,10 @@ using namespace std;
 **/
 static lua_State *state;
 
+/**
+* Pointer to the logic state object, so Lua methods can affect it's state
+**/
+static GameLogic *l;
 
 /**
 * Used right at the bottom - does registration of functions
@@ -33,9 +37,10 @@ void register_lua_functions();
 **/
 GameLogic::GameLogic(GameState *st)
 {
+	l = this;
 	st->logic = this;
 	this->st = st;
-	
+
 	this->mod = st->getMod(0);
 	this->map = st->curr_map;
 	
@@ -171,6 +176,17 @@ NPC * GameLogic::spawnNPC(UnitType *uc, Faction fac)
 
 
 
+/**
+* Raises a gamestart event
+**/
+void GameLogic::raiseGamestart()
+{
+	for (unsigned int ref = 0; ref <= this->binds_start.size(); ref++) {
+		lua_rawgeti(state, LUA_REGISTRYINDEX, ref);
+		lua_pcall(state, 0, 0, 0);
+	}
+}
+
 
 /*####################  LUA FUNCTIONS  ####################*/
 
@@ -206,15 +222,35 @@ static int debug(lua_State *L)
 }
 
 
+static int bind_gamestart(lua_State *L)
+{
+	if (! lua_isfunction(L, 1)) {
+		lua_pushstring(L, "Arg #1 is not a function");
+        lua_error(L);
+	}
 
+	lua_pushvalue(state, -1);
+
+	int r = luaL_ref(state, LUA_REGISTRYINDEX);
+	l->binds_start.push_back(r);
+	return 0;
+}
+
+
+
+/**
+* For function binding
+**/
 #define LUA_FUNC(name) lua_register(state, #name, name)
 
 /**
-* Register all of the Lia functions listed above
+* Register all of the Lua functions listed above
 **/
 void register_lua_functions()
 {
 	LUA_FUNC(debug);
+
+	LUA_FUNC(bind_gamestart);
 }
 
 

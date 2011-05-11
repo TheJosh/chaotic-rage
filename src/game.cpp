@@ -34,6 +34,8 @@ void gameLoop(GameState *st, Render *render)
 	ev->type = GAME_STARTED;
 	fireEvent(ev);
 	
+	st->logic->raiseGamestart();
+
 	running = true;
 	while (running) {
 		delta = SDL_GetTicks() - start;

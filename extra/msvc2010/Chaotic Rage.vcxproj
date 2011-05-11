@@ -168,6 +168,7 @@
   <ItemGroup>
     <None Include="..\..\data\cr\animmodels.conf" />
     <None Include="..\..\data\cr\floortypes.conf" />
+    <None Include="..\..\data\cr\gametypes\zombies.lua" />
     <None Include="..\..\data\cr\particlegenerators.conf" />
     <None Include="..\..\data\cr\particletypes.conf" />
     <None Include="..\..\data\cr\songs.conf" />

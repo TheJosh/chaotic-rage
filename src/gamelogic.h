@@ -7,6 +7,11 @@
 #include <SDL.h>
 #include "rage.h"
 
+extern "C" {
+	#include <lua.h>
+	#include <lauxlib.h>
+}
+
 using namespace std;
 
 
@@ -23,6 +28,9 @@ class GameLogic : public EventListener
 		Mod *mod;
 		
 	public:
+		vector<int> binds_start;
+
+	public:
 		GameLogic(GameState *st);
 		~GameLogic();
 		
@@ -38,11 +46,18 @@ class GameLogic : public EventListener
 		**/
 		bool execScript(string code);
 		
-		
+		/**
+		* Raise a 'Gamestart' Lua event
+		**/
+		void raiseGamestart();
+
+
 	private:
 		Player * spawnPlayer(UnitType *uc, Faction fac);
 		NPC * spawnNPC(UnitType *uc, Faction fac);
 		
+	public:
+		int bind_gamestart(lua_State *L);
 		
 	// When this gets switched to use lua, this will all leave
 	private:
@@ -53,4 +68,3 @@ class GameLogic : public EventListener
 		
 		int player_spawn;
 };
-
