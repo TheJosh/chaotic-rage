@@ -64,8 +64,9 @@ bool GameLogic::execScript(string code)
 	int res = luaL_dostring(L, code.c_str());
 	
 	if (res != 0) {
-		cerr << lua_tostring(L, -1) << "\n";
-		return false;
+		string msg = "Lua fault: ";
+		msg.append(lua_tostring(L, -1));
+		reportFatalError(msg);
 	}
 	
 	return true;
@@ -284,6 +285,26 @@ LUA_FUNC(add_timer)
 
 
 /**
+* Remove a standalone or interval timer.
+*
+* @param Integer id: The timer id
+**/
+LUA_FUNC(remove_timer)
+{
+	if (! lua_isnumber(L, 1)) {
+		lua_pushstring(L, "Arg #1 is not an integer");
+		lua_error(L);
+	}
+	
+	int id = lua_tointeger(L, 1);
+	
+	gl->timers[id] = NULL;
+
+	return 0;
+}
+
+
+/**
 * Spawn a new NPC unit
 **/
 LUA_FUNC(add_npc)
@@ -354,6 +375,8 @@ LUA_FUNC(add_player)
 	
 	gl->st->curr_player = p;
 	
+	gl->st->hud->hideSpawnMenu();
+
 	return 0;
 }
 
@@ -372,6 +395,7 @@ void register_lua_functions()
 	LUA_REG(bind_gamestart);
 	LUA_REG(add_interval);
 	LUA_REG(add_timer);
+	LUA_REG(remove_timer);
 	LUA_REG(add_npc);
 	LUA_REG(add_player);
 	
