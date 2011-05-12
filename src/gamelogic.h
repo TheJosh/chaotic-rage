@@ -46,14 +46,10 @@ class GameLogic : public EventListener
 		* Raise a 'Gamestart' Lua event
 		**/
 		void raiseGamestart();
-
-
-	private:
-		Player * spawnPlayer(UnitType *uc, Faction fac);
-		NPC * spawnNPC(UnitType *uc, Faction fac);
 		
 	public:
 		int bind_gamestart(lua_State *L);
+		
 		
 	// When this gets switched to use lua, this will all leave
 	private:

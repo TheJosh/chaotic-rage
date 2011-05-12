@@ -111,7 +111,7 @@ void GameLogic::update(int deglta)
 	} else if (st->curr_player == NULL && st->game_time - this->player_spawn > 1000) {
 		// Spawn time over, create player
 		st->hud->hideSpawnMenu();
-		st->curr_player = this->spawnPlayer(mod->getUnitType(0), FACTION_TEAM1);
+		//st->curr_player = this->spawnPlayer(mod->getUnitType(0), FACTION_TEAM1);
 		this->player_spawn = -1;
 		
 	}
@@ -120,60 +120,6 @@ void GameLogic::update(int deglta)
 		cout << "All zombies are dead\n";
 	}
 }
-
-
-/**
-* Spawns a pglayer into the specified faction
-**/
-Player * GameLogic::spawnPlayer(UnitType *uc, Faction fac)
-{
-	Player *p;
-	
-	p = new Player(uc, st);
-	st->addUnit(p);
-	
-	p->pickupWeapon(mod->getWeaponType(0));
-	p->pickupWeapon(mod->getWeaponType(1));
-	p->pickupWeapon(mod->getWeaponType(2));
-	
-	Zone *z = map->getSpawnZone(fac);
-	if (z == NULL) {
-		cerr << "Map does not have any spawnpoints\n";
-		exit(1);
-	}
-	
-	p->x = z->getRandomX();
-	p->y = z->getRandomY();
-	p->fac = fac;
-	
-	return p;
-}
-
-/**
-* Spawns a pglayer into the specified faction
-**/
-NPC * GameLogic::spawnNPC(UnitType *uc, Faction fac)
-{
-	NPC *p;
-	
-	p = new NPC(uc, st);
-	st->addUnit(p);
-	
-	p->pickupWeapon(mod->getWeaponType(1));
-	
-	Zone *z = map->getSpawnZone(fac);
-	if (z == NULL) {
-		cerr << "Map does not have any spawnpoints\n";
-		exit(1);
-	}
-	
-	p->x = z->getRandomX();
-	p->y = z->getRandomY();
-	p->fac = fac;
-	
-	return p;
-}
-
 
 
 /**
@@ -278,6 +224,45 @@ LUA_FUNC(add_npc)
 }
 
 
+/**
+* Spawn a new NPC unit
+**/
+LUA_FUNC(add_player)
+{
+	Player *p;
+	
+	const char* name = lua_tostring(L, 1);
+	UnitType *uc = gl->mod->getUnitType(*(new string(name)));
+	if (uc == NULL) {
+		lua_pushstring(L, "Arg #1 is not an available unittype");
+		lua_error(L);
+	}
+	
+	Faction fac = (Faction) lua_tointeger(L, 2);
+	
+	p = new Player(uc, gl->st);
+	gl->st->addUnit(p);
+	
+	p->pickupWeapon(gl->mod->getWeaponType(0));
+	p->pickupWeapon(gl->mod->getWeaponType(1));
+	p->pickupWeapon(gl->mod->getWeaponType(2));
+	
+	
+	Zone *z = gl->map->getSpawnZone(fac);
+	if (z == NULL) {
+		cerr << "Map does not have any spawnpoints\n";
+		exit(1);
+	}
+	
+	p->x = z->getRandomX();
+	p->y = z->getRandomY();
+	p->fac = fac;
+	
+	gl->st->curr_player = p;
+	
+	return 0;
+}
+
 
 /**
 * For function binding
@@ -292,6 +277,7 @@ void register_lua_functions()
 	LUA_REG(debug);
 	LUA_REG(bind_gamestart);
 	LUA_REG(add_npc);
+	LUA_REG(add_player);
 	
 	
 	// Factions constants table
