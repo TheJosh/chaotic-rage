@@ -22,12 +22,8 @@ class GameLogic : public EventListener
 {
 	public:
 		GameState *st;
-		
-	private:
 		Map *map;
 		Mod *mod;
-		
-	public:
 		vector<int> binds_start;
 
 	public:

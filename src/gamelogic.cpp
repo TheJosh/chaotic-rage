@@ -98,7 +98,7 @@ void GameLogic::update(int delta)
 {
 	spawn_timer += delta;
 	if (this->num_zomb < this->num_wanted_zomb && this->spawn_timer > 250) {
-		this->spawnNPC(mod->getUnitType(2), FACTION_TEAM2);
+		//this->spawnNPC(mod->getUnitType(2), FACTION_TEAM2);
 		this->num_zomb++;
 		this->spawn_timer -= 250;
 	}
@@ -190,11 +190,13 @@ void GameLogic::raiseGamestart()
 
 /*####################  LUA FUNCTIONS  ####################*/
 
+#define LUA_FUNC(name) static int name(lua_State *L)
+
 /**
 * Outputs one or more debug messages.
 * Messages will be outputted to standard-out, seperated by two spaces
 **/
-static int debug(lua_State *L)
+LUA_FUNC(debug)
 {
 	int n = lua_gettop(L);
 	int i;
@@ -222,11 +224,15 @@ static int debug(lua_State *L)
 }
 
 
-static int bind_gamestart(lua_State *L)
+/**
+* Binds a function to the gamestart event.
+* Multiple functions can be bound to the one event.
+**/
+LUA_FUNC(bind_gamestart)
 {
 	if (! lua_isfunction(L, 1)) {
 		lua_pushstring(L, "Arg #1 is not a function");
-        lua_error(L);
+		lua_error(L);
 	}
 
 	lua_pushvalue(state, -1);
@@ -237,20 +243,49 @@ static int bind_gamestart(lua_State *L)
 }
 
 
+/**
+* Spawn a new NPC unit
+**/
+LUA_FUNC(add_npc)
+{
+	NPC *p;
+	
+	UnitType *uc = l->mod->getUnitType(2);
+	Faction fac = FACTION_TEAM2;
+	
+	p = new NPC(uc, l->st);
+	l->st->addUnit(p);
+	
+	p->pickupWeapon(l->mod->getWeaponType(1));
+	
+	Zone *z = l->map->getSpawnZone(fac);
+	if (z == NULL) {
+		cerr << "Map does not have any spawnpoints\n";
+		exit(1);
+	}
+	
+	p->x = z->getRandomX();
+	p->y = z->getRandomY();
+	p->fac = fac;
+	
+	return 0;
+}
+
+
 
 /**
 * For function binding
 **/
-#define LUA_FUNC(name) lua_register(state, #name, name)
+#define LUA_REG(name) lua_register(state, #name, name)
 
 /**
 * Register all of the Lua functions listed above
 **/
 void register_lua_functions()
 {
-	LUA_FUNC(debug);
-
-	LUA_FUNC(bind_gamestart);
+	LUA_REG(debug);
+	LUA_REG(bind_gamestart);
+	LUA_REG(add_npc);
 }
 
 
