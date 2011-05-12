@@ -1,0 +1,21 @@
+== functions ==
+
+debug (msg, ...)
+
+bind_gamestart (func)
+
+add_npc(unittype, faction)
+
+add_player(unit, faction)
+
+
+== constants ==
+
+factions
+	team1
+	team2
+	...
+	team8
+	individual
+	common
+
