@@ -27,7 +27,8 @@ class GameLogic : public EventListener
 		GameState *st;
 		Map *map;
 		Mod *mod;
-		vector<int> binds_start;
+		vector<int> binds_gamestart;
+		vector<int> binds_unitdied;
 		vector<Timer*> timers;
 		
 	public:
@@ -51,8 +52,10 @@ class GameLogic : public EventListener
 		**/
 		void raiseGamestart();
 		
-	public:
-		int bind_gamestart(lua_State *L);
+		/**
+		* Raise a 'Unitdied' Lua event
+		**/
+		void raiseUnitdied();
 		
 		
 	// When this gets switched to use lua, this will all leave

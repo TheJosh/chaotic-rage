@@ -87,41 +87,16 @@ void GameLogic::handleEvent(Event * ev)
 		this->num_wanted_zomb = 10;
 		
 	} else if (ev->type == UNIT_DIED) {
-		this->num_killed++;
-		cout << "Num killed: " << this->num_killed << "\n";
-
-		if (this->num_killed == this->num_wanted_zomb) this->num_wanted_zomb += 10;
+		this->raiseUnitdied();
 	}
 }
 
 
+/**
+* Basically just provides timer ticks
+**/
 void GameLogic::update(int deglta)
 {
-	spawn_timer += deglta;
-	if (this->num_zomb < this->num_wanted_zomb && this->spawn_timer > 250) {
-		//this->spawnNPC(mod->getUnitType(2), FACTION_TEAM2);
-		this->num_zomb++;
-		this->spawn_timer -= 250;
-	}
-	
-	if (st->curr_player == NULL && this->player_spawn == -1) {
-		// Player has died, show spawn menu
-		st->hud->showSpawnMenu();
-		this->player_spawn = st->game_time;
-		
-	} else if (st->curr_player == NULL && st->game_time - this->player_spawn > 1000) {
-		// Spawn time over, create player
-		st->hud->hideSpawnMenu();
-		//st->curr_player = this->spawnPlayer(mod->getUnitType(0), FACTION_TEAM1);
-		this->player_spawn = -1;
-		
-	}
-	
-	if (this->num_zomb == this->num_killed) {
-		cout << "All zombies are dead\n";
-	}
-	
-	
 	for (unsigned int id = 0; id < this->timers.size(); id++) {
 		Timer* t = this->timers.at(id);
 		if (t == NULL) continue;
@@ -147,7 +122,24 @@ void GameLogic::update(int deglta)
 **/
 void GameLogic::raiseGamestart()
 {
-	for (unsigned int ref = 0; ref <= this->binds_start.size(); ref++) {
+	cout << "GameLogic::raiseGamestart()\n";
+
+	for (unsigned int id = 0; id < this->binds_gamestart.size(); id++) {
+		int ref = this->binds_gamestart.at(id);
+		lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
+		lua_pcall(L, 0, 0, 0);
+	}
+}
+
+/**
+* Raises a unitdied event
+**/
+void GameLogic::raiseUnitdied()
+{
+	cout << "GameLogic::raiseUnitdied()\n";
+	
+	for (unsigned int id = 0; id < this->binds_unitdied.size(); id++) {
+		int ref = this->binds_unitdied.at(id);
 		lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
 		lua_pcall(L, 0, 0, 0);
 	}
@@ -192,10 +184,12 @@ LUA_FUNC(debug)
 
 /**
 * Binds a function to the gamestart event.
-* Mugltipgle functions can be bound to the one event.
+* Multiple functions can be bound to the one event.
 **/
 LUA_FUNC(bind_gamestart)
 {
+	cout << "bind_gamestart\n";
+	
 	if (! lua_isfunction(L, 1)) {
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);
@@ -204,7 +198,28 @@ LUA_FUNC(bind_gamestart)
 	lua_pushvalue(L, -1);
 
 	int r = luaL_ref(L, LUA_REGISTRYINDEX);
-	gl->binds_start.push_back(r);
+	gl->binds_gamestart.push_back(r);
+	return 0;
+}
+
+
+/**
+* Binds a function to the unitdied event.
+* Multiple functions can be bound to the one event.
+**/
+LUA_FUNC(bind_unitdied)
+{
+	cout << "bind_unitdied\n";
+	
+	if (! lua_isfunction(L, 1)) {
+		lua_pushstring(L, "Arg #1 is not a function");
+		lua_error(L);
+	}
+
+	lua_pushvalue(L, -1);
+
+	int r = luaL_ref(L, LUA_REGISTRYINDEX);
+	gl->binds_unitdied.push_back(r);
 	return 0;
 }
 
@@ -393,6 +408,7 @@ void register_lua_functions()
 {
 	LUA_REG(debug);
 	LUA_REG(bind_gamestart);
+	LUA_REG(bind_unitdied);
 	LUA_REG(add_interval);
 	LUA_REG(add_timer);
 	LUA_REG(remove_timer);
