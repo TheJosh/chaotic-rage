@@ -213,6 +213,20 @@ UnitType * Mod::getUnitType(int id)
 	return unitclasses->at(id);
 }
 
+/**
+* Gets a unitclass by name
+**/
+UnitType * Mod::getUnitType(string name)
+{
+	if (name.empty()) return NULL;
+	
+	int i;
+	for (i = unitclasses->size() - 1; i >= 0; --i) {
+		if (unitclasses->at(i)->name.compare(name) == 0) return unitclasses->at(i);
+	}
+	return NULL;
+}
+
 
 /**
 * Gets a song by ID

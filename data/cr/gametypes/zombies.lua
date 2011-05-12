@@ -2,12 +2,13 @@
 -- Lua script for the gametype "Zombies".
 --
 
-debug('Hello world from Lua');
-
 bind_gamestart(function()
-	debug('Adding an NPC');
-	add_npc();
-	debug('NPC added!');
+	
+	-- create some zombies
+	for variable = 1, 10 do
+		add_npc("zomb", factions.team2);
+	end
+	
 end);
 
 

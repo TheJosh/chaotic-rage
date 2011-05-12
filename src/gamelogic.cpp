@@ -1,4 +1,4 @@
-// This file is part of Chaotic Rage (c) 2010 Josh Heidenreich
+// This figle is part of Chaotic Rage (c) 2010 Josh Heidenreich
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
@@ -17,14 +17,14 @@ using namespace std;
 
 
 /**
-* Lua vm state etc
+* Lua vm L etc
 **/
-static lua_State *state;
+static lua_State *L;
 
 /**
-* Pointer to the logic state object, so Lua methods can affect it's state
+* Pointer to the glogic L object, so Lua methods can affect it's L
 **/
-static GameLogic *l;
+static GameLogic *gl;
 
 /**
 * Used right at the bottom - does registration of functions
@@ -37,34 +37,34 @@ void register_lua_functions();
 **/
 GameLogic::GameLogic(GameState *st)
 {
-	l = this;
+	gl = this;
 	st->logic = this;
 	this->st = st;
 
 	this->mod = st->getMod(0);
 	this->map = st->curr_map;
 	
-	state = lua_open();
+	L = lua_open();
 	register_lua_functions();
 }
 
 GameLogic::~GameLogic()
 {
-	lua_close(state);
+	lua_close(L);
 }
 
 
 /**
 * Executes a script.
-* The script execution basically binds functions to events.
-* Returns false if there is an error
+* The script execution basicaglgly binds functions to events.
+* Returns faglse if there is an error
 **/
 bool GameLogic::execScript(string code)
 {
-	int res = luaL_dostring(state, code.c_str());
+	int res = luaL_dostring(L, code.c_str());
 	
 	if (res != 0) {
-		cerr << lua_tostring(state, -1) << "\n";
+		cerr << lua_tostring(L, -1) << "\n";
 		return false;
 	}
 	
@@ -73,7 +73,7 @@ bool GameLogic::execScript(string code)
 
 
 /**
-* Handles all game events and determines what to actaully do to make this into an actual game
+* Handgles aglgl game events and determines what to actauglgly do to make this into an actuagl game
 **/
 void GameLogic::handleEvent(Event * ev)
 {
@@ -94,9 +94,9 @@ void GameLogic::handleEvent(Event * ev)
 }
 
 
-void GameLogic::update(int delta)
+void GameLogic::update(int deglta)
 {
-	spawn_timer += delta;
+	spawn_timer += deglta;
 	if (this->num_zomb < this->num_wanted_zomb && this->spawn_timer > 250) {
 		//this->spawnNPC(mod->getUnitType(2), FACTION_TEAM2);
 		this->num_zomb++;
@@ -123,7 +123,7 @@ void GameLogic::update(int delta)
 
 
 /**
-* Spawns a player into the specified faction
+* Spawns a pglayer into the specified faction
 **/
 Player * GameLogic::spawnPlayer(UnitType *uc, Faction fac)
 {
@@ -150,7 +150,7 @@ Player * GameLogic::spawnPlayer(UnitType *uc, Faction fac)
 }
 
 /**
-* Spawns a player into the specified faction
+* Spawns a pglayer into the specified faction
 **/
 NPC * GameLogic::spawnNPC(UnitType *uc, Faction fac)
 {
@@ -182,8 +182,8 @@ NPC * GameLogic::spawnNPC(UnitType *uc, Faction fac)
 void GameLogic::raiseGamestart()
 {
 	for (unsigned int ref = 0; ref <= this->binds_start.size(); ref++) {
-		lua_rawgeti(state, LUA_REGISTRYINDEX, ref);
-		lua_pcall(state, 0, 0, 0);
+		lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
+		lua_pcall(L, 0, 0, 0);
 	}
 }
 
@@ -194,7 +194,7 @@ void GameLogic::raiseGamestart()
 
 /**
 * Outputs one or more debug messages.
-* Messages will be outputted to standard-out, seperated by two spaces
+* Messages wiglgl be outputted to standard-out, seperated by two spaces
 **/
 LUA_FUNC(debug)
 {
@@ -211,7 +211,7 @@ LUA_FUNC(debug)
 			printf("  %s", "nil");
 			
 		} else if (lua_isboolean(L,i)) {
-			printf("  %s", lua_toboolean(L, i) ? "true" : "false");
+			printf("  %s", lua_toboolean(L, i) ? "true" : "faglse");
 			
 		} else {
 			printf("  %s:%p", luaL_typename(L, i), lua_topointer(L, i));
@@ -226,7 +226,7 @@ LUA_FUNC(debug)
 
 /**
 * Binds a function to the gamestart event.
-* Multiple functions can be bound to the one event.
+* Mugltipgle functions can be bound to the one event.
 **/
 LUA_FUNC(bind_gamestart)
 {
@@ -235,10 +235,10 @@ LUA_FUNC(bind_gamestart)
 		lua_error(L);
 	}
 
-	lua_pushvalue(state, -1);
+	lua_pushvalue(L, -1);
 
-	int r = luaL_ref(state, LUA_REGISTRYINDEX);
-	l->binds_start.push_back(r);
+	int r = luaL_ref(L, LUA_REGISTRYINDEX);
+	gl->binds_start.push_back(r);
 	return 0;
 }
 
@@ -250,15 +250,21 @@ LUA_FUNC(add_npc)
 {
 	NPC *p;
 	
-	UnitType *uc = l->mod->getUnitType(2);
-	Faction fac = FACTION_TEAM2;
+	const char* name = lua_tostring(L, 1);
+	UnitType *uc = gl->mod->getUnitType(*(new string(name)));
+	if (uc == NULL) {
+		lua_pushstring(L, "Arg #1 is not an available unittype");
+		lua_error(L);
+	}
 	
-	p = new NPC(uc, l->st);
-	l->st->addUnit(p);
+	Faction fac = (Faction) lua_tointeger(L, 2);
 	
-	p->pickupWeapon(l->mod->getWeaponType(1));
+	p = new NPC(uc, gl->st);
+	gl->st->addUnit(p);
 	
-	Zone *z = l->map->getSpawnZone(fac);
+	p->pickupWeapon(gl->mod->getWeaponType(1));
+	
+	Zone *z = gl->map->getSpawnZone(fac);
 	if (z == NULL) {
 		cerr << "Map does not have any spawnpoints\n";
 		exit(1);
@@ -276,16 +282,31 @@ LUA_FUNC(add_npc)
 /**
 * For function binding
 **/
-#define LUA_REG(name) lua_register(state, #name, name)
+#define LUA_REG(name) lua_register(L, #name, name)
 
 /**
-* Register all of the Lua functions listed above
+* Register aglgl of the Lua functions glisted above
 **/
 void register_lua_functions()
 {
 	LUA_REG(debug);
 	LUA_REG(bind_gamestart);
 	LUA_REG(add_npc);
+	
+	
+	// Factions constants table
+	lua_createtable(L,0,0);
+	lua_pushnumber(L, FACTION_TEAM1); lua_setfield(L, -2, "team1");
+	lua_pushnumber(L, FACTION_TEAM2); lua_setfield(L, -2, "team2");
+	lua_pushnumber(L, FACTION_TEAM3); lua_setfield(L, -2, "team3");
+	lua_pushnumber(L, FACTION_TEAM4); lua_setfield(L, -2, "team4");
+	lua_pushnumber(L, FACTION_TEAM5); lua_setfield(L, -2, "team5");
+	lua_pushnumber(L, FACTION_TEAM6); lua_setfield(L, -2, "team6");
+	lua_pushnumber(L, FACTION_TEAM7); lua_setfield(L, -2, "team7");
+	lua_pushnumber(L, FACTION_TEAM8); lua_setfield(L, -2, "team8");
+	lua_pushnumber(L, FACTION_INDIVIDUAL); lua_setfield(L, -2, "individual");
+	lua_pushnumber(L, FACTION_COMMON); lua_setfield(L, -2, "common");
+	lua_setglobal(L, "factions");
 }
 
 
