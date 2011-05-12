@@ -15,6 +15,9 @@ extern "C" {
 using namespace std;
 
 
+class Timer;
+
+
 /**
 * Logic for the game - like spawning units, etc
 **/
@@ -25,7 +28,8 @@ class GameLogic : public EventListener
 		Map *map;
 		Mod *mod;
 		vector<int> binds_start;
-
+		vector<Timer*> timers;
+		
 	public:
 		GameLogic(GameState *st);
 		~GameLogic();
@@ -60,3 +64,14 @@ class GameLogic : public EventListener
 		
 		int player_spawn;
 };
+
+
+class Timer
+{
+	public:
+		unsigned int due;			// On or after this time, the function will be called
+		unsigned int lua_func;		// The Lua function to call
+		unsigned int interval;		// set to 0 for a one-off timer
+};
+
+

@@ -119,6 +119,25 @@ void GameLogic::update(int deglta)
 	if (this->num_zomb == this->num_killed) {
 		cout << "All zombies are dead\n";
 	}
+	
+	
+	for (unsigned int id = 0; id < this->timers.size(); id++) {
+		Timer* t = this->timers.at(id);
+		if (t == NULL) continue;
+		
+		if (gl->st->game_time >= t->due) {
+			lua_rawgeti(L, LUA_REGISTRYINDEX, t->lua_func);
+			lua_pcall(L, 0, 0, 0);
+			
+			if (t->interval) {
+				t->due += t->interval;
+			} else {
+				free(this->timers.at(id));	// need to de-sparse the array
+				this->timers[id] = NULL;
+			}
+		}
+		
+	}
 }
 
 
@@ -186,6 +205,81 @@ LUA_FUNC(bind_gamestart)
 	int r = luaL_ref(L, LUA_REGISTRYINDEX);
 	gl->binds_start.push_back(r);
 	return 0;
+}
+
+
+/**
+* Adds an interval timer.
+* Interval timers are fired at regular intervals.
+* Be warned that the timing is not exactly precice, and may be incorrect by up to 20ms.
+*
+* @param Integer time: The amount of time between interval ticks, in ms.
+* @param Function func: The function to call for each tick.
+* @return Integer: The timer-id, for deleting this timer later on.
+**/
+LUA_FUNC(add_interval)
+{
+	if (! lua_isnumber(L, 1)) {
+		lua_pushstring(L, "Arg #1 is not an integer");
+		lua_error(L);
+	}
+	
+	if (! lua_isfunction(L, 2)) {
+		lua_pushstring(L, "Arg #1 is not a function");
+		lua_error(L);
+	}
+	
+	int time = lua_tointeger(L, 1);
+	
+	lua_pushvalue(L, -1);
+	int func = luaL_ref(L, LUA_REGISTRYINDEX);
+	
+	Timer* t = new Timer();
+	gl->timers.push_back(t);
+	
+	t->due = gl->st->game_time + time;
+	t->lua_func = func;
+	t->interval = time;
+	
+	lua_pushnumber(L, gl->timers.size() - 1);
+	return 1;
+}
+
+
+/**
+* Adds a single-use timer.
+* Be warned that the timing is not exactly precice, and may be incorrect by up to 20ms.
+*
+* @param Integer time: The amount of time to wait, in ms.
+* @param Function func: The function to call.
+* @return Integer: The timer-id, for deleting this timer later on.
+**/
+LUA_FUNC(add_timer)
+{
+	if (! lua_isnumber(L, 1)) {
+		lua_pushstring(L, "Arg #1 is not an integer");
+		lua_error(L);
+	}
+	
+	if (! lua_isfunction(L, 2)) {
+		lua_pushstring(L, "Arg #1 is not a function");
+		lua_error(L);
+	}
+	
+	int time = lua_tointeger(L, 1);
+	
+	lua_pushvalue(L, -1);
+	int func = luaL_ref(L, LUA_REGISTRYINDEX);
+	
+	Timer* t = new Timer();
+	gl->timers.push_back(t);
+	
+	t->due = gl->st->game_time + time;
+	t->lua_func = func;
+	t->interval = 0;
+	
+	lua_pushnumber(L, gl->timers.size() - 1);
+	return 1;
 }
 
 
@@ -276,6 +370,8 @@ void register_lua_functions()
 {
 	LUA_REG(debug);
 	LUA_REG(bind_gamestart);
+	LUA_REG(add_interval);
+	LUA_REG(add_timer);
 	LUA_REG(add_npc);
 	LUA_REG(add_player);
 	
