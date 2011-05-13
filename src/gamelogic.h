@@ -56,16 +56,6 @@ class GameLogic : public EventListener
 		* Raise a 'Unitdied' Lua event
 		**/
 		void raiseUnitdied();
-		
-		
-	// When this gets switched to use lua, this will all leave
-	private:
-		int spawn_timer;
-		int num_zomb;
-		int num_wanted_zomb;
-		int num_killed;
-		
-		int player_spawn;
 };
 
 

@@ -78,15 +78,7 @@ bool GameLogic::execScript(string code)
 **/
 void GameLogic::handleEvent(Event * ev)
 {
-	if (ev->type == GAME_STARTED) {
-		this->player_spawn = -1;
-		
-		this->spawn_timer = 0;
-		this->num_zomb = 0;
-		this->num_killed = 0;
-		this->num_wanted_zomb = 10;
-		
-	} else if (ev->type == UNIT_DIED) {
+	if (ev->type == UNIT_DIED) {
 		this->raiseUnitdied();
 	}
 }
@@ -122,8 +114,6 @@ void GameLogic::update(int deglta)
 **/
 void GameLogic::raiseGamestart()
 {
-	cout << "GameLogic::raiseGamestart()\n";
-
 	for (unsigned int id = 0; id < this->binds_gamestart.size(); id++) {
 		int ref = this->binds_gamestart.at(id);
 		lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
@@ -136,8 +126,6 @@ void GameLogic::raiseGamestart()
 **/
 void GameLogic::raiseUnitdied()
 {
-	cout << "GameLogic::raiseUnitdied()\n";
-	
 	for (unsigned int id = 0; id < this->binds_unitdied.size(); id++) {
 		int ref = this->binds_unitdied.at(id);
 		lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
@@ -188,8 +176,6 @@ LUA_FUNC(debug)
 **/
 LUA_FUNC(bind_gamestart)
 {
-	cout << "bind_gamestart\n";
-	
 	if (! lua_isfunction(L, 1)) {
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);
@@ -209,8 +195,6 @@ LUA_FUNC(bind_gamestart)
 **/
 LUA_FUNC(bind_unitdied)
 {
-	cout << "bind_unitdied\n";
-	
 	if (! lua_isfunction(L, 1)) {
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);
