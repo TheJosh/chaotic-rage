@@ -35,7 +35,6 @@ int main (int argc, char ** argv) {
 	
 	new GameLogic(st);
 	
-	// TODO: make this run the gametype script instead
 	GameType *gt = mod->getGameType(0);
 	st->logic->execScript(gt->script);
 	

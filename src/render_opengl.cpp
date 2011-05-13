@@ -544,7 +544,7 @@ void RenderOpenGL::render()
 		glEnd();
 		
 		// Debugging of the map ness
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		/*glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glColor3f(0.5,0.5,0.5);
 		glDisable(GL_LIGHTING);
 		glDisable(GL_TEXTURE_2D); 
@@ -569,7 +569,7 @@ void RenderOpenGL::render()
 		glEnd();
 		glEnable(GL_LIGHTING);
 		glEnable(GL_TEXTURE_2D); 
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);*/
 		
 		
 		glPopMatrix();
