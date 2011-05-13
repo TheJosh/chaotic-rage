@@ -65,7 +65,7 @@ void AudioSDLMixer::handleEvent(Event * ev)
 
 
 /**
-* Plays sounds
+* Plays sounds - This method gets called every ~10ms
 **/
 void AudioSDLMixer::play()
 {
@@ -94,6 +94,24 @@ void AudioSDLMixer::play()
 			Mix_PlayChannel(-1, snd->sound, 0);
 		}
 	}
+}
+
+
+/**
+* An entity wants to play a sound
+**/
+void AudioSDLMixer::playSound(Sound * snd)
+{
+	if (snd == NULL) return;
+	Mix_PlayChannel(-1, snd->sound, 0);
+}
+
+/**
+* An entity wants to stop a sound
+**/
+void AudioSDLMixer::stopSound()
+{
+	// TODO: Work out how this should work, then implement it
 }
 
 

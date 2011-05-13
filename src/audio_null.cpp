@@ -36,9 +36,24 @@ void AudioNull::handleEvent(Event * ev)
 
 
 /**
-* Plays sounds
+* Plays sounds - This method gets called every ~10ms
 **/
 void AudioNull::play()
+{
+}
+
+
+/**
+* An entity wants to play a sound
+**/
+void AudioNull::playSound(Sound * snd)
+{
+}
+
+/**
+* An entity wants to stop a sound
+**/
+void AudioNull::stopSound()
 {
 }
 

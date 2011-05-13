@@ -22,6 +22,17 @@ class AudioNull : Audio
 		**/
 		virtual AudioPtr loadSound(string filename, Mod * mod);
 		
+		/**
+		* Plays a sound
+		**/
+		virtual void playSound(Sound * snd);
+		
+		/**
+		* Doesn't do anything yet, and the exact way which this will work is still undefined.
+		**/
+		virtual void stopSound();
+		
+		
 	public:
 		virtual void handleEvent(Event * ev);
 		
