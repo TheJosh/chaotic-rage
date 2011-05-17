@@ -7,6 +7,8 @@
 #include <SDL.h>
 #include "rage.h"
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 struct VBOvertex
 {
@@ -35,6 +37,9 @@ class RenderOpenGL : public Render
 		SpritePtr walls;
 		
 		AnimPlay *test;
+		
+		FT_Library ft;
+		FT_Face face;
 		
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);

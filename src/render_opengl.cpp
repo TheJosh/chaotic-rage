@@ -4,15 +4,20 @@
 
 #include <iostream>
 #include <algorithm>
+
 #include <GL/glew.h>
 #include <GL/gl.h>
 #if defined(__WIN32__)
 	#include <GL/glext.h>
 #endif
 #include <GL/glu.h>
+
 #include <SDL_image.h>
 #include <math.h>
 #include "rage.h"
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 using namespace std;
 
@@ -49,6 +54,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	// back into OpenGL
 	// Priority: Medium
 	
+	
+	// SDL
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	
 	flags = SDL_OPENGL;
@@ -60,6 +67,23 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		exit(1);
 	}
 	
+	SDL_WM_SetCaption("Chaotic Rage", "Chaotic Rage");
+	SDL_ShowCursor(SDL_DISABLE);
+	
+	this->virt_height = 1000;
+	this->virt_width = (int) floor(this->virt_height * (float)width / (float)height);
+	
+	
+	// SDL_Image
+	flags = IMG_INIT_PNG;
+	int initted = IMG_Init(flags);
+	if ((initted & flags) != flags) {
+		fprintf(stderr, "Failed to init required png support!\n");
+		exit(1);
+	}
+	
+	
+	// OpenGL
 	if (atof((char*) glGetString(GL_VERSION)) < 2.0) {
 		fprintf(stderr, "OpenGL 2.0 or later is required, but not supported on this system.");
 		exit(1);
@@ -71,20 +95,33 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		exit(1);
 	}
 	
-	// The 'virtual' size is 1000px high, with the proper width for your monitor.
-	this->virt_height = 1000;
-	this->virt_width = (int) floor(this->virt_height * (float)width / (float)height);
 	
-	SDL_WM_SetCaption("Chaotic Rage", "Chaotic Rage");
-	SDL_ShowCursor(SDL_DISABLE);
-	
-	flags = IMG_INIT_PNG;
-	int initted = IMG_Init(flags);
-	if ((initted & flags) != flags) {
-		fprintf(stderr, "Failed to init required png support!\n");
+	// Freetype
+	int error;
+	error = FT_Init_FreeType(&this->ft);
+	if (error) {
+		fprintf(stderr, "Freetype: Unable to init library\n");
 		exit(1);
 	}
 	
+	error = FT_New_Face(this->ft, "orbitron-black.otf", 0, &this->face);
+	if (error == FT_Err_Unknown_File_Format) {
+		fprintf(stderr, "Freetype: Unsupported font format\n");
+		exit(1);
+		
+	} else if (error) {
+		fprintf(stderr, "Freetype: Unable to load font\n");
+		exit(1);
+	}
+	
+	error = FT_Set_Char_Size(this->face, 0, 20*64, 72, 72);
+	if (error) {
+		fprintf(stderr, "Freetype: Unable to load font size\n");
+		exit(1);
+	}
+	
+	
+	// OpenGL env
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
@@ -104,10 +141,6 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	gluPerspective(45.0f, 1.0f, 1.0f, 1500.f);
 	glScalef (1.0f, -1.0f, 1.0f);
 	glTranslatef(-500, -500, -1250.0f);
-	
-	//glOrtho(0.0f, this->virt_width, this->virt_height, 0.0f, -1.0f, 1.0f);
-	//glFrustum(0.0f, this->virt_width, this->virt_height, 0.0f, 1, 500);
-	//glTranslatef(0, 0, -490.0f);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -608,6 +641,81 @@ void RenderOpenGL::render()
 		
 		glPopMatrix();
 	}*/
+	
+	
+	glLoadIdentity();
+	glTranslatef(300, 300, 40);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
+	
+	FT_GlyphSlot slot = face->glyph; /* a small shortcut */
+	//FT_UInt glyph_index;
+	unsigned int n;
+	
+	char *text = (char*) "Hello World";
+	
+	GLuint tex;
+	
+	glGenTextures( 1, &tex );
+	
+	for ( n = 0; n < strlen(text); n++ ) {
+	
+		 /* load glyph image into the slot (erase previous one) */
+		int error = FT_Load_Char( this->face, text[n], FT_LOAD_RENDER );
+		if ( error ) continue; /* ignore errors */ 
+	 	
+	 	int width = 128;
+	 	int height = 128;
+	 	
+		GLubyte* gl_data = new GLubyte[2 * width * height];
+		
+		for (int j = 0; j < height; j++) {
+			for (int i = 0; i < width; i++) {
+				
+				gl_data[2*(i+j*width)] = gl_data[2*(i+j*width)+1] = 
+					(i>=slot->bitmap.width || j>=slot->bitmap.rows) ?
+					0 : slot->bitmap.buffer[i + slot->bitmap.width*j];
+				
+			}
+		}
+	
+		glBindTexture( GL_TEXTURE_2D, tex);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, gl_data);
+		delete [] gl_data;
+		
+		glBindTexture(GL_TEXTURE_2D,tex);
+		
+		
+		glColor3f(1,1,1);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+		
+		
+		glPushMatrix();
+		
+		glTranslatef(slot->bitmap_left, 0 - slot->bitmap_top, 0);
+		
+		{
+			float   x=(float)slot->bitmap.width / (float)width;
+			float   y=(float)slot->bitmap.rows / (float)height;
+	
+			glBegin(GL_QUADS);
+			glTexCoord2d(0,y); glVertex2f(0,slot->bitmap.rows);
+			glTexCoord2d(0,0); glVertex2f(0,0);
+			glTexCoord2d(x,0); glVertex2f(slot->bitmap.width,0);
+			glTexCoord2d(x,y); glVertex2f(slot->bitmap.width,slot->bitmap.rows);
+			glEnd();
+		}
+		
+		glPopMatrix();
+		
+		glTranslatef(slot->advance.x >> 6, 0, 0);
+	}
+	glColor3f(1,1,1);
+	
 	
 	
 	// HUD
