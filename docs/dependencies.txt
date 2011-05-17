@@ -10,6 +10,7 @@ You will need at least these:
  - glew
  - flex
  - Lua
+ - Freetype2
  
 For compiling on a recent Ubuntu:
  - g++
@@ -24,6 +25,7 @@ For compiling on a recent Ubuntu:
  - libglew-dev
  - flex
  - liblua5.1-0-dev
+ - libfreetype6-dev
  
 TODO: compiling on windows
 

@@ -23,6 +23,17 @@ using namespace std;
 
 
 
+/**
+* Gets the next highest power-of-two for a number
+**/
+static inline int next_pot (int a)
+{
+	int rval=1; 
+	while(rval<a) rval<<=1;
+	return rval;
+}
+
+
 //static bool ZIndexPredicate(const Entity * e1, const Entity * e2)
 //{
 //	return e1->z < e2->z;
@@ -442,6 +453,95 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play)
 	}
 }
 
+
+/**
+* Draws text
+*
+* Note that the Y is for the baseline of the text.
+**/
+void RenderOpenGL::renderText(string text, int x, int y)
+{
+	glPushMatrix();
+	glTranslatef(x, y, 0);
+	
+	unsigned int n;
+	
+	glColor3f(1,1,1);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+	
+	for ( n = 0; n < text.length(); n++ ) {
+		this->renderCharacter(text[n]);
+	}
+	
+	glDisable(GL_BLEND);
+	glColor3f(1,1,1);
+	
+	glPopMatrix();
+}
+
+
+/**
+* Draws a single character
+**/
+void RenderOpenGL::renderCharacter(char c)
+{
+	FT_GlyphSlot slot = face->glyph;
+	
+	GLuint tex;
+	float tx, ty;
+	
+	// Load glyph image into the slot
+	int error = FT_Load_Char(this->face, c, FT_LOAD_RENDER);
+	if (error) return;
+	
+	// Convert glyph data into Lum/Alpha array for OpenGL
+	int width = next_pot(slot->bitmap.width);
+	int height = next_pot(slot->bitmap.rows);
+	
+	GLubyte* gl_data = new GLubyte[2 * width * height];
+	
+	for (int j = 0; j < height; j++) {
+		for (int i = 0; i < width; i++) {
+			
+			gl_data[2*(i+j*width)] = gl_data[2*(i+j*width)+1] = 
+				(i>=slot->bitmap.width || j>=slot->bitmap.rows) ?
+				0 : slot->bitmap.buffer[i + slot->bitmap.width*j];
+			
+		}
+	}
+	
+	// Create a texture
+	glGenTextures( 1, &tex );
+	glBindTexture(GL_TEXTURE_2D, tex);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, gl_data);
+	
+	delete [] gl_data;
+	
+	
+	// Prep the character
+	glPushMatrix();
+	glTranslatef(slot->bitmap_left, 0 - slot->bitmap_top, 0);
+	
+	tx = (float)slot->bitmap.width / (float)width;
+	ty = (float)slot->bitmap.rows / (float)height;
+	
+	glBegin(GL_QUADS);
+		glTexCoord2d(0,ty); glVertex2f(0,slot->bitmap.rows);
+		glTexCoord2d(0,0); glVertex2f(0,0);
+		glTexCoord2d(tx,0); glVertex2f(slot->bitmap.width,0);
+		glTexCoord2d(tx,ty); glVertex2f(slot->bitmap.width,slot->bitmap.rows);
+	glEnd();
+	
+	glPopMatrix();
+	glTranslatef(slot->advance.x >> 6, 0, 0);
+	
+	glDeleteTextures(1, &tex);
+}
+
+
 /**
 * Renders
 **/
@@ -644,77 +744,11 @@ void RenderOpenGL::render()
 	
 	
 	glLoadIdentity();
-	glTranslatef(300, 300, 40);
+	glTranslatef(0, 0, 40);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 	
-	FT_GlyphSlot slot = face->glyph; /* a small shortcut */
-	//FT_UInt glyph_index;
-	unsigned int n;
-	
-	char *text = (char*) "Hello World";
-	
-	GLuint tex;
-	
-	glGenTextures( 1, &tex );
-	
-	for ( n = 0; n < strlen(text); n++ ) {
-	
-		 /* load glyph image into the slot (erase previous one) */
-		int error = FT_Load_Char( this->face, text[n], FT_LOAD_RENDER );
-		if ( error ) continue; /* ignore errors */ 
-	 	
-	 	int width = 128;
-	 	int height = 128;
-	 	
-		GLubyte* gl_data = new GLubyte[2 * width * height];
-		
-		for (int j = 0; j < height; j++) {
-			for (int i = 0; i < width; i++) {
-				
-				gl_data[2*(i+j*width)] = gl_data[2*(i+j*width)+1] = 
-					(i>=slot->bitmap.width || j>=slot->bitmap.rows) ?
-					0 : slot->bitmap.buffer[i + slot->bitmap.width*j];
-				
-			}
-		}
-	
-		glBindTexture( GL_TEXTURE_2D, tex);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-		
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, gl_data);
-		delete [] gl_data;
-		
-		glBindTexture(GL_TEXTURE_2D,tex);
-		
-		
-		glColor3f(1,1,1);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-		
-		
-		glPushMatrix();
-		
-		glTranslatef(slot->bitmap_left, 0 - slot->bitmap_top, 0);
-		
-		{
-			float   x=(float)slot->bitmap.width / (float)width;
-			float   y=(float)slot->bitmap.rows / (float)height;
-	
-			glBegin(GL_QUADS);
-			glTexCoord2d(0,y); glVertex2f(0,slot->bitmap.rows);
-			glTexCoord2d(0,0); glVertex2f(0,0);
-			glTexCoord2d(x,0); glVertex2f(slot->bitmap.width,0);
-			glTexCoord2d(x,y); glVertex2f(slot->bitmap.width,slot->bitmap.rows);
-			glEnd();
-		}
-		
-		glPopMatrix();
-		
-		glTranslatef(slot->advance.x >> 6, 0, 0);
-	}
-	glColor3f(1,1,1);
+	this->renderText("You Are Here", 420, 500);
 	
 	
 	

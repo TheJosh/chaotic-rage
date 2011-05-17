@@ -65,6 +65,8 @@ class RenderOpenGL : public Render
 	protected:
 		void renderObj (WavefrontObj * obj);
 		void renderAnimPlay(AnimPlay * play);
+		void renderText(string text, int x, int y);
+		void renderCharacter(char c);
 		
 	private:
 		void createVBO (WavefrontObj * obj);
