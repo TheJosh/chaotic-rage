@@ -59,6 +59,11 @@ void NPC::update(int delta)
 		//}
 	}
 	
+	
+	this->desired_angle_aim = clampAngle(this->desired_angle_aim);
+	int turn_aim = ppsDeltai(ucs->turn_aim, delta);
+	this->angle_aim = angleFromDesired(this->angle_aim, this->desired_angle_aim, turn_aim);
+	
 	this->desired_angle_move = getRandom(vals[1] - 10, vals[1] + 10);
 	
 	this->speed += ppsDeltaf(ucs->accel, delta);

@@ -1,6 +1,6 @@
---
--- Lua script for the gametype "Zombies".
---
+----
+----  Lua script for the gametype "Zombies".
+----
 
 num_zombies = 0;
 num_wanted = 0;
@@ -8,7 +8,10 @@ num_dead = 0;
 timer = 0;
 round = 0;
 
+
+--
 -- Spwans zombies
+--
 spawn_func = function()
 	add_npc("zomb", factions.team2);
 	num_zombies = num_zombies + 1;
@@ -16,6 +19,9 @@ spawn_func = function()
 end;
 
 
+--
+-- Starts a new round
+--
 start_round = function()
 	num_zombies = 0;
 	num_wanted = num_wanted + 10;
@@ -24,21 +30,25 @@ start_round = function()
 	
 	show_alert_message("Starting Round " .. round);
 	
-	timer = add_interval(1000, spawn_func);
+	timer = add_interval(500, spawn_func);
 end;
 
 
-
+--
+-- Game start
+--
 bind_gamestart(function()
-	-- Add player
 	add_timer(2000, function()
 		add_player("maniac", factions.team1);
 	end);
 	
-	-- Start the first round
 	add_timer(5000, start_round);
 end);
 
+
+--
+-- Handle unit deaths
+--
 bind_unitdied(function()
 	-- TODO: This should only do stuff for death of zombies, not death of players
 	num_dead = num_dead + 1;

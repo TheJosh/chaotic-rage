@@ -193,13 +193,13 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		return;
 	}
 	
-		int turn_move = ppsDeltai(ucs->turn_move, delta);
-	//int turn_aim = ppsDeltai(ucs->turn_aim, delta);
+	int turn_move = ppsDeltai(ucs->turn_move, delta);
 	
 	this->desired_angle_move = clampAngle(this->desired_angle_move);
-	this->desired_angle_aim = clampAngle(this->desired_angle_aim);
-	
 	this->angle_move = angleFromDesired(this->angle_move, this->desired_angle_move, turn_move);
+	
+	//this->desired_angle_aim = clampAngle(this->desired_angle_aim);
+	//int turn_aim = ppsDeltai(ucs->turn_aim, delta);
 	//this->angle_aim = angleFromDesired(this->angle_aim, this->desired_angle_aim, turn_aim);
 	
 	this->angle = this->angle_aim;
