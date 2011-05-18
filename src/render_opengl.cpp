@@ -591,7 +591,7 @@ void RenderOpenGL::render()
 	glPushMatrix();
 		glTranslatef(1000, 1000, 10);
 		
-		GLfloat ambientLight[] = { 0.1f, 0.1f, 0.1f, 0.0f };
+		GLfloat ambientLight[] = { 0.2f, 0.2f, 0.2f, 0.0f };
 		GLfloat diffuseLight[] = { 0.1f, 0.1f, 0.1f, 0.2f };
 		GLfloat specularLight[] = { 0.1f, 0.1f, 0.1f, 0.2f };
 		GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -607,10 +607,10 @@ void RenderOpenGL::render()
 	// Torch
 	if (st->curr_player != NULL) {
 		glPushMatrix();
-			glTranslatef(st->curr_player->x, st->curr_player->y, 10);
+			glTranslatef(st->curr_player->x, st->curr_player->y, 15);
 		
 			GLfloat ambientLight[] = { 0.0f, 0.0f, 0.0f, 0.0f };
-			GLfloat diffuseLight[] = { 0.5f, 0.5f, 0.5f, 0.5f };
+			GLfloat diffuseLight[] = { 0.7f, 0.7f, 0.7f, 0.5f };
 			GLfloat specularLight[] = { 0.5f, 0.5f, 0.5f, 0.5f };
 			GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		
