@@ -381,6 +381,24 @@ LUA_FUNC(add_player)
 
 
 /**
+* Display an alert message
+**/
+LUA_FUNC(show_alert_message)
+{
+	const char* ctext = lua_tostring(L, 1);
+	string text = (*(new string(ctext)));
+	if (text.empty()) {
+		lua_pushstring(L, "Arg #1 is not a string");
+		lua_error(L);
+	}
+	
+	gl->st->hud->addAlertMessage(text);
+	
+	return 0;
+}
+
+
+/**
 * For function binding
 **/
 #define LUA_REG(name) lua_register(L, #name, name)
@@ -398,6 +416,7 @@ void register_lua_functions()
 	LUA_REG(remove_timer);
 	LUA_REG(add_npc);
 	LUA_REG(add_player);
+	LUA_REG(show_alert_message);
 	
 	
 	// Factions constants table

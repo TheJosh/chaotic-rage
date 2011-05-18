@@ -10,6 +10,15 @@
 using namespace std;
 
 
+class AlertMessage
+{
+	friend class HUD;
+	private:
+		string text;
+		unsigned int remove_time;
+};
+
+
 class HUD {
 	public:
 		const static int EVENT_BUBBLE = 1;
@@ -21,14 +30,16 @@ class HUD {
 	private:
 		bool weapon_menu;
 		bool spawn_menu;
+		list<AlertMessage*> msgs;
 		
 	public:
 		HUD();
-		void render(Render * render);
+		void render(RenderOpenGL * render);
 		int handleEvent(SDL_Event *event);
 		
 	public:
 		void showSpawnMenu();
 		void hideSpawnMenu();
+		void addAlertMessage(string text);
 	
 };

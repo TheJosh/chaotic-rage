@@ -32,11 +32,27 @@ void HUD::hideSpawnMenu()
 	SDL_ShowCursor(SDL_DISABLE);
 }
 
+void HUD::addAlertMessage(string text)
+{
+	AlertMessage *msg = new AlertMessage();
+	msg->text = text;
+	msg->remove_time = this->st->game_time + 5000;
+	this->msgs.push_front(msg);
+}
+
+/**
+* Used for filtering
+**/
+/*static bool MessageEraser(AlertMessage *e)
+{
+	return (e->remove_time > st->game_time);
+}*/
+
 
 /**
 * Render the heads up display
 **/
-void HUD::render(Render * render)
+void HUD::render(RenderOpenGL * render)
 {
 	if (this->spawn_menu) {
 		// TODO: menu for spawning
@@ -59,6 +75,7 @@ void HUD::render(Render * render)
 		
 		
 	} else if (this->weapon_menu && this->st->curr_player) {
+		// Weapon menu
 		SDL_Rect r = {100, 100, 125, 125};
 		unsigned int i, num = this->st->curr_player->getNumWeapons();
 		
@@ -76,6 +93,23 @@ void HUD::render(Render * render)
 				r.x = 100;
 				r.y += 150;
 			}
+		}
+		
+		
+	} else {
+		// General gameplay stuff
+		int y = 1000;
+		
+		for (list<AlertMessage*>::iterator it = this->msgs.begin(); it != this->msgs.end(); it++) {
+			AlertMessage *msg = (*it);
+			
+			if (msg->remove_time < st->game_time) {
+				// TODO: Remove the message
+				continue;
+			}
+			
+			y -= 20;
+			render->renderText(msg->text, 20, y);
 		}
 	}
 }

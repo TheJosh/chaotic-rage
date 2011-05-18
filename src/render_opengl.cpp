@@ -727,7 +727,7 @@ void RenderOpenGL::render()
 			glPopMatrix();
 		}
 	}
-		
+	
 	
 	// Testing: show collide boxes
 	/*for (list<CollideBox*>::iterator it = st->collideboxes.begin(); it != st->collideboxes.end(); it++) {
@@ -741,15 +741,6 @@ void RenderOpenGL::render()
 		
 		glPopMatrix();
 	}*/
-	
-	
-	glLoadIdentity();
-	glTranslatef(0, 0, 40);
-	glDisable(GL_LIGHTING);
-	glDisable(GL_DEPTH_TEST);
-	
-	this->renderText("You Are Here", 420, 500);
-	
 	
 	
 	// HUD
