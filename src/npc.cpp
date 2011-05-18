@@ -27,8 +27,9 @@ void NPC::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 	Unit::hasBeenHit(ours, theirs);
 	
 	// This should be moved into a function in the GameLogic class
-	/*if (e->klass() == UNIT && ((Unit*)e)->fac != this->fac) {
-		this->beginFiring();	
+	/*if (theirs->e->klass() == UNIT) {
+		this->beginFiring();
+		currently_hit = true;
 	}*/
 	// End of stuff to move
 }
@@ -42,6 +43,12 @@ void NPC::update(int delta)
 	UnitTypeSettings *ucs = this->uc->getSettings(0);
 	
 	
+	/*if (currently_hit) {
+		this->endFiring();
+	}
+	currently_hit = false;*/
+	
+	
 	// This should be moved into a function in the GameLogic class
 	if (st->curr_player == NULL) return;
 	
@@ -52,11 +59,11 @@ void NPC::update(int delta)
 		
 		this->desired_angle_aim = getRandom(vals[1] - 50, vals[1] + 50);
 		
-		//if (firing) {
-		//	this->endFiring();
-		//} else {
-		//	this->beginFiring();
-		//}
+		if (firing) {
+			this->endFiring();
+		} else {
+			this->beginFiring();
+		}
 	}
 	
 	
