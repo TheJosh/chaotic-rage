@@ -24,6 +24,7 @@ Particle::Particle(ParticleType *pt, GameState *st) : Entity(st)
 	this->wall_hits = getRandom(pt->wall_hits.min, pt->wall_hits.max);
 	
 	this->anim = new AnimPlay(pt->model);
+	this->cb = NULL;
 	
 	this->angle = 0;
 	this->age = 0;
@@ -32,12 +33,17 @@ Particle::Particle(ParticleType *pt, GameState *st) : Entity(st)
 
 Particle::~Particle()
 {
+	cout << "~Particle()" << "\n";
+	
 	delete (this->anim);
+	this->st->delCollideBox(this->cb);
 }
 
 void Particle::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 {
 	Entity *e = theirs->e;
+	
+	return;
 	
 	if (e->klass() == UNIT) {
 		// We hit a unit
@@ -45,8 +51,10 @@ void Particle::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 			((Unit*)e)->takeDamage(this->unit_damage);
 			
 			this->unit_hits--;
-			if (this->unit_hits == 0) this->hasDied();
-		
+			if (this->unit_hits == 0) {
+				this->hasDied();
+			}
+			
 		} else {
 			this->speed = 0;
 		}
@@ -57,7 +65,9 @@ void Particle::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 			((Wall*)e)->takeDamage(this->wall_damage);
 			
 			this->wall_hits--;
-			if (this->wall_hits == 0) this->hasDied();
+			if (this->wall_hits == 0) {
+				this->hasDied();
+			}
 		
 		} else {
 			this->speed = 0;
@@ -87,7 +97,15 @@ void Particle::update(int delta)
 	//this->x += getRandom(-3, 3);
 	//this->y += getRandom(-3, 3);
 	
-	this->st->addCollideBox((int) this->x, (int) this->y, 2, this, true);
+	// TODO: check still in bounds, if not, remove
+	
+	
+	if (this->cb == NULL) {
+		this->cb = this->st->addCollideBox(0, 0, 2, this, true);
+	} else {
+		this->st->moveCollideBox(this->cb, (int) this->x, (int) this->y);
+	}
+	
 	
 	if (this->anim->isDone()) this->anim->next();
 }

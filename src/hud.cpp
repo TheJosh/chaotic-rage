@@ -14,6 +14,7 @@ using namespace std;
 HUD::HUD()
 {
 	this->weapon_menu = false;
+	this->spawn_menu = false;
 }
 
 

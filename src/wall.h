@@ -10,7 +10,7 @@
 using namespace std;
 
 
-class Wall: public Entity
+class Wall : public Entity
 {
 	public:
 		virtual EntityClass klass() const { return WALL; }
@@ -21,7 +21,7 @@ class Wall: public Entity
 		
 	protected:
 		AnimPlay * anim;
-		
+		CollideBox * cb;
 	public:
 		Wall(WallType *pt, GameState *st);
 		virtual ~Wall();

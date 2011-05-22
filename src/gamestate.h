@@ -54,12 +54,16 @@ class GameState
 		Wall * checkHitWall(float x, float y, int check_radius);
 		Unit * checkHitUnit(float x, float y, int check_radius);
 		
+		void start();
 		void update(int delta);
 		
 		void addMod(Mod * mod);
 		Mod * getMod(int id);
 		
-		void addCollideBox(int x, int y, int radius, Entity *e, bool cares);
+		CollideBox* addCollideBox(int x, int y, int radius, Entity *e, bool cares);
+		void moveCollideBox(CollideBox* box, int x, int y);
+		void sizeCollideBox(CollideBox* box, int radius);
+		void delCollideBox(CollideBox* box);
 		
 	private:
 		void doCollisions();

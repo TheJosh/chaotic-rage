@@ -10,7 +10,7 @@
 using namespace std;
 
 
-class Unit: public Entity
+class Unit : public Entity
 {
 	public:
 		virtual EntityClass klass() const { return UNIT; }
@@ -48,6 +48,8 @@ class Unit: public Entity
 		
 		float old_x;
 		float old_y;
+		
+		CollideBox* cb;
 		
 	public:
 		Unit(UnitType *uc, GameState *st);

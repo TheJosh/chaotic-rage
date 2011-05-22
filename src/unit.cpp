@@ -28,12 +28,14 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 	this->current_state_type = 0;
 	this->setState(UNIT_STATE_STATIC);
 	
+	this->cb = NULL;
+	
 	this->walk_state = uc->getState(UNIT_STATE_WALK);
 	this->walk_time = 0;
 	
 	this->remove_at = 0;
-
-
+	
+	
 	// access sounds using this->uc->getSound(type)
 	// see unittype.h for types (e.g. UNIT_SOUND_DEATH)
 	// example:
@@ -45,6 +47,7 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 Unit::~Unit()
 {
 	delete(this->anim);
+	this->st->delCollideBox(this->cb);
 }
 
 
@@ -227,9 +230,14 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		}
 		
 		this->walk_time += delta;
+		
+		
+		if (this->cb == NULL) {
+			this->cb = this->st->addCollideBox(0, 0, 30, this, true);
+		} else {
+			this->st->moveCollideBox(this->cb, (int) this->x, (int) this->y);
+		}
 	}
-	
-	this->st->addCollideBox((int) this->x, (int) this->y, 30, this, true);
 	
 	
 	if (this->firing && this->weapon != NULL) {

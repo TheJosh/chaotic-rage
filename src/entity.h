@@ -12,6 +12,7 @@ using namespace std;
 
 
 enum EntityClass {
+	NONE = 0,
 	UNIT = 1,
 	PARTICLE = 2,
 	PGENERATOR = 3,
@@ -27,7 +28,7 @@ enum EntityClass {
 class Entity
 {
 	public:
-		virtual EntityClass klass() const = 0;
+		virtual EntityClass klass() const { return NONE; };
 		
 	public:
 		bool del;

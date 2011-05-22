@@ -10,7 +10,7 @@
 using namespace std;
 
 
-class Particle: public Entity
+class Particle : public Entity
 {
 	public:
 		virtual EntityClass klass() const { return PARTICLE; }
@@ -33,6 +33,7 @@ class Particle: public Entity
 	protected:
 		unsigned int animation_start;
 		AnimPlay * anim;
+		CollideBox* cb;
 		
 	public:
 		Particle(ParticleType *pt, GameState *st);

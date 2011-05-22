@@ -81,6 +81,7 @@ class CollideBox {
 		int y;
 		int radius;
 		Entity *e;
+		bool del;
 		
 	public:
 		CollideBox(int x, int y, int radius, Entity * e) {
@@ -88,6 +89,7 @@ class CollideBox {
 			this->y = y;
 			this->radius = radius;
 			this->e = e;
+			this->del = false;
 		};
 };
 

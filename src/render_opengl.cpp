@@ -394,7 +394,7 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 	obj->ibo_count = obj->faces.size() * 3;
 	obj->vbo = vboid;
 	
-	delete (vertexes);
+	delete [] vertexes;
 }
 
 

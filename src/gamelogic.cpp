@@ -100,7 +100,7 @@ void GameLogic::update(int deglta)
 			if (t->interval) {
 				t->due += t->interval;
 			} else {
-				free(this->timers.at(id));	// need to de-sparse the array
+				delete this->timers.at(id);	// need to de-sparse the array
 				this->timers[id] = NULL;
 			}
 		}

@@ -15,11 +15,13 @@ Wall::Wall(WallType *wt, GameState *st) : Entity(st)
 	this->wt = wt;
 	this->anim = new AnimPlay(wt->model);
 	this->health = 10000;
+	this->cb = NULL;
 }
 
 Wall::~Wall()
 {
 	delete (this->anim);
+	this->st->delCollideBox(this->cb);
 }
 
 
@@ -30,8 +32,12 @@ void Wall::update(int delta)
 {
 	if (this->anim->isDone()) this->anim->next();
 	
-	if (this->health > 0) {
-		this->st->addCollideBox((int) this->x, (int) this->y, 30, this, false);
+	if (this->health == 0) return;
+	
+	if (this->cb == NULL) {
+		this->cb = this->st->addCollideBox(0, 0, 30, this, true);
+	} else {
+		this->st->moveCollideBox(this->cb, (int) this->x, (int) this->y);
 	}
 }
 

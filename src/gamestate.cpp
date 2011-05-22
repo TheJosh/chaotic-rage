@@ -94,11 +94,34 @@ void GameState::addWall(Wall* wall)
 /**
 * Used for filtering
 **/
-static bool EntityEraser(Entity *e)
+static bool EntityEraser(Entity* e)
 {
-	return e->del;
+	if (! e->del) return false;
+	cout << "EntityEraser()" << "\n";
+	delete e;
+	return true;
 }
 
+/**
+* Used for filtering
+**/
+static bool CollideBoxEraser(CollideBox* box)
+{
+	if (! box->del) return false;
+	cout << "CollideBoxEraser()" << "\n";
+	delete box;
+	return true;
+}
+
+
+/**
+* Game has started
+**/
+void GameState::start()
+{
+	this->collides = new MapGrid(curr_map->width, curr_map->height);
+	this->collideboxes.clear();
+}
 
 
 /**
@@ -110,9 +133,6 @@ void GameState::update(int delta)
 	
 	vector<Entity*>::iterator it;
 	vector<Entity*>::iterator newend;
-	
-	this->collides = new MapGrid(curr_map->width, curr_map->height);
-	this->collideboxes.clear();
 	
 	
 	// Add new entities
@@ -130,19 +150,19 @@ void GameState::update(int delta)
 		}
 	}
 	
-	this->doCollisions();
-	
 	// Remove entities
 	// I'm fairly sure this leaks because it doesn't actually delete the entity
 	newend = remove_if(this->entities.begin(), this->entities.end(), EntityEraser);
 	this->entities.erase(newend, this->entities.end());
 	
+	// Remove collideboxes
+	this->collideboxes.remove_if(CollideBoxEraser);
+	
+	this->doCollisions();
+	
 	// Update time
 	this->game_time += delta;
 	this->anim_frame = (int) floor(this->game_time * ANIMATION_FPS / 1000.0);
-	
-	
-	delete(this->collides);
 }
 
 
@@ -159,7 +179,7 @@ void GameState::doCollisions()
 		
 		list<CollideBox*>* tests = this->collides->getCollidesMC(co->x, co->y, co->radius);
 		if (tests->size() < 2) {
-			free(tests);
+			delete tests;
 			continue;
 		}
 		
@@ -176,7 +196,7 @@ void GameState::doCollisions()
 			}
 		}
 		
-		free(tests);
+		delete tests;
 	}
 }
 
@@ -206,10 +226,10 @@ Mod * GameState::getMod(int id)
 * @param e			The entity assoc. with this collidebox
 * @param cares		If true, collissions send events to the entity
 **/
-void GameState::addCollideBox(int x, int y, int radius, Entity *e, bool cares)
+CollideBox* GameState::addCollideBox(int x, int y, int radius, Entity *e, bool cares)
 {
-	if (x < 0 or x >= curr_map->width) return;
-	if (y < 0 or y >= curr_map->height) return;
+	if (x < 0 or x >= curr_map->width) return NULL;
+	if (y < 0 or y >= curr_map->height) return NULL;
 	
 	CollideBox * box = new CollideBox(x, y, radius, e);
 	
@@ -219,5 +239,57 @@ void GameState::addCollideBox(int x, int y, int radius, Entity *e, bool cares)
 	if (cares) {
 		this->collideboxes.push_back(box);
 	}
+	
+	return box;
 }
+
+
+/**
+* Moves the collidebox to a new cell
+**/
+void GameState::moveCollideBox(CollideBox* box, int x, int y)
+{
+	if (box == NULL) return;
+	if (x < 0 or x >= curr_map->width) return;		// should this delete instead?
+	if (y < 0 or y >= curr_map->height) return;
+	
+	MapGridCell* cell;
+	
+	cell = this->collides->getCellMC(box->x, box->y);
+	cell->collideboxes.remove(box);
+	
+	box->x = x;
+	box->y = y;
+	
+	cell = this->collides->getCellMC(box->x, box->y);
+	cell->collideboxes.push_back(box);
+}
+
+
+/**
+* Changes the radius of a collide box
+**/
+void GameState::sizeCollideBox(CollideBox* box, int radius)
+{
+	if (box == NULL) return;
+	
+	box->radius = radius;
+}
+
+
+/**
+* Removes a collide box
+**/
+void GameState::delCollideBox(CollideBox* box)
+{
+	cout << "delCollideBox()" << "\n";
+	if (box == NULL) return;
+	
+	MapGridCell* cell = this->collides->getCellMC(box->x, box->y);
+	cell->collideboxes.remove(box);
+	
+	box->del = true;
+}
+
+
 

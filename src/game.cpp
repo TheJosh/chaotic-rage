@@ -34,6 +34,7 @@ void gameLoop(GameState *st, Render *render)
 	ev->type = GAME_STARTED;
 	fireEvent(ev);
 	
+	st->start();
 	st->logic->raiseGamestart();
 
 	running = true;
