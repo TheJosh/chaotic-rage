@@ -33,14 +33,15 @@ class GameState
 		
 		unsigned int anim_frame;
 		unsigned int game_time;
-		unsigned int curr_delta;
-
+		
 		Render* render;
 		HUD* hud;
 		Audio* audio;
 		GameLogic* logic;
 		MapGrid* collides;
 		bool reset_mouse;
+		
+		int dbg[4];
 		
 	public:
 		GameState();

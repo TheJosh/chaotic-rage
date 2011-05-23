@@ -13,7 +13,6 @@ using namespace std;
 static void handleEvents(GameState *st);
 
 static bool running;
-static float fps;
 
 
 /**
@@ -36,7 +35,9 @@ void gameLoop(GameState *st, Render *render)
 	
 	st->start();
 	st->logic->raiseGamestart();
-
+	
+	st->dbg[0] = st->dbg[1] = st->dbg[2] = st->dbg[3] = 0;
+	
 	running = true;
 	while (running) {
 		delta = SDL_GetTicks() - start;
@@ -44,7 +45,13 @@ void gameLoop(GameState *st, Render *render)
 		
 		curr_frame++;
 		total_time += delta;
-		fps = round(((float) curr_frame) / ((float) total_time / 1000.0));
+		
+		st->dbg[0] = (int) round(((float) curr_frame) / ((float) total_time / 1000.0));
+		st->dbg[1] = delta;
+		st->dbg[2] = curr_frame;
+		st->dbg[3] = total_time;
+		
+		if (total_time > 60000) break;
 		
 		st->logic->update(delta);
 		st->update(delta);
@@ -56,6 +63,11 @@ void gameLoop(GameState *st, Render *render)
 		
 		if (delta < 5) SDL_Delay(10);	// give up some CPU time if we have some to spare
 	}
+	
+	cout << st->dbg[0] << "\n";
+	cout << st->dbg[1] << "\n";
+	cout << st->dbg[2] << "\n";
+	cout << st->dbg[3] << "\n";
 	
 	ev = new Event();
 	ev->type = GAME_ENDED;

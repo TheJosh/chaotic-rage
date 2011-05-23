@@ -747,9 +747,11 @@ void RenderOpenGL::render()
 	glTranslatef(0, 0, 40);
 
 	char buff[50];
-	sprintf(buff, "Delta: %i", st->curr_delta);
-	this->renderText(buff, 10, 20);
-
+	for (int i = 0; i < 4; i++) {
+		sprintf(buff, "%i", st->dbg[i]);
+		this->renderText(buff, 10, 20 + 18 * i);
+	}
+	
 	
 	// HUD
 	glLoadIdentity();

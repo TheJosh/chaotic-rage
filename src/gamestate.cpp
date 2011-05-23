@@ -159,7 +159,6 @@ void GameState::update(int delta)
 	// Update time
 	this->game_time += delta;
 	this->anim_frame = (int) floor(this->game_time * ANIMATION_FPS / 1000.0);
-	this->curr_delta = delta;
 }
 
 
@@ -176,6 +175,7 @@ void GameState::doCollisions()
 		CollideBox *co = (*ito);
 		
 		list<CollideBox*>* tests = this->collides->getCollidesMC(co->x, co->y, co->radius, &release);
+		
 		if (tests->size() < 2) {
 			if (release == 1) delete tests;
 			continue;
