@@ -134,10 +134,11 @@ void GameState::update(int delta)
 	
 	
 	// Add new entities
-	for (vector<Entity*>::iterator it = this->entities_add.begin(); it != this->entities_add.end(); it++) {
-		Entity *e = (*it);
-		this->entities.push_back(e);
-	}
+	this->entities.insert(
+		this->entities.end(),
+		this->entities_add.begin(),
+		this->entities_add.end()
+	);
 	this->entities_add.clear();
 	
 	// Update entities
@@ -169,13 +170,14 @@ void GameState::doCollisions()
 {
 	int dist;
 	int search;
+	int release;
 	
 	for (list<CollideBox*>::iterator ito = this->collideboxes.begin(); ito != this->collideboxes.end(); ito++) {
 		CollideBox *co = (*ito);
 		
-		list<CollideBox*>* tests = this->collides->getCollidesMC(co->x, co->y, co->radius);
+		list<CollideBox*>* tests = this->collides->getCollidesMC(co->x, co->y, co->radius, &release);
 		if (tests->size() < 2) {
-			delete tests;
+			if (release == 1) delete tests;
 			continue;
 		}
 		
@@ -192,7 +194,7 @@ void GameState::doCollisions()
 			}
 		}
 		
-		delete tests;
+		if (release == 1) delete tests;
 	}
 }
 

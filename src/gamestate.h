@@ -19,13 +19,13 @@ class GameState
 	
 	protected:
 		list<Entity*> entities;
-		vector<Entity*> entities_add;
+		list<Entity*> entities_add;
+		list<CollideBox*> collideboxes;
+		
 		vector<Mod*> mods;
 		
 		vector<Unit*> units;		// leaks: items are not removed
 		vector<Wall*> walls;		// leaks: items are not removed
-		
-		list<CollideBox*> collideboxes;		// hmm
 		
 	public:
 		Map* curr_map;

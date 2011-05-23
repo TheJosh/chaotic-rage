@@ -746,8 +746,8 @@ void RenderOpenGL::render()
 	glDisable(GL_DEPTH_TEST);
 	glTranslatef(0, 0, 40);
 
-	char buff[10];
-	itoa(st->curr_delta, buff, 10);
+	char buff[50];
+	sprintf(buff, "Delta: %i", st->curr_delta);
 	this->renderText(buff, 10, 20);
 
 	

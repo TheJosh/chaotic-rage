@@ -55,9 +55,9 @@ class MapGrid
 		/**
 		* Gets all cells within a search radius
 		* Good for searching
-		* Don't forget to 'delete' the result when you are done.
+		* Don't forget to 'delete' the result when you are done, if "release" has been set to 1
 		**/
-		list<CollideBox*>* getCollidesMC(float x, float y, float radius);
+		list<CollideBox*>* getCollidesMC(float x, float y, float radius, int *release);
 };
 
 

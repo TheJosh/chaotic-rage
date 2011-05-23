@@ -48,10 +48,8 @@ MapGridCell* MapGrid::getCellMC(int x, int y)
 /**
 * Good for searching
 **/
-list<CollideBox*>* MapGrid::getCollidesMC(float x, float y, float radius)
+list<CollideBox*>* MapGrid::getCollidesMC(float x, float y, float radius, int *release)
 {
-	list<CollideBox*> * ret = new list<CollideBox*>();
-	
 	int x1 = (int) floor((x - radius) / MAPGRID_CELL_SIZE);
 	int y1 = (int) floor((y - radius) / MAPGRID_CELL_SIZE);
 	int x2 = (int) floor((x + radius) / MAPGRID_CELL_SIZE);
@@ -62,6 +60,12 @@ list<CollideBox*>* MapGrid::getCollidesMC(float x, float y, float radius)
 	if (x2 > row_width) x2 = row_width;
 	if (y2 > row_height) y2 = row_height;
 	
+	if (x1 == x2 and y1 == y2) {
+		*release = 0;
+		return &(this->cells[y1 * row_width + x1]->collideboxes);
+	}
+	
+	list<CollideBox*> * ret = new list<CollideBox*>();
 	for (x = x1; x <= x2; x++) {
 		for (y = y1; y <= y2; y++) {
 			ret->insert (
@@ -72,6 +76,7 @@ list<CollideBox*>* MapGrid::getCollidesMC(float x, float y, float radius)
 		}
 	}
 	
+	*release = 1;
 	return ret;
 }
 
