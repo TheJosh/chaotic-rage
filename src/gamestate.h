@@ -18,7 +18,7 @@ class GameState
 	friend class AudioSDLMixer;
 	
 	protected:
-		vector<Entity*> entities;
+		list<Entity*> entities;
 		vector<Entity*> entities_add;
 		vector<Mod*> mods;
 		

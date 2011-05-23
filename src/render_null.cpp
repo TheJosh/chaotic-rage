@@ -121,8 +121,9 @@ void RenderNull::render()
 	last_render = st->game_time;
 	
 	int c_unit = 0, c_particle = 0, c_pgenerator = 0, c_wall = 0;
-	for (unsigned int i = 0; i < st->entities.size(); i++) {
-		Entity *e = st->entities.at(i);
+	
+	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
+		Entity *e = (*it);
 		
 		if (e->klass() == UNIT) c_unit++;
 		if (e->klass() == PARTICLE) c_particle++;

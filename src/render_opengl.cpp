@@ -711,9 +711,8 @@ void RenderOpenGL::render()
 	glTranslatef(0, 0, 10);
 	
 	// Entities
-	//std::sort(st->entities.begin(), st->entities.end(), ZIndexPredicate);
-	for (i = 0; i < st->entities.size(); i++) {
-		Entity *e = st->entities.at(i);
+	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
+		Entity *e = (*it);
 		AnimPlay *play = e->getAnimModel();
 		
 		if (play != NULL) {

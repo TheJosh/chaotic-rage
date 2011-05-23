@@ -69,9 +69,6 @@ void AudioSDLMixer::handleEvent(Event * ev)
 **/
 void AudioSDLMixer::play()
 {
-	unsigned int i;
-	
-	
 	if (this->audio_start) {
 		Song * sg = st->getMod(0)->getSong(0);
 		Mix_FadeInMusic(sg->music, 0, 1000);
@@ -86,8 +83,9 @@ void AudioSDLMixer::play()
 	
 	
 	// Play sounds
-	for (i = 0; i < st->entities.size(); i++) {
-		Entity *e = st->entities.at(i);
+	// You probs should use Audio::playSound instead
+	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
+		Entity *e = (*it);
 		
 		Sound * snd = e->getSound();
 		if (snd != NULL) {

@@ -33,8 +33,6 @@ Particle::Particle(ParticleType *pt, GameState *st) : Entity(st)
 
 Particle::~Particle()
 {
-	cout << "~Particle()" << "\n";
-	
 	delete (this->anim);
 	this->st->delCollideBox(this->cb);
 }
@@ -42,8 +40,6 @@ Particle::~Particle()
 void Particle::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 {
 	Entity *e = theirs->e;
-	
-	return;
 	
 	if (e->klass() == UNIT) {
 		// We hit a unit

@@ -97,7 +97,6 @@ void GameState::addWall(Wall* wall)
 static bool EntityEraser(Entity* e)
 {
 	if (! e->del) return false;
-	cout << "EntityEraser()" << "\n";
 	delete e;
 	return true;
 }
@@ -108,7 +107,6 @@ static bool EntityEraser(Entity* e)
 static bool CollideBoxEraser(CollideBox* box)
 {
 	if (! box->del) return false;
-	cout << "CollideBoxEraser()" << "\n";
 	delete box;
 	return true;
 }
@@ -131,33 +129,27 @@ void GameState::update(int delta)
 {
 	DEBUG("Updating gamestate using delta: %i\n", delta);
 	
-	vector<Entity*>::iterator it;
-	vector<Entity*>::iterator newend;
-	
 	
 	// Add new entities
-	for (it = this->entities_add.begin(); it < this->entities_add.end(); it++) {
+	for (vector<Entity*>::iterator it = this->entities_add.begin(); it != this->entities_add.end(); it++) {
 		Entity *e = (*it);
 		this->entities.push_back(e);
 	}
 	this->entities_add.clear();
 	
 	// Update entities
-	for (it = this->entities.begin(); it < this->entities.end(); it++) {
+	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); it++) {
 		Entity *e = (*it);
 		if (! e->del) {
 			e->update(delta);
 		}
 	}
 	
-	// Remove entities
-	// I'm fairly sure this leaks because it doesn't actually delete the entity
-	newend = remove_if(this->entities.begin(), this->entities.end(), EntityEraser);
-	this->entities.erase(newend, this->entities.end());
-	
-	// Remove collideboxes
+	// Remove stuff
+	this->entities.remove_if(EntityEraser);
 	this->collideboxes.remove_if(CollideBoxEraser);
 	
+	// What hit what?
 	this->doCollisions();
 	
 	// Update time
@@ -282,7 +274,6 @@ void GameState::sizeCollideBox(CollideBox* box, int radius)
 **/
 void GameState::delCollideBox(CollideBox* box)
 {
-	cout << "delCollideBox()" << "\n";
 	if (box == NULL) return;
 	
 	MapGridCell* cell = this->collides->getCellMC(box->x, box->y);
