@@ -119,6 +119,9 @@ void GameState::start()
 {
 	this->collides = new MapGrid(curr_map->width, curr_map->height);
 	this->collideboxes.clear();
+
+	this->game_time = 0;
+	this->anim_frame = 0;
 }
 
 
@@ -155,6 +158,7 @@ void GameState::update(int delta)
 	// Update time
 	this->game_time += delta;
 	this->anim_frame = (int) floor(this->game_time * ANIMATION_FPS / 1000.0);
+	this->curr_delta = delta;
 }
 
 

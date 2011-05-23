@@ -741,6 +741,15 @@ void RenderOpenGL::render()
 		glPopMatrix();
 	}*/
 	
+	glLoadIdentity();
+	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
+	glTranslatef(0, 0, 40);
+
+	char buff[10];
+	itoa(st->curr_delta, buff, 10);
+	this->renderText(buff, 10, 20);
+
 	
 	// HUD
 	glLoadIdentity();

@@ -33,7 +33,8 @@ class GameState
 		
 		unsigned int anim_frame;
 		unsigned int game_time;
-		
+		unsigned int curr_delta;
+
 		Render* render;
 		HUD* hud;
 		Audio* audio;
