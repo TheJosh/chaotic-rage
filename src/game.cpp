@@ -61,7 +61,7 @@ void gameLoop(GameState *st, Render *render)
 		st->render->render();
 		st->audio->play();
 		
-		if (delta < 5) SDL_Delay(10);	// give up some CPU time if we have some to spare
+		SDL_Delay(10);
 	}
 	
 	cout << st->dbg[0] << "\n";

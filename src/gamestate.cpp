@@ -167,8 +167,6 @@ void GameState::update(int delta)
 **/
 void GameState::doCollisions()
 {
-	int dist;
-	int search;
 	int release;
 	
 	for (list<CollideBox*>::iterator ito = this->collideboxes.begin(); ito != this->collideboxes.end(); ito++) {
@@ -176,19 +174,37 @@ void GameState::doCollisions()
 		
 		list<CollideBox*>* tests = this->collides->getCollidesMC(co->x, co->y, co->radius, &release);
 		
-		if (tests->size() < 2) {
-			if (release == 1) delete tests;
-			continue;
-		}
-		
 		for (list<CollideBox*>::iterator iti = tests->begin(); iti != tests->end(); iti++) {
 			CollideBox *ci = (*iti);
 			
 			if (ci == co) continue;
 			
-			dist = (int) floor(sqrt((float)((ci->x - co->x) * (ci->x - co->x)) + ((ci->y - co->y) * (ci->y - co->y))));
-			search = ci->radius + co->radius;
 			
+			// Square based check. This could be faster.
+			/*
+			int xi1 = ci->x - ci->radius;
+			int xi2 = ci->x + ci->radius;
+			int yi1 = ci->y - ci->radius;
+			int yi2 = ci->y + ci->radius;
+			
+			int xo1 = co->x - co->radius;
+			int xo2 = co->x + co->radius;
+			int yo1 = co->y - co->radius;
+			int yo2 = co->y + co->radius;
+			
+			
+			if (
+				((xo1 > xi1 and xo1 < xi2) or (xo2 > xi1 and xo2 < xi2))
+				and
+				((yo1 > yi1 and yo1 < yi2) or (yo2 > yi1 and yo2 < yi2))
+			) {
+				co->e->hasBeenHit(co, ci);
+			}
+			*/
+			
+			
+			// Circle based check using sqrt. This is probably too slow.
+			int dist = (int) floor(sqrt((float)((ci->x - co->x) * (ci->x - co->x)) + ((ci->y - co->y) * (ci->y - co->y))));
 			if (dist <= (ci->radius + co->radius)) {
 				co->e->hasBeenHit(co, ci);
 			}
@@ -248,6 +264,7 @@ CollideBox* GameState::addCollideBox(int x, int y, int radius, Entity *e, bool c
 void GameState::moveCollideBox(CollideBox* box, int x, int y)
 {
 	if (box == NULL) return;
+	if (box->x == x and box->y == y) return;
 	if (x < 0 or x >= curr_map->width) return;		// should this delete instead?
 	if (y < 0 or y >= curr_map->height) return;
 	

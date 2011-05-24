@@ -80,7 +80,6 @@ list<CollideBox*>* MapGrid::getCollidesMC(float x, float y, float radius, int *r
 	return ret;
 }
 
-
 /**
 * Good for base iteration
 **/
