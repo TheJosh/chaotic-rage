@@ -30,6 +30,7 @@ class Wall : public Entity
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
+		virtual void hasBeenHit(CollideBox * ours, CollideBox * theirs);
 		
 	public:
 		void takeDamage(int damage);

@@ -25,6 +25,14 @@ Wall::~Wall()
 }
 
 
+void Wall::hasBeenHit(CollideBox * ours, CollideBox * theirs)
+{
+	if (theirs->e->klass() == PARTICLE) {
+		((Particle*)theirs->e)->doHitWall(this);;
+	}
+}
+
+
 /**
 * Do stuff
 **/

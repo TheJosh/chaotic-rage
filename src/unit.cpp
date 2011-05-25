@@ -58,6 +58,9 @@ void Unit::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 		this->y = this->old_y;
 		this->speed = 0;
 		this->setState(UNIT_STATE_STATIC);
+		
+	} else if (theirs->e->klass() == PARTICLE) {
+		((Particle*)theirs->e)->doHitUnit(this);
 	}
 }
 

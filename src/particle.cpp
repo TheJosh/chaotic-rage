@@ -73,6 +73,37 @@ void Particle::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 }
 
 
+void Particle::doHitUnit(Unit *u)
+{
+	if (this->unit_damage > 0) {
+		u->takeDamage(this->unit_damage);
+		
+		this->unit_hits--;
+		if (this->unit_hits == 0) {
+			this->hasDied();
+		}
+		
+	} else {
+		this->speed = 0;
+	}
+}
+
+void Particle::doHitWall(Wall *w)
+{
+	if (this->wall_damage > 0) {
+		w->takeDamage(this->wall_damage);
+		
+		this->wall_hits--;
+		if (this->wall_hits == 0) {
+			this->hasDied();
+		}
+	
+	} else {
+		this->speed = 0;
+	}
+}
+
+
 void Particle::update(int delta)
 {
 	this->age += delta;
@@ -97,7 +128,7 @@ void Particle::update(int delta)
 	
 	
 	if (this->cb == NULL) {
-		this->cb = this->st->addCollideBox(0, 0, 2, this, true);
+		this->cb = this->st->addCollideBox(0, 0, 2, this, false);
 	} else {
 		this->st->moveCollideBox(this->cb, (int) this->x, (int) this->y);
 	}

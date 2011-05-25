@@ -44,4 +44,7 @@ class Particle : public Entity
 		virtual Sound* getSound();
 		virtual void update(int delta);
 		virtual void hasBeenHit(CollideBox * ours, CollideBox * theirs);
+		
+		void doHitUnit(Unit *u);
+		void doHitWall(Wall *w);
 };
