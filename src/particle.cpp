@@ -37,41 +37,6 @@ Particle::~Particle()
 	this->st->delCollideBox(this->cb);
 }
 
-void Particle::hasBeenHit(CollideBox * ours, CollideBox * theirs)
-{
-	Entity *e = theirs->e;
-	
-	if (e->klass() == UNIT) {
-		// We hit a unit
-		if (this->unit_damage > 0) {
-			((Unit*)e)->takeDamage(this->unit_damage);
-			
-			this->unit_hits--;
-			if (this->unit_hits == 0) {
-				this->hasDied();
-			}
-			
-		} else {
-			this->speed = 0;
-		}
-	
-	} else if (e->klass() == WALL) {
-		// We hit a wall
-		if (this->wall_damage > 0) {
-			((Wall*)e)->takeDamage(this->wall_damage);
-			
-			this->wall_hits--;
-			if (this->wall_hits == 0) {
-				this->hasDied();
-			}
-		
-		} else {
-			this->speed = 0;
-		}
-		
-	}
-}
-
 
 void Particle::doHitUnit(Unit *u)
 {

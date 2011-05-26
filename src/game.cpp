@@ -21,7 +21,6 @@ static bool running;
 void gameLoop(GameState *st, Render *render)
 {
 	int start = 0, delta = 0;
-	int curr_frame = 0, total_time = 0;
 	Event * ev;
 	
 	SDL_WM_GrabInput(SDL_GRAB_ON);
@@ -36,22 +35,24 @@ void gameLoop(GameState *st, Render *render)
 	st->start();
 	st->logic->raiseGamestart();
 	
+	// This is for debugging only
 	st->dbg[0] = st->dbg[1] = st->dbg[2] = st->dbg[3] = 0;
+	int curr_frame = 0;
 	
 	running = true;
 	while (running) {
 		delta = SDL_GetTicks() - start;
 		start = SDL_GetTicks();
 		
+		// Debugging only
 		curr_frame++;
-		total_time += delta;
-		
-		st->dbg[0] = (int) round(((float) curr_frame) / ((float) total_time / 1000.0));
+		st->dbg[0] = (int) round(((float) curr_frame) / ((float) st->game_time / 1000.0));
 		st->dbg[1] = delta;
-		st->dbg[2] = curr_frame;
-		st->dbg[3] = total_time;
-		
-		if (total_time > 60000) break;
+		st->dbg[2] = st->game_time;
+		if (st->game_time > 1000) {
+			if (delta > st->dbg[3]) st->dbg[3] = delta;
+		}
+		if (st->game_time > 60000) break;
 		
 		st->logic->update(delta);
 		st->update(delta);
@@ -60,8 +61,6 @@ void gameLoop(GameState *st, Render *render)
 		
 		st->render->render();
 		st->audio->play();
-		
-		SDL_Delay(10);
 	}
 	
 	cout << st->dbg[0] << "\n";
