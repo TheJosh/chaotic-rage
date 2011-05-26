@@ -119,9 +119,10 @@ void GameState::start()
 {
 	this->collides = new MapGrid(curr_map->width, curr_map->height);
 	this->collideboxes.clear();
-
-	this->game_time = 0;
-	this->anim_frame = 0;
+	
+	// It should technically be 0, but 1 avoids division-by-zero
+	this->game_time = 1;
+	this->anim_frame = 1;
 }
 
 

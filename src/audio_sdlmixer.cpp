@@ -84,14 +84,14 @@ void AudioSDLMixer::play()
 	
 	// Play sounds
 	// You probs should use Audio::playSound instead
-	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
+	/*for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
 		Entity *e = (*it);
 		
 		Sound * snd = e->getSound();
 		if (snd != NULL) {
 			Mix_PlayChannel(-1, snd->sound, 0);
 		}
-	}
+	}*/
 }
 
 
@@ -101,7 +101,7 @@ void AudioSDLMixer::play()
 void AudioSDLMixer::playSound(Sound * snd)
 {
 	if (snd == NULL) return;
-	Mix_PlayChannel(-1, snd->sound, 0);
+	//Mix_PlayChannel(-1, snd->sound, 0);
 }
 
 /**
