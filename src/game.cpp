@@ -35,23 +35,10 @@ void gameLoop(GameState *st, Render *render)
 	st->start();
 	st->logic->raiseGamestart();
 	
-	// This is for debugging only
-	for (int i = 0; i < 10; i++) st->dbg[i] = 0;
-	int curr_frame = 0;
-	
 	running = true;
 	while (running) {
 		delta = SDL_GetTicks() - start;
 		start = SDL_GetTicks();
-		
-		// Debugging only
-		curr_frame++;
-		st->dbg[0] = (int) round(((float) curr_frame) / ((float) st->game_time / 1000.0));
-		st->dbg[1] = delta;
-		if (st->dbg[2] < st->dbg[3]) st->dbg[2] = st->dbg[3];
-		st->dbg[3] = 0;
-		if (st->dbg[5] < st->dbg[4]) st->dbg[5] = st->dbg[4];
-		if (st->game_time > 60000) break;
 		
 		st->logic->update(delta);
 		st->update(delta);
@@ -61,8 +48,6 @@ void gameLoop(GameState *st, Render *render)
 		st->render->render();
 		st->audio->play();
 	}
-	
-	for (int i = 0; i < 10; i++) cout << i << ": " << st->dbg[i] << "\n";
 	
 	ev = new Event();
 	ev->type = GAME_ENDED;

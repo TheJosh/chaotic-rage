@@ -741,17 +741,6 @@ void RenderOpenGL::render()
 		glPopMatrix();
 	}*/
 	
-	glLoadIdentity();
-	glDisable(GL_LIGHTING);
-	glDisable(GL_DEPTH_TEST);
-	glTranslatef(0, 0, 40);
-
-	char buff[50];
-	for (int i = 0; i < 10; i++) {
-		sprintf(buff, "%i   %i", i, st->dbg[i]);
-		this->renderText(buff, 10, 20 + 18 * i);
-	}
-	
 	
 	// HUD
 	glLoadIdentity();
