@@ -577,6 +577,7 @@ void RenderOpenGL::render()
 	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
 	
 	if (st->curr_player == NULL) {
+		glDisable(GL_LIGHTING);
 		glRotatef(22, 0, 0, 1);
 		glRotatef(12, 1, 0, 0);
 		glTranslatef(0 - st->curr_map->width / 2, 0 - st->curr_map->height / 2, 0);
