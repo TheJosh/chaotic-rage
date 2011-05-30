@@ -41,7 +41,7 @@ class GameState
 		MapGrid* collides;
 		bool reset_mouse;
 		
-		int dbg[4];
+		int dbg[10];
 		
 	public:
 		GameState();

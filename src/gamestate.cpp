@@ -96,7 +96,8 @@ void GameState::addWall(Wall* wall)
 **/
 static bool EntityEraser(Entity* e)
 {
-	if (! e->del) return false;
+	if (e->del == false) return false;
+	g_st->dbg[3]++;
 	delete e;
 	return true;
 }
@@ -106,7 +107,7 @@ static bool EntityEraser(Entity* e)
 **/
 static bool CollideBoxEraser(CollideBox* box)
 {
-	if (! box->del) return false;
+	if (box->del == false) return false;
 	delete box;
 	return true;
 }
@@ -143,11 +144,13 @@ void GameState::update(int delta)
 	this->entities_add.clear();
 	
 	// Update entities
+	this->dbg[4]=0;
 	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); it++) {
 		Entity *e = (*it);
 		if (! e->del) {
 			e->update(delta);
 		}
+		this->dbg[4]++;
 	}
 	
 	// Remove stuff

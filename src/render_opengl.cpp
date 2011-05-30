@@ -747,8 +747,8 @@ void RenderOpenGL::render()
 	glTranslatef(0, 0, 40);
 
 	char buff[50];
-	for (int i = 0; i < 4; i++) {
-		sprintf(buff, "%i", st->dbg[i]);
+	for (int i = 0; i < 10; i++) {
+		sprintf(buff, "%i   %i", i, st->dbg[i]);
 		this->renderText(buff, 10, 20 + 18 * i);
 	}
 	
