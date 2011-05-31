@@ -27,8 +27,6 @@ class GameLogic : public EventListener
 		GameState *st;
 		Map *map;
 		Mod *mod;
-		vector<int> binds_gamestart;
-		vector<int> binds_unitdied;
 		vector<Timer*> timers;
 		
 	public:
@@ -48,14 +46,22 @@ class GameLogic : public EventListener
 		bool execScript(string code);
 		
 		/**
-		* Raise a 'Gamestart' Lua event
+		* When the game starts
 		**/
-		void raiseGamestart();
+		void raise_gamestart();
+		vector<int> binds_gamestart;
 		
 		/**
-		* Raise a 'Unitdied' Lua event
+		* When a player has died
 		**/
-		void raiseUnitdied();
+		void raise_playerdied();
+		vector<int> binds_playerdied;
+		
+		/**
+		* When an NPC has died
+		**/
+		void raise_npcdied();
+		vector<int> binds_npcdied;
 };
 
 

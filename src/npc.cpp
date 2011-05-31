@@ -82,4 +82,13 @@ void NPC::update(int delta)
 	delete ucs;
 }
 
-
+int NPC::takeDamage(int damage)
+{
+	int result = Unit::takeDamage(damage);
+	
+	if (result == 1) {
+		this->st->logic->raise_npcdied();
+	}
+	
+	return result;
+}

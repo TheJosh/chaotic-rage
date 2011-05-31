@@ -74,7 +74,7 @@ class Unit : public Entity
 		unsigned int getPrevWeaponID();
 		unsigned int getNextWeaponID();
 		
-		void takeDamage(int damage);
+		virtual int takeDamage(int damage);
 		
 	protected:
 		void update(int delta, UnitTypeSettings *ucs);

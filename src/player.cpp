@@ -119,3 +119,18 @@ void Player::update(int delta)
 }
 
 
+int Player::takeDamage(int damage)
+{
+	int result = Unit::takeDamage(damage);
+	
+	if (result == 1) {
+		this->st->logic->raise_playerdied();
+		
+		if (this == this->st->curr_player) {
+			this->st->curr_player = NULL;
+		}
+	}
+	
+	return result;
+}
+

@@ -78,9 +78,7 @@ bool GameLogic::execScript(string code)
 **/
 void GameLogic::handleEvent(Event * ev)
 {
-	if (ev->type == UNIT_DIED) {
-		this->raiseUnitdied();
-	}
+
 }
 
 
@@ -109,29 +107,21 @@ void GameLogic::update(int deglta)
 }
 
 
-/**
-* Raises a gamestart event
-**/
-void GameLogic::raiseGamestart()
-{
-	for (unsigned int id = 0; id < this->binds_gamestart.size(); id++) {
-		int ref = this->binds_gamestart.at(id);
-		lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
-		lua_pcall(L, 0, 0, 0);
-	}
+/*####################  BOUND FUNCTIONS  ####################*/
+
+#define LUA_DEFINE_RAISE(name) void GameLogic::raise_##name() \
+{ \
+	for (unsigned int id = 0; id < this->binds_##name.size(); id++) { \
+		int ref = this->binds_##name.at(id); \
+		lua_rawgeti(L, LUA_REGISTRYINDEX, ref); \
+		lua_pcall(L, 0, 0, 0); \
+	} \
 }
 
-/**
-* Raises a unitdied event
-**/
-void GameLogic::raiseUnitdied()
-{
-	for (unsigned int id = 0; id < this->binds_unitdied.size(); id++) {
-		int ref = this->binds_unitdied.at(id);
-		lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
-		lua_pcall(L, 0, 0, 0);
-	}
-}
+LUA_DEFINE_RAISE(gamestart)
+LUA_DEFINE_RAISE(playerdied)
+LUA_DEFINE_RAISE(npcdied)
+
 
 
 /*####################  LUA FUNCTIONS  ####################*/
@@ -180,9 +170,9 @@ LUA_FUNC(bind_gamestart)
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);
 	}
-
+	
 	lua_pushvalue(L, -1);
-
+	
 	int r = luaL_ref(L, LUA_REGISTRYINDEX);
 	gl->binds_gamestart.push_back(r);
 	return 0;
@@ -193,17 +183,36 @@ LUA_FUNC(bind_gamestart)
 * Binds a function to the unitdied event.
 * Multiple functions can be bound to the one event.
 **/
-LUA_FUNC(bind_unitdied)
+LUA_FUNC(bind_playerdied)
 {
 	if (! lua_isfunction(L, 1)) {
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);
 	}
-
+	
 	lua_pushvalue(L, -1);
-
+	
 	int r = luaL_ref(L, LUA_REGISTRYINDEX);
-	gl->binds_unitdied.push_back(r);
+	gl->binds_playerdied.push_back(r);
+	return 0;
+}
+
+
+/**
+* Binds a function to the unitdied event.
+* Multiple functions can be bound to the one event.
+**/
+LUA_FUNC(bind_npcdied)
+{
+	if (! lua_isfunction(L, 1)) {
+		lua_pushstring(L, "Arg #1 is not a function");
+		lua_error(L);
+	}
+	
+	lua_pushvalue(L, -1);
+	
+	int r = luaL_ref(L, LUA_REGISTRYINDEX);
+	gl->binds_npcdied.push_back(r);
 	return 0;
 }
 
@@ -410,7 +419,8 @@ void register_lua_functions()
 {
 	LUA_REG(debug);
 	LUA_REG(bind_gamestart);
-	LUA_REG(bind_unitdied);
+	LUA_REG(bind_playerdied);
+	LUA_REG(bind_npcdied);
 	LUA_REG(add_interval);
 	LUA_REG(add_timer);
 	LUA_REG(remove_timer);

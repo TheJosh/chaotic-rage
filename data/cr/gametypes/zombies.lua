@@ -35,13 +35,18 @@ end;
 
 
 --
+-- Spawn a player
+--
+spawn_player = function()
+	add_player("maniac", factions.team1);
+end;
+
+
+--
 -- Game start
 --
 bind_gamestart(function()
-	add_timer(2000, function()
-		add_player("maniac", factions.team1);
-	end);
-	
+	add_timer(2500, spawn_player);
 	add_timer(5000, start_round);
 end);
 
@@ -49,8 +54,16 @@ end);
 --
 -- Handle unit deaths
 --
-bind_unitdied(function()
-	-- TODO: This should only do stuff for death of zombies, not death of players
+bind_playerdied(function()
+	show_alert_message("Just not good enough I see...");
+	add_timer(2500, spawn_player);
+end);
+
+
+--
+-- Handle unit deaths
+--
+bind_npcdied(function()
 	num_dead = num_dead + 1;
 	
 	-- Is the round over?

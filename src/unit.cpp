@@ -268,16 +268,9 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 /**
 * We have been hit! Take some damage
 **/
-void Unit::takeDamage(int damage)
+int Unit::takeDamage(int damage)
 {
 	this->health -= damage;
-	
-	/*if (this->uc->hit_generator != NULL) {
-		ParticleGenerator *pg = new ParticleGenerator(this->uc->hit_generator, st);
-		pg->x = this->x;
-		pg->y = this->y;
-		st->addParticleGenerator(pg);
-	}*/
 	
 	if (this->health <= 0 && remove_at == 0) {
 		Event *ev = new Event();
@@ -290,10 +283,10 @@ void Unit::takeDamage(int damage)
 		
 		remove_at = st->game_time + 10000;
 		
-		if (this == this->st->curr_player) {
-			this->st->curr_player = NULL;
-		}
+		return 1;
 	}
+	
+	return 0;
 }
 
 
