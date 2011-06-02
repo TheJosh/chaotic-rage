@@ -153,8 +153,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	glScalef (1.0f, -1.0f, 1.0f);
 	glTranslatef(-500, -500, -1250.0f);
 	
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
 }
 
 

@@ -24,21 +24,35 @@ int main (int argc, char ** argv) {
 	
 	st->render->setScreenSize(900, 900, false);
 	
+	if (FEAT_INTRO) {
+		// Cool intro/loading screen
+	}
+	
+	// Load data
 	Mod * mod = new Mod(st, "data/cr/");
 	if (! mod->load()) {
 		reportFatalError("Unable to load data module 'cr'.");
 	}
 	
-	Map *m = new Map(st);
-	m->load("arena", st->render);
-	st->curr_map = m;
-	
-	new GameLogic(st);
-	
-	GameType *gt = mod->getGameType(0);
-	st->logic->execScript(gt->script);
-	
-	gameLoop(st, st->render);
+	if (FEAT_MENU) {
+		// Menu awesomeness
+		Menu *m = new Menu(st);
+		m->doit();
+		
+	} else {
+		// Load map
+		Map *m = new Map(st);
+		m->load("arena", st->render);
+		st->curr_map = m;
+		
+		// Load gametype
+		new GameLogic(st);
+		GameType *gt = mod->getGameType(0);
+		st->logic->execScript(gt->script);
+		
+		// Begin!
+		gameLoop(st, st->render);
+	}
 	
 	exit(0);
 }

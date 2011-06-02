@@ -21,6 +21,7 @@ struct VBOvertex
 class RenderOpenGL : public Render
 {
 	friend class HUD;
+	friend class Menu;
 	
 	private:
 		SDL_Surface * screen;

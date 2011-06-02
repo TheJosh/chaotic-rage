@@ -11,6 +11,9 @@
 #include <GL/glu.h>
 #include <vector>
 
+
+// Debugging messages
+// Not used anywhere near as often as they should be used
 #ifdef DEBUG_MODE
 	#define WHERESTR "%s:%d\t"
 	#define WHEREARG __FILE__, __LINE__
@@ -21,9 +24,15 @@
 #endif
 
 
+// Engine features to optionally compile into the game
+#define FEAT_INTRO true
+#define FEAT_MENU false
+
+
 // Frames-per-second to run all in-game animations at.
 // Specified as a float to help out some arithmetic
 #define ANIMATION_FPS	12.0
+
 
 
 // Some values for things are a randomly chosen between a min and a max
@@ -63,6 +72,7 @@ class HUD;
 class Map;
 class MapGrid;
 class MapGridCell;
+class Menu;
 class Mod;
 class NPC;
 class Particle;
@@ -115,6 +125,7 @@ class Zone;
 #include "mapgrid.h"
 #include "map.h"
 
+#include "menu.h"
 #include "gamelogic.h"
 #include "gamestate.h"
 #include "game.h"
