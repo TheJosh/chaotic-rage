@@ -50,6 +50,7 @@ class Mod {
 		WeaponType * getWeaponType(int id);
 		
 		AnimModel * getAnimModel(string name);
+		GameType * getGameType(string name);
 		UnitType * getUnitType(string name);
 		Sound * getSound(string name);
 		WallType * getWallType(string name);

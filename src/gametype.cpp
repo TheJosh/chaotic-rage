@@ -17,6 +17,7 @@ using namespace std;
 cfg_opt_t gametype_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
+	CFG_STR((char*) "title", 0, CFGF_NONE),
 	CFG_STR((char*) "script", 0, CFGF_NONE),
 	CFG_END()
 };

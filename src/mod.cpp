@@ -183,6 +183,17 @@ GameType * Mod::getGameType(int id)
 	return gametypes->at(id);
 }
 
+GameType * Mod::getGameType(string name)
+{
+	if (name.empty()) return NULL;
+	
+	int i;
+	for (i = gametypes->size() - 1; i >= 0; --i) {
+		if (gametypes->at(i)->name.compare(name) == 0) return gametypes->at(i);
+	}
+	return NULL;
+}
+
 
 /**
 * Gets a particle type by ID
