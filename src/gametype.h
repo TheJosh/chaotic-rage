@@ -15,6 +15,7 @@ class GameType
 	public:
 		string name;
 		string script;
+		string title;
 		int id;
 		
 	public:

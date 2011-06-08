@@ -54,4 +54,6 @@ class Mod {
 		UnitType * getUnitType(string name);
 		Sound * getSound(string name);
 		WallType * getWallType(string name);
+		
+		void getAllGameTypes(vector<GameType*>::iterator * start, vector<GameType*>::iterator * end);
 };

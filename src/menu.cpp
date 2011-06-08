@@ -27,9 +27,11 @@ void Menu::doit()
 	
 	int gametype = 0;
 	vector<string> gametypes;
-	gametypes.push_back("zombies");
-	gametypes.push_back("boredem");
-	gametypes.push_back("test");
+	vector<GameType*>::iterator start, end;
+	st->getMod(0)->getAllGameTypes(&start, &end);
+	for (vector<GameType*>::iterator it = start; it != end; it++) {
+		gametypes.push_back((*it)->name);
+	}
 	
 	SDL_Event event;
 	

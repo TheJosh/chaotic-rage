@@ -194,6 +194,15 @@ GameType * Mod::getGameType(string name)
 	return NULL;
 }
 
+/**
+* Returns two iterators for getting all gametypes
+**/
+void Mod::getAllGameTypes(vector<GameType*>::iterator * start, vector<GameType*>::iterator * end)
+{
+	*start = gametypes->begin();
+	*end = gametypes->end();
+}
+
 
 /**
 * Gets a particle type by ID

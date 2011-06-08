@@ -33,6 +33,7 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 	
 	gt = new GameType();
 	gt->name = cfg_getstr(cfg_item, "name");
+	gt->title = cfg_getstr(cfg_item, "title");
 	
 	filename = "gametypes/";
 	filename.append(cfg_getstr(cfg_item, "script"));
