@@ -28,6 +28,8 @@ void Menu::doit()
 	int gametype = 0;
 	vector<string> gametypes;
 	gametypes.push_back("zombies");
+	gametypes.push_back("boredem");
+	gametypes.push_back("test");
 	
 	SDL_Event event;
 	
