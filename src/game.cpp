@@ -56,6 +56,8 @@ void gameLoop(GameState *st, Render *render)
 	SDL_WM_GrabInput(SDL_GRAB_OFF);
 	
 	st->render->postGame();
+	
+	st->clear();
 }
 
 

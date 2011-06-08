@@ -56,6 +56,7 @@ class GameState
 		
 		void start();
 		void update(int delta);
+		void clear();
 		
 		void addMod(Mod * mod);
 		Mod * getMod(int id);

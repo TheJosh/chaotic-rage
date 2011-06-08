@@ -83,7 +83,12 @@ int Map::load(string name, Render * render)
 	this->areas.push_back(a);
 	
 	
-	Mod * mod = new Mod(st, "maps/test/");
+	string filename = "maps/";
+	filename.append(name);
+	filename.append("/");
+	
+	
+	Mod * mod = new Mod(st, filename);
 	this->background = this->render->loadSprite("background.jpg", mod);
 	
 	{

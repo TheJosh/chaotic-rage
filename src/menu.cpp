@@ -23,6 +23,7 @@ void Menu::doit()
 	int map = 0;
 	vector<string> maps;
 	maps.push_back("test");
+	maps.push_back("blank");
 	
 	int gametype = 0;
 	vector<string> gametypes;
@@ -103,7 +104,7 @@ void Menu::doit()
 		render->renderText(gametypes[gametype], 160, 60);
 		render->renderText("Change with W and S", 450, 60);
 		
-		render->renderText("Start game with G", 20, 100);
+		render->renderText("Start game with G, quit with ESC", 20, 100);
 		
 		SDL_GL_SwapBuffers();
 	}

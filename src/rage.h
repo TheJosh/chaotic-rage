@@ -26,7 +26,7 @@
 
 // Engine features to optionally compile into the game
 #define FEAT_INTRO true
-#define FEAT_MENU false
+#define FEAT_MENU true
 
 
 // Frames-per-second to run all in-game animations at.

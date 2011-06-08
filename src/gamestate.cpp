@@ -113,6 +113,22 @@ static bool CollideBoxEraser(CollideBox* box)
 
 
 /**
+* Clears all game state, ready for a new game
+**/
+void GameState::clear()
+{
+	// TODO: Are these leaky?
+	this->entities.clear();
+	this->entities_add.clear();
+	this->collideboxes.clear();
+	
+	// TODO: Are these needed?
+	this->units.clear();
+	this->walls.clear();
+}
+
+
+/**
 * Game has started
 **/
 void GameState::start()
@@ -123,6 +139,8 @@ void GameState::start()
 	// It should technically be 0, but 1 avoids division-by-zero
 	this->game_time = 1;
 	this->anim_frame = 1;
+	this->curr_player = NULL;
+	this->reset_mouse = true;
 }
 
 
