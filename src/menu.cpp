@@ -111,6 +111,8 @@ void Menu::doit()
 		render->renderText("Start game with G, quit with ESC", 20, 100);
 		
 		SDL_GL_SwapBuffers();
+		
+		SDL_Delay(50);
 	}
 	
 }

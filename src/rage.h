@@ -69,6 +69,7 @@ class GameLogic;
 class GameState;
 class GameType;
 class HUD;
+class Intro;
 class Map;
 class MapGrid;
 class MapGridCell;
@@ -126,6 +127,7 @@ class Zone;
 #include "map.h"
 
 #include "menu.h"
+#include "intro.h"
 #include "gamelogic.h"
 #include "gamestate.h"
 #include "game.h"

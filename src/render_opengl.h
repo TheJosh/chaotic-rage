@@ -22,6 +22,7 @@ class RenderOpenGL : public Render
 {
 	friend class HUD;
 	friend class Menu;
+	friend class Intro;
 	
 	private:
 		SDL_Surface * screen;

@@ -24,12 +24,14 @@ int main (int argc, char ** argv) {
 	
 	st->render->setScreenSize(900, 900, false);
 	
+	Mod * mod = new Mod(st, "data/cr/");
+	
 	if (FEAT_INTRO) {
-		// Cool intro/loading screen
+		Intro *i = new Intro(st);
+		i->doit();
 	}
 	
 	// Load data
-	Mod * mod = new Mod(st, "data/cr/");
 	if (! mod->load()) {
 		reportFatalError("Unable to load data module 'cr'.");
 	}

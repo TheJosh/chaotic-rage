@@ -270,7 +270,7 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 	glBegin(GL_QUADS);
 		// Bottom-left vertex (corner)
 		glTexCoord2i( 0, 1 );
-		glVertex2i( x, y + w );
+		glVertex2i( x, y + h );
 		
 		// Bottom-right vertex (corner)
 		glTexCoord2i( 1, 1 );
