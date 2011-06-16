@@ -9,4 +9,4 @@ cp ../../docs files -r
 cp ../lib/*.dll files
 cp ../redist-msvc/*.dll files
 
-rm -rf `find -name ".svn"`
+rm -rf `find files -name ".svn"`
