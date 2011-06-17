@@ -32,10 +32,6 @@ class AudioNull : Audio
 		**/
 		virtual void stopSound();
 		
-		
-	public:
-		virtual void handleEvent(Event * ev);
-		
 	public:
 		AudioNull(GameState * st);
 };

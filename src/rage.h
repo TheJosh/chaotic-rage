@@ -63,8 +63,6 @@ class FloorType;
 class Audio;
 class CollideBox;
 class Entity;
-class Event;
-class EventListener;
 class GameLogic;
 class GameState;
 class GameType;
@@ -92,8 +90,6 @@ class WeaponType;
 class Zone;
 
 #include "mod.h"
-#include "event.h"
-
 #include "objload.h"
 #include "render.h"
 #include "render_opengl.h"

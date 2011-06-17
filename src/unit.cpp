@@ -273,11 +273,6 @@ int Unit::takeDamage(int damage)
 	this->health -= damage;
 	
 	if (this->health <= 0 && remove_at == 0) {
-		Event *ev = new Event();
-		ev->type = UNIT_DIED;
-		ev->e1 = this;
-		fireEvent(ev);
-		
 		this->speed = 0;
 		this->setState(UNIT_STATE_DIE);
 		

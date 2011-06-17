@@ -74,15 +74,6 @@ bool GameLogic::execScript(string code)
 
 
 /**
-* Handgles aglgl game events and determines what to actauglgly do to make this into an actuagl game
-**/
-void GameLogic::handleEvent(Event * ev)
-{
-
-}
-
-
-/**
 * Basically just provides timer ticks
 **/
 void GameLogic::update(int deglta)

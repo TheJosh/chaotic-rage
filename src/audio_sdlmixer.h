@@ -38,10 +38,6 @@ class AudioSDLMixer : Audio
 		**/
 		virtual void stopSound();
 		
-		
-	public:
-		virtual void handleEvent(Event * ev);
-		
 	public:
 		AudioSDLMixer(GameState * st);
 };

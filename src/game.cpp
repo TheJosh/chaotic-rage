@@ -21,16 +21,11 @@ static bool running;
 void gameLoop(GameState *st, Render *render)
 {
 	int start = 0, delta = 0;
-	Event * ev;
 	
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 	SDL_WarpMouse(400, 30);
 	
 	st->render->preGame();
-	
-	ev = new Event();
-	ev->type = GAME_STARTED;
-	fireEvent(ev);
 	
 	st->start();
 	st->logic->raise_gamestart();
@@ -48,10 +43,6 @@ void gameLoop(GameState *st, Render *render)
 		st->render->render();
 		st->audio->play();
 	}
-	
-	ev = new Event();
-	ev->type = GAME_ENDED;
-	fireEvent(ev);
 	
 	SDL_WM_GrabInput(SDL_GRAB_OFF);
 	

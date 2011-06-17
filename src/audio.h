@@ -13,7 +13,7 @@ using namespace std;
 typedef Mix_Chunk* AudioPtr;
 
 
-class Audio : public EventListener
+class Audio
 {
 	protected:
 		GameState * st;

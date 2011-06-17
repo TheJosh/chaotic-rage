@@ -28,14 +28,6 @@ AudioPtr AudioNull::loadSound(string filename, Mod * mod)
 
 
 /**
-* Handles in-game events
-**/
-void AudioNull::handleEvent(Event * ev)
-{
-}
-
-
-/**
 * Plays sounds - This method gets called every ~10ms
 **/
 void AudioNull::play()

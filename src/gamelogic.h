@@ -21,7 +21,7 @@ class Timer;
 /**
 * Logic for the game - like spawning units, etc
 **/
-class GameLogic : public EventListener
+class GameLogic
 {
 	public:
 		GameState *st;
@@ -34,7 +34,6 @@ class GameLogic : public EventListener
 		~GameLogic();
 		
 	public:
-		virtual void handleEvent(Event * ev);
 		void update(int delta);
 		
 	public:

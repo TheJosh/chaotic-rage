@@ -52,7 +52,7 @@ AudioPtr AudioSDLMixer::loadSound(string filename, Mod * mod)
 /**
 * Handles in-game events
 **/
-void AudioSDLMixer::handleEvent(Event * ev)
+/*void AudioSDLMixer::handleEvent(Event * ev)
 {
 	if (ev->type == GAME_STARTED) {
 		this->audio_start = true;
@@ -61,7 +61,7 @@ void AudioSDLMixer::handleEvent(Event * ev)
 	if (ev->type == GAME_ENDED) {
 		this->audio_stop = true;
 	}
-}
+}*/
 
 
 /**
