@@ -592,7 +592,7 @@ void RenderOpenGL::render()
 	glPushMatrix();
 		glTranslatef(1000, 1000, 10);
 		
-		GLfloat ambientLight[] = { 0.2f, 0.2f, 0.2f, 0.0f };
+		GLfloat ambientLight[] = { 0.3f, 0.3f, 0.3f, 0.0f };
 		GLfloat diffuseLight[] = { 0.1f, 0.1f, 0.1f, 0.2f };
 		GLfloat specularLight[] = { 0.1f, 0.1f, 0.1f, 0.2f };
 		GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
