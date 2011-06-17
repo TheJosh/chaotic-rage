@@ -15,9 +15,12 @@ using namespace std;
 **/
 #ifdef _WIN32
 	#include <windows.h>
-	static inline double round(double val) { return floor(val + 0.5); }
+	#include <math.h>
+	
 	#define or ||
 	#define and &&
+
+	static inline double round(double val) { return floor(val + 0.5); }
 #endif
 
 
