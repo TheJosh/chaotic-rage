@@ -37,7 +37,7 @@ UninstPage instfiles
 Section "Game (required)"
   
   SectionIn RO
-
+  
   ; Set output path to the installation directory.
   SetOutPath $INSTDIR
   
@@ -59,8 +59,10 @@ SectionEnd ; end the section
 Section "Start Menu Shortcuts"
 
   CreateDirectory "$SMPROGRAMS\Chaotic Rage"
-  CreateShortCut "$SMPROGRAMS\Chaotic Rage\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortCut "$SMPROGRAMS\Chaotic Rage\Chaotic Rage.lnk" "$INSTDIR\chaoticrage.exe" "" "$INSTDIR\chaoticrage.exe" 0
+  CreateShortCut "$SMPROGRAMS\Chaotic Rage\Uninstall.lnk" "$INSTDIR\uninstall.exe"
+  CreateShortCut "$SMPROGRAMS\Chaotic Rage\Chaotic Rage.lnk" "$INSTDIR\chaoticrage.exe"
+  CreateShortCut "$SMPROGRAMS\Chaotic Rage\Modding Docs.lnk" "$INSTDIR\docs\"
+  CreateShortCut "$SMPROGRAMS\Chaotic Rage\Manual.lnk" "$INSTDIR\manual\index.htm"
   
 SectionEnd
 
@@ -75,8 +77,16 @@ Section "Uninstall"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\ChaoticRage"
   DeleteRegKey HKLM "SOFTWARE\ChaoticRage"
 
-  ; TODO: Remove files...
-
+  ; Remove files
+  RMDir /r "$INSTDIR\maps"
+  RMDir /r "$INSTDIR\data"
+  RMDir /r "$INSTDIR\docs"
+  RMDir /r "$INSTDIR\manual"
+  Delete "$INSTDIR\*.dll"
+  Delete "$INSTDIR\*.exe"
+  Delete "$INSTDIR\*.otf"
+  RMDir "$INSTDIR"
+  
   ; Remove shortcuts, if any
   RMDir /r /REBOOTOK "$SMPROGRAMS\Chaotic Rage"
 
