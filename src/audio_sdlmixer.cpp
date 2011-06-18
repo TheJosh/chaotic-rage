@@ -50,26 +50,12 @@ AudioPtr AudioSDLMixer::loadSound(string filename, Mod * mod)
 
 
 /**
-* Handles in-game events
-**/
-/*void AudioSDLMixer::handleEvent(Event * ev)
-{
-	if (ev->type == GAME_STARTED) {
-		this->audio_start = true;
-	}
-	
-	if (ev->type == GAME_ENDED) {
-		this->audio_stop = true;
-	}
-}*/
-
-
-/**
 * Plays sounds - This method gets called every ~10ms
 **/
 void AudioSDLMixer::play()
 {
-	if (this->audio_start) {
+	// Not really in use any more
+	/*if (this->audio_start) {
 		Song * sg = st->getMod(0)->getSong(0);
 		Mix_FadeInMusic(sg->music, 0, 1000);
 		Mix_VolumeMusic(50);
@@ -79,7 +65,7 @@ void AudioSDLMixer::play()
 	if (this->audio_stop) {
 		Mix_HaltMusic();
 		this->audio_stop = false;
-	}
+	}*/
 	
 	
 	// Play sounds
@@ -92,6 +78,16 @@ void AudioSDLMixer::play()
 			Mix_PlayChannel(-1, snd->sound, 0);
 		}
 	}*/
+}
+
+
+/**
+* Something wants to play a song
+**/
+void AudioSDLMixer::playSong(Song * sg)
+{
+	Mix_FadeInMusic(sg->music, 0, 1000);
+	Mix_VolumeMusic(50);
 }
 
 

@@ -42,6 +42,16 @@ void AudioNull::playSound(Sound * snd)
 {
 }
 
+
+/**
+* Something wants to play a song
+**/
+void AudioNull::playSong(Song * sng)
+{
+}
+
+
+
 /**
 * An entity wants to stop a sound
 **/

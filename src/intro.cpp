@@ -25,6 +25,18 @@ void Intro::doit()
 	SpritePtr img = this->render->loadSprite("joshcorp.png", mod);
 	
 	
+	Song* sg;
+	sg = new Song();
+	sg->name = "intro";
+
+	SDL_RWops * rwops = mod->loadRWops("intro.mp3");
+	sg->music = Mix_LoadMUS_RW(rwops);
+
+	if (sg->music != NULL) {
+		st->audio->playSong(sg);
+	}
+
+
 	SDL_Event event;
 	
 	glTranslatef(0, 0, 40);

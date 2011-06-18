@@ -34,6 +34,11 @@ class AudioSDLMixer : Audio
 		virtual void playSound(Sound * snd);
 		
 		/**
+		* Plays a song
+		**/
+		virtual void playSong(Song * sng);
+
+		/**
 		* Doesn't do anything yet, and the exact way which this will work is still undefined.
 		**/
 		virtual void stopSound();

@@ -35,6 +35,11 @@ class Audio
 		virtual void playSound(Sound * snd) = 0;
 		
 		/**
+		* Plays a song
+		**/
+		virtual void playSong(Song * sng) = 0;
+
+		/**
 		* Doesn't do anything yet, and the exact way which this will work is still undefined.
 		**/
 		virtual void stopSound() = 0;
