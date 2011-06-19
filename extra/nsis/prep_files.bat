@@ -12,4 +12,8 @@ copy /-Y ..\lib\*.dll files
 copy /-Y ..\redist-msvc\*.dll files
 copy /-Y ..\redist-msvc\*.manifest files
 
+copy /-Y blank.txt files\stdout.txt
+copy /-Y blank.txt files\stderr.txt
+
 copy /-Y ..\msvc2010\Debug\chaoticrage.exe files
+

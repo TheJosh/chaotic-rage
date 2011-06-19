@@ -1987,7 +1987,7 @@ WavefrontObj * loadObj(string filename)
 	if (yyin == NULL) {
 		return NULL;
 	}
-	
+
 	WavefrontObj * obj = yylex();
 	obj->ibo_count = 0;
 	

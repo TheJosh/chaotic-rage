@@ -177,8 +177,6 @@ void RenderOpenGL::saveScreenshot(string filename)
 	SDL_SaveBMP(flip, filename.c_str());
 	
 	SDL_FreeSurface(flip);
-	
-	cout << "Screenshot saved as " << filename << "\n";
 }
 
 

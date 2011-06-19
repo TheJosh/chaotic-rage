@@ -11,8 +11,11 @@ using namespace std;
 
 
 
-int main (int argc, char ** argv) {
-	
+int main (int argc, char ** argv)
+{
+	cout << ".";
+	cerr << ".";
+
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 	
 	seedRandom();
