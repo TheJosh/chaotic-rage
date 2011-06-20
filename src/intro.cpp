@@ -20,7 +20,7 @@ Intro::Intro(GameState *st)
 
 void Intro::doit()
 {
-	Mod * mod = new Mod(st, "data/intro/");
+	Mod * mod = new Mod(st, "data/intro");
 	
 	SpritePtr img = this->render->loadSprite("joshcorp.png", mod);
 	

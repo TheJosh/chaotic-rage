@@ -59,7 +59,8 @@ class GameState
 		void clear();
 		
 		void addMod(Mod * mod);
-		Mod * getMod(int id);
+		Mod * getMod(string name);
+		Mod * getDefaultMod();
 		
 		CollideBox* addCollideBox(int x, int y, int radius, Entity *e, bool cares);
 		void moveCollideBox(CollideBox* box, int x, int y);

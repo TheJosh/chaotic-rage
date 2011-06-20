@@ -287,7 +287,7 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 
 void RenderOpenGL::preGame()
 {
-	AnimModel *model = st->getMod(0)->getAnimModel("cube");
+	AnimModel *model = st->getDefaultMod()->getAnimModel("cube");
 	this->test = new AnimPlay(model);
 }
 

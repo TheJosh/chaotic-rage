@@ -13,13 +13,18 @@ using namespace std;
 
 
 /**
-* Inits the mod. Does not load yet
+* Inits the mod. Does not load yet.
+* Directory should NOT contain a trailing slash
 **/
 Mod::Mod(GameState * st, string directory)
 {
 	this->st = st;
 	st->addMod(this);
 	
+	int bp = directory.rfind('/');
+	this->name = directory.substr(bp + 1, 100);
+	
+	directory.append("/");
 	this->directory = directory;
 }
 

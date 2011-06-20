@@ -40,8 +40,8 @@ GameLogic::GameLogic(GameState *st)
 	gl = this;
 	st->logic = this;
 	this->st = st;
-
-	this->mod = st->getMod(0);
+	
+	this->mod = st->getDefaultMod();
 	this->map = st->curr_map;
 	
 	L = lua_open();

@@ -74,7 +74,7 @@ int Map::load(string name, Render * render)
 	this->height = 2000;
 	
 	// Default area
-	a = new Area(this->st->getMod(0)->getFloorType(0));
+	a = new Area(this->st->getMod("cr")->getFloorType(0));
 	a->x = 0;
 	a->y = 0;
 	a->width = this->width;
@@ -85,10 +85,8 @@ int Map::load(string name, Render * render)
 	
 	string filename = "maps/";
 	filename.append(name);
-	filename.append("/");
-	
-	
 	Mod * mod = new Mod(st, filename);
+	
 	this->background = this->render->loadSprite("background.jpg", mod);
 	
 	{
@@ -113,7 +111,7 @@ int Map::load(string name, Render * render)
 			string type = cfg_getstr(cfg_sub, "type");
 			if (type.empty()) continue;
 			
-			Wall * wa = new Wall(this->st->getMod(0)->getWallType(type), this->st);
+			Wall * wa = new Wall(this->st->getMod("cr")->getWallType(type), this->st);
 			
 			wa->x = cfg_getint(cfg_sub, "x");
 			wa->y = cfg_getint(cfg_sub, "y");

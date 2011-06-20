@@ -28,7 +28,7 @@ void Menu::doit()
 	int gametype = 0;
 	vector<string> gametypes;
 	vector<GameType*>::iterator start, end;
-	st->getMod(0)->getAllGameTypes(&start, &end);
+	st->getDefaultMod()->getAllGameTypes(&start, &end);
 	for (vector<GameType*>::iterator it = start; it != end; it++) {
 		gametypes.push_back((*it)->name);
 	}
@@ -77,7 +77,7 @@ void Menu::doit()
 							
 							// Load gametype
 							new GameLogic(st);
-							GameType *gt = st->getMod(0)->getGameType(gametypes[gametype]);
+							GameType *gt = st->getDefaultMod()->getGameType(gametypes[gametype]);
 							st->logic->execScript(gt->script);
 							
 							// Begin!
