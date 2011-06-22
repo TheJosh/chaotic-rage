@@ -246,8 +246,8 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	if (this->firing && this->weapon != NULL) {
 		if (this->weapon->melee == 0 && this->weapon_gen != NULL) {
 			// Bullet-based weapon
-			this->weapon_gen->x = (int) round(this->x + this->uc->width / 2);
-			this->weapon_gen->y = (int) round(this->y + this->uc->height / 2);
+			this->weapon_gen->x = this->x;
+			this->weapon_gen->y = this->y;
 			this->weapon_gen->angle = this->angle_aim;
 			this->weapon_gen->update(delta);
 			
