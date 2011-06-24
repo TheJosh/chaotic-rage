@@ -581,8 +581,20 @@ void RenderOpenGL::render()
 		glTranslatef(0 - st->curr_map->width / 2, 0 - st->curr_map->height / 2, 0);
 		
 	} else {
+		// TOP:
+		glRotatef(10, 1, 0, 0);
+		glTranslatef(0,100,0);
+		
+		// Behind:
+		//glRotatef(60, 1, 0, 0);
+		//glTranslatef(0,750,-125);
+		
+		// First-person:
+		//lRotatef(80, 1, 0, 0);
+		//glTranslatef(0,1220,-380);
+		
 		glRotatef(st->curr_player->angle, 0, 0, 1);
-		glTranslatef(0 - st->curr_player->x, 0 - st->curr_player->y, 600);
+		glTranslatef(0 - st->curr_player->x, 0 - st->curr_player->y, 500);
 	}
 	
 	
@@ -712,6 +724,9 @@ void RenderOpenGL::render()
 	// Entities
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
 		Entity *e = (*it);
+		
+		//if (e == st->curr_player) continue;
+		
 		AnimPlay *play = e->getAnimModel();
 		
 		if (play != NULL) {

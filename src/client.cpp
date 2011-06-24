@@ -47,12 +47,12 @@ int main (int argc, char ** argv)
 	} else {
 		// Load map
 		Map *m = new Map(st);
-		m->load("arena", st->render);
+		m->load("test", st->render);
 		st->curr_map = m;
 		
 		// Load gametype
 		new GameLogic(st);
-		GameType *gt = mod->getGameType(0);
+		GameType *gt = st->getDefaultMod()->getGameType(0);
 		st->logic->execScript(gt->script);
 		
 		// Begin!
