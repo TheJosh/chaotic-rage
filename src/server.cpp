@@ -33,10 +33,12 @@ int main (int argc, char ** argv) {
 	
 	
 	Map *m = new Map(st);
-	m->load("arena", st->render);
+	m->load("test", st->render);
 	st->curr_map = m;
 	
 	new GameLogic(st);
+	GameType *gt = st->getDefaultMod()->getGameType(0);
+	st->logic->execScript(gt->script);
 	
 	gameLoop(st, st->render);
 	

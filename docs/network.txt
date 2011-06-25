@@ -1,0 +1,51 @@
+
+Joining a game:
+
+[C] Plz give me info
+[S] Current game info
+[C] Can I join
+[S] Okay
+[S] No good
+[C] Ack
+-- send curr game state --
+[S] Game state finished, you're in
+
+
+Social interactions:
+
+[C] Chat msg
+[S] Chat msg
+
+
+Client updates:
+
+[C] Keyboard (buttons) and mouse (buttons, position) status
+
+
+Changes in game state:
+
+[S] Add unit
+[S] Update unit (-- perhaps multiple messages --)
+[S] Rem unit
+
+[S] Update wall
+[S] Rem wall
+
+[S] Add particlegenerator
+[S] Rem particlegenerator
+
+
+Misc:
+
+[S] Player X was dropped cos of lag (to other players)
+[C] I Quit!
+[S] Player X has quit (to other players)
+
+
+TODO:
+ - Postgame stats
+ - Achievments
+ - Winner/Loser
+ - Vehicles & Turrets
+ - Pause?
+
