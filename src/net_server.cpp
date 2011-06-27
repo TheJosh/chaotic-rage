@@ -34,9 +34,44 @@ void NetServer::update()
 ***  One method for each network message
 **/
 
-// TODO: Write them
+void NetServer::addmsgInfoResp() {
+}
 
+void NetServer::addmsgJoinAcc() {
+}
 
+void NetServer::addmsgJoinRej() {
+}
 
+void NetServer::addmsgDataCompl() {
+}
 
+void NetServer::addmsgChat() {
+}
 
+void NetServer::addmsgUnitAdd() {
+}
+
+void NetServer::addmsgUnitUpdate() {
+}
+
+void NetServer::addmsgUnitRem() {
+}
+
+void NetServer::addmsgWallUpdate() {
+}
+
+void NetServer::addmsgWallRem() {
+}
+
+void NetServer::addmsgPgAdd() {
+}
+
+void NetServer::addmsgPgRem() {
+}
+
+void NetServer::addmsgPlayerDrop() {
+}
+
+void NetServer::addmsgPlayerQuit() {
+}

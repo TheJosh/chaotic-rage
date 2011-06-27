@@ -23,5 +23,18 @@ class NetServer {
 		void update();
 		
 	public:
-		/* TODO: Method signatures for adding Messages */
+		void addmsgInfoResp();
+		void addmsgJoinAcc();
+		void addmsgJoinRej();
+		void addmsgDataCompl();
+		void addmsgChat();
+		void addmsgUnitAdd();
+		void addmsgUnitUpdate();
+		void addmsgUnitRem();
+		void addmsgWallUpdate();
+		void addmsgWallRem();
+		void addmsgPgAdd();
+		void addmsgPgRem();
+		void addmsgPlayerDrop();
+		void addmsgPlayerQuit();
 };

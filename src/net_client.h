@@ -23,5 +23,11 @@ class NetClient {
 		void update();
 		
 	public:
-		/* TODO: Method signatures for adding Messages */
+		// Client messages
+		void addmsgInfoReq();
+		void addmsgJoinReq();
+		void addmsgJoinAck();
+		void addmsgChat();
+		void addmsgKeyMouseStatus();
+		void addmsgQuit();
 };

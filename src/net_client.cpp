@@ -34,7 +34,24 @@ void NetClient::update()
 ***  One method for each network message
 **/
 
-// TODO: Write them
+void NetClient::addmsgInfoReq() {
+}
+
+void NetClient::addmsgJoinReq() {
+}
+
+void NetClient::addmsgJoinAck() {
+}
+
+void NetClient::addmsgChat() {
+}
+
+void NetClient::addmsgKeyMouseStatus() {
+}
+
+void NetClient::addmsgQuit() {
+}
+
 
 
 
