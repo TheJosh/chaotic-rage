@@ -55,7 +55,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;opengl32.lib;glu32.lib;glew32.lib;zziplib.lib;libConfuse.lib;zdll.lib;lua5.1.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_net.lib;opengl32.lib;glu32.lib;glew32.lib;zziplib.lib;libConfuse.lib;zdll.lib;lua5.1.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <IgnoreSpecificDefaultLibraries>MSVCRTD.LIB;MSVCRT100D.LIB</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -108,6 +108,8 @@
     <ClCompile Include="..\..\src\mapgrid.cpp" />
     <ClCompile Include="..\..\src\menu.cpp" />
     <ClCompile Include="..\..\src\mod.cpp" />
+    <ClCompile Include="..\..\src\net_client.cpp" />
+    <ClCompile Include="..\..\src\net_server.cpp" />
     <ClCompile Include="..\..\src\npc.cpp" />
     <ClCompile Include="..\..\src\particle.cpp" />
     <ClCompile Include="..\..\src\particlegenerator.cpp" />
@@ -148,6 +150,9 @@
     <ClInclude Include="..\..\src\mapgrid.h" />
     <ClInclude Include="..\..\src\menu.h" />
     <ClInclude Include="..\..\src\mod.h" />
+    <ClInclude Include="..\..\src\net.h" />
+    <ClInclude Include="..\..\src\net_client.h" />
+    <ClInclude Include="..\..\src\net_server.h" />
     <ClInclude Include="..\..\src\npc.h" />
     <ClInclude Include="..\..\src\particle.h" />
     <ClInclude Include="..\..\src\particlegenerator.h" />
