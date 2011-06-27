@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C++ Express 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Chaotic Rage", "Chaotic Rage.vcxproj", "{EA0FF0FC-87C1-4E50-B15F-05D74D0956AE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DedicatedServer", "DedicatedServer.vcxproj", "{94A7B771-6647-4405-BE3D-FD6459AA10EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +15,10 @@ Global
 		{EA0FF0FC-87C1-4E50-B15F-05D74D0956AE}.Debug|Win32.Build.0 = Debug|Win32
 		{EA0FF0FC-87C1-4E50-B15F-05D74D0956AE}.Release|Win32.ActiveCfg = Release|Win32
 		{EA0FF0FC-87C1-4E50-B15F-05D74D0956AE}.Release|Win32.Build.0 = Release|Win32
+		{94A7B771-6647-4405-BE3D-FD6459AA10EC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{94A7B771-6647-4405-BE3D-FD6459AA10EC}.Debug|Win32.Build.0 = Debug|Win32
+		{94A7B771-6647-4405-BE3D-FD6459AA10EC}.Release|Win32.ActiveCfg = Release|Win32
+		{94A7B771-6647-4405-BE3D-FD6459AA10EC}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
