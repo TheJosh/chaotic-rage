@@ -40,6 +40,9 @@ void gameLoop(GameState *st, Render *render)
 		handleEvents(st);
 		if (st->reset_mouse) SDL_WarpMouse(400, 30);
 		
+		if (st->client) st->client->update();
+		if (st->server) st->server->update();
+		
 		st->render->render();
 		st->audio->play();
 	}

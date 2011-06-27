@@ -24,6 +24,12 @@ int main (int argc, char ** argv)
 	
 	new RenderOpenGL(st);
 	new AudioSDLMixer(st);
+	new NetClient(st);
+	
+	// todo: change to match others...
+	st->hud = new HUD();
+	st->hud->st = st;
+	
 	
 	st->render->setScreenSize(900, 900, false);
 	

@@ -374,7 +374,7 @@ LUA_FUNC(add_player)
 	
 	gl->st->curr_player = p;
 	
-	gl->st->hud->hideSpawnMenu();
+	if (gl->st->hud) gl->st->hud->hideSpawnMenu();
 
 	return 0;
 }
@@ -392,7 +392,7 @@ LUA_FUNC(show_alert_message)
 		lua_error(L);
 	}
 	
-	gl->st->hud->addAlertMessage(text);
+	if (gl->st->hud) gl->st->hud->addAlertMessage(text);
 	
 	return 0;
 }

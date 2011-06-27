@@ -73,6 +73,8 @@ class MapGrid;
 class MapGridCell;
 class Menu;
 class Mod;
+class NetClient;
+class NetServer;
 class NPC;
 class Particle;
 class ParticleGenerator;
@@ -98,6 +100,10 @@ class Zone;
 #include "audio.h"
 #include "audio_sdlmixer.h"
 #include "audio_null.h"
+
+#include "net.h"
+#include "net_client.h"
+#include "net_server.h"
 
 #include "animmodel.h"
 #include "animplay.h"

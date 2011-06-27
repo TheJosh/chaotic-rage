@@ -21,6 +21,7 @@ int main (int argc, char ** argv) {
 	
 	new RenderNull(st);
 	new AudioNull(st);
+	new NetServer(st);
 	
 	st->render->setScreenSize(900, 900, false);
 	

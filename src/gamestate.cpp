@@ -39,20 +39,21 @@ GameState::GameState()
 	this->anim_frame = 0;
 	this->game_time = 0;
 	this->curr_player = NULL;
-	
-	this->hud = new HUD();
-	this->hud->st = this;
+	this->reset_mouse = false;
 	
 	this->render = NULL;
-	
-	this->reset_mouse = true;
+	this->hud = NULL;
+	this->audio = NULL;
+	this->logic = NULL;
+	this->collides = NULL;
+	this->client = NULL;
+	this->server = NULL;
 	
 	g_st = this;
 }
 
 GameState::~GameState()
 {
-	delete(this->hud);
 }
 
 
@@ -140,7 +141,7 @@ void GameState::start()
 	this->game_time = 1;
 	this->anim_frame = 1;
 	this->curr_player = NULL;
-	this->reset_mouse = true;
+	this->reset_mouse = false;
 }
 
 

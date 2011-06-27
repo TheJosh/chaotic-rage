@@ -590,7 +590,7 @@ void RenderOpenGL::render()
 		//glTranslatef(0,750,-125);
 		
 		// First-person:
-		//lRotatef(80, 1, 0, 0);
+		//glRotatef(80, 1, 0, 0);
 		//glTranslatef(0,1220,-380);
 		
 		glRotatef(st->curr_player->angle, 0, 0, 1);
