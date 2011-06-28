@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <SDL_net.h>
 #include "rage.h"
 #include "net.h"
 
@@ -14,10 +15,12 @@ NetClient::NetClient(GameState * st)
 {
 	this->st = st;
 	st->client = this;
+	this->sock = NULL;
 }
 
 NetClient::~NetClient()
 {
+	if (this->sock != NULL) SDLNet_UDP_Close(this->sock);
 }
 
 
@@ -26,7 +29,27 @@ NetClient::~NetClient()
 **/
 void NetClient::update()
 {
-	cout << "Doing NetClient stuff.\n";
+	cout << st->game_time << "] Sending a packet.\n";
+	
+	UDPpacket *pkt = SDLNet_AllocPacket(20);
+	
+	pkt->address = this->ipaddress;
+	pkt->data = (Uint8*) "hey ya";
+	pkt->len = 6;
+	
+	SDLNet_UDP_Send(this->sock, -1, pkt);
+	
+	//SDLNet_FreePacket(pkt);
+}
+
+
+/**
+* Set the address and port for sending messages
+**/
+void NetClient::bind(string address, int port)
+{
+	SDLNet_ResolveHost(&this->ipaddress, address.c_str(), port);
+	this->sock = SDLNet_UDP_Open(0);
 }
 
 

@@ -61,6 +61,8 @@ int main (int argc, char ** argv)
 		GameType *gt = st->getDefaultMod()->getGameType(0);
 		st->logic->execScript(gt->script);
 		
+		st->client->bind("localhost", 17778);
+		
 		// Begin!
 		gameLoop(st, st->render);
 	}

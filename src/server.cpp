@@ -41,6 +41,8 @@ int main (int argc, char ** argv) {
 	GameType *gt = st->getDefaultMod()->getGameType(0);
 	st->logic->execScript(gt->script);
 	
+	st->server->listen(17778);
+	
 	gameLoop(st, st->render);
 	
 	exit(0);

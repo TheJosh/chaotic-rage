@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <SDL_net.h>
 #include "rage.h"
 #include "net.h"
 
@@ -18,6 +19,7 @@ NetServer::NetServer(GameState * st)
 
 NetServer::~NetServer()
 {
+	if (this->sock != NULL) SDLNet_UDP_Close(this->sock);
 }
 
 
@@ -26,7 +28,23 @@ NetServer::~NetServer()
 **/
 void NetServer::update()
 {
-	cout << "Doing NetServer stuff.\n";
+	UDPpacket *pkt = SDLNet_AllocPacket(20);
+	
+	while (SDLNet_UDP_Recv(this->sock, pkt)) {
+		cout << st->game_time << "] Got a packet: " << pkt->data << "\n";
+	}
+	
+	//SDLNet_FreePacket(pkt);
+}
+
+
+/**
+* Set the port for listening for connections
+**/
+void NetServer::listen(int port)
+{
+	SDLNet_ResolveHost(&this->ipaddress, NULL, port);
+	this->sock = SDLNet_UDP_Open(port);
 }
 
 

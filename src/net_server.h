@@ -5,6 +5,7 @@
 #pragma once
 #include <iostream>
 #include <SDL.h>
+#include <SDL_net.h>
 #include "rage.h"
 #include "net.h"
 
@@ -14,6 +15,8 @@ using namespace std;
 class NetServer {
 	private:
 		GameState * st;
+		IPaddress ipaddress;
+		UDPsocket sock;
 		
 	public:
 		NetServer(GameState * st);
@@ -21,6 +24,7 @@ class NetServer {
 		
 	public:
 		void update();
+		void listen(int port);
 		
 	public:
 		void addmsgInfoResp();

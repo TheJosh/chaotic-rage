@@ -3,6 +3,7 @@ You will need at least these:
  - SDL
  - SDL_Mixer
  - SDL_Image
+ - SDL_Net
  - zziplib
  - libconfuse
  - gl
@@ -18,6 +19,7 @@ For compiling on a recent Ubuntu:
  - libsdl1.2-dev
  - libsdl-image1.2-dev
  - libsdl-mixer1.2-dev
+ - libsdl-net1.2-dev
  - libzzip-dev
  - libconfuse-dev
  - libgl1-mesa-dev
