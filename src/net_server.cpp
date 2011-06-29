@@ -31,7 +31,8 @@ void NetServer::update()
 	UDPpacket *pkt = SDLNet_AllocPacket(20);
 	
 	while (SDLNet_UDP_Recv(this->sock, pkt)) {
-		cout << st->game_time << "] Got a packet: " << pkt->data << "\n";
+		cout << setw (6) << setfill(' ') << st->game_time << " RECV ";
+		dumpPacket(pkt->data, pkt->len);
 	}
 	
 	//SDLNet_FreePacket(pkt);

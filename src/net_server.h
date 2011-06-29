@@ -17,6 +17,7 @@ class NetServer {
 		GameState * st;
 		IPaddress ipaddress;
 		UDPsocket sock;
+		list<NetMsg> messages;
 		
 	public:
 		NetServer(GameState * st);

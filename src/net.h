@@ -4,6 +4,8 @@
 
 #pragma once
 #include <iostream>
+#include <ios>
+#include <iomanip>
 #include <SDL.h>
 #include "rage.h"
 
@@ -41,19 +43,16 @@ enum NetMsgType {
 
 class NetMsg {
 	public:
-		Uint16 type;
+		Uint8 type;
 		char *data;
 		int size;
-
-		NetMsg (int size) {
-			this->size = size;
-			this->data = (char*) malloc(size);
-		}
-	
-		~NetMsg() {
-			free(data);
-		}
+		
+	public:
+		NetMsg (unsigned int size);
+		~NetMsg();
 };
 
+
+void dumpPacket(Uint8* data, int size);
 
 

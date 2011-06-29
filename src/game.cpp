@@ -20,7 +20,7 @@ static bool running;
 **/
 void gameLoop(GameState *st, Render *render)
 {
-	int start = 0, delta = 0;
+	int start = 0, delta = 0, net_time = 0, net_timestep = 20;
 	
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 	SDL_WarpMouse(400, 30);
@@ -40,8 +40,12 @@ void gameLoop(GameState *st, Render *render)
 		handleEvents(st);
 		if (st->reset_mouse) SDL_WarpMouse(400, 30);
 		
-		if (st->client) st->client->update();
-		if (st->server) st->server->update();
+		net_time += delta;
+		if (net_time > net_timestep) {
+			net_time -= net_timestep;
+			if (st->client) st->client->update();
+			if (st->server) st->server->update();
+		}
 		
 		st->render->render();
 		st->audio->play();

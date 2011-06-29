@@ -29,13 +29,23 @@ NetClient::~NetClient()
 **/
 void NetClient::update()
 {
-	cout << st->game_time << "] Sending a packet.\n";
-	
-	UDPpacket *pkt = SDLNet_AllocPacket(20);
+	UDPpacket *pkt = SDLNet_AllocPacket(1000);
 	
 	pkt->address = this->ipaddress;
-	pkt->data = (Uint8*) "hey ya";
-	pkt->len = 6;
+	pkt->len = 0;
+	
+	Uint8* ptr = pkt->data;
+	
+	for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
+		*ptr = (*it).type;
+		ptr++; pkt->len++;
+		
+		memcpy(ptr, (*it).data, (*it).size);
+		ptr += (*it).size; pkt->len += (*it).size;
+	}
+	
+	cout << setw (6) << setfill(' ') << st->game_time << " SEND ";
+	dumpPacket(pkt->data, pkt->len);
 	
 	SDLNet_UDP_Send(this->sock, -1, pkt);
 	
@@ -58,6 +68,10 @@ void NetClient::bind(string address, int port)
 **/
 
 void NetClient::addmsgInfoReq() {
+	NetMsg * msg = new NetMsg(3);
+	msg->type = INFO_REQ;
+	msg->data[0] = 'A';
+	messages.push_back(*msg);
 }
 
 void NetClient::addmsgJoinReq() {

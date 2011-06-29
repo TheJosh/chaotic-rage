@@ -6,6 +6,7 @@
 #include <iostream>
 #include <SDL.h>
 #include <SDL_net.h>
+#include <list>
 #include "rage.h"
 #include "net.h"
 
@@ -17,6 +18,7 @@ class NetClient {
 		GameState * st;
 		IPaddress ipaddress;
 		UDPsocket sock;
+		list<NetMsg> messages;
 		
 	public:
 		NetClient(GameState * st);
