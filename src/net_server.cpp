@@ -43,11 +43,25 @@ void NetServer::update()
 		dumpPacket(pkt->data, pkt->len);
 		
 		Uint8* ptr = pkt->data;
+		int p = 0;
 		
 		unsigned int newseq = SDLNet_Read16(ptr);
 		if (newseq > this->client_seq) {
 			this->client_seq = newseq;	// todo: client seq array
 			cout << "       The client has ACKed " << newseq << "\n";
+		}
+		ptr += 2; p += 2;
+		
+		while (p < pkt->len) {
+			cout << "       Got data: " << hex << setw (2) << ((int)(*ptr)) << dec << endl;
+			
+			if ((*ptr) > NOTHING && (*ptr) < BOTTOM) {
+				cout << "       It's even valid!\n";
+				
+				// todo: push off to handler ( type, data[(ptr + 1)...(ptr + 1 + msgtype_len[type])] )
+			}
+			
+			ptr++; p++;
 		}
 		
 		//this->addmsgInfoResp();
@@ -103,8 +117,9 @@ void NetServer::listen(int port)
 }
 
 
+
 /**
-***  One method for each network message
+***  One method for each outgoing network message
 **/
 
 void NetServer::addmsgInfoResp() {
@@ -151,3 +166,10 @@ void NetServer::addmsgPlayerDrop() {
 
 void NetServer::addmsgPlayerQuit() {
 }
+
+
+
+/**
+***  One method for each incoming network message
+**/
+

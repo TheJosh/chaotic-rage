@@ -11,6 +11,8 @@
 
 
 enum NetMsgType {
+	NOTHING =       0x00,
+	
 	INFO_REQ =      0x01,		// [C] Req for server info
 	INFO_RESP =     0x02,		// [S] Server info  (map, gametype, etc)
 	
@@ -38,8 +40,11 @@ enum NetMsgType {
 	PLAYER_DROP =   0x12,		// [S] Player dropped. too laggy -> all clients
 	QUIT_REQ =      0x13,		// [C] Player want's to leave -> server
 	PLAYER_QUIT =   0x14,		// [S] Player has left -> all clients
+	
+	BOTTOM =        0x15,		// -- not really a message --
 };
 
+extern int msgtype_len [];
 
 class NetMsg {
 	public:

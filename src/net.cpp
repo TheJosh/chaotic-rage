@@ -11,6 +11,34 @@
 using namespace std;
 
 
+
+// The lengths of all of the messages
+int msgtype_len [] = {
+	0,		//<-- 0x00
+	0,		//<-- 0x01
+	0,		//<-- 0x02
+	0,		//<-- 0x03
+	0,		//<-- 0x04
+	0,		//<-- 0x05
+	0,		//<-- 0x06
+	0,		//<-- 0x07
+	0,		//<-- 0x08
+	0,		//<-- 0x09
+	0,		//<-- 0x0A
+	0,		//<-- 0x0B
+	0,		//<-- 0x0C
+	0,		//<-- 0x0D
+	0,		//<-- 0x0E
+	0,		//<-- 0x0F
+	0,		//<-- 0x10
+	0,		//<-- 0x11
+	0,		//<-- 0x12
+	0,		//<-- 0x13
+	0,		//<-- 0x14
+};
+
+
+
 NetMsg::NetMsg (NetMsgType type, unsigned int size)
 {
 	this->type = type;

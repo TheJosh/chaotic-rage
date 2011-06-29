@@ -52,6 +52,9 @@ class NetServer {
 		void addmsgPgRem();
 		void addmsgPlayerDrop();
 		void addmsgPlayerQuit();
+		
+	public:
+		void handleInfoReq();
 };
 
 class NetServerSeqPred

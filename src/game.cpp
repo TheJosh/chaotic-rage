@@ -20,7 +20,7 @@ static bool running;
 **/
 void gameLoop(GameState *st, Render *render)
 {
-	int start = 0, delta = 0, net_time = 0, net_timestep = 20;
+	int start = 0, delta = 0, net_time = 0, net_timestep = 500;
 	
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 	SDL_WarpMouse(400, 30);
@@ -29,6 +29,8 @@ void gameLoop(GameState *st, Render *render)
 	
 	st->start();
 	st->logic->raise_gamestart();
+	
+	cout << "\n\n\n\n\n";
 	
 	running = true;
 	while (running) {
@@ -50,6 +52,8 @@ void gameLoop(GameState *st, Render *render)
 		st->render->render();
 		st->audio->play();
 	}
+	
+	cout << "\n\n\n\n\n";
 	
 	SDL_WM_GrabInput(SDL_GRAB_OFF);
 	
