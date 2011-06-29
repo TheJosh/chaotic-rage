@@ -15,6 +15,11 @@ NetServer::NetServer(GameState * st)
 {
 	this->st = st;
 	st->server = this;
+	
+	this->seq = 0;
+	this->seq_pred = new NetServerSeqPred(this);
+	
+	this->client_seq = 0; // todo: client seq array
 }
 
 NetServer::~NetServer()
@@ -28,12 +33,61 @@ NetServer::~NetServer()
 **/
 void NetServer::update()
 {
-	UDPpacket *pkt = SDLNet_AllocPacket(20);
+	UDPpacket *pkt = SDLNet_AllocPacket(1000);
+	
+	this->seq++;
+	
 	
 	while (SDLNet_UDP_Recv(this->sock, pkt)) {
 		cout << setw (6) << setfill(' ') << st->game_time << " RECV ";
 		dumpPacket(pkt->data, pkt->len);
+		
+		Uint8* ptr = pkt->data;
+		
+		unsigned int newseq = SDLNet_Read16(ptr);
+		if (newseq > this->client_seq) {
+			this->client_seq = newseq;	// todo: client seq array
+			cout << "       The client has ACKed " << newseq << "\n";
+		}
+		
+		//this->addmsgInfoResp();
 	}
+	
+	
+	// TODO: ----- loop over clients -----
+	
+	// TODO: fill pkt->address with client address
+	pkt->len = 0;
+	
+	Uint8* ptr = pkt->data;
+	
+	SDLNet_Write16(this->seq, ptr);
+	ptr += 2; pkt->len += 2;
+	
+	for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
+		
+		// client_seq
+		
+		// TODO: only items with a seq for that client
+		
+		*ptr = (*it).type;
+		ptr++; pkt->len++;
+		
+		memcpy(ptr, (*it).data, (*it).size);
+		ptr += (*it).size; pkt->len += (*it).size;
+	}
+	
+	if (pkt->len > 0) {
+		cout << setw (6) << setfill(' ') << st->game_time << " SEND ";
+		dumpPacket(pkt->data, pkt->len);
+		
+		SDLNet_UDP_Send(this->sock, -1, pkt);
+	}
+	
+	// TODO: ----- end loop over clients -----
+	
+	
+	this->messages.remove_if(*this->seq_pred);
 	
 	//SDLNet_FreePacket(pkt);
 }
@@ -54,6 +108,9 @@ void NetServer::listen(int port)
 **/
 
 void NetServer::addmsgInfoResp() {
+	NetMsg * msg = new NetMsg(INFO_RESP, 0);
+	msg->seq = this->seq;
+	messages.push_back(*msg);
 }
 
 void NetServer::addmsgJoinAcc() {

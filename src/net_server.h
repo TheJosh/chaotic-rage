@@ -12,12 +12,21 @@
 using namespace std;
 
 
+class NetServerSeqPred;
+
 class NetServer {
+	friend class NetServerSeqPred;
+	
 	private:
 		GameState * st;
 		IPaddress ipaddress;
 		UDPsocket sock;
 		list<NetMsg> messages;
+		unsigned int seq;
+		
+		unsigned int client_seq;	// todo: client seq array
+		
+		NetServerSeqPred * seq_pred;
 		
 	public:
 		NetServer(GameState * st);
@@ -28,6 +37,7 @@ class NetServer {
 		void listen(int port);
 		
 	public:
+		// Server messages
 		void addmsgInfoResp();
 		void addmsgJoinAcc();
 		void addmsgJoinRej();
@@ -43,3 +53,14 @@ class NetServer {
 		void addmsgPlayerDrop();
 		void addmsgPlayerQuit();
 };
+
+class NetServerSeqPred
+{
+	public:
+		NetServer *server;
+		bool operator() (const NetMsg& value) { return (this->server->client_seq > value.seq); }		// todo: client seq array
+		NetServerSeqPred(NetServer *s) { this->server = s; }
+};
+
+
+

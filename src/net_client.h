@@ -13,12 +13,19 @@
 using namespace std;
 
 
+class NetClientSeqPred;
+
 class NetClient {
+	friend class NetClientSeqPred;
+	
 	private:
 		GameState * st;
 		IPaddress ipaddress;
 		UDPsocket sock;
 		list<NetMsg> messages;
+		unsigned int seq;
+		
+		NetClientSeqPred * seq_pred;
 		
 	public:
 		NetClient(GameState * st);
@@ -37,3 +44,14 @@ class NetClient {
 		void addmsgKeyMouseStatus();
 		void addmsgQuit();
 };
+
+class NetClientSeqPred
+{
+	public:
+		NetClient *client;
+		bool operator() (const NetMsg& value) { return (this->client->seq > value.seq); }
+		NetClientSeqPred(NetClient *c) { this->client = c; }
+};
+
+
+

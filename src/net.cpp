@@ -11,18 +11,15 @@
 using namespace std;
 
 
-NetMsg::NetMsg (unsigned int size)
+NetMsg::NetMsg (NetMsgType type, unsigned int size)
 {
+	this->type = type;
 	this->size = size;
 	
 	this->data = NULL;
 	if (size > 0) {
-		this->data = (char*) malloc(size);
-		
-		for (unsigned int i = size-1; i != 0; --i) {
-			this->data[i] = 0;
-		}
-		this->data[0] = 0;
+		this->data = (Uint8*) malloc(size);
+		memset(this->data, 0, size);
 	}
 }
 

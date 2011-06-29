@@ -11,44 +11,45 @@
 
 
 enum NetMsgType {
-	INFO_REQ = 1,			// [C] Req for server info
-	INFO_RESP = 2,			// [S] Server info  (map, gametype, etc)
+	INFO_REQ =      0x01,		// [C] Req for server info
+	INFO_RESP =     0x02,		// [S] Server info  (map, gametype, etc)
 	
-	JOIN_REQ = 3,			// [C] Join request
-	JOIN_OKAY = 4,			// [S] Join accepted
-	JOIN_DENY = 5,			// [S] Join denied
-	JOIN_ACK = 6,			// [C] Client ack of join accept, server to send data
-	JOIN_DONE = 7,			// [S] Sending of data is complete
+	JOIN_REQ =      0x03,		// [C] Join request
+	JOIN_OKAY =     0x04,		// [S] Join accepted
+	JOIN_DENY =     0x05,		// [S] Join denied
+	JOIN_ACK =      0x06,		// [C] Client ack of join accept, server to send data
+	JOIN_DONE =     0x07,		// [S] Sending of data is complete
 	
-	CHAT_REQ = 8,			// [C] Client -> server w/ chat msg
-	CHAT_MSG = 9,			// [S] Server -> all w/ chat msg
+	CHAT_REQ =      0x08,		// [C] Client -> server w/ chat msg
+	CHAT_MSG =      0x09,		// [S] Server -> all w/ chat msg
 	
-	CLIENT_STATE = 10,		// [C] Keyboard (buttons) and mouse (buttons, position) status -> server
+	CLIENT_STATE =  0x0A,		// [C] Keyboard (buttons) and mouse (buttons, position) status -> server
 	
-	UNIT_ADD = 11,			// [S] A unit has been added
-	UNIT_UPDATE = 12,		// [S] Unit params have changed
-	UNIT_REM = 13,			// [S] Unit has been removed
+	UNIT_ADD =      0x0B,		// [S] A unit has been added
+	UNIT_UPDATE =   0x0C,		// [S] Unit params have changed
+	UNIT_REM =      0x0D,		// [S] Unit has been removed
 	
-	WALL_UPDATE = 14,		// [S] Wall params have changed
-	WALL_REM = 15,			// [S] Wall has been removed
+	WALL_UPDATE =   0x0E,		// [S] Wall params have changed
+	WALL_REM =      0x0F,		// [S] Wall has been removed
 	
-	PG_ADD = 16,			// [S] Particle Generator has been added
-	PG_REM = 17,			// [S] Particle Generator has been removed
+	PG_ADD =        0x10,		// [S] Particle Generator has been added
+	PG_REM =        0x11,		// [S] Particle Generator has been removed
 	
-	PLAYER_DROP = 18,		// [S] Player dropped. too laggy -> all clients
-	REQ_QUIT = 19,			// [C] Player want's to leave -> server
-	PLAYER_QUIT = 20,		// [S] Player has left -> all clients
+	PLAYER_DROP =   0x12,		// [S] Player dropped. too laggy -> all clients
+	QUIT_REQ =      0x13,		// [C] Player want's to leave -> server
+	PLAYER_QUIT =   0x14,		// [S] Player has left -> all clients
 };
 
 
 class NetMsg {
 	public:
 		Uint8 type;
-		char *data;
-		int size;
+		Uint8 *data;
+		unsigned int size;
+		unsigned int seq;
 		
 	public:
-		NetMsg (unsigned int size);
+		NetMsg (NetMsgType type, unsigned int size);
 		~NetMsg();
 };
 
