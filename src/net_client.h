@@ -41,7 +41,7 @@ class NetClient {
 		void addmsgJoinReq();
 		void addmsgJoinAck();
 		void addmsgChat();
-		void addmsgKeyMouseStatus();
+		void addmsgKeyMouseStatus(unsigned int x, unsigned int y);
 		void addmsgQuit();
 		
 	public:

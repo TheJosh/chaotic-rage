@@ -56,13 +56,8 @@ void NetServer::update()
 			unsigned int type = (*ptr);
 			ptr++; p++;
 			
-			cout << "       Got data: " << hex << setw (2) << (type) << dec << endl;
-			
 			if (type > NOTHING && type < BOTTOM) {
-				cout << "       It's even valid!\n";
-				
 				if (msg_server_recv[type] != NULL) {
-					cout << "       Firing handler\n";
 					unsigned int num = ((*this).*(msg_server_recv[type]))(ptr, pkt->len - p);
 					ptr += num; p += num;
 				}
@@ -180,7 +175,7 @@ void NetServer::addmsgPlayerQuit() {
 
 unsigned int NetServer::handleInfoReq(Uint8 *data, unsigned int size)
 {
-	cout << "       handleInfoReq()\n";
+	this->addmsgInfoResp();
 	return 0;
 }
 
@@ -205,7 +200,10 @@ unsigned int NetServer::handleChat(Uint8 *data, unsigned int size)
 unsigned int NetServer::handleKeyMouseStatus(Uint8 *data, unsigned int size)
 {
 	cout << "       handleKeyMouseStatus()\n";
-	return 0;
+	
+	cout << "       x: " << SDLNet_Read16(data) << "\n";
+	cout << "       y: " << SDLNet_Read16(data + 2) << "\n";
+	return 4;
 }
 
 unsigned int NetServer::handleQuit(Uint8 *data, unsigned int size)

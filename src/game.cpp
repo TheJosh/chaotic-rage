@@ -142,8 +142,11 @@ static void handleEvents(GameState *st)
 			
 		} else if (event.type == SDL_MOUSEMOTION) {
 			// Mouse motion
-			if (st->curr_player != NULL) st->curr_player->angleFromMouse(event.motion.x, event.motion.y);
-			
+			if (st->curr_player != NULL) {
+				st->curr_player->angleFromMouse(event.motion.x, event.motion.y);
+				
+				if (st->client) st->client->addmsgKeyMouseStatus(event.motion.x, event.motion.y);
+			}
 			
 		} else if (event.type == SDL_MOUSEBUTTONDOWN) {
 			// Mouse down

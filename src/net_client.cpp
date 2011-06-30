@@ -115,9 +115,21 @@ void NetClient::addmsgJoinAck() {
 }
 
 void NetClient::addmsgChat() {
+	NetMsg * msg = new NetMsg(CHAT_REQ, 0);
+	msg->seq = this->seq;
+	messages.push_back(*msg);
 }
 
-void NetClient::addmsgKeyMouseStatus() {
+void NetClient::addmsgKeyMouseStatus(unsigned int x, unsigned int y) {
+	NetMsg * msg = new NetMsg(CLIENT_STATE, 4);
+	msg->seq = this->seq;
+	
+	Uint8* ptr = msg->data;
+	
+	SDLNet_Write16(x, ptr); ptr += 2;
+	SDLNet_Write16(y, ptr); ptr += 2;
+	
+	messages.push_back(*msg);
 }
 
 void NetClient::addmsgQuit() {
