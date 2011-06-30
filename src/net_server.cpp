@@ -53,15 +53,20 @@ void NetServer::update()
 		ptr += 2; p += 2;
 		
 		while (p < pkt->len) {
-			cout << "       Got data: " << hex << setw (2) << ((int)(*ptr)) << dec << endl;
+			unsigned int type = (*ptr);
+			ptr++; p++;
 			
-			if ((*ptr) > NOTHING && (*ptr) < BOTTOM) {
+			cout << "       Got data: " << hex << setw (2) << (type) << dec << endl;
+			
+			if (type > NOTHING && type < BOTTOM) {
 				cout << "       It's even valid!\n";
 				
-				// todo: push off to handler ( type, data[(ptr + 1)...(ptr + 1 + msgtype_len[type])] )
+				if (msg_server_recv[type] != NULL) {
+					cout << "       Firing handler\n";
+					unsigned int num = ((*this).*(msg_server_recv[type]))(ptr, pkt->len - p);
+					ptr += num; p += num;
+				}
 			}
-			
-			ptr++; p++;
 		}
 		
 		//this->addmsgInfoResp();
@@ -119,7 +124,7 @@ void NetServer::listen(int port)
 
 
 /**
-***  One method for each outgoing network message
+***  One method for each outgoing network message the server sends out
 **/
 
 void NetServer::addmsgInfoResp() {
@@ -170,6 +175,44 @@ void NetServer::addmsgPlayerQuit() {
 
 
 /**
-***  One method for each incoming network message
+***  One method for each incoming network message from the client
 **/
+
+unsigned int NetServer::handleInfoReq(Uint8 *data, unsigned int size)
+{
+	cout << "       handleInfoReq()\n";
+	return 0;
+}
+
+unsigned int NetServer::handleJoinReq(Uint8 *data, unsigned int size)
+{
+	cout << "       handleJoinReq()\n";
+	return 0;
+}
+
+unsigned int NetServer::handleJoinAck(Uint8 *data, unsigned int size)
+{
+	cout << "       handleJoinAck()\n";
+	return 0;
+}
+
+unsigned int NetServer::handleChat(Uint8 *data, unsigned int size)
+{
+	cout << "       handleChat()\n";
+	return 0;
+}
+
+unsigned int NetServer::handleKeyMouseStatus(Uint8 *data, unsigned int size)
+{
+	cout << "       handleKeyMouseStatus()\n";
+	return 0;
+}
+
+unsigned int NetServer::handleQuit(Uint8 *data, unsigned int size)
+{
+	cout << "       handleQuit()\n";
+	return 0;
+}
+
+
 

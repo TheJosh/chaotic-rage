@@ -10,6 +10,10 @@
 #include "rage.h"
 
 
+
+/**
+* Types of network messages
+**/
 enum NetMsgType {
 	NOTHING =       0x00,
 	
@@ -41,11 +45,43 @@ enum NetMsgType {
 	QUIT_REQ =      0x13,		// [C] Player want's to leave -> server
 	PLAYER_QUIT =   0x14,		// [S] Player has left -> all clients
 	
-	BOTTOM =        0x15,		// -- not really a message --
+	BOTTOM =        0x15,
 };
 
-extern int msgtype_len [];
 
+/**
+* Handle a msg recv (client).
+*
+* @param data A pointer to the data of the message
+* @param size The maximum number of bytes which can be read
+* @return int The number of bytes read
+**/
+typedef unsigned int (NetClient::*MsgClientRecv)(Uint8 *data, unsigned int size);
+
+/**
+* Array of read funcs
+**/
+extern MsgClientRecv msg_client_recv [];
+
+
+/**
+* Handle a msg recv (server).
+*
+* @param data A pointer to the data of the message
+* @param size The maximum number of bytes which can be read
+* @return int The number of bytes read
+**/
+typedef unsigned int (NetServer::*MsgServerRecv)(Uint8 *data, unsigned int size);
+
+/**
+* Array of read funcs
+**/
+extern MsgServerRecv msg_server_recv [];
+
+
+/**
+* A single network message, ready for transmission
+**/
 class NetMsg {
 	public:
 		Uint8 type;
@@ -59,6 +95,9 @@ class NetMsg {
 };
 
 
+/**
+* Debugging of packets
+**/
 void dumpPacket(Uint8* data, int size);
 
 

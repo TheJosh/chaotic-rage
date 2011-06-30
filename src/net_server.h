@@ -37,7 +37,7 @@ class NetServer {
 		void listen(int port);
 		
 	public:
-		// Server messages
+		// One method for each outgoing network message the server sends out
 		void addmsgInfoResp();
 		void addmsgJoinAcc();
 		void addmsgJoinRej();
@@ -54,7 +54,14 @@ class NetServer {
 		void addmsgPlayerQuit();
 		
 	public:
-		void handleInfoReq();
+		// One method for each incoming network message from the client
+		unsigned int handleInfoReq(Uint8 *data, unsigned int size);
+		unsigned int handleJoinReq(Uint8 *data, unsigned int size);
+		unsigned int handleJoinAck(Uint8 *data, unsigned int size);
+		unsigned int handleChat(Uint8 *data, unsigned int size);
+		unsigned int handleKeyMouseStatus(Uint8 *data, unsigned int size);
+		unsigned int handleQuit(Uint8 *data, unsigned int size);
+		
 };
 
 class NetServerSeqPred

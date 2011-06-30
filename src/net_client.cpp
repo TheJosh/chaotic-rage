@@ -90,8 +90,10 @@ void NetClient::bind(string address, int port)
 }
 
 
+
+
 /**
-***  One method for each network message
+***  One method for each outgoing network message the client sends out
 **/
 
 void NetClient::addmsgInfoReq() {
@@ -124,6 +126,95 @@ void NetClient::addmsgQuit() {
 	messages.push_back(*msg);
 }
 
+
+
+/**
+***  One method for each incoming network message from the server
+**/
+
+unsigned int NetClient::handleInfoResp(Uint8 *data, unsigned int size)
+{
+	cout << "       handleInfoResp()\n";
+	return 0;
+}
+
+unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
+{
+	cout << "       handleJoinAcc()\n";
+	return 0;
+}
+
+unsigned int NetClient::handleJoinRej(Uint8 *data, unsigned int size)
+{
+	cout << "       handleJoinRej()\n";
+	return 0;
+}
+
+unsigned int NetClient::handleDataCompl(Uint8 *data, unsigned int size)
+{
+	cout << "       handleDataCompl()\n";
+	return 0;
+}
+
+unsigned int NetClient::handleChat(Uint8 *data, unsigned int size)
+{
+	cout << "       handleChat()\n";
+	return 0;
+}
+
+unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
+{
+	cout << "       handleUnitAdd()\n";
+	return 0;
+}
+
+unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)
+{
+	cout << "       handleUnitUpdate()\n";
+	return 0;
+}
+
+unsigned int NetClient::handleUnitRem(Uint8 *data, unsigned int size)
+{
+	cout << "       handleUnitRem()\n";
+	return 0;
+}
+
+unsigned int NetClient::handleWallUpdate(Uint8 *data, unsigned int size)
+{
+	cout << "       handleWallUpdate()\n";
+	return 0;
+}
+
+unsigned int NetClient::handleWallRem(Uint8 *data, unsigned int size)
+{
+	cout << "       handleWallRem()\n";
+	return 0;
+}
+
+unsigned int NetClient::handlePgAdd(Uint8 *data, unsigned int size)
+{
+	cout << "       handlePgAdd()\n";
+	return 0;
+}
+
+unsigned int NetClient::handlePgRem(Uint8 *data, unsigned int size)
+{
+	cout << "       handlePgRem()\n";
+	return 0;
+}
+
+unsigned int NetClient::handlePlayerDrop(Uint8 *data, unsigned int size)
+{
+	cout << "       handlePlayerDrop()\n";
+	return 0;
+}
+
+unsigned int NetClient::handlePlayerQuit(Uint8 *data, unsigned int size)
+{
+	cout << "       handlePlayerQuit()\n";
+	return 0;
+}
 
 
 
