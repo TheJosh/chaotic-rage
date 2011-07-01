@@ -64,6 +64,8 @@ void GameState::addUnit(Unit* unit)
 {
 	this->entities_add.push_back(unit);
 	this->units.push_back(unit);
+	
+	if (this->server) this->server->addmsgUnitAdd(unit);
 }
 
 /**

@@ -63,8 +63,6 @@ void NetServer::update()
 				}
 			}
 		}
-		
-		//this->addmsgInfoResp();
 	}
 	
 	
@@ -140,7 +138,15 @@ void NetServer::addmsgDataCompl() {
 void NetServer::addmsgChat() {
 }
 
-void NetServer::addmsgUnitAdd() {
+void NetServer::addmsgUnitAdd(Unit *u) {
+	NetMsg * msg = new NetMsg(UNIT_ADD, 4);
+	msg->seq = this->seq;
+	
+	Uint8* ptr = msg->data;
+	SDLNet_Write16((Uint16) u->x, ptr); ptr += 2;
+	SDLNet_Write16((Uint16) u->y, ptr); ptr += 2;
+	
+	messages.push_back(*msg);
 }
 
 void NetServer::addmsgUnitUpdate() {
@@ -201,8 +207,9 @@ unsigned int NetServer::handleKeyMouseStatus(Uint8 *data, unsigned int size)
 {
 	cout << "       handleKeyMouseStatus()\n";
 	
-	cout << "       x: " << SDLNet_Read16(data) << "\n";
-	cout << "       y: " << SDLNet_Read16(data + 2) << "\n";
+	cout << "       x: " << SDLNet_Read16(data += 2) << "\n";
+	cout << "       y: " << SDLNet_Read16(data += 2) << "\n";
+	
 	return 4;
 }
 

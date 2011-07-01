@@ -4,10 +4,10 @@ echo "Building:"
 make -j4 || exit;
 
 echo "Starting server."
-./dedicatedserver > server.log &
+SDL_VIDEO_WINDOW_POS=0,0 ./dedicatedserver > server.log &
 
 echo "Starting client."
-./chaoticrage > client.log
+SDL_VIDEO_WINDOW_POS=1000,0 ./chaoticrage > client.log
 
 echo "All done"
 killall dedicatedserver

@@ -355,23 +355,21 @@ LUA_FUNC(add_player)
 	Faction fac = (Faction) lua_tointeger(L, 2);
 	
 	p = new Player(uc, gl->st);
-	gl->st->addUnit(p);
+	p->fac = fac;
 	
 	p->pickupWeapon(gl->mod->getWeaponType(0));
 	p->pickupWeapon(gl->mod->getWeaponType(1));
 	p->pickupWeapon(gl->mod->getWeaponType(2));
-	
 	
 	Zone *z = gl->map->getSpawnZone(fac);
 	if (z == NULL) {
 		cerr << "Map does not have any spawnpoints\n";
 		exit(1);
 	}
-	
 	p->x = z->getRandomX();
 	p->y = z->getRandomY();
-	p->fac = fac;
 	
+	gl->st->addUnit(p);
 	gl->st->curr_player = p;
 	
 	if (gl->st->hud) gl->st->hud->hideSpawnMenu();

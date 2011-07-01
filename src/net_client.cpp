@@ -40,13 +40,26 @@ void NetClient::update()
 		dumpPacket(pkt->data, pkt->len);
 		
 		Uint8* ptr = pkt->data;
+		int p = 0;
 		
 		unsigned int newseq = SDLNet_Read16(ptr);
 		if (newseq > this->seq) {
 			this->seq = newseq;
 			cout << "       The server has sent " << newseq << ", will ACK.\n";
 		}
+		ptr += 2; p += 2;
 		
+		while (p < pkt->len) {
+			unsigned int type = (*ptr);
+			ptr++; p++;
+			
+			if (type > NOTHING && type < BOTTOM) {
+				if (msg_client_recv[type] != NULL) {
+					unsigned int num = ((*this).*(msg_client_recv[type]))(ptr, pkt->len - p);
+					ptr += num; p += num;
+				}
+			}
+		}
 	}
 	
 	
@@ -125,7 +138,6 @@ void NetClient::addmsgKeyMouseStatus(unsigned int x, unsigned int y) {
 	msg->seq = this->seq;
 	
 	Uint8* ptr = msg->data;
-	
 	SDLNet_Write16(x, ptr); ptr += 2;
 	SDLNet_Write16(y, ptr); ptr += 2;
 	
@@ -177,6 +189,18 @@ unsigned int NetClient::handleChat(Uint8 *data, unsigned int size)
 unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
 {
 	cout << "       handleUnitAdd()\n";
+	
+	int x = SDLNet_Read16(data);
+	int y = SDLNet_Read16(data + 2);
+	
+	UnitType *ut = st->getDefaultMod()->getUnitType(1);
+	Player *p = new Player(ut, st);
+	p->x = x;
+	p->y = y;
+	
+	st->curr_player = p;
+	st->addUnit(p);
+	
 	return 0;
 }
 

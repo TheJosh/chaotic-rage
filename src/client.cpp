@@ -58,8 +58,8 @@ int main (int argc, char ** argv)
 		
 		// Load gametype
 		new GameLogic(st);
-		GameType *gt = st->getDefaultMod()->getGameType(0);
-		st->logic->execScript(gt->script);
+		//GameType *gt = st->getDefaultMod()->getGameType("boredem");
+		//st->logic->execScript(gt->script);
 		
 		st->client->bind("localhost", 17778);
 		st->client->addmsgInfoReq();
