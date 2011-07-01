@@ -18,9 +18,10 @@ class Player : public Unit
 		static const int KEY_DOWN = 2;
 		static const int KEY_RIGHT = 3;
 		
-	private:
+	public:
 		bool key[3];
-		int prev_x;
+		int mouse_x;
+		int mouse_y;
 		
 	public:
 		Player(UnitType *uc, GameState *st);

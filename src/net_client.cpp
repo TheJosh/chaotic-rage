@@ -198,8 +198,13 @@ unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
 	p->x = x;
 	p->y = y;
 	
+	p->pickupWeapon(st->getDefaultMod()->getWeaponType(0));
+	p->pickupWeapon(st->getDefaultMod()->getWeaponType(1));
+	
 	st->curr_player = p;
 	st->addUnit(p);
+	
+	st->hud->hideSpawnMenu();
 	
 	return 0;
 }

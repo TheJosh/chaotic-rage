@@ -43,14 +43,8 @@ void Player::keyRelease(int idx)
 **/
 void Player::angleFromMouse(int x, int y)
 {
-	float sensitivity = 5.0; // 1 = slow, 10 = nuts
-	
-	float changeDist = x-400;
-	changeDist /= (10.0/sensitivity);
-	
-	//float changeAngle = asin(changeDist*(3.142/180.0))*(180/3.142);
-	
-	this->angle_aim = this->angle_aim - changeDist;
+	this->mouse_x = x;
+	this->mouse_y = y;
 }
 
 
@@ -61,6 +55,19 @@ void Player::update(int delta)
 {
 	UnitTypeSettings *ucs = this->uc->getSettings(0);
 	bool keypressed = false;
+	
+	
+	{
+		float sensitivity = 5.0; // 1 = slow, 10 = nuts
+		
+		float changeDist = this->mouse_x-400;
+		changeDist /= (10.0/sensitivity);
+		
+		//float changeAngle = asin(changeDist*(3.142/180.0))*(180/3.142);
+		
+		this->angle_aim = this->angle_aim - changeDist;
+	}
+	
 	
 	// Up/Down
 	if (this->key[KEY_UP]) {
@@ -91,6 +98,7 @@ void Player::update(int delta)
 		this->desired_angle_move = 270;
 		keypressed = true;
 	}
+	
 	
 	this->desired_angle_move += this->angle_aim;
 	

@@ -45,8 +45,15 @@ void gameLoop(GameState *st, Render *render)
 		net_time += delta;
 		if (net_time > net_timestep) {
 			net_time -= net_timestep;
-			if (st->client) st->client->update();
-			if (st->server) st->server->update();
+			
+			if (st->client) {
+				if (st->curr_player) st->client->addmsgKeyMouseStatus(st->curr_player->mouse_x, st->curr_player->mouse_y);
+				st->client->update();
+			}
+			
+			if (st->server) {
+				st->server->update();
+			}
 		}
 		
 		st->render->render();
@@ -144,8 +151,6 @@ static void handleEvents(GameState *st)
 			// Mouse motion
 			if (st->curr_player != NULL) {
 				st->curr_player->angleFromMouse(event.motion.x, event.motion.y);
-				
-				if (st->client) st->client->addmsgKeyMouseStatus(event.motion.x, event.motion.y);
 			}
 			
 		} else if (event.type == SDL_MOUSEBUTTONDOWN) {
