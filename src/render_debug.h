@@ -8,6 +8,10 @@
 #include "rage.h"
 
 
+/**
+* A really basic 2D renderer which only displays boxes.
+* For debugging, etc
+**/
 class RenderDebug : public Render
 {
 	private:

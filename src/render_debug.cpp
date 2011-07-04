@@ -124,12 +124,16 @@ int RenderDebug::getSpriteHeight(SpritePtr sprite)
 
 
 /**
-* This is the render method for the game
-* For this renderer, we actually just dump a little bit of info about the game state
-* Every ~ 5000ms
+* Does a render every ~500ms
 **/
 void RenderDebug::render()
 {
+	static int last_render = st->game_time;
+	
+	if (st->game_time - last_render < 500) return;
+	last_render = st->game_time;
+	
+	
 	float scalex = ((float)st->curr_map->width) / ((float)this->width);
 	float scaley = ((float)st->curr_map->height) / ((float)this->height);
 

@@ -39,11 +39,11 @@ int main (int argc, char ** argv) {
 	
 	
 	Map *m = new Map(st);
-	m->load("test", st->render);
+	m->load("blank", st->render);
 	st->curr_map = m;
 	
 	new GameLogic(st);
-	GameType *gt = st->getDefaultMod()->getGameType("zombies");
+	GameType *gt = st->getDefaultMod()->getGameType("boredem");
 	st->logic->execScript(gt->script);
 	
 	st->server->listen(17778);
