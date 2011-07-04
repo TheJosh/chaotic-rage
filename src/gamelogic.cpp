@@ -339,7 +339,11 @@ LUA_FUNC(add_npc)
 
 
 /**
-* Spawn a new NPC unit
+* Spawn a new player unit
+*
+* @param String Unit type.
+* @param int Faction-ID. Use the 'factions' enumeration.
+* @param int Player slot, between 1 and N, where N is the number of supported players in the game.
 **/
 LUA_FUNC(add_player)
 {
@@ -354,8 +358,11 @@ LUA_FUNC(add_player)
 	
 	Faction fac = (Faction) lua_tointeger(L, 2);
 	
+	int slot = (Faction) lua_tointeger(L, 3);
+	
 	p = new Player(uc, gl->st);
 	p->fac = fac;
+	p->slot = slot;
 	
 	p->pickupWeapon(gl->mod->getWeaponType(0));
 	p->pickupWeapon(gl->mod->getWeaponType(1));
@@ -370,10 +377,12 @@ LUA_FUNC(add_player)
 	p->y = z->getRandomY();
 	
 	gl->st->addUnit(p);
-	gl->st->curr_player = p;
 	
-	if (gl->st->hud) gl->st->hud->hideSpawnMenu();
-
+	if (gl->st->curr_slot == slot) {
+		gl->st->curr_player = p;
+		if (gl->st->hud) gl->st->hud->hideSpawnMenu();
+	}
+	
 	return 0;
 }
 

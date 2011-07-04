@@ -5,7 +5,7 @@
 bind_gamestart(function()
 	
 	add_interval(1000, function()
-		add_player("maniac", factions.team1);
+		add_player("maniac", factions.team1, 1);
 	end);
 	
 end);

@@ -192,21 +192,25 @@ unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
 	
 	int x = SDLNet_Read16(data);
 	int y = SDLNet_Read16(data + 2);
+	int slot = SDLNet_Read16(data + 4);
 	
 	UnitType *ut = st->getDefaultMod()->getUnitType(1);
 	Player *p = new Player(ut, st);
 	p->x = x;
 	p->y = y;
+	p->slot = slot;
 	
 	p->pickupWeapon(st->getDefaultMod()->getWeaponType(0));
 	p->pickupWeapon(st->getDefaultMod()->getWeaponType(1));
 	
-	st->curr_player = p;
+	if (st->curr_slot == p->slot) {
+		st->curr_player = p;
+		st->hud->hideSpawnMenu();
+	}
+	
 	st->addUnit(p);
 	
-	st->hud->hideSpawnMenu();
-	
-	return 0;
+	return 6;
 }
 
 unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)

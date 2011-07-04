@@ -39,6 +39,7 @@ GameState::GameState()
 	this->anim_frame = 0;
 	this->game_time = 0;
 	this->curr_player = NULL;
+	this->curr_slot = 1;
 	this->reset_mouse = false;
 	
 	this->render = NULL;

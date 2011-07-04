@@ -29,8 +29,10 @@ class GameState
 		
 	public:
 		Map* curr_map;
-		Player* curr_player;
 		bool reset_mouse;
+		
+		Player* curr_player;
+		int curr_slot;
 		
 		unsigned int anim_frame;
 		unsigned int game_time;
