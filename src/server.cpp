@@ -18,11 +18,16 @@ int main (int argc, char ** argv) {
 	seedRandom();
 	
 	GameState *st = new GameState();
+	st->curr_slot = 0;
 	
-	new RenderNull(st);
+	new RenderDebug(st);
 	new AudioNull(st);
 	new NetServer(st);
-	
+
+	// todo: change to match others...
+	st->hud = new HUD();
+	st->hud->st = st;
+
 	st->render->setScreenSize(900, 900, false);
 	
 	Mod * mod = new Mod(st, "data/cr");
@@ -38,7 +43,7 @@ int main (int argc, char ** argv) {
 	st->curr_map = m;
 	
 	new GameLogic(st);
-	GameType *gt = st->getDefaultMod()->getGameType("boredem");
+	GameType *gt = st->getDefaultMod()->getGameType("zombies");
 	st->logic->execScript(gt->script);
 	
 	st->server->listen(17778);

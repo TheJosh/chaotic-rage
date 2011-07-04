@@ -96,6 +96,7 @@ class Zone;
 #include "render.h"
 #include "render_opengl.h"
 #include "render_null.h"
+#include "render_debug.h"
 
 #include "audio.h"
 #include "audio_sdlmixer.h"
