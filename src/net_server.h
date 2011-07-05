@@ -36,7 +36,7 @@ class NetServer {
 	public:
 		// One method for each outgoing network message the server sends out
 		void addmsgInfoResp();
-		void addmsgJoinAcc();
+		void addmsgJoinAcc(NetServerClientInfo *client);
 		void addmsgJoinRej();
 		void addmsgDataCompl();
 		void addmsgChat();

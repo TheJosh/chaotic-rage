@@ -171,6 +171,11 @@ unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 {
 	cout << "       handleJoinAcc()\n";
 	
+	int slot = SDLNet_Read16(data);
+	st->curr_slot = slot;
+	
+	cout << "       Our slot: " << slot << "\n";
+	
 	this->addmsgJoinAck();
 	
 	return 0;

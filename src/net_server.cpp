@@ -142,9 +142,13 @@ void NetServer::addmsgInfoResp() {
 	messages.push_back(*msg);
 }
 
-void NetServer::addmsgJoinAcc() {
-	NetMsg * msg = new NetMsg(JOIN_OKAY, 0);
+void NetServer::addmsgJoinAcc(NetServerClientInfo *client) {
+	NetMsg * msg = new NetMsg(JOIN_OKAY, 2);
 	msg->seq = this->seq;
+	
+	Uint8* ptr = msg->data;
+	SDLNet_Write16((Uint16) client->slot, ptr); ptr += 2;
+	
 	messages.push_back(*msg);
 }
 
@@ -211,12 +215,11 @@ unsigned int NetServer::handleJoinReq(NetServerClientInfo *client, Uint8 *data, 
 	
 	if (client->inlist) return 0;
 	
-	client->slot = 1;
+	client->slot = this->clients.size() + 1;
 	client->inlist = true;
-	
 	this->clients.push_back(client);
 	
-	this->addmsgJoinAcc();
+	this->addmsgJoinAcc(client);
 	
 	return 0;
 }
