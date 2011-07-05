@@ -240,8 +240,12 @@ unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 
 {
 	cout << "       handleKeyMouseStatus()\n";
 	
-	cout << "       x: " << SDLNet_Read16(data += 2) << "\n";
-	cout << "       y: " << SDLNet_Read16(data += 2) << "\n";
+	int x, y;
+	
+	unpack(data, "HH", &x, &y);
+	
+	cout << "       x: " << x << "\n";
+	cout << "       y: " << y << "\n";
 	
 	return 4;
 }
