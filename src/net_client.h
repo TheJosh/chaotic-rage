@@ -13,7 +13,6 @@
 using namespace std;
 
 
-class NetClientSeqPred;
 
 class NetClient {
 	friend class NetClientSeqPred;
@@ -21,9 +20,10 @@ class NetClient {
 	private:
 		GameState * st;
 		IPaddress ipaddress;
+		Uint16 code;
 		UDPsocket sock;
 		list<NetMsg> messages;
-		unsigned int seq;
+		SeqNum seq;			// TODO: is this big enough?
 		
 		NetClientSeqPred * seq_pred;
 		

@@ -11,6 +11,11 @@
 
 
 
+class NetServerSeqPred;
+class NetServerClientInfo;
+class NetClientSeqPred;
+
+
 /**
 * Types of network messages
 **/
@@ -71,12 +76,18 @@ extern MsgClientRecv msg_client_recv [];
 * @param size The maximum number of bytes which can be read
 * @return int The number of bytes read
 **/
-typedef unsigned int (NetServer::*MsgServerRecv)(Uint8 *data, unsigned int size);
+typedef unsigned int (NetServer::*MsgServerRecv)(NetServerClientInfo *client, Uint8 *data, unsigned int size);
 
 /**
 * Array of read funcs
 **/
 extern MsgServerRecv msg_server_recv [];
+
+
+/**
+* Sequence number
+**/
+typedef Uint16 SeqNum;
 
 
 /**
@@ -87,7 +98,7 @@ class NetMsg {
 		Uint8 type;
 		Uint8 *data;
 		unsigned int size;
-		unsigned int seq;
+		SeqNum seq;
 		
 	public:
 		NetMsg (NetMsgType type, unsigned int size);

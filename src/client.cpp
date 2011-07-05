@@ -62,7 +62,7 @@ int main (int argc, char ** argv)
 		//st->logic->execScript(gt->script);
 		
 		st->client->bind("localhost", 17778);
-		st->client->addmsgInfoReq();
+		st->client->addmsgJoinReq();
 		
 		// Begin!
 		gameLoop(st, st->render);

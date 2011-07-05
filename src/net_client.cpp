@@ -19,6 +19,8 @@ NetClient::NetClient(GameState * st)
 	
 	this->seq = 0;
 	this->seq_pred = new NetClientSeqPred(this);
+	
+	this->code = getRandom(0, 32700);
 }
 
 NetClient::~NetClient()
@@ -42,7 +44,7 @@ void NetClient::update()
 		Uint8* ptr = pkt->data;
 		int p = 0;
 		
-		unsigned int newseq = SDLNet_Read16(ptr);
+		SeqNum newseq = SDLNet_Read16(ptr);
 		if (newseq > this->seq) {
 			this->seq = newseq;
 			cout << "       The server has sent " << newseq << ", will ACK.\n";
@@ -69,6 +71,9 @@ void NetClient::update()
 	Uint8* ptr = pkt->data;
 	
 	SDLNet_Write16(this->seq, ptr);
+	ptr += 2; pkt->len += 2;
+	
+	SDLNet_Write16(this->code, ptr);
 	ptr += 2; pkt->len += 2;
 	
 	for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
@@ -165,6 +170,9 @@ unsigned int NetClient::handleInfoResp(Uint8 *data, unsigned int size)
 unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 {
 	cout << "       handleJoinAcc()\n";
+	
+	this->addmsgJoinAck();
+	
 	return 0;
 }
 

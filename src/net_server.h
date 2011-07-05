@@ -12,8 +12,6 @@
 using namespace std;
 
 
-class NetServerSeqPred;
-
 class NetServer {
 	friend class NetServerSeqPred;
 	
@@ -22,9 +20,8 @@ class NetServer {
 		IPaddress ipaddress;
 		UDPsocket sock;
 		list<NetMsg> messages;
-		unsigned int seq;
-		
-		unsigned int client_seq;	// todo: client seq array
+		SeqNum seq;		// TODO: is this big enough?
+		list<NetServerClientInfo*> clients;
 		
 		NetServerSeqPred * seq_pred;
 		
@@ -55,22 +52,43 @@ class NetServer {
 		
 	public:
 		// One method for each incoming network message from the client
-		unsigned int handleInfoReq(Uint8 *data, unsigned int size);
-		unsigned int handleJoinReq(Uint8 *data, unsigned int size);
-		unsigned int handleJoinAck(Uint8 *data, unsigned int size);
-		unsigned int handleChat(Uint8 *data, unsigned int size);
-		unsigned int handleKeyMouseStatus(Uint8 *data, unsigned int size);
-		unsigned int handleQuit(Uint8 *data, unsigned int size);
+		unsigned int handleInfoReq(NetServerClientInfo *client, Uint8 *data, unsigned int size);
+		unsigned int handleJoinReq(NetServerClientInfo *client, Uint8 *data, unsigned int size);
+		unsigned int handleJoinAck(NetServerClientInfo *client, Uint8 *data, unsigned int size);
+		unsigned int handleChat(NetServerClientInfo *client, Uint8 *data, unsigned int size);
+		unsigned int handleKeyMouseStatus(NetServerClientInfo *client, Uint8 *data, unsigned int size);
+		unsigned int handleQuit(NetServerClientInfo *client, Uint8 *data, unsigned int size);
 		
 };
 
+
+/**
+* Used to determine messages that should be removed
+**/
 class NetServerSeqPred
 {
 	public:
 		NetServer *server;
-		bool operator() (const NetMsg& value) { return (this->server->client_seq > value.seq); }		// todo: client seq array
+		bool operator() (const NetMsg& value) { return false; } //(this->server->client_seq > value.seq); }		// todo: client seq array
 		NetServerSeqPred(NetServer *s) { this->server = s; }
 };
 
+
+/**
+* Client info (ip, code) -> (seq, slot)
+**/
+class NetServerClientInfo
+{
+	public:
+		IPaddress ipaddress;
+		Uint16 code;
+		
+	public:
+		SeqNum seq;		// TODO: again...big enough?
+		int slot;
+		bool inlist;
+		
+		NetServerClientInfo() { seq = 0; slot = 0; inlist = false; }
+};
 
 

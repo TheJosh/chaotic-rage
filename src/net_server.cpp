@@ -18,8 +18,6 @@ NetServer::NetServer(GameState * st)
 	
 	this->seq = 0;
 	this->seq_pred = new NetServerSeqPred(this);
-	
-	this->client_seq = 0; // todo: client seq array
 }
 
 NetServer::~NetServer()
@@ -33,7 +31,7 @@ NetServer::~NetServer()
 **/
 void NetServer::update()
 {
-	UDPpacket *pkt = SDLNet_AllocPacket(1000);
+	UDPpacket *pkt = SDLNet_AllocPacket(1024);
 	
 	this->seq++;
 	
@@ -45,12 +43,31 @@ void NetServer::update()
 		Uint8* ptr = pkt->data;
 		int p = 0;
 		
-		unsigned int newseq = SDLNet_Read16(ptr);
-		if (newseq > this->client_seq) {
-			this->client_seq = newseq;	// todo: client seq array
+		SeqNum newseq = SDLNet_Read16(ptr);
+		ptr += 2; p += 2;
+		
+		Uint16 code = SDLNet_Read16(ptr);
+		ptr += 2; p += 2;
+		
+		NetServerClientInfo *client = NULL;
+		for (list<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
+			if ((*cli) != NULL && (*cli)->ipaddress.host == pkt->address.host && (*cli)->code == code) {
+				client = (*cli);
+				break;
+			}
+		}
+		
+		if (client != NULL && newseq > client->seq) {
+			client->seq = newseq;
 			cout << "       The client has ACKed " << newseq << "\n";
 		}
-		ptr += 2; p += 2;
+		
+		if (client == NULL) {
+			client = new NetServerClientInfo();
+			client->ipaddress.host = pkt->address.host;
+			client->ipaddress.port = pkt->address.port;
+			client->code = code;
+		}
 		
 		while (p < pkt->len) {
 			unsigned int type = (*ptr);
@@ -58,7 +75,7 @@ void NetServer::update()
 			
 			if (type > NOTHING && type < BOTTOM) {
 				if (msg_server_recv[type] != NULL) {
-					unsigned int num = ((*this).*(msg_server_recv[type]))(ptr, pkt->len - p);
+					unsigned int num = ((*this).*(msg_server_recv[type]))(client, ptr, pkt->len - p);
 					ptr += num; p += num;
 				}
 			}
@@ -66,37 +83,36 @@ void NetServer::update()
 	}
 	
 	
-	// TODO: ----- loop over clients -----
-	
-	// TODO: fill pkt->address with client address
-	pkt->len = 0;
-	
-	Uint8* ptr = pkt->data;
-	
-	SDLNet_Write16(this->seq, ptr);
-	ptr += 2; pkt->len += 2;
-	
-	for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
+	for (list<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
+		if ((*cli) == NULL) continue;
 		
-		// client_seq
+		pkt->address.host = (*cli)->ipaddress.host;
+		pkt->address.port = (*cli)->ipaddress.port;
 		
-		// TODO: only items with a seq for that client
+		pkt->len = 0;
 		
-		*ptr = (*it).type;
-		ptr++; pkt->len++;
+		Uint8* ptr = pkt->data;
 		
-		memcpy(ptr, (*it).data, (*it).size);
-		ptr += (*it).size; pkt->len += (*it).size;
+		SDLNet_Write16(this->seq, ptr);
+		ptr += 2; pkt->len += 2;
+		
+		for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
+			if ((*cli)->seq > (*it).seq) continue;
+			
+			*ptr = (*it).type;
+			ptr++; pkt->len++;
+			
+			memcpy(ptr, (*it).data, (*it).size);
+			ptr += (*it).size; pkt->len += (*it).size;
+		}
+		
+		if (pkt->len > 0) {
+			cout << setw (6) << setfill(' ') << st->game_time << " SEND ";
+			dumpPacket(pkt->data, pkt->len);
+			
+			SDLNet_UDP_Send(this->sock, -1, pkt);
+		}
 	}
-	
-	if (pkt->len > 0) {
-		cout << setw (6) << setfill(' ') << st->game_time << " SEND ";
-		dumpPacket(pkt->data, pkt->len);
-		
-		SDLNet_UDP_Send(this->sock, -1, pkt);
-	}
-	
-	// TODO: ----- end loop over clients -----
 	
 	
 	this->messages.remove_if(*this->seq_pred);
@@ -127,6 +143,9 @@ void NetServer::addmsgInfoResp() {
 }
 
 void NetServer::addmsgJoinAcc() {
+	NetMsg * msg = new NetMsg(JOIN_OKAY, 0);
+	msg->seq = this->seq;
+	messages.push_back(*msg);
 }
 
 void NetServer::addmsgJoinRej() {
@@ -180,31 +199,41 @@ void NetServer::addmsgPlayerQuit() {
 ***  One method for each incoming network message from the client
 **/
 
-unsigned int NetServer::handleInfoReq(Uint8 *data, unsigned int size)
+unsigned int NetServer::handleInfoReq(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
 	this->addmsgInfoResp();
 	return 0;
 }
 
-unsigned int NetServer::handleJoinReq(Uint8 *data, unsigned int size)
+unsigned int NetServer::handleJoinReq(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
 	cout << "       handleJoinReq()\n";
+	
+	if (client->inlist) return 0;
+	
+	client->slot = 1;
+	client->inlist = true;
+	
+	this->clients.push_back(client);
+	
+	this->addmsgJoinAcc();
+	
 	return 0;
 }
 
-unsigned int NetServer::handleJoinAck(Uint8 *data, unsigned int size)
+unsigned int NetServer::handleJoinAck(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
 	cout << "       handleJoinAck()\n";
 	return 0;
 }
 
-unsigned int NetServer::handleChat(Uint8 *data, unsigned int size)
+unsigned int NetServer::handleChat(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
 	cout << "       handleChat()\n";
 	return 0;
 }
 
-unsigned int NetServer::handleKeyMouseStatus(Uint8 *data, unsigned int size)
+unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
 	cout << "       handleKeyMouseStatus()\n";
 	
@@ -214,7 +243,7 @@ unsigned int NetServer::handleKeyMouseStatus(Uint8 *data, unsigned int size)
 	return 4;
 }
 
-unsigned int NetServer::handleQuit(Uint8 *data, unsigned int size)
+unsigned int NetServer::handleQuit(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
 	cout << "       handleQuit()\n";
 	return 0;
