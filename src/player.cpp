@@ -13,6 +13,8 @@ using namespace std;
 Player::Player(UnitType *uc, GameState *st) : Unit(uc, st)
 {
 	for (int i = 0; i < 4; i++) this->key[i] = 0;
+	this->mouse_x = 400;
+	this->mouse_y = 50;
 }
 
 Player::~Player()

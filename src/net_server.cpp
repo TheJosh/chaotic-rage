@@ -165,10 +165,7 @@ void NetServer::addmsgUnitAdd(Unit *u) {
 	NetMsg * msg = new NetMsg(UNIT_ADD, 6);
 	msg->seq = this->seq;
 	
-	Uint8* ptr = msg->data;
-	SDLNet_Write16((Uint16) u->x, ptr); ptr += 2;
-	SDLNet_Write16((Uint16) u->y, ptr); ptr += 2;
-	SDLNet_Write16((Uint16) u->slot, ptr); ptr += 2;
+	pack(msg->data, "ffh", u->x, u->y, u->slot);
 	
 	messages.push_back(*msg);
 }

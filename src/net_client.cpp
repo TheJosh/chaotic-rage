@@ -201,9 +201,15 @@ unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
 {
 	cout << "       handleUnitAdd()\n";
 	
-	int x = SDLNet_Read16(data);
-	int y = SDLNet_Read16(data + 2);
-	int slot = SDLNet_Read16(data + 4);
+	float x,y;
+	int slot;
+	
+	unpack(data, "ffh", &x, &y, &slot);
+	
+	cout << "       x: " << x << "\n";
+	cout << "       y: " << y << "\n";
+	cout << "       slot: " << slot << "\n";
+	
 	
 	UnitType *ut = st->getDefaultMod()->getUnitType(1);
 	Player *p = new Player(ut, st);
