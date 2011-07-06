@@ -244,6 +244,9 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	}
 	
 	
+	if (st->server) st->server->addmsgUnitUpdate(this);
+	
+	
 	if (this->firing && this->weapon != NULL) {
 		if (this->weapon->melee == 0 && this->weapon_gen != NULL) {
 			// Bullet-based weapon

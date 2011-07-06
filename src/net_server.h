@@ -41,7 +41,7 @@ class NetServer {
 		void addmsgDataCompl();
 		void addmsgChat();
 		void addmsgUnitAdd(Unit *u);
-		void addmsgUnitUpdate();
+		void addmsgUnitUpdate(Unit *u);
 		void addmsgUnitRem();
 		void addmsgWallUpdate();
 		void addmsgWallRem();

@@ -96,6 +96,22 @@ void GameState::addWall(Wall* wall)
 
 
 /**
+* Finds the unit which matches a given slot
+**/
+Unit* GameState::findUnitSlot(int slot)
+{
+	if (slot <= 0) return NULL;
+	
+	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); it++) {
+		if ((*it)->klass() != UNIT) continue;
+		if (((Unit*)*it)->slot == slot) return ((Unit*)*it);
+	}
+	
+	return NULL;
+}
+
+
+/**
 * Used for filtering
 **/
 static bool EntityEraser(Entity* e)

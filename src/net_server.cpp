@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <algorithm>
 #include <SDL_net.h>
 #include "rage.h"
 #include "net.h"
@@ -136,13 +137,15 @@ void NetServer::listen(int port)
 ***  One method for each outgoing network message the server sends out
 **/
 
-void NetServer::addmsgInfoResp() {
+void NetServer::addmsgInfoResp()
+{
 	NetMsg * msg = new NetMsg(INFO_RESP, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
 }
 
-void NetServer::addmsgJoinAcc(NetServerClientInfo *client) {
+void NetServer::addmsgJoinAcc(NetServerClientInfo *client)
+{
 	NetMsg * msg = new NetMsg(JOIN_OKAY, 2);
 	msg->seq = this->seq;
 	
@@ -152,16 +155,20 @@ void NetServer::addmsgJoinAcc(NetServerClientInfo *client) {
 	messages.push_back(*msg);
 }
 
-void NetServer::addmsgJoinRej() {
+void NetServer::addmsgJoinRej()
+{
 }
 
-void NetServer::addmsgDataCompl() {
+void NetServer::addmsgDataCompl()
+{
 }
 
-void NetServer::addmsgChat() {
+void NetServer::addmsgChat()
+{
 }
 
-void NetServer::addmsgUnitAdd(Unit *u) {
+void NetServer::addmsgUnitAdd(Unit *u)
+{
 	NetMsg * msg = new NetMsg(UNIT_ADD, 6);
 	msg->seq = this->seq;
 	
@@ -170,28 +177,49 @@ void NetServer::addmsgUnitAdd(Unit *u) {
 	messages.push_back(*msg);
 }
 
-void NetServer::addmsgUnitUpdate() {
+
+void NetServer::addmsgUnitUpdate(Unit *u)
+{
+	list<NetMsg>::iterator srch = find_if(messages.begin(), messages.end(), IsTypeUniqPred(UNIT_UPDATE, u->slot));
+	if (srch != messages.end()) return;
+	
+	cout << "       addmsgUnitUpdate()\n";
+	
+	NetMsg * msg = new NetMsg(UNIT_UPDATE, 8);
+	msg->seq = this->seq;
+	msg->uniq = u->slot;
+	
+	pack(msg->data, "fffh", u->x, u->y, u->angle, u->slot);
+	
+	messages.push_back(*msg);
 }
 
-void NetServer::addmsgUnitRem() {
+void NetServer::addmsgUnitRem()
+{
 }
 
-void NetServer::addmsgWallUpdate() {
+void NetServer::addmsgWallUpdate()
+{
 }
 
-void NetServer::addmsgWallRem() {
+void NetServer::addmsgWallRem()
+{
 }
 
-void NetServer::addmsgPgAdd() {
+void NetServer::addmsgPgAdd()
+{
 }
 
-void NetServer::addmsgPgRem() {
+void NetServer::addmsgPgRem()
+{
 }
 
-void NetServer::addmsgPlayerDrop() {
+void NetServer::addmsgPlayerDrop()
+{
 }
 
-void NetServer::addmsgPlayerQuit() {
+void NetServer::addmsgPlayerQuit()
+{
 }
 
 
@@ -237,12 +265,17 @@ unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 
 {
 	cout << "       handleKeyMouseStatus()\n";
 	
+	Player *p = (Player*) st->findUnitSlot(client->slot);
+	if (p == NULL) return 4;
+	
 	int x, y;
 	
 	unpack(data, "HH", &x, &y);
 	
 	cout << "       x: " << x << "\n";
 	cout << "       y: " << y << "\n";
+	
+	p->angleFromMouse(x, y);
 	
 	return 4;
 }

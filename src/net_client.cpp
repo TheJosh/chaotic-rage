@@ -233,7 +233,18 @@ unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
 unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)
 {
 	cout << "       handleUnitUpdate()\n";
-	return 0;
+	
+	float x,y,angle;
+	int slot;
+	
+	unpack(data, "fffh", &x, &y, &angle, &slot);
+	
+	cout << "       x: " << x << "\n";
+	cout << "       y: " << y << "\n";
+	cout << "       angle: " << angle << "\n";
+	cout << "       slot: " << slot << "\n";
+	
+	return 6;
 }
 
 unsigned int NetClient::handleUnitRem(Uint8 *data, unsigned int size)

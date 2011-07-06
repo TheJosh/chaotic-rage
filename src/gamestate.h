@@ -56,6 +56,8 @@ class GameState
 		void addParticleGenerator(ParticleGenerator* generator);
 		void addWall(Wall* wall);
 		
+		Unit * findUnitSlot(int slot);
+		
 		Wall * checkHitWall(float x, float y, int check_radius);
 		Unit * checkHitUnit(float x, float y, int check_radius);
 		

@@ -96,6 +96,7 @@ typedef Uint16 SeqNum;
 class NetMsg {
 	public:
 		Uint8 type;
+		Uint8 uniq;
 		Uint8 *data;
 		unsigned int size;
 		SeqNum seq;
@@ -103,6 +104,20 @@ class NetMsg {
 	public:
 		NetMsg (NetMsgType type, unsigned int size);
 		~NetMsg();
+};
+
+
+/**
+* Used to find messages
+**/
+class IsTypeUniqPred
+{
+	public:
+		Uint8 type;
+		Uint8 uniq;
+		
+		bool operator() (const NetMsg& value) { return (this->type == type && this->uniq == uniq); }
+		IsTypeUniqPred(Uint8 type, Uint8 uniq) { this->type = type; this->uniq = uniq; }
 };
 
 
