@@ -142,7 +142,7 @@ void NetClient::addmsgKeyMouseStatus(unsigned int x, unsigned int y) {
 	NetMsg * msg = new NetMsg(CLIENT_STATE, 4);
 	msg->seq = this->seq;
 	
-	pack(msg->data, "HH", x, y);
+	pack(msg->data, "hh", x, y);
 	
 	messages.push_back(*msg);
 }
@@ -202,14 +202,10 @@ unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
 	cout << "       handleUnitAdd()\n";
 	
 	float x,y;
-	int slot;
+	int angle;
+	short slot;
 	
-	unpack(data, "ffh", &x, &y, &slot);
-	
-	cout << "       x: " << x << "\n";
-	cout << "       y: " << y << "\n";
-	cout << "       slot: " << slot << "\n";
-	
+	unpack(data, "fflh", &x, &y, &angle, &slot);
 	
 	UnitType *ut = st->getDefaultMod()->getUnitType(1);
 	Player *p = new Player(ut, st);
@@ -227,24 +223,20 @@ unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
 	
 	st->addUnit(p);
 	
-	return 6;
+	return 14;
 }
 
 unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)
 {
 	cout << "       handleUnitUpdate()\n";
 	
-	float x,y,angle;
-	int slot;
+	float x,y;
+	int angle;
+	short slot;
 	
-	unpack(data, "fffh", &x, &y, &angle, &slot);
+	unpack(data, "fflh", &x, &y, &angle, &slot);
 	
-	cout << "       x: " << x << "\n";
-	cout << "       y: " << y << "\n";
-	cout << "       angle: " << angle << "\n";
-	cout << "       slot: " << slot << "\n";
-	
-	return 6;
+	return 14;
 }
 
 unsigned int NetClient::handleUnitRem(Uint8 *data, unsigned int size)

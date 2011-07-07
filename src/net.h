@@ -116,7 +116,7 @@ class IsTypeUniqPred
 		Uint8 type;
 		Uint8 uniq;
 		
-		bool operator() (const NetMsg& value) { return (this->type == type && this->uniq == uniq); }
+		bool operator() (const NetMsg& value) { return (value.type == this->type && value.uniq == this->uniq); }
 		IsTypeUniqPred(Uint8 type, Uint8 uniq) { this->type = type; this->uniq = uniq; }
 };
 
@@ -127,36 +127,21 @@ class IsTypeUniqPred
 void dumpPacket(Uint8* data, int size);
 
 
-/**
-* pack() -- store data dictated by the format string in the buffer
-*
-*   bits |signed   unsigned   float   string
-*   -----+----------------------------------
-*      8 |   c        C
-*     16 |   h        H         f
-*     32 |   l        L         d
-*     64 |   q        Q         g
-*      - |                               s
-*
-*  (16-bit unsigned length is automatically prepended to strings)
-**/
-unsigned int pack(unsigned char *buf, const char *format, ...);
+/*
+** pack() -- store data dictated by the format string in the buffer
+**
+**  c - 8-bit char
+**  h - 16-bit int (signed or unsigned)
+**  l - 32-bit int (signed or unsigned)
+**  f - float, 32-bit
+**  s - string (16-bit length is automatically prepended)
+*/ 
+int32_t pack(unsigned char *buf, char const *format, ...);
 
 
-/**
-* unpack() -- unpack data dictated by the format string into the buffer
-*
-*   bits |signed   unsigned   float   string
-*   -----+----------------------------------
-*      8 |   c        C
-*     16 |   h        H         f
-*     32 |   l        L         d
-*     64 |   q        Q         g
-*      - |                               s
-*
-*  (string is extracted based on its stored length, but 's' can be
-*  prepended with a max length)
-**/
-void unpack(unsigned char *buf, const char *format, ...);
+/*
+** unpack() -- unpack data dictated by the format string into the buffer
+*/
+void unpack(unsigned char *buf, char const *format, ...);
 
 

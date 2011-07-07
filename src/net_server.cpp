@@ -169,10 +169,13 @@ void NetServer::addmsgChat()
 
 void NetServer::addmsgUnitAdd(Unit *u)
 {
-	NetMsg * msg = new NetMsg(UNIT_ADD, 6);
+	NetMsg * msg = new NetMsg(UNIT_ADD, 14);
 	msg->seq = this->seq;
 	
-	pack(msg->data, "ffh", u->x, u->y, u->slot);
+	cout << "       addmsgUnitAdd()\n";
+	cout << "       slot: " << u->slot << "\n";
+	
+	pack(msg->data, "fflh", u->x, u->y, u->angle, u->slot);
 	
 	messages.push_back(*msg);
 }
@@ -184,12 +187,13 @@ void NetServer::addmsgUnitUpdate(Unit *u)
 	if (srch != messages.end()) return;
 	
 	cout << "       addmsgUnitUpdate()\n";
+	cout << "       slot: " << u->slot << "\n";
 	
-	NetMsg * msg = new NetMsg(UNIT_UPDATE, 8);
+	NetMsg * msg = new NetMsg(UNIT_UPDATE, 14);
 	msg->seq = this->seq;
 	msg->uniq = u->slot;
 	
-	pack(msg->data, "fffh", u->x, u->y, u->angle, u->slot);
+	pack(msg->data, "fflh", u->x, u->y, u->angle, u->slot);
 	
 	messages.push_back(*msg);
 }
@@ -268,9 +272,9 @@ unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 
 	Player *p = (Player*) st->findUnitSlot(client->slot);
 	if (p == NULL) return 4;
 	
-	int x, y;
+	short x, y;
 	
-	unpack(data, "HH", &x, &y);
+	unpack(data, "hh", &x, &y);
 	
 	cout << "       x: " << x << "\n";
 	cout << "       y: " << y << "\n";
