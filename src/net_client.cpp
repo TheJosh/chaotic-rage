@@ -256,9 +256,9 @@ unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)
 	cout << "       y: " << y << "\n";
 	cout << "       a: " << angle << "\n";
 	
-	//p->x = x;
-	//p->y = y;
-	//p->angle = angle;
+	p->x = x;
+	p->y = y;
+	p->angle = angle;
 	
 	return 14;
 }
