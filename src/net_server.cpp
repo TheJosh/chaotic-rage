@@ -272,14 +272,21 @@ unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 
 	Player *p = (Player*) st->findUnitSlot(client->slot);
 	if (p == NULL) return 4;
 	
-	short x, y;
+	Uint16 x, y;
+	Uint8 keys;
 	
-	unpack(data, "hh", &x, &y);
+	unpack(data, "hhc", &x, &y, &keys);
 	
 	cout << "       x: " << x << "\n";
 	cout << "       y: " << y << "\n";
-	
 	p->angleFromMouse(x, y);
+	
+	int bit;
+	bit = keys & (1 << 0); cout << "       key 1: " << bit << "\n";
+	bit = keys & (1 << 1); cout << "       key 2: " << bit << "\n";
+	bit = keys & (1 << 2); cout << "       key 3: " << bit << "\n";
+	bit = keys & (1 << 3); cout << "       key 4: " << bit << "\n";
+	p->setKeys(keys);
 	
 	return 4;
 }

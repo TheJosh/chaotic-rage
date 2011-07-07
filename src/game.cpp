@@ -47,7 +47,9 @@ void gameLoop(GameState *st, Render *render)
 			net_time -= net_timestep;
 			
 			if (st->client) {
-				if (st->curr_player) st->client->addmsgKeyMouseStatus(st->curr_player->mouse_x, st->curr_player->mouse_y);
+				if (st->curr_player) {
+					st->client->addmsgKeyMouseStatus(st->curr_player->mouse_x, st->curr_player->mouse_y, st->curr_player->key);
+				}
 				st->client->update();
 			}
 			

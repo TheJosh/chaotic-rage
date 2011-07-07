@@ -138,11 +138,18 @@ void NetClient::addmsgChat() {
 	messages.push_back(*msg);
 }
 
-void NetClient::addmsgKeyMouseStatus(unsigned int x, unsigned int y) {
-	NetMsg * msg = new NetMsg(CLIENT_STATE, 4);
+void NetClient::addmsgKeyMouseStatus(unsigned int x, unsigned int y, bool * keys)
+{
+	NetMsg * msg = new NetMsg(CLIENT_STATE, 5);
 	msg->seq = this->seq;
 	
-	pack(msg->data, "hh", x, y);
+	Uint8 k = 0;
+	k |= keys[0] << 0;
+	k |= keys[1] << 1;
+	k |= keys[2] << 2;
+	k |= keys[3] << 3;
+	
+	pack(msg->data, "hhc", x, y, k);
 	
 	messages.push_back(*msg);
 }

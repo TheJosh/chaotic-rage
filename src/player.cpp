@@ -41,6 +41,18 @@ void Player::keyRelease(int idx)
 
 
 /**
+* Set all keys.
+* Bitfield should be a Uint8 of flags, with bit 0 => this->key[0], etc.
+**/
+void Player::setKeys(Uint8 bitfield)
+{
+	for (int i = 0; i < 4; i++) {
+		this->key[i] = bitfield & (1 << i);
+	}
+}
+
+
+/**
 * Sets the player angle to point towards the mouse
 **/
 void Player::angleFromMouse(int x, int y)

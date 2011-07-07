@@ -31,6 +31,7 @@ class Player : public Unit
 		void keyPress(int idx);
 		void keyRelease(int idx);
 		void angleFromMouse(int x, int y);
+		void setKeys(Uint8 bitfield);
 		
 	public:
 		virtual void update(int delta);
