@@ -115,9 +115,10 @@ class IsTypeUniqPred
 	public:
 		Uint8 type;
 		Uint8 uniq;
+		SeqNum seq;
 		
-		bool operator() (const NetMsg& value) { return (value.type == this->type && value.uniq == this->uniq); }
-		IsTypeUniqPred(Uint8 type, Uint8 uniq) { this->type = type; this->uniq = uniq; }
+		bool operator() (const NetMsg& value) { return (value.type == this->type && value.uniq == this->uniq && value.seq == this->seq); }
+		IsTypeUniqPred(Uint8 type, Uint8 uniq, SeqNum seq) { this->type = type; this->uniq = uniq; this->seq = seq; }
 };
 
 

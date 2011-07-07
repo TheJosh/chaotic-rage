@@ -243,6 +243,23 @@ unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)
 	
 	unpack(data, "fflh", &x, &y, &angle, &slot);
 	
+	Player *p = (Player*) st->findUnitSlot(slot);
+	if (p == NULL) return 14;
+	
+	cout << "       CURRENT\n";
+	cout << "       x: " << p->x << "\n";
+	cout << "       y: " << p->y << "\n";
+	cout << "       a: " << p->angle << "\n";
+	
+	cout << "       FROM PKT\n";
+	cout << "       x: " << x << "\n";
+	cout << "       y: " << y << "\n";
+	cout << "       a: " << angle << "\n";
+	
+	//p->x = x;
+	//p->y = y;
+	//p->angle = angle;
+	
 	return 14;
 }
 
