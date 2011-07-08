@@ -140,6 +140,14 @@ void NetClient::addmsgChat() {
 
 void NetClient::addmsgKeyMouseStatus(unsigned int x, unsigned int y, bool * keys)
 {
+	cout << "       addmsgKeyMouseStatus(" << x << ", " << y << ")\n";
+	
+	if (x != 400) {
+		cout << "       !!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
+		cout << "       !!   mouse-x is not 400   !!\n";
+		cout << "       !!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
+	}
+	
 	NetMsg * msg = new NetMsg(CLIENT_STATE, 5);
 	msg->seq = this->seq;
 	
@@ -239,28 +247,34 @@ unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)
 	
 	float x,y;
 	int angle;
+	float speed;
 	short slot;
 	
-	unpack(data, "fflh", &x, &y, &angle, &slot);
+	unpack(data, "fflfh", &x, &y, &angle, &speed, &slot);
 	
 	Player *p = (Player*) st->findUnitSlot(slot);
-	if (p == NULL) return 14;
+	if (p == NULL) return 18;
 	
 	cout << "       CURRENT\n";
 	cout << "       x: " << p->x << "\n";
 	cout << "       y: " << p->y << "\n";
 	cout << "       a: " << p->angle << "\n";
+	cout << "       s: " << p->speed << "\n";
 	
 	cout << "       FROM PKT\n";
 	cout << "       x: " << x << "\n";
 	cout << "       y: " << y << "\n";
 	cout << "       a: " << angle << "\n";
+	cout << "       s: " << speed << "\n";
 	
-	p->x = x;
-	p->y = y;
-	p->angle = angle;
+	if (p != st->curr_player) {
+		p->x = x;
+		p->y = y;
+		p->angle = angle;
+		p->speed = speed;
+	}
 	
-	return 14;
+	return 18;
 }
 
 unsigned int NetClient::handleUnitRem(Uint8 *data, unsigned int size)

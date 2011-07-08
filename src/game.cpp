@@ -20,7 +20,7 @@ static bool running;
 **/
 void gameLoop(GameState *st, Render *render)
 {
-	int start = 0, delta = 0, net_time = 0, net_timestep = 500;
+	int start = 0, delta = 0, net_time = 0, net_timestep = 50;
 	
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 	SDL_WarpMouse(400, 30);

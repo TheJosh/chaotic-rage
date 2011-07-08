@@ -183,7 +183,7 @@ void NetServer::addmsgUnitAdd(Unit *u)
 
 void NetServer::addmsgUnitUpdate(Unit *u)
 {
-	messages.remove_if(IsTypeUniqPred(UNIT_UPDATE, u->slot, this->seq));
+	messages.remove_if(IsTypeUniqPred(UNIT_UPDATE, u->slot));
 	
 	//list<NetMsg>::iterator srch = find_if(messages.begin(), messages.end(), IsTypeUniqPred(UNIT_UPDATE, u->slot, this->seq));
 	//if (srch != messages.end()) return;
@@ -191,11 +191,11 @@ void NetServer::addmsgUnitUpdate(Unit *u)
 	cout << "       addmsgUnitUpdate()\n";
 	cout << "       slot: " << u->slot << "\n";
 	
-	NetMsg * msg = new NetMsg(UNIT_UPDATE, 14);
+	NetMsg * msg = new NetMsg(UNIT_UPDATE, 18);
 	msg->seq = this->seq;
 	msg->uniq = u->slot;
 	
-	pack(msg->data, "fflh", u->x, u->y, u->angle, u->slot);
+	pack(msg->data, "fflfh", u->x, u->y, u->angle, u->speed, u->slot);
 	
 	messages.push_back(*msg);
 }

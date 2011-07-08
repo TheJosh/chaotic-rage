@@ -21,7 +21,6 @@ class Unit : public Entity
 		int slot;
 		
 	protected:
-		float speed;
 		int health;
 		int desired_angle_move;
 		int angle_move;
