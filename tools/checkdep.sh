@@ -1,17 +1,48 @@
 #!/bin/bash
 
-sdl-config --version >/dev/null || echo "Package 'SDL' not found"
 
-pkg-config zziplib --exists || echo "Package 'zziplib' not found"
+PACKAGES="";
 
-pkg-config zziplib --exists || echo "Package 'zziplib' not found"
+#
+# Tools
+#
 
-pkg-config libconfuse --exists || echo "Package 'libconfuse' not found"
+g++ --version >/dev/null || PACKAGES="$PACKAGES g++"
 
-pkg-config gl --exists || echo "Package 'gl' not found"
+make --version >/dev/null || PACKAGES="$PACKAGES make"
 
-pkg-config glu --exists || echo "Package 'glu' not found"
+flex --version >/dev/null || PACKAGES="$PACKAGES flex"
 
-flex --version >/dev/null || echo "Tool 'flex' not found"
 
-pkg-config lua5.1 --exists || echo "Package 'lua5.1' not found"
+#
+# Libs
+#
+
+sdl-config --version >/dev/null 2>/dev/null || PACKAGES="${PACKAGES} libsdl1.2-dev"
+
+cat /usr/include/SDL/SDL_mixer.h >/dev/null 2>/dev/null || PACKAGES="$PACKAGES libsdl-mixer1.2-dev"
+
+cat /usr/include/SDL/SDL_image.h >/dev/null 2>/dev/null || PACKAGES="$PACKAGES libsdl-image1.2-dev"
+
+cat /usr/include/SDL/SDL_net.h >/dev/null 2>/dev/null || PACKAGES="$PACKAGES libsdl-net1.2-dev"
+
+pkg-config zziplib --exists || PACKAGES="$PACKAGES libzzip-dev"
+
+pkg-config libconfuse --exists || PACKAGES="$PACKAGES libconfuse-dev"
+
+pkg-config gl --exists || PACKAGES="${PACKAGES} libgl1-mesa-dev"
+
+pkg-config glu --exists || PACKAGES="$PACKAGES libglu1-mesa-dev"
+
+pkg-config glew --exists || PACKAGES="$PACKAGES libglew-dev"
+
+pkg-config lua5.1 --exists || PACKAGES="$PACKAGES liblua5.1-0-dev"
+
+freetype-config --version >/dev/null || PACKAGES="$PACKAGES libfreetype6-dev"
+
+
+if [ -n "$PACKAGES" ]; then
+	echo "On Ubuntu? Run this:"
+	echo "   sudo apt-get install ${PACKAGES}"
+fi
+
