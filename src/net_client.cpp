@@ -267,7 +267,7 @@ unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)
 	cout << "       a: " << angle << "\n";
 	cout << "       s: " << speed << "\n";
 	
-	if (p != st->curr_player) {
+	if (p != st->curr_player || speed == 0) {
 		p->x = x;
 		p->y = y;
 		p->angle = angle;
