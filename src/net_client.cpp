@@ -138,17 +138,11 @@ void NetClient::addmsgChat() {
 	messages.push_back(*msg);
 }
 
-void NetClient::addmsgKeyMouseStatus(unsigned int x, unsigned int y, bool * keys)
+void NetClient::addmsgKeyMouseStatus(int x, int y, int delta, bool * keys)
 {
-	cout << "       addmsgKeyMouseStatus(" << x << ", " << y << ")\n";
+	cout << "       addmsgKeyMouseStatus(" << x << ", " << y << ", " << delta << ")\n";
 	
-	if (x != 400) {
-		cout << "       !!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
-		cout << "       !!   mouse-x is not 400   !!\n";
-		cout << "       !!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
-	}
-	
-	NetMsg * msg = new NetMsg(CLIENT_STATE, 5);
+	NetMsg * msg = new NetMsg(CLIENT_STATE, 7);
 	msg->seq = this->seq;
 	
 	Uint8 k = 0;
@@ -157,7 +151,8 @@ void NetClient::addmsgKeyMouseStatus(unsigned int x, unsigned int y, bool * keys
 	k |= keys[2] << 2;
 	k |= keys[3] << 3;
 	
-	pack(msg->data, "hhc", x, y, k);
+	pack_debug();
+	pack(msg->data, "hhhc", (Sint16)x, (Sint16)y, (Sint16)delta, k);
 	
 	messages.push_back(*msg);
 }

@@ -15,12 +15,20 @@ static void handleEvents(GameState *st);
 static bool running;
 
 
+// Mouse movement
+static int game_x, game_y;
+static int net_x, net_y;
+
+
 /**
 * The main game loop
 **/
 void gameLoop(GameState *st, Render *render)
 {
 	int start = 0, delta = 0, net_time = 0, net_timestep = 50;
+	
+	game_x = game_y = 0;
+	net_x = net_y = 0;
 	
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 	SDL_WarpMouse(400, 30);
@@ -40,15 +48,21 @@ void gameLoop(GameState *st, Render *render)
 		st->logic->update(delta);
 		st->update(delta);
 		handleEvents(st);
-		if (st->reset_mouse) SDL_WarpMouse(400, 30);
+		
+		if (st->curr_player && st->reset_mouse) {
+			st->curr_player->angleFromMouse(game_x, game_y, delta);
+			game_x = game_y = 0;
+			SDL_WarpMouse(400, 30);
+		}
 		
 		net_time += delta;
 		if (net_time > net_timestep) {
 			net_time -= net_timestep;
 			
 			if (st->client) {
-				if (st->curr_player) {
-					st->client->addmsgKeyMouseStatus(st->curr_player->mouse_x, st->curr_player->mouse_y, st->curr_player->key);
+				if (st->curr_player && st->reset_mouse) {
+					st->client->addmsgKeyMouseStatus(net_x, net_y, net_timestep, st->curr_player->key);
+					net_x = net_y = 0;
 				}
 				st->client->update();
 			}
@@ -152,7 +166,13 @@ static void handleEvents(GameState *st)
 		} else if (event.type == SDL_MOUSEMOTION) {
 			// Mouse motion
 			if (st->curr_player != NULL) {
-				st->curr_player->angleFromMouse(event.motion.x, event.motion.y);
+				cout << "New pos: " << event.motion.x << "\n";
+
+				game_x += event.motion.x - 400;
+				net_x += event.motion.x - 400;
+				
+				game_y += event.motion.y - 30;
+				net_y += event.motion.y - 30;
 			}
 			
 		} else if (event.type == SDL_MOUSEBUTTONDOWN) {

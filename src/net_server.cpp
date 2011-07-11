@@ -188,8 +188,8 @@ void NetServer::addmsgUnitUpdate(Unit *u)
 	//list<NetMsg>::iterator srch = find_if(messages.begin(), messages.end(), IsTypeUniqPred(UNIT_UPDATE, u->slot, this->seq));
 	//if (srch != messages.end()) return;
 	
-	cout << "       addmsgUnitUpdate()\n";
-	cout << "       slot: " << u->slot << "\n";
+	//cout << "       addmsgUnitUpdate()\n";
+	//cout << "       slot: " << u->slot << "\n";
 	
 	NetMsg * msg = new NetMsg(UNIT_UPDATE, 18);
 	msg->seq = this->seq;
@@ -272,16 +272,18 @@ unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 
 	cout << "       handleKeyMouseStatus()\n";
 	
 	Player *p = (Player*) st->findUnitSlot(client->slot);
-	if (p == NULL) return 4;
+	if (p == NULL) return 7;
 	
-	Uint16 x, y;
+	Sint16 x, y, delta;
 	Uint8 keys;
 	
-	unpack(data, "hhc", &x, &y, &keys);
+	pack_debug();
+	unpack(data, "hhhc", &x, &y, &delta, &keys);
 	
 	cout << "       x: " << x << "\n";
 	cout << "       y: " << y << "\n";
-	p->angleFromMouse(x, y);
+	cout << "       delta: " << delta << "\n";
+	p->angleFromMouse(x, y, delta);
 	
 	int bit;
 	bit = keys & (1 << 0); cout << "       key 1: " << bit << "\n";
@@ -290,7 +292,7 @@ unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 
 	bit = keys & (1 << 3); cout << "       key 4: " << bit << "\n";
 	p->setKeys(keys);
 	
-	return 4;
+	return 7;
 }
 
 unsigned int NetServer::handleQuit(NetServerClientInfo *client, Uint8 *data, unsigned int size)

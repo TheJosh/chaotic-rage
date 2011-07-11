@@ -13,8 +13,6 @@ using namespace std;
 Player::Player(UnitType *uc, GameState *st) : Unit(uc, st)
 {
 	for (int i = 0; i < 4; i++) this->key[i] = 0;
-	this->mouse_x = 400;
-	this->mouse_y = 50;
 }
 
 Player::~Player()
@@ -55,10 +53,18 @@ void Player::setKeys(Uint8 bitfield)
 /**
 * Sets the player angle to point towards the mouse
 **/
-void Player::angleFromMouse(int x, int y)
+void Player::angleFromMouse(int x, int y, int delta)
 {
-	this->mouse_x = x;
-	this->mouse_y = y;
+	// TODO: Think about delta
+	
+	float sensitivity = 5.0; // 1 = slow, 10 = nuts
+	
+	float change_dist = x;
+	change_dist /= (10.0 / sensitivity);
+	
+	//float changeAngle = asin(changeDist*(3.142/180.0))*(180/3.142);
+	
+	this->angle_aim = this->angle_aim - change_dist;
 }
 
 
@@ -69,18 +75,6 @@ void Player::update(int delta)
 {
 	UnitTypeSettings *ucs = this->uc->getSettings(0);
 	bool keypressed = false;
-	
-	
-	{
-		float sensitivity = 5.0; // 1 = slow, 10 = nuts
-		
-		float changeDist = this->mouse_x-400;
-		changeDist /= (10.0/sensitivity);
-		
-		//float changeAngle = asin(changeDist*(3.142/180.0))*(180/3.142);
-		
-		this->angle_aim = this->angle_aim - changeDist;
-	}
 	
 	
 	// Up/Down

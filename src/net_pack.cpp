@@ -23,6 +23,14 @@
 using namespace std;
 
 
+static bool debug;
+
+void pack_debug()
+{
+	debug = true;
+}
+
+
 // various bits for floating point types--
 // varies for different architectures
 typedef float float32_t;
@@ -150,7 +158,7 @@ int32_t pack(unsigned char *buf, char const *format, ...)
     char *s;
     int32_t size = 0, len;
     
-    cout << setw (6) << setfill(' ') << "       PACK " << format << "\n";
+    if (debug) cout << setw (6) << setfill(' ') << "       PACK " << format << "\n";
     
     va_start(ap, format);
     
@@ -160,8 +168,8 @@ int32_t pack(unsigned char *buf, char const *format, ...)
             size += 2;
             h = (int16_t)va_arg(ap, int); // promoted
             packi16(buf, h);
-            cout << "        - h " << h << " ";
-            dumpPacket(buf, 2);
+            if (debug) cout << "        - h " << h << " ";
+            if (debug) dumpPacket(buf, 2);
             buf += 2;
             break;
 
@@ -169,8 +177,8 @@ int32_t pack(unsigned char *buf, char const *format, ...)
             size += 4;
             l = va_arg(ap, int32_t);
             packi32(buf, l);
-            cout << "        - l " << l << " ";
-            dumpPacket(buf, 4);
+            if (debug) cout << "        - l " << l << " ";
+            if (debug) dumpPacket(buf, 4);
             buf += 4;
             break;
 
@@ -185,8 +193,8 @@ int32_t pack(unsigned char *buf, char const *format, ...)
             f = (float32_t)va_arg(ap, double); // promoted
             l = pack754_32(f); // convert to IEEE 754
             packi32(buf, l);
-            cout << "        - f " << f << " ";
-            dumpPacket(buf, 4);
+            if (debug) cout << "        - f " << f << " ";
+            if (debug) dumpPacket(buf, 4);
             buf += 4;
             break;
 
@@ -203,7 +211,9 @@ int32_t pack(unsigned char *buf, char const *format, ...)
     }
 
     va_end(ap);
-
+    
+    debug = false;
+    
     return size;
 }
 
@@ -221,7 +231,7 @@ void unpack(unsigned char *buf, char const *format, ...)
     char *s;
     int32_t len, count, maxstrlen=0;
     
-    cout << setw (6) << setfill(' ') << "       UNPACK " << format << "\n";
+    if (debug) cout << setw (6) << setfill(' ') << "       UNPACK " << format << "\n";
     
     va_start(ap, format);
     
@@ -230,16 +240,16 @@ void unpack(unsigned char *buf, char const *format, ...)
         case 'h': // 16-bit
             h = va_arg(ap, int16_t*);
             *h = unpacki16(buf);
-            cout << "        - h ";
-            dumpPacket(buf, 2);
+            if (debug) cout << "        - h ";
+            if (debug) dumpPacket(buf, 2);
             buf += 2;
             break;
 
         case 'l': // 32-bit
             l = va_arg(ap, int32_t*);
             *l = unpacki32(buf);
-            cout << "        - l ";
-            dumpPacket(buf, 4);
+            if (debug) cout << "        - l ";
+            if (debug) dumpPacket(buf, 4);
             buf += 4;
             break;
 
@@ -251,8 +261,8 @@ void unpack(unsigned char *buf, char const *format, ...)
         case 'f': // float
             f = va_arg(ap, float32_t*);
             pf = unpacki32(buf);
-            cout << "        - f ";
-            dumpPacket(buf, 4);
+            if (debug) cout << "        - f ";
+            if (debug) dumpPacket(buf, 4);
             buf += 4;
             *f = unpack754_32(pf);
             break;
@@ -278,4 +288,6 @@ void unpack(unsigned char *buf, char const *format, ...)
     }
 
     va_end(ap);
+    
+    debug = false;
 }

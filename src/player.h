@@ -20,8 +20,6 @@ class Player : public Unit
 		
 	public:
 		bool key[3];
-		int mouse_x;
-		int mouse_y;
 		
 	public:
 		Player(UnitType *uc, GameState *st);
@@ -30,7 +28,7 @@ class Player : public Unit
 	public:
 		void keyPress(int idx);
 		void keyRelease(int idx);
-		void angleFromMouse(int x, int y);
+		void angleFromMouse(int x, int y, int delta);
 		void setKeys(Uint8 bitfield);
 		
 	public:

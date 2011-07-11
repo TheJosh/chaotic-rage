@@ -142,6 +142,8 @@ class IsTypeUniqSeqPred
 void dumpPacket(Uint8* data, int size);
 
 
+void pack_debug();
+
 /*
 ** pack() -- store data dictated by the format string in the buffer
 **
