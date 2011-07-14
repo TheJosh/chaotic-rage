@@ -285,11 +285,10 @@ unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 
 	cout << "       delta: " << delta << "\n";
 	p->angleFromMouse(x, y, delta);
 	
-	int bit;
-	bit = keys & (1 << 0); cout << "       key 1: " << bit << "\n";
-	bit = keys & (1 << 1); cout << "       key 2: " << bit << "\n";
-	bit = keys & (1 << 2); cout << "       key 3: " << bit << "\n";
-	bit = keys & (1 << 3); cout << "       key 4: " << bit << "\n";
+	for (int i = 0; i < 8; i++) {
+		cout << "       bit " << i << ": " << (keys & (1 << i)) << "\n";
+	}
+	
 	p->setKeys(keys);
 	
 	return 7;

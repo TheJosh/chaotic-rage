@@ -17,9 +17,13 @@ class Player : public Unit
 		static const int KEY_LEFT = 1;
 		static const int KEY_DOWN = 2;
 		static const int KEY_RIGHT = 3;
+		static const int KEY_FIRE = 4;
+		static const int KEY_UNUSED1 = 5;
+		static const int KEY_UNUSED2 = 6;
+		static const int KEY_UNUSED3 = 7;
 		
 	public:
-		bool key[3];
+		bool key[7];
 		
 	public:
 		Player(UnitType *uc, GameState *st);
@@ -30,6 +34,7 @@ class Player : public Unit
 		void keyRelease(int idx);
 		void angleFromMouse(int x, int y, int delta);
 		void setKeys(Uint8 bitfield);
+		Uint8 packKeys();
 		
 	public:
 		virtual void update(int delta);

@@ -12,7 +12,7 @@ using namespace std;
 
 Player::Player(UnitType *uc, GameState *st) : Unit(uc, st)
 {
-	for (int i = 0; i < 4; i++) this->key[i] = 0;
+	for (int i = 0; i < 8; i++) this->key[i] = 0;
 }
 
 Player::~Player()
@@ -39,12 +39,25 @@ void Player::keyRelease(int idx)
 
 
 /**
+* Packs a bitfield of keys
+**/
+Uint8 Player::packKeys()
+{
+	Uint8 k = 0;
+	for (int i = 0; i < 8; i++) {
+		k |= this->key[i] << i;
+	}
+	return k;
+}
+
+
+/**
 * Set all keys.
 * Bitfield should be a Uint8 of flags, with bit 0 => this->key[0], etc.
 **/
 void Player::setKeys(Uint8 bitfield)
 {
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 8; i++) {
 		this->key[i] = bitfield & (1 << i);
 	}
 }
@@ -110,7 +123,8 @@ void Player::update(int delta)
 	
 	this->desired_angle_move += this->angle_aim;
 	
-	// A key was pressed
+	
+	// A movement key was pressed
 	if (keypressed) {
 		this->speed += ppsDeltaf(ucs->accel, delta);
 		this->setState(UNIT_STATE_RUNNING);
@@ -124,10 +138,17 @@ void Player::update(int delta)
 		this->setState(UNIT_STATE_STATIC);
 	}
 	
-	
 	// Bound to limits
 	if (this->speed > ucs->max_speed) this->speed = ucs->max_speed;
 	if (this->speed < 0 - ucs->max_speed) this->speed = 0 - ucs->max_speed;
+	
+	
+	if (this->key[KEY_FIRE] && !this->firing) {
+		this->beginFiring();
+	} else if (!this->key[KEY_FIRE] && this->firing) {
+		this->endFiring();
+	}
+	
 	
 	Unit::update(delta, ucs);
 	

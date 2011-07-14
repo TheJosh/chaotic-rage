@@ -62,7 +62,7 @@ void gameLoop(GameState *st, Render *render)
 			if (st->client) {
 				if (st->curr_player && st->reset_mouse) {
 					st->curr_player->angleFromMouse(net_x, net_y, net_timestep);
-					st->client->addmsgKeyMouseStatus(net_x, net_y, net_timestep, st->curr_player->key);
+					st->client->addmsgKeyMouseStatus(net_x, net_y, net_timestep, st->curr_player->packKeys());
 					net_x = net_y = 0;
 				}
 				st->client->update();
@@ -178,12 +178,12 @@ static void handleEvents(GameState *st)
 			
 		} else if (event.type == SDL_MOUSEBUTTONDOWN) {
 			// Mouse down
-			if (st->curr_player != NULL) st->curr_player->beginFiring();
+			if (st->curr_player != NULL) st->curr_player->keyPress(Player::KEY_FIRE);
 			
 			
 		} else if (event.type == SDL_MOUSEBUTTONUP) {
 			// Mouse up
-			if (st->curr_player != NULL) st->curr_player->endFiring();
+			if (st->curr_player != NULL) st->curr_player->keyRelease(Player::KEY_FIRE);
 			
 			
 		}
