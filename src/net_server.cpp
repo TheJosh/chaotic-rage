@@ -252,6 +252,8 @@ unsigned int NetServer::handleJoinReq(NetServerClientInfo *client, Uint8 *data, 
 	
 	this->addmsgJoinAcc(client);
 	
+	this->st->logic->raise_playerjoin(client->slot);
+	
 	return 0;
 }
 

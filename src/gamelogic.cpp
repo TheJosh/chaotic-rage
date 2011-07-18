@@ -109,7 +109,19 @@ void GameLogic::update(int deglta)
 	} \
 }
 
+#define LUA_DEFINE_RAISE_INTARG(name) void GameLogic::raise_##name(int arg) \
+{ \
+	for (unsigned int id = 0; id < this->binds_##name.size(); id++) { \
+		int ref = this->binds_##name.at(id); \
+		lua_rawgeti(L, LUA_REGISTRYINDEX, ref); \
+		lua_pushinteger(L, arg); \
+		lua_pcall(L, 1, 0, 0); \
+	} \
+}
+
+
 LUA_DEFINE_RAISE(gamestart)
+LUA_DEFINE_RAISE_INTARG(playerjoin)
 LUA_DEFINE_RAISE(playerdied)
 LUA_DEFINE_RAISE(npcdied)
 
@@ -166,6 +178,25 @@ LUA_FUNC(bind_gamestart)
 	
 	int r = luaL_ref(L, LUA_REGISTRYINDEX);
 	gl->binds_gamestart.push_back(r);
+	return 0;
+}
+
+
+/**
+* Binds a function to the playerjoin event.
+* Multiple functions can be bound to the one event.
+**/
+LUA_FUNC(bind_playerjoin)
+{
+	if (! lua_isfunction(L, 1)) {
+		lua_pushstring(L, "Arg #1 is not a function");
+		lua_error(L);
+	}
+	
+	lua_pushvalue(L, -1);
+	
+	int r = luaL_ref(L, LUA_REGISTRYINDEX);
+	gl->binds_playerjoin.push_back(r);
 	return 0;
 }
 
@@ -417,6 +448,7 @@ void register_lua_functions()
 {
 	LUA_REG(debug);
 	LUA_REG(bind_gamestart);
+	LUA_REG(bind_playerjoin);
 	LUA_REG(bind_playerdied);
 	LUA_REG(bind_npcdied);
 	LUA_REG(add_interval);

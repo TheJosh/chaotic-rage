@@ -51,6 +51,12 @@ class GameLogic
 		vector<int> binds_gamestart;
 		
 		/**
+		* When a player joins
+		**/
+		void raise_playerjoin(int arg);
+		vector<int> binds_playerjoin;
+		
+		/**
 		* When a player has died
 		**/
 		void raise_playerdied();
