@@ -108,7 +108,9 @@
     <ClCompile Include="..\..\src\mapgrid.cpp" />
     <ClCompile Include="..\..\src\menu.cpp" />
     <ClCompile Include="..\..\src\mod.cpp" />
+    <ClCompile Include="..\..\src\net.cpp" />
     <ClCompile Include="..\..\src\net_client.cpp" />
+    <ClCompile Include="..\..\src\net_pack.cpp" />
     <ClCompile Include="..\..\src\net_server.cpp" />
     <ClCompile Include="..\..\src\npc.cpp" />
     <ClCompile Include="..\..\src\particle.cpp" />
