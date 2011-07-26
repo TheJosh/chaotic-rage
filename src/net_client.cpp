@@ -269,7 +269,17 @@ unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)
 unsigned int NetClient::handleUnitRem(Uint8 *data, unsigned int size)
 {
 	cout << "       handleUnitRem()\n";
-	return 0;
+	
+	short slot;
+	
+	unpack(data, "h", &slot);
+	
+	Player *p = (Player*) st->findUnitSlot(slot);
+	if (p == NULL) return 2;
+	
+	p->del = true;
+	
+	return 2;
 }
 
 unsigned int NetClient::handleWallUpdate(Uint8 *data, unsigned int size)

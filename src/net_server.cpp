@@ -167,6 +167,9 @@ void NetServer::addmsgChat()
 {
 }
 
+/**
+* A unit has been added
+**/
 void NetServer::addmsgUnitAdd(Unit *u)
 {
 	NetMsg * msg = new NetMsg(UNIT_ADD, 14);
@@ -180,7 +183,9 @@ void NetServer::addmsgUnitAdd(Unit *u)
 	messages.push_back(*msg);
 }
 
-
+/**
+* A unit has been updated
+**/
 void NetServer::addmsgUnitUpdate(Unit *u)
 {
 	messages.remove_if(IsTypeUniqPred(UNIT_UPDATE, u->slot));
@@ -200,8 +205,20 @@ void NetServer::addmsgUnitUpdate(Unit *u)
 	messages.push_back(*msg);
 }
 
-void NetServer::addmsgUnitRem()
+/**
+* A unit has been removed
+**/
+void NetServer::addmsgUnitRem(Unit *u)
 {
+	NetMsg * msg = new NetMsg(UNIT_REM, 2);
+	msg->seq = this->seq;
+	
+	cout << "       addmsgUnitRem()\n";
+	cout << "       slot: " << u->slot << "\n";
+	
+	pack(msg->data, "h", u->slot);
+	
+	messages.push_back(*msg);
 }
 
 void NetServer::addmsgWallUpdate()
