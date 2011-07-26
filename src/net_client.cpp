@@ -208,11 +208,15 @@ unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
 	float x,y;
 	int angle;
 	short slot;
+	Player *p;
 	
 	unpack(data, "fflh", &x, &y, &angle, &slot);
 	
+	p = (Player*) st->findUnitSlot(slot);
+	if (p != NULL) return 14;
+	
 	UnitType *ut = st->getDefaultMod()->getUnitType(1);
-	Player *p = new Player(ut, st);
+	p = new Player(ut, st);
 	p->x = x;
 	p->y = y;
 	p->slot = slot;
