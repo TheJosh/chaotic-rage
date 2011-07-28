@@ -33,6 +33,13 @@ void Menu::doit()
 		gametypes.push_back((*it)->name);
 	}
 	
+	int viewmode = 0;
+	vector<string> viewmodes;
+	viewmodes.push_back("top");
+	viewmodes.push_back("3rd-person");
+	viewmodes.push_back("1st-person");
+	
+	
 	SDL_Event event;
 	
 	glTranslatef(0, 0, 40);
@@ -60,6 +67,7 @@ void Menu::doit()
 						if (map < ((int) maps.size()) - 1) map++;
 						break;
 						
+						
 					case SDLK_w:
 						if (gametype > 0) gametype--;
 						break;
@@ -67,6 +75,16 @@ void Menu::doit()
 					case SDLK_s:
 						if (gametype < ((int) gametypes.size()) - 1) gametype++;
 						break;
+						
+						
+					case SDLK_e:
+						if (viewmode > 0) viewmode--;
+						break;
+						
+					case SDLK_d:
+						if (viewmode < ((int) viewmodes.size()) - 1) viewmode++;
+						break;
+						
 						
 					case SDLK_l:
 						{
@@ -81,6 +99,8 @@ void Menu::doit()
 							st->logic->execScript(gt->script);
 							
 							st->client = NULL;
+							
+							((RenderOpenGL*)st->render)->viewmode = viewmode;
 							
 							// Begin!
 							gameLoop(st, st->render);
@@ -124,17 +144,32 @@ void Menu::doit()
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		
-		render->renderText("Map:", 20, 36);
-		render->renderText(maps[map], 160, 36);
-		render->renderText("Change with Q and A", 450, 36);
 		
-		render->renderText("Gametype:", 20, 60);
-		render->renderText(gametypes[gametype], 160, 60);
-		render->renderText("Change with W and S", 450, 60);
+		int y = 35;
 		
-		render->renderText("Start a local game with L", 20, 100);
-		render->renderText("Start a network game with N", 20, 122);
-		render->renderText("Quit with ESC", 20, 160);
+		render->renderText("Map:", 20, y);
+		render->renderText(maps[map], 160, y);
+		render->renderText("Change with Q and A", 450, y);
+		
+		y += 30;
+		render->renderText("Gametype:", 20, y);
+		render->renderText(gametypes[gametype], 160, y);
+		render->renderText("Change with W and S", 450, y);
+		
+		y += 30;
+		render->renderText("Viewmode:", 20, y);
+		render->renderText(viewmodes[viewmode], 160, y);
+		render->renderText("Change with E and D", 450, y);
+		
+		y += 60;
+		render->renderText("Start a local game with L", 20, y);
+		
+		y += 30;
+		render->renderText("Start a network game with N", 20, y);
+		
+		y += 60;
+		render->renderText("Quit with ESC", 20, y);
+		
 		
 		SDL_GL_SwapBuffers();
 		

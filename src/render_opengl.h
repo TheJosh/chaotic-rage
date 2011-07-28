@@ -43,6 +43,9 @@ class RenderOpenGL : public Render
 		FT_Library ft;
 		FT_Face face;
 		
+	public:
+		int viewmode;
+		
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
 		

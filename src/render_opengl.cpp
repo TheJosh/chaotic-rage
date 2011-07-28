@@ -43,6 +43,7 @@ static inline int next_pot (int a)
 RenderOpenGL::RenderOpenGL(GameState * st) : Render(st)
 {
 	this->screen = NULL;
+	this->viewmode = 0;
 }
 
 RenderOpenGL::~RenderOpenGL()
@@ -581,17 +582,19 @@ void RenderOpenGL::render()
 		glTranslatef(0 - st->curr_map->width / 2, 0 - st->curr_map->height / 2, 0);
 		
 	} else {
-		// TOP:
-		glRotatef(10, 1, 0, 0);
-		glTranslatef(0,100,0);
+		if (this->viewmode == 0) {				// Top
+			glRotatef(10, 1, 0, 0);
+			glTranslatef(0,100,0);
+			
+		} else if (this->viewmode == 1) {		// Behind (3rd person)
+			glRotatef(60, 1, 0, 0);
+			glTranslatef(0,750,-125);
 		
-		// Behind:
-		//glRotatef(60, 1, 0, 0);
-		//glTranslatef(0,750,-125);
+		} else if (this->viewmode == 2) {		// First person
+			glRotatef(80, 1, 0, 0);
+			glTranslatef(0,1220,-380);
 		
-		// First-person:
-		//glRotatef(80, 1, 0, 0);
-		//glTranslatef(0,1220,-380);
+		}
 		
 		glRotatef(st->curr_player->angle, 0, 0, 1);
 		glTranslatef(0 - st->curr_player->x, 0 - st->curr_player->y, 500);
@@ -725,7 +728,7 @@ void RenderOpenGL::render()
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
 		Entity *e = (*it);
 		
-		//if (e == st->curr_player) continue;
+		if (this->viewmode == 2 && e == st->curr_player) continue;
 		
 		AnimPlay *play = e->getAnimModel();
 		
