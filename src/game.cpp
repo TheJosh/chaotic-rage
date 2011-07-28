@@ -50,7 +50,7 @@ void gameLoop(GameState *st, Render *render)
 		handleEvents(st);
 		
 		if (st->curr_player && st->reset_mouse) {
-			//st->curr_player->angleFromMouse(game_x, game_y, delta);
+			st->curr_player->angleFromMouse(game_x, game_y, delta);		// one of these two is correct...
 			game_x = game_y = 0;
 			SDL_WarpMouse(400, 30);
 		}
@@ -61,7 +61,7 @@ void gameLoop(GameState *st, Render *render)
 			
 			if (st->client) {
 				if (st->curr_player && st->reset_mouse) {
-					st->curr_player->angleFromMouse(net_x, net_y, net_timestep);
+					//st->curr_player->angleFromMouse(net_x, net_y, net_timestep);
 					st->client->addmsgKeyMouseStatus(net_x, net_y, net_timestep, st->curr_player->packKeys());
 					net_x = net_y = 0;
 				}

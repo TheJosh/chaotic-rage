@@ -68,7 +68,7 @@ void Menu::doit()
 						if (gametype < ((int) gametypes.size()) - 1) gametype++;
 						break;
 						
-					case SDLK_g:
+					case SDLK_l:
 						{
 							// Load map
 							Map *m = new Map(st);
@@ -80,10 +80,34 @@ void Menu::doit()
 							GameType *gt = st->getDefaultMod()->getGameType(gametypes[gametype]);
 							st->logic->execScript(gt->script);
 							
+							st->client = NULL;
+							
 							// Begin!
 							gameLoop(st, st->render);
 						}
 						break;
+						
+					case SDLK_n:
+						{
+							// Load map
+							Map *m = new Map(st);
+							m->load("blank", st->render);
+							st->curr_map = m;
+							
+							// Load gametype
+							new GameLogic(st);
+							//GameType *gt = st->getDefaultMod()->getGameType("boredem");
+							//st->logic->execScript(gt->script);
+							
+							new NetClient(st);
+							st->client->bind("localhost", 17778);
+							st->client->addmsgJoinReq();
+							
+							// Begin!
+							gameLoop(st, st->render);
+						}
+						break;
+						
 						
 					case SDLK_ESCAPE:
 						running = false;
@@ -108,7 +132,9 @@ void Menu::doit()
 		render->renderText(gametypes[gametype], 160, 60);
 		render->renderText("Change with W and S", 450, 60);
 		
-		render->renderText("Start game with G, quit with ESC", 20, 100);
+		render->renderText("Start a local game with L", 20, 100);
+		render->renderText("Start a network game with N", 20, 122);
+		render->renderText("Quit with ESC", 20, 160);
 		
 		SDL_GL_SwapBuffers();
 		

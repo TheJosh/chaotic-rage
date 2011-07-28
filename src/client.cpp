@@ -24,7 +24,6 @@ int main (int argc, char ** argv)
 	
 	new RenderOpenGL(st);
 	new AudioSDLMixer(st);
-	new NetClient(st);
 	
 	// todo: change to match others...
 	st->hud = new HUD();
@@ -61,6 +60,7 @@ int main (int argc, char ** argv)
 		//GameType *gt = st->getDefaultMod()->getGameType("boredem");
 		//st->logic->execScript(gt->script);
 		
+		new NetClient(st);
 		st->client->bind("localhost", 17778);
 		st->client->addmsgJoinReq();
 		
