@@ -33,7 +33,7 @@ class HUD {
 		list<AlertMessage*> msgs;
 		
 	public:
-		HUD();
+		HUD(GameState *st);
 		void render(RenderOpenGL * render);
 		int handleEvent(SDL_Event *event);
 		

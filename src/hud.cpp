@@ -11,8 +11,11 @@ using namespace std;
 
 
 
-HUD::HUD()
+HUD::HUD(GameState *st)
 {
+	st->hud = this;
+	this->st = st;
+	
 	this->weapon_menu = false;
 	this->spawn_menu = false;
 }

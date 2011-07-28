@@ -24,10 +24,7 @@ int main (int argc, char ** argv)
 	
 	new RenderOpenGL(st);
 	new AudioSDLMixer(st);
-	
-	// todo: change to match others...
-	st->hud = new HUD();
-	st->hud->st = st;
+	new HUD(st);
 	
 	
 	st->render->setScreenSize(900, 900, false);
