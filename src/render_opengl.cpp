@@ -667,8 +667,8 @@ void RenderOpenGL::render()
  		glNormal3f(0, 0, 1);
 		
 		glBegin(GL_QUADS);
-			for (int x = 0; x < 2000; x += a->width) {
-			for (int y = 0; y < 2000; y += a->width) {
+			for (int x = 0; x < st->curr_map->width; x += a->width) {
+			for (int y = 0; y < st->curr_map->height; y += a->width) {
 				
 				// Bottom-left vertex (corner)
 				glTexCoord2f( 0.0, texh );
