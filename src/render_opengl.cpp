@@ -602,41 +602,33 @@ void RenderOpenGL::render()
 	
 	
 	// Lights
-	glPushMatrix();
-		glTranslatef(1000, 1000, 10);
-		
-		GLfloat ambientLight[] = { 0.3f, 0.3f, 0.3f, 0.0f };
-		GLfloat diffuseLight[] = { 0.1f, 0.1f, 0.1f, 0.2f };
-		GLfloat specularLight[] = { 0.1f, 0.1f, 0.1f, 0.2f };
-		GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-		
-		glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
-		glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
-		glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
-		glLightfv(GL_LIGHT0, GL_POSITION, position);
-		glDisable(GL_LIGHT0);
-	glPopMatrix();
+	GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	
-	
-	// Torch
-	if (st->curr_player != NULL) {
+	for (i = 0; i < st->curr_map->lights.size(); i++) {
+		Light * l = st->curr_map->lights[i];
+		
+		if (l->type == 2 && st->curr_player == NULL) continue;
+		
 		glPushMatrix();
-			glTranslatef(st->curr_player->x, st->curr_player->y, 15);
-		
-			GLfloat ambientLight[] = { 0.0f, 0.0f, 0.0f, 0.0f };
-			GLfloat diffuseLight[] = { 0.7f, 0.7f, 0.7f, 0.5f };
-			GLfloat specularLight[] = { 0.5f, 0.5f, 0.5f, 0.5f };
-			GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-		
-			glLightfv(GL_LIGHT1, GL_AMBIENT, ambientLight);
-			glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuseLight);
-			glLightfv(GL_LIGHT1, GL_SPECULAR, specularLight);
-			glLightfv(GL_LIGHT1, GL_POSITION, position);
-			glEnable(GL_LIGHT1);
+			if (l->type == 1) {
+				glTranslatef(l->x, l->y, l->z);
+				
+			} else if (l->type == 2) {
+				glTranslatef(st->curr_player->x, st->curr_player->y, l->z);
+				
+			}
+			
+			glLightfv(GL_LIGHT0 + i, GL_AMBIENT, l->ambient);
+			glLightfv(GL_LIGHT0 + i, GL_DIFFUSE, l->diffuse);
+			glLightfv(GL_LIGHT0 + i, GL_SPECULAR, l->specular);
+			glLightfv(GL_LIGHT0 + i, GL_POSITION, position);
+			glEnable(GL_LIGHT0 + i);
 		glPopMatrix();
+		
+		if (i == 7) break;
 	}
 	
-
+	
 	// Render map
 	for (i = 0; i < st->curr_map->areas.size(); i++) {
 		Area * a = st->curr_map->areas[i];

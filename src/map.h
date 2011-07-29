@@ -28,6 +28,26 @@ class Area {
 		~Area();
 };
 
+class Light {
+	public:
+		unsigned int type;		// 1, 2 or 3
+		int x;
+		int y;
+		int z;
+		float ambient [3];
+		float diffuse [3];
+		float specular [3];
+		
+	public:
+		Light(unsigned int type);
+		~Light();
+		
+		void setAmbient(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+		void setDiffuse(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+		void setSpecular(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+};
+
+
 
 class Map {
 	friend class RenderSDL;
@@ -36,6 +56,7 @@ class Map {
 	private:
 		vector<Area*> areas;
 		vector<Zone*> zones;
+		vector<Light*> lights;
 		Render * render;
 		GameState * st;
 		

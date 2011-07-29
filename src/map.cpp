@@ -31,11 +31,27 @@ static cfg_opt_t zone_opts[] =
 	CFG_END()
 };
 
+static cfg_opt_t light_opts[] =
+{
+	CFG_INT((char*) "type", 0, CFGF_NONE),			// 1 = point, 2 = torch
+	
+	CFG_INT((char*) "x", 0, CFGF_NONE),
+	CFG_INT((char*) "y", 0, CFGF_NONE),
+	CFG_INT((char*) "z", 0, CFGF_NONE),
+	
+	CFG_INT_LIST((char*) "ambient", 0, CFGF_NONE),
+	CFG_INT_LIST((char*) "diffuse", 0, CFGF_NONE),
+	CFG_INT_LIST((char*) "specular", 0, CFGF_NONE),
+	
+	CFG_END()
+};
+
 // Main config
 static cfg_opt_t opts[] =
 {
 	CFG_SEC((char*) "wall", wall_opts, CFGF_MULTI),
 	CFG_SEC((char*) "zone", zone_opts, CFGF_MULTI),
+	CFG_SEC((char*) "light", light_opts, CFGF_MULTI),
 	
 	CFG_INT((char*) "width", 0, CFGF_NONE),
 	CFG_INT((char*) "height", 0, CFGF_NONE),
@@ -52,6 +68,44 @@ Area::Area(FloorType * type)
 Area::~Area()
 {
 }
+
+
+Light::Light(unsigned int type)
+{
+	this->type = type;
+	this->ambient[0] = this->ambient[1] = this->ambient[2] = this->ambient[3] = 0.0;
+	this->diffuse[0] = this->diffuse[1] = this->diffuse[2] = this->diffuse[3] = 0.0;
+	this->specular[0] = this->specular[1] = this->specular[2] = this->specular[3] = 0.0;
+}
+
+Light::~Light()
+{
+}
+
+void Light::setAmbient(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+{
+	this->ambient[0] = r / 255.0;
+	this->ambient[1] = g / 255.0;
+	this->ambient[2] = b / 255.0;
+	this->ambient[3] = a / 255.0;
+}
+
+void Light::setDiffuse(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+{
+	this->diffuse[0] = r / 255.0;
+	this->diffuse[1] = g / 255.0;
+	this->diffuse[2] = b / 255.0;
+	this->diffuse[3] = a / 255.0;
+}
+
+void Light::setSpecular(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+{
+	this->specular[0] = r / 255.0;
+	this->specular[1] = g / 255.0;
+	this->specular[2] = b / 255.0;
+	this->specular[3] = a / 255.0;
+}
+
 
 Map::Map(GameState * st)
 {
@@ -145,6 +199,52 @@ int Map::load(string name, Render * render)
 			}
 			
 			this->zones.push_back(z);
+		}
+		
+		// Lights
+		num_types = cfg_size(cfg, "light");
+		for (j = 0; j < num_types; j++) {
+			int num;
+			
+			cfg_sub = cfg_getnsec(cfg, "light", j);
+			
+			Light * l = new Light(cfg_getint(cfg_sub, "type"));
+			
+			l->x = cfg_getint(cfg_sub, "x");
+			l->y = cfg_getint(cfg_sub, "y");
+			l->z = cfg_getint(cfg_sub, "z");
+			
+			num = cfg_size(cfg_sub, "ambient");
+			if (num == 4) {
+				l->setAmbient(
+					cfg_getnint(cfg_sub, "ambient", 0),
+					cfg_getnint(cfg_sub, "ambient", 1),
+					cfg_getnint(cfg_sub, "ambient", 2),
+					cfg_getnint(cfg_sub, "ambient", 3)
+				);
+			}
+			
+			num = cfg_size(cfg_sub, "diffuse");
+			if (num == 4) {
+				l->setDiffuse(
+					cfg_getnint(cfg_sub, "diffuse", 0),
+					cfg_getnint(cfg_sub, "diffuse", 1),
+					cfg_getnint(cfg_sub, "diffuse", 2),
+					cfg_getnint(cfg_sub, "diffuse", 3)
+				);
+			}
+			
+			num = cfg_size(cfg_sub, "specular");
+			if (num == 4) {
+				l->setSpecular(
+					cfg_getnint(cfg_sub, "specular", 0),
+					cfg_getnint(cfg_sub, "specular", 1),
+					cfg_getnint(cfg_sub, "specular", 2),
+					cfg_getnint(cfg_sub, "specular", 3)
+				);
+			}
+			
+			this->lights.push_back(l);
 		}
 		
 	}
