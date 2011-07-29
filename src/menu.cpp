@@ -24,6 +24,7 @@ void Menu::doit()
 	vector<string> maps;
 	maps.push_back("test");
 	maps.push_back("blank");
+	maps.push_back("pacman");
 	
 	int gametype = 0;
 	vector<string> gametypes;
