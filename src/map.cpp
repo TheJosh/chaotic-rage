@@ -36,6 +36,10 @@ static cfg_opt_t opts[] =
 {
 	CFG_SEC((char*) "wall", wall_opts, CFGF_MULTI),
 	CFG_SEC((char*) "zone", zone_opts, CFGF_MULTI),
+	
+	CFG_INT((char*) "width", 0, CFGF_NONE),
+	CFG_INT((char*) "height", 0, CFGF_NONE),
+	
 	CFG_END()
 };
 
@@ -102,6 +106,12 @@ int Map::load(string name, Render * render)
 		cfg_parse_buf(cfg, buffer);
 		
 		free(buffer);
+		
+		
+		this->width = cfg_getint(cfg, "width");
+		this->height = cfg_getint(cfg, "height");
+		if (this->width == 0 or this->height == 0) return 0;
+		
 		
 		// Walls
 		num_types = cfg_size(cfg, "wall");
