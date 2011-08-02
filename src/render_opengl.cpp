@@ -631,6 +631,9 @@ void RenderOpenGL::render()
 	}
 	
 	
+	GLfloat emission[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	glMaterialfv(GL_FRONT, GL_EMISSION, emission);
+	
 	// Render map
 	for (i = 0; i < st->curr_map->areas.size(); i++) {
 		Area * a = st->curr_map->areas[i];
