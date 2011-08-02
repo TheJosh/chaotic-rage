@@ -29,6 +29,7 @@ cfg_opt_t _meshframe_opts[] =
 	CFG_INT((char*) "frame", 0, CFGF_NONE),
 	CFG_STR((char*) "mesh", 0, CFGF_NONE),
 	CFG_STR((char*) "texture", 0, CFGF_NONE),
+
 	CFG_FLOAT((char*) "px", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "py", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "pz", 0, CFGF_NONE),
@@ -38,6 +39,8 @@ cfg_opt_t _meshframe_opts[] =
 	CFG_FLOAT((char*) "sx", 1, CFGF_NONE),
 	CFG_FLOAT((char*) "sy", 1, CFGF_NONE),
 	CFG_FLOAT((char*) "sz", 1, CFGF_NONE),
+
+	CFG_INT_LIST((char*) "emission", 0, CFGF_NONE),
 	CFG_END()
 };
 
@@ -67,7 +70,7 @@ AnimModel* loadItemAnimModel(cfg_t *cfg_model, Mod * mod)
 	am->next_name = cfg_getstr(cfg_model, "next");
 	
 	int num = cfg_size(cfg_model, "meshframe");
-	int j;
+	int j,k;
 	for (j = 0; j < num; j++) {
 		cfg_meshframe = cfg_getnsec(cfg_model, "meshframe", j);
 		
@@ -127,6 +130,14 @@ AnimModel* loadItemAnimModel(cfg_t *cfg_model, Mod * mod)
 		mf->sy = cfg_getfloat(cfg_meshframe, "sy");
 		mf->sz = cfg_getfloat(cfg_meshframe, "sz");
 		
+		k = cfg_size(cfg_meshframe, "emission");
+		if (k == 4) {
+			mf->emission[0] = cfg_getnint(cfg_meshframe, "emission", 0) / 255.0;
+			mf->emission[1] = cfg_getnint(cfg_meshframe, "emission", 1) / 255.0;
+			mf->emission[2] = cfg_getnint(cfg_meshframe, "emission", 2) / 255.0;
+			mf->emission[3] = cfg_getnint(cfg_meshframe, "emission", 3) / 255.0;
+		}
+
 		am->meshframes.push_back(mf);
 	}
 	
@@ -149,5 +160,6 @@ MeshFrame::MeshFrame()
 {
 	mesh = NULL;
 	texture = NULL;
+	emission[0] = emission[1] = emission[2] = emission[3] = 0;
 }
 

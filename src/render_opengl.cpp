@@ -438,6 +438,8 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play)
 		
 		glBindTexture(GL_TEXTURE_2D, model->meshframes[d]->texture->pixels);
 		
+		glMaterialfv(GL_FRONT, GL_EMISSION, model->meshframes[d]->emission);
+
 		glPushMatrix();
 		
 		glTranslatef(model->meshframes[d]->px, model->meshframes[d]->py, model->meshframes[d]->pz);
@@ -715,7 +717,8 @@ void RenderOpenGL::render()
 	}
 	
 	glTranslatef(0, 0, 10);
-	
+
+
 	// Entities
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
 		Entity *e = (*it);

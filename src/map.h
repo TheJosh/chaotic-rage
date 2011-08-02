@@ -34,9 +34,9 @@ class Light {
 		int x;
 		int y;
 		int z;
-		float ambient [3];
-		float diffuse [3];
-		float specular [3];
+		float ambient [4];
+		float diffuse [4];
+		float specular [4];
 		
 	public:
 		Light(unsigned int type);
