@@ -20,6 +20,9 @@ Wall::Wall(WallType *wt, GameState *st) : Entity(st)
 
 Wall::~Wall()
 {
+	cout << "\n\n\n";
+	cout << "Removing the wall object!\n";
+	cout << "\n\n\n";
 	delete (this->anim);
 	this->st->delCollideBox(this->cb);
 }
@@ -28,7 +31,7 @@ Wall::~Wall()
 void Wall::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 {
 	if (theirs->e->klass() == PARTICLE) {
-		((Particle*)theirs->e)->doHitWall(this);;
+		((Particle*)theirs->e)->doHitWall(this);
 	}
 }
 
@@ -76,6 +79,11 @@ void Wall::takeDamage(int damage)
 			this->anim = new AnimPlay(dam->model);
 			break;
 		}
+	}
+	
+	if (this->health == 0) {
+		this->st->delCollideBox(this->cb);
+		this->cb = NULL;
 	}
 }
 

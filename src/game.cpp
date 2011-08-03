@@ -167,8 +167,6 @@ static void handleEvents(GameState *st)
 		} else if (event.type == SDL_MOUSEMOTION) {
 			// Mouse motion
 			if (st->curr_player != NULL) {
-				cout << "New pos: " << event.motion.x << "\n";
-
 				game_x += event.motion.x - 400;
 				net_x += event.motion.x - 400;
 				
