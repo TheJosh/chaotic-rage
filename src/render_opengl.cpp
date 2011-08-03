@@ -605,6 +605,8 @@ void RenderOpenGL::render()
 	
 	// Lights
 	GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	GLfloat spot_torch[] = { -1.0f, -1.0f, 0.0f };
+	
 	
 	for (i = 0; i < st->curr_map->lights.size(); i++) {
 		Light * l = st->curr_map->lights[i];
@@ -616,8 +618,19 @@ void RenderOpenGL::render()
 				glTranslatef(l->x, l->y, l->z);
 				
 			} else if (l->type == 2) {
-				glTranslatef(st->curr_player->x, st->curr_player->y, l->z);
+				glTranslatef(st->curr_player->x, st->curr_player->y, 50);
+				glRotatef((360+40) - st->curr_player->angle, 0, 0, 1);
+				glRotatef(20, 1, 0, 0);
 				
+				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_torch);
+				glLightf(GL_LIGHT0 + i, GL_SPOT_CUTOFF, 20);
+				glLightf(GL_LIGHT0 + i, GL_SPOT_EXPONENT, 2);
+				
+				
+				glPushMatrix();
+				glScalef(10,10,10);
+				renderAnimPlay(this->test);
+				glPopMatrix();
 			}
 			
 			glLightfv(GL_LIGHT0 + i, GL_AMBIENT, l->ambient);
@@ -651,7 +664,7 @@ void RenderOpenGL::render()
 		
 		glBindTexture(GL_TEXTURE_2D, a->type->texture->pixels);
  		
- 		a->width = a->height = 50;
+ 		a->width = a->height = 10;
  		
  		float texw = 1.0;
  		float texh = 1.0;
@@ -660,8 +673,11 @@ void RenderOpenGL::render()
  			texh = ((float)a->height) / ((float)a->type->texture->h);
  		}
  		
- 		
- 		glNormal3f(0, 0, 1);
+ 		glEnable(GL_NORMALIZE);
+ 		glLightModeli (GL_LIGHT_MODEL_COLOR_CONTROL,GL_SEPARATE_SPECULAR_COLOR);
+ 		glShadeModel(GL_SMOOTH);
+		
+		glNormal3f(0, 0, 1);
 		
 		glBegin(GL_QUADS);
 			for (int x = 0; x < st->curr_map->width; x += a->width) {
