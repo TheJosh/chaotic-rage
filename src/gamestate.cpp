@@ -362,4 +362,15 @@ void GameState::delCollideBox(CollideBox* box)
 }
 
 
+/**
+* Is the given point in bounds?
+**/
+bool GameState::inBounds(float x, float y)
+{
+	if (x < 0.0 || y < 0.0) return false;
+	if (x > this->curr_map->width) return false;
+	if (y > this->curr_map->height) return false;
+	return true;
+}
+
 

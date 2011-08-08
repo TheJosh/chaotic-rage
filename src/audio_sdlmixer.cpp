@@ -54,20 +54,6 @@ AudioPtr AudioSDLMixer::loadSound(string filename, Mod * mod)
 **/
 void AudioSDLMixer::play()
 {
-	// Not really in use any more
-	/*if (this->audio_start) {
-		Song * sg = st->getMod(0)->getSong(0);
-		Mix_FadeInMusic(sg->music, 0, 1000);
-		Mix_VolumeMusic(50);
-		this->audio_start = false;
-	}
-	
-	if (this->audio_stop) {
-		Mix_HaltMusic();
-		this->audio_stop = false;
-	}*/
-	
-	
 	// Play sounds
 	// You probs should use Audio::playSound instead
 	/*for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {

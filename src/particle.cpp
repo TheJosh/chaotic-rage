@@ -76,10 +76,15 @@ void Particle::update(int delta)
 		this->hasDied();
 	}
 	
+	if (! st->inBounds(this->x, this->y)) {
+		this->hasDied();
+	}
+	
 	if (this->speed <= 0) {
 		this->z = 0;
 		return;
 	}
+	
 	
 	this->speed += ppsDeltaf(this->accel, delta);
 	
@@ -88,9 +93,6 @@ void Particle::update(int delta)
 	
 	//this->x += getRandom(-3, 3);
 	//this->y += getRandom(-3, 3);
-	
-	// TODO: check still in bounds, if not, remove
-	
 	
 	if (this->cb == NULL) {
 		this->cb = this->st->addCollideBox(0, 0, 2, this, false);

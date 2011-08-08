@@ -58,9 +58,6 @@ class GameState
 		
 		Unit * findUnitSlot(int slot);
 		
-		Wall * checkHitWall(float x, float y, int check_radius);
-		Unit * checkHitUnit(float x, float y, int check_radius);
-		
 		void start();
 		void update(int delta);
 		void clear();
@@ -73,6 +70,8 @@ class GameState
 		void moveCollideBox(CollideBox* box, int x, int y);
 		void sizeCollideBox(CollideBox* box, int radius);
 		void delCollideBox(CollideBox* box);
+		
+		bool inBounds(float x, float y);
 		
 	private:
 		void doCollisions();
