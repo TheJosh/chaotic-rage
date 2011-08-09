@@ -334,8 +334,10 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 }
 
 
+/**
+* For VBO pointer offsets
+**/
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
-
 
 /**
 * Builds a VBO for this object
