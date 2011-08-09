@@ -361,9 +361,9 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 		vn = &obj->normals.at(f->n1 - 1);
 		t = &obj->texuvs.at(f->t1 - 1);
 		
-		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
+		vertexes[j].x = v->x * -1.0; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
-		vertexes[j].tx = t->x; vertexes[j].ty = 1.0 - t->y;
+		vertexes[j].tx = t->x; vertexes[j].ty = t->y * -1.0;
 		j++;
 		
 		
@@ -371,9 +371,9 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 		vn = &obj->normals.at(f->n2 - 1);
 		t = &obj->texuvs.at(f->t2 - 1);
 		
-		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
+		vertexes[j].x = v->x * -1.0; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
-		vertexes[j].tx = t->x; vertexes[j].ty = 1.0 - t->y;
+		vertexes[j].tx = t->x; vertexes[j].ty = t->y * -1.0;
 		j++;
 		
 		
@@ -381,9 +381,9 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 		vn = &obj->normals.at(f->n3 - 1);
 		t = &obj->texuvs.at(f->t3 - 1);
 		
-		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
+		vertexes[j].x = v->x * -1.0; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
-		vertexes[j].tx = t->x; vertexes[j].ty = 1.0 - t->y;
+		vertexes[j].tx = t->x; vertexes[j].ty = t->y * -1.0;
 		j++;
 		
 	}
