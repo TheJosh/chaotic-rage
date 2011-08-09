@@ -629,10 +629,10 @@ void RenderOpenGL::render()
 				glLightf(GL_LIGHT0 + i, GL_SPOT_EXPONENT, 2);
 				
 				
-				glPushMatrix();
+				/*glPushMatrix();
 				glScalef(10,10,10);
 				renderAnimPlay(this->test);
-				glPopMatrix();
+				glPopMatrix();*/
 			}
 			
 			glLightfv(GL_LIGHT0 + i, GL_AMBIENT, l->ambient);
