@@ -28,19 +28,31 @@ void Menu::doit()
 	
 	int gametype = 0;
 	vector<string> gametypes;
-	vector<GameType*>::iterator start, end;
-	st->getDefaultMod()->getAllGameTypes(&start, &end);
-	for (vector<GameType*>::iterator it = start; it != end; it++) {
-		gametypes.push_back((*it)->name);
+	{
+		vector<GameType*>::iterator start, end;
+		st->getDefaultMod()->getAllGameTypes(&start, &end);
+		for (vector<GameType*>::iterator it = start; it != end; it++) {
+			gametypes.push_back((*it)->name);
+		}
 	}
-	
+
 	int viewmode = 0;
 	vector<string> viewmodes;
 	viewmodes.push_back("top");
 	viewmodes.push_back("3rd-person");
 	viewmodes.push_back("1st-person");
 	
-	
+	int unittype = 0;
+	vector<string> unittypes;
+	{
+		vector<UnitType*>::iterator start, end;
+		st->getDefaultMod()->getAllUnitTypes(&start, &end);
+		for (vector<UnitType*>::iterator it = start; it != end; it++) {
+			unittypes.push_back((*it)->name);
+		}
+	}
+
+
 	SDL_Event event;
 	
 	glTranslatef(0, 0, 40);
@@ -87,6 +99,15 @@ void Menu::doit()
 						break;
 						
 						
+					case SDLK_r:
+						if (unittype > 0) unittype--;
+						break;
+						
+					case SDLK_f:
+						if (unittype < ((int) unittypes.size()) - 1) unittype++;
+						break;
+
+
 					case SDLK_l:
 						{
 							// Load map
@@ -99,6 +120,8 @@ void Menu::doit()
 							GameType *gt = st->getDefaultMod()->getGameType(gametypes[gametype]);
 							st->logic->execScript(gt->script);
 							
+							st->logic->selected_unittype = st->getDefaultMod()->getUnitType(unittype);
+
 							st->client = NULL;
 							
 							((RenderOpenGL*)st->render)->viewmode = viewmode;
@@ -162,6 +185,11 @@ void Menu::doit()
 		render->renderText(viewmodes[viewmode], 160, y);
 		render->renderText("Change with E and D", 450, y);
 		
+		y += 30;
+		render->renderText("Unit type:", 20, y);
+		render->renderText(unittypes[unittype], 160, y);
+		render->renderText("Change with R and F", 450, y);
+
 		y += 60;
 		render->renderText("Start a local game with L", 20, y);
 		

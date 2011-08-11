@@ -30,6 +30,9 @@ class GameLogic
 		vector<Timer*> timers;
 		
 	public:
+		UnitType * selected_unittype;
+
+	public:
 		GameLogic(GameState *st);
 		~GameLogic();
 		

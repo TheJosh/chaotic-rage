@@ -38,7 +38,7 @@ end;
 -- Spawn a player
 --
 spawn_player = function()
-	add_player("maniac", factions.team1, 1);
+	add_player(get_selected_unittype(), factions.team1, 1);
 end;
 
 

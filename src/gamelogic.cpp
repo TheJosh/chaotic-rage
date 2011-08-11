@@ -46,6 +46,8 @@ GameLogic::GameLogic(GameState *st)
 	
 	L = lua_open();
 	register_lua_functions();
+
+	this->selected_unittype = NULL;
 }
 
 GameLogic::~GameLogic()
@@ -437,6 +439,19 @@ LUA_FUNC(show_alert_message)
 
 
 /**
+* 
+*
+* @return String: The currently selected unit type
+**/
+LUA_FUNC(get_selected_unittype)
+{
+	lua_pushstring(L, gl->selected_unittype->name.c_str());
+	return 1;
+}
+
+
+
+/**
 * For function binding
 **/
 #define LUA_REG(name) lua_register(L, #name, name)
@@ -457,7 +472,8 @@ void register_lua_functions()
 	LUA_REG(add_npc);
 	LUA_REG(add_player);
 	LUA_REG(show_alert_message);
-	
+	LUA_REG(get_selected_unittype);
+
 	
 	// Factions constants table
 	lua_createtable(L,0,0);

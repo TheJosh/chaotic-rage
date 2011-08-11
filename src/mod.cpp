@@ -252,6 +252,15 @@ UnitType * Mod::getUnitType(string name)
 	return NULL;
 }
 
+/**
+* Returns two iterators for getting all gametypes
+**/
+void Mod::getAllUnitTypes(vector<UnitType*>::iterator * start, vector<UnitType*>::iterator * end)
+{
+	*start = unitclasses->begin();
+	*end = unitclasses->end();
+}
+
 
 /**
 * Gets a song by ID
