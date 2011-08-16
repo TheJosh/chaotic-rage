@@ -433,6 +433,9 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play)
 	
 	int frame = play->getFrame();
 	
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+
 	for (unsigned int d = 0; d < model->meshframes.size(); d++) {
 		if (model->meshframes[d]->frame != frame) continue;
 		if (model->meshframes[d]->mesh == NULL) continue;
@@ -454,6 +457,8 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play)
 		
 		glPopMatrix();
 	}
+
+	glDisable(GL_BLEND);
 }
 
 
