@@ -3,46 +3,12 @@
 2 = Initial weapon #2
 A = Ability
 
-Simbot
- - Metallic blobs
- - M: Knife which comes out of arm
- - 1: Anti-matter gun
- - 2: Blob launcher, blobs are sticky and slow units which come into contact
- - A: Mimic; gain the look and ability of another unit for a short period.
-
 Enock
  - Suicidal, Kamakaze
  - Melee: Chainsaw
  - 1: Rocket Launcher
  - 2: SMG
  - A: Kamakaze, comes back together
-
-Wahcon
- - Telepathic; psonic race
- - M: Head crush
- - 1: Psychic disrupter
- - 2: Physic attractor mine
-
-Zidhask
- - Mech w/ living host, can't remove host
- - M: Pincer
- - 1: Machine gun
- - 2: Wall boring drill
- - A: Death star dual laser, very powerful but takes ages to fire.
-
-Zapron
- - Rocket pack guy, like reaper, floats slightly midair
- - M: Double-sided Axe
- - 1: Dual pistol
- - 2: Tazer
- - A: Vertical boost, shooting down
-
-Snydoob
- - Stealth dude
- - M: Bigg Nife - really large two handed weapon
- - 1: Laser
- - 2: Silenced pistol
- - A: Invisibility
 
 Festoid
  - Organic; claws; like a ling
@@ -57,6 +23,40 @@ Nechron
  - 1: Grenade launcher
  - 2: Generic disruptor - converts target to random race
  - A: Tenticle wrap
+
+Simbot
+ - Metallic blobs
+ - M: Knife which comes out of arm
+ - 1: Anti-matter gun
+ - 2: Blob launcher, blobs are sticky and slow units which come into contact
+ - A: Mimic; gain the look and ability of another unit for a short period.
+
+Snydoob
+ - Stealth dude
+ - M: Bigg Nife - really large two handed weapon
+ - 1: Laser
+ - 2: Silenced pistol
+ - A: Invisibility
+
+Wahcon
+ - Telepathic; psonic race
+ - M: Head crush
+ - 1: Psychic disrupter
+ - 2: Physic attractor mine
+
+Zapron
+ - Rocket pack guy, like reaper, floats slightly midair
+ - M: Double-sided Axe
+ - 1: Dual pistol
+ - 2: Tazer
+ - A: Vertical boost, shooting down
+
+Zidhask
+ - Mech w/ living host, can't remove host
+ - M: Pincer
+ - 1: Machine gun
+ - 2: Wall boring drill
+ - A: Death star dual laser, very powerful but takes ages to fire.
 
 Zing
  - Swarm of locusts, beetles, etc
