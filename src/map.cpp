@@ -20,6 +20,17 @@ static cfg_opt_t wall_opts[] =
 	CFG_END()
 };
 
+// Object
+static cfg_opt_t object_opts[] =
+{
+	CFG_INT((char*) "x", 0, CFGF_NONE),
+	CFG_INT((char*) "y", 0, CFGF_NONE),
+	CFG_INT((char*) "z", 0, CFGF_NONE),
+	CFG_INT((char*) "angle", 0, CFGF_NONE),
+	CFG_STR((char*) "type", ((char*)""), CFGF_NONE),
+	CFG_END()
+};
+
 static cfg_opt_t zone_opts[] =
 {
 	CFG_INT((char*) "x", 0, CFGF_NONE),
@@ -50,6 +61,7 @@ static cfg_opt_t light_opts[] =
 static cfg_opt_t opts[] =
 {
 	CFG_SEC((char*) "wall", wall_opts, CFGF_MULTI),
+	CFG_SEC((char*) "object", object_opts, CFGF_MULTI),
 	CFG_SEC((char*) "zone", zone_opts, CFGF_MULTI),
 	CFG_SEC((char*) "light", light_opts, CFGF_MULTI),
 	
@@ -184,6 +196,24 @@ int Map::load(string name, Render * render)
 			this->st->addWall(wa);
 		}
 		
+		// Objects
+		num_types = cfg_size(cfg, "object");
+		for (j = 0; j < num_types; j++) {
+			cfg_sub = cfg_getnsec(cfg, "object", j);
+			
+			string type = cfg_getstr(cfg_sub, "type");
+			if (type.empty()) continue;
+			
+			Object * ob = new Object(this->st->getMod("cr")->getObjectType(type), this->st);
+			
+			ob->x = cfg_getint(cfg_sub, "x");
+			ob->y = cfg_getint(cfg_sub, "y");
+			ob->z = cfg_getint(cfg_sub, "z");
+			ob->angle = cfg_getint(cfg_sub, "angle");
+			
+			this->st->addObject(ob);
+		}
+
 		// Zones
 		num_types = cfg_size(cfg, "zone");
 		for (j = 0; j < num_types; j++) {

@@ -117,6 +117,9 @@ bool Mod::load()
 	areatypes = loadModFile<FloorType*>(this, "floortypes.conf", "floortype", floortype_opts, &loadItemFloorType);
 	if (areatypes == NULL) return false;
 	
+	objecttypes = loadModFile<ObjectType*>(this, "objecttypes.conf", "objecttype", objecttype_opts, &loadItemObjectType);
+	if (objecttypes == NULL) return false;
+
 	particletypes = loadModFile<ParticleType*>(this, "particletypes.conf", "particle", particletype_opts, &loadItemParticleType);
 	if (particletypes == NULL) return false;
 	
@@ -209,6 +212,31 @@ void Mod::getAllGameTypes(vector<GameType*>::iterator * start, vector<GameType*>
 }
 
 
+
+/**
+* Gets a unitclass by ID
+**/
+ObjectType * Mod::getObjectType(int id)
+{
+	if (id < 0 or ((unsigned int) id) > objecttypes->size()) return NULL;
+	return objecttypes->at(id);
+}
+
+/**
+* Gets a unitclass by name
+**/
+ObjectType * Mod::getObjectType(string name)
+{
+	if (name.empty()) return NULL;
+	
+	int i;
+	for (i = objecttypes->size() - 1; i >= 0; --i) {
+		if (objecttypes->at(i)->name.compare(name) == 0) return objecttypes->at(i);
+	}
+	return NULL;
+}
+
+
 /**
 * Gets a particle type by ID
 **/
@@ -251,6 +279,7 @@ UnitType * Mod::getUnitType(string name)
 	}
 	return NULL;
 }
+
 
 /**
 * Returns two iterators for getting all gametypes

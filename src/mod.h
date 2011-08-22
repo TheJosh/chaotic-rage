@@ -15,6 +15,7 @@ class Mod {
 		vector<AnimModel*> * animmodels;
 		vector<FloorType*> * areatypes;
 		vector<GameType*> * gametypes;
+		vector<ObjectType*> * objecttypes;
 		vector<ParticleType*> * particletypes;
 		vector<ParticleGenType*> * pgeneratortypes;
 		vector<Song*> * songs;
@@ -41,6 +42,7 @@ class Mod {
 		AnimModel * getAnimModel(int id);
 		FloorType * getFloorType(int id);
 		GameType * getGameType(int id);
+		ObjectType * getObjectType(int id);
 		ParticleType * getParticleType(int id);
 		ParticleGenType * getParticleGenType(int id);
 		Song * getSong(int id);
@@ -51,6 +53,7 @@ class Mod {
 		
 		AnimModel * getAnimModel(string name);
 		GameType * getGameType(string name);
+		ObjectType * getObjectType(string name);
 		UnitType * getUnitType(string name);
 		Sound * getSound(string name);
 		WallType * getWallType(string name);

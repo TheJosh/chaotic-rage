@@ -152,6 +152,12 @@
     <ClCompile Include="..\..\src\net_pack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\objecttype.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\animmodel.h">
@@ -280,6 +286,12 @@
     <ClInclude Include="..\..\src\net_server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\objecttype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\data\cr\animmodels.conf">
@@ -311,6 +323,12 @@
     </None>
     <None Include="..\..\data\cr\gametypes\zombies.lua">
       <Filter>Gametypes</Filter>
+    </None>
+    <None Include="..\..\data\cr\gametypes.conf">
+      <Filter>Configs</Filter>
+    </None>
+    <None Include="..\..\data\cr\objecttypes.conf">
+      <Filter>Configs</Filter>
     </None>
   </ItemGroup>
 </Project>

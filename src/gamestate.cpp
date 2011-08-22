@@ -94,6 +94,14 @@ void GameState::addWall(Wall* wall)
 	this->walls.push_back(wall);
 }
 
+/**
+* Add an object
+**/
+void GameState::addObject(Object* object)
+{
+	this->entities_add.push_back(object);
+}
+
 
 /**
 * Finds the unit which matches a given slot

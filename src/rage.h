@@ -76,6 +76,8 @@ class Mod;
 class NetClient;
 class NetServer;
 class NPC;
+class Object;
+class ObjectType;
 class Particle;
 class ParticleGenerator;
 class ParticleGenType;
@@ -109,6 +111,7 @@ class Zone;
 #include "animmodel.h"
 #include "animplay.h"
 #include "floortype.h"
+#include "objecttype.h"
 #include "particletype.h"
 #include "unittype.h"
 #include "song.h"
@@ -121,6 +124,7 @@ class Zone;
 #include "unit.h"
 #include "player.h"
 #include "npc.h"
+#include "object.h"
 #include "particle.h"
 #include "particlegenerator.h"
 #include "wall.h"

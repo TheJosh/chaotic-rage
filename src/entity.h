@@ -17,6 +17,7 @@ enum EntityClass {
 	PARTICLE = 2,
 	PGENERATOR = 3,
 	WALL = 4,
+	OBJECT = 5,
 };
 
 

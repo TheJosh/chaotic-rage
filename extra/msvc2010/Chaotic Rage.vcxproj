@@ -113,6 +113,8 @@
     <ClCompile Include="..\..\src\net_pack.cpp" />
     <ClCompile Include="..\..\src\net_server.cpp" />
     <ClCompile Include="..\..\src\npc.cpp" />
+    <ClCompile Include="..\..\src\object.cpp" />
+    <ClCompile Include="..\..\src\objecttype.cpp" />
     <ClCompile Include="..\..\src\particle.cpp" />
     <ClCompile Include="..\..\src\particlegenerator.cpp" />
     <ClCompile Include="..\..\src\particletype.cpp" />
@@ -156,6 +158,8 @@
     <ClInclude Include="..\..\src\net_client.h" />
     <ClInclude Include="..\..\src\net_server.h" />
     <ClInclude Include="..\..\src\npc.h" />
+    <ClInclude Include="..\..\src\object.h" />
+    <ClInclude Include="..\..\src\objecttype.h" />
     <ClInclude Include="..\..\src\particle.h" />
     <ClInclude Include="..\..\src\particlegenerator.h" />
     <ClInclude Include="..\..\src\particletype.h" />
@@ -181,7 +185,9 @@
   <ItemGroup>
     <None Include="..\..\data\cr\animmodels.conf" />
     <None Include="..\..\data\cr\floortypes.conf" />
+    <None Include="..\..\data\cr\gametypes.conf" />
     <None Include="..\..\data\cr\gametypes\zombies.lua" />
+    <None Include="..\..\data\cr\objecttypes.conf" />
     <None Include="..\..\data\cr\particlegenerators.conf" />
     <None Include="..\..\data\cr\particletypes.conf" />
     <None Include="..\..\data\cr\songs.conf" />

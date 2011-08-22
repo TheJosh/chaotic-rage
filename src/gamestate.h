@@ -55,7 +55,8 @@ class GameState
 		void addParticle(Particle* particle);
 		void addParticleGenerator(ParticleGenerator* generator);
 		void addWall(Wall* wall);
-		
+		void addObject(Object* object);
+
 		Unit * findUnitSlot(int slot);
 		
 		void start();
