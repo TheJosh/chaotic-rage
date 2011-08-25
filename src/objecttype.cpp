@@ -29,6 +29,10 @@ cfg_opt_t objecttype_opts[] =
 	CFG_STR((char*) "model", (char*)"", CFGF_NONE),
 	CFG_STR_LIST((char*) "walk_sounds", 0, CFGF_NONE),
 	CFG_SEC((char*) "damage", damage_opts, CFGF_MULTI),
+
+	CFG_STR((char*) "add-object", (char*)"", CFGF_NONE),
+	CFG_STR((char*) "show-message", (char*)"", CFGF_NONE),
+
 	CFG_END()
 };
 
@@ -46,10 +50,11 @@ ObjectType* loadItemObjectType(cfg_t* cfg_item, Mod* mod)
 	wt->name = cfg_getstr(cfg_item, "name");
 	wt->check_radius = 30;	//TODO: dynamic
 	
+	wt->add_object = cfg_getstr(cfg_item, "add-object");
+	wt->show_message = cfg_getstr(cfg_item, "show-message");
+
 	char * tmp = cfg_getstr(cfg_item, "model");
-	if (tmp != NULL) {
-		wt->model = mod->getAnimModel(tmp);
-	}
+	if (tmp != NULL) wt->model = mod->getAnimModel(tmp);
 	
 	// Load damage states
 	size = cfg_size(cfg_item, "damage");

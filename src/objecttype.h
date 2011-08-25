@@ -24,14 +24,15 @@ class ObjectType
 		bool stretch;
 		bool wall;
 		ObjectType * ground_type;
+		AnimModel * model;
+		int check_radius;
 		
 		vector <ObjectTypeDamage *> damage_models;
 		vector <AudioPtr> walk_sounds;
 		
-		AnimModel * model;
-		
-		int check_radius;
-		
+		string add_object;
+		string show_message;
+
 		// dynamic
 		int id;
 		SpritePtr surf;

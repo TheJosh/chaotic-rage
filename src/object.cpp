@@ -10,10 +10,10 @@
 using namespace std;
 
 
-Object::Object(ObjectType *wt, GameState *st) : Entity(st)
+Object::Object(ObjectType *ot, GameState *st) : Entity(st)
 {
-	this->wt = wt;
-	this->anim = new AnimPlay(wt->model);
+	this->ot = ot;
+	this->anim = new AnimPlay(ot->model);
 	this->health = 10000;
 	this->cb = NULL;
 }
@@ -69,8 +69,8 @@ void Object::takeDamage(int damage)
 	this->health -= damage;
 	if (this->health < 0) this->health = 0;
 	
-	for (unsigned int j = 0; j < this->wt->damage_models.size(); j++) {
-		ObjectTypeDamage * dam = this->wt->damage_models.at(j);
+	for (unsigned int j = 0; j < this->ot->damage_models.size(); j++) {
+		ObjectTypeDamage * dam = this->ot->damage_models.at(j);
 		
 		if (this->health <= dam->health) {
 			delete(this->anim);

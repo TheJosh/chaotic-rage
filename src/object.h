@@ -16,7 +16,7 @@ class Object : public Entity
 		virtual EntityClass klass() const { return OBJECT; }
 		
 	public:
-		ObjectType* wt;
+		ObjectType* ot;
 		int health;
 		
 	protected:

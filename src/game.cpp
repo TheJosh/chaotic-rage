@@ -118,7 +118,11 @@ static void handleEvents(GameState *st)
 				case SDLK_d:
 					if (st->curr_player != NULL) st->curr_player->keyPress(Player::KEY_RIGHT);
 					break;
-					
+
+				case SDLK_e:
+					if (st->curr_player != NULL) st->curr_player->keyPress(Player::KEY_USE);
+					break;
+
 				case SDLK_ESCAPE:
 					running = false;
 					break;
@@ -156,6 +160,10 @@ static void handleEvents(GameState *st)
 					if (st->curr_player != NULL) st->curr_player->keyRelease(Player::KEY_RIGHT);
 					break;
 					
+				case SDLK_e:
+					if (st->curr_player != NULL) st->curr_player->keyRelease(Player::KEY_USE);
+					break;
+
 				case SDLK_ESCAPE:
 					running = false;
 					break;
