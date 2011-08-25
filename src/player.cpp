@@ -15,6 +15,7 @@ Player::Player(UnitType *uc, GameState *st) : Unit(uc, st)
 	for (int i = 0; i < 8; i++) this->key[i] = 0;
 	this->use = false;
 	this->curr_obj = NULL;
+	this->lift_obj = NULL;
 }
 
 Player::~Player()
@@ -167,7 +168,23 @@ void Player::update(int delta)
 	} else if (!this->key[KEY_USE] && this->use) {
 		this->use = false;
 	}
-
+	
+	// Lift
+	if (this->key[KEY_LIFT] && this->lift_obj == NULL) {
+		this->doLift();
+	} else if (!this->key[KEY_LIFT] && this->lift_obj != NULL) {
+		this->lift_obj->z = 0;
+		this->lift_obj = NULL;
+	}
+	
+	
+	if (this->lift_obj) {
+		this->lift_obj->x = this->x;
+		this->lift_obj->y = this->y;
+		this->lift_obj->z = 70;
+		this->lift_obj->angle = this->angle;
+	}
+	
 	
 	Unit::update(delta, ucs);
 	
@@ -196,9 +213,9 @@ int Player::takeDamage(int damage)
 void Player::doUse()
 {
 	if (this->curr_obj == NULL) return;
-
+	this->use = true;
 	
-
+	
 	ObjectType *ot = this->curr_obj->ot;
 
 	if (ot->show_message.length() != 0) {
@@ -213,3 +230,9 @@ void Player::doUse()
 		this->st->addObject(nu);
 	}
 }
+
+void Player::doLift()
+{
+	this->lift_obj = this->curr_obj;
+}
+

@@ -19,7 +19,7 @@ class Player : public Unit
 		static const int KEY_RIGHT = 3;
 		static const int KEY_FIRE = 4;
 		static const int KEY_USE = 5;
-		static const int KEY_UNUSED2 = 6;
+		static const int KEY_LIFT = 6;
 		static const int KEY_UNUSED3 = 7;
 		
 	public:
@@ -44,5 +44,7 @@ class Player : public Unit
 	private:
 		bool use;
 		void doUse();
+		void doLift();
 		Object* curr_obj;
+		Object* lift_obj;
 };
