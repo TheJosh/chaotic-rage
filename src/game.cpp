@@ -126,7 +126,7 @@ static void handleEvents(GameState *st)
 				case SDLK_q:
 					if (st->curr_player != NULL) st->curr_player->keyPress(Player::KEY_LIFT);
 					break;
-					
+
 				case SDLK_ESCAPE:
 					running = false;
 					break;
@@ -171,7 +171,7 @@ static void handleEvents(GameState *st)
 				case SDLK_q:
 					if (st->curr_player != NULL) st->curr_player->keyRelease(Player::KEY_LIFT);
 					break;
-					
+
 				case SDLK_ESCAPE:
 					running = false;
 					break;

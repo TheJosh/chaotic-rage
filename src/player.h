@@ -40,11 +40,4 @@ class Player : public Unit
 		virtual void update(int delta);
 		virtual int takeDamage(int damage);
 		virtual void hasBeenHit(CollideBox * ours, CollideBox * theirs);
-
-	private:
-		bool use;
-		void doUse();
-		void doLift();
-		Object* curr_obj;
-		Object* lift_obj;
 };

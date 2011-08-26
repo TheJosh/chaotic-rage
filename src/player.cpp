@@ -13,9 +13,6 @@ using namespace std;
 Player::Player(UnitType *uc, GameState *st) : Unit(uc, st)
 {
 	for (int i = 0; i < 8; i++) this->key[i] = 0;
-	this->use = false;
-	this->curr_obj = NULL;
-	this->lift_obj = NULL;
 }
 
 Player::~Player()
@@ -29,6 +26,19 @@ Player::~Player()
 void Player::keyPress(int idx)
 {
 	this->key[idx] = 1;
+
+	if (idx == KEY_FIRE) {
+		if (this->lift_obj) {
+			this->doDrop();
+		} else {
+			this->beginFiring();
+		}
+
+	} else if (idx == KEY_USE) {
+		this->doUse();
+	} else if (idx == KEY_LIFT) {
+		this->doLift();
+	}
 }
 
 
@@ -38,6 +48,10 @@ void Player::keyPress(int idx)
 void Player::keyRelease(int idx)
 {
 	this->key[idx] = 0;
+
+	if (idx == KEY_FIRE) {
+		this->endFiring();
+	}
 }
 
 
@@ -155,42 +169,10 @@ void Player::update(int delta)
 	if (this->speed > ucs->max_speed) this->speed = ucs->max_speed;
 	if (this->speed < 0 - ucs->max_speed) this->speed = 0 - ucs->max_speed;
 	
-	// Fire
-	if (this->key[KEY_FIRE] && !this->firing) {
-		this->beginFiring();
-	} else if (!this->key[KEY_FIRE] && this->firing) {
-		this->endFiring();
-	}
-	
-	// Use
-	if (this->key[KEY_USE] && !this->use) {
-		this->doUse();
-	} else if (!this->key[KEY_USE] && this->use) {
-		this->use = false;
-	}
-	
-	// Lift
-	if (this->key[KEY_LIFT] && this->lift_obj == NULL) {
-		this->doLift();
-	} else if (!this->key[KEY_LIFT] && this->lift_obj != NULL) {
-		this->lift_obj->z = 0;
-		this->lift_obj = NULL;
-	}
-	
-	
-	if (this->lift_obj) {
-		this->lift_obj->x = this->x;
-		this->lift_obj->y = this->y;
-		this->lift_obj->z = 70;
-		this->lift_obj->angle = this->angle;
-	}
-	
 	
 	Unit::update(delta, ucs);
 	
 	delete ucs;
-
-	this->curr_obj = NULL;
 }
 
 
@@ -207,32 +189,5 @@ int Player::takeDamage(int damage)
 	}
 	
 	return result;
-}
-
-
-void Player::doUse()
-{
-	if (this->curr_obj == NULL) return;
-	this->use = true;
-	
-	
-	ObjectType *ot = this->curr_obj->ot;
-
-	if (ot->show_message.length() != 0) {
-		this->st->hud->addAlertMessage(ot->show_message);
-	}
-
-	if (ot->add_object.length() != 0) {
-		Object *nu = new Object(this->st->getDefaultMod()->getObjectType(ot->add_object), this->st);
-		nu->x = this->x;
-		nu->y = this->y;
-		nu->z = 60;
-		this->st->addObject(nu);
-	}
-}
-
-void Player::doLift()
-{
-	this->lift_obj = this->curr_obj;
 }
 

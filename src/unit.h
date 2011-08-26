@@ -21,6 +21,7 @@ class Unit : public Entity
 		int slot;
 		
 	protected:
+		// TODO: Cleanup
 		int health;
 		int desired_angle_move;
 		int angle_move;
@@ -51,6 +52,9 @@ class Unit : public Entity
 		
 		CollideBox* cb;
 		
+		Object* curr_obj;
+		Object* lift_obj;
+
 	public:
 		Unit(UnitType *uc, GameState *st);
 		virtual ~Unit();
@@ -79,4 +83,7 @@ class Unit : public Entity
 	protected:
 		void update(int delta, UnitTypeSettings *ucs);
 		void setState(int new_type);
+		void doUse();
+		void doLift();
+		void doDrop();
 };

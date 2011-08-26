@@ -36,7 +36,10 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 	
 	this->remove_at = 0;
 	
-	
+	this->curr_obj = NULL;
+	this->lift_obj = NULL;
+
+
 	// access sounds using this->uc->getSound(type)
 	// see unittype.h for types (e.g. UNIT_SOUND_DEATH)
 	// example:
@@ -247,6 +250,7 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	if (st->server) st->server->addmsgUnitUpdate(this);
 	
 	
+	// Do some shooting
 	if (this->firing && this->weapon != NULL) {
 		if (this->weapon->melee == 0 && this->weapon_gen != NULL) {
 			// Bullet-based weapon
@@ -265,6 +269,18 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	}
 	
 	
+	// Move the lifted object with the unit
+	if (this->lift_obj) {
+		this->lift_obj->x = this->x;
+		this->lift_obj->y = this->y;
+		this->lift_obj->z = 70;
+		this->lift_obj->angle = this->angle;
+	}
+
+	// This will be re-set by the collission code
+	this->curr_obj = NULL;
+
+
 	if (this->anim->isDone()) this->anim->next();
 }
 
@@ -289,3 +305,43 @@ int Unit::takeDamage(int damage)
 }
 
 
+/**
+* Use an object
+**/
+void Unit::doUse()
+{
+	if (this->curr_obj == NULL) return;
+	
+	
+	ObjectType *ot = this->curr_obj->ot;
+
+	if (ot->show_message.length() != 0) {
+		this->st->hud->addAlertMessage(ot->show_message);
+	}
+
+	if (ot->add_object.length() != 0) {
+		Object *nu = new Object(this->st->getDefaultMod()->getObjectType(ot->add_object), this->st);
+		nu->x = this->x;
+		nu->y = this->y;
+		nu->z = 60;
+		this->st->addObject(nu);
+	}
+}
+
+/**
+* Lift an object
+**/
+void Unit::doLift()
+{
+	this->lift_obj = this->curr_obj;
+}
+
+/**
+* Drop an object. Is this the same as throw?
+**/
+void Unit::doDrop()
+{
+	this->lift_obj->speed = 10;
+
+	this->lift_obj = NULL;
+}

@@ -48,6 +48,10 @@ void Object::update(int delta)
 	} else {
 		this->st->moveCollideBox(this->cb, (int) this->x, (int) this->y);
 	}
+
+	if (this->z > 0) {
+		this->z--;
+	}
 }
 
 AnimPlay* Object::getAnimModel()
