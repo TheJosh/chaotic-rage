@@ -118,13 +118,15 @@ void Unit::endFiring()
 /**
 * Pick up a weapon
 **/
-void Unit::pickupWeapon(WeaponType* wt)
+int Unit::pickupWeapon(WeaponType* wt)
 {
 	this->avail_weapons.push_back(wt);
 	
 	if (this->weapon == NULL) {
 		this->setWeapon(0);
 	}
+
+	return this->avail_weapons.size() - 1;
 }
 
 unsigned int Unit::getNumWeapons()
@@ -333,6 +335,16 @@ void Unit::doUse()
 		nu->y = this->y;
 		nu->z = 60;
 		this->st->addObject(nu);
+	}
+
+	if (ot->pickup_weapon.length() != 0) {
+		WeaponType *wt = this->st->getDefaultMod()->getWeaponType(ot->pickup_weapon);
+		if (wt) {
+			string msg = "Picked up a ";
+			msg.append(wt->name);
+			this->st->hud->addAlertMessage(msg);
+			this->setWeapon(this->pickupWeapon(wt));
+		}
 	}
 
 	if (ot->drive == 1) {

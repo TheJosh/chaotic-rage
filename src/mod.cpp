@@ -352,6 +352,17 @@ WeaponType * Mod::getWeaponType(int id)
 	return weapontypes->at(id);
 }
 
+WeaponType * Mod::getWeaponType(string name)
+{
+	if (name.empty()) return NULL;
+	
+	int i;
+	for (i = weapontypes->size() - 1; i >= 0; --i) {
+		if (weapontypes->at(i)->name.compare(name) == 0) return weapontypes->at(i);
+	}
+	return NULL;
+}
+
 
 
 /**

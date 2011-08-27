@@ -21,6 +21,7 @@ class WeaponType
 		Sound *sound_fire;
 		
 		// dynamic
+		string name;
 		int id;
 		
 	public:

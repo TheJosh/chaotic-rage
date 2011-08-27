@@ -32,6 +32,7 @@ class ObjectType
 		
 		string add_object;
 		string show_message;
+		string pickup_weapon;
 		bool drive;
 
 		// dynamic

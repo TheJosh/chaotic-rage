@@ -34,6 +34,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	string filename;
 	
 	wt = new WeaponType();
+	wt->name = cfg_getstr(cfg_item, "name");
 	wt->melee = cfg_getint(cfg_item, "melee");
 	
 	if (wt->melee == 0) {

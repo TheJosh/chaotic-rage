@@ -70,7 +70,7 @@ class Unit : public Entity
 		void beginFiring();
 		void endFiring();
 		
-		void pickupWeapon(WeaponType* wt);
+		int pickupWeapon(WeaponType* wt);
 		unsigned int getNumWeapons();
 		WeaponType * getWeaponAt(unsigned int id);
 		
