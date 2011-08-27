@@ -54,6 +54,7 @@ class Unit : public Entity
 		
 		Object* curr_obj;
 		Object* lift_obj;
+		Object* drive_obj;
 
 	public:
 		Unit(UnitType *uc, GameState *st);

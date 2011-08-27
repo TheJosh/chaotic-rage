@@ -38,6 +38,7 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 	
 	this->curr_obj = NULL;
 	this->lift_obj = NULL;
+	this->drive_obj = NULL;
 
 
 	// access sounds using this->uc->getSound(type)
@@ -238,7 +239,6 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		
 		this->walk_time += delta;
 		
-		
 		if (this->cb == NULL) {
 			this->cb = this->st->addCollideBox(0, 0, 30, this, true);
 		} else {
@@ -270,12 +270,20 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	
 	
 	// Move the lifted object with the unit
+	// Or driving
 	if (this->lift_obj) {
 		this->lift_obj->x = this->x;
 		this->lift_obj->y = this->y;
 		this->lift_obj->z = 70;
 		this->lift_obj->angle = this->angle;
+
+	} else if (this->drive_obj) {
+		this->drive_obj->x = pointPlusAngleX(this->x, this->angle, -20);
+		this->drive_obj->y = pointPlusAngleY(this->y, this->angle, -20);
+		this->drive_obj->angle = this->angle;
+
 	}
+
 
 	// This will be re-set by the collission code
 	this->curr_obj = NULL;
@@ -325,6 +333,14 @@ void Unit::doUse()
 		nu->y = this->y;
 		nu->z = 60;
 		this->st->addObject(nu);
+	}
+
+	if (ot->drive == 1) {
+		if (this->drive_obj) {
+			this->drive_obj = NULL;
+		} else {
+			this->drive_obj = this->curr_obj;
+		}
 	}
 }
 

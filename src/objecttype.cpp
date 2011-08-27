@@ -32,6 +32,7 @@ cfg_opt_t objecttype_opts[] =
 
 	CFG_STR((char*) "add-object", (char*)"", CFGF_NONE),
 	CFG_STR((char*) "show-message", (char*)"", CFGF_NONE),
+	CFG_INT((char*) "drive", 0, CFGF_NONE),
 
 	CFG_END()
 };
@@ -52,6 +53,7 @@ ObjectType* loadItemObjectType(cfg_t* cfg_item, Mod* mod)
 	
 	wt->add_object = cfg_getstr(cfg_item, "add-object");
 	wt->show_message = cfg_getstr(cfg_item, "show-message");
+	wt->drive = cfg_getint(cfg_item, "drive");
 
 	char * tmp = cfg_getstr(cfg_item, "model");
 	if (tmp != NULL) wt->model = mod->getAnimModel(tmp);
