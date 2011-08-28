@@ -1,0 +1,24 @@
+A list of the weapons.
+
+Anti-matter gun
+Blob launcher, blobs are sticky and slow units which come into contact
+Chain gun
+Dual pistol
+Generic disruptor - converts target to random race
+Grenade launcher
+Laser
+Locust gun - blinds the victim
+Machine gun
+Moatar - two player weapon
+Net gun/box thorn gun
+Physic attractor mine
+Pistol
+Poison tipped needle shooter
+Psychic disrupter
+Puss launcher
+Rocket launcher
+Silenced pistol
+SMG
+Tazer
+Wall boring drill
+

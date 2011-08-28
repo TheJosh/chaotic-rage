@@ -1,0 +1,67 @@
+This doc explains the sounds we need and their current status.
+
+N = No sound file yet
+S = Stand-in sound file
+F = Final sound file
+
+
+Weapon sounds
+----------------------
+1. Firing (begin)
+   The begin process of the firing
+2. Firing (repeat)
+   Looped sound played after begin has been played
+3. Firing (complete)
+   After firing is done
+4. Reload
+   When the weapon is reloaded
+
+WEAPON						1	2	3	4
+
+Anti-matter gun					N	N	N	N
+Blob launcher					N	N	N	N
+Chain gun					N	N	N	N
+Dual pistol					N	N	N	N
+Generic disruptor				N	N	N	N
+Grenade launcher				N	N	N	N
+Laser						N	N	N	N
+Locust gun					N	N	N	N
+Machine gun					N	N	N	N
+Moatar						N	N	N	N
+Net gun/box thorn gun				N	N	N	N
+Physic attractor mine				N	N	N	N
+Pistol						N	N	N	N
+Poison tipped needle shooter			N	N	N	N
+Psychic disrupter				N	N	N	N
+Puss launcher					N	N	N	N
+Rocket launcher					N	N	N	N
+Silenced pistol					N	N	N	N
+SMG						N	N	N	N
+Tazer						N	N	N	N
+Wall boring drill				N	N	N	N
+
+
+
+Unit sounds
+----------------------
+1. Static
+2. Hit
+3. Death
+4. Spawn
+5. Ability
+6. Celebrate
+7. Fail
+
+UNIT			1	2	3	4	5	6	7
+
+Enock			N	N	N	N	N	N	N
+Festoid			N	N	N	N	N	N	N
+Nechron			N	N	N	N	N	N	N
+Simbot			N	N	N	N	N	N	N
+Snydoob			N	N	N	N	N	N	N
+Wahcon			N	N	N	N	N	N	N
+Zapron			N	N	N	N	N	N	N
+Zidhask			N	N	N	N	N	N	N
+Zing			N	N	N	N	N	N	N
+Zomb			N	N	N	N	N	N	N
+
