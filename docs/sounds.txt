@@ -1,3 +1,6 @@
+kate: tab-width 8; indent-width 8; space-indent off; word-wrap off;
+
+
 This doc explains the sounds we need and their current status.
 
 N = No sound file yet

@@ -10,6 +10,20 @@
 using namespace std;
 
 
+#define WEAPON_SOUND_BEGIN 1
+#define WEAPON_SOUND_REPEAT 2
+#define WEAPON_SOUND_END 3
+#define WEAPON_SOUND_RELOAD 4
+
+
+class WeaponTypeSound
+{
+	public:
+		int id;
+		Sound * snd;
+		int type;
+};
+
 class WeaponType
 {
 	public:
@@ -18,7 +32,7 @@ class WeaponType
 		bool melee;
 		int damage;
 		
-		Sound *sound_fire;
+		vector<WeaponTypeSound*> sounds;
 		
 		// dynamic
 		string name;
@@ -26,6 +40,9 @@ class WeaponType
 		
 	public:
 		WeaponType();
+		
+	public:
+		Sound* getSound(int type);
 };
 
 

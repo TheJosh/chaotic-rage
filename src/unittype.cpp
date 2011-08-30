@@ -123,10 +123,10 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	}
 	
 
-	/// States ///
+	/// Sounds ///
 	int num_sounds = cfg_size(cfg_item, "sound");
 	
-	// load states
+	// load sounds
 	for (j = 0; j < num_sounds; j++) {
 		cfg_sound = cfg_getnsec(cfg_item, "sound", j);
 		
@@ -227,7 +227,7 @@ Sound* UnitType::getSound(int type)
 	// Randomly choose one
 	num = getRandom(0, num);
 	for (j = 0; j < this->sounds.size(); j++) {
-		if (this->states.at(j)->type == type) {
+		if (this->sounds.at(j)->type == type) {
 			if (num == 0) {
 				return this->sounds.at(j)->snd;
 			}

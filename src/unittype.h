@@ -89,7 +89,7 @@ class UnitType
 		UnitTypeSettings* getSettings(Uint8 modifier_flags);
 		UnitTypeState* getState(int type);
 		Sound* getSound(int type);
-
+		
 		Mod * getMod() { return this->mod; }
 };
 

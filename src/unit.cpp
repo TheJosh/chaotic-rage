@@ -102,6 +102,9 @@ void Unit::beginFiring()
 	if (this->speed == 0) {
 		this->setState(UNIT_STATE_FIRING);
 	}
+	
+	Sound* snd = this->weapon->getSound(WEAPON_SOUND_BEGIN);
+	if (snd != NULL) this->st->audio->playSound(snd);
 }
 
 void Unit::endFiring()
@@ -113,6 +116,9 @@ void Unit::endFiring()
 	if (this->speed == 0) {
 		this->setState(UNIT_STATE_STATIC);
 	}
+	
+	Sound* snd = this->weapon->getSound(WEAPON_SOUND_END);
+	if (snd != NULL) this->st->audio->playSound(snd);
 }
 
 /**
@@ -187,10 +193,6 @@ AnimPlay* Unit::getAnimModel()
 
 Sound* Unit::getSound()
 {
-	if (this->firing && this->weapon != NULL) {
-		return this->weapon->sound_fire;
-	}
-	
 	return NULL;
 }
 
@@ -205,6 +207,7 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		if (remove_at <= st->game_time) this->del = 1;
 		return;
 	}
+	
 	
 	int turn_move = ppsDeltai(ucs->turn_move, delta);
 	
