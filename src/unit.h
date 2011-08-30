@@ -56,6 +56,8 @@ class Unit : public Entity
 		Object* lift_obj;
 		Object* drive_obj;
 
+		int weapon_sound;
+
 	public:
 		Unit(UnitType *uc, GameState *st);
 		virtual ~Unit();

@@ -59,10 +59,14 @@ void NPC::update(int delta)
 		
 		this->desired_angle_aim = getRandom(vals[1] - 50, vals[1] + 50);
 		
-		if (firing) {
-			this->endFiring();
-		} else {
-			this->beginFiring();
+		//if (firing) {
+		//	this->endFiring();
+		//} else {
+		//	this->beginFiring();
+		//}
+
+		if (getRandom(1,8) == 1) {
+			this->st->audio->playSound(this->st->getDefaultMod()->getSound("zombie_1"), false);
 		}
 	}
 	

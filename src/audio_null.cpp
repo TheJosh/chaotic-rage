@@ -9,16 +9,9 @@
 using namespace std;
 
 
-/**
-* Init SDL_Mixer
-**/
-AudioNull::AudioNull(GameState * st) : Audio(st)
-{
-}
-
 
 /**
-* Load a sound
+* We have to return -something-
 **/
 AudioPtr AudioNull::loadSound(string filename, Mod * mod)
 {
@@ -27,36 +20,14 @@ AudioPtr AudioNull::loadSound(string filename, Mod * mod)
 }
 
 
-/**
-* Plays sounds - This method gets called every ~10ms
-**/
-void AudioNull::play()
-{
-}
+AudioNull::AudioNull(GameState * st) : Audio(st) {}
 
+void AudioNull::play() {}
 
-/**
-* An entity wants to play a sound
-**/
-void AudioNull::playSound(Sound * snd)
-{
-}
+int AudioNull::playSound(Sound * snd, bool loop) { return 0; }
 
+void AudioNull::playSong(Song * sng) {}
 
-/**
-* Something wants to play a song
-**/
-void AudioNull::playSong(Song * sng)
-{
-}
+void AudioNull::stopSound(int id) {}
 
-
-
-/**
-* An entity wants to stop a sound
-**/
-void AudioNull::stopSound()
-{
-}
-
-
+void AudioNull::stopAll() {}

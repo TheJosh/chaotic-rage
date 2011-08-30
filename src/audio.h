@@ -31,8 +31,9 @@ class Audio
 		
 		/**
 		* Plays a sound
+		* Returns a sound id, or -1 on error
 		**/
-		virtual void playSound(Sound * snd) = 0;
+		virtual int playSound(Sound * snd, bool loop) = 0;
 		
 		/**
 		* Plays a song
@@ -40,10 +41,16 @@ class Audio
 		virtual void playSong(Song * sng) = 0;
 
 		/**
-		* Doesn't do anything yet, and the exact way which this will work is still undefined.
+		* Stops a sound based on the sound id
+		* If -1 is passed, does nothing
 		**/
-		virtual void stopSound() = 0;
+		virtual void stopSound(int id) = 0;
 		
+		/**
+		* Stop everything (sound-wise at least)
+		**/
+		virtual void stopAll() = 0;
+
 	public:
 		Audio(GameState * st);
 };

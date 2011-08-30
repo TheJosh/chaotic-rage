@@ -79,19 +79,31 @@ void AudioSDLMixer::playSong(Song * sg)
 
 /**
 * An entity wants to play a sound
+* Returns an int which can be used to halt the sound
 **/
-void AudioSDLMixer::playSound(Sound * snd)
+int AudioSDLMixer::playSound(Sound * snd, bool loop)
 {
-	if (snd == NULL) return;
-	//Mix_PlayChannel(-1, snd->sound, 0);
+	if (snd == NULL) return -1;
+	return Mix_PlayChannel(-1, snd->sound, loop ? -1 : 0);
 }
 
 /**
 * An entity wants to stop a sound
 **/
-void AudioSDLMixer::stopSound()
+void AudioSDLMixer::stopSound(int id)
 {
-	// TODO: Work out how this should work, then implement it
+	if (id == -1) return;
+	Mix_HaltChannel(id);
+}
+
+
+/**
+* Stops all audio
+**/
+void AudioSDLMixer::stopAll()
+{
+	Mix_HaltChannel(-1);
+	Mix_HaltMusic();
 }
 
 

@@ -40,6 +40,8 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 	this->lift_obj = NULL;
 	this->drive_obj = NULL;
 
+	this->weapon_sound = -1;
+
 
 	// access sounds using this->uc->getSound(type)
 	// see unittype.h for types (e.g. UNIT_SOUND_DEATH)
@@ -104,7 +106,7 @@ void Unit::beginFiring()
 	}
 	
 	Sound* snd = this->weapon->getSound(WEAPON_SOUND_BEGIN);
-	if (snd != NULL) this->st->audio->playSound(snd);
+	weapon_sound = this->st->audio->playSound(snd, true);
 }
 
 void Unit::endFiring()
@@ -117,8 +119,10 @@ void Unit::endFiring()
 		this->setState(UNIT_STATE_STATIC);
 	}
 	
+	this->st->audio->stopSound(this->weapon_sound);
+
 	Sound* snd = this->weapon->getSound(WEAPON_SOUND_END);
-	if (snd != NULL) this->st->audio->playSound(snd);
+	this->st->audio->playSound(snd, false);
 }
 
 /**

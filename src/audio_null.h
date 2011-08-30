@@ -25,7 +25,7 @@ class AudioNull : Audio
 		/**
 		* Plays a sound
 		**/
-		virtual void playSound(Sound * snd);
+		virtual int playSound(Sound * snd, bool loop);
 		
 		/**
 		* Plays a song
@@ -35,8 +35,13 @@ class AudioNull : Audio
 		/**
 		* Doesn't do anything yet, and the exact way which this will work is still undefined.
 		**/
-		virtual void stopSound();
+		virtual void stopSound(int id);
 		
+		/**
+		* Stop everything (sound-wise at least)
+		**/
+		virtual void stopAll();
+
 	public:
 		AudioNull(GameState * st);
 };
