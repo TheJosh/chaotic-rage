@@ -13,7 +13,16 @@ round = 0;
 -- Spwans zombies
 --
 spawn_func = function()
-	add_npc("zomb", factions.team2);
+	t = random(1, 3);		-- It looks like it will never select the top number
+							-- I think this is a bug
+							-- For now, it's set to 3 to get two items
+	
+	if (t == 1) then
+		add_npc("zomb", factions.team2);
+	elseif (t == 2) then
+		add_npc("zomb_baby", factions.team2);
+	end;
+	
 	num_zombies = num_zombies + 1;
 	if num_zombies >= num_wanted then remove_timer(timer) end;
 end;

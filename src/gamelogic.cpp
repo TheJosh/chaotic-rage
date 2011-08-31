@@ -450,6 +450,22 @@ LUA_FUNC(get_selected_unittype)
 }
 
 
+/**
+* 
+*
+* @return String: The currently selected unit type
+**/
+LUA_FUNC(random)
+{
+	int min = lua_tointeger(L, 1);
+	int max = lua_tointeger(L, 2);
+	
+	lua_pushinteger(L, getRandom(min,max));
+	
+	return 1;
+}
+
+
 
 /**
 * For function binding
@@ -473,7 +489,8 @@ void register_lua_functions()
 	LUA_REG(add_player);
 	LUA_REG(show_alert_message);
 	LUA_REG(get_selected_unittype);
-
+	LUA_REG(random);
+	
 	
 	// Factions constants table
 	lua_createtable(L,0,0);
