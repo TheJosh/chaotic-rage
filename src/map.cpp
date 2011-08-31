@@ -302,7 +302,7 @@ Zone * Map::getSpawnZone(Faction f)
 	
 	if (num == 0) return NULL;
 	
-	num = (int) floor(getRandom(0, num * 10) / 10.0);	//getRandom seems to have some problems with small values
+	num = getRandom(0, num-1);
 	
 	return candidates[num];
 }

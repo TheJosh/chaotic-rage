@@ -13,9 +13,7 @@ round = 0;
 -- Spwans zombies
 --
 spawn_func = function()
-	t = random(1, 3);		-- It looks like it will never select the top number
-							-- I think this is a bug
-							-- For now, it's set to 3 to get two items
+	t = random(1, 2);
 	
 	if (t == 1) then
 		add_npc("zomb", factions.team2);
