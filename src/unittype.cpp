@@ -6,6 +6,7 @@
 #include <SDL.h>
 #include <confuse.h>
 #include <zzip/zzip.h>
+#include <string>
 #include "rage.h"
 
 using namespace std;
@@ -190,7 +191,7 @@ UnitTypeState* UnitType::getState(int type)
 	}
 	
 	// Randomly choose one
-	num = getRandom(0, num);
+	num = getRandom(0, num - 1);
 	for (j = 0; j < this->states.size(); j++) {
 		if (this->states.at(j)->type == type) {
 			if (num == 0) {
@@ -202,8 +203,7 @@ UnitTypeState* UnitType::getState(int type)
 	
 	// If no state of this type found, do a search for a static type
 	if (type == UNIT_STATE_STATIC) {
-		cerr << "Cannot find state of type UNIT_STATE_STATIC for unit.\n";
-		exit(1);
+		reportFatalError("Cannot find state of type UNIT_STATE_STATIC for unit type " + this->name);
 	}
 	
 	return this->getState(UNIT_STATE_STATIC);
@@ -225,7 +225,7 @@ Sound* UnitType::getSound(int type)
 	}
 	
 	// Randomly choose one
-	num = getRandom(0, num);
+	num = getRandom(0, num - 1);
 	for (j = 0; j < this->sounds.size(); j++) {
 		if (this->sounds.at(j)->type == type) {
 			if (num == 0) {

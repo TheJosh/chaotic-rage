@@ -104,7 +104,7 @@ Sound* WeaponType::getSound(int type)
 	}
 	
 	// Randomly choose one
-	num = getRandom(0, num);
+	num = getRandom(0, num - 1);
 	for (j = 0; j < this->sounds.size(); j++) {
 		if (this->sounds.at(j)->type == type) {
 			if (num == 0) {
