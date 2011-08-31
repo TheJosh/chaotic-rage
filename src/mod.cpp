@@ -300,6 +300,14 @@ Song * Mod::getSong(int id)
 	return songs->at(id);
 }
 
+/**
+* Gets a random song
+**/
+Song * Mod::getRandomSong()
+{
+	return songs->at(getRandom(0, songs->size() - 1));
+}
+
 
 /**
 * Gets a sound by ID

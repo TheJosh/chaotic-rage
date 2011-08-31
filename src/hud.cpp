@@ -44,6 +44,15 @@ void HUD::addAlertMessage(string text)
 	this->msgs.push_front(msg);
 }
 
+void HUD::addAlertMessage(string text1, string text2)
+{
+	AlertMessage *msg = new AlertMessage();
+	msg->text = text1.append(text2);
+	msg->remove_time = this->st->game_time + 5000;
+	this->msgs.push_front(msg);
+}
+
+
 /**
 * Used for filtering
 **/

@@ -347,9 +347,7 @@ void Unit::doUse()
 	if (ot->pickup_weapon.length() != 0) {
 		WeaponType *wt = this->st->getDefaultMod()->getWeaponType(ot->pickup_weapon);
 		if (wt) {
-			string msg = "Picked up a ";
-			msg.append(wt->name);
-			this->st->hud->addAlertMessage(msg);
+			this->st->hud->addAlertMessage("Picked up a ", wt->name);
 			this->setWeapon(this->pickupWeapon(wt));
 		}
 	}

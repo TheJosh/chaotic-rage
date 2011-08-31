@@ -40,6 +40,7 @@ class HUD {
 	public:
 		void showSpawnMenu();
 		void hideSpawnMenu();
+
 		void addAlertMessage(string text);
-	
+		void addAlertMessage(string text1, string text2);
 };

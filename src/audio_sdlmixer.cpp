@@ -20,6 +20,8 @@ AudioSDLMixer::AudioSDLMixer(GameState * st) : Audio(st)
 	Mix_AllocateChannels(100);
 	this->audio_start = false;
 	this->audio_stop = false;
+
+	Mix_VolumeMusic(50);
 }
 
 
@@ -54,16 +56,13 @@ AudioPtr AudioSDLMixer::loadSound(string filename, Mod * mod)
 **/
 void AudioSDLMixer::play()
 {
-	// Play sounds
-	// You probs should use Audio::playSound instead
-	/*for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
-		Entity *e = (*it);
-		
-		Sound * snd = e->getSound();
-		if (snd != NULL) {
-			Mix_PlayChannel(-1, snd->sound, 0);
+	if (Mix_PlayingMusic() == 0) {
+		Song *sg = this->st->getDefaultMod()->getRandomSong();
+		if (sg != NULL) {
+			this->playSong(sg);
+			this->st->hud->addAlertMessage("Now playing ", sg->name);
 		}
-	}*/
+	}
 }
 
 
@@ -72,8 +71,7 @@ void AudioSDLMixer::play()
 **/
 void AudioSDLMixer::playSong(Song * sg)
 {
-	Mix_FadeInMusic(sg->music, 0, 1000);
-	Mix_VolumeMusic(50);
+	Mix_PlayMusic(sg->music, 1);
 }
 
 

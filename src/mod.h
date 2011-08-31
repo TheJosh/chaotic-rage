@@ -59,6 +59,8 @@ class Mod {
 		WallType * getWallType(string name);
 		WeaponType * getWeaponType(string name);
 
+		Song * getRandomSong();
+
 		void getAllGameTypes(vector<GameType*>::iterator * start, vector<GameType*>::iterator * end);
 		void getAllUnitTypes(vector<UnitType*>::iterator * start, vector<UnitType*>::iterator * end);
 };
