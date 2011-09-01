@@ -55,6 +55,7 @@ class Unit : public Entity
 		Object* curr_obj;
 		Object* lift_obj;
 		Object* drive_obj;
+		Object* turret_obj;
 
 		int weapon_sound;
 

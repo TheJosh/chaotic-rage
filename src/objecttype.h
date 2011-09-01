@@ -34,6 +34,7 @@ class ObjectType
 		string show_message;
 		string pickup_weapon;
 		bool drive;
+		bool turret;
 
 		// dynamic
 		int id;

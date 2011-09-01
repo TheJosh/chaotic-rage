@@ -39,6 +39,7 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 	this->curr_obj = NULL;
 	this->lift_obj = NULL;
 	this->drive_obj = NULL;
+	this->turret_obj = NULL;
 
 	this->weapon_sound = -1;
 
@@ -279,7 +280,7 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	
 	
 	// Move the lifted object with the unit
-	// Or driving
+	// Or driving, or turrets
 	if (this->lift_obj) {
 		this->lift_obj->x = this->x;
 		this->lift_obj->y = this->y;
@@ -291,6 +292,10 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		this->drive_obj->y = pointPlusAngleY(this->y, this->angle, -20);
 		this->drive_obj->angle = this->angle;
 
+	} else if (this->turret_obj) {
+		this->x = this->turret_obj->x;
+		this->y = this->turret_obj->y;
+		this->turret_obj->angle = this->angle;
 	}
 
 
@@ -357,6 +362,15 @@ void Unit::doUse()
 			this->drive_obj = NULL;
 		} else {
 			this->drive_obj = this->curr_obj;
+		}
+
+	} else if (ot->turret == 1) {
+		if (this->turret_obj) {
+			this->turret_obj = NULL;
+			this->setWeapon(this->curr_weapon_id);
+		} else {
+			this->turret_obj = this->curr_obj;
+			this->weapon_gen = new ParticleGenerator(st->getDefaultMod()->getWeaponType("poopgun")->pg, this->st);
 		}
 	}
 }
