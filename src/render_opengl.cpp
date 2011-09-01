@@ -80,7 +80,6 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	}
 	
 	SDL_WM_SetCaption("Chaotic Rage", "Chaotic Rage");
-	SDL_ShowCursor(SDL_DISABLE);
 	
 	this->virt_height = 1000;
 	this->virt_width = (int) floor(this->virt_height * (float)width / (float)height);
@@ -290,11 +289,15 @@ void RenderOpenGL::preGame()
 {
 	AnimModel *model = st->getDefaultMod()->getAnimModel("cube");
 	this->test = new AnimPlay(model);
+
+	SDL_ShowCursor(SDL_DISABLE);
 }
 
 void RenderOpenGL::postGame()
 {
 	delete(this->test);
+
+	SDL_ShowCursor(SDL_ENABLE);
 }
 
 

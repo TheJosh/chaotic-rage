@@ -20,6 +20,13 @@ Menu::Menu(GameState *st)
 
 void Menu::doit()
 {
+	Mod * mod = new Mod(st, "data/menu");
+	
+	SpritePtr logo = this->render->loadSprite("logo.png", mod);
+	SpritePtr mid = this->render->loadSprite("bg_mid.png", mod);
+	SpritePtr right = this->render->loadSprite("bg_right.png", mod);
+
+
 	int map = 0;
 	vector<string> maps;
 	maps.push_back("test");
@@ -164,12 +171,20 @@ void Menu::doit()
 		}
 		
 		
+		glClearColor(9.0/255.0, 9.0/255.0, 9.0/255.0, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		
 		
-		int y = 35;
+		render->renderSprite(mid, 0, render->virt_height - mid->h, render->virt_width - right->w, mid->h);
+		render->renderSprite(right, render->virt_width - right->w, render->virt_height - right->h);
+		render->renderSprite(logo, (render->virt_width - logo->w) / 2, 20);
+
+
+		int y = 200;
 		
 		render->renderText("Map:", 20, y);
 		render->renderText(maps[map], 160, y);
@@ -200,6 +215,16 @@ void Menu::doit()
 		render->renderText("Quit with ESC", 20, y);
 		
 		
+		y = render->virt_height - 30 * 7;
+		render->renderText("Controls:", 20, y); y += 30;
+		render->renderText("Move", 20, y); render->renderText("A-S-D-F", 230, y); y += 30;
+		render->renderText("Look", 20, y); render->renderText("Mouse", 230, y); y += 30;
+		render->renderText("Action", 20, y); render->renderText("E", 230, y); y += 30;
+		render->renderText("Pick-up", 20, y); render->renderText("Q", 230, y); y += 30;
+		render->renderText("Fire", 20, y); render->renderText("Left-Click", 230, y); y += 30;
+		render->renderText("Change weapon", 20, y); render->renderText("Shift, Scroll, Click", 230, y); y += 30;
+
+
 		SDL_GL_SwapBuffers();
 		
 		SDL_Delay(50);
