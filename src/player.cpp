@@ -85,6 +85,8 @@ void Player::setKeys(Uint8 bitfield)
 **/
 void Player::angleFromMouse(int x, int y, int delta)
 {
+	if (this->drive_obj != NULL && this->speed == 0) return;	// Cars can only turn while moving
+
 	// TODO: Think about delta
 	
 	float sensitivity = 5.0; // 1 = slow, 10 = nuts
@@ -138,11 +140,11 @@ void Player::update(int delta)
 		}
 		keypressed = true;
 		
-	} else if (this->key[KEY_LEFT]) {
+	} else if (this->key[KEY_LEFT] && this->drive_obj == NULL) {
 		this->desired_angle_move = 90;
 		keypressed = true;
 		
-	} else if (this->key[KEY_RIGHT]) {
+	} else if (this->key[KEY_RIGHT] && this->drive_obj == NULL) {
 		this->desired_angle_move = 270;
 		keypressed = true;
 	}
