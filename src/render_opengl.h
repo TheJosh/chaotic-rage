@@ -35,6 +35,10 @@ class RenderOpenGL : public Render
 		int virt_width;
 		int virt_height;
 		
+		// Width and height of the desktop at game begin
+		int desktop_width;
+		int desktop_height;
+
 		SpritePtr ground;
 		SpritePtr walls;
 		

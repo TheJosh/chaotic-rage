@@ -44,6 +44,10 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render(st)
 {
 	this->screen = NULL;
 	this->viewmode = 0;
+
+	const SDL_VideoInfo* mode = SDL_GetVideoInfo();
+	this->desktop_width = mode->current_w;
+	this->desktop_height = mode->current_h;
 }
 
 RenderOpenGL::~RenderOpenGL()
@@ -151,7 +155,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	gluPerspective(45.0f, 1.0f, 1.0f, 1500.f);
 	glScalef (1.0f, -1.0f, 1.0f);
-	glTranslatef(-500, -500, -1250.0f);
+	glTranslatef(0 - (this->virt_width / 2), 0 - (this->virt_height / 2), -1250.0f);
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
@@ -568,12 +572,14 @@ void RenderOpenGL::render()
 	
 	
 	// Background
-	/*glLoadIdentity();
-	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
-	glRotatef(st->curr_player->angle, 0, 0, 1);
-	glTranslatef(0 - w / 2, 0 - h / 2, 0);
-	this->renderSprite(st->map->background, 0, 0, w, h);*/
-	
+	if (st->curr_player != NULL) {
+		glLoadIdentity();
+		glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
+		glRotatef(st->curr_player->angle, 0, 0, 1);
+		glTranslatef(0 - st->curr_map->background->w / 2, 0 - st->curr_map->background->h / 2, 0);
+		this->renderSprite(st->curr_map->background, 0, 0);
+	}
+
 	
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);

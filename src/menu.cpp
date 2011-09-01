@@ -160,6 +160,11 @@ void Menu::doit()
 						break;
 						
 						
+					case SDLK_p:
+						render->setScreenSize(render->desktop_width, render->desktop_height, true);
+						break;
+
+
 					case SDLK_ESCAPE:
 						running = false;
 						break;
@@ -209,8 +214,11 @@ void Menu::doit()
 		render->renderText("Start a local game with L", 20, y);
 		
 		y += 30;
-		render->renderText("Start a network game with N", 20, y);
+		render->renderText("Start a network game with N (buggy)", 20, y);
 		
+		y += 30;
+		render->renderText("Switch to fullscreen with P (really buggy)", 20, y);
+
 		y += 60;
 		render->renderText("Quit with ESC", 20, y);
 		

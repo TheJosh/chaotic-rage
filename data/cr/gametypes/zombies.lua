@@ -13,10 +13,12 @@ round = 0;
 -- Spwans zombies
 --
 spawn_func = function()
-	t = random(1, 2);
+	t = random(1, 3);
 	
 	if (t == 1) then
 		add_npc("zomb", factions.team2);
+	elseif (t == 2) then
+		add_npc("zomb_fast", factions.team2);
 	elseif (t == 2) then
 		add_npc("zomb_baby", factions.team2);
 	end;
