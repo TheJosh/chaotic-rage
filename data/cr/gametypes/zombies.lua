@@ -19,7 +19,7 @@ spawn_func = function()
 		add_npc("zomb", factions.team2);
 	elseif (t == 2) then
 		add_npc("zomb_fast", factions.team2);
-	elseif (t == 2) then
+	elseif (t == 3) then
 		add_npc("zomb_baby", factions.team2);
 	end;
 	
