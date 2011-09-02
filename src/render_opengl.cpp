@@ -100,7 +100,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	// OpenGL
 	if (atof((char*) glGetString(GL_VERSION)) < 2.0) {
-		fprintf(stderr, "OpenGL 2.0 or later is required, but not supported on this system.");
+		reportFatalError("OpenGL 2.0 or later is required, but not supported on this system.");
 		exit(1);
 	}
 	

@@ -13,7 +13,7 @@ namespace Maptool
             types = new List<EntityType>();
 
             ConfuseReader rdr = new ConfuseReader();
-            String file = System.IO.File.ReadAllText(Program.Datapath + "/animmodels/animmodels.conf");
+            String file = System.IO.File.ReadAllText(Program.Datapath + "/animmodels.conf");
             ConfuseSection sect = rdr.Parse(file);
 
             string texture;
@@ -34,7 +34,7 @@ namespace Maptool
 
 
             rdr = new ConfuseReader();
-            file = System.IO.File.ReadAllText(Program.Datapath + "/walltypes/walltypes.conf");
+            file = System.IO.File.ReadAllText(Program.Datapath + "/walltypes.conf");
             sect = rdr.Parse(file);
 
             foreach (ConfuseSection walltype in sect.subsections) {
