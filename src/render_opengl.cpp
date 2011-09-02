@@ -88,7 +88,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	this->virt_height = 1000;
 	this->virt_width = (int) floor(this->virt_height * (float)width / (float)height);
 	
-	
+
 	// SDL_Image
 	flags = IMG_INIT_PNG;
 	int initted = IMG_Init(flags);
@@ -153,10 +153,10 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
-	gluPerspective(45.0f, 1.0f, 1.0f, 1500.f);
+	gluPerspective(45.0f, this->virt_width / this->virt_height, 1.0f, 1500.f);
 	glScalef (1.0f, -1.0f, 1.0f);
 	glTranslatef(0 - (this->virt_width / 2), 0 - (this->virt_height / 2), -1250.0f);
-	
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 }
