@@ -218,7 +218,7 @@ void Menu::doit()
 		render->renderText("Start a network game with N (buggy)", 20, y);
 		
 		y += 30;
-		render->renderText("Switch to fullscreen with P (really buggy)", 20, y);
+		render->renderText("Switch to fullscreen with P (sometimes buggy)", 20, y);
 
 		y += 60;
 		render->renderText("Quit with ESC", 20, y);

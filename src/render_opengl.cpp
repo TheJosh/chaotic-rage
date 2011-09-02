@@ -153,12 +153,17 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
-	gluPerspective(45.0f, this->virt_width / this->virt_height, 1.0f, 1500.f);
+	gluPerspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 1500.f);
 	glScalef (1.0f, -1.0f, 1.0f);
 	glTranslatef(0 - (this->virt_width / 2), 0 - (this->virt_height / 2), -1250.0f);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+
+	if (loaded.size() > 0) {
+		for (unsigned int i = 0; i != loaded.size(); i++) {
+			this->surfaceToOpenGL(loaded.at(i));
+		}
+	}
 }
 
 
@@ -189,8 +194,6 @@ void RenderOpenGL::saveScreenshot(string filename)
 **/
 SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 {
-	GLenum texture_format;
-	GLint num_colors;
 	SDL_Surface * surf;
 	
 	surf = IMG_Load_RW(rw, 0);
@@ -200,6 +203,7 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 		return NULL;
 	}
 	
+	// Checks
 	if ((surf->w & (surf->w - 1)) != 0) {
 		DEBUG("Bitmap '%s' width is not a power of 2.\n", filename.c_str());
 	}
@@ -208,34 +212,51 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 		DEBUG("Bitmap '%s' height is not a power of 2.\n", filename.c_str());
 	}
 	
-	// Determine OpenGL import type
-	num_colors = surf->format->BytesPerPixel;
-	if (num_colors == 4) {
-		if (surf->format->Rmask == 0x000000ff) {
-			texture_format = GL_RGBA;
-		} else {
-			texture_format = GL_BGRA;
-		}
-		
-	} else if (num_colors == 3) {
-		if (surf->format->Rmask == 0x000000ff) {
-			texture_format = GL_RGB;
-		} else {
-			texture_format = GL_BGR;
-		}
-		
-	} else {
+	if (surf->format->BytesPerPixel != 4 && surf->format->BytesPerPixel != 3) {
 		fprintf(stderr, "Bitmap '%s' not in 32-bit or 24-bit colour; unable to load into OpenGL\n", filename.c_str());
 		load_err = true;
 		return NULL;
 	}
-	
+
 	// Create the sprite object
 	SpritePtr sprite = new struct sprite();
 	sprite->w = surf->w;
 	sprite->h = surf->h;
 	sprite->orig = surf;
 	
+	this->surfaceToOpenGL(sprite);
+	
+	loaded.push_back(sprite);
+
+	return sprite;
+}
+
+
+/**
+* Loads an SDL_Surface into OpenGL
+**/
+void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
+{
+	GLenum texture_format;
+	GLint num_colors;
+
+	// Determine OpenGL import type
+	num_colors = sprite->orig->format->BytesPerPixel;
+	if (num_colors == 4) {
+		if (sprite->orig->format->Rmask == 0x000000ff) {
+			texture_format = GL_RGBA;
+		} else {
+			texture_format = GL_BGRA;
+		}
+		
+	} else if (num_colors == 3) {
+		if (sprite->orig->format->Rmask == 0x000000ff) {
+			texture_format = GL_RGB;
+		} else {
+			texture_format = GL_BGR;
+		}	
+	}
+
 	// Open texture handle
 	glGenTextures(1, &sprite->pixels);
 	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
@@ -244,11 +265,8 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surf->w, surf->h, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
-	
-	//SDL_FreeSurface(surf);
-	
-	return sprite;
+	// Load it
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sprite->orig->w, sprite->orig->h, 0, texture_format, GL_UNSIGNED_BYTE, sprite->orig->pixels);
 }
 
 
@@ -310,9 +328,6 @@ void RenderOpenGL::postGame()
 **/
 void RenderOpenGL::clearPixel(int x, int y)
 {
-	// TODO: code this
-	// Priority: Low
-	//setPixel(walls->surf, x, y, this->colourkey);
 }
 
 /**

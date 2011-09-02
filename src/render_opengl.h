@@ -47,6 +47,9 @@ class RenderOpenGL : public Render
 		FT_Library ft;
 		FT_Face face;
 		
+		vector<SpritePtr> loaded;
+
+
 	public:
 		int viewmode;
 		
@@ -79,6 +82,6 @@ class RenderOpenGL : public Render
 		
 	private:
 		void createVBO (WavefrontObj * obj);
-		
+		void surfaceToOpenGL(SpritePtr sprite);
 };
 

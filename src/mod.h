@@ -38,7 +38,7 @@ class Mod {
 		
 	public:
 		bool load();
-		
+
 		AnimModel * getAnimModel(int id);
 		FloorType * getFloorType(int id);
 		GameType * getGameType(int id);
