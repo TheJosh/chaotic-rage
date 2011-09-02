@@ -116,6 +116,7 @@ void Menu::doit()
 
 
 					case SDLK_l:
+					case SDLK_RETURN:
 						{
 							// Load map
 							Map *m = new Map(st);
@@ -225,7 +226,7 @@ void Menu::doit()
 		
 		y = render->virt_height - 30 * 7;
 		render->renderText("Controls:", 20, y); y += 30;
-		render->renderText("Move", 20, y); render->renderText("A-S-D-F", 230, y); y += 30;
+		render->renderText("Move", 20, y); render->renderText("W-S-A-D", 230, y); y += 30;
 		render->renderText("Look", 20, y); render->renderText("Mouse", 230, y); y += 30;
 		render->renderText("Action", 20, y); render->renderText("E", 230, y); y += 30;
 		render->renderText("Pick-up", 20, y); render->renderText("Q", 230, y); y += 30;
