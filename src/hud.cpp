@@ -143,10 +143,12 @@ int HUD::handleEvent(SDL_Event *event)
 
 		} else if (event->key.keysym.sym == SDLK_UP) {
 			this->st->local_players[0]->setWeapon(this->st->local_players[0]->getPrevWeaponID());
+			this->st->local_players[1]->setWeapon(this->st->local_players[1]->getPrevWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		}  else if (event->key.keysym.sym == SDLK_DOWN) {
 			this->st->local_players[0]->setWeapon(this->st->local_players[0]->getNextWeaponID());
+			this->st->local_players[1]->setWeapon(this->st->local_players[1]->getPrevWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		}
@@ -155,10 +157,12 @@ int HUD::handleEvent(SDL_Event *event)
 		// MOUSE BUTTON + SCROLL
 		if (event->button.button == SDL_BUTTON_WHEELUP) {
 			this->st->local_players[0]->setWeapon(this->st->local_players[0]->getPrevWeaponID());
+			this->st->local_players[0]->setWeapon(this->st->local_players[0]->getPrevWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		} else if (event->button.button == SDL_BUTTON_WHEELDOWN) {
 			this->st->local_players[0]->setWeapon(this->st->local_players[0]->getNextWeaponID());
+			this->st->local_players[1]->setWeapon(this->st->local_players[1]->getPrevWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		} else {

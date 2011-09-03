@@ -59,9 +59,12 @@ void gameLoop(GameState *st, Render *render)
 		st->update(delta);
 		handleEvents(st);
 		
-		if (st->local_players[0] && st->reset_mouse) {
-			st->local_players[0]->angleFromMouse(game_x[0], game_y[0], delta);		// one of these two is correct...
+		if (st->reset_mouse) {
+			if (st->local_players[0]) st->local_players[0]->angleFromMouse(game_x[0], game_y[0], delta);		// one of these two is correct...
+			if (st->local_players[1]) st->local_players[1]->angleFromMouse(game_x[1], game_y[1], delta);		// one of these two is correct...
 			game_x[0] = game_y[0] = 0;
+			game_x[1] = game_y[1] = 0;
+
 			SDL_WarpMouse(400, 30);
 		}
 		
