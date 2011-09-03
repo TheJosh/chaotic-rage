@@ -15,9 +15,10 @@ static void handleEvents(GameState *st);
 static bool running;
 
 
-// Mouse movement
-static int game_x, game_y;
-static int net_x, net_y;
+// Mouse movement, including keyboard simulation
+static int game_x[MAX_LOCAL], game_y[MAX_LOCAL];
+static int net_x[MAX_LOCAL], net_y[MAX_LOCAL];
+static int mk_down_x[MAX_LOCAL], mk_down_y[MAX_LOCAL];
 
 
 /**
@@ -27,9 +28,10 @@ void gameLoop(GameState *st, Render *render)
 {
 	int start = 0, delta = 0, net_time = 0, net_timestep = 50;
 	
-	game_x = game_y = 0;
-	net_x = net_y = 0;
-	
+	for (int i = 0; i < MAX_LOCAL; i++) {
+		game_x[i] = game_y[i] = net_x[i] = net_y[i] = mk_down_x[i] = mk_down_y[i] = 0;
+	}
+
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 	SDL_WarpMouse(400, 30);
 	
@@ -58,8 +60,8 @@ void gameLoop(GameState *st, Render *render)
 		handleEvents(st);
 		
 		if (st->local_players[0] && st->reset_mouse) {
-			st->local_players[0]->angleFromMouse(game_x, game_y, delta);		// one of these two is correct...
-			game_x = game_y = 0;
+			st->local_players[0]->angleFromMouse(game_x[0], game_y[0], delta);		// one of these two is correct...
+			game_x[0] = game_y[0] = 0;
 			SDL_WarpMouse(400, 30);
 		}
 		
@@ -70,8 +72,8 @@ void gameLoop(GameState *st, Render *render)
 			if (st->client) {
 				if (st->local_players[0] && st->reset_mouse) {
 					//st->local_players[0]->angleFromMouse(net_x, net_y, net_timestep);
-					st->client->addmsgKeyMouseStatus(net_x, net_y, net_timestep, st->local_players[0]->packKeys());
-					net_x = net_y = 0;
+					st->client->addmsgKeyMouseStatus(net_x[0], net_y[0], net_timestep, st->local_players[0]->packKeys());
+					net_x[0] = net_y[0] = 0;
 				}
 				st->client->update();
 			}
@@ -106,110 +108,152 @@ static void handleEvents(GameState *st)
 	while (SDL_PollEvent(&event)) {
 		if (st->hud->handleEvent(&event) == HUD::EVENT_PREVENT) continue;
 		
+		// General keys
 		if (event.type == SDL_QUIT) {
 			running = false;
 			
 		} else if (event.type == SDL_KEYDOWN) {
-			// Key press
-			switch (event.key.keysym.sym) {
-				case SDLK_w:
-					if (st->local_players[0] != NULL) st->local_players[0]->keyPress(Player::KEY_UP);
-					break;
-					
-				case SDLK_a:
-					if (st->local_players[0] != NULL) st->local_players[0]->keyPress(Player::KEY_LEFT);
-					break;
-					
-				case SDLK_s:
-					if (st->local_players[0] != NULL) st->local_players[0]->keyPress(Player::KEY_DOWN);
-					break;
-					
-				case SDLK_d:
-					if (st->local_players[0] != NULL) st->local_players[0]->keyPress(Player::KEY_RIGHT);
-					break;
-					
-				case SDLK_e:
-					if (st->local_players[0] != NULL) st->local_players[0]->keyPress(Player::KEY_USE);
-					break;
-				
-				case SDLK_q:
-					if (st->local_players[0] != NULL) st->local_players[0]->keyPress(Player::KEY_LIFT);
-					break;
+			if (event.key.keysym.sym == SDLK_ESCAPE) {
+				running = false;
 
-				case SDLK_ESCAPE:
-					running = false;
-					break;
-					
-					
-				case SDLK_PRINT:
-					{
-						string filename = getUserDataDir();
-						filename.append("screenshot");
-						((RenderOpenGL*) st->render)->saveScreenshot(filename);
-					}
-					break;
-				
-					
-				default: break;
+			} else if (event.key.keysym.sym == SDLK_PRINT) {
+				string filename = getUserDataDir();
+				filename.append("screenshot");
+				((RenderOpenGL*) st->render)->saveScreenshot(filename);
 			}
-			
-			
-		} else if (event.type == SDL_KEYUP) {
-			// Key Release
-			switch (event.key.keysym.sym) {
-				case SDLK_w:
-					if (st->local_players[0] != NULL) st->local_players[0]->keyRelease(Player::KEY_UP);
-					break;
-					
-				case SDLK_a:
-					if (st->local_players[0] != NULL) st->local_players[0]->keyRelease(Player::KEY_LEFT);
-					break;
-					
-				case SDLK_s:
-					if (st->local_players[0] != NULL) st->local_players[0]->keyRelease(Player::KEY_DOWN);
-					break;
-					
-				case SDLK_d:
-					if (st->local_players[0] != NULL) st->local_players[0]->keyRelease(Player::KEY_RIGHT);
-					break;
-					
-				case SDLK_e:
-					if (st->local_players[0] != NULL) st->local_players[0]->keyRelease(Player::KEY_USE);
-					break;
-				
-				case SDLK_q:
-					if (st->local_players[0] != NULL) st->local_players[0]->keyRelease(Player::KEY_LIFT);
-					break;
-
-				case SDLK_ESCAPE:
-					running = false;
-					break;
-					
-				default: break;
-			}
-			
-			
-		} else if (event.type == SDL_MOUSEMOTION) {
-			// Mouse motion
-			if (st->local_players[0] != NULL) {
-				game_x += event.motion.x - 400;
-				net_x += event.motion.x - 400;
-				
-				game_y += event.motion.y - 30;
-				net_y += event.motion.y - 30;
-			}
-			
-		} else if (event.type == SDL_MOUSEBUTTONDOWN) {
-			// Mouse down
-			if (st->local_players[0] != NULL) st->local_players[0]->keyPress(Player::KEY_FIRE);
-			
-			
-		} else if (event.type == SDL_MOUSEBUTTONUP) {
-			// Mouse up
-			if (st->local_players[0] != NULL) st->local_players[0]->keyRelease(Player::KEY_FIRE);
-			
-			
 		}
+
+
+		// TODO: More dynamic
+		
+		// One player, player one
+		if (st->num_local == 1 && st->local_players[0] != NULL) {
+			if (event.type == SDL_KEYDOWN) {
+				switch (event.key.keysym.sym) {
+					case SDLK_w: st->local_players[0]->keyPress(Player::KEY_UP); break;
+					case SDLK_a: st->local_players[0]->keyPress(Player::KEY_LEFT); break;
+					case SDLK_s: st->local_players[0]->keyPress(Player::KEY_DOWN); break;
+					case SDLK_d: st->local_players[0]->keyPress(Player::KEY_RIGHT); break;
+					case SDLK_e: st->local_players[0]->keyPress(Player::KEY_USE); break;
+					case SDLK_q: st->local_players[0]->keyPress(Player::KEY_LIFT); break;
+					default: break;
+				}
+			
+			} else if (event.type == SDL_KEYUP) {
+				switch (event.key.keysym.sym) {
+					case SDLK_w: st->local_players[0]->keyRelease(Player::KEY_UP); break;
+					case SDLK_a: st->local_players[0]->keyRelease(Player::KEY_LEFT); break;
+					case SDLK_s: st->local_players[0]->keyRelease(Player::KEY_DOWN); break;
+					case SDLK_d: st->local_players[0]->keyRelease(Player::KEY_RIGHT); break;
+					case SDLK_e: st->local_players[0]->keyRelease(Player::KEY_USE); break;
+					case SDLK_q: st->local_players[0]->keyRelease(Player::KEY_LIFT); break;
+					default: break;
+				}
+			
+			} else if (event.type == SDL_MOUSEMOTION) {
+				game_x[0] += event.motion.x - 400;
+				net_x[0] += event.motion.x - 400;
+				game_y[0] += event.motion.y - 30;
+				net_y[0] += event.motion.y - 30;
+			
+			} else if (event.type == SDL_MOUSEBUTTONDOWN) {
+				st->local_players[0]->keyPress(Player::KEY_FIRE);
+			
+			} else if (event.type == SDL_MOUSEBUTTONUP) {
+				st->local_players[0]->keyRelease(Player::KEY_FIRE);
+			}
+
+		} // end one player, one
+
+
+		// Two players, player one
+		if (st->num_local == 2 && st->local_players[0] != NULL) {
+			if (event.type == SDL_KEYDOWN) {
+				switch (event.key.keysym.sym) {
+					case SDLK_w: st->local_players[0]->keyPress(Player::KEY_UP); break;
+					case SDLK_a: st->local_players[0]->keyPress(Player::KEY_LEFT); break;
+					case SDLK_s: st->local_players[0]->keyPress(Player::KEY_DOWN); break;
+					case SDLK_d: st->local_players[0]->keyPress(Player::KEY_RIGHT); break;
+					case SDLK_e: st->local_players[0]->keyPress(Player::KEY_USE); break;
+					case SDLK_q: st->local_players[0]->keyPress(Player::KEY_LIFT); break;
+					case SDLK_o: mk_down_x[0] = -10; break;
+					case SDLK_p: mk_down_x[0] = 10; break;
+					case SDLK_9: mk_down_y[0] = -10; break;
+					case SDLK_l: mk_down_y[0] = 10; break;
+					case SDLK_j: st->local_players[0]->keyPress(Player::KEY_FIRE); break;
+					default: break;
+				}
+			
+			} else if (event.type == SDL_KEYUP) {
+				switch (event.key.keysym.sym) {
+					case SDLK_w: st->local_players[0]->keyRelease(Player::KEY_UP); break;
+					case SDLK_a: st->local_players[0]->keyRelease(Player::KEY_LEFT); break;
+					case SDLK_s: st->local_players[0]->keyRelease(Player::KEY_DOWN); break;
+					case SDLK_d: st->local_players[0]->keyRelease(Player::KEY_RIGHT); break;
+					case SDLK_e: st->local_players[0]->keyRelease(Player::KEY_USE); break;
+					case SDLK_q: st->local_players[0]->keyRelease(Player::KEY_LIFT); break;
+					case SDLK_o: mk_down_x[0] = 0; break;
+					case SDLK_p: mk_down_x[0] = 0; break;
+					case SDLK_9: mk_down_y[0] = 0; break;
+					case SDLK_l: mk_down_y[0] = 0; break;
+					case SDLK_j: st->local_players[0]->keyRelease(Player::KEY_FIRE); break;
+					default: break;
+				}
+			}
+
+		} // Two players, player one
+
+
+		// Two players, player two
+		// Keypad: Move = 8, 4, 5, 6; Action = 9; Lift = 7
+		if (st->num_local == 2 && st->local_players[1] != NULL) {
+			if (event.type == SDL_KEYDOWN) {
+				switch (event.key.keysym.sym) {
+					case SDLK_KP8: st->local_players[1]->keyPress(Player::KEY_UP); break;
+					case SDLK_KP4: st->local_players[1]->keyPress(Player::KEY_LEFT); break;
+					case SDLK_KP5: st->local_players[1]->keyPress(Player::KEY_DOWN); break;
+					case SDLK_KP6: st->local_players[1]->keyPress(Player::KEY_RIGHT); break;
+					case SDLK_KP9: st->local_players[1]->keyPress(Player::KEY_USE); break;
+					case SDLK_KP7: st->local_players[1]->keyPress(Player::KEY_LIFT); break;
+					default: break;
+				}
+			
+			} else if (event.type == SDL_KEYUP) {
+				switch (event.key.keysym.sym) {
+					case SDLK_KP8: st->local_players[1]->keyRelease(Player::KEY_UP); break;
+					case SDLK_KP4: st->local_players[1]->keyRelease(Player::KEY_LEFT); break;
+					case SDLK_KP5: st->local_players[1]->keyRelease(Player::KEY_DOWN); break;
+					case SDLK_KP6: st->local_players[1]->keyRelease(Player::KEY_RIGHT); break;
+					case SDLK_KP9: st->local_players[1]->keyRelease(Player::KEY_USE); break;
+					case SDLK_KP7: st->local_players[1]->keyRelease(Player::KEY_LIFT); break;
+					default: break;
+				}
+			
+			} else if (event.type == SDL_MOUSEMOTION) {
+				game_x[1] += event.motion.x - 400;
+				net_x[1] += event.motion.x - 400;
+				game_y[1] += event.motion.y - 30;
+				net_y[1] += event.motion.y - 30;
+			
+			} else if (event.type == SDL_MOUSEBUTTONDOWN) {
+				st->local_players[1]->keyPress(Player::KEY_FIRE);
+			
+			} else if (event.type == SDL_MOUSEBUTTONUP) {
+				st->local_players[1]->keyRelease(Player::KEY_FIRE);
+			}
+
+		} // Two players, player two
+
+
+	} // end while
+
+
+	// Process simulated mouse movements
+	if (st->num_local == 2 && st->local_players[0] != NULL) {
+		game_x[0] += mk_down_x[0];
+		net_x[0] += mk_down_x[0];
+		game_y[0] += mk_down_y[0];
+		net_y[0] += mk_down_y[0];
 	}
 }
 
