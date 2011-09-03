@@ -50,11 +50,11 @@ void NPC::update(int delta)
 	
 	
 	// This should be moved into a function in the GameLogic class
-	if (st->curr_player == NULL) return;
+	if (st->local_players[0] == NULL) return;
 	
 	if (st->game_time - vals[0] > 2500) {
 		vals[0] = st->game_time;
-		vals[1] = getAngleBetweenPoints((int)round(this->x), (int)round(this->y), (int)round(this->st->curr_player->x), (int)round(this->st->curr_player->y));
+		vals[1] = getAngleBetweenPoints((int)round(this->x), (int)round(this->y), (int)round(this->st->local_players[0]->x), (int)round(this->st->local_players[0]->y));
 		vals[1] = getRandom(vals[1] - 50, vals[1] + 50);
 		
 		this->desired_angle_aim = getRandom(vals[1] - 50, vals[1] + 50);

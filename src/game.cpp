@@ -36,8 +36,16 @@ void gameLoop(GameState *st, Render *render)
 	st->render->preGame();
 	
 	st->start();
+
+	st->logic->update(1);
 	st->logic->raise_gamestart();
 	
+	if (st->client == NULL) {
+		for (int i = 0; i < st->num_local; i++) {
+			st->logic->raise_playerjoin(i+1);		// TODO: Should be based on slot number
+		}
+	}
+
 	cout << "\n\n\n\n\n";
 	
 	running = true;
@@ -49,8 +57,8 @@ void gameLoop(GameState *st, Render *render)
 		st->update(delta);
 		handleEvents(st);
 		
-		if (st->curr_player && st->reset_mouse) {
-			st->curr_player->angleFromMouse(game_x, game_y, delta);		// one of these two is correct...
+		if (st->local_players[0] && st->reset_mouse) {
+			st->local_players[0]->angleFromMouse(game_x, game_y, delta);		// one of these two is correct...
 			game_x = game_y = 0;
 			SDL_WarpMouse(400, 30);
 		}
@@ -60,9 +68,9 @@ void gameLoop(GameState *st, Render *render)
 			net_time -= net_timestep;
 			
 			if (st->client) {
-				if (st->curr_player && st->reset_mouse) {
-					//st->curr_player->angleFromMouse(net_x, net_y, net_timestep);
-					st->client->addmsgKeyMouseStatus(net_x, net_y, net_timestep, st->curr_player->packKeys());
+				if (st->local_players[0] && st->reset_mouse) {
+					//st->local_players[0]->angleFromMouse(net_x, net_y, net_timestep);
+					st->client->addmsgKeyMouseStatus(net_x, net_y, net_timestep, st->local_players[0]->packKeys());
 					net_x = net_y = 0;
 				}
 				st->client->update();
@@ -105,27 +113,27 @@ static void handleEvents(GameState *st)
 			// Key press
 			switch (event.key.keysym.sym) {
 				case SDLK_w:
-					if (st->curr_player != NULL) st->curr_player->keyPress(Player::KEY_UP);
+					if (st->local_players[0] != NULL) st->local_players[0]->keyPress(Player::KEY_UP);
 					break;
 					
 				case SDLK_a:
-					if (st->curr_player != NULL) st->curr_player->keyPress(Player::KEY_LEFT);
+					if (st->local_players[0] != NULL) st->local_players[0]->keyPress(Player::KEY_LEFT);
 					break;
 					
 				case SDLK_s:
-					if (st->curr_player != NULL) st->curr_player->keyPress(Player::KEY_DOWN);
+					if (st->local_players[0] != NULL) st->local_players[0]->keyPress(Player::KEY_DOWN);
 					break;
 					
 				case SDLK_d:
-					if (st->curr_player != NULL) st->curr_player->keyPress(Player::KEY_RIGHT);
+					if (st->local_players[0] != NULL) st->local_players[0]->keyPress(Player::KEY_RIGHT);
 					break;
 					
 				case SDLK_e:
-					if (st->curr_player != NULL) st->curr_player->keyPress(Player::KEY_USE);
+					if (st->local_players[0] != NULL) st->local_players[0]->keyPress(Player::KEY_USE);
 					break;
 				
 				case SDLK_q:
-					if (st->curr_player != NULL) st->curr_player->keyPress(Player::KEY_LIFT);
+					if (st->local_players[0] != NULL) st->local_players[0]->keyPress(Player::KEY_LIFT);
 					break;
 
 				case SDLK_ESCAPE:
@@ -150,27 +158,27 @@ static void handleEvents(GameState *st)
 			// Key Release
 			switch (event.key.keysym.sym) {
 				case SDLK_w:
-					if (st->curr_player != NULL) st->curr_player->keyRelease(Player::KEY_UP);
+					if (st->local_players[0] != NULL) st->local_players[0]->keyRelease(Player::KEY_UP);
 					break;
 					
 				case SDLK_a:
-					if (st->curr_player != NULL) st->curr_player->keyRelease(Player::KEY_LEFT);
+					if (st->local_players[0] != NULL) st->local_players[0]->keyRelease(Player::KEY_LEFT);
 					break;
 					
 				case SDLK_s:
-					if (st->curr_player != NULL) st->curr_player->keyRelease(Player::KEY_DOWN);
+					if (st->local_players[0] != NULL) st->local_players[0]->keyRelease(Player::KEY_DOWN);
 					break;
 					
 				case SDLK_d:
-					if (st->curr_player != NULL) st->curr_player->keyRelease(Player::KEY_RIGHT);
+					if (st->local_players[0] != NULL) st->local_players[0]->keyRelease(Player::KEY_RIGHT);
 					break;
 					
 				case SDLK_e:
-					if (st->curr_player != NULL) st->curr_player->keyRelease(Player::KEY_USE);
+					if (st->local_players[0] != NULL) st->local_players[0]->keyRelease(Player::KEY_USE);
 					break;
 				
 				case SDLK_q:
-					if (st->curr_player != NULL) st->curr_player->keyRelease(Player::KEY_LIFT);
+					if (st->local_players[0] != NULL) st->local_players[0]->keyRelease(Player::KEY_LIFT);
 					break;
 
 				case SDLK_ESCAPE:
@@ -183,7 +191,7 @@ static void handleEvents(GameState *st)
 			
 		} else if (event.type == SDL_MOUSEMOTION) {
 			// Mouse motion
-			if (st->curr_player != NULL) {
+			if (st->local_players[0] != NULL) {
 				game_x += event.motion.x - 400;
 				net_x += event.motion.x - 400;
 				
@@ -193,12 +201,12 @@ static void handleEvents(GameState *st)
 			
 		} else if (event.type == SDL_MOUSEBUTTONDOWN) {
 			// Mouse down
-			if (st->curr_player != NULL) st->curr_player->keyPress(Player::KEY_FIRE);
+			if (st->local_players[0] != NULL) st->local_players[0]->keyPress(Player::KEY_FIRE);
 			
 			
 		} else if (event.type == SDL_MOUSEBUTTONUP) {
 			// Mouse up
-			if (st->curr_player != NULL) st->curr_player->keyRelease(Player::KEY_FIRE);
+			if (st->local_players[0] != NULL) st->local_players[0]->keyRelease(Player::KEY_FIRE);
 			
 			
 		}

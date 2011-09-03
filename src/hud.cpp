@@ -87,17 +87,17 @@ void HUD::render(RenderOpenGL * render)
 		}
 		
 		
-	} else if (this->weapon_menu && this->st->curr_player) {
+	} else if (this->weapon_menu && this->st->local_players[0]) {
 		// Weapon menu
 		SDL_Rect r = {100, 100, 125, 125};
-		unsigned int i, num = this->st->curr_player->getNumWeapons();
+		unsigned int i, num = this->st->local_players[0]->getNumWeapons();
 		
 		for (i = 0; i < num; i++) {
-			WeaponType *wt = this->st->curr_player->getWeaponAt(i);
+			WeaponType *wt = this->st->local_players[0]->getWeaponAt(i);
 			
 			render->renderSprite(wt->icon_large, r.x, r.y);
 			
-			if (i == this->st->curr_player->getCurrentWeaponID()) {
+			if (i == this->st->local_players[0]->getCurrentWeaponID()) {
 				render->renderSprite(wt->icon_large, 500, 500);
 			}
 			
@@ -142,11 +142,11 @@ int HUD::handleEvent(SDL_Event *event)
 			return HUD::EVENT_PREVENT;
 
 		} else if (event->key.keysym.sym == SDLK_UP) {
-			this->st->curr_player->setWeapon(this->st->curr_player->getPrevWeaponID());
+			this->st->local_players[0]->setWeapon(this->st->local_players[0]->getPrevWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		}  else if (event->key.keysym.sym == SDLK_DOWN) {
-			this->st->curr_player->setWeapon(this->st->curr_player->getNextWeaponID());
+			this->st->local_players[0]->setWeapon(this->st->local_players[0]->getNextWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		}
@@ -154,11 +154,11 @@ int HUD::handleEvent(SDL_Event *event)
 	} else if (this->weapon_menu and event->type == SDL_MOUSEBUTTONDOWN) {
 		// MOUSE BUTTON + SCROLL
 		if (event->button.button == SDL_BUTTON_WHEELUP) {
-			this->st->curr_player->setWeapon(this->st->curr_player->getPrevWeaponID());
+			this->st->local_players[0]->setWeapon(this->st->local_players[0]->getPrevWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		} else if (event->button.button == SDL_BUTTON_WHEELDOWN) {
-			this->st->curr_player->setWeapon(this->st->curr_player->getNextWeaponID());
+			this->st->local_players[0]->setWeapon(this->st->local_players[0]->getNextWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		} else {

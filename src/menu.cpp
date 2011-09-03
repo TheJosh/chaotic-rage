@@ -131,7 +131,9 @@ void Menu::doit()
 							st->logic->selected_unittype = st->getDefaultMod()->getUnitType(unittype);
 
 							st->client = NULL;
-							
+							st->num_local = 1;
+							st->local_players[0] = NULL;
+
 							((RenderOpenGL*)st->render)->viewmode = viewmode;
 							
 							// Begin!
@@ -160,7 +162,32 @@ void Menu::doit()
 						}
 						break;
 						
-						
+					case SDLK_m:
+						{
+							// Load map
+							Map *m = new Map(st);
+							m->load(maps[map], st->render);
+							st->curr_map = m;
+							
+							// Load gametype
+							new GameLogic(st);
+							GameType *gt = st->getDefaultMod()->getGameType(gametypes[gametype]);
+							st->logic->execScript(gt->script);
+							
+							st->logic->selected_unittype = st->getDefaultMod()->getUnitType(unittype);
+
+							st->client = NULL;
+							st->num_local = 2;
+							st->local_players[0] = NULL;
+							st->local_players[1] = NULL;
+
+							((RenderOpenGL*)st->render)->viewmode = viewmode;
+							
+							// Begin!
+							gameLoop(st, st->render);
+						}
+						break;
+
 					case SDLK_p:
 						render->setScreenSize(render->desktop_width, render->desktop_height, true);
 						break;
@@ -218,7 +245,10 @@ void Menu::doit()
 		render->renderText("Start a network game with N (buggy)", 20, y);
 		
 		y += 30;
-		render->renderText("Switch to fullscreen with P (sometimes buggy)", 20, y);
+		render->renderText("Start a split-screen game with M (less buggy)", 20, y);
+
+		y += 30;
+		render->renderText("Switch to fullscreen with P", 20, y);
 
 		y += 60;
 		render->renderText("Quit with ESC", 20, y);

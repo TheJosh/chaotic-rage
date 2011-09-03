@@ -38,10 +38,14 @@ GameState::GameState()
 {
 	this->anim_frame = 0;
 	this->game_time = 0;
-	this->curr_player = NULL;
+	this->num_local = 0;
 	this->curr_slot = 1;
 	this->reset_mouse = false;
-	
+
+	for (unsigned int i = 0; i < MAX_LOCAL; i++) {
+		this->local_players[i] = NULL;
+	}
+
 	this->render = NULL;
 	this->hud = NULL;
 	this->audio = NULL;
@@ -167,7 +171,6 @@ void GameState::start()
 	// It should technically be 0, but 1 avoids division-by-zero
 	this->game_time = 1;
 	this->anim_frame = 1;
-	this->curr_player = NULL;
 	this->reset_mouse = false;
 }
 

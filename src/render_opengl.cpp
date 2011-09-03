@@ -65,12 +65,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	this->real_width = width;
 	this->real_height = height;
 	
-	// TODO: we need to keep track of all textures
-	// because when this method runs again, we need to re-load everything
-	// back into OpenGL
-	// Priority: Medium
-	
-	
+
 	// SDL
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	
@@ -84,9 +79,6 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	}
 	
 	SDL_WM_SetCaption("Chaotic Rage", "Chaotic Rage");
-	
-	this->virt_height = 1000;
-	this->virt_width = (int) floor(this->virt_height * (float)width / (float)height);
 	
 
 	// SDL_Image
@@ -136,34 +128,58 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	}
 	
 	
-	// OpenGL env
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_LIGHTING);
-	glEnable(GL_DEPTH_TEST);
-	
-	glDepthFunc(GL_LEQUAL);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	
-	glViewport(0, 0, width, height);
-	
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	
-	gluPerspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 1500.f);
-	glScalef (1.0f, -1.0f, 1.0f);
-	glTranslatef(0 - (this->virt_width / 2), 0 - (this->virt_height / 2), -1250.0f);
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	if (loaded.size() > 0) {
 		for (unsigned int i = 0; i != loaded.size(); i++) {
 			this->surfaceToOpenGL(loaded.at(i));
 		}
 	}
+
+
+	// OpenGL env
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+
+	mainViewport(1, 1);
+}
+
+
+/**
+* Set up the OpenGL viewport
+*
+* s = Screen no
+* of = Total number of screens
+**/
+void RenderOpenGL::mainViewport(int s, int of)
+{
+	int w = this->real_width;
+	int h = this->real_height;
+	int x = 0;
+	int y = 0;
+
+	if (of == 2) {
+		h /= 2;
+		y = (s == 1 ? 0 : h);
+	}
+
+	this->virt_height = 1000;
+	this->virt_width = (int) floor(this->virt_height * (float)w / (float)h);
+
+	glViewport(x, y, w, h);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	gluPerspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 1500.f);
+	glScalef (1.0f, -1.0f, 1.0f);
+	glTranslatef(0 - (this->virt_width / 2), 0 - (this->virt_height / 2), -1250.0f);
+
+	glMatrixMode(GL_MODELVIEW);
 }
 
 
@@ -320,6 +336,7 @@ void RenderOpenGL::postGame()
 	delete(this->test);
 
 	SDL_ShowCursor(SDL_ENABLE);
+	mainViewport(1, 1);
 }
 
 
@@ -572,30 +589,50 @@ void RenderOpenGL::renderCharacter(char c)
 }
 
 
+
 /**
 * Renders
 **/
 void RenderOpenGL::render()
 {
-	unsigned int i;
-	
-	int x, y;	// for general use
-	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_MODELVIEW);
-	
-	
-	
-	// Background
-	if (st->curr_player != NULL) {
+
+	for (int i = 0; i < this->st->num_local; i++) {
+		this->render_player = this->st->local_players[i];
+		mainViewport(i, this->st->num_local);
+
+		background();
+		mainRot();
+		lights();
+		map();
+		entities();
+		hud();
+	}
+
+	SDL_GL_SwapBuffers();
+}
+
+
+/**
+* Background
+**/
+void RenderOpenGL::background()
+{
+	if (this->render_player != NULL) {
 		glLoadIdentity();
 		glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
-		glRotatef(st->curr_player->angle, 0, 0, 1);
+		glRotatef(this->render_player->angle, 0, 0, 1);
 		glTranslatef(0 - st->curr_map->background->w / 2, 0 - st->curr_map->background->h / 2, 0);
 		this->renderSprite(st->curr_map->background, 0, 0);
 	}
+}
 
-	
+
+/**
+* Main rotation for camera
+**/
+void RenderOpenGL::mainRot()
+{
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_NORMALIZE);
@@ -608,7 +645,7 @@ void RenderOpenGL::render()
 	glLoadIdentity();
 	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
 	
-	if (st->curr_player == NULL) {
+	if (this->render_player == NULL) {
 		glDisable(GL_LIGHTING);
 		glRotatef(22, 0, 0, 1);
 		glRotatef(12, 1, 0, 0);
@@ -629,11 +666,20 @@ void RenderOpenGL::render()
 		
 		}
 		
-		glRotatef(st->curr_player->angle, 0, 0, 1);
-		glTranslatef(0 - st->curr_player->x, 0 - st->curr_player->y, 500);
+		glRotatef(this->render_player->angle, 0, 0, 1);
+		glTranslatef(0 - this->render_player->x, 0 - this->render_player->y, 500);
 	}
+}
 	
-	
+
+/**
+* Lighting
+**/
+void RenderOpenGL::lights()
+{
+	unsigned int i;
+	int x, y;
+
 	// Lights
 	GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	GLfloat spot_torch[] = { -1.0f, -1.0f, 0.0f };
@@ -642,15 +688,15 @@ void RenderOpenGL::render()
 	for (i = 0; i < st->curr_map->lights.size(); i++) {
 		Light * l = st->curr_map->lights[i];
 		
-		if (l->type == 2 && st->curr_player == NULL) continue;
+		if (l->type == 2 && this->render_player == NULL) continue;
 		
 		glPushMatrix();
 			if (l->type == 1) {
 				glTranslatef(l->x, l->y, l->z);
 				
 			} else if (l->type == 2) {
-				glTranslatef(st->curr_player->x, st->curr_player->y, 50);
-				glRotatef((360+40) - st->curr_player->angle, 0, 0, 1);
+				glTranslatef(this->render_player->x, this->render_player->y, 50);
+				glRotatef((360+40) - this->render_player->angle, 0, 0, 1);
 				glRotatef(20, 1, 0, 0);
 				
 				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_torch);
@@ -673,8 +719,17 @@ void RenderOpenGL::render()
 		
 		if (i == 7) break;
 	}
-	
-	
+}
+
+
+/**
+* Floor
+**/
+void RenderOpenGL::map()
+{
+	unsigned int i;
+	int x, y;
+
 	GLfloat emission[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	glMaterialfv(GL_FRONT, GL_EMISSION, emission);
 	
@@ -765,7 +820,17 @@ void RenderOpenGL::render()
 		
 		glPopMatrix();
 	}
-	
+}
+
+
+/**
+* Entities
+**/
+void RenderOpenGL::entities()
+{
+	unsigned int i;
+	int x, y;
+
 	glTranslatef(0, 0, 10);
 
 
@@ -773,7 +838,7 @@ void RenderOpenGL::render()
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
 		Entity *e = (*it);
 		
-		if (this->viewmode == 2 && e == st->curr_player) continue;
+		if (this->viewmode == 2 && e == this->render_player) continue;
 		
 		AnimPlay *play = e->getAnimModel();
 		
@@ -788,10 +853,15 @@ void RenderOpenGL::render()
 			glPopMatrix();
 		}
 	}
-	
-	
-	// Testing: show collide boxes
-	/*for (list<CollideBox*>::iterator it = st->collideboxes.begin(); it != st->collideboxes.end(); it++) {
+}
+
+
+/**
+* Testing: show collide boxes
+**/
+void RenderOpenGL::collides()
+{
+	for (list<CollideBox*>::iterator it = st->collideboxes.begin(); it != st->collideboxes.end(); it++) {
 		CollideBox *c = (*it);
 		
 		glPushMatrix();
@@ -801,17 +871,20 @@ void RenderOpenGL::render()
 		renderAnimPlay(this->test);
 		
 		glPopMatrix();
-	}*/
-	
-	
-	// HUD
+	}
+}
+
+
+/**
+* Heads-up display
+**/
+void RenderOpenGL::hud()
+{
 	glLoadIdentity();
 	glTranslatef(0, 0, 40);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 	st->hud->render(this);
-	
-	SDL_GL_SwapBuffers();
 }
 
 

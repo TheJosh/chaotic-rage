@@ -4,10 +4,11 @@
 
 
 bind_playerjoin(function(slot)
+	show_alert_message("raise_playerjoin(" .. slot .. ")");
+	debug("raise_playerjoin(" .. slot .. ")");
+
 	
-	add_timer(1000, function()
-		add_player("maniac", factions.team1, slot);
-	end);
+	add_player("robot", factions.team1, slot);
 	
 end);
 

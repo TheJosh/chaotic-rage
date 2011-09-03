@@ -113,7 +113,10 @@ void GameLogic::update(int deglta)
 
 #define LUA_DEFINE_RAISE_INTARG(name) void GameLogic::raise_##name(int arg) \
 { \
+	cout << "raise_" #name "(" << arg << ")\n"; \
+	cout << "num binds: " << this->binds_##name.size() << "\n"; \
 	for (unsigned int id = 0; id < this->binds_##name.size(); id++) { \
+		cout << "bind: " << id << "\n"; \
 		int ref = this->binds_##name.at(id); \
 		lua_rawgeti(L, LUA_REGISTRYINDEX, ref); \
 		lua_pushinteger(L, arg); \
@@ -190,6 +193,8 @@ LUA_FUNC(bind_gamestart)
 **/
 LUA_FUNC(bind_playerjoin)
 {
+	cout << "bind_playerjoin\n";
+
 	if (! lua_isfunction(L, 1)) {
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);
@@ -411,11 +416,20 @@ LUA_FUNC(add_player)
 	
 	gl->st->addUnit(p);
 	
-	if (gl->st->curr_slot == slot) {
-		gl->st->curr_player = p;
+	// SHould run off 'current slot'
+	if (1 == slot) {
+		gl->st->local_players[0] = p;
 		if (gl->st->hud) gl->st->hud->hideSpawnMenu();
 	}
 	
+	// HACK
+	// TODO: Should be based on slot number
+	if (2 == slot) {
+		gl->st->local_players[1] = p;
+		if (gl->st->hud) gl->st->hud->hideSpawnMenu();
+	}
+	
+
 	return 0;
 }
 

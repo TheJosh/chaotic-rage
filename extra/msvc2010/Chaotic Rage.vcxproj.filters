@@ -330,5 +330,11 @@
     <None Include="..\..\data\cr\objecttypes.conf">
       <Filter>Configs</Filter>
     </None>
+    <None Include="..\..\data\cr\gametypes\boredem.lua">
+      <Filter>Gametypes</Filter>
+    </None>
+    <None Include="..\..\data\cr\gametypes\test.lua">
+      <Filter>Gametypes</Filter>
+    </None>
   </ItemGroup>
 </Project>

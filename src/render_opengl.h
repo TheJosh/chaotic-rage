@@ -49,6 +49,8 @@ class RenderOpenGL : public Render
 		
 		vector<SpritePtr> loaded;
 
+		Unit* render_player;
+
 
 	public:
 		int viewmode;
@@ -83,5 +85,14 @@ class RenderOpenGL : public Render
 	private:
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
+
+		void mainViewport(int s, int of);
+		void background();
+		void mainRot();
+		void lights();
+		void map();
+		void entities();
+		void collides();
+		void hud();
 };
 

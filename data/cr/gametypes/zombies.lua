@@ -46,16 +46,15 @@ end;
 --
 -- Spawn a player
 --
-spawn_player = function()
-	add_player(get_selected_unittype(), factions.team1, 1);
-end;
+bind_playerjoin(function(slot)
+	add_player("robot", factions.team1, slot);
+end);
 
 
 --
 -- Game start
 --
 bind_gamestart(function()
-	add_timer(2500, spawn_player);
 	add_timer(5000, start_round);
 end);
 
@@ -65,7 +64,10 @@ end);
 --
 bind_playerdied(function()
 	show_alert_message("Just not good enough I see...");
-	add_timer(2500, spawn_player);
+
+	add_timer(2000, function()
+		add_player("maniac", factions.team1, 1);
+	end);
 end);
 
 

@@ -10,6 +10,9 @@
 using namespace std;
 
 
+#define MAX_LOCAL 4
+
+
 class GameState
 {
 	friend class RenderSDL;
@@ -32,7 +35,9 @@ class GameState
 		Map* curr_map;
 		bool reset_mouse;
 		
-		Player* curr_player;
+		Player* local_players[MAX_LOCAL];
+		int num_local;
+
 		int curr_slot;
 		
 		unsigned int anim_frame;
