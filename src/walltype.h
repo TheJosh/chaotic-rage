@@ -31,7 +31,8 @@ class WallType
 		AnimModel * model;
 		
 		int check_radius;
-		
+		int health;
+
 		// dynamic
 		int id;
 		SpritePtr surf;

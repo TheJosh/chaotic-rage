@@ -14,7 +14,7 @@ Object::Object(ObjectType *ot, GameState *st) : Entity(st)
 {
 	this->ot = ot;
 	this->anim = new AnimPlay(ot->model);
-	this->health = 10000;
+	this->health = ot->health;
 	this->cb = NULL;
 }
 

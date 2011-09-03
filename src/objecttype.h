@@ -26,7 +26,8 @@ class ObjectType
 		ObjectType * ground_type;
 		AnimModel * model;
 		int check_radius;
-		
+		int health;
+
 		vector <ObjectTypeDamage *> damage_models;
 		vector <AudioPtr> walk_sounds;
 		

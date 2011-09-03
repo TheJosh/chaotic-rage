@@ -14,7 +14,7 @@ Wall::Wall(WallType *wt, GameState *st) : Entity(st)
 {
 	this->wt = wt;
 	this->anim = new AnimPlay(wt->model);
-	this->health = 10000;
+	this->health = wt->health;
 	this->cb = NULL;
 }
 
