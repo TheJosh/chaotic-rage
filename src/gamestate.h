@@ -36,8 +36,8 @@ class GameState
 		bool reset_mouse;
 		
 		Player* local_players[MAX_LOCAL];
-		int num_local;
-
+		unsigned int num_local;
+		
 		int curr_slot;
 		
 		unsigned int anim_frame;

@@ -597,7 +597,7 @@ void RenderOpenGL::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	for (int i = 0; i < this->st->num_local; i++) {
+	for (unsigned int i = 0; i < this->st->num_local; i++) {
 		this->render_player = this->st->local_players[i];
 		mainViewport(i, this->st->num_local);
 
@@ -678,7 +678,6 @@ void RenderOpenGL::mainRot()
 void RenderOpenGL::lights()
 {
 	unsigned int i;
-	int x, y;
 
 	// Lights
 	GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -749,19 +748,19 @@ void RenderOpenGL::map()
 		glTranslatef(0 - x, 0 - y, 0);
 		
 		glBindTexture(GL_TEXTURE_2D, a->type->texture->pixels);
- 		
- 		a->width = a->height = 10;
- 		
- 		float texw = 1.0;
- 		float texh = 1.0;
- 		if (! a->type->stretch) {
- 			texw = ((float)a->width) / ((float)a->type->texture->w);
- 			texh = ((float)a->height) / ((float)a->type->texture->h);
- 		}
- 		
- 		glEnable(GL_NORMALIZE);
- 		glLightModeli (GL_LIGHT_MODEL_COLOR_CONTROL,GL_SEPARATE_SPECULAR_COLOR);
- 		glShadeModel(GL_SMOOTH);
+		
+		a->width = a->height = 10;
+		
+		float texw = 1.0;
+		float texh = 1.0;
+		if (! a->type->stretch) {
+			texw = ((float)a->width) / ((float)a->type->texture->w);
+			texh = ((float)a->height) / ((float)a->type->texture->h);
+		}
+		
+		glEnable(GL_NORMALIZE);
+		glLightModeli (GL_LIGHT_MODEL_COLOR_CONTROL,GL_SEPARATE_SPECULAR_COLOR);
+		glShadeModel(GL_SMOOTH);
 		
 		glNormal3f(0, 0, 1);
 		
@@ -828,12 +827,9 @@ void RenderOpenGL::map()
 **/
 void RenderOpenGL::entities()
 {
-	unsigned int i;
-	int x, y;
-
 	glTranslatef(0, 0, 10);
-
-
+	
+	
 	// Entities
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
 		Entity *e = (*it);

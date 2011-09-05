@@ -43,7 +43,7 @@ void gameLoop(GameState *st, Render *render)
 	st->logic->raise_gamestart();
 	
 	if (st->client == NULL) {
-		for (int i = 0; i < st->num_local; i++) {
+		for (unsigned int i = 0; i < st->num_local; i++) {
 			st->logic->raise_playerjoin(i+1);		// TODO: Should be based on slot number
 		}
 	}
@@ -183,7 +183,7 @@ static void handleEvents(GameState *st)
 					case SDLK_p: mk_down_x[0] = 10; break;
 					case SDLK_9: mk_down_y[0] = -10; break;
 					case SDLK_l: mk_down_y[0] = 10; break;
-					case SDLK_j: st->local_players[0]->keyPress(Player::KEY_FIRE); break;
+					case SDLK_k: st->local_players[0]->keyPress(Player::KEY_FIRE); break;
 					default: break;
 				}
 			
@@ -199,7 +199,7 @@ static void handleEvents(GameState *st)
 					case SDLK_p: mk_down_x[0] = 0; break;
 					case SDLK_9: mk_down_y[0] = 0; break;
 					case SDLK_l: mk_down_y[0] = 0; break;
-					case SDLK_j: st->local_players[0]->keyRelease(Player::KEY_FIRE); break;
+					case SDLK_k: st->local_players[0]->keyRelease(Player::KEY_FIRE); break;
 					default: break;
 				}
 			}
