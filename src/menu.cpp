@@ -262,7 +262,7 @@ void Menu::doit()
 		render->renderText("Action", 20, y); render->renderText("E", 230, y); y += 30;
 		render->renderText("Pick-up", 20, y); render->renderText("Q", 230, y); y += 30;
 		render->renderText("Fire", 20, y); render->renderText("Left-Click", 230, y); y += 30;
-		render->renderText("Change weapon", 20, y); render->renderText("Shift, Scroll, Click", 230, y); y += 30;
+		render->renderText("Change weapon", 20, y); render->renderText("Scroll-wheel", 230, y); y += 30;
 
 
 		SDL_GL_SwapBuffers();
