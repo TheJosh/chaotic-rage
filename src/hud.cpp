@@ -157,14 +157,14 @@ int HUD::handleEvent(SDL_Event *event)
 		// MOUSE BUTTON + SCROLL
 		if (event->button.button == SDL_BUTTON_WHEELUP) {
 			if (! this->weapon_menu) this->weapon_menu = true;
-			this->st->local_players[0]->setWeapon(this->st->local_players[0]->getPrevWeaponID());
-			this->st->local_players[1]->setWeapon(this->st->local_players[1]->getPrevWeaponID());
+			if (this->st->local_players[0]) this->st->local_players[0]->setWeapon(this->st->local_players[0]->getPrevWeaponID());
+			if (this->st->local_players[1]) this->st->local_players[1]->setWeapon(this->st->local_players[1]->getPrevWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		} else if (event->button.button == SDL_BUTTON_WHEELDOWN) {
 			if (! this->weapon_menu) this->weapon_menu = true;
-			this->st->local_players[0]->setWeapon(this->st->local_players[0]->getNextWeaponID());
-			this->st->local_players[1]->setWeapon(this->st->local_players[1]->getNextWeaponID());
+			if (this->st->local_players[0]) this->st->local_players[0]->setWeapon(this->st->local_players[0]->getNextWeaponID());
+			if (this->st->local_players[1]) this->st->local_players[1]->setWeapon(this->st->local_players[1]->getNextWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		} else {
