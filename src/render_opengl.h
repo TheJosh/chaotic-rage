@@ -78,7 +78,7 @@ class RenderOpenGL : public Render
 		
 	protected:
 		void renderObj (WavefrontObj * obj);
-		void renderAnimPlay(AnimPlay * play);
+		void renderAnimPlay(AnimPlay * play, int angle);
 		void renderText(string text, int x, int y);
 		void renderCharacter(char c);
 		

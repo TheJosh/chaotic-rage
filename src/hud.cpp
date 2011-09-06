@@ -80,7 +80,7 @@ void HUD::render(RenderOpenGL * render)
 			glRotatef(180, 0, 0, 1);
 			
 			AnimPlay * play = new AnimPlay(ucs->model);
-			((RenderOpenGL*) render)->renderAnimPlay(play);
+			((RenderOpenGL*) render)->renderAnimPlay(play, 0);
 			delete(play);
 			
 			glPopMatrix();

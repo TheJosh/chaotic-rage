@@ -463,7 +463,7 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 }
 
 
-void RenderOpenGL::renderAnimPlay(AnimPlay * play)
+void RenderOpenGL::renderAnimPlay(AnimPlay * play, int angle)
 {
 	AnimModel * model;
 	
@@ -483,8 +483,12 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play)
 		glBindTexture(GL_TEXTURE_2D, model->meshframes[d]->texture->pixels);
 		
 		glMaterialfv(GL_FRONT, GL_EMISSION, model->meshframes[d]->emission);
-
+		
 		glPushMatrix();
+		
+		if (model->meshframes[d]->do_angle) {
+			glRotatef(0 - angle, 0, 0, 1);
+		}
 		
 		glTranslatef(model->meshframes[d]->px, model->meshframes[d]->py, model->meshframes[d]->pz);
 		glRotatef(model->meshframes[d]->rx, 1, 0, 0);
@@ -705,7 +709,7 @@ void RenderOpenGL::lights()
 				
 				/*glPushMatrix();
 				glScalef(10,10,10);
-				renderAnimPlay(this->test);
+				renderAnimPlay(this->test, 0);
 				glPopMatrix();*/
 			}
 			
@@ -842,9 +846,8 @@ void RenderOpenGL::entities()
 			glPushMatrix();
 			
 			glTranslatef(e->x, e->y, e->z);
-			glRotatef(0 - e->angle, 0, 0, 1);
 			
-			renderAnimPlay(play);
+			renderAnimPlay(play, e->angle);
 			
 			glPopMatrix();
 		}
@@ -864,7 +867,7 @@ void RenderOpenGL::collides()
 		
 		glTranslatef(c->x, c->y, 100);
 		glScalef(c->radius, c->radius, c->radius);
-		renderAnimPlay(this->test);
+		renderAnimPlay(this->test, 0);
 		
 		glPopMatrix();
 	}

@@ -22,7 +22,8 @@ class MeshFrame
 		float rx, ry, rz;		// rotate
 		float sx, sy, sz;		// scale
 		float emission [4];
-
+		bool do_angle;
+		
 		// dynamic
 		WavefrontObj * mesh;
 		SpritePtr texture;
