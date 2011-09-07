@@ -24,7 +24,7 @@ AudioNull::AudioNull(GameState * st) : Audio(st) {}
 
 void AudioNull::play() {}
 
-int AudioNull::playSound(Sound * snd, bool loop) { return 0; }
+int AudioNull::playSound(Sound * snd, bool loop, Entity *e) { return 0; }
 
 void AudioNull::playSong(Song * sng) {}
 

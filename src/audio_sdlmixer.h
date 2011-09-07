@@ -31,7 +31,7 @@ class AudioSDLMixer : Audio
 		/**
 		* Plays a sound
 		**/
-		virtual int playSound(Sound * snd, bool loop);
+		virtual int playSound(Sound * snd, bool loop, Entity *e);
 		
 		/**
 		* Plays a song

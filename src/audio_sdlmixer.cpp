@@ -71,6 +71,7 @@ void AudioSDLMixer::play()
 **/
 void AudioSDLMixer::playSong(Song * sg)
 {
+	Mix_VolumeMusic(40);
 	Mix_PlayMusic(sg->music, 1);
 }
 
@@ -79,9 +80,13 @@ void AudioSDLMixer::playSong(Song * sg)
 * An entity wants to play a sound
 * Returns an int which can be used to halt the sound
 **/
-int AudioSDLMixer::playSound(Sound * snd, bool loop)
+int AudioSDLMixer::playSound(Sound * snd, bool loop, Entity *e)
 {
 	if (snd == NULL) return -1;
+
+	float vol = sqrt( ((st->local_players[0]->x - e->x) * (st->local_players[0]->x - e->x)) + ((st->local_players[0]->y - e->y) * (st->local_players[0]->y - e->y)) );
+	if (vol > 250.0) return -1;
+
 	return Mix_PlayChannel(-1, snd->sound, loop ? -1 : 0);
 }
 

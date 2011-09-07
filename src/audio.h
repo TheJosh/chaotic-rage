@@ -33,7 +33,7 @@ class Audio
 		* Plays a sound
 		* Returns a sound id, or -1 on error
 		**/
-		virtual int playSound(Sound * snd, bool loop) = 0;
+		virtual int playSound(Sound * snd, bool loop, Entity *e) = 0;
 		
 		/**
 		* Plays a song
