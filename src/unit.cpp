@@ -290,11 +290,13 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	} else if (this->drive_obj) {
 		this->drive_obj->x = pointPlusAngleX(this->x, this->angle, -20);
 		this->drive_obj->y = pointPlusAngleY(this->y, this->angle, -20);
+		this->drive_obj->y = this->z;
 		this->drive_obj->angle = this->angle;
 
 	} else if (this->turret_obj) {
 		this->x = this->turret_obj->x;
 		this->y = this->turret_obj->y;
+		this->z = this->turret_obj->z + 20;
 		this->turret_obj->angle = this->angle;
 	}
 
