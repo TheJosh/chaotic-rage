@@ -33,7 +33,8 @@ void Menu::doit()
 	maps.push_back("blank");
 	maps.push_back("pacman");
 	maps.push_back("warfare");
-
+	maps.push_back("arena");
+	
 	int gametype = 0;
 	vector<string> gametypes;
 	{
