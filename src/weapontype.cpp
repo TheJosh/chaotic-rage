@@ -51,12 +51,6 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		wt->pg = mod->getParticleGenType(tmp);
 	}
 	
-	// Load large icon
-	filename = getDataDirectory(DF_WEAPONS);
-	filename.append(cfg_getstr(cfg_item, "name"));
-	filename.append(".png");
-	wt->icon_large = mod->st->render->loadSprite(filename, mod);
-	
 	
 	/// Sounds ///
 	int num_sounds = cfg_size(cfg_item, "sound");
@@ -112,5 +106,4 @@ Sound* WeaponType::getSound(int type)
 WeaponType::WeaponType()
 {
 	this->pg = NULL;
-	this->icon_large = NULL;
 }

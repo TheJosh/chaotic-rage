@@ -29,7 +29,6 @@ class WeaponType
 	public:
 		string title;
 		ParticleGenType *pg;
-		SpritePtr icon_large;
 		
 		vector<WeaponTypeSound*> sounds;
 		

@@ -542,27 +542,26 @@ void RenderOpenGL::renderText(string text, int x, int y)
 void RenderOpenGL::renderCharacter(char character)
 {
 	if ((int) character < 32 || (int) character > 128) return;
-
+	
 	FT_GlyphSlot slot = face->glyph;
-	float tx, ty;
 	FreetypeChar *c = &(this->char_tex[(int) character - 32]);
-
-
+	
+	
 	// Load glyph image into the slot
 	int error = FT_Load_Char(this->face, character, FT_LOAD_DEFAULT);
 	if (error) return;
 	
-
+	
 	// If the OpenGL tex does not exist for this character, create it
 	if (c->tex == 0) {
 		error = FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL);
 		if (error) return;
-
+		
 		int width = next_pot(slot->bitmap.width);
 		int height = next_pot(slot->bitmap.rows);
-
+		
 		GLubyte* gl_data = new GLubyte[2 * width * height];
-	
+		
 		for (int j = 0; j < height; j++) {
 			for (int i = 0; i < width; i++) {
 			
@@ -572,16 +571,16 @@ void RenderOpenGL::renderCharacter(char character)
 			
 			}
 		}
-	
+		
 		// Create a texture
 		glGenTextures(1, &c->tex);
 		glBindTexture(GL_TEXTURE_2D, c->tex);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, gl_data);
-	
+		
 		delete [] gl_data;
-
+		
 		c->w = slot->bitmap.width;
 		c->h = slot->bitmap.rows;
 		c->x = slot->bitmap_left;
@@ -589,13 +588,13 @@ void RenderOpenGL::renderCharacter(char character)
 		c->tx = (float)slot->bitmap.width / (float)width;
 		c->ty = (float)slot->bitmap.rows / (float)height;
 	}
-
-
+	
+	
 	// Render
 	glPushMatrix();
 	glTranslatef(c->x, 0 - c->y, 0);
 	glBindTexture(GL_TEXTURE_2D, c->tex);
-
+	
 	glBegin(GL_QUADS);
 		glTexCoord2d(0,c->ty); glVertex2f(0,c->h);
 		glTexCoord2d(0,0); glVertex2f(0,0);
