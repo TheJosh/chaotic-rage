@@ -594,8 +594,11 @@ void RenderOpenGL::renderCharacter(char c)
 
 
 
+
+
 /**
-* Renders
+* This is the main render function.
+* It calls all of the sub-render parts which are defined below.
 **/
 void RenderOpenGL::render()
 {
@@ -604,7 +607,7 @@ void RenderOpenGL::render()
 	for (unsigned int i = 0; i < this->st->num_local; i++) {
 		this->render_player = this->st->local_players[i];
 		mainViewport(i, this->st->num_local);
-
+		
 		background();
 		mainRot();
 		lights();
@@ -663,18 +666,25 @@ void RenderOpenGL::mainRot()
 		} else if (this->viewmode == 1) {		// Behind (3rd person)
 			glRotatef(60, 1, 0, 0);
 			glTranslatef(0,750,-125);
-		
+			
 		} else if (this->viewmode == 2) {		// First person
 			glRotatef(80, 1, 0, 0);
 			glTranslatef(0,1220,-380);
-		
 		}
 		
 		glRotatef(this->render_player->angle, 0, 0, 1);
 		glTranslatef(0 - this->render_player->x, 0 - this->render_player->y, 500);
 	}
-}
 	
+	if (this->viewmode != 0) {
+		glEnable(GL_FOG);
+		glFogi (GL_FOG_MODE, GL_LINEAR);
+		glFogf (GL_FOG_START, 400);
+		glFogf (GL_FOG_END, 200);
+		glFogf (GL_FOG_DENSITY, 0.3);
+	}
+}
+
 
 /**
 * Lighting
@@ -879,10 +889,12 @@ void RenderOpenGL::collides()
 **/
 void RenderOpenGL::hud()
 {
-	glLoadIdentity();
-	glTranslatef(0, 0, 40);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_FOG);
+	
+	glLoadIdentity();
+	glTranslatef(0, 0, 40);
 	st->hud->render(this);
 }
 
