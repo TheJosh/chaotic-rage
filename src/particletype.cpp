@@ -33,8 +33,7 @@ cfg_opt_t particletype_opts[] =
 // Particle generator spewage
 static cfg_opt_t spew_opts[] =
 {
-	CFG_STR((char*) "name", 0, CFGF_NONE),
-	CFG_INT((char*) "type", 0, CFGF_NONE),
+	CFG_STR((char*) "type", (char*)"", CFGF_NONE),
 	CFG_INT((char*) "angle_range", 0, CFGF_NONE),
 	CFG_INT((char*) "rate", 0, CFGF_NONE),
 	CFG_INT((char*) "delay", 0, CFGF_NONE),
@@ -60,11 +59,13 @@ ParticleType* loadItemParticleType(cfg_t* cfg_item, Mod* mod)
 {
 	ParticleType* pt;
 	
+	if (cfg_size(cfg_item, "name") == 0) return NULL;
 	if (cfg_size(cfg_item, "model") == 0) return NULL;
 	if (cfg_getint(cfg_item, "age") == 0) return NULL;
 	
 	// Load settings
 	pt = new ParticleType();
+	pt->name = cfg_getstr(cfg_item, "name");
 	pt->max_speed = cfg_getrange(cfg_item, "max_speed");
 	pt->begin_speed = cfg_getrange(cfg_item, "begin_speed");
 	pt->accel = cfg_getrange(cfg_item, "accel");
@@ -96,25 +97,35 @@ ParticleGenType* loadItemParticleGenType(cfg_t* cfg_item, Mod* mod)
 	if (cfg_size(cfg_item, "spew") == 0) return NULL;
 	
 	gt = new ParticleGenType();
-	
-	int num_types = cfg_size(cfg_item, "spew");
-	for (j = 0; j < num_types; j++) {
+	gt->name = cfg_getstr(cfg_item, "name");
+
+
+	// Spewers
+	int num_spew = cfg_size(cfg_item, "spew");
+
+	for (j = 0; j < num_spew; j++) {
 		cfg_spew = cfg_getnsec(cfg_item, "spew", j);
 		
+		if (cfg_size(cfg_spew, "type") == 0) return NULL;
 		if (cfg_getint(cfg_spew, "angle_range") == 0) return NULL;
 		if (cfg_getint(cfg_spew, "rate") == 0) return NULL;
 		
 		GenSpew* spew = new GenSpew();
-		spew->pt = mod->getParticleType(cfg_getint(cfg_spew, "type"));
 		spew->angle_range = cfg_getint(cfg_spew, "angle_range");
 		spew->rate = cfg_getint(cfg_spew, "rate");
 		spew->delay = cfg_getint(cfg_spew, "delay");
 		spew->time = cfg_getint(cfg_spew, "time");
 		spew->offset = cfg_getint(cfg_spew, "offset");
 		
+		char * tmp = cfg_getstr(cfg_spew, "type");
+		if (tmp == NULL) return NULL;
+		spew->pt = mod->getParticleType(tmp);
+		if (spew->pt == NULL) return NULL;
+
 		gt->spewers.push_back(spew);
 	}
 	
+
 	return gt;
 }
 

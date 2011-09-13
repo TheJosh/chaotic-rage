@@ -26,12 +26,8 @@ cfg_opt_t weapontype_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_STR((char*) "title", 0, CFGF_NONE),
-	CFG_INT((char*) "particlegen", -1, CFGF_NONE),
-	CFG_INT((char*) "melee", 0, CFGF_NONE),
-	CFG_INT((char*) "damage", 0, CFGF_NONE),
-	
+	CFG_STR((char*) "particlegen", (char*)"", CFGF_NONE),
 	CFG_SEC((char*) "sound", weaponsound_opts, CFGF_MULTI),
-	
 	CFG_END()
 };
 
@@ -50,8 +46,9 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	wt->name = cfg_getstr(cfg_item, "name");
 	wt->title = cfg_getstr(cfg_item, "title");
 
-	if (cfg_getint(cfg_item, "particlegen") != -1) {
-		wt->pg = mod->getParticleGenType(cfg_getint(cfg_item, "particlegen"));
+	char * tmp = cfg_getstr(cfg_item, "particlegen");
+	if (tmp != NULL) {
+		wt->pg = mod->getParticleGenType(tmp);
 	}
 	
 	// Load large icon

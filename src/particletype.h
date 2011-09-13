@@ -31,6 +31,7 @@ class ParticleType
 		
 		// dynamic
 		int id;
+		string name;
 		vector<SpritePtr> sprites;
 };
 

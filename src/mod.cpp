@@ -246,6 +246,17 @@ ParticleType * Mod::getParticleType(int id)
 	return particletypes->at(id);
 }
 
+ParticleType * Mod::getParticleType(string name)
+{
+	if (name.empty()) return NULL;
+	
+	int i;
+	for (i = particletypes->size() - 1; i >= 0; --i) {
+		if (particletypes->at(i)->name.compare(name) == 0) return particletypes->at(i);
+	}
+	return NULL;
+}
+
 
 /**
 * Gets a particle generator by ID
@@ -254,6 +265,17 @@ ParticleGenType * Mod::getParticleGenType(int id)
 {
 	if (id < 0 or ((unsigned int) id) > pgeneratortypes->size()) return NULL;
 	return pgeneratortypes->at(id);
+}
+
+ParticleGenType * Mod::getParticleGenType(string name)
+{
+	if (name.empty()) return NULL;
+	
+	int i;
+	for (i = pgeneratortypes->size() - 1; i >= 0; --i) {
+		if (pgeneratortypes->at(i)->name.compare(name) == 0) return pgeneratortypes->at(i);
+	}
+	return NULL;
 }
 
 

@@ -54,6 +54,8 @@ class Mod {
 		AnimModel * getAnimModel(string name);
 		GameType * getGameType(string name);
 		ObjectType * getObjectType(string name);
+		ParticleType * getParticleType(string name);
+		ParticleGenType * getParticleGenType(string name);
 		UnitType * getUnitType(string name);
 		Sound * getSound(string name);
 		WallType * getWallType(string name);
