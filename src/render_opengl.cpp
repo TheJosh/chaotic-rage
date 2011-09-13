@@ -48,6 +48,10 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render(st)
 	const SDL_VideoInfo* mode = SDL_GetVideoInfo();
 	this->desktop_width = mode->current_w;
 	this->desktop_height = mode->current_h;
+
+	for (unsigned int i = 0; i < NUM_CHAR_TEX; i++) {
+		this->char_tex[i].tex = 0;
+	}
 }
 
 RenderOpenGL::~RenderOpenGL()
@@ -535,61 +539,72 @@ void RenderOpenGL::renderText(string text, int x, int y)
 /**
 * Draws a single character
 **/
-void RenderOpenGL::renderCharacter(char c)
+void RenderOpenGL::renderCharacter(char character)
 {
+	if ((int) character < 32 || (int) character > 128) return;
+
 	FT_GlyphSlot slot = face->glyph;
-	
-	GLuint tex;
 	float tx, ty;
-	
+	FreetypeChar *c = &(this->char_tex[(int) character - 32]);
+
+
 	// Load glyph image into the slot
-	int error = FT_Load_Char(this->face, c, FT_LOAD_RENDER);
+	int error = FT_Load_Char(this->face, character, FT_LOAD_DEFAULT);
 	if (error) return;
 	
-	// Convert glyph data into Lum/Alpha array for OpenGL
-	int width = next_pot(slot->bitmap.width);
-	int height = next_pot(slot->bitmap.rows);
+
+	// If the OpenGL tex does not exist for this character, create it
+	if (c->tex == 0) {
+		error = FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL);
+		if (error) return;
+
+		int width = next_pot(slot->bitmap.width);
+		int height = next_pot(slot->bitmap.rows);
+
+		GLubyte* gl_data = new GLubyte[2 * width * height];
 	
-	GLubyte* gl_data = new GLubyte[2 * width * height];
-	
-	for (int j = 0; j < height; j++) {
-		for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
+			for (int i = 0; i < width; i++) {
 			
-			gl_data[2*(i+j*width)] = gl_data[2*(i+j*width)+1] = 
-				(i>=slot->bitmap.width || j>=slot->bitmap.rows) ?
-				0 : slot->bitmap.buffer[i + slot->bitmap.width*j];
+				gl_data[2*(i+j*width)] = gl_data[2*(i+j*width)+1] = 
+					(i>=slot->bitmap.width || j>=slot->bitmap.rows) ?
+					0 : slot->bitmap.buffer[i + slot->bitmap.width*j];
 			
+			}
 		}
+	
+		// Create a texture
+		glGenTextures(1, &c->tex);
+		glBindTexture(GL_TEXTURE_2D, c->tex);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, gl_data);
+	
+		delete [] gl_data;
+
+		c->w = slot->bitmap.width;
+		c->h = slot->bitmap.rows;
+		c->x = slot->bitmap_left;
+		c->y = slot->bitmap_top;
+		c->tx = (float)slot->bitmap.width / (float)width;
+		c->ty = (float)slot->bitmap.rows / (float)height;
 	}
-	
-	// Create a texture
-	glGenTextures( 1, &tex );
-	glBindTexture(GL_TEXTURE_2D, tex);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, gl_data);
-	
-	delete [] gl_data;
-	
-	
-	// Prep the character
+
+
+	// Render
 	glPushMatrix();
-	glTranslatef(slot->bitmap_left, 0 - slot->bitmap_top, 0);
-	
-	tx = (float)slot->bitmap.width / (float)width;
-	ty = (float)slot->bitmap.rows / (float)height;
-	
+	glTranslatef(c->x, 0 - c->y, 0);
+	glBindTexture(GL_TEXTURE_2D, c->tex);
+
 	glBegin(GL_QUADS);
-		glTexCoord2d(0,ty); glVertex2f(0,slot->bitmap.rows);
+		glTexCoord2d(0,c->ty); glVertex2f(0,c->h);
 		glTexCoord2d(0,0); glVertex2f(0,0);
-		glTexCoord2d(tx,0); glVertex2f(slot->bitmap.width,0);
-		glTexCoord2d(tx,ty); glVertex2f(slot->bitmap.width,slot->bitmap.rows);
+		glTexCoord2d(c->tx,0); glVertex2f(c->w,0);
+		glTexCoord2d(c->tx,c->ty); glVertex2f(c->w,c->h);
 	glEnd();
 	
 	glPopMatrix();
 	glTranslatef(slot->advance.x >> 6, 0, 0);
-	
-	glDeleteTextures(1, &tex);
 }
 
 

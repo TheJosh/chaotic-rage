@@ -10,11 +10,22 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#define NUM_CHAR_TEX (128 - 32)
+
+
+
 struct VBOvertex
 {
 	float x, y, z;        // Vertex
 	float nx, ny, nz;     // Normal
 	float tx, ty;         // Tex
+};
+
+struct FreetypeChar
+{
+	GLuint tex;
+	int x, y, w, h;
+	float tx, ty;
 };
 
 
@@ -46,7 +57,8 @@ class RenderOpenGL : public Render
 		
 		FT_Library ft;
 		FT_Face face;
-		
+		FreetypeChar char_tex[NUM_CHAR_TEX];
+
 		vector<SpritePtr> loaded;
 
 		Unit* render_player;
