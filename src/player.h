@@ -20,10 +20,11 @@ class Player : public Unit
 		static const int KEY_FIRE = 4;
 		static const int KEY_USE = 5;
 		static const int KEY_LIFT = 6;
-		static const int KEY_UNUSED3 = 7;
-		
+		static const int KEY_MELEE = 7;
+		static const int KEY_SPECIAL = 8;
+
 	public:
-		bool key[7];
+		bool key[16];
 
 	public:
 		Player(UnitType *uc, GameState *st);
@@ -33,8 +34,8 @@ class Player : public Unit
 		void keyPress(int idx);
 		void keyRelease(int idx);
 		void angleFromMouse(int x, int y, int delta);
-		void setKeys(Uint8 bitfield);
-		Uint8 packKeys();
+		void setKeys(Uint8 bitfield);		// TODO: Use 16-bits
+		Uint8 packKeys();					// TODO: Use 16-bits
 		
 	public:
 		virtual void update(int delta);

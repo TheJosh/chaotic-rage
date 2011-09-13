@@ -244,27 +244,28 @@ void Menu::doit()
 		render->renderText("Start a local game with L", 20, y);
 		
 		y += 30;
-		render->renderText("Start a network game with N (buggy)", 20, y);
+		render->renderText("Start a network game with N (really buggy)", 20, y);
 		
 		y += 30;
 		render->renderText("Start a split-screen game with M (less buggy)", 20, y);
 
 		y += 30;
-		render->renderText("Switch to fullscreen with P", 20, y);
+		render->renderText("Switch to fullscreen with P (do this before anything else)", 20, y);
 
 		y += 60;
 		render->renderText("Quit with ESC", 20, y);
 		
 		
-		y = render->virt_height - 30 * 7;
+		y = render->virt_height - 30 * 9;
 		render->renderText("Controls:", 20, y); y += 30;
 		render->renderText("Move", 20, y); render->renderText("W-S-A-D", 230, y); y += 30;
 		render->renderText("Look", 20, y); render->renderText("Mouse", 230, y); y += 30;
 		render->renderText("Action", 20, y); render->renderText("E", 230, y); y += 30;
 		render->renderText("Pick-up", 20, y); render->renderText("Q", 230, y); y += 30;
-		render->renderText("Fire", 20, y); render->renderText("Left-Click", 230, y); y += 30;
 		render->renderText("Change weapon", 20, y); render->renderText("Scroll-wheel", 230, y); y += 30;
-
+		render->renderText("Fire", 20, y); render->renderText("Left-Click", 230, y); y += 30;
+		render->renderText("Melee", 20, y); render->renderText("Right-Click", 230, y); y += 30;
+		render->renderText("Special Attack", 20, y); render->renderText("T", 230, y); y += 30;
 
 		SDL_GL_SwapBuffers();
 		

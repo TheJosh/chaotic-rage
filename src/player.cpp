@@ -12,7 +12,7 @@ using namespace std;
 
 Player::Player(UnitType *uc, GameState *st) : Unit(uc, st)
 {
-	for (int i = 0; i < 8; i++) this->key[i] = 0;
+	for (int i = 0; i < 16; i++) this->key[i] = 0;
 }
 
 Player::~Player()
@@ -38,6 +38,10 @@ void Player::keyPress(int idx)
 		this->doUse();
 	} else if (idx == KEY_LIFT) {
 		this->doLift();
+	} else if (idx == KEY_MELEE) {
+		this->meleeAttack();
+	} else if (idx == KEY_SPECIAL) {
+		this->specialAttack();
 	}
 }
 

@@ -126,6 +126,19 @@ void Unit::endFiring()
 	this->st->audio->playSound(snd, false, this);
 }
 
+void Unit::meleeAttack()
+{
+	// TODO: Code this one
+	this->st->hud->addAlertMessage("TODO: melee attack");
+}
+
+void Unit::specialAttack()
+{
+	// TODO: Code this one
+	this->st->hud->addAlertMessage("TODO: special attack");
+}
+
+
 /**
 * Pick up a weapon
 **/

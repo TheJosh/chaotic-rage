@@ -308,7 +308,7 @@ unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 
 		cout << "       bit " << i << ": " << (keys & (1 << i)) << "\n";
 	}
 	
-	p->setKeys(keys);
+	p->setKeys(keys);	// TODO: Use 16-bits
 	
 	return 7;
 }

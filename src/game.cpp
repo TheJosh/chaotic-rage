@@ -139,6 +139,7 @@ static void handleEvents(GameState *st)
 					case SDLK_d: st->local_players[0]->keyPress(Player::KEY_RIGHT); break;
 					case SDLK_e: st->local_players[0]->keyPress(Player::KEY_USE); break;
 					case SDLK_q: st->local_players[0]->keyPress(Player::KEY_LIFT); break;
+					case SDLK_t: st->local_players[0]->keyPress(Player::KEY_SPECIAL); break;
 					default: break;
 				}
 			
@@ -150,6 +151,7 @@ static void handleEvents(GameState *st)
 					case SDLK_d: st->local_players[0]->keyRelease(Player::KEY_RIGHT); break;
 					case SDLK_e: st->local_players[0]->keyRelease(Player::KEY_USE); break;
 					case SDLK_q: st->local_players[0]->keyRelease(Player::KEY_LIFT); break;
+					case SDLK_t: st->local_players[0]->keyRelease(Player::KEY_SPECIAL); break;
 					default: break;
 				}
 			
@@ -159,11 +161,18 @@ static void handleEvents(GameState *st)
 				game_y[0] += event.motion.y - 30;
 				net_y[0] += event.motion.y - 30;
 			
-			} else if (event.type == SDL_MOUSEBUTTONDOWN) {
+			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == 1) {
 				st->local_players[0]->keyPress(Player::KEY_FIRE);
 			
-			} else if (event.type == SDL_MOUSEBUTTONUP) {
+			} else if (event.type == SDL_MOUSEBUTTONUP && event.button.button == 1) {
 				st->local_players[0]->keyRelease(Player::KEY_FIRE);
+
+			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == 3) {
+				st->local_players[0]->keyPress(Player::KEY_MELEE);
+			
+			} else if (event.type == SDL_MOUSEBUTTONUP && event.button.button == 3) {
+				st->local_players[0]->keyRelease(Player::KEY_MELEE);
+
 			}
 
 		} // end one player, one
