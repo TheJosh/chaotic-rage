@@ -95,17 +95,13 @@ void HUD::render(RenderOpenGL * render)
 		for (i = 0; i < num; i++) {
 			WeaponType *wt = this->st->local_players[0]->getWeaponAt(i);
 			
-			render->renderSprite(wt->icon_large, r.x, r.y);
-			
+			render->renderText(wt->title, r.x, r.y);
+
 			if (i == this->st->local_players[0]->getCurrentWeaponID()) {
-				render->renderSprite(wt->icon_large, 500, 500);
+				render->renderText(">", r.x - 25, r.y);
 			}
 			
-			r.x += 150;
-			if (r.x >= 600) {
-				r.x = 100;
-				r.y += 150;
-			}
+			r.y += 30;
 		}
 		
 		

@@ -71,6 +71,7 @@ class UnitType
 		int width, height;
 		int begin_health;
 		ParticleGenType* hit_generator;
+		vector<WeaponType*> spawn_weapons;
 		int playable;
 		
 	private:

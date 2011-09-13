@@ -53,6 +53,8 @@ cfg_opt_t unittype_opts[] =
 	CFG_INT((char*) "begin_health", 0, CFGF_NONE),
 	CFG_INT((char*) "hit_generator", 0, CFGF_NONE),
 	
+	CFG_STR_LIST((char*) "spawn_weapons", 0, CFGF_NONE),
+
 	CFG_END()
 };
 
@@ -140,6 +142,18 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 		uts->snd = mod->getSound(tmp);
 		
 		uc->sounds.push_back(uts);
+	}
+
+
+	/// Spawn Weapons ///
+	int num_weapons = cfg_size(cfg_item, "spawn_weapons");
+
+	for (j = 0; j < num_weapons; j++) {
+		WeaponType * wt = mod->getWeaponType(cfg_getnstr(cfg_item, "spawn_weapons", j));
+		
+		if (wt != NULL) {
+			uc->spawn_weapons.push_back(wt);
+		}
 	}
 
 

@@ -360,8 +360,10 @@ LUA_FUNC(add_npc)
 	p = new NPC(uc, gl->st);
 	gl->st->addUnit(p);
 	
-	p->pickupWeapon(gl->mod->getWeaponType(1));
-	
+	for (unsigned int i = 0; i < uc->spawn_weapons.size(); i++) {
+		p->pickupWeapon(uc->spawn_weapons.at(i));
+	}
+
 	Zone *z = gl->map->getSpawnZone(fac);
 	if (z == NULL) {
 		cerr << "Map does not have any spawnpoints\n";
@@ -402,9 +404,9 @@ LUA_FUNC(add_player)
 	p->fac = fac;
 	p->slot = slot;
 	
-	p->pickupWeapon(gl->mod->getWeaponType(0));
-	p->pickupWeapon(gl->mod->getWeaponType(1));
-	p->pickupWeapon(gl->mod->getWeaponType(2));
+	for (unsigned int i = 0; i < uc->spawn_weapons.size(); i++) {
+		p->pickupWeapon(uc->spawn_weapons.at(i));
+	}
 	
 	Zone *z = gl->map->getSpawnZone(fac);
 	if (z == NULL) {

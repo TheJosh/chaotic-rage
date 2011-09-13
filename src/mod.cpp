@@ -113,7 +113,10 @@ bool Mod::load()
 	sounds = loadModFile<Sound*>(this, "sounds.conf", "sound", sound_opts, &loadItemSound);
 	if (sounds == NULL) return false;
 	
-	
+	songs = loadModFile<Song*>(this, "songs.conf", "song", song_opts, &loadItemSong);
+	if (songs == NULL) return false;
+
+
 	areatypes = loadModFile<FloorType*>(this, "floortypes.conf", "floortype", floortype_opts, &loadItemFloorType);
 	if (areatypes == NULL) return false;
 	
@@ -126,17 +129,14 @@ bool Mod::load()
 	pgeneratortypes = loadModFile<ParticleGenType*>(this, "particlegenerators.conf", "generator", generatortype_opts, &loadItemParticleGenType);
 	if (pgeneratortypes == NULL) return false;
 	
-	songs = loadModFile<Song*>(this, "songs.conf", "song", song_opts, &loadItemSong);
-	if (songs == NULL) return false;
-	
-	unitclasses = loadModFile<UnitType*>(this, "unittypes.conf", "unittype", unittype_opts, &loadItemUnitType);
-	if (unitclasses == NULL) return false;
-	
 	walltypes = loadModFile<WallType*>(this, "walltypes.conf", "walltype", walltype_opts, &loadItemWallType);
 	if (walltypes == NULL) return false;
 	
 	weapontypes = loadModFile<WeaponType*>(this, "weapontypes.conf", "weapon", weapontype_opts, &loadItemWeaponType);
 	if (weapontypes == NULL) return false;
+	
+	unitclasses = loadModFile<UnitType*>(this, "unittypes.conf", "unittype", unittype_opts, &loadItemUnitType);
+	if (unitclasses == NULL) return false;
 	
 	
 	gametypes = loadModFile<GameType*>(this, "gametypes.conf", "gametype", gametype_opts, &loadItemGameType);

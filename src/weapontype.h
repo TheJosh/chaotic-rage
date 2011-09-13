@@ -27,10 +27,9 @@ class WeaponTypeSound
 class WeaponType
 {
 	public:
+		string title;
 		ParticleGenType *pg;
 		SpritePtr icon_large;
-		bool melee;
-		int damage;
 		
 		vector<WeaponTypeSound*> sounds;
 		

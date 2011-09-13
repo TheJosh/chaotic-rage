@@ -25,6 +25,7 @@ static cfg_opt_t weaponsound_opts[] =
 cfg_opt_t weapontype_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
+	CFG_STR((char*) "title", 0, CFGF_NONE),
 	CFG_INT((char*) "particlegen", -1, CFGF_NONE),
 	CFG_INT((char*) "melee", 0, CFGF_NONE),
 	CFG_INT((char*) "damage", 0, CFGF_NONE),
@@ -47,17 +48,10 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	
 	wt = new WeaponType();
 	wt->name = cfg_getstr(cfg_item, "name");
-	wt->melee = cfg_getint(cfg_item, "melee");
-	
-	if (wt->melee == 0) {
-		// Bullet
-		if (cfg_getint(cfg_item, "particlegen") != -1) {
-			wt->pg = mod->getParticleGenType(cfg_getint(cfg_item, "particlegen"));
-		}
-		
-	} else if (wt->melee == 1) {
-		// Melee
-		wt->damage = cfg_getint(cfg_item, "damage");
+	wt->title = cfg_getstr(cfg_item, "title");
+
+	if (cfg_getint(cfg_item, "particlegen") != -1) {
+		wt->pg = mod->getParticleGenType(cfg_getint(cfg_item, "particlegen"));
 	}
 	
 	// Load large icon

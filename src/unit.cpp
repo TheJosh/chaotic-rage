@@ -130,6 +130,12 @@ void Unit::meleeAttack()
 {
 	// TODO: Code this one
 	this->st->hud->addAlertMessage("TODO: melee attack");
+
+	// This is some old melee code I found which used the old collission system.
+	/*Unit * target = (Unit*) this->inContactWith(UNIT);
+	if (target != NULL) {
+		target->takeDamage(this->weapon->damage);
+	}*/
 }
 
 void Unit::specialAttack()
@@ -274,21 +280,11 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	
 	
 	// Do some shooting
-	if (this->firing && this->weapon != NULL) {
-		if (this->weapon->melee == 0 && this->weapon_gen != NULL) {
-			// Bullet-based weapon
-			this->weapon_gen->x = this->x;
-			this->weapon_gen->y = this->y;
-			this->weapon_gen->angle = this->angle_aim;
-			this->weapon_gen->update(delta);
-			
-		} else if (this->weapon->melee == 1) {
-			// Meele-based weapon
-			/*Unit * target = (Unit*) this->inContactWith(UNIT);
-			if (target != NULL) {
-				target->takeDamage(this->weapon->damage);
-			}*/
-		}
+	if (this->firing && this->weapon != NULL && this->weapon_gen != NULL) {
+		this->weapon_gen->x = this->x;
+		this->weapon_gen->y = this->y;
+		this->weapon_gen->angle = this->angle_aim;
+		this->weapon_gen->update(delta);
 	}
 	
 	
@@ -367,7 +363,7 @@ void Unit::doUse()
 	if (ot->pickup_weapon.length() != 0) {
 		WeaponType *wt = this->st->getDefaultMod()->getWeaponType(ot->pickup_weapon);
 		if (wt) {
-			this->st->hud->addAlertMessage("Picked up a ", wt->name);
+			this->st->hud->addAlertMessage("Picked up a ", wt->title);
 			this->setWeapon(this->pickupWeapon(wt));
 		}
 	}

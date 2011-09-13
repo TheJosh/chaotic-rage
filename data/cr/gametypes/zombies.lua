@@ -49,7 +49,7 @@ end;
 -- Spawn a player
 --
 bind_playerjoin(function(slot)
-	add_player("robot", factions.team1, slot);
+	add_player(get_selected_unittype(), factions.team1, slot);
 end);
 
 
