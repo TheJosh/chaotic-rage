@@ -27,14 +27,21 @@ class WeaponTypeSound
 class WeaponType
 {
 	public:
+		int id;
+		string name;
 		string title;
+		
+		// TODO: Not used anymore, rejig for effects maybe?
 		ParticleGenType *pg;
 		
-		vector<WeaponTypeSound*> sounds;
+		ParticleType *pt;
+		int angle_range;
+		int rate;
+		bool continuous;
+		int magazine_limit;
+		int belt_limit;
 		
-		// dynamic
-		string name;
-		int id;
+		vector<WeaponTypeSound*> sounds;
 		
 	public:
 		WeaponType();

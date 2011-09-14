@@ -26,7 +26,16 @@ cfg_opt_t weapontype_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_STR((char*) "title", 0, CFGF_NONE),
+	
 	CFG_STR((char*) "particlegen", (char*)"", CFGF_NONE),
+	
+	CFG_STR((char*) "particle", (char*)"", CFGF_NONE),
+	CFG_INT((char*) "angle_range", 0, CFGF_NONE),
+	CFG_INT((char*) "rate", 0, CFGF_NONE),
+	CFG_INT((char*) "continuous", 0, CFGF_NONE),
+	CFG_INT((char*) "magazine_limit", 100, CFGF_NONE),
+	CFG_INT((char*) "belt_limit", 1000, CFGF_NONE),
+	
 	CFG_SEC((char*) "sound", weaponsound_opts, CFGF_MULTI),
 	CFG_END()
 };
@@ -45,8 +54,21 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	wt = new WeaponType();
 	wt->name = cfg_getstr(cfg_item, "name");
 	wt->title = cfg_getstr(cfg_item, "title");
-
-	char * tmp = cfg_getstr(cfg_item, "particlegen");
+	
+	// Particle (bullets)
+	char * tmp = cfg_getstr(cfg_item, "particle");
+	if (tmp != NULL) {
+		wt->pt = mod->getParticleType(tmp);
+		
+		wt->angle_range = cfg_getint(cfg_item, "angle_range");
+		wt->rate = cfg_getint(cfg_item, "rate");
+		wt->continuous = cfg_getint(cfg_item, "continuous");
+		wt->magazine_limit = cfg_getint(cfg_item, "magazine_limit");
+		wt->belt_limit = cfg_getint(cfg_item, "belt_limit");
+	}
+	
+	// Particle gen (effects)
+	tmp = cfg_getstr(cfg_item, "particlegen");
 	if (tmp != NULL) {
 		wt->pg = mod->getParticleGenType(tmp);
 	}

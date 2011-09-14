@@ -280,11 +280,30 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	
 	
 	// Do some shooting
-	if (this->firing && this->weapon != NULL && this->weapon_gen != NULL) {
-		this->weapon_gen->x = this->x;
-		this->weapon_gen->y = this->y;
-		this->weapon_gen->angle = this->angle_aim;
-		this->weapon_gen->update(delta);
+	if (this->firing && this->weapon != NULL) {
+		if (this->weapon_gen != NULL) {
+			this->weapon_gen->x = this->x;
+			this->weapon_gen->y = this->y;
+			this->weapon_gen->angle = this->angle_aim;
+			this->weapon_gen->update(delta);
+		}
+		
+		if (this->weapon->pt) {
+			Particle* pa = new Particle(this->weapon->pt, this->st);
+			pa->x = this->x;
+			pa->y = this->y;
+			
+			pa->angle = this->angle + getRandom(0 - this->weapon->angle_range / 2, this->weapon->angle_range / 2);
+			pa->angle = clampAngle(pa->angle);
+			
+			// TODO: This should be dynamic or computed or something even better (vectors anyone?)
+			pa->x = pointPlusAngleX(pa->x, pa->angle, 50);
+			pa->y = pointPlusAngleY(pa->y, pa->angle, 50);
+			
+			st->addParticle(pa);
+			
+			if (! this->weapon->continuous) this->firing = false;
+		}
 	}
 	
 	
