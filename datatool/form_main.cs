@@ -23,8 +23,6 @@ namespace datatool
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AreatypeList f = new AreatypeList();
-            f.Show();
         }
 
         private void button2_Click(object sender, EventArgs e)

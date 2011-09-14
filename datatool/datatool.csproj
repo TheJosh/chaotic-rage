@@ -58,14 +58,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\actions.cs" />
-    <Compile Include="Actions\actions_edit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Actions\actions_edit.Designer.cs">
-      <DependentUpon>actions_edit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AreaType\areatype_ui_editor.cs" />
     <Compile Include="ConfuseReader.cs" />
     <Compile Include="Modifiers\modifier_edit.cs">
       <SubType>Form</SubType>
@@ -88,20 +80,7 @@
     <Compile Include="base_list.Designer.cs">
       <DependentUpon>base_list.cs</DependentUpon>
     </Compile>
-    <Compile Include="AreaType\areatype_list.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AreaType\areatype_list.Designer.cs">
-      <DependentUpon>areatype_list.cs</DependentUpon>
-    </Compile>
     <Compile Include="base_item.cs" />
-    <Compile Include="AreaType\areatype_item.cs" />
-    <Compile Include="AreaType\areatype_edit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AreaType\areatype_edit.Designer.cs">
-      <DependentUpon>areatype_edit.cs</DependentUpon>
-    </Compile>
     <Compile Include="DataProvider.cs" />
     <Compile Include="Unitclass\unitclass_edit.cs">
       <SubType>Form</SubType>
@@ -167,17 +146,8 @@
     <Compile Include="Unitclass\unitclass_list.Designer.cs">
       <DependentUpon>unitclass_list.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Actions\actions_edit.resx">
-      <DependentUpon>actions_edit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AreaType\areatype_edit.resx">
-      <DependentUpon>areatype_edit.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="base_list.resx">
       <DependentUpon>base_list.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AreaType\areatype_list.resx">
-      <DependentUpon>areatype_list.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modifiers\modifier_edit.resx">
       <DependentUpon>modifier_edit.cs</DependentUpon>

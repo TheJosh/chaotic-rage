@@ -107,7 +107,7 @@ namespace datatool
 
 
     [Serializable]
-    public class unitclass_item : actions_item 
+    public class unitclass_item : base_item 
     {
         private string name;
         private List<unitclass_settings> settings;

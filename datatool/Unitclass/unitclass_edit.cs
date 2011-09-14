@@ -94,8 +94,6 @@ namespace datatool
 
         private void btnActions_Click(object sender, EventArgs e)
         {
-            ActionsEditor f = new ActionsEditor(this.item);
-            f.ShowDialog();
         }
 
         private void stateToolStripMenuItem_Click(object sender, EventArgs e)

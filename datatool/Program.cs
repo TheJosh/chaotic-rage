@@ -26,7 +26,7 @@ namespace datatool
             dp = new DataProvider();
             dp.load(datapath);
 
-            string filename = datapath + "\\particletypes\\particletypes.conf";
+            string filename = datapath + "\\particletypes.conf";
             string file = System.IO.File.ReadAllText(filename);
 
             ConfuseReader read = new ConfuseReader();

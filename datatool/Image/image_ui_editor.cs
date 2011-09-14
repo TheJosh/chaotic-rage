@@ -16,9 +16,7 @@ namespace datatool
         {
             image_ui_form form = new image_ui_form();
 
-            if (context.Instance is areatype_item) {
-                form.directory = "areatypes";
-            } else if (context.Instance is particletype_item) {
+            if (context.Instance is particletype_item) {
                 form.directory = "particletypes";
             } else if (context.Instance is unitclass_state) {
                 form.directory = "unitclass";
