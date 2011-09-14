@@ -57,8 +57,13 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	
 	// Particle (bullets)
 	char * tmp = cfg_getstr(cfg_item, "particle");
-	if (tmp != NULL) {
+	if (tmp != NULL && strlen(tmp) > 0) {
 		wt->pt = mod->getParticleType(tmp);
+		
+		if (wt->pt == NULL) {
+			cerr << "Particle type '" << tmp << "' not found.\n";
+			return NULL;
+		}
 		
 		wt->angle_range = cfg_getint(cfg_item, "angle_range");
 		wt->rate = cfg_getint(cfg_item, "rate");
