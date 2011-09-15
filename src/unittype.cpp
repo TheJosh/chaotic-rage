@@ -53,7 +53,7 @@ cfg_opt_t unittype_opts[] =
 	CFG_INT((char*) "begin_health", 0, CFGF_NONE),
 	CFG_INT((char*) "hit_generator", 0, CFGF_NONE),
 	
-	CFG_INT((char*) "melee_damange", 100, CFGF_NONE),
+	CFG_INT((char*) "melee_damage", 100, CFGF_NONE),
 	CFG_INT((char*) "melee_delay", 100, CFGF_NONE),
 	CFG_INT((char*) "melee_cooldown", 100, CFGF_NONE),
 
@@ -80,7 +80,7 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	uc->hit_generator = mod->getParticleGenType(cfg_getint(cfg_item, "hit_generator"));
 	uc->playable = cfg_getint(cfg_item, "playable");
 	
-	uc->melee_damange = cfg_getint(cfg_item, "melee_damange");
+	uc->melee_damage = cfg_getint(cfg_item, "melee_damage");
 	uc->melee_delay = cfg_getint(cfg_item, "melee_delay");
 	uc->melee_cooldown = cfg_getint(cfg_item, "melee_cooldown");
 

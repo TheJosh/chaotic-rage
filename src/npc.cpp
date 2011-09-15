@@ -87,6 +87,10 @@ void NPC::update(int delta)
 	this->desired_angle_move = getRandom(vals[1] - 10, vals[1] + 10);
 	
 	this->speed += ppsDeltaf(ucs->accel, delta);
+	
+	if (this->closest && this->closest->fac != this->fac) {
+		this->meleeAttack();
+	}
 	// End of stuff to move
 	
 	

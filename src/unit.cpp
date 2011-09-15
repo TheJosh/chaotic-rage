@@ -40,13 +40,14 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 	this->lift_obj = NULL;
 	this->drive_obj = NULL;
 	this->turret_obj = NULL;
-
+	
+	this->closest = NULL;
 	this->melee_time = 0;
 	this->melee_cooldown = 0;
-
+	
 	this->weapon_sound = -1;
-
-
+	
+	
 	// access sounds using this->uc->getSound(type)
 	// see unittype.h for types (e.g. UNIT_SOUND_DEATH)
 	// example:
@@ -321,7 +322,7 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	
 	// Melee
 	if (this->melee_time != 0 && this->melee_time < st->game_time) {
-		if (this->closest) this->closest->takeDamage(this->uc->melee_damange);
+		if (this->closest) this->closest->takeDamage(this->uc->melee_damage);
 		this->melee_time = 0;
 
 	} else if (this->melee_cooldown != 0 && this->melee_cooldown < st->game_time) {
@@ -349,13 +350,13 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		this->z = this->turret_obj->z + 20;
 		this->turret_obj->angle = this->angle;
 	}
-
-
+	
+	
 	// This will be re-set by the collission code
 	this->curr_obj = NULL;
 	this->closest = NULL;
-
-
+	
+	
 	if (this->anim->isDone()) this->anim->next();
 }
 
