@@ -31,22 +31,7 @@ namespace datatool
             this.weapontypes = new List<base_item>();
 
             load_particletypes();
-
-            // Load modifiers
-            modifiers.Add(new modifier_item("Shield"));
-            modifiers.Add(new modifier_item("Speed"));
-
-            // Load particle generators
-            particlegenerators.Add(new particlegenerator_item("Machine gun"));
-            particlegenerators.Add(new particlegenerator_item("Blood"));
-
-            // Load unit classes
-            unitclasses.Add(new unitclass_item("Maniac"));
-            unitclasses.Add(new unitclass_item("Zombie"));
-
-            // Load unit classes
-            weapontypes.Add(new weapontype_item("Shotgun"));
-            weapontypes.Add(new weapontype_item("Machine gun"));
+            load_weapontypes();
 
             return true;
         }
@@ -89,6 +74,43 @@ namespace datatool
         }
 
 
+        /**
+        * Loads the particletypes
+        **/
+        private void load_weapontypes()
+        {
+            ConfuseSection sect = null;
+            string file = System.IO.File.ReadAllText(this.datapath + "\\weapontypes.conf");
+
+            // Parse config
+            try {
+                sect = read.Parse(file);
+            } catch (Exception ex) {
+                MessageBox.Show("Error loading weapontypes:\n" + ex.Message);
+                Application.Exit();
+            }
+
+            // Load particletypes
+            foreach (ConfuseSection s in sect.subsections) {
+                weapontype_item i = new weapontype_item("");
+                weapontypes.Add(i);
+
+                if (!s.values.ContainsKey("name")) throw new Exception("Weapontype defined without a name");
+
+                i.Name = s.get_string("name", "");
+                i.Title = s.get_string("title", "");
+
+                i.Particle = this.FindParticletype(s.get_string("particle", ""));
+                i.AngleRange = s.get_int("angle_range", 0);
+                i.Rate = s.get_int("rate", 0);
+                i.Continuous = s.get_bool("continuous", false);
+                i.MagazineLimit = s.get_int("magazine_limit", 100);
+                i.BeltLimit = s.get_int("belt_limit", 1000);
+
+                i.ParticleGen = this.FindParticlegenerator(s.get_string("particlegen", ""));
+            }
+        }
+
 
         public List<base_item> AreaTypes
         {
@@ -118,6 +140,26 @@ namespace datatool
         public List<base_item> WeaponTypes
         {
             get { return weapontypes; }
+        }
+
+
+
+        public particletype_item FindParticletype(string name)
+        {
+            if (name == null || name == "") return null;
+            foreach (particletype_item item in particletypes) {
+                if (item.Name == name) return item;
+            }
+            return null;
+        }
+
+        public particlegenerator_item FindParticlegenerator(string name)
+        {
+            if (name == null || name == "") return null;
+            foreach (particlegenerator_item item in particlegenerators) {
+                if (item.Name == name) return item;
+            }
+            return null;
         }
 
     }
