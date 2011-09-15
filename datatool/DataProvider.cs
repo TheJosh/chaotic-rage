@@ -15,6 +15,7 @@ namespace datatool
         private List<base_item> particletypes;
         private List<base_item> particlegenerators;
         private List<base_item> unitclasses;
+        private List<base_item> weapontypes;
 
 
         public bool load(string filename)
@@ -27,6 +28,7 @@ namespace datatool
             this.particletypes = new List<base_item>();
             this.particlegenerators = new List<base_item>();
             this.unitclasses = new List<base_item>();
+            this.weapontypes = new List<base_item>();
 
             load_particletypes();
 
@@ -41,6 +43,10 @@ namespace datatool
             // Load unit classes
             unitclasses.Add(new unitclass_item("Maniac"));
             unitclasses.Add(new unitclass_item("Zombie"));
+
+            // Load unit classes
+            weapontypes.Add(new weapontype_item("Shotgun"));
+            weapontypes.Add(new weapontype_item("Machine gun"));
 
             return true;
         }
@@ -107,6 +113,11 @@ namespace datatool
         public List<base_item> UnitClasses
         {
             get { return unitclasses; }
+        }
+
+        public List<base_item> WeaponTypes
+        {
+            get { return weapontypes; }
         }
 
     }

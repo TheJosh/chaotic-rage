@@ -48,5 +48,11 @@ namespace datatool
             ModifierList f = new ModifierList();
             f.Show();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            WeapontypeList f = new WeapontypeList();
+            f.Show();
+        }
     }
 }

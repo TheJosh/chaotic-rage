@@ -146,6 +146,19 @@
     <Compile Include="Unitclass\unitclass_list.Designer.cs">
       <DependentUpon>unitclass_list.cs</DependentUpon>
     </Compile>
+    <Compile Include="WeaponType\weapontype_list.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WeaponType\weapontype_list.Designer.cs">
+      <DependentUpon>weapontype_list.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WeaponType\weapontype_item.cs" />
+    <Compile Include="WeaponType\weapontype_edit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WeaponType\weapontype_edit.Designer.cs">
+      <DependentUpon>weapontype_edit.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="base_list.resx">
       <DependentUpon>base_list.cs</DependentUpon>
     </EmbeddedResource>
@@ -188,6 +201,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Unitclass\unitclass_list.resx">
       <DependentUpon>unitclass_list.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WeaponType\weapontype_list.resx">
+      <DependentUpon>weapontype_list.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WeaponType\weapontype_edit.resx">
+      <DependentUpon>weapontype_edit.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
