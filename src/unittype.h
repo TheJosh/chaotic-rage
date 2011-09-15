@@ -74,6 +74,10 @@ class UnitType
 		vector<WeaponType*> spawn_weapons;
 		int playable;
 		
+		int melee_damange;
+		int melee_delay;
+		int melee_cooldown;
+
 	private:
 		UnitTypeSettings initial;
 		UnitTypeSettings modifiers[UNIT_NUM_MODIFIERS];

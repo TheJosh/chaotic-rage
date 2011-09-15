@@ -57,6 +57,10 @@ class Unit : public Entity
 		Object* drive_obj;
 		Object* turret_obj;
 
+		Unit* closest;
+		unsigned int melee_time;
+		unsigned int melee_cooldown;
+
 		int weapon_sound;
 
 	public:
@@ -68,7 +72,8 @@ class Unit : public Entity
 		virtual Sound* getSound();
 		virtual void update(int delta) = 0;
 		virtual void hasBeenHit(CollideBox * ours, CollideBox * theirs);
-		
+		virtual void entityClose(Entity * e, float dist);
+
 	public:
 		void beginFiring();
 		void endFiring();

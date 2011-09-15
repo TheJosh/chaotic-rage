@@ -77,9 +77,9 @@ class MapGridCell
 **/
 class CollideBox {
 	public:
-		int x;
-		int y;
-		int radius;
+		float x;
+		float y;
+		float radius;
 		Entity *e;
 		bool del;
 		

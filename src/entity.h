@@ -70,7 +70,12 @@ class Entity
 		**/
 		virtual void hasBeenHit(CollideBox * ours, CollideBox * theirs) {};
 		
-		
+		/**
+		* Called by the collission code when a collission didn't happen - but is close
+		**/
+		virtual void entityClose(Entity * e, float dist) {};
+
+
 	public:
 		GameState * getGameState();
 		

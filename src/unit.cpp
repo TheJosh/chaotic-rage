@@ -41,6 +41,9 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 	this->drive_obj = NULL;
 	this->turret_obj = NULL;
 
+	this->melee_time = 0;
+	this->melee_cooldown = 0;
+
 	this->weapon_sound = -1;
 
 
@@ -59,6 +62,9 @@ Unit::~Unit()
 }
 
 
+/**
+* Hit!
+**/
 void Unit::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 {
 	if (theirs->e->klass() == WALL) {
@@ -69,6 +75,16 @@ void Unit::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 		
 	} else if (theirs->e->klass() == PARTICLE) {
 		((Particle*)theirs->e)->doHitUnit(this);
+	}
+}
+
+/**
+* Near miss!
+**/
+void Unit::entityClose(Entity * e, float dist)
+{
+	if (e->klass() == UNIT) {
+		closest = (Unit*) e;
 	}
 }
 
@@ -128,14 +144,11 @@ void Unit::endFiring()
 
 void Unit::meleeAttack()
 {
-	// TODO: Code this one
-	this->st->hud->addAlertMessage("TODO: melee attack");
+	if (this->melee_time != 0) return;
+	if (this->melee_cooldown != 0) return;
 
-	// This is some old melee code I found which used the old collission system.
-	/*Unit * target = (Unit*) this->inContactWith(UNIT);
-	if (target != NULL) {
-		target->takeDamage(this->weapon->damage);
-	}*/
+	this->melee_time = st->game_time + this->uc->melee_delay;
+	this->melee_cooldown = this->melee_time + this->uc->melee_cooldown;
 }
 
 void Unit::specialAttack()
@@ -306,7 +319,16 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		}
 	}
 	
-	
+	// Melee
+	if (this->melee_time != 0 && this->melee_time < st->game_time) {
+		if (this->closest) this->closest->takeDamage(this->uc->melee_damange);
+		this->melee_time = 0;
+
+	} else if (this->melee_cooldown != 0 && this->melee_cooldown < st->game_time) {
+		this->melee_cooldown = 0;
+	}
+
+
 	// Move the lifted object with the unit
 	// Or driving, or turrets
 	if (this->lift_obj) {
@@ -331,6 +353,7 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 
 	// This will be re-set by the collission code
 	this->curr_obj = NULL;
+	this->closest = NULL;
 
 
 	if (this->anim->isDone()) this->anim->next();

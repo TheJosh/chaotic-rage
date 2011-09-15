@@ -222,8 +222,11 @@ void GameState::doCollisions()
 	for (list<CollideBox*>::iterator ito = this->collideboxes.begin(); ito != this->collideboxes.end(); ito++) {
 		CollideBox *co = (*ito);
 		
-		list<CollideBox*>* tests = this->collides->getCollidesMC(co->x, co->y, co->radius, &release);
+		list<CollideBox*>* tests = this->collides->getCollidesMC(co->x, co->y, 100, &release);
 		
+		Entity* closest = NULL;
+		float closest_dist = 200;
+
 		for (list<CollideBox*>::iterator iti = tests->begin(); iti != tests->end(); iti++) {
 			CollideBox *ci = (*iti);
 			
@@ -254,12 +257,22 @@ void GameState::doCollisions()
 			
 			
 			// Circle based check using sqrt. This is probably too slow.
-			int dist = (int) floor(sqrt((float)((ci->x - co->x) * (ci->x - co->x)) + ((ci->y - co->y) * (ci->y - co->y))));
+			float dist = sqrt( ((ci->x - co->x) * (ci->x - co->x)) + ((ci->y - co->y) * (ci->y - co->y)) );
+
 			if (dist <= (ci->radius + co->radius)) {
 				co->e->hasBeenHit(co, ci);
 			}
+			
+			if (dist < closest_dist) {
+				closest = ci->e;
+				closest_dist = dist;
+			}
 		}
 		
+		if (closest) {
+			co->e->entityClose(closest, closest_dist);
+		}
+
 		if (release == 1) delete tests;
 	}
 }
