@@ -62,7 +62,7 @@ namespace datatool
                 Application.Exit();
             }
 
-            // Load areatypes
+            // Load particletypes
             foreach (ConfuseSection s in sect.subsections) {
                 particletype_item i = new particletype_item("");
                 particletypes.Add(i);
@@ -70,11 +70,15 @@ namespace datatool
                 if (!s.values.ContainsKey("name")) throw new Exception("Particletype defined without a name");
 
                 i.Name = s.get_string("name", "");
-                i.Image = s.get_string("image", "");
-                i.NumFrames = s.get_int("num_frames", 1);
-                i.LinSpeed = s.get_range("lin_speed", new range(0)).toString();
-                i.LinAccel = s.get_range("lin_accel", new range(0)).toString();
+                i.Model = s.get_string("model", "");
+                i.MaxSpeed = s.get_range("max_speed", new range(0)).toString();
+                i.BeginSpeed = s.get_range("begin_speed", new range(0)).toString();
+                i.Accel = s.get_range("accel", new range(0)).toString();
                 i.Age = s.get_range("age", new range(0)).toString();
+                i.UnitDamage = s.get_range("unit_damage", new range(0)).toString();
+                i.WallDamage = s.get_range("wall_damage", new range(0)).toString();
+                i.UnitHits = s.get_range("unit_hits", new range(0)).toString();
+                i.WallHits = s.get_range("wall_hits", new range(0)).toString();
             }
         }
 

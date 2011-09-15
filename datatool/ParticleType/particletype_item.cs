@@ -9,10 +9,10 @@ namespace datatool
     public class particletype_item : base_item
     {
         private string name;
-        private string image;
-        private int num_frames;
-        private range lin_speed;
-        private range lin_accel;
+        private string model;
+        private range max_speed;
+        private range begin_speed;
+        private range accel;
         private range age;
         private range unit_damage;
         private range wall_damage;
@@ -23,10 +23,11 @@ namespace datatool
         public particletype_item(string name)
         {
             this.name = name;
-            this.num_frames = 1;
-            this.lin_speed = new range(1);
-            this.lin_accel = new range(1);
-            this.age = new range(1);
+            this.model = "";
+            this.max_speed = new range(0);
+            this.begin_speed = new range(0);
+            this.accel = new range(0);
+            this.age = new range(0);
             this.unit_damage = new range(0);
             this.wall_damage = new range(0);
             this.unit_hits = new range(1);
@@ -47,35 +48,35 @@ namespace datatool
             set { this.name = value; }
         }
 
-        [DescriptionAttribute("The name of the image to use for this particletype")]
-        [Editor(typeof(image_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
-        public string Image
+        [DescriptionAttribute("The animmodel to display for this particletype")]
+        public string Model
         {
-            get { return this.image; }
-            set { this.image = value; }
+            get { return this.model; }
+            set { this.model = value; }
         }
 
-        [DescriptionAttribute("The number of frames in the animation")]
-        public int NumFrames
+        [DescriptionAttribute("Max speed")]
+        [Editor(typeof(range_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
+        public string MaxSpeed
         {
-            get { return this.num_frames; }
-            set { this.num_frames = value; }
+            get { return this.max_speed.toString(); }
+            set { this.max_speed = range.fromString(value); }
         }
 
         [DescriptionAttribute("Initial speed")]
         [Editor(typeof(range_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
-        public string LinSpeed
+        public string BeginSpeed
         {
-            get { return this.lin_speed.toString(); }
-            set { this.lin_speed = range.fromString(value); }
+            get { return this.begin_speed.toString(); }
+            set { this.begin_speed = range.fromString(value); }
         }
 
         [DescriptionAttribute("Acceleration of the speed, in pixels/second")]
         [Editor(typeof(range_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
-        public string LinAccel
+        public string Accel
         {
-            get { return this.lin_accel.toString(); }
-            set { this.lin_accel = range.fromString(value); }
+            get { return this.accel.toString(); }
+            set { this.accel = range.fromString(value); }
         }
 
         [DescriptionAttribute("The max age of the particle")]
@@ -94,21 +95,20 @@ namespace datatool
             set { this.unit_damage = range.fromString(value); }
         }
 
-        [DescriptionAttribute("Damage against walls and solid structures")]
-        [Editor(typeof(range_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
-        public string WallDamage
-        {
-            get { return this.wall_damage.toString(); }
-            set { this.wall_damage = range.fromString(value); }
-        }
-
-
         [DescriptionAttribute("Number of hits against units before this particle is removed")]
         [Editor(typeof(range_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
         public string UnitHits
         {
             get { return this.unit_hits.toString(); }
             set { this.unit_hits = range.fromString(value); }
+        }
+
+        [DescriptionAttribute("Damage against walls and solid structures")]
+        [Editor(typeof(range_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
+        public string WallDamage
+        {
+            get { return this.wall_damage.toString(); }
+            set { this.wall_damage = range.fromString(value); }
         }
 
         [DescriptionAttribute("Number of hits against walls before this particle is removed")]
