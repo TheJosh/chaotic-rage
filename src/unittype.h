@@ -21,6 +21,7 @@ using namespace std;
 #define UNIT_STATE_RUNNING 2
 #define UNIT_STATE_FIRING 3
 #define UNIT_STATE_DIE 4
+#define UNIT_STATE_MELEE 5
 
 #define UNIT_SOUND_STATIC 1
 #define UNIT_SOUND_HIT 2

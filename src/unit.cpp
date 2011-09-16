@@ -150,6 +150,8 @@ void Unit::meleeAttack()
 
 	this->melee_time = st->game_time + this->uc->melee_delay;
 	this->melee_cooldown = this->melee_time + this->uc->melee_cooldown;
+
+	this->setState(UNIT_STATE_MELEE);
 }
 
 void Unit::specialAttack()
@@ -326,6 +328,7 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		this->melee_time = 0;
 
 	} else if (this->melee_cooldown != 0 && this->melee_cooldown < st->game_time) {
+		this->setState(UNIT_STATE_STATIC);
 		this->melee_cooldown = 0;
 	}
 
