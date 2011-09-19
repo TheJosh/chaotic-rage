@@ -153,6 +153,35 @@ bool Mod::load()
 
 
 /**
+* Reloads the attributes of some of the key config files
+**/
+bool Mod::reloadAttrs()
+{
+	int i;
+	
+	// Weapons
+	vector<WeaponType*> * n_weapontypes = loadModFile<WeaponType*>(this, "weapontypes.conf", "weapon", weapontype_opts, &loadItemWeaponType);
+	if (n_weapontypes == NULL) return false;
+	
+	for (i = n_weapontypes->size() - 1; i >= 0; --i) {
+		WeaponType *nu = n_weapontypes->at(i);
+		WeaponType *old = this->getWeaponType(nu->name);
+		if (! old) continue;
+		
+		old->pt = nu->pt;
+		old->title = nu->title;
+		old->angle_range = nu->angle_range;
+		old->rate = nu->rate;
+		old->continuous = nu->continuous;
+		old->magazine_limit = nu->magazine_limit;
+		old->belt_limit = nu->belt_limit;
+	}
+	
+	return true;
+}
+
+
+/**
 * Gets an animmodel by ID
 **/
 AnimModel * Mod::getAnimModel(int id)

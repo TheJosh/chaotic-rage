@@ -60,11 +60,11 @@ void gameLoop(GameState *st, Render *render)
 		handleEvents(st);
 		
 		if (st->reset_mouse) {
-			if (st->local_players[0]) st->local_players[0]->angleFromMouse(game_x[0], game_y[0], delta);		// one of these two is correct...
+			if (st->local_players[0]) st->local_players[0]->angleFromMouse(game_x[0], game_y[0], delta);		// one of these two is correct...(this one or the one below)
 			if (st->local_players[1]) st->local_players[1]->angleFromMouse(game_x[1], game_y[1], delta);		// one of these two is correct...
 			game_x[0] = game_y[0] = 0;
 			game_x[1] = game_y[1] = 0;
-
+			
 			SDL_WarpMouse(400, 30);
 		}
 		
@@ -140,6 +140,19 @@ static void handleEvents(GameState *st)
 					case SDLK_e: st->local_players[0]->keyPress(Player::KEY_USE); break;
 					case SDLK_q: st->local_players[0]->keyPress(Player::KEY_LIFT); break;
 					case SDLK_t: st->local_players[0]->keyPress(Player::KEY_SPECIAL); break;
+					
+					
+					case SDLK_F5:
+						st->hud->addAlertMessage("Config reload: ", st->getDefaultMod()->reloadAttrs() ? "success" : "failure");
+						break;
+						
+					case SDLK_F6:
+						st->reset_mouse = !st->reset_mouse;
+						SDL_ShowCursor(!st->reset_mouse);
+						SDL_WM_GrabInput(st->reset_mouse == 1 ? SDL_GRAB_ON : SDL_GRAB_OFF);
+						st->hud->addAlertMessage("Reset-mouse ", st->reset_mouse ? "on" : "off");
+						break;
+						
 					default: break;
 				}
 			
