@@ -66,9 +66,9 @@ end);
 --
 bind_playerdied(function()
 	show_alert_message("Just not good enough I see...");
-
+	
 	add_timer(2000, function()
-		add_player("maniac", factions.team1, 1);
+		add_player(get_selected_unittype(), factions.team1, 1);
 	end);
 end);
 
