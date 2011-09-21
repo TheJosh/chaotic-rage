@@ -47,6 +47,14 @@ namespace datatool
         {
             string o;
 
+            // Particles 
+            o = "";
+            foreach (base_item i in this.particletypes)
+            {
+                o += "particle {\n\t" + i.getConfItem() + "\n}\n";
+            }
+            System.IO.File.WriteAllText(this.datapath + "\\particletypes.conf", o);
+
             // Weapons
             o = "";
             foreach (base_item i in this.weapontypes) {

@@ -33,6 +33,8 @@ namespace datatool
                 } else if (kvp.Value is base_item) {
                     o += kvp.Key + " = \"" + kvp.Value.ToString() + "\" ";
 
+                } else if (kvp.Value is range) {
+                    o += kvp.Key + " = {" + ((range)kvp.Value).min  + "," + ((range)kvp.Value).max + "} ";
                 }
             }
 

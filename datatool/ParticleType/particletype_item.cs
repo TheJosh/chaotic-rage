@@ -39,6 +39,24 @@ namespace datatool
             return this.name;
         }
 
+        override public string getConfItem()
+        {
+            ConfuseBuilder b = new ConfuseBuilder();
+
+            b.values["name"] = this.name;
+            b.values["model"] = this.model;
+            b.values["max_speed"] = this.max_speed;
+            b.values["begin_speed"] = this.begin_speed;
+            b.values["accel"] = this.accel;
+            b.values["age"] = this.age;
+            b.values["unit_damage"] = this.unit_damage;
+            b.values["wall_damage"] = this.wall_damage;
+            b.values["unit_hits"] = this.unit_hits;
+            b.values["wall_hits"] = this.wall_hits;
+
+            return b.ToString();
+        }
+
 
 
         [DescriptionAttribute("The name of this particletype, internal use only")]

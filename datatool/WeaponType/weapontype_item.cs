@@ -33,6 +33,15 @@ namespace datatool
         }
 
 
+        override public string getConfItem()
+        {
+            ConfuseBuilder b = new ConfuseBuilder();
+
+            b.values["sound"] = this.sound;
+            b.values["type"] = this.type;
+
+            return b.ToString();
+        }
     }
 
 
@@ -74,9 +83,7 @@ namespace datatool
 
             b.values["name"] = this.name;
             b.values["title"] = this.title;
-
             b.values["particlegen"] = this.particlegen;
-
             b.values["particle"] = this.particle;
             b.values["angle_range"] = this.angle_range;
             b.values["rate"] = this.rate;
@@ -84,7 +91,14 @@ namespace datatool
             b.values["magazine_limit"] = this.magazine_limit;
             b.values["belt_limit"] = this.belt_limit;
 
-            return b.ToString();
+            string o = b.ToString();
+
+            foreach (weapontype_sound i in this.sounds)
+            {
+                if (i.Type != 0) o += "\n\t{ " + i.getConfItem() + "}";
+            }
+
+            return o;
         }
 
 
