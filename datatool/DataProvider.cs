@@ -50,7 +50,7 @@ namespace datatool
             // Weapons
             o = "";
             foreach (base_item i in this.weapontypes) {
-                o += "weapontype {\n\t" + i.getConfItem() + "\n}\n";
+                o += "weapon {\n\t" + i.getConfItem() + "\n}\n";
             }
             System.IO.File.WriteAllText(this.datapath + "\\weapontypes.conf", o);
 
