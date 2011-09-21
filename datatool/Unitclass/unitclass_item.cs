@@ -110,12 +110,20 @@ namespace datatool
     public class unitclass_item : base_item 
     {
         private string name;
+        private int begin_health;
+        private int melee_damage;
+        private int melee_delay;
+        private int melee_cooldown;
         private List<unitclass_settings> settings;
         private List<unitclass_state> states;
 
         public unitclass_item(string name)
         {
             this.name = name;
+            this.begin_health = 0;
+            this.melee_damage = 100;
+            this.melee_delay = 100;
+            this.melee_cooldown = 100;
 
             this.settings = new List<unitclass_settings>();
             this.settings.Add(new unitclass_settings());
@@ -138,13 +146,41 @@ namespace datatool
             set { this.name = value; }
         }
 
-        [DescriptionAttribute("The available settings")]
+        [DescriptionAttribute("The initial health of the unit")]
+        public int BeginHealth
+        {
+            get { return this.begin_health; }
+            set { this.begin_health = value; }
+        }
+
+        [DescriptionAttribute("The amount of damage a melee attack does")]
+        public int MeleeDamage
+        {
+            get { return this.melee_damage; }
+            set { this.melee_damage = value; }
+        }
+
+        [DescriptionAttribute("The delay between initalising the melee and the damage is applied")]
+        public int MeleeDelay
+        {
+            get { return this.melee_delay; }
+            set { this.melee_delay = value; }
+        }
+
+        [DescriptionAttribute("The delay after a melee before another melee can be made")]
+        public int MeleeCooldown
+        {
+            get { return this.melee_cooldown; }
+            set { this.melee_cooldown = value; }
+        }
+
+        [Browsable(false)]
         public List<unitclass_settings> Settings
         {
             get { return this.settings; }
         }
 
-        [DescriptionAttribute("The available states")]
+        [Browsable(false)]
         public List<unitclass_state> States
         {
             get { return this.states; }

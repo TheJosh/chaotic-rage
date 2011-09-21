@@ -31,7 +31,6 @@ namespace datatool
         private void Form_Load(object sender, EventArgs e)
         {
             this.Text = this.item.getName();
-            this.txtName.Text = this.item.getName();
 
             for (int i = 0; i < this.item.States.Count; i++) {
                 ExtraListItem item = new ExtraListItem();
@@ -46,6 +45,8 @@ namespace datatool
                 item.Group = lstSettings.Groups[1];
                 this.lstSettings.Items.Add(item);
             }
+
+            grid.SelectedObject = this.item;
         }
 
         /**
@@ -82,7 +83,11 @@ namespace datatool
         private void gridSpew_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
             if (e.ChangedItem.Label == "Name") {
-                this.sel_list_item.Text = e.ChangedItem.Value.ToString();
+                if (this.sel_list_item == null) {
+                    this.Text = e.ChangedItem.Value.ToString();
+                } else {
+                    this.sel_list_item.Text = e.ChangedItem.Value.ToString();
+                }
             }
         }
 
@@ -127,6 +132,13 @@ namespace datatool
 
             if (b is unitclass_state) { stateToolStripMenuItem_Click(sender, e); return; }
             if (b is unitclass_settings) { settingsToolStripMenuItem_Click(sender, e); return; }
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            lstSettings.SelectedItems.Clear();
+            this.sel_list_item = null;
+            grid.SelectedObject = item;
         }
     }
 

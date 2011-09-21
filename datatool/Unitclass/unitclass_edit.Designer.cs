@@ -32,8 +32,6 @@ namespace datatool
             System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Modifier settings", System.Windows.Forms.HorizontalAlignment.Left);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UnitclassEdit));
             this.grid = new System.Windows.Forms.PropertyGrid();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtName = new System.Windows.Forms.TextBox();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.lstSettings = new System.Windows.Forms.ListView();
@@ -46,6 +44,7 @@ namespace datatool
             this.stateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.panel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -55,31 +54,13 @@ namespace datatool
             this.grid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.grid.Location = new System.Drawing.Point(233, 49);
+            this.grid.Location = new System.Drawing.Point(233, 12);
             this.grid.Name = "grid";
             this.grid.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.grid.Size = new System.Drawing.Size(342, 306);
+            this.grid.Size = new System.Drawing.Size(342, 343);
             this.grid.TabIndex = 4;
             this.grid.ToolbarVisible = false;
             this.grid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.gridSpew_PropertyValueChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Name:";
-            // 
-            // txtName
-            // 
-            this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtName.Location = new System.Drawing.Point(79, 12);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(496, 20);
-            this.txtName.TabIndex = 6;
             // 
             // btnOK
             // 
@@ -120,7 +101,7 @@ namespace datatool
             listViewGroup2});
             this.lstSettings.Location = new System.Drawing.Point(0, 28);
             this.lstSettings.Name = "lstSettings";
-            this.lstSettings.Size = new System.Drawing.Size(212, 278);
+            this.lstSettings.Size = new System.Drawing.Size(212, 315);
             this.lstSettings.SmallImageList = this.imgSmallIcons;
             this.lstSettings.TabIndex = 14;
             this.lstSettings.UseCompatibleStateImageBehavior = false;
@@ -155,9 +136,9 @@ namespace datatool
                         | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.Controls.Add(this.toolStrip1);
             this.panel1.Controls.Add(this.lstSettings);
-            this.panel1.Location = new System.Drawing.Point(15, 49);
+            this.panel1.Location = new System.Drawing.Point(15, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(212, 306);
+            this.panel1.Size = new System.Drawing.Size(212, 343);
             this.panel1.TabIndex = 16;
             // 
             // toolStrip1
@@ -165,7 +146,8 @@ namespace datatool
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripSplitButton1,
-            this.toolStripButton1});
+            this.toolStripButton1,
+            this.toolStripButton2});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -181,7 +163,7 @@ namespace datatool
             this.toolStripSplitButton1.Image = global::datatool.Properties.Resources.add;
             this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripSplitButton1.Name = "toolStripSplitButton1";
-            this.toolStripSplitButton1.Size = new System.Drawing.Size(58, 22);
+            this.toolStripSplitButton1.Size = new System.Drawing.Size(61, 22);
             this.toolStripSplitButton1.Text = "Add";
             this.toolStripSplitButton1.ButtonClick += new System.EventHandler(this.toolStripSplitButton1_ButtonClick);
             // 
@@ -189,7 +171,7 @@ namespace datatool
             // 
             this.stateToolStripMenuItem.Image = global::datatool.Properties.Resources.video;
             this.stateToolStripMenuItem.Name = "stateToolStripMenuItem";
-            this.stateToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.stateToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.stateToolStripMenuItem.Text = "Animation";
             this.stateToolStripMenuItem.Click += new System.EventHandler(this.stateToolStripMenuItem_Click);
             // 
@@ -197,7 +179,7 @@ namespace datatool
             // 
             this.settingsToolStripMenuItem.Image = global::datatool.Properties.Resources.system;
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.settingsToolStripMenuItem.Text = "Modifier settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
@@ -206,8 +188,17 @@ namespace datatool
             this.toolStripButton1.Image = global::datatool.Properties.Resources.delete;
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(66, 22);
+            this.toolStripButton1.Size = new System.Drawing.Size(70, 22);
             this.toolStripButton1.Text = "Remove";
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.Image = global::datatool.Properties.Resources.system;
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(74, 22);
+            this.toolStripButton2.Text = "Edit Base";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
             // UnitclassEdit
             // 
@@ -219,8 +210,6 @@ namespace datatool
             this.Controls.Add(this.btnActions);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.txtName);
-            this.Controls.Add(this.label1);
             this.MinimumSize = new System.Drawing.Size(485, 437);
             this.Name = "UnitclassEdit";
             this.Text = "Edit unit class";
@@ -230,15 +219,12 @@ namespace datatool
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.PropertyGrid grid;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.ListView lstSettings;
@@ -251,5 +237,6 @@ namespace datatool
         private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
     }
 }
