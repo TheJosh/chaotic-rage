@@ -68,6 +68,25 @@ namespace datatool
         }
 
 
+        override public string getConfItem()
+        {
+            ConfuseBuilder b = new ConfuseBuilder();
+
+            b.values["name"] = this.name;
+            b.values["title"] = this.title;
+
+            b.values["particlegen"] = this.particlegen;
+
+            b.values["particle"] = this.particle;
+            b.values["angle_range"] = this.angle_range;
+            b.values["rate"] = this.rate;
+            b.values["continuous"] = this.continuous;
+            b.values["magazine_limit"] = this.magazine_limit;
+            b.values["belt_limit"] = this.belt_limit;
+
+            return b.ToString();
+        }
+
 
         [DescriptionAttribute("The name of this weapon, internal use only")]
         public string Name

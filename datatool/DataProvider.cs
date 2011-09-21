@@ -18,6 +18,9 @@ namespace datatool
         private List<base_item> weapontypes;
 
 
+        /**
+        * Loads data files
+        **/
         public bool load(string filename)
         {
             this.datapath = filename;
@@ -32,6 +35,24 @@ namespace datatool
 
             load_particletypes();
             load_weapontypes();
+
+            return true;
+        }
+
+
+        /**
+        * Saves data files
+        **/
+        public bool save(string filename)
+        {
+            string o;
+
+            // Weapons
+            o = "";
+            foreach (base_item i in this.weapontypes) {
+                o += "weapontype {\n\t" + i.getConfItem() + "\n}\n";
+            }
+            System.IO.File.WriteAllText(this.datapath + "\\weapontypes.conf", o);
 
             return true;
         }

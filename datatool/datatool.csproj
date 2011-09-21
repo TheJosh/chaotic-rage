@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfuseBuilder.cs" />
     <Compile Include="ConfuseReader.cs" />
     <Compile Include="Modifiers\modifier_edit.cs">
       <SubType>Form</SubType>

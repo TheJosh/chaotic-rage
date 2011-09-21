@@ -54,5 +54,15 @@ namespace datatool
             WeapontypeList f = new WeapontypeList();
             f.Show();
         }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.dp.save(Program.dp.datapath);
+        }
     }
 }

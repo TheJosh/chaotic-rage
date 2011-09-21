@@ -23,6 +23,7 @@ namespace datatool
             datapath = datapath.Replace("\\datatool\\bin\\Debug", "");
             datapath += "\\data\\cr";
 
+
             dp = new DataProvider();
             dp.load(datapath);
 
@@ -36,6 +37,7 @@ namespace datatool
                 MessageBox.Show("Error loading " + filename + "\n" + ex.Message);
                 Application.Exit();
             }
+
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

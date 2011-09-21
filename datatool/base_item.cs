@@ -16,6 +16,11 @@ namespace datatool
         {
             return this.getName();
         }
+
+        virtual public string getConfItem()
+        {
+            return "";
+        }
     }
 
 
