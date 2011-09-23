@@ -68,6 +68,7 @@ Unit::~Unit()
 **/
 void Unit::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 {
+	if (remove_at != 0) return;
 	if (theirs->e->klass() == WALL) {
 		this->x = this->old_x;
 		this->y = this->old_y;

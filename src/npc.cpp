@@ -40,6 +40,8 @@ void NPC::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 **/
 void NPC::update(int delta)
 {
+	if (remove_at != 0) return;
+
 	UnitTypeSettings *ucs = this->uc->getSettings(0);
 	
 	
