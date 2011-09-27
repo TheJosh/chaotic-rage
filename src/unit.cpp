@@ -301,6 +301,10 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	if (this->firing) {
 		if (this->turret_obj) {
 			w = this->st->getDefaultMod()->getWeaponType("poopgun");
+			
+		} else if (this->drive_obj) {
+			w = this->st->getDefaultMod()->getWeaponType("rocket_launcher");
+			
 		} else if (this->weapon) {
 			w = this->weapon;
 		}
@@ -354,7 +358,7 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	} else if (this->drive_obj) {
 		this->drive_obj->x = pointPlusAngleX(this->x, this->angle, -20);
 		this->drive_obj->y = pointPlusAngleY(this->y, this->angle, -20);
-		this->drive_obj->y = this->z;
+		this->drive_obj->z = this->z;
 		this->drive_obj->angle = this->angle;
 		
 	} else if (this->turret_obj) {
