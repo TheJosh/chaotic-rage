@@ -51,7 +51,7 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 	// access sounds using this->uc->getSound(type)
 	// see unittype.h for types (e.g. UNIT_SOUND_DEATH)
 	// example:
-	// Sound* snd;
+	// Sound* snd;if (this->firing
 	// snd = this->uc->getSound(UNIT_SOUND_DEATH);
 	// if (snd != NULL) this->st->audio->playSound(snd);
 }
@@ -297,30 +297,39 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	
 	
 	// Do some shooting
-	if (this->firing && this->weapon != NULL) {
-		if (this->weapon_gen != NULL) {
-			this->weapon_gen->x = this->x;
-			this->weapon_gen->y = this->y;
-			this->weapon_gen->angle = this->angle_aim;
-			this->weapon_gen->update(delta);
+	WeaponType *w = NULL;
+	if (this->firing) {
+		if (this->turret_obj) {
+			w = this->st->getDefaultMod()->getWeaponType("poopgun");
+		} else if (this->weapon) {
+			w = this->weapon;
 		}
+	}
+	
+	// I still might remove weapon effects using a particle generator
+	// It's a dumb system anyway.
+	/*if (this->weapon_gen != NULL) {
+		this->weapon_gen->x = this->x;
+		this->weapon_gen->y = this->y;
+		this->weapon_gen->angle = this->angle_aim;
+		this->weapon_gen->update(delta);
+	}*/
+	
+	if (w && w->pt) {
+		Particle* pa = new Particle(w->pt, this->st);
+		pa->x = this->x;
+		pa->y = this->y;
 		
-		if (this->weapon->pt) {
-			Particle* pa = new Particle(this->weapon->pt, this->st);
-			pa->x = this->x;
-			pa->y = this->y;
-			
-			pa->angle = this->angle + getRandom(0 - this->weapon->angle_range / 2, this->weapon->angle_range / 2);
-			pa->angle = clampAngle(pa->angle);
-			
-			// TODO: This should be dynamic or computed or something even better (vectors anyone?)
-			pa->x = pointPlusAngleX(pa->x, pa->angle, 50);
-			pa->y = pointPlusAngleY(pa->y, pa->angle, 50);
-			
-			st->addParticle(pa);
-			
-			if (! this->weapon->continuous) this->firing = false;
-		}
+		pa->angle = this->angle + getRandom(0 - w->angle_range / 2, w->angle_range / 2);
+		pa->angle = clampAngle(pa->angle);
+		
+		// TODO: This should be dynamic or computed or something even better (vectors anyone?)
+		pa->x = pointPlusAngleX(pa->x, pa->angle, 50);
+		pa->y = pointPlusAngleY(pa->y, pa->angle, 50);
+		
+		st->addParticle(pa);
+		
+		if (! w->continuous) this->firing = false;
 	}
 	
 	// Melee
@@ -341,13 +350,13 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		this->lift_obj->y = this->y;
 		this->lift_obj->z = 70;
 		this->lift_obj->angle = this->angle;
-
+		
 	} else if (this->drive_obj) {
 		this->drive_obj->x = pointPlusAngleX(this->x, this->angle, -20);
 		this->drive_obj->y = pointPlusAngleY(this->y, this->angle, -20);
 		this->drive_obj->y = this->z;
 		this->drive_obj->angle = this->angle;
-
+		
 	} else if (this->turret_obj) {
 		this->x = this->turret_obj->x;
 		this->y = this->turret_obj->y;
