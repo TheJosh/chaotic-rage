@@ -64,10 +64,6 @@ void Menu::doit()
 
 	SDL_Event event;
 	
-	glTranslatef(0, 0, 40);
-	glDisable(GL_LIGHTING);
-	glDisable(GL_DEPTH_TEST);
-	
 	
 	this->running = true;
 	while (this->running) {
@@ -209,11 +205,15 @@ void Menu::doit()
 		glClearColor(9.0/255.0, 9.0/255.0, 9.0/255.0, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
+		
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		
-		
+		glTranslatef(0, 0, 40);
+		glDisable(GL_LIGHTING);
+		glDisable(GL_DEPTH_TEST);
+	
+	
 		render->renderSprite(mid, 0, render->virt_height - mid->h, render->virt_width - right->w, mid->h);
 		render->renderSprite(right, render->virt_width - right->w, render->virt_height - right->h);
 		render->renderSprite(logo, (render->virt_width - logo->w) / 2, 20);
