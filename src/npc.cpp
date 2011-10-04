@@ -40,8 +40,11 @@ void NPC::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 **/
 void NPC::update(int delta)
 {
-	if (remove_at != 0) return;
-
+	if (remove_at != 0) {
+		if (remove_at <= st->game_time) this->del = 1;
+		return;
+	}
+	
 	UnitTypeSettings *ucs = this->uc->getSettings(0);
 	
 	

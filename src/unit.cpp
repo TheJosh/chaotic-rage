@@ -389,7 +389,7 @@ int Unit::takeDamage(int damage)
 		this->speed = 0;
 		this->setState(UNIT_STATE_DIE);
 		
-		remove_at = st->game_time + 10000;
+		remove_at = st->game_time + (10 * 60 * 1000);	// 10 mins
 		
 		return 1;
 	}
