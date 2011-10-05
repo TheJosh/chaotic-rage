@@ -54,6 +54,54 @@ void HUD::addAlertMessage(string text1, string text2)
 
 
 /**
+* Add a data table to the HUD
+**/
+int HUD::addDataTable(int x, int y, int cols, int rows)
+{
+	DataTable * dt;
+	
+	dt = new DataTable();
+	dt->x = x;
+	dt->y = y;
+	dt->cols = cols;
+	dt->rows = rows;
+	
+	for (int i = 0; i < (cols * rows); i++) {
+		dt->data.push_back("");
+	}
+	
+	this->tables.push_back(dt);
+	
+	return this->tables.size() - 1;
+}
+
+/**
+* Set a value of a data table
+**/
+void HUD::setDataValue(int table_id, int col, int row, string val)
+{
+	DataTable * dt;
+	dt = this->tables.at(table_id);
+	dt->data[(row * dt->cols) + col] = val;
+	
+	for (int i = 0; i < (dt->cols * dt->rows); i++) {
+		cout << dt->data.at(i) << "\n";
+	}
+}
+
+/**
+* Remove a data table
+**/
+void HUD::removeDataTable(int table_id)
+{
+	/*DataTable * dt;
+	dt = this->tables.at(table_id);
+	this->tables.erase(table_id);
+	delete dt;*/
+}
+
+
+/**
 * Used for filtering
 **/
 /*static bool MessageEraser(AlertMessage *e)
@@ -106,9 +154,8 @@ void HUD::render(RenderOpenGL * render)
 		
 		
 	} else {
-		// General gameplay stuff
+		// Alert messages
 		int y = 1000;
-		
 		for (list<AlertMessage*>::iterator it = this->msgs.begin(); it != this->msgs.end(); it++) {
 			AlertMessage *msg = (*it);
 			
@@ -119,6 +166,17 @@ void HUD::render(RenderOpenGL * render)
 			
 			y -= 20;
 			render->renderText(msg->text, 20, y);
+		}
+		
+		// Data tables
+		for (unsigned int i = 0; i < this->tables.size(); i++) {
+			DataTable *dt = this->tables[i];
+			
+			for (int col = 0; col < dt->cols; col++) {
+				for (int row = 0; row < dt->rows; row++) {
+					render->renderText(dt->data[(row * dt->cols) + col], dt->x + (100 * col), dt->y + (20 * row));
+				}
+			}
 		}
 	}
 }

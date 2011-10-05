@@ -455,6 +455,52 @@ LUA_FUNC(show_alert_message)
 
 
 /**
+* Display an alert message
+**/
+LUA_FUNC(add_data_table)
+{
+	int x = lua_tointeger(L, 1);
+	int y = lua_tointeger(L, 2);
+	int cols = lua_tointeger(L, 3);
+	int rows = lua_tointeger(L, 4);
+	int table_id = 0;
+	
+	if (gl->st->hud) {
+		table_id = gl->st->hud->addDataTable(x, y, cols, rows);
+	}
+	
+	lua_pushnumber(L, table_id);
+	return 1;
+}
+
+/**
+* Set a value for a data table
+*
+* @param int The table id
+* @param int The col of the cell to set
+* @param int The row of the cell to set
+* @param String The value to set
+**/
+LUA_FUNC(set_data_value)
+{
+	int table_id = lua_tointeger(L, 1);
+	int col = lua_tointeger(L, 2);
+	int row = lua_tointeger(L, 3);
+	
+	const char* ctext = lua_tostring(L, 4);
+	string text = (*(new string(ctext)));
+	if (text.empty()) {
+		lua_pushstring(L, "Arg #4 is not a string");
+		lua_error(L);
+	}
+	
+	if (gl->st->hud) gl->st->hud->setDataValue(table_id, col, row, text);
+	
+	return 0;
+}
+
+
+/**
 * 
 *
 * @return String: The currently selected unit type
@@ -505,6 +551,8 @@ void register_lua_functions()
 	LUA_REG(add_player);
 	LUA_REG(show_alert_message);
 	LUA_REG(get_selected_unittype);
+	LUA_REG(add_data_table);
+	LUA_REG(set_data_value);
 	LUA_REG(random);
 	
 	

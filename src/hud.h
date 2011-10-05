@@ -18,6 +18,17 @@ class AlertMessage
 		unsigned int remove_time;
 };
 
+class DataTable
+{
+	friend class HUD;
+	private:
+		int x;
+		int y;
+		int cols;
+		int rows;
+		vector<string> data;
+};
+
 
 class HUD {
 	public:
@@ -31,6 +42,7 @@ class HUD {
 		bool weapon_menu;
 		bool spawn_menu;
 		list<AlertMessage*> msgs;
+		vector<DataTable*> tables;
 		
 	public:
 		HUD(GameState *st);
@@ -40,7 +52,11 @@ class HUD {
 	public:
 		void showSpawnMenu();
 		void hideSpawnMenu();
-
+		
 		void addAlertMessage(string text);
 		void addAlertMessage(string text1, string text2);
+		
+		int addDataTable(int x, int y, int cols, int rows);
+		void setDataValue(int table_id, int col, int row, string val);
+		void removeDataTable(int table_id);
 };
