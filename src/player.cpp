@@ -110,6 +110,8 @@ void Player::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 
 	if (theirs->e->klass() == OBJECT) {
 		this->curr_obj = (Object*)theirs->e;
+		
+		if (this->curr_obj->ot->over) this->doUse();
 	}
 }
 

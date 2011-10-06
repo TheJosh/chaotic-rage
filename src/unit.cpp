@@ -205,6 +205,8 @@ void Unit::setWeapon(int id)
 		this->weapon_gen = new ParticleGenerator(wt->pg, this->st);
 	}
 	
+	this->weapon_fire_time = st->game_time;
+	
 	curr_weapon_id = id;
 }
 
@@ -320,10 +322,6 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		this->weapon_gen->update(delta);
 	}*/
 	
-	if (this->weapon_fire_time == 0) {
-		this->weapon_fire_time = st->game_time;
-	}
-	
 	if (w && w->pt && st->game_time - this->weapon_fire_time > w->rate) {
 		Particle* pa = new Particle(w->pt, this->st);
 		pa->x = this->x;
@@ -432,6 +430,7 @@ void Unit::doUse()
 		if (wt) {
 			this->st->hud->addAlertMessage("Picked up a ", wt->title);
 			this->setWeapon(this->pickupWeapon(wt));
+			this->curr_obj->del = 1;
 		}
 	}
 

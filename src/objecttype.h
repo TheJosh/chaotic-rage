@@ -27,7 +27,7 @@ class ObjectType
 		AnimModel * model;
 		int check_radius;
 		int health;
-
+		
 		vector <ObjectTypeDamage *> damage_models;
 		vector <AudioPtr> walk_sounds;
 		
@@ -36,7 +36,8 @@ class ObjectType
 		string pickup_weapon;
 		bool drive;
 		bool turret;
-
+		bool over;
+		
 		// dynamic
 		int id;
 		SpritePtr surf;
