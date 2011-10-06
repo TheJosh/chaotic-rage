@@ -33,6 +33,7 @@ class Unit : public Entity
 		bool firing;
 		vector<WeaponType*> avail_weapons;
 		unsigned int curr_weapon_id;
+		unsigned int weapon_fire_time;
 		
 		UnitType* uc;
 		UnitTypeState* current_state;

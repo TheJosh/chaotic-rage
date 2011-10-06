@@ -83,10 +83,6 @@ void HUD::setDataValue(int table_id, int col, int row, string val)
 	DataTable * dt;
 	dt = this->tables.at(table_id);
 	dt->data[(row * dt->cols) + col] = val;
-	
-	for (int i = 0; i < (dt->cols * dt->rows); i++) {
-		cout << dt->data.at(i) << "\n";
-	}
 }
 
 /**

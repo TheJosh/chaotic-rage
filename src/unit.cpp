@@ -24,6 +24,7 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 	this->weapon = NULL;
 	this->weapon_gen = NULL;
 	this->firing = false;
+	this->weapon_fire_time = 0;
 	
 	this->anim = NULL;
 	this->current_state_type = 0;
@@ -319,7 +320,11 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		this->weapon_gen->update(delta);
 	}*/
 	
-	if (w && w->pt) {
+	if (this->weapon_fire_time == 0) {
+		this->weapon_fire_time = st->game_time;
+	}
+	
+	if (w && w->pt && st->game_time - this->weapon_fire_time > w->rate) {
 		Particle* pa = new Particle(w->pt, this->st);
 		pa->x = this->x;
 		pa->y = this->y;
@@ -332,6 +337,8 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		pa->y = pointPlusAngleY(pa->y, pa->angle, 50);
 		
 		st->addParticle(pa);
+		
+		this->weapon_fire_time = st->game_time;
 		
 		if (! w->continuous) this->firing = false;
 	}
