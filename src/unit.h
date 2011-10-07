@@ -10,6 +10,15 @@
 using namespace std;
 
 
+class UnitWeapon {
+	friend class Unit;
+	private:
+		WeaponType* wt;
+		int magazine;
+		int belt;
+		unsigned int next_use;		// time after which the weapon can be used again
+};
+
 class Unit : public Entity
 {
 	public:
@@ -28,12 +37,11 @@ class Unit : public Entity
 		int desired_angle_aim;
 		int angle_aim;
 		
-		WeaponType* weapon;
+		UnitWeapon* weapon;
 		ParticleGenerator* weapon_gen;
 		bool firing;
-		vector<WeaponType*> avail_weapons;
+		vector<UnitWeapon*> avail_weapons;
 		unsigned int curr_weapon_id;
-		unsigned int weapon_fire_time;
 		
 		UnitType* uc;
 		UnitTypeState* current_state;
@@ -63,7 +71,11 @@ class Unit : public Entity
 		unsigned int melee_cooldown;
 
 		int weapon_sound;
-
+		
+		
+		int temp;
+		
+		
 	public:
 		Unit(UnitType *uc, GameState *st);
 		virtual ~Unit();
@@ -83,7 +95,8 @@ class Unit : public Entity
 
 		int pickupWeapon(WeaponType* wt);
 		unsigned int getNumWeapons();
-		WeaponType * getWeaponAt(unsigned int id);
+		UnitWeapon * getWeaponAt(unsigned int id);
+		WeaponType * getWeaponTypeAt(unsigned int id);
 		
 		void setWeapon(int id);
 		unsigned int getCurrentWeaponID();

@@ -171,7 +171,8 @@ bool Mod::reloadAttrs()
 		old->pt = nu->pt;
 		old->title = nu->title;
 		old->angle_range = nu->angle_range;
-		old->rate = nu->rate;
+		old->fire_delay = nu->fire_delay;
+		old->reload_delay = nu->reload_delay;
 		old->continuous = nu->continuous;
 		old->magazine_limit = nu->magazine_limit;
 		old->belt_limit = nu->belt_limit;

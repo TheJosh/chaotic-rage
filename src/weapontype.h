@@ -36,7 +36,8 @@ class WeaponType
 		
 		ParticleType *pt;
 		int angle_range;
-		unsigned int rate;
+		unsigned int fire_delay;
+		unsigned int reload_delay;
 		bool continuous;
 		int magazine_limit;
 		int belt_limit;

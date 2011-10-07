@@ -31,7 +31,8 @@ cfg_opt_t weapontype_opts[] =
 	
 	CFG_STR((char*) "particle", (char*)"", CFGF_NONE),
 	CFG_INT((char*) "angle_range", 0, CFGF_NONE),
-	CFG_INT((char*) "rate", 0, CFGF_NONE),
+	CFG_INT((char*) "fire_delay", 0, CFGF_NONE),
+	CFG_INT((char*) "reload_delay", 0, CFGF_NONE),
 	CFG_INT((char*) "continuous", 0, CFGF_NONE),
 	CFG_INT((char*) "magazine_limit", 100, CFGF_NONE),
 	CFG_INT((char*) "belt_limit", 1000, CFGF_NONE),
@@ -66,7 +67,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		}
 		
 		wt->angle_range = cfg_getint(cfg_item, "angle_range");
-		wt->rate = cfg_getint(cfg_item, "rate");
+		wt->fire_delay = cfg_getint(cfg_item, "fire_delay");
+		wt->reload_delay = cfg_getint(cfg_item, "reload_delay");
 		wt->continuous = cfg_getint(cfg_item, "continuous");
 		wt->magazine_limit = cfg_getint(cfg_item, "magazine_limit");
 		wt->belt_limit = cfg_getint(cfg_item, "belt_limit");

@@ -24,7 +24,6 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 	this->weapon = NULL;
 	this->weapon_gen = NULL;
 	this->firing = false;
-	this->weapon_fire_time = 0;
 	
 	this->anim = NULL;
 	this->current_state_type = 0;
@@ -47,6 +46,10 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 	this->melee_cooldown = 0;
 	
 	this->weapon_sound = -1;
+	
+	
+	this->temp = st->hud->addDataTable(50, 50, 1, 2);
+	
 	
 	
 	// access sounds using this->uc->getSound(type)
@@ -125,7 +128,7 @@ void Unit::beginFiring()
 		this->setState(UNIT_STATE_FIRING);
 	}
 	
-	Sound* snd = this->weapon->getSound(WEAPON_SOUND_BEGIN);
+	Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_BEGIN);
 	weapon_sound = this->st->audio->playSound(snd, true, this);
 }
 
@@ -141,7 +144,7 @@ void Unit::endFiring()
 	
 	this->st->audio->stopSound(this->weapon_sound);
 
-	Sound* snd = this->weapon->getSound(WEAPON_SOUND_END);
+	Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_END);
 	this->st->audio->playSound(snd, false, this);
 }
 
@@ -168,7 +171,14 @@ void Unit::specialAttack()
 **/
 int Unit::pickupWeapon(WeaponType* wt)
 {
-	this->avail_weapons.push_back(wt);
+	UnitWeapon *uw;
+	uw = new UnitWeapon();
+	uw->wt = wt;
+	uw->magazine = wt->magazine_limit;
+	uw->belt = wt->belt_limit;
+	uw->next_use = st->game_time;
+	
+	this->avail_weapons.push_back(uw);
 	
 	if (this->weapon == NULL) {
 		this->setWeapon(0);
@@ -182,7 +192,12 @@ unsigned int Unit::getNumWeapons()
 	return this->avail_weapons.size();
 }
 
-WeaponType * Unit::getWeaponAt(unsigned int id)
+WeaponType * Unit::getWeaponTypeAt(unsigned int id)
+{
+	return this->avail_weapons[id]->wt;
+}
+
+UnitWeapon * Unit::getWeaponAt(unsigned int id)
 {
 	return this->avail_weapons[id];
 }
@@ -193,19 +208,17 @@ WeaponType * Unit::getWeaponAt(unsigned int id)
 **/
 void Unit::setWeapon(int id)
 {
-	WeaponType *wt = this->avail_weapons.at(id);
+	UnitWeapon *uw = this->avail_weapons.at(id);
 	
-	this->weapon = wt;
+	this->weapon = uw;
 	this->firing = false;
 	
 	delete this->weapon_gen;
 	this->weapon_gen = NULL;
 	
-	if (wt->pg) {
-		this->weapon_gen = new ParticleGenerator(wt->pg, this->st);
+	if (uw->wt->pg) {
+		this->weapon_gen = new ParticleGenerator(uw->wt->pg, this->st);
 	}
-	
-	this->weapon_fire_time = st->game_time;
 	
 	curr_weapon_id = id;
 }
@@ -250,6 +263,15 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	if (remove_at != 0) {
 		if (remove_at <= st->game_time) this->del = 1;
 		return;
+	}
+	
+	
+	if (weapon) {
+		char buf[50];
+		sprintf(buf, "%i", weapon->magazine);
+		st->hud->setDataValue(this->temp, 0, 0, buf);
+		sprintf(buf, "%i", weapon->belt);
+		st->hud->setDataValue(this->temp, 0, 1, buf);
 	}
 	
 	
@@ -308,8 +330,8 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		} else if (this->drive_obj) {
 			w = this->st->getDefaultMod()->getWeaponType("rocket_launcher");
 			
-		} else if (this->weapon) {
-			w = this->weapon;
+		} else if (this->weapon && this->weapon->next_use < st->game_time && this->weapon->magazine > 0) {
+			w = this->weapon->wt;
 		}
 	}
 	
@@ -322,7 +344,7 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		this->weapon_gen->update(delta);
 	}*/
 	
-	if (w && w->pt && st->game_time - this->weapon_fire_time > w->rate) {
+	if (w && w->pt) {
 		Particle* pa = new Particle(w->pt, this->st);
 		pa->x = this->x;
 		pa->y = this->y;
@@ -336,7 +358,20 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		
 		st->addParticle(pa);
 		
-		this->weapon_fire_time = st->game_time;
+		if (w == this->weapon->wt) {
+			this->weapon->next_use = st->game_time + this->weapon->wt->fire_delay;
+			
+			this->weapon->magazine--;
+			if (this->weapon->magazine == 0 && this->weapon->belt > 0) {
+				int load = this->weapon->wt->magazine_limit;
+				if (load > this->weapon->belt) load = this->weapon->belt;
+				this->weapon->magazine = load;
+				this->weapon->belt -= load;
+				this->weapon->next_use += this->weapon->wt->reload_delay;
+				this->firing = false;
+				this->st->hud->addAlertMessage("Reloading...");
+			}
+		}
 		
 		if (! w->continuous) this->firing = false;
 	}

@@ -137,7 +137,7 @@ void HUD::render(RenderOpenGL * render)
 		unsigned int i, num = this->st->local_players[0]->getNumWeapons();
 		
 		for (i = 0; i < num; i++) {
-			WeaponType *wt = this->st->local_players[0]->getWeaponAt(i);
+			WeaponType *wt = this->st->local_players[0]->getWeaponTypeAt(i);
 			
 			render->renderText(wt->title, r.x, r.y);
 
