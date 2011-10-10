@@ -92,8 +92,9 @@ class Unit : public Entity
 		void endFiring();
 		void meleeAttack();
 		void specialAttack();
-
-		int pickupWeapon(WeaponType* wt);
+		
+		bool pickupWeapon(WeaponType* wt);
+		bool pickupAmmo(WeaponType* wt);
 		unsigned int getNumWeapons();
 		UnitWeapon * getWeaponAt(unsigned int id);
 		WeaponType * getWeaponTypeAt(unsigned int id);

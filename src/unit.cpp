@@ -169,10 +169,11 @@ void Unit::specialAttack()
 /**
 * Pick up a weapon
 **/
-int Unit::pickupWeapon(WeaponType* wt)
+bool Unit::pickupWeapon(WeaponType* wt)
 {
-	UnitWeapon *uw;
-	uw = new UnitWeapon();
+	if (this->pickupAmmo(wt)) return true;
+	
+	UnitWeapon *uw = new UnitWeapon();
 	uw->wt = wt;
 	uw->magazine = wt->magazine_limit;
 	uw->belt = wt->belt_limit;
@@ -180,11 +181,25 @@ int Unit::pickupWeapon(WeaponType* wt)
 	
 	this->avail_weapons.push_back(uw);
 	
-	if (this->weapon == NULL) {
-		this->setWeapon(0);
-	}
+	this->setWeapon(this->avail_weapons.size() - 1);
+	
+	return true;
+}
 
-	return this->avail_weapons.size() - 1;
+/**
+* Pick up ammo
+**/
+bool Unit::pickupAmmo(WeaponType* wt)
+{
+	for (unsigned int i = 0; i < this->avail_weapons.size(); i++) {
+		if (this->avail_weapons[i]->wt == wt) {
+			this->avail_weapons[i]->belt += wt->belt_limit;
+			this->avail_weapons[i]->belt = min(this->avail_weapons[i]->belt, wt->belt_limit);
+			return true;
+		}
+	}
+	
+	return false;
 }
 
 unsigned int Unit::getNumWeapons()
@@ -459,16 +474,25 @@ void Unit::doUse()
 		nu->z = 60;
 		this->st->addObject(nu);
 	}
-
+	
 	if (ot->pickup_weapon.length() != 0) {
 		WeaponType *wt = this->st->getDefaultMod()->getWeaponType(ot->pickup_weapon);
 		if (wt) {
 			this->st->hud->addAlertMessage("Picked up a ", wt->title);
-			this->setWeapon(this->pickupWeapon(wt));
+			this->pickupWeapon(wt);
 			this->curr_obj->del = 1;
 		}
 	}
-
+	
+	if (ot->ammo_crate.length() != 0) {
+		WeaponType *wt = this->st->getDefaultMod()->getWeaponType(ot->ammo_crate);
+		if (wt) {
+			this->st->hud->addAlertMessage("Picked up some ammo");
+			this->pickupAmmo(wt);
+			this->curr_obj->del = 1;
+		}
+	}
+	
 	if (ot->drive == 1) {
 		if (this->drive_obj) {
 			this->drive_obj = NULL;

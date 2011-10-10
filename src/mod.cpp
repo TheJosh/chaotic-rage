@@ -143,12 +143,12 @@ bool Mod::load()
 	if (gametypes == NULL) return false;
 	
 	
-	// Post-load logic
+	// Anim models ->next linkup
 	for (int i = animmodels->size() - 1; i >= 0; --i) {
 		animmodels->at(i)->next = this->getAnimModel(animmodels->at(i)->next_name);
 	}
 	
-	// Auto-create object types for weapons
+	// Auto-create object types for weapons (pickup)
 	for (int i = weapontypes->size() - 1; i >= 0; --i) {
 		string tmp = weapontypes->at(i)->name;
 		tmp.append("_pickup");
@@ -167,6 +167,27 @@ bool Mod::load()
 		
 		objecttypes->push_back(ot);
 	}
+	
+	// Auto-create object types for weapons (ammocrate)
+	for (int i = weapontypes->size() - 1; i >= 0; --i) {
+		string tmp = weapontypes->at(i)->name;
+		tmp.append("_ammocrate");
+		
+		ObjectType *ot = new ObjectType();
+		ot->name = tmp;
+		ot->check_radius = 30;
+		ot->health = 20000;
+		ot->ammo_crate = weapontypes->at(i)->name;
+		ot->over = true;
+		
+		ot->model = this->getAnimModel(tmp);
+		if (ot->model == NULL) {
+			ot->model = this->getAnimModel("generic_ammocrate");
+		}
+		
+		objecttypes->push_back(ot);
+	}
+	
 	
 	return true;
 }
