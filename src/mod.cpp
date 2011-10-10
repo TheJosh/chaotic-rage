@@ -148,6 +148,26 @@ bool Mod::load()
 		animmodels->at(i)->next = this->getAnimModel(animmodels->at(i)->next_name);
 	}
 	
+	// Auto-create object types for weapons
+	for (int i = weapontypes->size() - 1; i >= 0; --i) {
+		string tmp = weapontypes->at(i)->name;
+		tmp.append("_pickup");
+		
+		ObjectType *ot = new ObjectType();
+		ot->name = tmp;
+		ot->check_radius = 30;
+		ot->health = 20000;
+		ot->pickup_weapon = weapontypes->at(i)->name;
+		ot->over = true;
+		
+		ot->model = this->getAnimModel(tmp);
+		if (ot->model == NULL) {
+			ot->model = this->getAnimModel("generic_pickup");
+		}
+		
+		objecttypes->push_back(ot);
+	}
+	
 	return true;
 }
 

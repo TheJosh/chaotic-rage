@@ -204,7 +204,10 @@ int Map::load(string name, Render * render)
 			string type = cfg_getstr(cfg_sub, "type");
 			if (type.empty()) continue;
 			
-			Object * ob = new Object(this->st->getMod("cr")->getObjectType(type), this->st);
+			ObjectType *ot = this->st->getMod("cr")->getObjectType(type);
+			if (ot == NULL) reportFatalError("Unable to load map; missing or invalid object " + type);
+			
+			Object * ob = new Object(ot, this->st);
 			
 			ob->x = cfg_getint(cfg_sub, "x");
 			ob->y = cfg_getint(cfg_sub, "y");

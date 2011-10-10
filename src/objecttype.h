@@ -34,6 +34,7 @@ class ObjectType
 		string add_object;
 		string show_message;
 		string pickup_weapon;
+		string ammo_crate;
 		bool drive;
 		bool turret;
 		bool over;
