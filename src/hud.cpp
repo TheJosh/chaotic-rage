@@ -65,6 +65,7 @@ int HUD::addDataTable(int x, int y, int cols, int rows)
 	dt->y = y;
 	dt->cols = cols;
 	dt->rows = rows;
+	dt->visible = true;
 	
 	for (int i = 0; i < (cols * rows); i++) {
 		dt->data.push_back("");
@@ -90,10 +91,9 @@ void HUD::setDataValue(int table_id, int col, int row, string val)
 **/
 void HUD::removeDataTable(int table_id)
 {
-	/*DataTable * dt;
+	DataTable * dt;
 	dt = this->tables.at(table_id);
-	this->tables.erase(table_id);
-	delete dt;*/
+	dt->visible = false;
 }
 
 /**
@@ -175,6 +175,7 @@ void HUD::render(RenderOpenGL * render)
 		// Data tables
 		for (unsigned int i = 0; i < this->tables.size(); i++) {
 			DataTable *dt = this->tables[i];
+			if (! dt->visible) continue;
 			
 			for (int col = 0; col < dt->cols; col++) {
 				for (int row = 0; row < dt->rows; row++) {

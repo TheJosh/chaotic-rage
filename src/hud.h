@@ -27,6 +27,7 @@ class DataTable
 		int cols;
 		int rows;
 		vector<string> data;
+		bool visible;
 };
 
 

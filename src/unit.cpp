@@ -48,6 +48,7 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 	this->weapon_sound = -1;
 	
 	
+	// TODO: THIS IS CRAP
 	this->temp = st->hud->addDataTable(50, 50, 1, 2);
 	
 	
@@ -64,6 +65,7 @@ Unit::~Unit()
 {
 	delete(this->anim);
 	this->st->delCollideBox(this->cb);
+	this->st->hud->removeDataTable(this->temp);
 }
 
 
