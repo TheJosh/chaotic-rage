@@ -55,7 +55,8 @@ namespace datatool
 
         private particletype_item particle;
         private int angle_range;
-        private int rate;
+        private int fire_delay;
+        private int reload_delay;
         private bool continuous;
         private int magazine_limit;
         private int belt_limit;
@@ -86,7 +87,8 @@ namespace datatool
             b.values["particlegen"] = this.particlegen;
             b.values["particle"] = this.particle;
             b.values["angle_range"] = this.angle_range;
-            b.values["rate"] = this.rate;
+            b.values["fire_delay"] = this.fire_delay;
+            b.values["reload_delay"] = this.reload_delay;
             b.values["continuous"] = this.continuous;
             b.values["magazine_limit"] = this.magazine_limit;
             b.values["belt_limit"] = this.belt_limit;
@@ -132,10 +134,17 @@ namespace datatool
         }
 
         [DescriptionAttribute("no desc yet")]
-        public int Rate
+        public int FireDelay
         {
-            get { return this.rate; }
-            set { this.rate = value; }
+            get { return this.fire_delay; }
+            set { this.fire_delay = value; }
+        }
+
+        [DescriptionAttribute("no desc yet")]
+        public int ReloadDelay
+        {
+            get { return this.reload_delay; }
+            set { this.reload_delay = value; }
         }
 
         [DescriptionAttribute("no desc yet")]

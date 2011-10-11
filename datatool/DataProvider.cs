@@ -74,7 +74,7 @@ namespace datatool
             ConfuseSection sect = null;
             string file = System.IO.File.ReadAllText(this.datapath + "\\particletypes.conf");
 
-            // Parse config
+            // Parse
             try {
                 sect = read.Parse(file);
             } catch (Exception ex) {
@@ -82,7 +82,7 @@ namespace datatool
                 Application.Exit();
             }
 
-            // Load particletypes
+            // Load
             foreach (ConfuseSection s in sect.subsections) {
                 particletype_item i = new particletype_item("");
                 particletypes.Add(i);
@@ -111,7 +111,7 @@ namespace datatool
             ConfuseSection sect = null;
             string file = System.IO.File.ReadAllText(this.datapath + "\\weapontypes.conf");
 
-            // Parse config
+            // Parse
             try {
                 sect = read.Parse(file);
             } catch (Exception ex) {
@@ -119,7 +119,7 @@ namespace datatool
                 Application.Exit();
             }
 
-            // Load particletypes
+            // Load
             foreach (ConfuseSection s in sect.subsections) {
                 weapontype_item i = new weapontype_item("");
                 weapontypes.Add(i);
@@ -131,7 +131,8 @@ namespace datatool
 
                 i.Particle = this.FindParticletype(s.get_string("particle", ""));
                 i.AngleRange = s.get_int("angle_range", 0);
-                i.Rate = s.get_int("rate", 0);
+                i.FireDelay = s.get_int("fire_delay", 250);
+                i.ReloadDelay = s.get_int("reload_delay", 1000);
                 i.Continuous = s.get_bool("continuous", false);
                 i.MagazineLimit = s.get_int("magazine_limit", 100);
                 i.BeltLimit = s.get_int("belt_limit", 1000);
