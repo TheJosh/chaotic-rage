@@ -25,8 +25,9 @@ void Menu::doit()
 	SpritePtr logo = this->render->loadSprite("logo.png", mod);
 	SpritePtr mid = this->render->loadSprite("bg_mid.png", mod);
 	SpritePtr right = this->render->loadSprite("bg_right.png", mod);
-
-
+	
+	
+	// Maps
 	int map = 0;
 	vector<string> maps;
 	maps.push_back("test");
@@ -35,6 +36,7 @@ void Menu::doit()
 	maps.push_back("warfare");
 	maps.push_back("arena");
 	
+	// Gametypes
 	int gametype = 0;
 	vector<string> gametypes;
 	{
@@ -44,20 +46,22 @@ void Menu::doit()
 			gametypes.push_back((*it)->name);
 		}
 	}
-
+	
+	// Viewmodes
 	int viewmode = 0;
 	vector<string> viewmodes;
 	viewmodes.push_back("top");
 	viewmodes.push_back("3rd-person");
 	viewmodes.push_back("1st-person");
 	
+	// Unittypes
 	int unittype = 0;
 	vector<string> unittypes;
 	{
 		vector<UnitType*>::iterator start, end;
 		st->getDefaultMod()->getAllUnitTypes(&start, &end);
 		for (vector<UnitType*>::iterator it = start; it != end; it++) {
-			unittypes.push_back((*it)->name);
+			if ((*it)->playable) unittypes.push_back((*it)->name);
 		}
 	}
 
@@ -126,7 +130,7 @@ void Menu::doit()
 							GameType *gt = st->getDefaultMod()->getGameType(gametypes[gametype]);
 							st->logic->execScript(gt->script);
 							
-							st->logic->selected_unittype = st->getDefaultMod()->getUnitType(unittype);
+							st->logic->selected_unittype = st->getDefaultMod()->getUnitType(unittypes[unittype]);
 
 							st->client = NULL;
 							st->num_local = 1;
