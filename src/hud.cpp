@@ -96,6 +96,14 @@ void HUD::removeDataTable(int table_id)
 	delete dt;*/
 }
 
+/**
+* Remove a data table
+**/
+void HUD::removeAllDataTables()
+{
+	this->tables.clear();
+}
+
 
 /**
 * Used for filtering

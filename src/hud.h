@@ -59,4 +59,7 @@ class HUD {
 		int addDataTable(int x, int y, int cols, int rows);
 		void setDataValue(int table_id, int col, int row, string val);
 		void removeDataTable(int table_id);
+		void removeAllDataTables();
 };
+
+
