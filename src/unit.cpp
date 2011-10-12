@@ -48,10 +48,6 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 	this->weapon_sound = -1;
 	
 	
-	// TODO: THIS IS CRAP
-	this->temp = st->hud->addDataTable(50, 50, 1, 2);
-	
-	
 	
 	// access sounds using this->uc->getSound(type)
 	// see unittype.h for types (e.g. UNIT_SOUND_DEATH)
@@ -65,7 +61,6 @@ Unit::~Unit()
 {
 	delete(this->anim);
 	this->st->delCollideBox(this->cb);
-	this->st->hud->removeDataTable(this->temp);
 }
 
 
@@ -180,6 +175,7 @@ bool Unit::pickupWeapon(WeaponType* wt)
 	uw->magazine = wt->magazine_limit;
 	uw->belt = wt->belt_limit;
 	uw->next_use = st->game_time;
+	uw->reloading = false;
 	
 	this->avail_weapons.push_back(uw);
 	
@@ -259,6 +255,27 @@ unsigned int Unit::getNextWeaponID()
 	return ret;
 }
 
+/**
+* The amount of ammo in the belt, or -1 if no current weapon
+**/
+int Unit::getBelt()
+{
+	if (this->weapon == NULL) return -1;
+	return this->weapon->belt;
+}
+
+/**
+* The amount of ammo in the magazine, or -1 no current weapon, or -2 if reloading
+**/
+int Unit::getMagazine()
+{
+	if (this->weapon == NULL) return -1;
+	if (this->weapon->reloading) return -2;
+	return this->weapon->magazine;
+}
+
+
+
 
 AnimPlay* Unit::getAnimModel()
 {
@@ -280,15 +297,6 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	if (remove_at != 0) {
 		if (remove_at <= st->game_time) this->del = 1;
 		return;
-	}
-	
-	
-	if (weapon) {
-		char buf[50];
-		sprintf(buf, "%i", weapon->magazine);
-		st->hud->setDataValue(this->temp, 0, 0, buf);
-		sprintf(buf, "%i", weapon->belt);
-		st->hud->setDataValue(this->temp, 0, 1, buf);
 	}
 	
 	
@@ -349,6 +357,7 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 			
 		} else if (this->weapon && this->weapon->next_use < st->game_time && this->weapon->magazine > 0) {
 			w = this->weapon->wt;
+			
 		}
 	}
 	
@@ -385,13 +394,19 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 				this->weapon->magazine = load;
 				this->weapon->belt -= load;
 				this->weapon->next_use += this->weapon->wt->reload_delay;
+				this->weapon->reloading = true;
 				this->firing = false;
-				this->st->hud->addAlertMessage("Reloading...");
 			}
 		}
 		
 		if (! w->continuous) this->firing = false;
 	}
+	
+	// Reset the 'reloading' flag if enough time has passed
+	if (this->weapon && this->weapon->next_use < st->game_time) {
+		this->weapon->reloading = false;
+	}
+	
 	
 	// Melee
 	if (this->melee_time != 0 && this->melee_time < st->game_time) {
@@ -488,9 +503,8 @@ void Unit::doUse()
 	
 	if (ot->ammo_crate.length() != 0) {
 		WeaponType *wt = this->st->getDefaultMod()->getWeaponType(ot->ammo_crate);
-		if (wt) {
+		if (wt && this->pickupAmmo(wt)) {
 			this->st->hud->addAlertMessage("Picked up some ammo");
-			this->pickupAmmo(wt);
 			this->curr_obj->del = 1;
 		}
 	}

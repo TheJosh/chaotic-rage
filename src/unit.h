@@ -17,6 +17,7 @@ class UnitWeapon {
 		int magazine;
 		int belt;
 		unsigned int next_use;		// time after which the weapon can be used again
+		bool reloading;
 };
 
 class Unit : public Entity
@@ -65,15 +66,12 @@ class Unit : public Entity
 		Object* lift_obj;
 		Object* drive_obj;
 		Object* turret_obj;
-
+		
 		Unit* closest;
 		unsigned int melee_time;
 		unsigned int melee_cooldown;
-
+		
 		int weapon_sound;
-		
-		
-		int temp;
 		
 		
 	public:
@@ -103,6 +101,8 @@ class Unit : public Entity
 		unsigned int getCurrentWeaponID();
 		unsigned int getPrevWeaponID();
 		unsigned int getNextWeaponID();
+		int getBelt();
+		int getMagazine();
 		
 		virtual int takeDamage(int damage);
 		
