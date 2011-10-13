@@ -25,7 +25,7 @@
 
 
 // Engine features to optionally compile into the game
-#define FEAT_INTRO false
+#define FEAT_INTRO true
 #define FEAT_MENU true
 
 
