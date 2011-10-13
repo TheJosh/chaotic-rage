@@ -184,20 +184,24 @@ void HUD::render(RenderOpenGL * render)
 			}
 		}
 		
-		int ammo = st->local_players[0]->getMagazine();
-		if (ammo >= 0) {
-			char buf[50];
-			sprintf(buf, "%i", ammo);
-			render->renderText(buf, 50, 50);
-		} else if (ammo == -2) {
-			render->renderText("relodn!", 50, 50);
-		}
+		if (st->local_players[0] != NULL) {
+			int ammo;
+			
+			ammo = st->local_players[0]->getMagazine();
+			if (ammo >= 0) {
+				char buf[50];
+				sprintf(buf, "%i", ammo);
+				render->renderText(buf, 50, 50);
+			} else if (ammo == -2) {
+				render->renderText("relodn!", 50, 50);
+			}
 		
-		ammo = st->local_players[0]->getBelt();
-		if (ammo >= 0) {
-			char buf[50];
-			sprintf(buf, "%i", ammo);
-			render->renderText(buf, 150, 50);
+			ammo = st->local_players[0]->getBelt();
+			if (ammo >= 0) {
+				char buf[50];
+				sprintf(buf, "%i", ammo);
+				render->renderText(buf, 150, 50);
+			}
 		}
 	}
 }
