@@ -23,8 +23,7 @@ void Menu::doit()
 	Mod * mod = new Mod(st, "data/menu");
 	
 	SpritePtr logo = this->render->loadSprite("logo.png", mod);
-	SpritePtr mid = this->render->loadSprite("bg_mid.png", mod);
-	SpritePtr right = this->render->loadSprite("bg_right.png", mod);
+	//SpritePtr right = this->render->loadSprite("bg_right.png", mod);
 	
 	
 	// Maps
@@ -206,7 +205,7 @@ void Menu::doit()
 		}
 		
 		
-		glClearColor(9.0/255.0, 9.0/255.0, 9.0/255.0, 0.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		
@@ -218,8 +217,7 @@ void Menu::doit()
 		glDisable(GL_DEPTH_TEST);
 	
 	
-		render->renderSprite(mid, 0, render->virt_height - mid->h, render->virt_width - right->w, mid->h);
-		render->renderSprite(right, render->virt_width - right->w, render->virt_height - right->h);
+		//render->renderSprite(right, render->virt_width - right->w, render->virt_height - right->h);
 		render->renderSprite(logo, (render->virt_width - logo->w) / 2, 20);
 
 
