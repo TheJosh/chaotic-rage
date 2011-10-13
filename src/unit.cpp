@@ -395,11 +395,11 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 				this->weapon->belt -= load;
 				this->weapon->next_use += this->weapon->wt->reload_delay;
 				this->weapon->reloading = true;
-				this->firing = false;
+				this->endFiring();
 			}
 		}
 		
-		if (! w->continuous) this->firing = false;
+		if (! w->continuous) this->endFiring();
 	}
 	
 	// Reset the 'reloading' flag if enough time has passed
@@ -460,6 +460,7 @@ int Unit::takeDamage(int damage)
 	if (this->health <= 0 && remove_at == 0) {
 		this->speed = 0;
 		this->setState(UNIT_STATE_DIE);
+		this->endFiring();
 		
 		remove_at = st->game_time + (10 * 60 * 1000);	// 10 mins
 		
