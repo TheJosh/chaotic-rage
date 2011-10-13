@@ -138,6 +138,16 @@ namespace datatool
                 i.BeltLimit = s.get_int("belt_limit", 1000);
 
                 i.ParticleGen = this.FindParticlegenerator(s.get_string("particlegen", ""));
+
+                i.Sounds.Clear();
+                foreach (ConfuseSection ss in s.subsections) {
+                    if (ss.name == "sound") {
+                        weapontype_sound sss = new weapontype_sound();
+                        sss.Sound = ss.get_string("sound", "");
+                        sss.Type = ss.get_int("type", 0);
+                        i.Sounds.Add(sss);
+                    }
+                }
             }
         }
 

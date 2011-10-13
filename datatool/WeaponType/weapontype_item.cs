@@ -97,7 +97,7 @@ namespace datatool
 
             foreach (weapontype_sound i in this.sounds)
             {
-                if (i.Type != 0) o += "\n\t{ " + i.getConfItem() + "}";
+                if (i.Type != 0) o += "\n\tsound { " + i.getConfItem() + "}";
             }
 
             return o;
