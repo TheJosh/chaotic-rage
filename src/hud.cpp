@@ -185,22 +185,29 @@ void HUD::render(RenderOpenGL * render)
 		}
 		
 		if (st->local_players[0] != NULL) {
-			int ammo;
+			int val;
 			
-			ammo = st->local_players[0]->getMagazine();
-			if (ammo >= 0) {
+			val = st->local_players[0]->getMagazine();
+			if (val >= 0) {
 				char buf[50];
-				sprintf(buf, "%i", ammo);
+				sprintf(buf, "%i", val);
 				render->renderText(buf, 50, 50);
-			} else if (ammo == -2) {
+			} else if (val == -2) {
 				render->renderText("relodn!", 50, 50);
 			}
-		
-			ammo = st->local_players[0]->getBelt();
-			if (ammo >= 0) {
+			
+			val = st->local_players[0]->getBelt();
+			if (val >= 0) {
 				char buf[50];
-				sprintf(buf, "%i", ammo);
+				sprintf(buf, "%i", val);
 				render->renderText(buf, 150, 50);
+			}
+			
+			val = st->local_players[0]->getHealth();
+			if (val >= 0) {
+				char buf[50];
+				sprintf(buf, "%i", val);
+				render->renderText(buf, 50, 80);
 			}
 		}
 	}

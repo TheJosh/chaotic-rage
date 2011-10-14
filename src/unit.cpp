@@ -274,6 +274,13 @@ int Unit::getMagazine()
 	return this->weapon->magazine;
 }
 
+/**
+* Gets the unit health
+**/
+int Unit::getHealth()
+{
+	return this->health;
+}
 
 
 

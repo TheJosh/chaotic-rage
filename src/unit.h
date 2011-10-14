@@ -103,6 +103,7 @@ class Unit : public Entity
 		unsigned int getNextWeaponID();
 		int getBelt();
 		int getMagazine();
+		int getHealth();
 		
 		virtual int takeDamage(int damage);
 		
