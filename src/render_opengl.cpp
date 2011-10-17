@@ -132,13 +132,22 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	}
 	
 	
+	// Loaded textures
 	if (loaded.size() > 0) {
 		for (unsigned int i = 0; i != loaded.size(); i++) {
 			this->surfaceToOpenGL(loaded.at(i));
 		}
 	}
-
-
+	
+	// Loaded FreeType character textures
+	for (unsigned int i = 0; i < NUM_CHAR_TEX; i++) {
+		if (this->char_tex[i].tex) {
+			glDeleteTextures(1, &this->char_tex[i].tex);
+			this->char_tex[i].tex = 0;
+		}
+	}
+	
+	
 	// OpenGL env
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
@@ -147,8 +156,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
-
+	
+	
 	mainViewport(1, 1);
 }
 
