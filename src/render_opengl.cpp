@@ -211,7 +211,6 @@ void RenderOpenGL::saveScreenshot(string filename)
 	if (flip == NULL) return;
 	SDL_FreeSurface(surf);
 	
-	filename.append(".bmp");
 	SDL_SaveBMP(flip, filename.c_str());
 	
 	SDL_FreeSurface(flip);

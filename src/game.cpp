@@ -109,6 +109,10 @@ static void handleEvents(GameState *st)
 {
 	SDL_Event event;
 	
+	static int screenshot_num = 0;
+	
+	
+	
 	while (SDL_PollEvent(&event)) {
 		if (st->hud->handleEvent(&event) == HUD::EVENT_PREVENT) continue;
 		
@@ -121,9 +125,20 @@ static void handleEvents(GameState *st)
 				running = false;
 
 			} else if (event.key.keysym.sym == SDLK_PRINT) {
+				screenshot_num++;
+				char buf[50];
+				sprintf(buf, "%i", screenshot_num);
+				
 				string filename = getUserDataDir();
 				filename.append("screenshot");
+				filename.append(buf);
+				filename.append(".bmp");
 				((RenderOpenGL*) st->render)->saveScreenshot(filename);
+				
+				filename = "screenshot";
+				filename.append(buf);
+				filename.append(".bmp");
+				st->hud->addAlertMessage("Saved ", filename);
 			}
 		}
 
