@@ -29,7 +29,7 @@ void Intro::doit()
 	sg = new Song();
 	sg->name = "intro";
 
-	SDL_RWops * rwops = mod->loadRWops("intro.mp3");
+	SDL_RWops * rwops = mod->loadRWops("intro.ogg");
 	sg->music = Mix_LoadMUS_RW(rwops);
 
 	if (sg->music != NULL) {
