@@ -5,6 +5,7 @@
 #pragma once
 #include <iostream>
 #include <SDL.h>
+#include <btBulletDynamicsCommon.h>
 #include "rage.h"
 
 using namespace std;
@@ -18,6 +19,14 @@ class PhysicsBullet
 {
 	private:
 		GameState * st;
+		
+		btDefaultCollisionConfiguration* collisionConfiguration;
+		btCollisionDispatcher* dispatcher;
+		btBroadphaseInterface* overlappingPairCache;
+		btSequentialImpulseConstraintSolver* solver;
+		btDiscreteDynamicsWorld* dynamicsWorld;
+		btAlignedObjectArray<btCollisionShape*>* collisionShapes;
+		
 		
 	public:
 		virtual void preGame();
