@@ -5,8 +5,8 @@ ifeq ($(PLATFORM),linux)
 	CXX=g++
 	CLIENT=chaoticrage
 	SERVER=dedicatedserver
-	CFLAGS=`sdl-config --cflags` `pkg-config zziplib libconfuse gl glu lua5.1 --cflags` `freetype-config --cflags` -Werror -Wall -ggdb
-	LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse lua5.1 --libs` `freetype-config --libs` -lGL -lGLU -lGLEW -lSDL_mixer -lSDL_image -lSDL_net
+	CFLAGS=`sdl-config --cflags` `pkg-config zziplib libconfuse gl glu lua5.1 bullet --cflags` `freetype-config --cflags` -Werror -Wall -ggdb
+	LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse lua5.1 bullet --libs` `freetype-config --libs` -lGL -lGLU -lGLEW -lSDL_mixer -lSDL_image -lSDL_net
 endif
 
 ifeq ($(PLATFORM),i386-mingw32)
