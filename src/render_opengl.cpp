@@ -698,7 +698,10 @@ void RenderOpenGL::mainRot()
 		glTranslatef(0 - this->render_player->x, 0 - this->render_player->y, 500);
 	}
 	
-	if (this->viewmode != 0) {
+	if (this->viewmode == 0) {
+		glTranslatef(0, 0, getRandom(0, this->st->getEntropy(1)));
+		
+	} else {
 		glEnable(GL_FOG);
 		glFogi (GL_FOG_MODE, GL_LINEAR);
 		glFogf (GL_FOG_START, 400);

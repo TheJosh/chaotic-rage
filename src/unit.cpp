@@ -464,6 +464,8 @@ int Unit::takeDamage(int damage)
 {
 	this->health -= damage;
 	
+	this->st->increaseEntropy(1);
+	
 	if (this->health <= 0 && remove_at == 0) {
 		this->speed = 0;
 		this->setState(UNIT_STATE_DIE);

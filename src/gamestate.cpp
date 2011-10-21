@@ -145,6 +145,24 @@ static bool CollideBoxEraser(CollideBox* box)
 
 
 /**
+* Gets the entropy for a given player
+**/
+unsigned int GameState::getEntropy(unsigned int slot)
+{
+	return this->entropy;
+}
+
+/**
+* Increases the entropy for a player
+**/
+void GameState::increaseEntropy(unsigned int slot)
+{
+	this->entropy += 30;
+}
+
+
+
+/**
 * Clears all game state, ready for a new game
 **/
 void GameState::clear()
@@ -205,6 +223,11 @@ void GameState::update(int delta)
 	
 	// What hit what?
 	this->doCollisions();
+	
+	// Decrease entropy
+	if (this->entropy > 0) {
+		this->entropy--;
+	}
 	
 	// Update time
 	this->game_time += delta;

@@ -38,16 +38,18 @@ class GameState
 		Player* local_players[MAX_LOCAL];
 		unsigned int num_local;
 		
+		unsigned int entropy;		// TODO: gamestate -> localplayers
+		
 		int curr_slot;
 		
 		unsigned int anim_frame;
 		unsigned int game_time;
 		
 		Render* render;
-		HUD* hud;
+		HUD* hud;					// TODO: gamestate -> localplayers
 		Audio* audio;
 		GameLogic* logic;
-		MapGrid* collides;
+		MapGrid* collides;			// TODO: newphysics
 		NetClient* client;
 		NetServer* server;
 		PhysicsBullet* physics;
@@ -73,12 +75,17 @@ class GameState
 		Mod * getMod(string name);
 		Mod * getDefaultMod();
 		
+		// TODO: newphysics
 		CollideBox* addCollideBox(int x, int y, int radius, Entity *e, bool cares);
 		void moveCollideBox(CollideBox* box, int x, int y);
 		void sizeCollideBox(CollideBox* box, int radius);
 		void delCollideBox(CollideBox* box);
 		
 		bool inBounds(float x, float y);
+		
+		unsigned int getEntropy(unsigned int slot);
+		void increaseEntropy(unsigned int slot);
+		
 		
 	private:
 		void doCollisions();
