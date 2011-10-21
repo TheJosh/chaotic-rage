@@ -4,7 +4,12 @@
 
 #include <string>
 #include <iostream>
+#include <shlobj.h>
+#include <tchar.h>
+#include <shlwapi.h>
 #include "../rage.h"
+
+#pragma comment(lib,"shlwapi.lib")
 
 using namespace std;
 
@@ -19,6 +24,16 @@ using namespace std;
 **/
 string getUserDataDir()
 {
+	TCHAR szPath[MAX_PATH];
+
+	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, szPath))) {
+		PathAppend(szPath, _T("\\Chaotic Rage\\"));
+
+		CreateDirectory (szPath, NULL);
+
+		return string(szPath);
+	}
+
 	return "C:/";
 }
 
