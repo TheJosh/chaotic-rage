@@ -25,6 +25,7 @@ int main (int argc, char ** argv)
 	new RenderOpenGL(st);
 	new AudioSDLMixer(st);
 	new HUD(st);
+	new PhysicsBullet(st);
 	
 	
 	st->render->setScreenSize(900, 900, false);

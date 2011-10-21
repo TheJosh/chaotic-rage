@@ -37,6 +37,7 @@ void gameLoop(GameState *st, Render *render)
 	
 	st->render->preGame();
 	st->hud->removeAllDataTables();
+	st->physics->preGame();
 	
 	st->start();
 	
@@ -97,7 +98,8 @@ void gameLoop(GameState *st, Render *render)
 	
 	st->render->postGame();
 	st->audio->stopAll();
-
+	st->render->postGame();
+	
 	st->clear();
 }
 

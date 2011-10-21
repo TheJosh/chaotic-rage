@@ -50,6 +50,7 @@ class GameState
 		MapGrid* collides;
 		NetClient* client;
 		NetServer* server;
+		PhysicsBullet* physics;
 		
 	public:
 		GameState();

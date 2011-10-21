@@ -59,10 +59,10 @@ enum Faction {
 
 class AnimModel;
 class AnimPlay;
-class FloorType;
 class Audio;
 class CollideBox;
 class Entity;
+class FloorType;
 class GameLogic;
 class GameState;
 class GameType;
@@ -82,6 +82,7 @@ class Particle;
 class ParticleGenerator;
 class ParticleGenType;
 class ParticleType;
+class PhysicsBullet;
 class Player;
 class Render;
 class Song;
@@ -103,6 +104,8 @@ class Zone;
 #include "audio.h"
 #include "audio_sdlmixer.h"
 #include "audio_null.h"
+
+#include "physics_bullet.h"
 
 #include "net.h"
 #include "net_client.h"
