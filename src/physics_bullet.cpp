@@ -23,6 +23,10 @@ PhysicsBullet::~PhysicsBullet()
 }
 
 
+
+/**
+* Set up the physics world
+**/
 void PhysicsBullet::preGame()
 {
 	collisionConfiguration = new btDefaultCollisionConfiguration();
@@ -43,6 +47,9 @@ void PhysicsBullet::preGame()
 }
 
 
+/**
+* Tear down the physics world
+**/
 void PhysicsBullet::postGame()
 {
 	// TODO: Free other stuff properly, see HelloWorld demo
@@ -53,6 +60,40 @@ void PhysicsBullet::postGame()
 	delete overlappingPairCache;
 	delete dispatcher;
 	delete collisionConfiguration;
+}
+
+
+/**
+* Create and add a rigid body
+*
+* m = mass
+* x,y,z = origin position
+**/
+btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, float x, float y, float z)
+{
+	btTransform startTransform;
+	startTransform.setIdentity();
+	startTransform.setOrigin(btVector3(x, y, z));
+	
+	btScalar mass(m);
+	bool isDynamic = (mass != 0.f);
+	
+	btVector3 localInertia(0,0,0);
+	if (isDynamic)
+		colShape->calculateLocalInertia(mass,localInertia);
+	
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(
+		mass,
+		myMotionState,
+		colShape,
+		localInertia
+	);
+	btRigidBody* body = new btRigidBody(rbInfo);
+	
+	dynamicsWorld->addRigidBody(body);
+	
+	return body;
 }
 
 

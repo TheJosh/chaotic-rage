@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <SDL.h>
+#include <btBulletDynamicsCommon.h>
 #include "rage.h"
 
 using namespace std;
@@ -31,6 +32,14 @@ GameState * Entity::getGameState()
 void Entity::hasDied()
 {
 	this->del = true;
+}
+
+/**
+* Return the rigid body for this entity
+**/
+btRigidBody* Entity::getRigidBody()
+{
+	return this->body;
 }
 
 

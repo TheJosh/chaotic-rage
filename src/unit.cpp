@@ -5,6 +5,7 @@
 #include <iostream>
 #include <SDL.h>
 #include <math.h>
+#include <btBulletDynamicsCommon.h>
 #include "rage.h"
 
 using namespace std;
@@ -47,6 +48,12 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 	
 	this->weapon_sound = -1;
 	
+	
+	// The colShape should be tied to the unit type.
+	btCollisionShape* colShape = new btSphereShape(btScalar(1.));
+	//collisionShapes.push_back(colShape);
+	
+	this->body = st->physics->addRigidBody(colShape, 1, 0, 0, 0);
 	
 	
 	// access sounds using this->uc->getSound(type)

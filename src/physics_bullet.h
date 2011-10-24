@@ -27,14 +27,14 @@ class PhysicsBullet
 		btDiscreteDynamicsWorld* dynamicsWorld;
 		btAlignedObjectArray<btCollisionShape*>* collisionShapes;
 		
-		
 	public:
+		PhysicsBullet(GameState * st);
+		~PhysicsBullet();
 		virtual void preGame();
 		virtual void postGame();
 		
 	public:
-		PhysicsBullet(GameState * st);
-		~PhysicsBullet();
+		btRigidBody* addRigidBody(btCollisionShape* colShape, float mass, float x, float y, float z);
 };
 
 

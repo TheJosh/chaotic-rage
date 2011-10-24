@@ -5,6 +5,7 @@
 #pragma once
 #include <iostream>
 #include <SDL.h>
+#include <btBulletDynamicsCommon.h>
 #include <list>
 #include "rage.h"
 
@@ -39,12 +40,14 @@ class Entity
 		float speed;
 		int angle;
 		
+		btRigidBody* body;
+		
 	protected:
 		GameState* st;
 		
 	protected:
 		Entity(GameState *st);
-	
+		
 	public:
 		virtual ~Entity();
 		
@@ -84,5 +87,10 @@ class Entity
 		* Called by entity code to indicate the death of itself
 		**/
 		void hasDied();
+		
+		/**
+		* Return the rigid body for this entity
+		**/
+		btRigidBody* getRigidBody();
 		
 };
