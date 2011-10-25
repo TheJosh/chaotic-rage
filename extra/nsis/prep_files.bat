@@ -15,5 +15,7 @@ copy /-Y ..\redist-msvc\*.manifest files
 copy /-Y blank.txt files\stdout.txt
 copy /-Y blank.txt files\stderr.txt
 
+copy /-Y ..\..\datatool\bin\Debug\datatool.exe files
+
 copy /-Y ..\msvc2010\Debug\chaoticrage.exe files
 
