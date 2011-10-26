@@ -18,30 +18,32 @@ Weapon sounds
    After firing is done
 4. Reload
    When the weapon is reloaded
+5. Empty
+   Attempted firing when empty
 
-WEAPON						1	2	3	4
+WEAPON						1	2	3	4	5
 
-Anti-matter gun					N	N	N	N
-Blob launcher					N	N	N	N
-Chain gun					N	N	N	N
-Dual pistol					N	N	N	N
-Generic disruptor				N	N	N	N
-Grenade launcher				N	N	N	N
-Laser						N	N	N	N
-Locust gun					N	N	N	N
-Machine gun					N	N	N	N
-Moatar						N	N	N	N
-Net gun/box thorn gun				N	N	N	N
-Physic attractor mine				N	N	N	N
-Pistol						N	N	N	N
-Poison tipped needle shooter			N	N	N	N
-Psychic disrupter				N	N	N	N
-Puss launcher					N	N	N	N
-Rocket launcher					N	N	N	N
-Silenced pistol					N	N	N	N
-SMG						N	N	N	N
-Tazer						N	N	N	N
-Wall boring drill				N	N	N	N
+Anti-matter gun					N	N	N	N	N
+Blob launcher					N	N	N	N	N
+Chain gun					N	N	N	N	N
+Dual pistol					N	N	N	N	N
+Generic disruptor				N	N	N	N	N
+Grenade launcher				N	N	N	N	N
+Laser						N	N	N	N	N
+Locust gun					N	N	N	N	N
+Machine gun					N	N	N	N	N
+Moatar						N	N	N	N	N
+Net gun/box thorn gun				N	N	N	N	N
+Physic attractor mine				N	N	N	N	N
+Pistol						N	N	N	N	N
+Poison tipped needle shooter			N	N	N	N	N
+Psychic disrupter				N	N	N	N	N
+Puss launcher					N	N	N	N	N
+Rocket launcher					N	N	N	N	N
+Silenced pistol					N	N	N	N	N
+SMG						N	N	N	N	N
+Tazer						N	N	N	N	N
+Wall boring drill				N	N	N	N	N
 
 
 
@@ -52,8 +54,9 @@ Unit sounds
 3. Death
 4. Spawn
 5. Ability
-6. Celebrate
-7. Fail
+6. Celebrate (due to scoring a point, flag, etc)
+7. Fail (due to loosing a point, flag, etc)
+
 
 UNIT			1	2	3	4	5	6	7
 
