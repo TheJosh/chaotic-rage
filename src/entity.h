@@ -64,6 +64,11 @@ class Entity
 		virtual Sound* getSound() = 0;
 		
 		/**
+		* Return the rigid body for this entity
+		**/
+		btRigidBody* getRigidBody();
+		
+		/**
 		* Update the entity. Time is provided in milliseconds (ms)
 		**/
 		virtual void update(int delta) = 0;
@@ -87,10 +92,5 @@ class Entity
 		* Called by entity code to indicate the death of itself
 		**/
 		void hasDied();
-		
-		/**
-		* Return the rigid body for this entity
-		**/
-		btRigidBody* getRigidBody();
 		
 };

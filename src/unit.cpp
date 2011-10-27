@@ -68,6 +68,7 @@ Unit::~Unit()
 {
 	delete(this->anim);
 	this->st->delCollideBox(this->cb);
+	st->physics->delRigidBody(this->body);
 }
 
 
@@ -345,6 +346,9 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 			this->old_y = this->y;
 			this->x = newx;
 			this->y = newy;
+			
+			btVector3 linVel(newx - this->x, newy - this->y, 0);
+			body->setLinearVelocity(linVel);
 		}
 		
 		this->walk_time += delta;

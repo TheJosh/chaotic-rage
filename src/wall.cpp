@@ -10,21 +10,26 @@
 using namespace std;
 
 
-Wall::Wall(WallType *wt, GameState *st) : Entity(st)
+Wall::Wall(WallType *wt, GameState *st, float x, float y, float z) : Entity(st)
 {
 	this->wt = wt;
 	this->anim = new AnimPlay(wt->model);
 	this->health = wt->health;
 	this->cb = NULL;
+	
+	
+	// The colShape should be tied to the wall type.
+	btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
+	//collisionShapes.push_back(colShape);
+	
+	this->body = st->physics->addRigidBody(colShape, 1, x, y, z);
 }
 
 Wall::~Wall()
 {
-	cout << "\n\n\n";
-	cout << "Removing the wall object!\n";
-	cout << "\n\n\n";
 	delete (this->anim);
 	this->st->delCollideBox(this->cb);
+	st->physics->delRigidBody(this->body);
 }
 
 

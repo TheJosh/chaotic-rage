@@ -187,10 +187,14 @@ int Map::load(string name, Render * render)
 			string type = cfg_getstr(cfg_sub, "type");
 			if (type.empty()) continue;
 			
-			Wall * wa = new Wall(this->st->getMod("cr")->getWallType(type), this->st);
+			Wall * wa = new Wall(
+				this->st->getMod("cr")->getWallType(type),
+				this->st,
+				cfg_getint(cfg_sub, "x"),
+				cfg_getint(cfg_sub, "y"),
+				getRandom(100, 150)
+			);
 			
-			wa->x = cfg_getint(cfg_sub, "x");
-			wa->y = cfg_getint(cfg_sub, "y");
 			wa->angle = cfg_getint(cfg_sub, "angle");
 			
 			this->st->addWall(wa);

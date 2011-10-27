@@ -43,6 +43,20 @@ void PhysicsBullet::preGame()
 	
 	dynamicsWorld->setGravity(btVector3(0,0,-10));
 	
+	
+	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,0,1),1);
+	
+	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-1)));
+	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
+		0,
+		groundMotionState,
+		groundShape,
+		btVector3(0,0,0)
+	);
+	btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
+	dynamicsWorld->addRigidBody(groundRigidBody);
+	
+	
 	collisionShapes = new btAlignedObjectArray<btCollisionShape*>();
 }
 
@@ -71,9 +85,8 @@ void PhysicsBullet::postGame()
 **/
 btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, float x, float y, float z)
 {
-	btTransform startTransform;
-	startTransform.setIdentity();
-	startTransform.setOrigin(btVector3(x, y, z));
+	btDefaultMotionState* myMotionState =
+		new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(x,y,z)));
 	
 	btScalar mass(m);
 	bool isDynamic = (mass != 0.f);
@@ -82,7 +95,6 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, fl
 	if (isDynamic)
 		colShape->calculateLocalInertia(mass,localInertia);
 	
-	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(
 		mass,
 		myMotionState,
@@ -95,6 +107,26 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, fl
 	
 	return body;
 }
+
+
+/**
+* Remove a rigid body from the game world
+**/
+void PhysicsBullet::delRigidBody(btRigidBody* body)
+{
+	// TODO: Free properly, see HelloWorld demo
+}
+
+
+/**
+* Step the physics forward by the given amount of time
+**/
+void PhysicsBullet::stepTime(int ms)
+{
+	dynamicsWorld->stepSimulation(((float)ms) / 100.0, 10);
+}
+
+
 
 
 

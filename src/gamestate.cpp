@@ -157,7 +157,7 @@ unsigned int GameState::getEntropy(unsigned int slot)
 **/
 void GameState::increaseEntropy(unsigned int slot)
 {
-	this->entropy += 30;
+	this->entropy += 10;
 }
 
 
@@ -223,6 +223,9 @@ void GameState::update(int delta)
 	
 	// What hit what?
 	this->doCollisions();
+	
+	// Update physics
+	this->physics->stepTime(delta);
 	
 	// Decrease entropy
 	if (this->entropy > 0) {

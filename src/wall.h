@@ -23,7 +23,7 @@ class Wall : public Entity
 		AnimPlay * anim;
 		CollideBox * cb;
 	public:
-		Wall(WallType *pt, GameState *st);
+		Wall(WallType *pt, GameState *st, float x, float y, float z);
 		virtual ~Wall();
 		
 	public:

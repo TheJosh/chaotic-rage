@@ -37,7 +37,6 @@ void gameLoop(GameState *st, Render *render)
 	
 	st->render->preGame();
 	st->hud->removeAllDataTables();
-	st->physics->preGame();
 	
 	st->start();
 	
