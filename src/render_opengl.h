@@ -58,12 +58,15 @@ class RenderOpenGL : public Render
 		FT_Library ft;
 		FT_Face face;
 		FreetypeChar char_tex[NUM_CHAR_TEX];
-
+		
 		vector<SpritePtr> loaded;
-
+		
 		Unit* render_player;
-
-
+		
+	public:
+		int tx, ty, tz;
+		int rx, ry, rz;
+		
 	public:
 		int viewmode;
 		

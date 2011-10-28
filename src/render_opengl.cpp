@@ -52,6 +52,14 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render(st)
 	for (unsigned int i = 0; i < NUM_CHAR_TEX; i++) {
 		this->char_tex[i].tex = 0;
 	}
+	
+	
+	tx = 0;
+	ty = 193;
+	tz = 620;
+	rx = 10;
+	ry = 0;
+	rz = 0;
 }
 
 RenderOpenGL::~RenderOpenGL()
@@ -637,7 +645,13 @@ void RenderOpenGL::render()
 		entities();
 		hud();
 	}
-
+	
+	
+	char buf[50];
+	sprintf(buf, "%i %i %i", tx, ty, tz);
+	this->renderText(buf, 200, 200);
+	
+	
 	SDL_GL_SwapBuffers();
 }
 
@@ -682,9 +696,15 @@ void RenderOpenGL::mainRot()
 		glTranslatef(0 - st->curr_map->width / 2, 0 - st->curr_map->height / 2, 0);
 		
 	} else {
+		glRotatef(rx, 1, 0, 0);
+		glRotatef(ry, 0, 1, 0);
+		glRotatef(rz, 0, 0, 1);
+		glTranslatef(tx,ty,tz);
+		
+		/*
 		if (this->viewmode == 0) {				// Top
 			glRotatef(10, 1, 0, 0);
-			glTranslatef(0,100,0);
+			glTranslatef(0,193,620);
 			
 		} else if (this->viewmode == 1) {		// Behind (3rd person)
 			glRotatef(60, 1, 0, 0);
@@ -694,6 +714,7 @@ void RenderOpenGL::mainRot()
 			glRotatef(80, 1, 0, 0);
 			glTranslatef(0,1220,-380);
 		}
+		*/
 		
 		glRotatef(this->render_player->angle, 0, 0, 1);
 		glTranslatef(0 - this->render_player->x, 0 - this->render_player->y, 500);

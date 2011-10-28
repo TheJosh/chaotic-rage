@@ -159,6 +159,14 @@ static void handleEvents(GameState *st)
 					case SDLK_t: st->local_players[0]->keyPress(Player::KEY_SPECIAL); break;
 					
 					
+					case SDLK_KP7: ((RenderOpenGL*)st->render)->tx++; break;
+					case SDLK_KP8: ((RenderOpenGL*)st->render)->ty++; break;
+					case SDLK_KP9: ((RenderOpenGL*)st->render)->tz++; break;
+					case SDLK_KP4: ((RenderOpenGL*)st->render)->tx--; break;
+					case SDLK_KP5: ((RenderOpenGL*)st->render)->ty--; break;
+					case SDLK_KP6: ((RenderOpenGL*)st->render)->tz--; break;
+					
+					
 					case SDLK_F5:
 						st->hud->addAlertMessage("Config reload: ", st->getDefaultMod()->reloadAttrs() ? "success" : "failure");
 						break;
