@@ -675,13 +675,6 @@ void RenderOpenGL::mainRot()
 	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
 	
 	
-	glDisable(GL_LIGHTING);
-	glRotatef(22, 0, 0, 1);
-	glRotatef(12, 1, 0, 0);
-	glTranslatef(0 - st->curr_map->width / 2, 0 - st->curr_map->height / 2, 0);
-	return;
-	
-	
 	if (this->render_player == NULL) {
 		glDisable(GL_LIGHTING);
 		glRotatef(22, 0, 0, 1);
@@ -888,10 +881,10 @@ void RenderOpenGL::entities()
 		if (play != NULL) {
 			glPushMatrix();
 			
-			if (e->klass() == UNIT || e->klass() == WALL) {
+			if (e->klass() == WALL) {
 				btTransform trans;
 				e->getRigidBody()->getMotionState()->getWorldTransform(trans);
-				glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());		// TODO: Use Z...need a ground object first!
+				glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
 				
 			} else {
 				glTranslatef(e->x, e->y, e->z);

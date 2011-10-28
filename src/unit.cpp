@@ -347,8 +347,8 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 			this->x = newx;
 			this->y = newy;
 			
-			btVector3 linVel(newx - this->x, newy - this->y, 0);
-			body->setLinearVelocity(linVel);
+			//btVector3 linVel(newx - this->x, newy - this->y, 0);
+			//body->setLinearVelocity(linVel);
 		}
 		
 		this->walk_time += delta;

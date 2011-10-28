@@ -123,7 +123,7 @@ void PhysicsBullet::delRigidBody(btRigidBody* body)
 **/
 void PhysicsBullet::stepTime(int ms)
 {
-	dynamicsWorld->stepSimulation(((float)ms) / 100.0, 10);
+	dynamicsWorld->stepSimulation(ms / 1000.0f, 10);
 }
 
 
