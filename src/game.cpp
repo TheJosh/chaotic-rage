@@ -166,6 +166,9 @@ static void handleEvents(GameState *st)
 					case SDLK_KP5: ((RenderOpenGL*)st->render)->ty--; break;
 					case SDLK_KP6: ((RenderOpenGL*)st->render)->tz--; break;
 					
+					case SDLK_KP1: ((RenderOpenGL*)st->render)->rx++; break;
+					case SDLK_KP2: ((RenderOpenGL*)st->render)->rx--; break;
+					
 					
 					case SDLK_F5:
 						st->hud->addAlertMessage("Config reload: ", st->getDefaultMod()->reloadAttrs() ? "success" : "failure");

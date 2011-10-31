@@ -54,12 +54,17 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render(st)
 	}
 	
 	
+	// top
 	tx = 0;
 	ty = 193;
 	tz = 620;
 	rx = 10;
-	ry = 0;
-	rz = 0;
+	
+	// 3rd
+	tx = 0;
+	ty = 1039;
+	tz = 81;
+	rx = 60;
 }
 
 RenderOpenGL::~RenderOpenGL()
@@ -648,7 +653,7 @@ void RenderOpenGL::render()
 	
 	
 	char buf[50];
-	sprintf(buf, "%i %i %i", tx, ty, tz);
+	sprintf(buf, "%i %i %i %i", tx, ty, tz, rx);
 	this->renderText(buf, 200, 200);
 	
 	
@@ -697,8 +702,6 @@ void RenderOpenGL::mainRot()
 		
 	} else {
 		glRotatef(rx, 1, 0, 0);
-		glRotatef(ry, 0, 1, 0);
-		glRotatef(rz, 0, 0, 1);
 		glTranslatef(tx,ty,tz);
 		
 		/*
@@ -721,7 +724,7 @@ void RenderOpenGL::mainRot()
 	}
 	
 	if (this->viewmode == 0) {
-		glTranslatef(0, 0, getRandom(0, this->st->getEntropy(1)));
+		//glTranslatef(0, 0, getRandom(0, this->st->getEntropy(1)));
 		
 	} else {
 		glEnable(GL_FOG);
@@ -755,8 +758,8 @@ void RenderOpenGL::lights()
 				glTranslatef(l->x, l->y, l->z);
 				
 			} else if (l->type == 2) {
-				glTranslatef(this->render_player->x, this->render_player->y, 50);
-				glRotatef((360+40) - this->render_player->angle, 0, 0, 1);
+				glTranslatef(this->render_player->x, this->render_player->y, 5);
+				glRotatef(0.0 - (this->render_player->angle / 2.0), 0, 0, 1);
 				glRotatef(20, 1, 0, 0);
 				
 				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_torch);
@@ -810,7 +813,7 @@ void RenderOpenGL::map()
 		
 		glBindTexture(GL_TEXTURE_2D, a->type->texture->pixels);
 		
-		a->width = a->height = 10;
+		a->width = a->height = 1;
 		
 		float texw = 1.0;
 		float texh = 1.0;
