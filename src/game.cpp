@@ -97,7 +97,7 @@ void gameLoop(GameState *st, Render *render)
 	
 	st->render->postGame();
 	st->audio->stopAll();
-	st->render->postGame();
+	st->physics->postGame();
 	
 	st->clear();
 }
