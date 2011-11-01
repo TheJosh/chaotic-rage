@@ -711,20 +711,21 @@ void RenderOpenGL::mainRot()
 		glTranslatef(0 - st->curr_map->width / 2, 0 - st->curr_map->height / 2, 0);
 		
 	} else {
-		//glRotatef(rx, 1, 0, 0);
 		//glTranslatef(tx,ty,tz);
+		//glRotatef(rx, 1, 0, 0);
 		
-		if (this->viewmode == 0) {				// Top
+		if (this->viewmode == 0) {			// Top
+			glTranslatef(0,87,731);
 			glRotatef(10, 1, 0, 0);
-			glTranslatef(0,193,620);
 			
 		} else if (this->viewmode == 1) {		// Behind (3rd person)
-			glRotatef(60, 1, 0, 0);
-			glTranslatef(0,1039,81);
+			glTranslatef(0,483,1095);
+			glRotatef(74, 1, 0, 0);
 			
 		} else if (this->viewmode == 2) {		// First person
-			glRotatef(80, 1, 0, 0);
 			glTranslatef(0,1220,-380);
+			glRotatef(80, 1, 0, 0);
+			
 		}
 		
 		glRotatef(this->render_player->angle, 0, 0, 1);
