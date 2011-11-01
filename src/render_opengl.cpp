@@ -350,16 +350,16 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 
 void RenderOpenGL::preGame()
 {
-	AnimModel *model = st->getDefaultMod()->getAnimModel("cube");
+	AnimModel *model = st->getDefaultMod()->getAnimModel("_test_cube");
 	this->test = new AnimPlay(model);
-
+	
 	SDL_ShowCursor(SDL_DISABLE);
 }
 
 void RenderOpenGL::postGame()
 {
 	delete(this->test);
-
+	
 	SDL_ShowCursor(SDL_ENABLE);
 	mainViewport(1, 1);
 }
@@ -646,7 +646,17 @@ void RenderOpenGL::render()
 		background();
 		mainRot();
 		lights();
+		
+		glDisable(GL_LIGHTING);
+		
 		map();
+		
+		glPushMatrix();
+		glTranslatef(100, 100, 0);
+		renderAnimPlay(this->test, 0);
+		glPopMatrix();
+		
+		
 		entities();
 		hud();
 	}
@@ -798,8 +808,6 @@ void RenderOpenGL::map()
 	for (i = 0; i < st->curr_map->areas.size(); i++) {
 		Area * a = st->curr_map->areas[i];
 		
-		glTranslatef(0, 0, 1);
-		
 		glPushMatrix();
 		
 		x = a->x + a->width / 2;
@@ -850,35 +858,6 @@ void RenderOpenGL::map()
 			}
 		glEnd();
 		
-		// Debugging of the map ness
-		/*glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glColor3f(0.5,0.5,0.5);
-		glDisable(GL_LIGHTING);
-		glDisable(GL_TEXTURE_2D); 
-		glBegin(GL_QUADS);
-			for (int x = 0; x < 2000; x += a->width) {
-			for (int y = 0; y < 2000; y += a->width) {
-				
-				// Bottom-left vertex (corner)
-				glVertex3i( x, y + a->height, 0 );
-				
-				// Bottom-right vertex (corner)
-				glVertex3i( x + a->width, y + a->height, 0 );
-				
-				// Top-right vertex (corner)
-				glVertex3i( x + a->width, y, 0 );
-				
-				// Top-left vertex (corner)
-				glVertex3i( x, y, 0 );
-				
-			}
-			}
-		glEnd();
-		glEnable(GL_LIGHTING);
-		glEnable(GL_TEXTURE_2D); 
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);*/
-		
-		
 		glPopMatrix();
 	}
 }
@@ -889,10 +868,6 @@ void RenderOpenGL::map()
 **/
 void RenderOpenGL::entities()
 {
-	glTranslatef(0, 0, 10);
-	
-	
-	// Entities
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
 		Entity *e = (*it);
 		

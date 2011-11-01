@@ -397,8 +397,8 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		pa->angle = clampAngle(pa->angle);
 		
 		// TODO: This should be dynamic or computed or something even better (vectors anyone?)
-		pa->x = pointPlusAngleX(pa->x, pa->angle, 50);
-		pa->y = pointPlusAngleY(pa->y, pa->angle, 50);
+		pa->x = pointPlusAngleX(pa->x, pa->angle, 1);
+		pa->y = pointPlusAngleY(pa->y, pa->angle, 1);
 		
 		st->addParticle(pa);
 		
