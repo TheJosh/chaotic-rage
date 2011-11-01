@@ -61,10 +61,10 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render(st)
 	rx = 10;
 	
 	// 3rd
-	tx = 0;
+	/*tx = 0;
 	ty = 1039;
 	tz = 81;
-	rx = 60;
+	rx = 60;*/
 }
 
 RenderOpenGL::~RenderOpenGL()
@@ -701,23 +701,21 @@ void RenderOpenGL::mainRot()
 		glTranslatef(0 - st->curr_map->width / 2, 0 - st->curr_map->height / 2, 0);
 		
 	} else {
-		glRotatef(rx, 1, 0, 0);
-		glTranslatef(tx,ty,tz);
+		//glRotatef(rx, 1, 0, 0);
+		//glTranslatef(tx,ty,tz);
 		
-		/*
 		if (this->viewmode == 0) {				// Top
 			glRotatef(10, 1, 0, 0);
 			glTranslatef(0,193,620);
 			
 		} else if (this->viewmode == 1) {		// Behind (3rd person)
 			glRotatef(60, 1, 0, 0);
-			glTranslatef(0,750,-125);
+			glTranslatef(0,1039,81);
 			
 		} else if (this->viewmode == 2) {		// First person
 			glRotatef(80, 1, 0, 0);
 			glTranslatef(0,1220,-380);
 		}
-		*/
 		
 		glRotatef(this->render_player->angle, 0, 0, 1);
 		glTranslatef(0 - this->render_player->x, 0 - this->render_player->y, 500);
@@ -758,9 +756,9 @@ void RenderOpenGL::lights()
 				glTranslatef(l->x, l->y, l->z);
 				
 			} else if (l->type == 2) {
-				glTranslatef(this->render_player->x, this->render_player->y, 5);
-				glRotatef(0.0 - (this->render_player->angle / 2.0), 0, 0, 1);
-				glRotatef(20, 1, 0, 0);
+				glTranslatef(this->render_player->x, this->render_player->y, 2);
+				glRotatef(0 - this->render_player->angle + 40, 0, 0, 1);
+				glRotatef(15, 1, 0, 0);
 				
 				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_torch);
 				glLightf(GL_LIGHT0 + i, GL_SPOT_CUTOFF, 20);
