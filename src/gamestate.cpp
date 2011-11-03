@@ -251,7 +251,7 @@ void GameState::doCollisions()
 		list<CollideBox*>* tests = this->collides->getCollidesMC(co->x, co->y, 100, &release);
 		
 		Entity* closest = NULL;
-		float closest_dist = 200;
+		float closest_dist = 10;
 
 		for (list<CollideBox*>::iterator iti = tests->begin(); iti != tests->end(); iti++) {
 			CollideBox *ci = (*iti);

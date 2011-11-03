@@ -44,7 +44,7 @@ void Object::update(int delta)
 	if (this->health == 0) return;
 	
 	if (this->cb == NULL) {
-		this->cb = this->st->addCollideBox(0, 0, 30, this, true);
+		this->cb = this->st->addCollideBox(0, 0, 3, this, true);
 	} else {
 		this->st->moveCollideBox(this->cb, (int) this->x, (int) this->y);
 	}

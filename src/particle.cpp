@@ -95,7 +95,7 @@ void Particle::update(int delta)
 	//this->y += getRandom(-3, 3);
 	
 	if (this->cb == NULL) {
-		this->cb = this->st->addCollideBox(0, 0, 2, this, false);
+		this->cb = this->st->addCollideBox(0, 0, 1, this, false);
 	} else {
 		this->st->moveCollideBox(this->cb, (int) this->x, (int) this->y);
 	}
