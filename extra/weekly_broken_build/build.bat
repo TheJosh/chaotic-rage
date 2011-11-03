@@ -13,11 +13,16 @@ mkdir files\data\cr
 mkdir files\data\cr\animmodels
 mkdir files\data\cr\gametypes
 mkdir files\data\cr\sounds
+mkdir files\maps
+mkdir files\maps\test
+mkdir files\maps\blank
 
 copy ..\..\data\cr\*.conf files\data\cr
 copy ..\..\data\cr\animmodels\*.obj files\data\cr\animmodels
 copy ..\..\data\cr\gametypes\*.lua files\data\cr\gametypes
 copy ..\..\data\cr\sounds\*.wav files\data\cr\sounds
+copy ..\..\maps\test\*.conf files\maps\test
+copy ..\..\maps\blank\*.conf files\maps\blank
 
 "C:\Program Files\NSIS\makensis.exe" weekly.nsi
 
