@@ -48,14 +48,14 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../include;../include/bullet</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_net.lib;opengl32.lib;glu32.lib;glew32.lib;zziplib.lib;libConfuse.lib;zdll.lib;lua5.1.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../lib;../lib-bullet</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_net.lib;opengl32.lib;glu32.lib;glew32.lib;zziplib.lib;libConfuse.lib;zdll.lib;lua5.1.lib;freetype.lib;BulletSoftBody.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <IgnoreSpecificDefaultLibraries>MSVCRTD.LIB;MSVCRT100D.LIB</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -118,9 +118,11 @@
     <ClCompile Include="..\..\src\particle.cpp" />
     <ClCompile Include="..\..\src\particlegenerator.cpp" />
     <ClCompile Include="..\..\src\particletype.cpp" />
+    <ClCompile Include="..\..\src\physics_bullet.cpp" />
     <ClCompile Include="..\..\src\platform\win32.cpp" />
     <ClCompile Include="..\..\src\player.cpp" />
     <ClCompile Include="..\..\src\render.cpp" />
+    <ClCompile Include="..\..\src\render_debug.cpp" />
     <ClCompile Include="..\..\src\render_null.cpp" />
     <ClCompile Include="..\..\src\render_opengl.cpp" />
     <ClCompile Include="..\..\src\SDL_rwops_zzip.cpp" />
@@ -160,13 +162,16 @@
     <ClInclude Include="..\..\src\npc.h" />
     <ClInclude Include="..\..\src\object.h" />
     <ClInclude Include="..\..\src\objecttype.h" />
+    <ClInclude Include="..\..\src\objload.h" />
     <ClInclude Include="..\..\src\particle.h" />
     <ClInclude Include="..\..\src\particlegenerator.h" />
     <ClInclude Include="..\..\src\particletype.h" />
+    <ClInclude Include="..\..\src\physics_bullet.h" />
     <ClInclude Include="..\..\src\platform\platform.h" />
     <ClInclude Include="..\..\src\player.h" />
     <ClInclude Include="..\..\src\rage.h" />
     <ClInclude Include="..\..\src\render.h" />
+    <ClInclude Include="..\..\src\render_debug.h" />
     <ClInclude Include="..\..\src\render_null.h" />
     <ClInclude Include="..\..\src\render_opengl.h" />
     <ClInclude Include="..\..\src\SDL_rwops_zzip.h" />
