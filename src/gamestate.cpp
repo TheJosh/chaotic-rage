@@ -284,8 +284,9 @@ void GameState::doCollisions()
 			
 			// Circle based check using sqrt. This is probably too slow.
 			float dist = sqrt( ((ci->x - co->x) * (ci->x - co->x)) + ((ci->y - co->y) * (ci->y - co->y)) );
-
-			if (dist <= (ci->radius + co->radius)) {
+			float exp = ci->radius + co->radius;
+			
+			if (dist <= exp) {
 				co->e->hasBeenHit(co, ci);
 			}
 			

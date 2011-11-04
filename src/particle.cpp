@@ -45,6 +45,7 @@ void Particle::doHitUnit(Unit *u)
 		
 		this->unit_hits--;
 		if (this->unit_hits == 0) {
+			cout << "particle dead; unit-hit\n";
 			this->hasDied();
 		}
 		
@@ -60,6 +61,7 @@ void Particle::doHitWall(Wall *w)
 		
 		this->wall_hits--;
 		if (this->wall_hits == 0) {
+			cout << "particle dead; wall-hit\n";
 			this->hasDied();
 		}
 	
@@ -73,15 +75,18 @@ void Particle::update(int delta)
 {
 	this->age += delta;
 	if (this->age >= this->max_age) {
+		cout << "particle dead; age\n";
 		this->hasDied();
 	}
 	
 	if (! st->inBounds(this->x, this->y)) {
+		cout << "particle dead; bounds\n";
 		this->hasDied();
 	}
 	
 	if (this->speed <= 0) {
 		this->z = 0;
+		cout << "particle dead; speed\n";
 		return;
 	}
 	

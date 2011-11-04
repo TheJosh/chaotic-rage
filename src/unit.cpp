@@ -397,8 +397,8 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		pa->angle = clampAngle(pa->angle);
 		
 		// TODO: This should be dynamic or computed or something even better (vectors anyone?)
-		pa->x = pointPlusAngleX(pa->x, pa->angle, 1);
-		pa->y = pointPlusAngleY(pa->y, pa->angle, 1);
+		pa->x = pointPlusAngleX(pa->x, pa->angle, 6);
+		pa->y = pointPlusAngleY(pa->y, pa->angle, 6);
 		
 		st->addParticle(pa);
 		
@@ -446,15 +446,15 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		this->lift_obj->angle = this->angle;
 		
 	} else if (this->drive_obj) {
-		this->drive_obj->x = pointPlusAngleX(this->x, this->angle, -20);
-		this->drive_obj->y = pointPlusAngleY(this->y, this->angle, -20);
+		this->drive_obj->x = pointPlusAngleX(this->x, this->angle, -2);
+		this->drive_obj->y = pointPlusAngleY(this->y, this->angle, -2);
 		this->drive_obj->z = this->z;
 		this->drive_obj->angle = this->angle;
 		
 	} else if (this->turret_obj) {
 		this->x = this->turret_obj->x;
 		this->y = this->turret_obj->y;
-		this->z = this->turret_obj->z + 20;
+		this->z = this->turret_obj->z + 5;
 		this->turret_obj->angle = this->angle;
 	}
 	
@@ -509,7 +509,7 @@ void Unit::doUse()
 		Object *nu = new Object(this->st->getDefaultMod()->getObjectType(ot->add_object), this->st);
 		nu->x = this->x;
 		nu->y = this->y;
-		nu->z = 60;
+		nu->z = 6;
 		this->st->addObject(nu);
 	}
 	
