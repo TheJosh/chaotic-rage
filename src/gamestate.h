@@ -75,12 +75,6 @@ class GameState
 		Mod * getMod(string name);
 		Mod * getDefaultMod();
 		
-		// TODO: newphysics
-		CollideBox* addCollideBox(int x, int y, int radius, Entity *e, bool cares);
-		void moveCollideBox(CollideBox* box, int x, int y);
-		void sizeCollideBox(CollideBox* box, int radius);
-		void delCollideBox(CollideBox* box);
-		
 		bool inBounds(float x, float y);
 		
 		unsigned int getEntropy(unsigned int slot);

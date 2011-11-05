@@ -67,7 +67,6 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 Unit::~Unit()
 {
 	delete(this->anim);
-	this->st->delCollideBox(this->cb);
 	st->physics->delRigidBody(this->body);
 }
 
@@ -352,12 +351,6 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		}
 		
 		this->walk_time += delta;
-		
-		if (this->cb == NULL) {
-			this->cb = this->st->addCollideBox(0, 0, 3, this, true);
-		} else {
-			this->st->moveCollideBox(this->cb, (int) this->x, (int) this->y);
-		}
 	}
 	
 	

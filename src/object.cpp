@@ -24,7 +24,6 @@ Object::~Object()
 	cout << "Removing the object object!\n";
 	cout << "\n\n\n";
 	delete (this->anim);
-	this->st->delCollideBox(this->cb);
 }
 
 
@@ -42,12 +41,6 @@ void Object::update(int delta)
 	if (this->anim->isDone()) this->anim->next();
 	
 	if (this->health == 0) return;
-	
-	if (this->cb == NULL) {
-		this->cb = this->st->addCollideBox(0, 0, 3, this, true);
-	} else {
-		this->st->moveCollideBox(this->cb, (int) this->x, (int) this->y);
-	}
 
 	if (this->z > 0) {
 		this->z--;
@@ -81,11 +74,6 @@ void Object::takeDamage(int damage)
 			this->anim = new AnimPlay(dam->model);
 			break;
 		}
-	}
-	
-	if (this->health == 0) {
-		this->st->delCollideBox(this->cb);
-		this->cb = NULL;
 	}
 }
 

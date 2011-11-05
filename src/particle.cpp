@@ -34,7 +34,6 @@ Particle::Particle(ParticleType *pt, GameState *st) : Entity(st)
 Particle::~Particle()
 {
 	delete (this->anim);
-	this->st->delCollideBox(this->cb);
 }
 
 
@@ -98,12 +97,6 @@ void Particle::update(int delta)
 	
 	//this->x += getRandom(-3, 3);
 	//this->y += getRandom(-3, 3);
-	
-	if (this->cb == NULL) {
-		this->cb = this->st->addCollideBox(0, 0, 1, this, false);
-	} else {
-		this->st->moveCollideBox(this->cb, (int) this->x, (int) this->y);
-	}
 	
 	
 	if (this->anim->isDone()) this->anim->next();
