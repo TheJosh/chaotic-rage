@@ -62,9 +62,9 @@ ObjectType* loadItemObjectType(cfg_t* cfg_item, Mod* mod)
 	wt->pickup_weapon = cfg_getstr(cfg_item, "pickup-weapon");
 	wt->ammo_crate = cfg_getstr(cfg_item, "ammo-crate");
 	
-	wt->drive = cfg_getint(cfg_item, "drive");
-	wt->turret = cfg_getint(cfg_item, "turret");
-	wt->over = cfg_getint(cfg_item, "over");
+	wt->drive = (cfg_getint(cfg_item, "drive") == 1);
+	wt->turret = (cfg_getint(cfg_item, "turret") == 1);
+	wt->over = (cfg_getint(cfg_item, "over") == 1);
 	
 	char * tmp = cfg_getstr(cfg_item, "model");
 	if (tmp != NULL) wt->model = mod->getAnimModel(tmp);

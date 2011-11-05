@@ -37,7 +37,7 @@ FloorType* loadItemFloorType(cfg_t *cfg_areatype, Mod * mod)
 	
 	at = new FloorType();
 	at->name = cfg_getstr(cfg_areatype, "name");
-	at->stretch = cfg_getint(cfg_areatype, "stretch");
+	at->stretch = (cfg_getint(cfg_areatype, "stretch") == 1);
 	at->texture = mod->st->render->loadSprite(filename.c_str(), mod);
 	
 	return at;

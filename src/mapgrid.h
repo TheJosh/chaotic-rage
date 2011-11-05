@@ -84,7 +84,7 @@ class CollideBox {
 		bool del;
 		
 	public:
-		CollideBox(int x, int y, int radius, Entity * e) {
+		CollideBox(float x, float y, float radius, Entity * e) {
 			this->x = x;
 			this->y = y;
 			this->radius = radius;

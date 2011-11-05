@@ -69,7 +69,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		wt->angle_range = cfg_getint(cfg_item, "angle_range");
 		wt->fire_delay = cfg_getint(cfg_item, "fire_delay");
 		wt->reload_delay = cfg_getint(cfg_item, "reload_delay");
-		wt->continuous = cfg_getint(cfg_item, "continuous");
+		wt->continuous = (cfg_getint(cfg_item, "continuous") == 1);
 		wt->magazine_limit = cfg_getint(cfg_item, "magazine_limit");
 		wt->belt_limit = cfg_getint(cfg_item, "belt_limit");
 	}

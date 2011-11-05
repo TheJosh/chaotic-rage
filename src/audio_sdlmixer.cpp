@@ -22,7 +22,7 @@ AudioSDLMixer::AudioSDLMixer(GameState * st) : Audio(st)
 	this->audio_start = false;
 	this->audio_stop = false;
 
-	Mix_VolumeMusic(50);
+	Mix_VolumeMusic(75);
 }
 
 
@@ -72,7 +72,6 @@ void AudioSDLMixer::play()
 **/
 void AudioSDLMixer::playSong(Song * sg)
 {
-	Mix_VolumeMusic(40);
 	Mix_PlayMusic(sg->music, 1);
 }
 
