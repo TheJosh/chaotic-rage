@@ -357,22 +357,23 @@ LUA_FUNC(add_npc)
 	
 	Faction fac = (Faction) lua_tointeger(L, 2);
 	
-	p = new NPC(uc, gl->st);
-	gl->st->addUnit(p);
 	
-	for (unsigned int i = 0; i < uc->spawn_weapons.size(); i++) {
-		p->pickupWeapon(uc->spawn_weapons.at(i));
-	}
-
-	Zone *z = gl->map->getSpawnZone(fac);
-	if (z == NULL) {
+	Zone *zn = gl->map->getSpawnZone(fac);
+	if (zn == NULL) {
 		cerr << "Map does not have any spawnpoints\n";
 		exit(1);
 	}
 	
-	p->x = z->getRandomX();
-	p->y = z->getRandomY();
+	p = new NPC(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 2);
+	
 	p->fac = fac;
+	
+	for (unsigned int i = 0; i < uc->spawn_weapons.size(); i++) {
+		p->pickupWeapon(uc->spawn_weapons.at(i));
+	}
+	
+	gl->st->addUnit(p);
+	
 	
 	return 0;
 }
@@ -400,21 +401,20 @@ LUA_FUNC(add_player)
 	
 	int slot = (Faction) lua_tointeger(L, 3);
 	
-	p = new Player(uc, gl->st);
+	
+	Zone *zn = gl->map->getSpawnZone(fac);
+	if (zn == NULL) {
+		cerr << "Map does not have any spawnpoints\n";
+		exit(1);
+	}
+	
+	p = new Player(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 2);
 	p->fac = fac;
 	p->slot = slot;
 	
 	for (unsigned int i = 0; i < uc->spawn_weapons.size(); i++) {
 		p->pickupWeapon(uc->spawn_weapons.at(i));
 	}
-	
-	Zone *z = gl->map->getSpawnZone(fac);
-	if (z == NULL) {
-		cerr << "Map does not have any spawnpoints\n";
-		exit(1);
-	}
-	p->x = z->getRandomX();
-	p->y = z->getRandomY();
 	
 	gl->st->addUnit(p);
 	
@@ -431,7 +431,7 @@ LUA_FUNC(add_player)
 		if (gl->st->hud) gl->st->hud->hideSpawnMenu();
 	}
 	
-
+	
 	return 0;
 }
 

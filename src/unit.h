@@ -75,7 +75,7 @@ class Unit : public Entity
 		
 		
 	public:
-		Unit(UnitType *uc, GameState *st);
+		Unit(UnitType *uc, GameState *st, float x, float y, float z);
 		virtual ~Unit();
 		
 	public:

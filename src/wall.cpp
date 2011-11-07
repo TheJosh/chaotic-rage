@@ -18,9 +18,11 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z) : Entity(st)
 	this->cb = NULL;
 	
 	
-	// The colShape should be tied to the wall type.
+	// TODO: The colShape should be tied to the wall type.
 	btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
-	//collisionShapes.push_back(colShape);
+	
+	// TODO: Store the colshape and nuke at some point
+	// collisionShapes.push_back(colShape);
 	
 	this->body = st->physics->addRigidBody(colShape, 1, x, y, z);
 }

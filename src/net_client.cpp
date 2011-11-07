@@ -217,9 +217,7 @@ unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
 	if (p != NULL) return 14;
 	
 	UnitType *ut = st->getDefaultMod()->getUnitType(1);
-	p = new Player(ut, st);
-	p->x = x;
-	p->y = y;
+	p = new Player(ut, st, x, y, 2);
 	p->slot = slot;
 	
 	p->pickupWeapon(st->getDefaultMod()->getWeaponType(0));

@@ -27,7 +27,7 @@ class Player : public Unit
 		bool key[16];
 
 	public:
-		Player(UnitType *uc, GameState *st);
+		Player(UnitType *uc, GameState *st, float x, float y, float z);
 		virtual ~Player();
 		
 	public:

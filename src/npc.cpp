@@ -10,7 +10,7 @@
 using namespace std;
 
 
-NPC::NPC(UnitType *uc, GameState *st) : Unit(uc, st)
+NPC::NPC(UnitType *uc, GameState *st, float x, float y, float z) : Unit(uc, st, x, y, z)
 {
 	vals[0] = vals[1] = vals[2] = vals[3] = 0;
 	

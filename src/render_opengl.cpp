@@ -879,7 +879,7 @@ void RenderOpenGL::entities()
 		if (play != NULL) {
 			glPushMatrix();
 			
-			if (e->klass() == WALL) {
+			if (e->klass() == WALL || e->klass() == UNIT) {
 				btTransform trans;
 				e->getRigidBody()->getMotionState()->getWorldTransform(trans);
 				glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());

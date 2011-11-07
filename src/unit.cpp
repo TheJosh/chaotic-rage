@@ -11,7 +11,7 @@
 using namespace std;
 
 
-Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
+Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 {
 	this->uc = uc;
 	this->angle_move = 0;
@@ -49,11 +49,13 @@ Unit::Unit(UnitType *uc, GameState *st) : Entity(st)
 	this->weapon_sound = -1;
 	
 	
-	// The colShape should be tied to the unit type.
-	btCollisionShape* colShape = new btSphereShape(btScalar(1.));
-	//collisionShapes.push_back(colShape);
+	// TODO: The colShape should be tied to the wall type.
+	btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
 	
-	this->body = st->physics->addRigidBody(colShape, 1, 0, 0, 0);
+	// TODO: Store the colshape and nuke at some point
+	// collisionShapes.push_back(colShape);
+	
+	this->body = st->physics->addRigidBody(colShape, 1, x, y, z);
 	
 	
 	// access sounds using this->uc->getSound(type)
