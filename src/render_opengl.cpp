@@ -729,7 +729,10 @@ void RenderOpenGL::mainRot()
 		}
 		
 		glRotatef(this->render_player->angle, 0, 0, 1);
-		glTranslatef(0 - this->render_player->x, 0 - this->render_player->y, 500);
+		
+		btTransform trans;
+		this->render_player->getRigidBody()->getMotionState()->getWorldTransform(trans);
+		glTranslatef(0 - trans.getOrigin().getX(), 0 - trans.getOrigin().getY(), 500 - trans.getOrigin().getZ());
 	}
 	
 	if (this->viewmode == 0) {
@@ -889,6 +892,10 @@ void RenderOpenGL::entities()
 			}
 			
 			renderAnimPlay(play, e->angle);
+			
+			//if (e->klass() == WALL || e->klass() == UNIT) {
+			//	renderAnimPlay(this->test, 0);
+			//}
 			
 			glPopMatrix();
 		}
