@@ -355,7 +355,6 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		this->walk_time += delta;
 	}
 	
-	
 	if (st->server) st->server->addmsgUnitUpdate(this);
 	
 	

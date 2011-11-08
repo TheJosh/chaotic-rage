@@ -156,6 +156,37 @@ void Player::update(int delta)
 	}
 	
 	
+	
+	{
+		btTransform xform;
+		body->getMotionState()->getWorldTransform (xform);
+		
+		btVector3 linearVelocity = body->getLinearVelocity();
+		//btScalar speed = linearVelocity.length();
+		
+		btVector3 forwardDir = xform.getBasis()[1];
+		forwardDir.normalize ();
+		
+		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
+		
+		if (this->key[KEY_UP]) {
+			walkDirection += forwardDir;
+		} else if (this->key[KEY_DOWN]) {
+			walkDirection -= forwardDir;
+		}
+		
+		if (!this->key[KEY_UP] && !this->key[KEY_DOWN]) {
+			linearVelocity *= btScalar(0.2);
+			body->setLinearVelocity (linearVelocity);
+			
+		} else {
+			btVector3 velocity = linearVelocity + walkDirection * 5;
+			body->setLinearVelocity (velocity);
+		}
+	}
+	
+	
+	
 	this->desired_angle_move += this->angle_aim;
 	
 	
