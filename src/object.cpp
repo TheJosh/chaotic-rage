@@ -10,12 +10,21 @@
 using namespace std;
 
 
-Object::Object(ObjectType *ot, GameState *st) : Entity(st)
+Object::Object(ObjectType *ot, GameState *st, float x, float y, float z) : Entity(st)
 {
 	this->ot = ot;
 	this->anim = new AnimPlay(ot->model);
 	this->health = ot->health;
 	this->cb = NULL;
+
+
+	// TODO: The colShape should be tied to the wall type.
+	btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
+	
+	// TODO: Store the colshape and nuke at some point
+	// collisionShapes.push_back(colShape);
+	
+	this->body = st->physics->addRigidBody(colShape, 0.1, x, y, z);
 }
 
 Object::~Object()

@@ -882,7 +882,7 @@ void RenderOpenGL::entities()
 		if (play != NULL) {
 			glPushMatrix();
 			
-			if (e->klass() == WALL || e->klass() == UNIT) {
+			if (e->klass() == WALL || e->klass() == UNIT || e->klass() == OBJECT) {
 				btTransform trans;
 				e->getRigidBody()->getMotionState()->getWorldTransform(trans);
 				glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
@@ -893,9 +893,9 @@ void RenderOpenGL::entities()
 			
 			renderAnimPlay(play, e->angle);
 			
-			//if (e->klass() == WALL || e->klass() == UNIT) {
-			//	renderAnimPlay(this->test, 0);
-			//}
+			if (e->klass() == WALL || e->klass() == UNIT || e->klass() == OBJECT) {
+				renderAnimPlay(this->test, 0);
+			}
 			
 			glPopMatrix();
 		}

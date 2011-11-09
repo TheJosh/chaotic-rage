@@ -500,10 +500,7 @@ void Unit::doUse()
 	}
 
 	if (ot->add_object.length() != 0) {
-		Object *nu = new Object(this->st->getDefaultMod()->getObjectType(ot->add_object), this->st);
-		nu->x = this->x;
-		nu->y = this->y;
-		nu->z = 6;
+		Object *nu = new Object(this->st->getDefaultMod()->getObjectType(ot->add_object), this->st, this->x, this->y, 6);
 		this->st->addObject(nu);
 	}
 	

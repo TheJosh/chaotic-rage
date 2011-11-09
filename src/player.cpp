@@ -183,7 +183,7 @@ void Player::update(int delta)
 			body->setLinearVelocity (linearVelocity);
 			
 		} else {
-			btVector3 velocity = linearVelocity + walkDirection;
+			btVector3 velocity = linearVelocity + walkDirection * 2;
 			body->setLinearVelocity (velocity);
 		}
 		
