@@ -161,8 +161,11 @@ void Player::update(int delta)
 		btTransform xform;
 		body->getMotionState()->getWorldTransform (xform);
 		
+		xform.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->angle)));
+		
+		
 		btVector3 linearVelocity = body->getLinearVelocity();
-		//btScalar speed = linearVelocity.length();
+		btScalar speed = linearVelocity.length();
 		
 		btVector3 forwardDir = xform.getBasis()[1];
 		forwardDir.normalize ();
@@ -170,9 +173,9 @@ void Player::update(int delta)
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		
 		if (this->key[KEY_UP]) {
-			walkDirection += forwardDir;
-		} else if (this->key[KEY_DOWN]) {
 			walkDirection -= forwardDir;
+		} else if (this->key[KEY_DOWN]) {
+			walkDirection += forwardDir;
 		}
 		
 		if (!this->key[KEY_UP] && !this->key[KEY_DOWN]) {
@@ -180,9 +183,11 @@ void Player::update(int delta)
 			body->setLinearVelocity (linearVelocity);
 			
 		} else {
-			btVector3 velocity = linearVelocity + walkDirection * 5;
+			btVector3 velocity = linearVelocity + walkDirection;
 			body->setLinearVelocity (velocity);
 		}
+		
+		cout << speed << "\n";
 	}
 	
 	

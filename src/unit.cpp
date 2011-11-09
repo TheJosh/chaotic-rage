@@ -55,7 +55,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	// TODO: Store the colshape and nuke at some point
 	// collisionShapes.push_back(colShape);
 	
-	this->body = st->physics->addRigidBody(colShape, 1, x, y, z);
+	this->body = st->physics->addRigidBody(colShape, 0.1, x, y, z);
 	
 	
 	// access sounds using this->uc->getSound(type)
