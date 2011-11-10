@@ -383,7 +383,7 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	}*/
 	
 	if (w && w->pt) {
-		Particle* pa = new Particle(w->pt, this->st);
+		Particle* pa = new Particle(w->pt, this->st, this->x, this->y, 1);
 		pa->x = this->x;
 		pa->y = this->y;
 		

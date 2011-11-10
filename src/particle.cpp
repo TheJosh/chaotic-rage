@@ -10,7 +10,7 @@
 using namespace std;
 
 
-Particle::Particle(ParticleType *pt, GameState *st) : Entity(st)
+Particle::Particle(ParticleType *pt, GameState *st, float x, float y, float z) : Entity(st)
 {
 	this->pt = pt;
 	this->animation_start = st->anim_frame;
@@ -29,6 +29,15 @@ Particle::Particle(ParticleType *pt, GameState *st) : Entity(st)
 	this->angle = 0;
 	this->age = 0;
 	this->z = 1;		// in the air a little
+	
+	
+	// TODO: The colShape should be tied to the wall type.
+	btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
+	
+	// TODO: Store the colshape and nuke at some point
+	// collisionShapes.push_back(colShape);
+	
+	this->body = st->physics->addRigidBody(colShape, 0.1, x, y, z);
 }
 
 Particle::~Particle()

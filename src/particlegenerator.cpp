@@ -57,9 +57,7 @@ void ParticleGenerator::update(int delta)
 		// Generate the particles according to the rate
 		gennum = ppsDeltai(spew->rate, delta);
 		for (int j = 0; j < gennum; j++) {
-			pa = new Particle(spew->pt, this->st);
-			pa->x = this->x;
-			pa->y = this->y;
+			pa = new Particle(spew->pt, this->st, this->x, this->y, 1);
 			
 			pa->angle = this->angle + getRandom(0 - spew->angle_range / 2, spew->angle_range / 2);
 			pa->angle = clampAngle(pa->angle);

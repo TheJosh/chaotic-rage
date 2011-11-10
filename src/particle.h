@@ -36,7 +36,7 @@ class Particle : public Entity
 		CollideBox* cb;
 		
 	public:
-		Particle(ParticleType *pt, GameState *st);
+		Particle(ParticleType *pt, GameState *st, float x, float y, float z);
 		virtual ~Particle();
 		
 	public:
