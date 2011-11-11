@@ -24,6 +24,8 @@ copy ..\..\data\cr\sounds\*.wav files\data\cr\sounds
 copy ..\..\maps\test\*.conf files\maps\test
 copy ..\..\maps\blank\*.conf files\maps\blank
 
+del files\data\cr\songs.conf
+
 "C:\Program Files\NSIS\makensis.exe" weekly.nsi
 
 pscp cr-wbb-*.exe josh@chaoticrage.com:/srv/http/chaoticrage/public_html/weekly_broken_build
