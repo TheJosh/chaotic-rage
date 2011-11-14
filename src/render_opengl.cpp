@@ -770,7 +770,10 @@ void RenderOpenGL::lights()
 				glTranslatef(l->x, l->y, l->z);
 				
 			} else if (l->type == 2) {
-				glTranslatef(this->render_player->x, this->render_player->y, 2);
+				btTransform trans;
+				this->render_player->getRigidBody()->getMotionState()->getWorldTransform(trans);
+				glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
+				
 				glRotatef(0 - this->render_player->angle + 40, 0, 0, 1);
 				glRotatef(15, 1, 0, 0);
 				
@@ -882,20 +885,12 @@ void RenderOpenGL::entities()
 		if (play != NULL) {
 			glPushMatrix();
 			
-			if (e->klass() == WALL || e->klass() == UNIT || e->klass() == OBJECT || e->klass() == PARTICLE) {
-				btTransform trans;
-				e->getRigidBody()->getMotionState()->getWorldTransform(trans);
-				glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
-				
-			} else {
-				glTranslatef(e->x, e->y, e->z);
-			}
+			btTransform trans;
+			e->getRigidBody()->getMotionState()->getWorldTransform(trans);
+			glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
 			
 			renderAnimPlay(play, e->angle);
-			
-			if (e->klass() == WALL || e->klass() == UNIT || e->klass() == OBJECT || e->klass() == PARTICLE) {
-				renderAnimPlay(this->test, 0);
-			}
+			renderAnimPlay(this->test, 0);
 			
 			glPopMatrix();
 		}

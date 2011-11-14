@@ -178,7 +178,8 @@ void NetServer::addmsgUnitAdd(Unit *u)
 	cout << "       addmsgUnitAdd()\n";
 	cout << "       slot: " << u->slot << "\n";
 	
-	pack(msg->data, "fflh", u->x, u->y, u->angle, u->slot);
+	// TODO: Rebuild network for new physics
+	//pack(msg->data, "fflh", u->x, u->y, u->angle, u->slot);
 	
 	messages.push_back(*msg);
 }
@@ -200,7 +201,8 @@ void NetServer::addmsgUnitUpdate(Unit *u)
 	msg->seq = this->seq;
 	msg->uniq = u->slot;
 	
-	pack(msg->data, "fflfh", u->x, u->y, u->angle, u->speed, u->slot);
+	// TODO: Rebuild network for new physics
+	//pack(msg->data, "fflfh", u->x, u->y, u->angle, u->speed, u->slot);
 	
 	messages.push_back(*msg);
 }

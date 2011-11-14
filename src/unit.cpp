@@ -23,7 +23,6 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	this->slot = 0;
 	
 	this->weapon = NULL;
-	this->weapon_gen = NULL;
 	this->firing = false;
 	
 	this->anim = NULL;
@@ -80,8 +79,6 @@ void Unit::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 {
 	if (remove_at != 0) return;
 	if (theirs->e->klass() == WALL) {
-		this->x = this->old_x;
-		this->y = this->old_y;
 		this->speed = 0;
 		this->setState(UNIT_STATE_STATIC);
 		
@@ -125,10 +122,6 @@ void Unit::beginFiring()
 	if (this->weapon == NULL) return;
 	
 	this->firing = true;
-	
-	if (this->weapon_gen) {
-		this->weapon_gen->age = 0;
-	}
 	
 	if (this->speed == 0) {
 		this->setState(UNIT_STATE_FIRING);
@@ -235,13 +228,6 @@ void Unit::setWeapon(int id)
 	this->weapon = uw;
 	this->firing = false;
 	
-	delete this->weapon_gen;
-	this->weapon_gen = NULL;
-	
-	if (uw->wt->pg) {
-		this->weapon_gen = new ParticleGenerator(uw->wt->pg, this->st);
-	}
-	
 	curr_weapon_id = id;
 }
 
@@ -331,34 +317,10 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	if (this->speed < 0 - ucs->max_speed) this->speed = 0 - ucs->max_speed;
 	
 	
-	// Movement
-	if (this->speed != 0.0) {
-		float newx = pointPlusAngleX(this->x, this->angle_move, ppsDeltaf(this->speed, delta));
-		float newy = pointPlusAngleY(this->y, this->angle_move, ppsDeltaf(this->speed, delta));
-		
-		// Fall off the map detection
-		if (newx < 0.0 || newy < 0.0
-				|| newx >= this->st->curr_map->width - this->uc->width || newy >= this->st->curr_map->height - this->uc->height) {
-			this->speed = 0;
-			this->setState(UNIT_STATE_STATIC);
-			
-		} else {
-			this->old_x = this->x;
-			this->old_y = this->y;
-			this->x = newx;
-			this->y = newy;
-			
-			//btVector3 linVel(newx - this->x, newy - this->y, 0);
-			//body->setLinearVelocity(linVel);
-		}
-		
-		this->walk_time += delta;
-	}
-	
 	if (st->server) st->server->addmsgUnitUpdate(this);
 	
 	
-	// Do some shooting
+	// Which weapon to use?
 	WeaponType *w = NULL;
 	if (this->firing) {
 		if (this->turret_obj) {
@@ -373,26 +335,19 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		}
 	}
 	
-	// I still might remove weapon effects using a particle generator
-	// It's a dumb system anyway.
-	/*if (this->weapon_gen != NULL) {
-		this->weapon_gen->x = this->x;
-		this->weapon_gen->y = this->y;
-		this->weapon_gen->angle = this->angle_aim;
-		this->weapon_gen->update(delta);
-	}*/
-	
+	// Fire!
 	if (w && w->pt) {
-		Particle* pa = new Particle(w->pt, this->st, this->x, this->y, 1);
-		pa->x = this->x;
-		pa->y = this->y;
+		btTransform trans;
+		this->body->getMotionState()->getWorldTransform(trans);
+		
+		Particle* pa = new Particle(w->pt, this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
 		
 		pa->angle = this->angle + getRandom(0 - w->angle_range / 2, w->angle_range / 2);
 		pa->angle = clampAngle(pa->angle);
 		
-		// TODO: This should be dynamic or computed or something even better (vectors anyone?)
-		pa->x = pointPlusAngleX(pa->x, pa->angle, 6);
-		pa->y = pointPlusAngleY(pa->y, pa->angle, 6);
+		// TODO: New physics
+		//pa->x = pointPlusAngleX(pa->x, pa->angle, 6);
+		//pa->y = pointPlusAngleY(pa->y, pa->angle, 6);
 		
 		st->addParticle(pa);
 		
@@ -433,7 +388,8 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 
 	// Move the lifted object with the unit
 	// Or driving, or turrets
-	if (this->lift_obj) {
+	// TODO: New Physics
+	/*if (this->lift_obj) {
 		this->lift_obj->x = this->x;
 		this->lift_obj->y = this->y;
 		this->lift_obj->z = 70;
@@ -450,7 +406,7 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		this->y = this->turret_obj->y;
 		this->z = this->turret_obj->z + 5;
 		this->turret_obj->angle = this->angle;
-	}
+	}*/
 	
 	
 	// This will be re-set by the collission code
@@ -492,15 +448,17 @@ void Unit::doUse()
 {
 	if (this->curr_obj == NULL) return;
 	
+	btTransform trans;
+	this->body->getMotionState()->getWorldTransform(trans);
 	
 	ObjectType *ot = this->curr_obj->ot;
-
+	
 	if (ot->show_message.length() != 0) {
 		this->st->hud->addAlertMessage(ot->show_message);
 	}
-
+	
 	if (ot->add_object.length() != 0) {
-		Object *nu = new Object(this->st->getDefaultMod()->getObjectType(ot->add_object), this->st, this->x, this->y, 6);
+		Object *nu = new Object(this->st->getDefaultMod()->getObjectType(ot->add_object), this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
 		this->st->addObject(nu);
 	}
 	
@@ -534,7 +492,6 @@ void Unit::doUse()
 			this->setWeapon(this->curr_weapon_id);
 		} else {
 			this->turret_obj = this->curr_obj;
-			this->weapon_gen = new ParticleGenerator(st->getDefaultMod()->getWeaponType("poopgun")->pg, this->st);
 		}
 	}
 }

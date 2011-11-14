@@ -28,7 +28,6 @@ Particle::Particle(ParticleType *pt, GameState *st, float x, float y, float z) :
 	
 	this->angle = 0;
 	this->age = 0;
-	this->z = 1;		// in the air a little
 	
 	
 	// TODO: The colShape should be tied to the wall type.
@@ -87,26 +86,14 @@ void Particle::update(int delta)
 		this->hasDied();
 	}
 	
-	if (! st->inBounds(this->x, this->y)) {
-		cout << "particle dead; bounds\n";
-		this->hasDied();
-	}
-	
 	if (this->speed <= 0) {
-		this->z = 0;
 		cout << "particle dead; speed\n";
+		this->hasDied();
 		return;
 	}
 	
 	
 	this->speed += ppsDeltaf(this->accel, delta);
-	
-	this->x = pointPlusAngleX(this->x, this->angle, ppsDeltaf(this->speed, delta));
-	this->y = pointPlusAngleY(this->y, this->angle, ppsDeltaf(this->speed, delta));
-	
-	//this->x += getRandom(-3, 3);
-	//this->y += getRandom(-3, 3);
-	
 	
 	if (this->anim->isDone()) this->anim->next();
 }

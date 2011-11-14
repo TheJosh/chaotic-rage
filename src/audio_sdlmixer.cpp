@@ -83,10 +83,19 @@ void AudioSDLMixer::playSong(Song * sg)
 int AudioSDLMixer::playSound(Sound * snd, bool loop, Entity *e)
 {
 	if (snd == NULL) return -1;
-
-	float vol = sqrt( ((st->local_players[0]->x - e->x) * (st->local_players[0]->x - e->x)) + ((st->local_players[0]->y - e->y) * (st->local_players[0]->y - e->y)) );
-	if (vol > 250.0) return -1;
-
+	
+	btTransform trans;
+	e->getRigidBody()->getMotionState()->getWorldTransform(trans);
+	int x1 = trans.getOrigin().getX();
+	int y1 = trans.getOrigin().getY();
+	
+	st->local_players[0]->getRigidBody()->getMotionState()->getWorldTransform(trans);
+	int x2 = trans.getOrigin().getX();
+	int y2 = trans.getOrigin().getY();
+	
+	float vol = ((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2));
+	if (vol > 250.0 * 250.0) return -1;
+	
 	return Mix_PlayChannel(-1, snd->sound, loop ? -1 : 0);
 }
 

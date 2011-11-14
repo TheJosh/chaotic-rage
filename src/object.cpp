@@ -48,12 +48,7 @@ void Object::hasBeenHit(CollideBox * ours, CollideBox * theirs)
 void Object::update(int delta)
 {
 	if (this->anim->isDone()) this->anim->next();
-	
 	if (this->health == 0) return;
-
-	if (this->z > 0) {
-		this->z--;
-	}
 }
 
 AnimPlay* Object::getAnimModel()

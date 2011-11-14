@@ -151,9 +151,12 @@ void RenderDebug::render()
 	// Entities
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
 		Entity *e = (*it);
-
-		dest.x = (e->x/scalex) - 8;
-		dest.y = (e->y/scaley) - 8;
+		
+		btTransform trans;
+		e->getRigidBody()->getMotionState()->getWorldTransform(trans);
+		
+		dest.x = (trans.getOrigin().getX() / scalex) - 8;
+		dest.y = (trans.getOrigin().getY() / scaley) - 8;
 		
 		if (e->klass() == WALL) {
 			SDL_BlitSurface(this->sprite_wall, &src, screen, &dest);

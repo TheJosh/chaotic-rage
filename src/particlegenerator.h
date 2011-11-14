@@ -22,7 +22,7 @@ class ParticleGenerator : public Entity
 		int spewdelay[MAX_SPEWERS];
 		
 	public:
-		ParticleGenerator(ParticleGenType* type, GameState *st);
+		ParticleGenerator(ParticleGenType* type, GameState *st, float x, float y, float z);
 		virtual ~ParticleGenerator();
 		
 	public:

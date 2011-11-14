@@ -55,7 +55,8 @@ void NPC::update(int delta)
 	
 	
 	// This should be moved into a function in the GameLogic class
-	if (st->local_players[0] == NULL) return;
+	// TODO: NPC restructuring for new physics
+	/*if (st->local_players[0] == NULL) return;
 	
 	if (st->game_time - vals[0] > 2500) {
 		vals[0] = st->game_time;
@@ -96,6 +97,7 @@ void NPC::update(int delta)
 	if (this->closest && this->closest->fac != this->fac) {
 		this->meleeAttack();
 	}
+	*/
 	// End of stuff to move
 	
 	

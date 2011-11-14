@@ -247,6 +247,8 @@ unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)
 	Player *p = (Player*) st->findUnitSlot(slot);
 	if (p == NULL) return 18;
 	
+	// TODO: Rebuild network for new physics
+	/*
 	cout << "       CURRENT\n";
 	cout << "       x: " << p->x << "\n";
 	cout << "       y: " << p->y << "\n";
@@ -265,6 +267,7 @@ unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)
 		p->angle = angle;
 		p->speed = speed;
 	}
+	*/
 	
 	return 18;
 }

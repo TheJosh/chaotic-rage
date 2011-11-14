@@ -34,9 +34,6 @@ class Entity
 		
 	public:
 		bool del;
-		float x;
-		float y;
-		int z;
 		float speed;
 		int angle;
 		

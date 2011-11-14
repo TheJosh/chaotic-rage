@@ -11,17 +11,24 @@
 using namespace std;
 
 
-ParticleGenerator::ParticleGenerator(ParticleGenType* type, GameState *st) : Entity(st)
+ParticleGenerator::ParticleGenerator(ParticleGenType* type, GameState *st, float x, float y, float z) : Entity(st)
 {
 	this->type = type;
-	this->x = x;
-	this->y = y;
 	this->angle = 0;
 	this->age = 0;
 	
 	for (int i = 0; i < MAX_SPEWERS; i++) {
 		this->spewdelay[i] = 0;
 	}
+	
+	
+	// TODO: The colShape should be tied to the wall type.
+	btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
+	
+	// TODO: Store the colshape and nuke at some point
+	// collisionShapes.push_back(colShape);
+	
+	this->body = st->physics->addRigidBody(colShape, 0.1, x, y, z);
 }
 
 ParticleGenerator::~ParticleGenerator()
@@ -54,16 +61,20 @@ void ParticleGenerator::update(int delta)
 			this->spewdelay[i] = spew->delay;
 		}
 		
+		btTransform trans;
+		this->body->getMotionState()->getWorldTransform(trans);
+		
 		// Generate the particles according to the rate
 		gennum = ppsDeltai(spew->rate, delta);
 		for (int j = 0; j < gennum; j++) {
-			pa = new Particle(spew->pt, this->st, this->x, this->y, 1);
+			pa = new Particle(spew->pt, this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
 			
 			pa->angle = this->angle + getRandom(0 - spew->angle_range / 2, spew->angle_range / 2);
 			pa->angle = clampAngle(pa->angle);
 			
-			pa->x = pointPlusAngleX(pa->x, pa->angle, spew->offset);
-			pa->y = pointPlusAngleY(pa->y, pa->angle, spew->offset);
+			// TODO: Rethink particle generators for new physics
+			//pa->x = pointPlusAngleX(pa->x, pa->angle, spew->offset);
+			//pa->y = pointPlusAngleY(pa->y, pa->angle, spew->offset);
 			
 			st->addParticle(pa);
 		}
