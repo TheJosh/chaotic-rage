@@ -175,14 +175,16 @@ void Player::update(int delta)
 		cout << "initial: " << linearVelocity.x() << " " << linearVelocity.y() << " " << linearVelocity.z() << "\n";
 		cout << "speed: " << speed << "\n";
 		
-		/*if (!this->key[KEY_UP] && !this->key[KEY_DOWN]) {
+		if (!this->key[KEY_UP] && !this->key[KEY_DOWN]) {
 			linearVelocity *= btScalar(0.2);
 			
 			cout << "scaled: " << linearVelocity.x() << " " << linearVelocity.y() << " " << linearVelocity.z() << "\n";
 			
 			body->setLinearVelocity (linearVelocity);
 			
-		} else */if (speed < 10) {
+		} else if (speed < 10.0) {
+			body->activate(true);
+			
 			btVector3 forwardDir = xform.getBasis()[1];
 			forwardDir.normalize ();
 			forwardDir *= btScalar(2.5);
