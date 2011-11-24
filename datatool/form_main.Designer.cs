@@ -28,90 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.labDatapath = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Button();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.menu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolParticles = new System.Windows.Forms.ToolStripButton();
+            this.toolWeapons = new System.Windows.Forms.ToolStripButton();
+            this.toolUnittypes = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolParticleGenerators = new System.Windows.Forms.ToolStripButton();
+            this.toolModifiers = new System.Windows.Forms.ToolStripButton();
+            this.status = new System.Windows.Forms.StatusStrip();
+            this.statusDatapath = new System.Windows.Forms.ToolStripStatusLabel();
             this.menu.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
+            this.status.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(15, 64);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(119, 30);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Particles";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(15, 136);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(119, 30);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Unit types";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(15, 100);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(119, 30);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "Weapons";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // button5
-            // 
-            this.button5.Enabled = false;
-            this.button5.Location = new System.Drawing.Point(210, 64);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(119, 30);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "Particle generators";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // labDatapath
-            // 
-            this.labDatapath.AutoSize = true;
-            this.labDatapath.Location = new System.Drawing.Point(68, 35);
-            this.labDatapath.Name = "labDatapath";
-            this.labDatapath.Size = new System.Drawing.Size(147, 13);
-            this.labDatapath.TabIndex = 5;
-            this.labDatapath.Text = "Unable to determine datapath";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(12, 35);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Data:";
-            // 
-            // button6
-            // 
-            this.button6.Enabled = false;
-            this.button6.Location = new System.Drawing.Point(210, 100);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(119, 30);
-            this.button6.TabIndex = 7;
-            this.button6.Text = "Modifiers";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // menu
             // 
@@ -119,7 +53,7 @@
             this.fileToolStripMenuItem});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
-            this.menu.Size = new System.Drawing.Size(615, 24);
+            this.menu.Size = new System.Drawing.Size(766, 24);
             this.menu.TabIndex = 8;
             this.menu.Text = "menuStrip1";
             // 
@@ -129,44 +63,125 @@
             this.saveToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
             this.fileToolStripMenuItem.Text = "&File";
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolParticles,
+            this.toolWeapons,
+            this.toolUnittypes,
+            this.toolStripSeparator1,
+            this.toolParticleGenerators,
+            this.toolModifiers});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(766, 25);
+            this.toolStrip1.TabIndex = 10;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolParticles
+            // 
+            this.toolParticles.Image = ((System.Drawing.Image)(resources.GetObject("toolParticles.Image")));
+            this.toolParticles.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolParticles.Name = "toolParticles";
+            this.toolParticles.Size = new System.Drawing.Size(67, 22);
+            this.toolParticles.Text = "Particles";
+            this.toolParticles.Click += new System.EventHandler(this.toolParticles_Click);
+            // 
+            // toolWeapons
+            // 
+            this.toolWeapons.Image = ((System.Drawing.Image)(resources.GetObject("toolWeapons.Image")));
+            this.toolWeapons.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolWeapons.Name = "toolWeapons";
+            this.toolWeapons.Size = new System.Drawing.Size(72, 22);
+            this.toolWeapons.Text = "Weapons";
+            this.toolWeapons.Click += new System.EventHandler(this.toolWeapons_Click);
+            // 
+            // toolUnittypes
+            // 
+            this.toolUnittypes.Image = ((System.Drawing.Image)(resources.GetObject("toolUnittypes.Image")));
+            this.toolUnittypes.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolUnittypes.Name = "toolUnittypes";
+            this.toolUnittypes.Size = new System.Drawing.Size(76, 22);
+            this.toolUnittypes.Text = "Unit types";
+            this.toolUnittypes.Click += new System.EventHandler(this.toolUnittypes_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolParticleGenerators
+            // 
+            this.toolParticleGenerators.Enabled = false;
+            this.toolParticleGenerators.Image = ((System.Drawing.Image)(resources.GetObject("toolParticleGenerators.Image")));
+            this.toolParticleGenerators.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolParticleGenerators.Name = "toolParticleGenerators";
+            this.toolParticleGenerators.Size = new System.Drawing.Size(119, 22);
+            this.toolParticleGenerators.Text = "Particle Generators";
+            // 
+            // toolModifiers
+            // 
+            this.toolModifiers.Enabled = false;
+            this.toolModifiers.Image = ((System.Drawing.Image)(resources.GetObject("toolModifiers.Image")));
+            this.toolModifiers.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolModifiers.Name = "toolModifiers";
+            this.toolModifiers.Size = new System.Drawing.Size(68, 22);
+            this.toolModifiers.Text = "Modifers";
+            // 
+            // status
+            // 
+            this.status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusDatapath});
+            this.status.Location = new System.Drawing.Point(0, 344);
+            this.status.Name = "status";
+            this.status.Size = new System.Drawing.Size(766, 22);
+            this.status.TabIndex = 11;
+            // 
+            // statusDatapath
+            // 
+            this.statusDatapath.Name = "statusDatapath";
+            this.statusDatapath.Size = new System.Drawing.Size(68, 17);
+            this.statusDatapath.Text = "No Datapath";
+            this.statusDatapath.ToolTipText = "No datapath";
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(615, 182);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.labDatapath);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.ClientSize = new System.Drawing.Size(766, 366);
+            this.Controls.Add(this.status);
+            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menu);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.IsMdiContainer = true;
             this.MainMenuStrip = this.menu;
-            this.MaximizeBox = false;
             this.Name = "Main";
             this.Text = "Chaotic Rage datatool";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Main_Load);
             this.menu.ResumeLayout(false);
             this.menu.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
+            this.status.ResumeLayout(false);
+            this.status.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -174,17 +189,19 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Label labDatapath;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button6;
         private System.Windows.Forms.MenuStrip menu;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton toolParticles;
+        private System.Windows.Forms.ToolStripButton toolWeapons;
+        private System.Windows.Forms.ToolStripButton toolUnittypes;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton toolParticleGenerators;
+        private System.Windows.Forms.ToolStripButton toolModifiers;
+        private System.Windows.Forms.StatusStrip status;
+        private System.Windows.Forms.ToolStripStatusLabel statusDatapath;
     }
 }
 
