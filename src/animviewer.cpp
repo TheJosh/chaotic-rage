@@ -11,11 +11,13 @@ using namespace std;
 
 
 
-int main (int argc, char ** argv)
+int main (int argc, char * argv[])
 {
-	cout << ".";
-	cerr << ".";
-
+	if (argc != 2) {
+		cout << "Usage:\n" << argv[0] << " [model]\n";
+		exit(1);
+	}
+	
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 	
 	seedRandom();
@@ -53,6 +55,27 @@ int main (int argc, char ** argv)
 	st->local_players[0] = NULL;
 	
 	((RenderOpenGL*)st->render)->viewmode = 1;
+	
+	
+	// Create object type for anim model
+	string tmp = argv[1];
+	ObjectType *ot = new ObjectType();
+	ot->name = tmp;
+	ot->check_radius = 30;
+	ot->health = 20000;
+	
+	ot->model = mod->getAnimModel(tmp);
+	if (ot->model == NULL) {
+		reportFatalError("Animmodel not found");
+	}
+	
+	mod->addObjectType(ot);
+	
+	
+	// Create object in the world
+	Object *o = new Object(ot, st, m->width/2, m->height/2, 0);
+	st->addObject(o);
+	
 	
 	// Begin!
 	gameLoop(st, st->render);

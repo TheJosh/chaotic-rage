@@ -307,6 +307,11 @@ ObjectType * Mod::getObjectType(string name)
 	return NULL;
 }
 
+void Mod::addObjectType(ObjectType * ot)
+{
+	objecttypes->push_back(ot);
+}
+
 
 /**
 * Gets a particle type by ID
