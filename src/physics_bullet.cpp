@@ -46,6 +46,7 @@ void PhysicsBullet::preGame()
 	
 	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,0,1),1);
 	
+	
 	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-1)));
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
 		0,
@@ -53,8 +54,11 @@ void PhysicsBullet::preGame()
 		groundShape,
 		btVector3(0,0,0)
 	);
-	btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
+	this->groundRigidBody = new btRigidBody(groundRigidBodyCI);
 	dynamicsWorld->addRigidBody(groundRigidBody);
+	
+	
+	cout << "\n\ngroundRigidBody: " << groundRigidBody << "\n";
 	
 	
 	collisionShapes = new btAlignedObjectArray<btCollisionShape*>();
@@ -126,6 +130,49 @@ void PhysicsBullet::stepTime(int ms)
 	dynamicsWorld->stepSimulation(ms / 1000.0f, 10);
 }
 
+
+
+/**
+* Look for collissions of entities
+**/
+void PhysicsBullet::doCollisions()
+{
+	int i;
+	
+	int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
+	
+	cout << "\n\nNum manifolds: " << numManifolds << "\n";
+	
+	for (i = 0; i < numManifolds; i++) {
+		btPersistentManifold* contactManifold = dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
+		
+		btCollisionObject* obA = static_cast<btCollisionObject*>(contactManifold->getBody0());
+		btCollisionObject* obB = static_cast<btCollisionObject*>(contactManifold->getBody1());
+		
+		if (obA == this->groundRigidBody || obB == this->groundRigidBody) continue;
+		
+		cout << "Collision: " << obA << " - " << obB << "\n";
+		
+		/*int numContacts = contactManifold->getNumContacts();
+		
+		for (j = 0; j < numContacts; j++) {
+			btManifoldPoint& pt = contactManifold->getContactPoint(j);
+			
+			glBegin(GL_LINES);
+			glColor3f(0, 0, 0);
+			
+			btVector3 ptA = pt.getPositionWorldOnA();
+			btVector3 ptB = pt.getPositionWorldOnB();
+			
+			glVertex3d(ptA.x(),ptA.y(),ptA.z());
+			glVertex3d(ptB.x(),ptB.y(),ptB.z());
+			glEnd();
+		}*/
+		
+		//you can un-comment out this line, and then all points are removed
+		//contactManifold->clearManifold();	
+	}
+}
 
 
 

@@ -242,3 +242,9 @@ string getDataDirectory(int datafile)
 	return "";
 }
 
+
+void terminal_clear()
+{
+	printf("%c[2J\n", 0x1B);
+}
+

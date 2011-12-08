@@ -221,11 +221,11 @@ void GameState::update(int delta)
 	this->entities.remove_if(EntityEraser);
 	this->collideboxes.remove_if(CollideBoxEraser);
 	
-	// What hit what?
-	this->doCollisions();
-	
 	// Update physics
 	this->physics->stepTime(delta);
+	
+	// What hit what?
+	this->physics->doCollisions();
 	
 	// Decrease entropy
 	if (this->entropy > 0) {
@@ -235,73 +235,6 @@ void GameState::update(int delta)
 	// Update time
 	this->game_time += delta;
 	this->anim_frame = (int) floor(this->game_time * ANIMATION_FPS / 1000.0);
-}
-
-
-/**
-* Look for collissions of entities
-**/
-void GameState::doCollisions()
-{
-	int release;
-	
-	for (list<CollideBox*>::iterator ito = this->collideboxes.begin(); ito != this->collideboxes.end(); ito++) {
-		CollideBox *co = (*ito);
-		
-		list<CollideBox*>* tests = this->collides->getCollidesMC(co->x, co->y, 100, &release);
-		
-		Entity* closest = NULL;
-		float closest_dist = 10;
-
-		for (list<CollideBox*>::iterator iti = tests->begin(); iti != tests->end(); iti++) {
-			CollideBox *ci = (*iti);
-			
-			if (ci == co) continue;
-			
-			
-			// Square based check. This could be faster.
-			/*
-			int xi1 = ci->x - ci->radius;
-			int xi2 = ci->x + ci->radius;
-			int yi1 = ci->y - ci->radius;
-			int yi2 = ci->y + ci->radius;
-			
-			int xo1 = co->x - co->radius;
-			int xo2 = co->x + co->radius;
-			int yo1 = co->y - co->radius;
-			int yo2 = co->y + co->radius;
-			
-			
-			if (
-				((xo1 > xi1 and xo1 < xi2) or (xo2 > xi1 and xo2 < xi2))
-				and
-				((yo1 > yi1 and yo1 < yi2) or (yo2 > yi1 and yo2 < yi2))
-			) {
-				co->e->hasBeenHit(co, ci);
-			}
-			*/
-			
-			
-			// Circle based check using sqrt. This is probably too slow.
-			float dist = sqrt( ((ci->x - co->x) * (ci->x - co->x)) + ((ci->y - co->y) * (ci->y - co->y)) );
-			float exp = ci->radius + co->radius;
-			
-			if (dist <= exp) {
-				co->e->hasBeenHit(co, ci);
-			}
-			
-			if (dist < closest_dist) {
-				closest = ci->e;
-				closest_dist = dist;
-			}
-		}
-		
-		if (closest) {
-			co->e->entityClose(closest, closest_dist);
-		}
-
-		if (release == 1) delete tests;
-	}
 }
 
 

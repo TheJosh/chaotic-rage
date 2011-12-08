@@ -48,3 +48,8 @@ Range cfg_getrange(cfg_t *cfg, const char * name);
 
 // Game mods
 string getDataDirectory(int datafile);
+
+// Terminal (ANSI only)
+void terminal_clear();
+
+

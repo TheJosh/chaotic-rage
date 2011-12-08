@@ -11,7 +11,6 @@
 using namespace std;
 
 
-
 /**
 * Thin wrapper around the "Bullet" physics library
 **/
@@ -27,6 +26,8 @@ class PhysicsBullet
 		btDiscreteDynamicsWorld* dynamicsWorld;
 		btAlignedObjectArray<btCollisionShape*>* collisionShapes;
 		
+		btRigidBody* groundRigidBody;
+		
 	public:
 		PhysicsBullet(GameState * st);
 		~PhysicsBullet();
@@ -38,6 +39,7 @@ class PhysicsBullet
 		void delRigidBody(btRigidBody* body);
 		
 		void stepTime(int ms);
+		void doCollisions();
 };
 
 
