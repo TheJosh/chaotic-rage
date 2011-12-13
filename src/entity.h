@@ -73,7 +73,7 @@ class Entity
 		/**
 		* Called by the collission code when a collission has happened
 		**/
-		virtual void hasBeenHit(CollideBox * ours, CollideBox * theirs) {};
+		virtual void hasBeenHit(Entity * that) {};
 		
 		/**
 		* Called by the collission code when a collission didn't happen - but is close

@@ -25,6 +25,8 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z) : Entity(st)
 	// collisionShapes.push_back(colShape);
 	
 	this->body = st->physics->addRigidBody(colShape, 1, x, y, z);
+	
+	this->body->setUserPointer(this);
 }
 
 Wall::~Wall()
@@ -34,10 +36,10 @@ Wall::~Wall()
 }
 
 
-void Wall::hasBeenHit(CollideBox * ours, CollideBox * theirs)
+void Wall::hasBeenHit(Entity * that)
 {
-	if (theirs->e->klass() == PARTICLE) {
-		((Particle*)theirs->e)->doHitWall(this);
+	if (that->klass() == PARTICLE) {
+		((Particle*)that)->doHitWall(this);
 	}
 }
 

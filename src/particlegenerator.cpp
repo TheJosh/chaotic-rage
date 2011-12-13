@@ -29,6 +29,8 @@ ParticleGenerator::ParticleGenerator(ParticleGenType* type, GameState *st, float
 	// collisionShapes.push_back(colShape);
 	
 	this->body = st->physics->addRigidBody(colShape, 0.1, x, y, z);
+	
+	this->body->setUserPointer(this);
 }
 
 ParticleGenerator::~ParticleGenerator()

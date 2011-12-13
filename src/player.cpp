@@ -104,12 +104,12 @@ void Player::angleFromMouse(int x, int y, int delta)
 }
 
 
-void Player::hasBeenHit(CollideBox * ours, CollideBox * theirs)
+void Player::hasBeenHit(Entity * that)
 {
-	Unit::hasBeenHit(ours, theirs);
-
-	if (theirs->e->klass() == OBJECT) {
-		this->curr_obj = (Object*)theirs->e;
+	Unit::hasBeenHit(that);
+	
+	if (that->klass() == OBJECT) {
+		this->curr_obj = (Object*)that;
 		
 		if (this->curr_obj->ot->over) this->doUse();
 	}

@@ -22,6 +22,6 @@ class NPC : public Unit
 		
 	public:
 		virtual void update(int delta);
-		virtual void hasBeenHit(CollideBox * ours, CollideBox * theirs);
+		virtual void hasBeenHit(Entity * that);
 		virtual int takeDamage(int damage);
 };

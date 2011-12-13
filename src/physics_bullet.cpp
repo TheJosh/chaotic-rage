@@ -118,7 +118,13 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, fl
 **/
 void PhysicsBullet::delRigidBody(btRigidBody* body)
 {
-	// TODO: Free properly, see HelloWorld demo
+	if (body && body->getMotionState()) {
+		delete body->getMotionState();
+	}
+	
+	dynamicsWorld->removeCollisionObject(body);
+	
+	delete body;
 }
 
 
@@ -152,6 +158,11 @@ void PhysicsBullet::doCollisions()
 		if (obA == this->groundRigidBody || obB == this->groundRigidBody) continue;
 		
 		cout << "Collision: " << obA << " - " << obB << "\n";
+		
+		Entity* entA = static_cast<Entity*>(obA->getUserPointer());
+		Entity* entB = static_cast<Entity*>(obB->getUserPointer());
+		
+		entA->hasBeenHit(entB);
 		
 		/*int numContacts = contactManifold->getNumContacts();
 		

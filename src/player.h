@@ -40,5 +40,5 @@ class Player : public Unit
 	public:
 		virtual void update(int delta);
 		virtual int takeDamage(int damage);
-		virtual void hasBeenHit(CollideBox * ours, CollideBox * theirs);
+		virtual void hasBeenHit(Entity * that);
 };

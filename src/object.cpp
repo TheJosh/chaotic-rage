@@ -25,20 +25,19 @@ Object::Object(ObjectType *ot, GameState *st, float x, float y, float z) : Entit
 	// collisionShapes.push_back(colShape);
 	
 	this->body = st->physics->addRigidBody(colShape, 0.1, x, y, z);
+	
+	this->body->setUserPointer(this);
 }
 
 Object::~Object()
 {
-	cout << "\n\n\n";
-	cout << "Removing the object object!\n";
-	cout << "\n\n\n";
 	delete (this->anim);
+	st->physics->delRigidBody(this->body);
 }
 
 
-void Object::hasBeenHit(CollideBox * ours, CollideBox * theirs)
+void Object::hasBeenHit(Entity * that)
 {
-	
 }
 
 

@@ -56,6 +56,8 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	
 	this->body = st->physics->addRigidBody(colShape, 0.1, x, y, z);
 	
+	this->body->setUserPointer(this);
+	
 	
 	// access sounds using this->uc->getSound(type)
 	// see unittype.h for types (e.g. UNIT_SOUND_DEATH)
@@ -75,15 +77,15 @@ Unit::~Unit()
 /**
 * Hit!
 **/
-void Unit::hasBeenHit(CollideBox * ours, CollideBox * theirs)
+void Unit::hasBeenHit(Entity * that)
 {
 	if (remove_at != 0) return;
-	if (theirs->e->klass() == WALL) {
+	if (that->klass() == WALL) {
 		this->speed = 0;
 		this->setState(UNIT_STATE_STATIC);
 		
-	} else if (theirs->e->klass() == PARTICLE) {
-		((Particle*)theirs->e)->doHitUnit(this);
+	} else if (that->klass() == PARTICLE) {
+		((Particle*)that)->doHitUnit(this);
 	}
 }
 

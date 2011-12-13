@@ -22,16 +22,9 @@ NPC::~NPC()
 }
 
 
-void NPC::hasBeenHit(CollideBox * ours, CollideBox * theirs)
+void NPC::hasBeenHit(Entity * that)
 {
-	Unit::hasBeenHit(ours, theirs);
-	
-	// This should be moved into a function in the GameLogic class
-	/*if (theirs->e->klass() == UNIT) {
-		this->beginFiring();
-		currently_hit = true;
-	}*/
-	// End of stuff to move
+	Unit::hasBeenHit(that);
 }
 
 

@@ -82,7 +82,7 @@ class Unit : public Entity
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta) = 0;
-		virtual void hasBeenHit(CollideBox * ours, CollideBox * theirs);
+		virtual void hasBeenHit(Entity * that);
 		virtual void entityClose(Entity * e, float dist);
 
 	public:

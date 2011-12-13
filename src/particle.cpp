@@ -37,11 +37,14 @@ Particle::Particle(ParticleType *pt, GameState *st, float x, float y, float z) :
 	// collisionShapes.push_back(colShape);
 	
 	this->body = st->physics->addRigidBody(colShape, 0.1, x, y, z);
+	
+	this->body->setUserPointer(this);
 }
 
 Particle::~Particle()
 {
 	delete (this->anim);
+	st->physics->delRigidBody(this->body);
 }
 
 
