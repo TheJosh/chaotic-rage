@@ -53,6 +53,7 @@ class GameState
 		NetClient* client;
 		NetServer* server;
 		PhysicsBullet* physics;
+		CommandLineArgs* cmdline;
 		
 	public:
 		GameState();

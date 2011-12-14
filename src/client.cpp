@@ -22,6 +22,8 @@ int main (int argc, char ** argv)
 	
 	GameState *st = new GameState();
 	
+	st->cmdline = new CommandLineArgs(argc, argv);
+	
 	new RenderOpenGL(st);
 	new AudioSDLMixer(st);
 	new HUD(st);
