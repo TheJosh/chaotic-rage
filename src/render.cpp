@@ -29,7 +29,7 @@ SpritePtr Render::loadSprite(string filename, Mod * mod)
 	SpritePtr sprite;
 	SDL_RWops *rw;
 	
-	DEBUG("Loading sprite '%s'.\n", filename.c_str());
+	DEBUG("vid", "Loading sprite '%s'", filename.c_str());
 	
 	rw = mod->loadRWops(filename);
 	if (rw == NULL) {

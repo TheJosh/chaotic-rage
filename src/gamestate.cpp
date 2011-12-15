@@ -198,7 +198,7 @@ void GameState::start()
 **/
 void GameState::update(int delta)
 {
-	DEBUG("Updating gamestate using delta: %i\n", delta);
+	DEBUG("loop", "Updating gamestate using delta: %i\n", delta);
 	
 	
 	// Add new entities

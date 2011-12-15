@@ -22,7 +22,9 @@ int main (int argc, char ** argv)
 	
 	GameState *st = new GameState();
 	
+	#ifdef GETOPT
 	st->cmdline = new CommandLineArgs(argc, argv);
+	#endif
 	
 	new RenderOpenGL(st);
 	new AudioSDLMixer(st);

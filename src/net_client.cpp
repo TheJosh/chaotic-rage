@@ -146,7 +146,6 @@ void NetClient::addmsgKeyMouseStatus(int x, int y, int delta, Uint8 k)
 	msg->seq = this->seq;
 	
 	// TODO: k should be 16-bit
-	pack_debug();
 	pack(msg->data, "hhhc", (Sint16)x, (Sint16)y, (Sint16)delta, k);
 	
 	messages.push_back(*msg);

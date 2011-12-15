@@ -298,7 +298,6 @@ unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 
 	Sint16 x, y, delta;
 	Uint8 keys;
 	
-	pack_debug();
 	unpack(data, "hhhc", &x, &y, &delta, &keys);
 	
 	cout << "       x: " << x << "\n";

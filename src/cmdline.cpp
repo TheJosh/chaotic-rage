@@ -17,40 +17,75 @@ using namespace std;
 **/
 CommandLineArgs::CommandLineArgs(int argc, char ** argv)
 {
-	this->debug = false;
-	
-	
-	
 	static struct option long_options[] = {
-		{"help",	0, 0, 'h'},
-		{"debug",	0, 0, 'd'},
+		{"help",			0, 0, 'h'},
+		#ifdef DEBUG_OPTIONS
+		{"debug",			1, 0, 'a'},
+		{"debug-list",		0, 0, 'b'},
+		{"debug-lineno",	0, 0, 'c'},
+		{"debug-file",		1, 0, 'd'},
+		#endif
 		{NULL, 0, NULL, 0}
 	};
 	
 	int c;
 	int option_index = 0;
-	while ((c = getopt_long(argc, argv, "hd", long_options, &option_index)) != -1) {
+	while ((c = getopt_long(argc, argv, "h", long_options, &option_index)) != -1) {
 		switch (c) {
 			case 'h':
 				cout <<
 					"Chaotic Rage\n\n"
 					"Options:\n"
-					" -h --help\t\tShow this help\n"
-					" -d --debug\t\tEnable debug mode\n";
-					exit(0);
+					" -h\t--help                 Show this help\n"
+					#ifdef DEBUG_OPTIONS
+					"   \t--debug SECTION        Enable debug mode for a given section\n"
+					"   \t--debug-list           Show a list of available debug sections\n"
+					"   \t--debug-lineno         Show file and line no in debugging output\n"
+					"   \t--debug-file           Save debug logs in a file instead of stdout\n"
+					#endif
+				;
+				exit(0);
 				break;
 			
-			case 'd':
-				this->debug = true;
+			#ifdef DEBUG_OPTIONS
+			case 'a':
+				debug_enable(optarg);
+				cout << "Enabling debug for '" << optarg << "'.\n";
 				break;
+				
+			case 'b':
+				cout <<
+					"Chaotic Rage\n\n"
+					"Debug Sections:\n"
+					"  aud                Audio (Play, Stop)\n"
+					"  coll               Collisions\n"
+					"  data               Data-file loading\n"
+					"  lua                Lua function calls\n"
+					"  part               Particle movements\n"
+					"  phy                Physics (RigidBody adding, removing)\n"
+					"  unit               Unit movements\n"
+					"  vid                Video\n"
+					"  loop               Main game loop\n"
+					"  net                Network (also: net_pack)\n"
+				;
+				exit(0);
+				break;
+				
+			case 'c':
+				debug_lineno(true);
+				cout << "Enabling file and line numbers in debug.\n";
+				break;
+				
+			case 'd':
+				debug_tofile(optarg);
+				cout << "Saving debug data to file '" << optarg << "'.\n";
+				break;
+			#endif
 			
 			default: break;
 		}
 	}
 	
-	if (this->debug) {
-		cout << "Debug mode ON\n";
-	}
 }
 
 

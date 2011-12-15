@@ -34,7 +34,7 @@ AudioPtr AudioSDLMixer::loadSound(string filename, Mod * mod)
 	AudioPtr sound;
 	SDL_RWops *rw;
 	
-	DEBUG("Loading sound '%s'.\n", filename.c_str());
+	DEBUG("snd", "Loading sound '%s'", filename.c_str());
 	
 	rw = mod->loadRWops(filename);
 	if (rw == NULL) {

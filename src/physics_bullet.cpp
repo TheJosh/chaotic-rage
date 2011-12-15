@@ -147,7 +147,7 @@ void PhysicsBullet::doCollisions()
 	
 	int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
 	
-	cout << "\n\nNum manifolds: " << numManifolds << "\n";
+	DEBUG("coll", "Num manifolds: %i", numManifolds);
 	
 	for (i = 0; i < numManifolds; i++) {
 		btPersistentManifold* contactManifold = dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
@@ -157,7 +157,7 @@ void PhysicsBullet::doCollisions()
 		
 		if (obA == this->groundRigidBody || obB == this->groundRigidBody) continue;
 		
-		cout << "Collision: " << obA << " - " << obB << "\n";
+		DEBUG("coll", "Collision: %p %p", obA, obB);
 		
 		Entity* entA = static_cast<Entity*>(obA->getUserPointer());
 		Entity* entB = static_cast<Entity*>(obB->getUserPointer());

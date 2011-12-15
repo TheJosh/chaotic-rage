@@ -15,7 +15,7 @@ using namespace std;
 class CommandLineArgs
 {
 	public:
-		bool debug;
+		
 		
 	public:
 		CommandLineArgs(int argc, char ** argv);

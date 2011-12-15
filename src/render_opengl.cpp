@@ -239,18 +239,18 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 	
 	surf = IMG_Load_RW(rw, 0);
 	if (surf == NULL) {
-		fprintf(stderr, "Couldn't load sprite '%s'.\n", filename.c_str());
+		fprintf(stderr, "Couldn't load sprite '%s'\n", filename.c_str());
 		load_err = true;
 		return NULL;
 	}
 	
 	// Checks
 	if ((surf->w & (surf->w - 1)) != 0) {
-		DEBUG("Bitmap '%s' width is not a power of 2.\n", filename.c_str());
+		DEBUG("vid", "Bitmap '%s' width is not a power of 2", filename.c_str());
 	}
 	
 	if ((surf->h & (surf->h - 1)) != 0) {
-		DEBUG("Bitmap '%s' height is not a power of 2.\n", filename.c_str());
+		DEBUG("vid", "Bitmap '%s' height is not a power of 2", filename.c_str());
 	}
 	
 	if (surf->format->BytesPerPixel != 4 && surf->format->BytesPerPixel != 3) {

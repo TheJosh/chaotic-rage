@@ -12,21 +12,10 @@
 #include <vector>
 
 
-// Debugging messages
-// Not used anywhere near as often as they should be used
-#ifdef DEBUG_MODE
-	#define WHERESTR "%s:%d\t"
-	#define WHEREARG __FILE__, __LINE__
-	#define DEBUGPRINT2(...) fprintf(stderr, __VA_ARGS__)
-	#define DEBUG(_fmt, ...) DEBUGPRINT2(WHERESTR _fmt, WHEREARG, __VA_ARGS__)
-#else
-	#define DEBUG(_fmt, ...) /* nothing! */
-#endif
-
-
 // Engine features to optionally compile into the game
 #define FEAT_INTRO false
 #define FEAT_MENU true
+#define DEBUG_OPTIONS
 
 
 // Frames-per-second to run all in-game animations at.
@@ -145,6 +134,7 @@ class Zone;
 #include "hud.h"
 #include "util.h"
 #include "cmdline.h"
+#include "debug.h"
 
 #include "sdl_util.h"
 #include "SDL_rwops_zzip.h"

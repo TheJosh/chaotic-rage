@@ -158,9 +158,7 @@ void Player::update(int delta)
 	
 	
 	{
-		cout << "-----------------------------\n";
-		
-		cout << "angle: " << this->angle << "\n";
+		DEBUG("unit", "angle: %f", this->angle);
 		
 		btTransform xform;
 		body->getMotionState()->getWorldTransform (xform);
@@ -171,14 +169,10 @@ void Player::update(int delta)
 		btVector3 linearVelocity = body->getLinearVelocity();
 		btScalar speed = linearVelocity.length();
 		
-		
-		cout << "initial: " << linearVelocity.x() << " " << linearVelocity.y() << " " << linearVelocity.z() << "\n";
-		cout << "speed: " << speed << "\n";
+		DEBUG("unit", "speed: %f", this->speed);
 		
 		if (!this->key[KEY_UP] && !this->key[KEY_DOWN]) {
 			linearVelocity *= btScalar(0.2);
-			
-			cout << "scaled: " << linearVelocity.x() << " " << linearVelocity.y() << " " << linearVelocity.z() << "\n";
 			
 			body->setLinearVelocity (linearVelocity);
 			
@@ -189,8 +183,6 @@ void Player::update(int delta)
 			forwardDir.normalize ();
 			forwardDir *= btScalar(2.5);
 			
-			cout << "forward: " << forwardDir.x() << " " << forwardDir.y() << " " << forwardDir.z() << "\n";
-			
 			btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		
 			if (this->key[KEY_UP]) {
@@ -199,11 +191,7 @@ void Player::update(int delta)
 				walkDirection += forwardDir;
 			}
 			
-			cout << "walk: " << walkDirection.x() << " " << walkDirection.y() << " " << walkDirection.z() << "\n";
-			
 			btVector3 velocity = linearVelocity + walkDirection;
-			
-			cout << "pluswalk: " << velocity.x() << " " << velocity.y() << " " << velocity.z() << "\n";
 			
 			body->setLinearVelocity (velocity);
 		}
