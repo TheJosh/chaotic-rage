@@ -61,6 +61,12 @@
     <Compile Include="ConfuseBuilder.cs" />
     <Compile Include="ConfuseReader.cs" />
     <Compile Include="ListenForm.cs" />
+    <Compile Include="Metrics\metric_compare.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Metrics\metric_compare.Designer.cs">
+      <DependentUpon>metric_compare.cs</DependentUpon>
+    </Compile>
     <Compile Include="Metrics\metric_grid.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -169,6 +175,9 @@
     </Compile>
     <EmbeddedResource Include="base_list.resx">
       <DependentUpon>base_list.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Metrics\metric_compare.resx">
+      <DependentUpon>metric_compare.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Metrics\metric_grid.resx">
       <DependentUpon>metric_grid.cs</DependentUpon>
