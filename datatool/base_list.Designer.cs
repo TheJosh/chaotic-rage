@@ -91,24 +91,27 @@
             // addToolStripMenuItem
             // 
             this.addToolStripMenuItem.Image = global::datatool.Properties.Resources.add;
+            this.addToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.addToolStripMenuItem.Text = "&Add";
             this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Image = global::datatool.Properties.Resources.edit;
+            this.editToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             this.editToolStripMenuItem.Text = "&Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Image = global::datatool.Properties.Resources.delete;
+            this.deleteToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
             this.deleteToolStripMenuItem.Text = "&Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
@@ -116,8 +119,9 @@
             // 
             this.selectToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.selectToolStripMenuItem.Image = global::datatool.Properties.Resources.select;
+            this.selectToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.selectToolStripMenuItem.Name = "selectToolStripMenuItem";
-            this.selectToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
+            this.selectToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
             this.selectToolStripMenuItem.Text = "&Select";
             this.selectToolStripMenuItem.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.selectToolStripMenuItem.Visible = false;
@@ -126,8 +130,9 @@
             // cancelToolStripMenuItem
             // 
             this.cancelToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.cancelToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.cancelToolStripMenuItem.Name = "cancelToolStripMenuItem";
-            this.cancelToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
+            this.cancelToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             this.cancelToolStripMenuItem.Text = "Cancel";
             this.cancelToolStripMenuItem.Visible = false;
             this.cancelToolStripMenuItem.Click += new System.EventHandler(this.cancelToolStripMenuItem_Click);

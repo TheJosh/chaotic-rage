@@ -74,6 +74,8 @@ namespace datatool
 
             this.items.Add(i);
 
+            ((Main)this.MdiParent).postMessage_Updated();
+
             lvi = new LinkedListViewItem();
             lvi.Text = i.getName();
             lvi.Item = i;
@@ -101,6 +103,8 @@ namespace datatool
 
             int index = this.items.FindIndex(base_item => base_item == lvi.Item);
             this.items[index] = i;
+
+            ((Main)this.MdiParent).postMessage_Updated();
 
             lvi.Item = i;
             lvi.Text = lvi.Item.getName();

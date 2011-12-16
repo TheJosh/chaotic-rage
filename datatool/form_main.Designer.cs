@@ -35,6 +35,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metricsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMetricsWeaponsGrid = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuMetricsWeaponsCompare = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolParticles = new System.Windows.Forms.ToolStripButton();
             this.toolWeapons = new System.Windows.Forms.ToolStripButton();
@@ -44,7 +45,6 @@
             this.toolModifiers = new System.Windows.Forms.ToolStripButton();
             this.status = new System.Windows.Forms.StatusStrip();
             this.statusDatapath = new System.Windows.Forms.ToolStripStatusLabel();
-            this.MenuMetricsWeaponsCompare = new System.Windows.Forms.ToolStripMenuItem();
             this.menu.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.status.SuspendLayout();
@@ -100,13 +100,20 @@
             this.MenuMetricsWeaponsGrid.Text = "Weapons Grid";
             this.MenuMetricsWeaponsGrid.Click += new System.EventHandler(this.MenuMetricsWeapons_Click);
             // 
+            // MenuMetricsWeaponsCompare
+            // 
+            this.MenuMetricsWeaponsCompare.Name = "MenuMetricsWeaponsCompare";
+            this.MenuMetricsWeaponsCompare.Size = new System.Drawing.Size(175, 22);
+            this.MenuMetricsWeaponsCompare.Text = "Weapons Compare";
+            this.MenuMetricsWeaponsCompare.Click += new System.EventHandler(this.MenuMetricsWeaponsCompare_Click);
+            // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolParticles,
             this.toolWeapons,
-            this.toolUnittypes,
             this.toolStripSeparator1,
+            this.toolUnittypes,
             this.toolParticleGenerators,
             this.toolModifiers});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
@@ -135,6 +142,7 @@
             // 
             // toolUnittypes
             // 
+            this.toolUnittypes.Enabled = false;
             this.toolUnittypes.Image = ((System.Drawing.Image)(resources.GetObject("toolUnittypes.Image")));
             this.toolUnittypes.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolUnittypes.Name = "toolUnittypes";
@@ -181,13 +189,6 @@
             this.statusDatapath.Text = "No Datapath";
             this.statusDatapath.ToolTipText = "No datapath";
             // 
-            // MenuMetricsWeaponsCompare
-            // 
-            this.MenuMetricsWeaponsCompare.Name = "MenuMetricsWeaponsCompare";
-            this.MenuMetricsWeaponsCompare.Size = new System.Drawing.Size(175, 22);
-            this.MenuMetricsWeaponsCompare.Text = "Weapons Compare";
-            this.MenuMetricsWeaponsCompare.Click += new System.EventHandler(this.MenuMetricsWeaponsCompare_Click);
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -202,6 +203,7 @@
             this.Name = "Main";
             this.Text = "Chaotic Rage datatool";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Load += new System.EventHandler(this.Main_Load);
             this.menu.ResumeLayout(false);
             this.menu.PerformLayout();

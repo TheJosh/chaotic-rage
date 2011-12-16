@@ -43,6 +43,20 @@ namespace datatool
             this.statusDatapath.Text = Program.dp.datapath;
         }
 
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            switch (MessageBox.Show("Do you want to save?", Application.ProductName, MessageBoxButtons.YesNoCancel))
+            {
+                case System.Windows.Forms.DialogResult.Yes:
+                    Program.dp.save(Program.dp.datapath);
+                    break;
+
+                case System.Windows.Forms.DialogResult.Cancel:
+                    e.Cancel = true;
+                    break;
+            }
+        }
+
 
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -90,5 +104,6 @@ namespace datatool
             f.MdiParent = this;
             f.Show();
         }
+
     }
 }
