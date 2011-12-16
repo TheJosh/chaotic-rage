@@ -136,5 +136,14 @@ namespace datatool
             get { return this.wall_hits.toString(); }
             set { this.wall_hits = range.fromString(value); }
         }
+
+
+        [Browsable(false)]
+        public float UnitDamageAverage
+        {
+            get {
+                return (float)(this.unit_damage.min + this.unit_damage.max) / 2.0f;
+            }
+        }
     }
 }

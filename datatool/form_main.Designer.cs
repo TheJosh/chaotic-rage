@@ -42,6 +42,8 @@
             this.toolModifiers = new System.Windows.Forms.ToolStripButton();
             this.status = new System.Windows.Forms.StatusStrip();
             this.statusDatapath = new System.Windows.Forms.ToolStripStatusLabel();
+            this.metricsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuMetricsWeapons = new System.Windows.Forms.ToolStripMenuItem();
             this.menu.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.status.SuspendLayout();
@@ -50,7 +52,8 @@
             // menu
             // 
             this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.metricsToolStripMenuItem});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
             this.menu.Size = new System.Drawing.Size(766, 24);
@@ -69,14 +72,14 @@
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -161,6 +164,21 @@
             this.statusDatapath.Text = "No Datapath";
             this.statusDatapath.ToolTipText = "No datapath";
             // 
+            // metricsToolStripMenuItem
+            // 
+            this.metricsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuMetricsWeapons});
+            this.metricsToolStripMenuItem.Name = "metricsToolStripMenuItem";
+            this.metricsToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
+            this.metricsToolStripMenuItem.Text = "Metrics";
+            // 
+            // MenuMetricsWeapons
+            // 
+            this.MenuMetricsWeapons.Name = "MenuMetricsWeapons";
+            this.MenuMetricsWeapons.Size = new System.Drawing.Size(152, 22);
+            this.MenuMetricsWeapons.Text = "Weapons";
+            this.MenuMetricsWeapons.Click += new System.EventHandler(this.MenuMetricsWeapons_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -202,6 +220,8 @@
         private System.Windows.Forms.ToolStripButton toolModifiers;
         private System.Windows.Forms.StatusStrip status;
         private System.Windows.Forms.ToolStripStatusLabel statusDatapath;
+        private System.Windows.Forms.ToolStripMenuItem metricsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MenuMetricsWeapons;
     }
 }
 

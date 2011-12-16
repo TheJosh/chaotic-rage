@@ -21,6 +21,16 @@ namespace datatool
         {
             return "";
         }
+
+        virtual public List<string> getMetricNames()
+        {
+            return null;
+        }
+
+        virtual public float getMetric(int type)
+        {
+            return 0;
+        }
     }
 
 

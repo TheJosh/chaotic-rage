@@ -37,7 +37,6 @@ namespace datatool
             this.lstSettings = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imgSmallIcons = new System.Windows.Forms.ImageList(this.components);
-            this.btnActions = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
@@ -119,17 +118,6 @@ namespace datatool
             this.imgSmallIcons.TransparentColor = System.Drawing.Color.Transparent;
             this.imgSmallIcons.Images.SetKeyName(0, "document-properties.png");
             // 
-            // btnActions
-            // 
-            this.btnActions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnActions.Location = new System.Drawing.Point(12, 373);
-            this.btnActions.Name = "btnActions";
-            this.btnActions.Size = new System.Drawing.Size(82, 23);
-            this.btnActions.TabIndex = 15;
-            this.btnActions.Text = "Ac&tions";
-            this.btnActions.UseVisualStyleBackColor = true;
-            this.btnActions.Click += new System.EventHandler(this.btnActions_Click);
-            // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -163,7 +151,7 @@ namespace datatool
             this.toolStripSplitButton1.Image = global::datatool.Properties.Resources.add;
             this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripSplitButton1.Name = "toolStripSplitButton1";
-            this.toolStripSplitButton1.Size = new System.Drawing.Size(61, 22);
+            this.toolStripSplitButton1.Size = new System.Drawing.Size(58, 22);
             this.toolStripSplitButton1.Text = "Add";
             this.toolStripSplitButton1.ButtonClick += new System.EventHandler(this.toolStripSplitButton1_ButtonClick);
             // 
@@ -171,7 +159,7 @@ namespace datatool
             // 
             this.stateToolStripMenuItem.Image = global::datatool.Properties.Resources.video;
             this.stateToolStripMenuItem.Name = "stateToolStripMenuItem";
-            this.stateToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.stateToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.stateToolStripMenuItem.Text = "Animation";
             this.stateToolStripMenuItem.Click += new System.EventHandler(this.stateToolStripMenuItem_Click);
             // 
@@ -179,7 +167,7 @@ namespace datatool
             // 
             this.settingsToolStripMenuItem.Image = global::datatool.Properties.Resources.system;
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.settingsToolStripMenuItem.Text = "Modifier settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
@@ -188,7 +176,7 @@ namespace datatool
             this.toolStripButton1.Image = global::datatool.Properties.Resources.delete;
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(70, 22);
+            this.toolStripButton1.Size = new System.Drawing.Size(66, 22);
             this.toolStripButton1.Text = "Remove";
             // 
             // toolStripButton2
@@ -196,7 +184,7 @@ namespace datatool
             this.toolStripButton2.Image = global::datatool.Properties.Resources.system;
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(74, 22);
+            this.toolStripButton2.Size = new System.Drawing.Size(71, 22);
             this.toolStripButton2.Text = "Edit Base";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
@@ -207,7 +195,6 @@ namespace datatool
             this.ClientSize = new System.Drawing.Size(587, 410);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.grid);
-            this.Controls.Add(this.btnActions);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.MinimumSize = new System.Drawing.Size(485, 437);
@@ -230,7 +217,6 @@ namespace datatool
         private System.Windows.Forms.ListView lstSettings;
         private System.Windows.Forms.ImageList imgSmallIcons;
         private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.Button btnActions;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;

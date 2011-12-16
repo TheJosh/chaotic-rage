@@ -104,6 +104,72 @@ namespace datatool
         }
 
 
+        /**
+         * Returns the list of metrics available
+         **/
+        override public List<string> getMetricNames()
+        {
+            List<string> o = new List<string>();
+            o.Add("Num fire in 10 secs");
+            o.Add("Num fire in 30 secs");
+            o.Add("Unit Damage in 10 secs");
+            o.Add("Unit Damage in 30 secs");
+            return o;
+        }
+
+        /**
+         * Returns the data for the various metrics
+         **/
+        override public float getMetric(int type)
+        {
+            int time = 0;
+            int metric = 0;
+
+            switch (type) {
+                case 0: metric = 1; time = 10 * 1000; break;
+                case 1: metric = 1; time = 30 * 1000; break;
+
+                case 2: metric = 2; time = 10 * 1000; break;
+                case 3: metric = 2; time = 30 * 1000; break;
+            }
+
+            if (this.particle == null) return 0;
+            if (time == 0) return 0;
+            if (metric == 0) return 0;
+
+
+            // The weights are to make the assumption
+            // that the player is partway into a clip, and partway into
+            // a reload cycle when the imaginary '10 secs' begins
+            //
+            int i = (int)Math.Round(this.fire_delay * 0.6);
+            int num_mag = (int)Math.Round(this.magazine_limit * 0.75);
+            int num_fire = 0;
+
+            while (i <= time) {
+                num_fire++;
+                num_mag--;
+
+                if (num_mag == 0) {
+                    num_mag = this.magazine_limit;
+                    if (num_fire >= this.belt_limit) break;
+                    i += this.reload_delay;
+                }
+                
+                i += this.fire_delay;
+            }
+
+            if (metric == 1) {
+                return num_fire;
+            } else if (metric == 2) {
+                return num_fire * this.particle.UnitDamageAverage;
+            }
+
+            return 0;
+        }
+
+
+
         [DescriptionAttribute("The name of this weapon, internal use only")]
         public string Name
         {

@@ -60,6 +60,13 @@
   <ItemGroup>
     <Compile Include="ConfuseBuilder.cs" />
     <Compile Include="ConfuseReader.cs" />
+    <Compile Include="ListenForm.cs" />
+    <Compile Include="Metrics\metric_grid.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Metrics\metric_grid.Designer.cs">
+      <DependentUpon>metric_grid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modifiers\modifier_edit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -162,6 +169,9 @@
     </Compile>
     <EmbeddedResource Include="base_list.resx">
       <DependentUpon>base_list.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Metrics\metric_grid.resx">
+      <DependentUpon>metric_grid.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modifiers\modifier_edit.resx">
       <DependentUpon>modifier_edit.cs</DependentUpon>

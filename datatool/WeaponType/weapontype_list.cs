@@ -41,6 +41,8 @@ namespace datatool
             form = new WeapontypeEdit((weapontype_item)editing);
             if (form.ShowDialog() == DialogResult.Cancel) return null;
 
+            ((Main)this.MdiParent).postMessage_Updated();
+
             return editing;
         }
     }

@@ -13,6 +13,7 @@ namespace datatool
         public Main()
         {
             InitializeComponent();
+            this.listeners = new List<ListenForm>();
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -29,6 +30,7 @@ namespace datatool
         {
             Program.dp.save(Program.dp.datapath);
         }
+
 
         private void toolParticles_Click(object sender, EventArgs e)
         {
@@ -49,6 +51,33 @@ namespace datatool
             UnitclassList f = new UnitclassList();
             f.MdiParent = this;
             f.Show();
+        }
+
+        private void MenuMetricsWeapons_Click(object sender, EventArgs e)
+        {
+            metric_grid f = new metric_grid(new weapontype_item("A").getMetricNames(), Program.dp.WeaponTypes);
+            f.MdiParent = this;
+            f.Show();
+        }
+
+
+        private List<ListenForm> listeners;
+
+        public void registerListener(ListenForm f)
+        {
+            this.listeners.Add(f);
+        }
+
+        public void unregisterListener(ListenForm f)
+        {
+            this.listeners.Remove(f);
+        }
+
+        public void postMessage_Updated()
+        {
+            foreach (ListenForm l in this.listeners) {
+                l.Message_Updated();
+            }
         }
     }
 }
