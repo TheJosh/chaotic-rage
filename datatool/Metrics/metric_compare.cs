@@ -19,8 +19,7 @@ namespace datatool
             this.data = data;
 
             metriccombo.Items.Clear();
-            foreach (string m in metrics)
-            {
+            foreach (string m in metrics) {
                 metriccombo.Items.Add(m);
             }
             metriccombo.SelectedIndex = 0;
@@ -51,31 +50,38 @@ namespace datatool
         private void fill_grid()
         {
             int metric = metriccombo.SelectedIndex;
-            
+
             datagrid.Columns.Clear();
             datagrid.Columns.Add("", "");
             datagrid.Columns[0].DefaultCellStyle = datagrid.ColumnHeadersDefaultCellStyle;
-            foreach (base_item col in this.data)
-            {
+            foreach (base_item col in this.data) {
                 datagrid.Columns.Add(col.getName(), col.getName());
             }
-            
+
             foreach (DataGridViewColumn c in datagrid.Columns) {
                 c.Width = 75;
             }
             datagrid.Columns[0].Width = 100;
 
             datagrid.Rows.Clear();
-            foreach (base_item row in this.data)
-            {
+            foreach (base_item row in this.data) {
                 DataGridViewRow dgr = new DataGridViewRow();
                 dgr.CreateCells(datagrid);
                 dgr.Cells[0].Value = row.getName();
-                
+
                 int i = 1;
-                foreach (base_item col in this.data)
-                {
-                    dgr.Cells[i].Value = col.getMetric(metric) - row.getMetric(metric);
+                foreach (base_item col in this.data) {
+                    float val = col.getMetric(metric) - row.getMetric(metric);
+                    if (val == 0) {
+                        dgr.Cells[i].Value = "";
+                    } else if (val > 0) {
+                        dgr.Cells[i].Value = Math.Round(val, 1);
+                        dgr.Cells[i].Style.ForeColor = Color.Blue;
+                    } else if (val < 0) {
+                        dgr.Cells[i].Value = Math.Round(val, 1);
+                        dgr.Cells[i].Style.ForeColor = Color.Red;
+                    }
+
                     i++;
                 }
 

@@ -14,10 +14,17 @@ namespace datatool
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            ParticletypeList form;
+            ParticletypeList l;
+            ParticletypeEdit e;
 
-            form = new ParticletypeList();
-            return form.SelectItem();
+            if (value != null) {
+                e = new ParticletypeEdit((particletype_item)value);
+                e.ShowDialog();
+                return e.Item;
+            }
+            
+            l = new ParticletypeList();
+            return l.SelectItem();
         }
     }
 }

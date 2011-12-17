@@ -114,6 +114,8 @@ namespace datatool
             o.Add("Num fire in 30 secs");
             o.Add("Unit Damage in 10 secs");
             o.Add("Unit Damage in 30 secs");
+            o.Add("Unit Damage in 10 secs (angle adjusted)");
+            o.Add("Unit Damage in 30 secs (angle adjusted)");
             return o;
         }
 
@@ -131,6 +133,9 @@ namespace datatool
 
                 case 2: metric = 2; time = 10 * 1000; break;
                 case 3: metric = 2; time = 30 * 1000; break;
+
+                case 4: metric = 3; time = 10 * 1000; break;
+                case 5: metric = 3; time = 30 * 1000; break;
             }
 
             if (this.particle == null) return 0;
@@ -163,6 +168,9 @@ namespace datatool
                 return num_fire;
             } else if (metric == 2) {
                 return num_fire * this.particle.UnitDamageAverage;
+            } else if (metric == 3) {
+                float angweight = 1.0f / this.angle_range * 5.0f;
+                return num_fire * this.particle.UnitDamageAverage * angweight;
             }
 
             return 0;
