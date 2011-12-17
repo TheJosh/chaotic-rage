@@ -74,7 +74,7 @@ namespace datatool
 
             this.items.Add(i);
 
-            ((Main)this.MdiParent).postMessage_Updated();
+            if (this.MdiParent != null) ((Main)this.MdiParent).postMessage_Updated();
 
             lvi = new LinkedListViewItem();
             lvi.Text = i.getName();
@@ -104,7 +104,7 @@ namespace datatool
             int index = this.items.FindIndex(base_item => base_item == lvi.Item);
             this.items[index] = i;
 
-            ((Main)this.MdiParent).postMessage_Updated();
+            if (this.MdiParent != null) ((Main)this.MdiParent).postMessage_Updated();
 
             lvi.Item = i;
             lvi.Text = lvi.Item.getName();
@@ -114,13 +114,45 @@ namespace datatool
 
 
         /**
+         * Duplicate the current item
+         */
+        private void duplicateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            base_item i;
+            LinkedListViewItem lvi;
+
+            if (this.listview.SelectedItems.Count == 0) return;
+
+            lvi = (LinkedListViewItem)this.listview.SelectedItems[0];
+
+            i = this.doEdit(lvi.Item);
+            if (i == null) return;
+
+            this.items.Add(i);
+
+            if (this.MdiParent != null) ((Main)this.MdiParent).postMessage_Updated();
+
+            lvi = new LinkedListViewItem();
+            lvi.Text = i.getName();
+            lvi.Item = i;
+            lvi.ImageIndex = this.icon_list_index;
+            this.listview.Items.Add(lvi);
+        }
+
+        /**
          * Delete button clicked
          **/
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (this.listview.SelectedItems.Count == 0) return;
 
-            this.listview.SelectedItems[0].Remove();
+            LinkedListViewItem lvi;
+            lvi = (LinkedListViewItem)this.listview.SelectedItems[0];
+
+            this.items.Remove(lvi.Item);
+            lvi.Remove();
+
+            if (this.MdiParent != null) ((Main)this.MdiParent).postMessage_Updated();
         }
 
 

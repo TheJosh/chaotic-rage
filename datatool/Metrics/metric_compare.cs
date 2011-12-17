@@ -61,7 +61,7 @@ namespace datatool
             }
             
             foreach (DataGridViewColumn c in datagrid.Columns) {
-                c.Width = 50;
+                c.Width = 75;
             }
             datagrid.Columns[0].Width = 100;
 
@@ -75,7 +75,7 @@ namespace datatool
                 int i = 1;
                 foreach (base_item col in this.data)
                 {
-                    dgr.Cells[i].Value = row.getMetric(metric) - col.getMetric(metric);
+                    dgr.Cells[i].Value = col.getMetric(metric) - row.getMetric(metric);
                     i++;
                 }
 
