@@ -106,8 +106,6 @@ void Player::angleFromMouse(int x, int y, int delta)
 
 void Player::hasBeenHit(Entity * that)
 {
-	DEBUG("unit", "hasBeenHit %p %p", this, that);
-	
 	Unit::hasBeenHit(that);
 	
 	if (that->klass() == OBJECT) {
