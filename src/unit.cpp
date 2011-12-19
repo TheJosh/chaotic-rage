@@ -79,6 +79,8 @@ Unit::~Unit()
 **/
 void Unit::hasBeenHit(Entity * that)
 {
+	DEBUG("unit", "hasBeenHit %p %p", this, that);
+	
 	if (remove_at != 0) return;
 	if (that->klass() == WALL) {
 		this->speed = 0;

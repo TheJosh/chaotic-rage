@@ -106,6 +106,8 @@ void Player::angleFromMouse(int x, int y, int delta)
 
 void Player::hasBeenHit(Entity * that)
 {
+	DEBUG("unit", "hasBeenHit %p %p", this, that);
+	
 	Unit::hasBeenHit(that);
 	
 	if (that->klass() == OBJECT) {
@@ -158,8 +160,6 @@ void Player::update(int delta)
 	
 	
 	{
-		DEBUG("unit", "angle: %f", this->angle);
-		
 		btTransform xform;
 		body->getMotionState()->getWorldTransform (xform);
 		
@@ -169,7 +169,7 @@ void Player::update(int delta)
 		btVector3 linearVelocity = body->getLinearVelocity();
 		btScalar speed = linearVelocity.length();
 		
-		DEBUG("unit", "speed: %f", this->speed);
+		DEBUG("unit", "%p\tAngle: %.1f\tSpeed: %.1f", this, this->angle, this->speed);
 		
 		if (!this->key[KEY_UP] && !this->key[KEY_DOWN]) {
 			linearVelocity *= btScalar(0.2);

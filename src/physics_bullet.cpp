@@ -163,6 +163,7 @@ void PhysicsBullet::doCollisions()
 		Entity* entB = static_cast<Entity*>(obB->getUserPointer());
 		
 		entA->hasBeenHit(entB);
+		entB->hasBeenHit(entA);
 		
 		/*int numContacts = contactManifold->getNumContacts();
 		
