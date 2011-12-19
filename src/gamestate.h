@@ -53,8 +53,11 @@ class GameState
 		NetClient* client;
 		NetServer* server;
 		PhysicsBullet* physics;
+
+		#ifdef GETOPT
 		CommandLineArgs* cmdline;
-		
+		#endif
+
 	public:
 		GameState();
 		~GameState();

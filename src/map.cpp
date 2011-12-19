@@ -192,7 +192,7 @@ int Map::load(string name, Render * render)
 				this->st,
 				cfg_getint(cfg_sub, "x"),
 				cfg_getint(cfg_sub, "y"),
-				getRandom(10, 15)
+				0
 			);
 			
 			wa->angle = cfg_getint(cfg_sub, "angle");
