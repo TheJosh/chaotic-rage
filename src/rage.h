@@ -50,6 +50,7 @@ class AnimModel;
 class AnimPlay;
 class Audio;
 class CollideBox;
+class CommandLineArgs;
 class Entity;
 class FloorType;
 class GameLogic;
@@ -133,11 +134,7 @@ class Zone;
 #include "hud.h"
 #include "util.h"
 #include "debug.h"
+#include "cmdline.h"
 
 #include "sdl_util.h"
 #include "SDL_rwops_zzip.h"
-
-
-#ifdef GETOPT
-#include "cmdline.h"
-#endif

@@ -17,6 +17,9 @@ using namespace std;
 **/
 CommandLineArgs::CommandLineArgs(int argc, char ** argv)
 {
+	#ifdef GETOPT
+	
+	
 	static struct option long_options[] = {
 		{"help",			0, 0, 'h'},
 		#ifdef DEBUG_OPTIONS
@@ -86,6 +89,8 @@ CommandLineArgs::CommandLineArgs(int argc, char ** argv)
 		}
 	}
 	
+	
+	#endif
 }
 
 
