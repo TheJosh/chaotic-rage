@@ -167,7 +167,7 @@ void Player::update(int delta)
 		btVector3 linearVelocity = body->getLinearVelocity();
 		btScalar speed = linearVelocity.length();
 		
-		//DEBUG("unit", "%p\tAngle: %.1f\tSpeed: %.1f", this, this->angle, this->speed);
+		DEBUG("unit", "%p Velocity: %f %f %f", this, linearVelocity.x(), linearVelocity.y(), linearVelocity.z());
 		
 		if (!this->key[KEY_UP] && !this->key[KEY_DOWN]) {
 			linearVelocity *= btScalar(0.2);

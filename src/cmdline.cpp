@@ -70,6 +70,7 @@ CommandLineArgs::CommandLineArgs(int argc, char ** argv)
 					"  vid                Video\n"
 					"  loop               Main game loop\n"
 					"  net                Network (also: net_pack)\n"
+					"  weap               Weapons\n"
 				;
 				exit(0);
 				break;

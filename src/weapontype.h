@@ -30,6 +30,7 @@ class WeaponType
 		int id;
 		string name;
 		string title;
+		GameState * st;
 		
 		// TODO: Not used anymore, rejig for effects maybe?
 		ParticleGenType *pg;
@@ -49,6 +50,8 @@ class WeaponType
 		
 	public:
 		Sound* getSound(int type);
+		void doFire(Unit * u);
+		void doHit(Entity * e);
 };
 
 

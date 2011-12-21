@@ -340,51 +340,8 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	}
 	
 	// Fire!
-	if (w && w->pt) {
-		btTransform trans;
-		this->body->getMotionState()->getWorldTransform(trans);
-		
-		Particle* pa = new Particle(w->pt, this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
-		
-		
-			btTransform xform;
-			body->getMotionState()->getWorldTransform (xform);
-			
-			xform.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->angle)));
-			
-			btVector3 forwardDir = xform.getBasis()[1];
-			forwardDir.normalize ();
-			
-			
-			DEBUG("unit", "forwardDir is %f %f %f", forwardDir.x(), forwardDir.y(), forwardDir.z());
-			
-			btVector3 begin = trans.getOrigin();
-			btVector3 end = begin + (forwardDir * btScalar(-50.0));		// weapon range
-			
-			DEBUG("unit", "Ray between %f %f %f and %f %f %f", begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z());
-			
-			btCollisionWorld::ClosestRayResultCallback cb(begin, end);
-			
-			st->physics->getWorld()->rayTest(begin, end, cb);
-			if (cb.hasHit()) {
-				DEBUG("unit", "%p Shot; hit", this);
-				
-				btRigidBody * body = btRigidBody::upcast(cb.m_collisionObject);
-				if (body) {
-					
-					Entity* entA = static_cast<Entity*>(body->getUserPointer());
-					
-					DEBUG("unit", "Ray hit %p (%p)", body, entA);
-					
-					if (entA) {
-						entA->hasBeenHit(pa);
-					}
-				}
-				
-			} else {
-				DEBUG("unit", "%p Shot; miss", this);
-			}
-		
+	if (w) {
+		w->doFire(this);
 		
 		if (w == this->weapon->wt) {
 			this->weapon->next_use = st->game_time + this->weapon->wt->fire_delay;

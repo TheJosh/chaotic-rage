@@ -55,6 +55,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	wt = new WeaponType();
 	wt->name = cfg_getstr(cfg_item, "name");
 	wt->title = cfg_getstr(cfg_item, "title");
+	wt->st = mod->st;
 	
 	// Particle (bullets)
 	char * tmp = cfg_getstr(cfg_item, "particle");
@@ -136,3 +137,69 @@ WeaponType::WeaponType()
 {
 	this->pg = NULL;
 }
+
+
+/**
+* Fires a weapon, from a specified Unit
+**/
+void WeaponType::doFire(Unit * u)
+{
+	if (! this->pt) return;		// not for long!
+	
+	
+	btTransform xform;
+	u->body->getMotionState()->getWorldTransform (xform);
+	
+	xform.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(u->angle)));
+	
+	btVector3 forwardDir = xform.getBasis()[1];
+	forwardDir.normalize ();
+	
+	
+	DEBUG("weap", "forwardDir is %f %f %f", forwardDir.x(), forwardDir.y(), forwardDir.z());
+	
+	btVector3 begin = xform.getOrigin();
+	btVector3 end = begin + (forwardDir * btScalar(-50.0));		// weapon range
+	
+	DEBUG("weap", "Ray between %f %f %f and %f %f %f", begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z());
+	
+	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
+	
+	this->st->physics->getWorld()->rayTest(begin, end, cb);
+	
+	if (cb.hasHit()) {
+		DEBUG("weap", "%p Shot; hit", u);
+		
+		btRigidBody * body = btRigidBody::upcast(cb.m_collisionObject);
+		if (body) {
+			
+			Entity* entA = static_cast<Entity*>(body->getUserPointer());
+			
+			DEBUG("weap", "Ray hit %p (%p)", body, entA);
+			
+			if (entA) {
+				this->doHit(entA);
+			}
+		}
+		
+	} else {
+		DEBUG("weap", "%p Shot; miss", u);
+	}
+}
+
+
+/**
+* The bullets have hit an entity! do damage!
+**/
+void WeaponType::doHit(Entity * e)
+{
+	if (e->klass() == UNIT) {
+		((Unit*)e)->takeDamage(this->pt->unit_damage.min);
+		
+	} else if (e->klass() == WALL) {
+		((Wall*)e)->takeDamage(this->pt->wall_damage.min);
+		
+	}
+}
+
+
