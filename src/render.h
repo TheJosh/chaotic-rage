@@ -91,6 +91,11 @@ class Render
 		**/
 		bool wasLoadSpriteError();
 		
+		/**
+		* Enable physics debugging
+		**/
+		virtual void enablePhysicsDebug() {}
+		
 	public:
 		Render(GameState * st);
 };

@@ -82,6 +82,15 @@ void PhysicsBullet::postGame()
 
 
 /**
+* Returns the world
+**/
+btDiscreteDynamicsWorld* PhysicsBullet::getWorld()
+{
+	return dynamicsWorld;
+}
+
+
+/**
 * Create and add a rigid body
 *
 * m = mass

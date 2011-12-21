@@ -120,6 +120,7 @@ void Menu::doit()
 					case SDLK_RETURN:
 						{
 							st->physics->preGame();
+							//st->render->enablePhysicsDebug();
 							
 							// Load map
 							Map *m = new Map(st);

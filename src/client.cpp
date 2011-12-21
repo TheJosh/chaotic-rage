@@ -34,6 +34,7 @@ int main (int argc, char ** argv)
 	
 	st->render->setScreenSize(900, 900, false);
 	
+	
 	Mod * mod = new Mod(st, "data/cr");
 	
 	if (FEAT_INTRO) {

@@ -79,7 +79,7 @@ Unit::~Unit()
 **/
 void Unit::hasBeenHit(Entity * that)
 {
-	DEBUG("unit", "hasBeenHit %p %p", this, that);
+	DEBUG("coll", "hasBeenHit %p %p", this, that);
 	
 	if (remove_at != 0) return;
 	if (that->klass() == WALL) {
@@ -354,6 +354,34 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		//pa->y = pointPlusAngleY(pa->y, pa->angle, 6);
 		
 		st->addParticle(pa);
+		
+		{
+			btVector3 unitDirection = body->getLinearVelocity();
+			unitDirection.normalize();
+			
+			btVector3 begin = trans.getOrigin();
+			btVector3 end = begin + unitDirection * btScalar(50.0);		// weapon range
+			
+			btCollisionWorld::ClosestRayResultCallback cb(begin, end);
+			
+			st->physics->getWorld()->rayTest(begin, end, cb);
+			if (cb.hasHit()) {
+				DEBUG("unit", "%p Shot; hit", this);
+				
+				btRigidBody * body = btRigidBody::upcast(cb.m_collisionObject);
+				if (body) {
+					
+					Entity* entA = static_cast<Entity*>(body->getUserPointer());
+					
+					DEBUG("unit", "Ray hit %p (%p %p)", body, entA, body->getUserPointer());
+					
+					//entA->hasBeenHit(pa);
+				}
+				
+			} else {
+				DEBUG("unit", "%p Shot; miss", this);
+			}
+		}
 		
 		if (w == this->weapon->wt) {
 			this->weapon->next_use = st->game_time + this->weapon->wt->fire_delay;

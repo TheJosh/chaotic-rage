@@ -40,6 +40,8 @@ class PhysicsBullet
 		
 		void stepTime(int ms);
 		void doCollisions();
+		
+		btDiscreteDynamicsWorld* getWorld();
 };
 
 

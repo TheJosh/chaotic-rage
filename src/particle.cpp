@@ -49,13 +49,13 @@ Particle::~Particle()
 
 
 void Particle::doHitUnit(Unit *u)
-{
+{return;
 	if (this->unit_damage > 0) {
 		u->takeDamage(this->unit_damage);
 		
 		this->unit_hits--;
 		if (this->unit_hits == 0) {
-			cout << "particle dead; unit-hit\n";
+			DEBUG("part", "%p dead, unit-hit", this);
 			this->hasDied();
 		}
 		
@@ -65,13 +65,13 @@ void Particle::doHitUnit(Unit *u)
 }
 
 void Particle::doHitWall(Wall *w)
-{
+{return;
 	if (this->wall_damage > 0) {
 		w->takeDamage(this->wall_damage);
 		
 		this->wall_hits--;
 		if (this->wall_hits == 0) {
-			cout << "particle dead; wall-hit\n";
+			DEBUG("part", "%p dead, wall-hit", this);
 			this->hasDied();
 		}
 	
@@ -85,12 +85,12 @@ void Particle::update(int delta)
 {
 	this->age += delta;
 	if (this->age >= this->max_age) {
-		cout << "particle dead; age\n";
+		DEBUG("part", "%p dead, age", this);
 		this->hasDied();
 	}
 	
 	if (this->speed <= 0) {
-		cout << "particle dead; speed\n";
+		DEBUG("part", "%p dead, speed", this);
 		this->hasDied();
 		return;
 	}
