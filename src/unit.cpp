@@ -346,21 +346,22 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 		
 		Particle* pa = new Particle(w->pt, this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
 		
-		pa->angle = this->angle + getRandom(0 - w->angle_range / 2, w->angle_range / 2);
-		pa->angle = clampAngle(pa->angle);
 		
-		// TODO: New physics
-		//pa->x = pointPlusAngleX(pa->x, pa->angle, 6);
-		//pa->y = pointPlusAngleY(pa->y, pa->angle, 6);
-		
-		st->addParticle(pa);
-		
-		{
-			btVector3 unitDirection = body->getLinearVelocity();
-			unitDirection.normalize();
+			btTransform xform;
+			body->getMotionState()->getWorldTransform (xform);
+			
+			xform.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->angle)));
+			
+			btVector3 forwardDir = xform.getBasis()[1];
+			forwardDir.normalize ();
+			
+			
+			DEBUG("unit", "forwardDir is %f %f %f", forwardDir.x(), forwardDir.y(), forwardDir.z());
 			
 			btVector3 begin = trans.getOrigin();
-			btVector3 end = begin + unitDirection * btScalar(50.0);		// weapon range
+			btVector3 end = begin + (forwardDir * btScalar(-50.0));		// weapon range
+			
+			DEBUG("unit", "Ray between %f %f %f and %f %f %f", begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z());
 			
 			btCollisionWorld::ClosestRayResultCallback cb(begin, end);
 			
@@ -373,15 +374,17 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 					
 					Entity* entA = static_cast<Entity*>(body->getUserPointer());
 					
-					DEBUG("unit", "Ray hit %p (%p %p)", body, entA, body->getUserPointer());
+					DEBUG("unit", "Ray hit %p (%p)", body, entA);
 					
-					//entA->hasBeenHit(pa);
+					if (entA) {
+						entA->hasBeenHit(pa);
+					}
 				}
 				
 			} else {
 				DEBUG("unit", "%p Shot; miss", this);
 			}
-		}
+		
 		
 		if (w == this->weapon->wt) {
 			this->weapon->next_use = st->game_time + this->weapon->wt->fire_delay;
