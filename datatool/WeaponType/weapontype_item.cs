@@ -60,6 +60,9 @@ namespace datatool
         private bool continuous;
         private int magazine_limit;
         private int belt_limit;
+        private float range;
+        private float unit_damage;
+        private float wall_damage;
 
         private List<weapontype_sound> sounds;
 
@@ -92,6 +95,9 @@ namespace datatool
             b.values["continuous"] = this.continuous;
             b.values["magazine_limit"] = this.magazine_limit;
             b.values["belt_limit"] = this.belt_limit;
+            b.values["range"] = this.range;
+            b.values["wall_damage"] = this.wall_damage;
+            b.values["unit_damage"] = this.unit_damage;
 
             string o = b.ToString();
 
@@ -138,7 +144,6 @@ namespace datatool
                 case 5: metric = 3; time = 30 * 1000; break;
             }
 
-            if (this.particle == null) return 0;
             if (time == 0) return 0;
             if (metric == 0) return 0;
 
@@ -167,10 +172,10 @@ namespace datatool
             if (metric == 1) {
                 return num_fire;
             } else if (metric == 2) {
-                return num_fire * this.particle.UnitDamageAverage;
+                return num_fire * this.unit_damage;
             } else if (metric == 3) {
                 float angweight = 1.0f / this.angle_range * 5.0f;
-                return num_fire * this.particle.UnitDamageAverage * angweight;
+                return num_fire * this.unit_damage * angweight;
             }
 
             return 0;
@@ -179,13 +184,15 @@ namespace datatool
 
 
         [DescriptionAttribute("The name of this weapon, internal use only")]
+        [Category("Metadata")]
         public string Name
         {
             get { return this.name; }
             set { this.name = value; }
         }
 
-        [DescriptionAttribute("The name of this weapon in-game")] 
+        [DescriptionAttribute("The name of this weapon in-game")]
+        [Category("Metadata")]
         public string Title
         {
             get { return this.title; }
@@ -193,14 +200,7 @@ namespace datatool
         }
 
         [DescriptionAttribute("no desc yet")]
-        [Editor(typeof(particletype_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
-        public particletype_item Particle
-        {
-            get { return this.particle; }
-            set { this.particle = value; }
-        }
-
-        [DescriptionAttribute("no desc yet")]
+        [Category("Specifications")]
         public int AngleRange
         {
             get { return this.angle_range; }
@@ -208,6 +208,7 @@ namespace datatool
         }
 
         [DescriptionAttribute("no desc yet")]
+        [Category("Specifications")]
         public int FireDelay
         {
             get { return this.fire_delay; }
@@ -215,6 +216,7 @@ namespace datatool
         }
 
         [DescriptionAttribute("no desc yet")]
+        [Category("Specifications")]
         public int ReloadDelay
         {
             get { return this.reload_delay; }
@@ -222,6 +224,7 @@ namespace datatool
         }
 
         [DescriptionAttribute("no desc yet")]
+        [Category("Specifications")]
         public bool Continuous
         {
             get { return this.continuous; }
@@ -229,6 +232,7 @@ namespace datatool
         }
 
         [DescriptionAttribute("no desc yet")]
+        [Category("Specifications")]
         public int MagazineLimit
         {
             get { return this.magazine_limit; }
@@ -236,14 +240,49 @@ namespace datatool
         }
 
         [DescriptionAttribute("no desc yet")]
+        [Category("Specifications")]
         public int BeltLimit
         {
             get { return this.belt_limit; }
             set { this.belt_limit = value; }
         }
 
+        [DescriptionAttribute("no desc yet")]
+        [Category("Specifications")]
+        public float Range
+        {
+            get { return this.range; }
+            set { this.range = value; }
+        }
+
+        [DescriptionAttribute("no desc yet")]
+        [Category("Specifications")]
+        public float UnitDamage
+        {
+            get { return this.unit_damage; }
+            set { this.unit_damage = value; }
+        }
+
+        [DescriptionAttribute("no desc yet")]
+        [Category("Specifications")]
+        public float WallDamage
+        {
+            get { return this.wall_damage; }
+            set { this.wall_damage = value; }
+        }
+
 
         [DescriptionAttribute("For effects only")]
+        [Category("Effects")]
+        [Editor(typeof(particletype_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
+        public particletype_item Particle
+        {
+            get { return this.particle; }
+            set { this.particle = value; }
+        }
+
+        [DescriptionAttribute("For effects only, probably will be removed soon")]
+        [Category("Effects")]
         [Editor(typeof(particlegenerator_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
         public particlegenerator_item ParticleGen
         {

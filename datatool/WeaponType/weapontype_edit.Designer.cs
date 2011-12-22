@@ -56,7 +56,7 @@ namespace datatool
             this.grid.Location = new System.Drawing.Point(15, 49);
             this.grid.Name = "grid";
             this.grid.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.grid.Size = new System.Drawing.Size(342, 306);
+            this.grid.Size = new System.Drawing.Size(342, 385);
             this.grid.TabIndex = 4;
             this.grid.ToolbarVisible = false;
             this.grid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.gridSpew_PropertyValueChanged);
@@ -82,7 +82,7 @@ namespace datatool
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(493, 371);
+            this.btnOK.Location = new System.Drawing.Point(493, 450);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(82, 27);
             this.btnOK.TabIndex = 8;
@@ -93,7 +93,7 @@ namespace datatool
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(406, 371);
+            this.btnCancel.Location = new System.Drawing.Point(406, 450);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(81, 27);
             this.btnCancel.TabIndex = 9;
@@ -115,7 +115,7 @@ namespace datatool
             listViewGroup1});
             this.lstSettings.Location = new System.Drawing.Point(0, 28);
             this.lstSettings.Name = "lstSettings";
-            this.lstSettings.Size = new System.Drawing.Size(212, 278);
+            this.lstSettings.Size = new System.Drawing.Size(212, 357);
             this.lstSettings.SmallImageList = this.imgSmallIcons;
             this.lstSettings.TabIndex = 14;
             this.lstSettings.UseCompatibleStateImageBehavior = false;
@@ -141,7 +141,7 @@ namespace datatool
             this.panel1.Controls.Add(this.lstSettings);
             this.panel1.Location = new System.Drawing.Point(363, 49);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(212, 306);
+            this.panel1.Size = new System.Drawing.Size(212, 385);
             this.panel1.TabIndex = 16;
             // 
             // toolStrip1
@@ -172,7 +172,7 @@ namespace datatool
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(115, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem1.Text = "Sound";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
@@ -197,7 +197,7 @@ namespace datatool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(587, 410);
+            this.ClientSize = new System.Drawing.Size(587, 489);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.grid);
             this.Controls.Add(this.btnCancel);

@@ -58,6 +58,16 @@ namespace datatool
         }
 
         /**
+         * Get a float value. If not available, returns the default
+         **/
+        public float get_float(string name, int def)
+        {
+            if (!(this.values.ContainsKey(name))) return def;
+            if (!(this.values[name] is float)) return def;
+            return (float)this.values[name];
+        }
+
+        /**
          * Get a bool value. If not available, returns the default
          **/
         public bool get_bool(string name, bool def)
@@ -141,17 +151,21 @@ namespace datatool
                 } else if (ident != null && !eq && !list && t.type == ConfuseTokenType.EQUALS) {
                     eq = true;
 
-                // Regular string, number
+                // Regular string, float, integer
                 } else if (ident != null && eq && !list && t.type == ConfuseTokenType.STRING) {
                     sect.values.Add(ident, t.val);
                     ident = null;
                     eq = false;
 
                 } else if (ident != null && eq && !list && t.type == ConfuseTokenType.NUMBER) {
-                    sect.values.Add(ident, int.Parse(t.val));
+                    if (t.val.Contains(".")) {
+                        sect.values.Add(ident, float.Parse(t.val));
+                    } else {
+                        sect.values.Add(ident, int.Parse(t.val));
+                    }
                     ident = null;
                     eq = false;
-                    
+
 
                 // List start
                 } else if (ident != null && eq && !list && t.type == ConfuseTokenType.SECTSTART) {
@@ -168,7 +182,12 @@ namespace datatool
 
                 } else if (ident != null && eq && list && t.type == ConfuseTokenType.NUMBER) {
                     List<object> obj = (List<object>)sect.values[ident];
-                    obj.Add(int.Parse(t.val));
+                    if (t.val.Contains(".")) {
+                        obj.Add(float.Parse(t.val));
+                    } else {
+                        obj.Add(int.Parse(t.val));
+                    }
+
 
                 // List end
                 } else if (ident != null && eq && list && t.type == ConfuseTokenType.SECTEND) {
@@ -211,7 +230,7 @@ namespace datatool
             regexes.Add("^}", ConfuseTokenType.SECTEND);
             regexes.Add("^,", ConfuseTokenType.COMMA);
             regexes.Add("^\"([^\"]+)\"", ConfuseTokenType.STRING);
-            regexes.Add("^[-0-9]+", ConfuseTokenType.NUMBER);
+            regexes.Add("^[-0-9.]+", ConfuseTokenType.NUMBER);
             regexes.Add("^\\s+", ConfuseTokenType.NOTHING);
             regexes.Add("^//.*?\\n", ConfuseTokenType.NOTHING);
             regexes.Add("^/\\*.*\\*/", ConfuseTokenType.NOTHING);

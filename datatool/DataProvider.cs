@@ -112,12 +112,12 @@ namespace datatool
             string file = System.IO.File.ReadAllText(this.datapath + "\\weapontypes.conf");
 
             // Parse
-            try {
+            //try {
                 sect = read.Parse(file);
-            } catch (Exception ex) {
-                MessageBox.Show("Error loading weapontypes:\n" + ex.Message);
-                Application.Exit();
-            }
+            //} catch (Exception ex) {
+            //    MessageBox.Show("Error loading weapontypes:\n" + ex.Message);
+            //    return;
+            //}
 
             // Load
             foreach (ConfuseSection s in sect.subsections) {
@@ -129,14 +129,17 @@ namespace datatool
                 i.Name = s.get_string("name", "");
                 i.Title = s.get_string("title", "");
 
-                i.Particle = this.FindParticletype(s.get_string("particle", ""));
                 i.AngleRange = s.get_int("angle_range", 0);
                 i.FireDelay = s.get_int("fire_delay", 250);
                 i.ReloadDelay = s.get_int("reload_delay", 1000);
                 i.Continuous = s.get_bool("continuous", false);
                 i.MagazineLimit = s.get_int("magazine_limit", 100);
                 i.BeltLimit = s.get_int("belt_limit", 1000);
+                i.Range = s.get_float("range", 50);
+                i.UnitDamage = s.get_float("unit_damage", 10);
+                i.WallDamage = s.get_float("wall_damage", 10);
 
+                i.Particle = this.FindParticletype(s.get_string("particle", ""));
                 i.ParticleGen = this.FindParticlegenerator(s.get_string("particlegen", ""));
 
                 i.Sounds.Clear();
