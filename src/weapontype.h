@@ -42,6 +42,9 @@ class WeaponType
 		bool continuous;
 		int magazine_limit;
 		int belt_limit;
+		float range;
+		float unit_damage;
+		float wall_damage;
 		
 		vector<WeaponTypeSound*> sounds;
 		

@@ -36,6 +36,9 @@ cfg_opt_t weapontype_opts[] =
 	CFG_INT((char*) "continuous", 0, CFGF_NONE),
 	CFG_INT((char*) "magazine_limit", 100, CFGF_NONE),
 	CFG_INT((char*) "belt_limit", 1000, CFGF_NONE),
+	CFG_FLOAT((char*) "range", 50, CFGF_NONE),
+	CFG_FLOAT((char*) "unit_damage", 50, CFGF_NONE),
+	CFG_FLOAT((char*) "wall_damage", 50, CFGF_NONE),
 	
 	CFG_SEC((char*) "sound", weaponsound_opts, CFGF_MULTI),
 	CFG_END()
@@ -159,7 +162,7 @@ void WeaponType::doFire(Unit * u)
 	DEBUG("weap", "forwardDir is %f %f %f", forwardDir.x(), forwardDir.y(), forwardDir.z());
 	
 	btVector3 begin = xform.getOrigin();
-	btVector3 end = begin + (forwardDir * btScalar(-50.0));		// weapon range
+	btVector3 end = begin + (forwardDir * btScalar(0 - this->range));		// weapon range
 	
 	DEBUG("weap", "Ray between %f %f %f and %f %f %f", begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z());
 	
@@ -194,10 +197,10 @@ void WeaponType::doFire(Unit * u)
 void WeaponType::doHit(Entity * e)
 {
 	if (e->klass() == UNIT) {
-		((Unit*)e)->takeDamage(this->pt->unit_damage.min);
+		((Unit*)e)->takeDamage(this->unit_damage);
 		
 	} else if (e->klass() == WALL) {
-		((Wall*)e)->takeDamage(this->pt->wall_damage.min);
+		((Wall*)e)->takeDamage(this->wall_damage);
 		
 	}
 }
