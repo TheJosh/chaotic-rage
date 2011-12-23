@@ -15,6 +15,9 @@ NPC::NPC(UnitType *uc, GameState *st, float x, float y, float z) : Unit(uc, st, 
 	vals[0] = vals[1] = vals[2] = vals[3] = 0;
 	
 	this->setState(UNIT_STATE_RUNNING);
+	
+	logic = new AILogic(this);
+	logic->execScript("debug(\"AI script running!\")");
 }
 
 NPC::~NPC()
@@ -39,6 +42,9 @@ void NPC::update(int delta)
 	}
 	
 	UnitTypeSettings *ucs = this->uc->getSettings(0);
+	
+	
+	logic->update(delta);
 	
 	
 	/*if (currently_hit) {

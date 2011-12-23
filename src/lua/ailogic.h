@@ -23,7 +23,7 @@ class AILogic
 {
 	public:
 		Unit *u;
-		lua_State *L;
+		lua_State *lua;
 		GameState *st;
 		vector<LuaTimer*> timers;
 		
@@ -46,30 +46,6 @@ class AILogic
 		* Basically just provides timer ticks
 		**/
 		void update(int delta);
-		
-		/**
-		* When the game starts
-		**/
-		void raise_gamestart();
-		vector<int> binds_gamestart;
-		
-		/**
-		* When a player joins
-		**/
-		void raise_playerjoin(int arg);
-		vector<int> binds_playerjoin;
-		
-		/**
-		* When a player has died
-		**/
-		void raise_playerdied();
-		vector<int> binds_playerdied;
-		
-		/**
-		* When an NPC has died
-		**/
-		void raise_npcdied();
-		vector<int> binds_npcdied;
 };
 
 

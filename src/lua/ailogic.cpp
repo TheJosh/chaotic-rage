@@ -39,16 +39,16 @@ static void register_lua_functions();
 AILogic::AILogic(Unit *u)
 {
 	this->u = u;
-	this->L = lua_open();
 	this->st = u->getGameState();
+	this->lua = lua_open();
 	
-	AILogic::ActiveLuaState();
+	this->ActiveLuaState();
 	register_lua_functions();
 }
 
 AILogic::~AILogic()
 {
-	lua_close(L);
+	lua_close(this->lua);
 }
 
 
@@ -58,7 +58,7 @@ AILogic::~AILogic()
 **/
 void AILogic::ActiveLuaState()
 {
-	L = this->L;
+	L = this->lua;
 	gl = this;
 }
 
@@ -70,7 +70,7 @@ void AILogic::ActiveLuaState()
 **/
 bool AILogic::execScript(string code)
 {
-	L = this->L;
+	this->ActiveLuaState();
 	
 	int res = luaL_dostring(L, code.c_str());
 	
@@ -89,7 +89,7 @@ bool AILogic::execScript(string code)
 **/
 void AILogic::update(int deglta)
 {
-	L = this->L;
+	this->ActiveLuaState();
 	
 	for (unsigned int id = 0; id < this->timers.size(); id++) {
 		LuaTimer* t = this->timers.at(id);
@@ -115,7 +115,7 @@ void AILogic::update(int deglta)
 
 #define LUA_DEFINE_RAISE(name) void AILogic::raise_##name() \
 { \
-	L = this->L; \
+	this->ActiveLuaState(); \
 	for (unsigned int id = 0; id < this->binds_##name.size(); id++) { \
 		int ref = this->binds_##name.at(id); \
 		lua_rawgeti(L, LUA_REGISTRYINDEX, ref); \
@@ -125,7 +125,7 @@ void AILogic::update(int deglta)
 
 #define LUA_DEFINE_RAISE_INTARG(name) void AILogic::raise_##name(int arg) \
 { \
-	L = this->L; \
+	this->ActiveLuaState(); \
 	cout << "raise_" #name "(" << arg << ")\n"; \
 	cout << "num binds: " << this->binds_##name.size() << "\n"; \
 	for (unsigned int id = 0; id < this->binds_##name.size(); id++) { \
@@ -138,11 +138,12 @@ void AILogic::update(int deglta)
 }
 
 
+#if(0)
 LUA_DEFINE_RAISE(gamestart)
 LUA_DEFINE_RAISE_INTARG(playerjoin)
 LUA_DEFINE_RAISE(playerdied)
 LUA_DEFINE_RAISE(npcdied)
-
+#endif
 
 
 /*####################  LUA FUNCTIONS  ####################*/
@@ -151,7 +152,7 @@ LUA_DEFINE_RAISE(npcdied)
 
 /**
 * Outputs one or more debug messages.
-* Messages wiglgl be outputted to standard-out, seperated by two spaces
+* Messages will be outputted to standard-out, seperated by two spaces
 **/
 LUA_FUNC(debug)
 {

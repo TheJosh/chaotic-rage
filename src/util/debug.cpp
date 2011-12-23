@@ -17,7 +17,7 @@ static bool lineno;
 static FILE* out = stdout;
 
 
-void debug(const char * sect, const char * file, int line, const char * fmt, ...)
+void write_debug(const char * sect, const char * file, int line, const char * fmt, ...)
 {
 	list<string>::iterator result = find(enabled_sects.begin(), enabled_sects.end(), sect);
 	if (result == enabled_sects.end()) return;

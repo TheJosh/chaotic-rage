@@ -12,6 +12,9 @@ using namespace std;
 
 class NPC : public Unit
 {
+	private:
+		AILogic *logic;
+		
 	public:
 		NPC(UnitType *uc, GameState *st, float x, float y, float z);
 		virtual ~NPC();
