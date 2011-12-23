@@ -81,7 +81,7 @@ bool GameLogic::execScript(string code)
 void GameLogic::update(int deglta)
 {
 	for (unsigned int id = 0; id < this->timers.size(); id++) {
-		Timer* t = this->timers.at(id);
+		LuaTimer* t = this->timers.at(id);
 		if (t == NULL) continue;
 		
 		if (gl->st->game_time >= t->due) {
@@ -272,7 +272,7 @@ LUA_FUNC(add_interval)
 	lua_pushvalue(L, -1);
 	int func = luaL_ref(L, LUA_REGISTRYINDEX);
 	
-	Timer* t = new Timer();
+	LuaTimer* t = new LuaTimer();
 	gl->timers.push_back(t);
 	
 	t->due = gl->st->game_time + time;
@@ -309,7 +309,7 @@ LUA_FUNC(add_timer)
 	lua_pushvalue(L, -1);
 	int func = luaL_ref(L, LUA_REGISTRYINDEX);
 	
-	Timer* t = new Timer();
+	LuaTimer* t = new LuaTimer();
 	gl->timers.push_back(t);
 	
 	t->due = gl->st->game_time + time;

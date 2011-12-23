@@ -15,7 +15,7 @@ extern "C" {
 using namespace std;
 
 
-class Timer;
+class LuaTimer;
 
 
 /**
@@ -27,7 +27,7 @@ class GameLogic
 		GameState *st;
 		Map *map;
 		Mod *mod;
-		vector<Timer*> timers;
+		vector<LuaTimer*> timers;
 		
 	public:
 		UnitType * selected_unittype;
@@ -73,7 +73,7 @@ class GameLogic
 };
 
 
-class Timer
+class LuaTimer
 {
 	public:
 		unsigned int due;			// On or after this time, the function will be called

@@ -37,8 +37,8 @@ cfg_opt_t weapontype_opts[] =
 	CFG_INT((char*) "magazine_limit", 100, CFGF_NONE),
 	CFG_INT((char*) "belt_limit", 1000, CFGF_NONE),
 	CFG_FLOAT((char*) "range", 50, CFGF_NONE),
-	CFG_FLOAT((char*) "unit_damage", 50, CFGF_NONE),
-	CFG_FLOAT((char*) "wall_damage", 50, CFGF_NONE),
+	CFG_FLOAT((char*) "unit_damage", 10, CFGF_NONE),
+	CFG_FLOAT((char*) "wall_damage", 10, CFGF_NONE),
 	
 	CFG_SEC((char*) "sound", weaponsound_opts, CFGF_MULTI),
 	CFG_END()
