@@ -5,7 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include <SDL.h>
-#include "rage.h"
+#include "../rage.h"
 
 extern "C" {
 	#include <lua.h>
@@ -29,7 +29,7 @@ static GameLogic *gl;
 /**
 * Used right at the bottom - does registration of functions
 **/
-void register_lua_functions();
+static void register_lua_functions();
 
 
 /**

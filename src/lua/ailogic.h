@@ -5,7 +5,8 @@
 #pragma once
 #include <iostream>
 #include <SDL.h>
-#include "rage.h"
+#include "../rage.h"
+#include "luatimer.h"
 
 extern "C" {
 	#include <lua.h>
@@ -15,37 +16,36 @@ extern "C" {
 using namespace std;
 
 
-class LuaTimer;
-
-
 /**
 * Logic for the game - like spawning units, etc
 **/
-class GameLogic
+class AILogic
 {
 	public:
+		Unit *u;
+		lua_State *L;
 		GameState *st;
-		Map *map;
-		Mod *mod;
 		vector<LuaTimer*> timers;
 		
 	public:
-		UnitType * selected_unittype;
-
-	public:
-		GameLogic(GameState *st);
-		~GameLogic();
+		AILogic(Unit *u);
+		~AILogic();
 		
-	public:
-		void update(int delta);
+	private:
+		void ActiveLuaState();
 		
 	public:
 		/**
 		* Executes a script.
-		* The script execution basically binds functions to events.
+		* The script execution typically binds functions to events.
 		* Returns false if there is an error
 		**/
 		bool execScript(string code);
+		
+		/**
+		* Basically just provides timer ticks
+		**/
+		void update(int delta);
 		
 		/**
 		* When the game starts
@@ -70,15 +70,6 @@ class GameLogic
 		**/
 		void raise_npcdied();
 		vector<int> binds_npcdied;
-};
-
-
-class LuaTimer
-{
-	public:
-		unsigned int due;			// On or after this time, the function will be called
-		unsigned int lua_func;		// The Lua function to call
-		unsigned int interval;		// set to 0 for a one-off timer
 };
 
 

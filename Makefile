@@ -23,7 +23,7 @@ endif
 OBJPATH=build
 SRCPATH=src
 
-CPPFILES=$(wildcard $(SRCPATH)/*.cpp $(SRCPATH)/audio/*.cpp $(SRCPATH)/mod/*.cpp $(SRCPATH)/net/*.cpp $(SRCPATH)/render/*.cpp $(SRCPATH)/util/*.cpp)
+CPPFILES=$(wildcard $(SRCPATH)/*.cpp $(SRCPATH)/audio/*.cpp $(SRCPATH)/mod/*.cpp $(SRCPATH)/net/*.cpp $(SRCPATH)/render/*.cpp $(SRCPATH)/util/*.cpp $(SRCPATH)/lua/*.cpp)
 
 OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES)) $(OBJPATH)/objload.o $(OBJPATH)/linux.o
 OBJMAINS=build/server.o build/client.o build/animviewer.o

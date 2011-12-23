@@ -46,6 +46,7 @@ enum Faction {
 };
 
 
+class AILogic;
 class AnimModel;
 class AnimPlay;
 class Audio;
@@ -120,6 +121,9 @@ class Zone;
 #include "mod/weapontype.h"
 #include "mod/gametype.h"
 
+#include "lua/gamelogic.h"
+#include "lua/ailogic.h"
+
 #include "entity.h"
 #include "unit.h"
 #include "player.h"
@@ -133,11 +137,9 @@ class Zone;
 #include "mapgrid.h"
 #include "map.h"
 
-#include "gamelogic.h"
 #include "gamestate.h"
-
+#include "game.h"
 #include "intro.h"
 #include "menu.h"
-#include "game.h"
 
 
