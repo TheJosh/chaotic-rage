@@ -17,7 +17,11 @@ NPC::NPC(UnitType *uc, GameState *st, float x, float y, float z) : Unit(uc, st, 
 	this->setState(UNIT_STATE_RUNNING);
 	
 	logic = new AILogic(this);
-	logic->execScript("debug(\"AI script running!\")");
+	
+	
+	// TODO: AIs should be loaded properly etc
+	char * script = st->getDefaultMod()->loadText("ai.lua");
+	logic->execScript(script);
 }
 
 NPC::~NPC()
