@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <SDL.h>
 #include "../rage.h"
+#include "luatimer.h"
+#include "lua_libs.h"
 
 extern "C" {
 	#include <lua.h>
@@ -309,6 +311,8 @@ void register_lua_functions()
 	LUA_REG(add_timer);
 	LUA_REG(remove_timer);
 	LUA_REG(random);
+	
+	load_vector3_lib(L);
 }
 
 
