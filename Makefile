@@ -23,7 +23,9 @@ endif
 OBJPATH=build
 SRCPATH=src
 
-OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(wildcard $(SRCPATH)/*.cpp)) $(OBJPATH)/objload.o $(OBJPATH)/linux.o
+CPPFILES=$(wildcard $(SRCPATH)/*.cpp $(SRCPATH)/audio/*.cpp $(SRCPATH)/mod/*.cpp $(SRCPATH)/net/*.cpp $(SRCPATH)/render/*.cpp $(SRCPATH)/util/*.cpp)
+
+OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES)) $(OBJPATH)/objload.o $(OBJPATH)/linux.o
 OBJMAINS=build/server.o build/client.o build/animviewer.o
 
 OBJFILES_CLIENT=build/client.o $(filter-out $(OBJMAINS), $(OBJFILES))
@@ -49,19 +51,23 @@ animviewer: $(OBJFILES_ANIMVIEWER)
 	@echo [LINK] $@
 	@$(CXX) $(CFLAGS) $(OBJFILES_ANIMVIEWER) -o $(ANIMVIEWER) $(LIBS) -ggdb 
 	
+	
 $(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h Makefile
 	@echo [CC] $<
+	@mkdir -p `dirname $< | sed "s/src/build/"`
 	@$(CXX) $(CFLAGS) -o $@ -c $<
+	
 	
 clean:
 	rm -f chaoticrage chaoticrage.exe
-	rm -f dedicatedserver dedicatedserver.exe 
+	rm -f dedicatedserver dedicatedserver.exe
+	rm -f animviewer animviewer.exe
 	rm -f $(OBJFILES)
 	rm -f $(OBJPATH)/objload.cpp
 	
-$(OBJPATH)/objload.o: $(SRCPATH)/objload.l $(SRCPATH)/objload.h Makefile
-	@echo [FLEX] $(SRCPATH)/objload.l
-	@flex -o $(OBJPATH)/objload.cpp $(SRCPATH)/objload.l
+$(OBJPATH)/objload.o: $(SRCPATH)/util/objload.l $(SRCPATH)/util/objload.h Makefile
+	@echo [FLEX] $(SRCPATH)/util/objload.l
+	@flex -o $(OBJPATH)/objload.cpp $(SRCPATH)/util/objload.l
 	@echo [CC] $(OBJPATH)/objload.cpp
 	@$(CXX) $(CFLAGS) -o $(OBJPATH)/objload.o -c $(OBJPATH)/objload.cpp -Wno-unused-function -Wno-unused-variable -I src
 	
