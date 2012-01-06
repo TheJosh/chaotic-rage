@@ -31,6 +31,7 @@ class Mod {
 		
 	public:
 		char * loadText(string filename);
+		Uint8 * loadBinary(string resname, int * len);
 		SDL_RWops * loadRWops(string filename);
 		
 	public:

@@ -101,7 +101,8 @@ class RenderOpenGL : public Render
 		void renderAnimPlay(AnimPlay * play, int angle);
 		void renderText(string text, int x, int y);
 		void renderCharacter(char c);
-		
+		void loadFont(string name, Mod * mod);
+
 	private:
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);

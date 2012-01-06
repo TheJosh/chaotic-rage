@@ -25,7 +25,9 @@ void Menu::doit()
 	SpritePtr logo = this->render->loadSprite("logo.png", mod);
 	//SpritePtr right = this->render->loadSprite("bg_right.png", mod);
 	
-	
+	this->render->loadFont("orb.otf", mod);
+
+
 	// Maps
 	int map = 0;
 	vector<string> maps;

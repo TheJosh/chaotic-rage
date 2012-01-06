@@ -509,6 +509,42 @@ char * Mod::loadText(string resname)
 
 
 /**
+* Loads binary data from the mod.
+**/
+Uint8 * Mod::loadBinary(string resname, int * len)
+{
+	ZZIP_FILE *fp;
+	Uint8 *buffer;
+	
+	string filename = directory;
+	filename.append(resname);
+	
+	fp = zzip_open(filename.c_str(), 0);
+	if (! fp) {
+		cerr << "Couldn't load resource '" << resname << "'. Unable to locate resource.\n";
+		return NULL;
+	}
+	
+	// Read the contents of the file into a buffer
+	zzip_seek (fp, 0, SEEK_END);
+	int l = zzip_tell (fp);
+	zzip_seek (fp, 0, SEEK_SET);
+	
+	buffer = (Uint8*) malloc(l);
+	if (buffer == NULL) {
+		cerr << "Couldn't load resource '" << resname << "'. Unable to allocate memory.\n";
+		return NULL;
+	}
+	
+	zzip_read(fp, buffer, l);
+	zzip_close(fp);
+	
+	*len = l;
+	return buffer;
+}
+
+
+/**
 * Loads a resource into a SDL_RWops.
 * Don't forget to SDL_RWclose() when you are done.
 **/

@@ -45,6 +45,7 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render(st)
 	this->screen = NULL;
 	this->physicsdebug = NULL;
 	this->viewmode = 0;
+	this->face = NULL;
 
 	const SDL_VideoInfo* mode = SDL_GetVideoInfo();
 	this->desktop_width = mode->current_w;
@@ -120,7 +121,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		exit(1);
 	}
 	
-	
+
 	// Freetype
 	int error;
 	error = FT_Init_FreeType(&this->ft);
@@ -128,23 +129,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		fprintf(stderr, "Freetype: Unable to init library\n");
 		exit(1);
 	}
-	
-	error = FT_New_Face(this->ft, "orbitron-black.otf", 0, &this->face);
-	if (error == FT_Err_Unknown_File_Format) {
-		fprintf(stderr, "Freetype: Unsupported font format\n");
-		exit(1);
-		
-	} else if (error) {
-		fprintf(stderr, "Freetype: Unable to load font\n");
-		exit(1);
-	}
-	
-	error = FT_Set_Char_Size(this->face, 0, 20*64, 72, 72);
-	if (error) {
-		fprintf(stderr, "Freetype: Unable to load font size\n");
-		exit(1);
-	}
-	
+
 	
 	// Loaded textures
 	if (loaded.size() > 0) {
@@ -173,6 +158,29 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	
 	mainViewport(1, 1);
+}
+
+
+void RenderOpenGL::loadFont(string name, Mod * mod)
+{
+	int error, len;
+	Uint8 * buf = mod->loadBinary(name, &len);
+
+	error = FT_New_Memory_Face(this->ft, (const FT_Byte *) buf, len, 0, &this->face);
+	if (error == FT_Err_Unknown_File_Format) {
+		fprintf(stderr, "Freetype: Unsupported font format\n");
+		exit(1);
+		
+	} else if (error) {
+		fprintf(stderr, "Freetype: Unable to load font\n");
+		exit(1);
+	}
+	
+	error = FT_Set_Char_Size(this->face, 0, 20*64, 72, 72);
+	if (error) {
+		fprintf(stderr, "Freetype: Unable to load font size\n");
+		exit(1);
+	}
 }
 
 
@@ -549,6 +557,8 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, int angle)
 **/
 void RenderOpenGL::renderText(string text, int x, int y)
 {
+	if (face == NULL) return;
+
 	glPushMatrix();
 	glTranslatef(x, y, 0);
 	
