@@ -12,6 +12,10 @@
 using namespace std;
 
 
+// Allowed 'zip' extentions
+static zzip_strings_t mod_zzip_ext[] = { ".crk", ".CRK", 0 };
+
+
 /**
 * Inits the mod. Does not load yet.
 * Directory should NOT contain a trailing slash
@@ -483,7 +487,7 @@ char * Mod::loadText(string resname)
 	string filename = directory;
 	filename.append(resname);
 	
-	fp = zzip_open(filename.c_str(), 0);
+	fp = zzip_open_ext_io(filename.c_str(), O_RDONLY|O_BINARY, 0, mod_zzip_ext, 0);
 	if (! fp) {
 		cerr << "Couldn't load resource '" << resname << "'. Unable to locate resource.\n";
 		return NULL;
@@ -519,7 +523,7 @@ Uint8 * Mod::loadBinary(string resname, int * len)
 	string filename = directory;
 	filename.append(resname);
 	
-	fp = zzip_open(filename.c_str(), 0);
+	fp = zzip_open_ext_io(filename.c_str(), O_RDONLY|O_BINARY, 0, mod_zzip_ext, 0);
 	if (! fp) {
 		cerr << "Couldn't load resource '" << resname << "'. Unable to locate resource.\n";
 		return NULL;

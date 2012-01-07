@@ -9,11 +9,17 @@
 #include <zzip/zzip.h>
 #include <string.h> /* strchr */
 
+
+// Allowed 'zip' extentions
+static zzip_strings_t mod_zzip_ext[] = { ".crk", ".CRK", 0 };
+
+
 /* MSVC can not take a casted variable as an lvalue ! */
 #define SDL_RWOPS_ZZIP_DATA(_context) \
 			 ((_context)->hidden.unknown.data1)
 #define SDL_RWOPS_ZZIP_FILE(_context)  (ZZIP_FILE*) \
 			 ((_context)->hidden.unknown.data1)
+
 
 static int sdl_rwops_zzip_seek(SDL_RWops *context, int offset, int whence)
 {
@@ -44,10 +50,7 @@ SDL_RWops *SDL_RWFromZZIP(const char* file, const char* mode)
 	register SDL_RWops* rwops;
 	register ZZIP_FILE* zzip_file;
 
-	if (! strchr (mode, 'r'))
-	return SDL_RWFromFile(file, mode);
-
-	zzip_file = zzip_fopen (file, mode);
+	zzip_file = zzip_open_ext_io (file, O_RDONLY|O_BINARY, 0, mod_zzip_ext, 0);
 	if (! zzip_file) return 0;
 
 	rwops = SDL_AllocRW ();

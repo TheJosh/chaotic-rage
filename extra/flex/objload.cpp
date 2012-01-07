@@ -524,6 +524,9 @@ char *yytext;
 	
 	using namespace std;
 	
+	// Allowed 'zip' extentions
+	static zzip_strings_t mod_zzip_ext[] = { ".crk", ".CRK", 0 };
+
 	#define YY_DECL WavefrontObj * yylex()
 
 	#define YY_INPUT(buf,result,max_size) { \
@@ -1988,7 +1991,7 @@ WavefrontObj * loadObj(string filename)
 {
 	ZZIP_FILE *fp;
 
-	fp = zzip_open(filename.c_str(), 0);
+	fp = zzip_open_ext_io(filename.c_str(), O_RDONLY|O_BINARY, 0, mod_zzip_ext, 0);
 	if (fp == NULL) return NULL;
 
 	yyin = (FILE*) fp;
