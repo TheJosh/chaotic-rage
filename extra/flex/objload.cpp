@@ -519,13 +519,16 @@ char *yytext;
 	#include <stdlib.h>
 	#include <vector>
 	#include <iostream>
+	#include <zzip/zzip.h>
 	#include "objload.h"
 	
 	using namespace std;
 	
 	#define YY_DECL WavefrontObj * yylex()
 
-
+	#define YY_INPUT(buf,result,max_size) { \
+		result = zzip_read((ZZIP_FILE*) yyin, buf, max_size); \
+	}
 
 
 
@@ -1983,15 +1986,16 @@ void yyfree (void * ptr )
 
 WavefrontObj * loadObj(string filename)
 {
-	yyin = fopen(filename.c_str(), "r");
-	if (yyin == NULL) {
-		return NULL;
-	}
+	ZZIP_FILE *fp;
 
+	fp = zzip_open(filename.c_str(), 0);
+	if (fp == NULL) return NULL;
+
+	yyin = (FILE*) fp;
 	WavefrontObj * obj = yylex();
 	obj->ibo_count = 0;
 	
-	fclose(yyin);
+	zzip_close(fp);
 	
 	return obj;
 }

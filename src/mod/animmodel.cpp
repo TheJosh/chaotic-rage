@@ -79,14 +79,12 @@ AnimModel* loadItemAnimModel(cfg_t *cfg_model, Mod * mod)
 		MeshFrame* mf = new MeshFrame();
 		mf->frame = cfg_getint(cfg_meshframe, "frame");
 		
+		// Load the mesh
 		{
 			string name = cfg_getstr(cfg_meshframe, "mesh");
 			
 			map<string, WavefrontObj *>::iterator it = loaded_meshes.find(name);
 			if (it == loaded_meshes.end()) {
-				/**
-				* TODO: needs to use zzip!
-				**/
 				string filename = "data/cr/animmodels/";
 				filename.append(name);
 				filename.append(".obj");
@@ -101,6 +99,7 @@ AnimModel* loadItemAnimModel(cfg_t *cfg_model, Mod * mod)
 			}
 		}
 		
+		// Load the texture
 		{
 			string name = cfg_getstr(cfg_meshframe, "texture");
 			
