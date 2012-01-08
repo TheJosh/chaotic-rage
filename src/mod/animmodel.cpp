@@ -85,7 +85,8 @@ AnimModel* loadItemAnimModel(cfg_t *cfg_model, Mod * mod)
 			
 			map<string, WavefrontObj *>::iterator it = loaded_meshes.find(name);
 			if (it == loaded_meshes.end()) {
-				string filename = "data/cr/animmodels/";
+				string filename = mod->directory;
+				filename.append("animmodels/");
 				filename.append(name);
 				filename.append(".obj");
 				

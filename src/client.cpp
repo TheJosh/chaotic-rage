@@ -36,18 +36,26 @@ int main (int argc, char ** argv)
 	st->render->setScreenSize(900, 900, false);
 	
 	
-	Mod * mod = new Mod(st, "data/cr");
-	
 	if (FEAT_INTRO) {
 		Intro *i = new Intro(st);
 		i->doit();
 	}
 	
 	// Load data
+	Mod * mod = new Mod(st, "data/cr");
 	if (! mod->load()) {
 		reportFatalError("Unable to load data module 'cr'.");
 	}
-	
+	st->mm->addMod(mod);
+
+	// Load mod #2
+	mod = new Mod(st, "data/fishing");
+	if (! mod->load()) {
+		reportFatalError("Unable to load data module 'fishing'.");
+	}
+	st->mm->addMod(mod);
+
+
 	if (FEAT_MENU) {
 		// Menu awesomeness
 		Menu *m = new Menu(st);

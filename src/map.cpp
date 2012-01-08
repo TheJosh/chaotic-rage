@@ -189,8 +189,11 @@ int Map::load(string name, Render * render)
 			string type = cfg_getstr(cfg_sub, "type");
 			if (type.empty()) continue;
 			
+			WallType *wt = this->st->mm->getWallType(type);
+			if (wt == NULL) reportFatalError("Unable to load map; missing or invalid wall type '" + type + "'");
+
 			Wall * wa = new Wall(
-				this->st->mm->getWallType(type),
+				wt,
 				this->st,
 				cfg_getint(cfg_sub, "x"),
 				cfg_getint(cfg_sub, "y"),
@@ -211,7 +214,7 @@ int Map::load(string name, Render * render)
 			if (type.empty()) continue;
 			
 			ObjectType *ot = this->st->mm->getObjectType(type);
-			if (ot == NULL) reportFatalError("Unable to load map; missing or invalid object " + type);
+			if (ot == NULL) reportFatalError("Unable to load map; missing or invalid object type '" + type + "'");
 			
 			Object * ob = new Object(ot, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), cfg_getint(cfg_sub, "z"));
 			

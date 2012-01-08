@@ -23,13 +23,24 @@ static zzip_strings_t mod_zzip_ext[] = { ".crk", ".CRK", 0 };
 Mod::Mod(GameState * st, string directory)
 {
 	this->st = st;
-	st->mm->addMod(this);
 	
 	int bp = directory.rfind('/');
 	this->name = directory.substr(bp + 1, 100);
 	
 	directory.append("/");
 	this->directory = directory;
+
+	this->animmodels = NULL;
+	this->areatypes = NULL;
+	this->gametypes = NULL;
+	this->objecttypes = NULL;
+	this->particletypes = NULL;
+	this->pgeneratortypes = NULL;
+	this->songs = NULL;
+	this->sounds = NULL;
+	this->unitclasses = NULL;
+	this->walltypes = NULL;
+	this->weapontypes = NULL;
 }
 
 
@@ -71,7 +82,7 @@ vector<T> * loadModFile(Mod* mod, const char* filename, const char* section, cfg
 	buffer = mod->loadText(filename);
 	if (buffer == NULL) {
 		cerr << "Error loading file " << filename << ". File is empty or missing.\n";
-		return NULL;
+		return models;
 	}
 	
 	cfg = cfg_init(opts, CFGF_NONE);
@@ -83,7 +94,7 @@ vector<T> * loadModFile(Mod* mod, const char* filename, const char* section, cfg
 	int num_types = cfg_size(cfg, section);
 	if (num_types == 0) {
 		cerr << "Error loading file " << filename << ". File does not contain any '" << section << "' sections.\n";
-		return NULL;
+		return models;
 	}
 
 	// Process area type sections

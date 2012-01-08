@@ -12,7 +12,7 @@ using namespace std;
 
 class ModManager {
 	private:
-		vector<Mod*> mods;
+		vector<Mod*> * mods;
 		GameState * st;
 		
 	public:

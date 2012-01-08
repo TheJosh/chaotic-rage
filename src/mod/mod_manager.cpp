@@ -20,6 +20,8 @@ ModManager::ModManager(GameState * st)
 {
 	this->st = st;
 	st->mm = this;
+
+	this->mods = new vector<Mod*>();
 }
 
 
@@ -29,7 +31,7 @@ ModManager::ModManager(GameState * st)
 **/
 void ModManager::addMod(Mod * mod)
 {
-	mods.push_back(mod);
+	this->mods->push_back(mod);
 }
 
 /**
@@ -40,8 +42,8 @@ Mod * ModManager::getMod(string name)
 	if (name.empty()) return NULL;
 	
 	int i;
-	for (i = mods.size() - 1; i >= 0; --i) {
-		if (mods.at(i)->name.compare(name) == 0) return mods.at(i);
+	for (i = this->mods->size() - 1; i >= 0; --i) {
+		if (this->mods->at(i)->name.compare(name) == 0) return this->mods->at(i);
 	}
 	
 	reportFatalError("Data module is not loaded: " + name);
@@ -53,7 +55,7 @@ Mod * ModManager::getMod(string name)
 **/
 Mod * ModManager::getDefaultMod()
 {
-	return mods.at(0);
+	return this->mods->at(0);
 }
 
 /**
@@ -275,7 +277,15 @@ WallType * ModManager::getWallType(int id)
 **/
 WallType * ModManager::getWallType(string name)
 {
-	return this->getDefaultMod()->getWallType(name);
+	if (name.empty()) return NULL;
+	
+	for (int i = 0; i <= this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		WallType *wt = mod->getWallType(name);
+		if (wt) return wt;
+	}
+	
+	return NULL;
 }
 
 
