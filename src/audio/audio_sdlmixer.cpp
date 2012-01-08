@@ -58,7 +58,7 @@ AudioPtr AudioSDLMixer::loadSound(string filename, Mod * mod)
 void AudioSDLMixer::play()
 {
 	if (Mix_PlayingMusic() == 0) {
-		Song *sg = this->st->getDefaultMod()->getRandomSong();
+		Song *sg = this->st->mm->getRandomSong();
 		if (sg != NULL) {
 			this->playSong(sg);
 			this->st->hud->addAlertMessage("Now playing ", sg->name);

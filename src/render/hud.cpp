@@ -122,7 +122,7 @@ void HUD::render(RenderOpenGL * render)
 	if (this->spawn_menu) {
 		// TODO: menu for spawning
 		for (int i = 0; i <= 1; i++) {
-			UnitType *uc = st->getDefaultMod()->getUnitType(i);
+			UnitType *uc = st->mm->getUnitType(i);
 			UnitTypeState *ucs = uc->getState(UNIT_STATE_STATIC);
 			if (! uc->playable) continue;
 			

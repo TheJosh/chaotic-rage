@@ -64,6 +64,7 @@ class MapGrid;
 class MapGridCell;
 class Menu;
 class Mod;
+class ModManager;
 class NetClient;
 class NetServer;
 class NPC;
@@ -109,6 +110,7 @@ class Zone;
 #include "net/net_server.h"
 
 #include "mod/mod.h"
+#include "mod/mod_manager.h"
 #include "mod/animmodel.h"
 #include "mod/animplay.h"
 #include "mod/floortype.h"

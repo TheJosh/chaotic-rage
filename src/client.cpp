@@ -30,7 +30,8 @@ int main (int argc, char ** argv)
 	new AudioSDLMixer(st);
 	new HUD(st);
 	new PhysicsBullet(st);
-	
+	new ModManager(st);
+
 	
 	st->render->setScreenSize(900, 900, false);
 	
@@ -60,7 +61,7 @@ int main (int argc, char ** argv)
 		
 		// Load gametype
 		new GameLogic(st);
-		//GameType *gt = st->getDefaultMod()->getGameType("boredem");
+		//GameType *gt = st->mm->getGameType("boredem");
 		//st->logic->execScript(gt->script);
 		
 		new NetClient(st);

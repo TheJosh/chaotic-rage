@@ -370,7 +370,7 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 
 void RenderOpenGL::preGame()
 {
-	AnimModel *model = st->getDefaultMod()->getAnimModel("_test_cube");
+	AnimModel *model = st->mm->getAnimModel("_test_cube");
 	this->test = new AnimPlay(model);
 	
 	SDL_ShowCursor(SDL_DISABLE);

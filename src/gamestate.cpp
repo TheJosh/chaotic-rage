@@ -239,40 +239,6 @@ void GameState::update(int delta)
 
 
 /**
-* Add a mod to the list
-**/
-void GameState::addMod(Mod * mod)
-{
-	mods.push_back(mod);
-}
-
-/**
-* Get a mod via name
-**/
-Mod * GameState::getMod(string name)
-{
-	if (name.empty()) return NULL;
-	
-	int i;
-	for (i = mods.size() - 1; i >= 0; --i) {
-		if (mods.at(i)->name.compare(name) == 0) return mods.at(i);
-	}
-	
-	reportFatalError("Data module is not loaded: " + name);
-	return NULL;
-}
-
-
-/**
-* Get the 'default' mod
-**/
-Mod * GameState::getDefaultMod()
-{
-	return mods.at(0);
-}
-
-
-/**
 * Is the given point in bounds?
 **/
 bool GameState::inBounds(float x, float y)

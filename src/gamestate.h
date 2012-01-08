@@ -20,13 +20,11 @@ class GameState
 	friend class RenderNull;
 	friend class RenderDebug;
 	friend class AudioSDLMixer;
-	
+
 	protected:
 		list<Entity*> entities;
 		list<Entity*> entities_add;
 		list<CollideBox*> collideboxes;
-		
-		vector<Mod*> mods;
 		
 		vector<Unit*> units;		// leaks: items are not removed
 		vector<Wall*> walls;		// leaks: items are not removed
@@ -54,7 +52,8 @@ class GameState
 		NetServer* server;
 		PhysicsBullet* physics;
 		CommandLineArgs* cmdline;
-		
+		ModManager* mm;
+
 	public:
 		GameState();
 		~GameState();
@@ -71,10 +70,6 @@ class GameState
 		void start();
 		void update(int delta);
 		void clear();
-		
-		void addMod(Mod * mod);
-		Mod * getMod(string name);
-		Mod * getDefaultMod();
 		
 		bool inBounds(float x, float y);
 		

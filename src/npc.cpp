@@ -20,7 +20,7 @@ NPC::NPC(UnitType *uc, GameState *st, float x, float y, float z) : Unit(uc, st, 
 	
 	
 	// TODO: AIs should be loaded properly etc
-	char * script = st->getDefaultMod()->loadText("ai.lua");
+	char * script = st->mm->getDefaultMod()->loadText("ai.lua");
 	logic->execScript(script);
 }
 
@@ -76,15 +76,15 @@ void NPC::update(int delta)
 
 		int s = getRandom(1, 8);
 		if (s == 1) {
-			this->st->audio->playSound(this->st->getDefaultMod()->getSound("zombie_1"), false, this);
+			this->st->audio->playSound(this->st->mm->getSound("zombie_1"), false, this);
 		} else if (s == 2) {
-			this->st->audio->playSound(this->st->getDefaultMod()->getSound("zombie_2"), false, this);
+			this->st->audio->playSound(this->st->mm->getSound("zombie_2"), false, this);
 		} else if (s == 3) {
-			this->st->audio->playSound(this->st->getDefaultMod()->getSound("zombie_3"), false, this);
+			this->st->audio->playSound(this->st->mm->getSound("zombie_3"), false, this);
 		} else if (s == 4) {
-			this->st->audio->playSound(this->st->getDefaultMod()->getSound("zombie_4"), false, this);
+			this->st->audio->playSound(this->st->mm->getSound("zombie_4"), false, this);
 		} else if (s == 5) {
-			this->st->audio->playSound(this->st->getDefaultMod()->getSound("zombie_5"), false, this);
+			this->st->audio->playSound(this->st->mm->getSound("zombie_5"), false, this);
 		}
 	}
 	
@@ -118,11 +118,11 @@ int NPC::takeDamage(int damage)
 
 		int s = getRandom(1, 3);
 		if (s == 1) {
-			this->st->audio->playSound(this->st->getDefaultMod()->getSound("zombie_death1"), false, this);
+			this->st->audio->playSound(this->st->mm->getSound("zombie_death1"), false, this);
 		} else if (s == 2) {
-			this->st->audio->playSound(this->st->getDefaultMod()->getSound("zombie_death2"), false, this);
+			this->st->audio->playSound(this->st->mm->getSound("zombie_death2"), false, this);
 		} else if (s == 3) {
-			this->st->audio->playSound(this->st->getDefaultMod()->getSound("zombie_death3"), false, this);
+			this->st->audio->playSound(this->st->mm->getSound("zombie_death3"), false, this);
 		}
 	}
 	

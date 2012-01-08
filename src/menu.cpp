@@ -42,7 +42,7 @@ void Menu::doit()
 	vector<string> gametypes;
 	{
 		vector<GameType*>::iterator start, end;
-		st->getDefaultMod()->getAllGameTypes(&start, &end);
+		st->mm->getAllGameTypes(&start, &end);
 		for (vector<GameType*>::iterator it = start; it != end; it++) {
 			gametypes.push_back((*it)->name);
 		}
@@ -60,7 +60,7 @@ void Menu::doit()
 	vector<string> unittypes;
 	{
 		vector<UnitType*>::iterator start, end;
-		st->getDefaultMod()->getAllUnitTypes(&start, &end);
+		st->mm->getAllUnitTypes(&start, &end);
 		for (vector<UnitType*>::iterator it = start; it != end; it++) {
 			if ((*it)->playable) unittypes.push_back((*it)->name);
 		}
@@ -131,10 +131,10 @@ void Menu::doit()
 							
 							// Load gametype
 							new GameLogic(st);
-							GameType *gt = st->getDefaultMod()->getGameType(gametypes[gametype]);
+							GameType *gt = st->mm->getGameType(gametypes[gametype]);
 							st->logic->execScript(gt->script);
 							
-							st->logic->selected_unittype = st->getDefaultMod()->getUnitType(unittypes[unittype]);
+							st->logic->selected_unittype = st->mm->getUnitType(unittypes[unittype]);
 
 							st->client = NULL;
 							st->num_local = 1;
@@ -156,7 +156,7 @@ void Menu::doit()
 							
 							// Load gametype
 							new GameLogic(st);
-							//GameType *gt = st->getDefaultMod()->getGameType("boredem");
+							//GameType *gt = st->mm->getGameType("boredem");
 							//st->logic->execScript(gt->script);
 							
 							new NetClient(st);
@@ -177,10 +177,10 @@ void Menu::doit()
 							
 							// Load gametype
 							new GameLogic(st);
-							GameType *gt = st->getDefaultMod()->getGameType(gametypes[gametype]);
+							GameType *gt = st->mm->getGameType(gametypes[gametype]);
 							st->logic->execScript(gt->script);
 							
-							st->logic->selected_unittype = st->getDefaultMod()->getUnitType(unittype);
+							st->logic->selected_unittype = st->mm->getUnitType(unittype);
 
 							st->client = NULL;
 							st->num_local = 2;

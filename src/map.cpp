@@ -143,8 +143,10 @@ int Map::load(string name, Render * render)
 	this->width = 2000;
 	this->height = 2000;
 	
+
 	// Default area
-	a = new Area(this->st->getMod("cr")->getFloorType(0));
+	// TODO: Flooring support in the map
+	a = new Area(this->st->mm->getFloorType(0));
 	a->x = 0;
 	a->y = 0;
 	a->width = this->width;
@@ -188,7 +190,7 @@ int Map::load(string name, Render * render)
 			if (type.empty()) continue;
 			
 			Wall * wa = new Wall(
-				this->st->getMod("cr")->getWallType(type),
+				this->st->mm->getWallType(type),
 				this->st,
 				cfg_getint(cfg_sub, "x"),
 				cfg_getint(cfg_sub, "y"),
@@ -208,7 +210,7 @@ int Map::load(string name, Render * render)
 			string type = cfg_getstr(cfg_sub, "type");
 			if (type.empty()) continue;
 			
-			ObjectType *ot = this->st->getMod("cr")->getObjectType(type);
+			ObjectType *ot = this->st->mm->getObjectType(type);
 			if (ot == NULL) reportFatalError("Unable to load map; missing or invalid object " + type);
 			
 			Object * ob = new Object(ot, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), cfg_getint(cfg_sub, "z"));

@@ -217,6 +217,9 @@
     <ClCompile Include="..\flex\objload.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\mod\mod_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\entity.h">
@@ -370,6 +373,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\flex\objload.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\mod_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

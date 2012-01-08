@@ -215,12 +215,12 @@ unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
 	p = (Player*) st->findUnitSlot(slot);
 	if (p != NULL) return 14;
 	
-	UnitType *ut = st->getDefaultMod()->getUnitType(1);
+	UnitType *ut = st->mm->getUnitType(1);
 	p = new Player(ut, st, x, y, 2);
 	p->slot = slot;
 	
-	p->pickupWeapon(st->getDefaultMod()->getWeaponType(0));
-	p->pickupWeapon(st->getDefaultMod()->getWeaponType(1));
+	p->pickupWeapon(st->mm->getWeaponType(0));
+	p->pickupWeapon(st->mm->getWeaponType(1));
 	
 	if (st->curr_slot == p->slot) {
 		st->local_players[0] = p;

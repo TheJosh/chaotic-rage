@@ -125,6 +125,7 @@
     <ClCompile Include="..\..\src\mod\floortype.cpp" />
     <ClCompile Include="..\..\src\mod\gametype.cpp" />
     <ClCompile Include="..\..\src\mod\mod.cpp" />
+    <ClCompile Include="..\..\src\mod\mod_manager.cpp" />
     <ClCompile Include="..\..\src\mod\objecttype.cpp" />
     <ClCompile Include="..\..\src\mod\particletype.cpp" />
     <ClCompile Include="..\..\src\mod\song.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="..\..\src\mod\floortype.h" />
     <ClInclude Include="..\..\src\mod\gametype.h" />
     <ClInclude Include="..\..\src\mod\mod.h" />
+    <ClInclude Include="..\..\src\mod\mod_manager.h" />
     <ClInclude Include="..\..\src\mod\objecttype.h" />
     <ClInclude Include="..\..\src\mod\particletype.h" />
     <ClInclude Include="..\..\src\mod\song.h" />

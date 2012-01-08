@@ -23,7 +23,7 @@ static zzip_strings_t mod_zzip_ext[] = { ".crk", ".CRK", 0 };
 Mod::Mod(GameState * st, string directory)
 {
 	this->st = st;
-	st->addMod(this);
+	st->mm->addMod(this);
 	
 	int bp = directory.rfind('/');
 	this->name = directory.substr(bp + 1, 100);
@@ -247,13 +247,29 @@ AnimModel * Mod::getAnimModel(string name)
 	return NULL;
 }
 
+
+
 /**
-* Gets an areatype by ID
+* Gets an floor type by ID
 **/
 FloorType * Mod::getFloorType(int id)
 {
 	if (id < 0 or ((unsigned int) id) > areatypes->size()) return NULL;
 	return areatypes->at(id);
+}
+
+/**
+* Gets an floor type by name
+**/
+FloorType * Mod::getFloorType(string name)
+{
+	if (name.empty()) return NULL;
+	
+	int i;
+	for (i = areatypes->size() - 1; i >= 0; --i) {
+		if (areatypes->at(i)->name.compare(name) == 0) return areatypes->at(i);
+	}
+	return NULL;
 }
 
 
@@ -400,6 +416,20 @@ Song * Mod::getSong(int id)
 {
 	if (id < 0 or ((unsigned int) id) > songs->size()) return NULL;
 	return songs->at(id);
+}
+
+/**
+* Gets a unitclass by name
+**/
+Song * Mod::getSong(string name)
+{
+	if (name.empty()) return NULL;
+	
+	int i;
+	for (i = songs->size() - 1; i >= 0; --i) {
+		if (songs->at(i)->name.compare(name) == 0) return songs->at(i);
+	}
+	return NULL;
 }
 
 /**

@@ -171,7 +171,7 @@ static void handleEvents(GameState *st)
 					
 					
 					case SDLK_F5:
-						st->hud->addAlertMessage("Config reload: ", st->getDefaultMod()->reloadAttrs() ? "success" : "failure");
+						st->hud->addAlertMessage("Config reload: ", st->mm->reloadAttrs() ? "success" : "failure");
 						break;
 						
 					case SDLK_F6:

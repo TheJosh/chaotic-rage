@@ -24,7 +24,6 @@ class GameLogic
 	public:
 		GameState *st;
 		Map *map;
-		Mod *mod;
 		vector<LuaTimer*> timers;
 		
 	public:

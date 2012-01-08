@@ -10,37 +10,21 @@
 using namespace std;
 
 
-class Mod {
+class ModManager {
 	private:
-		vector<AnimModel*> * animmodels;
-		vector<FloorType*> * areatypes;
-		vector<GameType*> * gametypes;
-		vector<ObjectType*> * objecttypes;
-		vector<ParticleType*> * particletypes;
-		vector<ParticleGenType*> * pgeneratortypes;
-		vector<Song*> * songs;
-		vector<Sound*> * sounds;
-		vector<UnitType*> * unitclasses;
-		vector<WallType*> * walltypes;
-		vector<WeaponType*> * weapontypes;
-		
-	public:
+		vector<Mod*> mods;
 		GameState * st;
-		string name;
-		string directory;
 		
 	public:
-		char * loadText(string filename);
-		Uint8 * loadBinary(string resname, int * len);
-		SDL_RWops * loadRWops(string filename);
+		ModManager(GameState * st);
 		
-	public:
-		Mod(GameState * st, string directory);
-		
-	public:
-		bool load();
+	public:	
+		void addMod(Mod * mod);
+		Mod * getMod(string name);
+		Mod * getDefaultMod();
+
 		bool reloadAttrs();
-		
+
 		AnimModel * getAnimModel(int id);
 		FloorType * getFloorType(int id);
 		GameType * getGameType(int id);

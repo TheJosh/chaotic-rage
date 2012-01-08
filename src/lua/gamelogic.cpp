@@ -39,9 +39,8 @@ GameLogic::GameLogic(GameState *st)
 {
 	gl = this;
 	st->logic = this;
+
 	this->st = st;
-	
-	this->mod = st->getDefaultMod();
 	this->map = st->curr_map;
 	
 	L = lua_open();
@@ -349,7 +348,7 @@ LUA_FUNC(add_npc)
 	NPC *p;
 	
 	const char* name = lua_tostring(L, 1);
-	UnitType *uc = gl->mod->getUnitType(*(new string(name)));
+	UnitType *uc = gl->st->mm->getUnitType(*(new string(name)));
 	if (uc == NULL) {
 		lua_pushstring(L, "Arg #1 is not an available unittype");
 		lua_error(L);
@@ -391,7 +390,7 @@ LUA_FUNC(add_player)
 	Player *p;
 	
 	const char* name = lua_tostring(L, 1);
-	UnitType *uc = gl->mod->getUnitType(*(new string(name)));
+	UnitType *uc = gl->st->mm->getUnitType(*(new string(name)));
 	if (uc == NULL) {
 		lua_pushstring(L, "Arg #1 is not an available unittype");
 		lua_error(L);

@@ -328,10 +328,10 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	WeaponType *w = NULL;
 	if (this->firing) {
 		if (this->turret_obj) {
-			w = this->st->getDefaultMod()->getWeaponType("poopgun");
+			w = this->st->mm->getWeaponType("poopgun");
 			
 		} else if (this->drive_obj) {
-			w = this->st->getDefaultMod()->getWeaponType("rocket_launcher");
+			w = this->st->mm->getWeaponType("rocket_launcher");
 			
 		} else if (this->weapon && this->weapon->next_use < st->game_time && this->weapon->magazine > 0) {
 			w = this->weapon->wt;
@@ -450,12 +450,12 @@ void Unit::doUse()
 	}
 	
 	if (ot->add_object.length() != 0) {
-		Object *nu = new Object(this->st->getDefaultMod()->getObjectType(ot->add_object), this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
+		Object *nu = new Object(this->st->mm->getObjectType(ot->add_object), this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
 		this->st->addObject(nu);
 	}
 	
 	if (ot->pickup_weapon.length() != 0) {
-		WeaponType *wt = this->st->getDefaultMod()->getWeaponType(ot->pickup_weapon);
+		WeaponType *wt = this->st->mm->getWeaponType(ot->pickup_weapon);
 		if (wt) {
 			this->st->hud->addAlertMessage("Picked up a ", wt->title);
 			this->pickupWeapon(wt);
@@ -464,7 +464,7 @@ void Unit::doUse()
 	}
 	
 	if (ot->ammo_crate.length() != 0) {
-		WeaponType *wt = this->st->getDefaultMod()->getWeaponType(ot->ammo_crate);
+		WeaponType *wt = this->st->mm->getWeaponType(ot->ammo_crate);
 		if (wt && this->pickupAmmo(wt)) {
 			this->st->hud->addAlertMessage("Picked up some ammo");
 			this->curr_obj->del = 1;
