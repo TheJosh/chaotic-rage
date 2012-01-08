@@ -3,7 +3,12 @@
 	#include <stdlib.h>
 	#include <vector>
 	#include <iostream>
+	#include <zzip/zzip.h>
 	#include "util/objload.h"
+	
+	#ifndef O_BINARY
+	#define O_BINARY 0
+	#endif
 	
 	using namespace std;
 	
@@ -116,10 +121,10 @@ SPACE [ \t]+
 WavefrontObj * loadObj(string filename)
 {
 	ZZIP_FILE *fp;
-
+	
 	fp = zzip_open_ext_io(filename.c_str(), O_RDONLY|O_BINARY, 0, mod_zzip_ext, 0);
 	if (fp == NULL) return NULL;
-
+	
 	yyin = (FILE*) fp;
 	WavefrontObj * obj = yylex();
 	obj->ibo_count = 0;

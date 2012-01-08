@@ -9,6 +9,10 @@
 #include <zzip/zzip.h>
 #include <string.h> /* strchr */
 
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
+
 
 // Allowed 'zip' extentions
 static zzip_strings_t mod_zzip_ext[] = { ".crk", ".CRK", 0 };

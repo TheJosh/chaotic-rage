@@ -47,7 +47,7 @@ int main (int argc, char * argv[])
 	st->curr_map = m;
 	
 	new GameLogic(st);
-	GameType *gt = st->getDefaultMod()->getGameType("boredem");
+	GameType *gt = st->mm->getGameType("boredem");
 	st->logic->execScript(gt->script);
 	
 	st->client = NULL;

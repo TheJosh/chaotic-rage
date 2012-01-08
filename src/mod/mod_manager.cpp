@@ -279,7 +279,7 @@ WallType * ModManager::getWallType(string name)
 {
 	if (name.empty()) return NULL;
 	
-	for (int i = 0; i <= this->mods->size(); i++) {
+	for (unsigned int i = 0; i <= this->mods->size(); i++) {
 		Mod *mod = this->mods->at(i);
 		WallType *wt = mod->getWallType(name);
 		if (wt) return wt;
