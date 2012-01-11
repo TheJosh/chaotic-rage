@@ -170,6 +170,8 @@ void Menu::doit()
 						
 					case SDLK_m:
 						{
+							st->physics->preGame();
+							
 							// Load map
 							Map *m = new Map(st);
 							m->load(maps[map], st->render);
