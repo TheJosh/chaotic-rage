@@ -146,7 +146,7 @@ int Map::load(string name, Render * render)
 
 	// Default area
 	// TODO: Flooring support in the map
-	a = new Area(this->st->mm->getFloorType(0));
+	a = new Area(this->st->mm->getFloorType("sandy"));
 	a->x = 0;
 	a->y = 0;
 	a->width = this->width;

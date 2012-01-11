@@ -180,8 +180,8 @@ void Menu::doit()
 							GameType *gt = st->mm->getGameType(gametypes[gametype]);
 							st->logic->execScript(gt->script);
 							
-							st->logic->selected_unittype = st->mm->getUnitType(unittype);
-
+							st->logic->selected_unittype = st->mm->getUnitType(unittypes[unittype]);
+							
 							st->client = NULL;
 							st->num_local = 2;
 							st->local_players[0] = NULL;

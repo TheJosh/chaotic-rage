@@ -22,20 +22,8 @@ class ModManager {
 		void addMod(Mod * mod);
 		Mod * getMod(string name);
 		Mod * getDefaultMod();
-
+		
 		bool reloadAttrs();
-
-		AnimModel * getAnimModel(int id);
-		FloorType * getFloorType(int id);
-		GameType * getGameType(int id);
-		ObjectType * getObjectType(int id);
-		ParticleType * getParticleType(int id);
-		ParticleGenType * getParticleGenType(int id);
-		Song * getSong(int id);
-		Sound * getSound(int id);
-		UnitType * getUnitType(int id);
-		WallType * getWallType(int id);
-		WeaponType * getWeaponType(int id);
 		
 		AnimModel * getAnimModel(string name);
 		FloorType * getFloorType(string name);
@@ -52,7 +40,7 @@ class ModManager {
 		void addObjectType(ObjectType * ot);
 		
 		Song * getRandomSong();
-
+		
 		void getAllGameTypes(vector<GameType*>::iterator * start, vector<GameType*>::iterator * end);
 		void getAllUnitTypes(vector<UnitType*>::iterator * start, vector<UnitType*>::iterator * end);
 };

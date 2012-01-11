@@ -71,14 +71,6 @@ bool ModManager::reloadAttrs()
 
 
 /**
-* Gets an animmodel by ID
-**/
-AnimModel * ModManager::getAnimModel(int id)
-{
-	return this->getDefaultMod()->getAnimModel(id);
-}
-
-/**
 * Gets an animmodel by name
 **/
 AnimModel * ModManager::getAnimModel(string name)
@@ -86,15 +78,6 @@ AnimModel * ModManager::getAnimModel(string name)
 	return this->getDefaultMod()->getAnimModel(name);
 }
 
-
-
-/**
-* Gets an floor type by ID
-**/
-FloorType * ModManager::getFloorType(int id)
-{
-	return this->getDefaultMod()->getFloorType(id);
-}
 
 /**
 * Gets an floor type by name
@@ -105,15 +88,6 @@ FloorType * ModManager::getFloorType(string name)
 }
 
 
-
-/**
-* Gets a gametype by ID
-**/
-GameType * ModManager::getGameType(int id)
-{
-	return this->getDefaultMod()->getGameType(id);
-}
-
 /**
 * Gets a gametype by name
 **/
@@ -121,6 +95,7 @@ GameType * ModManager::getGameType(string name)
 {
 	return this->getDefaultMod()->getGameType(name);
 }
+
 
 /**
 * Returns a start and end iterator for getting all gametypes (default mod only atm)
@@ -131,15 +106,6 @@ void ModManager::getAllGameTypes(vector<GameType*>::iterator * start, vector<Gam
 }
 
 
-
-/**
-* Gets a object type by ID
-**/
-ObjectType * ModManager::getObjectType(int id)
-{
-	return this->getDefaultMod()->getObjectType(id);
-}
-
 /**
 * Gets a object type by name
 **/
@@ -147,6 +113,7 @@ ObjectType * ModManager::getObjectType(string name)
 {
 	return this->getDefaultMod()->getObjectType(name);
 }
+
 
 /**
 * Adds a dynamically-created object type to the default mod
@@ -157,16 +124,7 @@ void ModManager::addObjectType(ObjectType * ot)
 }
 
 
-
-/**
-* Gets a particle type by ID
-**/
-ParticleType * ModManager::getParticleType(int id)
-{
-	return this->getDefaultMod()->getParticleType(id);
-}
-
-/**
+/*
 * Gets a particle type by name
 **/
 ParticleType * ModManager::getParticleType(string name)
@@ -174,15 +132,6 @@ ParticleType * ModManager::getParticleType(string name)
 	return this->getDefaultMod()->getParticleType(name);
 }
 
-
-
-/**
-* Gets a particle generator by ID
-**/
-ParticleGenType * ModManager::getParticleGenType(int id)
-{
-	return this->getDefaultMod()->getParticleGenType(id);
-}
 
 /**
 * Gets a particle generator by name
@@ -192,15 +141,6 @@ ParticleGenType * ModManager::getParticleGenType(string name)
 	return this->getDefaultMod()->getParticleGenType(name);
 }
 
-
-
-/**
-* Gets a unit type by ID
-**/
-UnitType * ModManager::getUnitType(int id)
-{
-	return this->getDefaultMod()->getUnitType(id);
-}
 
 /**
 * Gets a unit type by name
@@ -219,15 +159,6 @@ void ModManager::getAllUnitTypes(vector<UnitType*>::iterator * start, vector<Uni
 }
 
 
-
-/**
-* Gets a song by ID
-**/
-Song * ModManager::getSong(int id)
-{
-	return this->getDefaultMod()->getSong(id);
-}
-
 /**
 * Gets a song by name
 **/
@@ -235,6 +166,7 @@ Song * ModManager::getSong(string name)
 {
 	return this->getDefaultMod()->getSong(name);
 }
+
 
 /**
 * Gets a random song
@@ -245,15 +177,6 @@ Song * ModManager::getRandomSong()
 }
 
 
-
-/**
-* Gets a sound by ID
-**/
-Sound * ModManager::getSound(int id)
-{
-	return this->getDefaultMod()->getSound(id);
-}
-
 /**
 * Gets a sound by name
 **/
@@ -262,15 +185,6 @@ Sound * ModManager::getSound(string name)
 	return this->getDefaultMod()->getSound(name);
 }
 
-
-
-/**
-* Gets a wall type by ID
-**/
-WallType * ModManager::getWallType(int id)
-{
-	return this->getDefaultMod()->getWallType(id);
-}
 
 /**
 * Gets a wall type by name
@@ -288,15 +202,6 @@ WallType * ModManager::getWallType(string name)
 	return NULL;
 }
 
-
-
-/**
-* Gets a weapon type by ID
-**/
-WeaponType * ModManager::getWeaponType(int id)
-{
-	return this->getDefaultMod()->getWeaponType(id);
-}
 
 /**
 * Gets a weapon type by name
