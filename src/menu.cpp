@@ -41,9 +41,8 @@ void Menu::doit()
 	int gametype = 0;
 	vector<string> gametypes;
 	{
-		vector<GameType*>::iterator start, end;
-		st->mm->getAllGameTypes(&start, &end);
-		for (vector<GameType*>::iterator it = start; it != end; it++) {
+		vector<GameType*> * ut = st->mm->getAllGameTypes();
+		for (vector<GameType*>::iterator it = ut->begin(); it != ut->end(); it++) {
 			gametypes.push_back((*it)->name);
 		}
 	}
@@ -59,14 +58,13 @@ void Menu::doit()
 	int unittype = 0;
 	vector<string> unittypes;
 	{
-		vector<UnitType*>::iterator start, end;
-		st->mm->getAllUnitTypes(&start, &end);
-		for (vector<UnitType*>::iterator it = start; it != end; it++) {
+		vector<UnitType*> * ut = st->mm->getAllUnitTypes();
+		for (vector<UnitType*>::iterator it = ut->begin(); it != ut->end(); it++) {
 			if ((*it)->playable) unittypes.push_back((*it)->name);
 		}
 	}
-
-
+	
+	
 	SDL_Event event;
 	
 	

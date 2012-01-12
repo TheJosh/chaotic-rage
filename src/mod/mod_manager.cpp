@@ -61,12 +61,14 @@ Mod * ModManager::getDefaultMod()
 /**
 * Reload the attrs for all mods.
 * Development/Debugging feature only.
-*
-* TODO: Should actually operate on all mods, currently only default mod
 **/
 bool ModManager::reloadAttrs()
 {
-	return this->getDefaultMod()->reloadAttrs();
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		if (! mod->reloadAttrs()) return false;
+	}
+	return true;
 }
 
 
@@ -75,7 +77,15 @@ bool ModManager::reloadAttrs()
 **/
 AnimModel * ModManager::getAnimModel(string name)
 {
-	return this->getDefaultMod()->getAnimModel(name);
+	if (name.empty()) return NULL;
+	
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		AnimModel *et = mod->getAnimModel(name);
+		if (et) return et;
+	}
+	
+	return NULL;
 }
 
 
@@ -84,7 +94,15 @@ AnimModel * ModManager::getAnimModel(string name)
 **/
 FloorType * ModManager::getFloorType(string name)
 {
-	return this->getDefaultMod()->getFloorType(name);
+	if (name.empty()) return NULL;
+	
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		FloorType *et = mod->getFloorType(name);
+		if (et) return et;
+	}
+	
+	return NULL;
 }
 
 
@@ -93,16 +111,35 @@ FloorType * ModManager::getFloorType(string name)
 **/
 GameType * ModManager::getGameType(string name)
 {
-	return this->getDefaultMod()->getGameType(name);
+	if (name.empty()) return NULL;
+	
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		GameType *et = mod->getGameType(name);
+		if (et) return et;
+	}
+	
+	return NULL;
 }
 
 
 /**
-* Returns a start and end iterator for getting all gametypes (default mod only atm)
+* Returns a start and end iterator for getting all gametypes
 **/
-void ModManager::getAllGameTypes(vector<GameType*>::iterator * start, vector<GameType*>::iterator * end)
+vector<GameType*> * ModManager::getAllGameTypes()
 {
-	this->getDefaultMod()->getAllGameTypes(start, end);
+	vector<GameType*>::iterator start, end;
+	vector<GameType*> * gt;
+	
+	gt = new vector<GameType*>();
+	
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		mod->getAllGameTypes(&start, &end);
+		gt->insert(gt->end(), start, end);
+	}
+	
+	return gt;
 }
 
 
@@ -111,16 +148,15 @@ void ModManager::getAllGameTypes(vector<GameType*>::iterator * start, vector<Gam
 **/
 ObjectType * ModManager::getObjectType(string name)
 {
-	return this->getDefaultMod()->getObjectType(name);
-}
-
-
-/**
-* Adds a dynamically-created object type to the default mod
-**/
-void ModManager::addObjectType(ObjectType * ot)
-{
-	this->getDefaultMod()->addObjectType(ot);
+	if (name.empty()) return NULL;
+	
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		ObjectType *et = mod->getObjectType(name);
+		if (et) return et;
+	}
+	
+	return NULL;
 }
 
 
@@ -129,7 +165,15 @@ void ModManager::addObjectType(ObjectType * ot)
 **/
 ParticleType * ModManager::getParticleType(string name)
 {
-	return this->getDefaultMod()->getParticleType(name);
+	if (name.empty()) return NULL;
+	
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		ParticleType *et = mod->getParticleType(name);
+		if (et) return et;
+	}
+	
+	return NULL;
 }
 
 
@@ -138,7 +182,15 @@ ParticleType * ModManager::getParticleType(string name)
 **/
 ParticleGenType * ModManager::getParticleGenType(string name)
 {
-	return this->getDefaultMod()->getParticleGenType(name);
+	if (name.empty()) return NULL;
+	
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		ParticleGenType *et = mod->getParticleGenType(name);
+		if (et) return et;
+	}
+	
+	return NULL;
 }
 
 
@@ -147,15 +199,34 @@ ParticleGenType * ModManager::getParticleGenType(string name)
 **/
 UnitType * ModManager::getUnitType(string name)
 {
-	return this->getDefaultMod()->getUnitType(name);
+	if (name.empty()) return NULL;
+	
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		UnitType *et = mod->getUnitType(name);
+		if (et) return et;
+	}
+	
+	return NULL;
 }
 
 /**
-* Returns a start and end iterator for getting all unit types (default mod only atm)
+* Returns a start and end iterator for getting all unit types
 **/
-void ModManager::getAllUnitTypes(vector<UnitType*>::iterator * start, vector<UnitType*>::iterator * end)
+vector<UnitType*> * ModManager::getAllUnitTypes()
 {
-	this->getDefaultMod()->getAllUnitTypes(start, end);
+	vector<UnitType*>::iterator start, end;
+	vector<UnitType*> * ut;
+	
+	ut = new vector<UnitType*>();
+	
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		mod->getAllUnitTypes(&start, &end);
+		ut->insert(ut->end(), start, end);
+	}
+	
+	return ut;
 }
 
 
@@ -164,7 +235,15 @@ void ModManager::getAllUnitTypes(vector<UnitType*>::iterator * start, vector<Uni
 **/
 Song * ModManager::getSong(string name)
 {
-	return this->getDefaultMod()->getSong(name);
+	if (name.empty()) return NULL;
+	
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		Song *et = mod->getSong(name);
+		if (et) return et;
+	}
+	
+	return NULL;
 }
 
 
@@ -173,7 +252,8 @@ Song * ModManager::getSong(string name)
 **/
 Song * ModManager::getRandomSong()
 {
-	return this->getDefaultMod()->getRandomSong();
+	Mod *mod = this->mods->at(getRandom(0, mods->size() - 1));
+	return mod->getRandomSong();
 }
 
 
@@ -182,7 +262,15 @@ Song * ModManager::getRandomSong()
 **/
 Sound * ModManager::getSound(string name)
 {
-	return this->getDefaultMod()->getSound(name);
+	if (name.empty()) return NULL;
+	
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		Sound *et = mod->getSound(name);
+		if (et) return et;
+	}
+	
+	return NULL;
 }
 
 
@@ -193,10 +281,10 @@ WallType * ModManager::getWallType(string name)
 {
 	if (name.empty()) return NULL;
 	
-	for (unsigned int i = 0; i <= this->mods->size(); i++) {
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
 		Mod *mod = this->mods->at(i);
-		WallType *wt = mod->getWallType(name);
-		if (wt) return wt;
+		WallType *et = mod->getWallType(name);
+		if (et) return et;
 	}
 	
 	return NULL;
@@ -208,7 +296,15 @@ WallType * ModManager::getWallType(string name)
 **/
 WeaponType * ModManager::getWeaponType(string name)
 {
-	return this->getDefaultMod()->getWeaponType(name);
+	if (name.empty()) return NULL;
+	
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		WeaponType *et = mod->getWeaponType(name);
+		if (et) return et;
+	}
+	
+	return NULL;
 }
 
 

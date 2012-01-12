@@ -370,13 +370,13 @@ ParticleType * Mod::getParticleType(string name)
 **/
 ParticleGenType * Mod::getParticleGenType(int id)
 {
-	if (id < 0 or ((unsigned int) id) > pgeneratortypes->size()) return NULL;
+	if (pgeneratortypes == NULL or id < 0 or ((unsigned int) id) > pgeneratortypes->size()) return NULL;
 	return pgeneratortypes->at(id);
 }
 
 ParticleGenType * Mod::getParticleGenType(string name)
 {
-	if (name.empty()) return NULL;
+	if (pgeneratortypes == NULL or name.empty()) return NULL;
 	
 	int i;
 	for (i = pgeneratortypes->size() - 1; i >= 0; --i) {
@@ -448,6 +448,7 @@ Song * Mod::getSong(string name)
 **/
 Song * Mod::getRandomSong()
 {
+	if (songs == NULL or songs->size() == 0) return NULL;
 	return songs->at(getRandom(0, songs->size() - 1));
 }
 

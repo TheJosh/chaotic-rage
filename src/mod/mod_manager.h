@@ -37,10 +37,10 @@ class ModManager {
 		WallType * getWallType(string name);
 		WeaponType * getWeaponType(string name);
 		
-		void addObjectType(ObjectType * ot);
-		
 		Song * getRandomSong();
 		
-		void getAllGameTypes(vector<GameType*>::iterator * start, vector<GameType*>::iterator * end);
-		void getAllUnitTypes(vector<UnitType*>::iterator * start, vector<UnitType*>::iterator * end);
+		vector<GameType*> * getAllGameTypes();
+		vector<UnitType*> * getAllUnitTypes();
 };
+
+
