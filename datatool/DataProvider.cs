@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
+using Ionic.Utils.Zip;
+using System.IO;
 
 namespace datatool
 {
     public class DataProvider
     {
         ConfuseReader read;
-        public string datapath;
+        private string datapath;
+        private ZipFile zf;
 
         private List<base_item> areatypes;
         private List<base_item> modifiers;
@@ -21,7 +24,7 @@ namespace datatool
         /**
         * Loads data files
         **/
-        public bool load(string filename)
+        public bool load(string filename, bool isZip)
         {
             this.datapath = filename;
             this.read = new ConfuseReader();
@@ -33,6 +36,12 @@ namespace datatool
             this.unitclasses = new List<base_item>();
             this.weapontypes = new List<base_item>();
 
+            if (isZip) {
+                this.zf = new ZipFile(filename);
+            } else {
+                this.zf = null;
+            }
+
             load_particletypes();
             load_weapontypes();
 
@@ -41,9 +50,70 @@ namespace datatool
 
 
         /**
+         * The currently loaded datapath.
+         **/
+        public string Filename
+        {
+            get { return this.datapath; }
+        }
+
+        /**
+         * Is it a ZIP currently loaded?
+         **/
+        public bool IsZip
+        {
+            get { return (this.zf != null); }
+        }
+
+        public string GetFriendlyFilename()
+        {
+            if (this.zf != null) {
+                return "[Mod; " + Path.GetFileName(this.datapath) + "]";
+            } else {
+                return "[Directory; " + this.datapath + "]";
+            }
+        }
+
+
+        /**
+         * Read a file from the disk or zip
+         **/
+        private string readFile(string filename)
+        {
+            if (this.zf != null) {
+                MemoryStream ms = new MemoryStream();
+                zf.Extract(filename, ms);
+                ms.Seek(0, 0);
+                StreamReader reader = new StreamReader(ms);
+                return reader.ReadToEnd();
+
+            } else {
+                return File.ReadAllText(this.datapath + "\\" + filename);
+            }
+        }
+
+        /**
+         * Write a file to the disk or zip
+         **/
+        private void writeFile(string filename, string content)
+        {
+            if (this.zf != null) {
+                try {
+                    zf.RemoveEntry(filename);
+                } catch (Exception ex) {}
+                zf.AddStringAsFile(content, filename, "");
+
+            } else {
+                File.WriteAllText(this.datapath + "\\" + filename, content);
+            }
+        }
+        
+
+
+        /**
         * Saves data files
         **/
-        public bool save(string filename)
+        public bool save()
         {
             string o;
 
@@ -53,14 +123,19 @@ namespace datatool
             {
                 o += "particle {\n\t" + i.getConfItem() + "\n}\n";
             }
-            System.IO.File.WriteAllText(this.datapath + "\\particletypes.conf", o);
-
+            this.writeFile("particletypes.conf", o);
+            
             // Weapons
             o = "";
             foreach (base_item i in this.weapontypes) {
                 o += "weapon {\n\t" + i.getConfItem() + "\n}\n";
             }
-            System.IO.File.WriteAllText(this.datapath + "\\weapontypes.conf", o);
+            this.writeFile("weapontypes.conf", o);
+
+            if (this.zf != null) {
+                this.zf.Save();
+                this.zf = new ZipFile(this.datapath);
+            }
 
             return true;
         }
@@ -72,7 +147,7 @@ namespace datatool
         private void load_particletypes()
         {
             ConfuseSection sect = null;
-            string file = System.IO.File.ReadAllText(this.datapath + "\\particletypes.conf");
+            string file = this.readFile("particletypes.conf");
 
             // Parse
             try {
@@ -109,15 +184,15 @@ namespace datatool
         private void load_weapontypes()
         {
             ConfuseSection sect = null;
-            string file = System.IO.File.ReadAllText(this.datapath + "\\weapontypes.conf");
+            string file = this.readFile("weapontypes.conf");
 
             // Parse
-            //try {
+            try {
                 sect = read.Parse(file);
-            //} catch (Exception ex) {
-            //    MessageBox.Show("Error loading weapontypes:\n" + ex.Message);
-            //    return;
-            //}
+            } catch (Exception ex) {
+                MessageBox.Show("Error loading weapontypes:\n" + ex.Message);
+                return;
+            }
 
             // Load
             foreach (ConfuseSection s in sect.subsections) {

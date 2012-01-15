@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
+using Ionic.Utils.Zip;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -40,7 +40,7 @@ namespace datatool
 
         private void Main_Load(object sender, EventArgs e)
         {
-            this.statusDatapath.Text = Program.dp.datapath;
+            this.statusDatapath.Text = "Current File: " + Program.dp.GetFriendlyFilename();
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
@@ -48,7 +48,7 @@ namespace datatool
             switch (MessageBox.Show("Do you want to save?", Application.ProductName, MessageBoxButtons.YesNoCancel))
             {
                 case System.Windows.Forms.DialogResult.Yes:
-                    Program.dp.save(Program.dp.datapath);
+                    Program.dp.save();
                     break;
 
                 case System.Windows.Forms.DialogResult.Cancel:
@@ -66,7 +66,7 @@ namespace datatool
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Program.dp.save(Program.dp.datapath);
+            Program.dp.save();
         }
 
         private void toolParticles_Click(object sender, EventArgs e)
