@@ -23,11 +23,17 @@ void Menu::doit()
 	Mod * mod = new Mod(st, "data/menu");
 	
 	SpritePtr logo = this->render->loadSprite("logo.png", mod);
-	//SpritePtr right = this->render->loadSprite("bg_right.png", mod);
 	
 	this->render->loadFont("orb.otf", mod);
-
-
+	
+	WavefrontObj * bgmesh = loadObj("data/menu/bg.obj");
+	SpritePtr bg = this->render->loadSprite("bg.jpg", mod);
+	float bg_rot1_pos = -10;
+	float bg_rot1_dir = 0.04;
+	float bg_rot2_pos = 3;
+	float bg_rot2_dir = -0.02;
+	
+	
 	// Maps
 	int map = 0;
 	vector<string> maps;
@@ -210,43 +216,94 @@ void Menu::doit()
 		}
 		
 		
+		bg_rot1_pos += bg_rot1_dir;
+		if (bg_rot1_pos >= 10.0 or bg_rot1_pos <= -10.0) {
+			bg_rot1_dir = 0.0 - bg_rot1_dir;
+		}
+		
+		bg_rot2_pos += bg_rot2_dir;
+		if (bg_rot2_pos >= 3.0 or bg_rot2_pos <= -3.0) {
+			bg_rot2_dir = 0.0 - bg_rot2_dir;
+		}
+		
+		
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		
-		glMatrixMode(GL_MODELVIEW);
+		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		
-		glTranslatef(0, 0, 40);
+		gluPerspective(30.0f, render->virt_width / render->virt_height, 1.0f, 2500.f);
+		glScalef (1.0f, -1.0f, 1.0f);
+		glTranslatef(0 - (render->virt_width / 2), 0 - (render->virt_height / 2), -1250.0f);
+		
+		glMatrixMode(GL_MODELVIEW);
 		glDisable(GL_LIGHTING);
 		glDisable(GL_DEPTH_TEST);
-	
-	
-		//render->renderSprite(right, render->virt_width - right->w, render->virt_height - right->h);
-		render->renderSprite(logo, (render->virt_width - logo->w) / 2, 20);
-
-
-		int y = 200;
+		glDisable(GL_FOG);
 		
+		
+		glLoadIdentity();
+		glTranslatef(500, 500, 0);
+		glRotatef(90, 1, 0, 0);
+		glRotatef(bg_rot1_pos, 0, 0, 1);
+		glRotatef(bg_rot2_pos, 1, 0, 0);
+		glScalef(650, 50, 650);
+		glBindTexture(GL_TEXTURE_2D, bg->pixels);
+		render->renderObj(bgmesh);
+		
+		
+		glLoadIdentity();
+		glTranslatef(0, 0, -600);
+		render->renderSprite(logo, (render->virt_width - logo->w) / 2, 20);
+		
+		
+		
+		int y = 200;
+		glLoadIdentity();
+		glTranslatef(0, 0, -600);
+		glRotatef(5, 0, 1, 0);
 		render->renderText("Map:", 20, y);
+		glRotatef(-5, 0, 1, 0);
 		render->renderText(maps[map], 160, y);
+		glRotatef(-5, 0, 1, 0);
 		render->renderText("Change with Q and A", 450, y);
 		
 		y += 30;
+		glLoadIdentity();
+		glTranslatef(0, 0, -600);
+		glRotatef(5, 0, 1, 0);
 		render->renderText("Gametype:", 20, y);
+		glRotatef(-5, 0, 1, 0);
 		render->renderText(gametypes[gametype], 160, y);
+		glRotatef(-5, 0, 1, 0);
 		render->renderText("Change with W and S", 450, y);
 		
 		y += 30;
+		glLoadIdentity();
+		glTranslatef(0, 0, -600);
+		glRotatef(5, 0, 1, 0);
 		render->renderText("Viewmode:", 20, y);
+		glRotatef(-5, 0, 1, 0);
 		render->renderText(viewmodes[viewmode], 160, y);
+		glRotatef(-5, 0, 1, 0);
 		render->renderText("Change with E and D", 450, y);
 		
 		y += 30;
+		glLoadIdentity();
+		glTranslatef(0, 0, -600);
+		glRotatef(5, 0, 1, 0);
 		render->renderText("Unit type:", 20, y);
+		glRotatef(-5, 0, 1, 0);
 		render->renderText(unittypes[unittype], 160, y);
+		glRotatef(-5, 0, 1, 0);
 		render->renderText("Change with R and F", 450, y);
-
+		
+		glLoadIdentity();
+		glTranslatef(0, 0, -600);
+		glRotatef(5, 0, 1, 0);
+		
 		y += 60;
 		render->renderText("Start a local game with L", 20, y);
 		
@@ -273,7 +330,8 @@ void Menu::doit()
 		render->renderText("Fire", 20, y); render->renderText("Left-Click", 230, y); y += 30;
 		render->renderText("Melee", 20, y); render->renderText("Right-Click", 230, y); y += 30;
 		render->renderText("Special Attack", 20, y); render->renderText("T", 230, y); y += 30;
-
+		
+		
 		SDL_GL_SwapBuffers();
 		
 		SDL_Delay(50);
