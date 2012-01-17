@@ -99,7 +99,7 @@ class RenderOpenGL : public Render
 	protected:
 		void renderObj (WavefrontObj * obj);
 		void renderAnimPlay(AnimPlay * play, int angle);
-		void renderText(string text, int x, int y);
+		void renderText(string text, float x = 0.0, float y = 0.0, float r = 1.0, float g = 1.0, float b = 1.0);
 		void renderCharacter(char c);
 		void loadFont(string name, Mod * mod);
 

@@ -29,14 +29,12 @@ void Menu::doit()
 	WavefrontObj * bgmesh = loadObj("data/menu/bg.obj");
 	SpritePtr bg = this->render->loadSprite("bg.jpg", mod);
 	float bg_rot1_pos = -10;
-	float bg_rot1_dir = 0.04;
+	float bg_rot1_dir = 0.06;
 	float bg_rot2_pos = 3;
-	float bg_rot2_dir = -0.02;
+	float bg_rot2_dir = -0.04;
 	
 	
 	// Maps
-	int map = 0;
-	vector<string> maps;
 	maps.push_back("test");
 	maps.push_back("blank");
 	maps.push_back("pacman");
@@ -44,8 +42,6 @@ void Menu::doit()
 	maps.push_back("arena");
 	
 	// Gametypes
-	int gametype = 0;
-	vector<string> gametypes;
 	{
 		vector<GameType*> * ut = st->mm->getAllGameTypes();
 		for (vector<GameType*>::iterator it = ut->begin(); it != ut->end(); it++) {
@@ -54,15 +50,11 @@ void Menu::doit()
 	}
 	
 	// Viewmodes
-	int viewmode = 0;
-	vector<string> viewmodes;
 	viewmodes.push_back("top");
 	viewmodes.push_back("3rd-person");
 	viewmodes.push_back("1st-person");
 	
 	// Unittypes
-	int unittype = 0;
-	vector<string> unittypes;
 	{
 		vector<UnitType*> * ut = st->mm->getAllUnitTypes();
 		for (vector<UnitType*>::iterator it = ut->begin(); it != ut->end(); it++) {
@@ -71,17 +63,47 @@ void Menu::doit()
 	}
 	
 	
+	map = gametype = viewmode = unittype = 0;
+	
+	
+	int mousex, mousey;
 	SDL_Event event;
+	
+	
+	int y = render->real_height - (40 * 5) - 20;
+	
+	this->menuAdd("Single Player", 40, y, MC_SINGLEPLAYER);
+	y += 40;
+	
+	this->menuAdd("Split Screen", 40, y, MC_SPLITSCREEN);
+	y += 40;
+	
+	this->menuAdd("Network Game", 40, y, MC_NETWORK);
+	y += 40;
+	
+	this->menuAdd("Settings", 40, y, MC_SETTINGS);
+	y += 40;
+	
+	this->menuAdd("Quit", 40, y, MC_QUIT);
+	
 	
 	
 	this->running = true;
 	while (this->running) {
 		
+		SDL_GetMouseState(&mousex, &mousey);
+		
+		MenuCommand cmd = MC_NOTHING;
+		
 		
 		while (SDL_PollEvent(&event)) {
 			
 			if (event.type == SDL_QUIT) {
-				this->running = false;
+				cmd = MC_QUIT;
+				
+			} else if (event.type == SDL_MOUSEBUTTONUP) {
+				cmd = this->menuClick(mousex, mousey);
+				
 				
 			} else if (event.type == SDL_KEYDOWN) {
 				// Key press
@@ -124,80 +146,15 @@ void Menu::doit()
 
 					case SDLK_l:
 					case SDLK_RETURN:
-						{
-							st->physics->preGame();
-							//st->render->enablePhysicsDebug();
-							
-							// Load map
-							Map *m = new Map(st);
-							m->load(maps[map], st->render);
-							st->curr_map = m;
-							
-							// Load gametype
-							new GameLogic(st);
-							GameType *gt = st->mm->getGameType(gametypes[gametype]);
-							st->logic->execScript(gt->script);
-							
-							st->logic->selected_unittype = st->mm->getUnitType(unittypes[unittype]);
-
-							st->client = NULL;
-							st->num_local = 1;
-							st->local_players[0] = NULL;
-
-							((RenderOpenGL*)st->render)->viewmode = viewmode;
-							
-							// Begin!
-							gameLoop(st, st->render);
-						}
+						cmd = MC_SINGLEPLAYER;
 						break;
 						
 					case SDLK_n:
-						{
-							// Load map
-							Map *m = new Map(st);
-							m->load("blank", st->render);
-							st->curr_map = m;
-							
-							// Load gametype
-							new GameLogic(st);
-							//GameType *gt = st->mm->getGameType("boredem");
-							//st->logic->execScript(gt->script);
-							
-							new NetClient(st);
-							st->client->bind("localhost", 17778);
-							st->client->addmsgJoinReq();
-							
-							// Begin!
-							gameLoop(st, st->render);
-						}
+						cmd = MC_NETWORK;
 						break;
 						
 					case SDLK_m:
-						{
-							st->physics->preGame();
-							
-							// Load map
-							Map *m = new Map(st);
-							m->load(maps[map], st->render);
-							st->curr_map = m;
-							
-							// Load gametype
-							new GameLogic(st);
-							GameType *gt = st->mm->getGameType(gametypes[gametype]);
-							st->logic->execScript(gt->script);
-							
-							st->logic->selected_unittype = st->mm->getUnitType(unittypes[unittype]);
-							
-							st->client = NULL;
-							st->num_local = 2;
-							st->local_players[0] = NULL;
-							st->local_players[1] = NULL;
-
-							((RenderOpenGL*)st->render)->viewmode = viewmode;
-							
-							// Begin!
-							gameLoop(st, st->render);
-						}
+						cmd = MC_SPLITSCREEN;
 						break;
 
 					case SDLK_p:
@@ -206,8 +163,7 @@ void Menu::doit()
 
 
 					case SDLK_ESCAPE:
-						running = false;
-						break;
+						cmd = MC_QUIT;
 					
 					default: break;
 				}
@@ -215,6 +171,15 @@ void Menu::doit()
 			}
 		}
 		
+		
+		switch (cmd) {
+			case MC_SINGLEPLAYER: this->doSingleplayer(); break;
+			case MC_SPLITSCREEN: this->doSplitscreen(); break;
+			case MC_NETWORK: this->doNetwork(); break;
+			case MC_SETTINGS: this->doSettings(); break;
+			case MC_QUIT: this->doQuit(); break;
+			default: break;
+		}
 		
 		bg_rot1_pos += bg_rot1_dir;
 		if (bg_rot1_pos >= 10.0 or bg_rot1_pos <= -10.0) {
@@ -225,6 +190,8 @@ void Menu::doit()
 		if (bg_rot2_pos >= 3.0 or bg_rot2_pos <= -3.0) {
 			bg_rot2_dir = 0.0 - bg_rot2_dir;
 		}
+		
+		
 		
 		
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -256,10 +223,23 @@ void Menu::doit()
 		
 		glLoadIdentity();
 		glTranslatef(0, 0, -600);
-		render->renderSprite(logo, (render->virt_width - logo->w) / 2, 20);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+		glEnable(GL_BLEND);
+		render->renderSprite(logo, 40, 40);
 		
 		
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(0.0f, render->real_width, render->real_height, 0.0f, 0.0f, 10.0f);
 		
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		
+		this->menuHover(mousex, mousey);
+		this->menuRender();
+		
+		
+		/*
 		int y = 200;
 		glLoadIdentity();
 		glTranslatef(0, 0, -600);
@@ -330,7 +310,7 @@ void Menu::doit()
 		render->renderText("Fire", 20, y); render->renderText("Left-Click", 230, y); y += 30;
 		render->renderText("Melee", 20, y); render->renderText("Right-Click", 230, y); y += 30;
 		render->renderText("Special Attack", 20, y); render->renderText("T", 230, y); y += 30;
-		
+		*/
 		
 		SDL_GL_SwapBuffers();
 		
@@ -338,3 +318,141 @@ void Menu::doit()
 	}
 	
 }
+
+
+
+
+void Menu::menuAdd(string name, int x, int y, MenuCommand cmd)
+{
+	MenuItem * nu = new MenuItem();
+	this->menuitems.push_back(nu);
+	
+	nu->x1 = x;
+	nu->x2 = x + 200;
+	nu->y1 = y;
+	nu->y2 = y + 20;
+	nu->name = name;
+	nu->cmd = cmd;
+	nu->hover = false;
+}
+
+
+void Menu::menuRender()
+{
+	glBindTexture(GL_TEXTURE_2D, 0);
+	
+	for (unsigned int i = 0; i < this->menuitems.size(); i++) {
+		MenuItem * m = this->menuitems.at(i);
+		
+		render->renderText(m->name, m->x1 + 1, m->y1 + 20 + 1, 0.1, 0.1, 0.1);
+		
+		if (m->hover) {
+			render->renderText(m->name, m->x1, m->y1 + 20, 161.0/255.0, 0.0, 0.0);
+		} else {
+			render->renderText(m->name, m->x1, m->y1 + 20, 1.0, 1.0, 1.0);
+		}
+		
+		glColor3f(1, 1, 1);
+	}
+}
+
+
+void Menu::menuHover(int x, int y)
+{
+	for (unsigned int i = 0; i < this->menuitems.size(); i++) {
+		MenuItem * m = this->menuitems.at(i);
+		
+		if (x >= m->x1 and x <= m->x2 and y >= m->y1 and y <= m->y2) {
+			m->hover = true;
+		} else {
+			m->hover = false;
+		}
+	}
+}
+
+
+MenuCommand Menu::menuClick(int x, int y)
+{
+	for (unsigned int i = 0; i < this->menuitems.size(); i++) {
+		MenuItem * m = this->menuitems.at(i);
+		
+		if (x >= m->x1 and x <= m->x2 and y >= m->y1 and y <= m->y2) {
+			return m->cmd;
+		}
+	}
+	
+	return MC_NOTHING;
+}
+
+
+void Menu::doSingleplayer()
+{
+	st->physics->preGame();
+	
+	// Load map
+	Map *m = new Map(st);
+	m->load(maps[map], st->render);
+	st->curr_map = m;
+	
+	// Load gametype
+	new GameLogic(st);
+	GameType *gt = st->mm->getGameType(gametypes[gametype]);
+	st->logic->execScript(gt->script);
+	
+	st->logic->selected_unittype = st->mm->getUnitType(unittypes[unittype]);
+
+	st->client = NULL;
+	st->num_local = 1;
+	st->local_players[0] = NULL;
+
+	((RenderOpenGL*)st->render)->viewmode = viewmode;
+	
+	// Begin!
+	gameLoop(st, st->render);
+}
+
+
+void Menu::doSplitscreen()
+{
+	st->physics->preGame();
+	
+	// Load map
+	Map *m = new Map(st);
+	m->load(maps[map], st->render);
+	st->curr_map = m;
+	
+	// Load gametype
+	new GameLogic(st);
+	GameType *gt = st->mm->getGameType(gametypes[gametype]);
+	st->logic->execScript(gt->script);
+	
+	st->logic->selected_unittype = st->mm->getUnitType(unittypes[unittype]);
+	
+	st->client = NULL;
+	st->num_local = 2;
+	st->local_players[0] = NULL;
+	st->local_players[1] = NULL;
+
+	((RenderOpenGL*)st->render)->viewmode = viewmode;
+	
+	// Begin!
+	gameLoop(st, st->render);
+}
+
+
+void Menu::doNetwork()
+{
+}
+
+
+void Menu::doSettings()
+{
+}
+
+
+void Menu::doQuit()
+{
+	this->running = false;
+}
+
+
