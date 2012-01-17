@@ -92,28 +92,27 @@ void Menu::doit()
 	
 	this->menuAdd("Quit", 40, y, MC_QUIT);
 	
+	
 	gcn::SDLInput* input;
 	gcn::OpenGLGraphics* graphics;
 	gcn::OpenGLSDLImageLoader* imageLoader;
-	gcn::Container* top;
 	gcn::ImageFont* font;
-	gcn::Label* label;
-
-
+	
+	
 	imageLoader = new gcn::OpenGLSDLImageLoader();
 	gcn::Image::setImageLoader(imageLoader);
-
+	
 	graphics = new gcn::OpenGLGraphics(render->real_width, render->real_height);
 	input = new gcn::SDLInput();
-
+	
 	font = new gcn::ImageFont("fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
 	gcn::Widget::setGlobalFont(font);
-
+	
 	this->gui = new gcn::Gui();
 	this->gui->setGraphics(graphics);
 	this->gui->setInput(input);
-
-
+	
+	
 	this->running = true;
 	while (this->running) {
 		
@@ -402,39 +401,39 @@ DialogNewGame::DialogNewGame(int num_local)
 **/
 gcn::Container * DialogNewGame::setup()
 {
-	gcn::Label* label;
 	gcn::Button* button;
-
+	
 	if (this->num_local == 1) {
 		c = new gcn::Window("Single Player");
 	} else if (this->num_local > 1) {
 		c = new gcn::Window("Split Screen");
 	}
-
+	
 	c->setDimension(gcn::Rectangle(0, 0, 200, 200));
-
+	
+	
 	this->map = new gcn::DropDown(new VectorListModel(&this->m->maps));
 	this->map->setPosition(10, 30);
 	c->add(this->map);
-
+	
 	this->gametype = new gcn::DropDown(new VectorListModel(&this->m->gametypes));
 	this->gametype->setPosition(10, 10);
 	c->add(this->gametype);
-
+	
 	this->unittype = new gcn::DropDown(new VectorListModel(&this->m->unittypes));
 	this->unittype->setPosition(10, 50);
 	c->add(this->unittype);
-
+	
 	this->viewmode = new gcn::DropDown(new VectorListModel(&this->m->viewmodes));
 	this->viewmode->setPosition(10, 70);
 	c->add(this->viewmode);
-
-
+	
+	
 	button = new gcn::Button("Start Game");
 	button->setPosition(120, 150);
 	button->addActionListener(this);
 	c->add(button);
-
+	
 	return c;
 }
 

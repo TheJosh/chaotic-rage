@@ -7,7 +7,7 @@ ifeq ($(PLATFORM),linux)
 	SERVER=dedicatedserver
 	ANIMVIEWER=animviewer
 	CFLAGS=`sdl-config --cflags` `pkg-config zziplib libconfuse gl glu lua5.1 bullet --cflags` `freetype-config --cflags` -DGETOPT -Werror -Wall -ggdb
-	LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse lua5.1 bullet --libs` `freetype-config --libs` -lGL -lGLU -lGLEW -lSDL_mixer -lSDL_image -lSDL_net
+	LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse lua5.1 bullet --libs` `freetype-config --libs` -lGL -lGLU -lGLEW -lSDL_mixer -lSDL_image -lSDL_net -lguichan_sdl -lguichan_opengl -lguichan
 endif
 
 ifeq ($(PLATFORM),i386-mingw32)
