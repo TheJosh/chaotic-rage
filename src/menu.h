@@ -5,9 +5,15 @@
 #pragma once
 #include <iostream>
 #include <SDL.h>
+#include <guichan.hpp>
 #include "rage.h"
 
 using namespace std;
+
+
+class MenuDialog;
+class DialogNewGame;
+class VectorListModel;
 
 
 enum MenuCommand {
@@ -36,9 +42,12 @@ class Menu
 		RenderOpenGL *render;
 		int running;
 		vector<MenuItem*> menuitems;
+		gcn::Gui* gui;
+		MenuDialog *dialog;
 		
-		
-	private:
+
+		// This will be removed soon
+	public:
 		int map;
 		vector<string> maps;
 		int gametype;
@@ -58,7 +67,10 @@ class Menu
 		void menuRender();
 		void menuHover(int x, int y);
 		MenuCommand menuClick(int x, int y);
-		
+
+		void setDialog(MenuDialog * dialog);
+		void startGame(string map, string gametype, string unittype, int viewmode, int num_local);
+
 	protected:
 		void doSingleplayer();
 		void doSplitscreen();
@@ -67,3 +79,57 @@ class Menu
 		void doQuit();
 };
 
+
+class MenuDialog {
+	friend class Menu;
+
+	protected:
+		gcn::Container * c;
+		Menu * m;
+
+	public:
+		virtual gcn::Container * setup() = 0;
+};
+
+
+class VectorListModel: public gcn::ListModel
+{
+	private:
+		vector<string> * v;
+
+	public:
+		VectorListModel(vector<string> * vec) {
+			this->v = vec;
+		}
+
+		std::string getElementAt(int i)
+		{
+			return v->at(i);
+		}
+
+		int getNumberOfElements()
+		{
+			return v->size();
+		}
+};
+
+class DialogNewGame : public MenuDialog, public gcn::ActionListener {
+	public:
+		DialogNewGame(int num_local);
+
+	private:
+		int num_local;
+		gcn::DropDown * map;
+		gcn::DropDown * gametype;
+		gcn::DropDown * unittype;
+		gcn::DropDown * viewmode;
+
+	public:
+		virtual gcn::Container * setup();
+		virtual void action(const gcn::ActionEvent& actionEvent);
+};
+
+class DialogNull : public MenuDialog {
+	public:
+		virtual gcn::Container * setup();
+};

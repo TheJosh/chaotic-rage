@@ -5,7 +5,12 @@
 #include <iostream>
 #include <SDL.h>
 #include <math.h>
+#include <guichan.hpp>
+#include <guichan/sdl.hpp>
+#include <guichan/opengl.hpp>
+#include <guichan/opengl/openglsdlimageloader.hpp>
 #include "rage.h"
+#include "menu.h"
 
 
 using namespace std;
@@ -15,6 +20,7 @@ Menu::Menu(GameState *st)
 {
 	this->st = st;
 	this->render = (RenderOpenGL*) st->render;
+	this->dialog = NULL;
 }
 
 
@@ -86,8 +92,28 @@ void Menu::doit()
 	
 	this->menuAdd("Quit", 40, y, MC_QUIT);
 	
-	
-	
+	gcn::SDLInput* input;
+	gcn::OpenGLGraphics* graphics;
+	gcn::OpenGLSDLImageLoader* imageLoader;
+	gcn::Container* top;
+	gcn::ImageFont* font;
+	gcn::Label* label;
+
+
+	imageLoader = new gcn::OpenGLSDLImageLoader();
+	gcn::Image::setImageLoader(imageLoader);
+
+	graphics = new gcn::OpenGLGraphics(render->real_width, render->real_height);
+	input = new gcn::SDLInput();
+
+	font = new gcn::ImageFont("fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+	gcn::Widget::setGlobalFont(font);
+
+	this->gui = new gcn::Gui();
+	this->gui->setGraphics(graphics);
+	this->gui->setInput(input);
+
+
 	this->running = true;
 	while (this->running) {
 		
@@ -97,81 +123,37 @@ void Menu::doit()
 		
 		
 		while (SDL_PollEvent(&event)) {
-			
+
 			if (event.type == SDL_QUIT) {
 				cmd = MC_QUIT;
 				
 			} else if (event.type == SDL_MOUSEBUTTONUP) {
 				cmd = this->menuClick(mousex, mousey);
 				
-				
 			} else if (event.type == SDL_KEYDOWN) {
 				// Key press
 				switch (event.key.keysym.sym) {
-					case SDLK_q:
-						if (map > 0) map--;
-						break;
-						
-					case SDLK_a:
-						if (map < ((int) maps.size()) - 1) map++;
-						break;
-						
-						
-					case SDLK_w:
-						if (gametype > 0) gametype--;
-						break;
-						
-					case SDLK_s:
-						if (gametype < ((int) gametypes.size()) - 1) gametype++;
-						break;
-						
-						
-					case SDLK_e:
-						if (viewmode > 0) viewmode--;
-						break;
-						
-					case SDLK_d:
-						if (viewmode < ((int) viewmodes.size()) - 1) viewmode++;
-						break;
-						
-						
-					case SDLK_r:
-						if (unittype > 0) unittype--;
-						break;
-						
-					case SDLK_f:
-						if (unittype < ((int) unittypes.size()) - 1) unittype++;
-						break;
-
-
-					case SDLK_l:
-					case SDLK_RETURN:
-						cmd = MC_SINGLEPLAYER;
-						break;
-						
-					case SDLK_n:
-						cmd = MC_NETWORK;
-						break;
-						
-					case SDLK_m:
-						cmd = MC_SPLITSCREEN;
-						break;
-
 					case SDLK_p:
 						render->setScreenSize(render->desktop_width, render->desktop_height, true);
 						break;
 
-
 					case SDLK_ESCAPE:
-						cmd = MC_QUIT;
+						if (this->dialog != NULL) {
+							this->setDialog(NULL);
+						} else {
+							cmd = MC_QUIT;
+						}
 					
 					default: break;
 				}
 				
 			}
+
+			input->pushInput(event);
 		}
 		
 		
+		// Handle main menu commands
 		switch (cmd) {
 			case MC_SINGLEPLAYER: this->doSingleplayer(); break;
 			case MC_SPLITSCREEN: this->doSplitscreen(); break;
@@ -181,6 +163,8 @@ void Menu::doit()
 			default: break;
 		}
 		
+
+		// Background animation
 		bg_rot1_pos += bg_rot1_dir;
 		if (bg_rot1_pos >= 10.0 or bg_rot1_pos <= -10.0) {
 			bg_rot1_dir = 0.0 - bg_rot1_dir;
@@ -193,11 +177,16 @@ void Menu::doit()
 		
 		
 		
-		
+		// Set up everything for render
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		
+		glDisable(GL_LIGHTING);
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_FOG);
+
+
+		// Perspective mode for the background
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		
@@ -206,11 +195,6 @@ void Menu::doit()
 		glTranslatef(0 - (render->virt_width / 2), 0 - (render->virt_height / 2), -1250.0f);
 		
 		glMatrixMode(GL_MODELVIEW);
-		glDisable(GL_LIGHTING);
-		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_FOG);
-		
-		
 		glLoadIdentity();
 		glTranslatef(500, 500, 0);
 		glRotatef(90, 1, 0, 0);
@@ -221,13 +205,7 @@ void Menu::doit()
 		render->renderObj(bgmesh);
 		
 		
-		glLoadIdentity();
-		glTranslatef(0, 0, -600);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-		glEnable(GL_BLEND);
-		render->renderSprite(logo, 40, 40);
-		
-		
+		// Ortho mode for the logo and main menu
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glOrtho(0.0f, render->real_width, render->real_height, 0.0f, 0.0f, 10.0f);
@@ -235,93 +213,31 @@ void Menu::doit()
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+		glEnable(GL_BLEND);
+		render->renderSprite(logo, 40, 40);
+
 		this->menuHover(mousex, mousey);
 		this->menuRender();
-		
-		
-		/*
-		int y = 200;
-		glLoadIdentity();
-		glTranslatef(0, 0, -600);
-		glRotatef(5, 0, 1, 0);
-		render->renderText("Map:", 20, y);
-		glRotatef(-5, 0, 1, 0);
-		render->renderText(maps[map], 160, y);
-		glRotatef(-5, 0, 1, 0);
-		render->renderText("Change with Q and A", 450, y);
-		
-		y += 30;
-		glLoadIdentity();
-		glTranslatef(0, 0, -600);
-		glRotatef(5, 0, 1, 0);
-		render->renderText("Gametype:", 20, y);
-		glRotatef(-5, 0, 1, 0);
-		render->renderText(gametypes[gametype], 160, y);
-		glRotatef(-5, 0, 1, 0);
-		render->renderText("Change with W and S", 450, y);
-		
-		y += 30;
-		glLoadIdentity();
-		glTranslatef(0, 0, -600);
-		glRotatef(5, 0, 1, 0);
-		render->renderText("Viewmode:", 20, y);
-		glRotatef(-5, 0, 1, 0);
-		render->renderText(viewmodes[viewmode], 160, y);
-		glRotatef(-5, 0, 1, 0);
-		render->renderText("Change with E and D", 450, y);
-		
-		y += 30;
-		glLoadIdentity();
-		glTranslatef(0, 0, -600);
-		glRotatef(5, 0, 1, 0);
-		render->renderText("Unit type:", 20, y);
-		glRotatef(-5, 0, 1, 0);
-		render->renderText(unittypes[unittype], 160, y);
-		glRotatef(-5, 0, 1, 0);
-		render->renderText("Change with R and F", 450, y);
-		
-		glLoadIdentity();
-		glTranslatef(0, 0, -600);
-		glRotatef(5, 0, 1, 0);
-		
-		y += 60;
-		render->renderText("Start a local game with L", 20, y);
-		
-		y += 30;
-		render->renderText("Start a network game with N (really buggy)", 20, y);
-		
-		y += 30;
-		render->renderText("Start a split-screen game with M (less buggy)", 20, y);
 
-		y += 30;
-		render->renderText("Switch to fullscreen with P (do this before anything else)", 20, y);
 
-		y += 60;
-		render->renderText("Quit with ESC", 20, y);
-		
-		
-		y = render->virt_height - 30 * 9;
-		render->renderText("Controls:", 20, y); y += 30;
-		render->renderText("Move", 20, y); render->renderText("W-S-A-D", 230, y); y += 30;
-		render->renderText("Look", 20, y); render->renderText("Mouse", 230, y); y += 30;
-		render->renderText("Action", 20, y); render->renderText("E", 230, y); y += 30;
-		render->renderText("Pick-up", 20, y); render->renderText("Q", 230, y); y += 30;
-		render->renderText("Change weapon", 20, y); render->renderText("Scroll-wheel", 230, y); y += 30;
-		render->renderText("Fire", 20, y); render->renderText("Left-Click", 230, y); y += 30;
-		render->renderText("Melee", 20, y); render->renderText("Right-Click", 230, y); y += 30;
-		render->renderText("Special Attack", 20, y); render->renderText("T", 230, y); y += 30;
-		*/
-		
+		// If a guichan dialog is set, render it and process events
+		if (this->dialog != NULL) {
+			gui->logic();
+			gui->draw();
+		}
+
+
 		SDL_GL_SwapBuffers();
-		
 		SDL_Delay(50);
 	}
 	
 }
 
 
-
-
+/**
+* Adds a menu item to the main menu
+**/
 void Menu::menuAdd(string name, int x, int y, MenuCommand cmd)
 {
 	MenuItem * nu = new MenuItem();
@@ -337,6 +253,9 @@ void Menu::menuAdd(string name, int x, int y, MenuCommand cmd)
 }
 
 
+/**
+* Renders the main menu
+**/
 void Menu::menuRender()
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -357,6 +276,9 @@ void Menu::menuRender()
 }
 
 
+/**
+* Looks for mouse hovers on the main menu
+**/
 void Menu::menuHover(int x, int y)
 {
 	for (unsigned int i = 0; i < this->menuitems.size(); i++) {
@@ -371,6 +293,9 @@ void Menu::menuHover(int x, int y)
 }
 
 
+/**
+* Handles mouse clicks on the main menu, returning the appropriate MenuCommand
+**/
 MenuCommand Menu::menuClick(int x, int y)
 {
 	for (unsigned int i = 0; i < this->menuitems.size(); i++) {
@@ -385,74 +310,163 @@ MenuCommand Menu::menuClick(int x, int y)
 }
 
 
-void Menu::doSingleplayer()
+
+/**
+* Sets the current menu dialog, or NULL to hide the dialog
+**/
+void Menu::setDialog(MenuDialog * dialog)
 {
-	st->physics->preGame();
-	
-	// Load map
-	Map *m = new Map(st);
-	m->load(maps[map], st->render);
-	st->curr_map = m;
-	
-	// Load gametype
-	new GameLogic(st);
-	GameType *gt = st->mm->getGameType(gametypes[gametype]);
-	st->logic->execScript(gt->script);
-	
-	st->logic->selected_unittype = st->mm->getUnitType(unittypes[unittype]);
+	this->dialog = dialog;
 
-	st->client = NULL;
-	st->num_local = 1;
-	st->local_players[0] = NULL;
-
-	((RenderOpenGL*)st->render)->viewmode = viewmode;
-	
-	// Begin!
-	gameLoop(st, st->render);
+	if (this->dialog != NULL) {
+		dialog->m = this;
+		gcn::Container * c = dialog->setup();
+		c->setPosition((this->render->real_width - c->getWidth()) / 2, (this->render->real_height - c->getHeight()) / 2);
+		c->setBaseColor(gcn::Color(150, 150, 150, 200));
+		gui->setTop(c);
+	}
 }
 
+
+
+void Menu::doSingleplayer()
+{
+	this->setDialog(new DialogNewGame(1));
+}
 
 void Menu::doSplitscreen()
 {
-	st->physics->preGame();
-	
-	// Load map
-	Map *m = new Map(st);
-	m->load(maps[map], st->render);
-	st->curr_map = m;
-	
-	// Load gametype
-	new GameLogic(st);
-	GameType *gt = st->mm->getGameType(gametypes[gametype]);
-	st->logic->execScript(gt->script);
-	
-	st->logic->selected_unittype = st->mm->getUnitType(unittypes[unittype]);
-	
-	st->client = NULL;
-	st->num_local = 2;
-	st->local_players[0] = NULL;
-	st->local_players[1] = NULL;
-
-	((RenderOpenGL*)st->render)->viewmode = viewmode;
-	
-	// Begin!
-	gameLoop(st, st->render);
+	this->setDialog(new DialogNewGame(2));
 }
-
 
 void Menu::doNetwork()
 {
+	this->setDialog(new DialogNull());
 }
-
 
 void Menu::doSettings()
 {
+	this->setDialog(new DialogNull());
 }
-
 
 void Menu::doQuit()
 {
 	this->running = false;
 }
 
+
+
+/**
+* Starts a game with the specified settings
+**/
+void Menu::startGame(string map, string gametype, string unittype, int viewmode, int num_local)
+{
+	st->physics->preGame();
+	
+	// Load map
+	Map *m = new Map(st);
+	m->load(map, st->render);
+	st->curr_map = m;
+	
+	// Load gametype
+	new GameLogic(st);
+	GameType *gt = st->mm->getGameType(gametype);
+	st->logic->execScript(gt->script);
+	
+	st->logic->selected_unittype = st->mm->getUnitType(unittype);
+
+	st->client = NULL;
+	st->num_local = num_local;
+	for (int i = 0; i < num_local; i++) {
+		st->local_players[i] = NULL;
+	}
+
+	((RenderOpenGL*)st->render)->viewmode = viewmode;
+	
+	// Begin!
+	gameLoop(st, st->render);
+}
+
+
+
+/**
+* Constructor for "new game" dialog
+**/
+DialogNewGame::DialogNewGame(int num_local)
+{
+	this->num_local = num_local;
+}
+
+/**
+* Setup routine for the "New Game" dialog
+**/
+gcn::Container * DialogNewGame::setup()
+{
+	gcn::Label* label;
+	gcn::Button* button;
+
+	if (this->num_local == 1) {
+		c = new gcn::Window("Single Player");
+	} else if (this->num_local > 1) {
+		c = new gcn::Window("Split Screen");
+	}
+
+	c->setDimension(gcn::Rectangle(0, 0, 200, 200));
+
+	this->map = new gcn::DropDown(new VectorListModel(&this->m->maps));
+	this->map->setPosition(10, 30);
+	c->add(this->map);
+
+	this->gametype = new gcn::DropDown(new VectorListModel(&this->m->gametypes));
+	this->gametype->setPosition(10, 10);
+	c->add(this->gametype);
+
+	this->unittype = new gcn::DropDown(new VectorListModel(&this->m->unittypes));
+	this->unittype->setPosition(10, 50);
+	c->add(this->unittype);
+
+	this->viewmode = new gcn::DropDown(new VectorListModel(&this->m->viewmodes));
+	this->viewmode->setPosition(10, 70);
+	c->add(this->viewmode);
+
+
+	button = new gcn::Button("Start Game");
+	button->setPosition(120, 150);
+	button->addActionListener(this);
+	c->add(button);
+
+	return c;
+}
+
+/**
+* Button click processing for the "New Game" dialog
+**/
+void DialogNewGame::action(const gcn::ActionEvent& actionEvent)
+{
+	this->m->startGame(
+		this->m->maps[this->map->getSelected()],
+		this->m->gametypes[this->gametype->getSelected()],
+		this->m->unittypes[this->unittype->getSelected()],
+		this->viewmode->getSelected(),
+		this->num_local
+	);
+}
+
+
+
+/**
+* Setup routine for the NULL dialog
+**/
+gcn::Container * DialogNull::setup()
+{
+	gcn::Label* label;
+
+	c = new gcn::Window("Argh");
+	c->setDimension(gcn::Rectangle(0, 0, 300, 100));
+
+	label = new gcn::Label("This action is not available at this time");
+	c->add(label, 22, 20);
+
+	return c;
+}
 
