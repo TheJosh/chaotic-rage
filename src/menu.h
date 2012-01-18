@@ -18,11 +18,12 @@ class VectorListModel;
 
 enum MenuCommand {
 	MC_NOTHING = 0,
-	MC_SINGLEPLAYER = 1,
-	MC_SPLITSCREEN = 2,
-	MC_NETWORK = 3,
-	MC_SETTINGS = 4,
-	MC_QUIT = 5,
+	MC_SINGLEPLAYER,
+	MC_SPLITSCREEN,
+	MC_NETWORK,
+	MC_SETTINGS,
+	MC_CONTROLS,
+	MC_QUIT,
 };
 
 class MenuItem {
@@ -76,6 +77,7 @@ class Menu
 		void doSplitscreen();
 		void doNetwork();
 		void doSettings();
+		void doControls();
 		void doQuit();
 };
 
@@ -116,14 +118,14 @@ class VectorListModel: public gcn::ListModel
 class DialogNewGame : public MenuDialog, public gcn::ActionListener {
 	public:
 		DialogNewGame(int num_local);
-
+		
 	private:
 		int num_local;
 		gcn::DropDown * map;
 		gcn::DropDown * gametype;
 		gcn::DropDown * unittype;
 		gcn::DropDown * viewmode;
-
+		
 	public:
 		virtual gcn::Container * setup();
 		virtual void action(const gcn::ActionEvent& actionEvent);
@@ -133,3 +135,9 @@ class DialogNull : public MenuDialog {
 	public:
 		virtual gcn::Container * setup();
 };
+
+class DialogControls : public MenuDialog {
+	public:
+		virtual gcn::Container * setup();
+};
+

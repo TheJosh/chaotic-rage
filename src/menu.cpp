@@ -76,7 +76,7 @@ void Menu::doit()
 	SDL_Event event;
 	
 	
-	int y = render->real_height - (40 * 5) - 20;
+	int y = render->real_height - (40 * 6) - 20;
 	
 	this->menuAdd("Single Player", 40, y, MC_SINGLEPLAYER);
 	y += 40;
@@ -88,6 +88,9 @@ void Menu::doit()
 	y += 40;
 	
 	this->menuAdd("Settings", 40, y, MC_SETTINGS);
+	y += 40;
+	
+	this->menuAdd("Controls", 40, y, MC_CONTROLS);
 	y += 40;
 	
 	this->menuAdd("Quit", 40, y, MC_QUIT);
@@ -105,7 +108,7 @@ void Menu::doit()
 	graphics = new gcn::OpenGLGraphics(render->real_width, render->real_height);
 	input = new gcn::SDLInput();
 	
-	font = new gcn::ImageFont("fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+	font = new gcn::ImageFont("fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"); // .,!?-+/():;%&`'*#=[]\"
 	gcn::Widget::setGlobalFont(font);
 	
 	this->gui = new gcn::Gui();
@@ -158,6 +161,7 @@ void Menu::doit()
 			case MC_SPLITSCREEN: this->doSplitscreen(); break;
 			case MC_NETWORK: this->doNetwork(); break;
 			case MC_SETTINGS: this->doSettings(); break;
+			case MC_CONTROLS: this->doControls(); break;
 			case MC_QUIT: this->doQuit(); break;
 			default: break;
 		}
@@ -348,6 +352,11 @@ void Menu::doSettings()
 	this->setDialog(new DialogNull());
 }
 
+void Menu::doControls()
+{
+	this->setDialog(new DialogControls());
+}
+
 void Menu::doQuit()
 {
 	this->running = false;
@@ -462,10 +471,54 @@ gcn::Container * DialogNull::setup()
 
 	c = new gcn::Window("Argh");
 	c->setDimension(gcn::Rectangle(0, 0, 300, 100));
-
+	
 	label = new gcn::Label("This action is not available at this time");
 	c->add(label, 22, 20);
-
+	
 	return c;
 }
 
+
+/**
+* Setup routine for the NULL dialog
+**/
+gcn::Container * DialogControls::setup()
+{
+	string controls[] = {
+		"Move", "W A S D",
+		"Aim", "Mouse",
+		"Fire", "Left Click",
+		"Melee", "Right Click",
+		"Change Weapon", "Scroll",
+		"Use", "E",
+		"Lift", "Q",
+		"Special", "T",
+		""
+	};
+	
+	gcn::Label* label;
+	
+	c = new gcn::Window("Controls");
+	c->setDimension(gcn::Rectangle(0, 0, 300, 300));
+	
+	int y = 20;
+	int i = 0;
+	do {
+		if (controls[i].length() == 0) break;
+		
+		label = new gcn::Label(controls[i]);
+		c->add(label, 22, y);
+		i++;
+		
+		label = new gcn::Label(controls[i]);
+		label->setAlignment(gcn::Graphics::RIGHT);
+		c->add(label, 300 - 22 - label->getWidth(), y);
+		i++;
+		
+		y += 20;
+	} while(1);
+	
+	c->setHeight(y + 30);
+	
+	return c;
+}
