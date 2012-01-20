@@ -41,11 +41,18 @@ static double * _new(lua_State *L)
 }
 
 
+
+#define LUA_FUNC(name) static int name(lua_State *L)
+
 /**
 * Create a new vector3 and assign the x,y,z attributes
-* This is registered as "vector3"
+*
+* @param optional number X
+* @param optional number Y
+* @param optional number Z
+* @return vector3
 **/
-static int Lnew(lua_State *L)
+LUA_FUNC(vector3)
 {
 	double *v;
 	lua_settop(L,3);
@@ -58,9 +65,9 @@ static int Lnew(lua_State *L)
 
 
 /**
-* Metatable GET element
+* @metatable vector3 get
 **/
-static int Lget(lua_State *L)
+LUA_FUNC(get)
 {
 	double *v=_get(L,1);
 	const char* i=luaL_checkstring(L,2);
@@ -74,9 +81,9 @@ static int Lget(lua_State *L)
 }
 
 /**
-* Metatable SET element
+* @metatable vector3 set
 **/
-static int Lset(lua_State *L)
+LUA_FUNC(set)
 {
 	double *v=_get(L,1);
 	const char* i=luaL_checkstring(L,2);
@@ -91,9 +98,9 @@ static int Lset(lua_State *L)
 }
 
 /**
-* Metatable TOSTRING element
+* @metatable vector3 tostring
 **/
-static int Ltostring(lua_State *L)
+LUA_FUNC(tostring)
 {
 	double *v=_get(L,1);
 	char s[64];
@@ -103,10 +110,11 @@ static int Ltostring(lua_State *L)
 }
 
 /**
-* Metatable ADD element.
-* Arguments: Two vectors
+* @metatable vector3 add
+* @param vector3 A
+* @param vector3 B
 **/
-static int Ladd(lua_State *L)
+LUA_FUNC(add)
 {
 	double *v1=_get(L,1);
 	double *v2=_get(L,2);
@@ -120,10 +128,11 @@ static int Ladd(lua_State *L)
 }
 
 /**
-* Metatable SUB element
-* Arguments: Two vectors
+* @metatable vector3 sub
+* @param vector3 A
+* @param vector3 B
 **/
-static int Lsub(lua_State *L)
+LUA_FUNC(sub)
 {
 	double *v1=_get(L,1);
 	double *v2=_get(L,2);
@@ -137,10 +146,11 @@ static int Lsub(lua_State *L)
 }
 
 /**
-* Metatable MUL element
-* Arguments: A vector and a number
+* @metatable vector3 mul
+* @param vector3 A
+* @param number B
 **/
-static int Lmul(lua_State *L)
+LUA_FUNC(mul)
 {
 	double *v1=_get(L,1);
 	double f=lua_tonumber(L,2);
@@ -154,10 +164,11 @@ static int Lmul(lua_State *L)
 }
 
 /**
-* Metatable DIV element
-* Arguments: A vector and a number
+* @metatable vector3 div
+* @param vector3 A
+* @param number B
 **/
-static int Ldiv(lua_State *L)
+LUA_FUNC(div)
 {
 	double *v1=_get(L,1);
 	double f=lua_tonumber(L,2);
@@ -171,10 +182,10 @@ static int Ldiv(lua_State *L)
 }
 
 /**
-* Metatable UNM element.
-* Arguments: One vector
+* @metatable vector3 unm
+* @param vector3 A
 **/
-static int Lunm(lua_State *L)
+LUA_FUNC(unm)
 {
 	double *v1=_get(L,1);
 	double *vR;
@@ -187,10 +198,10 @@ static int Lunm(lua_State *L)
 }
 
 /**
-* Metatable LEN element.
-* Arguments: One vector
+* @metatable vector3 len
+* @param vector3 A
 **/
-static int Llen(lua_State *L)
+LUA_FUNC(len)
 {
 	double *v=_get(L,1);
 	double len = sqrt((v[0] * v[0]) + (v[1] * v[1]) + (v[2] * v[2]));
@@ -199,10 +210,11 @@ static int Llen(lua_State *L)
 }
 
 /**
-* Metatable EQ element.
-* Arguments: Two vectors
+* @metatable vector3 eq
+* @param vector3 A
+* @param vector3 B
 **/
-static int Leq(lua_State *L)
+LUA_FUNC(eq)
 {
 	double *v1=_get(L,1);
 	double *v2=_get(L,2);
@@ -213,9 +225,11 @@ static int Leq(lua_State *L)
 
 /**
 * Normalizes a vector
-* Arguments: One vector
+*
+* @param vector3 V
+* @return vector3
 **/
-static int Lnormalize(lua_State *L)
+LUA_FUNC(normalize)
 {
 	double *v=_get(L,1);
 	double len = sqrt((v[0] * v[0]) + (v[1] * v[1]) + (v[2] * v[2]));
@@ -230,9 +244,12 @@ static int Lnormalize(lua_State *L)
 
 /**
 * Cross product
-* Arguments: Two vectors
+*
+* @param vector3 A
+* @param vector3 B
+* @return vector3
 **/
-static int Lcross(lua_State *L)
+LUA_FUNC(cross)
 {
 	double *v1=_get(L,1);
 	double *v2=_get(L,2);
@@ -247,9 +264,12 @@ static int Lcross(lua_State *L)
 
 /**
 * Dot product
-* Arguments: Two vectors
+*
+* @param vector3 A
+* @param vector3 B
+* @return vector3
 **/
-static int Ldot(lua_State *L)
+LUA_FUNC(dot)
 {
 	double *v1=_get(L,1);
 	double *v2=_get(L,2);
@@ -264,16 +284,16 @@ static int Ldot(lua_State *L)
 **/
 static const luaL_reg R[] =
 {
-	{ "__index",	Lget		},
-	{ "__newindex",	Lset		},
-	{ "__tostring",	Ltostring	},
-	{ "__add",		Ladd		},
-	{ "__sub",		Lsub		},
-	{ "__mul",		Lmul		},
-	{ "__div",		Ldiv		},
-	{ "__unm",		Lunm		},
-	{ "__len",		Llen		},
-	{ "__eq",		Leq			},
+	{ "__index",	get		},
+	{ "__newindex",	set		},
+	{ "__tostring",	tostring},
+	{ "__add",		add		},
+	{ "__sub",		sub		},
+	{ "__mul",		mul		},
+	{ "__div",		div		},
+	{ "__unm",		unm		},
+	{ "__len",		len		},
+	{ "__eq",		eq		},
 	{ NULL,		NULL		}
 };
 
@@ -286,10 +306,10 @@ void load_vector3_lib(lua_State *L)
 	luaL_newmetatable(L,MYTYPE);
 	luaL_register(L,NULL,R);
 	
-	lua_register(L,"vector3",Lnew);
-	lua_register(L,"v3normalize",Lnormalize);
-	lua_register(L,"v3normalise",Lnormalize);		// catch both spellings
-	lua_register(L,"v3cross",Lcross);
-	lua_register(L,"v3dot",Ldot);
+	lua_register(L,"vector3",vector3);
+	lua_register(L,"v3normalize",normalize);
+	lua_register(L,"v3normalise",normalize);		// catch both spellings
+	lua_register(L,"v3cross",cross);
+	lua_register(L,"v3dot",dot);
 }
 
