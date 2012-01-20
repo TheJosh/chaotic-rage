@@ -295,6 +295,28 @@ LUA_FUNC(random)
 }
 
 
+/**
+* Returns all visible units for this current unit
+**/
+LUA_FUNC(visible_units)
+{
+	list<UnitQueryResult> * uqr = gl->st->findVisibleUnits(gl->u);
+	
+	lua_newtable(L);
+	
+	int i = 0;
+	for (list<UnitQueryResult>::iterator it = uqr->begin(); it != uqr->end(); it++) {
+		i++;
+		lua_pushnumber(L, (*it).dist);
+		lua_rawseti (L, -2, i);
+	}
+	
+	delete(uqr);
+	
+	return 1;
+}
+
+
 
 /**
 * For function binding
@@ -311,6 +333,8 @@ void register_lua_functions()
 	LUA_REG(add_timer);
 	LUA_REG(remove_timer);
 	LUA_REG(random);
+	
+	LUA_REG(visible_units);
 	
 	load_vector3_lib(L);
 }

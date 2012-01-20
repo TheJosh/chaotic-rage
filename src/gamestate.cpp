@@ -239,14 +239,43 @@ void GameState::update(int delta)
 
 
 /**
-* Is the given point in bounds?
+* Finds units visible to this unit.
+*
+* Returns a UnitQueryResult. Don't forget to delete() it when you are done!
 **/
-bool GameState::inBounds(float x, float y)
+list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 {
-	if (x < 0.0 || y < 0.0) return false;
-	if (x > this->curr_map->width) return false;
-	if (y > this->curr_map->height) return false;
-	return true;
+	list<UnitQueryResult> * ret = new list<UnitQueryResult>();
+	
+	float visual_distance = 30;		// TODO: Should this be a unit property?
+	
+	btTransform trans;
+	UnitQueryResult uqr;
+	btVector3 vecO, vecS;
+	float dist;
+	Unit * u;
+	
+	origin->getRigidBody()->getMotionState()->getWorldTransform(trans);
+	vecO = trans.getOrigin();
+	
+	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); it++) {
+		if ((*it)->klass() != UNIT) continue;
+		u = (Unit*)(*it);
+		
+		u->getRigidBody()->getMotionState()->getWorldTransform(trans);
+		vecS = trans.getOrigin();
+		vecS -= vecO;
+		
+		dist = vecS.length();
+		if (dist > visual_distance) continue;
+		
+		uqr.u = u;
+		uqr.dist = dist;
+		
+		ret->push_back(uqr);
+	}
+	
+	return ret;
 }
 
 

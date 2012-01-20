@@ -13,6 +13,13 @@ using namespace std;
 #define MAX_LOCAL 4
 
 
+class UnitQueryResult
+{
+	public:
+		Unit * u;
+		float dist;
+};
+
 class GameState
 {
 	friend class RenderSDL;
@@ -59,26 +66,27 @@ class GameState
 		~GameState();
 		
 	public:
+		// Adding
 		void addUnit(Unit* unit);
 		void addParticle(Particle* particle);
 		void addParticleGenerator(ParticleGenerator* generator);
 		void addWall(Wall* wall);
 		void addObject(Object* object);
-
+		
+		// For network
 		Unit * findUnitSlot(int slot);
 		
+		// Start and run
 		void start();
 		void update(int delta);
 		void clear();
 		
-		bool inBounds(float x, float y);
-		
+		// Entropy
 		unsigned int getEntropy(unsigned int slot);
 		void increaseEntropy(unsigned int slot);
 		
-		
-	private:
-		void doCollisions();
+		// Data queries
+		list<UnitQueryResult> * findVisibleUnits(Unit* origin);
 };
 
 
