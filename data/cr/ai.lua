@@ -5,28 +5,18 @@
 
 add_interval(10 * 1000, function()
 	
-	debug("10 secs...!");
+	print("10 secs...!");
 	
 end);
 
+add_interval(10 * 1000, function() 
 
+	units = visible_units();
 
-    function iter (a, i)
-      i = i + 1
-      local v = a[i]
-      if v then
-        return i, v
-      end
-    end
-    
-    function ipairs (a)
-      return iter, a, 0
-    end
+	print("Found " .. #units .. " units")
 
+	for i, v in ipairs(units) do
+		print(i, v.dist)
+	end
 
-units = visible_units();
-
-for i,v in ipairs(units) do
-	debug(i,v)
-end
-
+end);

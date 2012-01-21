@@ -51,6 +51,8 @@
       <AdditionalIncludeDirectories>../include;../include/bullet</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <MinimalRebuild>true</MinimalRebuild>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -90,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\..\data\cr\ai.lua" />
     <None Include="..\..\data\cr\animmodels.conf" />
     <None Include="..\..\data\cr\floortypes.conf" />
     <None Include="..\..\data\cr\gametypes.conf" />
@@ -116,6 +119,7 @@
     <ClCompile Include="..\..\src\intro.cpp" />
     <ClCompile Include="..\..\src\lua\ailogic.cpp" />
     <ClCompile Include="..\..\src\lua\gamelogic.cpp" />
+    <ClCompile Include="..\..\src\lua\lua_unitinfo_lib.cpp" />
     <ClCompile Include="..\..\src\lua\lua_vector3_lib.cpp" />
     <ClCompile Include="..\..\src\map.cpp" />
     <ClCompile Include="..\..\src\mapgrid.cpp" />

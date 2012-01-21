@@ -21,6 +21,9 @@
       <UniqueIdentifier>{da51fd0c-f7db-498f-b47c-5218200eec2f}</UniqueIdentifier>
       <Extensions>lua</Extensions>
     </Filter>
+    <Filter Include="AIs">
+      <UniqueIdentifier>{70dfa020-46d5-49a9-a13b-b8044be4e017}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\data\cr\animmodels.conf">
@@ -64,6 +67,9 @@
     </None>
     <None Include="..\..\data\cr\gametypes\test.lua">
       <Filter>Gametypes</Filter>
+    </None>
+    <None Include="..\..\data\cr\ai.lua">
+      <Filter>AIs</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +224,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\mod\mod_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\lua_unitinfo_lib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

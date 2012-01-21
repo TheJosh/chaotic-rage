@@ -1,10 +1,12 @@
-/*
-* lv3.c
-* 3d vectors for Lua 5.0
-* Luiz Henrique de Figueiredo <lhf@tecgraf.puc-rio.br>
-* 03 Dec 2004 11:29:50
-* This code is hereby placed in the public domain.
-*/
+// This file is part of Chaotic Rage (c) 2010 Josh Heidenreich
+//
+// kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
+//
+// Original copyright block:
+//   Luiz Henrique de Figueiredo <lhf@tecgraf.puc-rio.br>
+//   03 Dec 2004 11:29:50
+//   This code is hereby placed in the public domain.
+
 
 #include <stdio.h>
 #include <math.h>

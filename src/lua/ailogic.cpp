@@ -12,6 +12,7 @@
 extern "C" {
 	#include <lua.h>
 	#include <lauxlib.h>
+	#include <lualib.h>
 }
 
 
@@ -307,8 +308,9 @@ LUA_FUNC(visible_units)
 	int i = 0;
 	for (list<UnitQueryResult>::iterator it = uqr->begin(); it != uqr->end(); it++) {
 		i++;
-		lua_pushnumber(L, (*it).dist);
-		lua_rawseti (L, -2, i);
+		//lua_pushnumber(L, (*it).dist);
+		create_unitinfo(L, &(*it));
+		lua_rawseti (L, 1, i);
 	}
 	
 	delete(uqr);
@@ -328,15 +330,38 @@ LUA_FUNC(visible_units)
 **/
 void register_lua_functions()
 {
-	LUA_REG(debug);
+	lua_pushcfunction(L, luaopen_base);
+	lua_pushstring(L, "");
+	lua_call(L, 1, 0);
+
+	lua_pushcfunction(L, luaopen_table);
+	lua_pushstring(L, LUA_TABLIBNAME);
+	lua_call(L, 1, 0);
+
+	lua_pushcfunction(L, luaopen_string);
+	lua_pushstring(L, LUA_STRLIBNAME);
+	lua_call(L, 1, 0);
+
+	lua_pushcfunction(L, luaopen_math);
+	lua_pushstring(L, LUA_MATHLIBNAME);
+	lua_call(L, 1, 0);
+
+	lua_pushnil(L);
+	lua_setglobal(L, "dofile");
+
+	lua_pushnil(L);
+	lua_setglobal(L, "loadfile");
+
+	lua_pushnil(L);
+	lua_setglobal(L, "collectgarbage"); 
+
 	LUA_REG(add_interval);
 	LUA_REG(add_timer);
 	LUA_REG(remove_timer);
-	LUA_REG(random);
-	
 	LUA_REG(visible_units);
 	
 	load_vector3_lib(L);
+	load_unitinfo_lib(L);
 }
 
 

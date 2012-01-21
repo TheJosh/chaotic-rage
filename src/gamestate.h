@@ -13,6 +13,10 @@ using namespace std;
 #define MAX_LOCAL 4
 
 
+/**
+* Information about a unit. Exposed to lua as Unitinfo
+* This class must remain a POD or you will break the lua binding
+**/
 class UnitQueryResult
 {
 	public:
@@ -20,6 +24,10 @@ class UnitQueryResult
 		float dist;
 };
 
+
+/**
+* Main game state storage. Contains pointers to everything.
+**/
 class GameState
 {
 	friend class RenderSDL;
