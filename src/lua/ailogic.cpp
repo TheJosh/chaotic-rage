@@ -153,37 +153,6 @@ LUA_DEFINE_RAISE(npcdied)
 
 #define LUA_FUNC(name) static int name(lua_State *L)
 
-/**
-* Outputs one or more debug messages.
-* Messages will be outputted to standard-out, seperated by two spaces
-**/
-LUA_FUNC(debug)
-{
-	int n = lua_gettop(L);
-	int i;
-	
-	printf("Lua debug:");
-	
-	for (i = 1; i <= n; i++) {
-		if (lua_isstring(L, i)) {
-			printf("  %s", lua_tostring(L, i));
-			
-		} else if (lua_isnil(L, i)) {
-			printf("  %s", "nil");
-			
-		} else if (lua_isboolean(L,i)) {
-			printf("  %s", lua_toboolean(L, i) ? "true" : "faglse");
-			
-		} else {
-			printf("  %s:%p", luaL_typename(L, i), lua_topointer(L, i));
-		}   
-	}
-	
-	printf("\n");
-	
-	return 0;
-}
-
 
 /**
 * Adds an interval timer.
@@ -279,21 +248,6 @@ LUA_FUNC(remove_timer)
 	return 0;
 }
 
-/**
-* Returns a random integer.
-*
-* @param Integer min
-* @param Integer max
-**/
-LUA_FUNC(random)
-{
-	int min = lua_tointeger(L, 1);
-	int max = lua_tointeger(L, 2);
-	
-	lua_pushinteger(L, getRandom(min,max));
-	
-	return 1;
-}
 
 
 /**
@@ -309,7 +263,7 @@ LUA_FUNC(visible_units)
 	for (list<UnitQueryResult>::iterator it = uqr->begin(); it != uqr->end(); it++) {
 		i++;
 		//lua_pushnumber(L, (*it).dist);
-		create_unitinfo(L, &(*it));
+		new_unitinfo(L, &(*it));
 		lua_rawseti (L, 1, i);
 	}
 	
@@ -318,6 +272,58 @@ LUA_FUNC(visible_units)
 	return 1;
 }
 
+
+LUA_FUNC(get_location)
+{
+	btTransform trans;
+	btVector3 vecO;
+
+	gl->u->getRigidBody()->getMotionState()->getWorldTransform(trans);
+	vecO = trans.getOrigin();
+
+	new_vector3bt(L, vecO);
+
+	return 1;
+}
+
+
+/**
+* Sets the AI going in a certain direction.
+* The length of this vector is ignored, only the direction component.
+**/
+LUA_FUNC(set_direction)
+{
+	double * v = get_vector3(L, 1);
+
+	btVector3 walkDirection = btVector3(v[0], v[1], v[2]);
+	walkDirection.normalize();
+
+	btVector3 velocity = walkDirection * btScalar(60);		// TODO: Managed in the unit settings
+
+	gl->u->body->setLinearVelocity(velocity);
+	gl->u->body->activate(true);
+
+	return 0;
+}
+
+
+
+/**
+* Display an alert message
+**/
+LUA_FUNC(show_alert_message)
+{
+	const char* ctext = lua_tostring(L, 1);
+	string text = (*(new string(ctext)));
+	if (text.empty()) {
+		lua_pushstring(L, "Arg #1 is not a string");
+		lua_error(L);
+	}
+	
+	if (gl->st->hud) gl->st->hud->addAlertMessage(text);
+	
+	return 0;
+}
 
 
 /**
@@ -359,7 +365,10 @@ void register_lua_functions()
 	LUA_REG(add_timer);
 	LUA_REG(remove_timer);
 	LUA_REG(visible_units);
-	
+	LUA_REG(set_direction);
+	LUA_REG(get_location);
+	LUA_REG(show_alert_message);
+
 	load_vector3_lib(L);
 	load_unitinfo_lib(L);
 }

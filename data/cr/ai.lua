@@ -3,20 +3,22 @@
 ----
 
 
-add_interval(10 * 1000, function()
-	
-	print("10 secs...!");
-	
-end);
-
-add_interval(10 * 1000, function() 
+ function target() 
 
 	units = visible_units();
+	if (#units == 0) then return end
 
-	print("Found " .. #units .. " units")
+	table.sort(units, function(a,b)
+		return a.dist > b.dist				-- finds the furthest unit, so we can actually see it working
+	end);
 
-	for i, v in ipairs(units) do
-		print(i, v.dist)
-	end
+	me = get_location()
+	dir = units[1].location - me
 
-end);
+	set_direction(dir)
+
+end
+
+
+add_interval(10 * 1000, target)
+target();

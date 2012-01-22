@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "../rage.h"
+#include "lua_libs.h"
 
 extern "C" {
 	#include <lua.h>
@@ -54,8 +55,15 @@ LUA_FUNC(get)
 	if (strcmp(i, "dist") == 0) {
 		lua_pushnumber(L, uqr->dist);
 
+	} else if (strcmp(i, "location") == 0) {
+		btTransform trans;
+		uqr->u->getRigidBody()->getMotionState()->getWorldTransform(trans);
+		btVector3 vecO = trans.getOrigin();
+		new_vector3bt(L, vecO);
+
 	} else {
-		lua_pushnil(L);
+		lua_pushstring(L, "Invalid property for object " MYTYPE);
+		lua_error(L);
 	}
 
 	return 1;
@@ -98,7 +106,12 @@ void load_unitinfo_lib(lua_State *L)
 * Creates a unitinfo object, returning the lua pointer, and
 * putting the object on the stack ready for use
 **/
-UnitQueryResult * create_unitinfo(lua_State *L, UnitQueryResult* src)
+UnitQueryResult * new_unitinfo(lua_State *L, UnitQueryResult* src)
 {
 	return _new(L, src);
+}
+
+UnitQueryResult * get_unitinfo(lua_State *L, int i)
+{
+	return _get(L, i);
 }

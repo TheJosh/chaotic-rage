@@ -179,7 +179,7 @@ void Player::update(int delta)
 			
 			btVector3 forwardDir = xform.getBasis()[1];
 			forwardDir.normalize ();
-			forwardDir *= btScalar(2.5);
+			forwardDir *= btScalar(2.5);		// TODO: Managed in the unit settings
 			
 			btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		

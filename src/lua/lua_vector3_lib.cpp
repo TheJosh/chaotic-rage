@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include "../rage.h"
 
 extern "C" {
 	#include <lua.h>
@@ -104,9 +105,9 @@ LUA_FUNC(set)
 **/
 LUA_FUNC(tostring)
 {
-	double *v=_get(L,1);
+	double *f=_get(L,1);
 	char s[64];
-	sprintf(s,"%s %p",MYTYPE,(void*)v);
+	sprintf(s,"vector3 [%5.3f,%5.3f,%5.3f]",f[0],f[1],f[2]);
 	lua_pushstring(L,s);
 	return 1;
 }
@@ -315,3 +316,22 @@ void load_vector3_lib(lua_State *L)
 	lua_register(L,"v3dot",dot);
 }
 
+/**
+* Creates a vector3 object, returning the lua pointer, and
+* putting the object on the stack ready for use
+**/
+double * new_vector3(lua_State *L, float x, float y, float z)
+{
+	double *v;
+	lua_settop(L,3);
+	v=_new(L);
+	v[0]=x;
+	v[1]=y;
+	v[2]=z;
+	return v;
+}
+
+double * get_vector3(lua_State *L, int i)
+{
+	return _get(L, i);
+}
