@@ -319,15 +319,19 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 	}
 
 	// Open texture handle
+	glEnable(GL_TEXTURE_2D);
 	glGenTextures(1, &sprite->pixels);
 	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
 	
 	// Set stretching properties
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	
 	// Load it
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sprite->orig->w, sprite->orig->h, 0, texture_format, GL_UNSIGNED_BYTE, sprite->orig->pixels);
+	
+	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 
@@ -854,10 +858,10 @@ void RenderOpenGL::map()
 		
 		float texw = 1.0;
 		float texh = 1.0;
-		if (! a->type->stretch) {
-			texw = ((float)a->width) / ((float)a->type->texture->w);
-			texh = ((float)a->height) / ((float)a->type->texture->h);
-		}
+		//if (! a->type->stretch) {
+		//	texw = ((float)a->width) / ((float)a->type->texture->w);
+		//	texh = ((float)a->height) / ((float)a->type->texture->h);
+		//}
 		
 		glEnable(GL_NORMALIZE);
 		glLightModeli (GL_LIGHT_MODEL_COLOR_CONTROL,GL_SEPARATE_SPECULAR_COLOR);
