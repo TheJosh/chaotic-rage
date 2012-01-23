@@ -61,6 +61,9 @@ LUA_FUNC(get)
 		btVector3 vecO = trans.getOrigin();
 		new_vector3bt(L, vecO);
 
+	} else if (strcmp(i, "faction") == 0) {
+		lua_pushnumber(L, uqr->u->fac);
+
 	} else {
 		lua_pushstring(L, "Invalid property for object " MYTYPE);
 		lua_error(L);

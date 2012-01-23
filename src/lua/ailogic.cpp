@@ -123,7 +123,7 @@ void AILogic::update(int delta)
 	
 	if (currspeed < this->speed) {
 		this->dir.setZ(0);
-		btVector3 move = linearVelocity + this->dir * btScalar(2.5);		// TODO: Managed in the unit settings
+		btVector3 move = this->dir * (currspeed + btScalar(2.5));		// TODO: Managed in the unit settings
 		
 		this->u->body->activate(true);
 		this->u->body->setLinearVelocity(move);
@@ -291,20 +291,20 @@ LUA_FUNC(visible_units)
 
 
 /**
-* Return the current location
+* Return a unitinfo object with information about the currently running AI unit
 *
-* @return vector3
+* @return unitinfo
 **/
-LUA_FUNC(get_location)
+LUA_FUNC(get_info)
 {
-	btTransform trans;
-	btVector3 vecO;
-	
-	gl->u->getRigidBody()->getMotionState()->getWorldTransform(trans);
-	vecO = trans.getOrigin();
-	
-	new_vector3bt(L, vecO);
-	
+	UnitQueryResult *uqr = new UnitQueryResult();
+	uqr->u = gl->u;
+	uqr->dist = 0;
+
+	new_unitinfo(L, uqr);
+
+	delete (uqr);
+
 	return 1;
 }
 
@@ -364,7 +364,7 @@ void register_lua_functions()
 	LUA_REG(add_timer);
 	LUA_REG(remove_timer);
 	LUA_REG(visible_units);
-	LUA_REG(get_location);
+	LUA_REG(get_info);
 	LUA_REG(move);
 	LUA_REG(stop);
 }

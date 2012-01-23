@@ -57,8 +57,8 @@ void Menu::doit()
 	
 	// Viewmodes
 	viewmodes.push_back("top");
-	viewmodes.push_back("3rd-person");
-	viewmodes.push_back("1st-person");
+	viewmodes.push_back("3rd person");
+	viewmodes.push_back("1st person");
 	
 	// Unittypes
 	{
@@ -145,7 +145,16 @@ void Menu::doit()
 						} else {
 							cmd = MC_QUIT;
 						}
-					
+						break;
+
+					case SDLK_PRINT:
+						{
+							string filename = getUserDataDir();
+							filename.append("menu_screenshot.bmp");
+							render->saveScreenshot(filename);
+						}
+						break;
+
 					default: break;
 				}
 				

@@ -119,6 +119,7 @@
     <ClCompile Include="..\..\src\intro.cpp" />
     <ClCompile Include="..\..\src\lua\ailogic.cpp" />
     <ClCompile Include="..\..\src\lua\gamelogic.cpp" />
+    <ClCompile Include="..\..\src\lua\lua_standard.cpp" />
     <ClCompile Include="..\..\src\lua\lua_unitinfo_lib.cpp" />
     <ClCompile Include="..\..\src\lua\lua_vector3_lib.cpp" />
     <ClCompile Include="..\..\src\map.cpp" />

@@ -673,10 +673,10 @@ void RenderOpenGL::render()
 		
 		map();
 		
-		glPushMatrix();
+		/*glPushMatrix();
 		glTranslatef(100, 100, 0);
 		renderAnimPlay(this->test, 0);
-		glPopMatrix();
+		glPopMatrix();*/
 		
 		
 		entities();
@@ -914,7 +914,7 @@ void RenderOpenGL::entities()
 			glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
 			
 			renderAnimPlay(play, e->angle);
-			renderAnimPlay(this->test, 0);
+			//renderAnimPlay(this->test, 0);
 			
 			glPopMatrix();
 		}

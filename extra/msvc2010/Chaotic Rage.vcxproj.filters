@@ -229,6 +229,9 @@
     <ClCompile Include="..\..\src\lua\lua_unitinfo_lib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lua\lua_standard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\entity.h">

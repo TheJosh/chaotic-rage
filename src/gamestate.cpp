@@ -261,7 +261,8 @@ list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); it++) {
 		if ((*it)->klass() != UNIT) continue;
 		u = (Unit*)(*it);
-		
+		if (u == origin) continue;
+
 		u->getRigidBody()->getMotionState()->getWorldTransform(trans);
 		vecS = trans.getOrigin();
 		vecS -= vecO;
