@@ -118,10 +118,16 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	GLenum err = glewInit();
 	if (GLEW_OK != err) {
 		fprintf(stderr, "Glew Error: %s\n", glewGetErrorString(err));
+		reportFatalError("Unable to init the library GLEW");
 		exit(1);
 	}
 	
-
+	if (! GL_ARB_framebuffer_object) {
+		reportFatalError("OpenGL 3.0 or the extension 'GL_ARB_framebuffer_object' not available.");
+		exit(1);
+	}
+	
+	
 	// Freetype
 	int error;
 	error = FT_Init_FreeType(&this->ft);
@@ -330,7 +336,6 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 	
 	// Load it
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sprite->orig->w, sprite->orig->h, 0, texture_format, GL_UNSIGNED_BYTE, sprite->orig->pixels);
-	
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
