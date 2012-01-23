@@ -12,7 +12,13 @@ using namespace std;
 
 
 /**
-* Vector3, from lua_vector3_lib.cpp
+* Inits the Lua standard libraries, and nukes some non-safe ones (like IO and OS)
+**/
+void lua_standard_libs(lua_State *L);
+
+
+/**
+* vector3, from lua_vector3_lib.cpp
 **/
 void load_vector3_lib(lua_State *L);
 double * new_vector3(lua_State *L, float x, float y, float z);
@@ -22,7 +28,7 @@ double * get_vector3(lua_State *L, int i);
 
 
 /**
-* Unitinfo, from lua_unitinfo_lib.cpp
+* unitinfo, from lua_unitinfo_lib.cpp
 **/
 void load_unitinfo_lib(lua_State *L);
 UnitQueryResult * new_unitinfo(lua_State *L, UnitQueryResult* src);

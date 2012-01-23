@@ -40,6 +40,7 @@ int inside (SDL_Rect rect, int x, int y);
 // Time
 int ppsDeltai(int pps, int delta);
 float ppsDeltaf(float pps, int delta);
+float mpsDeltaf(float mps, int delta);
 
 // Random numbers
 void seedRandom();

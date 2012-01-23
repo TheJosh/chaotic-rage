@@ -47,6 +47,9 @@ AILogic::AILogic(Unit *u)
 	
 	this->ActiveLuaState();
 	register_lua_functions();
+	
+	this->dir = btVector3(0,0,0);
+	this->speed = 0;
 }
 
 AILogic::~AILogic()
@@ -90,10 +93,12 @@ bool AILogic::execScript(string code)
 /**
 * Basically just provides timer ticks
 **/
-void AILogic::update(int deglta)
+void AILogic::update(int delta)
 {
 	this->ActiveLuaState();
 	
+	
+	// Fire timers
 	for (unsigned int id = 0; id < this->timers.size(); id++) {
 		LuaTimer* t = this->timers.at(id);
 		if (t == NULL) continue;
@@ -109,7 +114,19 @@ void AILogic::update(int deglta)
 				this->timers[id] = NULL;
 			}
 		}
+	}
+	
+	
+	// Do a position update
+	btVector3 linearVelocity = this->u->body->getLinearVelocity();
+	btScalar currspeed = linearVelocity.length();
+	
+	if (currspeed < this->speed) {
+		this->dir.setZ(0);
+		btVector3 move = linearVelocity + this->dir * btScalar(2.5);		// TODO: Managed in the unit settings
 		
+		this->u->body->activate(true);
+		this->u->body->setLinearVelocity(move);
 	}
 }
 
@@ -273,55 +290,58 @@ LUA_FUNC(visible_units)
 }
 
 
+/**
+* Return the current location
+*
+* @return vector3
+**/
 LUA_FUNC(get_location)
 {
 	btTransform trans;
 	btVector3 vecO;
-
+	
 	gl->u->getRigidBody()->getMotionState()->getWorldTransform(trans);
 	vecO = trans.getOrigin();
-
+	
 	new_vector3bt(L, vecO);
-
+	
 	return 1;
 }
 
 
 /**
-* Sets the AI going in a certain direction.
-* The length of this vector is ignored, only the direction component.
+* Sets the AI going in a certain direction, at a certain speed.
+*
+* The vector is normalized before use, and the speed is limited by the unit type configuration.
+* If the speed is omitted or zero, the maximum possible speed for the unit type will be used.
+*
+* @param vector3 direction Direction of travel
+* @param optional vector3 speed Speed, in meters per second
 **/
-LUA_FUNC(set_direction)
+LUA_FUNC(move)
 {
 	double * v = get_vector3(L, 1);
-
 	btVector3 walkDirection = btVector3(v[0], v[1], v[2]);
 	walkDirection.normalize();
-
-	btVector3 velocity = walkDirection * btScalar(60);		// TODO: Managed in the unit settings
-
-	gl->u->body->setLinearVelocity(velocity);
-	gl->u->body->activate(true);
-
+	gl->dir = walkDirection;
+	
+	float speed = lua_tonumber(L, 2);
+	if (speed != 0.0f) {
+		gl->speed = MAX(speed, 5.f);			// TODO: Max speed - managed in the unit settings
+	} else {
+		gl->speed = 5.f;						// TODO: Max speed - managed in the unit settings
+	}
+	
 	return 0;
 }
 
 
-
 /**
-* Display an alert message
+* Makes the AI stop movement.
 **/
-LUA_FUNC(show_alert_message)
+LUA_FUNC(stop)
 {
-	const char* ctext = lua_tostring(L, 1);
-	string text = (*(new string(ctext)));
-	if (text.empty()) {
-		lua_pushstring(L, "Arg #1 is not a string");
-		lua_error(L);
-	}
-	
-	if (gl->st->hud) gl->st->hud->addAlertMessage(text);
-	
+	gl->speed = 0;
 	return 0;
 }
 
@@ -336,41 +356,17 @@ LUA_FUNC(show_alert_message)
 **/
 void register_lua_functions()
 {
-	lua_pushcfunction(L, luaopen_base);
-	lua_pushstring(L, "");
-	lua_call(L, 1, 0);
-
-	lua_pushcfunction(L, luaopen_table);
-	lua_pushstring(L, LUA_TABLIBNAME);
-	lua_call(L, 1, 0);
-
-	lua_pushcfunction(L, luaopen_string);
-	lua_pushstring(L, LUA_STRLIBNAME);
-	lua_call(L, 1, 0);
-
-	lua_pushcfunction(L, luaopen_math);
-	lua_pushstring(L, LUA_MATHLIBNAME);
-	lua_call(L, 1, 0);
-
-	lua_pushnil(L);
-	lua_setglobal(L, "dofile");
-
-	lua_pushnil(L);
-	lua_setglobal(L, "loadfile");
-
-	lua_pushnil(L);
-	lua_setglobal(L, "collectgarbage"); 
-
+	lua_standard_libs(L);
+	load_vector3_lib(L);
+	load_unitinfo_lib(L);
+	
 	LUA_REG(add_interval);
 	LUA_REG(add_timer);
 	LUA_REG(remove_timer);
 	LUA_REG(visible_units);
-	LUA_REG(set_direction);
 	LUA_REG(get_location);
-	LUA_REG(show_alert_message);
-
-	load_vector3_lib(L);
-	load_unitinfo_lib(L);
+	LUA_REG(move);
+	LUA_REG(stop);
 }
 
 

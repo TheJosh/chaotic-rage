@@ -247,7 +247,7 @@ list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 {
 	list<UnitQueryResult> * ret = new list<UnitQueryResult>();
 	
-	float visual_distance = 60;		// TODO: Should this be a unit property?
+	float visual_distance = 200;		// TODO: Should this be a unit property?
 	
 	btTransform trans;
 	UnitQueryResult uqr;

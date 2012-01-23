@@ -3,22 +3,22 @@
 ----
 
 
- function target() 
-
+function target() 
+	
 	units = visible_units();
 	if (#units == 0) then return end
-
+	
 	table.sort(units, function(a,b)
 		return a.dist > b.dist				-- finds the furthest unit, so we can actually see it working
 	end);
-
+	
 	me = get_location()
 	dir = units[1].location - me
-
-	set_direction(dir)
-
+	
+	move(dir)
+	
 end
 
 
-add_interval(10 * 1000, target)
+add_interval(2 * 1000, target)
 target();

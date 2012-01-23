@@ -45,7 +45,7 @@ end;
 --
 start_round = function()
 	num_zombies = 0;
-	num_wanted = num_wanted + 10;
+	num_wanted = 1; --num_wanted + 10;
 	num_dead = 0;
 	round = round + 1;
 	

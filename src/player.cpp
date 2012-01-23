@@ -174,7 +174,7 @@ void Player::update(int delta)
 			
 			body->setLinearVelocity (linearVelocity);
 			
-		} else if (speed < 10.0) {
+		} else if (speed < 10.0) {				// TODO: Managed in the unit settings
 			body->activate(true);
 			
 			btVector3 forwardDir = xform.getBasis()[1];

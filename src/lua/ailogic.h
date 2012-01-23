@@ -26,6 +26,8 @@ class AILogic
 		lua_State *lua;
 		GameState *st;
 		vector<LuaTimer*> timers;
+		btVector3 dir;
+		float speed;
 		
 	public:
 		AILogic(Unit *u);

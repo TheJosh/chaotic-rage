@@ -163,7 +163,7 @@ int inside (SDL_Rect rect, int x, int y)
 **/
 int ppsDeltai(int pps, int delta)
 {
-	float ret = ((float)pps) * ((float)delta) / 1000.0;
+	float ret = ((float)pps) * ((float)delta) / 1000.0f;
 	if (pps > 0) { return (int) ceil(ret); } else { return (int) floor(ret); }
 }
 
@@ -177,7 +177,19 @@ int ppsDeltai(int pps, int delta)
 **/
 float ppsDeltaf(float pps, int delta)
 {
-	return pps * ((float)delta) / 1000.0;
+	return pps * ((float)delta) / 1000.0f;
+}
+
+
+/**
+* Converts a meters/second distance, and a delta into a fixed distance in meters.
+* deltas are in miliseconds.
+*
+* return value is in meters.
+**/
+float mpsDeltaf(float mps, int delta)
+{
+	return mps * ((float)delta) / 1000.0f;
 }
 
 
