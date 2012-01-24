@@ -157,28 +157,26 @@ void Player::update(int delta)
 	
 	
 	
+	// TODO: why is this in a block?
 	{
 		btTransform xform;
 		body->getMotionState()->getWorldTransform (xform);
-		
-		xform.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->angle)));
-		
 		
 		btVector3 linearVelocity = body->getLinearVelocity();
 		btScalar speed = linearVelocity.length();
 		
 		DEBUG("unit", "%p Velocity: %f %f %f", this, linearVelocity.x(), linearVelocity.y(), linearVelocity.z());
 		
-		if (!this->key[KEY_UP] && !this->key[KEY_DOWN]) {
+		
+		if (!this->key[KEY_UP] && !this->key[KEY_DOWN] && !this->key[KEY_LEFT] && !this->key[KEY_RIGHT]) {
 			linearVelocity *= btScalar(0.2);
-			
-			body->setLinearVelocity (linearVelocity);
 			
 		} else if (speed < 10.0) {				// TODO: Managed in the unit settings
 			body->activate(true);
 			
+			xform.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->angle)));
 			btVector3 forwardDir = xform.getBasis()[1];
-			forwardDir.normalize ();
+			forwardDir.normalize();
 			forwardDir *= btScalar(2.5);		// TODO: Managed in the unit settings
 			
 			btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
@@ -189,10 +187,21 @@ void Player::update(int delta)
 				walkDirection += forwardDir;
 			}
 			
-			btVector3 velocity = linearVelocity + walkDirection;
+			xform.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->angle + 90)));
+			btVector3 strafeDir = xform.getBasis()[1];
+			strafeDir.normalize();
+			strafeDir *= btScalar(0.7);		// TODO: Managed in the unit settings
 			
-			body->setLinearVelocity (velocity);
+			if (this->key[KEY_LEFT]) {
+				walkDirection -= strafeDir;
+			} else if (this->key[KEY_RIGHT]) {
+				walkDirection += strafeDir;
+			}
+			
+			linearVelocity += walkDirection;
 		}
+		
+		body->setLinearVelocity (linearVelocity);
 	}
 	
 	
