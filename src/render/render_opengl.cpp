@@ -87,6 +87,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	// SDL
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 	
 	flags = SDL_OPENGL;
 	if (fullscreen) flags |= SDL_FULLSCREEN;
@@ -157,6 +159,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_MULTISAMPLE);
 	glDepthFunc(GL_LEQUAL);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
