@@ -106,6 +106,14 @@ void GameState::addObject(Object* object)
 	this->entities_add.push_back(object);
 }
 
+/**
+* Add a particle
+**/
+void GameState::addNewParticle(NewParticle* particle)
+{
+	this->particles.push_back(particle);
+}
+
 
 /**
 * Finds the unit which matches a given slot
@@ -227,6 +235,9 @@ void GameState::update(int delta)
 	// What hit what?
 	this->physics->doCollisions();
 	
+	// Particles
+	this->update_particles(delta);
+	
 	// Decrease entropy
 	if (this->entropy > 0) {
 		this->entropy--;
@@ -235,6 +246,14 @@ void GameState::update(int delta)
 	// Update time
 	this->game_time += delta;
 	this->anim_frame = (int) floor(this->game_time * ANIMATION_FPS / 1000.0);
+}
+
+
+void GameState::update_particles(int delta)
+{
+	for (list<NewParticle*>::iterator it = this->particles.begin(); it != this->particles.end(); it++) {
+		(*it)->pos += (*it)->vel;
+	}
 }
 
 

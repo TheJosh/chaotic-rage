@@ -64,6 +64,7 @@ int AnimPlay::getFrame()
 **/
 bool AnimPlay::isDone()
 {
+	if (this->model == NULL) return false;
 	if (this->model->next == NULL) return false;
 	if (this->start_frame == -1) return false;
 	

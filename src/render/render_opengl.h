@@ -113,6 +113,7 @@ class RenderOpenGL : public Render
 		void lights();
 		void map();
 		void entities();
+		void particles();
 		void collides();
 		void hud();
 };

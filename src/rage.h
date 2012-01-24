@@ -67,6 +67,7 @@ class Mod;
 class ModManager;
 class NetClient;
 class NetServer;
+class NewParticle;
 class NPC;
 class Object;
 class ObjectType;
@@ -131,6 +132,7 @@ class Zone;
 #include "player.h"
 #include "npc.h"
 #include "object.h"
+#include "newparticle.h"
 #include "particle.h"
 #include "particlegenerator.h"
 #include "wall.h"

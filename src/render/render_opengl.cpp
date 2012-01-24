@@ -692,6 +692,7 @@ void RenderOpenGL::render()
 		
 		
 		entities();
+		particles();
 		hud();
 		
 		if (physicsdebug != NULL) {
@@ -930,6 +931,19 @@ void RenderOpenGL::entities()
 			
 			glPopMatrix();
 		}
+	}
+}
+
+
+void RenderOpenGL::particles()
+{
+	glPointSize(5.f);
+	
+	for (list<NewParticle*>::iterator it = this->st->particles.begin(); it != this->st->particles.end(); it++) {
+		glBegin(GL_POINTS);
+		glColor4f((*it)->r, (*it)->g, (*it)->b, 1.0f);
+		glVertex3f((*it)->pos.x(), (*it)->pos.y(), (*it)->pos.z());
+		glEnd();
 	}
 }
 

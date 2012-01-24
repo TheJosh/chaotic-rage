@@ -40,6 +40,7 @@ class GameState
 		list<Entity*> entities;
 		list<Entity*> entities_add;
 		list<CollideBox*> collideboxes;
+		list<NewParticle*> particles;
 		
 		vector<Unit*> units;		// leaks: items are not removed
 		vector<Wall*> walls;		// leaks: items are not removed
@@ -80,6 +81,7 @@ class GameState
 		void addParticleGenerator(ParticleGenerator* generator);
 		void addWall(Wall* wall);
 		void addObject(Object* object);
+		void addNewParticle(NewParticle* particle);
 		
 		// For network
 		Unit * findUnitSlot(int slot);
@@ -87,6 +89,7 @@ class GameState
 		// Start and run
 		void start();
 		void update(int delta);
+		void update_particles(int delta);
 		void clear();
 		
 		// Entropy

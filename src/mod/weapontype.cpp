@@ -60,7 +60,18 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	wt->title = cfg_getstr(cfg_item, "title");
 	wt->st = mod->st;
 	
-	// Particle (bullets)
+	wt->angle_range = cfg_getint(cfg_item, "angle_range");
+	wt->fire_delay = cfg_getint(cfg_item, "fire_delay");
+	wt->reload_delay = cfg_getint(cfg_item, "reload_delay");
+	wt->continuous = (cfg_getint(cfg_item, "continuous") == 1);
+	wt->magazine_limit = cfg_getint(cfg_item, "magazine_limit");
+	wt->belt_limit = cfg_getint(cfg_item, "belt_limit");
+	wt->range = cfg_getfloat(cfg_item, "range");
+	wt->unit_damage = cfg_getfloat(cfg_item, "unit_damage");
+	wt->wall_damage = cfg_getfloat(cfg_item, "wall_damage");
+	
+	
+	// Particle (effects; old)
 	char * tmp = cfg_getstr(cfg_item, "particle");
 	if (tmp != NULL && strlen(tmp) > 0) {
 		wt->pt = mod->getParticleType(tmp);
@@ -69,16 +80,9 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 			cerr << "Particle type '" << tmp << "' not found.\n";
 			return NULL;
 		}
-		
-		wt->angle_range = cfg_getint(cfg_item, "angle_range");
-		wt->fire_delay = cfg_getint(cfg_item, "fire_delay");
-		wt->reload_delay = cfg_getint(cfg_item, "reload_delay");
-		wt->continuous = (cfg_getint(cfg_item, "continuous") == 1);
-		wt->magazine_limit = cfg_getint(cfg_item, "magazine_limit");
-		wt->belt_limit = cfg_getint(cfg_item, "belt_limit");
 	}
 	
-	// Particle gen (effects)
+	// Particle gen (effects; old)
 	tmp = cfg_getstr(cfg_item, "particlegen");
 	if (tmp != NULL) {
 		wt->pg = mod->getParticleGenType(tmp);
@@ -151,20 +155,29 @@ void WeaponType::doFire(Unit * u)
 	
 	
 	btTransform xform;
-	u->body->getMotionState()->getWorldTransform (xform);
+	u->body->getMotionState()->getWorldTransform(xform);
 	
-	xform.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(u->angle)));
+	xform.setRotation(btQuaternion(btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(u->angle)));
 	
 	btVector3 forwardDir = xform.getBasis()[1];
-	forwardDir.normalize ();
+	forwardDir.normalize();
 	
 	
-	DEBUG("weap", "forwardDir is %f %f %f", forwardDir.x(), forwardDir.y(), forwardDir.z());
+	DEBUG("weap", "forwardDir is %5.3f %5.3f %5.3f", forwardDir.x(), forwardDir.y(), forwardDir.z());
+	DEBUG("weap", "Range is %5.1f", this->range);
 	
 	btVector3 begin = xform.getOrigin();
-	btVector3 end = begin + (forwardDir * btScalar(0 - this->range));		// weapon range
+	btVector3 end = begin + forwardDir * btScalar(0.0f - this->range);		// weapon range
 	
-	DEBUG("weap", "Ray between %f %f %f and %f %f %f", begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z());
+	DEBUG("weap", "Ray between %5.3f %5.3f %5.3f and %5.3f %5.3f %5.3f", begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z());
+	
+	
+	btVector3 vel = end - begin;
+	vel.normalize();
+	vel *= btScalar(2.0f);
+	
+	create_particles(u->getGameState(), 30, begin, vel, btVector3(0.5f, 0.1f, 0.5f), 0.1, 0.1, 0.1, 500);
+	
 	
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
 	
