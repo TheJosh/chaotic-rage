@@ -1,7 +1,7 @@
 ===  For Beta 1  ===
 
 - Rescale of objects
-- Darkness
-- Strafe, turn fixes
-- Weapons should have wider rayTests
+- Weapons should have wider rayTests, particles in weird locations
+- Rip out old particle system
 - Find all TODOs and fix em
+- Vehicles working
