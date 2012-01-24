@@ -680,17 +680,7 @@ void RenderOpenGL::render()
 		background();
 		mainRot();
 		lights();
-		
-		glDisable(GL_LIGHTING);
-		
 		map();
-		
-		/*glPushMatrix();
-		glTranslatef(100, 100, 0);
-		renderAnimPlay(this->test, 0);
-		glPopMatrix();*/
-		
-		
 		entities();
 		particles();
 		hud();
@@ -748,12 +738,10 @@ void RenderOpenGL::mainRot()
 		glTranslatef(0 - st->curr_map->width / 2, 0 - st->curr_map->height / 2, 0);
 		
 	} else {
-		//glTranslatef(tx,ty,tz);
-		//glRotatef(rx, 1, 0, 0);
-		
-		if (this->viewmode == 0) {			// Top
+		if (this->viewmode == 0) {				// Top
 			glTranslatef(0,87,731);
 			glRotatef(10, 1, 0, 0);
+			glTranslatef(0,0,-5);
 			
 		} else if (this->viewmode == 1) {		// Behind (3rd person)
 			glTranslatef(0,483,1095);
