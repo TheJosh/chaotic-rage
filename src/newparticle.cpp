@@ -19,9 +19,9 @@ void create_particles(GameState * st, unsigned int num, btVector3 pos, btVector3
 		p = new NewParticle();
 		p->pos = pos;
 		p->vel = btVector3(
-			vel.x() + getRandom(-velrand.x(), velrand.x()),
-			vel.y() + getRandom(-velrand.y(), velrand.y()),
-			vel.z() + getRandom(-velrand.z(), velrand.z())
+			vel.x() + getRandomf(-velrand.x(), velrand.x()),
+			vel.y() + getRandomf(-velrand.y(), velrand.y()),
+			vel.z() + getRandomf(-velrand.z(), velrand.z())
 		);
 		p->r = r;
 		p->g = g;

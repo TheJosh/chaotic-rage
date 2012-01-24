@@ -45,6 +45,7 @@ float mpsDeltaf(float mps, int delta);
 // Random numbers
 void seedRandom();
 int getRandom(int low, int high);
+float getRandomf(float low, float high);
 
 // libconfuse helpers
 Range cfg_getrange(cfg_t *cfg, const char * name);

@@ -205,6 +205,13 @@ int getRandom(int low, int high)
 	return rand() % (high - low + 1) + low;
 }
 
+float getRandomf(float low, float high)
+{
+	if (high < low) swap(low, high);
+	if (high == low) return low;
+	return ((float)rand()/(float)RAND_MAX) * (high - low) + low;
+}
+
 
 /**
 * Gets a range for a libconfuse config option.

@@ -937,8 +937,7 @@ void RenderOpenGL::entities()
 
 void RenderOpenGL::particles()
 {
-	glPointSize(5.f);
-	
+	glPointSize(10.f);
 	for (list<NewParticle*>::iterator it = this->st->particles.begin(); it != this->st->particles.end(); it++) {
 		glBegin(GL_POINTS);
 		glColor4f((*it)->r, (*it)->g, (*it)->b, 1.0f);
