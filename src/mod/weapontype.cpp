@@ -172,12 +172,7 @@ void WeaponType::doFire(Unit * u)
 	DEBUG("weap", "Ray between %5.3f %5.3f %5.3f and %5.3f %5.3f %5.3f", begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z());
 	
 	
-	btVector3 vel = end - begin;
-	vel.normalize();
-	vel *= btScalar(2.0f);
-	
-	create_particles(u->getGameState(), 30, begin, vel, btVector3(0.1f, 0.05f, 0.1f), 0.1, 0.1, 0.1, 500);
-	
+	create_particles_weapon(u->getGameState(), 30, begin, end, 10.f);
 	
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
 	

@@ -10,22 +10,35 @@
 using namespace std;
 
 
-void create_particles(GameState * st, unsigned int num, btVector3 pos, btVector3 vel, btVector3 velrand, float r, float g, float b, int lifetime)
+/**
+* Creates particles for a weapon.
+*
+* Angles and speeds are randomised. Lifetime is calculated based on the end vector and a constant speed.
+*
+* @param num The number of particles to create
+* @param start The start location of the particle stream
+* @param end The end location of the particle stream
+* @param angle_range The range of angles to use for the stream, in degrees
+**/
+void create_particles_weapon(GameState * st, unsigned int num, btVector3 begin, btVector3 end, float angle_range)
 {
 	NewParticle * p;
-	int time_death = st->game_time + lifetime;
+	
+	btVector3 velW = end - begin;
+	velW.normalize();
+	velW *= btScalar(velW.length() / 1.f);
+	
+	float time_death = st->game_time + 1.f;
+	
+	angle_range /= 2;
 	
 	for (; num > 0; --num) {
+		btVector3 velP = velW.rotate(btVector3(0.f, 0.f, 1.f), getRandomf(-angle_range, angle_range));
+		
 		p = new NewParticle();
-		p->pos = pos;
-		p->vel = btVector3(
-			vel.x() + getRandomf(-velrand.x(), velrand.x()),
-			vel.y() + getRandomf(-velrand.y(), velrand.y()),
-			vel.z() + getRandomf(-velrand.z(), velrand.z())
-		);
-		p->r = r;
-		p->g = g;
-		p->b = b;
+		p->pos = begin;
+		p->vel = velP;
+		p->r = p->g = p->b = .1f;
 		p->time_death = time_death;
 		
 		st->addNewParticle(p);
