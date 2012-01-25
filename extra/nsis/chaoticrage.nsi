@@ -90,6 +90,8 @@ Section "Uninstall"
   Delete "$INSTDIR\*.manifest"
   Delete "$INSTDIR\*.exe"
   Delete "$INSTDIR\*.otf"
+  Delete "$INSTDIR\*.bmp"
+  Delete "$INSTDIR\*.txt"
   RMDir "$INSTDIR"
   
   ; Remove shortcuts, if any
