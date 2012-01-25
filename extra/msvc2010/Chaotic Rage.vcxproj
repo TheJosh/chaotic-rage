@@ -142,6 +142,7 @@
     <ClCompile Include="..\..\src\net\net_client.cpp" />
     <ClCompile Include="..\..\src\net\net_pack.cpp" />
     <ClCompile Include="..\..\src\net\net_server.cpp" />
+    <ClCompile Include="..\..\src\newparticle.cpp" />
     <ClCompile Include="..\..\src\npc.cpp" />
     <ClCompile Include="..\..\src\object.cpp" />
     <ClCompile Include="..\..\src\particle.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="..\..\src\net\net.h" />
     <ClInclude Include="..\..\src\net\net_client.h" />
     <ClInclude Include="..\..\src\net\net_server.h" />
+    <ClInclude Include="..\..\src\newparticle.h" />
     <ClInclude Include="..\..\src\npc.h" />
     <ClInclude Include="..\..\src\object.h" />
     <ClInclude Include="..\..\src\particle.h" />

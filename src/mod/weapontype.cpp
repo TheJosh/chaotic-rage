@@ -172,10 +172,10 @@ void WeaponType::doFire(Unit * u)
 	DEBUG("weap", "Ray between %5.3f %5.3f %5.3f and %5.3f %5.3f %5.3f", begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z());
 	
 	
-	create_particles_weapon(u->getGameState(), 30, begin, end, 10.f);
+	create_particles_weapon(u->getGameState(), 30, &begin, &end, 10.f);
 	
+
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
-	
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
 	
 	if (cb.hasHit()) {

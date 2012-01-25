@@ -27,7 +27,7 @@ RenderDebug::~RenderDebug()
 /**
 * Sets the screen size
 **/
-void RenderDebug::setScreenSize(int width, int height, bool fullscreen)
+void RenderDebug::setScreenSize(int width, int height, bool fullscreen, int multisample)
 {
 	this->width = width;
 	this->height = height;

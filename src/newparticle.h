@@ -20,4 +20,4 @@ class NewParticle {
 
 
 
-void create_particles_weapon(GameState * st, unsigned int num, btVector3 start, btVector3 end, float angle);
+void create_particles_weapon(GameState * st, unsigned int num, btVector3 * begin, btVector3 * end, float angle_range);

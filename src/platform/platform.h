@@ -5,6 +5,7 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <vector>
 #include "../rage.h"
 
 using namespace std;
@@ -40,4 +41,18 @@ string getUserDataDir();
 **/
 void reportFatalError(string msg);
 
+
+/**
+* Returns an array of full paths to user modules
+* The returned paths include the ".crk" part.
+*
+* Example return value:
+*    <
+*    /home/josh/.chaoticrage/mods/hey.crk
+*    /home/josh/.chaoticrage/mods/whoo.crk
+*    >
+*
+* Please free the result when you are done.
+**/
+vector<string> * getUserModFilenames();
 

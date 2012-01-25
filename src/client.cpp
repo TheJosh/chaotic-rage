@@ -33,7 +33,7 @@ int main (int argc, char ** argv)
 	new ModManager(st);
 
 	
-	st->render->setScreenSize(900, 900, false);
+	st->render->setScreenSize(900, 900, false, 0);
 	
 	
 	if (FEAT_INTRO) {
@@ -48,12 +48,15 @@ int main (int argc, char ** argv)
 	}
 	st->mm->addMod(mod);
 
-	// Load mod #2
-	mod = new Mod(st, "data/fishing");
-	if (! mod->load()) {
-		reportFatalError("Unable to load data module 'fishing'.");
+	// Load user mods
+	vector<string> * userfiles = getUserModFilenames();
+	for (unsigned int i = 0; i < userfiles->size(); i++) {
+		mod = new Mod(st, userfiles->at(i));
+		if (! mod->load()) {
+			reportFatalError("Unable to load data module '" + userfiles->at(i) + "'.");
+		}
+		st->mm->addMod(mod);
 	}
-	st->mm->addMod(mod);
 
 
 	if (FEAT_MENU) {

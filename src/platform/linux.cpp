@@ -52,3 +52,24 @@ void reportFatalError(string msg)
 	exit(1);
 }
 
+
+/**
+* Returns an array of full paths to user modules
+* The returned paths include the ".crk" part.
+*
+* Example return value:
+*    <
+*    /home/josh/.chaoticrage/mods/hey.crk
+*    /home/josh/.chaoticrage/mods/whoo.crk
+*    >
+*
+* Please free the result when you are done.
+**/
+vector<string> * getUserModFilenames()
+{
+	vector<string> * ret = new vector<string>();
+
+	// TODO: Support this method on linux
+
+	return ret;
+}

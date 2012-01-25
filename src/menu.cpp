@@ -5,10 +5,16 @@
 #include <iostream>
 #include <SDL.h>
 #include <math.h>
+
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
 #include <guichan/opengl.hpp>
 #include <guichan/opengl/openglsdlimageloader.hpp>
+
 #include "rage.h"
 #include "menu.h"
 
@@ -35,9 +41,9 @@ void Menu::doit()
 	WavefrontObj * bgmesh = loadObj("data/menu/bg.obj");
 	SpritePtr bg = this->render->loadSprite("bg.jpg", mod);
 	float bg_rot1_pos = -10;
-	float bg_rot1_dir = 0.06;
+	float bg_rot1_dir = 0.006;
 	float bg_rot2_pos = 3;
-	float bg_rot2_dir = -0.04;
+	float bg_rot2_dir = -0.004;
 	
 	
 	// Maps
@@ -136,7 +142,7 @@ void Menu::doit()
 				// Key press
 				switch (event.key.keysym.sym) {
 					case SDLK_p:
-						render->setScreenSize(render->desktop_width, render->desktop_height, true);
+						render->setScreenSize(render->desktop_width, render->desktop_height, true, 0);
 						break;
 
 					case SDLK_ESCAPE:
@@ -196,6 +202,7 @@ void Menu::doit()
 		glDisable(GL_LIGHTING);
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_FOG);
+		glDisable(GL_MULTISAMPLE);
 
 
 		// Perspective mode for the background
@@ -241,7 +248,6 @@ void Menu::doit()
 
 
 		SDL_GL_SwapBuffers();
-		SDL_Delay(50);
 	}
 	
 }

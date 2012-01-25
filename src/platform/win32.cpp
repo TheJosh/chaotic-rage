@@ -52,3 +52,43 @@ void reportFatalError(string msg)
 	exit(1);
 }
 
+
+/**
+* Returns an array of full paths to user modules
+* The returned paths include the ".crk" part.
+*
+* Example return value:
+*    <
+*    /home/josh/.chaoticrage/mods/hey.crk
+*    /home/josh/.chaoticrage/mods/whoo.crk
+*    >
+*
+* Please free the result when you are done.
+**/
+vector<string> * getUserModFilenames()
+{
+	vector<string> * ret = new vector<string>();
+	string userdir = getUserDataDir();
+
+	WIN32_FIND_DATA fdFile;
+    HANDLE hFind = NULL;
+    char sPath[2048];
+
+	// Initial search
+    sprintf(sPath, "%s\\*.crk", userdir);
+    if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE) {
+        return ret;
+    }
+
+	// Iterate over results
+	do {
+        if (fdFile.cFileName[0] != '.') {
+            sprintf(sPath, "%s\\%s", userdir, fdFile.cFileName);
+			ret->push_back(string(sPath));
+        }
+    } while(FindNextFile(hFind, &fdFile));
+
+    FindClose(hFind);
+
+	return ret;
+}

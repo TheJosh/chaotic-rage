@@ -20,23 +20,24 @@ using namespace std;
 * @param end The end location of the particle stream
 * @param angle_range The range of angles to use for the stream, in degrees
 **/
-void create_particles_weapon(GameState * st, unsigned int num, btVector3 begin, btVector3 end, float angle_range)
+void create_particles_weapon(GameState * st, unsigned int num, btVector3 * begin, btVector3 * end, float angle_range)
 {
 	NewParticle * p;
 	
-	btVector3 velW = end - begin;
+	btVector3 velW = *end - *begin;
 	velW.normalize();
-	velW *= btScalar(velW.length() / 1.f);
+	velW *= btScalar(velW.length() / 1000.f);
 	
-	float time_death = st->game_time + 1.f;
+	int time_death = st->game_time + 1000;
 	
 	angle_range /= 2;
-	
+	angle_range = DEG_TO_RAD(angle_range);
+
 	for (; num > 0; --num) {
 		btVector3 velP = velW.rotate(btVector3(0.f, 0.f, 1.f), getRandomf(-angle_range, angle_range));
 		
 		p = new NewParticle();
-		p->pos = begin;
+		p->pos = *begin;
 		p->vel = velP;
 		p->r = p->g = p->b = .1f;
 		p->time_death = time_death;

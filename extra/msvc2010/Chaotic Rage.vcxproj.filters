@@ -232,6 +232,9 @@
     <ClCompile Include="..\..\src\lua\lua_standard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\newparticle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\entity.h">
@@ -388,6 +391,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\mod\mod_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\newparticle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

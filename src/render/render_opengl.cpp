@@ -76,7 +76,7 @@ RenderOpenGL::~RenderOpenGL()
 /**
 * Sets the screen size
 **/
-void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
+void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen, int multisample)
 {
 	int flags;
 	
@@ -86,9 +86,15 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	// SDL
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
-	
+
+	if (multisample > 0) {
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, multisample);
+	} else {
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
+	}
+
 	flags = SDL_OPENGL;
 	if (fullscreen) flags |= SDL_FULLSCREEN;
 	
@@ -155,15 +161,13 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	
 	// OpenGL env
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_LIGHTING);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_MULTISAMPLE);
 	glDepthFunc(GL_LEQUAL);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glFlush();
+	SDL_GL_SwapBuffers();
 	
 	mainViewport(1, 1);
 }
@@ -459,6 +463,11 @@ void RenderOpenGL::preGame()
 	this->test = new AnimPlay(model);
 	
 	SDL_ShowCursor(SDL_DISABLE);
+
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_MULTISAMPLE);
 }
 
 void RenderOpenGL::postGame()
@@ -467,6 +476,13 @@ void RenderOpenGL::postGame()
 	
 	SDL_ShowCursor(SDL_ENABLE);
 	mainViewport(1, 1);
+
+	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_MULTISAMPLE);
+
+	GLfloat em[] = {0.0, 0.0, 0.0, 0.0};
+	glMaterialfv(GL_FRONT, GL_EMISSION, em);
 }
 
 
@@ -1013,6 +1029,9 @@ void RenderOpenGL::entities()
 			glPopMatrix();
 		}
 	}
+
+	GLfloat em[] = {0.0, 0.0, 0.0, 0.0};
+	glMaterialfv(GL_FRONT, GL_EMISSION, em);
 }
 
 

@@ -14,7 +14,7 @@ class RenderNull : public Render
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
 		
 	public:
-		virtual void setScreenSize(int width, int height, bool fullscreen);
+		virtual void setScreenSize(int width, int height, bool fullscreen, int multisample);
 		virtual void render();
 		virtual void renderSprite(SpritePtr sprite, int x, int y);
 		virtual void renderSprite(SpritePtr sprite, int x, int y, int w, int h);

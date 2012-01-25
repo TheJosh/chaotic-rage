@@ -20,7 +20,7 @@ RenderNull::~RenderNull()
 /**
 * Sets the screen size
 **/
-void RenderNull::setScreenSize(int width, int height, bool fullscreen)
+void RenderNull::setScreenSize(int width, int height, bool fullscreen, int multisample)
 {
 }
 

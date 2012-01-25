@@ -252,7 +252,7 @@ void GameState::update(int delta)
 void GameState::update_particles(int delta)
 {
 	for (list<NewParticle*>::iterator it = this->particles.begin(); it != this->particles.end(); it++) {
-		(*it)->pos += (*it)->vel;
+		(*it)->pos += (*it)->vel * btScalar(delta);
 	}
 }
 
