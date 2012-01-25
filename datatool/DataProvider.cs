@@ -21,6 +21,17 @@ namespace datatool
         private List<base_item> weapontypes;
 
 
+        public DataProvider()
+        {
+            this.areatypes = new List<base_item>();
+            this.modifiers = new List<base_item>();
+            this.particletypes = new List<base_item>();
+            this.particlegenerators = new List<base_item>();
+            this.unitclasses = new List<base_item>();
+            this.weapontypes = new List<base_item>();
+        }
+
+
         /**
         * Loads data files
         **/
@@ -29,12 +40,12 @@ namespace datatool
             this.datapath = filename;
             this.read = new ConfuseReader();
 
-            this.areatypes = new List<base_item>();
-            this.modifiers = new List<base_item>();
-            this.particletypes = new List<base_item>();
-            this.particlegenerators = new List<base_item>();
-            this.unitclasses = new List<base_item>();
-            this.weapontypes = new List<base_item>();
+            this.areatypes.Clear();
+            this.modifiers.Clear();
+            this.particletypes.Clear();
+            this.particlegenerators.Clear();
+            this.unitclasses.Clear();
+            this.weapontypes.Clear();
 
             if (isZip) {
                 this.zf = new ZipFile(filename);
@@ -71,6 +82,16 @@ namespace datatool
                 return "[Mod; " + Path.GetFileName(this.datapath) + "]";
             } else {
                 return "[Directory; " + this.datapath + "]";
+            }
+        }
+
+        public void SetFile(string filename, bool zip)
+        {
+            this.datapath = filename;
+            if (zip) {
+                this.zf = new ZipFile(filename);
+            } else {
+                this.zf = null;
             }
         }
 

@@ -76,6 +76,7 @@ namespace datatool
 
         private void gridSpew_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
+            if (this.sel_list_item == null) return;
             if (e.ChangedItem.Label == "Name") {
                 this.sel_list_item.Text = e.ChangedItem.Value.ToString();
             }

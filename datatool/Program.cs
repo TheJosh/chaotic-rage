@@ -7,7 +7,16 @@ namespace datatool
 {
     static class Program
     {
-        public static DataProvider dp;
+        // Currently loaded module
+        public static DataProvider dp = null;
+
+        // Directory containing game mods
+        public static string game_path;
+
+        // Directory containing user mods
+        public static string user_path;
+
+
 
         /// <summary>
         /// The main entry point for the application.
@@ -15,18 +24,19 @@ namespace datatool
         [STAThread]
         static void Main()
         {
-            string datapath;
-
-            // The datapath is the current directory,
+            // The game mods are in a sub-dir of the current directory,
             // unless if we are running out of the Debug directory for the datatool.
             // In that case, we assume a chaotic rage install is a few directories above.
-            datapath = Path.GetDirectoryName(Application.ExecutablePath);
-            datapath = datapath.Replace("\\datatool\\bin\\Debug", "");
-            datapath += "\\data\\cr";
+            game_path = Path.GetDirectoryName(Application.ExecutablePath);
+            game_path = game_path.Replace("\\datatool\\bin\\Debug", "");
+            game_path += "\\data";
 
-
-            dp = new DataProvider();
-            dp.load(datapath, false);
+            // The user mods are in "Application Data" on windows.
+            // This tool doesn't really run on any other platform so other systems don't
+            // matter at this time.
+            user_path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            user_path += "\\Chaotic Rage\\mods";
+            Directory.CreateDirectory(user_path);
 
 
             Application.EnableVisualStyles();
