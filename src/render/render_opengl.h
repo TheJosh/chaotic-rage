@@ -51,7 +51,7 @@ class RenderOpenGL : public Render
 		// Width and height of the desktop at game begin
 		int desktop_width;
 		int desktop_height;
-
+		
 		SpritePtr ground;
 		SpritePtr walls;
 		
@@ -66,6 +66,8 @@ class RenderOpenGL : public Render
 		Unit* render_player;
 		
 		btIDebugDraw *physicsdebug;
+		
+		vector<GLuint> ter_vboids;
 		
 	public:
 		int tx, ty, tz;
@@ -89,6 +91,8 @@ class RenderOpenGL : public Render
 		virtual int getSpriteWidth(SpritePtr sprite);
 		virtual int getSpriteHeight(SpritePtr sprite);
 		virtual void enablePhysicsDebug();
+		virtual void loadHeightmap(SpritePtr sprite);
+		virtual void freeHeightmap(SpritePtr sprite);
 		
 	public:
 		RenderOpenGL(GameState * st);

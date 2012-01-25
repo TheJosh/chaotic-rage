@@ -96,6 +96,17 @@ class Render
 		**/
 		virtual void enablePhysicsDebug() {}
 		
+		/**
+		* Load a heightmap from an image.
+		**/
+		virtual void loadHeightmap(SpritePtr sprite) {}
+		
+		/**
+		* Free a loaded heightmap.
+		**/
+		virtual void freeHeightmap(SpritePtr sprite) {}
+		
+		
 	public:
 		Render(GameState * st);
 };

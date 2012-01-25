@@ -176,7 +176,7 @@ void WeaponType::doFire(Unit * u)
 	vel.normalize();
 	vel *= btScalar(2.0f);
 	
-	create_particles(u->getGameState(), 30, begin, vel, btVector3(0.5f, 0.1f, 0.5f), 0.1, 0.1, 0.1, 500);
+	create_particles(u->getGameState(), 30, begin, vel, btVector3(0.1f, 0.05f, 0.1f), 0.1, 0.1, 0.1, 500);
 	
 	
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
