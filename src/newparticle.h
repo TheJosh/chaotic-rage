@@ -15,9 +15,9 @@ class NewParticle {
 		btVector3 pos;
 		btVector3 vel;
 		float r, g, b;
-		int time_death;
+		unsigned int time_death;
 };
 
 
 
-void create_particles_weapon(GameState * st, unsigned int num, btVector3 * begin, btVector3 * end, float angle_range);
+void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end, float angle_range);

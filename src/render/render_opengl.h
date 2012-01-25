@@ -52,29 +52,28 @@ class RenderOpenGL : public Render
 		int desktop_width;
 		int desktop_height;
 		
-		SpritePtr ground;
-		SpritePtr walls;
-		
-		AnimPlay *test;
-		
-		FT_Library ft;
-		FT_Face face;
-		FreetypeChar char_tex[NUM_CHAR_TEX];
-		
-		vector<SpritePtr> loaded;
-		
+		// The current player being rendered (split screen)
 		Unit* render_player;
 		
+		// FreeType
+		FT_Library ft;
+		FT_Face face;
+
+		// Caches
+		vector<SpritePtr> loaded;
+		FreetypeChar char_tex[NUM_CHAR_TEX];
+		vector<GLuint> ter_vboids;
+
+		// Debugging
+		AnimPlay *test;
 		btIDebugDraw *physicsdebug;
 		
-		vector<GLuint> ter_vboids;
-		
-	public:
-		int tx, ty, tz;
-		int rx, ry, rz;
 		
 	public:
 		int viewmode;
+		int tx, ty, tz;		// these are for debugging I think
+		int rx, ry, rz;		// these too
+		
 		
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);

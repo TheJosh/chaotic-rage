@@ -17,6 +17,8 @@ static GameState *g_st;
 
 
 static bool EntityEraser(Entity *e);
+static bool ParticleEraser(NewParticle *p);
+static bool CollideBoxEraser(CollideBox* box);
 
 
 
@@ -151,6 +153,16 @@ static bool CollideBoxEraser(CollideBox* box)
 	return true;
 }
 
+/**
+* Used for filtering
+**/
+static bool ParticleEraser(NewParticle* p)
+{
+	if (p->time_death > g_st->game_time) return false;
+	delete p;
+	return true;
+}
+
 
 /**
 * Gets the entropy for a given player
@@ -237,7 +249,8 @@ void GameState::update(int delta)
 	
 	// Particles
 	this->update_particles(delta);
-	
+	this->particles.remove_if(ParticleEraser);
+
 	// Decrease entropy
 	if (this->entropy > 0) {
 		this->entropy--;
@@ -249,6 +262,9 @@ void GameState::update(int delta)
 }
 
 
+/**
+* Moves particles
+**/
 void GameState::update_particles(int delta)
 {
 	for (list<NewParticle*>::iterator it = this->particles.begin(); it != this->particles.end(); it++) {
