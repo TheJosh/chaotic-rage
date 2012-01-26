@@ -28,7 +28,7 @@ function target()
 	
 	me = get_info()
 
-	table.filter(units, function(a)
+	units = table.filter(units, function(a)
 		return (a.faction ~= me.faction)			-- filters out units in the same faction
 	end);
 
