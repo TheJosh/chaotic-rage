@@ -58,12 +58,15 @@ class RenderOpenGL : public Render
 		// FreeType
 		FT_Library ft;
 		FT_Face face;
-
+		
 		// Caches
 		vector<SpritePtr> loaded;
 		FreetypeChar char_tex[NUM_CHAR_TEX];
-		vector<GLuint> ter_vboids;
-
+		
+		// Heightmap
+		unsigned int ter_size;
+		GLuint ter_vboid;
+		
 		// Debugging
 		AnimPlay *test;
 		btIDebugDraw *physicsdebug;

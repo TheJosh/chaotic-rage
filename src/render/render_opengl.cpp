@@ -351,63 +351,42 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 **/
 void RenderOpenGL::loadHeightmap(SpritePtr sprite)
 {
-	/*
-	float height;
-	GLuint vboid;
+	int nX, nZ, nTri, j;
+	float flX, flZ;
+	Uint8 r,g,b;
 	
+	this->ter_size = sprite->w * sprite->h * 6;
+	VBOvertex* vertexes = new VBOvertex[this->ter_size];
 	
-	
-	for (y = 0; y < this->ter_size_y - 1; y++) {
-		glBegin(GL_TRIANGLE_STRIP);
-		
-		glGenBuffers(1, &vboid);
-		glBindBuffer(GL_ARRAY_BUFFER, vboid);
-		
-		VBOvertex* vertexes = new VBOvertex[this->ter_size_x * 2];
-		
-		int j = 0;
-		for (x = 0; x < this->ter_size_x; x++) {
-			
-			// TODO: Load this value from the image at (y+1, x)
-			height = ((float)getRandom(0, 255)) / 255.0;
-			
-			
-			vertexes[j].x = startX + x;
-			vertexes[j].y = startY - (y + 1);
-			vertexes[j].z = height;
-			
-			vertexes[j].nx = 0.0f;
-			vertexes[j].ny = 0.0f;
-			vertexes[j].nz = 1.0f;
-			
-			vertexes[j].tx = 0.0f;
-			vertexes[j].ty = 0.0f;
-			
-			
-			// TODO: Load this value from the image at (y, x)
-			height = ((float)getRandom(0, 255)) / 255.0;
-			
-			vertexes[j].x = startX + x;
-			vertexes[j].y = startY - y ;
-			vertexes[j].z = height;
-			
-			vertexes[j].nx = 0.0f;
-			vertexes[j].ny = 0.0f;
-			vertexes[j].nz = 1.0f;
-			
-			vertexes[j].tx = 0.0f;
-			vertexes[j].ty = 0.0f;
+	j = 0;
+	for( nZ = 0; nZ < sprite->h; nZ += 1 ) {
+		for( nX = 0; nX < sprite->w; nX += 1 ) {
+			for( nTri = 0; nTri < 6; nTri++ ) {
+				// Using This Quick Hack, Figure The X,Z Position Of The Point
+				flX = (float) nX + (( nTri == 1 || nTri == 2 || nTri == 5 ) ? 1.0f : 0.0f);
+				flZ = (float) nZ + (( nTri == 2 || nTri == 4 || nTri == 5 ) ? 1.0f : 0.0f);
+				
+				Uint32 pixel = getPixel(sprite->orig, nX, nZ);
+				SDL_GetRGB(pixel, sprite->orig->format, &r, &g, &b);
+				float height = r / 255.0;
+				
+		 		vertexes[j].x = flX;// - ( sprite->w / 2 );
+				vertexes[j].y = flZ;// - ( sprite->h / 2 );
+				vertexes[j].z = height;
+				vertexes[j].nx = 0.0f;
+				vertexes[j].ny = 0.0f;
+				vertexes[j].nz = 1.0f;
+				vertexes[j].tx = flX / sprite->w;
+				vertexes[j].ty = flZ / sprite->h;
+				j++;
+			}
 		}
-		
-		
-		// TODO: Create VBO from 'vertexes'.
-		// TODO: Save the VBO id in the 'ter_vboids' vector.
-		
-		
-		// glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * obj->faces.size() * 3, vertexes, GL_STATIC_DRAW);
-		// delete [] vertexes;
 	}
-	*/
+	
+	glGenBuffers(1, &this->ter_vboid);
+	glBindBuffer(GL_ARRAY_BUFFER, this->ter_vboid);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * this->ter_size, vertexes, GL_STATIC_DRAW);
+	delete [] vertexes;
 }
 
 
@@ -919,29 +898,33 @@ void RenderOpenGL::lights()
 **/
 void RenderOpenGL::map()
 {
-	/*
+	glEnable(GL_NORMALIZE);
+	glDisable(GL_BLEND);
+	glBindTexture(GL_TEXTURE_2D, st->curr_map->areas[0]->type->texture->pixels);
+	
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	
-	// Loop through VBOs for the map, and draw
 	
-		glBindBuffer(GL_ARRAY_BUFFER, obj->vbo);
-		glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
-		glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
-		glClientActiveTexture(GL_TEXTURE0);
-		glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
+	glPushMatrix();
+	glTranslatef(0,0,-1);
 	
-		glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
+	glBindBuffer(GL_ARRAY_BUFFER, this->ter_vboid);
+	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
+	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
+	glClientActiveTexture(GL_TEXTURE0);
+	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, this->ter_size);
 	
-	// }
+	glPopMatrix();
 	
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	*/
 	
 	
+	/*
 	unsigned int i;
 	float x, y;
 	
@@ -1001,6 +984,7 @@ void RenderOpenGL::map()
 		
 		glPopMatrix();
 	}
+	*/
 }
 
 

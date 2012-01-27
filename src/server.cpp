@@ -26,7 +26,7 @@ int main (int argc, char ** argv) {
 	new HUD(st);
 	
 
-	st->render->setScreenSize(900, 900, false);
+	st->render->setScreenSize(900, 900, false, 0);
 	
 	Mod * mod = new Mod(st, "data/cr");
 	
