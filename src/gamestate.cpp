@@ -333,6 +333,7 @@ void GameState::initGuichan()
 	this->guitop = new gcn::Container();
 	this->guitop->setPosition(0,0);
 	this->guitop->setSize(((RenderOpenGL*)this->render)->real_width, ((RenderOpenGL*)this->render)->real_height);
+	this->guitop->setBaseColor(gcn::Color(0, 0, 0, 0));
 	gui->setTop(this->guitop);
 }
 

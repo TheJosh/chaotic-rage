@@ -227,24 +227,24 @@ void RenderOpenGL::mainViewport(int s, int of)
 	int h = this->real_height;
 	int x = 0;
 	int y = 0;
-
+	
 	if (of == 2) {
 		h /= 2;
 		y = (s == 1 ? 0 : h);
 	}
-
+	
 	this->virt_height = 1000;
 	this->virt_width = (int) floor(this->virt_height * (float)w / (float)h);
-
+	
 	glViewport(x, y, w, h);
-
+	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-
+	
 	gluPerspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 1500.f);
 	glScalef (1.0f, -1.0f, 1.0f);
 	glTranslatef(0 - (this->virt_width / 2), 0 - (this->virt_height / 2), -1250.0f);
-
+	
 	glMatrixMode(GL_MODELVIEW);
 }
 
@@ -893,12 +893,6 @@ void RenderOpenGL::lights()
 				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_torch);
 				glLightf(GL_LIGHT0 + i, GL_SPOT_CUTOFF, 20);
 				glLightf(GL_LIGHT0 + i, GL_SPOT_EXPONENT, 2);
-				
-				
-				/*glPushMatrix();
-				glScalef(10,10,10);
-				renderAnimPlay(this->test, 0);
-				glPopMatrix();*/
 			}
 			
 			glLightfv(GL_LIGHT0 + i, GL_AMBIENT, l->ambient);
@@ -942,69 +936,6 @@ void RenderOpenGL::map()
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	
-	
-	/*
-	unsigned int i;
-	float x, y;
-	
-	// Render map
-	for (i = 0; i < st->curr_map->areas.size(); i++) {
-		Area * a = st->curr_map->areas[i];
-		
-		glPushMatrix();
-		
-		x = a->x + a->width / 2;
-		y = a->y + a->height / 2;
-		
-		glTranslatef(x, y, 0);
-		glRotatef(0 - a->angle, 0, 0, 1);
-		glTranslatef(0 - x, 0 - y, 0);
-		
-		glBindTexture(GL_TEXTURE_2D, a->type->texture->pixels);
-		
-		a->width = a->height = 1;
-		
-		float texw = 1.0;
-		float texh = 1.0;
-		//if (! a->type->stretch) {
-		//	texw = ((float)a->width) / ((float)a->type->texture->w);
-		//	texh = ((float)a->height) / ((float)a->type->texture->h);
-		//}
-		
-		glEnable(GL_NORMALIZE);
-		glLightModeli (GL_LIGHT_MODEL_COLOR_CONTROL,GL_SEPARATE_SPECULAR_COLOR);
-		glShadeModel(GL_SMOOTH);
-		
-		glNormal3f(0, 0, 1);
-		
-		glBegin(GL_QUADS);
-			for (int x = 0; x < st->curr_map->width; x += a->width) {
-			for (int y = 0; y < st->curr_map->height; y += a->width) {
-				
-				// Bottom-left vertex (corner)
-				glTexCoord2f( 0.0, texh );
-				glVertex3i( x, y + a->height, 0 );
-				
-				// Bottom-right vertex (corner)
-				glTexCoord2f( texw, texh );
-				glVertex3i( x + a->width, y + a->height, 0 );
-				
-				// Top-right vertex (corner)
-				glTexCoord2f( texw, 0.0 );
-				glVertex3i( x + a->width, y, 0 );
-				
-				// Top-left vertex (corner)
-				glTexCoord2f( 0.0, 0.0 );
-				glVertex3i( x, y, 0 );
-				
-			}
-			}
-		glEnd();
-		
-		glPopMatrix();
-	}
-	*/
 }
 
 
@@ -1079,6 +1010,7 @@ void RenderOpenGL::guichan()
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_FOG);
 	
+	glLoadIdentity();
 	if (this->st->dialogs.size() > 0) {
 		this->st->gui->draw();
 	}
