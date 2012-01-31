@@ -48,14 +48,14 @@ class GameState
 		vector<Unit*> units;		// leaks: items are not removed
 		vector<Wall*> walls;		// leaks: items are not removed
 		
+		bool reset_mouse;
+		unsigned int entropy;		// TODO: gamestate -> localplayers
+
 	public:
 		Map* curr_map;
-		bool reset_mouse;
 		
 		Player* local_players[MAX_LOCAL];
 		unsigned int num_local;
-		
-		unsigned int entropy;		// TODO: gamestate -> localplayers
 		
 		int curr_slot;
 		
@@ -73,9 +73,9 @@ class GameState
 		PhysicsBullet* physics;
 		CommandLineArgs* cmdline;
 		ModManager* mm;
-		
-		gcn::SDLInput* input;
+
 		gcn::Gui* gui;
+		gcn::SDLInput* guiinput;
 		gcn::Container * guitop;
 		
 	public:
@@ -104,13 +104,19 @@ class GameState
 		unsigned int getEntropy(unsigned int slot);
 		void increaseEntropy(unsigned int slot);
 		
+		// Mouse reset
+		void setMouseGrab(bool reset);
+		bool getMouseGrab();
+
 		// Data queries
 		list<UnitQueryResult> * findVisibleUnits(Unit* origin);
 		
 		// Dialogs
 		void initGuichan();
-		void addDialog(Dialog * dialog, bool onlyone = true);
+		bool hasDialog(string name);
+		void addDialog(Dialog * dialog);
 		void remDialog(Dialog * dialog);
+		bool hasDialogs();
 };
 
 

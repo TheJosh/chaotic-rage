@@ -24,16 +24,13 @@ HUD::HUD(GameState *st)
 void HUD::showSpawnMenu()
 {
 	spawn_menu = true;
-	this->st->reset_mouse = false;
-	SDL_ShowCursor(SDL_ENABLE);
+	this->st->setMouseGrab(false);
 }
 
 void HUD::hideSpawnMenu()
 {
 	spawn_menu = false;
-	
-	this->st->reset_mouse = true;
-	SDL_ShowCursor(SDL_DISABLE);
+	this->st->setMouseGrab(true);
 }
 
 void HUD::addAlertMessage(string text)

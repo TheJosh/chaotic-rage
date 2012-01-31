@@ -1,6 +1,9 @@
-===  For Beta 1  ===
+===  For Beta 2  ===
 
 - Rescale of objects
 - Rip out old particle system
 - Find all TODOs and fix em
 - Vehicles working
+- Heightmaps working
+- Improve the datatool more
+- API docs for lua (AIs, Gametypes)

@@ -164,12 +164,16 @@ gcn::Container * DialogQuit::setup()
 	c->setDimension(gcn::Rectangle(0, 0, 300, 100));
 	
 	button = new gcn::Button("Yes");
-	button->setPosition(30, 30);
+	button->setPosition(150 - 5 - 60, 30);
+	button->setWidth(60);
+	button->setId("Y");
 	button->addActionListener(this);
 	c->add(button);
 	
 	button = new gcn::Button("No");
-	button->setPosition(100, 30);
+	button->setPosition(150 + 5, 30);
+	button->setWidth(60);
+	button->setId("N");
 	button->addActionListener(this);
 	c->add(button);
 	
@@ -181,8 +185,10 @@ gcn::Container * DialogQuit::setup()
 **/
 void DialogQuit::action(const gcn::ActionEvent& actionEvent)
 {
+	if (actionEvent.getSource()->getId() == "Y") {
+		this->st->running = false;
+	}
 	this->st->remDialog(this);
-	this->st->running = false;
 }
 
 

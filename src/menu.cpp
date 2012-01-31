@@ -99,24 +99,14 @@ void Menu::doit()
 	this->menuAdd("Quit", 40, y, MC_QUIT);
 	
 	
+	
+
 	gcn::SDLInput* input;
-	gcn::OpenGLGraphics* graphics;
-	gcn::OpenGLSDLImageLoader* imageLoader;
-	gcn::ImageFont* font;
-	
-	
-	imageLoader = new gcn::OpenGLSDLImageLoader();
-	gcn::Image::setImageLoader(imageLoader);
-	
-	graphics = new gcn::OpenGLGraphics(render->real_width, render->real_height);
 	input = new gcn::SDLInput();
-	
-	font = new gcn::ImageFont("fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"); // .,!?-+/():;%&`'*#=[]\"
-	gcn::Widget::setGlobalFont(font);
-	
+
 	this->gui = new gcn::Gui();
-	this->gui->setGraphics(graphics);
 	this->gui->setInput(input);
+	this->render->initGuichan(gui);
 	
 	
 	this->running = true;

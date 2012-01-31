@@ -47,6 +47,7 @@ class Dialog {
 	public:
 		virtual gcn::Container * setup() = 0;
 		virtual string getName() { return "?"; }
+		gcn::Container * getContainer() { return this->c; };
 };
 
 

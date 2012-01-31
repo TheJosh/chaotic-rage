@@ -261,6 +261,11 @@ void GameState::update(int delta)
 		this->entropy--;
 	}
 	
+	// Handle guichan logic
+	if (this->hasDialogs()) {
+		this->gui->logic();
+	}
+
 	// Update time
 	this->game_time += delta;
 	this->anim_frame = (int) floor(this->game_time * ANIMATION_FPS / 1000.0);
@@ -320,6 +325,24 @@ list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 }
 
 
+/**
+* Sets the status of the mouse grab
+**/
+void GameState::setMouseGrab(bool reset)
+{
+	this->reset_mouse = reset;
+	SDL_ShowCursor(!this->reset_mouse);
+	SDL_WM_GrabInput(this->reset_mouse == 1 ? SDL_GRAB_ON : SDL_GRAB_OFF);
+}
+
+/**
+* Sets the status of the mouse grab
+**/
+bool GameState::getMouseGrab()
+{
+	return this->reset_mouse;
+}
+
 
 /**
 * Init guichan
@@ -327,7 +350,10 @@ list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 void GameState::initGuichan()
 {
 	this->gui = new gcn::Gui();
-	this->gui->setInput(new gcn::SDLInput());
+
+	this->guiinput = new gcn::SDLInput();
+	gui->setInput(guiinput);
+
 	((RenderOpenGL*)this->render)->initGuichan(gui);
 	
 	this->guitop = new gcn::Container();
@@ -338,24 +364,29 @@ void GameState::initGuichan()
 }
 
 
+bool GameState::hasDialog(string name)
+{
+	for (list<Dialog*>::iterator it = this->dialogs.begin(); it != this->dialogs.end(); it++) {
+		if ((*it)->getName().compare(name) == 0) return true;
+	}
+	return false;
+}
+
+
 /**
 * Add a dialog to the game world.
 * Inits the dialog too.
 **/
-void GameState::addDialog(Dialog * dialog, bool onlyone)
+void GameState::addDialog(Dialog * dialog)
 {
-	if (onlyone) {
-		for (list<Dialog*>::iterator it = this->dialogs.begin(); it != this->dialogs.end(); it++) {
-			if ((*it)->getName().compare(dialog->getName())) return;
-		}
-	}
-	
 	gcn::Container * c = dialog->setup();
 	c->setPosition((((RenderOpenGL*)this->render)->real_width - c->getWidth()) / 2, (((RenderOpenGL*)this->render)->real_height - c->getHeight()) / 2);
 	c->setBaseColor(gcn::Color(150, 150, 150, 200));
 	this->guitop->add(c);
 	
 	this->dialogs.push_back(dialog);
+
+	this->setMouseGrab(false);
 }
 
 
@@ -365,8 +396,21 @@ void GameState::addDialog(Dialog * dialog, bool onlyone)
 void GameState::remDialog(Dialog * dialog)
 {
 	this->dialogs.remove(dialog);
+	this->guitop->remove(dialog->getContainer());
 	
-	// TODO: fix this to actually remove the widget!
+	if (this->dialogs.size() == 0) {
+		this->setMouseGrab(true);
+	}
+
+	delete(dialog);
+}
+
+/**
+* Are there dialogs currently visible?
+**/
+bool GameState::hasDialogs()
+{
+	return (this->dialogs.size() != 0);
 }
 
 

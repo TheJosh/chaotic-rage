@@ -58,7 +58,7 @@ void gameLoop(GameState *st, Render *render)
 		st->update(delta);
 		handleEvents(st);
 		
-		if (st->reset_mouse) {
+		if (st->getMouseGrab()) {
 			if (st->local_players[0]) st->local_players[0]->angleFromMouse(game_x[0], game_y[0], delta);		// one of these two is correct...(this one or the one 15 lines below)
 			if (st->local_players[1]) st->local_players[1]->angleFromMouse(game_x[1], game_y[1], delta);
 			game_x[0] = game_y[0] = 0;
@@ -72,7 +72,7 @@ void gameLoop(GameState *st, Render *render)
 			net_time -= net_timestep;
 			
 			if (st->client) {
-				if (st->local_players[0] && st->reset_mouse) {
+				if (st->local_players[0] && st->getMouseGrab()) {
 					//st->local_players[0]->angleFromMouse(net_x, net_y, net_timestep);
 					st->client->addmsgKeyMouseStatus(net_x[0], net_y[0], net_timestep, st->local_players[0]->packKeys());
 					net_x[0] = net_y[0] = 0;
@@ -121,8 +121,10 @@ static void handleEvents(GameState *st)
 			
 		} else if (event.type == SDL_KEYDOWN) {
 			if (event.key.keysym.sym == SDLK_ESCAPE) {
-				st->addDialog(new DialogQuit(st));
-				
+				if (! st->hasDialog("quit")) {
+					st->addDialog(new DialogQuit(st));
+				}
+
 			} else if (event.key.keysym.sym == SDLK_PRINT) {
 				screenshot_num++;
 				char buf[50];
@@ -139,6 +141,12 @@ static void handleEvents(GameState *st)
 				filename.append(".bmp");
 				st->hud->addAlertMessage("Saved ", filename);
 			}
+		}
+
+
+		if (st->hasDialogs()) {
+			st->guiinput->pushInput(event);
+			continue;
 		}
 
 
@@ -173,10 +181,8 @@ static void handleEvents(GameState *st)
 						break;
 						
 					case SDLK_F6:
-						st->reset_mouse = !st->reset_mouse;
-						SDL_ShowCursor(!st->reset_mouse);
-						SDL_WM_GrabInput(st->reset_mouse == 1 ? SDL_GRAB_ON : SDL_GRAB_OFF);
-						st->hud->addAlertMessage("Reset-mouse ", st->reset_mouse ? "on" : "off");
+						st->setMouseGrab(! st->getMouseGrab());
+						st->hud->addAlertMessage("Reset-mouse ", st->getMouseGrab() ? "on" : "off");
 						break;
 						
 					default: break;

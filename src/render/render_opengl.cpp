@@ -207,7 +207,7 @@ void RenderOpenGL::initGuichan(gcn::Gui * gui)
 	imageLoader = new gcn::OpenGLSDLImageLoader();
 	gcn::Image::setImageLoader(imageLoader);
 	
-	font = new gcn::ImageFont("fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"); // .,!?-+/():;%&`'*#=[]\"
+	font = new gcn::ImageFont("fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?"); // .,!?-+/():;%&`'*#=[]\"
 	gcn::Widget::setGlobalFont(font);
 	
 	graphics = new gcn::OpenGLGraphics(this->real_width, this->real_height);
@@ -1006,14 +1006,14 @@ void RenderOpenGL::collides()
 **/
 void RenderOpenGL::guichan()
 {
+	if (! st->hasDialogs()) return;
+
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_FOG);
 	
 	glLoadIdentity();
-	if (this->st->dialogs.size() > 0) {
-		this->st->gui->draw();
-	}
+	this->st->gui->draw();
 }
 
 
