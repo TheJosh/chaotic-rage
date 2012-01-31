@@ -52,6 +52,10 @@ class AnimPlay;
 class Audio;
 class CollideBox;
 class CommandLineArgs;
+class Dialog;
+class DialogNewGame;
+class DialogNull;
+class DialogControls;
 class Entity;
 class FloorType;
 class GameLogic;
@@ -126,6 +130,8 @@ class Zone;
 
 #include "lua/gamelogic.h"
 #include "lua/ailogic.h"
+
+#include "gui/dialog.h"
 
 #include "entity.h"
 #include "unit.h"

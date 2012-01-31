@@ -12,8 +12,6 @@ using namespace std;
 
 static void handleEvents(GameState *st);
 
-static bool running;
-
 
 // Mouse movement, including keyboard simulation
 static int game_x[MAX_LOCAL], game_y[MAX_LOCAL];
@@ -51,8 +49,8 @@ void gameLoop(GameState *st, Render *render)
 
 	cout << "\n\n\n\n\n";
 	
-	running = true;
-	while (running) {
+	st->running = true;
+	while (st->running) {
 		delta = SDL_GetTicks() - start;
 		start = SDL_GetTicks();
 		
@@ -119,12 +117,12 @@ static void handleEvents(GameState *st)
 		
 		// General keys
 		if (event.type == SDL_QUIT) {
-			running = false;
+			st->running = false;
 			
 		} else if (event.type == SDL_KEYDOWN) {
 			if (event.key.keysym.sym == SDLK_ESCAPE) {
-				running = false;
-
+				st->addDialog(new DialogQuit(st));
+				
 			} else if (event.key.keysym.sym == SDLK_PRINT) {
 				screenshot_num++;
 				char buf[50];

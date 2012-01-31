@@ -5,6 +5,8 @@
 #pragma once
 #include <iostream>
 #include <SDL.h>
+#include <guichan.hpp>
+#include <guichan/sdl.hpp>
 #include "rage.h"
 
 using namespace std;
@@ -41,6 +43,7 @@ class GameState
 		list<Entity*> entities_add;
 		list<CollideBox*> collideboxes;
 		list<NewParticle*> particles;
+		list<Dialog*> dialogs;
 		
 		vector<Unit*> units;		// leaks: items are not removed
 		vector<Wall*> walls;		// leaks: items are not removed
@@ -56,6 +59,7 @@ class GameState
 		
 		int curr_slot;
 		
+		bool running;
 		unsigned int anim_frame;
 		unsigned int game_time;
 		
@@ -69,7 +73,11 @@ class GameState
 		PhysicsBullet* physics;
 		CommandLineArgs* cmdline;
 		ModManager* mm;
-
+		
+		gcn::SDLInput* input;
+		gcn::Gui* gui;
+		gcn::Container * guitop;
+		
 	public:
 		GameState();
 		~GameState();
@@ -98,6 +106,11 @@ class GameState
 		
 		// Data queries
 		list<UnitQueryResult> * findVisibleUnits(Unit* origin);
+		
+		// Dialogs
+		void initGuichan();
+		void addDialog(Dialog * dialog, bool onlyone = true);
+		void remDialog(Dialog * dialog);
 };
 
 

@@ -12,6 +12,11 @@
 
 #define NUM_CHAR_TEX (128 - 32)
 
+#include <guichan.hpp>
+#include <guichan/sdl.hpp>
+#include <guichan/opengl.hpp>
+#include <guichan/opengl/openglsdlimageloader.hpp>
+
 #include "LinearMath/btIDebugDraw.h"
 
 
@@ -36,6 +41,7 @@ class RenderOpenGL : public Render
 	friend class HUD;
 	friend class Menu;
 	friend class Intro;
+	friend class GameState;
 	
 	private:
 		SDL_Surface * screen;
@@ -101,6 +107,7 @@ class RenderOpenGL : public Render
 		virtual ~RenderOpenGL();
 		
 		void saveScreenshot(string filename);
+		void initGuichan(gcn::Gui * gui);
 		
 	protected:
 		void renderObj (WavefrontObj * obj);
@@ -108,7 +115,7 @@ class RenderOpenGL : public Render
 		void renderText(string text, float x = 0.0, float y = 0.0, float r = 1.0, float g = 1.0, float b = 1.0);
 		void renderCharacter(char c);
 		void loadFont(string name, Mod * mod);
-
+		
 	private:
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
@@ -121,6 +128,7 @@ class RenderOpenGL : public Render
 		void entities();
 		void particles();
 		void collides();
+		void guichan();
 		void hud();
 };
 

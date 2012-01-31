@@ -7,6 +7,8 @@
 #include <map>
 #include <algorithm>
 #include <SDL.h>
+#include <guichan.hpp>
+#include <guichan/sdl.hpp>
 #include <math.h>
 #include "rage.h"
 
@@ -38,16 +40,17 @@ GameState * getGameState()
 **/
 GameState::GameState()
 {
+	this->running = false;
 	this->anim_frame = 0;
 	this->game_time = 0;
 	this->num_local = 0;
 	this->curr_slot = 1;
 	this->reset_mouse = false;
-
+	
 	for (unsigned int i = 0; i < MAX_LOCAL; i++) {
 		this->local_players[i] = NULL;
 	}
-
+	
 	this->render = NULL;
 	this->hud = NULL;
 	this->audio = NULL;
@@ -210,6 +213,8 @@ void GameState::start()
 	this->game_time = 1;
 	this->anim_frame = 1;
 	this->reset_mouse = false;
+	
+	this->initGuichan();
 }
 
 
@@ -312,6 +317,55 @@ list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 	}
 	
 	return ret;
+}
+
+
+
+/**
+* Init guichan
+**/
+void GameState::initGuichan()
+{
+	this->gui = new gcn::Gui();
+	this->gui->setInput(new gcn::SDLInput());
+	((RenderOpenGL*)this->render)->initGuichan(gui);
+	
+	this->guitop = new gcn::Container();
+	this->guitop->setPosition(0,0);
+	this->guitop->setSize(((RenderOpenGL*)this->render)->real_width, ((RenderOpenGL*)this->render)->real_height);
+	gui->setTop(this->guitop);
+}
+
+
+/**
+* Add a dialog to the game world.
+* Inits the dialog too.
+**/
+void GameState::addDialog(Dialog * dialog, bool onlyone)
+{
+	if (onlyone) {
+		for (list<Dialog*>::iterator it = this->dialogs.begin(); it != this->dialogs.end(); it++) {
+			if ((*it)->getName().compare(dialog->getName())) return;
+		}
+	}
+	
+	gcn::Container * c = dialog->setup();
+	c->setPosition((((RenderOpenGL*)this->render)->real_width - c->getWidth()) / 2, (((RenderOpenGL*)this->render)->real_height - c->getHeight()) / 2);
+	c->setBaseColor(gcn::Color(150, 150, 150, 200));
+	this->guitop->add(c);
+	
+	this->dialogs.push_back(dialog);
+}
+
+
+/**
+* Remove a dialog from the game world.
+**/
+void GameState::remDialog(Dialog * dialog)
+{
+	this->dialogs.remove(dialog);
+	
+	// TODO: fix this to actually remove the widget!
 }
 
 

@@ -16,6 +16,11 @@
 #include <math.h>
 #include "../rage.h"
 
+#include <guichan.hpp>
+#include <guichan/sdl.hpp>
+#include <guichan/opengl.hpp>
+#include <guichan/opengl/openglsdlimageloader.hpp>
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -32,12 +37,6 @@ static inline int next_pot (int a)
 	while(rval<a) rval<<=1;
 	return rval;
 }
-
-
-//static bool ZIndexPredicate(const Entity * e1, const Entity * e2)
-//{
-//	return e1->z < e2->z;
-//}
 
 
 RenderOpenGL::RenderOpenGL(GameState * st) : Render(st)
@@ -193,6 +192,26 @@ void RenderOpenGL::loadFont(string name, Mod * mod)
 		fprintf(stderr, "Freetype: Unable to load font size\n");
 		exit(1);
 	}
+}
+
+
+/**
+* Init the rendering part of guichan
+**/
+void RenderOpenGL::initGuichan(gcn::Gui * gui)
+{
+	gcn::OpenGLGraphics* graphics;
+	gcn::OpenGLSDLImageLoader* imageLoader;
+	gcn::ImageFont* font;
+	
+	imageLoader = new gcn::OpenGLSDLImageLoader();
+	gcn::Image::setImageLoader(imageLoader);
+	
+	font = new gcn::ImageFont("fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"); // .,!?-+/():;%&`'*#=[]\"
+	gcn::Widget::setGlobalFont(font);
+	
+	graphics = new gcn::OpenGLGraphics(this->real_width, this->real_height);
+	gui->setGraphics(graphics);
 }
 
 
@@ -751,6 +770,7 @@ void RenderOpenGL::render()
 		map();
 		entities();
 		particles();
+		guichan();
 		hud();
 		
 		if (physicsdebug != NULL) {
@@ -1046,6 +1066,21 @@ void RenderOpenGL::collides()
 		renderAnimPlay(this->test, 0);
 		
 		glPopMatrix();
+	}
+}
+
+
+/**
+* Heads-up display
+**/
+void RenderOpenGL::guichan()
+{
+	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_FOG);
+	
+	if (this->st->dialogs.size() > 0) {
+		this->st->gui->draw();
 	}
 }
 
