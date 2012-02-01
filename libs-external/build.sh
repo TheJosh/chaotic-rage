@@ -19,3 +19,7 @@ echo
 
 sudo make install
 
+sudo updatedb
+
+sudo ldconfig
+
