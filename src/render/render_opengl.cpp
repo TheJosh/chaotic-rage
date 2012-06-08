@@ -829,7 +829,7 @@ void RenderOpenGL::mainRot()
 		if (this->viewmode == 0) {				// Top
 			glTranslatef(0,87,731);
 			glRotatef(10, 1, 0, 0);
-			glTranslatef(0,0,-5);
+			glTranslatef(0,0,-10);
 			
 		} else if (this->viewmode == 1) {		// Behind (3rd person)
 			glTranslatef(0,483,1095);
