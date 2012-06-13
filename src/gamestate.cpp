@@ -354,7 +354,7 @@ void GameState::initGuichan()
 	this->guiinput = new gcn::SDLInput();
 	gui->setInput(guiinput);
 
-	((RenderOpenGL*)this->render)->initGuichan(gui);
+	((RenderOpenGL*)this->render)->initGuichan(gui, this->mm->getDefaultMod());
 	
 	this->guitop = new gcn::Container();
 	this->guitop->setPosition(0,0);

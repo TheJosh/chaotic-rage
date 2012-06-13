@@ -106,7 +106,7 @@ void Menu::doit()
 
 	this->gui = new gcn::Gui();
 	this->gui->setInput(input);
-	this->render->initGuichan(gui);
+	this->render->initGuichan(gui, mod);
 	
 	
 	this->running = true;

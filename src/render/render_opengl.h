@@ -107,7 +107,7 @@ class RenderOpenGL : public Render
 		virtual ~RenderOpenGL();
 		
 		void saveScreenshot(string filename);
-		void initGuichan(gcn::Gui * gui);
+		void initGuichan(gcn::Gui * gui, Mod * mod);
 		
 	protected:
 		void renderObj (WavefrontObj * obj);

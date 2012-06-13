@@ -19,7 +19,7 @@
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
 #include <guichan/opengl.hpp>
-#include <guichan/opengl/openglsdlimageloader.hpp>
+#include "guichan_imageloader.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -198,13 +198,13 @@ void RenderOpenGL::loadFont(string name, Mod * mod)
 /**
 * Init the rendering part of guichan
 **/
-void RenderOpenGL::initGuichan(gcn::Gui * gui)
+void RenderOpenGL::initGuichan(gcn::Gui * gui, Mod * mod)
 {
 	gcn::OpenGLGraphics* graphics;
-	gcn::OpenGLSDLImageLoader* imageLoader;
+	gcn::ChaoticRageOpenGLSDLImageLoader* imageLoader;
 	gcn::ImageFont* font;
 	
-	imageLoader = new gcn::OpenGLSDLImageLoader();
+	imageLoader = new gcn::ChaoticRageOpenGLSDLImageLoader(mod);
 	gcn::Image::setImageLoader(imageLoader);
 	
 	font = new gcn::ImageFont("fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?"); // .,!?-+/():;%&`'*#=[]\"
