@@ -4,3 +4,5 @@ build
 dedicatedserver
 
 *.mtl
+*.blend1
+*.blend2
