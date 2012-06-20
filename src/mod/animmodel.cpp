@@ -36,6 +36,7 @@ cfg_opt_t _meshframe_opts[] =
 	CFG_FLOAT((char*) "rx", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "ry", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "rz", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "s", 1, CFGF_NONE),
 	CFG_FLOAT((char*) "sx", 1, CFGF_NONE),
 	CFG_FLOAT((char*) "sy", 1, CFGF_NONE),
 	CFG_FLOAT((char*) "sz", 1, CFGF_NONE),
@@ -131,6 +132,13 @@ AnimModel* loadItemAnimModel(cfg_t *cfg_model, Mod * mod)
 		mf->sx = cfg_getfloat(cfg_meshframe, "sx");
 		mf->sy = cfg_getfloat(cfg_meshframe, "sy");
 		mf->sz = cfg_getfloat(cfg_meshframe, "sz");
+		
+		{
+			float f = cfg_getfloat(cfg_meshframe, "s");
+			if (f != 1.0) {
+				mf->sx = mf->sy = mf->sz = f;
+			}
+		}
 		
 		mf->do_angle = (cfg_getint(cfg_meshframe, "do-angle") == 1 ? true : false);
 		

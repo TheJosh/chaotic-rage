@@ -1,4 +1,4 @@
-# Blender v2.59 (sub 0) OBJ File: 'machinegun.blend'
+# Blender v2.63 (sub 11) OBJ File: 'machinegun.blend'
 # www.blender.org
 mtllib machinegun.mtl
 o Cube_Cube.001
@@ -75,7 +75,7 @@ vn 1.000000 -0.000000 -0.000000
 vn 0.000001 1.000000 -0.000001
 vn 0.000000 0.000000 1.000000
 vn -0.000000 -0.122980 -0.992409
-usemtl 
+usemtl Material_machinegun.png
 s off
 f 14/1/1 1/2/1 4/3/1
 f 14/1/2 4/3/2 16/4/2
