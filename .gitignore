@@ -1,7 +1,9 @@
 animviewer
 chaoticrage
-build
 dedicatedserver
+
+build
+core
 
 *.mtl
 *.blend1

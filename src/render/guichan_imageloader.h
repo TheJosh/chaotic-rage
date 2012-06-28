@@ -37,9 +37,12 @@ namespace gcn
 		virtual Image* load(const std::string& filename, bool convertToDisplayFormat = true)
 		{
 			SDL_RWops * rw = this->mod->loadRWops(filename);
+			if (rw == NULL) {
+				throw GCN_EXCEPTION(
+						std::string("Unable to load image file: ") + filename);
+			}
 			
 			SDL_Surface *loadedSurface = IMG_Load_RW(rw, 0);
-			
 			if (loadedSurface == NULL) {
 				throw GCN_EXCEPTION(
 						std::string("Unable to load image file: ") + filename);
@@ -55,6 +58,11 @@ namespace gcn
 			
 			OpenGLImage *image = new OpenGLImage((unsigned int*)surface->pixels, surface->w, surface->h, convertToDisplayFormat);
 			SDL_FreeSurface(surface);
+			
+			if (image == NULL) {
+				throw GCN_EXCEPTION(
+						std::string("Unable to convert image to OpenGL: ") + filename);
+			}
 			
 			return image;
 		}

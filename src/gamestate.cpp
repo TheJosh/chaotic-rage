@@ -349,18 +349,22 @@ bool GameState::getMouseGrab()
 **/
 void GameState::initGuichan()
 {
-	this->gui = new gcn::Gui();
-
-	this->guiinput = new gcn::SDLInput();
-	gui->setInput(guiinput);
-
-	((RenderOpenGL*)this->render)->initGuichan(gui, this->mm->getDefaultMod());
-	
-	this->guitop = new gcn::Container();
-	this->guitop->setPosition(0,0);
-	this->guitop->setSize(((RenderOpenGL*)this->render)->real_width, ((RenderOpenGL*)this->render)->real_height);
-	this->guitop->setBaseColor(gcn::Color(0, 0, 0, 0));
-	gui->setTop(this->guitop);
+	try {
+		this->gui = new gcn::Gui();
+		this->guiinput = new gcn::SDLInput();
+		gui->setInput(guiinput);
+		
+		((RenderOpenGL*)this->render)->initGuichan(gui, this->mm->getDefaultMod());
+		
+		this->guitop = new gcn::Container();
+		this->guitop->setPosition(0,0);
+		this->guitop->setSize(((RenderOpenGL*)this->render)->real_width, ((RenderOpenGL*)this->render)->real_height);
+		this->guitop->setBaseColor(gcn::Color(0, 0, 0, 0));
+		gui->setTop(this->guitop);
+		
+	} catch (gcn::Exception ex) {
+		this->gui = NULL;
+	}
 }
 
 
@@ -379,13 +383,15 @@ bool GameState::hasDialog(string name)
 **/
 void GameState::addDialog(Dialog * dialog)
 {
+	if (this->gui == NULL) return;
+	
 	gcn::Container * c = dialog->setup();
 	c->setPosition((((RenderOpenGL*)this->render)->real_width - c->getWidth()) / 2, (((RenderOpenGL*)this->render)->real_height - c->getHeight()) / 2);
 	c->setBaseColor(gcn::Color(150, 150, 150, 200));
 	this->guitop->add(c);
 	
 	this->dialogs.push_back(dialog);
-
+	
 	this->setMouseGrab(false);
 }
 

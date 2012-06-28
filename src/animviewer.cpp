@@ -7,6 +7,12 @@
 #include "rage.h"
 
 
+#include <guichan.hpp>
+#include <guichan/sdl.hpp>
+#include <guichan/opengl.hpp>
+#include <guichan/opengl/openglsdlimageloader.hpp>
+
+
 using namespace std;
 
 
@@ -28,15 +34,17 @@ int main (int argc, char * argv[])
 	new AudioSDLMixer(st);
 	new HUD(st);
 	new PhysicsBullet(st);
+	new ModManager(st);
 	
 	st->render->setScreenSize(900, 900, false, 0);
 	
-	Mod * mod = new Mod(st, "data/cr");
 	
 	// Load data
+	Mod * mod = new Mod(st, "data/cr");
 	if (! mod->load()) {
 		reportFatalError("Unable to load data module 'cr'.");
 	}
+	st->mm->addMod(mod);
 	
 	
 	st->physics->preGame();
