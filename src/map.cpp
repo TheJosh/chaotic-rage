@@ -203,10 +203,9 @@ int Map::load(string name, Render * render)
 				this->st,
 				cfg_getint(cfg_sub, "x"),
 				cfg_getint(cfg_sub, "y"),
-				0
+				1,
+				cfg_getint(cfg_sub, "angle")
 			);
-			
-			wa->angle = cfg_getint(cfg_sub, "angle");
 			
 			this->st->addWall(wa);
 		}

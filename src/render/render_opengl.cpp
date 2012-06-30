@@ -958,7 +958,7 @@ void RenderOpenGL::entities()
 			e->getRigidBody()->getMotionState()->getWorldTransform(trans);
 			glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
 			
-			renderAnimPlay(play, e->angle);
+			renderAnimPlay(play, 0);
 			//renderAnimPlay(this->test, 0);
 			
 			glPopMatrix();

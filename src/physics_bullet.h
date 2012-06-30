@@ -36,6 +36,8 @@ class PhysicsBullet
 		
 	public:
 		btRigidBody* addRigidBody(btCollisionShape* colShape, float mass, float x, float y, float z);
+		btRigidBody* addRigidBody(btCollisionShape* colShape, float m, btDefaultMotionState* motionState);
+
 		void delRigidBody(btRigidBody* body);
 		
 		void stepTime(int ms);

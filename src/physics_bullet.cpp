@@ -93,6 +93,7 @@ btDiscreteDynamicsWorld* PhysicsBullet::getWorld()
 /**
 * Create and add a rigid body
 *
+* colShape = The collission shape of the body
 * m = mass
 * x,y,z = origin position
 **/
@@ -111,6 +112,36 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, fl
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(
 		mass,
 		myMotionState,
+		colShape,
+		localInertia
+	);
+	btRigidBody* body = new btRigidBody(rbInfo);
+	
+	dynamicsWorld->addRigidBody(body);
+	
+	return body;
+}
+
+
+/**
+* Create and add a rigid body
+*
+* colShape = The collission shape of the body
+* m = mass
+* motionState = origin motion state (position and rotation)
+**/
+btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, btDefaultMotionState* motionState)
+{
+	btScalar mass(m);
+	bool isDynamic = (mass != 0.f);
+	
+	btVector3 localInertia(0,0,0);
+	if (isDynamic)
+		colShape->calculateLocalInertia(mass,localInertia);
+	
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(
+		mass,
+		motionState,
 		colShape,
 		localInertia
 	);

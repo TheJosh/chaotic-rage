@@ -10,7 +10,7 @@
 using namespace std;
 
 
-Wall::Wall(WallType *wt, GameState *st, float x, float y, float z) : Entity(st)
+Wall::Wall(WallType *wt, GameState *st, float x, float y, float z, float angle) : Entity(st)
 {
 	this->wt = wt;
 	this->anim = new AnimPlay(wt->model);
@@ -19,12 +19,18 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z) : Entity(st)
 	
 	
 	// TODO: The colShape should be tied to the wall type.
-	btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
+	btCollisionShape* colShape = new btBoxShape(btVector3(1,2,1));
 	
 	// TODO: Store the colshape and nuke at some point
 	// collisionShapes.push_back(colShape);
 	
-	this->body = st->physics->addRigidBody(colShape, 0.0, x, y, z);
+	btDefaultMotionState* motionState =
+		new btDefaultMotionState(btTransform(
+			btQuaternion(btScalar(angle), btScalar(0), btScalar(0)),
+			btVector3(x,y,z)
+		));
+	
+	this->body = st->physics->addRigidBody(colShape, 0.0, motionState);
 	
 	this->body->setUserPointer(this);
 }

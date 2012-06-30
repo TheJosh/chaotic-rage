@@ -54,8 +54,63 @@ cfg_opt_t animmodel_opts[] =
 	CFG_INT((char*) "num_frames", 0, CFGF_NONE),
 	CFG_SEC((char*) "meshframe", _meshframe_opts, CFGF_MULTI),
 	CFG_STR((char*) "next", (char*)"", CFGF_NONE),
+	CFG_STR((char*) "mesh", 0, CFGF_NONE),
+	CFG_STR((char*) "texture", 0, CFGF_NONE),
 	CFG_END()
 };
+
+
+/**
+* Loads a mesh from storage. Does some clever caching to only load it once
+**/
+WavefrontObj * cachedLoadMesh(string name, Mod * mod)
+{
+	WavefrontObj * ret = NULL;
+
+	map<string, WavefrontObj *>::iterator it = loaded_meshes.find(name);
+	if (it == loaded_meshes.end()) {
+		string filename = mod->directory;
+		filename.append("animmodels/");
+		filename.append(name);
+		filename.append(".obj");
+				
+		ret = loadObj(filename);
+				
+		if (ret == NULL) { cerr << "Bad mesh: " << filename << "\n"; return NULL; }
+				
+		loaded_meshes[name] = ret;
+	} else {
+		ret = it->second;
+	}
+
+	return ret;
+}
+
+
+/**
+* Loads a texture from storage. Does some clever caching to only load it once
+**/
+SpritePtr cachedLoadTexture(string name, Mod * mod)
+{
+	SpritePtr tex = NULL;
+
+	map<string, SpritePtr>::iterator it = loaded_textures.find(name);
+	if (it == loaded_textures.end()) {
+		string filename = "animmodels/";
+		filename.append(name);
+		filename.append(".png");
+				
+		tex = mod->st->render->loadSprite(filename, mod);
+				
+		if (tex == NULL) { cerr << "Bad texture: " << filename << "\n"; return NULL; }
+				
+		loaded_textures[name] = tex;
+	} else {
+		tex = it->second;
+	}
+
+	return tex;
+}
 
 
 /**
@@ -72,6 +127,28 @@ AnimModel* loadItemAnimModel(cfg_t *cfg_model, Mod * mod)
 	am->num_frames = cfg_getint(cfg_model, "num_frames");
 	am->next_name = cfg_getstr(cfg_model, "next");
 	
+	// If a model doesn't provide num_frames arg, we assume a single simple frame
+	// with just a mesh and a texture. Nice an quick to work with.
+	if (am->num_frames == 0) {
+		am->num_frames = 1;
+
+		MeshFrame* mf = new MeshFrame();
+		mf->frame = 0;
+		mf->mesh = cachedLoadMesh(cfg_getstr(cfg_model, "mesh"), mod);
+		mf->texture = cachedLoadTexture(cfg_getstr(cfg_model, "texture"), mod);
+		mf->texture_name = cfg_getstr(cfg_model, "texture");
+
+		mf->px = mf->py = mf->pz = 0;
+		mf->rx = mf->ry = mf->rz = 0;
+		mf->sx = mf->sy = mf->sz = 1;
+		mf->do_angle = 0;
+
+		am->meshframes.push_back(mf);
+
+		return am;
+	}
+
+
 	int num = cfg_size(cfg_model, "meshframe");
 	int j,k;
 	for (j = 0; j < num; j++) {
@@ -80,47 +157,8 @@ AnimModel* loadItemAnimModel(cfg_t *cfg_model, Mod * mod)
 		MeshFrame* mf = new MeshFrame();
 		mf->frame = cfg_getint(cfg_meshframe, "frame");
 		
-		// Load the mesh
-		{
-			string name = cfg_getstr(cfg_meshframe, "mesh");
-			
-			map<string, WavefrontObj *>::iterator it = loaded_meshes.find(name);
-			if (it == loaded_meshes.end()) {
-				string filename = mod->directory;
-				filename.append("animmodels/");
-				filename.append(name);
-				filename.append(".obj");
-				
-				mf->mesh = loadObj(filename);
-				
-				if (mf->mesh == NULL) { cerr << "Bad mesh: " << filename << "\n"; return NULL; }
-				
-				loaded_meshes[name] = mf->mesh;
-			} else {
-				mf->mesh = it->second;
-			}
-		}
-		
-		// Load the texture
-		{
-			string name = cfg_getstr(cfg_meshframe, "texture");
-			
-			map<string, SpritePtr>::iterator it = loaded_textures.find(name);
-			if (it == loaded_textures.end()) {
-				string filename = "animmodels/";
-				filename.append(name);
-				filename.append(".png");
-				
-				mf->texture = mod->st->render->loadSprite(filename, mod);
-				
-				if (mf->texture == NULL) { cerr << "Bad texture: " << filename << "\n"; return NULL; }
-				
-				loaded_textures[name] = mf->texture;
-			} else {
-				mf->texture = it->second;
-			}
-		}
-		
+		mf->mesh = cachedLoadMesh(cfg_getstr(cfg_meshframe, "mesh"), mod);
+		mf->texture = cachedLoadTexture(cfg_getstr(cfg_meshframe, "texture"), mod);
 		mf->texture_name = cfg_getstr(cfg_meshframe, "texture");
 		
 		mf->px = cfg_getfloat(cfg_meshframe, "px");
