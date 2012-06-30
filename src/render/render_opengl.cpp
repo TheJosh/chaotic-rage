@@ -607,7 +607,7 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 }
 
 
-void RenderOpenGL::renderAnimPlay(AnimPlay * play, int angle)
+void RenderOpenGL::renderAnimPlay(AnimPlay * play)
 {
 	AnimModel * model;
 	
@@ -630,9 +630,10 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, int angle)
 		
 		glPushMatrix();
 		
-		if (model->meshframes[d]->do_angle) {
-			glRotatef(0 - angle, 0, 0, 1);
-		}
+		// TODO: Fix for new physics
+		//if (model->meshframes[d]->do_angle) {
+		//	glRotatef(0 - angle, 0, 0, 1);
+		//}
 		
 		glTranslatef(model->meshframes[d]->px, model->meshframes[d]->py, model->meshframes[d]->pz);
 		glRotatef(model->meshframes[d]->rx, 1, 0, 0);
@@ -956,10 +957,11 @@ void RenderOpenGL::entities()
 			
 			btTransform trans;
 			e->getRigidBody()->getMotionState()->getWorldTransform(trans);
-			glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
-			
-			renderAnimPlay(play, 0);
-			//renderAnimPlay(this->test, 0);
+			btScalar m[16];
+			trans.getOpenGLMatrix(m);
+			glMultMatrixf((GLfloat*)m);
+
+			renderAnimPlay(play);
 			
 			glPopMatrix();
 		}
@@ -994,7 +996,7 @@ void RenderOpenGL::collides()
 		
 		glTranslatef(c->x, c->y, 100);
 		glScalef(c->radius, c->radius, c->radius);
-		renderAnimPlay(this->test, 0);
+		renderAnimPlay(this->test);
 		
 		glPopMatrix();
 	}

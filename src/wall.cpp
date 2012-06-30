@@ -26,7 +26,7 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z, float angle) 
 	
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
-			btQuaternion(btScalar(angle), btScalar(0), btScalar(0)),
+			btQuaternion(btScalar(0), btScalar(0), btScalar(DEG_TO_RAD(angle))),
 			btVector3(x,y,z)
 		));
 	
