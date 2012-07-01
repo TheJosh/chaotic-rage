@@ -14,7 +14,6 @@ using namespace std;
 ParticleGenerator::ParticleGenerator(ParticleGenType* type, GameState *st, float x, float y, float z) : Entity(st)
 {
 	this->type = type;
-	this->angle = 0;
 	this->age = 0;
 	
 	for (int i = 0; i < MAX_SPEWERS; i++) {

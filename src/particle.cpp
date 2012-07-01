@@ -25,8 +25,6 @@ Particle::Particle(ParticleType *pt, GameState *st, float x, float y, float z) :
 	
 	this->anim = new AnimPlay(pt->model);
 	this->cb = NULL;
-	
-	this->angle = 0;
 	this->age = 0;
 	
 	

@@ -23,7 +23,7 @@ class Object : public Entity
 		AnimPlay * anim;
 		CollideBox * cb;
 	public:
-		Object(ObjectType *pt, GameState *st, float x, float y, float z);
+		Object(ObjectType *pt, GameState *st, float x, float y, float z, float angle);
 		virtual ~Object();
 		
 	public:
