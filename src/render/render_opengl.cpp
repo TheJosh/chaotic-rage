@@ -793,9 +793,14 @@ void RenderOpenGL::render()
 void RenderOpenGL::background()
 {
 	if (this->render_player != NULL) {
+		btTransform trans;
+		this->render_player->body->getMotionState()->getWorldTransform(trans);
+		btVector3 euler;
+		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
+		
 		glLoadIdentity();
 		glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
-		glRotatef(this->render_player->angle, 0, 0, 1);
+		glRotatef(RAD_TO_DEG(euler.z()), 0, 0, 1);
 		glTranslatef(0 - st->curr_map->background->w / 2, 0 - st->curr_map->background->h / 2, 0);
 		this->renderSprite(st->curr_map->background, 0, 0);
 	}
@@ -842,10 +847,14 @@ void RenderOpenGL::mainRot()
 			
 		}
 		
-		glRotatef(this->render_player->angle, 0, 0, 1);
-		
 		btTransform trans;
-		this->render_player->getRigidBody()->getMotionState()->getWorldTransform(trans);
+		this->render_player->body->getMotionState()->getWorldTransform(trans);
+		btVector3 euler;
+		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
+		
+		//glRotatef(euler.z(), 0, 0, 1);
+		//glRotatef(this->render_player->angle, 0, 0, 1);
+		
 		glTranslatef(0 - trans.getOrigin().getX(), 0 - trans.getOrigin().getY(), 500 - trans.getOrigin().getZ());
 	}
 	

@@ -35,6 +35,7 @@ class Entity
 	public:
 		bool del;
 		float speed;
+		int angle;
 		
 		btRigidBody* body;
 		

@@ -227,5 +227,13 @@ void PhysicsBullet::doCollisions()
 }
 
 
-
+void PhysicsBullet::QuaternionToEulerXYZ(const btQuaternion &quat, btVector3 &euler)
+{
+	float w=quat.getW(); float x=quat.getX(); float y=quat.getY(); float z=quat.getZ();
+	double sqw = w*w; double sqx = x*x; double sqy = y*y; double sqz = z*z;
+	
+	euler.setZ((atan2(2.0 * (x*y + z*w),(sqx - sqy - sqz + sqw))));
+	euler.setX((atan2(2.0 * (y*z + x*w),(-sqx - sqy + sqz + sqw))));
+	euler.setY((asin(-2.0 * (x*z - y*w))));
+}
 

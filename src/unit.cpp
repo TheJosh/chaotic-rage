@@ -14,10 +14,6 @@ using namespace std;
 Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 {
 	this->uc = uc;
-	this->angle_move = 0;
-	this->desired_angle_move = 0;
-	this->angle_aim = 0;
-	this->desired_angle_aim = 0;
 	this->speed = 0;
 	this->health = uc->begin_health;
 	this->slot = 0;
@@ -306,17 +302,6 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	}
 	
 	
-	int turn_move = ppsDeltai(ucs->turn_move, delta);
-	
-	this->desired_angle_move = clampAngle(this->desired_angle_move);
-	this->angle_move = angleFromDesired(this->angle_move, this->desired_angle_move, turn_move);
-	
-	//this->desired_angle_aim = clampAngle(this->desired_angle_aim);
-	//int turn_aim = ppsDeltai(ucs->turn_aim, delta);
-	//this->angle_aim = angleFromDesired(this->angle_aim, this->desired_angle_aim, turn_aim);
-	
-	this->angle = this->angle_aim;
-	
 	if (this->speed > ucs->max_speed) this->speed = ucs->max_speed;
 	if (this->speed < 0 - ucs->max_speed) this->speed = 0 - ucs->max_speed;
 	
@@ -450,7 +435,7 @@ void Unit::doUse()
 	}
 	
 	if (ot->add_object.length() != 0) {
-		Object *nu = new Object(this->st->mm->getObjectType(ot->add_object), this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
+		Object *nu = new Object(this->st->mm->getObjectType(ot->add_object), this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ(), trans.getRotation().getZ());
 		this->st->addObject(nu);
 	}
 	

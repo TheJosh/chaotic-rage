@@ -13,6 +13,7 @@ using namespace std;
 Player::Player(UnitType *uc, GameState *st, float x, float y, float z) : Unit(uc, st, x, y, z)
 {
 	for (int i = 0; i < 16; i++) this->key[i] = 0;
+	this->mouse_angle = 0.0;
 }
 
 Player::~Player()
@@ -98,9 +99,7 @@ void Player::angleFromMouse(int x, int y, int delta)
 	float change_dist = x;
 	change_dist /= (10.0 / sensitivity);
 	
-	//float changeAngle = asin(changeDist*(3.142/180.0))*(180/3.142);
-	
-	this->angle_aim = this->angle_aim - change_dist;
+	this->mouse_angle = this->mouse_angle - change_dist;
 }
 
 
@@ -125,38 +124,6 @@ void Player::update(int delta)
 	bool keypressed = false;
 	
 	
-	// Up/Down
-	if (this->key[KEY_UP]) {
-		if (this->key[KEY_LEFT]) {
-			this->desired_angle_move = 45;
-		} else if (this->key[KEY_RIGHT]) {
-			this->desired_angle_move = 315;
-		} else {
-			this->desired_angle_move = 0;
-		}
-		keypressed = true;
-		
-	} else if (this->key[KEY_DOWN]) {
-		if (this->key[KEY_LEFT]) {
-			this->desired_angle_move = 135;
-		} else if (this->key[KEY_RIGHT]) {
-			this->desired_angle_move = 225;
-		} else {
-			this->desired_angle_move = 180;
-		}
-		keypressed = true;
-		
-	} else if (this->key[KEY_LEFT] && this->drive_obj == NULL) {
-		this->desired_angle_move = 90;
-		keypressed = true;
-		
-	} else if (this->key[KEY_RIGHT] && this->drive_obj == NULL) {
-		this->desired_angle_move = 270;
-		keypressed = true;
-	}
-	
-	
-	
 	// TODO: why is this in a block?
 	{
 		btTransform xform;
@@ -170,11 +137,12 @@ void Player::update(int delta)
 		
 		if (!this->key[KEY_UP] && !this->key[KEY_DOWN] && !this->key[KEY_LEFT] && !this->key[KEY_RIGHT]) {
 			linearVelocity *= btScalar(0.2);
+			keypressed = true;
 			
 		} else if (speed < 10.0) {				// TODO: Managed in the unit settings
 			body->activate(true);
 			
-			xform.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->angle)));
+			xform.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle)));
 			btVector3 forwardDir = xform.getBasis()[1];
 			forwardDir.normalize();
 			forwardDir *= btScalar(2.5);		// TODO: Managed in the unit settings
@@ -187,7 +155,7 @@ void Player::update(int delta)
 				walkDirection += forwardDir;
 			}
 			
-			xform.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->angle + 90)));
+			xform.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle + 90)));
 			btVector3 strafeDir = xform.getBasis()[1];
 			strafeDir.normalize();
 			strafeDir *= btScalar(0.7);		// TODO: Managed in the unit settings
@@ -201,13 +169,18 @@ void Player::update(int delta)
 			linearVelocity += walkDirection;
 		}
 		
+		// TODO: Use this->mouse_angle to turn the object around too.
+		
 		body->setLinearVelocity (linearVelocity);
+		
+
+		btVector3 axis = btVector3(0.0, 0.0, 1.0);
+		axis *= btScalar(this->mouse_angle);
+		body->setAngularVelocity (axis);
 	}
 	
-	
-	
-	this->desired_angle_move += this->angle_aim;
-	
+	// TODO: REmove this hack.
+	this->angle = this->mouse_angle;
 	
 	// A movement key was pressed
 	if (keypressed) {

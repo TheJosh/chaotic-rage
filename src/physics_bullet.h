@@ -44,6 +44,8 @@ class PhysicsBullet
 		void doCollisions();
 		
 		btDiscreteDynamicsWorld* getWorld();
+		
+		static void QuaternionToEulerXYZ(const btQuaternion &quat,btVector3 &euler);
 };
 
 

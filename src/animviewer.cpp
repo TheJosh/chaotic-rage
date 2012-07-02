@@ -81,7 +81,7 @@ int main (int argc, char * argv[])
 	
 	
 	// Create object in the world
-	Object *o = new Object(ot, st, m->width/2, m->height/2, 0);
+	Object *o = new Object(ot, st, m->width/2, m->height/2, 0, 0);
 	st->addObject(o);
 	
 	

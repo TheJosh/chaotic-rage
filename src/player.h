@@ -22,10 +22,11 @@ class Player : public Unit
 		static const int KEY_LIFT = 6;
 		static const int KEY_MELEE = 7;
 		static const int KEY_SPECIAL = 8;
-
+		
 	public:
 		bool key[16];
-
+		float mouse_angle;
+		
 	public:
 		Player(UnitType *uc, GameState *st, float x, float y, float z);
 		virtual ~Player();

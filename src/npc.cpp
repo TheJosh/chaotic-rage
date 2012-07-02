@@ -47,62 +47,7 @@ void NPC::update(int delta)
 	
 	UnitTypeSettings *ucs = this->uc->getSettings(0);
 	
-	
 	logic->update(delta);
-	
-	
-	/*if (currently_hit) {
-		this->endFiring();
-	}
-	currently_hit = false;*/
-	
-	
-	// This should be moved into a function in the GameLogic class
-	// TODO: NPC restructuring for new physics
-	/*if (st->local_players[0] == NULL) return;
-	
-	if (st->game_time - vals[0] > 2500) {
-		vals[0] = st->game_time;
-		vals[1] = getAngleBetweenPoints((int)round(this->x), (int)round(this->y), (int)round(this->st->local_players[0]->x), (int)round(this->st->local_players[0]->y));
-		vals[1] = getRandom(vals[1] - 50, vals[1] + 50);
-		
-		this->desired_angle_aim = getRandom(vals[1] - 50, vals[1] + 50);
-		
-		//if (firing) {
-		//	this->endFiring();
-		//} else {
-		//	this->beginFiring();
-		//}
-
-		int s = getRandom(1, 8);
-		if (s == 1) {
-			this->st->audio->playSound(this->st->mm->getSound("zombie_1"), false, this);
-		} else if (s == 2) {
-			this->st->audio->playSound(this->st->mm->getSound("zombie_2"), false, this);
-		} else if (s == 3) {
-			this->st->audio->playSound(this->st->mm->getSound("zombie_3"), false, this);
-		} else if (s == 4) {
-			this->st->audio->playSound(this->st->mm->getSound("zombie_4"), false, this);
-		} else if (s == 5) {
-			this->st->audio->playSound(this->st->mm->getSound("zombie_5"), false, this);
-		}
-	}
-	
-	
-	this->desired_angle_aim = clampAngle(this->desired_angle_aim);
-	int turn_aim = ppsDeltai(ucs->turn_aim, delta);
-	this->angle_aim = angleFromDesired(this->angle_aim, this->desired_angle_aim, turn_aim);
-	
-	this->desired_angle_move = getRandom(vals[1] - 10, vals[1] + 10);
-	
-	this->speed += ppsDeltaf(ucs->accel, delta);
-	
-	if (this->closest && this->closest->fac != this->fac) {
-		this->meleeAttack();
-	}
-	*/
-	// End of stuff to move
-	
 	
 	Unit::update(delta, ucs);
 	
