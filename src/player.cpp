@@ -90,8 +90,6 @@ void Player::setKeys(Uint8 bitfield)
 **/
 void Player::angleFromMouse(int x, int y, int delta)
 {
-	if (this->drive_obj != NULL && this->speed == 0) return;	// Cars can only turn while moving
-
 	// TODO: Think about delta
 	
 	float sensitivity = 5.0; // 1 = slow, 10 = nuts
@@ -179,26 +177,6 @@ void Player::update(int delta)
 		}
 		
 		body->setLinearVelocity (linearVelocity);
-	
-	
-	
-	// A movement key was pressed
-	if (keypressed) {
-		this->speed += ppsDeltaf(ucs->accel, delta);
-		this->setState(UNIT_STATE_RUNNING);
-		
-	} else if (speed > 0) {		// nothing pressed, slow down (forwards)
-		this->speed -= (speed > 100 ? 100 : speed);
-		this->setState(UNIT_STATE_STATIC);
-		
-	} else if (speed < 0) {		// nothing pressed, slow down (reverse)
-		this->speed += (0 - speed > 100 ? 100 : 0 - speed);
-		this->setState(UNIT_STATE_STATIC);
-	}
-	
-	// Bound to limits
-	if (this->speed > ucs->max_speed) this->speed = ucs->max_speed;
-	if (this->speed < 0 - ucs->max_speed) this->speed = 0 - ucs->max_speed;
 	
 	
 	Unit::update(delta, ucs);

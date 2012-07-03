@@ -14,7 +14,6 @@ using namespace std;
 Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 {
 	this->uc = uc;
-	this->speed = 0;
 	this->health = uc->begin_health;
 	this->slot = 0;
 	
@@ -79,7 +78,6 @@ void Unit::hasBeenHit(Entity * that)
 	
 	if (remove_at != 0) return;
 	if (that->klass() == WALL) {
-		this->speed = 0;
 		this->setState(UNIT_STATE_STATIC);
 		
 	} else if (that->klass() == PARTICLE) {
@@ -123,9 +121,7 @@ void Unit::beginFiring()
 	
 	this->firing = true;
 	
-	if (this->speed == 0) {
-		this->setState(UNIT_STATE_FIRING);
-	}
+	this->setState(UNIT_STATE_FIRING);
 	
 	Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_BEGIN);
 	weapon_sound = this->st->audio->playSound(snd, true, this);
@@ -137,9 +133,7 @@ void Unit::endFiring()
 	
 	this->firing = false;
 	
-	if (this->speed == 0) {
-		this->setState(UNIT_STATE_STATIC);
-	}
+	this->setState(UNIT_STATE_STATIC);
 	
 	this->st->audio->stopSound(this->weapon_sound);
 
@@ -302,10 +296,6 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	}
 	
 	
-	if (this->speed > ucs->max_speed) this->speed = ucs->max_speed;
-	if (this->speed < 0 - ucs->max_speed) this->speed = 0 - ucs->max_speed;
-	
-	
 	if (st->server) st->server->addmsgUnitUpdate(this);
 	
 	
@@ -405,7 +395,6 @@ int Unit::takeDamage(int damage)
 	this->st->increaseEntropy(1);
 	
 	if (this->health <= 0 && remove_at == 0) {
-		this->speed = 0;
 		this->setState(UNIT_STATE_DIE);
 		this->endFiring();
 		
@@ -486,7 +475,5 @@ void Unit::doLift()
 **/
 void Unit::doDrop()
 {
-	this->lift_obj->speed = 10;
-
 	this->lift_obj = NULL;
 }

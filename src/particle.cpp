@@ -15,7 +15,6 @@ Particle::Particle(ParticleType *pt, GameState *st, float x, float y, float z) :
 	this->pt = pt;
 	this->animation_start = st->anim_frame;
 	
-	this->speed = getRandom(pt->begin_speed.min, pt->begin_speed.max);
 	this->accel = getRandom(pt->accel.min, pt->accel.max);
 	this->max_age = getRandom(pt->age.min, pt->age.max);
 	this->unit_damage = getRandom(pt->unit_damage.min, pt->unit_damage.max);
@@ -56,9 +55,6 @@ void Particle::doHitUnit(Unit *u)
 			DEBUG("part", "%p dead, unit-hit", this);
 			this->hasDied();
 		}
-		
-	} else {
-		this->speed = 0;
 	}
 }
 
@@ -72,9 +68,6 @@ void Particle::doHitWall(Wall *w)
 			DEBUG("part", "%p dead, wall-hit", this);
 			this->hasDied();
 		}
-	
-	} else {
-		this->speed = 0;
 	}
 }
 
@@ -86,15 +79,6 @@ void Particle::update(int delta)
 		DEBUG("part", "%p dead, age", this);
 		this->hasDied();
 	}
-	
-	if (this->speed <= 0) {
-		DEBUG("part", "%p dead, speed", this);
-		this->hasDied();
-		return;
-	}
-	
-	
-	this->speed += ppsDeltaf(this->accel, delta);
 	
 	if (this->anim->isDone()) this->anim->next();
 }
