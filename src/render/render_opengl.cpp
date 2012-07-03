@@ -800,7 +800,7 @@ void RenderOpenGL::background()
 		
 		glLoadIdentity();
 		glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
-		glRotatef(RAD_TO_DEG(euler.z()), 0, 0, 1);
+		glRotatef(RAD_TO_DEG(0 - euler.z()), 0, 0, 1);
 		glTranslatef(0 - st->curr_map->background->w / 2, 0 - st->curr_map->background->h / 2, 0);
 		this->renderSprite(st->curr_map->background, 0, 0);
 	}
@@ -895,7 +895,9 @@ void RenderOpenGL::lights()
 				this->render_player->getRigidBody()->getMotionState()->getWorldTransform(trans);
 				glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
 				
-				glRotatef(0 - this->render_player->angle + 40, 0, 0, 1);
+				btVector3 euler;
+				PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
+				glRotatef(RAD_TO_DEG(euler.z()) + 40, 0, 0, 1);
 				glRotatef(15, 1, 0, 0);
 				
 				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_torch);

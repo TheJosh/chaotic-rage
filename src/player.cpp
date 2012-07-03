@@ -124,16 +124,18 @@ void Player::update(int delta)
 	bool keypressed = false;
 	
 	
-	// TODO: why is this in a block?
-	{
+	
 		btTransform xform;
 		
 		
+		// For some reason, the whole world is shaking madly.
+		// I think its this code, but I dont know why
 		body->setAngularFactor(btVector3(0,0,1));
 		body->getMotionState()->getWorldTransform(xform);
 		xform.setRotation(btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(0 - this->mouse_angle)));
-		//body->getMotionState()->setWorldTransform(xform);
+		body->getMotionState()->setWorldTransform(xform);
 		body->setCenterOfMassTransform (xform);
+		// End of dodgy code
 		
 		
 		body->getMotionState()->getWorldTransform (xform);
@@ -178,13 +180,9 @@ void Player::update(int delta)
 			linearVelocity += walkDirection;
 		}
 		
-		// TODO: Use this->mouse_angle to turn the object around too.
-		
 		body->setLinearVelocity (linearVelocity);
-	}
 	
-	// TODO: REmove this hack.
-	this->angle = this->mouse_angle;
+	
 	
 	// A movement key was pressed
 	if (keypressed) {
