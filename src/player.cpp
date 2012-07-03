@@ -131,11 +131,9 @@ void Player::update(int delta)
 		// For some reason, the whole world is shaking madly.
 		// I think its this code, but I dont know why
 		body->setAngularFactor(btVector3(0,0,1));
-		body->getMotionState()->getWorldTransform(xform);
-		xform.setRotation(btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(0 - this->mouse_angle)));
-		body->getMotionState()->setWorldTransform(xform);
-		body->setCenterOfMassTransform (xform);
-		// End of dodgy code
+		btTransform newTrans = body->getWorldTransform();
+		newTrans.setRotation(btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(0 - this->mouse_angle)));
+		body->setWorldTransform(newTrans);
 		
 		
 		body->getMotionState()->getWorldTransform (xform);

@@ -42,9 +42,7 @@ ParticleGenerator::~ParticleGenerator()
 **/
 void ParticleGenerator::update(int delta)
 {
-	Particle *pa;
 	GenSpew *spew;
-	int gennum;
 	
 	bool useful = false;
 	for (unsigned int i = 0; i < this->type->spewers.size(); i++) {
