@@ -127,6 +127,15 @@ void Player::update(int delta)
 	// TODO: why is this in a block?
 	{
 		btTransform xform;
+		
+		
+		body->setAngularFactor(btVector3(0,0,1));
+		body->getMotionState()->getWorldTransform(xform);
+		xform.setRotation(btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(0 - this->mouse_angle)));
+		//body->getMotionState()->setWorldTransform(xform);
+		body->setCenterOfMassTransform (xform);
+		
+		
 		body->getMotionState()->getWorldTransform (xform);
 		
 		btVector3 linearVelocity = body->getLinearVelocity();
@@ -172,11 +181,6 @@ void Player::update(int delta)
 		// TODO: Use this->mouse_angle to turn the object around too.
 		
 		body->setLinearVelocity (linearVelocity);
-		
-
-		btVector3 axis = btVector3(0.0, 0.0, 1.0);
-		axis *= btScalar(this->mouse_angle);
-		body->setAngularVelocity (axis);
 	}
 	
 	// TODO: REmove this hack.

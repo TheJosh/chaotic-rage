@@ -851,9 +851,7 @@ void RenderOpenGL::mainRot()
 		this->render_player->body->getMotionState()->getWorldTransform(trans);
 		btVector3 euler;
 		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-		
-		//glRotatef(euler.z(), 0, 0, 1);
-		//glRotatef(this->render_player->angle, 0, 0, 1);
+		glRotatef(RAD_TO_DEG(0 - euler.z()), 0, 0, 1);
 		
 		glTranslatef(0 - trans.getOrigin().getX(), 0 - trans.getOrigin().getY(), 500 - trans.getOrigin().getZ());
 	}
