@@ -65,20 +65,7 @@ void ParticleGenerator::update(int delta)
 		btTransform trans;
 		this->body->getMotionState()->getWorldTransform(trans);
 		
-		// Generate the particles according to the rate
-		gennum = ppsDeltai(spew->rate, delta);
-		for (int j = 0; j < gennum; j++) {
-			pa = new Particle(spew->pt, this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
-			
-			pa->angle = this->angle + getRandom(0 - spew->angle_range / 2, spew->angle_range / 2);
-			pa->angle = clampAngle(pa->angle);
-			
-			// TODO: Rethink particle generators for new physics
-			//pa->x = pointPlusAngleX(pa->x, pa->angle, spew->offset);
-			//pa->y = pointPlusAngleY(pa->y, pa->angle, spew->offset);
-			
-			st->addParticle(pa);
-		}
+		// TODO: Rethink particle generators for new physics
 	}
 	
 	this->age += delta;
