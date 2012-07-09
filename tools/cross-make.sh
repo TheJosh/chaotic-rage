@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+#  I don't think this actually works at the moment
+#
+
+cd ..
 
 # Where is 'crossenv' installed?
 CROSSENV="/home/josh/crossenv"
