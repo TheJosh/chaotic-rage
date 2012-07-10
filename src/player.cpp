@@ -14,6 +14,8 @@ Player::Player(UnitType *uc, GameState *st, float x, float y, float z) : Unit(uc
 {
 	for (int i = 0; i < 16; i++) this->key[i] = 0;
 	this->mouse_angle = 0.0;
+	
+	body->setAngularFactor(btVector3(0,0,1));
 }
 
 Player::~Player()
@@ -119,64 +121,61 @@ void Player::hasBeenHit(Entity * that)
 void Player::update(int delta)
 {
 	UnitTypeSettings *ucs = this->uc->getSettings(0);
-	bool keypressed = false;
 	
 	
 	
-		btTransform xform;
+	btTransform xform, xform2;
+	body->getMotionState()->getWorldTransform (xform);
+	xform2 = xform;
+	
+	
+	xform.setRotation(btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(0 - this->mouse_angle)));
+	
+	
+	btVector3 linearVelocity = body->getLinearVelocity();
+	btScalar speed = linearVelocity.length();
+	
+	DEBUG("unit", "%p Velocity: %f %f %f", this, linearVelocity.x(), linearVelocity.y(), linearVelocity.z());
+	
+	
+	if (!this->key[KEY_UP] && !this->key[KEY_DOWN] && !this->key[KEY_LEFT] && !this->key[KEY_RIGHT]) {
+		linearVelocity *= btScalar(0.2);
+		body->setLinearVelocity (linearVelocity);
 		
+	} else if (speed < 10.0) {				// TODO: Managed in the unit settings
+		body->activate(true);
 		
-		// For some reason, the whole world is shaking madly.
-		// I think its this code, but I dont know why
-		body->setAngularFactor(btVector3(0,0,1));
-		btTransform newTrans = body->getWorldTransform();
-		newTrans.setRotation(btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(0 - this->mouse_angle)));
-		body->setWorldTransform(newTrans);
+		xform2.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle)));
+		btVector3 forwardDir = xform2.getBasis()[1];
+		forwardDir.normalize();
+		forwardDir *= btScalar(2.5);		// TODO: Managed in the unit settings
 		
+		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		
-		body->getMotionState()->getWorldTransform (xform);
-		
-		btVector3 linearVelocity = body->getLinearVelocity();
-		btScalar speed = linearVelocity.length();
-		
-		DEBUG("unit", "%p Velocity: %f %f %f", this, linearVelocity.x(), linearVelocity.y(), linearVelocity.z());
-		
-		
-		if (!this->key[KEY_UP] && !this->key[KEY_DOWN] && !this->key[KEY_LEFT] && !this->key[KEY_RIGHT]) {
-			linearVelocity *= btScalar(0.2);
-			keypressed = true;
-			
-		} else if (speed < 10.0) {				// TODO: Managed in the unit settings
-			body->activate(true);
-			
-			xform.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle)));
-			btVector3 forwardDir = xform.getBasis()[1];
-			forwardDir.normalize();
-			forwardDir *= btScalar(2.5);		// TODO: Managed in the unit settings
-			
-			btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
-		
-			if (this->key[KEY_UP]) {
-				walkDirection -= forwardDir;
-			} else if (this->key[KEY_DOWN]) {
-				walkDirection += forwardDir;
-			}
-			
-			xform.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle + 90)));
-			btVector3 strafeDir = xform.getBasis()[1];
-			strafeDir.normalize();
-			strafeDir *= btScalar(0.7);		// TODO: Managed in the unit settings
-			
-			if (this->key[KEY_LEFT]) {
-				walkDirection -= strafeDir;
-			} else if (this->key[KEY_RIGHT]) {
-				walkDirection += strafeDir;
-			}
-			
-			linearVelocity += walkDirection;
+		if (this->key[KEY_UP]) {
+			walkDirection -= forwardDir;
+		} else if (this->key[KEY_DOWN]) {
+			walkDirection += forwardDir;
 		}
 		
+		xform2.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle + 90)));
+		btVector3 strafeDir = xform2.getBasis()[1];
+		strafeDir.normalize();
+		strafeDir *= btScalar(0.7);		// TODO: Managed in the unit settings
+		
+		if (this->key[KEY_LEFT]) {
+			walkDirection -= strafeDir;
+		} else if (this->key[KEY_RIGHT]) {
+			walkDirection += strafeDir;
+		}
+		
+		linearVelocity += walkDirection;
 		body->setLinearVelocity (linearVelocity);
+	}
+	
+	
+	body->getMotionState()->setWorldTransform (xform);
+	body->setCenterOfMassTransform (xform);
 	
 	
 	Unit::update(delta, ucs);
