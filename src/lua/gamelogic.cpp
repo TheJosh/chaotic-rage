@@ -347,14 +347,19 @@ LUA_FUNC(add_npc)
 {
 	NPC *p;
 	
-	const char* name = lua_tostring(L, 1);
-	UnitType *uc = gl->st->mm->getUnitType(*(new string(name)));
+	UnitType *uc = gl->st->mm->getUnitType(*(new string(lua_tostring(L, 1))));
 	if (uc == NULL) {
 		lua_pushstring(L, "Arg #1 is not an available unittype");
 		lua_error(L);
 	}
 	
-	Faction fac = (Faction) lua_tointeger(L, 2);
+	AIType *ai = gl->st->mm->getAIType(*(new string(lua_tostring(L, 2))));
+	if (uc == NULL) {
+		lua_pushstring(L, "Arg #2 is not an available aitype");
+		lua_error(L);
+	}
+	
+	Faction fac = (Faction) lua_tointeger(L, 3);
 	
 	
 	Zone *zn = gl->map->getSpawnZone(fac);
@@ -363,7 +368,7 @@ LUA_FUNC(add_npc)
 		exit(1);
 	}
 	
-	p = new NPC(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 2);
+	p = new NPC(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 2, ai);
 	
 	p->fac = fac;
 	

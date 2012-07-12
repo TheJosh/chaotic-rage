@@ -24,13 +24,13 @@ spawn_func = function()
 	t = random(1, 4);
 	
 	if (t == 1) then
-		add_npc("zomb", factions.team2);
+		add_npc("zomb", "zombie", factions.team2);
 	elseif (t == 2) then
-		add_npc("zomb_fast", factions.team2);
+		add_npc("zomb_fast", "zombie", factions.team2);
 	elseif (t == 3) then
-		add_npc("zomb_baby", factions.team2);
+		add_npc("zomb_baby", "zombie", factions.team2);
 	elseif (t == 4) then
-		add_npc("zomb_facebook", factions.team2);
+		add_npc("zomb_facebook", "zombie", factions.team2);
 	end;
 	
 	num_zombies = num_zombies + 1;

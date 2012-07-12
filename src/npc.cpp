@@ -10,18 +10,14 @@
 using namespace std;
 
 
-NPC::NPC(UnitType *uc, GameState *st, float x, float y, float z) : Unit(uc, st, x, y, z)
+NPC::NPC(UnitType *uc, GameState *st, float x, float y, float z, AIType *ai) : Unit(uc, st, x, y, z)
 {
 	vals[0] = vals[1] = vals[2] = vals[3] = 0;
 	
 	this->setState(UNIT_STATE_RUNNING);
 	
 	logic = new AILogic(this);
-	
-	
-	// TODO: AIs should be loaded properly etc
-	char * script = st->mm->getDefaultMod()->loadText("ai.lua");
-	logic->execScript(script);
+	logic->execScript(ai->script);
 }
 
 NPC::~NPC()

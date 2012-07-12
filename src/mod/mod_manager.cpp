@@ -75,6 +75,23 @@ bool ModManager::reloadAttrs()
 /**
 * Gets an animmodel by name
 **/
+AIType * ModManager::getAIType(string name)
+{
+	if (name.empty()) return NULL;
+	
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		AIType *et = mod->getAIType(name);
+		if (et) return et;
+	}
+	
+	return NULL;
+}
+
+
+/**
+* Gets an animmodel by name
+**/
 AnimModel * ModManager::getAnimModel(string name)
 {
 	if (name.empty()) return NULL;

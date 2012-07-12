@@ -16,7 +16,7 @@ class NPC : public Unit
 		AILogic *logic;
 		
 	public:
-		NPC(UnitType *uc, GameState *st, float x, float y, float z);
+		NPC(UnitType *uc, GameState *st, float x, float y, float z, AIType *ai);
 		virtual ~NPC();
 		
 	private:
