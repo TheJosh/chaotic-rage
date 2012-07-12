@@ -17,6 +17,7 @@ using namespace std;
 
 class Mod {
 	private:
+		vector<AIType*> * ais;
 		vector<AnimModel*> * animmodels;
 		vector<FloorType*> * areatypes;
 		vector<GameType*> * gametypes;
@@ -46,6 +47,7 @@ class Mod {
 		bool load();
 		bool reloadAttrs();
 		
+		AIType * getAIType(int id);
 		AnimModel * getAnimModel(int id);
 		FloorType * getFloorType(int id);
 		GameType * getGameType(int id);
@@ -58,6 +60,7 @@ class Mod {
 		WallType * getWallType(int id);
 		WeaponType * getWeaponType(int id);
 		
+		AIType * getAIType(string name);
 		AnimModel * getAnimModel(string name);
 		FloorType * getFloorType(string name);
 		GameType * getGameType(string name);

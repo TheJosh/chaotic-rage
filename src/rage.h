@@ -46,6 +46,7 @@ enum Faction {
 };
 
 
+class AIType;
 class AILogic;
 class AnimModel;
 class AnimPlay;
@@ -116,6 +117,7 @@ class Zone;
 
 #include "mod/mod.h"
 #include "mod/mod_manager.h"
+#include "mod/aitype.h"
 #include "mod/animmodel.h"
 #include "mod/animplay.h"
 #include "mod/floortype.h"

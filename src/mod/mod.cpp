@@ -29,7 +29,8 @@ Mod::Mod(GameState * st, string directory)
 	
 	directory.append("/");
 	this->directory = directory;
-
+	
+	this->ais = NULL;
 	this->animmodels = NULL;
 	this->areatypes = NULL;
 	this->gametypes = NULL;
@@ -124,7 +125,7 @@ bool Mod::load()
 {
 	animmodels = loadModFile<AnimModel*>(this, "animmodels.conf", "animmodel", animmodel_opts, &loadItemAnimModel);
 	if (animmodels == NULL) return false;
-		
+	
 	sounds = loadModFile<Sound*>(this, "sounds.conf", "sound", sound_opts, &loadItemSound);
 	if (sounds == NULL) return false;
 	
@@ -153,6 +154,9 @@ bool Mod::load()
 	unitclasses = loadModFile<UnitType*>(this, "unittypes.conf", "unittype", unittype_opts, &loadItemUnitType);
 	if (unitclasses == NULL) return false;
 	
+	
+	ais = loadModFile<AIType*>(this, "ais.conf", "ai", ai_opts, &loadItemAIType);
+	if (ais == NULL) return false;
 	
 	gametypes = loadModFile<GameType*>(this, "gametypes.conf", "gametype", gametype_opts, &loadItemGameType);
 	if (gametypes == NULL) return false;
@@ -236,6 +240,29 @@ bool Mod::reloadAttrs()
 	
 	return true;
 }
+
+
+
+/**
+* Gets an AIType by ID
+**/
+AIType * Mod::getAIType(int id)
+{
+	if (id < 0 or ((unsigned int) id) > ais->size()) return NULL;
+	return ais->at(id);
+}
+
+AIType * Mod::getAIType(string name)
+{
+	if (name.empty()) return NULL;
+	
+	int i;
+	for (i = ais->size() - 1; i >= 0; --i) {
+		if (ais->at(i)->name.compare(name) == 0) return ais->at(i);
+	}
+	return NULL;
+}
+
 
 
 /**
