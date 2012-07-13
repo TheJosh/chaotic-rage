@@ -782,7 +782,7 @@ void RenderOpenGL::render()
 		map();
 		entities();
 		particles();
-		if (physicsdebug != NULL) physicsdebug();
+		if (physicsdebug != NULL) physics();
 		guichan();
 		hud();
 	}
@@ -795,7 +795,7 @@ void RenderOpenGL::render()
 /**
 * Render debugging goodness for Bullet Physics
 **/
-void RenderOpenGL::physicsdebug()
+void RenderOpenGL::physics()
 {
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
