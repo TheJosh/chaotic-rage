@@ -420,3 +420,10 @@ bool GameState::hasDialogs()
 }
 
 
+void GameState::addDebugLine(btVector3 * a, btVector3 * b)
+{
+	DebugLine *dl = new DebugLine();
+	dl->a = new btVector3(*a);
+	dl->b = new btVector3(*b);
+	lines.push_back(dl);
+}

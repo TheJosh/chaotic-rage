@@ -28,6 +28,17 @@ class UnitQueryResult
 
 
 /**
+* TODO: Remove me
+**/
+class DebugLine
+{
+	public:
+		btVector3 *a;
+		btVector3 *b;
+};
+
+
+/**
 * Main game state storage. Contains pointers to everything.
 **/
 class GameState
@@ -50,6 +61,8 @@ class GameState
 		
 		bool reset_mouse;
 		unsigned int entropy;		// TODO: gamestate -> localplayers
+
+		list<DebugLine*>lines;
 
 	public:
 		Map* curr_map;
@@ -117,6 +130,8 @@ class GameState
 		void addDialog(Dialog * dialog);
 		void remDialog(Dialog * dialog);
 		bool hasDialogs();
+
+		void addDebugLine(btVector3 * a, btVector3 * b);
 };
 
 

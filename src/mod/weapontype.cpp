@@ -173,6 +173,8 @@ void WeaponType::doFire(Unit * u)
 	
 	DEBUG("weap", "Ray between %5.3f %5.3f %5.3f and %5.3f %5.3f %5.3f", begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z());
 	
+	st->addDebugLine(&begin, &end);
+
 
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
