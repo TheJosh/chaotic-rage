@@ -33,16 +33,15 @@ void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end,
 	
 	angle_range /= 2;
 	angle_range = DEG_TO_RAD(angle_range);
-
 	
 	btVector3 velP = velW.rotate(btVector3(0.f, 0.f, 1.f), getRandomf(-angle_range, angle_range));
-		
+	
 	p = new NewParticle();
 	p->pos = *begin;
 	p->vel = velP;
 	p->r = p->g = p->b = .1f;
 	p->time_death = time_death;
-		
+	
 	st->addNewParticle(p);
 }
 

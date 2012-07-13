@@ -189,8 +189,6 @@ void Unit::meleeAttack()
 	
 	if (e->klass() == UNIT) {
 		((Unit*)e)->takeDamage(10);		// TODO: settings (melee damage)
-		
-		
 	}
 }
 

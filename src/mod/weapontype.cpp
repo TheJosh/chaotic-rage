@@ -154,10 +154,12 @@ void WeaponType::doFire(Unit * u)
 	btTransform xform;
 	u->body->getMotionState()->getWorldTransform(xform);
 	
-	int angle = this->angle_range / 2;
-	angle = getRandom(-angle, angle);
-	angle += u->angle;
-	xform.setRotation(btQuaternion(btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(angle)));
+	// TODO: Weapon angle ranges
+	//int angle = this->angle_range / 2;
+	//angle = getRandom(-angle, angle);
+	//btQuaternion rot = xform.getRotation();
+	//rot += btQuaternion(btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(angle));
+	//xform.setRotation(rot);
 	
 	btVector3 forwardDir = xform.getBasis()[1];
 	forwardDir.normalize();
