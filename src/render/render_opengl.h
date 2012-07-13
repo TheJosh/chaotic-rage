@@ -127,6 +127,7 @@ class RenderOpenGL : public Render
 		void lights();
 		void map();
 		void entities();
+		void physicsdebug();
 		void particles();
 		void collides();
 		void guichan();

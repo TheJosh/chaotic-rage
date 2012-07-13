@@ -782,24 +782,30 @@ void RenderOpenGL::render()
 		map();
 		entities();
 		particles();
+		if (physicsdebug != NULL) physicsdebug();
 		guichan();
 		hud();
-		
-		if (physicsdebug != NULL) {
-			glDisable(GL_LIGHTING);
-			glDisable(GL_DEPTH_TEST);
-			glDisable(GL_FOG);
-			glDisable(GL_TEXTURE_2D);
-			st->physics->getWorld()->debugDrawWorld();
-			glEnable(GL_LIGHTING);
-			glEnable(GL_DEPTH_TEST);
-			glEnable(GL_FOG);
-			glEnable(GL_TEXTURE_2D);
-		}
 	}
 	
 	
 	SDL_GL_SwapBuffers();
+}
+
+
+/**
+* Render debugging goodness for Bullet Physics
+**/
+void RenderOpenGL::physicsdebug()
+{
+	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_FOG);
+	glDisable(GL_TEXTURE_2D);
+	st->physics->getWorld()->debugDrawWorld();
+	glEnable(GL_LIGHTING);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_FOG);
+	glEnable(GL_TEXTURE_2D);
 }
 
 
