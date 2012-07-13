@@ -99,6 +99,7 @@ class RenderOpenGL : public Render
 		virtual int getSpriteWidth(SpritePtr sprite);
 		virtual int getSpriteHeight(SpritePtr sprite);
 		virtual void enablePhysicsDebug();
+		virtual void disablePhysicsDebug();
 		virtual void loadHeightmap(SpritePtr sprite);
 		virtual void freeHeightmap(SpritePtr sprite);
 		

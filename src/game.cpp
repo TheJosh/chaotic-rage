@@ -185,6 +185,16 @@ static void handleEvents(GameState *st)
 						st->hud->addAlertMessage("Reset-mouse ", st->getMouseGrab() ? "on" : "off");
 						break;
 						
+					case SDLK_F7:
+						st->render->enablePhysicsDebug();
+						st->hud->addAlertMessage("Physics debug on");
+						break;
+					
+					case SDLK_F8:
+						st->render->disablePhysicsDebug();
+						st->hud->addAlertMessage("Physics debug off");
+						break;
+						
 					default: break;
 				}
 			

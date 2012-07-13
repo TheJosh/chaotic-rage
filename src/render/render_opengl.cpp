@@ -261,6 +261,16 @@ void RenderOpenGL::enablePhysicsDebug()
 
 
 /**
+* Disable debug drawing
+**/
+void RenderOpenGL::disablePhysicsDebug()
+{
+	this->st->physics->getWorld()->setDebugDrawer(NULL);
+	delete this->physicsdebug;
+}
+
+
+/**
 * Saves a screenshot.
 * Filename does NOT include extension
 **/

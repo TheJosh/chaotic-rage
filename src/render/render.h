@@ -97,6 +97,11 @@ class Render
 		virtual void enablePhysicsDebug() {}
 		
 		/**
+		* Disable physics debugging
+		**/
+		virtual void disablePhysicsDebug() {}
+		
+		/**
 		* Load a heightmap from an image.
 		**/
 		virtual void loadHeightmap(SpritePtr sprite) {}
