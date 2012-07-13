@@ -7,13 +7,13 @@
 -- Table filtering routine
 -- 
 table.filter = function(tbl, func)
-     local newtbl = {}
-     for i,v in pairs(tbl) do
-         if func(v) then
+	local newtbl = {}
+	for i,v in pairs(tbl) do
+		if func(v) then
 			newtbl[i] = v
-         end
-     end
-     return newtbl
+		end
+	end
+	return newtbl
 end
 
 
@@ -22,7 +22,6 @@ end
 -- Main function for doing stuff, gets run every 2 seconds
 --
 function target() 
-	
 	units = visible_units();
 	if (#units == 0) then return end
 	
@@ -42,6 +41,10 @@ function target()
 	dir = units[1].location - me.location
 	move(dir)
 	
+	-- do melee attack
+	if (#dir < 5) then
+		melee();
+	end
 end
 
 

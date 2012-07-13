@@ -337,6 +337,17 @@ LUA_FUNC(move)
 
 
 /**
+* Does a melee attack
+**/
+LUA_FUNC(melee)
+{
+	gl->u->meleeAttack();
+	
+	return 0;
+}
+
+
+/**
 * Makes the AI stop movement.
 **/
 LUA_FUNC(stop)
@@ -352,7 +363,7 @@ LUA_FUNC(stop)
 #define LUA_REG(name) lua_register(L, #name, name)
 
 /**
-* Register aglgl of the Lua functions glisted above
+* Register all of the Lua functions glisted above
 **/
 void register_lua_functions()
 {
@@ -366,6 +377,7 @@ void register_lua_functions()
 	LUA_REG(visible_units);
 	LUA_REG(get_info);
 	LUA_REG(move);
+	LUA_REG(melee);
 	LUA_REG(stop);
 }
 

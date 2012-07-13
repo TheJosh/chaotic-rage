@@ -145,10 +145,12 @@ void Unit::meleeAttack()
 {
 	if (this->melee_time != 0) return;
 	if (this->melee_cooldown != 0) return;
-
+	
 	this->melee_time = st->game_time + this->uc->melee_delay;
 	this->melee_cooldown = this->melee_time + this->uc->melee_cooldown;
-
+	
+	this->st->hud->addAlertMessage("TODO: melee attack");
+	
 	this->setState(UNIT_STATE_MELEE);
 }
 
