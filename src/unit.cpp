@@ -141,6 +141,37 @@ void Unit::endFiring()
 	this->st->audio->playSound(snd, false, this);
 }
 
+
+/**
+* What is directly in front of a unit, upto range meters ahead
+**/
+Entity * Unit::infront(float range)
+{
+	btTransform xform;
+	body->getMotionState()->getWorldTransform(xform);
+	btVector3 forwardDir = xform.getBasis()[1];
+	forwardDir.normalize();
+	
+	// Begin and end vectors
+	btVector3 begin = xform.getOrigin();
+	btVector3 end = begin + forwardDir * btScalar(0.0f - range);
+	
+	// Do the rayTest
+	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
+	this->st->physics->getWorld()->rayTest(begin, end, cb);
+	
+	// Check the raytest result
+	if (cb.hasHit()) {
+		btRigidBody * body = btRigidBody::upcast(cb.m_collisionObject);
+		if (body) {
+			return static_cast<Entity*>(body->getUserPointer());
+		}
+	}
+	
+	return NULL;
+}
+
+
 void Unit::meleeAttack()
 {
 	if (this->melee_time != 0) return;
@@ -149,9 +180,18 @@ void Unit::meleeAttack()
 	this->melee_time = st->game_time + this->uc->melee_delay;
 	this->melee_cooldown = this->melee_time + this->uc->melee_cooldown;
 	
-	this->st->hud->addAlertMessage("TODO: melee attack");
-	
 	this->setState(UNIT_STATE_MELEE);
+	
+	Entity *e = this->infront(5.0f);	// TODO: settings (melee range)
+	if (e == NULL) return;
+	
+	DEBUG("weap", "Ray hit %p", e);
+	
+	if (e->klass() == UNIT) {
+		((Unit*)e)->takeDamage(10);		// TODO: settings (melee damage)
+		
+		
+	}
 }
 
 void Unit::specialAttack()

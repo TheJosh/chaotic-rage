@@ -86,6 +86,8 @@ class Unit : public Entity
 		virtual void entityClose(Entity * e, float dist);
 
 	public:
+		Entity * infront(float range);
+		
 		void beginFiring();
 		void endFiring();
 		void meleeAttack();
