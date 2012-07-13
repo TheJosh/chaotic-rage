@@ -238,6 +238,9 @@
     <ClCompile Include="..\..\src\gui\dialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\mod\aitype.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\entity.h">
@@ -400,6 +403,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\gui\dialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\aitype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

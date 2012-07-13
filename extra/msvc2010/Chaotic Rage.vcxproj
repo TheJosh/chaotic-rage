@@ -126,6 +126,7 @@
     <ClCompile Include="..\..\src\map.cpp" />
     <ClCompile Include="..\..\src\mapgrid.cpp" />
     <ClCompile Include="..\..\src\menu.cpp" />
+    <ClCompile Include="..\..\src\mod\aitype.cpp" />
     <ClCompile Include="..\..\src\mod\animmodel.cpp" />
     <ClCompile Include="..\..\src\mod\animplay.cpp" />
     <ClCompile Include="..\..\src\mod\floortype.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="..\..\src\map.h" />
     <ClInclude Include="..\..\src\mapgrid.h" />
     <ClInclude Include="..\..\src\menu.h" />
+    <ClInclude Include="..\..\src\mod\aitype.h" />
     <ClInclude Include="..\..\src\mod\animmodel.h" />
     <ClInclude Include="..\..\src\mod\animplay.h" />
     <ClInclude Include="..\..\src\mod\floortype.h" />

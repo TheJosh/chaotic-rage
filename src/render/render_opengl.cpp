@@ -267,6 +267,7 @@ void RenderOpenGL::disablePhysicsDebug()
 {
 	this->st->physics->getWorld()->setDebugDrawer(NULL);
 	delete this->physicsdebug;
+	this->physicsdebug = NULL;
 }
 
 
@@ -788,7 +789,12 @@ void RenderOpenGL::render()
 			glDisable(GL_LIGHTING);
 			glDisable(GL_DEPTH_TEST);
 			glDisable(GL_FOG);
+			glDisable(GL_TEXTURE_2D);
 			st->physics->getWorld()->debugDrawWorld();
+			glEnable(GL_LIGHTING);
+			glEnable(GL_DEPTH_TEST);
+			glEnable(GL_FOG);
+			glEnable(GL_TEXTURE_2D);
 		}
 	}
 	
@@ -1064,7 +1070,7 @@ void RenderOpenGL::hud()
 //////////////////////////////////////////////
 ///
 ///   OpenGL debug drawing class.
-///   From bullet/demos/opengl.
+///   Originally from bullet/demos/opengl.
 ///
 //////////////////////////////////////////////
 
