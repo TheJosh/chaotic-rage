@@ -100,7 +100,7 @@ void Player::angleFromMouse(int x, int y, int delta)
 	float change_dist = x;
 	change_dist /= (10.0 / sensitivity);
 	
-	this->mouse_angle = this->mouse_angle - change_dist;
+	this->mouse_angle = this->mouse_angle + change_dist;
 }
 
 
@@ -165,9 +165,9 @@ void Player::update(int delta)
 		strafeDir *= btScalar(0.7);		// TODO: Managed in the unit settings
 		
 		if (this->key[KEY_LEFT]) {
-			walkDirection -= strafeDir;
-		} else if (this->key[KEY_RIGHT]) {
 			walkDirection += strafeDir;
+		} else if (this->key[KEY_RIGHT]) {
+			walkDirection -= strafeDir;
 		}
 		
 		linearVelocity += walkDirection;

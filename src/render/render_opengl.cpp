@@ -242,7 +242,6 @@ void RenderOpenGL::mainViewport(int s, int of)
 	glLoadIdentity();
 	
 	gluPerspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 1500.f);
-	glScalef (1.0f, -1.0f, 1.0f);
 	glTranslatef(0 - (this->virt_width / 2), 0 - (this->virt_height / 2), -1250.0f);
 	
 	glMatrixMode(GL_MODELVIEW);
@@ -822,7 +821,7 @@ void RenderOpenGL::background()
 		
 		glLoadIdentity();
 		glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
-		glRotatef(RAD_TO_DEG(0 - euler.z()), 0, 0, 1);
+		glRotatef(RAD_TO_DEG(euler.z()), 0, 0, 1);
 		glTranslatef(0 - st->curr_map->background->w / 2, 0 - st->curr_map->background->h / 2, 0);
 		this->renderSprite(st->curr_map->background, 0, 0);
 	}
@@ -855,13 +854,16 @@ void RenderOpenGL::mainRot()
 		
 	} else {
 		if (this->viewmode == 0) {				// Top
+			glRotatef(180, 0, 0, 1);
 			glTranslatef(0,87,731);
 			glRotatef(10, 1, 0, 0);
 			glTranslatef(0,0,-10);
 			
 		} else if (this->viewmode == 1) {		// Behind (3rd person)
+			glRotatef(180, 0, 0, 1);
 			glTranslatef(0,483,1095);
 			glRotatef(74, 1, 0, 0);
+			
 			
 		} else if (this->viewmode == 2) {		// First person
 			glTranslatef(0,1220,-380);
@@ -873,7 +875,7 @@ void RenderOpenGL::mainRot()
 		this->render_player->body->getMotionState()->getWorldTransform(trans);
 		btVector3 euler;
 		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-		glRotatef(RAD_TO_DEG(0 - euler.z()), 0, 0, 1);
+		glRotatef(RAD_TO_DEG(0-euler.z()), 0, 0, 1);
 		
 		glTranslatef(0 - trans.getOrigin().getX(), 0 - trans.getOrigin().getY(), 500 - trans.getOrigin().getZ());
 	}
@@ -1060,7 +1062,8 @@ void RenderOpenGL::hud()
 	glDisable(GL_FOG);
 	
 	glLoadIdentity();
-	glTranslatef(0, 0, 40);
+	//glScalef (1.0f, -1.0f, 1.0f);
+	glTranslatef(0.f, 0.f, 40.f);
 	st->hud->render(this);
 }
 
