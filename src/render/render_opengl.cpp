@@ -242,7 +242,7 @@ void RenderOpenGL::mainViewport(int s, int of)
 	glLoadIdentity();
 	
 	gluPerspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 1500.f);
-	glTranslatef(0 - (this->virt_width / 2), 0 - (this->virt_height / 2), -1250.0f);
+	glTranslatef(0.f - (this->virt_width / 2), 0.f - (this->virt_height / 2), -1250.0f);
 	
 	glMatrixMode(GL_MODELVIEW);
 }
@@ -397,7 +397,7 @@ void RenderOpenGL::loadHeightmap(SpritePtr sprite)
 				
 				Uint32 pixel = getPixel(sprite->orig, nX, nZ);
 				SDL_GetRGB(pixel, sprite->orig->format, &r, &g, &b);
-				float height = r / 255.0;
+				float height = r / 255.0f;
 				
 		 		vertexes[j].x = flX;// - ( sprite->w / 2 );
 				vertexes[j].y = flZ;// - ( sprite->h / 2 );
@@ -556,9 +556,9 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 		vn = &obj->normals.at(f->n1 - 1);
 		t = &obj->texuvs.at(f->t1 - 1);
 		
-		vertexes[j].x = v->x * -1.0; vertexes[j].y = v->y; vertexes[j].z = v->z;
+		vertexes[j].x = v->x * -1.0f; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
-		vertexes[j].tx = t->x; vertexes[j].ty = t->y * -1.0;
+		vertexes[j].tx = t->x; vertexes[j].ty = t->y * -1.0f;
 		j++;
 		
 		
@@ -566,9 +566,9 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 		vn = &obj->normals.at(f->n2 - 1);
 		t = &obj->texuvs.at(f->t2 - 1);
 		
-		vertexes[j].x = v->x * -1.0; vertexes[j].y = v->y; vertexes[j].z = v->z;
+		vertexes[j].x = v->x * -1.0f; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
-		vertexes[j].tx = t->x; vertexes[j].ty = t->y * -1.0;
+		vertexes[j].tx = t->x; vertexes[j].ty = t->y * -1.0f;
 		j++;
 		
 		
@@ -576,9 +576,9 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 		vn = &obj->normals.at(f->n3 - 1);
 		t = &obj->texuvs.at(f->t3 - 1);
 		
-		vertexes[j].x = v->x * -1.0; vertexes[j].y = v->y; vertexes[j].z = v->z;
+		vertexes[j].x = v->x * -1.0f; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
-		vertexes[j].tx = t->x; vertexes[j].ty = t->y * -1.0;
+		vertexes[j].tx = t->x; vertexes[j].ty = t->y * -1.0f;
 		j++;
 		
 	}
@@ -745,18 +745,18 @@ void RenderOpenGL::renderCharacter(char character)
 	
 	// Render
 	glPushMatrix();
-	glTranslatef(c->x, 0 - c->y, 0);
+	glTranslatef(c->x, 0.f - c->y, 0.f);
 	glBindTexture(GL_TEXTURE_2D, c->tex);
 	
 	glBegin(GL_QUADS);
-		glTexCoord2d(0,c->ty); glVertex2f(0,c->h);
-		glTexCoord2d(0,0); glVertex2f(0,0);
-		glTexCoord2d(c->tx,0); glVertex2f(c->w,0);
+		glTexCoord2d(0.f,c->ty); glVertex2f(0.f,c->h);
+		glTexCoord2d(0.f,0.f); glVertex2f(0.f,0.f);
+		glTexCoord2d(c->tx,0.f); glVertex2f(c->w,0.f);
 		glTexCoord2d(c->tx,c->ty); glVertex2f(c->w,c->h);
 	glEnd();
 	
 	glPopMatrix();
-	glTranslatef(slot->advance.x >> 6, 0, 0);
+	glTranslatef(slot->advance.x >> 6, 0.f, 0.f);
 }
 
 
@@ -832,9 +832,9 @@ void RenderOpenGL::background()
 		
 		glLoadIdentity();
 		glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
-		glRotatef(RAD_TO_DEG(euler.z()), 0, 0, 1);
-		glTranslatef(0 - st->curr_map->background->w / 2, 0 - st->curr_map->background->h / 2, 0);
-		this->renderSprite(st->curr_map->background, 0, 0);
+		glRotatef(RAD_TO_DEG(euler.z()), 0.f, 0.f, 1.f);
+		glTranslatef(0.f - st->curr_map->background->w / 2.f, 0 - st->curr_map->background->h / 2.f, 0.f);
+		this->renderSprite(st->curr_map->background, 0.f, 0.f);
 	}
 }
 
@@ -861,7 +861,7 @@ void RenderOpenGL::mainRot()
 		glDisable(GL_LIGHTING);
 		glRotatef(22, 0, 0, 1);
 		glRotatef(12, 1, 0, 0);
-		glTranslatef(0 - st->curr_map->width / 2, 0 - st->curr_map->height / 2, 0);
+		glTranslatef(0.f - st->curr_map->width / 2.f, 0.f - st->curr_map->height / 2.f, 0.f);
 		
 	} else {
 		if (this->viewmode == 0) {				// Top
@@ -886,9 +886,9 @@ void RenderOpenGL::mainRot()
 		this->render_player->body->getMotionState()->getWorldTransform(trans);
 		btVector3 euler;
 		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-		glRotatef(RAD_TO_DEG(0.f - euler.z()), 0, 0, 1);
+		glRotatef(RAD_TO_DEG(0.f - euler.z()), 0.f, 0.f, 1.f);
 		
-		glTranslatef(0 - trans.getOrigin().getX(), 0 - trans.getOrigin().getY(), 500 - trans.getOrigin().getZ());
+		glTranslatef(0.f - trans.getOrigin().getX(), 0.f - trans.getOrigin().getY(), 500.f - trans.getOrigin().getZ());
 	}
 	
 	if (this->viewmode == 0) {
@@ -899,7 +899,7 @@ void RenderOpenGL::mainRot()
 		glFogi (GL_FOG_MODE, GL_LINEAR);
 		glFogf (GL_FOG_START, 400);
 		glFogf (GL_FOG_END, 200);
-		glFogf (GL_FOG_DENSITY, 0.3);
+		glFogf (GL_FOG_DENSITY, 0.3f);
 	}
 }
 
@@ -932,7 +932,7 @@ void RenderOpenGL::lights()
 				
 				btVector3 euler;
 				PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-				glRotatef(RAD_TO_DEG(euler.z()) + 40, 0, 0, 1);
+				glRotatef(RAD_TO_DEG(euler.z()) + 40.f, 0.f, 0.f, 1.f);
 				glRotatef(15, 1, 0, 0);
 				
 				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_torch);

@@ -31,9 +31,9 @@ class Area {
 class Light {
 	public:
 		unsigned int type;		// 1, 2 or 3
-		int x;
-		int y;
-		int z;
+		float x;
+		float y;
+		float z;
 		float ambient [4];
 		float diffuse [4];
 		float specular [4];
