@@ -158,18 +158,19 @@ void WeaponType::doFire(Unit * u)
 	//int angle = this->angle_range / 2;
 	//angle = getRandom(-angle, angle);
 	//btQuaternion rot = xform.getRotation();
-	//rot += btQuaternion(btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(angle));
-	//xform.setRotation(rot);
+	btQuaternion rot = btQuaternion(btVector3(0.0, 0.0, 1.0), DEG_TO_RAD( ((Player*)u)->mouse_angle ));
+	xform.setRotation(rot);
 	
 	btVector3 forwardDir = xform.getBasis()[1];
 	forwardDir.normalize();
-
-
+	forwardDir *= btScalar(0.f - this->range);		// weapon range
+	
+	
 	DEBUG("weap", "forwardDir is %5.3f %5.3f %5.3f", forwardDir.x(), forwardDir.y(), forwardDir.z());
 	DEBUG("weap", "Range is %5.1f", this->range);
 	
 	btVector3 begin = xform.getOrigin();
-	btVector3 end = begin + forwardDir * btScalar(0.0f - this->range);		// weapon range
+	btVector3 end = begin + forwardDir;
 	
 	DEBUG("weap", "Ray between %5.3f %5.3f %5.3f and %5.3f %5.3f %5.3f", begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z());
 	
