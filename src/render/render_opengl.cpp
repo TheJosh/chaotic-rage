@@ -1061,9 +1061,12 @@ void RenderOpenGL::hud()
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_FOG);
 	
+	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	//glScalef (1.0f, -1.0f, 1.0f);
-	glTranslatef(0.f, 0.f, 40.f);
+	glOrtho(0.0, this->virt_width, this->virt_height, 0.0, -1.0, 1.0);
+	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 	st->hud->render(this);
 }
 
