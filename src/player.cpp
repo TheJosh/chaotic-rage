@@ -100,7 +100,7 @@ void Player::angleFromMouse(int x, int y, int delta)
 	float change_dist = x;
 	change_dist /= (10.0 / sensitivity);
 	
-	this->mouse_angle = this->mouse_angle - change_dist;
+	this->mouse_angle = this->mouse_angle + change_dist;
 }
 
 
@@ -143,13 +143,13 @@ void Player::update(int delta)
 		linearVelocity *= btScalar(0.2);
 		body->setLinearVelocity (linearVelocity);
 		
-	} else if (speed < 10.0) {				// TODO: Managed in the unit settings
+	} else if (speed < 5.0) {				// TODO: Managed in the unit settings	(max speed)
 		body->activate(true);
 		
 		xform2.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle)));
 		btVector3 forwardDir = xform2.getBasis()[1];
 		forwardDir.normalize();
-		forwardDir *= btScalar(2.5);		// TODO: Managed in the unit settings
+		forwardDir *= btScalar(2.5);		// TODO: Managed in the unit settings	(fwd accel)
 		
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		
@@ -162,12 +162,12 @@ void Player::update(int delta)
 		xform2.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle + 90)));
 		btVector3 strafeDir = xform2.getBasis()[1];
 		strafeDir.normalize();
-		strafeDir *= btScalar(0.7);		// TODO: Managed in the unit settings
+		strafeDir *= btScalar(0.7);		// TODO: Managed in the unit settings	(strafe accel)
 		
 		if (this->key[KEY_LEFT]) {
-			walkDirection -= strafeDir;
-		} else if (this->key[KEY_RIGHT]) {
 			walkDirection += strafeDir;
+		} else if (this->key[KEY_RIGHT]) {
+			walkDirection -= strafeDir;
 		}
 		
 		linearVelocity += walkDirection;
