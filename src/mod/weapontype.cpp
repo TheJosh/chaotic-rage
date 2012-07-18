@@ -176,8 +176,8 @@ void WeaponType::doFire(Unit * u)
 	DEBUG("weap", "Ray between %5.3f %5.3f %5.3f and %5.3f %5.3f %5.3f", begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z());
 	
 	st->addDebugLine(&begin, &end);
-
-
+	
+	
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
@@ -195,12 +195,9 @@ void WeaponType::doFire(Unit * u)
 	} else {
 		DEBUG("weap", "%p Shot; miss", u);
 	}
-
-
+	
+	
 	// Show the weapon bullets
-	// at the moment, we hack it so they are in the air, cos at the moment everything is still on the ground :)
-	begin += btVector3(0.f, 0.f, 1.7f);
-	end += btVector3(0.f, 0.f, 1.7f);
 	create_particles_weapon(u->getGameState(), &begin, &end, 0);
 }
 

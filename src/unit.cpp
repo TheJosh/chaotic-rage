@@ -44,7 +44,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	
 	
 	// TODO: The colShape should be tied to the wall type.
-	btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
+	btCollisionShape* colShape = new btBoxShape(btVector3(1.f, 1.f, 2.f));
 	
 	// TODO: Store the colshape and nuke at some point
 	// collisionShapes.push_back(colShape);
