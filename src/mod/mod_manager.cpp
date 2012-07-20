@@ -177,40 +177,6 @@ ObjectType * ModManager::getObjectType(string name)
 }
 
 
-/*
-* Gets a particle type by name
-**/
-ParticleType * ModManager::getParticleType(string name)
-{
-	if (name.empty()) return NULL;
-	
-	for (unsigned int i = 0; i < this->mods->size(); i++) {
-		Mod *mod = this->mods->at(i);
-		ParticleType *et = mod->getParticleType(name);
-		if (et) return et;
-	}
-	
-	return NULL;
-}
-
-
-/**
-* Gets a particle generator by name
-**/
-ParticleGenType * ModManager::getParticleGenType(string name)
-{
-	if (name.empty()) return NULL;
-	
-	for (unsigned int i = 0; i < this->mods->size(); i++) {
-		Mod *mod = this->mods->at(i);
-		ParticleGenType *et = mod->getParticleGenType(name);
-		if (et) return et;
-	}
-	
-	return NULL;
-}
-
-
 /**
 * Gets a unit type by name
 **/

@@ -35,8 +35,6 @@ Mod::Mod(GameState * st, string directory)
 	this->areatypes = NULL;
 	this->gametypes = NULL;
 	this->objecttypes = NULL;
-	this->particletypes = NULL;
-	this->pgeneratortypes = NULL;
 	this->songs = NULL;
 	this->sounds = NULL;
 	this->unitclasses = NULL;
@@ -138,12 +136,6 @@ bool Mod::load()
 	
 	objecttypes = loadModFile<ObjectType*>(this, "objecttypes.conf", "objecttype", objecttype_opts, &loadItemObjectType);
 	if (objecttypes == NULL) return false;
-
-	particletypes = loadModFile<ParticleType*>(this, "particletypes.conf", "particle", particletype_opts, &loadItemParticleType);
-	if (particletypes == NULL) return false;
-	
-	pgeneratortypes = loadModFile<ParticleGenType*>(this, "particlegenerators.conf", "generator", generatortype_opts, &loadItemParticleGenType);
-	if (pgeneratortypes == NULL) return false;
 	
 	walltypes = loadModFile<WallType*>(this, "walltypes.conf", "walltype", walltype_opts, &loadItemWallType);
 	if (walltypes == NULL) return false;
@@ -368,48 +360,6 @@ ObjectType * Mod::getObjectType(string name)
 void Mod::addObjectType(ObjectType * ot)
 {
 	objecttypes->push_back(ot);
-}
-
-
-/**
-* Gets a particle type by ID
-**/
-ParticleType * Mod::getParticleType(int id)
-{
-	if (id < 0 or ((unsigned int) id) > particletypes->size()) return NULL;
-	return particletypes->at(id);
-}
-
-ParticleType * Mod::getParticleType(string name)
-{
-	if (name.empty()) return NULL;
-	
-	int i;
-	for (i = particletypes->size() - 1; i >= 0; --i) {
-		if (particletypes->at(i)->name.compare(name) == 0) return particletypes->at(i);
-	}
-	return NULL;
-}
-
-
-/**
-* Gets a particle generator by ID
-**/
-ParticleGenType * Mod::getParticleGenType(int id)
-{
-	if (pgeneratortypes == NULL or id < 0 or ((unsigned int) id) > pgeneratortypes->size()) return NULL;
-	return pgeneratortypes->at(id);
-}
-
-ParticleGenType * Mod::getParticleGenType(string name)
-{
-	if (pgeneratortypes == NULL or name.empty()) return NULL;
-	
-	int i;
-	for (i = pgeneratortypes->size() - 1; i >= 0; --i) {
-		if (pgeneratortypes->at(i)->name.compare(name) == 0) return pgeneratortypes->at(i);
-	}
-	return NULL;
 }
 
 

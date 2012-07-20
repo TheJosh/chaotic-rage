@@ -119,7 +119,6 @@ ParticleGenType* loadItemParticleGenType(cfg_t* cfg_item, Mod* mod)
 		
 		char * tmp = cfg_getstr(cfg_spew, "type");
 		if (tmp == NULL) return NULL;
-		spew->pt = mod->getParticleType(tmp);
 		if (spew->pt == NULL) return NULL;
 
 		gt->spewers.push_back(spew);

@@ -22,8 +22,6 @@ class Mod {
 		vector<FloorType*> * areatypes;
 		vector<GameType*> * gametypes;
 		vector<ObjectType*> * objecttypes;
-		vector<ParticleType*> * particletypes;
-		vector<ParticleGenType*> * pgeneratortypes;
 		vector<Song*> * songs;
 		vector<Sound*> * sounds;
 		vector<UnitType*> * unitclasses;
@@ -52,8 +50,6 @@ class Mod {
 		FloorType * getFloorType(int id);
 		GameType * getGameType(int id);
 		ObjectType * getObjectType(int id);
-		ParticleType * getParticleType(int id);
-		ParticleGenType * getParticleGenType(int id);
 		Song * getSong(int id);
 		Sound * getSound(int id);
 		UnitType * getUnitType(int id);
@@ -65,8 +61,6 @@ class Mod {
 		FloorType * getFloorType(string name);
 		GameType * getGameType(string name);
 		ObjectType * getObjectType(string name);
-		ParticleType * getParticleType(string name);
-		ParticleGenType * getParticleGenType(string name);
 		UnitType * getUnitType(string name);
 		Song * getSong(string name);
 		Sound * getSound(string name);

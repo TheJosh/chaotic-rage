@@ -71,24 +71,6 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	wt->wall_damage = cfg_getfloat(cfg_item, "wall_damage");
 	
 	
-	// Particle (effects; old)
-	char * tmp = cfg_getstr(cfg_item, "particle");
-	if (tmp != NULL && strlen(tmp) > 0) {
-		wt->pt = mod->getParticleType(tmp);
-		
-		if (wt->pt == NULL) {
-			cerr << "Particle type '" << tmp << "' not found.\n";
-			return NULL;
-		}
-	}
-	
-	// Particle gen (effects; old)
-	tmp = cfg_getstr(cfg_item, "particlegen");
-	if (tmp != NULL) {
-		wt->pg = mod->getParticleGenType(tmp);
-	}
-	
-	
 	/// Sounds ///
 	int num_sounds = cfg_size(cfg_item, "sound");
 	
