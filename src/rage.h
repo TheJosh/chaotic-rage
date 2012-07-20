@@ -77,9 +77,6 @@ class NPC;
 class Object;
 class ObjectType;
 class Particle;
-class ParticleGenerator;
-class ParticleGenType;
-class ParticleType;
 class PhysicsBullet;
 class Player;
 class Render;
@@ -122,7 +119,6 @@ class Zone;
 #include "mod/animplay.h"
 #include "mod/floortype.h"
 #include "mod/objecttype.h"
-#include "mod/particletype.h"
 #include "mod/unittype.h"
 #include "mod/song.h"
 #include "mod/sound.h"
@@ -141,8 +137,6 @@ class Zone;
 #include "npc.h"
 #include "object.h"
 #include "newparticle.h"
-#include "particle.h"
-#include "particlegenerator.h"
 #include "wall.h"
 
 #include "zone.h"

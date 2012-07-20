@@ -15,8 +15,6 @@ using namespace std;
 enum EntityClass {
 	NONE = 0,
 	UNIT = 1,
-	PARTICLE = 2,
-	PGENERATOR = 3,
 	WALL = 4,
 	OBJECT = 5,
 };

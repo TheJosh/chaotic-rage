@@ -79,9 +79,6 @@ void Unit::hasBeenHit(Entity * that)
 	if (remove_at != 0) return;
 	if (that->klass() == WALL) {
 		this->setState(UNIT_STATE_STATIC);
-		
-	} else if (that->klass() == PARTICLE) {
-		((Particle*)that)->doHitUnit(this);
 	}
 }
 

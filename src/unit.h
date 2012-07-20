@@ -39,7 +39,6 @@ class Unit : public Entity
 		int angle_aim;
 		
 		UnitWeapon* weapon;
-		ParticleGenerator* weapon_gen;
 		bool firing;
 		vector<UnitWeapon*> avail_weapons;
 		unsigned int curr_weapon_id;

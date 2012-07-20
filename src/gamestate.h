@@ -98,8 +98,6 @@ class GameState
 	public:
 		// Adding
 		void addUnit(Unit* unit);
-		void addParticle(Particle* particle);
-		void addParticleGenerator(ParticleGenerator* generator);
 		void addWall(Wall* wall);
 		void addObject(Object* object);
 		void addNewParticle(NewParticle* particle);

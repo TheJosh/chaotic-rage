@@ -220,7 +220,6 @@ bool Mod::reloadAttrs()
 		WeaponType *old = this->getWeaponType(nu->name);
 		if (! old) continue;
 		
-		old->pt = nu->pt;
 		old->title = nu->title;
 		old->angle_range = nu->angle_range;
 		old->fire_delay = nu->fire_delay;

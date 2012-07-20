@@ -44,9 +44,6 @@ Wall::~Wall()
 
 void Wall::hasBeenHit(Entity * that)
 {
-	if (that->klass() == PARTICLE) {
-		((Particle*)that)->doHitWall(this);
-	}
 }
 
 

@@ -120,24 +120,22 @@ void RenderNull::render()
 	if (st->game_time - last_render < 5000) return;
 	last_render = st->game_time;
 	
-	int c_unit = 0, c_particle = 0, c_pgenerator = 0, c_wall = 0;
+	int c_unit = 0, c_wall = 0, c_object = 0;
 	
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
 		Entity *e = (*it);
 		
 		if (e->klass() == UNIT) c_unit++;
-		if (e->klass() == PARTICLE) c_particle++;
-		if (e->klass() == PGENERATOR) c_pgenerator++;
 		if (e->klass() == WALL) c_wall++;
+		if (e->klass() == OBJECT) c_object++;
 	}
 	
 	cout << "======================================================\n";
 	cout << "  Current time: " << st->game_time << "\n";
 	cout << "  Total num entities: " << st->entities.size() << "\n";
 	cout << "  Units: " << c_unit << "\n";
-	cout << "  Particles: " << c_particle << "\n";
-	cout << "  Particle generators: " << c_pgenerator << "\n";
 	cout << "  Walls: " << c_wall << "\n";
+	cout << "  Objects: " << c_object << "\n";
 }
 
 

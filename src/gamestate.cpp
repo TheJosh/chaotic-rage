@@ -79,22 +79,6 @@ void GameState::addUnit(Unit* unit)
 }
 
 /**
-* Add a particle
-**/
-void GameState::addParticle(Particle* particle)
-{
-	this->entities_add.push_back(particle);
-}
-
-/**
-* Add a particle generator
-**/
-void GameState::addParticleGenerator(ParticleGenerator* generator)
-{
-	this->entities_add.push_back(generator);
-}
-
-/**
 * Add a wall
 **/
 void GameState::addWall(Wall* wall)
