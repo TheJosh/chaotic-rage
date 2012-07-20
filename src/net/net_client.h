@@ -56,8 +56,6 @@ class NetClient {
 		unsigned int handleUnitRem(Uint8 *data, unsigned int size);
 		unsigned int handleWallUpdate(Uint8 *data, unsigned int size);
 		unsigned int handleWallRem(Uint8 *data, unsigned int size);
-		unsigned int handlePgAdd(Uint8 *data, unsigned int size);
-		unsigned int handlePgRem(Uint8 *data, unsigned int size);
 		unsigned int handlePlayerDrop(Uint8 *data, unsigned int size);
 		unsigned int handlePlayerQuit(Uint8 *data, unsigned int size);
 };

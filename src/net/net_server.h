@@ -45,8 +45,6 @@ class NetServer {
 		void addmsgUnitRem(Unit *u);
 		void addmsgWallUpdate();
 		void addmsgWallRem();
-		void addmsgPgAdd();
-		void addmsgPgRem();
 		void addmsgPlayerDrop();
 		void addmsgPlayerQuit();
 		

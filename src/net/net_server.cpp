@@ -231,14 +231,6 @@ void NetServer::addmsgWallRem()
 {
 }
 
-void NetServer::addmsgPgAdd()
-{
-}
-
-void NetServer::addmsgPgRem()
-{
-}
-
 void NetServer::addmsgPlayerDrop()
 {
 }

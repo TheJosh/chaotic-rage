@@ -64,7 +64,6 @@ CommandLineArgs::CommandLineArgs(int argc, char ** argv)
 					"  coll               Collisions\n"
 					"  data               Data-file loading\n"
 					"  lua                Lua function calls\n"
-					"  part               Particle movements\n"
 					"  phy                Physics (RigidBody adding, removing)\n"
 					"  unit               Unit movements\n"
 					"  vid                Video\n"

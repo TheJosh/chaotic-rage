@@ -31,8 +31,8 @@ MsgClientRecv msg_client_recv [] = {
 	&NetClient::handleUnitRem,          //<--  0x0D  [S] Unit has been removed
 	&NetClient::handleWallUpdate,       //<--  0x0E  [S] Wall params have changed
 	&NetClient::handleWallRem,          //<--  0x0F  [S] Wall has been removed
-	&NetClient::handlePgAdd,            //<--  0x10  [S] Particle Generator has been added
-	&NetClient::handlePgRem,            //<--  0x11  [S] Particle Generator has been removed
+	NULL,                               //<--  0x10  -
+	NULL,                               //<--  0x11  -
 	&NetClient::handlePlayerDrop,       //<--  0x12  [S] Player dropped. too laggy -> all clients
 	NULL,                               //<--  0x13  [C] Player want's to leave -> server
 	&NetClient::handlePlayerQuit,       //<--  0x14  [S] Player has left -> all clients
@@ -60,8 +60,8 @@ MsgServerRecv msg_server_recv [] = {
 	NULL,                               //<--  0x0D  [S] Unit has been removed
 	NULL,                               //<--  0x0E  [S] Wall params have changed
 	NULL,                               //<--  0x0F  [S] Wall has been removed
-	NULL,                               //<--  0x10  [S] Particle Generator has been added
-	NULL,                               //<--  0x11  [S] Particle Generator has been removed
+	NULL,                               //<--  0x10  -
+	NULL,                               //<--  0x11  -
 	NULL,                               //<--  0x12  [S] Player dropped. too laggy -> all clients
 	&NetServer::handleQuit,             //<--  0x13  [C] Player want's to leave -> server
 	NULL,                               //<--  0x14  [S] Player has left -> all clients

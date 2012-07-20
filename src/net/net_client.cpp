@@ -299,18 +299,6 @@ unsigned int NetClient::handleWallRem(Uint8 *data, unsigned int size)
 	return 0;
 }
 
-unsigned int NetClient::handlePgAdd(Uint8 *data, unsigned int size)
-{
-	cout << "       handlePgAdd()\n";
-	return 0;
-}
-
-unsigned int NetClient::handlePgRem(Uint8 *data, unsigned int size)
-{
-	cout << "       handlePgRem()\n";
-	return 0;
-}
-
 unsigned int NetClient::handlePlayerDrop(Uint8 *data, unsigned int size)
 {
 	cout << "       handlePlayerDrop()\n";

@@ -43,9 +43,6 @@ enum NetMsgType {
 	WALL_UPDATE =   0x0E,		// [S] Wall params have changed
 	WALL_REM =      0x0F,		// [S] Wall has been removed
 	
-	PG_ADD =        0x10,		// [S] Particle Generator has been added
-	PG_REM =        0x11,		// [S] Particle Generator has been removed
-	
 	PLAYER_DROP =   0x12,		// [S] Player dropped. too laggy -> all clients
 	QUIT_REQ =      0x13,		// [C] Player want's to leave -> server
 	PLAYER_QUIT =   0x14,		// [S] Player has left -> all clients

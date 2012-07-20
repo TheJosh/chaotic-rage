@@ -76,7 +76,6 @@ class NewParticle;
 class NPC;
 class Object;
 class ObjectType;
-class Particle;
 class PhysicsBullet;
 class Player;
 class Render;
