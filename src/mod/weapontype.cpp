@@ -27,9 +27,6 @@ cfg_opt_t weapontype_opts[] =
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_STR((char*) "title", 0, CFGF_NONE),
 	
-	CFG_STR((char*) "particlegen", (char*)"", CFGF_NONE),
-	
-	CFG_STR((char*) "particle", (char*)"", CFGF_NONE),
 	CFG_INT((char*) "angle_range", 0, CFGF_NONE),
 	CFG_INT((char*) "fire_delay", 0, CFGF_NONE),
 	CFG_INT((char*) "reload_delay", 0, CFGF_NONE),
@@ -124,7 +121,6 @@ Sound* WeaponType::getSound(int type)
 
 WeaponType::WeaponType()
 {
-	this->pg = NULL;
 }
 
 

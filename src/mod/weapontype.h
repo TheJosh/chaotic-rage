@@ -32,10 +32,6 @@ class WeaponType
 		string title;
 		GameState * st;
 		
-		// TODO: Not used anymore, rejig for effects maybe?
-		ParticleGenType *pg;
-		
-		ParticleType *pt;
 		int angle_range;
 		unsigned int fire_delay;
 		unsigned int reload_delay;
