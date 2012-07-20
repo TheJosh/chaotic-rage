@@ -124,7 +124,6 @@
     <ClCompile Include="..\..\src\lua\lua_unitinfo_lib.cpp" />
     <ClCompile Include="..\..\src\lua\lua_vector3_lib.cpp" />
     <ClCompile Include="..\..\src\map.cpp" />
-    <ClCompile Include="..\..\src\mapgrid.cpp" />
     <ClCompile Include="..\..\src\menu.cpp" />
     <ClCompile Include="..\..\src\mod\aitype.cpp" />
     <ClCompile Include="..\..\src\mod\animmodel.cpp" />
@@ -134,7 +133,6 @@
     <ClCompile Include="..\..\src\mod\mod.cpp" />
     <ClCompile Include="..\..\src\mod\mod_manager.cpp" />
     <ClCompile Include="..\..\src\mod\objecttype.cpp" />
-    <ClCompile Include="..\..\src\mod\particletype.cpp" />
     <ClCompile Include="..\..\src\mod\song.cpp" />
     <ClCompile Include="..\..\src\mod\sound.cpp" />
     <ClCompile Include="..\..\src\mod\unittype.cpp" />
@@ -147,8 +145,6 @@
     <ClCompile Include="..\..\src\newparticle.cpp" />
     <ClCompile Include="..\..\src\npc.cpp" />
     <ClCompile Include="..\..\src\object.cpp" />
-    <ClCompile Include="..\..\src\particle.cpp" />
-    <ClCompile Include="..\..\src\particlegenerator.cpp" />
     <ClCompile Include="..\..\src\physics_bullet.cpp" />
     <ClCompile Include="..\..\src\platform\win32.cpp" />
     <ClCompile Include="..\..\src\player.cpp" />
@@ -180,7 +176,6 @@
     <ClInclude Include="..\..\src\lua\luatimer.h" />
     <ClInclude Include="..\..\src\lua\lua_libs.h" />
     <ClInclude Include="..\..\src\map.h" />
-    <ClInclude Include="..\..\src\mapgrid.h" />
     <ClInclude Include="..\..\src\menu.h" />
     <ClInclude Include="..\..\src\mod\aitype.h" />
     <ClInclude Include="..\..\src\mod\animmodel.h" />
@@ -190,7 +185,6 @@
     <ClInclude Include="..\..\src\mod\mod.h" />
     <ClInclude Include="..\..\src\mod\mod_manager.h" />
     <ClInclude Include="..\..\src\mod\objecttype.h" />
-    <ClInclude Include="..\..\src\mod\particletype.h" />
     <ClInclude Include="..\..\src\mod\song.h" />
     <ClInclude Include="..\..\src\mod\sound.h" />
     <ClInclude Include="..\..\src\mod\unittype.h" />
@@ -202,8 +196,6 @@
     <ClInclude Include="..\..\src\newparticle.h" />
     <ClInclude Include="..\..\src\npc.h" />
     <ClInclude Include="..\..\src\object.h" />
-    <ClInclude Include="..\..\src\particle.h" />
-    <ClInclude Include="..\..\src\particlegenerator.h" />
     <ClInclude Include="..\..\src\physics_bullet.h" />
     <ClInclude Include="..\..\src\platform\platform.h" />
     <ClInclude Include="..\..\src\player.h" />
