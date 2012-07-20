@@ -20,7 +20,6 @@ static GameState *g_st;
 
 static bool EntityEraser(Entity *e);
 static bool ParticleEraser(NewParticle *p);
-static bool CollideBoxEraser(CollideBox* box);
 
 
 
@@ -55,7 +54,6 @@ GameState::GameState()
 	this->hud = NULL;
 	this->audio = NULL;
 	this->logic = NULL;
-	this->collides = NULL;
 	this->client = NULL;
 	this->server = NULL;
 	
@@ -133,16 +131,6 @@ static bool EntityEraser(Entity* e)
 /**
 * Used for filtering
 **/
-static bool CollideBoxEraser(CollideBox* box)
-{
-	if (box->del == false) return false;
-	delete box;
-	return true;
-}
-
-/**
-* Used for filtering
-**/
 static bool ParticleEraser(NewParticle* p)
 {
 	if (p->time_death > g_st->game_time) return false;
@@ -177,7 +165,6 @@ void GameState::clear()
 	// TODO: Are these leaky?
 	this->entities.clear();
 	this->entities_add.clear();
-	this->collideboxes.clear();
 	
 	// TODO: Are these needed?
 	this->units.clear();
@@ -190,9 +177,6 @@ void GameState::clear()
 **/
 void GameState::start()
 {
-	this->collides = new MapGrid(curr_map->width, curr_map->height);
-	this->collideboxes.clear();
-	
 	// It should technically be 0, but 1 avoids division-by-zero
 	this->game_time = 1;
 	this->anim_frame = 1;
@@ -228,7 +212,6 @@ void GameState::update(int delta)
 	
 	// Remove stuff
 	this->entities.remove_if(EntityEraser);
-	this->collideboxes.remove_if(CollideBoxEraser);
 	
 	// Update physics
 	this->physics->stepTime(delta);

@@ -15,7 +15,6 @@ Object::Object(ObjectType *ot, GameState *st, float x, float y, float z, float a
 	this->ot = ot;
 	this->anim = new AnimPlay(ot->model);
 	this->health = ot->health;
-	this->cb = NULL;
 
 
 	// TODO: The colShape should be tied to the wall type.

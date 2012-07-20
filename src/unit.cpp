@@ -24,8 +24,6 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	this->current_state_type = 0;
 	this->setState(UNIT_STATE_STATIC);
 	
-	this->cb = NULL;
-	
 	this->walk_state = uc->getState(UNIT_STATE_WALK);
 	this->walk_time = 0;
 	

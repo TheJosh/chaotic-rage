@@ -21,7 +21,7 @@ class Object : public Entity
 		
 	protected:
 		AnimPlay * anim;
-		CollideBox * cb;
+		
 	public:
 		Object(ObjectType *pt, GameState *st, float x, float y, float z, float angle);
 		virtual ~Object();

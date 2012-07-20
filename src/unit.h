@@ -59,8 +59,6 @@ class Unit : public Entity
 		float old_x;
 		float old_y;
 		
-		CollideBox* cb;
-		
 		Object* curr_obj;
 		Object* lift_obj;
 		Object* drive_obj;

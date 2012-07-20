@@ -15,7 +15,6 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z, float angle) 
 	this->wt = wt;
 	this->anim = new AnimPlay(wt->model);
 	this->health = wt->health;
-	this->cb = NULL;
 	
 	
 	// TODO: The colShape should be tied to the wall type.

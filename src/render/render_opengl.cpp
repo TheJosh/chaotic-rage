@@ -1029,25 +1029,6 @@ void RenderOpenGL::particles()
 
 
 /**
-* Testing: show collide boxes
-**/
-void RenderOpenGL::collides()
-{
-	for (list<CollideBox*>::iterator it = st->collideboxes.begin(); it != st->collideboxes.end(); it++) {
-		CollideBox *c = (*it);
-		
-		glPushMatrix();
-		
-		glTranslatef(c->x, c->y, 100);
-		glScalef(c->radius, c->radius, c->radius);
-		renderAnimPlay(this->test);
-		
-		glPopMatrix();
-	}
-}
-
-
-/**
 * Heads-up display
 **/
 void RenderOpenGL::guichan()

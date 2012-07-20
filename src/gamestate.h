@@ -52,7 +52,6 @@ class GameState
 	protected:
 		list<Entity*> entities;
 		list<Entity*> entities_add;
-		list<CollideBox*> collideboxes;
 		list<NewParticle*> particles;
 		list<Dialog*> dialogs;
 		
@@ -80,7 +79,6 @@ class GameState
 		HUD* hud;					// TODO: gamestate -> localplayers
 		Audio* audio;
 		GameLogic* logic;
-		MapGrid* collides;			// TODO: newphysics
 		NetClient* client;
 		NetServer* server;
 		PhysicsBullet* physics;

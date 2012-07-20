@@ -51,7 +51,6 @@ class AILogic;
 class AnimModel;
 class AnimPlay;
 class Audio;
-class CollideBox;
 class CommandLineArgs;
 class Dialog;
 class DialogNewGame;
@@ -65,8 +64,6 @@ class GameType;
 class HUD;
 class Intro;
 class Map;
-class MapGrid;
-class MapGridCell;
 class Menu;
 class Mod;
 class ModManager;
@@ -138,9 +135,8 @@ class Zone;
 #include "newparticle.h"
 #include "wall.h"
 
-#include "zone.h"
-#include "mapgrid.h"
 #include "map.h"
+#include "zone.h"
 
 #include "gamestate.h"
 #include "game.h"
