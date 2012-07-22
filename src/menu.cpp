@@ -371,7 +371,7 @@ void Menu::doQuit()
 **/
 void Menu::startGame(string map, string gametype, string unittype, int viewmode, int num_local)
 {
-	st->physics->preGame();
+	st->physics->init();
 	
 	// Load map
 	Map *m = new Map(st);
@@ -381,10 +381,10 @@ void Menu::startGame(string map, string gametype, string unittype, int viewmode,
 	// Load gametype
 	new GameLogic(st);
 	GameType *gt = st->mm->getGameType(gametype);
+	st->logic->selected_unittype = st->mm->getUnitType(unittype);
 	st->logic->execScript(gt->script);
 	
-	st->logic->selected_unittype = st->mm->getUnitType(unittype);
-
+	// Reset client variables
 	st->client = NULL;
 	st->num_local = num_local;
 	for (int i = 0; i < num_local; i++) {
@@ -392,6 +392,8 @@ void Menu::startGame(string map, string gametype, string unittype, int viewmode,
 	}
 
 	((RenderOpenGL*)st->render)->viewmode = viewmode;
+	
+	st->physics->preGame();
 	
 	// Begin!
 	gameLoop(st, st->render);

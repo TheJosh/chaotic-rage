@@ -25,9 +25,9 @@ PhysicsBullet::~PhysicsBullet()
 
 
 /**
-* Set up the physics world
+* This is run before map load to set up stuff
 **/
-void PhysicsBullet::preGame()
+void PhysicsBullet::init()
 {
 	collisionConfiguration = new btDefaultCollisionConfiguration();
 	dispatcher = new btCollisionDispatcher(collisionConfiguration);
@@ -42,8 +42,14 @@ void PhysicsBullet::preGame()
 	);
 	
 	dynamicsWorld->setGravity(btVector3(0,0,-10));
-	
-	
+}
+
+
+/**
+* This is post-map load, pre game run
+**/
+void PhysicsBullet::preGame()
+{
 	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,0,1),1);
 	
 	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-1)));
@@ -56,28 +62,33 @@ void PhysicsBullet::preGame()
 	this->groundRigidBody = new btRigidBody(groundRigidBodyCI);
 	dynamicsWorld->addRigidBody(groundRigidBody);
 	
-	//this->addBoundaryPlane(btVector3(1, 0, 0), btVector3(0, 0, 0));
-	//this->addBoundaryPlane(btVector3(0, 1, 0), btVector3(0, 0, 0));
+	this->addBoundaryPlane(btVector3(1, 0, 0), btVector3(0, 0, 0));
+	this->addBoundaryPlane(btVector3(0, 1, 0), btVector3(0, 0, 0));
 	//this->addBoundaryPlane(btVector3(1, 0, 0), btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
 	//this->addBoundaryPlane(btVector3(0, 1, 0), btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
-
+	
 	collisionShapes = new btAlignedObjectArray<btCollisionShape*>();
 }
 
 
-void PhysicsBullet::addBoundaryPlane(btVector3 &axis, btVector3 &loc)
+/**
+* Create a boundary plane (invisible wall)
+* There is normally four of these around the edges of the map.
+**/
+void PhysicsBullet::addBoundaryPlane(btVector3 axis, btVector3 loc)
 {
-	btCollisionShape* groundShape = new btStaticPlaneShape(axis, 1);
-
-	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-1,0)));
-	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
+	btCollisionShape* shape = new btStaticPlaneShape(axis, 0);
+	
+	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), loc));
+	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
 		0,
-		groundMotionState,
-		groundShape,
-		loc
-	); 
-	this->groundRigidBody = new btRigidBody(groundRigidBodyCI);
-	dynamicsWorld->addRigidBody(groundRigidBody);
+		motionState,
+		shape,
+		btVector3(0,0,0)
+	);
+	
+	btRigidBody *rigidBody = new btRigidBody(rigidBodyCI);
+	dynamicsWorld->addRigidBody(rigidBody);
 }
 
 

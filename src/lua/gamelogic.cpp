@@ -412,7 +412,7 @@ LUA_FUNC(add_player)
 		exit(1);
 	}
 	
-	p = new Player(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 2);
+	p = new Player(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 0);
 	p->fac = fac;
 	p->slot = slot;
 	
