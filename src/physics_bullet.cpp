@@ -46,7 +46,6 @@ void PhysicsBullet::preGame()
 	
 	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,0,1),1);
 	
-	
 	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-1)));
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
 		0,
@@ -57,11 +56,28 @@ void PhysicsBullet::preGame()
 	this->groundRigidBody = new btRigidBody(groundRigidBodyCI);
 	dynamicsWorld->addRigidBody(groundRigidBody);
 	
-	
-	cout << "\n\ngroundRigidBody: " << groundRigidBody << "\n";
-	
-	
+	//this->addBoundaryPlane(btVector3(1, 0, 0), btVector3(0, 0, 0));
+	//this->addBoundaryPlane(btVector3(0, 1, 0), btVector3(0, 0, 0));
+	//this->addBoundaryPlane(btVector3(1, 0, 0), btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
+	//this->addBoundaryPlane(btVector3(0, 1, 0), btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
+
 	collisionShapes = new btAlignedObjectArray<btCollisionShape*>();
+}
+
+
+void PhysicsBullet::addBoundaryPlane(btVector3 &axis, btVector3 &loc)
+{
+	btCollisionShape* groundShape = new btStaticPlaneShape(axis, 1);
+
+	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-1,0)));
+	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
+		0,
+		groundMotionState,
+		groundShape,
+		loc
+	); 
+	this->groundRigidBody = new btRigidBody(groundRigidBodyCI);
+	dynamicsWorld->addRigidBody(groundRigidBody);
 }
 
 
@@ -202,6 +218,8 @@ void PhysicsBullet::doCollisions()
 		Entity* entA = static_cast<Entity*>(obA->getUserPointer());
 		Entity* entB = static_cast<Entity*>(obB->getUserPointer());
 		
+		if (entA == NULL || entB == NULL) continue;
+
 		entA->hasBeenHit(entB);
 		entB->hasBeenHit(entA);
 		
