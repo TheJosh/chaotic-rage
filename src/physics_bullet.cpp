@@ -59,13 +59,16 @@ void PhysicsBullet::preGame()
 		groundShape,
 		btVector3(0,0,0)
 	);
+	
 	this->groundRigidBody = new btRigidBody(groundRigidBodyCI);
+	this->groundRigidBody->setRestitution(0.f);
+	this->groundRigidBody->setFriction(10.f);
 	dynamicsWorld->addRigidBody(groundRigidBody);
 	
 	this->addBoundaryPlane(btVector3(1, 0, 0), btVector3(0, 0, 0));
 	this->addBoundaryPlane(btVector3(0, 1, 0), btVector3(0, 0, 0));
-	//this->addBoundaryPlane(btVector3(1, 0, 0), btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
-	//this->addBoundaryPlane(btVector3(0, 1, 0), btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
+	this->addBoundaryPlane(btVector3(-1, 0, 0), btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
+	this->addBoundaryPlane(btVector3(0, -1, 0), btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
 	
 	collisionShapes = new btAlignedObjectArray<btCollisionShape*>();
 }
@@ -88,6 +91,7 @@ void PhysicsBullet::addBoundaryPlane(btVector3 axis, btVector3 loc)
 	);
 	
 	btRigidBody *rigidBody = new btRigidBody(rigidBodyCI);
+	
 	dynamicsWorld->addRigidBody(rigidBody);
 }
 
