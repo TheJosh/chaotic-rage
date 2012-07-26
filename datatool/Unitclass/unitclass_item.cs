@@ -6,6 +6,7 @@ using System.ComponentModel;
 namespace datatool
 {
     [Serializable]
+    [DisplayName("Unit settings group")]
     public class unitclass_settings : base_item
     {
         private string name;
@@ -106,16 +107,44 @@ namespace datatool
     }
 
 
+    public class unitclass_sound : base_item
+    {
+        private string sound;
+        private int type;
+        
+        public unitclass_sound() { }
+        
+        [DescriptionAttribute("Sound to play")]
+        public string Sound
+        {
+            get { return this.sound; }
+            set { this.sound = value; }
+        }
+
+        [DescriptionAttribute("What the sound is played for")]
+        public int Type
+        {
+            get { return this.type; }
+            set { this.type = value; }
+        }
+
+        override public string getName() { return this.sound; }
+    }
+
     [Serializable]
     public class unitclass_item : base_item 
     {
         private string name;
+
+        private List<unitclass_settings> settings;
+        private List<unitclass_state> states;
+        private List<unitclass_sound> sounds;
+        private bool playable;
         private int begin_health;
         private int melee_damage;
         private int melee_delay;
         private int melee_cooldown;
-        private List<unitclass_settings> settings;
-        private List<unitclass_state> states;
+        
 
         public unitclass_item(string name)
         {
@@ -130,6 +159,9 @@ namespace datatool
 
             this.states = new List<unitclass_state>();
             this.states.Add(new unitclass_state());
+
+            this.sounds = new List<unitclass_sound>();
+            this.sounds.Add(new unitclass_sound());
         }
 
         override public string getName()
@@ -140,13 +172,22 @@ namespace datatool
 
 
         [DescriptionAttribute("The name of this unitclass, internal use only")]
+        [Category("General")]
         public string Name
         {
             get { return this.name; }
             set { this.name = value; }
         }
 
+        [Category("General")]
+        public bool Playable
+        {
+            get { return this.playable; }
+            set { this.playable = value; }
+        }
+
         [DescriptionAttribute("The initial health of the unit")]
+        [Category("Balance Settings")]
         public int BeginHealth
         {
             get { return this.begin_health; }
@@ -154,6 +195,7 @@ namespace datatool
         }
 
         [DescriptionAttribute("The amount of damage a melee attack does")]
+        [Category("Balance Settings")]
         public int MeleeDamage
         {
             get { return this.melee_damage; }
@@ -161,6 +203,7 @@ namespace datatool
         }
 
         [DescriptionAttribute("The delay between initalising the melee and the damage is applied")]
+        [Category("Balance Settings")]
         public int MeleeDelay
         {
             get { return this.melee_delay; }
@@ -168,22 +211,29 @@ namespace datatool
         }
 
         [DescriptionAttribute("The delay after a melee before another melee can be made")]
+        [Category("Balance Settings")]
         public int MeleeCooldown
         {
             get { return this.melee_cooldown; }
             set { this.melee_cooldown = value; }
         }
 
-        [Browsable(false)]
+        [Category("Balance Settings")]
         public List<unitclass_settings> Settings
         {
             get { return this.settings; }
         }
 
-        [Browsable(false)]
+        [Category("Audio/Video")]
         public List<unitclass_state> States
         {
             get { return this.states; }
+        }
+
+        [Category("Audio/Video")]
+        public List<unitclass_sound> Sounds
+        {
+            get { return this.sounds; }
         }
 
     }

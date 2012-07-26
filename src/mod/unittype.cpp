@@ -45,18 +45,17 @@ static cfg_opt_t unitsound_opts[] =
 cfg_opt_t unittype_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
+
 	CFG_SEC((char*) "settings", unitsettings_opts, CFGF_MULTI),
 	CFG_SEC((char*) "state", unitstate_opts, CFGF_MULTI),
 	CFG_SEC((char*) "sound", unitsound_opts, CFGF_MULTI),
+	CFG_STR_LIST((char*) "spawn_weapons", 0, CFGF_NONE),
+
 	CFG_INT((char*) "playable", 1, CFGF_NONE),
-	
 	CFG_INT((char*) "begin_health", 0, CFGF_NONE),
-	
 	CFG_INT((char*) "melee_damage", 100, CFGF_NONE),
 	CFG_INT((char*) "melee_delay", 100, CFGF_NONE),
 	CFG_INT((char*) "melee_cooldown", 100, CFGF_NONE),
-
-	CFG_STR_LIST((char*) "spawn_weapons", 0, CFGF_NONE),
 
 	CFG_END()
 };

@@ -46,7 +46,6 @@
             this.toolbar = new System.Windows.Forms.ToolStrip();
             this.toolWeapons = new System.Windows.Forms.ToolStripButton();
             this.toolUnittypes = new System.Windows.Forms.ToolStripButton();
-            this.toolParticleGenerators = new System.Windows.Forms.ToolStripButton();
             this.toolModifiers = new System.Windows.Forms.ToolStripButton();
             this.status = new System.Windows.Forms.StatusStrip();
             this.statusDatapath = new System.Windows.Forms.ToolStripStatusLabel();
@@ -170,7 +169,6 @@
             this.toolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolWeapons,
             this.toolUnittypes,
-            this.toolParticleGenerators,
             this.toolModifiers});
             this.toolbar.Location = new System.Drawing.Point(0, 24);
             this.toolbar.Name = "toolbar";
@@ -194,17 +192,7 @@
             this.toolUnittypes.Name = "toolUnittypes";
             this.toolUnittypes.Size = new System.Drawing.Size(80, 22);
             this.toolUnittypes.Text = "Unit types";
-            this.toolUnittypes.Visible = false;
             this.toolUnittypes.Click += new System.EventHandler(this.toolUnittypes_Click);
-            // 
-            // toolParticleGenerators
-            // 
-            this.toolParticleGenerators.Image = ((System.Drawing.Image)(resources.GetObject("toolParticleGenerators.Image")));
-            this.toolParticleGenerators.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolParticleGenerators.Name = "toolParticleGenerators";
-            this.toolParticleGenerators.Size = new System.Drawing.Size(126, 22);
-            this.toolParticleGenerators.Text = "Particle Generators";
-            this.toolParticleGenerators.Visible = false;
             // 
             // toolModifiers
             // 
@@ -266,7 +254,6 @@
         private System.Windows.Forms.ToolStrip toolbar;
         private System.Windows.Forms.ToolStripButton toolWeapons;
         private System.Windows.Forms.ToolStripButton toolUnittypes;
-        private System.Windows.Forms.ToolStripButton toolParticleGenerators;
         private System.Windows.Forms.ToolStripButton toolModifiers;
         private System.Windows.Forms.StatusStrip status;
         private System.Windows.Forms.ToolStripStatusLabel statusDatapath;
