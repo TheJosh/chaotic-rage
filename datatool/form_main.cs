@@ -194,13 +194,6 @@ namespace datatool
             Program.dp.save();
         }
 
-        private void toolParticles_Click(object sender, EventArgs e)
-        {
-            ParticletypeList f = new ParticletypeList();
-            f.MdiParent = this;
-            f.Show();
-        }
-
         private void toolWeapons_Click(object sender, EventArgs e)
         {
             WeapontypeList f = new WeapontypeList();

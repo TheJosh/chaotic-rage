@@ -53,7 +53,6 @@ namespace datatool
                 this.zf = null;
             }
 
-            load_particletypes();
             load_weapontypes();
 
             return true;
@@ -137,14 +136,6 @@ namespace datatool
         public bool save()
         {
             string o;
-
-            // Particles 
-            o = "";
-            foreach (base_item i in this.particletypes)
-            {
-                o += "particle {\n\t" + i.getConfItem() + "\n}\n";
-            }
-            this.writeFile("particletypes.conf", o);
             
             // Weapons
             o = "";
@@ -162,42 +153,7 @@ namespace datatool
         }
 
 
-        /**
-         * Loads the particletypes
-         **/
-        private void load_particletypes()
-        {
-            ConfuseSection sect = null;
-            string file = this.readFile("particletypes.conf");
-
-            // Parse
-            try {
-                sect = read.Parse(file);
-            } catch (Exception ex) {
-                MessageBox.Show("Error loading particletypes:\n" + ex.Message);
-                Application.Exit();
-            }
-
-            // Load
-            foreach (ConfuseSection s in sect.subsections) {
-                particletype_item i = new particletype_item("");
-                particletypes.Add(i);
-
-                if (!s.values.ContainsKey("name")) throw new Exception("Particletype defined without a name");
-
-                i.Name = s.get_string("name", "");
-                i.Model = s.get_string("model", "");
-                i.MaxSpeed = s.get_range("max_speed", new range(0)).toString();
-                i.BeginSpeed = s.get_range("begin_speed", new range(0)).toString();
-                i.Accel = s.get_range("accel", new range(0)).toString();
-                i.Age = s.get_range("age", new range(0)).toString();
-                i.UnitDamage = s.get_range("unit_damage", new range(0)).toString();
-                i.WallDamage = s.get_range("wall_damage", new range(0)).toString();
-                i.UnitHits = s.get_range("unit_hits", new range(0)).toString();
-                i.WallHits = s.get_range("wall_hits", new range(0)).toString();
-            }
-        }
-
+        
 
         /**
         * Loads the particletypes
@@ -234,9 +190,6 @@ namespace datatool
                 i.Range = s.get_float("range", 50);
                 i.UnitDamage = s.get_float("unit_damage", 10);
                 i.WallDamage = s.get_float("wall_damage", 10);
-
-                i.Particle = this.FindParticletype(s.get_string("particle", ""));
-                i.ParticleGen = this.FindParticlegenerator(s.get_string("particlegen", ""));
 
                 i.Sounds.Clear();
                 foreach (ConfuseSection ss in s.subsections) {
@@ -279,26 +232,6 @@ namespace datatool
         public List<base_item> WeaponTypes
         {
             get { return weapontypes; }
-        }
-
-
-
-        public particletype_item FindParticletype(string name)
-        {
-            if (name == null || name == "") return null;
-            foreach (particletype_item item in particletypes) {
-                if (item.Name == name) return item;
-            }
-            return null;
-        }
-
-        public particlegenerator_item FindParticlegenerator(string name)
-        {
-            if (name == null || name == "") return null;
-            foreach (particlegenerator_item item in particlegenerators) {
-                if (item.Name == name) return item;
-            }
-            return null;
         }
 
     }

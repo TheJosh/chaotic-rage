@@ -31,7 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.menu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.weaponsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,17 +45,11 @@
             this.MenuMetricsWeaponsCompare = new System.Windows.Forms.ToolStripMenuItem();
             this.toolbar = new System.Windows.Forms.ToolStrip();
             this.toolWeapons = new System.Windows.Forms.ToolStripButton();
-            this.toolParticles = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolUnittypes = new System.Windows.Forms.ToolStripButton();
             this.toolParticleGenerators = new System.Windows.Forms.ToolStripButton();
             this.toolModifiers = new System.Windows.Forms.ToolStripButton();
             this.status = new System.Windows.Forms.StatusStrip();
             this.statusDatapath = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.newModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menu.SuspendLayout();
             this.toolbar.SuspendLayout();
             this.status.SuspendLayout();
@@ -82,17 +80,41 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "&File";
             // 
+            // newModToolStripMenuItem
+            // 
+            this.newModToolStripMenuItem.Name = "newModToolStripMenuItem";
+            this.newModToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.newModToolStripMenuItem.Text = "New Mod...";
+            this.newModToolStripMenuItem.Click += new System.EventHandler(this.newModToolStripMenuItem_Click);
+            // 
+            // openModToolStripMenuItem
+            // 
+            this.openModToolStripMenuItem.Name = "openModToolStripMenuItem";
+            this.openModToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.openModToolStripMenuItem.Text = "Open Mod...";
+            this.openModToolStripMenuItem.Click += new System.EventHandler(this.openModToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(137, 6);
+            // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.saveToolStripMenuItem.Text = "&Save Mod";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(137, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -109,16 +131,15 @@
             // weaponsToolStripMenuItem
             // 
             this.weaponsToolStripMenuItem.Name = "weaponsToolStripMenuItem";
-            this.weaponsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.weaponsToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.weaponsToolStripMenuItem.Text = "&Weapons";
             this.weaponsToolStripMenuItem.Click += new System.EventHandler(this.toolWeapons_Click);
             // 
             // particlesToolStripMenuItem
             // 
             this.particlesToolStripMenuItem.Name = "particlesToolStripMenuItem";
-            this.particlesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.particlesToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.particlesToolStripMenuItem.Text = "&Particles";
-            this.particlesToolStripMenuItem.Click += new System.EventHandler(this.toolParticles_Click);
             // 
             // metricsToolStripMenuItem
             // 
@@ -148,8 +169,6 @@
             // 
             this.toolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolWeapons,
-            this.toolParticles,
-            this.toolStripSeparator1,
             this.toolUnittypes,
             this.toolParticleGenerators,
             this.toolModifiers});
@@ -167,21 +186,6 @@
             this.toolWeapons.Size = new System.Drawing.Size(76, 22);
             this.toolWeapons.Text = "Weapons";
             this.toolWeapons.Click += new System.EventHandler(this.toolWeapons_Click);
-            // 
-            // toolParticles
-            // 
-            this.toolParticles.Image = ((System.Drawing.Image)(resources.GetObject("toolParticles.Image")));
-            this.toolParticles.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolParticles.Name = "toolParticles";
-            this.toolParticles.Size = new System.Drawing.Size(71, 22);
-            this.toolParticles.Text = "Particles";
-            this.toolParticles.Click += new System.EventHandler(this.toolParticles_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            this.toolStripSeparator1.Visible = false;
             // 
             // toolUnittypes
             // 
@@ -227,30 +231,6 @@
             this.statusDatapath.Text = "No Datapath";
             this.statusDatapath.ToolTipText = "No datapath";
             // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
-            // 
-            // newModToolStripMenuItem
-            // 
-            this.newModToolStripMenuItem.Name = "newModToolStripMenuItem";
-            this.newModToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.newModToolStripMenuItem.Text = "New Mod...";
-            this.newModToolStripMenuItem.Click += new System.EventHandler(this.newModToolStripMenuItem_Click);
-            // 
-            // openModToolStripMenuItem
-            // 
-            this.openModToolStripMenuItem.Name = "openModToolStripMenuItem";
-            this.openModToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.openModToolStripMenuItem.Text = "Open Mod...";
-            this.openModToolStripMenuItem.Click += new System.EventHandler(this.openModToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -284,10 +264,8 @@
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStrip toolbar;
-        private System.Windows.Forms.ToolStripButton toolParticles;
         private System.Windows.Forms.ToolStripButton toolWeapons;
         private System.Windows.Forms.ToolStripButton toolUnittypes;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton toolParticleGenerators;
         private System.Windows.Forms.ToolStripButton toolModifiers;
         private System.Windows.Forms.StatusStrip status;

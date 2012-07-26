@@ -51,9 +51,6 @@ namespace datatool
         private string name;
         private string title;
 
-        private particlegenerator_item particlegen;
-
-        private particletype_item particle;
         private int angle_range;
         private int fire_delay;
         private int reload_delay;
@@ -87,8 +84,6 @@ namespace datatool
 
             b.values["name"] = this.name;
             b.values["title"] = this.title;
-            b.values["particlegen"] = this.particlegen;
-            b.values["particle"] = this.particle;
             b.values["angle_range"] = this.angle_range;
             b.values["fire_delay"] = this.fire_delay;
             b.values["reload_delay"] = this.reload_delay;
@@ -270,26 +265,6 @@ namespace datatool
             get { return this.wall_damage; }
             set { this.wall_damage = value; }
         }
-
-
-        [DescriptionAttribute("For effects only")]
-        [Category("Effects")]
-        [Editor(typeof(particletype_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
-        public particletype_item Particle
-        {
-            get { return this.particle; }
-            set { this.particle = value; }
-        }
-
-        [DescriptionAttribute("For effects only, probably will be removed soon")]
-        [Category("Effects")]
-        [Editor(typeof(particlegenerator_ui_editor), typeof(System.Drawing.Design.UITypeEditor))]
-        public particlegenerator_item ParticleGen
-        {
-            get { return this.particlegen; }
-            set { this.particlegen = value; }
-        }
-
 
         [Browsable(false)]
         public List<weapontype_sound> Sounds
