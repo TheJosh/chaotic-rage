@@ -15,8 +15,6 @@ namespace datatool
 
         private List<base_item> areatypes;
         private List<base_item> modifiers;
-        private List<base_item> particletypes;
-        private List<base_item> particlegenerators;
         private List<base_item> unitclasses;
         private List<base_item> weapontypes;
 
@@ -25,8 +23,6 @@ namespace datatool
         {
             this.areatypes = new List<base_item>();
             this.modifiers = new List<base_item>();
-            this.particletypes = new List<base_item>();
-            this.particlegenerators = new List<base_item>();
             this.unitclasses = new List<base_item>();
             this.weapontypes = new List<base_item>();
         }
@@ -42,8 +38,6 @@ namespace datatool
 
             this.areatypes.Clear();
             this.modifiers.Clear();
-            this.particletypes.Clear();
-            this.particlegenerators.Clear();
             this.unitclasses.Clear();
             this.weapontypes.Clear();
 
@@ -54,6 +48,7 @@ namespace datatool
             }
 
             load_weapontypes();
+            load_unittypes();
 
             return true;
         }
@@ -204,6 +199,50 @@ namespace datatool
         }
 
 
+        /**
+        * Loads the particletypes
+        **/
+        private void load_unittypes()
+        {
+            ConfuseSection sect = null;
+            string file = this.readFile("unittypes.conf");
+
+            // Parse
+            try {
+                sect = read.Parse(file);
+            } catch (Exception ex) {
+                MessageBox.Show("Error loading unit types:\n" + ex.Message);
+                return;
+            }
+
+            // Load
+            foreach (ConfuseSection s in sect.subsections) {
+                unitclass_item i = new unitclass_item("");
+                unitclasses.Add(i);
+
+                if (!s.values.ContainsKey("name")) throw new Exception("Unit type defined without a name");
+
+                i.Name = s.get_string("name", "");
+                i.Playable = s.get_bool("playable", true);
+                i.BeginHealth = s.get_int("begin_health", 10000);
+                i.MeleeDamage = s.get_int("melee_damage", 1000);
+                i.MeleeDelay = s.get_int("melee_delay", 500);
+                i.MeleeCooldown = s.get_int("melee_cooldown", 500);
+
+                i.Sounds.Clear();
+                foreach (ConfuseSection ss in s.subsections) {
+                    if (ss.name == "sound") {
+                        unitclass_sound  sss = new unitclass_sound();
+                        sss.Sound = ss.get_string("sound", "");
+                        sss.Type = ss.get_int("type", 0);
+                        i.Sounds.Add(sss);
+                    }
+                }
+            }
+        }
+
+
+
         public List<base_item> AreaTypes
         {
             get { return areatypes; }
@@ -212,16 +251,6 @@ namespace datatool
         public List<base_item> Modifiers
         {
             get { return modifiers; }
-        }
-
-        public List<base_item> ParticleTypes
-        {
-            get { return particletypes; }
-        }
-
-        public List<base_item> ParticleGenerators
-        {
-            get { return particlegenerators; }
         }
 
         public List<base_item> UnitClasses

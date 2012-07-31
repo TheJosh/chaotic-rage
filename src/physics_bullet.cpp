@@ -65,10 +65,10 @@ void PhysicsBullet::preGame()
 	this->groundRigidBody->setFriction(10.f);
 	dynamicsWorld->addRigidBody(groundRigidBody);
 	
-	this->addBoundaryPlane(btVector3(1, 0, 0), btVector3(0, 0, 0));
-	this->addBoundaryPlane(btVector3(0, 1, 0), btVector3(0, 0, 0));
-	this->addBoundaryPlane(btVector3(-1, 0, 0), btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
-	this->addBoundaryPlane(btVector3(0, -1, 0), btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
+	this->addBoundaryPlane(&btVector3(1, 0, 0), &btVector3(0, 0, 0));
+	this->addBoundaryPlane(&btVector3(0, 1, 0), &btVector3(0, 0, 0));
+	this->addBoundaryPlane(&btVector3(-1, 0, 0), &btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
+	this->addBoundaryPlane(&btVector3(0, -1, 0), &btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
 	
 	collisionShapes = new btAlignedObjectArray<btCollisionShape*>();
 }
@@ -78,11 +78,11 @@ void PhysicsBullet::preGame()
 * Create a boundary plane (invisible wall)
 * There is normally four of these around the edges of the map.
 **/
-void PhysicsBullet::addBoundaryPlane(btVector3 axis, btVector3 loc)
+void PhysicsBullet::addBoundaryPlane(btVector3 * axis, btVector3 * loc)
 {
-	btCollisionShape* shape = new btStaticPlaneShape(axis, 0);
+	btCollisionShape* shape = new btStaticPlaneShape(*axis, 0);
 	
-	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), loc));
+	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), *loc));
 	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
 		0,
 		motionState,

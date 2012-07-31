@@ -106,7 +106,7 @@ namespace datatool
         override public string getName() { return this.name; }
     }
 
-
+    [Serializable]
     public class unitclass_sound : base_item
     {
         private string sound;
