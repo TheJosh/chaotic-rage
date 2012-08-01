@@ -25,7 +25,7 @@ namespace datatool
         public string val;
     }
 
-    class ConfuseSection
+    public class ConfuseSection
     {
         public string name;
         public List<ConfuseSection> subsections;

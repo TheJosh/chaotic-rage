@@ -173,18 +173,7 @@ namespace datatool
 
                 if (!s.values.ContainsKey("name")) throw new Exception("Weapontype defined without a name");
 
-                i.Name = s.get_string("name", "");
-                i.Title = s.get_string("title", "");
-
-                i.AngleRange = s.get_int("angle_range", 0);
-                i.FireDelay = s.get_int("fire_delay", 250);
-                i.ReloadDelay = s.get_int("reload_delay", 1000);
-                i.Continuous = s.get_bool("continuous", false);
-                i.MagazineLimit = s.get_int("magazine_limit", 100);
-                i.BeltLimit = s.get_int("belt_limit", 1000);
-                i.Range = s.get_float("range", 50);
-                i.UnitDamage = s.get_float("unit_damage", 10);
-                i.WallDamage = s.get_float("wall_damage", 10);
+                i.fillData(s);
 
                 i.Sounds.Clear();
                 foreach (ConfuseSection ss in s.subsections) {

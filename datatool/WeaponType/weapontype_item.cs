@@ -180,6 +180,7 @@ namespace datatool
 
         [DescriptionAttribute("The name of this weapon, internal use only")]
         [Category("Metadata")]
+        [ConfuseString("name")]
         public string Name
         {
             get { return this.name; }
@@ -188,6 +189,7 @@ namespace datatool
 
         [DescriptionAttribute("The name of this weapon in-game")]
         [Category("Metadata")]
+        [ConfuseString("title")]
         public string Title
         {
             get { return this.title; }
@@ -196,6 +198,7 @@ namespace datatool
 
         [DescriptionAttribute("no desc yet")]
         [Category("Specifications")]
+        [ConfuseInt("angle_range")]
         public int AngleRange
         {
             get { return this.angle_range; }
@@ -204,6 +207,7 @@ namespace datatool
 
         [DescriptionAttribute("no desc yet")]
         [Category("Specifications")]
+        [ConfuseInt("fire_delay")]
         public int FireDelay
         {
             get { return this.fire_delay; }
@@ -212,6 +216,7 @@ namespace datatool
 
         [DescriptionAttribute("no desc yet")]
         [Category("Specifications")]
+        [ConfuseInt("reload_delay")]
         public int ReloadDelay
         {
             get { return this.reload_delay; }
@@ -220,6 +225,7 @@ namespace datatool
 
         [DescriptionAttribute("no desc yet")]
         [Category("Specifications")]
+        [ConfuseBoolean("continuous")]
         public bool Continuous
         {
             get { return this.continuous; }
@@ -228,6 +234,7 @@ namespace datatool
 
         [DescriptionAttribute("no desc yet")]
         [Category("Specifications")]
+        [ConfuseInt("magazine_limit")]
         public int MagazineLimit
         {
             get { return this.magazine_limit; }
@@ -236,6 +243,7 @@ namespace datatool
 
         [DescriptionAttribute("no desc yet")]
         [Category("Specifications")]
+        [ConfuseInt("belt_limit")]
         public int BeltLimit
         {
             get { return this.belt_limit; }
@@ -244,6 +252,7 @@ namespace datatool
 
         [DescriptionAttribute("no desc yet")]
         [Category("Specifications")]
+        [ConfuseInt("range")]
         public float Range
         {
             get { return this.range; }
@@ -252,6 +261,7 @@ namespace datatool
 
         [DescriptionAttribute("no desc yet")]
         [Category("Specifications")]
+        [ConfuseInt("unit_damage")]
         public float UnitDamage
         {
             get { return this.unit_damage; }
@@ -260,6 +270,7 @@ namespace datatool
 
         [DescriptionAttribute("no desc yet")]
         [Category("Specifications")]
+        [ConfuseInt("wall_damage")]
         public float WallDamage
         {
             get { return this.wall_damage; }
