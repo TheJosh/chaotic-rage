@@ -206,7 +206,7 @@ namespace datatool
 
             // Load
             foreach (ConfuseSection s in sect.subsections) {
-                unitclass_item i = new unitclass_item("");
+                unitclass_item i = new unitclass_item();
                 unitclasses.Add(i);
 
                 if (!s.values.ContainsKey("name")) throw new Exception("Unit type defined without a name");

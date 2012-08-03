@@ -11,7 +11,6 @@ namespace datatool
     public partial class AnimModelEdit : Form
     {
         private animmodel_item item;
-        private ExtraListItem sel_list_item;
 
         public animmodel_item Item
         {

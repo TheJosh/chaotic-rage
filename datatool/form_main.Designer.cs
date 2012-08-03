@@ -37,18 +37,14 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.weaponsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.particlesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metricsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMetricsWeaponsGrid = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMetricsWeaponsCompare = new System.Windows.Forms.ToolStripMenuItem();
             this.toolbar = new System.Windows.Forms.ToolStrip();
             this.toolWeapons = new System.Windows.Forms.ToolStripButton();
-            this.toolUnittypes = new System.Windows.Forms.ToolStripButton();
-            this.toolModifiers = new System.Windows.Forms.ToolStripButton();
             this.status = new System.Windows.Forms.StatusStrip();
             this.statusDatapath = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolUnitTypes = new System.Windows.Forms.ToolStripButton();
             this.menu.SuspendLayout();
             this.toolbar.SuspendLayout();
             this.status.SuspendLayout();
@@ -58,7 +54,6 @@
             // 
             this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.editToolStripMenuItem,
             this.metricsToolStripMenuItem});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
@@ -117,29 +112,6 @@
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // editToolStripMenuItem
-            // 
-            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.weaponsToolStripMenuItem,
-            this.particlesToolStripMenuItem});
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
-            this.editToolStripMenuItem.Tag = "RequireFile";
-            this.editToolStripMenuItem.Text = "&Edit";
-            // 
-            // weaponsToolStripMenuItem
-            // 
-            this.weaponsToolStripMenuItem.Name = "weaponsToolStripMenuItem";
-            this.weaponsToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.weaponsToolStripMenuItem.Text = "&Weapons";
-            this.weaponsToolStripMenuItem.Click += new System.EventHandler(this.toolWeapons_Click);
-            // 
-            // particlesToolStripMenuItem
-            // 
-            this.particlesToolStripMenuItem.Name = "particlesToolStripMenuItem";
-            this.particlesToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.particlesToolStripMenuItem.Text = "&Particles";
-            // 
             // metricsToolStripMenuItem
             // 
             this.metricsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -168,8 +140,7 @@
             // 
             this.toolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolWeapons,
-            this.toolUnittypes,
-            this.toolModifiers});
+            this.toolUnitTypes});
             this.toolbar.Location = new System.Drawing.Point(0, 24);
             this.toolbar.Name = "toolbar";
             this.toolbar.Size = new System.Drawing.Size(766, 25);
@@ -184,24 +155,6 @@
             this.toolWeapons.Size = new System.Drawing.Size(76, 22);
             this.toolWeapons.Text = "Weapons";
             this.toolWeapons.Click += new System.EventHandler(this.toolWeapons_Click);
-            // 
-            // toolUnittypes
-            // 
-            this.toolUnittypes.Image = ((System.Drawing.Image)(resources.GetObject("toolUnittypes.Image")));
-            this.toolUnittypes.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolUnittypes.Name = "toolUnittypes";
-            this.toolUnittypes.Size = new System.Drawing.Size(80, 22);
-            this.toolUnittypes.Text = "Unit types";
-            this.toolUnittypes.Click += new System.EventHandler(this.toolUnittypes_Click);
-            // 
-            // toolModifiers
-            // 
-            this.toolModifiers.Image = ((System.Drawing.Image)(resources.GetObject("toolModifiers.Image")));
-            this.toolModifiers.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolModifiers.Name = "toolModifiers";
-            this.toolModifiers.Size = new System.Drawing.Size(74, 22);
-            this.toolModifiers.Text = "Modifers";
-            this.toolModifiers.Visible = false;
             // 
             // status
             // 
@@ -218,6 +171,15 @@
             this.statusDatapath.Size = new System.Drawing.Size(74, 17);
             this.statusDatapath.Text = "No Datapath";
             this.statusDatapath.ToolTipText = "No datapath";
+            // 
+            // toolUnitTypes
+            // 
+            this.toolUnitTypes.Image = ((System.Drawing.Image)(resources.GetObject("toolUnitTypes.Image")));
+            this.toolUnitTypes.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolUnitTypes.Name = "toolUnitTypes";
+            this.toolUnitTypes.Size = new System.Drawing.Size(83, 22);
+            this.toolUnitTypes.Text = "Unit Types";
+            this.toolUnitTypes.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // Main
             // 
@@ -253,20 +215,16 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStrip toolbar;
         private System.Windows.Forms.ToolStripButton toolWeapons;
-        private System.Windows.Forms.ToolStripButton toolUnittypes;
-        private System.Windows.Forms.ToolStripButton toolModifiers;
         private System.Windows.Forms.StatusStrip status;
         private System.Windows.Forms.ToolStripStatusLabel statusDatapath;
         private System.Windows.Forms.ToolStripMenuItem metricsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MenuMetricsWeaponsGrid;
         private System.Windows.Forms.ToolStripMenuItem MenuMetricsWeaponsCompare;
-        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem weaponsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem particlesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newModToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openModToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripButton toolUnitTypes;
     }
 }
 

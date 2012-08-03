@@ -70,6 +70,13 @@ namespace datatool
             this.ImageIndex = -1;
         }
 
+        public ExtraListItem(base_item item)
+        {
+            this.ImageIndex = -1;
+            this.Extra = item;
+        }
+
+
         public base_item Extra
         {
             get { return this.extra; }

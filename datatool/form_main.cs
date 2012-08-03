@@ -75,7 +75,6 @@ namespace datatool
                 this.statusDatapath.Text = "Current File: " + Program.dp.GetFriendlyFilename();
             }
 
-            editToolStripMenuItem.Enabled = enabled;
             metricsToolStripMenuItem.Enabled = enabled;
             saveToolStripMenuItem.Enabled = enabled;
             toolbar.Enabled = enabled;
@@ -221,6 +220,12 @@ namespace datatool
             metric_compare f = new metric_compare(new weapontype_item("A").getMetricNames(), Program.dp.WeaponTypes);
             f.MdiParent = this;
             f.Show();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            GeneralEdit edit = new GeneralEdit(Program.dp.UnitClasses, "Unit Types", typeof(unitclass_item));
+            edit.Show();
         }
 
     }

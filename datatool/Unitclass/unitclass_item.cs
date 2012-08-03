@@ -168,16 +168,10 @@ namespace datatool
         private int melee_damage;
         private int melee_delay;
         private int melee_cooldown;
-        
 
-        public unitclass_item(string name)
+
+        public unitclass_item()
         {
-            this.name = name;
-            this.begin_health = 0;
-            this.melee_damage = 100;
-            this.melee_delay = 100;
-            this.melee_cooldown = 100;
-
             this.settings = new List<unitclass_settings>();
             this.states = new List<unitclass_state>();
             this.sounds = new List<unitclass_sound>();
