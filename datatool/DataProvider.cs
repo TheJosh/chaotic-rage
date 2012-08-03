@@ -211,20 +211,21 @@ namespace datatool
 
                 if (!s.values.ContainsKey("name")) throw new Exception("Unit type defined without a name");
 
-                i.Name = s.get_string("name", "");
-                i.Playable = s.get_bool("playable", true);
-                i.BeginHealth = s.get_int("begin_health", 10000);
-                i.MeleeDamage = s.get_int("melee_damage", 1000);
-                i.MeleeDelay = s.get_int("melee_delay", 500);
-                i.MeleeCooldown = s.get_int("melee_cooldown", 500);
+                i.fillData(s);
 
-                i.Sounds.Clear();
                 foreach (ConfuseSection ss in s.subsections) {
                     if (ss.name == "sound") {
-                        unitclass_sound  sss = new unitclass_sound();
-                        sss.Sound = ss.get_string("sound", "");
-                        sss.Type = ss.get_int("type", 0);
-                        i.Sounds.Add(sss);
+                        unitclass_sound  subitem = new unitclass_sound();
+                        subitem.fillData(ss);
+                        i.Sounds.Add(subitem);
+
+                    } else if (ss.name == "settings") {
+
+                    } else if (ss.name == "state") {
+                        unitclass_state subitem = new unitclass_state();
+                        subitem.fillData(ss);
+                        i.Models.Add(subitem);
+
                     }
                 }
             }

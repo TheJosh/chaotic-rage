@@ -60,7 +60,7 @@ namespace datatool
         /**
          * Get a float value. If not available, returns the default
          **/
-        public float get_float(string name, int def)
+        public float get_float(string name, float def)
         {
             if (!(this.values.ContainsKey(name))) return def;
             if (!(this.values[name] is float)) return def;
