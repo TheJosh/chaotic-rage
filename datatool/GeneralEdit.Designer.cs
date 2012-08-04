@@ -35,7 +35,11 @@
             this.tools = new System.Windows.Forms.ToolStrip();
             this.btnAdd = new System.Windows.Forms.ToolStripButton();
             this.btnRemove = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolPreview = new System.Windows.Forms.ToolStripButton();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            this.panPreview = new System.Windows.Forms.Panel();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -58,8 +62,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.grid);
-            this.splitContainer1.Size = new System.Drawing.Size(765, 434);
-            this.splitContainer1.SplitterDistance = 255;
+            this.splitContainer1.Size = new System.Drawing.Size(565, 434);
+            this.splitContainer1.SplitterDistance = 188;
             this.splitContainer1.TabIndex = 0;
             // 
             // list
@@ -72,7 +76,7 @@
             this.list.Location = new System.Drawing.Point(0, 0);
             this.list.MultiSelect = false;
             this.list.Name = "list";
-            this.list.Size = new System.Drawing.Size(255, 434);
+            this.list.Size = new System.Drawing.Size(188, 434);
             this.list.TabIndex = 0;
             this.list.UseCompatibleStateImageBehavior = false;
             this.list.View = System.Windows.Forms.View.List;
@@ -88,7 +92,7 @@
             this.grid.Location = new System.Drawing.Point(0, 0);
             this.grid.Name = "grid";
             this.grid.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.grid.Size = new System.Drawing.Size(506, 434);
+            this.grid.Size = new System.Drawing.Size(373, 434);
             this.grid.TabIndex = 0;
             this.grid.ToolbarVisible = false;
             this.grid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.grid_PropertyValueChanged);
@@ -99,10 +103,12 @@
             this.tools.Dock = System.Windows.Forms.DockStyle.None;
             this.tools.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnAdd,
-            this.btnRemove});
+            this.btnRemove,
+            this.toolStripSeparator1,
+            this.toolPreview});
             this.tools.Location = new System.Drawing.Point(3, 0);
             this.tools.Name = "tools";
-            this.tools.Size = new System.Drawing.Size(162, 25);
+            this.tools.Size = new System.Drawing.Size(237, 25);
             this.tools.TabIndex = 1;
             this.tools.Text = "toolStrip1";
             // 
@@ -124,12 +130,31 @@
             this.btnRemove.Text = "Remove";
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolPreview
+            // 
+            this.toolPreview.Checked = true;
+            this.toolPreview.CheckOnClick = true;
+            this.toolPreview.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolPreview.Image = ((System.Drawing.Image)(resources.GetObject("toolPreview.Image")));
+            this.toolPreview.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolPreview.Name = "toolPreview";
+            this.toolPreview.Size = new System.Drawing.Size(100, 22);
+            this.toolPreview.Text = "Show Preview";
+            this.toolPreview.Click += new System.EventHandler(this.toolPreview_Click);
+            // 
             // toolStripContainer1
             // 
             // 
             // toolStripContainer1.ContentPanel
             // 
+            this.toolStripContainer1.ContentPanel.AutoScroll = true;
             this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer1);
+            this.toolStripContainer1.ContentPanel.Controls.Add(this.panPreview);
             this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(765, 434);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
@@ -142,6 +167,14 @@
             // 
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tools);
             // 
+            // panPreview
+            // 
+            this.panPreview.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panPreview.Location = new System.Drawing.Point(565, 0);
+            this.panPreview.Name = "panPreview";
+            this.panPreview.Size = new System.Drawing.Size(200, 434);
+            this.panPreview.TabIndex = 3;
+            // 
             // GeneralEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -153,6 +186,7 @@
             this.Load += new System.EventHandler(this.GeneralEdit_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.tools.ResumeLayout(false);
             this.tools.PerformLayout();
@@ -175,6 +209,9 @@
         private System.Windows.Forms.ToolStripButton btnRemove;
         private System.Windows.Forms.ToolStripContainer toolStripContainer1;
         private System.Windows.Forms.ColumnHeader colName;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton toolPreview;
+        private System.Windows.Forms.Panel panPreview;
 
     }
 }

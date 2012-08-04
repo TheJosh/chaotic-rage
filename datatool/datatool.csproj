@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>datatool</RootNamespace>
     <AssemblyName>datatool</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -52,6 +52,12 @@
   <ItemGroup>
     <Reference Include="Ionic.Utils.Zip">
       <HintPath>lib\Ionic.Utils.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGL">
+      <HintPath>lib\SharpGL\SharpGL.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGL.WinForms">
+      <HintPath>lib\SharpGL\SharpGL.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
