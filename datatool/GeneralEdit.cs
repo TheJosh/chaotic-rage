@@ -14,8 +14,11 @@ namespace datatool
         private List<base_item> items;
         private string title;
         private Type type;
+
+        private int previewType;
         private OpenGLControl glPreviewCtl;
         private float rotation;
+
 
         public GeneralEdit(List<base_item> items, string title, Type type)
         {
@@ -23,7 +26,14 @@ namespace datatool
             this.items = items;
             this.title = title;
             this.type = type;
-            this.initPreview();
+            this.setPreviewType(3);
+        }
+        
+        private void setPreviewType(int t) {
+            if (t == previewType) return;
+            if (previewType == 0) initPreview();
+            if (t == 0) nukePreview();
+            previewType = t;
         }
 
         private void initPreview() {
@@ -38,6 +48,7 @@ namespace datatool
             glPreviewCtl.RenderContextType = RenderContextType.FBO;
             glPreviewCtl.FrameRate = 10;
             panPreview.Controls.Add(glPreviewCtl);
+            panPreview.Visible = true;
 
             ((System.ComponentModel.ISupportInitialize)(this.glPreviewCtl)).EndInit();
         }
@@ -56,6 +67,7 @@ namespace datatool
         private void nukePreview()
         {
             panPreview.Controls[0].Dispose();
+            panPreview.Visible = false;
         }
 
         private void GeneralEdit_Load(object sender, EventArgs e)
@@ -115,16 +127,6 @@ namespace datatool
             list.Items.Remove(listitem);
         }
 
-        private void toolPreview_Click(object sender, EventArgs e)
-        {
-            if (toolPreview.Checked) {
-                this.initPreview();
-            } else {
-                this.nukePreview();
-            }
-            panPreview.Visible = toolPreview.Checked;
-        }
-
         private void preview_OpenGLDraw(object sender, EventArgs e)
         {
             OpenGL gl = glPreviewCtl.OpenGL;
@@ -132,6 +134,24 @@ namespace datatool
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
             gl.LoadIdentity();
             gl.Rotate(rotation, 0.0f, 1.0f, 0.0f);
+
+            switch (previewType) {
+                case 1:
+                    gl.PolygonMode(OpenGL.GL_FRONT_AND_BACK, OpenGL.GL_LINE);
+                    gl.Disable(OpenGL.GL_TEXTURE);
+                    break;
+
+                case 2:
+                    gl.PolygonMode(OpenGL.GL_FRONT_AND_BACK, OpenGL.GL_FILL);
+                    gl.Disable(OpenGL.GL_TEXTURE);
+                    break;
+
+                case 3:
+                    gl.PolygonMode(OpenGL.GL_FRONT_AND_BACK, OpenGL.GL_FILL);
+                    gl.Enable(OpenGL.GL_TEXTURE);
+                    break;
+            }
+
 
             //  Draw a coloured pyramid.
             gl.Begin(OpenGL.GL_TRIANGLES);
@@ -162,6 +182,38 @@ namespace datatool
             gl.End();
 
             rotation += 0.3f;
+        }
+
+        private void previewOff_Click(object sender, EventArgs e)
+        {
+            foreach (ToolStripMenuItem b in toolPreview.DropDown.Items) { b.Checked = false; }
+            previewOff.Checked = true;
+
+            setPreviewType(0);
+        }
+
+        private void previewWireframe_Click(object sender, EventArgs e)
+        {
+            foreach (ToolStripMenuItem b in toolPreview.DropDown.Items) { b.Checked = false; }
+            previewWireframe.Checked = true;
+
+            setPreviewType(1);
+        }
+
+        private void previewSolid_Click(object sender, EventArgs e)
+        {
+            foreach (ToolStripMenuItem b in toolPreview.DropDown.Items) { b.Checked = false; }
+            previewSolid.Checked = true;
+
+            setPreviewType(2);
+        }
+
+        private void previewTextured_Click(object sender, EventArgs e)
+        {
+            foreach (ToolStripMenuItem b in toolPreview.DropDown.Items) { b.Checked = false; }
+            previewTextured.Checked = true;
+
+            setPreviewType(3);
         }
     }
 }
