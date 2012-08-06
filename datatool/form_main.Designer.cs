@@ -42,9 +42,10 @@
             this.MenuMetricsWeaponsCompare = new System.Windows.Forms.ToolStripMenuItem();
             this.toolbar = new System.Windows.Forms.ToolStrip();
             this.toolWeapons = new System.Windows.Forms.ToolStripButton();
+            this.toolUnitTypes = new System.Windows.Forms.ToolStripButton();
             this.status = new System.Windows.Forms.StatusStrip();
             this.statusDatapath = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolUnitTypes = new System.Windows.Forms.ToolStripButton();
+            this.toolAnimModels = new System.Windows.Forms.ToolStripButton();
             this.menu.SuspendLayout();
             this.toolbar.SuspendLayout();
             this.status.SuspendLayout();
@@ -140,7 +141,8 @@
             // 
             this.toolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolWeapons,
-            this.toolUnitTypes});
+            this.toolUnitTypes,
+            this.toolAnimModels});
             this.toolbar.Location = new System.Drawing.Point(0, 24);
             this.toolbar.Name = "toolbar";
             this.toolbar.Size = new System.Drawing.Size(766, 25);
@@ -155,6 +157,15 @@
             this.toolWeapons.Size = new System.Drawing.Size(76, 22);
             this.toolWeapons.Text = "Weapons";
             this.toolWeapons.Click += new System.EventHandler(this.toolWeapons_Click);
+            // 
+            // toolUnitTypes
+            // 
+            this.toolUnitTypes.Image = ((System.Drawing.Image)(resources.GetObject("toolUnitTypes.Image")));
+            this.toolUnitTypes.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolUnitTypes.Name = "toolUnitTypes";
+            this.toolUnitTypes.Size = new System.Drawing.Size(83, 22);
+            this.toolUnitTypes.Text = "Unit Types";
+            this.toolUnitTypes.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // status
             // 
@@ -172,14 +183,15 @@
             this.statusDatapath.Text = "No Datapath";
             this.statusDatapath.ToolTipText = "No datapath";
             // 
-            // toolUnitTypes
+            // toolAnimModels
             // 
-            this.toolUnitTypes.Image = ((System.Drawing.Image)(resources.GetObject("toolUnitTypes.Image")));
-            this.toolUnitTypes.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolUnitTypes.Name = "toolUnitTypes";
-            this.toolUnitTypes.Size = new System.Drawing.Size(83, 22);
-            this.toolUnitTypes.Text = "Unit Types";
-            this.toolUnitTypes.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.toolAnimModels.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolAnimModels.Image = ((System.Drawing.Image)(resources.GetObject("toolAnimModels.Image")));
+            this.toolAnimModels.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolAnimModels.Name = "toolAnimModels";
+            this.toolAnimModels.Size = new System.Drawing.Size(23, 22);
+            this.toolAnimModels.Text = "AnimModels";
+            this.toolAnimModels.Click += new System.EventHandler(this.toolAnimModels_Click);
             // 
             // Main
             // 
@@ -225,6 +237,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton toolUnitTypes;
+        private System.Windows.Forms.ToolStripButton toolAnimModels;
     }
 }
 

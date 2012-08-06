@@ -66,12 +66,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnimModel\animmodel_edit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AnimModel\animmodel_edit.designer.cs">
-      <DependentUpon>animmodel_edit.cs</DependentUpon>
-    </Compile>
     <Compile Include="AnimModel\animmodel_item.cs" />
     <Compile Include="ConfuseBuilder.cs" />
     <Compile Include="ConfuseReader.cs" />
@@ -166,9 +160,6 @@
     <Compile Include="WeaponType\weapontype_edit.Designer.cs">
       <DependentUpon>weapontype_edit.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="AnimModel\animmodel_edit.resx">
-      <DependentUpon>animmodel_edit.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="base_list.resx">
       <DependentUpon>base_list.cs</DependentUpon>
     </EmbeddedResource>

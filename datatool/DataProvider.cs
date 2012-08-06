@@ -13,18 +13,18 @@ namespace datatool
         private string datapath;
         private ZipFile zf;
 
-        private List<base_item> areatypes;
         private List<base_item> modifiers;
         private List<base_item> unitclasses;
         private List<base_item> weapontypes;
+        private List<base_item> animmodels;
 
 
         public DataProvider()
         {
-            this.areatypes = new List<base_item>();
             this.modifiers = new List<base_item>();
             this.unitclasses = new List<base_item>();
             this.weapontypes = new List<base_item>();
+            this.animmodels = new List<base_item>();
         }
 
 
@@ -36,10 +36,10 @@ namespace datatool
             this.datapath = filename;
             this.read = new ConfuseReader();
 
-            this.areatypes.Clear();
             this.modifiers.Clear();
             this.unitclasses.Clear();
             this.weapontypes.Clear();
+            this.animmodels.Clear();
 
             if (isZip) {
                 this.zf = new ZipFile(filename);
@@ -49,6 +49,7 @@ namespace datatool
 
             load_weapontypes();
             load_unittypes();
+            load_animmodels();
 
             return true;
         }
@@ -215,7 +216,7 @@ namespace datatool
 
                 foreach (ConfuseSection ss in s.subsections) {
                     if (ss.name == "sound") {
-                        unitclass_sound  subitem = new unitclass_sound();
+                        unitclass_sound subitem = new unitclass_sound();
                         subitem.fillData(ss);
                         i.Sounds.Add(subitem);
 
@@ -232,10 +233,32 @@ namespace datatool
         }
 
 
-
-        public List<base_item> AreaTypes
+        /**
+        * Loads the particletypes
+        **/
+        private void load_animmodels()
         {
-            get { return areatypes; }
+            ConfuseSection sect = null;
+            string file = this.readFile("animmodels.conf");
+            read.file = "animmodels.conf";
+            sect = read.Parse(file);
+
+            // Load
+            foreach (ConfuseSection s in sect.subsections) {
+                animmodel_item i = new animmodel_item();
+                animmodels.Add(i);
+
+                if (!s.values.ContainsKey("name")) throw new Exception("Anim model defined without a name");
+
+                i.fillData(s);
+            }
+        }
+
+
+
+        public List<base_item> AnimModels
+        {
+            get { return animmodels; }
         }
 
         public List<base_item> Modifiers

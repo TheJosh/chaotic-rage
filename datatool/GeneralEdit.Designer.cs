@@ -36,13 +36,13 @@
             this.btnAdd = new System.Windows.Forms.ToolStripButton();
             this.btnRemove = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
-            this.panPreview = new System.Windows.Forms.Panel();
             this.toolPreview = new System.Windows.Forms.ToolStripSplitButton();
             this.previewOff = new System.Windows.Forms.ToolStripMenuItem();
             this.previewWireframe = new System.Windows.Forms.ToolStripMenuItem();
             this.previewSolid = new System.Windows.Forms.ToolStripMenuItem();
             this.previewTextured = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            this.panPreview = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -77,6 +77,7 @@
             this.list.Dock = System.Windows.Forms.DockStyle.Fill;
             this.list.FullRowSelect = true;
             this.list.HideSelection = false;
+            this.list.LabelWrap = false;
             this.list.Location = new System.Drawing.Point(0, 0);
             this.list.MultiSelect = false;
             this.list.Name = "list";
@@ -112,7 +113,7 @@
             this.toolPreview});
             this.tools.Location = new System.Drawing.Point(3, 0);
             this.tools.Name = "tools";
-            this.tools.Size = new System.Drawing.Size(248, 25);
+            this.tools.Size = new System.Drawing.Size(217, 25);
             this.tools.TabIndex = 1;
             this.tools.Text = "toolStrip1";
             // 
@@ -138,6 +139,53 @@
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolPreview
+            // 
+            this.toolPreview.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.previewOff,
+            this.previewWireframe,
+            this.previewSolid,
+            this.previewTextured});
+            this.toolPreview.Image = ((System.Drawing.Image)(resources.GetObject("toolPreview.Image")));
+            this.toolPreview.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolPreview.Name = "toolPreview";
+            this.toolPreview.Size = new System.Drawing.Size(80, 22);
+            this.toolPreview.Text = "Preview";
+            // 
+            // previewOff
+            // 
+            this.previewOff.CheckOnClick = true;
+            this.previewOff.Name = "previewOff";
+            this.previewOff.Size = new System.Drawing.Size(129, 22);
+            this.previewOff.Text = "Off";
+            this.previewOff.Click += new System.EventHandler(this.previewOff_Click);
+            // 
+            // previewWireframe
+            // 
+            this.previewWireframe.CheckOnClick = true;
+            this.previewWireframe.Name = "previewWireframe";
+            this.previewWireframe.Size = new System.Drawing.Size(129, 22);
+            this.previewWireframe.Text = "Wireframe";
+            this.previewWireframe.Click += new System.EventHandler(this.previewWireframe_Click);
+            // 
+            // previewSolid
+            // 
+            this.previewSolid.CheckOnClick = true;
+            this.previewSolid.Name = "previewSolid";
+            this.previewSolid.Size = new System.Drawing.Size(129, 22);
+            this.previewSolid.Text = "Solid";
+            this.previewSolid.Click += new System.EventHandler(this.previewSolid_Click);
+            // 
+            // previewTextured
+            // 
+            this.previewTextured.Checked = true;
+            this.previewTextured.CheckOnClick = true;
+            this.previewTextured.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.previewTextured.Name = "previewTextured";
+            this.previewTextured.Size = new System.Drawing.Size(129, 22);
+            this.previewTextured.Text = "Textured";
+            this.previewTextured.Click += new System.EventHandler(this.previewTextured_Click);
             // 
             // toolStripContainer1
             // 
@@ -166,53 +214,6 @@
             this.panPreview.Name = "panPreview";
             this.panPreview.Size = new System.Drawing.Size(200, 434);
             this.panPreview.TabIndex = 3;
-            // 
-            // toolPreview
-            // 
-            this.toolPreview.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.previewOff,
-            this.previewWireframe,
-            this.previewSolid,
-            this.previewTextured});
-            this.toolPreview.Image = ((System.Drawing.Image)(resources.GetObject("toolPreview.Image")));
-            this.toolPreview.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolPreview.Name = "toolPreview";
-            this.toolPreview.Size = new System.Drawing.Size(80, 22);
-            this.toolPreview.Text = "Preview";
-            // 
-            // previewOff
-            // 
-            this.previewOff.CheckOnClick = true;
-            this.previewOff.Name = "previewOff";
-            this.previewOff.Size = new System.Drawing.Size(152, 22);
-            this.previewOff.Text = "Off";
-            this.previewOff.Click += new System.EventHandler(this.previewOff_Click);
-            // 
-            // previewWireframe
-            // 
-            this.previewWireframe.CheckOnClick = true;
-            this.previewWireframe.Name = "previewWireframe";
-            this.previewWireframe.Size = new System.Drawing.Size(152, 22);
-            this.previewWireframe.Text = "Wireframe";
-            this.previewWireframe.Click += new System.EventHandler(this.previewWireframe_Click);
-            // 
-            // previewSolid
-            // 
-            this.previewSolid.CheckOnClick = true;
-            this.previewSolid.Name = "previewSolid";
-            this.previewSolid.Size = new System.Drawing.Size(152, 22);
-            this.previewSolid.Text = "Solid";
-            this.previewSolid.Click += new System.EventHandler(this.previewSolid_Click);
-            // 
-            // previewTextured
-            // 
-            this.previewTextured.Checked = true;
-            this.previewTextured.CheckOnClick = true;
-            this.previewTextured.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.previewTextured.Name = "previewTextured";
-            this.previewTextured.Size = new System.Drawing.Size(152, 22);
-            this.previewTextured.Text = "Textured";
-            this.previewTextured.Click += new System.EventHandler(this.previewTextured_Click);
             // 
             // GeneralEdit
             // 

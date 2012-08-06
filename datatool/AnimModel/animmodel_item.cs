@@ -8,11 +8,12 @@ namespace datatool
     public class animmodel_item : base_item 
     {
         private string name;
+        private string mesh;
+        private string texture;
 
 
-        public animmodel_item(string name)
+        public animmodel_item()
         {
-            this.name = name;
         }
 
         override public string getName()
@@ -21,7 +22,6 @@ namespace datatool
         }
 
 
-        [DescriptionAttribute("The name of this item, internal use only")]
         [Category("General")]
         [ConfuseString("name")]
         public string Name
@@ -30,6 +30,21 @@ namespace datatool
             set { this.name = value; }
         }
 
+        [Category("Data")]
+        [ConfuseString("mesh")]
+        public string Mesh
+        {
+            get { return this.mesh; }
+            set { this.mesh = value; }
+        }
+
+        [Category("Data")]
+        [ConfuseString("texture")]
+        public string Texture
+        {
+            get { return this.texture; }
+            set { this.texture = value; }
+        }
 
     }
 }

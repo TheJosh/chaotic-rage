@@ -138,12 +138,12 @@ namespace datatool
             Main.CustomModInfo cmi = (Main.CustomModInfo)i.Tag;
 
             Program.dp = new DataProvider();
-            try {
+            //try {
                 Program.dp.load(cmi.filename, cmi.zip);
-            } catch (Exception ex) {
-                MessageBox.Show("Tried to load mod, but failed. It might be corrupt.\n\nError:\n" + ex.Message);
-                Program.dp = null;
-            }
+           // } catch (Exception ex) {
+            //    MessageBox.Show("Tried to load mod, but failed. It might be corrupt.\n\nError:\n" + ex.Message);
+            //    Program.dp = null;
+            //}
             UpdateFileStatus();
         }
 
@@ -225,6 +225,12 @@ namespace datatool
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             GeneralEdit edit = new GeneralEdit(Program.dp.UnitClasses, "Unit Types", typeof(unitclass_item));
+            edit.Show();
+        }
+
+        private void toolAnimModels_Click(object sender, EventArgs e)
+        {
+            GeneralEdit edit = new GeneralEdit(Program.dp.AnimModels, "Animation Models", typeof(animmodel_item));
             edit.Show();
         }
 
