@@ -230,7 +230,7 @@ namespace datatool
 
         private void toolAnimModels_Click(object sender, EventArgs e)
         {
-            GeneralEdit edit = new GeneralEdit(Program.dp.AnimModels, "Animation Models", typeof(animmodel_item));
+            GeneralEdit edit = new GeneralEdit(Program.dp.AnimModels, "Animation Models", typeof(animmodel_item), new AnimmodelPreview());
             edit.Show();
         }
 

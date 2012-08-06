@@ -94,7 +94,7 @@ namespace datatool
         /**
          * Read a file from the disk or zip
          **/
-        private string readFile(string filename)
+        public string readFile(string filename)
         {
             if (this.zf != null) {
                 MemoryStream ms = new MemoryStream();
@@ -107,6 +107,18 @@ namespace datatool
                 return File.ReadAllText(this.datapath + "\\" + filename);
             }
         }
+
+
+        public byte[] readBinaryFile(string filename)
+        {
+            if (this.zf != null) {
+                throw new NotImplementedException();
+
+            } else {
+                return File.ReadAllBytes(this.datapath + "\\" + filename);
+            }
+        }
+
 
         /**
          * Write a file to the disk or zip

@@ -18,15 +18,23 @@ namespace datatool
         private int previewType;
         private OpenGLControl glPreviewCtl;
         private float rotation;
+        private PreviewBase preview;
 
 
-        public GeneralEdit(List<base_item> items, string title, Type type)
+        public GeneralEdit(List<base_item> items, string title, Type type, PreviewBase preview = null)
         {
             InitializeComponent();
             this.items = items;
             this.title = title;
             this.type = type;
-            this.setPreviewType(3);
+
+            if (preview != null) {
+                this.preview = preview;
+                this.setPreviewType(3);
+            } else {
+                this.nukePreview();
+                this.toolPreview.Visible = false;
+            }
         }
         
         private void setPreviewType(int t) {
@@ -66,7 +74,6 @@ namespace datatool
 
         private void nukePreview()
         {
-            panPreview.Controls[0].Dispose();
             panPreview.Visible = false;
         }
 
@@ -81,6 +88,10 @@ namespace datatool
 
         private void list_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (this.preview != null) {
+                this.preview.Nuke(glPreviewCtl.OpenGL);
+            }
+
             if (list.SelectedItems.Count == 0) {
                 grid.SelectedObject = null;
                 this.Text = this.title;
@@ -90,6 +101,10 @@ namespace datatool
             ExtraListItem listitem = (ExtraListItem)list.SelectedItems[0];
             grid.SelectedObject = listitem.Extra;
             this.Text = this.title + " - " + listitem.Extra.getName();
+
+            if (this.preview != null) {
+                this.preview.Init(glPreviewCtl.OpenGL, listitem.Extra);
+            }
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -129,57 +144,43 @@ namespace datatool
 
         private void preview_OpenGLDraw(object sender, EventArgs e)
         {
+            if (this.preview == null) return;
+
             OpenGL gl = glPreviewCtl.OpenGL;
             
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
             gl.LoadIdentity();
+            gl.Scale(1.0f, -1.0f, 1.0f);
             gl.Rotate(rotation, 0.0f, 1.0f, 0.0f);
+            gl.Rotate(90, 1.0f, 0.0f, 0.0f);
+
+            if (grid.SelectedObject == null) return;
 
             switch (previewType) {
                 case 1:
+                    gl.Color(0.7f, 0.7f, 0.7f, 1.0f);
                     gl.PolygonMode(OpenGL.GL_FRONT_AND_BACK, OpenGL.GL_LINE);
-                    gl.Disable(OpenGL.GL_TEXTURE);
+                    gl.Disable(OpenGL.GL_TEXTURE_2D);
+                    preview.Render(gl);
                     break;
 
                 case 2:
+                    gl.Color(0.3f, 0.3f, 0.3f, 1.0f);
                     gl.PolygonMode(OpenGL.GL_FRONT_AND_BACK, OpenGL.GL_FILL);
-                    gl.Disable(OpenGL.GL_TEXTURE);
+                    gl.Disable(OpenGL.GL_TEXTURE_2D);
+                    preview.Render(gl);
+                    gl.Color(0.7f, 0.7f, 0.7f, 1.0f);
+                    gl.PolygonMode(OpenGL.GL_FRONT_AND_BACK, OpenGL.GL_LINE);
+                    gl.LineWidth(1.3f);
+                    preview.Render(gl);
                     break;
 
                 case 3:
                     gl.PolygonMode(OpenGL.GL_FRONT_AND_BACK, OpenGL.GL_FILL);
-                    gl.Enable(OpenGL.GL_TEXTURE);
+                    gl.Enable(OpenGL.GL_TEXTURE_2D);
+                    preview.Render(gl);
                     break;
             }
-
-
-            //  Draw a coloured pyramid.
-            gl.Begin(OpenGL.GL_TRIANGLES);
-            gl.Color(1.0f, 0.0f, 0.0f);
-            gl.Vertex(0.0f, 1.0f, 0.0f);
-            gl.Color(0.0f, 1.0f, 0.0f);
-            gl.Vertex(-1.0f, -1.0f, 1.0f);
-            gl.Color(0.0f, 0.0f, 1.0f);
-            gl.Vertex(1.0f, -1.0f, 1.0f);
-            gl.Color(1.0f, 0.0f, 0.0f);
-            gl.Vertex(0.0f, 1.0f, 0.0f);
-            gl.Color(0.0f, 0.0f, 1.0f);
-            gl.Vertex(1.0f, -1.0f, 1.0f);
-            gl.Color(0.0f, 1.0f, 0.0f);
-            gl.Vertex(1.0f, -1.0f, -1.0f);
-            gl.Color(1.0f, 0.0f, 0.0f);
-            gl.Vertex(0.0f, 1.0f, 0.0f);
-            gl.Color(0.0f, 1.0f, 0.0f);
-            gl.Vertex(1.0f, -1.0f, -1.0f);
-            gl.Color(0.0f, 0.0f, 1.0f);
-            gl.Vertex(-1.0f, -1.0f, -1.0f);
-            gl.Color(1.0f, 0.0f, 0.0f);
-            gl.Vertex(0.0f, 1.0f, 0.0f);
-            gl.Color(0.0f, 0.0f, 1.0f);
-            gl.Vertex(-1.0f, -1.0f, -1.0f);
-            gl.Color(0.0f, 1.0f, 0.0f);
-            gl.Vertex(-1.0f, -1.0f, 1.0f);
-            gl.End();
 
             rotation += 0.3f;
         }

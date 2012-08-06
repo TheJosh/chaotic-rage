@@ -56,6 +56,13 @@
     <Reference Include="SharpGL">
       <HintPath>lib\SharpGL\SharpGL.dll</HintPath>
     </Reference>
+    <Reference Include="SharpGL.SceneGraph, Version=1.0.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\SharpGL\SharpGL.SceneGraph.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGL.Serialization">
+      <HintPath>lib\SharpGL\SharpGL.Serialization.dll</HintPath>
+    </Reference>
     <Reference Include="SharpGL.WinForms">
       <HintPath>lib\SharpGL\SharpGL.WinForms.dll</HintPath>
     </Reference>
@@ -66,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimModel\AnimmodelPreview.cs" />
     <Compile Include="AnimModel\animmodel_item.cs" />
     <Compile Include="ConfuseBuilder.cs" />
     <Compile Include="ConfuseReader.cs" />
@@ -111,6 +119,7 @@
     </Compile>
     <Compile Include="base_item.cs" />
     <Compile Include="DataProvider.cs" />
+    <Compile Include="PreviewBase.cs" />
     <Compile Include="Unitclass\unitclass_edit.cs">
       <SubType>Form</SubType>
     </Compile>
