@@ -65,10 +65,11 @@ void PhysicsBullet::preGame()
 	this->groundRigidBody->setFriction(10.f);
 	dynamicsWorld->addRigidBody(groundRigidBody);
 	
-	this->addBoundaryPlane(&btVector3(1, 0, 0), &btVector3(0, 0, 0));
-	this->addBoundaryPlane(&btVector3(0, 1, 0), &btVector3(0, 0, 0));
-	this->addBoundaryPlane(&btVector3(-1, 0, 0), &btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
-	this->addBoundaryPlane(&btVector3(0, -1, 0), &btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
+	// This leaks. I'm using pointers because of MS compiler doesn't like the alignment or something.
+	this->addBoundaryPlane(new btVector3(1, 0, 0), new btVector3(0, 0, 0));
+	this->addBoundaryPlane(new btVector3(0, 1, 0), new btVector3(0, 0, 0));
+	this->addBoundaryPlane(new btVector3(-1, 0, 0), new btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
+	this->addBoundaryPlane(new btVector3(0, -1, 0), new btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
 	
 	collisionShapes = new btAlignedObjectArray<btCollisionShape*>();
 }

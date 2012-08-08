@@ -33,7 +33,7 @@ int main (int argc, char ** argv)
 	new ModManager(st);
 
 	
-	st->render->setScreenSize(900, 900, false, 0);
+	st->render->setScreenSize(1000, 700, false, 0);
 	
 	
 	if (FEAT_INTRO) {
