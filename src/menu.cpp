@@ -130,6 +130,7 @@ void Menu::doit()
 				switch (event.key.keysym.sym) {
 					case SDLK_p:
 						render->setScreenSize(render->desktop_width, render->desktop_height, true, 0);
+						render->initGuichan(gui, mod);
 						break;
 
 					case SDLK_ESCAPE:

@@ -133,7 +133,6 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen, int mul
 		exit(1);
 	}
 	
-	
 	// Freetype
 	int error;
 	error = FT_Init_FreeType(&this->ft);
@@ -141,23 +140,21 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen, int mul
 		fprintf(stderr, "Freetype: Unable to init library\n");
 		exit(1);
 	}
-
 	
-	// Loaded textures
+	// Re-load textures
 	if (loaded.size() > 0) {
 		for (unsigned int i = 0; i != loaded.size(); i++) {
 			this->surfaceToOpenGL(loaded.at(i));
 		}
 	}
 	
-	// Loaded FreeType character textures
+	// Re-load FreeType character textures
 	for (unsigned int i = 0; i < NUM_CHAR_TEX; i++) {
 		if (this->char_tex[i].tex) {
 			glDeleteTextures(1, &this->char_tex[i].tex);
 			this->char_tex[i].tex = 0;
 		}
 	}
-	
 	
 	// OpenGL env
 	glDepthFunc(GL_LEQUAL);
