@@ -151,6 +151,8 @@ Entity * Unit::infront(float range)
 	btVector3 begin = xform.getOrigin();
 	btVector3 end = begin + forwardDir * btScalar(0.0f - range);
 	
+	st->addDebugLine(&begin, &end);
+	
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
@@ -183,7 +185,7 @@ void Unit::meleeAttack()
 	DEBUG("weap", "Ray hit %p", e);
 	
 	if (e->klass() == UNIT) {
-		((Unit*)e)->takeDamage(10);		// TODO: settings (melee damage)
+		((Unit*)e)->takeDamage(100);		// TODO: settings (melee damage)
 	}
 }
 
