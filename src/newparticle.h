@@ -21,3 +21,4 @@ class NewParticle {
 
 
 void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end, float angle_range);
+void create_particles_blood_spray(GameState * st, btVector3 * location, float damage);

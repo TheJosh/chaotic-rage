@@ -431,6 +431,10 @@ int Unit::takeDamage(int damage)
 {
 	this->health -= damage;
 	
+	btTransform trans;
+	this->body->getMotionState()->getWorldTransform(trans);
+	create_particles_blood_spray(this->st, new btVector3(trans.getOrigin()), damage);
+	
 	this->st->increaseEntropy(1);
 	
 	if (this->health <= 0 && remove_at == 0) {

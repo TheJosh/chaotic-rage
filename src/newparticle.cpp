@@ -45,3 +45,25 @@ void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end,
 	st->addNewParticle(p);
 }
 
+
+
+/**
+* Spray blood in all directions
+**/
+void create_particles_blood_spray(GameState * st, btVector3 * location, float damage)
+{
+	NewParticle * p;
+	*location += btVector3(0.0f, 0.0f, getRandomf(0.3f, 2.0f));
+	btVector3 vel = btVector3(getRandomf(-0.022f, 0.022f), getRandomf(-0.022f, 0.022f), -0.01f);
+	
+	p = new NewParticle();
+	p->pos = *location;
+	p->vel = vel;
+	p->r = .8f;
+	p->g = p->b = .1f;
+	p->time_death = st->game_time + 375;
+	
+	st->addNewParticle(p);
+}
+
+
