@@ -226,6 +226,8 @@ bool Unit::pickupAmmo(WeaponType* wt)
 		if (this->avail_weapons[i]->wt == wt) {
 			this->avail_weapons[i]->belt += wt->belt_limit;
 			this->avail_weapons[i]->belt = min(this->avail_weapons[i]->belt, wt->belt_limit);
+			this->avail_weapons[i]->magazine += wt->magazine_limit;
+			this->avail_weapons[i]->magazine = min(this->avail_weapons[i]->magazine, wt->magazine_limit);
 			return true;
 		}
 	}
