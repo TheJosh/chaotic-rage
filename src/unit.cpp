@@ -151,6 +151,8 @@ Entity * Unit::infront(float range)
 	btVector3 begin = xform.getOrigin();
 	btVector3 end = begin + forwardDir * btScalar(0.0f - range);
 	
+	st->addDebugLine(&begin, &end);
+	
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
@@ -183,7 +185,7 @@ void Unit::meleeAttack()
 	DEBUG("weap", "Ray hit %p", e);
 	
 	if (e->klass() == UNIT) {
-		((Unit*)e)->takeDamage(10);		// TODO: settings (melee damage)
+		((Unit*)e)->takeDamage(100);		// TODO: settings (melee damage)
 	}
 }
 
@@ -224,6 +226,8 @@ bool Unit::pickupAmmo(WeaponType* wt)
 		if (this->avail_weapons[i]->wt == wt) {
 			this->avail_weapons[i]->belt += wt->belt_limit;
 			this->avail_weapons[i]->belt = min(this->avail_weapons[i]->belt, wt->belt_limit);
+			this->avail_weapons[i]->magazine += wt->magazine_limit;
+			this->avail_weapons[i]->magazine = min(this->avail_weapons[i]->magazine, wt->magazine_limit);
 			return true;
 		}
 	}
@@ -427,11 +431,16 @@ int Unit::takeDamage(int damage)
 {
 	this->health -= damage;
 	
+	btTransform trans;
+	this->body->getMotionState()->getWorldTransform(trans);
+	create_particles_blood_spray(this->st, new btVector3(trans.getOrigin()), damage);
+	
 	this->st->increaseEntropy(1);
 	
 	if (this->health <= 0 && remove_at == 0) {
 		this->setState(UNIT_STATE_DIE);
 		this->endFiring();
+		this->st->physics->markDead(this->body);
 		
 		remove_at = st->game_time + (10 * 60 * 1000);	// 10 mins
 		
