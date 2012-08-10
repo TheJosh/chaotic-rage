@@ -434,6 +434,7 @@ int Unit::takeDamage(int damage)
 	if (this->health <= 0 && remove_at == 0) {
 		this->setState(UNIT_STATE_DIE);
 		this->endFiring();
+		this->st->physics->markDead(this->body);
 		
 		remove_at = st->game_time + (10 * 60 * 1000);	// 10 mins
 		

@@ -11,6 +11,16 @@
 using namespace std;
 
 
+
+#define BIT(x) (1<<(x))
+enum ColissionTypes {
+	COL_NOTHING = 0,		// Nothing!
+	COL_GROUND = BIT(0),	// The ground
+	COL_ALIVE = BIT(1),		// Alive objects
+	COL_DEAD = BIT(2)		// Dead objects
+};
+
+
 /**
 * Thin wrapper around the "Bullet" physics library
 **/
@@ -38,7 +48,8 @@ class PhysicsBullet
 	public:
 		btRigidBody* addRigidBody(btCollisionShape* colShape, float mass, float x, float y, float z);
 		btRigidBody* addRigidBody(btCollisionShape* colShape, float m, btDefaultMotionState* motionState);
-
+		
+		void markDead(btRigidBody* body);
 		void delRigidBody(btRigidBody* body);
 		
 		void stepTime(int ms);
