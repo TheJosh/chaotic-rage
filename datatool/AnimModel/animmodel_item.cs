@@ -10,10 +10,11 @@ namespace datatool
         private string name;
         private string mesh;
         private string texture;
-
+        private List<meshframe_item> meshframes;
 
         public animmodel_item()
         {
+            meshframes = new List<meshframe_item>();
         }
 
         override public string getName()
@@ -28,6 +29,38 @@ namespace datatool
         {
             get { return this.name; }
             set { this.name = value; }
+        }
+
+        [Category("Data")]
+        public List<meshframe_item> Meshframes
+        {
+            get { return this.meshframes; }
+        }
+    }
+
+
+    public class meshframe_item : base_item
+    {
+        private int frame;
+        private string mesh;
+        private string texture;
+
+
+        public meshframe_item()
+        {
+        }
+
+        override public string getName()
+        {
+            return this.mesh;
+        }
+
+        [Category("Data")]
+        [ConfuseString("frame")]
+        public int Frame
+        {
+            get { return this.frame; }
+            set { this.frame = value; }
         }
 
         [Category("Data")]

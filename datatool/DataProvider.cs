@@ -263,6 +263,22 @@ namespace datatool
                 if (!s.values.ContainsKey("name")) throw new Exception("Anim model defined without a name");
 
                 i.fillData(s);
+
+                if (s.get_string("mesh", "") != "") {
+                    meshframe_item subitem = new meshframe_item();
+                    subitem.Mesh = s.get_string("mesh", "");
+                    subitem.Texture = s.get_string("texture", "");
+                    i.Meshframes.Add(subitem);
+
+                } else {
+                    foreach (ConfuseSection ss in s.subsections) {
+                        if (ss.name == "meshframe") {
+                            meshframe_item subitem = new meshframe_item();
+                            subitem.fillData(ss);
+                            i.Meshframes.Add(subitem);
+                        }
+                    }
+                }
             }
         }
 

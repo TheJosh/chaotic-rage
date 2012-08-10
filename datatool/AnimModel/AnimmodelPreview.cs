@@ -22,14 +22,14 @@ namespace datatool
         {
             if (!(item is animmodel_item)) return;
             animmodel_item ii = (animmodel_item)item;
-
-            if (ii.Mesh == null || ii.Mesh == "") {
+            
+            if (ii.Meshframes.Count == 0 || ii.Meshframes[0].Mesh == null || ii.Meshframes[0].Mesh == "") {
                 s = null;
                 return;
             }
 
             string tmp = System.IO.Path.GetTempFileName();
-            System.IO.File.WriteAllText(tmp, Program.dp.readFile("animmodels\\" + ii.Mesh + ".obj"));
+            System.IO.File.WriteAllText(tmp, Program.dp.readFile("animmodels\\" + ii.Meshframes[0].Mesh + ".obj"));
 
             ObjFileFormat fmt = new ObjFileFormat();
             s = fmt.LoadData(tmp);
@@ -37,9 +37,9 @@ namespace datatool
             
             System.IO.File.Delete(tmp);
 
-            if (ii.Texture != null) {
+            if (ii.Meshframes[0].Texture != null) {
                 tmp = System.IO.Path.GetTempFileName();
-                System.IO.File.WriteAllBytes(tmp, Program.dp.readBinaryFile("animmodels\\" + ii.Texture + ".png"));
+                System.IO.File.WriteAllBytes(tmp, Program.dp.readBinaryFile("animmodels\\" + ii.Meshframes[0].Texture + ".png"));
 
                 tx = new SharpGL.SceneGraph.Assets.Texture();
                 tx.Create(gl, tmp);
