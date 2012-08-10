@@ -1015,6 +1015,8 @@ void RenderOpenGL::entities()
 
 void RenderOpenGL::particles()
 {
+	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_LIGHTING);
 	glPointSize(10.f);
 	for (list<NewParticle*>::iterator it = this->st->particles.begin(); it != this->st->particles.end(); it++) {
 		glBegin(GL_POINTS);
@@ -1022,6 +1024,8 @@ void RenderOpenGL::particles()
 		glVertex3f((*it)->pos.x(), (*it)->pos.y(), (*it)->pos.z());
 		glEnd();
 	}
+	glEnable(GL_LIGHTING);
+	glEnable(GL_TEXTURE_2D);
 }
 
 
