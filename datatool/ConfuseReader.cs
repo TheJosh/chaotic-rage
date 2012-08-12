@@ -60,7 +60,7 @@ namespace datatool
         /**
          * Get a float value. If not available, returns the default
          **/
-        public float get_float(string name, int def)
+        public float get_float(string name, float def)
         {
             if (!(this.values.ContainsKey(name))) return def;
             if (!(this.values[name] is float)) return def;
@@ -99,6 +99,14 @@ namespace datatool
     class ConfuseReader
     {
         private List<ConfuseToken> tokens;
+
+        public string file;
+
+
+        public ConfuseReader()
+        {
+            file = "unknown";
+        }
 
 
         /**
@@ -204,7 +212,7 @@ namespace datatool
 
                 // Not sure
                 } else {
-                    throw new Exception("Unexpected token " + t.type.ToString() + " while parsing config file. ident = " + ident + " eq=" + eq + " list=" + list);
+                    throw new Exception("Unexpected token " + t.type.ToString() + " while parsing " + file + ".\n\nident=" + ident + "\neq=" + eq + "\nlist=" + list);
                 }
             }
 
@@ -224,13 +232,13 @@ namespace datatool
 
             Dictionary<string,ConfuseTokenType> regexes = new Dictionary<string,ConfuseTokenType>();
 
-            regexes.Add("^[a-z_]+", ConfuseTokenType.IDENTIFIER);
+            regexes.Add("^[a-z]+[-_a-z]*[a-z]*", ConfuseTokenType.IDENTIFIER);
             regexes.Add("^=", ConfuseTokenType.EQUALS);
             regexes.Add("^{", ConfuseTokenType.SECTSTART);
             regexes.Add("^}", ConfuseTokenType.SECTEND);
             regexes.Add("^,", ConfuseTokenType.COMMA);
             regexes.Add("^\"([^\"]+)\"", ConfuseTokenType.STRING);
-            regexes.Add("^[-0-9.]+", ConfuseTokenType.NUMBER);
+            regexes.Add("^-?[0-9.]+", ConfuseTokenType.NUMBER);
             regexes.Add("^\\s+", ConfuseTokenType.NOTHING);
             regexes.Add("^//.*?\\n", ConfuseTokenType.NOTHING);
             regexes.Add("^/\\*.*\\*/", ConfuseTokenType.NOTHING);

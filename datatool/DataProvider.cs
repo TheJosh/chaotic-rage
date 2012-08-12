@@ -13,18 +13,18 @@ namespace datatool
         private string datapath;
         private ZipFile zf;
 
-        private List<base_item> areatypes;
         private List<base_item> modifiers;
         private List<base_item> unitclasses;
         private List<base_item> weapontypes;
+        private List<base_item> animmodels;
 
 
         public DataProvider()
         {
-            this.areatypes = new List<base_item>();
             this.modifiers = new List<base_item>();
             this.unitclasses = new List<base_item>();
             this.weapontypes = new List<base_item>();
+            this.animmodels = new List<base_item>();
         }
 
 
@@ -36,10 +36,10 @@ namespace datatool
             this.datapath = filename;
             this.read = new ConfuseReader();
 
-            this.areatypes.Clear();
             this.modifiers.Clear();
             this.unitclasses.Clear();
             this.weapontypes.Clear();
+            this.animmodels.Clear();
 
             if (isZip) {
                 this.zf = new ZipFile(filename);
@@ -49,6 +49,7 @@ namespace datatool
 
             load_weapontypes();
             load_unittypes();
+            load_animmodels();
 
             return true;
         }
@@ -93,7 +94,7 @@ namespace datatool
         /**
          * Read a file from the disk or zip
          **/
-        private string readFile(string filename)
+        public string readFile(string filename)
         {
             if (this.zf != null) {
                 MemoryStream ms = new MemoryStream();
@@ -106,6 +107,18 @@ namespace datatool
                 return File.ReadAllText(this.datapath + "\\" + filename);
             }
         }
+
+
+        public byte[] readBinaryFile(string filename)
+        {
+            if (this.zf != null) {
+                throw new NotImplementedException();
+
+            } else {
+                return File.ReadAllBytes(this.datapath + "\\" + filename);
+            }
+        }
+
 
         /**
          * Write a file to the disk or zip
@@ -206,25 +219,64 @@ namespace datatool
 
             // Load
             foreach (ConfuseSection s in sect.subsections) {
-                unitclass_item i = new unitclass_item("");
+                unitclass_item i = new unitclass_item();
                 unitclasses.Add(i);
 
                 if (!s.values.ContainsKey("name")) throw new Exception("Unit type defined without a name");
 
-                i.Name = s.get_string("name", "");
-                i.Playable = s.get_bool("playable", true);
-                i.BeginHealth = s.get_int("begin_health", 10000);
-                i.MeleeDamage = s.get_int("melee_damage", 1000);
-                i.MeleeDelay = s.get_int("melee_delay", 500);
-                i.MeleeCooldown = s.get_int("melee_cooldown", 500);
+                i.fillData(s);
 
-                i.Sounds.Clear();
                 foreach (ConfuseSection ss in s.subsections) {
                     if (ss.name == "sound") {
-                        unitclass_sound  sss = new unitclass_sound();
-                        sss.Sound = ss.get_string("sound", "");
-                        sss.Type = ss.get_int("type", 0);
-                        i.Sounds.Add(sss);
+                        unitclass_sound subitem = new unitclass_sound();
+                        subitem.fillData(ss);
+                        i.Sounds.Add(subitem);
+
+                    } else if (ss.name == "settings") {
+
+                    } else if (ss.name == "state") {
+                        unitclass_state subitem = new unitclass_state();
+                        subitem.fillData(ss);
+                        i.Models.Add(subitem);
+
+                    }
+                }
+            }
+        }
+
+
+        /**
+        * Loads the particletypes
+        **/
+        private void load_animmodels()
+        {
+            ConfuseSection sect = null;
+            string file = this.readFile("animmodels.conf");
+            read.file = "animmodels.conf";
+            sect = read.Parse(file);
+
+            // Load
+            foreach (ConfuseSection s in sect.subsections) {
+                animmodel_item i = new animmodel_item();
+                animmodels.Add(i);
+
+                if (!s.values.ContainsKey("name")) throw new Exception("Anim model defined without a name");
+
+                i.fillData(s);
+
+                if (s.get_string("mesh", "") != "") {
+                    meshframe_item subitem = new meshframe_item();
+                    subitem.Mesh = s.get_string("mesh", "");
+                    subitem.Texture = s.get_string("texture", "");
+                    i.Meshframes.Add(subitem);
+
+                } else {
+                    foreach (ConfuseSection ss in s.subsections) {
+                        if (ss.name == "meshframe") {
+                            meshframe_item subitem = new meshframe_item();
+                            subitem.fillData(ss);
+                            i.Meshframes.Add(subitem);
+                        }
                     }
                 }
             }
@@ -232,9 +284,9 @@ namespace datatool
 
 
 
-        public List<base_item> AreaTypes
+        public List<base_item> AnimModels
         {
-            get { return areatypes; }
+            get { return animmodels; }
         }
 
         public List<base_item> Modifiers

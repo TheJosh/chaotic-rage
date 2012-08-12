@@ -21,7 +21,7 @@ namespace datatool
         {
             UnitclassEdit form;
 
-            unitclass_item item = new unitclass_item("No name");
+            unitclass_item item = new unitclass_item();
 
             form = new UnitclassEdit(item);
             if (form.ShowDialog() == DialogResult.Cancel) return null;

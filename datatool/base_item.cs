@@ -43,13 +43,13 @@ namespace datatool
                 foreach (object att in attrs) {
 
                     if (att is ConfuseInt) {
-                        p.SetValue(this, sect.get_int(((ConfuseInt) att).Name, 0), null);
+                        p.SetValue(this, sect.get_int(((ConfuseInt)att).Name, ((ConfuseInt)att).Default), null);
                     } else if (att is ConfuseFloat) {
-                        p.SetValue(this, sect.get_float(((ConfuseFloat) att).Name, 0), null);
+                        p.SetValue(this, sect.get_float(((ConfuseFloat)att).Name, ((ConfuseFloat)att).Default), null);
                     } else if (att is ConfuseString) {
-                        p.SetValue(this, sect.get_string(((ConfuseString)att).Name, ""), null);
+                        p.SetValue(this, sect.get_string(((ConfuseString)att).Name, ((ConfuseString)att).Default), null);
                     } else if (att is ConfuseBoolean) {
-                        p.SetValue(this, sect.get_bool(((ConfuseBoolean)att).Name, false), null);
+                        p.SetValue(this, sect.get_bool(((ConfuseBoolean)att).Name, ((ConfuseBoolean)att).Default), null);
                     }
 
                 }
@@ -69,6 +69,13 @@ namespace datatool
         {
             this.ImageIndex = -1;
         }
+
+        public ExtraListItem(base_item item)
+        {
+            this.ImageIndex = -1;
+            this.Extra = item;
+        }
+
 
         public base_item Extra
         {
@@ -101,19 +108,27 @@ namespace datatool
     }
 
     public class ConfuseInt : ConfuseBinding {
-        public ConfuseInt(string name) : base(name) { }
+        private int def;
+        public ConfuseInt(string name, int def = 0) : base(name) { this.def = def; }
+        public int Default { get { return def; } }
     }
 
     public class ConfuseFloat : ConfuseBinding {
-        public ConfuseFloat(string name) : base(name) { }
+        private float def;
+        public ConfuseFloat(string name, float def = 0) : base(name) { }
+        public float Default { get { return def; } }
     }
 
     public class ConfuseString : ConfuseBinding {
-        public ConfuseString(string name) : base(name) { }
+        private string def;
+        public ConfuseString(string name, string def = "") : base(name) { }
+        public string Default { get { return def; } }
     }
 
     public class ConfuseBoolean : ConfuseBinding {
-        public ConfuseBoolean(string name) : base(name) { }
+        private bool def;
+        public ConfuseBoolean(string name, bool def = false) : base(name) { }
+        public bool Default { get { return def; } }
     }
 
 }
