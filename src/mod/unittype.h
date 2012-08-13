@@ -40,8 +40,8 @@ class UnitType;
 class UnitTypeSettings
 {
 	public:
-		int max_speed;        // meters/second
-		int accel;            // meters/second/second
+		float max_speed;      // meters/second
+		float accel;          // meters/second/second
 		int turn;             // degrees/second
 		int melee_damage;     // hit points
 		int melee_delay;      // milliseconds

@@ -121,10 +121,6 @@ void Player::hasBeenHit(Entity * that)
 **/
 void Player::update(int delta)
 {
-	UnitTypeSettings *ucs = this->uc->getSettings(0);
-	
-	
-	
 	btTransform xform, xform2;
 	body->getMotionState()->getWorldTransform (xform);
 	xform2 = xform;
@@ -140,16 +136,16 @@ void Player::update(int delta)
 	
 	
 	if (!this->key[KEY_UP] && !this->key[KEY_DOWN] && !this->key[KEY_LEFT] && !this->key[KEY_RIGHT]) {
-		linearVelocity *= btScalar(0.2);
+		linearVelocity *= btScalar(0.2);		// TODO: unit-type-settings?
 		body->setLinearVelocity (linearVelocity);
 		
-	} else if (speed < 5.0) {				// TODO: Managed in the unit settings	(max speed)
+	} else if (speed < uts->max_speed) {
 		body->activate(true);
 		
 		xform2.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle)));
 		btVector3 forwardDir = xform2.getBasis()[1];
 		forwardDir.normalize();
-		forwardDir *= btScalar(2.5);		// TODO: Managed in the unit settings	(fwd accel)
+		forwardDir *= btScalar(uts->accel);
 		
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		
@@ -180,8 +176,6 @@ void Player::update(int delta)
 	
 	
 	Unit::update(delta);
-	
-	delete ucs;
 }
 
 

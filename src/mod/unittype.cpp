@@ -18,8 +18,8 @@ using namespace std;
 // Settings section
 static cfg_opt_t unitsettings_opts[] =
 {
-	CFG_INT((char*) "max_speed", 0, CFGF_NONE),
-	CFG_INT((char*) "accel", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "max_speed", 0.0f, CFGF_NONE),
+	CFG_FLOAT((char*) "accel", 0.0f, CFGF_NONE),
 	CFG_INT((char*) "turn", 0, CFGF_NONE),
 	CFG_INT((char*) "melee_damage", 1000, CFGF_NONE),
 	CFG_INT((char*) "melee_delay", 100, CFGF_NONE),
@@ -83,8 +83,8 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	
 	// Load initial config
 	cfg_settings = cfg_getnsec(cfg_item, "settings", 0);
-	uc->initial.max_speed = cfg_getint(cfg_settings, "max_speed");
-	uc->initial.accel = cfg_getint(cfg_settings, "accel");
+	uc->initial.max_speed = cfg_getfloat(cfg_settings, "max_speed");
+	uc->initial.accel = cfg_getfloat(cfg_settings, "accel");
 	uc->initial.turn = cfg_getint(cfg_settings, "turn");
 	uc->initial.melee_damage = cfg_getint(cfg_settings, "melee_damage");
 	uc->initial.melee_delay = cfg_getint(cfg_settings, "melee_delay");
@@ -98,8 +98,8 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	for (j = 1; j < num_settings; j++) {
 		cfg_settings = cfg_getnsec(cfg_item, "settings", j);
 		
-		uc->modifiers[j - 1].max_speed = cfg_getint(cfg_settings, "max_speed");
-		uc->modifiers[j - 1].accel = cfg_getint(cfg_settings, "accel");
+		uc->modifiers[j - 1].max_speed = cfg_getfloat(cfg_settings, "max_speed");
+		uc->modifiers[j - 1].accel = cfg_getfloat(cfg_settings, "accel");
 		uc->modifiers[j - 1].turn = cfg_getint(cfg_settings, "turn");
 		uc->modifiers[j - 1].melee_damage = cfg_getint(cfg_settings, "melee_damage");
 		uc->modifiers[j - 1].melee_delay = cfg_getint(cfg_settings, "melee_delay");

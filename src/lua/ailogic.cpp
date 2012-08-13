@@ -123,7 +123,7 @@ void AILogic::update(int delta)
 	
 	if (currspeed < this->speed) {
 		this->dir.setZ(0);
-		btVector3 move = this->dir * (currspeed + btScalar(2.5));		// TODO: Managed in the unit settings
+		btVector3 move = this->dir * (currspeed + btScalar(this->u->getSettings()->accel));
 		
 		this->u->body->activate(true);
 		this->u->body->setLinearVelocity(move);
@@ -327,9 +327,9 @@ LUA_FUNC(move)
 	
 	float speed = lua_tonumber(L, 2);
 	if (speed != 0.0f) {
-		gl->speed = MAX(speed, 5.f);			// TODO: Max speed - managed in the unit settings
+		gl->speed = MAX(speed, gl->u->getSettings()->max_speed);
 	} else {
-		gl->speed = 5.f;						// TODO: Max speed - managed in the unit settings
+		gl->speed = gl->u->getSettings()->max_speed;
 	}
 	
 	return 0;

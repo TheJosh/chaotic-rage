@@ -43,14 +43,9 @@ void NPC::update(int delta)
 		if (remove_at <= st->game_time) this->del = 1;
 		return;
 	}
-	
-	UnitTypeSettings *ucs = this->uc->getSettings(0);
-	
+
 	logic->update(delta);
-	
 	Unit::update(delta);
-	
-	delete ucs;
 }
 
 int NPC::takeDamage(int damage)
