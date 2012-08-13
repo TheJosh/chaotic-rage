@@ -48,7 +48,7 @@ void NPC::update(int delta)
 	
 	logic->update(delta);
 	
-	Unit::update(delta, ucs);
+	Unit::update(delta);
 	
 	delete ucs;
 }

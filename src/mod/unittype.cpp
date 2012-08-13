@@ -20,8 +20,10 @@ static cfg_opt_t unitsettings_opts[] =
 {
 	CFG_INT((char*) "max_speed", 0, CFGF_NONE),
 	CFG_INT((char*) "accel", 0, CFGF_NONE),
-	CFG_INT((char*) "turn_move", 0, CFGF_NONE),
-	CFG_INT((char*) "turn_aim", 0, CFGF_NONE),
+	CFG_INT((char*) "turn", 0, CFGF_NONE),
+	CFG_INT((char*) "melee_damage", 1000, CFGF_NONE),
+	CFG_INT((char*) "melee_delay", 100, CFGF_NONE),
+	CFG_INT((char*) "melee_cooldown", 100, CFGF_NONE),
 	CFG_END()
 };
 
@@ -53,9 +55,6 @@ cfg_opt_t unittype_opts[] =
 
 	CFG_INT((char*) "playable", 1, CFGF_NONE),
 	CFG_INT((char*) "begin_health", 0, CFGF_NONE),
-	CFG_INT((char*) "melee_damage", 100, CFGF_NONE),
-	CFG_INT((char*) "melee_delay", 100, CFGF_NONE),
-	CFG_INT((char*) "melee_cooldown", 100, CFGF_NONE),
 
 	CFG_END()
 };
@@ -76,10 +75,6 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	uc->name = cfg_getstr(cfg_item, "name");
 	uc->begin_health = cfg_getint(cfg_item, "begin_health");
 	uc->playable = cfg_getint(cfg_item, "playable");
-	
-	uc->melee_damage = cfg_getint(cfg_item, "melee_damage");
-	uc->melee_delay = cfg_getint(cfg_item, "melee_delay");
-	uc->melee_cooldown = cfg_getint(cfg_item, "melee_cooldown");
 
 
 	/// Settings ///
@@ -90,13 +85,14 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	cfg_settings = cfg_getnsec(cfg_item, "settings", 0);
 	uc->initial.max_speed = cfg_getint(cfg_settings, "max_speed");
 	uc->initial.accel = cfg_getint(cfg_settings, "accel");
-	uc->initial.turn_move = cfg_getint(cfg_settings, "turn_move");
-	uc->initial.turn_aim = cfg_getint(cfg_settings, "turn_aim");
-	
+	uc->initial.turn = cfg_getint(cfg_settings, "turn");
+	uc->initial.melee_damage = cfg_getint(cfg_settings, "melee_damage");
+	uc->initial.melee_delay = cfg_getint(cfg_settings, "melee_delay");
+	uc->initial.melee_cooldown = cfg_getint(cfg_settings, "melee_cooldown");
+
 	if (uc->initial.max_speed == 0) return NULL;
 	if (uc->initial.accel == 0) return NULL;
-	if (uc->initial.turn_move == 0) return NULL;
-	if (uc->initial.turn_aim == 0) return NULL;
+	if (uc->initial.turn == 0) return NULL;
 	
 	// load modifiers
 	for (j = 1; j < num_settings; j++) {
@@ -104,8 +100,10 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 		
 		uc->modifiers[j - 1].max_speed = cfg_getint(cfg_settings, "max_speed");
 		uc->modifiers[j - 1].accel = cfg_getint(cfg_settings, "accel");
-		uc->modifiers[j - 1].turn_move = cfg_getint(cfg_settings, "turn_move");
-		uc->modifiers[j - 1].turn_aim = cfg_getint(cfg_settings, "turn_aim");
+		uc->modifiers[j - 1].turn = cfg_getint(cfg_settings, "turn");
+		uc->modifiers[j - 1].melee_damage = cfg_getint(cfg_settings, "melee_damage");
+		uc->modifiers[j - 1].melee_delay = cfg_getint(cfg_settings, "melee_delay");
+		uc->modifiers[j - 1].melee_cooldown = cfg_getint(cfg_settings, "melee_cooldown");
 	}
 	
 	
@@ -179,15 +177,19 @@ UnitTypeSettings* UnitType::getSettings(Uint8 modifier_flags)
 	
 	ret->max_speed = this->initial.max_speed;
 	ret->accel = this->initial.accel;
-	ret->turn_move = this->initial.turn_move;
-	ret->turn_aim = this->initial.turn_aim;
-	
+	ret->turn = this->initial.turn;
+	ret->melee_cooldown = this->initial.melee_cooldown;
+	ret->melee_damage = this->initial.melee_damage;
+	ret->melee_delay = this->initial.melee_delay;
+
 	for (int i = 0; i < UNIT_NUM_MODIFIERS; i++) {
 		if ((modifier_flags & (1 << i)) != 0) {
 			ret->max_speed += this->modifiers[i - 1].max_speed;
 			ret->accel += this->modifiers[i - 1].accel;
-			ret->turn_move += this->modifiers[i - 1].turn_move;
-			ret->turn_aim += this->modifiers[i - 1].turn_aim;
+			ret->turn += this->modifiers[i - 1].turn;
+			ret->melee_cooldown += this->modifiers[i - 1].melee_cooldown;
+			ret->melee_damage += this->modifiers[i - 1].melee_damage;
+			ret->melee_delay += this->modifiers[i - 1].melee_delay;
 		}
 	}
 	

@@ -68,6 +68,9 @@ class Unit : public Entity
 		unsigned int melee_time;
 		unsigned int melee_cooldown;
 		
+		Uint8 modifiers;
+		UnitTypeSettings *uts;
+
 		int weapon_sound;
 		
 		
@@ -78,7 +81,7 @@ class Unit : public Entity
 	public:
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
-		virtual void update(int delta) = 0;
+		virtual void update(int delta);
 		virtual void hasBeenHit(Entity * that);
 		virtual void entityClose(Entity * e, float dist);
 
@@ -106,8 +109,13 @@ class Unit : public Entity
 		
 		virtual int takeDamage(int damage);
 		
+		UnitTypeSettings * getSettings();
+		Uint8 getModifiers();
+		void setModifiers(Uint8 modifiers);
+		void addModifier(int modifier);
+		void remModifier(int modifier);
+
 	protected:
-		void update(int delta, UnitTypeSettings *ucs);
 		void setState(int new_type);
 		void doUse();
 		void doLift();

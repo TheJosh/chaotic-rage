@@ -40,10 +40,12 @@ class UnitType;
 class UnitTypeSettings
 {
 	public:
-		int max_speed;		// max pps unit can move
-		int accel;		// pps/second
-		int turn_move;		// degrees/second
-		int turn_aim;		// degrees/second
+		int max_speed;        // meters/second
+		int accel;            // meters/second/second
+		int turn;             // degrees/second
+		int melee_damage;     // hit points
+		int melee_delay;      // milliseconds
+		int melee_cooldown;   // milliseconds
 };
 
 class UnitTypeState
@@ -73,10 +75,6 @@ class UnitType
 		int begin_health;
 		vector<WeaponType*> spawn_weapons;
 		int playable;
-		
-		int melee_damage;
-		int melee_delay;
-		int melee_cooldown;
 
 	private:
 		UnitTypeSettings initial;

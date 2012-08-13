@@ -40,7 +40,9 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	
 	this->weapon_sound = -1;
 	
-	
+	this->uts = NULL;
+	this->setModifiers(0);
+
 	// TODO: The colShape should be tied to the wall type.
 	btCollisionShape* colShape = new btBoxShape(btVector3(1.f, 1.f, 2.f));
 	
@@ -62,7 +64,8 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 
 Unit::~Unit()
 {
-	delete(this->anim);
+	delete this->anim;
+	delete this->uts;
 	st->physics->delRigidBody(this->body);
 }
 
@@ -174,8 +177,8 @@ void Unit::meleeAttack()
 	if (this->melee_time != 0) return;
 	if (this->melee_cooldown != 0) return;
 	
-	this->melee_time = st->game_time + this->uc->melee_delay;
-	this->melee_cooldown = this->melee_time + this->uc->melee_cooldown;
+	this->melee_time = st->game_time + this->uts->melee_delay;
+	this->melee_cooldown = this->melee_time + this->uts->melee_cooldown;
 	
 	this->setState(UNIT_STATE_MELEE);
 	
@@ -185,7 +188,7 @@ void Unit::meleeAttack()
 	DEBUG("weap", "Ray hit %p", e);
 	
 	if (e->klass() == UNIT) {
-		((Unit*)e)->takeDamage(100);		// TODO: settings (melee damage)
+		((Unit*)e)->takeDamage(this->uts->melee_damage);
 	}
 }
 
@@ -323,11 +326,63 @@ Sound* Unit::getSound()
 }
 
 
+/**
+* Get the current UnitTypeSettings object.
+* It's updated each time the modifiers are changed
+**/
+UnitTypeSettings * Unit::getSettings()
+{
+	return this->uts;
+}
+
+
+/**
+* Get the Uint8 bitfield of modifiers
+**/
+Uint8 Unit::getModifiers()
+{
+	return this->modifiers;
+}
+
+
+/**
+* Set all the modifiers
+**/
+void Unit::setModifiers(Uint8 modifiers)
+{
+	this->modifiers = modifiers;
+	delete this->uts;
+	this->uts = this->uc->getSettings(this->modifiers);
+}
+
+
+/**
+* Turn on a modifier
+**/
+void Unit::addModifier(int modifier)
+{
+	this->modifiers |= modifier;
+	delete this->uts;
+	this->uts = this->uc->getSettings(this->modifiers);
+}
+
+
+/**
+* Turn off a modifier
+**/
+void Unit::remModifier(int modifier)
+{
+	this->modifiers &= ~modifier;
+	delete this->uts;
+	this->uts = this->uc->getSettings(this->modifiers);
+}
+
+
 
 /**
 * Moves units around
 **/
-void Unit::update(int delta, UnitTypeSettings *ucs)
+void Unit::update(int delta)
 {
 	if (remove_at != 0) {
 		if (remove_at <= st->game_time) this->del = 1;
@@ -383,7 +438,7 @@ void Unit::update(int delta, UnitTypeSettings *ucs)
 	
 	// Melee
 	if (this->melee_time != 0 && this->melee_time < st->game_time) {
-		if (this->closest) this->closest->takeDamage(this->uc->melee_damage);
+		if (this->closest) this->closest->takeDamage(this->uts->melee_damage);
 		this->melee_time = 0;
 
 	} else if (this->melee_cooldown != 0 && this->melee_cooldown < st->game_time) {

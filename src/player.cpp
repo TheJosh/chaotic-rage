@@ -179,7 +179,7 @@ void Player::update(int delta)
 	body->setCenterOfMassTransform (xform);
 	
 	
-	Unit::update(delta, ucs);
+	Unit::update(delta);
 	
 	delete ucs;
 }

@@ -14,6 +14,7 @@ copy /-Y ..\..\*.bmp files
 copy /-Y ..\lib\*.dll files
 copy /-Y ..\redist-msvc\*.dll files
 copy /-Y ..\..\datatool\lib\*.dll files
+copy /-Y ..\..\datatool\lib\SharpGL\*.dll files
 copy /-Y ..\redist-msvc\*.manifest files
 
 copy /-Y blank.txt files\stdout.txt
