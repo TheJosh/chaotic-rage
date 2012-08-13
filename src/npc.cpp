@@ -21,6 +21,8 @@ NPC::NPC(UnitType *uc, GameState *st, float x, float y, float z, AIType *ai) : U
 	
 	logic = new AILogic(this);
 	logic->execScript(ai->script);
+	
+	this->idle_sound_time = st->game_time + 5000;
 }
 
 NPC::~NPC()
@@ -46,6 +48,22 @@ void NPC::update(int delta)
 
 	logic->update(delta);
 	Unit::update(delta);
+	
+	
+	if (this->idle_sound_time < st->game_time) {
+		int s = getRandom(1, 3);
+		char buf[10];
+		sprintf(buf, "%i", s);
+		this->st->hud->addAlertMessage("s = ", buf);
+		if (s == 1) {
+			this->st->audio->playSound(this->st->mm->getSound("zombie_2"), false, this);
+		} else if (s == 2) {
+			this->st->audio->playSound(this->st->mm->getSound("zombie_3"), false, this);
+		} else if (s == 3) {
+			this->st->audio->playSound(this->st->mm->getSound("zombie_4"), false, this);
+		}
+		this->idle_sound_time = st->game_time + 5000;
+	}
 }
 
 int NPC::takeDamage(int damage)

@@ -94,7 +94,7 @@ int AudioSDLMixer::playSound(Sound * snd, bool loop, Entity *e)
 	int y2 = trans.getOrigin().getY();
 	
 	float vol = ((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2));
-	if (vol > 250.0 * 250.0) return -1;
+	if (vol > 25.0 * 25.0) return -1;
 	
 	return Mix_PlayChannel(-1, snd->sound, loop ? -1 : 0);
 }
