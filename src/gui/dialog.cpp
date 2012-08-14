@@ -30,6 +30,7 @@ DialogNewGame::DialogNewGame(int num_local)
 gcn::Container * DialogNewGame::setup()
 {
 	gcn::Button* button;
+	gcn::Label* label;
 	
 	if (this->num_local == 1) {
 		c = new gcn::Window("Single Player");
@@ -40,20 +41,35 @@ gcn::Container * DialogNewGame::setup()
 	c->setDimension(gcn::Rectangle(0, 0, 200, 200));
 	
 	
-	this->map = new gcn::DropDown(new VectorListModel(&this->m->maps));
-	this->map->setPosition(10, 30);
-	c->add(this->map);
+	label = new gcn::Label("Game type");
+	c->add(label, 10, 10);
 	
 	this->gametype = new gcn::DropDown(new VectorListModel(&this->m->gametypes));
-	this->gametype->setPosition(10, 10);
+	this->gametype->setPosition(80, 10);
 	c->add(this->gametype);
 	
+	
+	label = new gcn::Label("Map");
+	c->add(label, 10, 30);
+	
+	this->map = new gcn::DropDown(new VectorListModel(&this->m->maps));
+	this->map->setPosition(80, 30);
+	c->add(this->map);
+	
+	
+	label = new gcn::Label("Unit type");
+	c->add(label, 10, 50);
+	
 	this->unittype = new gcn::DropDown(new VectorListModel(&this->m->unittypes));
-	this->unittype->setPosition(10, 50);
+	this->unittype->setPosition(80, 50);
 	c->add(this->unittype);
 	
+	
+	label = new gcn::Label("View mode");
+	c->add(label, 10, 70);
+	
 	this->viewmode = new gcn::DropDown(new VectorListModel(&this->m->viewmodes));
-	this->viewmode->setPosition(10, 70);
+	this->viewmode->setPosition(80, 70);
 	c->add(this->viewmode);
 	
 	
