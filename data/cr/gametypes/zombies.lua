@@ -67,6 +67,15 @@ end;
 
 
 --
+-- Some initial ammo to get them started
+--
+initial_ammo = function()
+	show_alert_message("Here is some ammo...use it wisely!");
+	ammo_drop();
+end;
+
+
+--
 -- Spawn a player
 --
 bind_playerjoin(function(slot)
@@ -78,7 +87,8 @@ end);
 -- Game start
 --
 bind_gamestart(function()
-	add_timer(5000, start_round);
+	add_timer(10000, start_round);
+	add_timer(5000, initial_ammo);
 	
 	score_table = add_data_table(800, 50, 2, 3);
 end);
