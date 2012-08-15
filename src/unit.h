@@ -120,4 +120,5 @@ class Unit : public Entity
 		void doUse();
 		void doLift();
 		void doDrop();
+		void emptySound();
 };

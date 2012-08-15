@@ -14,6 +14,7 @@ using namespace std;
 #define WEAPON_SOUND_REPEAT 2
 #define WEAPON_SOUND_END 3
 #define WEAPON_SOUND_RELOAD 4
+#define WEAPON_SOUND_EMPTY 5
 
 
 class WeaponTypeSound

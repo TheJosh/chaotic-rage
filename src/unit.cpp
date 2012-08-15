@@ -139,6 +139,17 @@ void Unit::endFiring()
 	this->st->audio->playSound(snd, false, this);
 }
 
+void Unit::emptySound()
+{
+	if (this->weapon == NULL) return;
+	
+	this->st->audio->stopSound(this->weapon_sound);
+
+	Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_EMPTY);
+	this->st->audio->playSound(snd, true, this);
+}
+
+
 
 /**
 * What is directly in front of a unit, upto range meters ahead
@@ -424,6 +435,7 @@ void Unit::update(int delta)
 				this->weapon->next_use += this->weapon->wt->reload_delay;
 				this->weapon->reloading = true;
 				this->endFiring();
+				this->emptySound();
 			}
 		}
 		
