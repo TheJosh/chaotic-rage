@@ -17,7 +17,7 @@ Object::Object(ObjectType *ot, GameState *st, float x, float y, float z, float a
 	this->health = ot->health;
 
 
-	// TODO: The colShape should be tied to the wall type.
+	// TODO: The colShape should be tied to the object type.
 	btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
 	
 	// TODO: Store the colshape and nuke at some point
