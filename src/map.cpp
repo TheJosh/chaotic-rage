@@ -376,3 +376,21 @@ Zone * Map::getNearbaseZone(Faction f)
 }
 
 
+/**
+* Return a random X co-ord
+**/
+float Map::getRandomX()
+{
+	return getRandomf(0, this->width);
+}
+
+
+/**
+* Return a random Y co-ord
+**/
+float Map::getRandomY()
+{
+	return getRandomf(0, this->height);
+}
+
+

@@ -77,4 +77,7 @@ class Map {
 		Zone * getCollectZone(Faction f);
 		Zone * getDestZone(Faction f);
 		Zone * getNearbaseZone(Faction f);
+		
+		float getRandomX();
+		float getRandomY();
 };

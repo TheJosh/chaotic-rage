@@ -449,7 +449,15 @@ LUA_FUNC(ammo_drop)
 {
 	Object *o;
 	
-	o = new Object(gl->st->mm->getObjectType("current_ammocrate"), gl->st, 100, 100, 15, 0);		// special ammocrate for current weapon
+	// special ammocrate for current weapon
+	o = new Object(
+		gl->st->mm->getObjectType("current_ammocrate"),
+		gl->st,
+		gl->st->curr_map->getRandomX(),
+		gl->st->curr_map->getRandomY(),
+		15,
+		0
+	);
 	gl->st->addObject(o);
 	
 	return 0;
