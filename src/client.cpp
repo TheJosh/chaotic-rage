@@ -25,7 +25,7 @@ int main (int argc, char ** argv)
 	#ifdef GETOPT
 	st->cmdline = new CommandLineArgs(argc, argv);
 	#endif
-	
+
 	new RenderOpenGL(st);
 	new AudioSDLMixer(st);
 	new HUD(st);

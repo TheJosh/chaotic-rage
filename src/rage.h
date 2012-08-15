@@ -13,9 +13,14 @@
 
 
 // Engine features to optionally compile into the game
-#define FEAT_INTRO false
-#define FEAT_MENU true
-#define DEBUG_OPTIONS
+#ifdef RELEASE
+	#define FEAT_INTRO true
+	#define FEAT_MENU true
+#else
+	#define FEAT_INTRO false
+	#define FEAT_MENU true
+	#define DEBUG_OPTIONS
+#endif
 
 
 // Frames-per-second to run all in-game animations at.
