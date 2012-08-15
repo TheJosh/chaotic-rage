@@ -441,6 +441,22 @@ LUA_FUNC(add_player)
 
 
 /**
+* Drop ammo onto the game level
+*
+* TODO: This function is a bit specialised - it might be better to just use add_object
+**/
+LUA_FUNC(ammo_drop)
+{
+	Object *o;
+	
+	o = new Object(gl->st->mm->getObjectType("current_ammocrate"), gl->st, 100, 100, 15, 0);		// special ammocrate for current weapon
+	gl->st->addObject(o);
+	
+	return 0;
+}
+
+
+/**
 * Display an alert message
 **/
 LUA_FUNC(show_alert_message)
@@ -553,6 +569,7 @@ void register_lua_functions()
 	LUA_REG(remove_timer);
 	LUA_REG(add_npc);
 	LUA_REG(add_player);
+	LUA_REG(ammo_drop);
 	LUA_REG(show_alert_message);
 	LUA_REG(get_selected_unittype);
 	LUA_REG(add_data_table);

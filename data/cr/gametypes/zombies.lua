@@ -51,6 +51,11 @@ start_round = function()
 	
 	show_alert_message("Starting Round " .. round);
 	
+	if round % 3 == 0 then
+		show_alert_message("Would you like some more ammo?");
+		ammo_drop()
+	end;
+	
 	timer = add_interval(500, spawn_func);
 	
 	set_data_value(score_table, 0, 0, "Round");
@@ -103,7 +108,7 @@ bind_npcdied(function()
 	
 	-- Is the round over?
 	if num_dead == num_wanted then
-		show_alert_message("I guess you got them this time...");
+		show_alert_message("I guess you got them...this time");
 		add_timer(2500, start_round);
 	end;
 end);

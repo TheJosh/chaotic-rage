@@ -537,10 +537,18 @@ void Unit::doUse()
 	}
 	
 	if (ot->ammo_crate.length() != 0) {
-		WeaponType *wt = this->st->mm->getWeaponType(ot->ammo_crate);
-		if (wt && this->pickupAmmo(wt)) {
-			this->st->hud->addAlertMessage("Picked up some ammo");
-			this->curr_obj->del = 1;
+		if (ot->ammo_crate.compare("current") == 0) {
+			if (this->pickupAmmo(weapon->wt)) {
+				this->st->hud->addAlertMessage("Picked up some ammo");
+				this->curr_obj->del = 1;
+			}
+			
+		} else {
+			WeaponType *wt = this->st->mm->getWeaponType(ot->ammo_crate);
+			if (wt && this->pickupAmmo(wt)) {
+				this->st->hud->addAlertMessage("Picked up some ammo");
+				this->curr_obj->del = 1;
+			}
 		}
 	}
 	
