@@ -58,8 +58,8 @@ void Menu::doit()
 	}
 	
 	// Viewmodes
-	viewmodes.push_back("Above player");
 	viewmodes.push_back("Behind player");
+	viewmodes.push_back("Above player");
 	
 	// Unittypes
 	{

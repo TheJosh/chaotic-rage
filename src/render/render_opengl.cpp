@@ -861,13 +861,13 @@ void RenderOpenGL::mainRot()
 		glTranslatef(0.f - st->curr_map->width / 2.f, 0.f - st->curr_map->height / 2.f, 0.f);
 		
 	} else {
-		if (this->viewmode == 0) {				// Top
+		if (this->viewmode == 1) {				// Top
 			glRotatef(180, 0, 0, 1);
 			glTranslatef(0,87,731);
 			glRotatef(10, 1, 0, 0);
 			glTranslatef(0,0,-10);
 			
-		} else if (this->viewmode == 1) {		// Behind (3rd person)
+		} else if (this->viewmode == 0) {		// Behind (3rd person)
 			glRotatef(180, 0, 0, 1);
 			glTranslatef(0,483,1095);
 			glRotatef(74, 1, 0, 0);
