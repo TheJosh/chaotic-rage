@@ -44,6 +44,11 @@ void Intro::doit()
 	glDisable(GL_DEPTH_TEST);
 	
 	
+	// Ortho mode for the logos
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0.0f, render->real_width, render->real_height, 0.0f, 0.0f, 10.0f);
+	
 	
 	int start = SDL_GetTicks();
 	int time = 0;
@@ -75,8 +80,8 @@ void Intro::doit()
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		
-		int x = (render->virt_width - img->w) / 2;
-		int y = (render->virt_height - img->h) / 2;
+		int x = (render->real_width - img->w) / 2;
+		int y = (render->real_height - img->h) / 2;
 		render->renderSprite(img, x, y);
 		
 		SDL_GL_SwapBuffers();
