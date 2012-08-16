@@ -83,8 +83,6 @@ WavefrontObj * cachedLoadMesh(string name, Mod * mod)
 		
 		ret->calcBoundingSize();
 		
-		cout << "Mesh box: " << name << " = " << ret->size.x << ", " << ret->size.y << ", " << ret->size.z << "\n";
-		
 		loaded_meshes[name] = ret;
 		
 	} else {
