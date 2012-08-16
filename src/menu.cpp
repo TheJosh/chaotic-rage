@@ -198,7 +198,7 @@ void Menu::doit()
 		
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		glTranslatef(500, 500, 0);
+		glTranslatef((render->virt_width / 2), (render->virt_height / 2), 0);
 		glRotatef(90, 1, 0, 0);
 		glRotatef(bg_rot1_pos, 0, 0, 1);
 		glRotatef(bg_rot2_pos, 1, 0, 0);

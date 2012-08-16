@@ -837,6 +837,30 @@ void RenderOpenGL::background()
 
 
 /**
+* Camera spin when player is dead
+**/
+void RenderOpenGL::deadRot()
+{
+	static float angle = 22.0f;
+	
+	float hw = st->curr_map->width / 2.f;
+	float hh = st->curr_map->width / 2.f;
+	
+	// Proper angle
+	glRotatef(90.0f, 0, 0, 1);
+	glTranslatef(0.f - hw, 0.f - hh, 1000.f);
+	glRotatef(50.0f, 0, 1, 0);
+	
+	// Map spin
+	glTranslatef(hw, hh, 0.f);
+	glRotatef(angle, 0, 0, 1);
+	glTranslatef(0.f - hw, 0.f - hh, 0.f);
+	
+	angle += 0.05f;
+}
+
+
+/**
 * Main rotation for camera
 **/
 void RenderOpenGL::mainRot()
@@ -855,48 +879,41 @@ void RenderOpenGL::mainRot()
 	
 	
 	if (this->render_player == NULL) {
-		glDisable(GL_LIGHTING);
-		glRotatef(22, 0, 0, 1);
-		glRotatef(12, 1, 0, 0);
-		glTranslatef(0.f - st->curr_map->width / 2.f, 0.f - st->curr_map->height / 2.f, 0.f);
-		
-	} else {
-		if (this->viewmode == 1) {				// Top
-			glRotatef(180, 0, 0, 1);
-			glTranslatef(0,87,731);
-			glRotatef(10, 1, 0, 0);
-			glTranslatef(0,0,-10);
-			
-		} else if (this->viewmode == 0) {		// Behind (3rd person)
-			glRotatef(180, 0, 0, 1);
-			glTranslatef(0,483,1095);
-			glRotatef(74, 1, 0, 0);
-			
-			
-		} else if (this->viewmode == 2) {		// First person
-			glTranslatef(0,1220,-380);
-			glRotatef(80, 1, 0, 0);
-			
-		}
-		
-		btTransform trans;
-		this->render_player->body->getMotionState()->getWorldTransform(trans);
-		btVector3 euler;
-		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-		glRotatef(RAD_TO_DEG(0.f - euler.z()), 0.f, 0.f, 1.f);
-		
-		glTranslatef(0.f - trans.getOrigin().getX(), 0.f - trans.getOrigin().getY(), 500.f - trans.getOrigin().getZ());
+		this->deadRot();
+		return;
 	}
 	
-	if (this->viewmode == 0) {
-		//glTranslatef(0, 0, getRandom(0, this->st->getEntropy(1)));
+	if (this->viewmode == 1) {				// Top
+		glRotatef(180, 0, 0, 1);
+		glTranslatef(0,87,731);
+		glRotatef(10, 1, 0, 0);
+		glTranslatef(0,0,-10);
 		
-	} else {
+	} else if (this->viewmode == 0) {		// Behind (3rd person)
+		glRotatef(180, 0, 0, 1);
+		glTranslatef(0,483,1095);
+		glRotatef(74, 1, 0, 0);
+		
+	} else if (this->viewmode == 2) {		// First person
+		glTranslatef(0,1220,-380);
+		glRotatef(80, 1, 0, 0);
+		
+	}
+	
+	btTransform trans;
+	this->render_player->body->getMotionState()->getWorldTransform(trans);
+	btVector3 euler;
+	PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
+	glRotatef(RAD_TO_DEG(0.f - euler.z()), 0.f, 0.f, 1.f);
+	
+	glTranslatef(0.f - trans.getOrigin().getX(), 0.f - trans.getOrigin().getY(), 500.f - trans.getOrigin().getZ());
+	
+	if (this->viewmode == 0) {
 		glEnable(GL_FOG);
-		glFogi (GL_FOG_MODE, GL_LINEAR);
-		glFogf (GL_FOG_START, 400);
-		glFogf (GL_FOG_END, 200);
-		glFogf (GL_FOG_DENSITY, 0.3f);
+		glFogi(GL_FOG_MODE, GL_LINEAR);
+		glFogf(GL_FOG_START, 400);
+		glFogf(GL_FOG_END, 200);
+		glFogf(GL_FOG_DENSITY, 0.3f);
 	}
 }
 

@@ -84,6 +84,8 @@ int AudioSDLMixer::playSound(Sound * snd, bool loop, Entity *e)
 {
 	if (snd == NULL) return -1;
 	
+	if (st->local_players[0] == NULL) return -1;
+	
 	btTransform trans;
 	e->getRigidBody()->getMotionState()->getWorldTransform(trans);
 	int x1 = trans.getOrigin().getX();
