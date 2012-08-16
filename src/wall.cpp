@@ -18,7 +18,7 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z, float angle) 
 	
 	
 	// TODO: The colShape should be tied to the wall type.
-	btCollisionShape* colShape = new btBoxShape(btVector3(1,2,1));
+	btCollisionShape* colShape = new btBoxShape(wt->model->getBoundingSizeHE());
 	
 	// TODO: Store the colshape and nuke at some point
 	// collisionShapes.push_back(colShape);

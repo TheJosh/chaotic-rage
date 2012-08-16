@@ -18,7 +18,7 @@ Object::Object(ObjectType *ot, GameState *st, float x, float y, float z, float a
 
 
 	// TODO: The colShape should be tied to the object type.
-	btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
+	btCollisionShape* colShape = new btBoxShape(ot->model->getBoundingSizeHE());
 	
 	// TODO: Store the colshape and nuke at some point
 	// collisionShapes.push_back(colShape);

@@ -20,17 +20,23 @@ typedef struct face {
 	int mat;
 } Face;
 
-typedef struct wavefrontobj {
-	vector<Vertex> vertexes;
-	vector<TexUV> texuvs;
-	vector<Vertex> normals;
-	vector<string> materials;
-	vector<Face> faces;
-	
-	unsigned int ibo_count;
-	unsigned int vbo;		// vertex, normal, textures
-	unsigned int ibo;		// vertex index
-} WavefrontObj;
+class WavefrontObj {
+	public:
+		vector<Vertex> vertexes;
+		vector<TexUV> texuvs;
+		vector<Vertex> normals;
+		vector<string> materials;
+		vector<Face> faces;
+		
+		unsigned int ibo_count;
+		unsigned int vbo;		// vertex, normal, textures
+		unsigned int ibo;		// vertex index
+		
+		Vertex size;
+		
+	public:
+		void calcBoundingSize();
+};
 
 
 WavefrontObj * loadObj(string filename);

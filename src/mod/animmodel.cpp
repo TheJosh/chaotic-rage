@@ -73,12 +73,20 @@ WavefrontObj * cachedLoadMesh(string name, Mod * mod)
 		filename.append("animmodels/");
 		filename.append(name);
 		filename.append(".obj");
-				
+		
 		ret = loadObj(filename);
-				
-		if (ret == NULL) { cerr << "Bad mesh: " << filename << "\n"; return NULL; }
-				
+		
+		if (ret == NULL) {
+			cerr << "Bad mesh: " << filename << "\n";
+			return NULL;
+		}
+		
+		ret->calcBoundingSize();
+		
+		cout << "Mesh box: " << name << " = " << ret->size.x << ", " << ret->size.y << ", " << ret->size.z << "\n";
+		
 		loaded_meshes[name] = ret;
+		
 	} else {
 		ret = it->second;
 	}
@@ -212,4 +220,32 @@ MeshFrame::MeshFrame()
 	texture = NULL;
 	emission[0] = emission[1] = emission[2] = emission[3] = 0;
 }
+
+
+/**
+* Returns the bounding size of the mesh of the first frame
+**/
+btVector3 AnimModel::getBoundingSize()
+{
+	btVector3 ret;
+	ret.setX(this->meshframes[0]->mesh->size.x);
+	ret.setY(this->meshframes[0]->mesh->size.y);
+	ret.setZ(this->meshframes[0]->mesh->size.z);
+	return ret;
+}
+
+
+/**
+* Returns the bounding size of the mesh of the first frame
+* HE = half extents
+**/
+btVector3 AnimModel::getBoundingSizeHE()
+{
+	btVector3 ret;
+	ret.setX(this->meshframes[0]->mesh->size.x / 2.0f);
+	ret.setY(this->meshframes[0]->mesh->size.y / 2.0f);
+	ret.setZ(this->meshframes[0]->mesh->size.z / 2.0f);
+	return ret;
+}
+
 

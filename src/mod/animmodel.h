@@ -47,6 +47,11 @@ class AnimModel
 		
 	public:
 		AnimModel();
+		
+	public:
+		btVector3 getBoundingSize();
+		btVector3 getBoundingSizeHE();
+		
 };
 
 
