@@ -1,0 +1,7 @@
+set origin
+origin to geometry
+in sidebar set "bounds center"
+
+location needs to be 0,0,0
+
+export
