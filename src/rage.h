@@ -88,9 +88,10 @@ class UnitType;
 class Wall;
 class WallType;
 class WeaponType;
+class WavefrontObj;
 class Zone;
 
-#include "util/objload.h"
+#include "util/obj.h"
 #include "util/sdl_util.h"
 #include "util/SDL_rwops_zzip.h"
 #include "util/util.h"

@@ -208,9 +208,6 @@
     <ClCompile Include="..\..\src\util\util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\flex\objload.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\mod\mod_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -227,6 +224,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\mod\aitype.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\util\obj.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\flex\objload.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -369,9 +372,6 @@
     <ClInclude Include="..\..\src\util\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\flex\objload.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\mod\mod_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -382,6 +382,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\mod\aitype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\obj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

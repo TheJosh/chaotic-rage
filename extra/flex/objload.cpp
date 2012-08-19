@@ -520,7 +520,7 @@ char *yytext;
 	#include <vector>
 	#include <iostream>
 	#include <zzip/zzip.h>
-	#include "objload.h"
+	#include "../../src/util/obj.h"
 	
 	using namespace std;
 	
