@@ -35,7 +35,7 @@ int main (int argc, char ** argv)
 	
 	st->render->setScreenSize(1000, 700, false, 0);
 	
-	
+	// TODO: Make loading be async...
 	if (FEAT_INTRO) {
 		Intro *i = new Intro(st);
 		i->doit();

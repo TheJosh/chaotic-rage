@@ -55,7 +55,6 @@ void Intro::doit()
 	
 	this->running = true;
 	while (this->running) {
-		
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) {
 				this->running = false;
@@ -64,17 +63,13 @@ void Intro::doit()
 		
 		time = SDL_GetTicks() - start;
 		
-		
-		if (time > 2000) {
-			this->running = false;
-			
-		} else if (time > 1000) {
+		if (time > 1000) {
 			img = this->render->loadSprite("game.png", mod);
-			
+			this->running = false;
+
 		} else if (time > 500) {
 			img = this->render->loadSprite("sdl.png", mod);
 		}
-		
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glMatrixMode(GL_MODELVIEW);
@@ -85,8 +80,6 @@ void Intro::doit()
 		render->renderSprite(img, x, y);
 		
 		SDL_GL_SwapBuffers();
-		
 		SDL_Delay(50);
 	}
-	
 }
