@@ -38,6 +38,7 @@ Mod::Mod(GameState * st, string directory)
 	this->songs = NULL;
 	this->sounds = NULL;
 	this->unitclasses = NULL;
+	this->vehicletypes = NULL;
 	this->walltypes = NULL;
 	this->weapontypes = NULL;
 }
@@ -139,6 +140,9 @@ bool Mod::load()
 	
 	walltypes = loadModFile<WallType*>(this, "walltypes.conf", "walltype", walltype_opts, &loadItemWallType);
 	if (walltypes == NULL) return false;
+	
+	vehicletypes = loadModFile<VehicleType*>(this, "vehicletypes.conf", "vehicle", vehicletype_opts, &loadItemVehicleType);
+	if (vehicletypes == NULL) return false;
 	
 	weapontypes = loadModFile<WeaponType*>(this, "weapontypes.conf", "weapon", weapontype_opts, &loadItemWeaponType);
 	if (weapontypes == NULL) return false;
@@ -393,6 +397,30 @@ void Mod::getAllUnitTypes(vector<UnitType*>::iterator * start, vector<UnitType*>
 {
 	*start = unitclasses->begin();
 	*end = unitclasses->end();
+}
+
+
+/**
+* Gets a vehicle type by ID
+**/
+VehicleType * Mod::getVehicleType(int id)
+{
+	if (id < 0 or ((unsigned int) id) > vehicletypes->size()) return NULL;
+	return vehicletypes->at(id);
+}
+
+/**
+* Gets a vehicle type by name
+**/
+VehicleType * Mod::getVehicleType(string name)
+{
+	if (name.empty()) return NULL;
+	
+	int i;
+	for (i = vehicletypes->size() - 1; i >= 0; --i) {
+		if (vehicletypes->at(i)->name.compare(name) == 0) return vehicletypes->at(i);
+	}
+	return NULL;
 }
 
 

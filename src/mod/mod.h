@@ -25,6 +25,7 @@ class Mod {
 		vector<Song*> * songs;
 		vector<Sound*> * sounds;
 		vector<UnitType*> * unitclasses;
+		vector<VehicleType*> * vehicletypes;
 		vector<WallType*> * walltypes;
 		vector<WeaponType*> * weapontypes;
 		
@@ -53,6 +54,7 @@ class Mod {
 		Song * getSong(int id);
 		Sound * getSound(int id);
 		UnitType * getUnitType(int id);
+		VehicleType * getVehicleType(int id);
 		WallType * getWallType(int id);
 		WeaponType * getWeaponType(int id);
 		
@@ -64,6 +66,7 @@ class Mod {
 		UnitType * getUnitType(string name);
 		Song * getSong(string name);
 		Sound * getSound(string name);
+		VehicleType * getVehicleType(string name);
 		WallType * getWallType(string name);
 		WeaponType * getWeaponType(string name);
 		
