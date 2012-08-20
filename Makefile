@@ -74,7 +74,7 @@ clean:
 	rm -f $(OBJFILES)
 	rm -f $(OBJPATH)/objload.cpp
 	
-$(OBJPATH)/objload.o: $(SRCPATH)/util/objload.l $(SRCPATH)/util/objload.h Makefile
+$(OBJPATH)/objload.o: $(SRCPATH)/util/objload.l $(SRCPATH)/util/obj.h Makefile
 	@echo [FLEX] $(SRCPATH)/util/objload.l
 	@flex -o $(OBJPATH)/objload.cpp $(SRCPATH)/util/objload.l
 	@echo [CC] $(OBJPATH)/objload.cpp

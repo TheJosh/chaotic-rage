@@ -4,7 +4,7 @@
 	#include <vector>
 	#include <iostream>
 	#include <zzip/zzip.h>
-	#include "util/objload.h"
+	#include "util/obj.h"
 	
 	#ifndef O_BINARY
 	#define O_BINARY 0
