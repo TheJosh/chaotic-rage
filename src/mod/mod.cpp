@@ -141,7 +141,7 @@ bool Mod::load()
 	walltypes = loadModFile<WallType*>(this, "walltypes.conf", "walltype", walltype_opts, &loadItemWallType);
 	if (walltypes == NULL) return false;
 	
-	vehicletypes = loadModFile<VehicleType*>(this, "vehicletypes.conf", "vehicle", vehicletype_opts, &loadItemVehicleType);
+	vehicletypes = loadModFile<VehicleType*>(this, "vehicletypes.conf", "vehicletype", vehicletype_opts, &loadItemVehicleType);
 	if (vehicletypes == NULL) return false;
 	
 	weapontypes = loadModFile<WeaponType*>(this, "weapontypes.conf", "weapon", weapontype_opts, &loadItemWeaponType);
@@ -415,6 +415,8 @@ VehicleType * Mod::getVehicleType(int id)
 VehicleType * Mod::getVehicleType(string name)
 {
 	if (name.empty()) return NULL;
+	
+	cout << name << "\n";
 	
 	int i;
 	for (i = vehicletypes->size() - 1; i >= 0; --i) {

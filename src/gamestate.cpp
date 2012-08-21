@@ -86,6 +86,14 @@ void GameState::addWall(Wall* wall)
 }
 
 /**
+* Add a vehicle
+**/
+void GameState::addVehicle(Vehicle* vehicle)
+{
+	this->entities_add.push_back(vehicle);
+}
+
+/**
 * Add an object
 **/
 void GameState::addObject(Object* object)

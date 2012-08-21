@@ -16,14 +16,14 @@ class Vehicle : public Entity
 		virtual EntityClass klass() const { return VEHICLE; }
 		
 	public:
-		ObjectType* ot;
+		VehicleType* vt;
 		int health;
 		
 	protected:
 		AnimPlay * anim;
 		
 	public:
-		Vehicle(ObjectType *pt, GameState *st, float x, float y, float z, float angle);
+		Vehicle(VehicleType *pt, GameState *st, float x, float y, float z, float angle);
 		virtual ~Vehicle();
 		
 	public:

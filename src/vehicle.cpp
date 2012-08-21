@@ -10,15 +10,15 @@
 using namespace std;
 
 
-Vehicle::Vehicle(ObjectType *ot, GameState *st, float x, float y, float z, float angle) : Entity(st)
+Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, float angle) : Entity(st)
 {
-	this->ot = ot;
-	this->anim = new AnimPlay(ot->model);
-	this->health = ot->health;
+	this->vt = vt;
+	this->anim = new AnimPlay(vt->model);
+	this->health = vt->health;
 
 
 	// TODO: The colShape should be tied to the object type.
-	btCollisionShape* colShape = new btBoxShape(ot->model->getBoundingSizeHE());
+	btCollisionShape* colShape = new btBoxShape(vt->model->getBoundingSizeHE());
 	
 	// TODO: Store the colshape and nuke at some point
 	// collisionShapes.push_back(colShape);
@@ -74,8 +74,8 @@ void Vehicle::takeDamage(int damage)
 	this->health -= damage;
 	if (this->health < 0) this->health = 0;
 	
-	for (unsigned int j = 0; j < this->ot->damage_models.size(); j++) {
-		ObjectTypeDamage * dam = this->ot->damage_models.at(j);
+	for (unsigned int j = 0; j < this->vt->damage_models.size(); j++) {
+		VehicleTypeDamage * dam = this->vt->damage_models.at(j);
 		
 		if (this->health <= dam->health) {
 			delete(this->anim);

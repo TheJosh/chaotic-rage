@@ -97,6 +97,7 @@ class GameState
 		// Adding
 		void addUnit(Unit* unit);
 		void addWall(Wall* wall);
+		void addVehicle(Vehicle* vehicle);
 		void addObject(Object* object);
 		void addNewParticle(NewParticle* particle);
 		
