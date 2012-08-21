@@ -19,29 +19,13 @@ class VehicleTypeDamage {
 class VehicleType
 {
 	public:
-		// from data file
+		int id;
+		
 		string name;
-		bool stretch;
-		bool wall;
-		VehicleType * ground_type;
 		AnimModel * model;
-		int check_radius;
 		int health;
 		
 		vector <VehicleTypeDamage *> damage_models;
-		vector <AudioPtr> walk_sounds;
-		
-		string add_vehicle;
-		string show_message;
-		string pickup_weapon;
-		string ammo_crate;
-		bool drive;
-		bool turret;
-		bool over;
-		
-		// dynamic
-		int id;
-		SpritePtr surf;
 		
 	public:
 		VehicleType();

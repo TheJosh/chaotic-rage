@@ -222,7 +222,7 @@ int Map::load(string name, Render * render)
 			this->st->addWall(wa);
 		}
 		
-		// Objects
+		// Vehicles
 		num_types = cfg_size(cfg, "vehicle");
 		for (j = 0; j < num_types; j++) {
 			cfg_sub = cfg_getnsec(cfg, "vehicle", j);

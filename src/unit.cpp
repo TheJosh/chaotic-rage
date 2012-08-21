@@ -523,6 +523,13 @@ int Unit::takeDamage(int damage)
 **/
 void Unit::doUse()
 {
+	Entity *closest = this->infront(2.0f);
+	
+	if (closest && closest->klass() == VEHICLE) {
+		this->st->hud->addAlertMessage("TODO: vehicle entering");
+	}
+	
+	
 	if (this->curr_obj == NULL) return;
 	
 	btTransform trans;
