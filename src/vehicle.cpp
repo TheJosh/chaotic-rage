@@ -46,30 +46,28 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 	// TODO: The colShape should be tied to the object type.
 	// TODO: Store the colshape and nuke at some point
 	btCollisionShape* chassisShape = new btBoxShape(btVector3(1.f, 2.f, 0.5f));
-	btCompoundShape* compound = new btCompoundShape();
+	//btCompoundShape* compound = new btCompoundShape();
 	
 	// LocalTrans effectively shifts the center of mass with respect to the chassis
-	btTransform localTrans;
-	localTrans.setIdentity();
-	localTrans.setOrigin(btVector3(0,0,1));
-	compound->addChildShape(localTrans,chassisShape);
+	//btTransform localTrans;
+	//localTrans.setIdentity();
+	//localTrans.setOrigin(btVector3(0,0,-0.2f));
+	//compound->addChildShape(localTrans,chassisShape);
 	
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
 			btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
-			btVector3(x,y,1.0f)
+			btVector3(x,y,2.0f)
 		));	
-	this->body = st->physics->addRigidBody(compound, 10.0, motionState);
+this->body = st->physics->addRigidBody(chassisShape, 800.0, motionState);
+
 	this->body->setUserPointer(this);
 	
 	
 	        gVehicleSteering = 0.f;
-        //this->body->setCenterOfMassTransform(btTransform::getIdentity());
-        //this->body->setLinearVelocity(btVector3(0,0,0));
-        //this->body->setAngularVelocity(btVector3(0,0,0));
-        //st->physics->getWorld()->getBroadphase()->getOverlappingPairCache()->cleanProxyFromPairs(this->body->getBroadphaseHandle(),st->physics->getWorld()->getDispatcher());
-			
-
+        this->body->setLinearVelocity(btVector3(0,0,0));
+        this->body->setAngularVelocity(btVector3(0,0,0));
+        	
 
 	// Create wheel
 	this->wheel_shape = new btCylinderShapeX(btVector3(wheelWidth,wheelRadius,wheelRadius));
@@ -81,6 +79,9 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 	
 	st->physics->addVehicle(this->vehicle);
 	
+	// 0, 2, 1 = orig
+	// 0, 1, 2
+
 	this->vehicle->setCoordinateSystem(0, 2, 1);
 	
 	{
