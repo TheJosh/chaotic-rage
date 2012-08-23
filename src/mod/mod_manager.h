@@ -33,6 +33,7 @@ class ModManager {
 		UnitType * getUnitType(string name);
 		Song * getSong(string name);
 		Sound * getSound(string name);
+		VehicleType * getVehicleType(string name);
 		WallType * getWallType(string name);
 		WeaponType * getWeaponType(string name);
 		

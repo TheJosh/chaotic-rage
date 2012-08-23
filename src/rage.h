@@ -85,6 +85,8 @@ class Song;
 class Sound;
 class Unit;
 class UnitType;
+class VehicleType;
+class Vehicle;
 class Wall;
 class WallType;
 class WeaponType;
@@ -125,6 +127,7 @@ class Zone;
 #include "mod/song.h"
 #include "mod/sound.h"
 #include "mod/walltype.h"
+#include "mod/vehicletype.h"
 #include "mod/weapontype.h"
 #include "mod/gametype.h"
 
@@ -139,6 +142,7 @@ class Zone;
 #include "npc.h"
 #include "object.h"
 #include "newparticle.h"
+#include "vehicle.h"
 #include "wall.h"
 
 #include "map.h"

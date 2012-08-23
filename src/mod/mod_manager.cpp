@@ -109,6 +109,23 @@ AnimModel * ModManager::getAnimModel(string name)
 /**
 * Gets an floor type by name
 **/
+VehicleType * ModManager::getVehicleType(string name)
+{
+	if (name.empty()) return NULL;
+	
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		VehicleType *et = mod->getVehicleType(name);
+		if (et) return et;
+	}
+	
+	return NULL;
+}
+
+
+/**
+* Gets an floor type by name
+**/
 FloorType * ModManager::getFloorType(string name)
 {
 	if (name.empty()) return NULL;

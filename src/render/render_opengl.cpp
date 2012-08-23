@@ -251,7 +251,9 @@ void RenderOpenGL::mainViewport(int s, int of)
 void RenderOpenGL::enablePhysicsDebug()
 {
 	this->physicsdebug = new GLDebugDrawer();
-	this->physicsdebug->setDebugMode( btIDebugDraw::DBG_DrawWireframe | btIDebugDraw::DBG_DrawAabb | btIDebugDraw::DBG_DrawContactPoints | btIDebugDraw::DBG_NoDeactivation );
+	this->physicsdebug->setDebugMode(
+		btIDebugDraw::DBG_DrawWireframe | btIDebugDraw::DBG_DrawAabb | btIDebugDraw::DBG_DrawContactPoints | btIDebugDraw::DBG_NoDeactivation
+	);
 	this->st->physics->getWorld()->setDebugDrawer(this->physicsdebug);
 }
 
