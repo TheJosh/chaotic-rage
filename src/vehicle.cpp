@@ -45,7 +45,7 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 
 	// TODO: The colShape should be tied to the object type.
 	// TODO: Store the colshape and nuke at some point
-	btCollisionShape* chassisShape = new btBoxShape(btVector3(1.f, 2.f, 0.5f));
+	btCollisionShape* chassisShape = new btBoxShape(btVector3(1.f, 2.f, 1.0f));
 	//btCompoundShape* compound = new btCompoundShape();
 	
 	// LocalTrans effectively shifts the center of mass with respect to the chassis
@@ -57,7 +57,7 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
 			btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
-			btVector3(x,y,2.0f)
+			btVector3(x,y,1.0f)
 		));	
 this->body = st->physics->addRigidBody(chassisShape, 800.0, motionState);
 
@@ -117,7 +117,7 @@ this->body = st->physics->addRigidBody(chassisShape, 800.0, motionState);
 		wheel.m_frictionSlip = wheelFriction;
 		wheel.m_rollInfluence = rollInfluence;
 		
-		this->vehicle->updateWheelTransform(i, true);
+		//this->vehicle->updateWheelTransform(i, true);
 	}
 }
 
@@ -142,7 +142,7 @@ void Vehicle::update(int delta)
 	//if (this->health == 0) return;
 	
 	int wheelIndex = 0;
-	float gEngineForce = 100.0f;
+	float gEngineForce = 1000.0f;
 	float gBreakingForce = 0.0f;
 	float gVehicleSteering = 0.0f;
 	
@@ -165,9 +165,9 @@ void Vehicle::update(int delta)
 	
 
 
-	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
-		this->vehicle->updateWheelTransform(i, true);
-	}
+	//for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
+	//	this->vehicle->updateWheelTransform(i, true);
+	//}
 }
 
 AnimPlay* Vehicle::getAnimModel()
