@@ -48,6 +48,7 @@ class PhysicsBullet
 	public:
 		btRigidBody* addRigidBody(btCollisionShape* colShape, float mass, float x, float y, float z);
 		btRigidBody* addRigidBody(btCollisionShape* colShape, float m, btDefaultMotionState* motionState);
+		void addVehicle(btRaycastVehicle* vehicle);
 		
 		void markDead(btRigidBody* body);
 		void delRigidBody(btRigidBody* body);

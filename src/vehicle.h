@@ -22,6 +22,12 @@ class Vehicle : public Entity
 	protected:
 		AnimPlay * anim;
 		
+	private:
+		btRaycastVehicle::btVehicleTuning tuning;
+		btVehicleRaycaster* vehicle_raycaster;
+		btRaycastVehicle* vehicle;
+		btCollisionShape* wheel_shape;
+	
 	public:
 		Vehicle(VehicleType *pt, GameState *st, float x, float y, float z, float angle);
 		virtual ~Vehicle();

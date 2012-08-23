@@ -187,6 +187,15 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, bt
 
 
 /**
+* Add a vehicle
+**/
+void PhysicsBullet::addVehicle(btRaycastVehicle* vehicle)
+{
+	dynamicsWorld->addVehicle(vehicle);
+}
+
+
+/**
 * Remove and reinsert a rigid body, but with different flags
 **/
 void PhysicsBullet::markDead(btRigidBody* body)
