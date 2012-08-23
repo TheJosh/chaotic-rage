@@ -138,6 +138,7 @@
     <ClCompile Include="..\..\src\mod\song.cpp" />
     <ClCompile Include="..\..\src\mod\sound.cpp" />
     <ClCompile Include="..\..\src\mod\unittype.cpp" />
+    <ClCompile Include="..\..\src\mod\vehicletype.cpp" />
     <ClCompile Include="..\..\src\mod\walltype.cpp" />
     <ClCompile Include="..\..\src\mod\weapontype.cpp" />
     <ClCompile Include="..\..\src\net\net.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="..\..\src\util\SDL_rwops_zzip.cpp" />
     <ClCompile Include="..\..\src\util\sdl_util.cpp" />
     <ClCompile Include="..\..\src\util\util.cpp" />
+    <ClCompile Include="..\..\src\vehicle.cpp" />
     <ClCompile Include="..\..\src\wall.cpp" />
     <ClCompile Include="..\..\src\zone.cpp" />
     <ClCompile Include="..\flex\objload.cpp" />
@@ -191,6 +193,7 @@
     <ClInclude Include="..\..\src\mod\song.h" />
     <ClInclude Include="..\..\src\mod\sound.h" />
     <ClInclude Include="..\..\src\mod\unittype.h" />
+    <ClInclude Include="..\..\src\mod\vehicletype.h" />
     <ClInclude Include="..\..\src\mod\walltype.h" />
     <ClInclude Include="..\..\src\mod\weapontype.h" />
     <ClInclude Include="..\..\src\net\net.h" />
@@ -215,6 +218,7 @@
     <ClInclude Include="..\..\src\util\SDL_rwops_zzip.h" />
     <ClInclude Include="..\..\src\util\sdl_util.h" />
     <ClInclude Include="..\..\src\util\util.h" />
+    <ClInclude Include="..\..\src\vehicle.h" />
     <ClInclude Include="..\..\src\wall.h" />
     <ClInclude Include="..\..\src\zone.h" />
   </ItemGroup>

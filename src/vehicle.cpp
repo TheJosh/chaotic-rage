@@ -51,18 +51,26 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 	// LocalTrans effectively shifts the center of mass with respect to the chassis
 	btTransform localTrans;
 	localTrans.setIdentity();
-	localTrans.setOrigin(btVector3(0,0,0.7f));
+	localTrans.setOrigin(btVector3(0,0,1));
 	compound->addChildShape(localTrans,chassisShape);
 	
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
 			btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
-			btVector3(x,y,5.0f)
+			btVector3(x,y,1.0f)
 		));	
-	this->body = st->physics->addRigidBody(compound, 800.0, motionState);
+	this->body = st->physics->addRigidBody(compound, 10.0, motionState);
 	this->body->setUserPointer(this);
 	
 	
+	        gVehicleSteering = 0.f;
+        //this->body->setCenterOfMassTransform(btTransform::getIdentity());
+        //this->body->setLinearVelocity(btVector3(0,0,0));
+        //this->body->setAngularVelocity(btVector3(0,0,0));
+        //st->physics->getWorld()->getBroadphase()->getOverlappingPairCache()->cleanProxyFromPairs(this->body->getBroadphaseHandle(),st->physics->getWorld()->getDispatcher());
+			
+
+
 	// Create wheel
 	this->wheel_shape = new btCylinderShapeX(btVector3(wheelWidth,wheelRadius,wheelRadius));
 	
@@ -72,10 +80,6 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 	this->body->setActivationState(DISABLE_DEACTIVATION);
 	
 	st->physics->addVehicle(this->vehicle);
-	
-	
-	
-	
 	
 	this->vehicle->setCoordinateSystem(0, 2, 1);
 	
@@ -101,6 +105,8 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
 	}
 	
+	this->vehicle->resetSuspension();
+
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
 		btWheelInfo& wheel = this->vehicle->getWheelInfo(i);
 		
@@ -109,6 +115,8 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 		wheel.m_wheelsDampingCompression = suspensionCompression;
 		wheel.m_frictionSlip = wheelFriction;
 		wheel.m_rollInfluence = rollInfluence;
+		
+		this->vehicle->updateWheelTransform(i, true);
 	}
 }
 
@@ -133,16 +141,9 @@ void Vehicle::update(int delta)
 	//if (this->health == 0) return;
 	
 	int wheelIndex = 0;
-	float gEngineForce = 1000.0f;
+	float gEngineForce = 100.0f;
 	float gBreakingForce = 0.0f;
 	float gVehicleSteering = 0.0f;
-	
-	// Front
-	wheelIndex = 0;
-	this->vehicle->setSteeringValue(gVehicleSteering,wheelIndex);
-	
-	wheelIndex = 1;
-	this->vehicle->setSteeringValue(gVehicleSteering,wheelIndex);
 	
 	// Rear
 	wheelIndex = 2;
@@ -154,6 +155,15 @@ void Vehicle::update(int delta)
 	this->vehicle->setBrake(gBreakingForce,wheelIndex);
 	
 	
+		// Front
+	wheelIndex = 0;
+	this->vehicle->setSteeringValue(gVehicleSteering,wheelIndex);
+	
+	wheelIndex = 1;
+	this->vehicle->setSteeringValue(gVehicleSteering,wheelIndex);
+	
+
+
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
 		this->vehicle->updateWheelTransform(i, true);
 	}
