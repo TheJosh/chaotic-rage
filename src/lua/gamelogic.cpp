@@ -168,6 +168,21 @@ LUA_FUNC(debug)
 
 
 /**
+* Enables or disables physics debugging
+**/
+LUA_FUNC(debug_physics)
+{
+	if (lua_toboolean(L, 1)) {
+		gl->st->render->enablePhysicsDebug();
+	} else {
+		gl->st->render->disablePhysicsDebug();
+	}
+	
+	return 0;
+}
+
+
+/**
 * Binds a function to the gamestart event.
 * Multiple functions can be bound to the one event.
 **/
@@ -568,6 +583,7 @@ LUA_FUNC(random)
 void register_lua_functions()
 {
 	LUA_REG(debug);
+	LUA_REG(debug_physics);
 	LUA_REG(bind_gamestart);
 	LUA_REG(bind_playerjoin);
 	LUA_REG(bind_playerdied);
