@@ -64,13 +64,13 @@ void PhysicsBullet::preGame()
 	this->groundRigidBody = new btRigidBody(groundRigidBodyCI);
 	this->groundRigidBody->setRestitution(0.f);
 	this->groundRigidBody->setFriction(10.f);
-	dynamicsWorld->addRigidBody(groundRigidBody, COL_GROUND, COL_ALIVE | COL_DEAD);
+	dynamicsWorld->addRigidBody(groundRigidBody);	//, COL_GROUND, COL_ALIVE | COL_DEAD
 	
 	// This leaks. I'm using pointers because of MS compiler doesn't like the alignment or something.
-	//this->addBoundaryPlane(new btVector3(1, 0, 0), new btVector3(0, 0, 0));
-	//this->addBoundaryPlane(new btVector3(0, 1, 0), new btVector3(0, 0, 0));
-	//this->addBoundaryPlane(new btVector3(-1, 0, 0), new btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
-	//this->addBoundaryPlane(new btVector3(0, -1, 0), new btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
+	this->addBoundaryPlane(new btVector3(1, 0, 0), new btVector3(0, 0, 0));
+	this->addBoundaryPlane(new btVector3(0, 1, 0), new btVector3(0, 0, 0));
+	this->addBoundaryPlane(new btVector3(-1, 0, 0), new btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
+	this->addBoundaryPlane(new btVector3(0, -1, 0), new btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
 	
 	collisionShapes = new btAlignedObjectArray<btCollisionShape*>();
 }
@@ -94,7 +94,7 @@ void PhysicsBullet::addBoundaryPlane(btVector3 * axis, btVector3 * loc)
 	
 	btRigidBody *rigidBody = new btRigidBody(rigidBodyCI);
 	
-	dynamicsWorld->addRigidBody(rigidBody, COL_GROUND, COL_ALIVE | COL_DEAD);
+	dynamicsWorld->addRigidBody(rigidBody);	//, COL_GROUND, COL_ALIVE | COL_DEAD
 }
 
 
@@ -150,7 +150,7 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, fl
 	);
 	btRigidBody* body = new btRigidBody(rbInfo);
 	
-	dynamicsWorld->addRigidBody(body, COL_ALIVE, COL_GROUND | COL_ALIVE);
+	dynamicsWorld->addRigidBody(body);	//, COL_ALIVE, COL_GROUND | COL_ALIVE
 	
 	return body;
 }
@@ -180,7 +180,7 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, bt
 	);
 	btRigidBody* body = new btRigidBody(rbInfo);
 	
-	dynamicsWorld->addRigidBody(body, COL_ALIVE, COL_GROUND | COL_ALIVE);
+	dynamicsWorld->addRigidBody(body);	//, COL_ALIVE, COL_GROUND | COL_ALIVE
 	
 	return body;
 }
@@ -203,7 +203,7 @@ void PhysicsBullet::markDead(btRigidBody* body)
 	if (! body) return;
 	
 	dynamicsWorld->removeCollisionObject(body);
-	dynamicsWorld->addRigidBody(body, COL_DEAD, COL_GROUND);
+	dynamicsWorld->addRigidBody(body);//, COL_DEAD, COL_GROUND
 }
 
 

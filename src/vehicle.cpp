@@ -59,7 +59,7 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 			btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
 			btVector3(x,y,1.5f)
 		));
-	this->body = st->physics->addRigidBody(chassisShape, 3.0f, motionState);
+	this->body = st->physics->addRigidBody(chassisShape, 30.0f, motionState);
 	
 	this->body->setUserPointer(this);
 	//this->body->setLinearVelocity(btVector3(0,0,0));
@@ -144,15 +144,8 @@ void Vehicle::update(int delta)
 	//return;
 	
 	
-	gVehicleSteering += steeringIncrement / 10.0f;
-	if (gVehicleSteering == steeringClamp) gVehicleSteering = steeringClamp;
-	
-	
-	
 	int wheelIndex;
-	//gEngineForce = 1000.0f;
-	//gBreakingForce = 0.0f;
-	//gVehicleSteering = 0.0f;
+	
 	
 	// Rear
 	wheelIndex = 2;
@@ -171,11 +164,11 @@ void Vehicle::update(int delta)
 	this->vehicle->setSteeringValue(gVehicleSteering,wheelIndex);
 	
 	
-	
-	
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
 		this->vehicle->updateWheelTransform(i, true);
 	}
+	
+	gEngineForce += 1.0f;
 }
 
 AnimPlay* Vehicle::getAnimModel()
