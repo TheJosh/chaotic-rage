@@ -29,7 +29,7 @@ float	suspensionDamping = 2.3f;
 float	suspensionCompression = 4.4f;
 float	rollInfluence = 0.1f;//1.0f;
 
-btScalar suspensionRestLength(0.6);
+btScalar suspensionRestLength(0.6f);
 
 btVector3 wheelDirectionCS0(0,0,-1);
 btVector3 wheelAxleCS(1,0,0);
@@ -45,63 +45,71 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 
 	// TODO: The colShape should be tied to the object type.
 	// TODO: Store the colshape and nuke at some point
-	btCollisionShape* chassisShape = new btBoxShape(btVector3(1.f, 2.f, 1.0f));
+	btCollisionShape* chassisShape = new btBoxShape(btVector3(1.f, 2.f, 0.5f));
 	//btCompoundShape* compound = new btCompoundShape();
 	
 	// LocalTrans effectively shifts the center of mass with respect to the chassis
 	//btTransform localTrans;
 	//localTrans.setIdentity();
-	//localTrans.setOrigin(btVector3(0,0,-0.2f));
+	//localTrans.setOrigin(btVector3(0,0,0.5f));
 	//compound->addChildShape(localTrans,chassisShape);
 	
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
 			btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
-			btVector3(x,y,1.0f)
+			btVector3(x,y,1.5f)
 		));
-	this->body = st->physics->addRigidBody(chassisShape, 100.0, motionState);
+	this->body = st->physics->addRigidBody(chassisShape, 3.0f, motionState);
 	
 	this->body->setUserPointer(this);
-	this->body->setLinearVelocity(btVector3(0,0,0));
-	this->body->setAngularVelocity(btVector3(0,0,0));
+	//this->body->setLinearVelocity(btVector3(0,0,0));
+	//this->body->setAngularVelocity(btVector3(0,0,0));
 	this->body->setActivationState(DISABLE_DEACTIVATION);
 	
+	//this->tuning.m_maxSuspensionTravelCm = 500.0f;
+	//this->tuning.m_suspensionCompression = 4.4f;
+	//this->tuning.m_suspensionDamping = 2.3f;
+	//this->tuning.m_frictionSlip = 1000.0f;
+	//this->tuning.m_suspensionStiffness = 20.0f;
+
 	
 	// Create Vehicle
 	this->vehicle_raycaster = new btDefaultVehicleRaycaster(st->physics->getWorld());
 	this->vehicle = new btRaycastVehicle(this->tuning, this->body, this->vehicle_raycaster);
-	this->vehicle->setCoordinateSystem(0, 2, 1);
 	
-	st->physics->addVehicle(this->vehicle);
+	st->physics->getWorld()->addAction(this->vehicle);
+	
 	
 	// Create and attach wheels
+	
+	this->vehicle->setCoordinateSystem(0, 2, 1);
 	
 	{
 		this->wheel_shape = new btCylinderShapeX(btVector3(wheelWidth,wheelRadius,wheelRadius));
 		
 		btVector3 connectionPointCS0;
 		
-		float connectionHeight = -0.1f;
+		float connectionHeight = 0.2f;
 		bool isFrontWheel = true;
 		
 		
-		connectionPointCS0 = btVector3(CUBE_HALF_EXTENTS-(0.3*wheelWidth),2*CUBE_HALF_EXTENTS-wheelRadius, connectionHeight);
+		connectionPointCS0 = btVector3(0.88f, 1.6f, connectionHeight);
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
 		
-		connectionPointCS0 = btVector3(-CUBE_HALF_EXTENTS+(0.3*wheelWidth),2*CUBE_HALF_EXTENTS-wheelRadius, connectionHeight);
+		connectionPointCS0 = btVector3(-0.88f, 1.6f, connectionHeight);
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
 		
 		isFrontWheel = false;
 		
-		connectionPointCS0 = btVector3(-CUBE_HALF_EXTENTS+(0.3*wheelWidth),-2*CUBE_HALF_EXTENTS+wheelRadius, connectionHeight);
+		connectionPointCS0 = btVector3(0.88f, -1.6f, connectionHeight);
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
 		
-		connectionPointCS0 = btVector3(CUBE_HALF_EXTENTS-(0.3*wheelWidth),-2*CUBE_HALF_EXTENTS+wheelRadius, connectionHeight);
+		connectionPointCS0 = btVector3(-0.88f, -1.6f, connectionHeight);
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
 	}
 	
 	// Set some wheel dynamics
-	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
+	/*for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
 		btWheelInfo& wheel = this->vehicle->getWheelInfo(i);
 		
 		wheel.m_suspensionStiffness = suspensionStiffness;
@@ -109,7 +117,8 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 		wheel.m_wheelsDampingCompression = suspensionCompression;
 		wheel.m_frictionSlip = wheelFriction;
 		wheel.m_rollInfluence = rollInfluence;
-	}
+	}*/
+	
 }
 
 Vehicle::~Vehicle()
@@ -134,10 +143,16 @@ void Vehicle::update(int delta)
 	
 	//return;
 	
-	/*int wheelIndex;
-	gEngineForce = 1000.0f;
-	gBreakingForce = 0.0f;
-	gVehicleSteering = 0.0f;
+	
+	gVehicleSteering += steeringIncrement / 10.0f;
+	if (gVehicleSteering == steeringClamp) gVehicleSteering = steeringClamp;
+	
+	
+	
+	int wheelIndex;
+	//gEngineForce = 1000.0f;
+	//gBreakingForce = 0.0f;
+	//gVehicleSteering = 0.0f;
 	
 	// Rear
 	wheelIndex = 2;
@@ -154,12 +169,12 @@ void Vehicle::update(int delta)
 	
 	wheelIndex = 1;
 	this->vehicle->setSteeringValue(gVehicleSteering,wheelIndex);
-	*/
+	
+	
+	
 	
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
-		this->vehicle->applyEngineForce(1000.0f,i);
-		
-		//this->vehicle->updateWheelTransform(i, true);
+		this->vehicle->updateWheelTransform(i, true);
 	}
 }
 

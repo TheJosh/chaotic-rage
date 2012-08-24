@@ -50,10 +50,10 @@ void PhysicsBullet::init()
 **/
 void PhysicsBullet::preGame()
 {
-	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,0,1),1);
+	btCollisionShape* groundShape = new btBoxShape(btVector3(100.f, 100.f, 10.0f));
 	
 	// Ground
-	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-1)));
+	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(100.0f,100.0f,-10.0f)));
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
 		0,
 		groundMotionState,
@@ -67,10 +67,10 @@ void PhysicsBullet::preGame()
 	dynamicsWorld->addRigidBody(groundRigidBody, COL_GROUND, COL_ALIVE | COL_DEAD);
 	
 	// This leaks. I'm using pointers because of MS compiler doesn't like the alignment or something.
-	this->addBoundaryPlane(new btVector3(1, 0, 0), new btVector3(0, 0, 0));
-	this->addBoundaryPlane(new btVector3(0, 1, 0), new btVector3(0, 0, 0));
-	this->addBoundaryPlane(new btVector3(-1, 0, 0), new btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
-	this->addBoundaryPlane(new btVector3(0, -1, 0), new btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
+	//this->addBoundaryPlane(new btVector3(1, 0, 0), new btVector3(0, 0, 0));
+	//this->addBoundaryPlane(new btVector3(0, 1, 0), new btVector3(0, 0, 0));
+	//this->addBoundaryPlane(new btVector3(-1, 0, 0), new btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
+	//this->addBoundaryPlane(new btVector3(0, -1, 0), new btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
 	
 	collisionShapes = new btAlignedObjectArray<btCollisionShape*>();
 }
