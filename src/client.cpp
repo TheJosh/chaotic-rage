@@ -59,6 +59,11 @@ int main (int argc, char ** argv)
 	}
 
 
+	Menu *m = new Menu(st);
+	m->startGame("tanktest", "boredem", "robot", 0, 1);
+	exit(0);
+
+
 	if (FEAT_MENU) {
 		// Menu awesomeness
 		Menu *m = new Menu(st);

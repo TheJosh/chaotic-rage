@@ -58,36 +58,30 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 		new btDefaultMotionState(btTransform(
 			btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
 			btVector3(x,y,1.0f)
-		));	
-this->body = st->physics->addRigidBody(chassisShape, 800.0, motionState);
-
+		));
+	this->body = st->physics->addRigidBody(chassisShape, 100.0, motionState);
+	
 	this->body->setUserPointer(this);
+	this->body->setLinearVelocity(btVector3(0,0,0));
+	this->body->setAngularVelocity(btVector3(0,0,0));
+	this->body->setActivationState(DISABLE_DEACTIVATION);
 	
 	
-	        gVehicleSteering = 0.f;
-        this->body->setLinearVelocity(btVector3(0,0,0));
-        this->body->setAngularVelocity(btVector3(0,0,0));
-        	
-
-	// Create wheel
-	this->wheel_shape = new btCylinderShapeX(btVector3(wheelWidth,wheelRadius,wheelRadius));
-	
+	// Create Vehicle
 	this->vehicle_raycaster = new btDefaultVehicleRaycaster(st->physics->getWorld());
 	this->vehicle = new btRaycastVehicle(this->tuning, this->body, this->vehicle_raycaster);
-	
-	this->body->setActivationState(DISABLE_DEACTIVATION);
+	this->vehicle->setCoordinateSystem(0, 2, 1);
 	
 	st->physics->addVehicle(this->vehicle);
 	
-	// 0, 2, 1 = orig
-	// 0, 1, 2
-
-	this->vehicle->setCoordinateSystem(0, 2, 1);
+	// Create and attach wheels
 	
 	{
+		this->wheel_shape = new btCylinderShapeX(btVector3(wheelWidth,wheelRadius,wheelRadius));
+		
 		btVector3 connectionPointCS0;
 		
-		float connectionHeight = 1.2f;
+		float connectionHeight = -0.1f;
 		bool isFrontWheel = true;
 		
 		
@@ -106,8 +100,7 @@ this->body = st->physics->addRigidBody(chassisShape, 800.0, motionState);
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
 	}
 	
-	this->vehicle->resetSuspension();
-
+	// Set some wheel dynamics
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
 		btWheelInfo& wheel = this->vehicle->getWheelInfo(i);
 		
@@ -116,8 +109,6 @@ this->body = st->physics->addRigidBody(chassisShape, 800.0, motionState);
 		wheel.m_wheelsDampingCompression = suspensionCompression;
 		wheel.m_frictionSlip = wheelFriction;
 		wheel.m_rollInfluence = rollInfluence;
-		
-		//this->vehicle->updateWheelTransform(i, true);
 	}
 }
 
@@ -141,10 +132,12 @@ void Vehicle::update(int delta)
 	//if (this->anim->isDone()) this->anim->next();
 	//if (this->health == 0) return;
 	
-	int wheelIndex = 0;
-	float gEngineForce = 1000.0f;
-	float gBreakingForce = 0.0f;
-	float gVehicleSteering = 0.0f;
+	//return;
+	
+	/*int wheelIndex;
+	gEngineForce = 1000.0f;
+	gBreakingForce = 0.0f;
+	gVehicleSteering = 0.0f;
 	
 	// Rear
 	wheelIndex = 2;
@@ -155,19 +148,19 @@ void Vehicle::update(int delta)
 	this->vehicle->applyEngineForce(gEngineForce,wheelIndex);
 	this->vehicle->setBrake(gBreakingForce,wheelIndex);
 	
-	
-		// Front
+	// Front
 	wheelIndex = 0;
 	this->vehicle->setSteeringValue(gVehicleSteering,wheelIndex);
 	
 	wheelIndex = 1;
 	this->vehicle->setSteeringValue(gVehicleSteering,wheelIndex);
+	*/
 	
-
-
-	//for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
-	//	this->vehicle->updateWheelTransform(i, true);
-	//}
+	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
+		this->vehicle->applyEngineForce(1000.0f,i);
+		
+		//this->vehicle->updateWheelTransform(i, true);
+	}
 }
 
 AnimPlay* Vehicle::getAnimModel()
