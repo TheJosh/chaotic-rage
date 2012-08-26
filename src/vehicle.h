@@ -18,7 +18,10 @@ class Vehicle : public Entity
 	public:
 		VehicleType* vt;
 		int health;
-		
+		float engineForce;
+		float brakeForce;
+		float steering;
+
 	protected:
 		AnimPlay * anim;
 		

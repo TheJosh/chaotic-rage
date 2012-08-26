@@ -10,27 +10,18 @@
 using namespace std;
 
 
-#define CUBE_HALF_EXTENTS 1
-
-float	gEngineForce = 0.f;
-float	gBreakingForce = 0.f;
-
 float	maxEngineForce = 1000.f;//this should be engine/velocity dependent
 float	maxBreakingForce = 100.f;
-
-float	gVehicleSteering = 0.f;
 float	steeringIncrement = 0.04f;
 float	steeringClamp = 0.3f;
 float	wheelRadius = 0.5f;
 float	wheelWidth = 0.4f;
-float	wheelFriction = 1000;//BT_LARGE_FLOAT;
+float	wheelFriction = 1000;
 float	suspensionStiffness = 20.f;
 float	suspensionDamping = 2.3f;
 float	suspensionCompression = 4.4f;
-float	rollInfluence = 0.1f;//1.0f;
-
+float	rollInfluence = 0.1f;
 btScalar suspensionRestLength(0.6f);
-
 btVector3 wheelDirectionCS0(0,0,-1);
 btVector3 wheelAxleCS(1,0,0);
 
@@ -41,6 +32,10 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 	this->vt = vt;
 	this->anim = new AnimPlay(vt->model);
 	this->health = vt->health;
+
+	this->engineForce = 0.0f;
+	this->brakeForce = 0.0f;
+	this->steering = 0.0f;
 
 
 	// TODO: The colShape should be tied to the object type.
@@ -60,30 +55,16 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 			btVector3(x,y,1.5f)
 		));
 	this->body = st->physics->addRigidBody(chassisShape, 30.0f, motionState);
-	
 	this->body->setUserPointer(this);
-	//this->body->setLinearVelocity(btVector3(0,0,0));
-	//this->body->setAngularVelocity(btVector3(0,0,0));
 	this->body->setActivationState(DISABLE_DEACTIVATION);
-	
-	//this->tuning.m_maxSuspensionTravelCm = 500.0f;
-	//this->tuning.m_suspensionCompression = 4.4f;
-	//this->tuning.m_suspensionDamping = 2.3f;
-	//this->tuning.m_frictionSlip = 1000.0f;
-	//this->tuning.m_suspensionStiffness = 20.0f;
-
 	
 	// Create Vehicle
 	this->vehicle_raycaster = new btDefaultVehicleRaycaster(st->physics->getWorld());
 	this->vehicle = new btRaycastVehicle(this->tuning, this->body, this->vehicle_raycaster);
-	
-	st->physics->getWorld()->addAction(this->vehicle);
-	
+	this->vehicle->setCoordinateSystem(0, 2, 1);
+	st->physics->addVehicle(this->vehicle);
 	
 	// Create and attach wheels
-	
-	this->vehicle->setCoordinateSystem(0, 2, 1);
-	
 	{
 		this->wheel_shape = new btCylinderShapeX(btVector3(wheelWidth,wheelRadius,wheelRadius));
 		
@@ -109,7 +90,7 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 	}
 	
 	// Set some wheel dynamics
-	/*for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
+	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
 		btWheelInfo& wheel = this->vehicle->getWheelInfo(i);
 		
 		wheel.m_suspensionStiffness = suspensionStiffness;
@@ -117,8 +98,7 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 		wheel.m_wheelsDampingCompression = suspensionCompression;
 		wheel.m_frictionSlip = wheelFriction;
 		wheel.m_rollInfluence = rollInfluence;
-	}*/
-	
+	}
 }
 
 Vehicle::~Vehicle()
@@ -138,37 +118,36 @@ void Vehicle::hasBeenHit(Entity * that)
 **/
 void Vehicle::update(int delta)
 {
-	//if (this->anim->isDone()) this->anim->next();
-	//if (this->health == 0) return;
-	
-	//return;
-	
-	
 	int wheelIndex;
+
+	if (this->anim->isDone()) this->anim->next();
+	if (this->health == 0) return;
 	
 	
 	// Rear
 	wheelIndex = 2;
-	this->vehicle->applyEngineForce(gEngineForce,wheelIndex);
-	this->vehicle->setBrake(gBreakingForce,wheelIndex);
+	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
+	this->vehicle->setBrake(this->brakeForce,wheelIndex);
 	
 	wheelIndex = 3;
-	this->vehicle->applyEngineForce(gEngineForce,wheelIndex);
-	this->vehicle->setBrake(gBreakingForce,wheelIndex);
+	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
+	this->vehicle->setBrake(this->brakeForce,wheelIndex);
 	
 	// Front
 	wheelIndex = 0;
-	this->vehicle->setSteeringValue(gVehicleSteering,wheelIndex);
+	this->vehicle->setSteeringValue(this->steering,wheelIndex);
 	
 	wheelIndex = 1;
-	this->vehicle->setSteeringValue(gVehicleSteering,wheelIndex);
+	this->vehicle->setSteeringValue(this->steering,wheelIndex);
 	
 	
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
 		this->vehicle->updateWheelTransform(i, true);
 	}
 	
-	gEngineForce += 1.0f;
+	if (this->engineForce < 200.0f) {
+		this->engineForce += 1.0f;
+	}
 }
 
 AnimPlay* Vehicle::getAnimModel()
