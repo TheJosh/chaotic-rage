@@ -29,7 +29,8 @@ class Unit : public Entity
 		string name;
 		Faction fac;
 		int slot;
-		
+		Vehicle* drive;
+
 	protected:
 		// TODO: Cleanup
 		int health;
@@ -61,7 +62,6 @@ class Unit : public Entity
 		
 		Object* curr_obj;
 		Object* lift_obj;
-		Object* drive_obj;
 		Object* turret_obj;
 		
 		Unit* closest;

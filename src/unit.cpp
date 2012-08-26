@@ -31,7 +31,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	
 	this->curr_obj = NULL;
 	this->lift_obj = NULL;
-	this->drive_obj = NULL;
+	this->drive = NULL;
 	this->turret_obj = NULL;
 	
 	this->closest = NULL;
@@ -163,6 +163,7 @@ Entity * Unit::infront(float range)
 	
 	// Begin and end vectors
 	btVector3 begin = xform.getOrigin();
+	begin.setZ(0.4);
 	btVector3 end = begin + forwardDir * btScalar(0.0f - range);
 	
 	st->addDebugLine(&begin, &end);
@@ -410,7 +411,7 @@ void Unit::update(int delta)
 		if (this->turret_obj) {
 			w = this->st->mm->getWeaponType("poopgun");
 			
-		} else if (this->drive_obj) {
+		} else if (this->drive) {
 			w = this->st->mm->getWeaponType("rocket_launcher");
 			
 		} else if (this->weapon && this->weapon->next_use < st->game_time && this->weapon->magazine > 0) {
@@ -523,10 +524,15 @@ int Unit::takeDamage(int damage)
 **/
 void Unit::doUse()
 {
+	if (this->drive != NULL) {
+		this->drive = NULL;
+		return;
+	}
+
 	Entity *closest = this->infront(2.0f);
-	
 	if (closest && closest->klass() == VEHICLE) {
-		this->st->hud->addAlertMessage("TODO: vehicle entering");
+		this->drive = (Vehicle*)closest;
+		return;
 	}
 	
 	
@@ -571,14 +577,7 @@ void Unit::doUse()
 		}
 	}
 	
-	if (ot->drive == 1) {
-		if (this->drive_obj) {
-			this->drive_obj = NULL;
-		} else {
-			this->drive_obj = this->curr_obj;
-		}
-
-	} else if (ot->turret == 1) {
+	if (ot->turret == 1) {
 		if (this->turret_obj) {
 			this->turret_obj = NULL;
 			this->setWeapon(this->curr_weapon_id);

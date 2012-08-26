@@ -144,10 +144,6 @@ void Vehicle::update(int delta)
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
 		this->vehicle->updateWheelTransform(i, true);
 	}
-	
-	if (this->engineForce < 200.0f) {
-		this->engineForce += 1.0f;
-	}
 }
 
 AnimPlay* Vehicle::getAnimModel()

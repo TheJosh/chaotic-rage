@@ -867,15 +867,13 @@ void RenderOpenGL::deadRot()
 **/
 void RenderOpenGL::mainRot()
 {
+	btTransform trans;
+
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_NORMALIZE);
-	
-	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	
-	// Main map rotation
 	glLoadIdentity();
 	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
 	
@@ -902,8 +900,12 @@ void RenderOpenGL::mainRot()
 		
 	}
 	
-	btTransform trans;
-	this->render_player->body->getMotionState()->getWorldTransform(trans);
+	if (this->render_player->drive) {
+		this->render_player->drive->body->getMotionState()->getWorldTransform(trans);
+	} else {
+		this->render_player->body->getMotionState()->getWorldTransform(trans);
+	}
+
 	btVector3 euler;
 	PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
 	glRotatef(RAD_TO_DEG(0.f - euler.z()), 0.f, 0.f, 1.f);

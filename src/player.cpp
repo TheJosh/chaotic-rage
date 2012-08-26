@@ -121,6 +121,26 @@ void Player::hasBeenHit(Entity * that)
 **/
 void Player::update(int delta)
 {
+	if (this->drive) {
+		if (this->key[KEY_UP]) {
+			this->drive->engineForce = MAX(this->drive->engineForce + 3.0f, 100.0f);
+			this->drive->brakeForce = 0.0f;
+
+		} else if (this->key[KEY_DOWN]) {
+			this->drive->brakeForce = MAX(this->drive->brakeForce + 2.0f, 50.0f);
+			this->drive->engineForce = 0.0f;
+		}
+
+		if (this->key[KEY_LEFT]) {
+			this->drive->steering = MIN(this->drive->steering - 0.01f, -3.0f);
+		} else if (this->key[KEY_RIGHT]) {
+			this->drive->steering = MAX(this->drive->steering + 0.01f, 3.0f);
+		}
+
+		return;
+	}
+
+
 	btTransform xform, xform2;
 	body->getMotionState()->getWorldTransform (xform);
 	xform2 = xform;
