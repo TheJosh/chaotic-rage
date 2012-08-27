@@ -528,11 +528,16 @@ void Unit::doUse()
 
 	if (this->drive != NULL) {
 		// TODO: move this into a vehicleg leave method
-		this->drive->body->getMotionState()->getWorldTransform(trans);
-		this->body->getMotionState()->setWorldTransform(trans);
-		this->drive = NULL;
 		this->render = true;
+		this->drive->body->getMotionState()->getWorldTransform(trans);
+		trans.setRotation(btQuaternion(0,0,0,1));
+		this->body->getMotionState()->setWorldTransform(trans);
 		this->body->forceActivationState(ACTIVE_TAG);
+
+		this->drive->brakeForce = 0.0f;
+		this->drive->engineForce = 0.0f;
+		this->drive->steering = 0.0f;
+		this->drive = NULL;
 		return;
 	}
 

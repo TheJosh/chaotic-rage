@@ -43,4 +43,5 @@ class Vehicle : public Entity
 		
 	public:
 		void takeDamage(int damage);
+		float getSpeedKmHr();
 };

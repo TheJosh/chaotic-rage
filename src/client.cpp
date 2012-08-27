@@ -59,33 +59,15 @@ int main (int argc, char ** argv)
 	}
 
 
-	Menu *m = new Menu(st);
-	m->startGame("tanktest", "boredem", "robot", 0, 1);
-	exit(0);
-
-
 	if (FEAT_MENU) {
-		// Menu awesomeness
 		Menu *m = new Menu(st);
 		m->doit();
-		
+
 	} else {
-		// Load map
-		Map *m = new Map(st);
-		m->load("blank", st->render);
-		st->curr_map = m;
-		
-		// Load gametype
-		new GameLogic(st);
-		//GameType *gt = st->mm->getGameType("boredem");
-		//st->logic->execScript(gt->script);
-		
-		new NetClient(st);
-		st->client->bind("localhost", 17778);
-		st->client->addmsgJoinReq();
-		
-		// Begin!
-		gameLoop(st, st->render);
+		// Ultra-debug mode - stratight into a game
+		Menu *m = new Menu(st);
+		m->startGame("tanktest", "boredem", "robot", 0, 1);
+
 	}
 	
 	exit(0);

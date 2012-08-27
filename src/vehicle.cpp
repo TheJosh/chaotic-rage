@@ -116,6 +116,12 @@ void Vehicle::hasBeenHit(Entity * that)
 }
 
 
+float Vehicle::getSpeedKmHr()
+{
+	return this->vehicle->getCurrentSpeedKmHour();
+}
+
+
 /**
 * Do stuff
 **/
