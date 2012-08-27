@@ -123,18 +123,18 @@ void Player::update(int delta)
 {
 	if (this->drive) {
 		if (this->key[KEY_UP]) {
-			this->drive->engineForce = MIN(this->drive->engineForce + 3.0f, 100.0f);
+			this->drive->engineForce = MIN(this->drive->engineForce + 20.0f, 100.0f);
 			this->drive->brakeForce = 0.0f;
 
 		} else if (this->key[KEY_DOWN]) {
-			this->drive->brakeForce = MIN(this->drive->brakeForce + 2.0f, 50.0f);
+			this->drive->brakeForce = MIN(this->drive->brakeForce + 15.0f, 50.0f);
 			this->drive->engineForce = 0.0f;
 		}
 
 		if (this->key[KEY_LEFT]) {
-			this->drive->steering = MIN(this->drive->steering + 0.04f, 0.3f);
+			this->drive->steering = MIN(this->drive->steering + 0.01f, 0.3f);
 		} else if (this->key[KEY_RIGHT]) {
-			this->drive->steering = MAX(this->drive->steering - 0.04f, -0.3f);
+			this->drive->steering = MAX(this->drive->steering - 0.01f, -0.3f);
 		}
 
 		return;
@@ -170,9 +170,9 @@ void Player::update(int delta)
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		
 		if (this->key[KEY_UP]) {
-			walkDirection -= forwardDir;
-		} else if (this->key[KEY_DOWN]) {
 			walkDirection += forwardDir;
+		} else if (this->key[KEY_DOWN]) {
+			walkDirection -= forwardDir;
 		}
 		
 		xform2.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle + 90)));
@@ -181,9 +181,9 @@ void Player::update(int delta)
 		strafeDir *= btScalar(0.7);		// TODO: Managed in the unit settings	(strafe accel)
 		
 		if (this->key[KEY_LEFT]) {
-			walkDirection += strafeDir;
-		} else if (this->key[KEY_RIGHT]) {
 			walkDirection -= strafeDir;
+		} else if (this->key[KEY_RIGHT]) {
+			walkDirection += strafeDir;
 		}
 		
 		linearVelocity += walkDirection;
