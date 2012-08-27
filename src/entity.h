@@ -33,14 +33,14 @@ class Entity
 		
 	public:
 		bool del;
-		float speed;
-		int angle;
-		
+		bool render;
 		btRigidBody* body;
-		
-	protected:
 		GameState* st;
 		
+		// TODO: Remove these
+		float speed;
+		int angle;
+
 	protected:
 		Entity(GameState *st);
 		

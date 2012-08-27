@@ -13,19 +13,28 @@ using namespace std;
 Entity::Entity(GameState *st)
 {
 	this->del = false;
+	this->render = true;
 	this->st = st;
+	this->body = NULL;
 }
 
 Entity::~Entity()
 {
 }
 
+
+/**
+* Return the game state point - it is typically the same pointer everywhere.
+**/
 GameState * Entity::getGameState()
 {
 	return this->st;
 }
 
 
+/**
+* Has this entity died?
+**/
 void Entity::hasDied()
 {
 	this->del = true;

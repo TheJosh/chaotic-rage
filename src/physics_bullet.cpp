@@ -187,6 +187,15 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, bt
 
 
 /**
+* Add a rigid body which already exists
+**/
+void PhysicsBullet::addRigidBody(btRigidBody* body)
+{
+	dynamicsWorld->addRigidBody(body);	//, COL_ALIVE, COL_GROUND | COL_ALIVE
+}
+
+
+/**
 * Add a vehicle
 **/
 void PhysicsBullet::addVehicle(btRaycastVehicle* vehicle)
@@ -208,7 +217,16 @@ void PhysicsBullet::markDead(btRigidBody* body)
 
 
 /**
-* Remove a rigid body from the game world
+* Remove a rigid body from the game world, but keep the object around for adding later.
+**/
+void PhysicsBullet::remRigidBody(btRigidBody* body)
+{
+	dynamicsWorld->removeCollisionObject(body);
+}
+
+
+/**
+* Delete a rigid body, and remove it from the game world too
 **/
 void PhysicsBullet::delRigidBody(btRigidBody* body)
 {

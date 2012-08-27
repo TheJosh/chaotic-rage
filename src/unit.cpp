@@ -524,21 +524,30 @@ int Unit::takeDamage(int damage)
 **/
 void Unit::doUse()
 {
+	btTransform trans;
+
 	if (this->drive != NULL) {
+		// TODO: move this into a vehicleg leave method
+		this->drive->body->getMotionState()->getWorldTransform(trans);
+		this->body->getMotionState()->setWorldTransform(trans);
 		this->drive = NULL;
+		this->render = true;
+		this->body->forceActivationState(ACTIVE_TAG);
 		return;
 	}
 
 	Entity *closest = this->infront(2.0f);
 	if (closest && closest->klass() == VEHICLE) {
+		// TODO: move this into a vehicle enter method
 		this->drive = (Vehicle*)closest;
+		this->render = false;
+		this->body->forceActivationState(DISABLE_SIMULATION);
 		return;
 	}
 	
 	
 	if (this->curr_obj == NULL) return;
 	
-	btTransform trans;
 	this->body->getMotionState()->getWorldTransform(trans);
 	
 	ObjectType *ot = this->curr_obj->ot;
