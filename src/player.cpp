@@ -123,11 +123,11 @@ void Player::update(int delta)
 {
 	if (this->drive) {
 		if (this->key[KEY_UP]) {
-			this->drive->engineForce = MIN(this->drive->engineForce + 20.0f, 100.0f);
+			this->drive->engineForce = MIN(this->drive->engineForce + 20.0f, 200.0f);		// TODO: Accel + Brake based on vt settings
 			this->drive->brakeForce = 0.0f;
 
 		} else if (this->key[KEY_DOWN]) {
-			this->drive->brakeForce = MIN(this->drive->brakeForce + 15.0f, 50.0f);
+			this->drive->brakeForce = MIN(this->drive->brakeForce + 15.0f, 100.0f);
 			this->drive->engineForce = 0.0f;
 
 		} else {
