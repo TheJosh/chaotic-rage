@@ -1,9 +1,9 @@
 You will need at least these:
  - A compiler. The makefiles are written for GCC
- - SDL
- - SDL_Mixer
- - SDL_Image
- - SDL_Net
+ - SDL 1.2
+ - SDL_Mixer 1.2
+ - SDL_Image 1.2
+ - SDL_Net 1.2
  - zziplib
  - libconfuse
  - gl
@@ -11,6 +11,7 @@ You will need at least these:
  - glew
  - Lua
  - Freetype2
+ - Bullet Physics
  
 For compiling on a recent Ubuntu:
  - g++
@@ -29,6 +30,9 @@ For compiling on a recent Ubuntu:
  - liblua5.1-0-dev
  - libfreetype6-dev
  
+ - Compile bullet from lib-external
+
+
 TODO: compiling on windows
 
 TODO: compiling on mac
