@@ -142,7 +142,7 @@ void WeaponType::doFire(Unit * u)
 	
 	btVector3 forwardDir = xform.getBasis()[1];
 	forwardDir.normalize();
-	forwardDir *= btScalar(0.f - this->range);		// weapon range
+	forwardDir *= btScalar(this->range);		// weapon range
 	
 	
 	DEBUG("weap", "forwardDir is %5.3f %5.3f %5.3f", forwardDir.x(), forwardDir.y(), forwardDir.z());
