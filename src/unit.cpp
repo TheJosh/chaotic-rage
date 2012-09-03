@@ -508,6 +508,7 @@ int Unit::takeDamage(int damage)
 	if (this->health <= 0 && remove_at == 0) {
 		this->setState(UNIT_STATE_DIE);
 		this->endFiring();
+		this->leaveVehicle();
 		this->st->physics->markDead(this->body);
 		
 		remove_at = st->game_time + (10 * 60 * 1000);	// 10 mins
@@ -520,6 +521,40 @@ int Unit::takeDamage(int damage)
 
 
 /**
+* Enter a vehicle
+**/
+void Unit::enterVehicle(Vehicle *v)
+{
+	this->drive = v;
+	this->render = false;
+	this->body->forceActivationState(DISABLE_SIMULATION);
+}
+
+
+/**
+* Leave a vehicle
+**/
+void Unit::leaveVehicle()
+{
+	btTransform trans;
+	
+	if (! this->drive) return;
+	
+	this->drive->body->getMotionState()->getWorldTransform(trans);
+	trans.setRotation(btQuaternion(0,0,0,1));
+	this->body->getMotionState()->setWorldTransform(trans);
+	this->body->forceActivationState(ACTIVE_TAG);
+	
+	this->drive->brakeForce = 0.0f;
+	this->drive->engineForce = 0.0f;
+	this->drive->steering = 0.0f;
+	
+	this->render = true;
+	this->drive = NULL;
+}
+
+
+/**
 * Use an object
 **/
 void Unit::doUse()
@@ -527,26 +562,13 @@ void Unit::doUse()
 	btTransform trans;
 
 	if (this->drive != NULL) {
-		// TODO: move this into a vehicleg leave method
-		this->render = true;
-		this->drive->body->getMotionState()->getWorldTransform(trans);
-		trans.setRotation(btQuaternion(0,0,0,1));
-		this->body->getMotionState()->setWorldTransform(trans);
-		this->body->forceActivationState(ACTIVE_TAG);
-
-		this->drive->brakeForce = 0.0f;
-		this->drive->engineForce = 0.0f;
-		this->drive->steering = 0.0f;
-		this->drive = NULL;
+		this->leaveVehicle();
 		return;
 	}
 
 	Entity *closest = this->infront(2.0f);
 	if (closest && closest->klass() == VEHICLE) {
-		// TODO: move this into a vehicle enter method
-		this->drive = (Vehicle*)closest;
-		this->render = false;
-		this->body->forceActivationState(DISABLE_SIMULATION);
+		this->enterVehicle((Vehicle*)closest);
 		return;
 	}
 	

@@ -121,4 +121,6 @@ class Unit : public Entity
 		void doLift();
 		void doDrop();
 		void emptySound();
+		void enterVehicle(Vehicle *v);
+		void leaveVehicle();
 };
