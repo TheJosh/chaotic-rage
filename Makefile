@@ -32,6 +32,7 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/util/*.cpp \
 	$(SRCPATH)/lua/*.cpp \
 	$(SRCPATH)/gui/*.cpp \
+	$(SRCPATH)/http/*.cpp \
 )
 
 OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES)) $(OBJPATH)/objload.o $(OBJPATH)/linux.o
@@ -79,6 +80,10 @@ $(OBJPATH)/objload.o: $(SRCPATH)/util/objload.l $(SRCPATH)/util/obj.h Makefile
 	@flex -o $(OBJPATH)/objload.cpp $(SRCPATH)/util/objload.l
 	@echo [CC] $(OBJPATH)/objload.cpp
 	@$(CXX) $(CFLAGS) -o $(OBJPATH)/objload.o -c $(OBJPATH)/objload.cpp -Wno-unused-function -Wno-unused-variable -I src
+	
+$(OBJPATH)/happyhttp.o: $(SRCPATH)/http/happyhttp.cpp $(SRCPATH)/http/happyhttp.h Makefile
+	@echo [CC] $<
+	@$(CXX) $(CFLAGS) -Wno-error -o $@ -c $< 
 	
 $(OBJPATH)/linux.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h Makefile
 	@echo [CC] $<
