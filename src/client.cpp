@@ -5,6 +5,7 @@
 #include <string>
 #include <SDL.h>
 #include "rage.h"
+#include "http/client_stats.h"
 
 
 using namespace std;
@@ -34,6 +35,11 @@ int main (int argc, char ** argv)
 
 	
 	st->render->setScreenSize(1000, 700, false, 0);
+	
+	#ifdef RELEASE
+	// This has to be after the OpenGL init
+	sendClientStats();
+	#endif
 	
 	// TODO: Make loading be async...
 	if (FEAT_INTRO) {
