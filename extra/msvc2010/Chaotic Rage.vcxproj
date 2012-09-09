@@ -59,7 +59,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../lib;../lib-bullet</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_net.lib;opengl32.lib;glu32.lib;glew32.lib;zziplib.lib;libConfuse.lib;zdll.lib;lua5.1.lib;freetype.lib;BulletSoftBody.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;guichan.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_net.lib;opengl32.lib;glu32.lib;glew32.lib;zziplib.lib;libConfuse.lib;zdll.lib;lua5.1.lib;freetype.lib;BulletSoftBody.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;guichan.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <IgnoreSpecificDefaultLibraries>MSVCRTD.LIB;MSVCRT100D.LIB</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -119,6 +119,8 @@
     <ClCompile Include="..\..\src\game.cpp" />
     <ClCompile Include="..\..\src\gamestate.cpp" />
     <ClCompile Include="..\..\src\gui\dialog.cpp" />
+    <ClCompile Include="..\..\src\http\client_stats.cpp" />
+    <ClCompile Include="..\..\src\http\happyhttp.cpp" />
     <ClCompile Include="..\..\src\intro.cpp" />
     <ClCompile Include="..\..\src\lua\ailogic.cpp" />
     <ClCompile Include="..\..\src\lua\gamelogic.cpp" />
@@ -175,6 +177,8 @@
     <ClInclude Include="..\..\src\game.h" />
     <ClInclude Include="..\..\src\gamestate.h" />
     <ClInclude Include="..\..\src\gui\dialog.h" />
+    <ClInclude Include="..\..\src\http\client_stats.h" />
+    <ClInclude Include="..\..\src\http\happyhttp.h" />
     <ClInclude Include="..\..\src\intro.h" />
     <ClInclude Include="..\..\src\lua\ailogic.h" />
     <ClInclude Include="..\..\src\lua\gamelogic.h" />

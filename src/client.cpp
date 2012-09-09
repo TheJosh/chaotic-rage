@@ -36,10 +36,10 @@ int main (int argc, char ** argv)
 	
 	st->render->setScreenSize(1000, 700, false, 0);
 	
-	#ifdef RELEASE
+	//#ifdef RELEASE
 	// This has to be after the OpenGL init
 	sendClientStats();
-	#endif
+	//#endif
 	
 	// TODO: Make loading be async...
 	if (FEAT_INTRO) {

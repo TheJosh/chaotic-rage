@@ -56,21 +56,22 @@ void sendClientStats()
 	int l = strlen(params);
 	
 	
-	happyhttp::Connection conn("api.chaoticrage.com", 80);
-	conn.setcallbacks(0, 0, 0, 0);
+	//try {
+		happyhttp::Connection conn("api.chaoticrage.com", 80);
+		conn.setcallbacks(0, 0, 0, 0);
 	
-	conn.putrequest("POST", "/client_stats");
-	conn.putheader("Connection", "close");
-	conn.putheader("Content-Length", l);
-	conn.putheader("Content-type", "application/x-www-form-urlencoded");
-	conn.putheader("Accept", "text/plain");
-	conn.endheaders();
-	conn.send((const unsigned char*)params, l);
+		conn.putrequest("POST", "/client_stats");
+		conn.putheader("Connection", "close");
+		conn.putheader("Content-Length", l);
+		conn.putheader("Content-type", "application/x-www-form-urlencoded");
+		conn.putheader("Accept", "text/plain");
+		conn.endheaders();
+		conn.send((const unsigned char*)params, l);
 	
-	while (conn.outstanding()) {
-		conn.pump();
-	}
-	
+		while (conn.outstanding()) {
+			conn.pump();
+		}
+	//} catch (happyhttp::Wobbly w) {}
 	
 	free(gl_vendor);
 	free(gl_renderer);

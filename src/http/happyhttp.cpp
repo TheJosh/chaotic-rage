@@ -27,6 +27,11 @@
 
 #include "happyhttp.h"
 
+// MSVC++2010
+#ifdef _WIN32
+#define WIN32
+#endif
+
 #ifndef WIN32
 //	#include <sys/types.h>
 	#include <sys/socket.h>
@@ -38,7 +43,9 @@
 
 #ifdef WIN32
 	#include <winsock2.h>
+	#include <ws2tcpip.h>
 	#define vsnprintf _vsnprintf
+	#define strcasecmp stricmp
 #endif
 
 #include <cstdio>
@@ -173,19 +180,18 @@ bool datawaiting( int sock )
 // returns 0 if bad
 struct in_addr *atoaddr( const char* address)
 {
-	struct hostent *host;
-	static struct in_addr saddr;
+	struct addrinfo *result;
+	struct addrinfo hints;
+	
+	memset(&hints, 0, sizeof(struct addrinfo));
+	hints.ai_family = AF_INET;
 
-	// First try nnn.nnn.nnn.nnn form
-	saddr.s_addr = inet_addr(address);
-	if (saddr.s_addr != INADDR_NONE)
-		return &saddr;
+	int ret = getaddrinfo(address, NULL, NULL, &result);
+    if ( ret != 0 ) return 0;
 
-	host = gethostbyname(address);
-	if( host )
-		return (struct in_addr *) *host->h_addr_list;
-
-	return 0;
+	struct sockaddr_in* addr = (struct sockaddr_in*)result->ai_addr;
+	
+	return &addr->sin_addr;
 }
 
 
@@ -233,6 +239,10 @@ Connection::Connection( const char* host, int port ) :
 	m_Port( port ),
 	m_Sock(-1)
 {
+#ifdef WIN32
+	WSADATA wsaData;
+	WSAStartup(MAKEWORD( 2, 2 ), &wsaData);
+#endif
 }
 
 
@@ -295,6 +305,9 @@ void Connection::close()
 Connection::~Connection()
 {
 	close();
+#ifdef WIN32
+	WSACleanup();
+#endif
 }
 
 void Connection::request( const char* method,
