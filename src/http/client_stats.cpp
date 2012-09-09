@@ -42,7 +42,7 @@ char *url_encode(char *str) {
 **/
 void sendClientStats()
 {
-	char * version = url_encode(VERSION);
+	char * version = url_encode((char*)VERSION);
 	char * gl_vendor = url_encode((char*)glGetString(GL_VENDOR));
 	char * gl_renderer = url_encode((char*)glGetString(GL_RENDERER));
 	char * gl_version = url_encode((char*)glGetString(GL_VERSION));
