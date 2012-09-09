@@ -103,7 +103,9 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen, int mul
 		exit(1);
 	}
 	
-	SDL_WM_SetCaption("Chaotic Rage", "Chaotic Rage");
+	char buff[100];
+	sprintf(buff, "Chaotic Rage %s", VERSION);
+	SDL_WM_SetCaption(buff, buff);
 	
 
 	// SDL_Image

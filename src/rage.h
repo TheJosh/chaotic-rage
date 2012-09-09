@@ -16,12 +16,13 @@
 #ifdef RELEASE
 	#define FEAT_INTRO true
 	#define FEAT_MENU true
+	#define VERSION "Beta 6"
 #else
 	#define FEAT_INTRO false
 	#define FEAT_MENU true
 	#define DEBUG_OPTIONS
+	#define VERSION "Git Master"
 #endif
-
 
 // Frames-per-second to run all in-game animations at.
 // Specified as a float to help out some arithmetic
