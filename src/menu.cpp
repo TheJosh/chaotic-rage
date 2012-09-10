@@ -48,7 +48,10 @@ void Menu::doit()
 	
 	// Maps
 	maps.push_back("test");
-	
+	maps.push_back("tanktest");
+	maps.push_back("blank");
+	maps.push_back("arena");
+
 	// Gametypes
 	{
 		vector<GameType*> * ut = st->mm->getAllGameTypes();

@@ -47,7 +47,7 @@ void sendClientStats()
 	char * gl_renderer = url_encode((char*)glGetString(GL_RENDERER));
 	char * gl_version = url_encode((char*)glGetString(GL_VERSION));
 	
-	char * params = (char*)malloc(50 + strlen(gl_vendor) + strlen(gl_renderer) + strlen(gl_version));
+	char * params = (char*)malloc(50 + strlen(version) + strlen(gl_vendor) + strlen(gl_renderer) + strlen(gl_version));
 	sprintf(params,
 		"version=%s&glvendor=%s&glrenderer=%s&glversion=%s",
 		version,
