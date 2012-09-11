@@ -64,16 +64,15 @@ int main (int argc, char ** argv)
 		st->mm->addMod(mod);
 	}
 	
+	Menu *m = new Menu(st);
+	
 	// If you have a lot of debugging work to do, uncomment this
 	// and change your settings as required.
-	/*
-	Menu *m = new Menu(st);
-	m->startGame("tanktest", "boredem", "robot", 0, 1);
-	exit(0);
-	*/
+	m->startGame("heighttest", "boredem", "robot", 0, 1);
 	
-	Menu *m = new Menu(st);
-	m->doit();
+	// Run the menu
+	//m->doit();
+	
 	exit(0);
 }
 

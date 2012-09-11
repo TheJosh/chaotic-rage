@@ -60,6 +60,8 @@ class Map {
 		Render * render;
 		GameState * st;
 		Mod * mod;
+		float * heightmap;
+		int heightmap_w, heightmap_h;
 		
 	public:
 		SpritePtr background;
@@ -82,7 +84,8 @@ class Map {
 		float getRandomX();
 		float getRandomY();
 		
-		btCollisionShape * createGroundShape();
+		void createHeightmapRaw();
+		btRigidBody * createGroundBody();
 };
 
 

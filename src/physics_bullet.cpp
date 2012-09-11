@@ -50,21 +50,23 @@ void PhysicsBullet::init()
 **/
 void PhysicsBullet::preGame()
 {
-	btCollisionShape* groundShape = st->curr_map->createGroundShape();
-	if (! groundShape) {
-		groundShape = new btBoxShape(btVector3(this->st->curr_map->width/2.0f, this->st->curr_map->height/2.0f, 10.0f));
+	this->groundRigidBody = st->curr_map->createGroundBody();
+	
+	// If the map fails to return a terrain, we will create our own (flat one)
+	if (! this->groundRigidBody) {
+		btCollisionShape* groundShape = new btBoxShape(btVector3(this->st->curr_map->width/2.0f, this->st->curr_map->height/2.0f, 10.0f));
+		
+		btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(this->st->curr_map->width/2.0f, this->st->curr_map->height/2.0f, -10.0f)));
+		btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
+			0,
+			groundMotionState,
+			groundShape,
+			btVector3(0,0,0)
+		);
+		
+		this->groundRigidBody = new btRigidBody(groundRigidBodyCI);
 	}
 	
-	// Ground
-	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(this->st->curr_map->width/2.0f, this->st->curr_map->height/2.0f, 0.0f)));
-	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
-		0,
-		groundMotionState,
-		groundShape,
-		btVector3(0,0,0)
-	);
-	
-	this->groundRigidBody = new btRigidBody(groundRigidBodyCI);
 	this->groundRigidBody->setRestitution(0.f);
 	this->groundRigidBody->setFriction(10.f);
 	dynamicsWorld->addRigidBody(groundRigidBody);	//, COL_GROUND, COL_ALIVE | COL_DEAD

@@ -50,6 +50,7 @@ void Menu::doit()
 	// Maps
 	maps.push_back("test");
 	maps.push_back("tanktest");
+	maps.push_back("heighttest");
 	maps.push_back("blank");
 	maps.push_back("arena");
 

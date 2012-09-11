@@ -424,50 +424,62 @@ float Map::getRandomY()
 }
 
 
-/*
-* Create the "ground" for the map
+/**
+* Take the heightmap image and turn it into a data array
 **/
-btCollisionShape * Map::createGroundShape()
+void Map::createHeightmapRaw()
 {
-	// This is a bit crap.
-	
-	
-	SpritePtr heightmap = this->render->loadSprite("heightmap.png", mod);
-	if (! heightmap) return NULL;
-	
-	
-	int nX, nZ, j;
+	int nX, nZ;
 	Uint8 r,g,b;
 	
+	SpritePtr sprite = this->render->loadSprite("heightmap.png", mod);
+	if (! sprite) return;;
 	
-	float * raw = new float[heightmap->w * heightmap->h];
+	heightmap = new float[sprite->w * sprite->h];
+	heightmap_w = sprite->w;
+	heightmap_h = sprite->h;
 	
-	j = 0;
-	for( nZ = 0; nZ < heightmap->h; nZ += 1 ) {
-		for( nX = 0; nX < heightmap->w; nX += 1 ) {
+	for ( nZ = 0; nZ < heightmap_h; nZ += 1 ) {
+		for ( nX = 0; nX < heightmap_w; nX += 1 ) {
 			
-			Uint32 pixel = getPixel(heightmap->orig, nX, nZ);
-			SDL_GetRGB(pixel, heightmap->orig->format, &r, &g, &b);
+			Uint32 pixel = getPixel(sprite->orig, nX, nZ);
+			SDL_GetRGB(pixel, sprite->orig->format, &r, &g, &b);
 			
-			raw[j] = r / 255.0f * 20.0f;
-			cout << raw[j] << " ";
+			heightmap[nZ * heightmap_w + nX] = r / 255.0f * 2.0f;
+			
 		}
 	}
 	
+	this->render->freeSprite(sprite);
+}
+
+
+/*
+* Create the "ground" for the map
+*
+* This is a bit crap - the image is loaded twice (1x physics, 1x render)
+**/
+btRigidBody * Map::createGroundBody()
+{
+	if (heightmap == NULL) createHeightmapRaw();
+	if (heightmap == NULL) return NULL;
 	
 	float minHeight = 0.0f;
-	float maxHeight = 20.0f;
+	float maxHeight = 2.0f;
 	bool flipQuadEdges = false;
 	
-	cout << "\n\nAbout to create heightmap\n";
+	btHeightfieldTerrainShape * groundShape = new btHeightfieldTerrainShape(heightmap_w, heightmap_h, heightmap, 0, minHeight, maxHeight, 2, PHY_FLOAT, flipQuadEdges);
 	
-	btHeightfieldTerrainShape * ret = new btHeightfieldTerrainShape(heightmap->w, heightmap->h, raw, 0, minHeight, maxHeight, 2, PHY_FLOAT, flipQuadEdges);
+	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(this->st->curr_map->width/2.0f, this->st->curr_map->height/2.0f, -2.0f)));
 	
-	cout << "DONE!\n\n";
+	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
+		0,
+		groundMotionState,
+		groundShape,
+		btVector3(0,0,0)
+	);
 	
-	this->render->freeSprite(heightmap);
-	
-	return (btCollisionShape*)ret;
+	return new btRigidBody(groundRigidBodyCI);
 }
 
 
