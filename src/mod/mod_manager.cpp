@@ -58,6 +58,37 @@ Mod * ModManager::getDefaultMod()
 	return this->mods->at(0);
 }
 
+
+/**
+* Get a list of all loaded mods
+* Don't forget to delete() the result
+**/
+vector<string> * ModManager::getLoadedMods()
+{
+	vector<string> * out = new vector<string>();
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		out->push_back(mod->name);
+	}
+	return out;
+}
+
+
+/**
+* Get a list of all available mods
+* Don't forget to delete() the result
+**/
+vector<string> * ModManager::getAvailMods()
+{
+	vector<string> * out = new vector<string>();
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		out->push_back(mod->name);
+	}
+	return out;
+}
+
+
 /**
 * Reload the attrs for all mods.
 * Development/Debugging feature only.

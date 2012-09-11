@@ -47,12 +47,13 @@ class Menu
 		Dialog *dialog;
 		
 	public:
-		// Data for the "new game" dialog
+		// Data for the dialogs
 		vector<string> maps;
 		vector<string> gametypes;
 		vector<string> viewmodes;
 		vector<string> unittypes;
-		
+		ModManager *mm;
+
 	public:
 		// Init etc
 		Menu(GameState *st);
