@@ -42,10 +42,10 @@ int main (int argc, char ** argv)
 	#endif
 	
 	// TODO: Make loading be async...
-	if (FEAT_INTRO) {
+	#ifdef RELEASE
 		Intro *i = new Intro(st);
 		i->doit();
-	}
+	#endif
 	
 	// Load data
 	Mod * mod = new Mod(st, "data/cr");
@@ -63,19 +63,17 @@ int main (int argc, char ** argv)
 		}
 		st->mm->addMod(mod);
 	}
-
-
-	if (FEAT_MENU) {
-		Menu *m = new Menu(st);
-		m->doit();
-
-	} else {
-		// Ultra-debug mode - stratight into a game
-		Menu *m = new Menu(st);
-		m->startGame("tanktest", "boredem", "robot", 0, 1);
-
-	}
 	
+	// If you have a lot of debugging work to do, uncomment this
+	// and change your settings as required.
+	/*
+	Menu *m = new Menu(st);
+	m->startGame("tanktest", "boredem", "robot", 0, 1);
+	exit(0);
+	*/
+	
+	Menu *m = new Menu(st);
+	m->doit();
 	exit(0);
 }
 
