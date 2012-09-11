@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <math.h>
+#include <btBulletDynamicsCommon.h>
+#include <BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
 #include "rage.h"
 
 using namespace std;
@@ -169,7 +171,7 @@ int Map::load(string name, Render * render)
 	
 	string filename = "maps/";
 	filename.append(name);
-	Mod * mod = new Mod(st, filename);
+	mod = new Mod(st, filename);
 	
 	this->background = this->render->loadSprite("background.jpg", mod);
 	
@@ -420,5 +422,53 @@ float Map::getRandomY()
 {
 	return getRandomf(0, this->height);
 }
+
+
+/*
+* Create the "ground" for the map
+**/
+btCollisionShape * Map::createGroundShape()
+{
+	// This is a bit crap.
+	
+	
+	SpritePtr heightmap = this->render->loadSprite("heightmap.png", mod);
+	if (! heightmap) return NULL;
+	
+	
+	int nX, nZ, j;
+	Uint8 r,g,b;
+	
+	
+	float * raw = new float[heightmap->w * heightmap->h];
+	
+	j = 0;
+	for( nZ = 0; nZ < heightmap->h; nZ += 1 ) {
+		for( nX = 0; nX < heightmap->w; nX += 1 ) {
+			
+			Uint32 pixel = getPixel(heightmap->orig, nX, nZ);
+			SDL_GetRGB(pixel, heightmap->orig->format, &r, &g, &b);
+			
+			raw[j] = r / 255.0f * 20.0f;
+			cout << raw[j] << " ";
+		}
+	}
+	
+	
+	float minHeight = 0.0f;
+	float maxHeight = 20.0f;
+	bool flipQuadEdges = false;
+	
+	cout << "\n\nAbout to create heightmap\n";
+	
+	btHeightfieldTerrainShape * ret = new btHeightfieldTerrainShape(heightmap->w, heightmap->h, raw, 0, minHeight, maxHeight, 2, PHY_FLOAT, flipQuadEdges);
+	
+	cout << "DONE!\n\n";
+	
+	this->render->freeSprite(heightmap);
+	
+	return (btCollisionShape*)ret;
+}
+
 
 

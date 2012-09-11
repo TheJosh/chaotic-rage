@@ -50,10 +50,13 @@ void PhysicsBullet::init()
 **/
 void PhysicsBullet::preGame()
 {
-	btCollisionShape* groundShape = new btBoxShape(btVector3(100.f, 100.f, 10.0f));
+	btCollisionShape* groundShape = st->curr_map->createGroundShape();
+	if (! groundShape) {
+		groundShape = new btBoxShape(btVector3(this->st->curr_map->width/2.0f, this->st->curr_map->height/2.0f, 10.0f));
+	}
 	
 	// Ground
-	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(100.0f,100.0f,-10.0f)));
+	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(this->st->curr_map->width/2.0f, this->st->curr_map->height/2.0f, 0.0f)));
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
 		0,
 		groundMotionState,

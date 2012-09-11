@@ -59,6 +59,7 @@ class Map {
 		vector<Light*> lights;
 		Render * render;
 		GameState * st;
+		Mod * mod;
 		
 	public:
 		SpritePtr background;
@@ -80,4 +81,8 @@ class Map {
 		
 		float getRandomX();
 		float getRandomY();
+		
+		btCollisionShape * createGroundShape();
 };
+
+
