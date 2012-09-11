@@ -104,3 +104,16 @@ class DialogQuit : public Dialog, public gcn::ActionListener {
 };
 
 
+/**
+* Show mod selection
+**/
+class DialogMods : public Dialog, public gcn::ActionListener {
+	public:
+		DialogMods();
+		virtual gcn::Container * setup();
+		virtual string getName() { return "mods"; }
+		virtual void action(const gcn::ActionEvent& actionEvent);
+};
+
+
+

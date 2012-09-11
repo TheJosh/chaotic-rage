@@ -22,7 +22,9 @@ class ModManager {
 		void addMod(Mod * mod);
 		Mod * getMod(string name);
 		Mod * getDefaultMod();
-		
+		vector<string> * getLoadedMods();
+		vector<string> * getAvailMods();
+
 		bool reloadAttrs();
 		
 		AIType * getAIType(string name);

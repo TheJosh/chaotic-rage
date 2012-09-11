@@ -25,6 +25,7 @@ using namespace std;
 Menu::Menu(GameState *st)
 {
 	this->st = st;
+	this->mm = st->mm;
 	this->render = (RenderOpenGL*) st->render;
 	this->dialog = NULL;
 }
@@ -350,7 +351,7 @@ void Menu::doNetwork()
 
 void Menu::doSettings()
 {
-	this->setDialog(new DialogNull());
+	this->setDialog(new DialogMods());
 }
 
 void Menu::doControls()
