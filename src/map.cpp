@@ -136,6 +136,7 @@ void Light::setSpecular(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 Map::Map(GameState * st)
 {
 	this->st = st;
+	this->heightmap = NULL;
 	this->background = NULL;
 }
 
@@ -445,7 +446,7 @@ void Map::createHeightmapRaw()
 			Uint32 pixel = getPixel(sprite->orig, nX, nZ);
 			SDL_GetRGB(pixel, sprite->orig->format, &r, &g, &b);
 			
-			heightmap[nZ * heightmap_w + nX] = r / 255.0f * 2.0f;
+			heightmap[nZ * heightmap_w + nX] = r / 255.0f * 4.0f;
 			
 		}
 	}
@@ -465,7 +466,7 @@ btRigidBody * Map::createGroundBody()
 	if (heightmap == NULL) return NULL;
 	
 	float minHeight = 0.0f;
-	float maxHeight = 2.0f;
+	float maxHeight = 4.0f;
 	bool flipQuadEdges = false;
 	
 	btHeightfieldTerrainShape * groundShape = new btHeightfieldTerrainShape(heightmap_w, heightmap_h, heightmap, 0, minHeight, maxHeight, 2, PHY_FLOAT, flipQuadEdges);
