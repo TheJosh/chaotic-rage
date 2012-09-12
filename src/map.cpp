@@ -469,9 +469,23 @@ btRigidBody * Map::createGroundBody()
 	float maxHeight = 4.0f;
 	bool flipQuadEdges = false;
 	
-	btHeightfieldTerrainShape * groundShape = new btHeightfieldTerrainShape(heightmap_w, heightmap_h, heightmap, 0, minHeight, maxHeight, 2, PHY_FLOAT, flipQuadEdges);
+	btHeightfieldTerrainShape * groundShape = new btHeightfieldTerrainShape(
+		heightmap_w, heightmap_h, heightmap,
+		0,
+		minHeight, maxHeight,
+		2, PHY_FLOAT, flipQuadEdges
+	);
 	
-	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(this->st->curr_map->width/2.0f, this->st->curr_map->height/2.0f, -2.0f)));
+	groundShape->setLocalScaling(btVector3(
+		(float)this->width / (float)heightmap_w,
+		(float)this->height / (float)heightmap_h,
+		1.0f
+	));
+	
+	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(
+		btQuaternion(0,0,0,1),
+		btVector3(this->width/2.0f, this->height/2.0f, -2.0f)
+	));
 	
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
 		0,
