@@ -987,7 +987,9 @@ void RenderOpenGL::map()
 	
 	
 	glPushMatrix();
-	glTranslatef(0,0,-1);
+	
+	// TODO: Should this be a part of the mesh create instead of part of the render?
+	glScalef(this->st->curr_map->heightmapScaleX(), this->st->curr_map->heightmapScaleY(), this->st->curr_map->heightmapScaleZ());
 	
 	glBindBuffer(GL_ARRAY_BUFFER, this->ter_vboid);
 	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));

@@ -85,6 +85,9 @@ class Map {
 		float getRandomY();
 		
 		void createHeightmapRaw();
+		float heightmapScaleX();
+		float heightmapScaleY();
+		float heightmapScaleZ();
 		btRigidBody * createGroundBody();
 };
 

@@ -446,7 +446,7 @@ void Map::createHeightmapRaw()
 			Uint32 pixel = getPixel(sprite->orig, nX, nZ);
 			SDL_GetRGB(pixel, sprite->orig->format, &r, &g, &b);
 			
-			heightmap[nZ * heightmap_w + nX] = r / 255.0f * 4.0f;
+			heightmap[nZ * heightmap_w + nX] = r / 255.0f * 4.0f;		// 4.0f = maxheight
 			
 		}
 	}
@@ -454,6 +454,22 @@ void Map::createHeightmapRaw()
 	this->render->freeSprite(sprite);
 }
 
+
+float Map::heightmapScaleX()
+{
+	return (float)width / (float)heightmap_w;
+}
+
+
+float Map::heightmapScaleY()
+{
+	return (float)height / (float)heightmap_h;
+}
+
+float Map::heightmapScaleZ()
+{
+	return 4.0f;				// 4.0f = maxheight
+}
 
 /*
 * Create the "ground" for the map
@@ -466,7 +482,7 @@ btRigidBody * Map::createGroundBody()
 	if (heightmap == NULL) return NULL;
 	
 	float minHeight = 0.0f;
-	float maxHeight = 4.0f;
+	float maxHeight = 4.0f;				// 4.0f = maxheight
 	bool flipQuadEdges = false;
 	
 	btHeightfieldTerrainShape * groundShape = new btHeightfieldTerrainShape(
@@ -477,14 +493,14 @@ btRigidBody * Map::createGroundBody()
 	);
 	
 	groundShape->setLocalScaling(btVector3(
-		(float)this->width / (float)heightmap_w,
-		(float)this->height / (float)heightmap_h,
+		heightmapScaleX(),
+		heightmapScaleY(),
 		1.0f
 	));
 	
 	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(
 		btQuaternion(0,0,0,1),
-		btVector3(this->width/2.0f, this->height/2.0f, -2.0f)
+		btVector3(this->width/2.0f, this->height/2.0f, 2.0f)
 	));
 	
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
