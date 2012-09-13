@@ -60,13 +60,15 @@ class Map {
 		Render * render;
 		GameState * st;
 		Mod * mod;
-		float * heightmap;
-		int heightmap_w, heightmap_h;
 		
 	public:
 		SpritePtr background;
 		int width;
 		int height;
+		
+		float * heightmap;
+		int heightmap_w;
+		int heightmap_h;
 		
 	public:
 		Map(GameState * st);

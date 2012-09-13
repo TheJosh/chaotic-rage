@@ -177,12 +177,6 @@ int Map::load(string name, Render * render)
 	this->background = this->render->loadSprite("background.jpg", mod);
 	
 	{
-		SpritePtr heightmap = this->render->loadSprite("heightmap.png", mod);
-		this->render->loadHeightmap(heightmap);
-		this->render->freeSprite(heightmap);
-	}
-	
-	{
 		cfg_t *cfg, *cfg_sub;
 		int num_types, j, k;
 		

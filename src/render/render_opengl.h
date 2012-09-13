@@ -100,8 +100,8 @@ class RenderOpenGL : public Render
 		virtual int getSpriteHeight(SpritePtr sprite);
 		virtual void enablePhysicsDebug();
 		virtual void disablePhysicsDebug();
-		virtual void loadHeightmap(SpritePtr sprite);
-		virtual void freeHeightmap(SpritePtr sprite);
+		virtual void loadHeightmap();
+		virtual void freeHeightmap();
 		
 	public:
 		RenderOpenGL(GameState * st);

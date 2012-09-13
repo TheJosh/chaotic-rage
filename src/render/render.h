@@ -104,12 +104,12 @@ class Render
 		/**
 		* Load a heightmap from an image.
 		**/
-		virtual void loadHeightmap(SpritePtr sprite) {}
+		virtual void loadHeightmap() {}
 		
 		/**
 		* Free a loaded heightmap.
 		**/
-		virtual void freeHeightmap(SpritePtr sprite) {}
+		virtual void freeHeightmap() {}
 		
 		
 	public:

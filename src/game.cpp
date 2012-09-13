@@ -34,6 +34,7 @@ void gameLoop(GameState *st, Render *render)
 	SDL_WarpMouse(400, 30);
 	
 	st->render->preGame();
+	st->render->loadHeightmap();
 	st->hud->removeAllDataTables();
 	
 	st->start();
@@ -96,6 +97,7 @@ void gameLoop(GameState *st, Render *render)
 	SDL_WM_GrabInput(SDL_GRAB_OFF);
 	
 	st->render->postGame();
+	st->render->freeHeightmap();
 	st->audio->stopAll();
 	st->physics->postGame();
 	

@@ -379,35 +379,33 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 /**
 * Loads a heightmap from a loaded image.
 **/
-void RenderOpenGL::loadHeightmap(SpritePtr sprite)
+void RenderOpenGL::loadHeightmap()
 {
 	int nX, nZ, nTri, j;
 	float flX, flZ;
-	Uint8 r,g,b;
 	
-	this->ter_size = sprite->w * sprite->h * 6;
+	if (st->curr_map->heightmap == NULL) st->curr_map->createHeightmapRaw();
+	if (st->curr_map->heightmap == NULL) return;
+	
+	this->ter_size = st->curr_map->heightmap_w * st->curr_map->heightmap_h * 6;
 	VBOvertex* vertexes = new VBOvertex[this->ter_size];
 	
 	j = 0;
-	for( nZ = 0; nZ < sprite->h; nZ += 1 ) {
-		for( nX = 0; nX < sprite->w; nX += 1 ) {
+	for( nZ = 0; nZ < st->curr_map->heightmap_h; nZ += 1 ) {
+		for( nX = 0; nX < st->curr_map->heightmap_w; nX += 1 ) {
 			for( nTri = 0; nTri < 6; nTri++ ) {
 				// Using This Quick Hack, Figure The X,Z Position Of The Point
 				flX = (float) nX + (( nTri == 1 || nTri == 2 || nTri == 5 ) ? 1.0f : 0.0f);
 				flZ = (float) nZ + (( nTri == 2 || nTri == 4 || nTri == 5 ) ? 1.0f : 0.0f);
 				
-				Uint32 pixel = getPixel(sprite->orig, nX, nZ);
-				SDL_GetRGB(pixel, sprite->orig->format, &r, &g, &b);
-				float height = r / 255.0f;
-				
 		 		vertexes[j].x = flX;// - ( sprite->w / 2 );
 				vertexes[j].y = flZ;// - ( sprite->h / 2 );
-				vertexes[j].z = height;
+				vertexes[j].z = st->curr_map->heightmap[nZ * st->curr_map->heightmap_w + nX];
 				vertexes[j].nx = 0.0f;
 				vertexes[j].ny = 0.0f;
 				vertexes[j].nz = 1.0f;
-				vertexes[j].tx = flX / sprite->w;
-				vertexes[j].ty = flZ / sprite->h;
+				vertexes[j].tx = flX / st->curr_map->heightmap_w;
+				vertexes[j].ty = flZ / st->curr_map->heightmap_h;
 				j++;
 			}
 		}
@@ -423,9 +421,9 @@ void RenderOpenGL::loadHeightmap(SpritePtr sprite)
 /**
 * Free a loaded heightmap.
 **/
-void RenderOpenGL::freeHeightmap(SpritePtr sprite)
+void RenderOpenGL::freeHeightmap()
 {
-	// TODO: Code this
+	glDeleteBuffers(1, &this->ter_vboid);
 }
 
 
@@ -989,7 +987,7 @@ void RenderOpenGL::map()
 	glPushMatrix();
 	
 	// TODO: Should this be a part of the mesh create instead of part of the render?
-	glScalef(this->st->curr_map->heightmapScaleX(), this->st->curr_map->heightmapScaleY(), this->st->curr_map->heightmapScaleZ());
+	glScalef(this->st->curr_map->heightmapScaleX(), this->st->curr_map->heightmapScaleY(), 1.0);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, this->ter_vboid);
 	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
