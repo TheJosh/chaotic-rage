@@ -49,9 +49,21 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	// TODO: Store the colshape and nuke at some point
 	// collisionShapes.push_back(colShape);
 	
-	// TODO: The Z is currently 5.0 so the player falls onto the map
-	// This should use a RayTest to find the actual ground-z and drop them there.
-	this->body = st->physics->addRigidBody(colShape, 0.1f, x, y, 5.0f);
+	z = 30.0f;
+	
+	{
+		btVector3 begin(x, y, 30.0f);
+		btVector3 end(x, y, 0.0f);
+		
+		btCollisionWorld::ClosestRayResultCallback cb(begin, end);
+		this->st->physics->getWorld()->rayTest(begin, end, cb);
+		
+		if (cb.hasHit()) {
+			z = cb.m_hitPointWorld.z() + 1.f;		// height/2
+		}
+	}
+	
+	this->body = st->physics->addRigidBody(colShape, 0.1f, x, y, z);
 	
 	this->body->setUserPointer(this);
 	
