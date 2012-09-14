@@ -87,6 +87,7 @@ class Map {
 		float getRandomY();
 		
 		void createHeightmapRaw();
+		float heightmapGet(int X, int Y);
 		float heightmapScaleX();
 		float heightmapScaleY();
 		float heightmapScaleZ();

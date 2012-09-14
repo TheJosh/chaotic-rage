@@ -449,6 +449,12 @@ void Map::createHeightmapRaw()
 }
 
 
+float Map::heightmapGet(int X, int Y)
+{
+	return heightmap[Y * heightmap_w + X];
+}
+
+
 float Map::heightmapScaleX()
 {
 	return (float)width / (float)heightmap_w;

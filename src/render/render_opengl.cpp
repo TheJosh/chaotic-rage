@@ -393,6 +393,18 @@ void RenderOpenGL::loadHeightmap()
 	j = 0;
 	for( nZ = 0; nZ < st->curr_map->heightmap_h - 1; nZ += 1 ) {
 		for( nX = 0; nX < st->curr_map->heightmap_w; nX += 1 ) {
+			
+			// u = p2 - p1; v = p3 - p1
+			btVector3 u = btVector3(nX, nZ + 1, st->curr_map->heightmapGet(nX, nZ + 1)) - btVector3(nX, nZ, st->curr_map->heightmapGet(nX, nZ));
+			btVector3 v = btVector3(nX + 1, nZ, st->curr_map->heightmapGet(nX + 1, nZ)) - btVector3(nX, nZ, st->curr_map->heightmapGet(nX, nZ));
+			
+			// calc vector
+			btVector3 normal = btVector3(
+				u.y() * v.z() - u.z() * v.y(),
+				u.z() * v.x() - u.x() * v.z(),
+				u.x() * v.y() - u.y() * v.x()
+			);
+			
 			for( nTri = 0; nTri < 6; nTri++ ) {
 				// Using This Quick Hack, Figure The X,Z Position Of The Point
 				flX = (float) nX + (( nTri == 1 || nTri == 2 || nTri == 5 ) ? 1.0f : 0.0f);
@@ -400,10 +412,10 @@ void RenderOpenGL::loadHeightmap()
 				
 		 		vertexes[j].x = flX;
 				vertexes[j].y = flZ;
-				vertexes[j].z = st->curr_map->heightmap[(int)(flZ * st->curr_map->heightmap_w + flX)];
-				vertexes[j].nx = 0.0f;
-				vertexes[j].ny = 0.0f;
-				vertexes[j].nz = 1.0f;
+				vertexes[j].z = st->curr_map->heightmapGet(flX, flZ);
+				vertexes[j].nx = normal.x();
+				vertexes[j].ny = normal.y();
+				vertexes[j].nz = normal.z();
 				vertexes[j].tx = flX / st->curr_map->heightmap_w;
 				vertexes[j].ty = flZ / st->curr_map->heightmap_h;
 				j++;
