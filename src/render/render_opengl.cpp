@@ -989,7 +989,7 @@ void RenderOpenGL::map()
 {
 	glEnable(GL_NORMALIZE);
 	glDisable(GL_BLEND);
-	glBindTexture(GL_TEXTURE_2D, st->curr_map->areas[0]->type->texture->pixels);
+	glBindTexture(GL_TEXTURE_2D, st->curr_map->terrain->pixels);
 	
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);

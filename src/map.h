@@ -63,6 +63,7 @@ class Map {
 		
 	public:
 		SpritePtr background;
+		SpritePtr terrain;
 		int width;
 		int height;
 		

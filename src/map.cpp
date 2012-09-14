@@ -138,6 +138,7 @@ Map::Map(GameState * st)
 	this->st = st;
 	this->heightmap = NULL;
 	this->background = NULL;
+	this->terrain = NULL;
 }
 
 Map::~Map()
@@ -175,7 +176,8 @@ int Map::load(string name, Render * render)
 	mod = new Mod(st, filename);
 	
 	this->background = this->render->loadSprite("background.jpg", mod);
-	
+	this->terrain = this->render->loadSprite("terrain.png", mod);
+
 	{
 		cfg_t *cfg, *cfg_sub;
 		int num_types, j, k;
