@@ -165,7 +165,7 @@ void Player::update(int delta)
 	
 
 	if (!this->onground()) {
-		linearVelocity += btVector3(0.0f, 0.0f, -1.7f);
+		linearVelocity += btVector3(0.0f, 0.0f, -0.7f);
 		body->setLinearVelocity (linearVelocity);
 
 	} else if (!this->key[KEY_UP] && !this->key[KEY_DOWN] && !this->key[KEY_LEFT] && !this->key[KEY_RIGHT]) {

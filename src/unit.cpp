@@ -212,7 +212,7 @@ bool Unit::onground()
 	down.normalize ();
 
 	btVector3 begin = xform.getOrigin();
-	btVector3 end = begin + down * 10.0f;
+	btVector3 end = begin + down * 1.9f;		// half unit height + a little
 
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
