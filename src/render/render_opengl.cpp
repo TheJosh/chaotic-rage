@@ -377,7 +377,8 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 
 
 /**
-* Loads a heightmap from a loaded image.
+* Loads a heightmap from the raw heightmap data (an array of floats).
+* TODO: This should use TRIANGLE_STRIPS not TRIANGLES for rendering.
 **/
 void RenderOpenGL::loadHeightmap()
 {
@@ -1006,7 +1007,7 @@ void RenderOpenGL::map()
 	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
 	glClientActiveTexture(GL_TEXTURE0);
 	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, this->ter_size);
+	glDrawArrays(GL_TRIANGLES, 0, this->ter_size);
 	
 	glPopMatrix();
 	
