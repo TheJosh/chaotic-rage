@@ -44,7 +44,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	this->setModifiers(0);
 
 	// TODO: The colShape should be tied to the wall type.
-	btCollisionShape* colShape = new btBoxShape(btVector3(1.f, 1.f, 2.f));
+	btCollisionShape* colShape = new btCapsuleShapeZ(0.9f, 1.2f);
 	
 	// TODO: Store the colshape and nuke at some point
 	// collisionShapes.push_back(colShape);
@@ -67,7 +67,10 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	
 	this->body->setUserPointer(this);
 	
-	
+	body->setSleepingThresholds(0.0, 0.0);
+	body->setAngularFactor(0.0);
+	body->setFriction(0.5f);
+
 	// access sounds using this->uc->getSound(type)
 	// see unittype.h for types (e.g. UNIT_SOUND_DEATH)
 	// example:

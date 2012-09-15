@@ -14,9 +14,6 @@ Player::Player(UnitType *uc, GameState *st, float x, float y, float z) : Unit(uc
 {
 	for (int i = 0; i < 16; i++) this->key[i] = 0;
 	this->mouse_angle = 0.0;
-	
-	body->setSleepingThresholds(0.0, 0.0);
-	body->setAngularFactor(0.0);
 }
 
 Player::~Player()
