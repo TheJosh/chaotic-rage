@@ -392,7 +392,7 @@ void RenderOpenGL::loadHeightmap()
 	
 	j = 0;
 	for( nZ = 0; nZ < st->curr_map->heightmap_h - 1; nZ += 1 ) {
-		for( nX = 0; nX < st->curr_map->heightmap_w; nX += 1 ) {
+		for( nX = 0; nX < st->curr_map->heightmap_w - 1; nX += 1 ) {
 			
 			// u = p2 - p1; v = p3 - p1
 			btVector3 u = btVector3(nX, nZ + 1, st->curr_map->heightmapGet(nX, nZ + 1)) - btVector3(nX, nZ, st->curr_map->heightmapGet(nX, nZ));
