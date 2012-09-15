@@ -201,6 +201,26 @@ Entity * Unit::infront(float range)
 }
 
 
+/**
+* Are we on the ground?
+**/
+bool Unit::onground()
+{
+	btTransform xform;
+	body->getMotionState()->getWorldTransform (xform);
+	btVector3 down = -xform.getBasis()[2];
+	down.normalize ();
+
+	btVector3 begin = xform.getOrigin();
+	btVector3 end = begin + down * 10.0f;
+
+	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
+	this->st->physics->getWorld()->rayTest(begin, end, cb);
+
+	return (cb.hasHit());
+}
+
+
 void Unit::meleeAttack()
 {
 	if (this->melee_time != 0) return;
