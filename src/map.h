@@ -70,7 +70,8 @@ class Map {
 		float * heightmap;
 		int heightmap_w;
 		int heightmap_h;
-		
+		float heightmap_z;
+
 	public:
 		Map(GameState * st);
 		~Map();

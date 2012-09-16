@@ -52,6 +52,7 @@ void Menu::doit()
 	maps.push_back("tanktest");
 	maps.push_back("heighttest");
 	maps.push_back("arena");
+	maps.push_back("towers");
 
 	// Gametypes
 	{

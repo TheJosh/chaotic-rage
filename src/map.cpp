@@ -82,6 +82,8 @@ static cfg_opt_t opts[] =
 	CFG_INT((char*) "width", 0, CFGF_NONE),
 	CFG_INT((char*) "height", 0, CFGF_NONE),
 	
+	CFG_FLOAT((char*) "heightmap-z", 4.0f, CFGF_NONE),
+
 	CFG_END()
 };
 
@@ -156,8 +158,8 @@ int Map::load(string name, Render * render)
 	Area *a;
 	
 	this->render = render;
-	this->width = 2000;
-	this->height = 2000;
+	this->width = 100;
+	this->height = 100;
 	
 
 	// Default area
@@ -176,7 +178,10 @@ int Map::load(string name, Render * render)
 	mod = new Mod(st, filename);
 	
 	this->background = this->render->loadSprite("background.jpg", mod);
+	if (! this->background) reportFatalError("Unable to load map; no background img");
+
 	this->terrain = this->render->loadSprite("terrain.png", mod);
+	if (! this->terrain) reportFatalError("Unable to load map; no terran img");
 
 	{
 		cfg_t *cfg, *cfg_sub;
@@ -197,7 +202,8 @@ int Map::load(string name, Render * render)
 		this->height = cfg_getint(cfg, "height");
 		if (this->width == 0 or this->height == 0) return 0;
 		
-		
+		this->heightmap_z = cfg_getfloat(cfg, "heightmap-z");
+
 		// Walls
 		num_types = cfg_size(cfg, "wall");
 		for (j = 0; j < num_types; j++) {
@@ -442,7 +448,7 @@ void Map::createHeightmapRaw()
 			Uint32 pixel = getPixel(sprite->orig, nX, nZ);
 			SDL_GetRGB(pixel, sprite->orig->format, &r, &g, &b);
 			
-			heightmap[nZ * heightmap_w + nX] = r / 255.0f * 4.0f;		// 4.0f = maxheight
+			heightmap[nZ * heightmap_w + nX] = r / 255.0f * this->heightmap_z;
 			
 		}
 	}
@@ -470,7 +476,7 @@ float Map::heightmapScaleY()
 
 float Map::heightmapScaleZ()
 {
-	return 4.0f;				// 4.0f = maxheight
+	return this->heightmap_z;
 }
 
 /*
@@ -483,14 +489,12 @@ btRigidBody * Map::createGroundBody()
 	if (heightmap == NULL) createHeightmapRaw();
 	if (heightmap == NULL) return NULL;
 	
-	float minHeight = 0.0f;
-	float maxHeight = 4.0f;				// 4.0f = maxheight
 	bool flipQuadEdges = false;
 	
 	btHeightfieldTerrainShape * groundShape = new btHeightfieldTerrainShape(
 		heightmap_w, heightmap_h, heightmap,
 		0,
-		minHeight, maxHeight,
+		0.0f, this->heightmap_z,
 		2, PHY_FLOAT, flipQuadEdges
 	);
 	
@@ -502,7 +506,7 @@ btRigidBody * Map::createGroundBody()
 	
 	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(
 		btQuaternion(0,0,0,1),
-		btVector3(this->width/2.0f, this->height/2.0f, 2.0f)
+		btVector3(this->width/2.0f, this->height/2.0f, this->heightmap_z/2.0f)
 	));
 	
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
