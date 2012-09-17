@@ -408,7 +408,7 @@ void RenderOpenGL::loadHeightmap()
 			
 			for( nTri = 0; nTri < 6; nTri++ ) {
 				// Using This Quick Hack, Figure The X,Z Position Of The Point
-				flX = (float) nX + (( nTri == 1 || nTri == 2 || nTri == 5 ) ? 1.0f : 0.0f);
+				flX = (float) nX + (( nTri == 1 || nTri == 2 || nTri == 4 ) ? 1.0f : 0.0f);
 				flZ = (float) nZ + (( nTri == 2 || nTri == 4 || nTri == 5 ) ? 1.0f : 0.0f);
 				
 		 		vertexes[j].x = flX;
@@ -989,7 +989,10 @@ void RenderOpenGL::lights()
 void RenderOpenGL::map()
 {
 	glEnable(GL_NORMALIZE);
+	glEnable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
+	
+	glFrontFace(GL_CCW);
 	glBindTexture(GL_TEXTURE_2D, st->curr_map->terrain->pixels);
 	
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -1014,6 +1017,8 @@ void RenderOpenGL::map()
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	
+	glDisable(GL_CULL_FACE);
 }
 
 

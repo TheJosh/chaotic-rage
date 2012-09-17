@@ -35,6 +35,7 @@ void gameLoop(GameState *st, Render *render)
 	
 	st->render->preGame();
 	st->render->loadHeightmap();
+	st->curr_map->loadDefaultEntities();
 	st->hud->removeAllDataTables();
 	
 	st->start();

@@ -306,6 +306,30 @@ void PhysicsBullet::doCollisions()
 }
 
 
+/**
+* Use a raytest to find an appropriate spawn location on the ground
+**/
+btVector3 PhysicsBullet::spawnLocation(float x, float y, float height)
+{
+	float z = 100.0f;
+	
+	btVector3 begin(x, y, z);
+	btVector3 end(x, y, -z);
+	
+	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
+	dynamicsWorld->rayTest(begin, end, cb);
+	
+	if (cb.hasHit()) {
+		z = cb.m_hitPointWorld.z() + height/2.0f;
+	}
+	
+	return btVector3(x, y, z);
+}
+
+
+/**
+* Convert a quaternion into euler angles
+**/
 void PhysicsBullet::QuaternionToEulerXYZ(const btQuaternion &quat, btVector3 &euler)
 {
 	float w=quat.getW(); float x=quat.getX(); float y=quat.getY(); float z=quat.getZ();
@@ -315,4 +339,5 @@ void PhysicsBullet::QuaternionToEulerXYZ(const btQuaternion &quat, btVector3 &eu
 	euler.setX((atan2(2.0 * (y*z + x*w),(-sqx - sqy + sqz + sqw))));
 	euler.setY((asin(-2.0 * (x*z - y*w))));
 }
+
 

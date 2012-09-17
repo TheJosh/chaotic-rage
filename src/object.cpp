@@ -16,9 +16,9 @@ Object::Object(ObjectType *ot, GameState *st, float x, float y, float z, float a
 	this->anim = new AnimPlay(ot->model);
 	this->health = ot->health;
 
-
 	// TODO: The colShape should be tied to the object type.
-	btCollisionShape* colShape = new btBoxShape(ot->model->getBoundingSizeHE());
+	btVector3 sizeHE = ot->model->getBoundingSizeHE();
+	btCollisionShape* colShape = new btBoxShape(sizeHE);
 	
 	// TODO: Store the colshape and nuke at some point
 	// collisionShapes.push_back(colShape);
@@ -26,7 +26,7 @@ Object::Object(ObjectType *ot, GameState *st, float x, float y, float z, float a
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
 			btQuaternion(btScalar(0), btScalar(0), btScalar(DEG_TO_RAD(angle))),
-			btVector3(x,y,z)
+			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)
 		));
 	
 	this->body = st->physics->addRigidBody(colShape, 1, motionState);

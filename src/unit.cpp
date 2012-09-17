@@ -49,21 +49,12 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	// TODO: Store the colshape and nuke at some point
 	// collisionShapes.push_back(colShape);
 	
-	z = 30.0f;
+	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(
+		btQuaternion(0,0,0,1),
+		st->physics->spawnLocation(x, y, 1.2f)
+	));
 	
-	{
-		btVector3 begin(x, y, 30.0f);
-		btVector3 end(x, y, 0.0f);
-		
-		btCollisionWorld::ClosestRayResultCallback cb(begin, end);
-		this->st->physics->getWorld()->rayTest(begin, end, cb);
-		
-		if (cb.hasHit()) {
-			z = cb.m_hitPointWorld.z() + 1.f;		// height/2
-		}
-	}
-	
-	this->body = st->physics->addRigidBody(colShape, 0.1f, x, y, z);
+	this->body = st->physics->addRigidBody(colShape, 0.1f, motionState);
 	
 	this->body->setUserPointer(this);
 	

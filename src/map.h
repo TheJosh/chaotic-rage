@@ -60,6 +60,7 @@ class Map {
 		Render * render;
 		GameState * st;
 		Mod * mod;
+		string name;
 		
 	public:
 		SpritePtr background;
@@ -78,6 +79,7 @@ class Map {
 		
 	public:
 		int load(string name, Render * render);
+		void loadDefaultEntities();
 		
 		Zone * getSpawnZone(Faction f);
 		Zone * getPrisonZone(Faction f);

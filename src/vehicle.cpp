@@ -36,10 +36,11 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 	this->brakeForce = 0.0f;
 	this->steering = 0.0f;
 
-
+	btVector3 sizeHE = vt->model->getBoundingSizeHE();
+	
 	// TODO: The colShape should be tied to the object type.
 	// TODO: Store the colshape and nuke at some point
-	btCollisionShape* chassisShape = new btBoxShape(vt->model->getBoundingSizeHE());
+	btCollisionShape* chassisShape = new btBoxShape(sizeHE);
 	//btCompoundShape* compound = new btCompoundShape();
 	
 	// LocalTrans effectively shifts the center of mass with respect to the chassis
@@ -51,7 +52,7 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
 			btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
-			btVector3(x,y,1.5f)
+			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)
 		));
 	this->body = st->physics->addRigidBody(chassisShape, 120.0f, motionState);
 	this->body->setUserPointer(this);

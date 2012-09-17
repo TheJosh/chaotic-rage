@@ -160,8 +160,9 @@ int Map::load(string name, Render * render)
 	this->render = render;
 	this->width = 100;
 	this->height = 100;
+	this->name = name;
 	
-
+	
 	// Default area
 	// TODO: Flooring support in the map
 	a = new Area(this->st->mm->getFloorType("sandy"));
@@ -183,148 +184,168 @@ int Map::load(string name, Render * render)
 	this->terrain = this->render->loadSprite("terrain.png", mod);
 	if (! this->terrain) reportFatalError("Unable to load map; no terran img");
 
-	{
-		cfg_t *cfg, *cfg_sub;
-		int num_types, j, k;
-		
-		char *buffer = mod->loadText("map.conf");
-		if (buffer == NULL) {
-			return 0;
-		}
-		
-		cfg = cfg_init(opts, CFGF_NONE);
-		cfg_parse_buf(cfg, buffer);
-		
-		free(buffer);
-		
-		
-		this->width = cfg_getint(cfg, "width");
-		this->height = cfg_getint(cfg, "height");
-		if (this->width == 0 or this->height == 0) return 0;
-		
-		this->heightmap_z = cfg_getfloat(cfg, "heightmap-z");
 
-		// Walls
-		num_types = cfg_size(cfg, "wall");
-		for (j = 0; j < num_types; j++) {
-			cfg_sub = cfg_getnsec(cfg, "wall", j);
-			
-			string type = cfg_getstr(cfg_sub, "type");
-			if (type.empty()) continue;
-			
-			WallType *wt = this->st->mm->getWallType(type);
-			if (wt == NULL) reportFatalError("Unable to load map; missing or invalid wall type '" + type + "'");
-
-			Wall * wa = new Wall(
-				wt,
-				this->st,
-				cfg_getint(cfg_sub, "x"),
-				cfg_getint(cfg_sub, "y"),
-				1,
-				cfg_getint(cfg_sub, "angle")
-			);
-			
-			this->st->addWall(wa);
-		}
-		
-		// Vehicles
-		num_types = cfg_size(cfg, "vehicle");
-		for (j = 0; j < num_types; j++) {
-			cfg_sub = cfg_getnsec(cfg, "vehicle", j);
-			
-			string type = cfg_getstr(cfg_sub, "type");
-			if (type.empty()) continue;
-			
-			VehicleType *vt = this->st->mm->getVehicleType(type);
-			if (vt == NULL) reportFatalError("Unable to load map; missing or invalid vehicle type '" + type + "'");
-			
-			Vehicle * v = new Vehicle(vt, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), 1, cfg_getint(cfg_sub, "angle"));
-			
-			this->st->addVehicle(v);
-		}
-		
-		// Objects
-		num_types = cfg_size(cfg, "object");
-		for (j = 0; j < num_types; j++) {
-			cfg_sub = cfg_getnsec(cfg, "object", j);
-			
-			string type = cfg_getstr(cfg_sub, "type");
-			if (type.empty()) continue;
-			
-			ObjectType *ot = this->st->mm->getObjectType(type);
-			if (ot == NULL) reportFatalError("Unable to load map; missing or invalid object type '" + type + "'");
-			
-			Object * ob = new Object(ot, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), 1, cfg_getint(cfg_sub, "angle"));
-			
-			this->st->addObject(ob);
-		}
-
-		// Zones
-		num_types = cfg_size(cfg, "zone");
-		for (j = 0; j < num_types; j++) {
-			cfg_sub = cfg_getnsec(cfg, "zone", j);
-			
-			Zone * z = new Zone(cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), cfg_getint(cfg_sub, "width"), cfg_getint(cfg_sub, "height"));
-			
-			int num_spawn = cfg_size(cfg_sub, "spawn");
-			for (k = 0; k < num_spawn; k++) {
-				int f = cfg_getnint(cfg_sub, "spawn", k);
-				if (f < FACTION_INDIVIDUAL || f > FACTION_COMMON) continue;
-				z->spawn[f] = 1;
-			}
-			
-			this->zones.push_back(z);
-		}
-		
-		// Lights
-		num_types = cfg_size(cfg, "light");
-		for (j = 0; j < num_types; j++) {
-			int num;
-			
-			cfg_sub = cfg_getnsec(cfg, "light", j);
-			
-			Light * l = new Light(cfg_getint(cfg_sub, "type"));
-			
-			l->x = cfg_getint(cfg_sub, "x");
-			l->y = cfg_getint(cfg_sub, "y");
-			l->z = cfg_getint(cfg_sub, "z");
-			
-			num = cfg_size(cfg_sub, "ambient");
-			if (num == 4) {
-				l->setAmbient(
-					cfg_getnint(cfg_sub, "ambient", 0),
-					cfg_getnint(cfg_sub, "ambient", 1),
-					cfg_getnint(cfg_sub, "ambient", 2),
-					cfg_getnint(cfg_sub, "ambient", 3)
-				);
-			}
-			
-			num = cfg_size(cfg_sub, "diffuse");
-			if (num == 4) {
-				l->setDiffuse(
-					cfg_getnint(cfg_sub, "diffuse", 0),
-					cfg_getnint(cfg_sub, "diffuse", 1),
-					cfg_getnint(cfg_sub, "diffuse", 2),
-					cfg_getnint(cfg_sub, "diffuse", 3)
-				);
-			}
-			
-			num = cfg_size(cfg_sub, "specular");
-			if (num == 4) {
-				l->setSpecular(
-					cfg_getnint(cfg_sub, "specular", 0),
-					cfg_getnint(cfg_sub, "specular", 1),
-					cfg_getnint(cfg_sub, "specular", 2),
-					cfg_getnint(cfg_sub, "specular", 3)
-				);
-			}
-			
-			this->lights.push_back(l);
-		}
-		
+	cfg_t *cfg;
+	
+	char *buffer = mod->loadText("map.conf");
+	if (buffer == NULL) {
+		return 0;
 	}
 	
+	cfg = cfg_init(opts, CFGF_NONE);
+	cfg_parse_buf(cfg, buffer);
+	
+	free(buffer);
+	
+	
+	this->width = cfg_getint(cfg, "width");
+	this->height = cfg_getint(cfg, "height");
+	if (this->width == 0 or this->height == 0) return 0;
+	
+	this->heightmap_z = cfg_getfloat(cfg, "heightmap-z");
+	
 	return 1;
+}
+
+
+/**
+* Load the map entities
+* THis has to happen after the terrain is created
+**/
+void Map::loadDefaultEntities()
+{
+	cfg_t *cfg, *cfg_sub;
+	int num_types, j, k;
+	
+	
+	char *buffer = mod->loadText("map.conf");
+	if (buffer == NULL) {
+		return;
+	}
+	
+	cfg = cfg_init(opts, CFGF_NONE);
+	cfg_parse_buf(cfg, buffer);
+	
+	free(buffer);
+	
+	
+	// Walls
+	num_types = cfg_size(cfg, "wall");
+	for (j = 0; j < num_types; j++) {
+		cfg_sub = cfg_getnsec(cfg, "wall", j);
+		
+		string type = cfg_getstr(cfg_sub, "type");
+		if (type.empty()) continue;
+		
+		WallType *wt = this->st->mm->getWallType(type);
+		if (wt == NULL) reportFatalError("Unable to load map; missing or invalid wall type '" + type + "'");
+
+		Wall * wa = new Wall(
+			wt,
+			this->st,
+			cfg_getint(cfg_sub, "x"),
+			cfg_getint(cfg_sub, "y"),
+			1,
+			cfg_getint(cfg_sub, "angle")
+		);
+		
+		this->st->addWall(wa);
+	}
+	
+	// Vehicles
+	num_types = cfg_size(cfg, "vehicle");
+	for (j = 0; j < num_types; j++) {
+		cfg_sub = cfg_getnsec(cfg, "vehicle", j);
+		
+		string type = cfg_getstr(cfg_sub, "type");
+		if (type.empty()) continue;
+		
+		VehicleType *vt = this->st->mm->getVehicleType(type);
+		if (vt == NULL) reportFatalError("Unable to load map; missing or invalid vehicle type '" + type + "'");
+		
+		Vehicle * v = new Vehicle(vt, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), 1, cfg_getint(cfg_sub, "angle"));
+		
+		this->st->addVehicle(v);
+	}
+	
+	// Objects
+	num_types = cfg_size(cfg, "object");
+	for (j = 0; j < num_types; j++) {
+		cfg_sub = cfg_getnsec(cfg, "object", j);
+		
+		string type = cfg_getstr(cfg_sub, "type");
+		if (type.empty()) continue;
+		
+		ObjectType *ot = this->st->mm->getObjectType(type);
+		if (ot == NULL) reportFatalError("Unable to load map; missing or invalid object type '" + type + "'");
+		
+		Object * ob = new Object(ot, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), 1, cfg_getint(cfg_sub, "angle"));
+		
+		this->st->addObject(ob);
+	}
+
+	// Zones
+	num_types = cfg_size(cfg, "zone");
+	for (j = 0; j < num_types; j++) {
+		cfg_sub = cfg_getnsec(cfg, "zone", j);
+		
+		Zone * z = new Zone(cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), cfg_getint(cfg_sub, "width"), cfg_getint(cfg_sub, "height"));
+		
+		int num_spawn = cfg_size(cfg_sub, "spawn");
+		for (k = 0; k < num_spawn; k++) {
+			int f = cfg_getnint(cfg_sub, "spawn", k);
+			if (f < FACTION_INDIVIDUAL || f > FACTION_COMMON) continue;
+			z->spawn[f] = 1;
+		}
+		
+		this->zones.push_back(z);
+	}
+	
+	// Lights
+	num_types = cfg_size(cfg, "light");
+	for (j = 0; j < num_types; j++) {
+		int num;
+		
+		cfg_sub = cfg_getnsec(cfg, "light", j);
+		
+		Light * l = new Light(cfg_getint(cfg_sub, "type"));
+		
+		l->x = cfg_getint(cfg_sub, "x");
+		l->y = cfg_getint(cfg_sub, "y");
+		l->z = cfg_getint(cfg_sub, "z");
+		
+		num = cfg_size(cfg_sub, "ambient");
+		if (num == 4) {
+			l->setAmbient(
+				cfg_getnint(cfg_sub, "ambient", 0),
+				cfg_getnint(cfg_sub, "ambient", 1),
+				cfg_getnint(cfg_sub, "ambient", 2),
+				cfg_getnint(cfg_sub, "ambient", 3)
+			);
+		}
+		
+		num = cfg_size(cfg_sub, "diffuse");
+		if (num == 4) {
+			l->setDiffuse(
+				cfg_getnint(cfg_sub, "diffuse", 0),
+				cfg_getnint(cfg_sub, "diffuse", 1),
+				cfg_getnint(cfg_sub, "diffuse", 2),
+				cfg_getnint(cfg_sub, "diffuse", 3)
+			);
+		}
+		
+		num = cfg_size(cfg_sub, "specular");
+		if (num == 4) {
+			l->setSpecular(
+				cfg_getnint(cfg_sub, "specular", 0),
+				cfg_getnint(cfg_sub, "specular", 1),
+				cfg_getnint(cfg_sub, "specular", 2),
+				cfg_getnint(cfg_sub, "specular", 3)
+			);
+		}
+		
+		this->lights.push_back(l);
+	}
 }
 
 

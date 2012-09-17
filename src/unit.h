@@ -87,7 +87,7 @@ class Unit : public Entity
 
 	public:
 		Entity * infront(float range);
-		bool Unit::onground();
+		bool onground();
 
 		void beginFiring();
 		void endFiring();
