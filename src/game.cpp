@@ -31,7 +31,7 @@ void gameLoop(GameState *st, Render *render)
 	}
 
 	SDL_WM_GrabInput(SDL_GRAB_ON);
-	SDL_WarpMouse(400, 30);
+	SDL_WarpMouse(400, 300);
 	
 	st->render->preGame();
 	st->render->loadHeightmap();
@@ -66,7 +66,7 @@ void gameLoop(GameState *st, Render *render)
 			game_x[0] = game_y[0] = 0;
 			game_x[1] = game_y[1] = 0;
 			
-			SDL_WarpMouse(400, 30);
+			SDL_WarpMouse(400, 300);
 		}
 		
 		net_time += delta;
@@ -218,8 +218,8 @@ static void handleEvents(GameState *st)
 			} else if (event.type == SDL_MOUSEMOTION) {
 				game_x[0] += event.motion.x - 400;
 				net_x[0] += event.motion.x - 400;
-				game_y[0] += event.motion.y - 30;
-				net_y[0] += event.motion.y - 30;
+				game_y[0] += event.motion.y - 300;
+				net_y[0] += event.motion.y - 300;
 			
 			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == 1) {
 				st->local_players[0]->keyPress(Player::KEY_FIRE);
@@ -304,8 +304,8 @@ static void handleEvents(GameState *st)
 			} else if (event.type == SDL_MOUSEMOTION) {
 				game_x[1] += event.motion.x - 400;
 				net_x[1] += event.motion.x - 400;
-				game_y[1] += event.motion.y - 30;
-				net_y[1] += event.motion.y - 30;
+				game_y[1] += event.motion.y - 300;
+				net_y[1] += event.motion.y - 300;
 			
 			} else if (event.type == SDL_MOUSEBUTTONDOWN) {
 				st->local_players[1]->keyPress(Player::KEY_FIRE);

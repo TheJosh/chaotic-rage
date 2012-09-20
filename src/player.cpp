@@ -13,7 +13,8 @@ using namespace std;
 Player::Player(UnitType *uc, GameState *st, float x, float y, float z) : Unit(uc, st, x, y, z)
 {
 	for (int i = 0; i < 16; i++) this->key[i] = 0;
-	this->mouse_angle = 0.0;
+	this->mouse_angle = 0.0f;
+	this->vertical_angle = 0.0f;
 }
 
 Player::~Player()
@@ -90,14 +91,14 @@ void Player::setKeys(Uint8 bitfield)
 **/
 void Player::angleFromMouse(int x, int y, int delta)
 {
-	// TODO: Think about delta
+	float sensitivity = 5.0f;	// 1 = slow, 10 = nuts
+	float change_dist;
 	
-	float sensitivity = 5.0; // 1 = slow, 10 = nuts
-	
-	float change_dist = x;
-	change_dist /= (10.0 / sensitivity);
-	
+	change_dist = x / (10.0f / sensitivity);
 	this->mouse_angle = this->mouse_angle + change_dist;
+	
+	change_dist = y / (10.0f / sensitivity / 2.0f);
+	this->vertical_angle = this->vertical_angle + change_dist;
 }
 
 

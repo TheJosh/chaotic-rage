@@ -896,6 +896,8 @@ void RenderOpenGL::mainRot()
 		return;
 	}
 	
+	
+	
 	if (this->viewmode == 1) {				// Top
 		glRotatef(180, 0, 0, 1);
 		glTranslatef(0,87,731);
@@ -906,7 +908,7 @@ void RenderOpenGL::mainRot()
 		glRotatef(180, 0, 0, 1);
 		glTranslatef(0,483,1095);
 		glRotatef(74, 1, 0, 0);
-		
+	
 	} else if (this->viewmode == 2) {		// First person
 		glTranslatef(0,1220,-380);
 		glRotatef(80, 1, 0, 0);
@@ -921,9 +923,11 @@ void RenderOpenGL::mainRot()
 	
 	btVector3 euler;
 	PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
+	
 	glRotatef(RAD_TO_DEG(-euler.z()), 0.f, 0.f, 1.f);
 	glRotatef(180, 0.f, 0.f, 1.f);
 	glTranslatef(0.f - trans.getOrigin().getX(), 0.f - trans.getOrigin().getY(), 500.f - trans.getOrigin().getZ());
+	
 	
 	if (this->viewmode == 0) {
 		glEnable(GL_FOG);

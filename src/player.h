@@ -26,6 +26,7 @@ class Player : public Unit
 	public:
 		bool key[16];
 		float mouse_angle;
+		float vertical_angle;
 		
 	public:
 		Player(UnitType *uc, GameState *st, float x, float y, float z);

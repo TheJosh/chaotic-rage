@@ -59,7 +59,7 @@ class RenderOpenGL : public Render
 		int desktop_height;
 		
 		// The current player being rendered (split screen)
-		Unit* render_player;
+		Player* render_player;
 		
 		// FreeType
 		FT_Library ft;
