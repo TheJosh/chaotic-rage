@@ -28,6 +28,20 @@ class UnitQueryResult
 
 
 /**
+* Info about the players in the game.
+**/
+class PlayerState
+{
+	public:
+		Player * p;			// Player entity
+		
+	public:
+		PlayerState();
+		~PlayerState();
+};
+
+
+/**
 * TODO: Remove me
 **/
 class DebugLine
@@ -66,7 +80,7 @@ class GameState
 	public:
 		Map* curr_map;
 		
-		Player* local_players[MAX_LOCAL];
+		PlayerState * local_players[MAX_LOCAL];
 		unsigned int num_local;
 		
 		int curr_slot;

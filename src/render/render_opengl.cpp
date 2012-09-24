@@ -784,7 +784,7 @@ void RenderOpenGL::render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	for (unsigned int i = 0; i < this->st->num_local; i++) {
-		this->render_player = this->st->local_players[i];
+		this->render_player = this->st->local_players[i]->p;
 		mainViewport(i, this->st->num_local);
 		
 		background();

@@ -47,7 +47,7 @@ GameState::GameState()
 	this->reset_mouse = false;
 	
 	for (unsigned int i = 0; i < MAX_LOCAL; i++) {
-		this->local_players[i] = NULL;
+		this->local_players[i] = new PlayerState();
 	}
 	
 	this->render = NULL;
@@ -64,6 +64,15 @@ GameState::~GameState()
 {
 }
 
+
+PlayerState::PlayerState()
+{
+	this->p = NULL;
+}
+
+PlayerState::~PlayerState()
+{
+}
 
 /**
 * Add a unit

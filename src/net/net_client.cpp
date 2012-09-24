@@ -223,7 +223,7 @@ unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
 	p->pickupWeapon(st->mm->getWeaponType("pistol"));
 	
 	if (st->curr_slot == p->slot) {
-		st->local_players[0] = p;
+		st->local_players[0]->p = p;
 		st->hud->hideSpawnMenu();
 	}
 	
@@ -260,7 +260,7 @@ unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)
 	cout << "       a: " << angle << "\n";
 	cout << "       s: " << speed << "\n";
 	
-	if (p != st->local_players[0] || speed == 0) {
+	if (p != st->local_players[0]->p || speed == 0) {
 		p->x = x;
 		p->y = y;
 		p->angle = angle;

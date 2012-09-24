@@ -439,14 +439,14 @@ LUA_FUNC(add_player)
 	
 	// SHould run off 'current slot'
 	if (1 == slot) {
-		gl->st->local_players[0] = p;
+		gl->st->local_players[0]->p = p;
 		if (gl->st->hud) gl->st->hud->hideSpawnMenu();
 	}
 	
 	// HACK
 	// TODO: Should be based on slot number
 	if (2 == slot) {
-		gl->st->local_players[1] = p;
+		gl->st->local_players[1]->p = p;
 		if (gl->st->hud) gl->st->hud->hideSpawnMenu();
 	}
 	

@@ -223,8 +223,8 @@ int Player::takeDamage(int damage)
 		this->st->logic->raise_playerdied();
 		
 		for (unsigned int i = 0; i < this->st->num_local; i++) {
-			if (this == this->st->local_players[i]) {
-				this->st->local_players[i] = NULL;
+			if (this == this->st->local_players[i]->p) {
+				this->st->local_players[i]->p = NULL;
 			}
 		}
 	}

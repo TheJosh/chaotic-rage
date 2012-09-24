@@ -388,8 +388,8 @@ void Menu::startGame(string map, string gametype, string unittype, int viewmode,
 	// Reset client variables
 	st->client = NULL;
 	st->num_local = num_local;
-	for (int i = 0; i < num_local; i++) {
-		st->local_players[i] = NULL;
+	for (unsigned int i = 0; i < MAX_LOCAL; i++) {
+		st->local_players[i] = new PlayerState();
 	}
 
 	((RenderOpenGL*)st->render)->viewmode = viewmode;

@@ -84,14 +84,14 @@ int AudioSDLMixer::playSound(Sound * snd, bool loop, Entity *e)
 {
 	if (snd == NULL) return -1;
 	
-	if (st->local_players[0] == NULL) return -1;
+	if (st->local_players[0]->p == NULL) return -1;
 	
 	btTransform trans;
 	e->getRigidBody()->getMotionState()->getWorldTransform(trans);
 	int x1 = trans.getOrigin().getX();
 	int y1 = trans.getOrigin().getY();
 	
-	st->local_players[0]->getRigidBody()->getMotionState()->getWorldTransform(trans);
+	st->local_players[0]->p->getRigidBody()->getMotionState()->getWorldTransform(trans);
 	int x2 = trans.getOrigin().getX();
 	int y2 = trans.getOrigin().getY();
 	

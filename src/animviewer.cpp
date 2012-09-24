@@ -60,7 +60,7 @@ int main (int argc, char * argv[])
 	
 	st->client = NULL;
 	st->num_local = 1;
-	st->local_players[0] = NULL;
+	st->local_players[0]->p = NULL;
 	
 	((RenderOpenGL*)st->render)->viewmode = 1;
 	

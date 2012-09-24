@@ -136,17 +136,17 @@ void HUD::render(RenderOpenGL * render)
 		}*/
 		
 		
-	} else if (this->weapon_menu && this->st->local_players[0]) {
+	} else if (this->weapon_menu && this->st->local_players[0]->p) {
 		// Weapon menu
 		SDL_Rect r = {100, 100, 125, 125};
-		unsigned int i, num = this->st->local_players[0]->getNumWeapons();
+		unsigned int i, num = this->st->local_players[0]->p->getNumWeapons();
 		
 		for (i = 0; i < num; i++) {
-			WeaponType *wt = this->st->local_players[0]->getWeaponTypeAt(i);
+			WeaponType *wt = this->st->local_players[0]->p->getWeaponTypeAt(i);
 			
 			render->renderText(wt->title, r.x, r.y);
 
-			if (i == this->st->local_players[0]->getCurrentWeaponID()) {
+			if (i == this->st->local_players[0]->p->getCurrentWeaponID()) {
 				render->renderText(">", r.x - 25, r.y);
 			}
 			
@@ -181,10 +181,10 @@ void HUD::render(RenderOpenGL * render)
 			}
 		}
 		
-		if (st->local_players[0] != NULL) {
+		if (st->local_players[0]->p != NULL) {
 			int val;
 			
-			val = st->local_players[0]->getMagazine();
+			val = st->local_players[0]->p->getMagazine();
 			if (val >= 0) {
 				char buf[50];
 				sprintf(buf, "%i", val);
@@ -193,14 +193,14 @@ void HUD::render(RenderOpenGL * render)
 				render->renderText("relodn!", 50, 50);
 			}
 			
-			val = st->local_players[0]->getBelt();
+			val = st->local_players[0]->p->getBelt();
 			if (val >= 0) {
 				char buf[50];
 				sprintf(buf, "%i", val);
 				render->renderText(buf, 150, 50);
 			}
 			
-			val = st->local_players[0]->getHealth();
+			val = st->local_players[0]->p->getHealth();
 			if (val >= 0) {
 				char buf[50];
 				sprintf(buf, "%i", val);
@@ -225,13 +225,13 @@ int HUD::handleEvent(SDL_Event *event)
 			return HUD::EVENT_PREVENT;
 
 		} else if (event->key.keysym.sym == SDLK_UP) {
-			this->st->local_players[0]->setWeapon(this->st->local_players[0]->getPrevWeaponID());
-			this->st->local_players[1]->setWeapon(this->st->local_players[1]->getPrevWeaponID());
+			this->st->local_players[0]->p->setWeapon(this->st->local_players[0]->p->getPrevWeaponID());
+			this->st->local_players[1]->p->setWeapon(this->st->local_players[1]->p->getPrevWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		}  else if (event->key.keysym.sym == SDLK_DOWN) {
-			this->st->local_players[0]->setWeapon(this->st->local_players[0]->getNextWeaponID());
-			this->st->local_players[1]->setWeapon(this->st->local_players[1]->getNextWeaponID());
+			this->st->local_players[0]->p->setWeapon(this->st->local_players[0]->p->getNextWeaponID());
+			this->st->local_players[1]->p->setWeapon(this->st->local_players[1]->p->getNextWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		}
@@ -240,14 +240,14 @@ int HUD::handleEvent(SDL_Event *event)
 		// MOUSE BUTTON + SCROLL
 		if (event->button.button == SDL_BUTTON_WHEELUP) {
 			if (! this->weapon_menu) this->weapon_menu = true;
-			if (this->st->local_players[0]) this->st->local_players[0]->setWeapon(this->st->local_players[0]->getPrevWeaponID());
-			if (this->st->local_players[1]) this->st->local_players[1]->setWeapon(this->st->local_players[1]->getPrevWeaponID());
+			if (this->st->local_players[0]->p) this->st->local_players[0]->p->setWeapon(this->st->local_players[0]->p->getPrevWeaponID());
+			if (this->st->local_players[1]->p) this->st->local_players[1]->p->setWeapon(this->st->local_players[1]->p->getPrevWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		} else if (event->button.button == SDL_BUTTON_WHEELDOWN) {
 			if (! this->weapon_menu) this->weapon_menu = true;
-			if (this->st->local_players[0]) this->st->local_players[0]->setWeapon(this->st->local_players[0]->getNextWeaponID());
-			if (this->st->local_players[1]) this->st->local_players[1]->setWeapon(this->st->local_players[1]->getNextWeaponID());
+			if (this->st->local_players[0]->p) this->st->local_players[0]->p->setWeapon(this->st->local_players[0]->p->getNextWeaponID());
+			if (this->st->local_players[1]->p) this->st->local_players[1]->p->setWeapon(this->st->local_players[1]->p->getNextWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		} else {
