@@ -33,7 +33,7 @@ int main (int argc, char ** argv)
 	new ModManager(st);
 
 	
-	st->render->setScreenSize(1000, 700, false, 0);
+	st->render->setScreenSize(1000, 700, false);
 	
 	#ifdef RELEASE
 	// This has to be after the OpenGL init

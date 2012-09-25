@@ -35,7 +35,7 @@ int main (int argc, char * argv[])
 	new PhysicsBullet(st);
 	new ModManager(st);
 	
-	st->render->setScreenSize(900, 900, false, 0);
+	st->render->setScreenSize(500, 500, false);
 	
 	
 	// Load data

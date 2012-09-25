@@ -79,7 +79,7 @@ RenderOpenGL::~RenderOpenGL()
 /**
 * Sets the screen size
 **/
-void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen, int multisample)
+void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 {
 	int flags;
 	
@@ -90,9 +90,9 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen, int mul
 	// SDL
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	if (multisample > 0) {
+	if (q_alias >= 2) {
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, multisample);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, q_alias);
 	} else {
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);

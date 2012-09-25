@@ -32,7 +32,7 @@ class Render
 		/**
 		* Sets the screen size of this renderer
 		**/
-		virtual void setScreenSize(int width, int height, bool fullscreen, int multisample) = 0;
+		virtual void setScreenSize(int width, int height, bool fullscreen) = 0;
 		
 		/**
 		* Renders the provided game state

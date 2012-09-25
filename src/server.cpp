@@ -25,7 +25,7 @@ int main (int argc, char ** argv) {
 	new NetServer(st);
 	
 	
-	st->render->setScreenSize(900, 900, false, 0);
+	st->render->setScreenSize(500, 500, false);
 	
 	Mod * mod = new Mod(st, "data/cr");
 	
