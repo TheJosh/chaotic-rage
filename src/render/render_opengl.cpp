@@ -65,6 +65,10 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render(st)
 	ty = 1039;
 	tz = 81;
 	rx = 60;*/
+
+	q_tex = 1;
+	q_alias = 1;
+	q_general = 1;
 }
 
 RenderOpenGL::~RenderOpenGL()
@@ -161,7 +165,6 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen, int mul
 	// OpenGL env
 	glDepthFunc(GL_LEQUAL);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glFlush();
@@ -366,10 +369,14 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
 	
 	// Set stretching properties
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	
+	if (q_tex >= 2) {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	} else {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	}
+
 	// Load it
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sprite->orig->w, sprite->orig->h, 0, texture_format, GL_UNSIGNED_BYTE, sprite->orig->pixels);
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -487,7 +494,28 @@ void RenderOpenGL::preGame()
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_MULTISAMPLE);
+
+	if (q_tex >= 2) {
+		glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
+	} else {
+		glHint(GL_GENERATE_MIPMAP_HINT, GL_FASTEST);
+	}
+
+	if (q_alias >= 2) {
+		glEnable(GL_MULTISAMPLE);
+		glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+	} else {
+		glDisable(GL_MULTISAMPLE);
+		glHint(GL_POINT_SMOOTH_HINT, GL_FASTEST);
+	}
+
+	if (q_general >= 2) {
+		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+		glHint(GL_FOG_HINT, GL_NICEST);
+	} else {
+		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
+		glHint(GL_FOG_HINT, GL_FASTEST);
+	}
 }
 
 void RenderOpenGL::postGame()

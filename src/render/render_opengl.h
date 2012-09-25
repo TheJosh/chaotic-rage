@@ -77,7 +77,10 @@ class RenderOpenGL : public Render
 		AnimPlay *test;
 		btIDebugDraw *physicsdebug;
 		
-		
+		unsigned int q_tex;
+		unsigned int q_alias;
+		unsigned int q_general;
+
 	public:
 		int viewmode;
 		int tx, ty, tz;		// these are for debugging I think
