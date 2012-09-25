@@ -45,27 +45,15 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render(st)
 	this->physicsdebug = NULL;
 	this->viewmode = 0;
 	this->face = NULL;
-
+	
 	const SDL_VideoInfo* mode = SDL_GetVideoInfo();
 	this->desktop_width = mode->current_w;
 	this->desktop_height = mode->current_h;
-
+	
 	for (unsigned int i = 0; i < NUM_CHAR_TEX; i++) {
 		this->char_tex[i].tex = 0;
 	}
 	
-	// top
-	tx = 0;
-	ty = 193;
-	tz = 620;
-	rx = 10;
-	
-	// 3rd
-	/*tx = 0;
-	ty = 1039;
-	tz = 81;
-	rx = 60;*/
-
 	q_tex = 1;
 	q_alias = 1;
 	q_general = 1;
@@ -134,6 +122,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		exit(1);
 	}
 	
+	// GL_ARB_framebuffer_object -> glGenerateMipmap
 	if (! GL_ARB_framebuffer_object) {
 		reportFatalError("OpenGL 3.0 or the extension 'GL_ARB_framebuffer_object' not available.");
 		exit(1);

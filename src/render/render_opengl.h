@@ -46,15 +46,11 @@ class RenderOpenGL : public Render
 	private:
 		SDL_Surface * screen;
 		
-		// Size of the actual screen
+		// Size of the actual screen, virtual screen, and desktop
 		int real_width;
 		int real_height;
-		
-		// Size of the 'virtual' screen.
 		int virt_width;
 		int virt_height;
-		
-		// Width and height of the desktop at game begin
 		int desktop_width;
 		int desktop_height;
 		
@@ -64,8 +60,6 @@ class RenderOpenGL : public Render
 		// FreeType
 		FT_Library ft;
 		FT_Face face;
-		
-		// Caches
 		vector<SpritePtr> loaded;
 		FreetypeChar char_tex[NUM_CHAR_TEX];
 		
@@ -77,15 +71,11 @@ class RenderOpenGL : public Render
 		AnimPlay *test;
 		btIDebugDraw *physicsdebug;
 		
+	public:
+		int viewmode;
 		unsigned int q_tex;
 		unsigned int q_alias;
 		unsigned int q_general;
-
-	public:
-		int viewmode;
-		int tx, ty, tz;		// these are for debugging I think
-		int rx, ry, rz;		// these too
-		
 		
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
