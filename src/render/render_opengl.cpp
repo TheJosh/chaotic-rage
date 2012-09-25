@@ -829,7 +829,7 @@ void RenderOpenGL::renderCharacter(char character)
 **/
 void RenderOpenGL::render()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT);
 
 	for (unsigned int i = 0; i < this->st->num_local; i++) {
 		this->render_player = this->st->local_players[i]->p;
@@ -845,7 +845,6 @@ void RenderOpenGL::render()
 		guichan();
 		hud(this->st->local_players[i]->hud);
 	}
-	
 	
 	SDL_GL_SwapBuffers();
 }
@@ -935,16 +934,12 @@ void RenderOpenGL::mainRot()
 	glEnable(GL_NORMALIZE);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glLoadIdentity();
 	glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
-	
 	
 	if (this->render_player == NULL) {
 		this->deadRot();
 		return;
 	}
-	
-	
 	
 	if (this->viewmode == 1) {				// Top
 		glRotatef(180, 0, 0, 1);
@@ -976,7 +971,6 @@ void RenderOpenGL::mainRot()
 	glRotatef(180, 0.f, 0.f, 1.f);
 	glTranslatef(0.f - trans.getOrigin().getX(), 0.f - trans.getOrigin().getY(), 500.f - trans.getOrigin().getZ());
 	
-	
 	if (this->viewmode == 0) {
 		glEnable(GL_FOG);
 		glFogi(GL_FOG_MODE, GL_LINEAR);
@@ -997,7 +991,6 @@ void RenderOpenGL::lights()
 	// Lights
 	GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	GLfloat spot_torch[] = { -1.0f, -1.0f, 0.0f };
-	
 	
 	for (i = 0; i < st->curr_map->lights.size(); i++) {
 		Light * l = st->curr_map->lights[i];
@@ -1051,7 +1044,6 @@ void RenderOpenGL::map()
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	
-	
 	glPushMatrix();
 	
 	// TODO: Should this be a part of the mesh create instead of part of the render?
@@ -1081,6 +1073,9 @@ void RenderOpenGL::entities()
 {
 	preVBOrender();
 
+	glFrontFace(GL_CW);		// almost everything is wound wrong...
+	glEnable(GL_CULL_FACE);
+
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
 		Entity *e = (*it);
 		
@@ -1104,6 +1099,8 @@ void RenderOpenGL::entities()
 	}
 
 	postVBOrender();
+
+	glDisable(GL_CULL_FACE);
 
 	GLfloat em[] = {0.0, 0.0, 0.0, 0.0};
 	glMaterialfv(GL_FRONT, GL_EMISSION, em);
