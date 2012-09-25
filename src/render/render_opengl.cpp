@@ -605,30 +605,50 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 
 
 /**
-* Renders an object
+* Call this before VBO render
 **/
-void RenderOpenGL::renderObj (WavefrontObj * obj)
+void RenderOpenGL::preVBOrender()
 {
-	if (obj->ibo_count == 0) this->createVBO(obj);
-	
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	
-	glBindBuffer(GL_ARRAY_BUFFER, obj->vbo);
-	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
-	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
 	glClientActiveTexture(GL_TEXTURE0);
-	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
-	
-	glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
-	
+}
+
+
+/**
+* Call this after VBO render, to clean up the OpenGL state
+**/
+void RenderOpenGL::postVBOrender()
+{
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
 
+/**
+* Renders an object.
+* Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender afterwards()
+**/
+void RenderOpenGL::renderObj (WavefrontObj * obj)
+{
+	if (obj->ibo_count == 0) this->createVBO(obj);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, obj->vbo);
+
+	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
+	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
+	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
+
+	glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
+}
+
+
+/**
+* Renders an animation.
+* Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender afterwards()
+**/
 void RenderOpenGL::renderAnimPlay(AnimPlay * play)
 {
 	AnimModel * model;
@@ -1031,6 +1051,8 @@ void RenderOpenGL::map()
 **/
 void RenderOpenGL::entities()
 {
+	preVBOrender();
+
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
 		Entity *e = (*it);
 		
@@ -1038,21 +1060,22 @@ void RenderOpenGL::entities()
 		if (e->render == false) continue;
 
 		AnimPlay *play = e->getAnimModel();
-		
-		if (play != NULL) {
-			glPushMatrix();
-			
-			btTransform trans;
-			e->getRigidBody()->getMotionState()->getWorldTransform(trans);
-			btScalar m[16];
-			trans.getOpenGLMatrix(m);
-			glMultMatrixf((GLfloat*)m);
+		if (play == NULL) continue;
 
-			renderAnimPlay(play);
+		glPushMatrix();
 			
-			glPopMatrix();
-		}
+		btTransform trans;
+		e->getRigidBody()->getMotionState()->getWorldTransform(trans);
+		btScalar m[16];
+		trans.getOpenGLMatrix(m);
+		glMultMatrixf((GLfloat*)m);
+
+		renderAnimPlay(play);
+			
+		glPopMatrix();
 	}
+
+	postVBOrender();
 
 	GLfloat em[] = {0.0, 0.0, 0.0, 0.0};
 	glMaterialfv(GL_FRONT, GL_EMISSION, em);
@@ -1064,12 +1087,12 @@ void RenderOpenGL::particles()
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 	glPointSize(10.f);
+	glBegin(GL_POINTS);
 	for (list<NewParticle*>::iterator it = this->st->particles.begin(); it != this->st->particles.end(); it++) {
-		glBegin(GL_POINTS);
 		glColor4f((*it)->r, (*it)->g, (*it)->b, 1.0f);
 		glVertex3f((*it)->pos.x(), (*it)->pos.y(), (*it)->pos.z());
-		glEnd();
 	}
+	glEnd();
 	glEnable(GL_LIGHTING);
 	glEnable(GL_TEXTURE_2D);
 }

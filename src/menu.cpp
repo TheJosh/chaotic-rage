@@ -209,8 +209,10 @@ void Menu::doit()
 		glRotatef(bg_rot2_pos, 1, 0, 0);
 		glScalef(650, 50, 650);
 		glBindTexture(GL_TEXTURE_2D, bg->pixels);
+		render->preVBOrender();
 		render->renderObj(bgmesh);
-		
+		render->postVBOrender();
+
 		
 		// Ortho mode for the logo and main menu
 		glMatrixMode(GL_PROJECTION);
