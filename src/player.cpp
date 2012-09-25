@@ -206,7 +206,7 @@ void Player::update(int delta)
 		body->setLinearVelocity (linearVelocity);
 	}
 	
-	
+
 	body->getMotionState()->setWorldTransform (xform);
 	body->setCenterOfMassTransform (xform);
 	

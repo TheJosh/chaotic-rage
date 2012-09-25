@@ -39,7 +39,7 @@ void gameLoop(GameState *st, Render *render)
 	//st->hud->removeAllDataTables();
 	
 	st->start();
-	
+	st->setMouseGrab(true);
 	st->logic->update(1);
 	st->logic->raise_gamestart();
 	
