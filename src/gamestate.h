@@ -12,7 +12,11 @@
 using namespace std;
 
 
-#define MAX_LOCAL 4
+/* The maximum number of local players */
+#define MAX_LOCAL 2
+
+/* The "slot" for representing all players. */
+#define ALL_SLOTS 0
 
 
 /**
@@ -33,10 +37,13 @@ class UnitQueryResult
 class PlayerState
 {
 	public:
-		Player * p;			// Player entity
+		GameState *st;
+		Player * p;				// Player entity
+		HUD* hud;				// Heads-up display rendering (data tables, messages, etc)
+		unsigned int slot;		// Slots are numbered from 1 upwards. Used for network play.
 		
 	public:
-		PlayerState();
+		PlayerState(GameState *st);
 		~PlayerState();
 };
 
@@ -83,14 +90,13 @@ class GameState
 		PlayerState * local_players[MAX_LOCAL];
 		unsigned int num_local;
 		
-		int curr_slot;
+		int curr_slot;				// TODO: gamestate -> localplayers
 		
 		bool running;
 		unsigned int anim_frame;
 		unsigned int game_time;
 		
 		Render* render;
-		HUD* hud;					// TODO: gamestate -> localplayers
 		Audio* audio;
 		GameLogic* logic;
 		NetClient* client;
@@ -117,6 +123,7 @@ class GameState
 		
 		// For network
 		Unit * findUnitSlot(int slot);
+		PlayerState * localPlayerFromSlot(unsigned int slot);
 		
 		// Start and run
 		void start();
@@ -135,13 +142,17 @@ class GameState
 		// Data queries
 		list<UnitQueryResult> * findVisibleUnits(Unit* origin);
 		
-		// Dialogs
+		// GUI
 		void initGuichan();
 		bool hasDialog(string name);
 		void addDialog(Dialog * dialog);
 		void remDialog(Dialog * dialog);
 		bool hasDialogs();
-
+		
+		// HUD
+		void alertMessage(unsigned int slot, string text);
+		void alertMessage(unsigned int slot, string text, string text2);
+		
 		void addDebugLine(btVector3 * a, btVector3 * b);
 };
 

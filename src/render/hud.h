@@ -37,7 +37,7 @@ class HUD {
 		const static int EVENT_PREVENT = 2;
 	
 	public:
-		GameState *st;
+		PlayerState *ps;
 		
 	private:
 		bool weapon_menu;
@@ -46,11 +46,12 @@ class HUD {
 		vector<DataTable*> tables;
 		
 	public:
-		HUD(GameState *st);
+		HUD(PlayerState *ps);
+	
+	public:
 		void render(RenderOpenGL * render);
 		int handleEvent(SDL_Event *event);
 		
-	public:
 		void showSpawnMenu();
 		void hideSpawnMenu();
 		

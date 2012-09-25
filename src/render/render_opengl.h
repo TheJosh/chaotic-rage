@@ -131,7 +131,7 @@ class RenderOpenGL : public Render
 		void physics();
 		void particles();
 		void guichan();
-		void hud();
+		void hud(HUD * hud);
 };
 
 

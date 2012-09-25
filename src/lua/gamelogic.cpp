@@ -403,7 +403,7 @@ LUA_FUNC(add_npc)
 *
 * @param String Unit type.
 * @param int Faction-ID. Use the 'factions' enumeration.
-* @param int Player slot, between 1 and N, where N is the number of supported players in the game.
+* @param int Player slot, between 1 and N, where N is the number of players in the game, including network.
 **/
 LUA_FUNC(add_player)
 {
@@ -437,19 +437,8 @@ LUA_FUNC(add_player)
 	
 	gl->st->addUnit(p);
 	
-	// SHould run off 'current slot'
-	if (1 == slot) {
-		gl->st->local_players[0]->p = p;
-		if (gl->st->hud) gl->st->hud->hideSpawnMenu();
-	}
-	
-	// HACK
-	// TODO: Should be based on slot number
-	if (2 == slot) {
-		gl->st->local_players[1]->p = p;
-		if (gl->st->hud) gl->st->hud->hideSpawnMenu();
-	}
-	
+	PlayerState *ps = gl->st->localPlayerFromSlot(slot);
+	if (ps) ps->p = p;
 	
 	return 0;
 }
@@ -491,7 +480,7 @@ LUA_FUNC(show_alert_message)
 		lua_error(L);
 	}
 	
-	if (gl->st->hud) gl->st->hud->addAlertMessage(text);
+	gl->st->alertMessage(ALL_SLOTS, text);
 	
 	return 0;
 }
@@ -508,8 +497,9 @@ LUA_FUNC(add_data_table)
 	int rows = lua_tointeger(L, 4);
 	int table_id = 0;
 	
-	if (gl->st->hud) {
-		table_id = gl->st->hud->addDataTable(x, y, cols, rows);
+	PlayerState *ps = gl->st->localPlayerFromSlot(1);		// TODO: do this properly
+	if (ps && ps->hud) {
+		table_id = ps->hud->addDataTable(x, y, cols, rows);
 	}
 	
 	lua_pushnumber(L, table_id);
@@ -537,7 +527,10 @@ LUA_FUNC(set_data_value)
 		lua_error(L);
 	}
 	
-	if (gl->st->hud) gl->st->hud->setDataValue(table_id, col, row, text);
+	PlayerState *ps = gl->st->localPlayerFromSlot(1);		// TODO: do this properly
+	if (ps && ps->hud) {
+		ps->hud->setDataValue(table_id, col, row, text);
+	}
 	
 	return 0;
 }

@@ -47,11 +47,10 @@ GameState::GameState()
 	this->reset_mouse = false;
 	
 	for (unsigned int i = 0; i < MAX_LOCAL; i++) {
-		this->local_players[i] = new PlayerState();
+		this->local_players[i] = new PlayerState(this);
 	}
 	
 	this->render = NULL;
-	this->hud = NULL;
 	this->audio = NULL;
 	this->logic = NULL;
 	this->client = NULL;
@@ -65,14 +64,18 @@ GameState::~GameState()
 }
 
 
-PlayerState::PlayerState()
+PlayerState::PlayerState(GameState *st)
 {
+	this->st = st;
 	this->p = NULL;
+	this->hud = new HUD(this);
 }
 
 PlayerState::~PlayerState()
 {
+	delete(this->hud);
 }
+
 
 /**
 * Add a unit
@@ -121,6 +124,8 @@ void GameState::addNewParticle(NewParticle* particle)
 
 /**
 * Finds the unit which matches a given slot
+*
+* THIS IS CRAP
 **/
 Unit* GameState::findUnitSlot(int slot)
 {
@@ -134,6 +139,17 @@ Unit* GameState::findUnitSlot(int slot)
 	return NULL;
 }
 
+/**
+* Return the PlayerState for a local player, with the given slot number.
+* May return NULL (i.e. invalid slot or non-local slot
+**/
+PlayerState * GameState::localPlayerFromSlot(unsigned int slot)
+{
+	for (unsigned int i = 0; i < num_local; i++) {
+		if (local_players[i]->slot == slot) return local_players[i];
+	}
+	return NULL;
+}
 
 /**
 * Used for filtering
@@ -402,6 +418,33 @@ bool GameState::hasDialogs()
 {
 	return (this->dialogs.size() != 0);
 }
+
+
+/**
+* Send a message to a given slot. Use ALL_SLOTS to send to all slots
+**/
+void GameState::alertMessage(unsigned int slot, string text)
+{
+	if (slot == ALL_SLOTS) {
+		for (unsigned int i = 0; i < num_local; i++) {
+			local_players[i]->hud->addAlertMessage(text);
+		}
+	} else {
+		PlayerState *ps = localPlayerFromSlot(slot);
+		if (ps) ps->hud->addAlertMessage(text);
+	}
+}
+
+
+/**
+* Send a message to a given slot. Use ALL_SLOTS to send to all slots
+**/
+void GameState::alertMessage(unsigned int slot, string text, string text2)
+{
+	text.append(text2);
+	alertMessage(slot, text);
+}
+
 
 
 void GameState::addDebugLine(btVector3 * a, btVector3 * b)

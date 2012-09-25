@@ -77,6 +77,7 @@ class Object;
 class ObjectType;
 class PhysicsBullet;
 class Player;
+class PlayerState;
 class Render;
 class Song;
 class Sound;

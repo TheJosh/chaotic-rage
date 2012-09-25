@@ -224,7 +224,6 @@ unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
 	
 	if (st->curr_slot == p->slot) {
 		st->local_players[0]->p = p;
-		st->hud->hideSpawnMenu();
 	}
 	
 	st->addUnit(p);

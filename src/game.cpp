@@ -36,7 +36,7 @@ void gameLoop(GameState *st, Render *render)
 	st->render->preGame();
 	st->render->loadHeightmap();
 	st->curr_map->loadDefaultEntities();
-	st->hud->removeAllDataTables();
+	//st->hud->removeAllDataTables();
 	
 	st->start();
 	
@@ -118,7 +118,7 @@ static void handleEvents(GameState *st)
 	
 	
 	while (SDL_PollEvent(&event)) {
-		if (st->hud->handleEvent(&event) == HUD::EVENT_PREVENT) continue;
+		if (st->local_players[0]->hud->handleEvent(&event) == HUD::EVENT_PREVENT) continue;
 		
 		// General keys
 		if (event.type == SDL_QUIT) {
@@ -144,7 +144,7 @@ static void handleEvents(GameState *st)
 				filename = "screenshot";
 				filename.append(buf);
 				filename.append(".bmp");
-				st->hud->addAlertMessage("Saved ", filename);
+				st->alertMessage(ALL_SLOTS, "Saved ", filename);
 			}
 		}
 
@@ -182,22 +182,22 @@ static void handleEvents(GameState *st)
 					
 					
 					case SDLK_F5:
-						st->hud->addAlertMessage("Config reload: ", st->mm->reloadAttrs() ? "success" : "failure");
+						st->alertMessage(ALL_SLOTS, "Config reload: ", st->mm->reloadAttrs() ? "success" : "failure");
 						break;
 						
 					case SDLK_F6:
 						st->setMouseGrab(! st->getMouseGrab());
-						st->hud->addAlertMessage("Reset-mouse ", st->getMouseGrab() ? "on" : "off");
+						st->alertMessage(ALL_SLOTS, "Reset-mouse ", st->getMouseGrab() ? "on" : "off");
 						break;
 						
 					case SDLK_F7:
 						st->render->enablePhysicsDebug();
-						st->hud->addAlertMessage("Physics debug on");
+						st->alertMessage(ALL_SLOTS, "Physics debug on");
 						break;
 					
 					case SDLK_F8:
 						st->render->disablePhysicsDebug();
-						st->hud->addAlertMessage("Physics debug off");
+						st->alertMessage(ALL_SLOTS, "Physics debug off");
 						break;
 						
 					default: break;

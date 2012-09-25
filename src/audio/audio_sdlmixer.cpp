@@ -61,7 +61,7 @@ void AudioSDLMixer::play()
 		Song *sg = this->st->mm->getRandomSong();
 		if (sg != NULL) {
 			this->playSong(sg);
-			this->st->hud->addAlertMessage("Now playing ", sg->name);
+			this->st->alertMessage(ALL_SLOTS, "Now playing ", sg->name);
 		}
 	}
 }

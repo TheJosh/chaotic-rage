@@ -795,7 +795,7 @@ void RenderOpenGL::render()
 		particles();
 		if (physicsdebug != NULL) physics();
 		guichan();
-		hud();
+		hud(this->st->local_players[i]->hud);
 	}
 	
 	
@@ -1094,7 +1094,7 @@ void RenderOpenGL::guichan()
 /**
 * Heads-up display
 **/
-void RenderOpenGL::hud()
+void RenderOpenGL::hud(HUD * hud)
 {
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
@@ -1106,7 +1106,7 @@ void RenderOpenGL::hud()
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	st->hud->render(this);
+	hud->render(this);
 }
 
 

@@ -76,6 +76,6 @@ class Menu
 		
 		// Game dialogs
 		void setDialog(Dialog * dialog);
-		void startGame(string map, string gametype, string unittype, int viewmode, int num_local);
+		void startGame(string map, string gametype, string unittype, int viewmode, unsigned int num_local);
 };
 

@@ -32,7 +32,6 @@ int main (int argc, char * argv[])
 	
 	new RenderOpenGL(st);
 	new AudioSDLMixer(st);
-	new HUD(st);
 	new PhysicsBullet(st);
 	new ModManager(st);
 	

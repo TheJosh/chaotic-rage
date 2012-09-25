@@ -23,9 +23,8 @@ int main (int argc, char ** argv) {
 	new RenderDebug(st);
 	new AudioNull(st);
 	new NetServer(st);
-	new HUD(st);
 	
-
+	
 	st->render->setScreenSize(900, 900, false, 0);
 	
 	Mod * mod = new Mod(st, "data/cr");

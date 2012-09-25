@@ -11,11 +11,9 @@ using namespace std;
 
 
 
-HUD::HUD(GameState *st)
+HUD::HUD(PlayerState *ps)
 {
-	st->hud = this;
-	this->st = st;
-	
+	this->ps = ps;
 	this->weapon_menu = false;
 	this->spawn_menu = false;
 }
@@ -24,20 +22,20 @@ HUD::HUD(GameState *st)
 void HUD::showSpawnMenu()
 {
 	spawn_menu = true;
-	this->st->setMouseGrab(false);
+	this->ps->st->setMouseGrab(false);
 }
 
 void HUD::hideSpawnMenu()
 {
 	spawn_menu = false;
-	this->st->setMouseGrab(true);
+	this->ps->st->setMouseGrab(true);
 }
 
 void HUD::addAlertMessage(string text)
 {
 	AlertMessage *msg = new AlertMessage();
 	msg->text = text;
-	msg->remove_time = this->st->game_time + 5000;
+	msg->remove_time = this->ps->st->game_time + 5000;
 	this->msgs.push_front(msg);
 }
 
@@ -45,7 +43,7 @@ void HUD::addAlertMessage(string text1, string text2)
 {
 	AlertMessage *msg = new AlertMessage();
 	msg->text = text1.append(text2);
-	msg->remove_time = this->st->game_time + 5000;
+	msg->remove_time = this->ps->st->game_time + 5000;
 	this->msgs.push_front(msg);
 }
 
@@ -136,17 +134,17 @@ void HUD::render(RenderOpenGL * render)
 		}*/
 		
 		
-	} else if (this->weapon_menu && this->st->local_players[0]->p) {
+	} else if (this->weapon_menu && this->ps->p) {
 		// Weapon menu
 		SDL_Rect r = {100, 100, 125, 125};
-		unsigned int i, num = this->st->local_players[0]->p->getNumWeapons();
+		unsigned int i, num = this->ps->p->getNumWeapons();
 		
 		for (i = 0; i < num; i++) {
-			WeaponType *wt = this->st->local_players[0]->p->getWeaponTypeAt(i);
+			WeaponType *wt = this->ps->p->getWeaponTypeAt(i);
 			
 			render->renderText(wt->title, r.x, r.y);
 
-			if (i == this->st->local_players[0]->p->getCurrentWeaponID()) {
+			if (i == this->ps->p->getCurrentWeaponID()) {
 				render->renderText(">", r.x - 25, r.y);
 			}
 			
@@ -160,7 +158,7 @@ void HUD::render(RenderOpenGL * render)
 		for (list<AlertMessage*>::iterator it = this->msgs.begin(); it != this->msgs.end(); it++) {
 			AlertMessage *msg = (*it);
 			
-			if (msg->remove_time < st->game_time) {
+			if (msg->remove_time < ps->st->game_time) {
 				// TODO: Remove the message
 				continue;
 			}
@@ -181,10 +179,10 @@ void HUD::render(RenderOpenGL * render)
 			}
 		}
 		
-		if (st->local_players[0]->p != NULL) {
+		if (this->ps->p != NULL) {
 			int val;
 			
-			val = st->local_players[0]->p->getMagazine();
+			val = this->ps->p->getMagazine();
 			if (val >= 0) {
 				char buf[50];
 				sprintf(buf, "%i", val);
@@ -193,14 +191,14 @@ void HUD::render(RenderOpenGL * render)
 				render->renderText("relodn!", 50, 50);
 			}
 			
-			val = st->local_players[0]->p->getBelt();
+			val = this->ps->p->getBelt();
 			if (val >= 0) {
 				char buf[50];
 				sprintf(buf, "%i", val);
 				render->renderText(buf, 150, 50);
 			}
 			
-			val = st->local_players[0]->p->getHealth();
+			val = this->ps->p->getHealth();
 			if (val >= 0) {
 				char buf[50];
 				sprintf(buf, "%i", val);
@@ -221,17 +219,15 @@ int HUD::handleEvent(SDL_Event *event)
 	if (event->type == SDL_KEYUP) {
 		if (event->key.keysym.sym == SDLK_LSHIFT) {
 			// SHIFT key
-			st->hud->weapon_menu = ! st->hud->weapon_menu;
+			this->weapon_menu = ! this->weapon_menu;
 			return HUD::EVENT_PREVENT;
 
 		} else if (event->key.keysym.sym == SDLK_UP) {
-			this->st->local_players[0]->p->setWeapon(this->st->local_players[0]->p->getPrevWeaponID());
-			this->st->local_players[1]->p->setWeapon(this->st->local_players[1]->p->getPrevWeaponID());
+			this->ps->p->setWeapon(this->ps->p->getPrevWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		}  else if (event->key.keysym.sym == SDLK_DOWN) {
-			this->st->local_players[0]->p->setWeapon(this->st->local_players[0]->p->getNextWeaponID());
-			this->st->local_players[1]->p->setWeapon(this->st->local_players[1]->p->getNextWeaponID());
+			this->ps->p->setWeapon(this->ps->p->getNextWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		}
@@ -240,14 +236,12 @@ int HUD::handleEvent(SDL_Event *event)
 		// MOUSE BUTTON + SCROLL
 		if (event->button.button == SDL_BUTTON_WHEELUP) {
 			if (! this->weapon_menu) this->weapon_menu = true;
-			if (this->st->local_players[0]->p) this->st->local_players[0]->p->setWeapon(this->st->local_players[0]->p->getPrevWeaponID());
-			if (this->st->local_players[1]->p) this->st->local_players[1]->p->setWeapon(this->st->local_players[1]->p->getPrevWeaponID());
+			if (this->ps->p) this->ps->p->setWeapon(this->ps->p->getPrevWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		} else if (event->button.button == SDL_BUTTON_WHEELDOWN) {
 			if (! this->weapon_menu) this->weapon_menu = true;
-			if (this->st->local_players[0]->p) this->st->local_players[0]->p->setWeapon(this->st->local_players[0]->p->getNextWeaponID());
-			if (this->st->local_players[1]->p) this->st->local_players[1]->p->setWeapon(this->st->local_players[1]->p->getNextWeaponID());
+			if (this->ps->p) this->ps->p->setWeapon(this->ps->p->getNextWeaponID());
 			return HUD::EVENT_PREVENT;
 			
 		} else {

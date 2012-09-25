@@ -370,7 +370,7 @@ void Menu::doQuit()
 /**
 * Starts a game with the specified settings
 **/
-void Menu::startGame(string map, string gametype, string unittype, int viewmode, int num_local)
+void Menu::startGame(string map, string gametype, string unittype, int viewmode, unsigned int num_local)
 {
 	st->physics->init();
 	
@@ -388,8 +388,11 @@ void Menu::startGame(string map, string gametype, string unittype, int viewmode,
 	// Reset client variables
 	st->client = NULL;
 	st->num_local = num_local;
-	for (unsigned int i = 0; i < MAX_LOCAL; i++) {
-		st->local_players[i] = new PlayerState();
+	
+	// Create players in GameState.
+	for (unsigned int i = 0; i < num_local; i++) {
+		st->local_players[i] = new PlayerState(st);
+		st->local_players[i]->slot = i + 1;
 	}
 
 	((RenderOpenGL*)st->render)->viewmode = viewmode;
