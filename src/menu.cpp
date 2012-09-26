@@ -48,12 +48,13 @@ void Menu::doit()
 	
 	
 	// Maps
-	maps.push_back("test");
-	maps.push_back("tanktest");
-	maps.push_back("heighttest");
+	maps.push_back("therlor_valley");
 	maps.push_back("arena");
 	maps.push_back("towers");
-
+	maps.push_back("generaltest");
+	maps.push_back("tanktest");
+	maps.push_back("heighttest");
+	
 	// Gametypes
 	{
 		vector<GameType*> * ut = st->mm->getAllGameTypes();
