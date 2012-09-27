@@ -1025,7 +1025,7 @@ void RenderOpenGL::map()
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
-	
+	glDisable(GL_LIGHTING);
 	glFrontFace(GL_CCW);
 	glBindTexture(GL_TEXTURE_2D, st->curr_map->terrain->pixels);
 	
@@ -1051,6 +1051,7 @@ void RenderOpenGL::map()
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	
+	glEnable(GL_LIGHTING);
 	glDisable(GL_CULL_FACE);
 }
 
