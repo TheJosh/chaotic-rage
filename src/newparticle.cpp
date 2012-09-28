@@ -39,7 +39,7 @@ void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end,
 	p = new NewParticle();
 	p->pos = *begin;
 	p->vel = velP;
-	p->r = p->g = p->b = .1f;
+	p->r = p->g = p->b = .0f;
 	p->time_death = time_death;
 	
 	st->addNewParticle(p);

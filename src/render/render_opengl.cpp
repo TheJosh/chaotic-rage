@@ -54,9 +54,9 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render(st)
 		this->char_tex[i].tex = 0;
 	}
 	
-	q_tex = 1;
-	q_alias = 1;
-	q_general = 1;
+	q_tex = 4;
+	q_alias = 4;
+	q_general = 4;
 }
 
 RenderOpenGL::~RenderOpenGL()
