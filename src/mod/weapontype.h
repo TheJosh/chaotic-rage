@@ -17,6 +17,7 @@ using namespace std;
 #define WEAPON_SOUND_EMPTY 5
 
 #define WEAPON_TYPE_RAYCAST 1
+#define WEAPON_TYPE_DIGDOWN 2
 
 
 class WeaponTypeSound
@@ -54,6 +55,7 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 		
 };
 
+
 /**
 * Weapons which "fire" by doing a raycast
 * This is most common weapons (e.g. machineguns, pistols, etc)
@@ -63,6 +65,20 @@ class WeaponRaycast : public WeaponType
 	public:
 		int angle_range;
 		float range;
+
+	public:
+		virtual void doFire(Unit * u);
+};
+
+
+/**
+* Weapons which "fire" by doing a raycast
+* This is most common weapons (e.g. machineguns, pistols, etc)
+**/
+class WeaponDigdown : public WeaponType
+{
+	public:
+		float radius;
 
 	public:
 		virtual void doFire(Unit * u);

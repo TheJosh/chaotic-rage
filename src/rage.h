@@ -89,6 +89,7 @@ class Wall;
 class WallType;
 class WeaponType;
 class WeaponRaycast;
+class WeaponDigdown;
 class WavefrontObj;
 class Zone;
 

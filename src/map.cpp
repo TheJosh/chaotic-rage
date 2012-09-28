@@ -478,9 +478,30 @@ void Map::createHeightmapRaw()
 }
 
 
+/**
+* Get a map cell.
+**/
 float Map::heightmapGet(int X, int Y)
 {
 	return heightmap[Y * heightmap_w + X];
+}
+
+
+/**
+* Set a map cell. Returns the new value.
+**/
+float Map::heightmapSet(int X, int Y, float val)
+{
+	return heightmap[Y * heightmap_w + X] = val;
+}
+
+
+/**
+* Increase (use neg nums to decrease) a map cell. Returns the new value.
+**/
+float Map::heightmapAdd(int X, int Y, float amt)
+{
+	return heightmap[Y * heightmap_w + X] += amt;
 }
 
 
@@ -536,8 +557,12 @@ btRigidBody * Map::createGroundBody()
 		groundShape,
 		btVector3(0,0,0)
 	);
-	
-	return new btRigidBody(groundRigidBodyCI);
+
+	btRigidBody * terrain = new btRigidBody(groundRigidBodyCI);
+
+	//terrain->setCollisionFlags(terrain->getCollisionFlags()|btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);   // Disable debug drawing
+
+	return terrain;
 }
 
 

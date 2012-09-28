@@ -62,6 +62,11 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		w->range = cfg_getfloat(cfg_item, "range");
 		wt = w;
 
+	} else if (type == WEAPON_TYPE_DIGDOWN) {
+		WeaponDigdown* w = new WeaponDigdown();
+		w->radius = 10.0f;
+		wt = w;
+
 	} else {
 		return NULL;
 	}
@@ -195,3 +200,66 @@ void WeaponRaycast::doFire(Unit * u)
 
 
 
+/**
+* Fires a weapon, from a specified Unit
+**/
+void WeaponDigdown::doFire(Unit * u)
+{
+	btTransform xform;
+	u->body->getMotionState()->getWorldTransform(xform);
+	
+	btVector3 begin = xform.getOrigin();
+	btVector3 end = begin + btVector3(0.0f, 0.0f, -100.0f);
+	
+	DEBUG("weap", "Ray between %5.3f %5.3f %5.3f and %5.3f %5.3f %5.3f", begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z());
+	
+	//st->addDebugLine(&begin, &end);
+	
+	
+	// Do the rayTest
+	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
+	this->st->physics->getWorld()->rayTest(begin, end, cb);
+	
+	if (cb.hasHit()) {
+		btRigidBody * body = btRigidBody::upcast(cb.m_collisionObject);
+		if (body) {
+			Entity* entA = static_cast<Entity*>(body->getUserPointer());
+			DEBUG("weap", "Ray hit %p (%p)", body, entA);
+			if (entA) {
+				// Hit something, let's apply damage
+				if (entA->klass() == UNIT) {
+					((Unit*)entA)->takeDamage(this->unit_damage);
+				} else if (entA->klass() == WALL) {
+					((Wall*)entA)->takeDamage(this->wall_damage);
+				}
+
+			} else {
+				// Hit the ground (more common), lets dig a hole
+				Map* map = u->st->curr_map;
+				int mapX = begin.x() / map->width * map->heightmap_w;
+				int mapY = begin.y() / map->height * map->heightmap_h;
+
+				float depth = -0.1f;
+				map->heightmapAdd(mapX - 1, mapY - 1, depth);
+				map->heightmapAdd(mapX - 1, mapY, depth);
+				map->heightmapAdd(mapX, mapY - 1, depth);
+				map->heightmapAdd(mapX, mapY, depth);
+				map->heightmapAdd(mapX + 1, mapY + 1, depth);
+				map->heightmapAdd(mapX + 1, mapY, depth);
+				map->heightmapAdd(mapX, mapY + 1, depth);
+				map->heightmapAdd(mapX - 1, mapY + 1, depth);
+				map->heightmapAdd(mapX + 1, mapY - 1, depth);
+
+				u->st->render->freeHeightmap();
+				u->st->render->loadHeightmap();
+			}
+		}
+		
+	} else {
+		DEBUG("weap", "%p Shot; miss", u);
+	}
+	
+	
+	// Show the weapon bullets
+	create_particles_weapon(u->getGameState(), &begin, &end, 0);
+}

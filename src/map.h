@@ -92,6 +92,8 @@ class Map {
 		
 		void createHeightmapRaw();
 		float heightmapGet(int X, int Y);
+		float heightmapSet(int X, int Y, float val);
+		float heightmapAdd(int X, int Y, float amt);
 		float heightmapScaleX();
 		float heightmapScaleY();
 		float heightmapScaleZ();
