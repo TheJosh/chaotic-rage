@@ -16,6 +16,8 @@ using namespace std;
 #define WEAPON_SOUND_RELOAD 4
 #define WEAPON_SOUND_EMPTY 5
 
+#define WEAPON_TYPE_RAYCAST 1
+
 
 class WeaponTypeSound
 {
@@ -25,7 +27,7 @@ class WeaponTypeSound
 		int type;
 };
 
-class WeaponType
+class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 {
 	public:
 		int id;
@@ -33,13 +35,11 @@ class WeaponType
 		string title;
 		GameState * st;
 		
-		int angle_range;
 		unsigned int fire_delay;
 		unsigned int reload_delay;
 		bool continuous;
 		int magazine_limit;
 		int belt_limit;
-		float range;
 		float unit_damage;
 		float wall_damage;
 		
@@ -47,11 +47,25 @@ class WeaponType
 		
 	public:
 		WeaponType();
-		
-	public:
 		Sound* getSound(int type);
-		void doFire(Unit * u);
-		void doHit(Entity * e);
+
+	public:
+		virtual void doFire(Unit * u) = 0;
+		
+};
+
+/**
+* Weapons which "fire" by doing a raycast
+* This is most common weapons (e.g. machineguns, pistols, etc)
+**/
+class WeaponRaycast : public WeaponType
+{
+	public:
+		int angle_range;
+		float range;
+
+	public:
+		virtual void doFire(Unit * u);
 };
 
 

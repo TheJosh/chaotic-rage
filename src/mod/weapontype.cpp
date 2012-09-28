@@ -26,7 +26,8 @@ cfg_opt_t weapontype_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_STR((char*) "title", 0, CFGF_NONE),
-	
+	CFG_INT((char*) "type", 1, CFGF_NONE),
+
 	CFG_INT((char*) "angle_range", 0, CFGF_NONE),
 	CFG_INT((char*) "fire_delay", 0, CFGF_NONE),
 	CFG_INT((char*) "reload_delay", 0, CFGF_NONE),
@@ -50,33 +51,40 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	WeaponType* wt;
 	cfg_t *cfg_sound;
 	string filename;
-	int j;
+	int j, type;
 	
-	wt = new WeaponType();
+	type = cfg_getint(cfg_item, "type");
+
+	// The exact class is dependent on the type
+	if (type == WEAPON_TYPE_RAYCAST) {
+		WeaponRaycast* w = new WeaponRaycast();
+		w->angle_range = cfg_getint(cfg_item, "angle_range");
+		w->range = cfg_getfloat(cfg_item, "range");
+		wt = w;
+
+	} else {
+		return NULL;
+	}
+
+	// These settings are common to all weapon types
 	wt->name = cfg_getstr(cfg_item, "name");
 	wt->title = cfg_getstr(cfg_item, "title");
 	wt->st = mod->st;
 	
-	wt->angle_range = cfg_getint(cfg_item, "angle_range");
 	wt->fire_delay = cfg_getint(cfg_item, "fire_delay");
 	wt->reload_delay = cfg_getint(cfg_item, "reload_delay");
 	wt->continuous = (cfg_getint(cfg_item, "continuous") == 1);
 	wt->magazine_limit = cfg_getint(cfg_item, "magazine_limit");
 	wt->belt_limit = cfg_getint(cfg_item, "belt_limit");
-	wt->range = cfg_getfloat(cfg_item, "range");
 	wt->unit_damage = cfg_getfloat(cfg_item, "unit_damage");
 	wt->wall_damage = cfg_getfloat(cfg_item, "wall_damage");
 	
-	
-	/// Sounds ///
+	// Load sounds
 	int num_sounds = cfg_size(cfg_item, "sound");
-	
-	// load sounds
 	for (j = 0; j < num_sounds; j++) {
 		cfg_sound = cfg_getnsec(cfg_item, "sound", j);
 		
 		WeaponTypeSound* wts = new WeaponTypeSound();
-		
 		wts->type = cfg_getint(cfg_sound, "type");
 		
 		char * tmp = cfg_getstr(cfg_sound, "sound");
@@ -124,10 +132,12 @@ WeaponType::WeaponType()
 }
 
 
+
+
 /**
 * Fires a weapon, from a specified Unit
 **/
-void WeaponType::doFire(Unit * u)
+void WeaponRaycast::doFire(Unit * u)
 {
 	btTransform xform;
 	u->body->getMotionState()->getWorldTransform(xform);
@@ -166,7 +176,11 @@ void WeaponType::doFire(Unit * u)
 			Entity* entA = static_cast<Entity*>(body->getUserPointer());
 			DEBUG("weap", "Ray hit %p (%p)", body, entA);
 			if (entA) {
-				this->doHit(entA);
+				if (entA->klass() == UNIT) {
+					((Unit*)entA)->takeDamage(this->unit_damage);
+				} else if (entA->klass() == WALL) {
+					((Wall*)entA)->takeDamage(this->wall_damage);
+				}
 			}
 		}
 		
@@ -179,19 +193,5 @@ void WeaponType::doFire(Unit * u)
 	create_particles_weapon(u->getGameState(), &begin, &end, 0);
 }
 
-
-/**
-* The bullets have hit an entity! do damage!
-**/
-void WeaponType::doHit(Entity * e)
-{
-	if (e->klass() == UNIT) {
-		((Unit*)e)->takeDamage(this->unit_damage);
-		
-	} else if (e->klass() == WALL) {
-		((Wall*)e)->takeDamage(this->wall_damage);
-		
-	}
-}
 
 

@@ -225,7 +225,6 @@ bool Mod::reloadAttrs()
 		if (! old) continue;
 		
 		old->title = nu->title;
-		old->angle_range = nu->angle_range;
 		old->fire_delay = nu->fire_delay;
 		old->reload_delay = nu->reload_delay;
 		old->continuous = nu->continuous;

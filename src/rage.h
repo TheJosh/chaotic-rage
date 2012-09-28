@@ -88,6 +88,7 @@ class Vehicle;
 class Wall;
 class WallType;
 class WeaponType;
+class WeaponRaycast;
 class WavefrontObj;
 class Zone;
 
