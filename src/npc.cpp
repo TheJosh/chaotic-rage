@@ -22,7 +22,7 @@ NPC::NPC(UnitType *uc, GameState *st, float x, float y, float z, AIType *ai) : U
 	logic = new AILogic(this);
 	logic->execScript(ai->script);
 	
-	this->idle_sound_time = st->game_time + 5000;
+	this->idle_sound_time = st->game_time + 15000;
 }
 
 NPC::~NPC()
@@ -58,7 +58,7 @@ void NPC::update(int delta)
 		} else if (s == 3) {
 			this->st->audio->playSound(this->st->mm->getSound("zombie_4"), false, this);
 		}
-		this->idle_sound_time = st->game_time + 5000;
+		this->idle_sound_time = st->game_time + 15000;
 	}
 }
 
