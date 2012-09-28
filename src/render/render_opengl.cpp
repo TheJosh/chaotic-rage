@@ -1058,6 +1058,7 @@ void RenderOpenGL::map()
 	// Water surface
 	if (this->st->curr_map->water) {
  		glBindTexture(GL_TEXTURE_2D, st->curr_map->water->pixels);
+		glEnable(GL_BLEND);
 
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0f, 10.0f );
