@@ -560,7 +560,7 @@ btRigidBody * Map::createGroundBody()
 
 	btRigidBody * terrain = new btRigidBody(groundRigidBodyCI);
 
-	//terrain->setCollisionFlags(terrain->getCollisionFlags()|btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);   // Disable debug drawing
+	terrain->setCollisionFlags(terrain->getCollisionFlags()|btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);   // Disable debug drawing
 
 	return terrain;
 }
