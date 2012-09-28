@@ -83,6 +83,7 @@ static cfg_opt_t opts[] =
 	CFG_INT((char*) "height", 0, CFGF_NONE),
 	
 	CFG_FLOAT((char*) "heightmap-z", 4.0f, CFGF_NONE),
+	CFG_FLOAT((char*) "water-level", 0.0f, CFGF_NONE),
 
 	CFG_END()
 };
@@ -141,6 +142,7 @@ Map::Map(GameState * st)
 	this->heightmap = NULL;
 	this->background = NULL;
 	this->terrain = NULL;
+	this->water = NULL;
 }
 
 Map::~Map()
@@ -184,7 +186,6 @@ int Map::load(string name, Render * render)
 	this->terrain = this->render->loadSprite("terrain.png", mod);
 	if (! this->terrain) reportFatalError("Unable to load map; no terran img");
 
-
 	cfg_t *cfg;
 	
 	char *buffer = mod->loadText("map.conf");
@@ -203,7 +204,12 @@ int Map::load(string name, Render * render)
 	if (this->width == 0 or this->height == 0) return 0;
 	
 	this->heightmap_z = cfg_getfloat(cfg, "heightmap-z");
-	
+
+	this->water = this->render->loadSprite("water.png", mod);
+	if (this->water) {
+		this->water_level = cfg_getfloat(cfg, "water-level");
+	}
+
 	return 1;
 }
 

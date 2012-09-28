@@ -73,6 +73,9 @@ class Map {
 		int heightmap_h;
 		float heightmap_z;
 
+		float water_level;
+		SpritePtr water;
+
 	public:
 		Map(GameState * st);
 		~Map();

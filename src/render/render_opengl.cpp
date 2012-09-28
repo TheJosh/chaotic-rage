@@ -1027,7 +1027,6 @@ void RenderOpenGL::map()
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
-	//glDisable(GL_LIGHTING);
 	glFrontFace(GL_CCW);
 	glBindTexture(GL_TEXTURE_2D, st->curr_map->terrain->pixels);
 	
@@ -1053,8 +1052,27 @@ void RenderOpenGL::map()
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	
-	//glEnable(GL_LIGHTING);
 	glDisable(GL_CULL_FACE);
+
+
+	// Water surface
+	if (this->st->curr_map->water) {
+ 		glBindTexture(GL_TEXTURE_2D, st->curr_map->water->pixels);
+
+		glBegin(GL_QUADS);
+			glTexCoord2f(0.0f, 10.0f );
+			glVertex3f( 0, this->st->curr_map->height, this->st->curr_map->water_level  );
+		
+			glTexCoord2f(0.0f, 10.0f );
+			glVertex3f( this->st->curr_map->width, this->st->curr_map->height, this->st->curr_map->water_level );
+		
+			glTexCoord2f(0.0f, 10.0f );
+			glVertex3f( this->st->curr_map->width, 0, this->st->curr_map->water_level );
+
+			glTexCoord2f(0.0f, 10.0f );
+			glVertex3f( 0, 0, this->st->curr_map->water_level );
+		glEnd();
+	}
 }
 
 
