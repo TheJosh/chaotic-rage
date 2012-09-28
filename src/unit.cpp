@@ -153,8 +153,9 @@ void Unit::emptySound()
 	
 	this->st->audio->stopSound(this->weapon_sound);
 
-	Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_EMPTY);
-	this->st->audio->playSound(snd, true, this);
+	// TODO: Fix this
+	//Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_EMPTY);
+	//this->st->audio->playSound(snd, true, this);
 }
 
 
