@@ -392,8 +392,8 @@ void RenderOpenGL::loadHeightmap()
 		for( nX = 0; nX < st->curr_map->heightmap_w - 1; nX += 1 ) {
 			
 			// u = p2 - p1; v = p3 - p1
-			btVector3 u = btVector3(nX, nZ + 1, st->curr_map->heightmapGet(nX, nZ + 1)) - btVector3(nX, nZ, st->curr_map->heightmapGet(nX, nZ));
-			btVector3 v = btVector3(nX + 1, nZ, st->curr_map->heightmapGet(nX + 1, nZ)) - btVector3(nX, nZ, st->curr_map->heightmapGet(nX, nZ));
+			btVector3 u = btVector3(nX + 1, nZ, st->curr_map->heightmapGet(nX + 1, nZ)) - btVector3(nX, nZ, st->curr_map->heightmapGet(nX, nZ));
+			btVector3 v = btVector3(nX, nZ + 1, st->curr_map->heightmapGet(nX, nZ + 1)) - btVector3(nX, nZ, st->curr_map->heightmapGet(nX, nZ));
 			
 			// calc vector
 			btVector3 normal = btVector3(
@@ -1025,7 +1025,7 @@ void RenderOpenGL::map()
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
-	glDisable(GL_LIGHTING);
+	//glDisable(GL_LIGHTING);
 	glFrontFace(GL_CCW);
 	glBindTexture(GL_TEXTURE_2D, st->curr_map->terrain->pixels);
 	
@@ -1051,7 +1051,7 @@ void RenderOpenGL::map()
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	
-	glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHTING);
 	glDisable(GL_CULL_FACE);
 }
 
