@@ -41,8 +41,6 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 		bool continuous;
 		int magazine_limit;
 		int belt_limit;
-		float unit_damage;
-		float wall_damage;
 		
 		vector<WeaponTypeSound*> sounds;
 		
@@ -65,6 +63,8 @@ class WeaponRaycast : public WeaponType
 	public:
 		int angle_range;
 		float range;
+		float unit_damage;
+		float wall_damage;
 
 	public:
 		virtual void doFire(Unit * u);
@@ -78,7 +78,8 @@ class WeaponRaycast : public WeaponType
 class WeaponDigdown : public WeaponType
 {
 	public:
-		float radius;
+		int radius;
+		float depth;		// negative = go down, positive = go up
 
 	public:
 		virtual void doFire(Unit * u);

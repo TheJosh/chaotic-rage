@@ -27,17 +27,22 @@ cfg_opt_t weapontype_opts[] =
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_STR((char*) "title", 0, CFGF_NONE),
 	CFG_INT((char*) "type", 1, CFGF_NONE),
-
-	CFG_INT((char*) "angle_range", 0, CFGF_NONE),
 	CFG_INT((char*) "fire_delay", 0, CFGF_NONE),
 	CFG_INT((char*) "reload_delay", 0, CFGF_NONE),
 	CFG_INT((char*) "continuous", 0, CFGF_NONE),
 	CFG_INT((char*) "magazine_limit", 100, CFGF_NONE),
 	CFG_INT((char*) "belt_limit", 1000, CFGF_NONE),
+
+	// WEAPON_TYPE_RAYCAST
+	CFG_INT((char*) "angle_range", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "range", 50, CFGF_NONE),
 	CFG_FLOAT((char*) "unit_damage", 10, CFGF_NONE),
 	CFG_FLOAT((char*) "wall_damage", 10, CFGF_NONE),
 	
+	// WEAPON_TYPE_DIGDOWN
+	CFG_INT((char*) "radius", 2, CFGF_NONE),
+	CFG_FLOAT((char*) "depth", -0.1, CFGF_NONE),
+
 	CFG_SEC((char*) "sound", weaponsound_opts, CFGF_MULTI),
 	CFG_END()
 };
@@ -60,11 +65,14 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		WeaponRaycast* w = new WeaponRaycast();
 		w->angle_range = cfg_getint(cfg_item, "angle_range");
 		w->range = cfg_getfloat(cfg_item, "range");
+		w->unit_damage = cfg_getfloat(cfg_item, "unit_damage");
+		w->wall_damage = cfg_getfloat(cfg_item, "wall_damage");
 		wt = w;
 
 	} else if (type == WEAPON_TYPE_DIGDOWN) {
 		WeaponDigdown* w = new WeaponDigdown();
-		w->radius = 10.0f;
+		w->radius = cfg_getint(cfg_item, "radius");
+		w->depth = cfg_getfloat(cfg_item, "depth");
 		wt = w;
 
 	} else {
@@ -81,8 +89,6 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	wt->continuous = (cfg_getint(cfg_item, "continuous") == 1);
 	wt->magazine_limit = cfg_getint(cfg_item, "magazine_limit");
 	wt->belt_limit = cfg_getint(cfg_item, "belt_limit");
-	wt->unit_damage = cfg_getfloat(cfg_item, "unit_damage");
-	wt->wall_damage = cfg_getfloat(cfg_item, "wall_damage");
 	
 	// Load sounds
 	int num_sounds = cfg_size(cfg_item, "sound");
@@ -222,37 +228,24 @@ void WeaponDigdown::doFire(Unit * u)
 	
 	if (cb.hasHit()) {
 		btRigidBody * body = btRigidBody::upcast(cb.m_collisionObject);
-		if (body) {
-			Entity* entA = static_cast<Entity*>(body->getUserPointer());
-			DEBUG("weap", "Ray hit %p (%p)", body, entA);
-			if (entA) {
-				// Hit something, let's apply damage
-				if (entA->klass() == UNIT) {
-					((Unit*)entA)->takeDamage(this->unit_damage);
-				} else if (entA->klass() == WALL) {
-					((Wall*)entA)->takeDamage(this->wall_damage);
-				}
+		if (body && !body->getUserPointer()) {
+			// Hit the ground, lets dig a hole
+			Map* map = u->st->curr_map;
+			int mapX = begin.x() / map->width * map->heightmap_w;
+			int mapY = begin.y() / map->height * map->heightmap_h;
 
-			} else {
-				// Hit the ground (more common), lets dig a hole
-				Map* map = u->st->curr_map;
-				int mapX = begin.x() / map->width * map->heightmap_w;
-				int mapY = begin.y() / map->height * map->heightmap_h;
+			map->heightmapAdd(mapX - 1, mapY - 1, depth);
+			map->heightmapAdd(mapX - 1, mapY, depth);
+			map->heightmapAdd(mapX, mapY - 1, depth);
+			map->heightmapAdd(mapX, mapY, depth);
+			map->heightmapAdd(mapX + 1, mapY + 1, depth);
+			map->heightmapAdd(mapX + 1, mapY, depth);
+			map->heightmapAdd(mapX, mapY + 1, depth);
+			map->heightmapAdd(mapX - 1, mapY + 1, depth);
+			map->heightmapAdd(mapX + 1, mapY - 1, depth);
 
-				float depth = -0.1f;
-				map->heightmapAdd(mapX - 1, mapY - 1, depth);
-				map->heightmapAdd(mapX - 1, mapY, depth);
-				map->heightmapAdd(mapX, mapY - 1, depth);
-				map->heightmapAdd(mapX, mapY, depth);
-				map->heightmapAdd(mapX + 1, mapY + 1, depth);
-				map->heightmapAdd(mapX + 1, mapY, depth);
-				map->heightmapAdd(mapX, mapY + 1, depth);
-				map->heightmapAdd(mapX - 1, mapY + 1, depth);
-				map->heightmapAdd(mapX + 1, mapY - 1, depth);
-
-				u->st->render->freeHeightmap();
-				u->st->render->loadHeightmap();
-			}
+			u->st->render->freeHeightmap();
+			u->st->render->loadHeightmap();
 		}
 		
 	} else {
