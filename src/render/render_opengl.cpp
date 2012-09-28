@@ -483,7 +483,9 @@ void RenderOpenGL::preGame()
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
-
+	
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
+	
 	if (q_tex >= 2) {
 		glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
 	} else {
