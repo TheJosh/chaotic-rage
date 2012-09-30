@@ -1061,17 +1061,17 @@ void RenderOpenGL::map()
 		glEnable(GL_BLEND);
 
 		glBegin(GL_QUADS);
-			glTexCoord2f(0.0f, 10.0f );
-			glVertex3f( 0, this->st->curr_map->height, this->st->curr_map->water_level  );
+			glTexCoord2f(0.0f, this->st->curr_map->height/10.0f);
+			glVertex3f(0, this->st->curr_map->height, this->st->curr_map->water_level);
 		
-			glTexCoord2f(0.0f, 10.0f );
-			glVertex3f( this->st->curr_map->width, this->st->curr_map->height, this->st->curr_map->water_level );
+			glTexCoord2f(this->st->curr_map->width/10.0f, this->st->curr_map->height/10.0f);
+			glVertex3f(this->st->curr_map->width, this->st->curr_map->height, this->st->curr_map->water_level);
 		
-			glTexCoord2f(0.0f, 10.0f );
-			glVertex3f( this->st->curr_map->width, 0, this->st->curr_map->water_level );
+			glTexCoord2f(this->st->curr_map->width/10.0f, 0.0f);
+			glVertex3f(this->st->curr_map->width, 0, this->st->curr_map->water_level);
 
-			glTexCoord2f(0.0f, 10.0f );
-			glVertex3f( 0, 0, this->st->curr_map->water_level );
+			glTexCoord2f(0.0f, 0.0f);
+			glVertex3f(0, 0, this->st->curr_map->water_level);
 		glEnd();
 	}
 }
