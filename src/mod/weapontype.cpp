@@ -11,6 +11,10 @@
 using namespace std;
 
 
+static void heightmapCircle(Map* map, int x0, int y0, int radius, float depthadd);
+
+
+
 // Sound section
 static cfg_opt_t weaponsound_opts[] =
 {
@@ -234,15 +238,7 @@ void WeaponDigdown::doFire(Unit * u)
 			int mapX = begin.x() / map->width * map->heightmap_w;
 			int mapY = begin.y() / map->height * map->heightmap_h;
 
-			map->heightmapAdd(mapX - 1, mapY - 1, depth);
-			map->heightmapAdd(mapX - 1, mapY, depth);
-			map->heightmapAdd(mapX, mapY - 1, depth);
-			map->heightmapAdd(mapX, mapY, depth);
-			map->heightmapAdd(mapX + 1, mapY + 1, depth);
-			map->heightmapAdd(mapX + 1, mapY, depth);
-			map->heightmapAdd(mapX, mapY + 1, depth);
-			map->heightmapAdd(mapX - 1, mapY + 1, depth);
-			map->heightmapAdd(mapX + 1, mapY - 1, depth);
+			heightmapCircle(map, mapX, mapY, this->radius, this->depth);
 
 			u->st->render->freeHeightmap();
 			u->st->render->loadHeightmap();
@@ -255,4 +251,23 @@ void WeaponDigdown::doFire(Unit * u)
 	
 	// Show the weapon bullets
 	create_particles_weapon(u->getGameState(), &begin, &end, 0);
+}
+
+
+/**
+* Used by the dig/mound weapons
+**/
+void heightmapCircle(Map* map, int x0, int y0, int radius, float depthadd)
+{
+	int x, y, d;
+
+	for (y = -radius; y <= radius; y++) {
+		for (x = -radius; x <= radius; x++) {
+			d = (radius * radius) - ((x * x) + (y * y));
+			if (d > 0) {
+				// distance in = d
+				map->heightmapAdd(x0 + x, y0 + y, depthadd * d * 0.14);
+			}
+		}
+	}
 }
