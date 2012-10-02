@@ -167,7 +167,7 @@ void WeaponRaycast::doFire(Unit * u)
 	
 	btVector3 forwardDir = xform.getBasis()[1];
 	forwardDir.normalize();
-	forwardDir *= btScalar(this->range);		// weapon range
+	forwardDir *= btScalar(0 - this->range);		// weapon range
 	
 	
 	DEBUG("weap", "forwardDir is %5.3f %5.3f %5.3f", forwardDir.x(), forwardDir.y(), forwardDir.z());

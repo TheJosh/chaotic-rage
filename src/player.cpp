@@ -139,9 +139,9 @@ void Player::update(int delta)
 		}
 
 		if (this->key[KEY_LEFT]) {
-			this->drive->steering = MIN(this->drive->steering + 0.01f, 0.3f);
+			this->drive->steering = MIN(this->drive->steering - 0.01f, -0.3f);
 		} else if (this->key[KEY_RIGHT]) {
-			this->drive->steering = MAX(this->drive->steering - 0.01f, -0.3f);
+			this->drive->steering = MAX(this->drive->steering + 0.01f, 0.3f);
 		} else if (this->drive->steering > 0.0f) {
 			this->drive->steering = MAX(this->drive->steering - 0.01f, 0.0f);
 		} else if  (this->drive->steering < 0.0f) {
@@ -154,9 +154,9 @@ void Player::update(int delta)
 
 	btTransform xform, xform2;
 	body->getMotionState()->getWorldTransform (xform);
-	xform2 = xform;
-	
-	
+	xform.setRotation(btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle)));
+
+
 	btVector3 linearVelocity = body->getLinearVelocity();
 	btScalar speed = linearVelocity.length();
 	
@@ -174,7 +174,9 @@ void Player::update(int delta)
 	} else if (speed < uts->max_speed) {
 		body->activate(true);
 		
-		xform2.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle)));
+		xform2 = xform;
+
+		//xform2.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle)));
 		btVector3 forwardDir = xform2.getBasis()[1];
 		forwardDir.normalize();
 		forwardDir *= btScalar(uts->accel);
@@ -182,9 +184,9 @@ void Player::update(int delta)
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		
 		if (this->key[KEY_UP]) {
-			walkDirection += forwardDir;
-		} else if (this->key[KEY_DOWN]) {
 			walkDirection -= forwardDir;
+		} else if (this->key[KEY_DOWN]) {
+			walkDirection += forwardDir;
 		}
 		
 		xform2.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle + 90)));

@@ -172,8 +172,7 @@ Entity * Unit::infront(float range)
 	
 	// Begin and end vectors
 	btVector3 begin = xform.getOrigin();
-	begin.setZ(0.4);
-	btVector3 end = begin + forwardDir * btScalar(range);
+	btVector3 end = begin + forwardDir * btScalar(0 - range);
 	
 	st->addDebugLine(&begin, &end);
 	
