@@ -162,8 +162,8 @@ void WeaponRaycast::doFire(Unit * u)
 	angle = getRandom(-angle, angle);
 	
 	// TODO: Shouldn't the worldTransform contain the rotation too?
-	btQuaternion rot = btQuaternion(btVector3(0.0, 0.0, 1.0), DEG_TO_RAD( ((Player*)u)->mouse_angle + angle ));
-	xform.setRotation(rot);
+	//btQuaternion rot = btQuaternion(btVector3(0.0, 0.0, 1.0), DEG_TO_RAD( ((Player*)u)->mouse_angle + angle ));
+	//xform.setRotation(rot);
 	
 	btVector3 forwardDir = xform.getBasis()[1];
 	forwardDir.normalize();
@@ -178,7 +178,7 @@ void WeaponRaycast::doFire(Unit * u)
 	
 	DEBUG("weap", "Ray between %5.3f %5.3f %5.3f and %5.3f %5.3f %5.3f", begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z());
 	
-	//st->addDebugLine(&begin, &end);
+	st->addDebugLine(&begin, &end);
 	
 	
 	// Do the rayTest

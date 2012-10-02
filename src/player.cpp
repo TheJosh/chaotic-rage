@@ -156,8 +156,6 @@ void Player::update(int delta)
 	body->getMotionState()->getWorldTransform (xform);
 	xform2 = xform;
 	
-	xform.setRotation(btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(0 - this->mouse_angle)));
-	
 	
 	btVector3 linearVelocity = body->getLinearVelocity();
 	btScalar speed = linearVelocity.length();

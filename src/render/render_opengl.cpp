@@ -958,7 +958,7 @@ void RenderOpenGL::mainRot()
 	btVector3 euler;
 	PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
 	
-	glRotatef(RAD_TO_DEG(-euler.z()), 0.f, 0.f, 1.f);
+	glRotatef(RAD_TO_DEG(euler.z()), 0.f, 0.f, 1.f);
 	glRotatef(180, 0.f, 0.f, 1.f);
 	glTranslatef(0.f - trans.getOrigin().getX(), 0.f - trans.getOrigin().getY(), 500.f - trans.getOrigin().getZ());
 	
@@ -999,7 +999,7 @@ void RenderOpenGL::lights()
 				
 				btVector3 euler;
 				PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-				glRotatef(RAD_TO_DEG(euler.z()) + 180.0f + 45.0f, 0.f, 0.f, 1.f);
+				glRotatef(RAD_TO_DEG(euler.z()) + 45.0f, 0.f, 0.f, 1.f);
 				glRotatef(15.0f, 1, 0, 0);
 				
 				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_torch);
