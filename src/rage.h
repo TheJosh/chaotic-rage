@@ -90,6 +90,7 @@ class WallType;
 class WeaponType;
 class WeaponRaycast;
 class WeaponDigdown;
+class WeaponFlamethrower;
 class WavefrontObj;
 class Zone;
 

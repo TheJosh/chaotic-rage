@@ -79,6 +79,14 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		w->depth = cfg_getfloat(cfg_item, "depth");
 		wt = w;
 
+	} else if (type == WEAPON_TYPE_FLAMETHROWER) {
+		WeaponFlamethrower* w = new WeaponFlamethrower();
+		w->angle_range = cfg_getint(cfg_item, "angle_range");
+		w->range = cfg_getfloat(cfg_item, "range");
+		w->unit_damage = cfg_getfloat(cfg_item, "unit_damage");
+		w->wall_damage = cfg_getfloat(cfg_item, "wall_damage");
+		wt = w;
+
 	} else {
 		return NULL;
 	}
@@ -160,26 +168,19 @@ void WeaponRaycast::doFire(Unit * u)
 	// Weapon angle ranges
 	int angle = this->angle_range / 2;
 	angle = getRandom(-angle, angle);
+	btQuaternion rot = xform.getRotation() * btQuaternion(btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(angle));
+	xform.setRotation(rot);
 	
-	// TODO: Shouldn't the worldTransform contain the rotation too?
-	//btQuaternion rot = btQuaternion(btVector3(0.0, 0.0, 1.0), DEG_TO_RAD( ((Player*)u)->mouse_angle + angle ));
-	//xform.setRotation(rot);
-	
+	// Ray direction
 	btVector3 forwardDir = xform.getBasis()[1];
 	forwardDir.normalize();
-	forwardDir *= btScalar(0 - this->range);		// weapon range
+	forwardDir *= btScalar(0 - this->range);
 	
-	
-	DEBUG("weap", "forwardDir is %5.3f %5.3f %5.3f", forwardDir.x(), forwardDir.y(), forwardDir.z());
-	DEBUG("weap", "Range is %5.1f", this->range);
-	
+	// Ray begin and end points
 	btVector3 begin = xform.getOrigin();
 	btVector3 end = begin + forwardDir;
 	
-	DEBUG("weap", "Ray between %5.3f %5.3f %5.3f and %5.3f %5.3f %5.3f", begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z());
-	
 	st->addDebugLine(&begin, &end);
-	
 	
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
@@ -205,9 +206,8 @@ void WeaponRaycast::doFire(Unit * u)
 	
 	
 	// Show the weapon bullets
-	create_particles_weapon(u->getGameState(), &begin, &end, 0);
+	create_particles_weapon(u->getGameState(), &begin, &end);
 }
-
 
 
 /**
@@ -220,8 +220,6 @@ void WeaponDigdown::doFire(Unit * u)
 	
 	btVector3 begin = xform.getOrigin();
 	btVector3 end = begin + btVector3(0.0f, 0.0f, -100.0f);
-	
-	DEBUG("weap", "Ray between %5.3f %5.3f %5.3f and %5.3f %5.3f %5.3f", begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z());
 	
 	//st->addDebugLine(&begin, &end);
 	
@@ -243,14 +241,7 @@ void WeaponDigdown::doFire(Unit * u)
 			u->st->render->freeHeightmap();
 			u->st->render->loadHeightmap();
 		}
-		
-	} else {
-		DEBUG("weap", "%p Shot; miss", u);
 	}
-	
-	
-	// Show the weapon bullets
-	create_particles_weapon(u->getGameState(), &begin, &end, 0);
 }
 
 
@@ -270,4 +261,56 @@ void heightmapCircle(Map* map, int x0, int y0, int radius, float depthadd)
 			}
 		}
 	}
+}
+
+
+/**
+* Fires a weapon, from a specified Unit
+**/
+void WeaponFlamethrower::doFire(Unit * u)
+{
+	btTransform xform;
+	u->body->getMotionState()->getWorldTransform(xform);
+	
+	// Weapon angle ranges
+	int angle = this->angle_range / 2;
+	angle = getRandom(-angle, angle);
+	btQuaternion rot = xform.getRotation() * btQuaternion(btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(angle));
+	xform.setRotation(rot);
+	
+	// Ray direction
+	btVector3 forwardDir = xform.getBasis()[1];
+	forwardDir.normalize();
+	forwardDir *= btScalar(0 - this->range);
+	
+	// Ray begin and end points
+	btVector3 begin = xform.getOrigin();
+	btVector3 end = begin + forwardDir;
+	
+	st->addDebugLine(&begin, &end);
+	
+	// Do the rayTest
+	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
+	this->st->physics->getWorld()->rayTest(begin, end, cb);
+	
+	if (cb.hasHit()) {
+		btRigidBody * body = btRigidBody::upcast(cb.m_collisionObject);
+		if (body) {
+			Entity* entA = static_cast<Entity*>(body->getUserPointer());
+			DEBUG("weap", "Ray hit %p (%p)", body, entA);
+			if (entA) {
+				if (entA->klass() == UNIT) {
+					((Unit*)entA)->takeDamage(this->unit_damage);
+				} else if (entA->klass() == WALL) {
+					((Wall*)entA)->takeDamage(this->wall_damage);
+				}
+			}
+		}
+		
+	} else {
+		DEBUG("weap", "%p Shot; miss", u);
+	}
+	
+	// Show the weapon fire
+	create_particles_flamethrower(u->getGameState(), &begin, &end);
 }

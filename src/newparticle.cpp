@@ -20,9 +20,8 @@ using namespace std;
 * @param num The number of particles to create
 * @param start The start location of the particle stream
 * @param end The end location of the particle stream
-* @param angle_range The range of angles to use for the stream, in degrees
 **/
-void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end, float angle_range)
+void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end)
 {
 	NewParticle * p;
 	
@@ -31,20 +30,46 @@ void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end,
 	
 	int time_death = st->game_time + 375;
 	
-	angle_range /= 2;
-	angle_range = DEG_TO_RAD(angle_range);
-	
-	btVector3 velP = velW.rotate(btVector3(0.f, 0.f, 1.f), getRandomf(-angle_range, angle_range));
-	
 	p = new NewParticle();
 	p->pos = *begin;
-	p->vel = velP;
+	p->vel = velW;
 	p->r = p->g = p->b = 0.3f;
 	p->time_death = time_death;
 	
 	st->addNewParticle(p);
 }
 
+
+/**
+* Creates particles for a flamethrower.
+* Angles and speeds are randomised. Lifetime is calculated based on the end vector and a constant speed.
+*
+* TODO: This should have a variable speed as an argument, with the function calculating the age based on the length
+*       This will allow the actual (post-rayTest) endpoint to be used, which would be much better
+*
+* @param num The number of particles to create
+* @param start The start location of the particle stream
+* @param end The end location of the particle stream
+**/
+void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 * end)
+{
+	NewParticle * p;
+	
+	btVector3 velW = *end - *begin;
+	velW /= btScalar(375.f);
+	
+	int time_death = st->game_time + 375;
+	
+	p = new NewParticle();
+	p->pos = *begin;
+	p->vel = velW;
+	p->r = getRandomf(0.8f, 1.0f);
+	p->g = getRandomf(0.2f, 0.4f);
+	p->b = getRandomf(0.0f, 0.1f);
+	p->time_death = time_death;
+	
+	st->addNewParticle(p);
+}
 
 
 /**
@@ -59,8 +84,9 @@ void create_particles_blood_spray(GameState * st, btVector3 * location, float da
 	p = new NewParticle();
 	p->pos = *location;
 	p->vel = vel;
-	p->r = .8f;
-	p->g = p->b = .1f;
+	p->r = getRandomf(0.8f, 1.0f);
+	p->g = getRandomf(0.0f, 0.1f);
+	p->b = getRandomf(0.0f, 0.1f);
 	p->time_death = st->game_time + 375;
 	
 	st->addNewParticle(p);
