@@ -35,7 +35,7 @@ int main (int argc, char * argv[])
 	new PhysicsBullet(st);
 	new ModManager(st);
 	
-	st->render->setScreenSize(500, 500, false);
+	st->render->setScreenSize(800, 600, false);
 	
 	
 	// Load data
@@ -45,24 +45,29 @@ int main (int argc, char * argv[])
 	}
 	st->mm->addMod(mod);
 	
-	
-	st->physics->preGame();
+	// Init physics
+	st->physics->init();
 	
 	// Load map
 	Map *m = new Map(st);
 	m->load("blank", st->render);
 	st->curr_map = m;
 	
+	// Load gametype
 	new GameLogic(st);
 	GameType *gt = st->mm->getGameType("boredem");
 	st->logic->execScript(gt->script);
 	
+	// Prep some env
 	st->client = NULL;
 	st->num_local = 1;
-	st->local_players[0]->p = NULL;
+	st->local_players[0] = new PlayerState(st);
+	st->local_players[0]->slot = 1;
 	
-	((RenderOpenGL*)st->render)->viewmode = 1;
+	((RenderOpenGL*)st->render)->viewmode = 0;
 	
+	// Reset physics
+	st->physics->preGame();
 	
 	// Create object type for anim model
 	string tmp = argv[1];
@@ -78,15 +83,12 @@ int main (int argc, char * argv[])
 	
 	mod->addObjectType(ot);
 	
-	
 	// Create object in the world
 	Object *o = new Object(ot, st, m->width/2, m->height/2, 0, 0);
 	st->addObject(o);
 	
-	
 	// Begin!
 	gameLoop(st, st->render);
-	
 	
 	exit(0);
 }

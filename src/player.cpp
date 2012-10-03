@@ -139,9 +139,9 @@ void Player::update(int delta)
 		}
 
 		if (this->key[KEY_LEFT]) {
-			this->drive->steering = MIN(this->drive->steering - 0.01f, -0.3f);
+			this->drive->steering = MIN(this->drive->steering + 0.01f, 0.3f);
 		} else if (this->key[KEY_RIGHT]) {
-			this->drive->steering = MAX(this->drive->steering + 0.01f, 0.3f);
+			this->drive->steering = MAX(this->drive->steering - 0.01f, -0.3f);
 		} else if (this->drive->steering > 0.0f) {
 			this->drive->steering = MAX(this->drive->steering - 0.01f, 0.0f);
 		} else if  (this->drive->steering < 0.0f) {

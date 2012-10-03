@@ -22,7 +22,7 @@ float	suspensionDamping = 2.3f;
 float	suspensionCompression = 4.4f;
 float	rollInfluence = 0.1f;
 btVector3 wheelDirectionCS0(0,0,-1);
-btVector3 wheelAxleCS(-1,0,0);
+btVector3 wheelAxleCS(1,0,0);
 
 
 

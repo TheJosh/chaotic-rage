@@ -69,6 +69,7 @@ PlayerState::PlayerState(GameState *st)
 	this->st = st;
 	this->p = NULL;
 	this->hud = new HUD(this);
+	this->slot = 0;
 }
 
 PlayerState::~PlayerState()
