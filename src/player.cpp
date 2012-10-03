@@ -95,7 +95,7 @@ void Player::angleFromMouse(int x, int y, int delta)
 	float change_dist;
 	
 	change_dist = x / (10.0f / sensitivity);
-	this->mouse_angle = this->mouse_angle + change_dist;
+	this->mouse_angle = this->mouse_angle - change_dist;
 	
 	change_dist = y / (10.0f / sensitivity / 2.0f);
 	this->vertical_angle = this->vertical_angle + change_dist;
