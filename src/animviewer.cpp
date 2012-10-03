@@ -75,12 +75,10 @@ int main (int argc, char * argv[])
 	ot->name = tmp;
 	ot->check_radius = 30;
 	ot->health = 20000;
-	
 	ot->model = mod->getAnimModel(tmp);
 	if (ot->model == NULL) {
 		reportFatalError("Animmodel not found");
 	}
-	
 	mod->addObjectType(ot);
 	
 	// Create object in the world
