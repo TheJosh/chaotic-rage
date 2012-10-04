@@ -485,7 +485,7 @@ void RenderOpenGL::preGame()
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
 	
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	
 	if (q_tex >= 2) {
 		glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
@@ -1001,7 +1001,7 @@ void RenderOpenGL::lights()
 				
 				btVector3 euler;
 				PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-				glRotatef(RAD_TO_DEG(euler.z()) + 45.0f, 0.f, 0.f, 1.f);
+				glRotatef(RAD_TO_DEG(-euler.z()) + 45.0f, 0.f, 0.f, 1.f);
 				glRotatef(15.0f, 1, 0, 0);
 				
 				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_torch);
