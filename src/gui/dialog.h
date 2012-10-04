@@ -34,6 +34,26 @@ class VectorListModel: public gcn::ListModel
 };
 
 
+class MapRegistryListModel: public gcn::ListModel
+{
+	private:
+		MapRegistry * mapreg;
+		
+	public:
+		MapRegistryListModel(MapRegistry * mapreg) : mapreg(mapreg) {}
+		
+		std::string getElementAt(int i)
+		{
+			return mapreg->titleAt(i);
+		}
+		
+		int getNumberOfElements()
+		{
+			return mapreg->size();
+		}
+};
+
+
 /**
 * Base dialog class
 **/

@@ -52,7 +52,7 @@ gcn::Container * DialogNewGame::setup()
 	label = new gcn::Label("Map");
 	c->add(label, 10, 30);
 	
-	this->map = new gcn::DropDown(new VectorListModel(&this->m->maps));
+	this->map = new gcn::DropDown(new MapRegistryListModel(this->m->mapreg));
 	this->map->setPosition(80, 30);
 	c->add(this->map);
 	
@@ -87,7 +87,7 @@ gcn::Container * DialogNewGame::setup()
 void DialogNewGame::action(const gcn::ActionEvent& actionEvent)
 {
 	this->m->startGame(
-		this->m->maps[this->map->getSelected()],
+		this->m->mapreg->nameAt(this->map->getSelected()),
 		this->m->gametypes[this->gametype->getSelected()],
 		this->m->unittypes[this->unittype->getSelected()],
 		this->viewmode->getSelected(),

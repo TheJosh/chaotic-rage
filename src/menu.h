@@ -48,7 +48,7 @@ class Menu
 		
 	public:
 		// Data for the dialogs
-		vector<string> maps;
+		MapRegistry * mapreg;
 		vector<string> gametypes;
 		vector<string> viewmodes;
 		vector<string> unittypes;

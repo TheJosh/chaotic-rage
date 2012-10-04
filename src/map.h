@@ -104,3 +104,39 @@ class Map {
 };
 
 
+/**
+* A single "registered" map
+**/
+class MapReg {
+	friend class MapRegistry;
+	
+	protected:
+		string name;
+		string title;
+		
+	public:
+		MapReg() : name(""), title("") {}
+		MapReg(string name) : name(name), title(name) {}
+		MapReg(string name, string title) : name(name), title(title) {}
+};
+
+
+/**
+* The registry of maps
+**/
+class MapRegistry {
+	public:
+		vector<MapReg> maps;
+		
+	public:
+		void find(string dir);
+		
+		string nameAt(int index) { return maps.at(index).name; }
+		string titleAt(int index) { return maps.at(index).title; }
+		unsigned int size() { return maps.size(); }
+};
+
+
+
+
+

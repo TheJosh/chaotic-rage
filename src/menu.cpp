@@ -46,14 +46,9 @@ void Menu::doit()
 	float bg_rot2_pos = 3;
 	float bg_rot2_dir = -0.004;
 	
-	
-	// Maps
-	maps.push_back("therlor_valley");
-	maps.push_back("arena");
-	maps.push_back("towers");
-	maps.push_back("generaltest");
-	maps.push_back("tanktest");
-	maps.push_back("heighttest");
+	// Load maps
+	mapreg = new MapRegistry();
+	mapreg->find("maps");
 	
 	// Gametypes
 	{

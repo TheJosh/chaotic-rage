@@ -66,6 +66,8 @@ class GameType;
 class HUD;
 class Intro;
 class Map;
+class MapRegistry;
+class MapReg;
 class Menu;
 class Mod;
 class ModManager;
@@ -135,8 +137,6 @@ class Zone;
 #include "lua/gamelogic.h"
 #include "lua/ailogic.h"
 
-#include "gui/dialog.h"
-
 #include "entity.h"
 #include "unit.h"
 #include "player.h"
@@ -148,6 +148,8 @@ class Zone;
 
 #include "map.h"
 #include "zone.h"
+
+#include "gui/dialog.h"
 
 #include "gamestate.h"
 #include "game.h"
