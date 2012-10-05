@@ -1010,6 +1010,13 @@ void RenderOpenGLCompat::entities()
 		trans.getOpenGLMatrix(m);
 		glMultMatrixf((GLfloat*)m);
 
+		if (e == this->render_player) {
+			this->render_player->body->getMotionState()->getWorldTransform(trans);
+			btVector3 euler;
+			PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
+			glRotatef(RAD_TO_DEG(-euler.z()) * 2.0f, 0.f, 0.f, 1.f);
+		}
+
 		renderAnimPlay(play);
 			
 		glPopMatrix();
