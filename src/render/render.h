@@ -29,6 +29,8 @@ class Render
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename) = 0;
 		
 	public:
+		int viewmode;
+		
 		/**
 		* Sets the screen size of this renderer
 		**/
@@ -110,6 +112,16 @@ class Render
 		* Free a loaded heightmap.
 		**/
 		virtual void freeHeightmap() {}
+		
+		/**
+		* Returns the width of a sprite
+		**/
+		virtual int getWidth() { return 0; }
+		
+		/**
+		* Returns the height of a sprite
+		**/
+		virtual int getHeight() { return 0; }
 		
 		
 	public:

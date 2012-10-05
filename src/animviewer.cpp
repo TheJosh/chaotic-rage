@@ -63,8 +63,7 @@ int main (int argc, char * argv[])
 	st->num_local = 1;
 	st->local_players[0] = new PlayerState(st);
 	st->local_players[0]->slot = 1;
-	
-	((RenderOpenGL*)st->render)->viewmode = 0;
+	st->render->viewmode = 0;
 	
 	// Reset physics
 	st->physics->preGame();

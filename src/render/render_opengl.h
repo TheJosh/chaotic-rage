@@ -72,7 +72,6 @@ class RenderOpenGL : public Render
 		btIDebugDraw *physicsdebug;
 		
 	public:
-		int viewmode;
 		unsigned int q_tex;
 		unsigned int q_alias;
 		unsigned int q_general;
@@ -95,6 +94,8 @@ class RenderOpenGL : public Render
 		virtual void disablePhysicsDebug();
 		virtual void loadHeightmap();
 		virtual void freeHeightmap();
+		virtual int getWidth() { return real_width; }
+		virtual int getHeight() { return real_height; }
 		
 	public:
 		RenderOpenGL(GameState * st);

@@ -75,7 +75,7 @@ void Menu::doit()
 	SDL_Event event;
 	
 	
-	int y = render->real_height - (40 * 6) - 20;
+	int y = render->getHeight() - (40 * 6) - 20;
 	
 	this->menuAdd("Single Player", 40, y, MC_SINGLEPLAYER);
 	y += 40;
@@ -393,7 +393,7 @@ void Menu::startGame(string map, string gametype, string unittype, int viewmode,
 		st->local_players[i]->slot = i + 1;
 	}
 
-	((RenderOpenGL*)st->render)->viewmode = viewmode;
+	st->render->viewmode = viewmode;
 	
 	st->physics->preGame();
 	

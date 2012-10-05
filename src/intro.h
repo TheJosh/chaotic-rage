@@ -14,7 +14,7 @@ class Intro
 {
 	private:
 		GameState *st;
-		RenderOpenGL *render;
+		Render *render;
 		
 		int running;
 		

@@ -359,7 +359,7 @@ void GameState::initGuichan()
 		
 		this->guitop = new gcn::Container();
 		this->guitop->setPosition(0,0);
-		this->guitop->setSize(((RenderOpenGL*)this->render)->real_width, ((RenderOpenGL*)this->render)->real_height);
+		this->guitop->setSize(this->render->getWidth(), this->render->getHeight());
 		this->guitop->setBaseColor(gcn::Color(0, 0, 0, 0));
 		gui->setTop(this->guitop);
 		
@@ -387,7 +387,7 @@ void GameState::addDialog(Dialog * dialog)
 	if (this->gui == NULL) return;
 	
 	gcn::Container * c = dialog->setup();
-	c->setPosition((((RenderOpenGL*)this->render)->real_width - c->getWidth()) / 2, (((RenderOpenGL*)this->render)->real_height - c->getHeight()) / 2);
+	c->setPosition((this->render->getWidth() - c->getWidth()) / 2, (this->render->getHeight() - c->getHeight()) / 2);
 	c->setBaseColor(gcn::Color(150, 150, 150, 200));
 	this->guitop->add(c);
 	

@@ -114,27 +114,7 @@ void HUD::removeAllDataTables()
 **/
 void HUD::render(RenderOpenGL * render)
 {
-	if (this->spawn_menu) {
-		// TODO: menu for spawning
-		/*for (int i = 0; i <= 1; i++) {
-			UnitType *uc = st->mm->getUnitType(i);
-			UnitTypeState *ucs = uc->getState(UNIT_STATE_STATIC);
-			if (! uc->playable) continue;
-			
-			glPushMatrix();
-			glTranslatef(100 + i * 100, 500, 0);
-			glRotatef(90, 1, 0, 0);
-			glRotatef(180, 0, 0, 1);
-			
-			AnimPlay * play = new AnimPlay(ucs->model);
-			((RenderOpenGL*) render)->renderAnimPlay(play, 0);
-			delete(play);
-			
-			glPopMatrix();
-		}*/
-		
-		
-	} else if (this->weapon_menu && this->ps->p) {
+	if (this->weapon_menu && this->ps->p) {
 		// Weapon menu
 		SDL_Rect r = {100, 100, 125, 125};
 		unsigned int i, num = this->ps->p->getNumWeapons();

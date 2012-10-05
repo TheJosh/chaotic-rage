@@ -14,7 +14,7 @@ using namespace std;
 Intro::Intro(GameState *st)
 {
 	this->st = st;
-	this->render = (RenderOpenGL*) st->render;
+	this->render = st->render;
 }
 
 
@@ -47,7 +47,7 @@ void Intro::doit()
 	// Ortho mode for the logos
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(0.0f, render->real_width, render->real_height, 0.0f, 0.0f, 10.0f);
+	glOrtho(0.0f, this->render->getWidth(), this->render->getHeight(), 0.0f, 0.0f, 10.0f);
 	
 	
 	int start = SDL_GetTicks();
@@ -75,9 +75,9 @@ void Intro::doit()
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		
-		int x = (render->real_width - img->w) / 2;
-		int y = (render->real_height - img->h) / 2;
-		render->renderSprite(img, x, y);
+		int x = (this->render->getWidth() - img->w) / 2;
+		int y = (this->render->getHeight() - img->h) / 2;
+		this->render->renderSprite(img, x, y);
 		
 		SDL_GL_SwapBuffers();
 		SDL_Delay(50);
