@@ -158,6 +158,7 @@
     <ClCompile Include="..\..\src\render\render_debug.cpp" />
     <ClCompile Include="..\..\src\render\render_null.cpp" />
     <ClCompile Include="..\..\src\render\render_opengl.cpp" />
+    <ClCompile Include="..\..\src\render\render_opengl_compat.cpp" />
     <ClCompile Include="..\..\src\unit.cpp" />
     <ClCompile Include="..\..\src\util\debug.cpp" />
     <ClCompile Include="..\..\src\util\obj.cpp" />
@@ -212,9 +213,11 @@
     <ClInclude Include="..\..\src\rage.h" />
     <ClInclude Include="..\..\src\render\hud.h" />
     <ClInclude Include="..\..\src\render\render.h" />
+    <ClInclude Include="..\..\src\render\render_3d.h" />
     <ClInclude Include="..\..\src\render\render_debug.h" />
     <ClInclude Include="..\..\src\render\render_null.h" />
     <ClInclude Include="..\..\src\render\render_opengl.h" />
+    <ClInclude Include="..\..\src\render\render_opengl_compat.h" />
     <ClInclude Include="..\..\src\unit.h" />
     <ClInclude Include="..\..\src\util\cmdline.h" />
     <ClInclude Include="..\..\src\util\debug.h" />
