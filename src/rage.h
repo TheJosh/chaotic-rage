@@ -107,6 +107,7 @@ class Zone;
 #include "render/render.h"
 #include "render/render_3d.h"
 #include "render/render_opengl.h"
+#include "render/render_opengl_compat.h"
 #include "render/render_null.h"
 #include "render/render_debug.h"
 #include "render/hud.h"

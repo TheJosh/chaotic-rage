@@ -52,6 +52,7 @@ class Light {
 class Map {
 	friend class RenderSDL;
 	friend class RenderOpenGL;
+	friend class RenderOpenGLCompat;
 	
 	private:
 		vector<Area*> areas;
