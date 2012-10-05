@@ -49,7 +49,7 @@ class HUD {
 		HUD(PlayerState *ps);
 	
 	public:
-		void render(RenderOpenGL * render);
+		void render(Render3D * render);
 		int handleEvent(SDL_Event *event);
 		
 		void showSpawnMenu();

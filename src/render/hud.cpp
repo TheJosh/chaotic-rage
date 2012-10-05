@@ -112,7 +112,7 @@ void HUD::removeAllDataTables()
 /**
 * Render the heads up display
 **/
-void HUD::render(RenderOpenGL * render)
+void HUD::render(Render3D * render)
 {
 	if (this->weapon_menu && this->ps->p) {
 		// Weapon menu

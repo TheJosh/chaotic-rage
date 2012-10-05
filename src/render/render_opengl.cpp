@@ -39,7 +39,7 @@ static inline int next_pot (int a)
 }
 
 
-RenderOpenGL::RenderOpenGL(GameState * st) : Render(st)
+RenderOpenGL::RenderOpenGL(GameState * st) : Render3D(st)
 {
 	this->screen = NULL;
 	this->physicsdebug = NULL;

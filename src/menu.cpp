@@ -26,7 +26,7 @@ Menu::Menu(GameState *st)
 {
 	this->st = st;
 	this->mm = st->mm;
-	this->render = (RenderOpenGL*) st->render;
+	this->render = (Render3D*) st->render;
 	this->dialog = NULL;
 }
 

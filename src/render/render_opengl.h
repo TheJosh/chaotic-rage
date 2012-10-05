@@ -36,7 +36,7 @@ struct FreetypeChar
 };
 
 
-class RenderOpenGL : public Render
+class RenderOpenGL : public Render3D
 {
 	friend class HUD;
 	friend class Menu;
@@ -45,14 +45,6 @@ class RenderOpenGL : public Render
 	
 	private:
 		SDL_Surface * screen;
-		
-		// Size of the actual screen, virtual screen, and desktop
-		int real_width;
-		int real_height;
-		int virt_width;
-		int virt_height;
-		int desktop_width;
-		int desktop_height;
 		
 		// The current player being rendered (split screen)
 		Player* render_player;
@@ -76,10 +68,15 @@ class RenderOpenGL : public Render
 		unsigned int q_alias;
 		unsigned int q_general;
 		
+	public:
+		RenderOpenGL(GameState * st);
+		virtual ~RenderOpenGL();
+		
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
 		
 	public:
+		// From class Render
 		virtual void setScreenSize(int width, int height, bool fullscreen);
 		virtual void render();
 		virtual void renderSprite(SpritePtr sprite, int x, int y);
@@ -98,26 +95,21 @@ class RenderOpenGL : public Render
 		virtual int getHeight() { return real_height; }
 		
 	public:
-		RenderOpenGL(GameState * st);
-		virtual ~RenderOpenGL();
-		
-		void saveScreenshot(string filename);
-		void initGuichan(gcn::Gui * gui, Mod * mod);
-		
-	protected:
-		void preVBOrender();
-		void postVBOrender();
-		void renderObj (WavefrontObj * obj);
-		void renderAnimPlay(AnimPlay * play);
-		void renderText(string text, float x = 0.0, float y = 0.0, float r = 1.0, float g = 1.0, float b = 1.0);
-		void renderCharacter(char c);
-		void loadFont(string name, Mod * mod);
-		void deadRot();
+		// From class Render3D
+		virtual void saveScreenshot(string filename);
+		virtual void initGuichan(gcn::Gui * gui, Mod * mod);
+		virtual void preVBOrender();
+		virtual void postVBOrender();
+		virtual void renderAnimPlay(AnimPlay * play);
+		virtual void renderObj (WavefrontObj * obj);
+		virtual void loadFont(string name, Mod * mod);
+		virtual void renderText(string text, float x = 0.0, float y = 0.0, float r = 1.0, float g = 1.0, float b = 1.0);
 		
 	private:
+		void renderCharacter(char c);
+		void deadRot();
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
-		
 		void mainViewport(int s, int of);
 		void background();
 		void mainRot();

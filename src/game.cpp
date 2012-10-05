@@ -139,7 +139,7 @@ static void handleEvents(GameState *st)
 				filename.append("screenshot");
 				filename.append(buf);
 				filename.append(".bmp");
-				((RenderOpenGL*) st->render)->saveScreenshot(filename);
+				((Render3D*) st->render)->saveScreenshot(filename);
 				
 				filename = "screenshot";
 				filename.append(buf);

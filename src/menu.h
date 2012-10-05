@@ -40,7 +40,7 @@ class Menu
 {
 	private:
 		GameState *st;
-		RenderOpenGL *render;
+		Render3D *render;
 		int running;
 		vector<MenuItem*> menuitems;
 		gcn::Gui* gui;

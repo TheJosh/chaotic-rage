@@ -81,6 +81,7 @@ class PhysicsBullet;
 class Player;
 class PlayerState;
 class Render;
+class Render3D;
 class Song;
 class Sound;
 class Unit;
@@ -104,6 +105,7 @@ class Zone;
 #include "util/cmdline.h"
 
 #include "render/render.h"
+#include "render/render_3d.h"
 #include "render/render_opengl.h"
 #include "render/render_null.h"
 #include "render/render_debug.h"
