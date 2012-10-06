@@ -27,13 +27,13 @@ int main (int argc, char ** argv)
 	st->cmdline = new CommandLineArgs(argc, argv);
 	#endif
 
-	new RenderOpenGL(st);
-	new AudioSDLMixer(st);
-	new PhysicsBullet(st);
-	new ModManager(st);
+	st->cconf = new ClientConfig();
 
-	
-	st->render->setScreenSize(1000, 700, false);
+	// Load render, audio, etc according to config
+	st->cconf->initRender(st);
+	st->cconf->initAudio(st);
+	st->cconf->initPhysics(st);
+	st->cconf->initMods(st);
 	
 	#ifdef RELEASE
 	// This has to be after the OpenGL init

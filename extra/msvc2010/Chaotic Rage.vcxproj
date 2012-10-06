@@ -160,6 +160,7 @@
     <ClCompile Include="..\..\src\render\render_opengl.cpp" />
     <ClCompile Include="..\..\src\render\render_opengl_compat.cpp" />
     <ClCompile Include="..\..\src\unit.cpp" />
+    <ClCompile Include="..\..\src\util\clientconfig.cpp" />
     <ClCompile Include="..\..\src\util\debug.cpp" />
     <ClCompile Include="..\..\src\util\obj.cpp" />
     <ClCompile Include="..\..\src\util\SDL_rwops_zzip.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="..\..\src\render\render_opengl.h" />
     <ClInclude Include="..\..\src\render\render_opengl_compat.h" />
     <ClInclude Include="..\..\src\unit.h" />
+    <ClInclude Include="..\..\src\util\clientconfig.h" />
     <ClInclude Include="..\..\src\util\cmdline.h" />
     <ClInclude Include="..\..\src\util\debug.h" />
     <ClInclude Include="..\..\src\util\obj.h" />

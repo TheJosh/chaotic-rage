@@ -99,12 +99,7 @@ void RenderOpenGLCompat::setScreenSize(int width, int height, bool fullscreen)
 	}
 	
 	
-	// OpenGL
-	if (atof((char*) glGetString(GL_VERSION)) < 2.0) {
-		reportFatalError("OpenGL 2.0 or later is required, but not supported on this system.");
-		exit(1);
-	}
-	
+	// GLEW
 	GLenum err = glewInit();
 	if (GLEW_OK != err) {
 		fprintf(stderr, "Glew Error: %s\n", glewGetErrorString(err));
@@ -118,6 +113,12 @@ void RenderOpenGLCompat::setScreenSize(int width, int height, bool fullscreen)
 		exit(1);
 	}
 	
+	// GL_ARB_vertex_buffer_object -> VBOs
+	if (! GL_ARB_vertex_buffer_object) {
+		reportFatalError("OpenGL 3.0 or the extension 'GL_ARB_vertex_buffer_object' not available.");
+		exit(1);
+	}
+
 	// Freetype
 	int error;
 	error = FT_Init_FreeType(&this->ft);

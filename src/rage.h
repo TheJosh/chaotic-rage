@@ -54,6 +54,7 @@ class AnimModel;
 class AnimPlay;
 class Audio;
 class CommandLineArgs;
+class ClientConfig;
 class Dialog;
 class DialogNewGame;
 class DialogNull;
@@ -103,6 +104,7 @@ class Zone;
 #include "util/util.h"
 #include "util/debug.h"
 #include "util/cmdline.h"
+#include "util/clientconfig.h"
 
 #include "render/render.h"
 #include "render/render_3d.h"

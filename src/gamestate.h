@@ -104,6 +104,7 @@ class GameState
 		NetServer* server;
 		PhysicsBullet* physics;
 		CommandLineArgs* cmdline;
+		ClientConfig* cconf;
 		ModManager* mm;
 
 		gcn::Gui* gui;
