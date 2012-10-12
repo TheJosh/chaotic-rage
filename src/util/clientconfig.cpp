@@ -82,7 +82,7 @@ void ClientConfig::savedefault()
 {
 	string filename;
 
-	char * def =
+	char * def = (char*)
 		"#\n"
 		"# This is the configuration file for the Chaotic Rage game client.\n"
 		"#\n"
