@@ -71,35 +71,7 @@ void PhysicsBullet::preGame()
 	this->groundRigidBody->setFriction(10.f);
 	dynamicsWorld->addRigidBody(groundRigidBody);	//, COL_GROUND, COL_ALIVE | COL_DEAD
 	
-	// This leaks. I'm using pointers because of MS compiler doesn't like the alignment or something.
-	this->addBoundaryPlane(new btVector3(1, 0, 0), new btVector3(0, 0, 0));
-	this->addBoundaryPlane(new btVector3(0, 1, 0), new btVector3(0, 0, 0));
-	this->addBoundaryPlane(new btVector3(-1, 0, 0), new btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
-	this->addBoundaryPlane(new btVector3(0, -1, 0), new btVector3(this->st->curr_map->width, this->st->curr_map->height, 0));
-	
 	collisionShapes = new btAlignedObjectArray<btCollisionShape*>();
-}
-
-
-/**
-* Create a boundary plane (invisible wall)
-* There is normally four of these around the edges of the map.
-**/
-void PhysicsBullet::addBoundaryPlane(btVector3 * axis, btVector3 * loc)
-{
-	btCollisionShape* shape = new btStaticPlaneShape(*axis, 0);
-	
-	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), *loc));
-	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
-		0,
-		motionState,
-		shape,
-		btVector3(0,0,0)
-	);
-	
-	btRigidBody *rigidBody = new btRigidBody(rigidBodyCI);
-	
-	dynamicsWorld->addRigidBody(rigidBody);	//, COL_GROUND, COL_ALIVE | COL_DEAD
 }
 
 
