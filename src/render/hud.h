@@ -33,15 +33,10 @@ class DataTable
 
 class HUD {
 	public:
-		const static int EVENT_BUBBLE = 1;
-		const static int EVENT_PREVENT = 2;
-	
-	public:
 		PlayerState *ps;
 		
 	private:
 		bool weapon_menu;
-		bool spawn_menu;
 		list<AlertMessage*> msgs;
 		vector<DataTable*> tables;
 		
@@ -50,11 +45,11 @@ class HUD {
 	
 	public:
 		void render(Render3D * render);
-		int handleEvent(SDL_Event *event);
-		
-		void showSpawnMenu();
-		void hideSpawnMenu();
-		
+
+		void eventClick();
+		void eventUp();
+		void eventDown();
+
 		void addAlertMessage(string text);
 		void addAlertMessage(string text1, string text2);
 		

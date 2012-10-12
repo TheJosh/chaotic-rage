@@ -133,10 +133,10 @@ gcn::Container * DialogControls::setup()
 	
 	string controls_split1[] = {
 		"Move", "W A S D",
-		"Aim", "O P 9 L",
-		"Fire", "K",
-		"Melee", "U",
-		"Change Weapon", " ",
+		"Aim", "9 K L P",
+		"Fire", "O",
+		"Melee", "I",
+		"Change Weapon", "J M",
 		"Use", "E",
 		"Lift", "Q",
 		"Special", "T",
@@ -144,7 +144,7 @@ gcn::Container * DialogControls::setup()
 	};
 	
 	string controls_split2[] = {
-		"Move", "Numpad 4 5 6 8",
+		"Move", "Numpad 8 4 5 6",
 		"Aim", "Mouse",
 		"Fire", "Left Click",
 		"Melee", "Right Click",

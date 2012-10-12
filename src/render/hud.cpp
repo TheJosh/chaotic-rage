@@ -15,21 +15,8 @@ HUD::HUD(PlayerState *ps)
 {
 	this->ps = ps;
 	this->weapon_menu = false;
-	this->spawn_menu = false;
 }
 
-
-void HUD::showSpawnMenu()
-{
-	spawn_menu = true;
-	this->ps->st->setMouseGrab(false);
-}
-
-void HUD::hideSpawnMenu()
-{
-	spawn_menu = false;
-	this->ps->st->setMouseGrab(true);
-}
 
 void HUD::addAlertMessage(string text)
 {
@@ -190,45 +177,29 @@ void HUD::render(Render3D * render)
 
 
 /**
-* Handles events.
-* Called before the main event processing occurs.
-* Return EVENT_BUBBLE to bubble the event, EVENT_PREVENT to prevent additional processing
+* Up scroll or equivelent
 **/
-int HUD::handleEvent(SDL_Event *event)
+void HUD::eventUp()
 {
-	if (event->type == SDL_KEYUP) {
-		if (event->key.keysym.sym == SDLK_LSHIFT) {
-			// SHIFT key
-			this->weapon_menu = ! this->weapon_menu;
-			return HUD::EVENT_PREVENT;
+	this->weapon_menu = true;
+	this->ps->p->setWeapon(this->ps->p->getPrevWeaponID());
+}
 
-		} else if (event->key.keysym.sym == SDLK_UP) {
-			this->ps->p->setWeapon(this->ps->p->getPrevWeaponID());
-			return HUD::EVENT_PREVENT;
-			
-		}  else if (event->key.keysym.sym == SDLK_DOWN) {
-			this->ps->p->setWeapon(this->ps->p->getNextWeaponID());
-			return HUD::EVENT_PREVENT;
-			
-		}
 
-	} else if (event->type == SDL_MOUSEBUTTONDOWN) {
-		// MOUSE BUTTON + SCROLL
-		if (event->button.button == SDL_BUTTON_WHEELUP) {
-			if (! this->weapon_menu) this->weapon_menu = true;
-			if (this->ps->p) this->ps->p->setWeapon(this->ps->p->getPrevWeaponID());
-			return HUD::EVENT_PREVENT;
-			
-		} else if (event->button.button == SDL_BUTTON_WHEELDOWN) {
-			if (! this->weapon_menu) this->weapon_menu = true;
-			if (this->ps->p) this->ps->p->setWeapon(this->ps->p->getNextWeaponID());
-			return HUD::EVENT_PREVENT;
-			
-		} else {
-			this->weapon_menu = false;
-			return HUD::EVENT_BUBBLE;
-		}
-	}
-	
-	return HUD::EVENT_BUBBLE;
+/**
+* Down scroll or equivelent
+**/
+void HUD::eventDown()
+{
+	this->weapon_menu = true;
+	this->ps->p->setWeapon(this->ps->p->getNextWeaponID());
+}
+
+
+/**
+* Click or equivelent
+**/
+void HUD::eventClick()
+{
+	this->weapon_menu = false;
 }

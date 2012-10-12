@@ -834,10 +834,12 @@ void RenderOpenGL::render()
 		entities();
 		particles();
 		if (physicsdebug != NULL) physics();
-		guichan();
 		hud(this->st->local_players[i]->hud);
 	}
-	
+
+	mainViewport(0,1);
+	guichan();
+
 	SDL_GL_SwapBuffers();
 }
 
