@@ -224,7 +224,7 @@ int Player::takeDamage(int damage)
 	int result = Unit::takeDamage(damage);
 	
 	if (result == 1) {
-		this->st->logic->raise_playerdied();
+		this->st->logic->raise_playerdied(this->slot);
 		
 		for (unsigned int i = 0; i < this->st->num_local; i++) {
 			if (this == this->st->local_players[i]->p) {

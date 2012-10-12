@@ -59,7 +59,7 @@ class GameLogic
 		/**
 		* When a player has died
 		**/
-		void raise_playerdied();
+		void raise_playerdied(int arg);
 		vector<int> binds_playerdied;
 		
 		/**

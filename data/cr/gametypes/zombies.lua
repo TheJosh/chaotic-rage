@@ -97,13 +97,13 @@ end);
 --
 -- Handle unit deaths
 --
-bind_playerdied(function()
+bind_playerdied(function(slot)
 	show_alert_message("Just not good enough I see...");
 	
 	do_score();
 	
 	add_timer(2000, function()
-		add_player(get_selected_unittype(), factions.team1, 1);
+		add_player(get_selected_unittype(), factions.team1, slot);
 	end);
 end);
 

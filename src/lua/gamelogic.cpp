@@ -126,7 +126,7 @@ void GameLogic::update(int deglta)
 
 LUA_DEFINE_RAISE(gamestart)
 LUA_DEFINE_RAISE_INTARG(playerjoin)
-LUA_DEFINE_RAISE(playerdied)
+LUA_DEFINE_RAISE_INTARG(playerdied)
 LUA_DEFINE_RAISE(npcdied)
 
 
