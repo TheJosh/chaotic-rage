@@ -237,11 +237,13 @@ static void handleEvents(GameState *st)
 					case SDLK_d: st->local_players[0]->p->keyPress(Player::KEY_RIGHT); break;
 					case SDLK_e: st->local_players[0]->p->keyPress(Player::KEY_USE); break;
 					case SDLK_q: st->local_players[0]->p->keyPress(Player::KEY_LIFT); break;
+					case SDLK_t: st->local_players[0]->p->keyPress(Player::KEY_SPECIAL); break;
 					case SDLK_o: mk_down_x[0] = -10; break;
 					case SDLK_p: mk_down_x[0] = 10; break;
 					case SDLK_9: mk_down_y[0] = -10; break;
 					case SDLK_l: mk_down_y[0] = 10; break;
 					case SDLK_k: st->local_players[0]->p->keyPress(Player::KEY_FIRE); break;
+					case SDLK_u: st->local_players[0]->p->keyPress(Player::KEY_MELEE); break;
 					default: break;
 				}
 			
@@ -253,11 +255,13 @@ static void handleEvents(GameState *st)
 					case SDLK_d: st->local_players[0]->p->keyRelease(Player::KEY_RIGHT); break;
 					case SDLK_e: st->local_players[0]->p->keyRelease(Player::KEY_USE); break;
 					case SDLK_q: st->local_players[0]->p->keyRelease(Player::KEY_LIFT); break;
+					case SDLK_t: st->local_players[0]->p->keyRelease(Player::KEY_SPECIAL); break;
 					case SDLK_o: mk_down_x[0] = 0; break;
 					case SDLK_p: mk_down_x[0] = 0; break;
 					case SDLK_9: mk_down_y[0] = 0; break;
 					case SDLK_l: mk_down_y[0] = 0; break;
 					case SDLK_k: st->local_players[0]->p->keyRelease(Player::KEY_FIRE); break;
+					case SDLK_u: st->local_players[0]->p->keyRelease(Player::KEY_MELEE); break;
 					default: break;
 				}
 			}
@@ -276,6 +280,7 @@ static void handleEvents(GameState *st)
 					case SDLK_KP6: st->local_players[1]->p->keyPress(Player::KEY_RIGHT); break;
 					case SDLK_KP9: st->local_players[1]->p->keyPress(Player::KEY_USE); break;
 					case SDLK_KP7: st->local_players[1]->p->keyPress(Player::KEY_LIFT); break;
+					case SDLK_KP1: st->local_players[1]->p->keyPress(Player::KEY_SPECIAL); break;
 					default: break;
 				}
 			
@@ -287,6 +292,7 @@ static void handleEvents(GameState *st)
 					case SDLK_KP6: st->local_players[1]->p->keyRelease(Player::KEY_RIGHT); break;
 					case SDLK_KP9: st->local_players[1]->p->keyRelease(Player::KEY_USE); break;
 					case SDLK_KP7: st->local_players[1]->p->keyRelease(Player::KEY_LIFT); break;
+					case SDLK_KP1: st->local_players[1]->p->keyRelease(Player::KEY_SPECIAL); break;
 					default: break;
 				}
 			
