@@ -155,8 +155,12 @@ void Player::update(int delta)
 	btTransform xform, xform2;
 	body->getMotionState()->getWorldTransform (xform);
 	xform.setRotation(btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle)));
-
-
+	
+	// If they have fallen a considerable distance, they die
+	if (xform.getOrigin().z() <= -100.0) {
+		this->takeDamage(this->health);
+	}
+	
 	btVector3 linearVelocity = body->getLinearVelocity();
 	btScalar speed = linearVelocity.length();
 	
