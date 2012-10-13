@@ -117,7 +117,21 @@ void AILogic::update(int delta)
 	}
 	
 	
-	// Do a position update
+	this->dir.setZ(0.0f);
+
+
+	// Rotation update
+	btVector3 fwd = btVector3(0.0, -1.0, 0.0);
+	btVector3 axis = fwd.cross(this->dir);
+	axis.normalize();
+	float angle = acos(this->dir.dot(fwd));
+
+	btTransform trans = this->u->body->getWorldTransform();
+	trans.setRotation(btQuaternion(axis, angle).normalize());
+	this->u->body->setWorldTransform(trans);
+
+	
+	// Position update
 	btVector3 linearVelocity = this->u->body->getLinearVelocity();
 	btScalar currspeed = linearVelocity.length();
 	

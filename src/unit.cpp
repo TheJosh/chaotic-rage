@@ -165,6 +165,9 @@ void Unit::emptySound()
 **/
 Entity * Unit::infront(float range)
 {
+
+	// I think this is wrong.
+
 	btTransform xform;
 	body->getMotionState()->getWorldTransform(xform);
 	btVector3 forwardDir = xform.getBasis()[1];
