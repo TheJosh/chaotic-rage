@@ -199,7 +199,7 @@ bool Unit::onground()
 {
 	btTransform xform;
 	body->getMotionState()->getWorldTransform (xform);
-	btVector3 down = -xform.getBasis()[2];
+	btVector3 down = -xform.getBasis()[1];
 	down.normalize ();
 
 	btVector3 begin = xform.getOrigin();

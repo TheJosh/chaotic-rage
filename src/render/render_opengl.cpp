@@ -903,7 +903,7 @@ void RenderOpenGL::deadRot()
 	float hh = st->curr_map->height / 2.f;
 	
 	// Tilt it a little
-	glTranslatef(0.0f - hw, hh, 800.0f);
+	glTranslatef(0.0f - hw, hh, 1000.0f);
 	glRotatef(50.0f, 1, 0, 0);
 	
 	// Map spin
@@ -940,7 +940,6 @@ void RenderOpenGL::mainRot()
 		glTranslatef(0,0,-10);
 		
 	} else if (this->viewmode == 0) {		// Behind (3rd person)
-		glRotatef(180, 0, 0, 1);
 		glTranslatef(0,483,1095);
 		glRotatef(74, 1, 0, 0);
 	
@@ -954,13 +953,13 @@ void RenderOpenGL::mainRot()
 		this->render_player->drive->body->getMotionState()->getWorldTransform(trans);
 		btVector3 euler;
 		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-		glRotatef(RAD_TO_DEG(euler.z()), 0.f, 0.f, 1.f);
+		glRotatef(RAD_TO_DEG(euler.y()), 0.f, 1.f, 0.f);
 
 	} else {
 		this->render_player->body->getMotionState()->getWorldTransform(trans);
 		btVector3 euler;
 		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-		glRotatef(RAD_TO_DEG(euler.z()), 0.f, 0.f, 1.f);
+		glRotatef(RAD_TO_DEG(euler.y()), 0.f, 1.f, 0.f);
 	}
 	
 	glTranslatef(0.f - trans.getOrigin().getX(), 0.f - trans.getOrigin().getY(), 500.f - trans.getOrigin().getZ());
@@ -1002,7 +1001,7 @@ void RenderOpenGL::lights()
 				
 				btVector3 euler;
 				PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-				glRotatef(RAD_TO_DEG(-euler.z()) + 45.0f, 0.f, 0.f, 1.f);
+				//glRotatef(RAD_TO_DEG(-euler.y()) + 45.0f, 0.f, 0.f, 1.f);
 				glRotatef(15.0f, 1, 0, 0);
 				
 				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_torch);
