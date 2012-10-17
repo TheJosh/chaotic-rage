@@ -18,7 +18,8 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z, float angle) 
 	
 	
 	// TODO: The colShape should be tied to the wall type.
-	btCollisionShape* colShape = new btBoxShape(wt->model->getBoundingSizeHE());
+	btVector3 sizeHE = wt->model->getBoundingSizeHE();
+	btCollisionShape* colShape = new btBoxShape(sizeHE);
 	
 	// TODO: Store the colshape and nuke at some point
 	// collisionShapes.push_back(colShape);
@@ -26,10 +27,10 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z, float angle) 
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
 			btQuaternion(btScalar(0), btScalar(0), btScalar(DEG_TO_RAD(angle))),
-			btVector3(x,y,z)
+			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)
 		));
 	
-	this->body = st->physics->addRigidBody(colShape, 0.0, motionState);
+	this->body = st->physics->addRigidBody(colShape, 0.0f, motionState);
 	
 	this->body->setUserPointer(this);
 }
