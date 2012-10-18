@@ -172,7 +172,7 @@ void WeaponRaycast::doFire(Unit * u)
 	xform.setRotation(rot);
 	
 	// Ray direction
-	btVector3 forwardDir = xform.getBasis()[1];
+	btVector3 forwardDir = xform.getBasis()[2];
 	forwardDir.normalize();
 	forwardDir *= btScalar(0 - this->range);
 	
@@ -219,7 +219,7 @@ void WeaponDigdown::doFire(Unit * u)
 	u->body->getMotionState()->getWorldTransform(xform);
 	
 	btVector3 begin = xform.getOrigin();
-	btVector3 end = begin + btVector3(0.0f, 0.0f, -100.0f);
+	btVector3 end = begin + btVector3(0.0f, -100.0f, 0.0f);
 	
 	//st->addDebugLine(&begin, &end);
 	
@@ -279,7 +279,7 @@ void WeaponFlamethrower::doFire(Unit * u)
 	xform.setRotation(rot);
 	
 	// Ray direction
-	btVector3 forwardDir = xform.getBasis()[1];
+	btVector3 forwardDir = xform.getBasis()[2];
 	forwardDir.normalize();
 	forwardDir *= btScalar(0 - this->range);
 	

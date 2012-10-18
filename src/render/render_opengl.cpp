@@ -934,9 +934,9 @@ void RenderOpenGL::mainRot()
 	}
 	
 
-	float tilt = 10.0f;		// Up-Down tilt
+	float tilt = 13.0f;		// Up-Down tilt
 	float angle = 0.0f;		// Left-Right angle
-	float dist = 40.0f;		// Distance camera is fom the player
+	float dist = 45.0f;		// Distance camera is fom the player
 	
 	// Load the character details into the variables
 	this->render_player->body->getMotionState()->getWorldTransform(trans);
@@ -948,7 +948,7 @@ void RenderOpenGL::mainRot()
 	float cameraz = dist * cos(DEG_TO_RAD(angle)) + trans.getOrigin().z();
 	
 	// OpenGL transforms
-	glRotatef(360.0f - tilt, 1.0f, 0.0f, 0.0f);
+	glRotatef(tilt, 1.0f, 0.0f, 0.0f);
 	glRotatef(360.0f - angle, 0.0f, 1.0f, 0.0f);
 	glTranslatef(-camerax, -cameray, -cameraz);
 }

@@ -170,7 +170,7 @@ Entity * Unit::infront(float range)
 
 	btTransform xform;
 	body->getMotionState()->getWorldTransform(xform);
-	btVector3 forwardDir = xform.getBasis()[1];
+	btVector3 forwardDir = xform.getBasis()[2];
 	forwardDir.normalize();
 	
 	// Begin and end vectors
