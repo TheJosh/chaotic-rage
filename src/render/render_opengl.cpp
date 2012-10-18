@@ -588,9 +588,9 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 		vn = &obj->normals.at(f->n1 - 1);
 		t = &obj->texuvs.at(f->t1 - 1);
 		
-		vertexes[j].x = v->x * -1.0f; vertexes[j].y = v->y; vertexes[j].z = v->z;
+		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
-		vertexes[j].tx = t->x; vertexes[j].ty = t->y * -1.0f;
+		vertexes[j].tx = t->x; vertexes[j].ty = -t->y;
 		j++;
 		
 		
@@ -598,9 +598,9 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 		vn = &obj->normals.at(f->n2 - 1);
 		t = &obj->texuvs.at(f->t2 - 1);
 		
-		vertexes[j].x = v->x * -1.0f; vertexes[j].y = v->y; vertexes[j].z = v->z;
+		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
-		vertexes[j].tx = t->x; vertexes[j].ty = t->y * -1.0f;
+		vertexes[j].tx = t->x; vertexes[j].ty = -t->y;
 		j++;
 		
 		
@@ -608,9 +608,9 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 		vn = &obj->normals.at(f->n3 - 1);
 		t = &obj->texuvs.at(f->t3 - 1);
 		
-		vertexes[j].x = v->x * -1.0f; vertexes[j].y = v->y; vertexes[j].z = v->z;
+		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
-		vertexes[j].tx = t->x; vertexes[j].ty = t->y * -1.0f;
+		vertexes[j].tx = t->x; vertexes[j].ty = -t->y;
 		j++;
 		
 	}
@@ -692,15 +692,16 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play)
 		
 		glPushMatrix();
 		
-		// TODO: Fix for new physics
-		//if (model->meshframes[d]->do_angle) {
-		//	glRotatef(0 - angle, 0, 0, 1);
-		//}
-		
 		glTranslatef(model->meshframes[d]->px, model->meshframes[d]->py, model->meshframes[d]->pz);
 		glRotatef(model->meshframes[d]->rx, 1, 0, 0);
 		glRotatef(model->meshframes[d]->ry, 0, 1, 0);
 		glRotatef(model->meshframes[d]->rz, 0, 0, 1);
+		
+		
+		// This is only temporary until the models get changed to be Y-up instead of Z-up
+		glRotatef(270.0f, 1, 0, 0);
+		
+		
 		glScalef(model->meshframes[d]->sx, model->meshframes[d]->sy, model->meshframes[d]->sz);
 		
 		this->renderObj(model->meshframes[d]->mesh);
@@ -1070,7 +1071,7 @@ void RenderOpenGL::entities()
 {
 	preVBOrender();
 
-	glFrontFace(GL_CCW);		// almost everything is wound wrong...
+	glFrontFace(GL_CW);		// almost everything is wound wrong...
 	glEnable(GL_CULL_FACE);
 
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
@@ -1090,12 +1091,12 @@ void RenderOpenGL::entities()
 		trans.getOpenGLMatrix(m);
 		glMultMatrixf((GLfloat*)m);
 
-		if (e == this->render_player) {
+		/*if (e == this->render_player) {
 			this->render_player->body->getMotionState()->getWorldTransform(trans);
 			btVector3 euler;
 			PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
 			glRotatef(RAD_TO_DEG(-euler.z()) * 2.0f, 0.f, 0.f, 1.f);
-		}
+		}*/
 
 		renderAnimPlay(play);
 			
