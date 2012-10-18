@@ -548,13 +548,13 @@ btRigidBody * Map::createGroundBody()
 	
 	groundShape->setLocalScaling(btVector3(
 		heightmapScaleX(),
-		heightmapScaleY(),
-		1.0f
+		1.0f,
+		heightmapScaleY()
 	));
 	
 	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(
-		btQuaternion(0,0,0,1),
-		btVector3(this->width/2.0f, this->height/2.0f, this->heightmap_z/2.0f)
+		btQuaternion(1,0,0,1),
+		btVector3(this->width/2.0f, this->heightmap_z/2.0f, this->height/2.0f)
 	));
 	
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(

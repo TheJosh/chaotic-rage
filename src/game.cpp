@@ -167,7 +167,9 @@ static void handleEvents(GameState *st)
 					st->render->disablePhysicsDebug();
 					st->alertMessage(ALL_SLOTS, "Physics debug off");
 					break;
-			}	
+					
+				default: break;
+			}
 		}
 
 

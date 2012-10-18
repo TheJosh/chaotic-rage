@@ -232,9 +232,9 @@ void RenderOpenGL::mainViewport(int s, int of)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
-	gluPerspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 1500.f);
+	gluPerspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 150.f);
 	glScalef(-1.0f,1.0f,1.0f);
-	glTranslatef(0.f, 0.f, -1250.0f);
+	//glTranslatef(0.f, 0.f, -120.0f);
 	
 	glMatrixMode(GL_MODELVIEW);
 }
@@ -409,8 +409,8 @@ void RenderOpenGL::loadHeightmap()
 				flZ = (float) nZ + (( nTri == 2 || nTri == 4 || nTri == 5 ) ? 1.0f : 0.0f);
 				
 		 		vertexes[j].x = flX;
-				vertexes[j].y = flZ;
-				vertexes[j].z = st->curr_map->heightmapGet(flX, flZ);
+				vertexes[j].y = st->curr_map->heightmapGet(flX, flZ);
+				vertexes[j].z = flZ;
 				vertexes[j].nx = normal.x();
 				vertexes[j].ny = normal.y();
 				vertexes[j].nz = normal.z();
@@ -900,17 +900,16 @@ void RenderOpenGL::deadRot()
 	static float angle = 22.0f;
 	
 	float hw = st->curr_map->width / 2.f;
-	float hh = st->curr_map->width / 2.f;
+	float hh = st->curr_map->height / 2.f;
 	
-	// Proper angle
-	glRotatef(90.0f, 0, 0, 1);
-	glTranslatef(0.f - hw, 0.f - hh, 1000.f);
-	glRotatef(50.0f, 0, 1, 0);
+	// Tilt it a little
+	glTranslatef(0.0f - hw, hh, 1000.0f);
+	glRotatef(50.0f, 1, 0, 0);
 	
 	// Map spin
-	glTranslatef(hw, hh, 0.f);
-	glRotatef(angle, 0, 0, 1);
-	glTranslatef(0.f - hw, 0.f - hh, 0.f);
+	glTranslatef(hw, 0.f, hh);
+	glRotatef(angle, 0, 1, 0);
+	glTranslatef(0.f - hw, 0.f, 0.f - hh);
 	
 	angle += 0.05f;
 }
@@ -934,37 +933,47 @@ void RenderOpenGL::mainRot()
 		return;
 	}
 	
-	if (this->viewmode == 1) {				// Top
-		glRotatef(180, 0, 0, 1);
-		glTranslatef(0,87,731);
-		glRotatef(10, 1, 0, 0);
-		glTranslatef(0,0,-10);
-		
-	} else if (this->viewmode == 0) {		// Behind (3rd person)
-		glRotatef(180, 0, 0, 1);
-		glTranslatef(0,483,1095);
-		glRotatef(74, 1, 0, 0);
 	
-	} else if (this->viewmode == 2) {		// First person
-		glTranslatef(0,1220,-380);
-		glRotatef(80, 1, 0, 0);
-		
-	}
+	//float hw = st->curr_map->width / 2.f;
+	//float hh = st->curr_map->height / 2.f;
 	
-	if (this->render_player->drive) {
+	
+	//float tilt = 50.0f;
+	float angle = 0.0f;
+	//float height = 1000.0f;
+	
+	
+	/*if (this->render_player->drive) {
 		this->render_player->drive->body->getMotionState()->getWorldTransform(trans);
 		btVector3 euler;
 		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-		glRotatef(RAD_TO_DEG(euler.z()), 0.f, 0.f, 1.f);
-
-	} else {
+		angle = RAD_TO_DEG(euler.y());
+		
+	} else {*/
 		this->render_player->body->getMotionState()->getWorldTransform(trans);
+		
 		btVector3 euler;
 		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-		glRotatef(RAD_TO_DEG(euler.z()), 0.f, 0.f, 1.f);
-	}
+		angle = RAD_TO_DEG(euler.y());
+	//}
 	
-	glTranslatef(0.f - trans.getOrigin().getX(), 0.f - trans.getOrigin().getY(), 500.f - trans.getOrigin().getZ());
+	float cameradist = 40.0f;
+	float camerax = cameradist * sin(DEG_TO_RAD(angle)) + trans.getOrigin().x();
+	float cameraz = cameradist * cos(DEG_TO_RAD(angle)) + trans.getOrigin().z();
+	
+	glRotatef(360.0f - angle, 0.0f, 1.0f, 0.0f);
+	glTranslatef(-camerax, 0.0f, -cameraz);
+
+	
+	// Tilt it a little
+	//glTranslatef(0.0f - hw, hh, height);
+	//glRotatef(tilt, 1, 0, 0);
+	
+	// Map spin
+	//glTranslatef(hw, 0.f, hh);
+	//glRotatef(angle, 0, 1, 0);
+	//glTranslatef(0.f - hw, 0.f, 0.f - hh);
+	
 	
 	if (this->viewmode == 0) {
 		glEnable(GL_FOG);
@@ -1003,7 +1012,7 @@ void RenderOpenGL::lights()
 				
 				btVector3 euler;
 				PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-				glRotatef(RAD_TO_DEG(-euler.z()) + 45.0f, 0.f, 0.f, 1.f);
+				//glRotatef(RAD_TO_DEG(-euler.y()) + 45.0f, 0.f, 0.f, 1.f);
 				glRotatef(15.0f, 1, 0, 0);
 				
 				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_torch);
@@ -1031,7 +1040,7 @@ void RenderOpenGL::map()
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
-	glFrontFace(GL_CW);
+	glFrontFace(GL_CCW);
 	glBindTexture(GL_TEXTURE_2D, st->curr_map->terrain->pixels);
 	
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -1041,7 +1050,7 @@ void RenderOpenGL::map()
 	glPushMatrix();
 	
 	// TODO: Should this be a part of the mesh create instead of part of the render?
-	glScalef(this->st->curr_map->heightmapScaleX(), this->st->curr_map->heightmapScaleY(), 1.0);
+	glScalef(this->st->curr_map->heightmapScaleX(), 1.0f, this->st->curr_map->heightmapScaleY());
 	
 	glBindBuffer(GL_ARRAY_BUFFER, this->ter_vboid);
 	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
@@ -1066,16 +1075,16 @@ void RenderOpenGL::map()
 
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0f, this->st->curr_map->height/10.0f);
-			glVertex3f(0, this->st->curr_map->height, this->st->curr_map->water_level);
+			glVertex3f(0, this->st->curr_map->water_level, this->st->curr_map->height);
 		
 			glTexCoord2f(this->st->curr_map->width/10.0f, this->st->curr_map->height/10.0f);
-			glVertex3f(this->st->curr_map->width, this->st->curr_map->height, this->st->curr_map->water_level);
+			glVertex3f(this->st->curr_map->width, this->st->curr_map->water_level, this->st->curr_map->height);
 		
 			glTexCoord2f(this->st->curr_map->width/10.0f, 0.0f);
-			glVertex3f(this->st->curr_map->width, 0, this->st->curr_map->water_level);
+			glVertex3f(this->st->curr_map->width, this->st->curr_map->water_level, 0);
 
 			glTexCoord2f(0.0f, 0.0f);
-			glVertex3f(0, 0, this->st->curr_map->water_level);
+			glVertex3f(0, this->st->curr_map->water_level, 0);
 		glEnd();
 	}
 }

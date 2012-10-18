@@ -60,7 +60,7 @@ class PhysicsBullet
 		btDiscreteDynamicsWorld* getWorld();
 		
 		static void QuaternionToEulerXYZ(const btQuaternion &quat, btVector3 &euler);
-		btVector3 spawnLocation(float x, float y, float height);
+		btVector3 spawnLocation(float x, float z, float height);
 };
 
 

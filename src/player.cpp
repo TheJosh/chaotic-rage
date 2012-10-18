@@ -154,10 +154,10 @@ void Player::update(int delta)
 
 	btTransform xform, xform2;
 	body->getMotionState()->getWorldTransform (xform);
-	xform.setRotation(btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle)));
+	xform.setRotation(btQuaternion (btVector3(0.0, 1.0, 0.0), DEG_TO_RAD(this->mouse_angle)));
 	
 	// If they have fallen a considerable distance, they die
-	if (xform.getOrigin().z() <= -100.0) {
+	if (xform.getOrigin().y() <= -100.0) {
 		this->takeDamage(this->health);
 	}
 	
@@ -168,7 +168,7 @@ void Player::update(int delta)
 	
 
 	if (!this->onground()) {
-		linearVelocity += btVector3(0.0f, 0.0f, -0.7f);
+		linearVelocity += btVector3(0.0f, -0.7f, 0.0f);
 		body->setLinearVelocity (linearVelocity);
 
 	} else if (!this->key[KEY_UP] && !this->key[KEY_DOWN] && !this->key[KEY_LEFT] && !this->key[KEY_RIGHT]) {
@@ -181,7 +181,7 @@ void Player::update(int delta)
 		xform2 = xform;
 
 		//xform2.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle)));
-		btVector3 forwardDir = xform2.getBasis()[1];
+		btVector3 forwardDir = xform2.getBasis()[2];
 		forwardDir.normalize();
 		forwardDir *= btScalar(uts->accel);
 		
@@ -193,8 +193,8 @@ void Player::update(int delta)
 			walkDirection += forwardDir;
 		}
 		
-		xform2.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle + 90)));
-		btVector3 strafeDir = xform2.getBasis()[1];
+		xform2.setRotation (btQuaternion (btVector3(0.0, 1.0, 0.0), DEG_TO_RAD(this->mouse_angle + 90)));
+		btVector3 strafeDir = xform2.getBasis()[2];
 		strafeDir.normalize();
 		strafeDir *= btScalar(0.7);		// TODO: Managed in the unit settings	(strafe accel)
 		
@@ -205,7 +205,7 @@ void Player::update(int delta)
 		}
 		
 		linearVelocity += walkDirection;
-		linearVelocity += btVector3(0.0f, 0.0f, 0.7f);		// hill climbing
+		linearVelocity += btVector3(0.0f, 0.7f, 0.0f);		// hill climbing
 
 		body->setLinearVelocity (linearVelocity);
 	}

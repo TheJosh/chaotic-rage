@@ -41,7 +41,7 @@ void PhysicsBullet::init()
 		collisionConfiguration
 	);
 	
-	dynamicsWorld->setGravity(btVector3(0,0,-10));
+	dynamicsWorld->setGravity(btVector3(0,-10,0));
 }
 
 
@@ -54,9 +54,9 @@ void PhysicsBullet::preGame()
 	
 	// If the map fails to return a terrain, we will create our own (flat one)
 	if (! this->groundRigidBody) {
-		btCollisionShape* groundShape = new btBoxShape(btVector3(this->st->curr_map->width/2.0f, this->st->curr_map->height/2.0f, 10.0f));
+		btCollisionShape* groundShape = new btBoxShape(btVector3(this->st->curr_map->width/2.0f, 10.0f, this->st->curr_map->height/2.0f));
 		
-		btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(this->st->curr_map->width/2.0f, this->st->curr_map->height/2.0f, -10.0f)));
+		btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(this->st->curr_map->width/2.0f, -10.0f, this->st->curr_map->height/2.0f)));
 		btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
 			0,
 			groundMotionState,
@@ -281,18 +281,18 @@ void PhysicsBullet::doCollisions()
 /**
 * Use a raytest to find an appropriate spawn location on the ground
 **/
-btVector3 PhysicsBullet::spawnLocation(float x, float y, float height)
+btVector3 PhysicsBullet::spawnLocation(float x, float z, float height)
 {
-	float z = 100.0f;
+	float y = 100.0f;
 	
 	btVector3 begin(x, y, z);
-	btVector3 end(x, y, -z);
+	btVector3 end(x, -y, z);
 	
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
 	dynamicsWorld->rayTest(begin, end, cb);
 	
 	if (cb.hasHit()) {
-		z = cb.m_hitPointWorld.z() + height/2.0f;
+		y = cb.m_hitPointWorld.y() + height/2.0f;
 	}
 	
 	return btVector3(x, y, z);

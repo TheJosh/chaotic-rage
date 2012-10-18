@@ -44,13 +44,13 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	this->setModifiers(0);
 
 	// TODO: The colShape should be tied to the wall type.
-	btCollisionShape* colShape = new btCapsuleShapeZ(0.5f, 0.9f);
+	btCollisionShape* colShape = new btCapsuleShape(0.5f, 0.9f);
 	
 	// TODO: Store the colshape and nuke at some point
 	// collisionShapes.push_back(colShape);
 	
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(
-		btQuaternion(0,0,0,1),
+		btQuaternion(btVector3(0,0,1),0),
 		st->physics->spawnLocation(x, y, 0.9f)
 	));
 	
@@ -202,7 +202,7 @@ bool Unit::onground()
 {
 	btTransform xform;
 	body->getMotionState()->getWorldTransform (xform);
-	btVector3 down = -xform.getBasis()[2];
+	btVector3 down = -xform.getBasis()[1];
 	down.normalize ();
 
 	btVector3 begin = xform.getOrigin();
