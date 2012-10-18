@@ -181,7 +181,7 @@ void Player::update(int delta)
 		xform2 = xform;
 
 		//xform2.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle)));
-		btVector3 forwardDir = xform2.getBasis()[0];
+		btVector3 forwardDir = xform2.getBasis()[2];
 		forwardDir.normalize();
 		forwardDir *= btScalar(uts->accel);
 		
@@ -194,7 +194,7 @@ void Player::update(int delta)
 		}
 		
 		xform2.setRotation (btQuaternion (btVector3(0.0, 1.0, 0.0), DEG_TO_RAD(this->mouse_angle + 90)));
-		btVector3 strafeDir = xform2.getBasis()[0];
+		btVector3 strafeDir = xform2.getBasis()[2];
 		strafeDir.normalize();
 		strafeDir *= btScalar(0.7);		// TODO: Managed in the unit settings	(strafe accel)
 		

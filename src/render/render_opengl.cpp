@@ -232,9 +232,9 @@ void RenderOpenGL::mainViewport(int s, int of)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
-	gluPerspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 1500.f);
+	gluPerspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 150.f);
 	glScalef(-1.0f,1.0f,1.0f);
-	glTranslatef(0.f, 0.f, -1250.0f);
+	//glTranslatef(0.f, 0.f, -120.0f);
 	
 	glMatrixMode(GL_MODELVIEW);
 }
@@ -928,41 +928,52 @@ void RenderOpenGL::mainRot()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
-	//if (this->render_player == NULL) {
+	if (this->render_player == NULL) {
 		this->deadRot();
 		return;
-	//}
-	
-	if (this->viewmode == 1) {				// Top
-		glRotatef(180, 0, 0, 1);
-		glTranslatef(0,87,731);
-		glRotatef(10, 1, 0, 0);
-		glTranslatef(0,0,-10);
-		
-	} else if (this->viewmode == 0) {		// Behind (3rd person)
-		glTranslatef(0,483,1095);
-		glRotatef(74, 1, 0, 0);
-	
-	} else if (this->viewmode == 2) {		// First person
-		glTranslatef(0,1220,-380);
-		glRotatef(80, 1, 0, 0);
-		
 	}
 	
-	if (this->render_player->drive) {
+	
+	//float hw = st->curr_map->width / 2.f;
+	//float hh = st->curr_map->height / 2.f;
+	
+	
+	//float tilt = 50.0f;
+	float angle = 0.0f;
+	//float height = 1000.0f;
+	
+	
+	/*if (this->render_player->drive) {
 		this->render_player->drive->body->getMotionState()->getWorldTransform(trans);
 		btVector3 euler;
 		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-		glRotatef(RAD_TO_DEG(euler.y()), 0.f, 1.f, 0.f);
-
-	} else {
+		angle = RAD_TO_DEG(euler.y());
+		
+	} else {*/
 		this->render_player->body->getMotionState()->getWorldTransform(trans);
+		
 		btVector3 euler;
 		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-		glRotatef(RAD_TO_DEG(euler.y()), 0.f, 1.f, 0.f);
-	}
+		angle = RAD_TO_DEG(euler.y());
+	//}
 	
-	glTranslatef(0.f - trans.getOrigin().getX(), 0.f - trans.getOrigin().getY(), 500.f - trans.getOrigin().getZ());
+	float cameradist = 40.0f;
+	float camerax = cameradist * sin(DEG_TO_RAD(angle)) + trans.getOrigin().x();
+	float cameraz = cameradist * cos(DEG_TO_RAD(angle)) + trans.getOrigin().z();
+	
+	glRotatef(360.0f - angle, 0.0f, 1.0f, 0.0f);
+	glTranslatef(-camerax, 0.0f, -cameraz);
+
+	
+	// Tilt it a little
+	//glTranslatef(0.0f - hw, hh, height);
+	//glRotatef(tilt, 1, 0, 0);
+	
+	// Map spin
+	//glTranslatef(hw, 0.f, hh);
+	//glRotatef(angle, 0, 1, 0);
+	//glTranslatef(0.f - hw, 0.f, 0.f - hh);
+	
 	
 	if (this->viewmode == 0) {
 		glEnable(GL_FOG);
