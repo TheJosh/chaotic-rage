@@ -938,8 +938,8 @@ void RenderOpenGL::mainRot()
 	//float hh = st->curr_map->height / 2.f;
 	
 	
-	//float tilt = 50.0f;
-	float angle = 0.0f;
+	float tilt = 10.0f;
+	static float angle = 0.0f;
 	//float height = 1000.0f;
 	
 	
@@ -951,20 +951,24 @@ void RenderOpenGL::mainRot()
 		
 	} else {*/
 		this->render_player->body->getMotionState()->getWorldTransform(trans);
-		
-		btVector3 euler;
-		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-		angle = RAD_TO_DEG(euler.y());
 	//}
 	
+	//btVector3 euler;
+	//PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
+	//angle = RAD_TO_DEG(euler.y());
+
+
 	float cameradist = 40.0f;
 	float camerax = cameradist * sin(DEG_TO_RAD(angle)) + trans.getOrigin().x();
+	float cameray = cameradist * sin(DEG_TO_RAD(tilt)) + trans.getOrigin().y();
 	float cameraz = cameradist * cos(DEG_TO_RAD(angle)) + trans.getOrigin().z();
 	
+	glRotatef(360.0f - tilt, 1.0f, 0.0f, 0.0f);
 	glRotatef(360.0f - angle, 0.0f, 1.0f, 0.0f);
-	glTranslatef(-camerax, 0.0f, -cameraz);
+	glTranslatef(-camerax, -cameray, -cameraz);
 
 	
+	angle += 1.0f;
 	// Tilt it a little
 	//glTranslatef(0.0f - hw, hh, height);
 	//glRotatef(tilt, 1, 0, 0);
