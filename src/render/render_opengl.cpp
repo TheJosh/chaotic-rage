@@ -921,6 +921,7 @@ void RenderOpenGL::deadRot()
 void RenderOpenGL::mainRot()
 {
 	btTransform trans;
+	float tilt, angle, dist;		// Up/down; left/right; distance of camera
 
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
@@ -933,10 +934,13 @@ void RenderOpenGL::mainRot()
 		return;
 	}
 	
-
-	float tilt = 13.0f;		// Up-Down tilt
-	float angle = 0.0f;		// Left-Right angle
-	float dist = 45.0f;		// Distance camera is fom the player
+	if (this->viewmode == 0) {
+		tilt = 13.0f;
+		dist = 45.0f;
+	} else if (this->viewmode == 1) {
+		tilt = 50.0f;
+		dist = 60.0f;
+	}
 	
 	// Load the character details into the variables
 	this->render_player->body->getMotionState()->getWorldTransform(trans);
