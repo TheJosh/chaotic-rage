@@ -983,6 +983,7 @@ void RenderOpenGL::lights()
 				btTransform trans;
 				this->render_player->getRigidBody()->getMotionState()->getWorldTransform(trans);
 				glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
+				glTranslatef(l->x, l->y, l->z);
 				
 				btVector3 euler;
 				PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
