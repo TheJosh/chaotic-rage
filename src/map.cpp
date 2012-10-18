@@ -543,7 +543,7 @@ btRigidBody * Map::createGroundBody()
 		heightmap_w, heightmap_h, heightmap,
 		0,
 		0.0f, this->heightmap_z,
-		2, PHY_FLOAT, flipQuadEdges
+		1, PHY_FLOAT, flipQuadEdges
 	);
 	
 	groundShape->setLocalScaling(btVector3(
@@ -553,7 +553,7 @@ btRigidBody * Map::createGroundBody()
 	));
 	
 	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(
-		btQuaternion(1,0,0,1),
+		btQuaternion(0, 0, 0, 1),
 		btVector3(this->width/2.0f, this->heightmap_z/2.0f, this->height/2.0f)
 	));
 	

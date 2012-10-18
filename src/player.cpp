@@ -179,13 +179,12 @@ void Player::update(int delta)
 		body->activate(true);
 		
 		xform2 = xform;
+		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 
-		//xform2.setRotation (btQuaternion (btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(this->mouse_angle)));
+		// Forward/Backwards
 		btVector3 forwardDir = xform2.getBasis()[2];
 		forwardDir.normalize();
 		forwardDir *= btScalar(uts->accel);
-		
-		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		
 		if (this->key[KEY_UP]) {
 			walkDirection -= forwardDir;
@@ -193,7 +192,8 @@ void Player::update(int delta)
 			walkDirection += forwardDir;
 		}
 		
-		xform2.setRotation (btQuaternion (btVector3(0.0, 1.0, 0.0), DEG_TO_RAD(this->mouse_angle + 90)));
+		// Strafe
+		/*xform2.setRotation (btQuaternion (btVector3(0.0, 1.0, 0.0), DEG_TO_RAD(this->mouse_angle + 90)));
 		btVector3 strafeDir = xform2.getBasis()[2];
 		strafeDir.normalize();
 		strafeDir *= btScalar(0.7);		// TODO: Managed in the unit settings	(strafe accel)
@@ -202,8 +202,9 @@ void Player::update(int delta)
 			walkDirection -= strafeDir;
 		} else if (this->key[KEY_RIGHT]) {
 			walkDirection += strafeDir;
-		}
+		}*/
 		
+		// Apply velocity
 		linearVelocity += walkDirection;
 		linearVelocity += btVector3(0.0f, 0.7f, 0.0f);		// hill climbing
 

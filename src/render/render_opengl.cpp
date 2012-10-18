@@ -933,59 +933,24 @@ void RenderOpenGL::mainRot()
 		return;
 	}
 	
-	
-	//float hw = st->curr_map->width / 2.f;
-	//float hh = st->curr_map->height / 2.f;
-	
-	
-	float tilt = 10.0f;
-	static float angle = 0.0f;
-	//float height = 1000.0f;
-	
-	
-	/*if (this->render_player->drive) {
-		this->render_player->drive->body->getMotionState()->getWorldTransform(trans);
-		btVector3 euler;
-		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-		angle = RAD_TO_DEG(euler.y());
-		
-	} else {*/
-		this->render_player->body->getMotionState()->getWorldTransform(trans);
-	//}
-	
-	//btVector3 euler;
-	//PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-	//angle = RAD_TO_DEG(euler.y());
 
-
-	float cameradist = 40.0f;
-	float camerax = cameradist * sin(DEG_TO_RAD(angle)) + trans.getOrigin().x();
-	float cameray = cameradist * sin(DEG_TO_RAD(tilt)) + trans.getOrigin().y();
-	float cameraz = cameradist * cos(DEG_TO_RAD(angle)) + trans.getOrigin().z();
+	float tilt = 10.0f;		// Up-Down tilt
+	float angle = 0.0f;		// Left-Right angle
+	float dist = 40.0f;		// Distance camera is fom the player
 	
+	// Load the character details into the variables
+	this->render_player->body->getMotionState()->getWorldTransform(trans);
+	angle = -this->render_player->mouse_angle;
+
+	// Camera angle calculations
+	float camerax = dist * sin(DEG_TO_RAD(angle)) + trans.getOrigin().x();
+	float cameray = dist * sin(DEG_TO_RAD(tilt)) + trans.getOrigin().y();
+	float cameraz = dist * cos(DEG_TO_RAD(angle)) + trans.getOrigin().z();
+	
+	// OpenGL transforms
 	glRotatef(360.0f - tilt, 1.0f, 0.0f, 0.0f);
 	glRotatef(360.0f - angle, 0.0f, 1.0f, 0.0f);
 	glTranslatef(-camerax, -cameray, -cameraz);
-
-	
-	angle += 1.0f;
-	// Tilt it a little
-	//glTranslatef(0.0f - hw, hh, height);
-	//glRotatef(tilt, 1, 0, 0);
-	
-	// Map spin
-	//glTranslatef(hw, 0.f, hh);
-	//glRotatef(angle, 0, 1, 0);
-	//glTranslatef(0.f - hw, 0.f, 0.f - hh);
-	
-	
-	if (this->viewmode == 0) {
-		glEnable(GL_FOG);
-		glFogi(GL_FOG_MODE, GL_LINEAR);
-		glFogf(GL_FOG_START, 400);
-		glFogf(GL_FOG_END, 200);
-		glFogf(GL_FOG_DENSITY, 0.3f);
-	}
 }
 
 
