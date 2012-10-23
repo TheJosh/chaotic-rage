@@ -168,7 +168,7 @@ void WeaponRaycast::doFire(Unit * u)
 	// Weapon angle ranges
 	int angle = this->angle_range / 2;
 	angle = getRandom(-angle, angle);
-	btQuaternion rot = xform.getRotation() * btQuaternion(btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(angle));
+	btQuaternion rot = xform.getRotation() * btQuaternion(btVector3(0.0, 1.0, 0.0), DEG_TO_RAD(angle));
 	xform.setRotation(rot);
 	
 	// Ray direction
@@ -275,7 +275,7 @@ void WeaponFlamethrower::doFire(Unit * u)
 	// Weapon angle ranges
 	int angle = this->angle_range / 2;
 	angle = getRandom(-angle, angle);
-	btQuaternion rot = xform.getRotation() * btQuaternion(btVector3(0.0, 0.0, 1.0), DEG_TO_RAD(angle));
+	btQuaternion rot = xform.getRotation() * btQuaternion(btVector3(0.0, 1.0, 0.0), DEG_TO_RAD(angle));
 	xform.setRotation(rot);
 	
 	// Ray direction
