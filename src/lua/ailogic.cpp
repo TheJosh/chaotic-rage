@@ -118,8 +118,8 @@ void AILogic::update(int delta)
 	
 	
 	this->dir.setY(0.0f);
-
-
+	
+	
 	// Rotation update
 	btVector3 fwd = btVector3(0.0, 0.0, 1.0);
 	btVector3 axis = fwd.cross(this->dir);
@@ -129,14 +129,13 @@ void AILogic::update(int delta)
 	btTransform trans = this->u->body->getWorldTransform();
 	trans.setRotation(btQuaternion(axis, angle).normalize());
 	this->u->body->setWorldTransform(trans);
-
+	
 	
 	// Position update
 	btVector3 linearVelocity = this->u->body->getLinearVelocity();
 	btScalar currspeed = linearVelocity.length();
 	
 	if (currspeed < this->speed) {
-		this->dir.setZ(0);
 		btVector3 move = this->dir * (currspeed + btScalar(this->u->getSettings()->accel));
 		
 		this->u->body->activate(true);
