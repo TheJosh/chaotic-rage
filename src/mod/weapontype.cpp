@@ -179,7 +179,6 @@ void WeaponRaycast::doFire(Unit * u)
 	// Ray begin and end points
 	btVector3 begin = xform.getOrigin();
 	btVector3 end = begin + forwardDir;
-	
 	st->addDebugLine(&begin, &end);
 	
 	// Do the rayTest
@@ -286,7 +285,6 @@ void WeaponFlamethrower::doFire(Unit * u)
 	// Ray begin and end points
 	btVector3 begin = xform.getOrigin();
 	btVector3 end = begin + forwardDir;
-	
 	st->addDebugLine(&begin, &end);
 	
 	// Do the rayTest

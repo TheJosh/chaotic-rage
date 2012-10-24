@@ -165,18 +165,16 @@ void Unit::emptySound()
 **/
 Entity * Unit::infront(float range)
 {
-
-	// I think this is wrong.
-
 	btTransform xform;
 	body->getMotionState()->getWorldTransform(xform);
+	
 	btVector3 forwardDir = xform.getBasis()[2];
 	forwardDir.normalize();
+	forwardDir *= btScalar(0 - range);
 	
 	// Begin and end vectors
 	btVector3 begin = xform.getOrigin();
-	btVector3 end = begin + forwardDir * btScalar(0 - range);
-	
+	btVector3 end = begin + forwardDir;
 	st->addDebugLine(&begin, &end);
 	
 	// Do the rayTest
