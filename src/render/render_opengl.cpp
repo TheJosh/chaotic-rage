@@ -936,11 +936,11 @@ void RenderOpenGL::mainRot()
 	}
 	
 	if (this->viewmode == 0) {
-		tilt = 13.0f;
-		dist = 45.0f;
+		tilt = 17.0f;
+		dist = 25.0f;
 	} else if (this->viewmode == 1) {
-		tilt = 50.0f;
-		dist = 60.0f;
+		tilt = 70.0f;
+		dist = 50.0f;
 	}
 	
 	// Load the character details into the variables
@@ -948,9 +948,9 @@ void RenderOpenGL::mainRot()
 	angle = -this->render_player->mouse_angle;
 
 	// Camera angle calculations
-	float camerax = dist * sin(DEG_TO_RAD(angle)) + trans.getOrigin().x();
+	float camerax = dist * sin(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().x();
 	float cameray = dist * sin(DEG_TO_RAD(tilt)) + trans.getOrigin().y();
-	float cameraz = dist * cos(DEG_TO_RAD(angle)) + trans.getOrigin().z();
+	float cameraz = dist * cos(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().z();
 	
 	// OpenGL transforms
 	glRotatef(tilt, 1.0f, 0.0f, 0.0f);
