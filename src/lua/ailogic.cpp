@@ -118,29 +118,30 @@ void AILogic::update(int delta)
 	
 	
 	this->dir.setY(0.0f);
+	this->u->body->activate(true);
 	
+	// Get transform
+	btTransform xform;
+	this->u->body->getMotionState()->getWorldTransform (xform);
 	
 	// Rotation update
 	btVector3 fwd = btVector3(0.0, 0.0, 1.0);
 	btVector3 axis = fwd.cross(this->dir);
 	axis.normalize();
 	float angle = acos(this->dir.dot(fwd));
-
-	btTransform trans = this->u->body->getWorldTransform();
-	trans.setRotation(btQuaternion(axis, angle).normalize());
-	this->u->body->setWorldTransform(trans);
-	
+	xform.setRotation(btQuaternion(axis, angle).normalize());
 	
 	// Position update
 	btVector3 linearVelocity = this->u->body->getLinearVelocity();
 	btScalar currspeed = linearVelocity.length();
-	
 	if (currspeed < this->speed) {
 		btVector3 move = this->dir * (currspeed + btScalar(this->u->getSettings()->accel));
-		
-		this->u->body->activate(true);
 		this->u->body->setLinearVelocity(move);
 	}
+	
+	// Set transform
+	this->u->body->getMotionState()->setWorldTransform(xform);
+	this->u->body->setCenterOfMassTransform(xform);
 }
 
 

@@ -233,7 +233,7 @@ void RenderOpenGL::mainViewport(int s, int of)
 	glLoadIdentity();
 	
 	gluPerspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 150.f);
-	glScalef(-1.0f,1.0f,1.0f);
+	//glScalef(-1.0f,1.0f,1.0f);
 	//glTranslatef(0.f, 0.f, -120.0f);
 	
 	glMatrixMode(GL_MODELVIEW);
@@ -1015,7 +1015,7 @@ void RenderOpenGL::map()
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
-	glFrontFace(GL_CCW);
+	glFrontFace(GL_CW);
 	glBindTexture(GL_TEXTURE_2D, st->curr_map->terrain->pixels);
 	
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -1072,7 +1072,7 @@ void RenderOpenGL::entities()
 {
 	preVBOrender();
 
-	glFrontFace(GL_CW);		// almost everything is wound wrong...
+	glFrontFace(GL_CCW);
 	glEnable(GL_CULL_FACE);
 
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
