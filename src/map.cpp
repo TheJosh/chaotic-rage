@@ -180,17 +180,12 @@ int Map::load(string name, Render * render)
 	filename.append(name);
 	mod = new Mod(st, filename);
 	
-	this->background = this->render->loadSprite("background.jpg", mod);
-	if (! this->background) reportFatalError("Unable to load map; no background img");
-
-	this->terrain = this->render->loadSprite("terrain.png", mod);
-	if (! this->terrain) reportFatalError("Unable to load map; no terran img");
-
+	
 	cfg_t *cfg;
 	
 	char *buffer = mod->loadText("map.conf");
 	if (buffer == NULL) {
-		return 0;
+		reportFatalError("Unable to load map; no configuration file");
 	}
 	
 	cfg = cfg_init(opts, CFGF_NONE);
@@ -209,7 +204,15 @@ int Map::load(string name, Render * render)
 	if (this->water) {
 		this->water_level = cfg_getfloat(cfg, "water-level");
 	}
-
+	
+	
+	this->background = this->render->loadSprite("background.jpg", mod);
+	if (! this->background) reportFatalError("Unable to load map; no background img");
+	
+	this->terrain = this->render->loadSprite("terrain.png", mod);
+	if (! this->terrain) reportFatalError("Unable to load map; no terran img");
+	
+	
 	return 1;
 }
 
