@@ -3,6 +3,9 @@
 ----
 
 
+debug_physics(true);
+
+
 bind_playerjoin(function(slot)
 	add_player(get_selected_unittype(), factions.team1, slot);
 
