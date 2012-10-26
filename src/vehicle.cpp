@@ -21,8 +21,8 @@ float	suspensionStiffness = 20.f;
 float	suspensionDamping = 2.3f;
 float	suspensionCompression = 4.4f;
 float	rollInfluence = 0.1f;
-btVector3 wheelDirectionCS0(0,0,-1);
-btVector3 wheelAxleCS(1,0,0);
+btVector3 wheelDirectionCS0(0,-1,0);
+btVector3 wheelAxleCS(-1,0,0);
 
 
 
@@ -61,14 +61,12 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 	// Create Vehicle
 	this->vehicle_raycaster = new btDefaultVehicleRaycaster(st->physics->getWorld());
 	this->vehicle = new btRaycastVehicle(this->tuning, this->body, this->vehicle_raycaster);
-	this->vehicle->setCoordinateSystem(0, 2, 1);
+	this->vehicle->setCoordinateSystem(0, 1, 2);
 	st->physics->addVehicle(this->vehicle);
 	
 	// Create and attach wheels
 	{
-		btVector3 size = vt->model->getBoundingSizeHE();
-
-		btScalar suspensionRestLength(size.z() + 0.1f);
+		btScalar suspensionRestLength(sizeHE.y() + 0.1f);
 
 		this->wheel_shape = new btCylinderShapeX(btVector3(wheelWidth,wheelRadius,wheelRadius));
 		
@@ -78,18 +76,18 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 		bool isFrontWheel = true;
 		
 		
-		connectionPointCS0 = btVector3(size.x(), size.y(), connectionHeight);
+		connectionPointCS0 = btVector3(sizeHE.x(), connectionHeight, sizeHE.y());
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
 		
-		connectionPointCS0 = btVector3(-size.x(), size.y(), connectionHeight);
+		connectionPointCS0 = btVector3(-sizeHE.x(), connectionHeight, sizeHE.y());
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
 		
 		isFrontWheel = false;
 		
-		connectionPointCS0 = btVector3(size.x(), -size.y(), connectionHeight);
+		connectionPointCS0 = btVector3(sizeHE.x(), connectionHeight, -sizeHE.y());
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
 		
-		connectionPointCS0 = btVector3(-size.x(), -size.y(), connectionHeight);
+		connectionPointCS0 = btVector3(-sizeHE.x(), connectionHeight, -sizeHE.y());
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
 	}
 	

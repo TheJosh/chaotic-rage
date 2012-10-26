@@ -227,8 +227,8 @@ btVector3 AnimModel::getBoundingSize()
 {
 	btVector3 ret;
 	ret.setX(this->meshframes[0]->mesh->size.x);
-	ret.setY(this->meshframes[0]->mesh->size.y);
-	ret.setZ(this->meshframes[0]->mesh->size.z);
+	ret.setZ(this->meshframes[0]->mesh->size.y);
+	ret.setY(this->meshframes[0]->mesh->size.z);
 	return ret;
 }
 
@@ -241,8 +241,8 @@ btVector3 AnimModel::getBoundingSizeHE()
 {
 	btVector3 ret;
 	ret.setX(this->meshframes[0]->mesh->size.x / 2.0f);
-	ret.setY(this->meshframes[0]->mesh->size.y / 2.0f);
-	ret.setZ(this->meshframes[0]->mesh->size.z / 2.0f);
+	ret.setZ(this->meshframes[0]->mesh->size.y / 2.0f);
+	ret.setY(this->meshframes[0]->mesh->size.z / 2.0f);
 	return ret;
 }
 
