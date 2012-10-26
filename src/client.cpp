@@ -68,7 +68,7 @@ int main (int argc, char ** argv)
 	// If you have a lot of debugging work to do, uncomment this
 	// and change your settings as required.
 	//   map, gametype, character, viewmode, num players
-	m->startGame("heighttest", "test", "robot", 1, 1);
+	m->startGame("heighttest", "test", "robot", 0, 1);
 	
 	// Run the menu
 	m->doit();

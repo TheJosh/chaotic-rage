@@ -171,14 +171,9 @@ void WeaponRaycast::doFire(Unit * u)
 	btQuaternion rot = xform.getRotation() * btQuaternion(btVector3(0.0, 1.0, 0.0), DEG_TO_RAD(angle));
 	xform.setRotation(rot);
 	
-	// Ray direction
-	btVector3 forwardDir = xform.getBasis()[2];
-	forwardDir.normalize();
-	forwardDir *= btScalar(0 - this->range);
-	
-	// Ray begin and end points
+	// Begin and end vectors
 	btVector3 begin = xform.getOrigin();
-	btVector3 end = begin + forwardDir;
+	btVector3 end = begin + xform.getBasis() * btVector3(0, 0, range);
 	st->addDebugLine(&begin, &end);
 	
 	// Do the rayTest
@@ -277,14 +272,9 @@ void WeaponFlamethrower::doFire(Unit * u)
 	btQuaternion rot = xform.getRotation() * btQuaternion(btVector3(0.0, 1.0, 0.0), DEG_TO_RAD(angle));
 	xform.setRotation(rot);
 	
-	// Ray direction
-	btVector3 forwardDir = xform.getBasis()[2];
-	forwardDir.normalize();
-	forwardDir *= btScalar(0 - this->range);
-	
-	// Ray begin and end points
+	// Begin and end vectors
 	btVector3 begin = xform.getOrigin();
-	btVector3 end = begin + forwardDir;
+	btVector3 end = begin + xform.getBasis() * btVector3(0, 0, range);
 	st->addDebugLine(&begin, &end);
 	
 	// Do the rayTest

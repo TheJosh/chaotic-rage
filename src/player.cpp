@@ -95,7 +95,7 @@ void Player::angleFromMouse(int x, int y, int delta)
 	float change_dist;
 	
 	change_dist = x / (10.0f / sensitivity);
-	this->mouse_angle = this->mouse_angle + change_dist;
+	this->mouse_angle = this->mouse_angle - change_dist;
 	
 	change_dist = y / (10.0f / sensitivity / 2.0f);
 	this->vertical_angle = this->vertical_angle + change_dist;
@@ -182,21 +182,17 @@ void Player::update(int delta)
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 
 		// Forward/Backwards
-		btVector3 forwardDir = xform2.getBasis()[2];
-		forwardDir.normalize();
-		forwardDir *= btScalar(uts->accel);
+		btVector3 forwardDir = xform2.getBasis() * btVector3(0, 0, uts->accel);
 		
 		if (this->key[KEY_UP]) {
-			walkDirection -= forwardDir;
-		} else if (this->key[KEY_DOWN]) {
 			walkDirection += forwardDir;
+		} else if (this->key[KEY_DOWN]) {
+			walkDirection -= forwardDir;
 		}
 		
 		// Strafe
-		/*xform2.setRotation (btQuaternion (btVector3(0.0, 1.0, 0.0), DEG_TO_RAD(this->mouse_angle + 90)));
-		btVector3 strafeDir = xform2.getBasis()[2];
-		strafeDir.normalize();
-		strafeDir *= btScalar(0.7);		// TODO: Managed in the unit settings	(strafe accel)
+		/*
+		btVector3 strafeDir = xform2.getBasis() * btVector3(0.7, 0, 0);		// TODO: Managed in the unit settings	(strafe accel)
 		
 		if (this->key[KEY_LEFT]) {
 			walkDirection -= strafeDir;

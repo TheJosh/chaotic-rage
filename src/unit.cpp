@@ -168,13 +168,9 @@ Entity * Unit::infront(float range)
 	btTransform xform;
 	body->getMotionState()->getWorldTransform(xform);
 	
-	btVector3 forwardDir = xform.getBasis()[2];
-	forwardDir.normalize();
-	forwardDir *= btScalar(0 - range);
-	
 	// Begin and end vectors
 	btVector3 begin = xform.getOrigin();
-	btVector3 end = begin + forwardDir;
+	btVector3 end = begin + xform.getBasis() * btVector3(0, 0, range);
 	st->addDebugLine(&begin, &end);
 	
 	// Do the rayTest
