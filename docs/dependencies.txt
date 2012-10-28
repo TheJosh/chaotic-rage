@@ -12,29 +12,40 @@ You will need at least these:
  - Lua
  - Freetype2
  - Bullet Physics
+ - Guichan
+
+
+Compiling on Ubuntu 10.04:
+ 1. Install dependencies:
+     - g++
+     - make
+     - flex
+     - libsdl1.2-dev
+     - libsdl-image1.2-dev
+     - libsdl-mixer1.2-dev
+     - libsdl-net1.2-dev
+     - libzzip-dev
+     - libconfuse-dev
+     - libgl1-mesa-dev
+     - libglu1-mesa-dev
+     - libglew-dev
+     - liblua5.1-0-dev
+     - libfreetype6-dev
+     - libguichan-dev
+
+ 2. Compile bullet from lib-external
+    This will install bulelt also
+
+ 3. Compile using make
+
+
+Compiling on Windows:
+ 1. Download and install MSVC 2010 Express Edition.
+    I haven't tested full edition.
+
+ 2. Open the solution in the extra/msvc2010 directory
  
-For compiling on a recent Ubuntu:
- - g++
- - make
- - flex
-   
- - libsdl1.2-dev
- - libsdl-image1.2-dev
- - libsdl-mixer1.2-dev
- - libsdl-net1.2-dev
- - libzzip-dev
- - libconfuse-dev
- - libgl1-mesa-dev
- - libglu1-mesa-dev
- - libglew-dev
- - liblua5.1-0-dev
- - libfreetype6-dev
- 
- - Compile bullet from lib-external
+ 3. It should compile out-of-the-box, no further setup
+    should be nessasary.
 
 
-TODO: compiling on windows
-
-TODO: compiling on mac
-
-TODO: cross-compile for windows, mac
