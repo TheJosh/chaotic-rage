@@ -313,6 +313,9 @@ void PhysicsBullet::QuaternionToEulerXYZ(const btQuaternion &quat, btVector3 &eu
 }
 
 
+/**
+* Get the yaw from a quaternion
+**/
 float PhysicsBullet::QuaternionToYaw(const btQuaternion &quat)
 {
 	float fTx  = 2.0*quat.x();

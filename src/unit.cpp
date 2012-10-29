@@ -553,6 +553,10 @@ void Unit::enterVehicle(Vehicle *v)
 	this->drive = v;
 	this->render = false;
 	this->body->forceActivationState(DISABLE_SIMULATION);
+	
+	this->drive->brakeForce = 0.0f;
+	this->drive->engineForce = 0.0f;
+	this->drive->steering = 0.0f;
 }
 
 
@@ -567,10 +571,14 @@ void Unit::leaveVehicle()
 	
 	this->drive->body->getMotionState()->getWorldTransform(trans);
 	trans.setRotation(btQuaternion(0,0,0,1));
+
+	btVector3 spawn = this->st->physics->spawnLocation(trans.getOrigin().x(), trans.getOrigin().z(), 1.0f);
+	trans.setOrigin(spawn);
+	
 	this->body->getMotionState()->setWorldTransform(trans);
 	this->body->forceActivationState(ACTIVE_TAG);
 	
-	this->drive->brakeForce = 0.0f;
+	this->drive->brakeForce = 10.0f;
 	this->drive->engineForce = 0.0f;
 	this->drive->steering = 0.0f;
 	

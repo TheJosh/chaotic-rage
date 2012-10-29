@@ -132,6 +132,16 @@ void Vehicle::update(int delta)
 	if (this->health == 0) return;
 	
 	
+	// Front
+	wheelIndex = 0;
+	this->vehicle->setSteeringValue(this->steering,wheelIndex);
+	this->vehicle->setBrake(this->brakeForce,wheelIndex);
+	
+	wheelIndex = 1;
+	this->vehicle->setSteeringValue(this->steering,wheelIndex);
+	this->vehicle->setBrake(this->brakeForce,wheelIndex);
+	
+	
 	// Rear
 	wheelIndex = 2;
 	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
@@ -140,13 +150,6 @@ void Vehicle::update(int delta)
 	wheelIndex = 3;
 	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
 	this->vehicle->setBrake(this->brakeForce,wheelIndex);
-	
-	// Front
-	wheelIndex = 0;
-	this->vehicle->setSteeringValue(this->steering,wheelIndex);
-	
-	wheelIndex = 1;
-	this->vehicle->setSteeringValue(this->steering,wheelIndex);
 	
 	
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {

@@ -882,11 +882,10 @@ void RenderOpenGL::background()
 		btTransform trans;
 		this->render_player->body->getMotionState()->getWorldTransform(trans);
 		btVector3 euler;
-		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
 		
 		glLoadIdentity();
 		glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
-		glRotatef(RAD_TO_DEG(euler.z()), 0.f, 0.f, 1.f);
+		glRotatef(RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())), 0.f, 0.f, 1.f);
 		glTranslatef(0.f - st->curr_map->background->w / 2.f, 0 - st->curr_map->background->h / 2.f, 0.f);
 		this->renderSprite(st->curr_map->background, 0.f, 0.f);
 	}
@@ -993,8 +992,7 @@ void RenderOpenGL::lights()
 				glTranslatef(l->x, l->y, l->z);
 				
 				btVector3 euler;
-				PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-				//glRotatef(RAD_TO_DEG(-euler.y()) + 45.0f, 0.f, 0.f, 1.f);
+				glRotatef(RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 45.0f, 0.f, 0.f, 1.f);
 				glRotatef(15.0f, 1, 0, 0);
 				
 				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_torch);
@@ -1098,13 +1096,6 @@ void RenderOpenGL::entities()
 		btScalar m[16];
 		trans.getOpenGLMatrix(m);
 		glMultMatrixf((GLfloat*)m);
-
-		/*if (e == this->render_player) {
-			this->render_player->body->getMotionState()->getWorldTransform(trans);
-			btVector3 euler;
-			PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-			glRotatef(RAD_TO_DEG(-euler.z()) * 2.0f, 0.f, 0.f, 1.f);
-		}*/
 
 		renderAnimPlay(play);
 			
