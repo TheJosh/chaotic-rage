@@ -313,3 +313,17 @@ void PhysicsBullet::QuaternionToEulerXYZ(const btQuaternion &quat, btVector3 &eu
 }
 
 
+float PhysicsBullet::QuaternionToYaw(const btQuaternion &quat)
+{
+	float fTx  = 2.0*quat.x();
+	float fTy  = 2.0*quat.y();
+	float fTz  = 2.0*quat.z();
+	float fTwy = fTy*quat.w();
+	float fTxx = fTx*quat.x();
+	float fTxz = fTz*quat.x();
+	float fTyy = fTy*quat.y();
+	 
+	return atan2(fTxz+fTwy, 1.0-(fTxx+fTyy));
+}
+
+

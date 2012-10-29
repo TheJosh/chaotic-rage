@@ -51,6 +51,18 @@ int clampAngle(int angle)
 	return angle;
 }
 
+
+/**
+* Ensures angles are in the range 0 - 359
+**/
+float clampAnglef(float angle)
+{
+	while (angle < 0.0) angle += 360.0;
+	while (angle > 360.0) angle -= 360.0;
+	return angle;
+}
+
+
 /**
 * Calculates a new angle based on the original angle, desired angle and turn speed
 *

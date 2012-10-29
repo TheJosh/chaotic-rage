@@ -126,15 +126,15 @@ void Player::update(int delta)
 
 		} else if (this->key[KEY_DOWN]) {
 			if (this->drive->getSpeedKmHr() > 0.0) {
-				this->drive->brakeForce = MIN(this->drive->brakeForce + 15.0f, 100.0f);
+				this->drive->brakeForce = MIN(this->drive->brakeForce + 10.0f, 50.0f);		// Brake
 				this->drive->engineForce = 0.0f;
 			} else {
-				this->drive->engineForce = MAX(this->drive->engineForce - 5.0f, -30.0f);
+				this->drive->engineForce = MAX(this->drive->engineForce - 5.0f, -30.0f);	// Reverse
 				this->drive->brakeForce = 0.0f;
 			}
 
 		} else {
-			this->drive->engineForce = MAX(this->drive->engineForce - 20.0f, 0.0f);
+			this->drive->engineForce = MAX(this->drive->engineForce - 20.0f, 0.0f);			// Dampening
 			this->drive->brakeForce = MAX(this->drive->brakeForce - 15.0f, 0.0f);
 		}
 

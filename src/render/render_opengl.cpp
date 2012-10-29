@@ -944,9 +944,16 @@ void RenderOpenGL::mainRot()
 	}
 	
 	// Load the character details into the variables
-	this->render_player->body->getMotionState()->getWorldTransform(trans);
-	angle = this->render_player->mouse_angle + 180.0f;
-
+	if (this->render_player->drive) {
+		this->render_player->drive->body->getMotionState()->getWorldTransform(trans);
+		angle = RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 180.0f;
+	} else {
+		this->render_player->body->getMotionState()->getWorldTransform(trans);
+		angle = this->render_player->mouse_angle + 180.0f;
+	}
+	
+	angle = clampAnglef(angle);
+	
 	// Camera angle calculations
 	float camerax = dist * sin(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().x();
 	float cameray = dist * sin(DEG_TO_RAD(tilt)) + trans.getOrigin().y();
