@@ -326,7 +326,7 @@ float PhysicsBullet::QuaternionToYaw(const btQuaternion &quat)
 	float fTxz = fTz*quat.x();
 	float fTyy = fTy*quat.y();
 	 
-	return atan2(fTxz+fTwy, 1.0-(fTxx+fTyy));
+	return atan2(fTxz+fTwy, 1.0f-(fTxx+fTyy));
 }
 
 
