@@ -393,8 +393,8 @@ void RenderOpenGL::loadHeightmap()
 		for( nX = 0; nX < st->curr_map->heightmap_w - 1; nX += 1 ) {
 			
 			// u = p2 - p1; v = p3 - p1
-			btVector3 u = btVector3(nX + 1, nZ, st->curr_map->heightmapGet(nX + 1, nZ)) - btVector3(nX, nZ, st->curr_map->heightmapGet(nX, nZ));
-			btVector3 v = btVector3(nX, nZ + 1, st->curr_map->heightmapGet(nX, nZ + 1)) - btVector3(nX, nZ, st->curr_map->heightmapGet(nX, nZ));
+			btVector3 u = btVector3(nX + 1.0f, st->curr_map->heightmapGet(nX + 1, nZ), nZ) - btVector3(nX, st->curr_map->heightmapGet(nX, nZ), nZ);
+			btVector3 v = btVector3(nX + 1.0f, st->curr_map->heightmapGet(nX + 1, nZ + 1), nZ + 1.0f) - btVector3(nX, st->curr_map->heightmapGet(nX, nZ), nZ);
 			
 			// calc vector
 			btVector3 normal = btVector3(
@@ -412,7 +412,7 @@ void RenderOpenGL::loadHeightmap()
 				vertexes[j].y = st->curr_map->heightmapGet(flX, flZ);
 				vertexes[j].z = flZ;
 				vertexes[j].nx = normal.x();
-				vertexes[j].ny = normal.y();
+				vertexes[j].ny = -normal.y();
 				vertexes[j].nz = normal.z();
 				vertexes[j].tx = flX / st->curr_map->heightmap_w;
 				vertexes[j].ty = flZ / st->curr_map->heightmap_h;
