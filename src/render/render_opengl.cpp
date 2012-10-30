@@ -988,12 +988,10 @@ void RenderOpenGL::lights()
 			} else if (l->type == 2) {
 				btTransform trans;
 				this->render_player->getRigidBody()->getMotionState()->getWorldTransform(trans);
-				glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
-				glTranslatef(l->x, l->y, l->z);
+				glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY() + 10.0f, trans.getOrigin().getZ());
 				
 				btVector3 euler;
-				glRotatef(RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 45.0f, 0.f, 0.f, 1.f);
-				glRotatef(15.0f, 1, 0, 0);
+				glRotatef(RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 90.0f, 0.0f, 1.0f, 0.0f);
 				
 				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_torch);
 				glLightf(GL_LIGHT0 + i, GL_SPOT_CUTOFF, 20);
