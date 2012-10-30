@@ -232,6 +232,9 @@
     <ClInclude Include="..\..\src\wall.h" />
     <ClInclude Include="..\..\src\zone.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\appicon.rc" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
