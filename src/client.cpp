@@ -6,6 +6,7 @@
 #include <SDL.h>
 #include "rage.h"
 #include "http/client_stats.h"
+#include "util/windowicon.h"
 
 
 using namespace std;
@@ -20,6 +21,13 @@ int main (int argc, char ** argv)
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 	
 	seedRandom();
+	
+	// Load icon
+	SDL_RWops *rw = SDL_RWFromConstMem(windowicon_bmp, sizeof(windowicon_bmp));
+	SDL_Surface *icon = SDL_LoadBMP_RW(rw, 1);
+	SDL_SetColorKey(icon, SDL_SRCCOLORKEY, SDL_MapRGBA(icon->format, 255, 0, 255, 0));
+	SDL_WM_SetIcon(icon, NULL);
+	SDL_FreeSurface(icon);
 	
 	GameState *st = new GameState();
 	

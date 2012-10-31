@@ -1,0 +1,4 @@
+To generate the array in util/windowicon.h, use the Linux tool, xxd.
+
+Example:
+	xxd -i windowicon.bmp > windowicon.h
