@@ -195,17 +195,53 @@ Entity * Unit::infront(float range)
 bool Unit::onground()
 {
 	btTransform xform;
-	body->getMotionState()->getWorldTransform (xform);
-	btVector3 down = -xform.getBasis()[1];
-	down.normalize ();
+	body->getMotionState()->getWorldTransform(xform);
 
-	btVector3 begin = xform.getOrigin();
-	btVector3 end = begin + down * 1.9f;		// half unit height + a little
+	btVector3 begin = xform.getOrigin() + xform.getBasis() * btVector3(0.0f, 1.9f, 0.0f);
+	btVector3 end = xform.getOrigin() + xform.getBasis() * btVector3(0.0f, -1.9f, 0.0f);
+	st->addDebugLine(&begin, &end);
 
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
 
 	return (cb.hasHit());
+}
+
+
+/**
+* Raises or lowers the unit a little so it's on the ground
+**/
+void Unit::putOnGround(btTransform * xform)
+{
+	// Falling
+	btVector3 begin = xform->getOrigin();
+	btVector3 end = xform->getOrigin() + xform->getBasis() * btVector3(0.0f, -2.0f, 0.0f);
+	st->addDebugLine(&begin, &end);
+
+	{
+	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
+	this->st->physics->getWorld()->rayTest(begin, end, cb);
+
+	if (cb.hasHit()) {
+		xform->setOrigin(cb.m_hitPointWorld + btVector3(0.0f, 1.0f, 0.0f));
+		return;
+	}
+	}
+
+	// Going up
+	begin = xform->getOrigin();
+	end = xform->getOrigin() + xform->getBasis() * btVector3(0.0f, 2.0f, 0.0f);
+	st->addDebugLine(&begin, &end);
+
+	{
+	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
+	this->st->physics->getWorld()->rayTest(begin, end, cb);
+
+	if (cb.hasHit()) {
+		xform->setOrigin(cb.m_hitPointWorld + btVector3(0.0f, 1.0f, 0.0f));
+		return;
+	}
+	}
 }
 
 

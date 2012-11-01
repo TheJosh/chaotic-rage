@@ -162,12 +162,9 @@ void Player::update(int delta)
 	
 	DEBUG("unit", "%p Velocity: %f %f %f", this, linearVelocity.x(), linearVelocity.y(), linearVelocity.z());
 	
+	this->putOnGround(&xform);
 
-	if (!this->onground()) {
-		linearVelocity += btVector3(0.0f, -0.7f, 0.0f);
-		body->setLinearVelocity (linearVelocity);
-
-	} else if (!this->key[KEY_UP] && !this->key[KEY_DOWN] && !this->key[KEY_LEFT] && !this->key[KEY_RIGHT]) {
+	if (!this->key[KEY_UP] && !this->key[KEY_DOWN] && !this->key[KEY_LEFT] && !this->key[KEY_RIGHT]) {
 		linearVelocity *= btScalar(0.2);		// TODO: unit-type-settings?
 		body->setLinearVelocity (linearVelocity);
 		
