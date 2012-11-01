@@ -429,6 +429,14 @@ void Unit::update(int delta)
 	
 	if (st->server) st->server->addmsgUnitUpdate(this);
 	
+
+	// If they have fallen a considerable distance, they die
+	btTransform xform;
+	body->getMotionState()->getWorldTransform (xform);
+	if (xform.getOrigin().y() <= -100.0) {
+		this->takeDamage(this->health);
+	}
+
 	
 	// Which weapon to use?
 	WeaponType *w = NULL;
