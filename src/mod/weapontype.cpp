@@ -228,7 +228,7 @@ void WeaponDigdown::doFire(Unit * u)
 			// Hit the ground, lets dig a hole
 			Map* map = u->st->curr_map;
 			int mapX = begin.x() / map->width * map->heightmap_w;
-			int mapY = begin.y() / map->height * map->heightmap_h;
+			int mapY = begin.z() / map->height * map->heightmap_h;
 
 			heightmapCircle(map, mapX, mapY, this->radius, this->depth);
 
