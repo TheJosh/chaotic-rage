@@ -21,7 +21,7 @@ int getAngleBetweenPoints (int point1_x, int point1_y, int point2_x, int point2_
 	
 	if ((point1_x - point2_x) == 0) {
 		if (point1_y > point2_y) {
-			angle = 0.0;
+			angle = 0.0f;
 		} else {
 			angle = PI;
 		}
@@ -35,7 +35,7 @@ int getAngleBetweenPoints (int point1_x, int point1_y, int point2_x, int point2_
 		}
 	}
 	
-	angle = angle * (180 / PI);
+	angle = angle * (180.0f / PI);
 	
 	return (int) round(angle);
 }
@@ -57,8 +57,8 @@ int clampAngle(int angle)
 **/
 float clampAnglef(float angle)
 {
-	while (angle < 0.0) angle += 360.0;
-	while (angle > 360.0) angle -= 360.0;
+	while (angle < 0.0f) angle += 360.0f;
+	while (angle > 360.0f) angle -= 360.0f;
 	return angle;
 }
 
@@ -106,7 +106,7 @@ float pointPlusAngleX (float point_x, int angle, float distance)
 	if (angle < 0) angle += 360;
 	if (angle > 360) angle -= 360;
 	
-	angle_rads = angle * (PI / 180.0);
+	angle_rads = angle * (PI / 180.0f);
 	
 	return point_x - (sin(angle_rads) * distance);
 }
@@ -123,7 +123,7 @@ float pointPlusAngleY (float point_y, int angle, float distance)
 	if (angle < 0) angle += 360;
 	if (angle > 360) angle -= 360;
 	
-	angle_rads = angle * (PI / 180.0);
+	angle_rads = angle * (PI / 180.0f);
 	
 	return point_y - (cos(angle_rads) * distance);
 }
