@@ -393,8 +393,8 @@ void RenderOpenGL::loadHeightmap()
 		for( nX = 0; nX < st->curr_map->heightmap_w - 1; nX += 1 ) {
 			
 			// u = p2 - p1; v = p3 - p1
-			btVector3 u = btVector3(nX + 1.0f, st->curr_map->heightmapGet(nX + 1, nZ), nZ) - btVector3(nX, st->curr_map->heightmapGet(nX, nZ), nZ);
-			btVector3 v = btVector3(nX + 1.0f, st->curr_map->heightmapGet(nX + 1, nZ + 1), nZ + 1.0f) - btVector3(nX, st->curr_map->heightmapGet(nX, nZ), nZ);
+			btVector3 u = btVector3(nX + 1.0f, st->curr_map->heightmapGet(nX + 1, nZ + 1), nZ + 1.0f) - btVector3(nX, st->curr_map->heightmapGet(nX, nZ), nZ);
+			btVector3 v = btVector3(nX + 1.0f, st->curr_map->heightmapGet(nX + 1, nZ), nZ) - btVector3(nX, st->curr_map->heightmapGet(nX, nZ), nZ);
 			
 			// calc vector
 			btVector3 normal = btVector3(
@@ -412,7 +412,7 @@ void RenderOpenGL::loadHeightmap()
 				vertexes[j].y = st->curr_map->heightmapGet(flX, flZ);
 				vertexes[j].z = flZ;
 				vertexes[j].nx = normal.x();
-				vertexes[j].ny = -normal.y();
+				vertexes[j].ny = normal.y();
 				vertexes[j].nz = normal.z();
 				vertexes[j].tx = flX / st->curr_map->heightmap_w;
 				vertexes[j].ty = flZ / st->curr_map->heightmap_h;
@@ -973,8 +973,10 @@ void RenderOpenGL::lights()
 	unsigned int i;
 
 	// Lights
+	GLfloat dir_down[] = { 0.0f, 1.0f, 0.0f, 0.0f };
 	GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	GLfloat spot_torch[] = { -1.0f, 0.0f, -1.0f };
+	GLfloat spot_down[] = { 0.0f, -1.0f, 0.0f };
 	
 	for (i = 0; i < st->curr_map->lights.size(); i++) {
 		Light * l = st->curr_map->lights[i];
@@ -983,7 +985,7 @@ void RenderOpenGL::lights()
 		
 		glPushMatrix();
 			if (l->type == 1) {
-				glTranslatef(l->x, l->y, l->z);
+				glLightfv(GL_LIGHT0 + i, GL_POSITION, dir_down);
 				
 			} else if (l->type == 2) {
 				btTransform trans;
@@ -993,14 +995,22 @@ void RenderOpenGL::lights()
 				glRotatef(RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 90.0f + 45.0f, 0.0f, 1.0f, 0.0f);
 				
 				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_torch);
-				glLightf(GL_LIGHT0 + i, GL_SPOT_CUTOFF, 20);
-				glLightf(GL_LIGHT0 + i, GL_SPOT_EXPONENT, 2);
+				glLightf(GL_LIGHT0 + i, GL_SPOT_CUTOFF, 22.0f);
+				glLightf(GL_LIGHT0 + i, GL_SPOT_EXPONENT, 1.0f);
+				glLightfv(GL_LIGHT0 + i, GL_POSITION, position);
+				
+			} else if (l->type == 3) {
+				glTranslatef(l->x, l->y, l->z);
+				
+				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_down);
+				glLightf(GL_LIGHT0 + i, GL_SPOT_CUTOFF, 40.0f);
+				glLightf(GL_LIGHT0 + i, GL_SPOT_EXPONENT, 1.7f);
+				glLightfv(GL_LIGHT0 + i, GL_POSITION, position);
 			}
 			
 			glLightfv(GL_LIGHT0 + i, GL_AMBIENT, l->ambient);
 			glLightfv(GL_LIGHT0 + i, GL_DIFFUSE, l->diffuse);
 			glLightfv(GL_LIGHT0 + i, GL_SPECULAR, l->specular);
-			glLightfv(GL_LIGHT0 + i, GL_POSITION, position);
 			glEnable(GL_LIGHT0 + i);
 		glPopMatrix();
 		
