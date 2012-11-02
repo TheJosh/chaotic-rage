@@ -124,6 +124,8 @@ void AILogic::update(int delta)
 	btTransform xform;
 	this->u->body->getMotionState()->getWorldTransform (xform);
 	
+	this->u->putOnGround(&xform);
+
 	// Rotation update
 	btVector3 fwd = btVector3(0.0, 0.0, 1.0);
 	btVector3 axis = fwd.cross(this->dir);
