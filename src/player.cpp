@@ -184,19 +184,19 @@ void Player::update(int delta)
 		}
 		
 		// Strafe
-		/*
-		btVector3 strafeDir = xform2.getBasis() * btVector3(0.7, 0, 0);		// TODO: Managed in the unit settings	(strafe accel)
+		btVector3 strafeDir = xform2.getBasis() * btVector3(0.7f, 0, 0);		// TODO: Managed in the unit settings	(strafe accel)
 		
 		if (this->key[KEY_LEFT]) {
-			walkDirection -= strafeDir;
-		} else if (this->key[KEY_RIGHT]) {
 			walkDirection += strafeDir;
-		}*/
+		} else if (this->key[KEY_RIGHT]) {
+			walkDirection -= strafeDir;
+		}
 		
+		// Hill climbing
+		walkDirection += btVector3(0.0f, 0.7f, 0.0f);
+
 		// Apply velocity
 		linearVelocity += walkDirection;
-		linearVelocity += btVector3(0.0f, 0.7f, 0.0f);		// hill climbing
-
 		body->setLinearVelocity (linearVelocity);
 	}
 	
