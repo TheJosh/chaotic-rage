@@ -73,6 +73,7 @@ void RenderOpenGLCompat::setScreenSize(int width, int height, bool fullscreen)
 	
 	// SDL
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
 
@@ -99,7 +100,12 @@ void RenderOpenGLCompat::setScreenSize(int width, int height, bool fullscreen)
 	}
 	
 	
-	// GLEW
+	// OpenGL
+	if (atof((char*) glGetString(GL_VERSION)) < 2.0) {
+		reportFatalError("OpenGL 2.0 or later is required, but not supported on this system.");
+		exit(1);
+	}
+	
 	GLenum err = glewInit();
 	if (GLEW_OK != err) {
 		fprintf(stderr, "Glew Error: %s\n", glewGetErrorString(err));
@@ -113,12 +119,6 @@ void RenderOpenGLCompat::setScreenSize(int width, int height, bool fullscreen)
 		exit(1);
 	}
 	
-	// GL_ARB_vertex_buffer_object -> VBOs
-	if (! GL_ARB_vertex_buffer_object) {
-		reportFatalError("OpenGL 3.0 or the extension 'GL_ARB_vertex_buffer_object' not available.");
-		exit(1);
-	}
-
 	// Freetype
 	int error;
 	error = FT_Init_FreeType(&this->ft);
@@ -144,7 +144,6 @@ void RenderOpenGLCompat::setScreenSize(int width, int height, bool fullscreen)
 	
 	// OpenGL env
 	glDepthFunc(GL_LEQUAL);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glFlush();
@@ -223,9 +222,9 @@ void RenderOpenGLCompat::mainViewport(int s, int of)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
-	gluPerspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 1500.f);
-	glScalef(-1.0f,1.0f,1.0f);
-	glTranslatef(0.f, 0.f, -1250.0f);
+	gluPerspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 150.f);
+	//glScalef(-1.0f,1.0f,1.0f);
+	//glTranslatef(0.f, 0.f, -120.0f);
 	
 	glMatrixMode(GL_MODELVIEW);
 }
@@ -349,7 +348,7 @@ void RenderOpenGLCompat::surfaceToOpenGL(SpritePtr sprite)
 	glGenTextures(1, &sprite->pixels);
 	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
 	
-	// Multisample opts
+	// Set stretching properties
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -379,8 +378,8 @@ void RenderOpenGLCompat::loadHeightmap()
 		for( nX = 0; nX < st->curr_map->heightmap_w - 1; nX += 1 ) {
 			
 			// u = p2 - p1; v = p3 - p1
-			btVector3 u = btVector3(nX + 1, nZ, st->curr_map->heightmapGet(nX + 1, nZ)) - btVector3(nX, nZ, st->curr_map->heightmapGet(nX, nZ));
-			btVector3 v = btVector3(nX, nZ + 1, st->curr_map->heightmapGet(nX, nZ + 1)) - btVector3(nX, nZ, st->curr_map->heightmapGet(nX, nZ));
+			btVector3 u = btVector3(nX + 1.0f, st->curr_map->heightmapGet(nX + 1, nZ + 1), nZ + 1.0f) - btVector3(nX, st->curr_map->heightmapGet(nX, nZ), nZ);
+			btVector3 v = btVector3(nX + 1.0f, st->curr_map->heightmapGet(nX + 1, nZ), nZ) - btVector3(nX, st->curr_map->heightmapGet(nX, nZ), nZ);
 			
 			// calc vector
 			btVector3 normal = btVector3(
@@ -395,8 +394,8 @@ void RenderOpenGLCompat::loadHeightmap()
 				flZ = (float) nZ + (( nTri == 2 || nTri == 4 || nTri == 5 ) ? 1.0f : 0.0f);
 				
 		 		vertexes[j].x = flX;
-				vertexes[j].y = flZ;
-				vertexes[j].z = st->curr_map->heightmapGet(flX, flZ);
+				vertexes[j].y = st->curr_map->heightmapGet(flX, flZ);
+				vertexes[j].z = flZ;
 				vertexes[j].nx = normal.x();
 				vertexes[j].ny = normal.y();
 				vertexes[j].nz = normal.z();
@@ -470,10 +469,12 @@ void RenderOpenGLCompat::preGame()
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
-	
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glHint(GL_GENERATE_MIPMAP_HINT, GL_FASTEST);
+	glDisable(GL_BLEND);
 	glDisable(GL_MULTISAMPLE);
+
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	
+	glHint(GL_GENERATE_MIPMAP_HINT, GL_FASTEST);
 	glHint(GL_POINT_SMOOTH_HINT, GL_FASTEST);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
 	glHint(GL_FOG_HINT, GL_FASTEST);
@@ -489,6 +490,9 @@ void RenderOpenGLCompat::postGame()
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_MULTISAMPLE);
+
+	GLfloat em[] = {0.0, 0.0, 0.0, 0.0};
+	glMaterialfv(GL_FRONT, GL_EMISSION, em);
 }
 
 
@@ -554,9 +558,9 @@ void RenderOpenGLCompat::createVBO (WavefrontObj * obj)
 		vn = &obj->normals.at(f->n1 - 1);
 		t = &obj->texuvs.at(f->t1 - 1);
 		
-		vertexes[j].x = v->x * -1.0f; vertexes[j].y = v->y; vertexes[j].z = v->z;
+		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
-		vertexes[j].tx = t->x; vertexes[j].ty = t->y * -1.0f;
+		vertexes[j].tx = t->x; vertexes[j].ty = -t->y;
 		j++;
 		
 		
@@ -564,9 +568,9 @@ void RenderOpenGLCompat::createVBO (WavefrontObj * obj)
 		vn = &obj->normals.at(f->n2 - 1);
 		t = &obj->texuvs.at(f->t2 - 1);
 		
-		vertexes[j].x = v->x * -1.0f; vertexes[j].y = v->y; vertexes[j].z = v->z;
+		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
-		vertexes[j].tx = t->x; vertexes[j].ty = t->y * -1.0f;
+		vertexes[j].tx = t->x; vertexes[j].ty = -t->y;
 		j++;
 		
 		
@@ -574,9 +578,9 @@ void RenderOpenGLCompat::createVBO (WavefrontObj * obj)
 		vn = &obj->normals.at(f->n3 - 1);
 		t = &obj->texuvs.at(f->t3 - 1);
 		
-		vertexes[j].x = v->x * -1.0f; vertexes[j].y = v->y; vertexes[j].z = v->z;
+		vertexes[j].x = v->x; vertexes[j].y = v->y; vertexes[j].z = v->z;
 		vertexes[j].nx = vn->x; vertexes[j].ny = vn->y; vertexes[j].nz = vn->z;
-		vertexes[j].tx = t->x; vertexes[j].ty = t->y * -1.0f;
+		vertexes[j].tx = t->x; vertexes[j].ty = -t->y;
 		j++;
 		
 	}
@@ -644,9 +648,6 @@ void RenderOpenGLCompat::renderAnimPlay(AnimPlay * play)
 	
 	int frame = play->getFrame();
 	
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-
 	for (unsigned int d = 0; d < model->meshframes.size(); d++) {
 		if (model->meshframes[d]->frame != frame) continue;
 		if (model->meshframes[d]->mesh == NULL) continue;
@@ -654,25 +655,26 @@ void RenderOpenGLCompat::renderAnimPlay(AnimPlay * play)
 		
 		glBindTexture(GL_TEXTURE_2D, model->meshframes[d]->texture->pixels);
 		
-		glPushMatrix();
+		glMaterialfv(GL_FRONT, GL_EMISSION, model->meshframes[d]->emission);
 		
-		// TODO: Fix for new physics
-		//if (model->meshframes[d]->do_angle) {
-		//	glRotatef(0 - angle, 0, 0, 1);
-		//}
+		glPushMatrix();
 		
 		glTranslatef(model->meshframes[d]->px, model->meshframes[d]->py, model->meshframes[d]->pz);
 		glRotatef(model->meshframes[d]->rx, 1, 0, 0);
 		glRotatef(model->meshframes[d]->ry, 0, 1, 0);
 		glRotatef(model->meshframes[d]->rz, 0, 0, 1);
+		
+		
+		// This is only temporary until the models get changed to be Y-up instead of Z-up
+		glRotatef(270.0f, 1, 0, 0);
+		
+		
 		glScalef(model->meshframes[d]->sx, model->meshframes[d]->sy, model->meshframes[d]->sz);
 		
 		this->renderObj(model->meshframes[d]->mesh);
 		
 		glPopMatrix();
 	}
-
-	glDisable(GL_BLEND);
 }
 
 
@@ -691,14 +693,11 @@ void RenderOpenGLCompat::renderText(string text, float x, float y, float r, floa
 	unsigned int n;
 	
 	glColor3f(r, g, b);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	
 	for ( n = 0; n < text.length(); n++ ) {
 		this->renderCharacter(text[n]);
 	}
 	
-	glDisable(GL_BLEND);
 	glColor3f(1, 1, 1);
 	
 	glPopMatrix();
@@ -791,6 +790,7 @@ void RenderOpenGLCompat::render()
 		this->render_player = this->st->local_players[i]->p;
 		mainViewport(i, this->st->num_local);
 		
+		//background();
 		mainRot();
 		lights();
 		map();
@@ -799,7 +799,7 @@ void RenderOpenGLCompat::render()
 		if (physicsdebug != NULL) physics();
 		hud(this->st->local_players[i]->hud);
 	}
-	
+
 	mainViewport(0,1);
 	guichan();
 
@@ -836,26 +836,21 @@ void RenderOpenGLCompat::physics()
 
 
 /**
-* Camera spin when player is dead
+* Background
 **/
-void RenderOpenGLCompat::deadRot()
+void RenderOpenGLCompat::background()
 {
-	static float angle = 22.0f;
-	
-	float hw = st->curr_map->width / 2.f;
-	float hh = st->curr_map->width / 2.f;
-	
-	// Proper angle
-	glRotatef(90.0f, 0, 0, 1);
-	glTranslatef(0.f - hw, 0.f - hh, 1000.f);
-	glRotatef(50.0f, 0, 1, 0);
-	
-	// Map spin
-	glTranslatef(hw, hh, 0.f);
-	glRotatef(angle, 0, 0, 1);
-	glTranslatef(0.f - hw, 0.f - hh, 0.f);
-	
-	angle += 0.05f;
+	if (this->render_player != NULL) {
+		btTransform trans;
+		this->render_player->body->getMotionState()->getWorldTransform(trans);
+		btVector3 euler;
+		
+		glLoadIdentity();
+		glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
+		glRotatef(RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())), 0.f, 0.f, 1.f);
+		glTranslatef(0.f - st->curr_map->background->w / 2.f, 0 - st->curr_map->background->h / 2.f, 0.f);
+		this->renderSprite(st->curr_map->background, 0.f, 0.f);
+	}
 }
 
 
@@ -865,6 +860,8 @@ void RenderOpenGLCompat::deadRot()
 void RenderOpenGLCompat::mainRot()
 {
 	btTransform trans;
+	float tilt, angle, dist;		// Up/down; left/right; distance of camera
+	static float deadang = 22.0f;
 
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
@@ -873,41 +870,42 @@ void RenderOpenGLCompat::mainRot()
 	glLoadIdentity();
 	
 	if (this->render_player == NULL) {
-		this->deadRot();
-		return;
-	}
-	
-	if (this->viewmode == 1) {				// Top
-		glRotatef(180, 0, 0, 1);
-		glTranslatef(0,87,731);
-		glRotatef(10, 1, 0, 0);
-		glTranslatef(0,0,-10);
-		
-	} else if (this->viewmode == 0) {		// Behind (3rd person)
-		glRotatef(180, 0, 0, 1);
-		glTranslatef(0,483,1095);
-		glRotatef(74, 1, 0, 0);
-	
-	} else if (this->viewmode == 2) {		// First person
-		glTranslatef(0,1220,-380);
-		glRotatef(80, 1, 0, 0);
-		
-	}
-	
-	if (this->render_player->drive) {
-		this->render_player->drive->body->getMotionState()->getWorldTransform(trans);
-		btVector3 euler;
-		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-		glRotatef(RAD_TO_DEG(euler.z()), 0.f, 0.f, 1.f);
+		trans = btTransform(btQuaternion(0,0,0,0),btVector3(st->curr_map->width/2.0f, 0.0f, st->curr_map->height/2.0f));
+		tilt = 22.0f;
+		dist = 80.0f;
+		angle = deadang;
+		deadang += 0.05f;
 
 	} else {
-		this->render_player->body->getMotionState()->getWorldTransform(trans);
-		btVector3 euler;
-		PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-		glRotatef(RAD_TO_DEG(euler.z()), 0.f, 0.f, 1.f);
-	}
+		if (this->viewmode == 0) {
+			tilt = 17.0f;
+			dist = 25.0f;
+		} else if (this->viewmode == 1) {
+			tilt = 70.0f;
+			dist = 50.0f;
+		}
 	
-	glTranslatef(0.f - trans.getOrigin().getX(), 0.f - trans.getOrigin().getY(), 500.f - trans.getOrigin().getZ());
+		// Load the character details into the variables
+		if (this->render_player->drive) {
+			this->render_player->drive->body->getMotionState()->getWorldTransform(trans);
+			angle = RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 180.0f;
+		} else {
+			this->render_player->body->getMotionState()->getWorldTransform(trans);
+			angle = this->render_player->mouse_angle + 180.0f;
+		}
+	}
+
+	angle = clampAnglef(angle);
+	
+	// Camera angle calculations
+	float camerax = dist * sin(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().x();
+	float cameray = dist * sin(DEG_TO_RAD(tilt)) + trans.getOrigin().y();
+	float cameraz = dist * cos(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().z();
+	
+	// OpenGL transforms
+	glRotatef(tilt, 1.0f, 0.0f, 0.0f);
+	glRotatef(360.0f - angle, 0.0f, 1.0f, 0.0f);
+	glTranslatef(-camerax, -cameray, -cameraz);
 }
 
 
@@ -916,15 +914,52 @@ void RenderOpenGLCompat::mainRot()
 **/
 void RenderOpenGLCompat::lights()
 {
-	GLfloat amb[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	GLfloat lig[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	GLfloat position[] = { 100.0f, 100.0f, 50.0f, 1.0f };
+	unsigned int i;
+
+	// Lights
+	GLfloat dir_down[] = { 0.0f, 1.0f, 0.0f, 0.0f };
+	GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	GLfloat spot_torch[] = { -1.0f, 0.0f, -1.0f };
+	GLfloat spot_down[] = { 0.0f, -1.0f, 0.0f };
 	
-	glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, lig);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, lig);
-	glLightfv(GL_LIGHT0, GL_POSITION, position);
-	glEnable(GL_LIGHT0);
+	for (i = 0; i < st->curr_map->lights.size(); i++) {
+		Light * l = st->curr_map->lights[i];
+		
+		if (l->type == 2 && this->render_player == NULL) continue;
+		
+		glPushMatrix();
+			if (l->type == 1) {
+				glLightfv(GL_LIGHT0 + i, GL_POSITION, dir_down);
+				
+			} else if (l->type == 2) {
+				btTransform trans;
+				this->render_player->getRigidBody()->getMotionState()->getWorldTransform(trans);
+				
+				glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY() + 10.0f, trans.getOrigin().getZ());
+				glRotatef(RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 90.0f + 45.0f, 0.0f, 1.0f, 0.0f);
+				
+				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_torch);
+				glLightf(GL_LIGHT0 + i, GL_SPOT_CUTOFF, 22.0f);
+				glLightf(GL_LIGHT0 + i, GL_SPOT_EXPONENT, 1.0f);
+				glLightfv(GL_LIGHT0 + i, GL_POSITION, position);
+				
+			} else if (l->type == 3) {
+				glTranslatef(l->x, l->y, l->z);
+				
+				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_down);
+				glLightf(GL_LIGHT0 + i, GL_SPOT_CUTOFF, 40.0f);
+				glLightf(GL_LIGHT0 + i, GL_SPOT_EXPONENT, 1.7f);
+				glLightfv(GL_LIGHT0 + i, GL_POSITION, position);
+			}
+			
+			glLightfv(GL_LIGHT0 + i, GL_AMBIENT, l->ambient);
+			glLightfv(GL_LIGHT0 + i, GL_DIFFUSE, l->diffuse);
+			glLightfv(GL_LIGHT0 + i, GL_SPECULAR, l->specular);
+			glEnable(GL_LIGHT0 + i);
+		glPopMatrix();
+		
+		if (i == 7) break;
+	}
 }
 
 
@@ -935,7 +970,6 @@ void RenderOpenGLCompat::map()
 {
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
-	glDisable(GL_BLEND);
 	glFrontFace(GL_CW);
 	glBindTexture(GL_TEXTURE_2D, st->curr_map->terrain->pixels);
 	
@@ -946,7 +980,7 @@ void RenderOpenGLCompat::map()
 	glPushMatrix();
 	
 	// TODO: Should this be a part of the mesh create instead of part of the render?
-	glScalef(this->st->curr_map->heightmapScaleX(), this->st->curr_map->heightmapScaleY(), 1.0);
+	glScalef(this->st->curr_map->heightmapScaleX(), 1.0f, this->st->curr_map->heightmapScaleY());
 	
 	glBindBuffer(GL_ARRAY_BUFFER, this->ter_vboid);
 	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
@@ -967,20 +1001,19 @@ void RenderOpenGLCompat::map()
 	// Water surface
 	if (this->st->curr_map->water) {
  		glBindTexture(GL_TEXTURE_2D, st->curr_map->water->pixels);
-		glEnable(GL_BLEND);
 
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0f, this->st->curr_map->height/10.0f);
-			glVertex3f(0, this->st->curr_map->height, this->st->curr_map->water_level);
+			glVertex3f(0, this->st->curr_map->water_level, this->st->curr_map->height);
 		
 			glTexCoord2f(this->st->curr_map->width/10.0f, this->st->curr_map->height/10.0f);
-			glVertex3f(this->st->curr_map->width, this->st->curr_map->height, this->st->curr_map->water_level);
+			glVertex3f(this->st->curr_map->width, this->st->curr_map->water_level, this->st->curr_map->height);
 		
 			glTexCoord2f(this->st->curr_map->width/10.0f, 0.0f);
-			glVertex3f(this->st->curr_map->width, 0, this->st->curr_map->water_level);
+			glVertex3f(this->st->curr_map->width, this->st->curr_map->water_level, 0);
 
 			glTexCoord2f(0.0f, 0.0f);
-			glVertex3f(0, 0, this->st->curr_map->water_level);
+			glVertex3f(0, this->st->curr_map->water_level, 0);
 		glEnd();
 	}
 }
@@ -993,7 +1026,7 @@ void RenderOpenGLCompat::entities()
 {
 	preVBOrender();
 
-	glFrontFace(GL_CCW);		// almost everything is wound wrong...
+	glFrontFace(GL_CCW);
 	glEnable(GL_CULL_FACE);
 
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
@@ -1013,13 +1046,6 @@ void RenderOpenGLCompat::entities()
 		trans.getOpenGLMatrix(m);
 		glMultMatrixf((GLfloat*)m);
 
-		if (e == this->render_player) {
-			this->render_player->body->getMotionState()->getWorldTransform(trans);
-			btVector3 euler;
-			PhysicsBullet::QuaternionToEulerXYZ(trans.getRotation(), euler);
-			glRotatef(RAD_TO_DEG(-euler.z()) * 2.0f, 0.f, 0.f, 1.f);
-		}
-
 		renderAnimPlay(play);
 			
 		glPopMatrix();
@@ -1028,6 +1054,9 @@ void RenderOpenGLCompat::entities()
 	postVBOrender();
 
 	glDisable(GL_CULL_FACE);
+
+	GLfloat em[] = {0.0, 0.0, 0.0, 0.0};
+	glMaterialfv(GL_FRONT, GL_EMISSION, em);
 }
 
 
@@ -1080,6 +1109,3 @@ void RenderOpenGLCompat::hud(HUD * hud)
 	glLoadIdentity();
 	hud->render(this);
 }
-
-
-
