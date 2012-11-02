@@ -77,7 +77,7 @@ bool GameLogic::execScript(string code)
 /**
 * Basically just provides timer ticks
 **/
-void GameLogic::update(int deglta)
+void GameLogic::update(int delta)
 {
 	for (unsigned int id = 0; id < this->timers.size(); id++) {
 		LuaTimer* t = this->timers.at(id);
@@ -94,7 +94,6 @@ void GameLogic::update(int deglta)
 				this->timers[id] = NULL;
 			}
 		}
-		
 	}
 }
 
@@ -112,10 +111,7 @@ void GameLogic::update(int deglta)
 
 #define LUA_DEFINE_RAISE_INTARG(name) void GameLogic::raise_##name(int arg) \
 { \
-	cout << "raise_" #name "(" << arg << ")\n"; \
-	cout << "num binds: " << this->binds_##name.size() << "\n"; \
 	for (unsigned int id = 0; id < this->binds_##name.size(); id++) { \
-		cout << "bind: " << id << "\n"; \
 		int ref = this->binds_##name.at(id); \
 		lua_rawgeti(L, LUA_REGISTRYINDEX, ref); \
 		lua_pushinteger(L, arg); \
@@ -207,8 +203,6 @@ LUA_FUNC(bind_gamestart)
 **/
 LUA_FUNC(bind_playerjoin)
 {
-	cout << "bind_playerjoin\n";
-
 	if (! lua_isfunction(L, 1)) {
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);

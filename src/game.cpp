@@ -33,6 +33,8 @@ void gameLoop(GameState *st, Render *render)
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 	SDL_WarpMouse(400, 300);
 	
+	start = SDL_GetTicks();
+
 	st->render->preGame();
 	st->render->loadHeightmap();
 	st->curr_map->loadDefaultEntities();
@@ -40,12 +42,11 @@ void gameLoop(GameState *st, Render *render)
 	
 	st->start();
 	st->setMouseGrab(true);
-	st->logic->update(1);
 	st->logic->raise_gamestart();
 	
 	if (st->client == NULL) {
 		for (unsigned int i = 0; i < st->num_local; i++) {
-			st->logic->raise_playerjoin(i+1);		// TODO: Should be based on slot number
+			st->logic->raise_playerjoin(st->local_players[i]->slot);
 		}
 	}
 
