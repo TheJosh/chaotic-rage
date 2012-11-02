@@ -893,35 +893,13 @@ void RenderOpenGL::background()
 
 
 /**
-* Camera spin when player is dead
-**/
-void RenderOpenGL::deadRot()
-{
-	static float angle = 22.0f;
-	
-	float hw = st->curr_map->width / 2.f;
-	float hh = st->curr_map->height / 2.f;
-	
-	// Tilt it a little
-	glTranslatef(0.0f - hw, hh, 1000.0f);
-	glRotatef(50.0f, 1, 0, 0);
-	
-	// Map spin
-	glTranslatef(hw, 0.f, hh);
-	glRotatef(angle, 0, 1, 0);
-	glTranslatef(0.f - hw, 0.f, 0.f - hh);
-	
-	angle += 0.05f;
-}
-
-
-/**
 * Main rotation for camera
 **/
 void RenderOpenGL::mainRot()
 {
 	btTransform trans;
 	float tilt, angle, dist;		// Up/down; left/right; distance of camera
+	static float deadang = 22.0f;
 
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
@@ -930,27 +908,31 @@ void RenderOpenGL::mainRot()
 	glLoadIdentity();
 	
 	if (this->render_player == NULL) {
-		this->deadRot();
-		return;
-	}
-	
-	if (this->viewmode == 0) {
-		tilt = 17.0f;
-		dist = 25.0f;
-	} else if (this->viewmode == 1) {
-		tilt = 70.0f;
-		dist = 50.0f;
-	}
-	
-	// Load the character details into the variables
-	if (this->render_player->drive) {
-		this->render_player->drive->body->getMotionState()->getWorldTransform(trans);
-		angle = RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 180.0f;
+		trans = btTransform(btQuaternion(0,0,0,0),btVector3(st->curr_map->width/2.0f, 0.0f, st->curr_map->height/2.0f));
+		tilt = 22.0f;
+		dist = 80.0f;
+		angle = deadang;
+		deadang += 0.05f;
+
 	} else {
-		this->render_player->body->getMotionState()->getWorldTransform(trans);
-		angle = this->render_player->mouse_angle + 180.0f;
-	}
+		if (this->viewmode == 0) {
+			tilt = 17.0f;
+			dist = 25.0f;
+		} else if (this->viewmode == 1) {
+			tilt = 70.0f;
+			dist = 50.0f;
+		}
 	
+		// Load the character details into the variables
+		if (this->render_player->drive) {
+			this->render_player->drive->body->getMotionState()->getWorldTransform(trans);
+			angle = RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 180.0f;
+		} else {
+			this->render_player->body->getMotionState()->getWorldTransform(trans);
+			angle = this->render_player->mouse_angle + 180.0f;
+		}
+	}
+
 	angle = clampAnglef(angle);
 	
 	// Camera angle calculations

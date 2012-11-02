@@ -107,7 +107,6 @@ class RenderOpenGL : public Render3D
 		
 	private:
 		void renderCharacter(char c);
-		void deadRot();
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
 		void mainViewport(int s, int of);
