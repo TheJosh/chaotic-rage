@@ -350,6 +350,11 @@ bool GameState::getMouseGrab()
 **/
 void GameState::initGuichan()
 {
+	if (! this->render->is3D()) {
+		this->gui = NULL;
+		return;
+	}
+	
 	try {
 		this->gui = new gcn::Gui();
 		this->guiinput = new gcn::SDLInput();

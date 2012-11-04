@@ -123,6 +123,10 @@ class Render
 		**/
 		virtual int getHeight() { return 0; }
 		
+		/**
+		* Is it a 3D renderer?
+		**/
+		virtual bool is3D() { return false; }
 		
 	public:
 		Render(GameState * st);

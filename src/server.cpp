@@ -22,26 +22,35 @@ int main (int argc, char ** argv) {
 	
 	new RenderDebug(st);
 	new AudioNull(st);
+	new PhysicsBullet(st);
+	new ModManager(st);
 	new NetServer(st);
-	
 	
 	st->render->setScreenSize(500, 500, false);
 	
+	
+	// Load data
 	Mod * mod = new Mod(st, "data/cr");
-	
 	if (! mod->load()) {
-		cerr << "Unable to load datafile.\n";
-		exit(1);
+		reportFatalError("Unable to load data module 'cr'.");
 	}
+	st->mm->addMod(mod);
 	
+	
+	st->physics->init();
 	
 	Map *m = new Map(st);
-	m->load("blank", st->render);
+	m->load("tanktest", st->render);
 	st->curr_map = m;
 	
 	new GameLogic(st);
 	GameType *gt = st->mm->getGameType("boredem");
 	st->logic->execScript(gt->script);
+	
+	st->client = NULL;
+	st->num_local = 0;
+	
+	st->physics->preGame();
 	
 	st->server->listen(17778);
 	

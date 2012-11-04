@@ -346,6 +346,43 @@ void Menu::doSplitscreen()
 void Menu::doNetwork()
 {
 	this->setDialog(new DialogNull());
+	
+	
+	new NetClient(st);
+	
+	st->physics->init();
+	
+	// Load map
+	Map *m = new Map(st);
+	m->load("tanktest", st->render);
+	st->curr_map = m;
+	
+	// Load gametype
+	new GameLogic(st);
+	GameType *gt = st->mm->getGameType("boredem");
+	st->logic->selected_unittype = st->mm->getUnitType("robot");
+	st->logic->execScript(gt->script);
+	
+	// Reset client variables
+	st->client = NULL;
+	st->num_local = 1;
+	
+	// Create players in GameState.
+	for (unsigned int i = 0; i < st->num_local; i++) {
+		st->local_players[i] = new PlayerState(st);
+		st->local_players[i]->slot = i + 1;
+	}
+
+	st->render->viewmode = 0;
+	
+	st->physics->preGame();
+	
+	st->client->bind("localhost", 17778);
+	
+	// Begin!
+	gameLoop(st, st->render);
+	
+	
 }
 
 void Menu::doSettings()

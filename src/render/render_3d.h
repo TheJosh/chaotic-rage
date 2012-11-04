@@ -89,6 +89,11 @@ class Render3D : public Render
 		**/
 		virtual int getSpriteHeight(SpritePtr sprite) = 0;
 		
+		/**
+		* Is it a 3D renderer?
+		**/
+		virtual bool is3D() { return true; }
+		
 		
 	public:
 		/**
