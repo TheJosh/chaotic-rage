@@ -345,7 +345,7 @@ void Menu::doSplitscreen()
 
 void Menu::doNetwork()
 {
-	this->setDialog(new DialogNull());
+	this->setDialog(NULL);
 	
 	
 	new NetClient(st);
@@ -363,11 +363,8 @@ void Menu::doNetwork()
 	st->logic->selected_unittype = st->mm->getUnitType("robot");
 	st->logic->execScript(gt->script);
 	
-	// Reset client variables
-	st->client = NULL;
-	st->num_local = 1;
-	
 	// Create players in GameState.
+	st->num_local = 1;
 	for (unsigned int i = 0; i < st->num_local; i++) {
 		st->local_players[i] = new PlayerState(st);
 		st->local_players[i]->slot = i + 1;
@@ -378,6 +375,7 @@ void Menu::doNetwork()
 	st->physics->preGame();
 	
 	st->client->bind("localhost", 17778);
+	st->client->addmsgJoinReq();
 	
 	// Begin!
 	gameLoop(st, st->render);

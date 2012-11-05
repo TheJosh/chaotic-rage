@@ -75,7 +75,7 @@ void gameLoop(GameState *st, Render *render)
 			net_time -= net_timestep;
 			
 			if (st->client) {
-				if (st->local_players[0] && st->getMouseGrab()) {
+				if (st->local_players[0]->p && st->getMouseGrab()) {
 					//st->local_players[0]->p->angleFromMouse(net_x, net_y, net_timestep);
 					st->client->addmsgKeyMouseStatus(net_x[0], net_y[0], net_timestep, st->local_players[0]->p->packKeys());
 					net_x[0] = net_y[0] = 0;
