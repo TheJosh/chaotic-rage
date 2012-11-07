@@ -16,10 +16,14 @@ class Intro
 		GameState *st;
 		Render *render;
 		
-		int running;
-		
+		Song* sg;
+		SpritePtr img1;
+		SpritePtr img2;
+		SpritePtr img3;
+
 	public:
 		Intro(GameState *st);
+		void load();
 		void doit();
 };
 

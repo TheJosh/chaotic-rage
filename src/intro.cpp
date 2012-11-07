@@ -18,25 +18,36 @@ Intro::Intro(GameState *st)
 }
 
 
-void Intro::doit()
+/**
+* Load intro assets.
+* Has to be before doit()
+* Is not part of doit() because that's sometimes run with a different context.
+**/
+void Intro::load()
 {
 	Mod * mod = new Mod(st, "data/intro");
-	
-	SpritePtr img = this->render->loadSprite("joshcorp.png", mod);
-	
-	
-	Song* sg;
+
+	img1 = this->render->loadSprite("joshcorp.png", mod);
+	img2 = this->render->loadSprite("sdl.png", mod);
+	img3 = this->render->loadSprite("game.png", mod);
+
 	sg = new Song();
 	sg->name = "intro";
-
 	SDL_RWops * rwops = mod->loadRWops("intro.ogg");
 	sg->music = Mix_LoadMUS_RW(rwops);
+}
 
+
+/**
+* Run the intro
+**/
+void Intro::doit()
+{
 	if (sg->music != NULL) {
 		st->audio->playSong(sg);
 	}
 
-
+	SpritePtr img = this->img1;
 	SDL_Event event;
 	
 	glTranslatef(0, 0, 40);
@@ -53,22 +64,24 @@ void Intro::doit()
 	int start = SDL_GetTicks();
 	int time = 0;
 	
-	this->running = true;
-	while (this->running) {
+	bool animdone = false;
+	while (!animdone) {
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) {
-				this->running = false;
+				animdone = true;
 			}
 		}
 		
 		time = SDL_GetTicks() - start;
 		
-		if (time > 1000) {
-			img = this->render->loadSprite("game.png", mod);
-			this->running = false;
+		if (time > 1500) {
+			animdone = true;
 
+		} else if (time > 1000) {
+			img = this->img3;
+			
 		} else if (time > 500) {
-			img = this->render->loadSprite("sdl.png", mod);
+			img = this->img2;
 		}
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

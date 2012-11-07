@@ -55,16 +55,17 @@ int main (int argc, char ** argv)
 	st->cconf->initMods(st);
 	
 	#ifdef RELEASE
-	// This has to be after the OpenGL init
-	sendClientStats();
+		// This has to be after the OpenGL init
+		sendClientStats();
 	#endif
 	
-	// TODO: Make loading be async...
 	#ifdef RELEASE
+		// Intro
 		Intro *i = new Intro(st);
+		i->load();
 		i->doit();
 	#endif
-	
+
 	// This is version 1 of the async loader...
 	#ifdef _WIN32
 		SDL_SysWMinfo info;
@@ -73,25 +74,25 @@ int main (int argc, char ** argv)
 			exit(1);
 		}
 
+		// Create and link contexts
 		HDC hdc = GetDC(info.window);
 		HGLRC mainContext = wglGetCurrentContext();
 		HGLRC loaderContext = wglCreateContext(hdc);
 		wglShareLists(loaderContext, mainContext);
 
+		// Prep data going to the thread
 		ThreadData * td = new ThreadData();
 		td->st = st;
 		td->hdc = hdc;
 		td->hglrc = loaderContext;
 		td->done = false;
 
+		// Create and run the thread
 		SDL_Thread * thread = SDL_CreateThread(threadModLoader, td);
 
-		while (! td->done) {
-			cout << "Loading...\n";
-			SDL_Delay(250);
-		}
-	
+		// Run the intro while we wait
 		SDL_WaitThread(thread, NULL);
+
 	#else
 		loadMods(st);
 	#endif
