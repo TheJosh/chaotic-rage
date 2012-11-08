@@ -109,19 +109,19 @@ vector<string> * getUserModFilenames()
 /**
 * Loads the mods, in a multi-threaded way, if possible
 **/
-void threadedModLoader(GameState *st)
+bool threadedModLoader(GameState *st)
 {
 	SDL_SysWMinfo info;
 	SDL_VERSION(&info.version);
 	if (! SDL_GetWMInfo(&info)) {
-		exit(1);
+		return false;
 	}
 
 	// Create and link contexts
 	HDC hdc = GetDC(info.window);
 	HGLRC mainContext = wglGetCurrentContext();
 	HGLRC loaderContext = wglCreateContext(hdc);
-	wglShareLists(loaderContext, mainContext);
+	wglShareLists(mainContext, loaderContext);
 	wglMakeCurrent(hdc, mainContext);
 	
 	// Prep data going to the thread
@@ -134,14 +134,25 @@ void threadedModLoader(GameState *st)
 	// Create and run the thread
 	SDL_Thread * thread = SDL_CreateThread(threadedModLoader_thread, td);
 
-	// Wait for the thread to finish
+	// Wait for the load to finish
+	SDL_Event event;
 	while (! td->done) {
+		while (SDL_PollEvent(&event)) {
+			if (event.type == SDL_QUIT) {
+				 SDL_KillThread(thread);
+				 return false;
+			}
+		}
 		SDL_GL_SwapBuffers();
-		SDL_Delay(100);
+		SDL_Delay(50);
 	}
+
+	// Just in case
 	SDL_WaitThread(thread, NULL);
 
 	wglMakeCurrent(hdc, mainContext);
+
+	return true;
 }
 
 

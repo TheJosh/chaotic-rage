@@ -61,7 +61,8 @@ vector<string> * getUserModFilenames();
 
 /**
 * Loads the mods, in a multi-threaded way, if possible
+* True on success, false on failure
 **/
-void threadedModLoader(GameState *st);
+bool threadedModLoader(GameState *st);
 
 

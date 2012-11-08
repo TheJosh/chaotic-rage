@@ -52,7 +52,9 @@ int main (int argc, char ** argv)
 	i->doit();
 
 	// Load the mods, with threads if possible
-	threadedModLoader(st);
+	if (! threadedModLoader(st)) {
+		exit(0);
+	}
 
 	Menu *m = new Menu(st);
 	
