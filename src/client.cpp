@@ -4,7 +4,6 @@
 
 #include <string>
 #include <SDL.h>
-#include <SDL_syswm.h>
 #include "rage.h"
 #include "http/client_stats.h"
 #include "util/windowicon.h"
@@ -47,12 +46,10 @@ int main (int argc, char ** argv)
 		sendClientStats();
 	#endif
 	
-	#ifdef RELEASE
-		// Intro
-		Intro *i = new Intro(st);
-		i->load();
-		i->doit();
-	#endif
+	// Intro
+	Intro *i = new Intro(st);
+	i->load();
+	i->doit();
 
 	// Load the mods, with threads if possible
 	threadedModLoader(st);

@@ -7,6 +7,8 @@
 #include <shlobj.h>
 #include <tchar.h>
 #include <shlwapi.h>
+#include <SDL.h>
+#include <SDL_syswm.h>
 #include "../rage.h"
 
 #pragma comment(lib,"shlwapi.lib")
@@ -132,7 +134,11 @@ void threadedModLoader(GameState *st)
 	// Create and run the thread
 	SDL_Thread * thread = SDL_CreateThread(threadedModLoader_thread, td);
 
-	// Run the intro while we wait
+	// Wait for the thread to finish
+	while (! td->done) {
+		SDL_GL_SwapBuffers();
+		SDL_Delay(100);
+	}
 	SDL_WaitThread(thread, NULL);
 
 	wglMakeCurrent(hdc, mainContext);
