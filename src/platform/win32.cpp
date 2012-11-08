@@ -120,7 +120,8 @@ void threadedModLoader(GameState *st)
 	HGLRC mainContext = wglGetCurrentContext();
 	HGLRC loaderContext = wglCreateContext(hdc);
 	wglShareLists(loaderContext, mainContext);
-
+	wglMakeCurrent(hdc, mainContext);
+	
 	// Prep data going to the thread
 	ThreadData * td = new ThreadData();
 	td->st = st;
@@ -146,7 +147,7 @@ int threadedModLoader_thread(void *indata)
 	ThreadData * td = (ThreadData*) indata;
 	wglMakeCurrent(td->hdc, td->hglrc);
 	loadMods(td->st);
-	wglMakeCurrent(nullptr, nullptr);
+	wglMakeCurrent(NULL, NULL);
 	wglDeleteContext(td->hglrc);
 	td->done = true;
 	return 0;
