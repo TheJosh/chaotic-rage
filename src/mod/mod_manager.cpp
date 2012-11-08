@@ -14,6 +14,31 @@ using namespace std;
 
 
 /**
+* Load the main mod and user mods.
+* Run while the intro is being displayed, on a background thread.
+**/
+void loadMods(GameState *st)
+{
+	// Load main mod
+	Mod * mod = new Mod(st, "data/cr");
+	if (! mod->load()) {
+		reportFatalError("Unable to load data module 'cr'.");
+	}
+	st->mm->addMod(mod);
+
+	// Load user mods
+	vector<string> * userfiles = getUserModFilenames();
+	for (unsigned int i = 0; i < userfiles->size(); i++) {
+		mod = new Mod(st, userfiles->at(i));
+		if (! mod->load()) {
+			reportFatalError("Unable to load data module '" + userfiles->at(i) + "'.");
+		}
+		st->mm->addMod(mod);
+	}
+}
+
+
+/**
 * Inits the mod-manager.
 **/
 ModManager::ModManager(GameState * st)
@@ -25,7 +50,6 @@ ModManager::ModManager(GameState * st)
 }
 
 
-
 /**
 * Add a mod to the list
 **/
@@ -33,6 +57,7 @@ void ModManager::addMod(Mod * mod)
 {
 	this->mods->push_back(mod);
 }
+
 
 /**
 * Get a mod via name

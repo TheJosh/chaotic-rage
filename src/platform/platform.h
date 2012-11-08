@@ -10,6 +10,8 @@
 
 using namespace std;
 
+class GameState;
+
 
 /**
 * Some help for some compilers
@@ -55,4 +57,11 @@ void reportFatalError(string msg);
 * Please free the result when you are done.
 **/
 vector<string> * getUserModFilenames();
+
+
+/**
+* Loads the mods, in a multi-threaded way, if possible
+**/
+void threadedModLoader(GameState *st);
+
 

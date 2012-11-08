@@ -12,18 +12,6 @@
 using namespace std;
 
 
-int threadModLoader(void *indata);
-void loadMods(GameState *st);
-
-class ThreadData {
-	public:
-		GameState * st;
-		HDC hdc;
-		HGLRC hglrc;
-		bool done;
-};
-
-
 int main (int argc, char ** argv)
 {
 	cout << ".";
@@ -66,37 +54,8 @@ int main (int argc, char ** argv)
 		i->doit();
 	#endif
 
-	// This is version 1 of the async loader...
-	#ifdef _WIN32
-		SDL_SysWMinfo info;
-		SDL_VERSION(&info.version);
-		if (! SDL_GetWMInfo(&info)) {
-			exit(1);
-		}
-
-		// Create and link contexts
-		HDC hdc = GetDC(info.window);
-		HGLRC mainContext = wglGetCurrentContext();
-		HGLRC loaderContext = wglCreateContext(hdc);
-		wglShareLists(loaderContext, mainContext);
-
-		// Prep data going to the thread
-		ThreadData * td = new ThreadData();
-		td->st = st;
-		td->hdc = hdc;
-		td->hglrc = loaderContext;
-		td->done = false;
-
-		// Create and run the thread
-		SDL_Thread * thread = SDL_CreateThread(threadModLoader, td);
-
-		// Run the intro while we wait
-		SDL_WaitThread(thread, NULL);
-
-	#else
-		loadMods(st);
-	#endif
-
+	// Load the mods, with threads if possible
+	threadedModLoader(st);
 
 	Menu *m = new Menu(st);
 	
@@ -110,41 +69,5 @@ int main (int argc, char ** argv)
 	
 	exit(0);
 }
-
-
-int threadModLoader(void *indata)
-{
-	ThreadData * td = (ThreadData*) indata;
-	wglMakeCurrent(td->hdc, td->hglrc);
-	loadMods(td->st);
-	wglMakeCurrent(nullptr, nullptr);
-	wglDeleteContext(td->hglrc);
-	td->done = true;
-	return 0;
-}
-
-/**
-* Load the mods
-**/
-void loadMods(GameState *st)
-{
-	// Load main mod
-	Mod * mod = new Mod(st, "data/cr");
-	if (! mod->load()) {
-		reportFatalError("Unable to load data module 'cr'.");
-	}
-	st->mm->addMod(mod);
-
-	// Load user mods
-	vector<string> * userfiles = getUserModFilenames();
-	for (unsigned int i = 0; i < userfiles->size(); i++) {
-		mod = new Mod(st, userfiles->at(i));
-		if (! mod->load()) {
-			reportFatalError("Unable to load data module '" + userfiles->at(i) + "'.");
-		}
-		st->mm->addMod(mod);
-	}
-}
-
 
 

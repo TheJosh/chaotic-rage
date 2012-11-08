@@ -46,3 +46,7 @@ class ModManager {
 };
 
 
+void loadMods(GameState *st);
+
+
+
