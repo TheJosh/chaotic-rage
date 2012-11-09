@@ -70,10 +70,8 @@ void RenderOpenGLCompat::setScreenSize(int width, int height, bool fullscreen)
 	this->real_width = width;
 	this->real_height = height;
 	
-	
 	// SDL
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
 
@@ -82,49 +80,45 @@ void RenderOpenGLCompat::setScreenSize(int width, int height, bool fullscreen)
 	
 	this->screen = SDL_SetVideoMode(width, height, 32, flags);
 	if (screen == NULL) {
-		fprintf(stderr, "Unable to set %ix%i video: %s\n", width, height, SDL_GetError());
-		exit(1);
+		char buffer[200];
+		sprintf(buffer, "Unable to set %ix%i video: %s\n", width, height, SDL_GetError());
+		reportFatalError(buffer);
 	}
 	
+	// Window title
 	char buff[100];
 	sprintf(buff, "Chaotic Rage %s", VERSION);
 	SDL_WM_SetCaption(buff, buff);
 	
-
 	// SDL_Image
 	flags = IMG_INIT_PNG;
 	int initted = IMG_Init(flags);
 	if ((initted & flags) != flags) {
-		fprintf(stderr, "Failed to init required png support!\n");
-		exit(1);
+		reportFatalError("Failed to init required png support.");
 	}
-	
 	
 	// OpenGL
 	if (atof((char*) glGetString(GL_VERSION)) < 2.0) {
 		reportFatalError("OpenGL 2.0 or later is required, but not supported on this system.");
-		exit(1);
 	}
 	
+	// Glew
 	GLenum err = glewInit();
 	if (GLEW_OK != err) {
 		fprintf(stderr, "Glew Error: %s\n", glewGetErrorString(err));
-		reportFatalError("Unable to init the library GLEW");
-		exit(1);
+		reportFatalError("Unable to init the library GLEW.");
 	}
 	
 	// GL_ARB_framebuffer_object -> glGenerateMipmap
 	if (! GL_ARB_framebuffer_object) {
 		reportFatalError("OpenGL 3.0 or the extension 'GL_ARB_framebuffer_object' not available.");
-		exit(1);
 	}
 	
 	// Freetype
 	int error;
 	error = FT_Init_FreeType(&this->ft);
 	if (error) {
-		fprintf(stderr, "Freetype: Unable to init library\n");
-		exit(1);
+		reportFatalError("Freetype: Unable to init library.");
 	}
 	
 	// Re-load textures
