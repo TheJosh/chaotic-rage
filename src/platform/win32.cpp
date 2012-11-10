@@ -66,6 +66,15 @@ void reportFatalError(string msg)
 
 
 /**
+* Shows a message box (like a non-fatal error)
+**/
+void displayMessageBox(string msg)
+{
+	MessageBox(HWND_DESKTOP, msg.c_str(), "Chaotic Rage", MB_OK);
+}
+
+
+/**
 * Returns an array of full paths to user modules
 * The returned paths include the ".crk" part.
 *

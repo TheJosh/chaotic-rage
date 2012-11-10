@@ -136,6 +136,8 @@ void RenderOpenGLCompat::setScreenSize(int width, int height, bool fullscreen)
 		}
 	}
 	
+	displayMessageBox("Init of SDL and OpenGL done.");
+
 	// OpenGL env
 	glDepthFunc(GL_LEQUAL);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);

@@ -45,6 +45,12 @@ void reportFatalError(string msg);
 
 
 /**
+* Shows a message box (like a non-fatal error)
+**/
+void displayMessageBox(string msg);
+
+
+/**
 * Returns an array of full paths to user modules
 * The returned paths include the ".crk" part.
 *
