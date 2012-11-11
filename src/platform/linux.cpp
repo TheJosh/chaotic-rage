@@ -55,6 +55,15 @@ void reportFatalError(string msg)
 
 
 /**
+* Shows a message box (like a non-fatal error)
+**/
+void displayMessageBox(string msg)
+{
+	cout << msg << "\n";
+}
+
+
+/**
 * Returns an array of full paths to user modules
 * The returned paths include the ".crk" part.
 *
@@ -87,9 +96,10 @@ vector<string> * getUserModFilenames()
 /**
 * Loads the mods, in a multi-threaded way, if possible
 **/
-void threadedModLoader(GameState *st)
+bool threadedModLoader(GameState *st)
 {
 	loadMods(st);
+	return true;
 }
 
 
