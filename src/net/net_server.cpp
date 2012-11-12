@@ -172,14 +172,23 @@ void NetServer::addmsgChat()
 **/
 void NetServer::addmsgUnitAdd(Unit *u)
 {
-	NetMsg * msg = new NetMsg(UNIT_ADD, 14);
+	NetMsg * msg = new NetMsg(UNIT_ADD, 30);
 	msg->seq = this->seq;
+	msg->uniq = u->slot;
 	
 	cout << "       addmsgUnitAdd()\n";
 	cout << "       slot: " << u->slot << "\n";
 	
-	// TODO: Rebuild network for new physics
-	//pack(msg->data, "fflh", u->x, u->y, u->angle, u->slot);
+	btTransform trans;
+	u->body->getMotionState()->getWorldTransform(trans);
+	btQuaternion q = trans.getRotation();
+	btVector3 b = trans.getOrigin();
+	
+	pack(msg->data, "hfffffff",
+		u->slot,
+		q.x(), q.y(), q.z(), q.w(),
+		b.x(), b.y(), b.z()
+	);
 	
 	messages.push_back(*msg);
 }
@@ -191,18 +200,23 @@ void NetServer::addmsgUnitUpdate(Unit *u)
 {
 	messages.remove_if(IsTypeUniqPred(UNIT_UPDATE, u->slot));
 	
-	//list<NetMsg>::iterator srch = find_if(messages.begin(), messages.end(), IsTypeUniqPred(UNIT_UPDATE, u->slot, this->seq));
-	//if (srch != messages.end()) return;
+	cout << "       addmsgUnitUpdate()\n";
+	cout << "       slot: " << u->slot << "\n";
 	
-	//cout << "       addmsgUnitUpdate()\n";
-	//cout << "       slot: " << u->slot << "\n";
-	
-	NetMsg * msg = new NetMsg(UNIT_UPDATE, 18);
+	NetMsg * msg = new NetMsg(UNIT_UPDATE, 30);
 	msg->seq = this->seq;
 	msg->uniq = u->slot;
 	
-	// TODO: Rebuild network for new physics
-	//pack(msg->data, "fflfh", u->x, u->y, u->angle, u->speed, u->slot);
+	btTransform trans;
+	u->body->getMotionState()->getWorldTransform(trans);
+	btQuaternion q = trans.getRotation();
+	btVector3 b = trans.getOrigin();
+	
+	pack(msg->data, "hfffffff",
+		u->slot,
+		q.x(), q.y(), q.z(), q.w(),
+		b.x(), b.y(), b.z()
+	);
 	
 	messages.push_back(*msg);
 }
