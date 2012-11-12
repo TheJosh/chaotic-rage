@@ -115,7 +115,7 @@ gcn::Container * DialogNull::setup()
 
 
 /**
-* Setup routine for the NULL dialog
+* Setup routine for the controls dialog
 **/
 gcn::Container * DialogControls::setup()
 {
@@ -228,7 +228,7 @@ DialogQuit::DialogQuit(GameState *st)
 
 
 /**
-* Setup routine for the NULL dialog
+* Setup routine for the quit dialog
 **/
 gcn::Container * DialogQuit::setup()
 {
@@ -266,13 +266,13 @@ void DialogQuit::action(const gcn::ActionEvent& actionEvent)
 }
 
 
+
 /**
 * Dialog for mod selection
 **/
 DialogMods::DialogMods()
 {
 }
-
 
 /**
 * Setup routine for the mods dialog
@@ -322,4 +322,52 @@ void DialogMods::action(const gcn::ActionEvent& actionEvent)
 	if (actionEvent.getSource()->getId() == "S") {
 		this->m->setDialog(NULL);
 	}
+}
+
+
+
+/**
+* Constructor for join network game dialog
+**/
+DialogNetJoin::DialogNetJoin()
+{
+}
+
+/**
+* Setup routine for the join network game dialog
+**/
+gcn::Container * DialogNetJoin::setup()
+{
+	gcn::Button* button;
+	gcn::Label* label;
+	
+	c = new gcn::Window("Join network game");
+	
+	c->setDimension(gcn::Rectangle(0, 0, 200, 200));
+	
+	
+	label = new gcn::Label("Host");
+	c->add(label, 10, 10);
+	
+	this->host = new gcn::TextField("localhost");
+	this->host->setPosition(80, 10);
+	c->add(this->host);
+	
+
+	button = new gcn::Button("Join Game");
+	button->setPosition(120, 150);
+	button->addActionListener(this);
+	c->add(button);
+	
+	return c;
+}
+
+/**
+* Button click processing for the "New Game" dialog
+**/
+void DialogNetJoin::action(const gcn::ActionEvent& actionEvent)
+{
+	this->m->networkJoin(
+		this->host->getText()
+	);
 }

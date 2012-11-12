@@ -137,3 +137,17 @@ class DialogMods : public Dialog, public gcn::ActionListener {
 
 
 
+/**
+* Dialog for starting a new game - called by the menu
+**/
+class DialogNetJoin : public Dialog, public gcn::ActionListener {
+	public:
+		DialogNetJoin();
+		
+	private:
+		gcn::TextField * host;
+		
+	public:
+		virtual gcn::Container * setup();
+		virtual void action(const gcn::ActionEvent& actionEvent);
+};

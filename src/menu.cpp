@@ -345,42 +345,7 @@ void Menu::doSplitscreen()
 
 void Menu::doNetwork()
 {
-	this->setDialog(NULL);
-	
-	
-	new NetClient(st);
-	
-	st->physics->init();
-	
-	// Load map
-	Map *m = new Map(st);
-	m->load("tanktest", st->render);
-	st->curr_map = m;
-	
-	// Load gametype
-	new GameLogic(st);
-	GameType *gt = st->mm->getGameType("boredem");
-	st->logic->selected_unittype = st->mm->getUnitType("robot");
-	st->logic->execScript(gt->script);
-	
-	// Create players in GameState.
-	st->num_local = 1;
-	for (unsigned int i = 0; i < st->num_local; i++) {
-		st->local_players[i] = new PlayerState(st);
-		st->local_players[i]->slot = 0;		// allocated by the server
-	}
-
-	st->render->viewmode = 0;
-	
-	st->physics->preGame();
-	
-	st->client->bind("localhost", 17778);
-	st->client->addmsgJoinReq();
-	
-	// Begin!
-	gameLoop(st, st->render);
-	
-	
+	this->setDialog(new DialogNetJoin());
 }
 
 void Menu::doSettings()
@@ -436,4 +401,41 @@ void Menu::startGame(string map, string gametype, string unittype, int viewmode,
 	gameLoop(st, st->render);
 }
 
+	
+/**
+* Join a network game
+**/
+void Menu::networkJoin(string host)
+{	
+	new NetClient(st);
+	
+	st->physics->init();
+	
+	// Load map
+	Map *m = new Map(st);
+	m->load("tanktest", st->render);
+	st->curr_map = m;
+	
+	// Load gametype
+	new GameLogic(st);
+	GameType *gt = st->mm->getGameType("boredem");
+	st->logic->selected_unittype = st->mm->getUnitType("robot");
+	st->logic->execScript(gt->script);
+	
+	// Create players in GameState.
+	st->num_local = 1;
+	for (unsigned int i = 0; i < st->num_local; i++) {
+		st->local_players[i] = new PlayerState(st);
+		st->local_players[i]->slot = 0;		// allocated by the server
+	}
 
+	st->render->viewmode = 0;
+	
+	st->physics->preGame();
+	
+	st->client->bind(host, 17778);
+	st->client->addmsgJoinReq();
+	
+	// Begin!
+	gameLoop(st, st->render);
+}
