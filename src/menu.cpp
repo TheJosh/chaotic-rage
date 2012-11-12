@@ -367,7 +367,7 @@ void Menu::doNetwork()
 	st->num_local = 1;
 	for (unsigned int i = 0; i < st->num_local; i++) {
 		st->local_players[i] = new PlayerState(st);
-		st->local_players[i]->slot = i + 1;
+		st->local_players[i]->slot = 0;		// allocated by the server
 	}
 
 	st->render->viewmode = 0;

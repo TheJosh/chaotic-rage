@@ -11,6 +11,8 @@ using namespace std;
 RenderDebug::RenderDebug(GameState * st) : Render(st)
 {
 	this->sprite_wall = SDL_LoadBMP("data/debug/wall.bmp");
+	this->sprite_vehicle = SDL_LoadBMP("data/debug/vehicle.bmp");
+	this->sprite_object = SDL_LoadBMP("data/debug/object.bmp");
 	this->sprite_unit = SDL_LoadBMP("data/debug/unit.bmp");
 	this->sprite_player = SDL_LoadBMP("data/debug/player.bmp");
 }
@@ -19,6 +21,8 @@ RenderDebug::~RenderDebug()
 {
 	SDL_FreeSurface(this->sprite_wall);
 	SDL_FreeSurface(this->sprite_unit);
+	SDL_FreeSurface(this->sprite_vehicle);
+	SDL_FreeSurface(this->sprite_object);
 	SDL_FreeSurface(this->sprite_player);
 	SDL_FreeSurface(this->screen);
 }
@@ -156,10 +160,16 @@ void RenderDebug::render()
 		e->getRigidBody()->getMotionState()->getWorldTransform(trans);
 		
 		dest.x = (trans.getOrigin().getX() / scalex) - 8;
-		dest.y = (trans.getOrigin().getY() / scaley) - 8;
+		dest.y = (trans.getOrigin().getZ() / scaley) - 8;
 		
 		if (e->klass() == WALL) {
 			SDL_BlitSurface(this->sprite_wall, &src, screen, &dest);
+			
+		} else if (e->klass() == VEHICLE) {
+			SDL_BlitSurface(this->sprite_vehicle, &src, screen, &dest);
+			
+		} else if (e->klass() == OBJECT) {
+			SDL_BlitSurface(this->sprite_object, &src, screen, &dest);
 			
 		} else if (e->klass() == UNIT) {
 			if (((Unit*)e)->slot == 0) {

@@ -18,6 +18,8 @@ class RenderDebug : public Render
 		SDL_Surface * screen;
 
 		SDL_Surface * sprite_wall;
+		SDL_Surface * sprite_vehicle;
+		SDL_Surface * sprite_object;
 		SDL_Surface * sprite_unit;
 		SDL_Surface * sprite_player;
 		

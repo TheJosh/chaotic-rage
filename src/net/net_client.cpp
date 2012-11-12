@@ -175,6 +175,7 @@ unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 	
 	int slot = SDLNet_Read16(data);
 	st->curr_slot = slot;
+	st->local_players[0]->slot = slot;
 	
 	cout << "       Our slot: " << slot << "\n";
 	
@@ -219,7 +220,8 @@ unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
 	if (p != NULL) return 30;
 	
 	UnitType *ut = st->mm->getUnitType("robot");
-	p = new Player(ut, st, bx, by, bz);
+	
+	p = new Player(ut, st, bx, bz, by);
 	p->slot = slot;
 	
 	p->body->getMotionState()->setWorldTransform(btTransform(
