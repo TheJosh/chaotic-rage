@@ -23,69 +23,105 @@ function trivial_proto.dissector(buffer,pinfo,tree)
 		local len = 1
 		local msg = ""
 		
-		if t == 0x01 then
-			msg = "INFO_REQ"
+		
+		if t == 0x0B then
+			-- Unit add
+			local sub = messages:add(buffer(p, 31), "UNIT_ADD")
+			p = p + 1
 			
-		elseif t == 0x02 then
-			msg = "INFO_RESP"
+			sub:add(buffer(p + 0, 2), "slot: " .. buffer(p + 0, 2):uint());
+			sub:add(buffer(p + 2, 4), "q x: " .. buffer(p + 2, 4):float());
+			sub:add(buffer(p + 6, 4), "q y: " .. buffer(p + 6, 4):float());
+			sub:add(buffer(p + 10, 4), "q z: " .. buffer(p + 10, 4):float());
+			sub:add(buffer(p + 14, 4), "q w: " .. buffer(p + 14, 4):float());
+			sub:add(buffer(p + 18, 4), "b x: " .. buffer(p + 18, 4):float());
+			sub:add(buffer(p + 22, 4), "b y: " .. buffer(p + 22, 4):float());
+			sub:add(buffer(p + 26, 4), "b z: " .. buffer(p + 26, 4):float());
 			
-		elseif t == 0x03 then
-			msg = "JOIN_REQ"
-			
-		elseif t == 0x04 then
-			msg = "JOIN_OKAY"
-			len = len + 2
-			
-		elseif t == 0x05 then
-			msg = "JOIN_DENY"
-			
-		elseif t == 0x06 then
-			msg = "JOIN_ACK"
-			
-		elseif t == 0x07 then
-			msg = "JOIN_DONE"
-			
-		elseif t == 0x08 then
-			msg = "CHAT_REQ"
-			
-		elseif t == 0x09 then
-			msg = "CHAT_RESP"
-			
-		elseif t == 0x0A then
-			msg = "CLIENT_STATE"
-			len = len + 7
-			
-		elseif t == 0x0B then
-			msg = "UNIT_ADD"
-			len = len + 30
+			p = p + 30
 			
 		elseif t == 0x0C then
-			msg = "UNIT_UPDATE"
-			len = len + 30
+			-- Unit update
+			local sub = messages:add(buffer(p, 31), "UNIT_UPDATE")
+			p = p + 1
 			
-		elseif t == 0x0D then
-			msg = "UNIT_REM"
-			len = len + 2
+			sub:add(buffer(p + 0, 2), "slot: " .. buffer(p + 0, 2):uint());
+			sub:add(buffer(p + 2, 4), "q x: " .. buffer(p + 2, 4):float());
+			sub:add(buffer(p + 6, 4), "q y: " .. buffer(p + 6, 4):float());
+			sub:add(buffer(p + 10, 4), "q z: " .. buffer(p + 10, 4):float());
+			sub:add(buffer(p + 14, 4), "q w: " .. buffer(p + 14, 4):float());
+			sub:add(buffer(p + 18, 4), "b x: " .. buffer(p + 18, 4):float());
+			sub:add(buffer(p + 22, 4), "b y: " .. buffer(p + 22, 4):float());
+			sub:add(buffer(p + 26, 4), "b z: " .. buffer(p + 26, 4):float());
 			
-		elseif t == 0x0E then
-			msg = "WALL_ADD"
+			p = p + 30
 			
-		elseif t == 0x0F then
-			msg = "WALL_REM"
+		elseif t == 0x0A then
+			-- Client state
+			local sub = messages:add(buffer(p, 7), "CLIENT_STATE")
+			p = p + 1
 			
-		elseif t == 0x12 then
-			msg = "PLAYER_DROP"
+			sub:add(buffer(p + 0, 2), "x: ");
+			sub:add(buffer(p + 2, 2), "y: ");
+			sub:add(buffer(p + 4, 2), "delta: ");
+			sub:add(buffer(p + 6, 1), "keys: ");
 			
-		elseif t == 0x13 then
-			msg = "QUIT_REQ"
+			p = p + 6
 			
-		elseif t == 0x14 then
-			msg = "PLAYER_QUIT"
+		else
+			-- Simple messages, no sub-disection
+			if t == 0x01 then
+				msg = "INFO_REQ"
 			
+			elseif t == 0x02 then
+				msg = "INFO_RESP"
+			
+			elseif t == 0x03 then
+				msg = "JOIN_REQ"
+			
+			elseif t == 0x04 then
+				msg = "JOIN_OKAY"
+				len = len + 2
+			
+			elseif t == 0x05 then
+				msg = "JOIN_DENY"
+			
+			elseif t == 0x06 then
+				msg = "JOIN_ACK"
+			
+			elseif t == 0x07 then
+				msg = "JOIN_DONE"
+			
+			elseif t == 0x08 then
+				msg = "CHAT_REQ"
+			
+			elseif t == 0x09 then
+				msg = "CHAT_RESP"
+			
+			elseif t == 0x0D then
+				msg = "UNIT_REM"
+				len = len + 2
+			
+			elseif t == 0x0E then
+				msg = "WALL_ADD"
+			
+			elseif t == 0x0F then
+				msg = "WALL_REM"
+			
+			elseif t == 0x12 then
+				msg = "PLAYER_DROP"
+			
+			elseif t == 0x13 then
+				msg = "QUIT_REQ"
+			
+			elseif t == 0x14 then
+				msg = "PLAYER_QUIT"
+			
+			end
+			
+			messages:add(buffer(p, len), msg)
+			p = p + len
 		end
-		
-		messages:add(buffer(p, len), msg)
-		p = p + len
 	end
 end
 
