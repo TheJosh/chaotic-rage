@@ -97,6 +97,9 @@ void NetServer::update()
 		SDLNet_Write16(this->seq, ptr);
 		ptr += 2; pkt->len += 2;
 		
+		SDLNet_Write16(0, ptr);		// pad
+		ptr += 2; pkt->len += 2;
+		
 		for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
 			if ((*cli)->seq > (*it).seq) continue;
 			

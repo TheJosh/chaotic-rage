@@ -51,6 +51,9 @@ void NetClient::update()
 		}
 		ptr += 2; p += 2;
 		
+		SDLNet_Read16(ptr);		// pad
+		ptr += 2; p += 2;
+		
 		while (p < pkt->len) {
 			unsigned int type = (*ptr);
 			ptr++; p++;
