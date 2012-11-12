@@ -248,17 +248,12 @@ unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)
 {
 	cout << "       handleUnitUpdate()\n";
 	
-	float x,y;
-	int angle;
-	float speed;
 	short slot;
-	
-	unpack(data, "fflfh", &x, &y, &angle, &speed, &slot);
 	
 	Player *p = (Player*) st->findUnitSlot(slot);
 	if (p == NULL) return 30;
 	
-	if (p != st->local_players[0]->p) {
+	//if (p != st->local_players[0]->p) {
 		float qx, qy, qz, qw, bx, by, bz;
 		unpack(data, "hfffffff",
 			&slot,
@@ -270,7 +265,7 @@ unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)
 			btQuaternion(qx, qy, qz, qw),
 			btVector3(bx, by, bz)
 		));
-	}
+	//}
 	
 	return 30;
 }

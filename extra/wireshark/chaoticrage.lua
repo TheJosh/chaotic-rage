@@ -4,10 +4,12 @@ trivial_proto = Proto("chaoticrage", "Chaotic Rage")
 
 -- create a function to dissect it
 function trivial_proto.dissector(buffer,pinfo,tree)
+	pinfo.cols.protocol = "CR"
+	
 	if buffer(2,2):uint() == 0 then
-		pinfo.cols.protocol = "CR:S"
+		pinfo.cols.info = "Type = Server; seq = " .. buffer(0,2):uint()
 	else
-		pinfo.cols.protocol = "CR:C"
+		pinfo.cols.info = "Type = Client " .. buffer(2,2):uint() .. "; ack seq = " .. buffer(0,2):uint()
 	end
 	
 	local subtree = tree:add(trivial_proto, buffer(), "Chaotic Rage Protocol Data")
@@ -68,55 +70,53 @@ function trivial_proto.dissector(buffer,pinfo,tree)
 			
 			p = p + 6
 			
+		elseif t == 0x04 then
+			-- Join acceptance
+			local sub = messages:add(buffer(p, 3), "JOIN_OKAY")
+			p = p + 1
+			
+			sub:add(buffer(p + 0, 2), "slot: " .. buffer(p + 0, 2):uint());
+			
+			p = p + 2
+			
+		elseif t == 0x0D then
+			-- Unit removed
+			local sub = messages:add(buffer(p, 3), "UNIT_REM")
+			p = p + 1
+			
+			sub:add(buffer(p + 0, 2), "slot: " .. buffer(p + 0, 2):uint());
+			
+			p = p + 2
+			
+			
 		else
-			-- Simple messages, no sub-disection
+			-- Simple messages, no sub-dissection
 			if t == 0x01 then
 				msg = "INFO_REQ"
-			
 			elseif t == 0x02 then
 				msg = "INFO_RESP"
-			
 			elseif t == 0x03 then
 				msg = "JOIN_REQ"
-			
-			elseif t == 0x04 then
-				msg = "JOIN_OKAY"
-				len = len + 2
-			
 			elseif t == 0x05 then
 				msg = "JOIN_DENY"
-			
 			elseif t == 0x06 then
 				msg = "JOIN_ACK"
-			
 			elseif t == 0x07 then
 				msg = "JOIN_DONE"
-			
 			elseif t == 0x08 then
 				msg = "CHAT_REQ"
-			
 			elseif t == 0x09 then
 				msg = "CHAT_RESP"
-			
-			elseif t == 0x0D then
-				msg = "UNIT_REM"
-				len = len + 2
-			
 			elseif t == 0x0E then
 				msg = "WALL_ADD"
-			
 			elseif t == 0x0F then
 				msg = "WALL_REM"
-			
 			elseif t == 0x12 then
 				msg = "PLAYER_DROP"
-			
 			elseif t == 0x13 then
 				msg = "QUIT_REQ"
-			
 			elseif t == 0x14 then
 				msg = "PLAYER_QUIT"
-			
 			end
 			
 			messages:add(buffer(p, len), msg)
