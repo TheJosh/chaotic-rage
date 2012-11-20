@@ -213,6 +213,9 @@ bool Unit::onground()
 **/
 void Unit::putOnGround(btTransform * xform)
 {
+	return;		// This method is broken
+	
+	
 	// Falling
 	btVector3 begin = xform->getOrigin();
 	btVector3 end = xform->getOrigin() + xform->getBasis() * btVector3(0.0f, -2.0f, 0.0f);
