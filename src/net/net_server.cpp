@@ -187,7 +187,7 @@ void NetServer::addmsgUnitAdd(Unit *u)
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 	
-	pack(msg->data, "hfffffff",
+	pack(msg->data, "h ffff fff",
 		u->slot,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z()
@@ -215,7 +215,7 @@ void NetServer::addmsgUnitUpdate(Unit *u)
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 	
-	pack(msg->data, "hfffffff",
+	pack(msg->data, "h ffff fff",
 		u->slot,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z()

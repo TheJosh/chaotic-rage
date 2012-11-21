@@ -213,7 +213,7 @@ unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
 	Player *p;
 	
 	float qx, qy, qz, qw, bx, by, bz;
-	unpack(data, "hfffffff",
+	unpack(data, "h ffff fff",
 		&slot,
 		&qx, &qy, &qz, &qw,
 		&bx, &by, &bz
@@ -255,7 +255,7 @@ unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)
 	
 	//if (p != st->local_players[0]->p) {
 		float qx, qy, qz, qw, bx, by, bz;
-		unpack(data, "hfffffff",
+		unpack(data, "h ffff fff",
 			&slot,
 			&qx, &qy, &qz, &qw,
 			&bx, &by, &bz

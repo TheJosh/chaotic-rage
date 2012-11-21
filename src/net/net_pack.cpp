@@ -193,6 +193,9 @@ int32_t pack(unsigned char *buf, char const *format, ...)
             memcpy(buf, s, len);
             buf += len;
             break;
+            
+        case ' ':
+            break;
         }
     }
 
@@ -255,7 +258,10 @@ void unpack(unsigned char *buf, char const *format, ...)
             s[count] = '\0';
             buf += len;
             break;
-
+            
+        case ' ':
+            break;
+            
         default:
             if (isdigit(*format)) { // track max str len
                 maxstrlen = maxstrlen * 10 + (*format-'0');
