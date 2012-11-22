@@ -148,8 +148,9 @@ void NetClient::addmsgKeyMouseStatus(int x, int y, int delta, Uint8 k)
 	NetMsg * msg = new NetMsg(CLIENT_STATE, 7);
 	msg->seq = this->seq;
 	
-	// TODO: k should be 16-bit
-	pack(msg->data, "hhhc", (Sint16)x, (Sint16)y, (Sint16)delta, k);
+	pack(msg->data, "hhhc",
+		(Sint16)x, (Sint16)y, (Sint16)delta, k
+	);
 	
 	messages.push_back(*msg);
 }
@@ -176,15 +177,19 @@ unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 {
 	cout << "       handleJoinAcc()\n";
 	
-	int slot = SDLNet_Read16(data);
-	st->curr_slot = slot;
-	st->local_players[0]->slot = slot;
+	int slot;
+	unpack(data, "h",
+		&slot
+	);
 	
-	cout << "       Our slot: " << slot << "\n";
+	if (st->local_players[0]->slot == 0) {
+		st->local_players[0]->slot = slot;
+		cout << "       Our slot: " << slot << "\n";
+	}
 	
 	this->addmsgJoinAck();
 	
-	return 0;
+	return 2;
 }
 
 unsigned int NetClient::handleJoinRej(Uint8 *data, unsigned int size)
@@ -210,32 +215,36 @@ unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
 	cout << "       handleUnitAdd()\n";
 	
 	short slot;
-	Player *p;
-	
 	float qx, qy, qz, qw, bx, by, bz;
+	
 	unpack(data, "h ffff fff",
 		&slot,
 		&qx, &qy, &qz, &qw,
 		&bx, &by, &bz
 	);
 	
-	p = (Player*) st->findUnitSlot(slot);
+	// Is there already a player with this slot?
+	Player *p = (Player*) st->findUnitSlot(slot);
 	if (p != NULL) return 30;
 	
+	// Create new player
 	UnitType *ut = st->mm->getUnitType("robot");
-	
 	p = new Player(ut, st, bx, bz, by);
 	p->slot = slot;
 	
+	// Assign them the location
 	p->body->getMotionState()->setWorldTransform(btTransform(
 		btQuaternion(qx, qy, qz, qw),
 		btVector3(bx, by, bz)
 	));
 	
-	p->pickupWeapon(st->mm->getWeaponType("machinegun"));
-	p->pickupWeapon(st->mm->getWeaponType("pistol"));
+	// Give them some weapons
+	for (unsigned int i = 0; i < ut->spawn_weapons.size(); i++) {
+		p->pickupWeapon(ut->spawn_weapons.at(i));
+	}
 	
-	if (st->curr_slot == p->slot) {
+	// If the player is this client, save in the local_players obj
+	if (st->local_players[0]->slot == p->slot) {
 		st->local_players[0]->p = p;
 	}
 	
@@ -248,24 +257,27 @@ unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)
 {
 	cout << "       handleUnitUpdate()\n";
 	
-	short slot;
 	
+	short slot;
+	float qx, qy, qz, qw, bx, by, bz;
+	
+	unpack(data, "h ffff fff",
+		&slot,
+		&qx, &qy, &qz, &qw,
+		&bx, &by, &bz
+	);
+	
+	cout << "       it's for " << slot << "; we are " << st->local_players[0]->slot << "\n";
+	
+	// Find the player for the slot number
 	Player *p = (Player*) st->findUnitSlot(slot);
 	if (p == NULL) return 30;
 	
-	//if (p != st->local_players[0]->p) {
-		float qx, qy, qz, qw, bx, by, bz;
-		unpack(data, "h ffff fff",
-			&slot,
-			&qx, &qy, &qz, &qw,
-			&bx, &by, &bz
-		);
-		
-		p->body->getMotionState()->setWorldTransform(btTransform(
-			btQuaternion(qx, qy, qz, qw),
-			btVector3(bx, by, bz)
-		));
-	//}
+	// Update the transform
+	p->body->getMotionState()->setWorldTransform(btTransform(
+		btQuaternion(qx, qy, qz, qw),
+		btVector3(bx, by, bz)
+	));
 	
 	return 30;
 }

@@ -18,7 +18,6 @@ int main (int argc, char ** argv) {
 	seedRandom();
 	
 	GameState *st = new GameState();
-	st->curr_slot = 0;
 	
 	new RenderDebug(st);
 	new AudioNull(st);

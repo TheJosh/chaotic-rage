@@ -43,7 +43,6 @@ GameState::GameState()
 	this->anim_frame = 0;
 	this->game_time = 0;
 	this->num_local = 0;
-	this->curr_slot = 1;
 	this->reset_mouse = false;
 	
 	for (unsigned int i = 0; i < MAX_LOCAL; i++) {
@@ -128,7 +127,7 @@ void GameState::addNewParticle(NewParticle* particle)
 *
 * THIS IS CRAP
 **/
-Unit* GameState::findUnitSlot(int slot)
+Unit* GameState::findUnitSlot(unsigned int slot)
 {
 	if (slot <= 0) return NULL;
 	
@@ -142,7 +141,7 @@ Unit* GameState::findUnitSlot(int slot)
 
 /**
 * Return the PlayerState for a local player, with the given slot number.
-* May return NULL (i.e. invalid slot or non-local slot
+* May return NULL (i.e. invalid slot or non-local slot)
 **/
 PlayerState * GameState::localPlayerFromSlot(unsigned int slot)
 {

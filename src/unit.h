@@ -28,7 +28,7 @@ class Unit : public Entity
 	public:
 		string name;
 		Faction fac;
-		int slot;
+		unsigned int slot;		// zero for npcs, non-zero for players
 		Vehicle* drive;
 
 	protected:

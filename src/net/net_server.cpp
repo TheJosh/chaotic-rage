@@ -84,6 +84,18 @@ void NetServer::update()
 	}
 	
 	
+	cout << setw (6) << setfill(' ') << st->game_time << " MSG-QUEUE\n";
+	for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
+		cout << "       " << setw (6) << setfill(' ') << ((*it).seq) << " " << ((*it).type);
+		dumpPacket((*it).data, (*it).size);
+	}
+	
+	cout << setw (6) << setfill(' ') << st->game_time << " CLIENT-INFO\n";
+	for (list<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
+		cout << "       " << setw (6) << setfill(' ') << ((*cli)->seq) << " " << ((*cli)->slot) << "\n";
+	}
+	
+	
 	for (list<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
 		if ((*cli) == NULL) continue;
 		
@@ -152,8 +164,11 @@ void NetServer::addmsgJoinAcc(NetServerClientInfo *client)
 	NetMsg * msg = new NetMsg(JOIN_OKAY, 2);
 	msg->seq = this->seq;
 	
-	Uint8* ptr = msg->data;
-	SDLNet_Write16((Uint16) client->slot, ptr); ptr += 2;
+	pack(msg->data, "h",
+		client->slot
+	);
+	
+	cout << "       Sent slot of: " << client->slot << "\n";
 	
 	messages.push_back(*msg);
 }
@@ -202,9 +217,6 @@ void NetServer::addmsgUnitAdd(Unit *u)
 void NetServer::addmsgUnitUpdate(Unit *u)
 {
 	messages.remove_if(IsTypeUniqPred(UNIT_UPDATE, u->slot));
-	
-	cout << "       addmsgUnitUpdate()\n";
-	cout << "       slot: " << u->slot << "\n";
 	
 	NetMsg * msg = new NetMsg(UNIT_UPDATE, 30);
 	msg->seq = this->seq;
@@ -276,6 +288,7 @@ unsigned int NetServer::handleJoinReq(NetServerClientInfo *client, Uint8 *data, 
 	
 	client->slot = this->clients.size() + 1;
 	client->inlist = true;
+	client->seq = this->seq;
 	this->clients.push_back(client);
 	
 	this->addmsgJoinAcc(client);
@@ -300,25 +313,22 @@ unsigned int NetServer::handleChat(NetServerClientInfo *client, Uint8 *data, uns
 unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
 	cout << "       handleKeyMouseStatus()\n";
-	
-	Player *p = (Player*) st->findUnitSlot(client->slot);
-	if (p == NULL) return 7;
+	cout << "       " << client->slot << "\n";
 	
 	Sint16 x, y, delta;
 	Uint8 keys;
 	
-	unpack(data, "hhhc", &x, &y, &delta, &keys);
+	unpack(data, "hhhc",
+		&x, &y, &delta, &keys
+	);
 	
-	cout << "       x: " << x << "\n";
-	cout << "       y: " << y << "\n";
-	cout << "       delta: " << delta << "\n";
+	// Find the unit for this slot
+	Player *p = (Player*) st->findUnitSlot(client->slot);
+	if (p == NULL) return 7;
+	
+	// Update the unit details
 	p->angleFromMouse(x, y, delta);
-	
-	for (int i = 0; i < 8; i++) {
-		cout << "       bit " << i << ": " << (keys & (1 << i)) << "\n";
-	}
-	
-	p->setKeys(keys);	// TODO: Use 16-bits
+	p->setKeys(keys);
 	
 	return 7;
 }

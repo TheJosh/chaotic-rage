@@ -91,8 +91,6 @@ class GameState
 		PlayerState * local_players[MAX_LOCAL];
 		unsigned int num_local;
 		
-		int curr_slot;				// TODO: gamestate -> localplayers
-		
 		bool running;
 		unsigned int anim_frame;
 		unsigned int game_time;
@@ -124,7 +122,7 @@ class GameState
 		void addNewParticle(NewParticle* particle);
 		
 		// For network
-		Unit * findUnitSlot(int slot);
+		Unit * findUnitSlot(unsigned int slot);
 		PlayerState * localPlayerFromSlot(unsigned int slot);
 		
 		// Start and run

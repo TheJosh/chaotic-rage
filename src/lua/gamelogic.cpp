@@ -429,10 +429,13 @@ LUA_FUNC(add_player)
 		p->pickupWeapon(uc->spawn_weapons.at(i));
 	}
 	
-	gl->st->addUnit(p);
-	
+	// Is it a local player?
 	PlayerState *ps = gl->st->localPlayerFromSlot(slot);
-	if (ps) ps->p = p;
+	if (ps) {
+		ps->p = p;
+	}
+	
+	gl->st->addUnit(p);
 	
 	return 0;
 }
