@@ -61,18 +61,6 @@ class NetServer {
 
 
 /**
-* Used to determine messages that should be removed
-**/
-class NetServerSeqPred
-{
-	public:
-		NetServer *server;
-		bool operator() (const NetMsg& value) { return false; } //(this->server->client_seq > value.seq); }		// todo: client seq array
-		NetServerSeqPred(NetServer *s) { this->server = s; }
-};
-
-
-/**
 * Client info (ip, code) -> (seq, slot)
 **/
 class NetServerClientInfo
@@ -88,5 +76,29 @@ class NetServerClientInfo
 		
 		NetServerClientInfo() { seq = 0; slot = 0; inlist = false; }
 };
+
+
+/**
+* Used to determine messages that should be removed
+**/
+class NetServerSeqPred
+{
+	public:
+		NetServer *server;
+		
+		// Remove any messages with a seq lower than the lowest client
+		bool operator() (const NetMsg& value) {
+			SeqNum lowest = server->seq;
+			for (list<NetServerClientInfo*>::iterator cli = server->clients.begin(); cli != server->clients.end(); cli++) {
+				if ((*cli) == NULL) continue;
+				if ((*cli)->seq < lowest) lowest = (*cli)->seq;
+			}
+			return (lowest > value.seq);
+		}
+		
+		NetServerSeqPred(NetServer *s) { this->server = s; }
+};
+
+
 
 
