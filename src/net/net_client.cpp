@@ -21,6 +21,10 @@ NetClient::NetClient(GameState * st)
 	this->seq_pred = new NetClientSeqPred(this);
 	
 	this->code = getRandom(0, 32700);
+
+	if (SDLNet_Init() < 0) {
+		reportFatalError("SDL_net init failed");
+	}
 }
 
 NetClient::~NetClient()

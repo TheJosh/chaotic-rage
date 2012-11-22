@@ -19,6 +19,10 @@ NetServer::NetServer(GameState * st)
 	
 	this->seq = 0;
 	this->seq_pred = new NetServerSeqPred(this);
+
+	if (SDLNet_Init() < 0) {
+		reportFatalError("SDL_net init failed");
+	}
 }
 
 NetServer::~NetServer()
@@ -143,7 +147,11 @@ void NetServer::update()
 void NetServer::listen(int port)
 {
 	SDLNet_ResolveHost(&this->ipaddress, NULL, port);
+
 	this->sock = SDLNet_UDP_Open(port);
+	if (this->sock == NULL) {
+		reportFatalError(SDLNet_GetError());
+	}
 }
 
 

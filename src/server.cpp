@@ -27,15 +27,14 @@ int main (int argc, char ** argv) {
 	
 	st->render->setScreenSize(500, 500, false);
 	
-	
-	// Load data
-	Mod * mod = new Mod(st, "data/cr");
-	if (! mod->load()) {
-		reportFatalError("Unable to load data module 'cr'.");
+	// Load the mods, with threads if possible
+	if (! threadedModLoader(st)) {
+		exit(0);
 	}
-	st->mm->addMod(mod);
 	
 	
+	// Let the games begin!
+
 	st->physics->init();
 	
 	Map *m = new Map(st);
