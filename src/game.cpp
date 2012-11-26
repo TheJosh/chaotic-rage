@@ -32,7 +32,8 @@ void gameLoop(GameState *st, Render *render)
 
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 	SDL_WarpMouse(400, 300);
-	
+	SDL_EnableUNICODE(0);
+
 	start = SDL_GetTicks();
 
 	st->render->preGame();
@@ -97,7 +98,8 @@ void gameLoop(GameState *st, Render *render)
 	cout << "\n\n\n\n\n";
 	
 	SDL_WM_GrabInput(SDL_GRAB_OFF);
-	
+	SDL_EnableUNICODE(1);
+
 	st->render->postGame();
 	st->render->freeHeightmap();
 	st->audio->stopAll();

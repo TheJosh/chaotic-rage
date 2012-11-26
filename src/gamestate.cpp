@@ -398,6 +398,7 @@ void GameState::addDialog(Dialog * dialog)
 	this->dialogs.push_back(dialog);
 	
 	this->setMouseGrab(false);
+	SDL_EnableUNICODE(1);
 }
 
 
@@ -411,6 +412,7 @@ void GameState::remDialog(Dialog * dialog)
 	
 	if (this->dialogs.size() == 0) {
 		this->setMouseGrab(true);
+		SDL_EnableUNICODE(0);
 	}
 
 	delete(dialog);
