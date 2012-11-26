@@ -33,8 +33,8 @@ class NetClient {
 		
 	public:
 		void update();
-		void bind(string address, int port);
-		
+		bool attemptJoinGame(string address, int port);
+
 	public:
 		// One method for each outgoing network message the client sends out
 		void addmsgInfoReq();
@@ -58,6 +58,9 @@ class NetClient {
 		unsigned int handleWallRem(Uint8 *data, unsigned int size);
 		unsigned int handlePlayerDrop(Uint8 *data, unsigned int size);
 		unsigned int handlePlayerQuit(Uint8 *data, unsigned int size);
+
+	private:
+		void bind(string address, int port);
 };
 
 class NetClientSeqPred

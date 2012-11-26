@@ -115,6 +115,24 @@ void NetClient::bind(string address, int port)
 }
 
 
+/**
+* Try to join a game
+**/
+bool NetClient::attemptJoinGame(string address, int port)
+{
+	this->bind(address, port);
+	this->addmsgJoinReq();
+
+	// Wait up to two seconds to be allocated a slot
+	for (int i = 0; i < 20; i++) {
+		this->update();
+		if (st->local_players[0]->slot != 0) return true;
+		SDL_Delay(100);
+	}
+
+	return false;
+}
+
 
 
 /**

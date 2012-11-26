@@ -431,11 +431,19 @@ void Menu::networkJoin(string host)
 
 	st->render->viewmode = 0;
 	
+	// Perhaps this should be before all the init stuff
+	// so we don't need to undo it all
+	// Also, some of this should be put into functions better
+	bool gotin = st->client->attemptJoinGame(host, 17778);
+	if (! gotin) {
+		st->audio->stopAll();
+		st->clear();
+		displayMessageBox("Unable to connect to server " + host);
+		return;
+	}
+
 	st->physics->preGame();
-	
-	st->client->bind(host, 17778);
-	st->client->addmsgJoinReq();
-	
+
 	// Begin!
 	gameLoop(st, st->render);
 }
