@@ -342,8 +342,7 @@ gcn::Container * DialogNetJoin::setup()
 	gcn::Label* label;
 	
 	c = new gcn::Window("Join network game");
-	
-	c->setDimension(gcn::Rectangle(0, 0, 200, 200));
+	c->setDimension(gcn::Rectangle(0, 0, 245, 200));
 	
 	
 	label = new gcn::Label("Host");
@@ -351,11 +350,12 @@ gcn::Container * DialogNetJoin::setup()
 	
 	this->host = new gcn::TextField("localhost");
 	this->host->setPosition(80, 10);
+	this->host->setWidth(150);
 	c->add(this->host);
 	
 
 	button = new gcn::Button("Join Game");
-	button->setPosition(120, 150);
+	button->setPosition(170, 150);
 	button->addActionListener(this);
 	c->add(button);
 	
