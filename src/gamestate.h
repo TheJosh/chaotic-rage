@@ -70,7 +70,8 @@ class GameState
 	friend class RenderNull;
 	friend class RenderDebug;
 	friend class AudioSDLMixer;
-
+	friend class NetServer;
+	
 	protected:
 		list<Entity*> entities;
 		list<Entity*> entities_add;

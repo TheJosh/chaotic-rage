@@ -118,6 +118,7 @@ void NetServer::update()
 		
 		for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
 			if ((*cli)->seq > (*it).seq) continue;
+			if ((*it).dest != NULL && (*it).dest != (*cli)) continue;
 			
 			*ptr = (*it).type;
 			ptr++; pkt->len++;
@@ -160,14 +161,15 @@ void NetServer::listen(int port)
 ***  One method for each outgoing network message the server sends out
 **/
 
-void NetServer::addmsgInfoResp()
+NetMsg * NetServer::addmsgInfoResp()
 {
 	NetMsg * msg = new NetMsg(INFO_RESP, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
+	return msg;
 }
 
-void NetServer::addmsgJoinAcc(NetServerClientInfo *client)
+NetMsg * NetServer::addmsgJoinAcc(NetServerClientInfo *client)
 {
 	NetMsg * msg = new NetMsg(JOIN_OKAY, 2);
 	msg->seq = this->seq;
@@ -179,24 +181,28 @@ void NetServer::addmsgJoinAcc(NetServerClientInfo *client)
 	cout << "       Sent slot of: " << client->slot << "\n";
 	
 	messages.push_back(*msg);
+	return msg;
 }
 
-void NetServer::addmsgJoinRej()
+NetMsg * NetServer::addmsgJoinRej()
 {
+	return NULL;
 }
 
-void NetServer::addmsgDataCompl()
+NetMsg * NetServer::addmsgDataCompl()
 {
+	return NULL;
 }
 
-void NetServer::addmsgChat()
+NetMsg * NetServer::addmsgChat()
 {
+	return NULL;
 }
 
 /**
 * A unit has been added
 **/
-void NetServer::addmsgUnitAdd(Unit *u)
+NetMsg * NetServer::addmsgUnitAdd(Unit *u)
 {
 	NetMsg * msg = new NetMsg(UNIT_ADD, 30);
 	msg->seq = this->seq;
@@ -217,12 +223,13 @@ void NetServer::addmsgUnitAdd(Unit *u)
 	);
 	
 	messages.push_back(*msg);
+	return msg;
 }
 
 /**
 * A unit has been updated
 **/
-void NetServer::addmsgUnitUpdate(Unit *u)
+NetMsg * NetServer::addmsgUnitUpdate(Unit *u)
 {
 	messages.remove_if(IsTypeUniqPred(UNIT_UPDATE, u->slot));
 	
@@ -242,12 +249,13 @@ void NetServer::addmsgUnitUpdate(Unit *u)
 	);
 	
 	messages.push_back(*msg);
+	return msg;
 }
 
 /**
 * A unit has been removed
 **/
-void NetServer::addmsgUnitRem(Unit *u)
+NetMsg * NetServer::addmsgUnitRem(Unit *u)
 {
 	NetMsg * msg = new NetMsg(UNIT_REM, 2);
 	msg->seq = this->seq;
@@ -258,22 +266,27 @@ void NetServer::addmsgUnitRem(Unit *u)
 	pack(msg->data, "h", u->slot);
 	
 	messages.push_back(*msg);
+	return msg;
 }
 
-void NetServer::addmsgWallUpdate()
+NetMsg * NetServer::addmsgWallUpdate()
 {
+	return NULL;
 }
 
-void NetServer::addmsgWallRem()
+NetMsg * NetServer::addmsgWallRem()
 {
+	return NULL;
 }
 
-void NetServer::addmsgPlayerDrop()
+NetMsg * NetServer::addmsgPlayerDrop()
 {
+	return NULL;
 }
 
-void NetServer::addmsgPlayerQuit()
+NetMsg * NetServer::addmsgPlayerQuit()
 {
+	return NULL;
 }
 
 
@@ -299,9 +312,24 @@ unsigned int NetServer::handleJoinReq(NetServerClientInfo *client, Uint8 *data, 
 	client->seq = this->seq;
 	this->clients.push_back(client);
 	
+	this->st->logic->raise_playerjoin(client->slot);
+	
 	this->addmsgJoinAcc(client);
 	
-	this->st->logic->raise_playerjoin(client->slot);
+	NetMsg* msg;
+	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
+		Entity *e = (*it);
+		
+		switch (e->klass()) {
+			case UNIT:
+				msg = addmsgUnitAdd((Unit*)e);
+				msg->dest = client;
+				break;
+				
+			default:
+				break;
+		}
+	}
 	
 	return 0;
 }

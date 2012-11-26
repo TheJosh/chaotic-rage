@@ -81,6 +81,8 @@ NetMsg::NetMsg (NetMsgType type, unsigned int size)
 		this->data = (Uint8*) malloc(size);
 		memset(this->data, 0, size);
 	}
+	
+	this->dest = NULL;
 }
 
 NetMsg::~NetMsg()

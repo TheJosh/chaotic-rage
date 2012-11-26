@@ -97,6 +97,7 @@ class NetMsg {
 		Uint8 *data;
 		unsigned int size;
 		SeqNum seq;
+		NetServerClientInfo *dest;
 		
 	public:
 		NetMsg (NetMsgType type, unsigned int size);

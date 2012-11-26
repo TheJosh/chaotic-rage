@@ -35,18 +35,18 @@ class NetServer {
 		
 	public:
 		// One method for each outgoing network message the server sends out
-		void addmsgInfoResp();
-		void addmsgJoinAcc(NetServerClientInfo *client);
-		void addmsgJoinRej();
-		void addmsgDataCompl();
-		void addmsgChat();
-		void addmsgUnitAdd(Unit *u);
-		void addmsgUnitUpdate(Unit *u);
-		void addmsgUnitRem(Unit *u);
-		void addmsgWallUpdate();
-		void addmsgWallRem();
-		void addmsgPlayerDrop();
-		void addmsgPlayerQuit();
+		NetMsg * addmsgInfoResp();
+		NetMsg * addmsgJoinAcc(NetServerClientInfo *client);
+		NetMsg * addmsgJoinRej();
+		NetMsg * addmsgDataCompl();
+		NetMsg * addmsgChat();
+		NetMsg * addmsgUnitAdd(Unit *u);
+		NetMsg * addmsgUnitUpdate(Unit *u);
+		NetMsg * addmsgUnitRem(Unit *u);
+		NetMsg * addmsgWallUpdate();
+		NetMsg * addmsgWallRem();
+		NetMsg * addmsgPlayerDrop();
+		NetMsg * addmsgPlayerQuit();
 		
 	public:
 		// One method for each incoming network message from the client
