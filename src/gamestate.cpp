@@ -44,6 +44,7 @@ GameState::GameState()
 	this->game_time = 0;
 	this->num_local = 0;
 	this->reset_mouse = false;
+	this->eid_next = 1;
 	
 	for (unsigned int i = 0; i < MAX_LOCAL; i++) {
 		this->local_players[i] = new PlayerState(this);
@@ -78,10 +79,21 @@ PlayerState::~PlayerState()
 
 
 /**
+* Return a unique EID
+**/
+EID getNextEID()
+{
+	return eid_next++;
+}
+
+
+/**
 * Add a unit
 **/
 void GameState::addUnit(Unit* unit)
 {
+	unit->eid = this->getNextEID();
+	
 	this->entities_add.push_back(unit);
 	this->units.push_back(unit);
 	
@@ -93,6 +105,8 @@ void GameState::addUnit(Unit* unit)
 **/
 void GameState::addWall(Wall* wall)
 {
+	wall->eid = this->getNextEID();
+	
 	this->entities_add.push_back(wall);
 	this->walls.push_back(wall);
 }
@@ -102,6 +116,8 @@ void GameState::addWall(Wall* wall)
 **/
 void GameState::addVehicle(Vehicle* vehicle)
 {
+	vehicle->eid = this->getNextEID();
+	
 	this->entities_add.push_back(vehicle);
 }
 
@@ -110,6 +126,8 @@ void GameState::addVehicle(Vehicle* vehicle)
 **/
 void GameState::addObject(Object* object)
 {
+	object->eid = this->getNextEID();
+	
 	this->entities_add.push_back(object);
 }
 
@@ -202,6 +220,8 @@ void GameState::clear()
 	// TODO: Are these needed?
 	this->units.clear();
 	this->walls.clear();
+	
+	this->eid_next = 1;
 }
 
 

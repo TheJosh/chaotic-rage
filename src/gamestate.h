@@ -86,6 +86,8 @@ class GameState
 
 		list<DebugLine*>lines;
 
+		EID eid_next;
+
 	public:
 		Map* curr_map;
 		
@@ -121,6 +123,9 @@ class GameState
 		void addVehicle(Vehicle* vehicle);
 		void addObject(Object* object);
 		void addNewParticle(NewParticle* particle);
+		
+		// Get an EID
+		EID getNextEID();
 		
 		// For network
 		Unit * findUnitSlot(unsigned int slot);

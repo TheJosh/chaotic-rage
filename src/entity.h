@@ -21,9 +21,10 @@ enum EntityClass {
 };
 
 
-// Defines the length of a sprite-list
-// as returned by the getSprite method of entities
-#define SPRITE_LIST_LEN 4
+/**
+* Type for EIDs - unique entity identifiers, for network play
+**/
+typedef Uint16 EID;
 
 
 class Entity
@@ -36,10 +37,7 @@ class Entity
 		bool render;
 		btRigidBody* body;
 		GameState* st;
-		
-		// TODO: Remove these
-		float speed;
-		int angle;
+		EID eid;
 
 	protected:
 		Entity(GameState *st);
