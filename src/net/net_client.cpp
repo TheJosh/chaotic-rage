@@ -199,7 +199,7 @@ unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 {
 	cout << "       handleJoinAcc()\n";
 	
-	int slot;
+	unsigned int slot = 0;
 	unpack(data, "h",
 		&slot
 	);
