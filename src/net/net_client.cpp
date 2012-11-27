@@ -232,81 +232,85 @@ unsigned int NetClient::handleChat(Uint8 *data, unsigned int size)
 	return 0;
 }
 
-unsigned int NetClient::handleUnitAdd(Uint8 *data, unsigned int size)
+unsigned int NetClient::handlePlayerDrop(Uint8 *data, unsigned int size)
 {
-	cout << "       handleUnitAdd()\n";
-	
-	short slot;
-	float qx, qy, qz, qw, bx, by, bz;
-	
-	unpack(data, "h ffff fff",
-		&slot,
-		&qx, &qy, &qz, &qw,
-		&bx, &by, &bz
-	);
-	
-	// Is there already a player with this slot?
-	Player *p = (Player*) st->findUnitSlot(slot);
-	if (p != NULL) return 30;
-	
-	// Create new player
-	UnitType *ut = st->mm->getUnitType("robot");
-	p = new Player(ut, st, bx, bz, by);
-	p->slot = slot;
-	
-	// Assign them the location
-	p->body->getMotionState()->setWorldTransform(btTransform(
-		btQuaternion(qx, qy, qz, qw),
-		btVector3(bx, by, bz)
-	));
-	
-	// Give them some weapons
-	for (unsigned int i = 0; i < ut->spawn_weapons.size(); i++) {
-		p->pickupWeapon(ut->spawn_weapons.at(i));
-	}
-	
-	// If the player is this client, save in the local_players obj
-	if (st->local_players[0]->slot == p->slot) {
-		st->local_players[0]->p = p;
-	}
-	
-	st->addUnit(p);
-	
-	return 30;
+	cout << "       handlePlayerDrop()\n";
+	return 0;
 }
 
-unsigned int NetClient::handleUnitUpdate(Uint8 *data, unsigned int size)
+unsigned int NetClient::handlePlayerQuit(Uint8 *data, unsigned int size)
 {
-	cout << "       handleUnitUpdate()\n";
+	cout << "       handlePlayerQuit()\n";
+	return 0;
+}
+
+
+unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
+{
+	cout << "       handleUnitState()\n";
 	
 	
-	short slot;
+	short eid, slot;
 	float qx, qy, qz, qw, bx, by, bz;
 	
-	unpack(data, "h ffff fff",
-		&slot,
+	unpack(data, "hh ffff fff",
+		&eid, &slot,
 		&qx, &qy, &qz, &qw,
 		&bx, &by, &bz
 	);
 	
-	cout << "       it's for " << slot << "; we are " << st->local_players[0]->slot << "\n";
+	Unit* u = (Unit*) st->getEntity(eid);
 	
-	// Find the player for the slot number
-	Player *p = (Player*) st->findUnitSlot(slot);
-	if (p == NULL) return 30;
+	// If don't exist, create
+	if (u == NULL) {
+		UnitType *ut = st->mm->getUnitType("robot");
+		u = new Player(ut, st, bx, bz, by);
+		u->slot = slot;
+		
+		// Give them some weapons
+		for (unsigned int i = 0; i < ut->spawn_weapons.size(); i++) {
+			u->pickupWeapon(ut->spawn_weapons.at(i));
+		}
+		
+		// If the player is this client, save in the local_players obj
+		if (st->local_players[0]->slot == u->slot) {
+			st->local_players[0]->p = (Player*)u;
+		}
+		
+		st->addUnit(u);
+		u->eid = eid;
+	}
 	
 	// Update the transform
-	p->body->getMotionState()->setWorldTransform(btTransform(
+	u->body->getMotionState()->setWorldTransform(btTransform(
 		btQuaternion(qx, qy, qz, qw),
 		btVector3(bx, by, bz)
 	));
 	
-	return 30;
+	return 32;
 }
 
-unsigned int NetClient::handleUnitRem(Uint8 *data, unsigned int size)
+unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 {
-	cout << "       handleUnitRem()\n";
+	cout << "       handleWallState()\n";
+	return 0;
+}
+
+unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
+{
+	cout << "       handleObjectState()\n";
+	return 0;
+}
+
+unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
+{
+	cout << "       handleVehicleState()\n";
+	return 0;
+}
+
+unsigned int NetClient::handleEntityRem(Uint8 *data, unsigned int size)
+{
+	cout << "       handleEntityRem()\n";
 	
 	short slot;
 	
@@ -318,30 +322,6 @@ unsigned int NetClient::handleUnitRem(Uint8 *data, unsigned int size)
 	p->del = true;
 	
 	return 2;
-}
-
-unsigned int NetClient::handleWallUpdate(Uint8 *data, unsigned int size)
-{
-	cout << "       handleWallUpdate()\n";
-	return 0;
-}
-
-unsigned int NetClient::handleWallRem(Uint8 *data, unsigned int size)
-{
-	cout << "       handleWallRem()\n";
-	return 0;
-}
-
-unsigned int NetClient::handlePlayerDrop(Uint8 *data, unsigned int size)
-{
-	cout << "       handlePlayerDrop()\n";
-	return 0;
-}
-
-unsigned int NetClient::handlePlayerQuit(Uint8 *data, unsigned int size)
-{
-	cout << "       handlePlayerQuit()\n";
-	return 0;
 }
 
 

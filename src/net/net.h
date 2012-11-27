@@ -34,20 +34,19 @@ enum NetMsgType {
 	CHAT_REQ =      0x08,		// [C] Client -> server w/ chat msg
 	CHAT_MSG =      0x09,		// [S] Server -> all w/ chat msg
 	
-	CLIENT_STATE =  0x0A,		// [C] Keyboard (buttons) and mouse (buttons, position) status -> server
+	PLAYER_DROP =   0x0A,		// [S] Player dropped. too laggy -> all clients
+	QUIT_REQ =      0x0B,		// [C] Player want's to leave -> server
+	PLAYER_QUIT =   0x0C,		// [S] Player has left -> all clients
 	
-	UNIT_ADD =      0x0B,		// [S] A unit has been added
-	UNIT_UPDATE =   0x0C,		// [S] Unit params have changed
-	UNIT_REM =      0x0D,		// [S] Unit has been removed
+	CLIENT_STATE =  0x0D,		// [C] Keyboard (buttons) and mouse (buttons, position) status -> server
 	
-	WALL_UPDATE =   0x0E,		// [S] Wall params have changed
-	WALL_REM =      0x0F,		// [S] Wall has been removed
+	UNIT_STATE =    0x0E,		// [S] Unit dets have changed
+	WALL_STATE =    0x0F,		// [S] Wall dets have changed
+	OBJECT_STATE =  0x10,		// [S] Object dets have changed
+	VEHICLE_STATE = 0x11,		// [S] Vehicle dets have changed
+	ENTITY_REM =    0x12,		// [S] An entity has been removed
 	
-	PLAYER_DROP =   0x12,		// [S] Player dropped. too laggy -> all clients
-	QUIT_REQ =      0x13,		// [C] Player want's to leave -> server
-	PLAYER_QUIT =   0x14,		// [S] Player has left -> all clients
-	
-	BOTTOM =        0x15,
+	BOTTOM =        0x13,
 };
 
 

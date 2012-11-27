@@ -199,86 +199,6 @@ NetMsg * NetServer::addmsgChat()
 	return NULL;
 }
 
-/**
-* A unit has been added
-**/
-NetMsg * NetServer::addmsgUnitAdd(Unit *u)
-{
-	NetMsg * msg = new NetMsg(UNIT_ADD, 30);
-	msg->seq = this->seq;
-	msg->uniq = u->slot;
-	
-	cout << "       addmsgUnitAdd()\n";
-	cout << "       slot: " << u->slot << "\n";
-	
-	btTransform trans;
-	u->body->getMotionState()->getWorldTransform(trans);
-	btQuaternion q = trans.getRotation();
-	btVector3 b = trans.getOrigin();
-	
-	pack(msg->data, "h ffff fff",
-		u->slot,
-		q.x(), q.y(), q.z(), q.w(),
-		b.x(), b.y(), b.z()
-	);
-	
-	messages.push_back(*msg);
-	return msg;
-}
-
-/**
-* A unit has been updated
-**/
-NetMsg * NetServer::addmsgUnitUpdate(Unit *u)
-{
-	messages.remove_if(IsTypeUniqPred(UNIT_UPDATE, u->slot));
-	
-	NetMsg * msg = new NetMsg(UNIT_UPDATE, 30);
-	msg->seq = this->seq;
-	msg->uniq = u->slot;
-	
-	btTransform trans;
-	u->body->getMotionState()->getWorldTransform(trans);
-	btQuaternion q = trans.getRotation();
-	btVector3 b = trans.getOrigin();
-	
-	pack(msg->data, "h ffff fff",
-		u->slot,
-		q.x(), q.y(), q.z(), q.w(),
-		b.x(), b.y(), b.z()
-	);
-	
-	messages.push_back(*msg);
-	return msg;
-}
-
-/**
-* A unit has been removed
-**/
-NetMsg * NetServer::addmsgUnitRem(Unit *u)
-{
-	NetMsg * msg = new NetMsg(UNIT_REM, 2);
-	msg->seq = this->seq;
-	
-	cout << "       addmsgUnitRem()\n";
-	cout << "       slot: " << u->slot << "\n";
-	
-	pack(msg->data, "h", u->slot);
-	
-	messages.push_back(*msg);
-	return msg;
-}
-
-NetMsg * NetServer::addmsgWallUpdate()
-{
-	return NULL;
-}
-
-NetMsg * NetServer::addmsgWallRem()
-{
-	return NULL;
-}
-
 NetMsg * NetServer::addmsgPlayerDrop()
 {
 	return NULL;
@@ -287,6 +207,64 @@ NetMsg * NetServer::addmsgPlayerDrop()
 NetMsg * NetServer::addmsgPlayerQuit()
 {
 	return NULL;
+}
+
+
+/**
+* A unit has been updated
+**/
+NetMsg * NetServer::addmsgUnitState(Unit *u)
+{
+	messages.remove_if(IsTypeUniqPred(UNIT_STATE, u->slot));
+	
+	NetMsg * msg = new NetMsg(UNIT_STATE, 32);
+	msg->seq = this->seq;
+	msg->uniq = u->slot;
+	
+	btTransform trans;
+	u->body->getMotionState()->getWorldTransform(trans);
+	btQuaternion q = trans.getRotation();
+	btVector3 b = trans.getOrigin();
+	
+	pack(msg->data, "hh ffff fff",
+		u->eid, u->slot,
+		q.x(), q.y(), q.z(), q.w(),
+		b.x(), b.y(), b.z()
+	);
+	
+	messages.push_back(*msg);
+	return msg;
+}
+
+NetMsg * NetServer::addmsgWallState(Wall *w)
+{
+	return NULL;
+}
+
+NetMsg * NetServer::addmsgObjectState(Object *o)
+{
+	return NULL;
+}
+
+NetMsg * NetServer::addmsgVehicleState(Vehicle *v)
+{
+	return NULL;
+}
+
+/**
+* A unit has been removed
+**/
+NetMsg * NetServer::addmsgEntityRem(Entity *e)
+{
+	NetMsg * msg = new NetMsg(ENTITY_REM, 2);
+	msg->seq = this->seq;
+	
+	cout << "       addmsgEntityRem()\n";
+	
+	pack(msg->data, "h", e->eid);
+	
+	messages.push_back(*msg);
+	return msg;
 }
 
 
@@ -322,7 +300,7 @@ unsigned int NetServer::handleJoinReq(NetServerClientInfo *client, Uint8 *data, 
 		
 		switch (e->klass()) {
 			case UNIT:
-				msg = addmsgUnitAdd((Unit*)e);
+				msg = addmsgUnitState((Unit*)e);
 				msg->dest = client;
 				break;
 				

@@ -466,8 +466,10 @@ void Unit::update(int delta)
 	}
 	
 	
-	if (st->server) st->server->addmsgUnitUpdate(this);
-	
+	if (st->server) {
+		st->server->addmsgUnitState(this);
+	}
+
 
 	// If they have fallen a considerable distance, they die
 	btTransform xform;

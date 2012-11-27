@@ -81,9 +81,22 @@ PlayerState::~PlayerState()
 /**
 * Return a unique EID
 **/
-EID getNextEID()
+EID GameState::getNextEID()
 {
 	return eid_next++;
+}
+
+
+/**
+* Return the entity for a given EID
+* Is currently O(n), should probably try to make faster
+**/
+Entity * GameState::getEntity(EID eid)
+{
+	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); it++) {
+		if ((*it)->eid == eid) return (*it);
+	}
+	return NULL;
 }
 
 
@@ -96,8 +109,6 @@ void GameState::addUnit(Unit* unit)
 	
 	this->entities_add.push_back(unit);
 	this->units.push_back(unit);
-	
-	if (this->server) this->server->addmsgUnitAdd(unit);
 }
 
 /**

@@ -126,6 +126,7 @@ class GameState
 		
 		// Get an EID
 		EID getNextEID();
+		Entity * getEntity(EID eid);
 		
 		// For network
 		Unit * findUnitSlot(unsigned int slot);

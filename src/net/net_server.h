@@ -40,23 +40,25 @@ class NetServer {
 		NetMsg * addmsgJoinRej();
 		NetMsg * addmsgDataCompl();
 		NetMsg * addmsgChat();
-		NetMsg * addmsgUnitAdd(Unit *u);
-		NetMsg * addmsgUnitUpdate(Unit *u);
-		NetMsg * addmsgUnitRem(Unit *u);
-		NetMsg * addmsgWallUpdate();
-		NetMsg * addmsgWallRem();
 		NetMsg * addmsgPlayerDrop();
 		NetMsg * addmsgPlayerQuit();
-		
+		NetMsg * addmsgUnitState(Unit *u);
+		NetMsg * addmsgWallState(Wall *u);
+		NetMsg * addmsgObjectState(Object *u);
+		NetMsg * addmsgVehicleState(Vehicle *v);
+		NetMsg * addmsgEntityRem(Entity *e);
+
+
 	public:
 		// One method for each incoming network message from the client
 		unsigned int handleInfoReq(NetServerClientInfo *client, Uint8 *data, unsigned int size);
 		unsigned int handleJoinReq(NetServerClientInfo *client, Uint8 *data, unsigned int size);
 		unsigned int handleJoinAck(NetServerClientInfo *client, Uint8 *data, unsigned int size);
 		unsigned int handleChat(NetServerClientInfo *client, Uint8 *data, unsigned int size);
-		unsigned int handleKeyMouseStatus(NetServerClientInfo *client, Uint8 *data, unsigned int size);
 		unsigned int handleQuit(NetServerClientInfo *client, Uint8 *data, unsigned int size);
-		
+		unsigned int handleKeyMouseStatus(NetServerClientInfo *client, Uint8 *data, unsigned int size);
+
+
 };
 
 

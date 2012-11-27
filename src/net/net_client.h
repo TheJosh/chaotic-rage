@@ -41,9 +41,10 @@ class NetClient {
 		void addmsgJoinReq();
 		void addmsgJoinAck();
 		void addmsgChat();
-		void addmsgKeyMouseStatus(int x, int y, int delta, Uint8 k);
 		void addmsgQuit();
-		
+		void addmsgKeyMouseStatus(int x, int y, int delta, Uint8 k);
+
+
 	public:
 		// One method for each incoming network message from the server
 		unsigned int handleInfoResp(Uint8 *data, unsigned int size);
@@ -51,13 +52,15 @@ class NetClient {
 		unsigned int handleJoinRej(Uint8 *data, unsigned int size);
 		unsigned int handleDataCompl(Uint8 *data, unsigned int size);
 		unsigned int handleChat(Uint8 *data, unsigned int size);
-		unsigned int handleUnitAdd(Uint8 *data, unsigned int size);
-		unsigned int handleUnitUpdate(Uint8 *data, unsigned int size);
-		unsigned int handleUnitRem(Uint8 *data, unsigned int size);
-		unsigned int handleWallUpdate(Uint8 *data, unsigned int size);
-		unsigned int handleWallRem(Uint8 *data, unsigned int size);
 		unsigned int handlePlayerDrop(Uint8 *data, unsigned int size);
 		unsigned int handlePlayerQuit(Uint8 *data, unsigned int size);
+		
+		unsigned int handleUnitState(Uint8 *data, unsigned int size);
+		unsigned int handleWallState(Uint8 *data, unsigned int size);
+		unsigned int handleObjectState(Uint8 *data, unsigned int size);
+		unsigned int handleVehicleState(Uint8 *data, unsigned int size);
+		unsigned int handleEntityRem(Uint8 *data, unsigned int size);
+
 
 	private:
 		void bind(string address, int port);
