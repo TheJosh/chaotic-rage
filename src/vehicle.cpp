@@ -155,6 +155,12 @@ void Vehicle::update(int delta)
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
 		this->vehicle->updateWheelTransform(i, true);
 	}
+
+	// Send state over network
+	// TODO: only when moving
+	if (st->server != NULL) {
+		st->server->addmsgVehicleState(this);
+	}
 }
 
 AnimPlay* Vehicle::getAnimModel()

@@ -250,7 +250,7 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 	cout << "       handleUnitState()\n";
 	
 	
-	short eid, slot;
+	short eid = 0, slot = 0;
 	float qx, qy, qz, qw, bx, by, bz;
 	
 	unpack(data, "hh ffff fff",
@@ -293,7 +293,35 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 {
 	cout << "       handleWallState()\n";
-	return 0;
+
+
+	short eid = 0;
+	float qx, qy, qz, qw, bx, by, bz;
+	
+	unpack(data, "h ffff fff",
+		&eid,
+		&qx, &qy, &qz, &qw,
+		&bx, &by, &bz
+	);
+	
+	Wall* w = (Wall*) st->getEntity(eid);
+	
+	// If don't exist, create
+	if (w == NULL) {
+		WallType *wt = st->mm->getWallType("brick");
+		w = new Wall(wt, st, bx, by, bz, 0);
+		
+		st->addWall(w);
+		w->eid = eid;
+	}
+	
+	// Update the transform
+	w->body->getMotionState()->setWorldTransform(btTransform(
+		btQuaternion(qx, qy, qz, qw),
+		btVector3(bx, by, bz)
+	));
+	
+	return 30;
 }
 
 unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
@@ -305,7 +333,34 @@ unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 {
 	cout << "       handleVehicleState()\n";
-	return 0;
+
+	short eid = 0;
+	float qx, qy, qz, qw, bx, by, bz;
+	
+	unpack(data, "h ffff fff",
+		&eid,
+		&qx, &qy, &qz, &qw,
+		&bx, &by, &bz
+	);
+	
+	Vehicle* v = (Vehicle*) st->getEntity(eid);
+	
+	// If don't exist, create
+	if (v == NULL) {
+		VehicleType *vt = st->mm->getVehicleType("tank");
+		v = new Vehicle(vt, st, bx, by, bz, 0);
+		
+		st->addVehicle(v);
+		v->eid = eid;
+	}
+	
+	// Update the transform
+	v->body->getMotionState()->setWorldTransform(btTransform(
+		btQuaternion(qx, qy, qz, qw),
+		btVector3(bx, by, bz)
+	));
+	
+	return 30;
 }
 
 unsigned int NetClient::handleEntityRem(Uint8 *data, unsigned int size)
