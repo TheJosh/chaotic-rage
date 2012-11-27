@@ -11,7 +11,7 @@ You will need at least these:
  - glew
  - Lua
  - Freetype2
- - Bullet Physics
+ - Bullet Physics (and cmake if building yourself)
  - Guichan
 
 
@@ -19,6 +19,7 @@ Compiling on Ubuntu 10.04:
  1. Install dependencies:
      - g++
      - make
+     - cmake
      - flex
      - libsdl1.2-dev
      - libsdl-image1.2-dev
@@ -33,7 +34,7 @@ Compiling on Ubuntu 10.04:
      - libfreetype6-dev
      - libguichan-dev
     You can also use this command:
-     sudo apt-get install g++ make flex libsdl1.2-dev libsdl-image1.2-dev libsdl-mixer1.2-dev \
+     sudo apt-get install g++ make cmake flex libsdl1.2-dev libsdl-image1.2-dev libsdl-mixer1.2-dev \
      libsdl-net1.2-dev libzzip-dev libconfuse-dev libgl1-mesa-dev libglu1-mesa-dev libglew-dev \
      liblua5.1-0-dev libfreetype6-dev libguichan-dev
 
