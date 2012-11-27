@@ -32,9 +32,13 @@ Compiling on Ubuntu 10.04:
      - liblua5.1-0-dev
      - libfreetype6-dev
      - libguichan-dev
+    You can also use this command:
+     sudo apt-get install g++ make flex libsdl1.2-dev libsdl-image1.2-dev libsdl-mixer1.2-dev \
+     libsdl-net1.2-dev libzzip-dev libconfuse-dev libgl1-mesa-dev libglu1-mesa-dev libglew-dev \
+     liblua5.1-0-dev libfreetype6-dev libguichan-dev
 
  2. Compile bullet from lib-external
-    This will install bulelt also
+    This will install bullet also
 
  3. Compile using make
 
