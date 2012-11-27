@@ -181,7 +181,8 @@ int Map::load(string name, Render * render)
 	mod = new Mod(st, filename);
 	
 	
-	cfg_t *cfg;
+	cfg_t *cfg, *cfg_sub;
+	int num_types, j, k;
 	
 	char *buffer = mod->loadText("map.conf");
 	if (buffer == NULL) {
@@ -212,7 +213,72 @@ int Map::load(string name, Render * render)
 	this->terrain = this->render->loadSprite("terrain.png", mod);
 	if (! this->terrain) reportFatalError("Unable to load map; no terran img");
 	
+
 	
+	// Zones
+	num_types = cfg_size(cfg, "zone");
+	for (j = 0; j < num_types; j++) {
+		cfg_sub = cfg_getnsec(cfg, "zone", j);
+		
+		Zone * z = new Zone(cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), cfg_getint(cfg_sub, "width"), cfg_getint(cfg_sub, "height"));
+		
+		int num_spawn = cfg_size(cfg_sub, "spawn");
+		for (k = 0; k < num_spawn; k++) {
+			int f = cfg_getnint(cfg_sub, "spawn", k);
+			if (f < FACTION_INDIVIDUAL || f > FACTION_COMMON) continue;
+			z->spawn[f] = 1;
+		}
+		
+		this->zones.push_back(z);
+	}
+	
+	// Lights
+	num_types = cfg_size(cfg, "light");
+	for (j = 0; j < num_types; j++) {
+		int num;
+		
+		cfg_sub = cfg_getnsec(cfg, "light", j);
+		
+		Light * l = new Light(cfg_getint(cfg_sub, "type"));
+		
+		l->x = cfg_getint(cfg_sub, "x");
+		l->y = cfg_getint(cfg_sub, "y");
+		l->z = cfg_getint(cfg_sub, "z");
+		
+		num = cfg_size(cfg_sub, "ambient");
+		if (num == 4) {
+			l->setAmbient(
+				cfg_getnint(cfg_sub, "ambient", 0),
+				cfg_getnint(cfg_sub, "ambient", 1),
+				cfg_getnint(cfg_sub, "ambient", 2),
+				cfg_getnint(cfg_sub, "ambient", 3)
+			);
+		}
+		
+		num = cfg_size(cfg_sub, "diffuse");
+		if (num == 4) {
+			l->setDiffuse(
+				cfg_getnint(cfg_sub, "diffuse", 0),
+				cfg_getnint(cfg_sub, "diffuse", 1),
+				cfg_getnint(cfg_sub, "diffuse", 2),
+				cfg_getnint(cfg_sub, "diffuse", 3)
+			);
+		}
+		
+		num = cfg_size(cfg_sub, "specular");
+		if (num == 4) {
+			l->setSpecular(
+				cfg_getnint(cfg_sub, "specular", 0),
+				cfg_getnint(cfg_sub, "specular", 1),
+				cfg_getnint(cfg_sub, "specular", 2),
+				cfg_getnint(cfg_sub, "specular", 3)
+			);
+		}
+		
+		this->lights.push_back(l);
+	}
+	
+
 	return 1;
 }
 
@@ -291,69 +357,6 @@ void Map::loadDefaultEntities()
 		Object * ob = new Object(ot, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), 1, cfg_getint(cfg_sub, "angle"));
 		
 		this->st->addObject(ob);
-	}
-
-	// Zones
-	num_types = cfg_size(cfg, "zone");
-	for (j = 0; j < num_types; j++) {
-		cfg_sub = cfg_getnsec(cfg, "zone", j);
-		
-		Zone * z = new Zone(cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), cfg_getint(cfg_sub, "width"), cfg_getint(cfg_sub, "height"));
-		
-		int num_spawn = cfg_size(cfg_sub, "spawn");
-		for (k = 0; k < num_spawn; k++) {
-			int f = cfg_getnint(cfg_sub, "spawn", k);
-			if (f < FACTION_INDIVIDUAL || f > FACTION_COMMON) continue;
-			z->spawn[f] = 1;
-		}
-		
-		this->zones.push_back(z);
-	}
-	
-	// Lights
-	num_types = cfg_size(cfg, "light");
-	for (j = 0; j < num_types; j++) {
-		int num;
-		
-		cfg_sub = cfg_getnsec(cfg, "light", j);
-		
-		Light * l = new Light(cfg_getint(cfg_sub, "type"));
-		
-		l->x = cfg_getint(cfg_sub, "x");
-		l->y = cfg_getint(cfg_sub, "y");
-		l->z = cfg_getint(cfg_sub, "z");
-		
-		num = cfg_size(cfg_sub, "ambient");
-		if (num == 4) {
-			l->setAmbient(
-				cfg_getnint(cfg_sub, "ambient", 0),
-				cfg_getnint(cfg_sub, "ambient", 1),
-				cfg_getnint(cfg_sub, "ambient", 2),
-				cfg_getnint(cfg_sub, "ambient", 3)
-			);
-		}
-		
-		num = cfg_size(cfg_sub, "diffuse");
-		if (num == 4) {
-			l->setDiffuse(
-				cfg_getnint(cfg_sub, "diffuse", 0),
-				cfg_getnint(cfg_sub, "diffuse", 1),
-				cfg_getnint(cfg_sub, "diffuse", 2),
-				cfg_getnint(cfg_sub, "diffuse", 3)
-			);
-		}
-		
-		num = cfg_size(cfg_sub, "specular");
-		if (num == 4) {
-			l->setSpecular(
-				cfg_getnint(cfg_sub, "specular", 0),
-				cfg_getnint(cfg_sub, "specular", 1),
-				cfg_getnint(cfg_sub, "specular", 2),
-				cfg_getnint(cfg_sub, "specular", 3)
-			);
-		}
-		
-		this->lights.push_back(l);
 	}
 }
 
