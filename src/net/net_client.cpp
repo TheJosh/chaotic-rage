@@ -259,8 +259,9 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 		&bx, &by, &bz
 	);
 	
-	Unit* u = (Unit*) st->getEntity(eid);
-	
+	Entity* e = st->getEntity(eid);
+	Unit* u = (Unit*) e;
+
 	// If don't exist, create
 	if (u == NULL) {
 		UnitType *ut = st->mm->getUnitType("robot");
@@ -304,12 +305,13 @@ unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 		&bx, &by, &bz
 	);
 	
-	Wall* w = (Wall*) st->getEntity(eid);
-	
+	Entity* e = st->getEntity(eid);
+	Wall* w = (Wall*) e;
+
 	// If don't exist, create
 	if (w == NULL) {
 		WallType *wt = st->mm->getWallType("brick");
-		w = new Wall(wt, st, bx, by, bz, 0);
+		w = new Wall(wt, st, bx, bz, by, 0);
 		
 		st->addWall(w);
 		w->eid = eid;
@@ -343,12 +345,13 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 		&bx, &by, &bz
 	);
 	
-	Vehicle* v = (Vehicle*) st->getEntity(eid);
-	
+	Entity* e = st->getEntity(eid);
+	Vehicle* v = (Vehicle*) e;
+
 	// If don't exist, create
 	if (v == NULL) {
 		VehicleType *vt = st->mm->getVehicleType("tank");
-		v = new Vehicle(vt, st, bx, by, bz, 0);
+		v = new Vehicle(vt, st, bx, bz, by, 0);
 		
 		st->addVehicle(v);
 		v->eid = eid;
