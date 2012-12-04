@@ -413,7 +413,7 @@ void Menu::networkJoin(string host)
 	
 	// Load map
 	Map *m = new Map(st);
-	m->load("tanktest", st->render);
+	m->load("nettest", st->render);
 	st->curr_map = m;
 	
 	// Load gametype

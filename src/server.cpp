@@ -38,7 +38,7 @@ int main (int argc, char ** argv) {
 	st->physics->init();
 	
 	Map *m = new Map(st);
-	m->load("tanktest", st->render);
+	m->load("nettest", st->render);
 	st->curr_map = m;
 	
 	new GameLogic(st);

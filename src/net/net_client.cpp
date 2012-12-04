@@ -329,7 +329,35 @@ unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 {
 	cout << "       handleObjectState()\n";
-	return 0;
+
+	short eid = 0;
+	float qx, qy, qz, qw, bx, by, bz;
+	
+	unpack(data, "h ffff fff",
+		&eid,
+		&qx, &qy, &qz, &qw,
+		&bx, &by, &bz
+	);
+	
+	Entity* e = st->getEntity(eid);
+	Object* o = (Object*) e;
+
+	// If don't exist, create
+	if (o == NULL) {
+		ObjectType *ot = st->mm->getObjectType("machinegun_pickup");
+		o = new Object(ot, st, bx, bz, by, 0);
+		
+		st->addObject(o);
+		o->eid = eid;
+	}
+	
+	// Update the transform
+	o->body->getMotionState()->setWorldTransform(btTransform(
+		btQuaternion(qx, qy, qz, qw),
+		btVector3(bx, by, bz)
+	));
+	
+	return 30;
 }
 
 unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
