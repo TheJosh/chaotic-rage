@@ -365,12 +365,13 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 	cout << "       handleVehicleState()\n";
 
 	short eid = 0;
-	float qx, qy, qz, qw, bx, by, bz;
+	float qx, qy, qz, qw, bx, by, bz, ef, bf, s;
 	
-	unpack(data, "h ffff fff",
+	unpack(data, "h ffff fff fff",
 		&eid,
 		&qx, &qy, &qz, &qw,
-		&bx, &by, &bz
+		&bx, &by, &bz,
+		&ef, &bf, &s
 	);
 	
 	Entity* e = st->getEntity(eid);
@@ -391,7 +392,11 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 		btVector3(bx, by, bz)
 	));
 	
-	return 30;
+	v->engineForce = ef;
+	v->brakeForce = bf;
+	v->steering = s;
+
+	return 42;
 }
 
 unsigned int NetClient::handleEntityRem(Uint8 *data, unsigned int size)

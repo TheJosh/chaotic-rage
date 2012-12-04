@@ -298,7 +298,7 @@ NetMsg * NetServer::addmsgVehicleState(Vehicle *v)
 {
 	messages.remove_if(IsTypeUniqPred(VEHICLE_STATE, v->eid));
 	
-	NetMsg * msg = new NetMsg(VEHICLE_STATE, 30);
+	NetMsg * msg = new NetMsg(VEHICLE_STATE, 42);
 	msg->seq = this->seq;
 	msg->uniq = v->eid;
 	
@@ -307,10 +307,11 @@ NetMsg * NetServer::addmsgVehicleState(Vehicle *v)
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 	
-	pack(msg->data, "h ffff fff",
+	pack(msg->data, "h ffff fff fff",
 		v->eid,
 		q.x(), q.y(), q.z(), q.w(),
-		b.x(), b.y(), b.z()
+		b.x(), b.y(), b.z(),
+		v->engineForce, v->brakeForce, v->steering
 	);
 	
 	messages.push_back(*msg);
