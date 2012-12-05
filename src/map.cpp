@@ -338,7 +338,7 @@ void Map::loadDefaultEntities()
 		VehicleType *vt = this->st->mm->getVehicleType(type);
 		if (vt == NULL) reportFatalError("Unable to load map; missing or invalid vehicle type '" + type + "'");
 		
-		Vehicle * v = new Vehicle(vt, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), 1, cfg_getint(cfg_sub, "angle"));
+		Vehicle * v = new Vehicle(vt, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"));
 		
 		this->st->addVehicle(v);
 	}

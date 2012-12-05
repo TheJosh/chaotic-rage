@@ -377,21 +377,20 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 	Entity* e = st->getEntity(eid);
 	Vehicle* v = (Vehicle*) e;
 
+	btTransform trans = btTransform(btQuaternion(qx, qy, qz, qw), btVector3(bx, by, bz));
+
 	// If don't exist, create
 	if (v == NULL) {
 		VehicleType *vt = st->mm->getVehicleType("tank");
-		v = new Vehicle(vt, st, bx, bz, by, 0);
+
+		v = new Vehicle(vt, st, trans);
 		
 		st->addVehicle(v);
 		v->eid = eid;
 	}
 	
-	// Update the transform
-	v->body->getMotionState()->setWorldTransform(btTransform(
-		btQuaternion(qx, qy, qz, qw),
-		btVector3(bx, by, bz)
-	));
-	
+	// Update the vehicle
+	v->body->getMotionState()->setWorldTransform(trans);
 	v->engineForce = ef;
 	v->brakeForce = bf;
 	v->steering = s;

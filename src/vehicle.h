@@ -32,7 +32,9 @@ class Vehicle : public Entity
 		btCollisionShape* wheel_shape;
 	
 	public:
-		Vehicle(VehicleType *pt, GameState *st, float x, float y, float z, float angle);
+		Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy);
+		Vehicle(VehicleType *vt, GameState *st, btTransform & loc);
+		void init(VehicleType *vt, GameState *st, btTransform & loc);
 		virtual ~Vehicle();
 		
 	public:
