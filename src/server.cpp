@@ -42,7 +42,7 @@ int main (int argc, char ** argv) {
 	st->curr_map = m;
 	
 	new GameLogic(st);
-	GameType *gt = st->mm->getGameType("boredem");
+	GameType *gt = st->mm->getGameType("test");
 	st->logic->execScript(gt->script);
 	
 	st->client = NULL;
