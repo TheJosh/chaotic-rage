@@ -487,6 +487,23 @@ void GameState::HUDMessage(unsigned int slot, string text, string text2)
 }
 
 
+/**
+* Add a label to a given slot. Use ALL_SLOTS to add to all slots
+**/
+HUDLabel* GameState::HUDLabel(unsigned int slot, int x, int y, string data)
+{
+
+	// This doesn't actually work properly
+
+	PlayerState *ps = this->localPlayerFromSlot(1);
+
+	if (ps && ps->hud) {
+		return ps->hud->addLabel(x, y, data);
+	}
+
+	return NULL;
+}
+
 
 void GameState::addDebugLine(btVector3 * a, btVector3 * b)
 {

@@ -494,9 +494,9 @@ LUA_FUNC(add_label)
 	const char * data = lua_tostring(L, 3);
 	HUDLabel * lab;
 
-	PlayerState *ps = gl->st->localPlayerFromSlot(1);		// TODO: do this properly
-	if (ps && ps->hud) {
-		lab = ps->hud->addLabel(x, y, data);
+	lab = gl->st->HUDLabel(1, x, y, data);
+
+	if (lab) {
 		new_hudlabel(L, lab);
 		return 1;
 	}
