@@ -134,7 +134,7 @@ class Render3D : public Render
 		/**
 		* Render some text
 		**/
-		virtual void renderText(string text, float x = 0.0, float y = 0.0, float r = 1.0, float g = 1.0, float b = 1.0) = 0;
+		virtual void renderText(string text, float x = 0.0f, float y = 0.0f, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f) = 0;
 		
 		/**
 		* Render some text

@@ -50,24 +50,30 @@ start_round = function()
 	num_dead = 0;
 	round = round + 1;
 	
+	-- Cool label for new round
 	lab = add_label(0, 350, "Round " .. round);
 	lab.align = 2;
+	lab.r = 0.9; lab.g = 0.1; lab.b = 0.1;
 
-	add_timer(2000, function()
-		-- We should make this actually remove the label
-		-- but it needs to be network aware and faction aware
-		-- needs more thought first
+	-- Fade out the message
+	anim = add_interval(100, function()
+		lab.a = lab.a - 0.03;
 
-		lab.visible = false;
+		if lab.a <= 0.0 then
+			-- We should make this actually remove the label
+			-- but it needs to be network aware and faction aware
+			-- needs more thought first
+			remove_timer(anim);
+		end;
 	end);
-
-	show_alert_message("Starting Round " .. round);
 	
+	-- Do an ammo drop
 	if round % 3 == 0 then
 		show_alert_message("Would you like some more ammo?");
 		ammo_drop()
 	end;
 	
+	-- Lets get spawning
 	timer = add_interval(500, spawn_func);
 	
 	do_score();

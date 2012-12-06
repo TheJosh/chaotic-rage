@@ -677,7 +677,7 @@ void RenderOpenGLCompat::renderAnimPlay(AnimPlay * play)
 *
 * Note that the Y is for the baseline of the text.
 **/
-void RenderOpenGLCompat::renderText(string text, float x, float y, float r, float g, float b)
+void RenderOpenGLCompat::renderText(string text, float x, float y, float r, float g, float b, float a)
 {
 	if (face == NULL) return;
 
@@ -686,13 +686,16 @@ void RenderOpenGLCompat::renderText(string text, float x, float y, float r, floa
 	
 	unsigned int n;
 	
-	glColor3f(r, g, b);
-	
+	glColor4f(r, g, b, a);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+
 	for ( n = 0; n < text.length(); n++ ) {
 		this->renderCharacter(text[n]);
 	}
 	
-	glColor3f(1, 1, 1);
+	glDisable(GL_BLEND);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	
 	glPopMatrix();
 }

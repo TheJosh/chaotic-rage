@@ -101,15 +101,15 @@ void HUD::render(Render3D * render)
 			if (! l->visible) continue;
 			
 			if (l->align == HUDLabelAlign::ALIGN_LEFT) {
-				render->renderText(l->data, l->x, l->y);
+				render->renderText(l->data, l->x, l->y, l->r, l->g, l->b, l->a);
 
 			} else if (l->align == HUDLabelAlign::ALIGN_CENTER) {
 				int w = render->widthText(l->data);
-				render->renderText(l->data, l->x + (l->width - w) / 2, l->y);
-
+				render->renderText(l->data, l->x + (l->width - w) / 2, l->y, l->r, l->g, l->b, l->a);
+				
 			} else if (l->align == HUDLabelAlign::ALIGN_RIGHT) {
 				int w = render->widthText(l->data);
-				render->renderText(l->data, l->x + (l->width - w), l->y);
+				render->renderText(l->data, l->x + (l->width - w), l->y, l->r, l->g, l->b, l->a);
 			}
 		}
 		

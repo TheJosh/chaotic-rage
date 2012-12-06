@@ -66,6 +66,18 @@ LUA_FUNC(get)
 	} else if (strcmp(i, "visible") == 0) {
 		lua_pushboolean(L, lab->visible);
 
+	} else if (strcmp(i, "r") == 0) {
+		lua_pushnumber(L, lab->r);
+
+	} else if (strcmp(i, "g") == 0) {
+		lua_pushnumber(L, lab->g);
+
+	} else if (strcmp(i, "b") == 0) {
+		lua_pushnumber(L, lab->b);
+
+	} else if (strcmp(i, "a") == 0) {
+		lua_pushnumber(L, lab->a);
+
 	} else {
 		lua_pushstring(L, "Invalid property for object " MYTYPE);
 		lua_error(L);
@@ -96,6 +108,18 @@ LUA_FUNC(set)
 
 	} else if (strcmp(i, "align") == 0) {
 		lab->align = (HUDLabelAlign) lua_tointeger(L, 3);
+
+	} else if (strcmp(i, "r") == 0) {
+		lab->r = lua_tonumber(L, 3);
+
+	} else if (strcmp(i, "g") == 0) {
+		lab->g = lua_tonumber(L, 3);
+
+	} else if (strcmp(i, "b") == 0) {
+		lab->b = lua_tonumber(L, 3);
+
+	} else if (strcmp(i, "a") == 0) {
+		lab->a = lua_tonumber(L, 3);
 
 	} else {
 		lua_pushstring(L, "Invalid property for object " MYTYPE);
