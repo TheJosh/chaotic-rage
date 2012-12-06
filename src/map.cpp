@@ -290,7 +290,7 @@ int Map::load(string name, Render * render)
 void Map::loadDefaultEntities()
 {
 	cfg_t *cfg, *cfg_sub;
-	int num_types, j, k;
+	int num_types, j;
 	
 	
 	char *buffer = mod->loadText("map.conf");

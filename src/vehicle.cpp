@@ -29,19 +29,20 @@ btVector3 wheelAxleCS(-1,0,0);
 Vehicle::Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy) : Entity(st)
 {
 	btVector3 sizeHE = vt->model->getBoundingSizeHE();
-
-	this->init(vt, st, btTransform(
+	btTransform trans = btTransform(
 		btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
 		st->physics->spawnLocation(mapx, mapy, sizeHE.z() * 2.0f)
-	));
+	);
+	
+	this->init(vt, st, trans);
 }
 
-Vehicle::Vehicle(VehicleType *vt, GameState *st, btTransform & loc) : Entity(st)
+Vehicle::Vehicle(VehicleType *vt, GameState *st, btTransform &loc) : Entity(st)
 {
 	this->init(vt, st, loc);
 }
 
-void Vehicle::init(VehicleType *vt, GameState *st, btTransform & loc)
+void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 {
 	this->vt = vt;
 	this->anim = new AnimPlay(vt->model);
