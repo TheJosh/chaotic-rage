@@ -6,6 +6,7 @@
 #include <iostream>
 #include <SDL.h>
 #include "../rage.h"
+#include "hud_label.h"
 
 using namespace std;
 
@@ -16,15 +17,6 @@ class HUDMessage
 	private:
 		string text;
 		unsigned int remove_time;
-};
-
-class HUDLabel
-{
-	public:
-		int x;
-		int y;
-		string data;
-		bool visible;
 };
 
 

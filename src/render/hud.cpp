@@ -40,16 +40,10 @@ void HUD::addMessage(string text1, string text2)
 **/
 HUDLabel * HUD::addLabel(int x, int y, string data)
 {
-	HUDLabel * l;
-	
-	l = new HUDLabel();
-	l->x = x;
-	l->y = y;
-	l->data = data;
-	l->visible = true;
-	
+	HUDLabel * l = new HUDLabel(x, y, data);
+	l->width = ((Render3D*)this->ps->st->render)->virt_width;
+
 	this->labels.push_back(l);
-	
 	return l;
 }
 
@@ -106,7 +100,17 @@ void HUD::render(Render3D * render)
 			HUDLabel *l = (*it);
 			if (! l->visible) continue;
 			
-			render->renderText(l->data, l->x, l->y);
+			if (l->align == HUDLabelAlign::ALIGN_LEFT) {
+				render->renderText(l->data, l->x, l->y);
+
+			} else if (l->align == HUDLabelAlign::ALIGN_CENTER) {
+				int w = render->widthText(l->data);
+				render->renderText(l->data, l->x + (l->width - w) / 2, l->y);
+
+			} else if (l->align == HUDLabelAlign::ALIGN_RIGHT) {
+				int w = render->widthText(l->data);
+				render->renderText(l->data, l->x + (l->width - w), l->y);
+			}
 		}
 		
 		// Health, ammo, etc

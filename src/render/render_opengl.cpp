@@ -809,6 +809,30 @@ void RenderOpenGL::renderCharacter(char character)
 }
 
 
+/**
+* Returns the width of a string
+**/
+unsigned int RenderOpenGL::widthText(string text)
+{
+	if (face == NULL) return 0;
+
+	unsigned int w = 0;
+
+	for ( unsigned int n = 0; n < text.length(); n++ ) {
+		char character = text[n];
+		if ((int) character < 32 || (int) character > 128) continue;
+		
+		FT_GlyphSlot slot = face->glyph;
+		
+		// Load glyph image into the slot
+		int error = FT_Load_Char(this->face, character, FT_LOAD_DEFAULT);
+		if (error) continue;
+		
+		w += (slot->advance.x >> 6);
+	}
+	
+	return w;
+}
 
 
 

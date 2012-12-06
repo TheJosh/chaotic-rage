@@ -215,6 +215,7 @@
     <ClInclude Include="..\..\src\player.h" />
     <ClInclude Include="..\..\src\rage.h" />
     <ClInclude Include="..\..\src\render\hud.h" />
+    <ClInclude Include="..\..\src\render\hud_label.h" />
     <ClInclude Include="..\..\src\render\render.h" />
     <ClInclude Include="..\..\src\render\render_3d.h" />
     <ClInclude Include="..\..\src\render\render_debug.h" />

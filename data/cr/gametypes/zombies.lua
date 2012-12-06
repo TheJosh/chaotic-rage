@@ -50,6 +50,17 @@ start_round = function()
 	num_dead = 0;
 	round = round + 1;
 	
+	lab = add_label(0, 350, "Round " .. round);
+	lab.align = 2;
+
+	add_timer(2000, function()
+		-- We should make this actually remove the label
+		-- but it needs to be network aware and faction aware
+		-- needs more thought first
+
+		lab.visible = false;
+	end);
+
 	show_alert_message("Starting Round " .. round);
 	
 	if round % 3 == 0 then

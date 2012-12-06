@@ -136,6 +136,10 @@ class Render3D : public Render
 		**/
 		virtual void renderText(string text, float x = 0.0, float y = 0.0, float r = 1.0, float g = 1.0, float b = 1.0) = 0;
 		
+		/**
+		* Render some text
+		**/
+		virtual unsigned int widthText(string text) = 0;
 };
 
 

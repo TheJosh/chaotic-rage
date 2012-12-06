@@ -94,6 +94,9 @@ LUA_FUNC(set)
 	} else if (strcmp(i, "visible") == 0) {
 		lab->visible = lua_toboolean(L, 3);
 
+	} else if (strcmp(i, "align") == 0) {
+		lab->align = (HUDLabelAlign) lua_tointeger(L, 3);
+
 	} else {
 		lua_pushstring(L, "Invalid property for object " MYTYPE);
 		lua_error(L);
