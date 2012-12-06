@@ -38,52 +38,19 @@ void HUD::addMessage(string text1, string text2)
 /**
 * Add a data table to the HUD
 **/
-int HUD::addDataTable(int x, int y, int cols, int rows)
+HUDLabel * HUD::addLabel(int x, int y, string data)
 {
-	DataTable * dt;
+	HUDLabel * l;
 	
-	dt = new DataTable();
-	dt->x = x;
-	dt->y = y;
-	dt->cols = cols;
-	dt->rows = rows;
-	dt->visible = true;
+	l = new HUDLabel();
+	l->x = x;
+	l->y = y;
+	l->data = data;
+	l->visible = true;
 	
-	for (int i = 0; i < (cols * rows); i++) {
-		dt->data.push_back("");
-	}
+	this->labels.push_back(l);
 	
-	this->tables.push_back(dt);
-	
-	return this->tables.size() - 1;
-}
-
-/**
-* Set a value of a data table
-**/
-void HUD::setDataValue(int table_id, int col, int row, string val)
-{
-	DataTable * dt;
-	dt = this->tables.at(table_id);
-	dt->data[(row * dt->cols) + col] = val;
-}
-
-/**
-* Remove a data table
-**/
-void HUD::removeDataTable(int table_id)
-{
-	DataTable * dt;
-	dt = this->tables.at(table_id);
-	dt->visible = false;
-}
-
-/**
-* Remove a data table
-**/
-void HUD::removeAllDataTables()
-{
-	this->tables.clear();
+	return l;
 }
 
 
@@ -120,7 +87,7 @@ void HUD::render(Render3D * render)
 		
 		
 	} else {
-		// Alert messages
+		// Messages
 		int y = 1000;
 		for (list<HUDMessage*>::iterator it = this->msgs.begin(); it != this->msgs.end(); it++) {
 			HUDMessage *msg = (*it);
@@ -134,18 +101,15 @@ void HUD::render(Render3D * render)
 			render->renderText(msg->text, 20, y);
 		}
 		
-		// Data tables
-		for (unsigned int i = 0; i < this->tables.size(); i++) {
-			DataTable *dt = this->tables[i];
-			if (! dt->visible) continue;
+		// Labels
+		for (list<HUDLabel*>::iterator it = this->labels.begin(); it != this->labels.end(); it++) {
+			HUDLabel *l = (*it);
+			if (! l->visible) continue;
 			
-			for (int col = 0; col < dt->cols; col++) {
-				for (int row = 0; row < dt->rows; row++) {
-					render->renderText(dt->data[(row * dt->cols) + col], dt->x + (100 * col), dt->y + (20 * row));
-				}
-			}
+			render->renderText(l->data, l->x, l->y);
 		}
 		
+		// Health, ammo, etc
 		if (this->ps->p != NULL) {
 			int val;
 			

@@ -18,15 +18,12 @@ class HUDMessage
 		unsigned int remove_time;
 };
 
-class DataTable
+class HUDLabel
 {
-	friend class HUD;
-	private:
+	public:
 		int x;
 		int y;
-		int cols;
-		int rows;
-		vector<string> data;
+		string data;
 		bool visible;
 };
 
@@ -38,7 +35,7 @@ class HUD {
 	private:
 		bool weapon_menu;
 		list<HUDMessage*> msgs;
-		vector<DataTable*> tables;
+		list<HUDLabel*> labels;
 		
 	public:
 		HUD(PlayerState *ps);
@@ -53,10 +50,7 @@ class HUD {
 		void addMessage(string text);
 		void addMessage(string text1, string text2);
 		
-		int addDataTable(int x, int y, int cols, int rows);
-		void setDataValue(int table_id, int col, int row, string val);
-		void removeDataTable(int table_id);
-		void removeAllDataTables();
+		HUDLabel * addLabel(int x, int y, string data);
 };
 
 

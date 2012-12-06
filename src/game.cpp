@@ -39,10 +39,6 @@ void gameLoop(GameState *st, Render *render)
 	st->render->preGame();
 	st->render->loadHeightmap();
 
-	for (unsigned int i = 0; i < st->num_local; i++) {
-		st->local_players[i]->hud->removeAllDataTables();
-	}
-
 	if (st->client == NULL) {
 		st->curr_map->loadDefaultEntities();
 	}
@@ -54,7 +50,6 @@ void gameLoop(GameState *st, Render *render)
 	if (st->client == NULL) {
 		for (unsigned int i = 0; i < st->num_local; i++) {
 			st->logic->raise_playerjoin(st->local_players[i]->slot);
-			st->local_players[i]->hud->removeAllDataTables();
 		}
 	}
 

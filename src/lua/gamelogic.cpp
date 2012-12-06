@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <SDL.h>
 #include "../rage.h"
+#include "lua_libs.h"
 
 extern "C" {
 	#include <lua.h>
@@ -486,50 +487,22 @@ LUA_FUNC(show_alert_message)
 /**
 * Display an alert message
 **/
-LUA_FUNC(add_data_table)
+LUA_FUNC(add_label)
 {
 	int x = lua_tointeger(L, 1);
 	int y = lua_tointeger(L, 2);
-	int cols = lua_tointeger(L, 3);
-	int rows = lua_tointeger(L, 4);
-	int table_id = 0;
-	
-	PlayerState *ps = gl->st->localPlayerFromSlot(1);		// TODO: do this properly
-	if (ps && ps->hud) {
-		table_id = ps->hud->addDataTable(x, y, cols, rows);
-	}
-	
-	lua_pushnumber(L, table_id);
-	return 1;
-}
+	const char * data = lua_tostring(L, 3);
+	HUDLabel * lab;
 
-/**
-* Set a value for a data table
-*
-* @param int The table id
-* @param int The col of the cell to set
-* @param int The row of the cell to set
-* @param String The value to set
-**/
-LUA_FUNC(set_data_value)
-{
-	int table_id = lua_tointeger(L, 1);
-	int col = lua_tointeger(L, 2);
-	int row = lua_tointeger(L, 3);
-	
-	const char* ctext = lua_tostring(L, 4);
-	string text = (*(new string(ctext)));
-	if (text.empty()) {
-		lua_pushstring(L, "Arg #4 is not a string");
-		lua_error(L);
-	}
-	
 	PlayerState *ps = gl->st->localPlayerFromSlot(1);		// TODO: do this properly
 	if (ps && ps->hud) {
-		ps->hud->setDataValue(table_id, col, row, text);
+		lab = ps->hud->addLabel(x, y, data);
+		new_hudlabel(L, lab);
+		return 1;
 	}
 	
-	return 0;
+	lua_pushnil(L);
+	return 1;
 }
 
 
@@ -586,8 +559,7 @@ void register_lua_functions()
 	LUA_REG(ammo_drop);
 	LUA_REG(show_alert_message);
 	LUA_REG(get_selected_unittype);
-	LUA_REG(add_data_table);
-	LUA_REG(set_data_value);
+	LUA_REG(add_label);
 	LUA_REG(random);
 	
 	
@@ -604,6 +576,8 @@ void register_lua_functions()
 	lua_pushnumber(L, FACTION_INDIVIDUAL); lua_setfield(L, -2, "individual");
 	lua_pushnumber(L, FACTION_COMMON); lua_setfield(L, -2, "common");
 	lua_setglobal(L, "factions");
+
+	load_hudlabel_lib(L);
 }
 
 

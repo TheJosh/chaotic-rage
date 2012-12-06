@@ -65,6 +65,7 @@ class GameLogic;
 class GameState;
 class GameType;
 class HUD;
+class HUDLabel;
 class Intro;
 class Map;
 class MapRegistry;

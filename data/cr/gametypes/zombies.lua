@@ -8,12 +8,13 @@ num_dead = 0;
 timer = 0;
 round = 0;
 score_table = 0;
+score_labels = {};
 
 
 do_score = function()
-	set_data_value(score_table, 1, 0, round);
-	set_data_value(score_table, 1, 1, num_zombies - num_dead);
-	set_data_value(score_table, 1, 2, num_dead);
+	score_labels.round.data = round;
+	score_labels.alive.data = num_zombies - num_dead;
+	score_labels.dead.data = num_dead;
 end;
 
 
@@ -58,10 +59,6 @@ start_round = function()
 	
 	timer = add_interval(500, spawn_func);
 	
-	set_data_value(score_table, 0, 0, "Round");
-	set_data_value(score_table, 0, 1, "Alive");
-	set_data_value(score_table, 0, 2, "Dead");
-	
 	do_score();
 end;
 
@@ -90,7 +87,14 @@ bind_gamestart(function()
 	add_timer(10000, start_round);
 	add_timer(5000, initial_ammo);
 	
-	score_table = add_data_table(800, 50, 2, 3);
+	add_label(800, 50, "Round");
+	score_labels.round = add_label(900, 50, "0");
+
+	add_label(800, 70, "Alive");
+	score_labels.alive = add_label(900, 70, "0");
+
+	add_label(800, 90, "Dead");
+	score_labels.dead = add_label(900, 90, "0");
 end);
 
 

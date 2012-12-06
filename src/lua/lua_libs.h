@@ -33,3 +33,10 @@ double * get_vector3(lua_State *L, int i);
 void load_unitinfo_lib(lua_State *L);
 UnitQueryResult * new_unitinfo(lua_State *L, UnitQueryResult* src);
 UnitQueryResult * get_unitinfo(lua_State *L, int i);
+
+
+/**
+* hudlabel lua class for HUDLabel c++ class
+**/
+void load_hudlabel_lib(lua_State *L);
+void new_hudlabel(lua_State *L, HUDLabel* src);
