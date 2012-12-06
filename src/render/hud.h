@@ -10,7 +10,7 @@
 using namespace std;
 
 
-class AlertMessage
+class HUDMessage
 {
 	friend class HUD;
 	private:
@@ -37,7 +37,7 @@ class HUD {
 		
 	private:
 		bool weapon_menu;
-		list<AlertMessage*> msgs;
+		list<HUDMessage*> msgs;
 		vector<DataTable*> tables;
 		
 	public:
@@ -50,8 +50,8 @@ class HUD {
 		void eventUp();
 		void eventDown();
 
-		void addAlertMessage(string text);
-		void addAlertMessage(string text1, string text2);
+		void addMessage(string text);
+		void addMessage(string text1, string text2);
 		
 		int addDataTable(int x, int y, int cols, int rows);
 		void setDataValue(int table_id, int col, int row, string val);

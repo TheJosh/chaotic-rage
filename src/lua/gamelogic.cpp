@@ -477,7 +477,7 @@ LUA_FUNC(show_alert_message)
 		lua_error(L);
 	}
 	
-	gl->st->alertMessage(ALL_SLOTS, text);
+	gl->st->HUDMessage(ALL_SLOTS, text);
 	
 	return 0;
 }

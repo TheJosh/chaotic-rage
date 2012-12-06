@@ -18,17 +18,17 @@ HUD::HUD(PlayerState *ps)
 }
 
 
-void HUD::addAlertMessage(string text)
+void HUD::addMessage(string text)
 {
-	AlertMessage *msg = new AlertMessage();
+	HUDMessage *msg = new HUDMessage();
 	msg->text = text;
 	msg->remove_time = this->ps->st->game_time + 5000;
 	this->msgs.push_front(msg);
 }
 
-void HUD::addAlertMessage(string text1, string text2)
+void HUD::addMessage(string text1, string text2)
 {
-	AlertMessage *msg = new AlertMessage();
+	HUDMessage *msg = new HUDMessage();
 	msg->text = text1.append(text2);
 	msg->remove_time = this->ps->st->game_time + 5000;
 	this->msgs.push_front(msg);
@@ -90,7 +90,7 @@ void HUD::removeAllDataTables()
 /**
 * Used for filtering
 **/
-/*static bool MessageEraser(AlertMessage *e)
+/*static bool MessageEraser(HUDMessage *e)
 {
 	return (e->remove_time > st->game_time);
 }*/
@@ -122,8 +122,8 @@ void HUD::render(Render3D * render)
 	} else {
 		// Alert messages
 		int y = 1000;
-		for (list<AlertMessage*>::iterator it = this->msgs.begin(); it != this->msgs.end(); it++) {
-			AlertMessage *msg = (*it);
+		for (list<HUDMessage*>::iterator it = this->msgs.begin(); it != this->msgs.end(); it++) {
+			HUDMessage *msg = (*it);
 			
 			if (msg->remove_time < ps->st->game_time) {
 				// TODO: Remove the message

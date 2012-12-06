@@ -157,8 +157,8 @@ class GameState
 		bool hasDialogs();
 		
 		// HUD
-		void alertMessage(unsigned int slot, string text);
-		void alertMessage(unsigned int slot, string text, string text2);
+		void HUDMessage(unsigned int slot, string text);
+		void HUDMessage(unsigned int slot, string text, string text2);
 		
 		void addDebugLine(btVector3 * a, btVector3 * b);
 };

@@ -271,7 +271,7 @@ void Unit::meleeAttack()
 void Unit::specialAttack()
 {
 	// TODO: Code this one
-	this->st->alertMessage(this->slot, "TODO: special attack");
+	this->st->HUDMessage(this->slot, "TODO: special attack");
 }
 
 
@@ -662,7 +662,7 @@ void Unit::doUse()
 	ObjectType *ot = this->curr_obj->ot;
 	
 	if (ot->show_message.length() != 0) {
-		this->st->alertMessage(this->slot, ot->show_message);
+		this->st->HUDMessage(this->slot, ot->show_message);
 	}
 	
 	if (ot->add_object.length() != 0) {
@@ -673,7 +673,7 @@ void Unit::doUse()
 	if (ot->pickup_weapon.length() != 0) {
 		WeaponType *wt = this->st->mm->getWeaponType(ot->pickup_weapon);
 		if (wt) {
-			this->st->alertMessage(this->slot, "Picked up a ", wt->title);
+			this->st->HUDMessage(this->slot, "Picked up a ", wt->title);
 			this->pickupWeapon(wt);
 			this->curr_obj->del = 1;
 		}
@@ -682,14 +682,14 @@ void Unit::doUse()
 	if (ot->ammo_crate.length() != 0) {
 		if (ot->ammo_crate.compare("current") == 0) {
 			if (this->pickupAmmo(weapon->wt)) {
-				this->st->alertMessage(this->slot, "Picked up some ammo");
+				this->st->HUDMessage(this->slot, "Picked up some ammo");
 				this->curr_obj->del = 1;
 			}
 			
 		} else {
 			WeaponType *wt = this->st->mm->getWeaponType(ot->ammo_crate);
 			if (wt && this->pickupAmmo(wt)) {
-				this->st->alertMessage(this->slot, "Picked up some ammo");
+				this->st->HUDMessage(this->slot, "Picked up some ammo");
 				this->curr_obj->del = 1;
 			}
 		}

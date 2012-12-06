@@ -464,15 +464,15 @@ bool GameState::hasDialogs()
 /**
 * Send a message to a given slot. Use ALL_SLOTS to send to all slots
 **/
-void GameState::alertMessage(unsigned int slot, string text)
+void GameState::HUDMessage(unsigned int slot, string text)
 {
 	if (slot == ALL_SLOTS) {
 		for (unsigned int i = 0; i < num_local; i++) {
-			local_players[i]->hud->addAlertMessage(text);
+			local_players[i]->hud->addMessage(text);
 		}
 	} else {
 		PlayerState *ps = localPlayerFromSlot(slot);
-		if (ps) ps->hud->addAlertMessage(text);
+		if (ps) ps->hud->addMessage(text);
 	}
 }
 
@@ -480,10 +480,10 @@ void GameState::alertMessage(unsigned int slot, string text)
 /**
 * Send a message to a given slot. Use ALL_SLOTS to send to all slots
 **/
-void GameState::alertMessage(unsigned int slot, string text, string text2)
+void GameState::HUDMessage(unsigned int slot, string text, string text2)
 {
 	text.append(text2);
-	alertMessage(slot, text);
+	HUDMessage(slot, text);
 }
 
 
