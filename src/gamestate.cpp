@@ -96,6 +96,9 @@ Entity * GameState::getEntity(EID eid)
 	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); it++) {
 		if ((*it)->eid == eid) return (*it);
 	}
+	for (list<Entity*>::iterator it = this->entities_add.begin(); it != this->entities_add.end(); it++) {
+		if ((*it)->eid == eid) return (*it);
+	}
 	return NULL;
 }
 

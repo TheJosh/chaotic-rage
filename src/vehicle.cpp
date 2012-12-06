@@ -26,7 +26,22 @@ btVector3 wheelAxleCS(-1,0,0);
 
 
 
-Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, float angle) : Entity(st)
+Vehicle::Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy) : Entity(st)
+{
+	btVector3 sizeHE = vt->model->getBoundingSizeHE();
+
+	this->init(vt, st, btTransform(
+		btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
+		st->physics->spawnLocation(mapx, mapy, sizeHE.z() * 2.0f)
+	));
+}
+
+Vehicle::Vehicle(VehicleType *vt, GameState *st, btTransform & loc) : Entity(st)
+{
+	this->init(vt, st, loc);
+}
+
+void Vehicle::init(VehicleType *vt, GameState *st, btTransform & loc)
 {
 	this->vt = vt;
 	this->anim = new AnimPlay(vt->model);
@@ -49,11 +64,7 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z, floa
 	//localTrans.setOrigin(btVector3(0,0,0.5f));
 	//compound->addChildShape(localTrans,chassisShape);
 	
-	btDefaultMotionState* motionState =
-		new btDefaultMotionState(btTransform(
-			btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
-			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)
-		));
+	btDefaultMotionState* motionState = new btDefaultMotionState(loc);
 	this->body = st->physics->addRigidBody(chassisShape, 120.0f, motionState);
 	this->body->setUserPointer(this);
 	this->body->setActivationState(DISABLE_DEACTIVATION);
@@ -154,6 +165,12 @@ void Vehicle::update(int delta)
 	
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
 		this->vehicle->updateWheelTransform(i, true);
+	}
+
+	// Send state over network
+	// TODO: only when moving
+	if (st->server != NULL) {
+		st->server->addmsgVehicleState(this);
 	}
 }
 

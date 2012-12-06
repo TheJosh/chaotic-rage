@@ -38,11 +38,11 @@ int main (int argc, char ** argv) {
 	st->physics->init();
 	
 	Map *m = new Map(st);
-	m->load("tanktest", st->render);
+	m->load("nettest", st->render);
 	st->curr_map = m;
 	
 	new GameLogic(st);
-	GameType *gt = st->mm->getGameType("boredem");
+	GameType *gt = st->mm->getGameType("test");
 	st->logic->execScript(gt->script);
 	
 	st->client = NULL;

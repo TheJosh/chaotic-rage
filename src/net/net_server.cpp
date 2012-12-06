@@ -215,11 +215,11 @@ NetMsg * NetServer::addmsgPlayerQuit()
 **/
 NetMsg * NetServer::addmsgUnitState(Unit *u)
 {
-	messages.remove_if(IsTypeUniqPred(UNIT_STATE, u->slot));
+	messages.remove_if(IsTypeUniqPred(UNIT_STATE, u->eid));
 	
 	NetMsg * msg = new NetMsg(UNIT_STATE, 32);
 	msg->seq = this->seq;
-	msg->uniq = u->slot;
+	msg->uniq = u->eid;
 	
 	btTransform trans;
 	u->body->getMotionState()->getWorldTransform(trans);
@@ -236,23 +236,91 @@ NetMsg * NetServer::addmsgUnitState(Unit *u)
 	return msg;
 }
 
-NetMsg * NetServer::addmsgWallState(Wall *w)
-{
-	return NULL;
-}
-
-NetMsg * NetServer::addmsgObjectState(Object *o)
-{
-	return NULL;
-}
-
-NetMsg * NetServer::addmsgVehicleState(Vehicle *v)
-{
-	return NULL;
-}
 
 /**
-* A unit has been removed
+* A wall has been updated
+**/
+NetMsg * NetServer::addmsgWallState(Wall *w)
+{
+	messages.remove_if(IsTypeUniqPred(WALL_STATE, w->eid));
+	
+	NetMsg * msg = new NetMsg(WALL_STATE, 30);
+	msg->seq = this->seq;
+	msg->uniq = w->eid;
+	
+	btTransform trans;
+	w->body->getMotionState()->getWorldTransform(trans);
+	btQuaternion q = trans.getRotation();
+	btVector3 b = trans.getOrigin();
+	
+	pack(msg->data, "h ffff fff",
+		w->eid,
+		q.x(), q.y(), q.z(), q.w(),
+		b.x(), b.y(), b.z()
+	);
+	
+	messages.push_back(*msg);
+	return msg;
+}
+
+
+/**
+* An object has been updated
+**/
+NetMsg * NetServer::addmsgObjectState(Object *o)
+{
+	messages.remove_if(IsTypeUniqPred(OBJECT_STATE, o->eid));
+	
+	NetMsg * msg = new NetMsg(OBJECT_STATE, 30);
+	msg->seq = this->seq;
+	msg->uniq = o->eid;
+	
+	btTransform trans;
+	o->body->getMotionState()->getWorldTransform(trans);
+	btQuaternion q = trans.getRotation();
+	btVector3 b = trans.getOrigin();
+	
+	pack(msg->data, "h ffff fff",
+		o->eid,
+		q.x(), q.y(), q.z(), q.w(),
+		b.x(), b.y(), b.z()
+	);
+	
+	messages.push_back(*msg);
+	return msg;
+}
+
+
+/**
+* A vehicle has been updated
+**/
+NetMsg * NetServer::addmsgVehicleState(Vehicle *v)
+{
+	messages.remove_if(IsTypeUniqPred(VEHICLE_STATE, v->eid));
+	
+	NetMsg * msg = new NetMsg(VEHICLE_STATE, 42);
+	msg->seq = this->seq;
+	msg->uniq = v->eid;
+	
+	btTransform trans;
+	v->body->getMotionState()->getWorldTransform(trans);
+	btQuaternion q = trans.getRotation();
+	btVector3 b = trans.getOrigin();
+	
+	pack(msg->data, "h ffff fff fff",
+		v->eid,
+		q.x(), q.y(), q.z(), q.w(),
+		b.x(), b.y(), b.z(),
+		v->engineForce, v->brakeForce, v->steering
+	);
+	
+	messages.push_back(*msg);
+	return msg;
+}
+
+
+/**
+* An entity has been removed
 **/
 NetMsg * NetServer::addmsgEntityRem(Entity *e)
 {
@@ -300,10 +368,25 @@ unsigned int NetServer::handleJoinReq(NetServerClientInfo *client, Uint8 *data, 
 		
 		switch (e->klass()) {
 			case UNIT:
-				msg = addmsgUnitState((Unit*)e);
+				msg = this->addmsgUnitState((Unit*)e);
 				msg->dest = client;
 				break;
 				
+			case WALL:
+				msg = this->addmsgWallState((Wall*)e);
+				msg->dest = client;
+				break;
+
+			case OBJECT:
+				msg = this->addmsgObjectState((Object*)e);
+				msg->dest = client;
+				break;
+
+			case VEHICLE:
+				msg = this->addmsgVehicleState((Vehicle*)e);
+				msg->dest = client;
+				break;
+
 			default:
 				break;
 		}

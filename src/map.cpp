@@ -181,7 +181,8 @@ int Map::load(string name, Render * render)
 	mod = new Mod(st, filename);
 	
 	
-	cfg_t *cfg;
+	cfg_t *cfg, *cfg_sub;
+	int num_types, j, k;
 	
 	char *buffer = mod->loadText("map.conf");
 	if (buffer == NULL) {
@@ -212,87 +213,8 @@ int Map::load(string name, Render * render)
 	this->terrain = this->render->loadSprite("terrain.png", mod);
 	if (! this->terrain) reportFatalError("Unable to load map; no terran img");
 	
-	
-	return 1;
-}
 
-
-/**
-* Load the map entities
-* THis has to happen after the terrain is created
-**/
-void Map::loadDefaultEntities()
-{
-	cfg_t *cfg, *cfg_sub;
-	int num_types, j, k;
 	
-	
-	char *buffer = mod->loadText("map.conf");
-	if (buffer == NULL) {
-		return;
-	}
-	
-	cfg = cfg_init(opts, CFGF_NONE);
-	cfg_parse_buf(cfg, buffer);
-	
-	free(buffer);
-	
-	
-	// Walls
-	num_types = cfg_size(cfg, "wall");
-	for (j = 0; j < num_types; j++) {
-		cfg_sub = cfg_getnsec(cfg, "wall", j);
-		
-		string type = cfg_getstr(cfg_sub, "type");
-		if (type.empty()) continue;
-		
-		WallType *wt = this->st->mm->getWallType(type);
-		if (wt == NULL) reportFatalError("Unable to load map; missing or invalid wall type '" + type + "'");
-
-		Wall * wa = new Wall(
-			wt,
-			this->st,
-			cfg_getint(cfg_sub, "x"),
-			cfg_getint(cfg_sub, "y"),
-			1,
-			cfg_getint(cfg_sub, "angle")
-		);
-		
-		this->st->addWall(wa);
-	}
-	
-	// Vehicles
-	num_types = cfg_size(cfg, "vehicle");
-	for (j = 0; j < num_types; j++) {
-		cfg_sub = cfg_getnsec(cfg, "vehicle", j);
-		
-		string type = cfg_getstr(cfg_sub, "type");
-		if (type.empty()) continue;
-		
-		VehicleType *vt = this->st->mm->getVehicleType(type);
-		if (vt == NULL) reportFatalError("Unable to load map; missing or invalid vehicle type '" + type + "'");
-		
-		Vehicle * v = new Vehicle(vt, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), 1, cfg_getint(cfg_sub, "angle"));
-		
-		this->st->addVehicle(v);
-	}
-	
-	// Objects
-	num_types = cfg_size(cfg, "object");
-	for (j = 0; j < num_types; j++) {
-		cfg_sub = cfg_getnsec(cfg, "object", j);
-		
-		string type = cfg_getstr(cfg_sub, "type");
-		if (type.empty()) continue;
-		
-		ObjectType *ot = this->st->mm->getObjectType(type);
-		if (ot == NULL) reportFatalError("Unable to load map; missing or invalid object type '" + type + "'");
-		
-		Object * ob = new Object(ot, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), 1, cfg_getint(cfg_sub, "angle"));
-		
-		this->st->addObject(ob);
-	}
-
 	// Zones
 	num_types = cfg_size(cfg, "zone");
 	for (j = 0; j < num_types; j++) {
@@ -354,6 +276,87 @@ void Map::loadDefaultEntities()
 		}
 		
 		this->lights.push_back(l);
+	}
+	
+
+	return 1;
+}
+
+
+/**
+* Load the map entities
+* THis has to happen after the terrain is created
+**/
+void Map::loadDefaultEntities()
+{
+	cfg_t *cfg, *cfg_sub;
+	int num_types, j, k;
+	
+	
+	char *buffer = mod->loadText("map.conf");
+	if (buffer == NULL) {
+		return;
+	}
+	
+	cfg = cfg_init(opts, CFGF_NONE);
+	cfg_parse_buf(cfg, buffer);
+	
+	free(buffer);
+	
+	
+	// Walls
+	num_types = cfg_size(cfg, "wall");
+	for (j = 0; j < num_types; j++) {
+		cfg_sub = cfg_getnsec(cfg, "wall", j);
+		
+		string type = cfg_getstr(cfg_sub, "type");
+		if (type.empty()) continue;
+		
+		WallType *wt = this->st->mm->getWallType(type);
+		if (wt == NULL) reportFatalError("Unable to load map; missing or invalid wall type '" + type + "'");
+
+		Wall * wa = new Wall(
+			wt,
+			this->st,
+			cfg_getint(cfg_sub, "x"),
+			cfg_getint(cfg_sub, "y"),
+			1,
+			cfg_getint(cfg_sub, "angle")
+		);
+		
+		this->st->addWall(wa);
+	}
+	
+	// Vehicles
+	num_types = cfg_size(cfg, "vehicle");
+	for (j = 0; j < num_types; j++) {
+		cfg_sub = cfg_getnsec(cfg, "vehicle", j);
+		
+		string type = cfg_getstr(cfg_sub, "type");
+		if (type.empty()) continue;
+		
+		VehicleType *vt = this->st->mm->getVehicleType(type);
+		if (vt == NULL) reportFatalError("Unable to load map; missing or invalid vehicle type '" + type + "'");
+		
+		Vehicle * v = new Vehicle(vt, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"));
+		
+		this->st->addVehicle(v);
+	}
+	
+	// Objects
+	num_types = cfg_size(cfg, "object");
+	for (j = 0; j < num_types; j++) {
+		cfg_sub = cfg_getnsec(cfg, "object", j);
+		
+		string type = cfg_getstr(cfg_sub, "type");
+		if (type.empty()) continue;
+		
+		ObjectType *ot = this->st->mm->getObjectType(type);
+		if (ot == NULL) reportFatalError("Unable to load map; missing or invalid object type '" + type + "'");
+		
+		Object * ob = new Object(ot, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), 1, cfg_getint(cfg_sub, "angle"));
+		
+		this->st->addObject(ob);
 	}
 }
 

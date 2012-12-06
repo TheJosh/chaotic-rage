@@ -73,7 +73,7 @@ class NetServerClientInfo
 		
 	public:
 		SeqNum seq;		// TODO: again...big enough?
-		int slot;
+		unsigned int slot;
 		bool inlist;
 		
 		NetServerClientInfo() { seq = 0; slot = 0; inlist = false; }

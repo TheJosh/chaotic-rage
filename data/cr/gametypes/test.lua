@@ -7,8 +7,8 @@ debug_physics(true);
 
 
 bind_playerjoin(function(slot)
-	add_timer(20000, function()
-		add_player(get_selected_unittype(), factions.team1, slot);
+	add_timer(2000, function()
+		add_player("robot", factions.team1, slot);
 	end);
 
 	add_timer(5000, function() 
@@ -19,7 +19,7 @@ end);
 
 bind_playerdied(function(slot)
 	add_timer(2000, function()
-		add_player(get_selected_unittype(), factions.team1, slot);
+		add_player("robot", factions.team1, slot);
 	end);
 end);
 
