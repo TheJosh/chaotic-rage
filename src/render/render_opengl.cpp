@@ -950,6 +950,7 @@ void RenderOpenGL::mainRot()
 		} else {
 			this->render_player->body->getMotionState()->getWorldTransform(trans);
 			angle = this->render_player->mouse_angle + 180.0f;
+			tilt += this->render_player->vertical_angle;
 		}
 	}
 
