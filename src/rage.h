@@ -86,6 +86,7 @@ class Render;
 class Render3D;
 class Song;
 class Sound;
+class ServerConfig;
 class Unit;
 class UnitType;
 class VehicleType;
@@ -106,6 +107,7 @@ class Zone;
 #include "util/debug.h"
 #include "util/cmdline.h"
 #include "util/clientconfig.h"
+#include "util/serverconfig.h"
 
 #include "render/render.h"
 #include "render/render_3d.h"

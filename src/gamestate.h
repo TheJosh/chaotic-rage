@@ -106,6 +106,7 @@ class GameState
 		PhysicsBullet* physics;
 		CommandLineArgs* cmdline;
 		ClientConfig* cconf;
+		ServerConfig* sconf;
 		ModManager* mm;
 
 		gcn::Gui* gui;

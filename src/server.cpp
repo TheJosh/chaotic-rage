@@ -10,6 +10,8 @@
 using namespace std;
 
 
+void runGame(GameState * st, string map, string gametype);
+
 
 int main (int argc, char ** argv) {
 	
@@ -19,30 +21,41 @@ int main (int argc, char ** argv) {
 	
 	GameState *st = new GameState();
 	
-	new RenderDebug(st);
-	new AudioNull(st);
-	new PhysicsBullet(st);
-	new ModManager(st);
-	new NetServer(st);
-	
-	st->render->setScreenSize(500, 500, false);
-	
+	st->sconf = new ServerConfig();
+
+	// Load render, audio, etc according to config
+	st->sconf->initRender(st);
+	st->sconf->initAudio(st);
+	st->sconf->initPhysics(st);
+	st->sconf->initMods(st);
+
 	// Load the mods, with threads if possible
 	if (! threadedModLoader(st)) {
 		exit(0);
 	}
 	
+	// Run a game with the specified map and gametype
+	runGame(st, st->sconf->map, st->sconf->gametype);
 	
-	// Let the games begin!
+	exit(0);
+}
 
+
+/**
+* Run a game with the specified map and gametype
+**/
+void runGame(GameState * st, string map, string gametype)
+{
+	new NetServer(st);
+	
 	st->physics->init();
 	
 	Map *m = new Map(st);
-	m->load("nettest", st->render);
+	m->load(map, st->render);
 	st->curr_map = m;
 	
 	new GameLogic(st);
-	GameType *gt = st->mm->getGameType("test");
+	GameType *gt = st->mm->getGameType(gametype);
 	st->logic->execScript(gt->script);
 	
 	st->client = NULL;
@@ -50,13 +63,10 @@ int main (int argc, char ** argv) {
 	
 	st->physics->preGame();
 	
-	st->server->listen(17778);
+	st->server->listen(st->sconf->port);
 	
 	gameLoop(st, st->render);
 	
-	exit(0);
+	delete(st->server);
 }
-
-
-
 

@@ -167,6 +167,7 @@
     <ClCompile Include="..\..\src\util\obj.cpp" />
     <ClCompile Include="..\..\src\util\SDL_rwops_zzip.cpp" />
     <ClCompile Include="..\..\src\util\sdl_util.cpp" />
+    <ClCompile Include="..\..\src\util\serverconfig.cpp" />
     <ClCompile Include="..\..\src\util\util.cpp" />
     <ClCompile Include="..\..\src\vehicle.cpp" />
     <ClCompile Include="..\..\src\wall.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="..\..\src\util\obj.h" />
     <ClInclude Include="..\..\src\util\SDL_rwops_zzip.h" />
     <ClInclude Include="..\..\src\util\sdl_util.h" />
+    <ClInclude Include="..\..\src\util\serverconfig.h" />
     <ClInclude Include="..\..\src\util\util.h" />
     <ClInclude Include="..\..\src\vehicle.h" />
     <ClInclude Include="..\..\src\wall.h" />

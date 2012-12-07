@@ -256,6 +256,9 @@
     <ClCompile Include="..\..\src\lua\lua_hudlabel_lib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\util\serverconfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\entity.h">
@@ -433,6 +436,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\render\hud_label.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\serverconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
