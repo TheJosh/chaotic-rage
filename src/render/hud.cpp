@@ -73,7 +73,7 @@ void HUD::render(Render3D * render)
 			render->renderText(wt->title, r.x, r.y);
 
 			if (i == this->ps->p->getCurrentWeaponID()) {
-				render->renderText(">", r.x - 25, r.y);
+				render->renderText(">", r.x - 25.0f, r.y);
 			}
 			
 			r.y += 30;
@@ -92,7 +92,7 @@ void HUD::render(Render3D * render)
 			}
 			
 			y -= 20;
-			render->renderText(msg->text, 20, y);
+			render->renderText(msg->text, 20.0f, y);
 		}
 		
 		// Labels
@@ -100,14 +100,14 @@ void HUD::render(Render3D * render)
 			HUDLabel *l = (*it);
 			if (! l->visible) continue;
 			
-			if (l->align == HUDLabelAlign::ALIGN_LEFT) {
+			if (l->align == ALIGN_LEFT) {
 				render->renderText(l->data, l->x, l->y, l->r, l->g, l->b, l->a);
 
-			} else if (l->align == HUDLabelAlign::ALIGN_CENTER) {
+			} else if (l->align == ALIGN_CENTER) {
 				int w = render->widthText(l->data);
 				render->renderText(l->data, l->x + (l->width - w) / 2, l->y, l->r, l->g, l->b, l->a);
 				
-			} else if (l->align == HUDLabelAlign::ALIGN_RIGHT) {
+			} else if (l->align == ALIGN_RIGHT) {
 				int w = render->widthText(l->data);
 				render->renderText(l->data, l->x + (l->width - w), l->y, l->r, l->g, l->b, l->a);
 			}

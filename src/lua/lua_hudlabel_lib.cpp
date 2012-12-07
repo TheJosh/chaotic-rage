@@ -58,10 +58,10 @@ LUA_FUNC(get)
 		lua_pushstring(L, (const char*)lab->data.c_str());
 
 	} else if (strcmp(i, "x") == 0) {
-		lua_pushinteger(L, lab->x);
+		lua_pushnumber(L, lab->x);
 
 	} else if (strcmp(i, "y") == 0) {
-		lua_pushinteger(L, lab->y);
+		lua_pushnumber(L, lab->y);
 	
 	} else if (strcmp(i, "visible") == 0) {
 		lua_pushboolean(L, lab->visible);
@@ -98,10 +98,10 @@ LUA_FUNC(set)
 		lab->data.assign(lua_tostring(L, 3));
 
 	} else if (strcmp(i, "x") == 0) {
-		lab->x = lua_tointeger(L, 3);
+		lab->x = lua_tonumber(L, 3);
 		
 	} else if (strcmp(i, "y") == 0) {
-		lab->y = lua_tointeger(L, 3);
+		lab->y = lua_tonumber(L, 3);
 
 	} else if (strcmp(i, "visible") == 0) {
 		lab->visible = lua_toboolean(L, 3);

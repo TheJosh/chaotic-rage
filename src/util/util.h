@@ -12,13 +12,13 @@
 using namespace std;
 
 
-#define PI 3.1415
+#define PI 3.1415f
 
 #define MAX(a,b) ((a) >= (b) ? (a) : (b))
 #define MIN(a,b) ((a) <= (b) ? (a) : (b))
 
-#define DEG_TO_RAD(x) ((x) * (PI / 180.0))
-#define RAD_TO_DEG(x) ((x) * (180.0 / PI))
+#define DEG_TO_RAD(x) ((x) * (PI / 180.0f))
+#define RAD_TO_DEG(x) ((x) * (180.0f / PI))
 
 #define DF_AREATYPES 1
 #define DF_UNITCLASS 2
