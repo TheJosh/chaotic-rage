@@ -124,6 +124,7 @@
     <ClCompile Include="..\..\src\intro.cpp" />
     <ClCompile Include="..\..\src\lua\ailogic.cpp" />
     <ClCompile Include="..\..\src\lua\gamelogic.cpp" />
+    <ClCompile Include="..\..\src\lua\lua_hudlabel_lib.cpp" />
     <ClCompile Include="..\..\src\lua\lua_standard.cpp" />
     <ClCompile Include="..\..\src\lua\lua_unitinfo_lib.cpp" />
     <ClCompile Include="..\..\src\lua\lua_vector3_lib.cpp" />
@@ -214,6 +215,7 @@
     <ClInclude Include="..\..\src\player.h" />
     <ClInclude Include="..\..\src\rage.h" />
     <ClInclude Include="..\..\src\render\hud.h" />
+    <ClInclude Include="..\..\src\render\hud_label.h" />
     <ClInclude Include="..\..\src\render\render.h" />
     <ClInclude Include="..\..\src\render\render_3d.h" />
     <ClInclude Include="..\..\src\render\render_debug.h" />

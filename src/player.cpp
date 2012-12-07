@@ -28,23 +28,6 @@ Player::~Player()
 void Player::keyPress(int idx)
 {
 	this->key[idx] = 1;
-
-	if (idx == KEY_FIRE) {
-		if (this->lift_obj) {
-			this->doDrop();
-		} else {
-			this->beginFiring();
-		}
-
-	} else if (idx == KEY_USE) {
-		this->doUse();
-	} else if (idx == KEY_LIFT) {
-		this->doLift();
-	} else if (idx == KEY_MELEE) {
-		this->meleeAttack();
-	} else if (idx == KEY_SPECIAL) {
-		this->specialAttack();
-	}
 }
 
 
@@ -54,10 +37,6 @@ void Player::keyPress(int idx)
 void Player::keyRelease(int idx)
 {
 	this->key[idx] = 0;
-
-	if (idx == KEY_FIRE) {
-		this->endFiring();
-	}
 }
 
 
@@ -83,6 +62,42 @@ void Player::setKeys(Uint8 bitfield)
 	for (int i = 0; i < 8; i++) {
 		this->key[i] = bitfield & (1 << i);
 	}
+}
+
+
+/**
+* Uses ->key and ->lkey to detect changes to the flags, and
+* do the appropriate things
+**/
+void Player::handleKeyChange()
+{
+	if (this->key[KEY_FIRE] && !this->lkey[KEY_FIRE]) {
+		if (this->lift_obj) {
+			this->doDrop();
+		} else {
+			this->beginFiring();
+		}
+	} else if (!this->key[KEY_FIRE] && this->lkey[KEY_FIRE]) {
+		this->endFiring();
+	}
+
+	if (this->key[KEY_USE] && !this->lkey[KEY_USE]) {
+		this->doUse();
+	}
+
+	if (this->key[KEY_LIFT] && !this->lkey[KEY_LIFT]) {
+		this->doLift();
+	}
+	
+	if (this->key[KEY_MELEE] && !this->lkey[KEY_MELEE]) {
+		this->meleeAttack();
+	}
+
+	if (this->key[KEY_SPECIAL] && !this->lkey[KEY_SPECIAL]) {
+		this->specialAttack();
+	}
+
+	for (int i = 0; i < 16; i++) this->lkey[i] = this->key[i];
 }
 
 
@@ -122,6 +137,8 @@ void Player::hasBeenHit(Entity * that)
 **/
 void Player::update(int delta)
 {
+	this->handleKeyChange();
+
 	if (this->drive) {
 		if (this->key[KEY_UP]) {
 			this->drive->engineForce = MIN(this->drive->engineForce + 20.0f, 200.0f);		// TODO: Accel + Brake based on vt settings

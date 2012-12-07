@@ -25,6 +25,7 @@ class Player : public Unit
 		
 	public:
 		bool key[16];
+		bool lkey[16];
 		float mouse_angle;
 		float vertical_angle;
 		
@@ -35,10 +36,11 @@ class Player : public Unit
 	public:
 		void keyPress(int idx);
 		void keyRelease(int idx);
+		void handleKeyChange();
 		void angleFromMouse(int x, int y, int delta);
 		void setKeys(Uint8 bitfield);		// TODO: Use 16-bits
-		Uint8 packKeys();					// TODO: Use 16-bits
-		
+		Uint8 packKeys();					// TODO: Use 16-bits	
+
 	public:
 		virtual void update(int delta);
 		virtual int takeDamage(int damage);
