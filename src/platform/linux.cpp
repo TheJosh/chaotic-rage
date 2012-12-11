@@ -4,12 +4,16 @@
 
 #include <string>
 #include <iostream>
-#include "../rage.h"
-
 #include <errno.h>
 #include <glob.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <SDL.h>
+#include <SDL_syswm.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/Xos.h>
+#include "../rage.h"
 
 using namespace std;
 
@@ -49,7 +53,9 @@ string getUserDataDir()
 **/
 void reportFatalError(string msg)
 {
-	cerr << "FATAL ERROR: " << msg << "\n";
+	string m = "FATAL ERROR: ";
+	m.append(msg);
+	displayMessageBox(m);
 	exit(1);
 }
 
@@ -59,7 +65,51 @@ void reportFatalError(string msg)
 **/
 void displayMessageBox(string msg)
 {
+	SDL_SysWMinfo wm;
+	SDL_VERSION(&wm.version);
+	if (! SDL_GetWMInfo(&wm)) {
+		return;
+	}
+	
 	cout << msg << "\n";
+	
+	const char *charmsg = msg.c_str();
+	
+	   Display *d;
+   Window w;
+   XEvent e;
+   int s;
+ 
+   d = wm.info.x11.display;
+ 
+ wm.info.x11.lock_func();
+   s = DefaultScreen(d);
+   w = XCreateSimpleWindow(d, RootWindow(d, s), 10, 10, 200, 70, 1,
+                           BlackPixel(d, s), WhitePixel(d, s));
+   
+   XSetStandardProperties(d,w,"Fatal Error","Fatal Error",None,NULL,0,NULL);
+   
+   XSelectInput(d, w, ExposureMask | ButtonPressMask | KeyPressMask);
+   XMapWindow(d, w);
+ wm.info.x11.unlock_func();
+ 
+ SDL_Delay(10);
+ 
+   while (1) {
+      wm.info.x11.lock_func();
+      XNextEvent(d, &e);
+      if (e.type == Expose) {
+         XDrawString(d, w, DefaultGC(d, s), 10, 50, charmsg, strlen(charmsg));
+      }
+      wm.info.x11.unlock_func();
+      
+      if (e.type == KeyPress) break;
+      
+      if (e.type == ButtonPress) break;
+   }
+
+   XDestroyWindow(d, w);
+   
 }
 
 
