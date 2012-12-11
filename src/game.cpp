@@ -151,27 +151,27 @@ static void handleEvents(GameState *st)
 						filename = "screenshot";
 						filename.append(buf);
 						filename.append(".bmp");
-						st->HUDMessage(ALL_SLOTS, "Saved ", filename);
+						st->addHUDMessage(ALL_SLOTS, "Saved ", filename);
 					}
 					break;
 
 				case SDLK_F5:
-					st->HUDMessage(ALL_SLOTS, "Config reload: ", st->mm->reloadAttrs() ? "success" : "failure");
+					st->addHUDMessage(ALL_SLOTS, "Config reload: ", st->mm->reloadAttrs() ? "success" : "failure");
 					break;
 						
 				case SDLK_F6:
 					st->setMouseGrab(! st->getMouseGrab());
-					st->HUDMessage(ALL_SLOTS, "Reset-mouse ", st->getMouseGrab() ? "on" : "off");
+					st->addHUDMessage(ALL_SLOTS, "Reset-mouse ", st->getMouseGrab() ? "on" : "off");
 					break;
 						
 				case SDLK_F7:
 					st->render->enablePhysicsDebug();
-					st->HUDMessage(ALL_SLOTS, "Physics debug on");
+					st->addHUDMessage(ALL_SLOTS, "Physics debug on");
 					break;
 					
 				case SDLK_F8:
 					st->render->disablePhysicsDebug();
-					st->HUDMessage(ALL_SLOTS, "Physics debug off");
+					st->addHUDMessage(ALL_SLOTS, "Physics debug off");
 					break;
 					
 				default: break;

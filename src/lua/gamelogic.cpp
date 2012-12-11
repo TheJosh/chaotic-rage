@@ -478,7 +478,7 @@ LUA_FUNC(show_alert_message)
 		lua_error(L);
 	}
 	
-	gl->st->HUDMessage(ALL_SLOTS, text);
+	gl->st->addHUDMessage(ALL_SLOTS, text);
 	
 	return 0;
 }
@@ -494,7 +494,7 @@ LUA_FUNC(add_label)
 	const char * data = lua_tostring(L, 3);
 	HUDLabel * lab;
 
-	lab = gl->st->HUDLabel(1, x, y, data);
+	lab = gl->st->addHUDLabel(1, x, y, data);
 
 	if (lab) {
 		new_hudlabel(L, lab);

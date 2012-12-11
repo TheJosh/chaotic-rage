@@ -33,7 +33,7 @@ class HUDLabel
 
 	public:
 		HUDLabel(float x, float y, string data)
-			: x(x), y(y), data(data), width(0.0f), visible(true),
-			  align(ALIGN_LEFT), r(1.0f), g(1.0f), b(1.0f), a(1.0f)
+			: x(x), y(y), width(0.0f), align(ALIGN_LEFT), data(data), visible(true),
+			  r(1.0f), g(1.0f), b(1.0f), a(1.0f)
 			{};
 };

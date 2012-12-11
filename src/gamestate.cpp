@@ -464,7 +464,7 @@ bool GameState::hasDialogs()
 /**
 * Send a message to a given slot. Use ALL_SLOTS to send to all slots
 **/
-void GameState::HUDMessage(unsigned int slot, string text)
+void GameState::addHUDMessage(unsigned int slot, string text)
 {
 	if (slot == ALL_SLOTS) {
 		for (unsigned int i = 0; i < num_local; i++) {
@@ -480,17 +480,17 @@ void GameState::HUDMessage(unsigned int slot, string text)
 /**
 * Send a message to a given slot. Use ALL_SLOTS to send to all slots
 **/
-void GameState::HUDMessage(unsigned int slot, string text, string text2)
+void GameState::addHUDMessage(unsigned int slot, string text, string text2)
 {
 	text.append(text2);
-	HUDMessage(slot, text);
+	this->addHUDMessage(slot, text);
 }
 
 
 /**
 * Add a label to a given slot. Use ALL_SLOTS to add to all slots
 **/
-HUDLabel* GameState::HUDLabel(unsigned int slot, int x, int y, string data)
+HUDLabel* GameState::addHUDLabel(unsigned int slot, int x, int y, string data)
 {
 
 	// This doesn't actually work properly
