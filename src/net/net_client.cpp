@@ -41,6 +41,13 @@ void NetClient::update()
 	UDPpacket *pkt = SDLNet_AllocPacket(1000);
 	
 	
+	// Check the server is still chatting to us
+	if (this->seq != 0 && (st->game_time - this->last_ack) > 2500) {
+		displayMessageBox("Disconnected from server.");
+		st->running = false;
+	}
+	
+	// Handle packets coming in
 	while (SDLNet_UDP_Recv(this->sock, pkt)) {
 		cout << setw (6) << setfill(' ') << st->game_time << " RECV ";
 		dumpPacket(pkt->data, pkt->len);
@@ -51,6 +58,7 @@ void NetClient::update()
 		SeqNum newseq = SDLNet_Read16(ptr);
 		if (newseq > this->seq) {
 			this->seq = newseq;
+			this->last_ack = st->game_time;
 			cout << "       The server has sent " << newseq << ", will ACK.\n";
 		}
 		ptr += 2; p += 2;

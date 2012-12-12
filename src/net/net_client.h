@@ -22,8 +22,9 @@ class NetClient {
 		IPaddress ipaddress;
 		Uint16 code;
 		UDPsocket sock;
-		list<NetMsg> messages;
-		SeqNum seq;			// TODO: is this big enough?
+		list<NetMsg> messages;    // queue of messages to go out
+		SeqNum seq;               // TODO: is this big enough?
+		unsigned int last_ack;    // the time we last got a seq from the server
 		
 		NetClientSeqPred * seq_pred;
 		
