@@ -12,7 +12,7 @@ ifeq ($(PLATFORM),linux)
 	LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse lua5.1 bullet --libs` `freetype-config --libs` -lGL -lGLU -lGLEW -lSDL_mixer -lSDL_image -lSDL_net -lguichan_sdl -lguichan_opengl -lguichan -L/usr/X11R6/lib -lX11
 	
 	CFLAGS_NOGUI=`sdl-config --cflags` `pkg-config zziplib libconfuse lua5.1 bullet --cflags` -DGETOPT -Werror -Wall -ggdb
-	LIBS_NOGUI=`sdl-config --libs` `pkg-config zziplib libconfuse lua5.1 bullet --libs` -lSDL_image -lSDL_net
+	LIBS_NOGUI=`sdl-config --libs` `pkg-config zziplib libconfuse lua5.1 bullet --libs` -lSDL_image -lSDL_net -lguichan
 endif
 
 ifeq ($(PLATFORM),i386-mingw32)
@@ -52,11 +52,12 @@ OBJGUI=$(wildcard build/gui/*.o) \
 	build/intro.o \
 	build/menu.o \
 	build/http/client_stats.o \
-	build/util/clientconfig.o
+	build/util/clientconfig.o \
+	build/events.o
 
 OBJFILES_CLIENT=build/client.o build/linux.o $(filter-out $(OBJMAINS), $(OBJFILES))
 OBJFILES_SERVER=build/server.o build/linux.o $(filter-out $(OBJMAINS), $(OBJFILES))
-OBJFILES_SERVER_NOGUI=build/server_nogui.o build/linux_nogui.o $(filter-out $(OBJMAINS) $(OBJGUI), $(OBJFILES))
+OBJFILES_SERVER_NOGUI=build/server_nogui.o build/linux_nogui.o build/platform/nogui.o $(filter-out $(OBJMAINS) $(OBJGUI), $(OBJFILES))
 OBJFILES_ANIMVIEWER=build/animviewer.o build/linux.o $(filter-out $(OBJMAINS), $(OBJFILES))
 
 
