@@ -8,11 +8,15 @@
 #include <glob.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <SDL.h>
-#include <SDL_syswm.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xos.h>
+
+#ifndef NOGUI
+	#include <SDL.h>
+	#include <SDL_syswm.h>
+	#include <X11/Xlib.h>
+	#include <X11/Xutil.h>
+	#include <X11/Xos.h>
+#endif
+
 #include "../rage.h"
 
 using namespace std;
@@ -65,6 +69,9 @@ void reportFatalError(string msg)
 **/
 void displayMessageBox(string msg)
 {
+#ifdef NOGUI
+	cout << msg << "\n";
+#else
 	SDL_SysWMinfo wm;
 	SDL_VERSION(&wm.version);
 	if (! SDL_GetWMInfo(&wm)) {
@@ -109,7 +116,7 @@ void displayMessageBox(string msg)
    }
 
    XDestroyWindow(d, w);
-   
+#endif
 }
 
 

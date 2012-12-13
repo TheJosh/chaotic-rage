@@ -5,9 +5,14 @@ ifeq ($(PLATFORM),linux)
 	CXX=g++
 	CLIENT=chaoticrage
 	SERVER=dedicatedserver
+	SERVER_NOGUI=dedicatedserver-nogui
 	ANIMVIEWER=animviewer
+	
 	CFLAGS=`sdl-config --cflags` `pkg-config zziplib libconfuse gl glu lua5.1 bullet --cflags` `freetype-config --cflags` -DGETOPT -Werror -Wall -ggdb
 	LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse lua5.1 bullet --libs` `freetype-config --libs` -lGL -lGLU -lGLEW -lSDL_mixer -lSDL_image -lSDL_net -lguichan_sdl -lguichan_opengl -lguichan -L/usr/X11R6/lib -lX11
+	
+	CFLAGS_NOGUI=`sdl-config --cflags` `pkg-config zziplib libconfuse lua5.1 bullet --cflags` -DGETOPT -Werror -Wall -ggdb
+	LIBS_NOGUI=`sdl-config --libs` `pkg-config zziplib libconfuse lua5.1 bullet --libs` -lSDL_image -lSDL_net
 endif
 
 ifeq ($(PLATFORM),i386-mingw32)
@@ -35,12 +40,24 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/http/*.cpp \
 )
 
-OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES)) $(OBJPATH)/objload.o $(OBJPATH)/linux.o
+OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES)) $(OBJPATH)/objload.o
 OBJMAINS=build/server.o build/client.o build/animviewer.o
 
-OBJFILES_CLIENT=build/client.o $(filter-out $(OBJMAINS), $(OBJFILES))
-OBJFILES_SERVER=build/server.o $(filter-out $(OBJMAINS), $(OBJFILES))
-OBJFILES_ANIMVIEWER=build/animviewer.o $(filter-out $(OBJMAINS), $(OBJFILES))
+OBJGUI=$(wildcard build/gui/*.o) \
+	build/render/render_opengl.o \
+	build/render/render_opengl_compat.o \
+	build/render/render_debug.o \
+	build/render/hud.o \
+	build/audio/audio_sdlmixer.o \
+	build/intro.o \
+	build/menu.o \
+	build/http/client_stats.o \
+	build/util/clientconfig.o
+
+OBJFILES_CLIENT=build/client.o build/linux.o $(filter-out $(OBJMAINS), $(OBJFILES))
+OBJFILES_SERVER=build/server.o build/linux.o $(filter-out $(OBJMAINS), $(OBJFILES))
+OBJFILES_SERVER_NOGUI=build/server_nogui.o build/linux_nogui.o $(filter-out $(OBJMAINS) $(OBJGUI), $(OBJFILES))
+OBJFILES_ANIMVIEWER=build/animviewer.o build/linux.o $(filter-out $(OBJMAINS), $(OBJFILES))
 
 
 default: all
@@ -49,32 +66,38 @@ default: all
 
 all: client server animviewer
 
+
 client: $(OBJFILES_CLIENT)
 	@echo [LINK] $@
-	@$(CXX) $(CFLAGS) $(OBJFILES_CLIENT) -o $(CLIENT) $(LIBS) -ggdb 
+	@$(CXX) $(CFLAGS) $(OBJFILES_CLIENT) -o $(CLIENT) $(LIBS)
 	
 server: $(OBJFILES_SERVER)
 	@echo [LINK] $@
-	@$(CXX) $(CFLAGS) $(OBJFILES_SERVER) -o $(SERVER) $(LIBS) -ggdb 
+	@$(CXX) $(CFLAGS) $(OBJFILES_SERVER) -o $(SERVER) $(LIBS) 
+	
+server-nogui: $(OBJFILES_SERVER_NOGUI)
+	@echo [LINK] $@
+	@$(CXX) $(CFLAGS_NOGUI) $(OBJFILES_SERVER_NOGUI) -o $(SERVER_NOGUI) $(LIBS_NOGUI)
 	
 animviewer: $(OBJFILES_ANIMVIEWER)
 	@echo [LINK] $@
-	@$(CXX) $(CFLAGS) $(OBJFILES_ANIMVIEWER) -o $(ANIMVIEWER) $(LIBS) -ggdb 
-	
-	
+	@$(CXX) $(CFLAGS) $(OBJFILES_ANIMVIEWER) -o $(ANIMVIEWER) $(LIBS)
+
+
+clean:
+	rm -f chaoticrage
+	rm -f dedicatedserver
+	rm -f dedicatedserver-nogui
+	rm -f animviewer
+	rm -f $(OBJFILES)
+	rm -f $(OBJPATH)/objload.cpp
+
+
 $(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h Makefile
 	@echo [CC] $<
 	@mkdir -p `dirname $< | sed "s/src/build/"`
 	@$(CXX) $(CFLAGS) -o $@ -c $<
-	
-	
-clean:
-	rm -f chaoticrage chaoticrage.exe
-	rm -f dedicatedserver dedicatedserver.exe
-	rm -f animviewer animviewer.exe
-	rm -f $(OBJFILES)
-	rm -f $(OBJPATH)/objload.cpp
-	
+
 $(OBJPATH)/objload.o: $(SRCPATH)/util/objload.l $(SRCPATH)/util/obj.h Makefile
 	@echo [FLEX] $(SRCPATH)/util/objload.l
 	@flex -o $(OBJPATH)/objload.cpp $(SRCPATH)/util/objload.l
@@ -89,6 +112,13 @@ $(OBJPATH)/linux.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h
 	@echo [CC] $<
 	@$(CXX) $(CFLAGS) -o $@ -c $<
 	
+$(OBJPATH)/linux_nogui.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h Makefile
+	@echo [CC] $<
+	@$(CXX) $(CFLAGS) -DNOGUI -o $@ -c $<
+	
+$(OBJPATH)/server_nogui.o: $(SRCPATH)/server.cpp Makefile
+	@echo [CC] $<
+	@$(CXX) $(CFLAGS) -DNOGUI  -o $@ -c $<
 	
 	
 ifeq ($(wildcard $(OBJPATH)/),)
