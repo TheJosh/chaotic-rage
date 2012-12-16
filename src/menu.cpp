@@ -124,11 +124,6 @@ void Menu::doit()
 			} else if (event.type == SDL_KEYDOWN) {
 				// Key press
 				switch (event.key.keysym.sym) {
-					case SDLK_p:
-						render->setScreenSize(render->desktop_width, render->desktop_height, true);
-						render->initGuichan(gui, mod);
-						break;
-
 					case SDLK_ESCAPE:
 						if (this->dialog != NULL) {
 							this->setDialog(NULL);

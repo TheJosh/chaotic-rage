@@ -182,7 +182,7 @@ void RenderOpenGLCompat::initGuichan(gcn::Gui * gui, Mod * mod)
 	imageLoader = new gcn::ChaoticRageOpenGLSDLImageLoader(mod);
 	gcn::Image::setImageLoader(imageLoader);
 	
-	font = new gcn::ImageFont("fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?"); // .,!?-+/():;%&`'*#=[]\"
+	font = new gcn::ImageFont("fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?!."); // .,!?-+/():;%&`'*#=[]\"
 	gcn::Widget::setGlobalFont(font);
 	
 	graphics = new gcn::OpenGLGraphics(this->real_width, this->real_height);
