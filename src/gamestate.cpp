@@ -383,6 +383,9 @@ bool GameState::getMouseGrab()
 **/
 void GameState::initGuichan()
 {
+#ifdef NOGUI
+	this->gui = NULL;
+#else
 	if (! this->render->is3D()) {
 		this->gui = NULL;
 		return;
@@ -404,6 +407,7 @@ void GameState::initGuichan()
 	} catch (gcn::Exception ex) {
 		this->gui = NULL;
 	}
+#endif
 }
 
 

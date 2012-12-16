@@ -25,9 +25,4 @@ class ServerConfig
 		void load();
 		void save();
 		void savedefault();
-
-		void initRender(GameState *st);
-		void initAudio(GameState *st);
-		void initPhysics(GameState *st);
-		void initMods(GameState *st);
 };

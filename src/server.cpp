@@ -13,8 +13,8 @@ using namespace std;
 void runGame(GameState * st, string map, string gametype);
 
 
-int main (int argc, char ** argv) {
-	
+int main (int argc, char ** argv)
+{
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 	
 	seedRandom();
@@ -23,12 +23,19 @@ int main (int argc, char ** argv) {
 	
 	st->sconf = new ServerConfig();
 
-	// Load render, audio, etc according to config
-	st->sconf->initRender(st);
-	st->sconf->initAudio(st);
-	st->sconf->initPhysics(st);
-	st->sconf->initMods(st);
-
+	// Load render
+	#ifdef NOGUI
+		new RenderNull(st);
+	#else
+		new RenderDebug(st);
+		st->render->setScreenSize(500, 500, false);
+	#endif
+	
+	// Load other bits
+	new AudioNull(st);
+	new PhysicsBullet(st);
+	new ModManager(st);
+	
 	// Load the mods, with threads if possible
 	if (! threadedModLoader(st)) {
 		exit(0);
