@@ -158,6 +158,10 @@ class Zone;
 #include "zone.h"
 
 #include "gui/dialog.h"
+#include "gui/controls.h"
+#include "gui/network.h"
+#include "gui/newgame.h"
+#include "gui/settings.h"
 
 #include "gamestate.h"
 #include "game.h"

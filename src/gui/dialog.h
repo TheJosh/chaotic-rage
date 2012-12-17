@@ -72,26 +72,6 @@ class Dialog {
 
 
 /**
-* Dialog for starting a new game - called by the menu
-**/
-class DialogNewGame : public Dialog, public gcn::ActionListener {
-	public:
-		DialogNewGame(int num_local);
-		
-	private:
-		int num_local;
-		gcn::DropDown * map;
-		gcn::DropDown * gametype;
-		gcn::DropDown * unittype;
-		gcn::DropDown * viewmode;
-		
-	public:
-		virtual gcn::Container * setup();
-		virtual void action(const gcn::ActionEvent& actionEvent);
-};
-
-
-/**
 * Dialog complaining about not being implemented yet.
 **/
 class DialogNull : public Dialog {
@@ -101,16 +81,7 @@ class DialogNull : public Dialog {
 
 
 /**
-* Dialog displaying in-game controls - called by the menu
-**/
-class DialogControls : public Dialog {
-	public:
-		virtual gcn::Container * setup();
-};
-
-
-/**
-* Asks if the user wants to quit - in game
+* Asks if the user wants to quit.
 **/
 class DialogQuit : public Dialog, public gcn::ActionListener {
 	private:
@@ -123,34 +94,3 @@ class DialogQuit : public Dialog, public gcn::ActionListener {
 		virtual void action(const gcn::ActionEvent& actionEvent);
 };
 
-
-/**
-* Show mod selection
-**/
-class DialogMods : public Dialog, public gcn::ActionListener {
-	public:
-		DialogMods();
-		virtual gcn::Container * setup();
-		virtual string getName() { return "mods"; }
-		virtual void action(const gcn::ActionEvent& actionEvent);
-};
-
-
-
-/**
-* Dialog for starting a new game - called by the menu
-**/
-class DialogNetJoin : public Dialog, public gcn::ActionListener {
-	public:
-		DialogNetJoin();
-		
-	private:
-		gcn::TabbedArea * tabs;
-		gcn::TextField * host;
-		gcn::ListBox * internet;
-		vector<string> * internet_hosts;
-		
-	public:
-		virtual gcn::Container * setup();
-		virtual void action(const gcn::ActionEvent& actionEvent);
-};
