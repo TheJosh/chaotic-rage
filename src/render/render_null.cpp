@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include "../rage.h"
+#include <SDL.h>
+#include <SDL_image.h>
 
 using namespace std;
 
@@ -30,10 +32,22 @@ void RenderNull::setScreenSize(int width, int height, bool fullscreen)
 **/
 SpritePtr RenderNull::int_loadSprite(SDL_RWops *rw, string filename)
 {
-	SpritePtr p = new sprite();
-	p->w = 0;
-	p->h = 0;
-	return p;
+	SDL_Surface * surf;
+	
+	surf = IMG_Load_RW(rw, 0);
+	if (surf == NULL) {
+		fprintf(stderr, "Couldn't load sprite '%s'\n", filename.c_str());
+		load_err = true;
+		return NULL;
+	}
+
+	// Create the sprite object
+	SpritePtr sprite = new struct sprite();
+	sprite->w = surf->w;
+	sprite->h = surf->h;
+	sprite->orig = surf;
+	
+	return sprite;
 }
 
 
