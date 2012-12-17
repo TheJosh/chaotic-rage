@@ -11,6 +11,7 @@
 #include <guichan/opengl/openglsdlimageloader.hpp>
 #include "../rage.h"
 #include "dialog.h"
+#include "../http/serverlist.h"
 
 
 using namespace std;
@@ -339,23 +340,47 @@ DialogNetJoin::DialogNetJoin()
 gcn::Container * DialogNetJoin::setup()
 {
 	gcn::Button* button;
-	gcn::Label* label;
 	
-	c = new gcn::Window("Join network game");
-	c->setDimension(gcn::Rectangle(0, 0, 245, 200));
+	c = new gcn::Window("Network game");
+	c->setDimension(gcn::Rectangle(0, 0, 265, 220));
 	
+	this->tabs = new gcn::TabbedArea();
+	this->tabs->setPosition(10, 10);
+	this->tabs->setDimension(gcn::Rectangle(0, 0, 245, 180));
+	c->add(this->tabs);
 	
-	label = new gcn::Label("Host");
-	c->add(label, 10, 10);
+	// Direct connect to a host
+	{
+		gcn::Container* tabc = new gcn::Container();
+		tabc->setDimension(gcn::Rectangle(0, 0, 245, 180));
+		this->tabs->addTab("Direct", tabc);
+		
+		gcn::Label* label = new gcn::Label("Host");
+		tabc->add(label, 10, 10);
+		
+		this->host = new gcn::TextField("localhost");
+		this->host->setPosition(80, 10);
+		this->host->setWidth(150);
+		tabc->add(this->host);
+	}
 	
-	this->host = new gcn::TextField("localhost");
-	this->host->setPosition(80, 10);
-	this->host->setWidth(150);
-	c->add(this->host);
+	// List of internet hosts
+	{
+		gcn::Container* tabc = new gcn::Container();
+		tabc->setDimension(gcn::Rectangle(0, 0, 245, 180));
+		this->tabs->addTab("Internet", tabc);
+		
+		this->internet_hosts = getServerList();
+		
+		this->internet = new gcn::ListBox(new VectorListModel(this->internet_hosts));
+		this->internet->setPosition(10, 10);
+		this->internet->setWidth(225);
+		this->internet->setHeight(140);
+		tabc->add(this->internet);
+	}
 	
-
 	button = new gcn::Button("Join Game");
-	button->setPosition(170, 150);
+	button->setPosition(170, 190);
 	button->addActionListener(this);
 	c->add(button);
 	
@@ -367,7 +392,15 @@ gcn::Container * DialogNetJoin::setup()
 **/
 void DialogNetJoin::action(const gcn::ActionEvent& actionEvent)
 {
-	this->m->networkJoin(
-		this->host->getText()
-	);
+	if (this->tabs->getSelectedTabIndex() == 0) {
+		this->m->networkJoin(
+			this->host->getText()
+		);
+		
+	} else if (this->tabs->getSelectedTabIndex() == 1) {
+		this->m->networkJoin(
+			this->internet_hosts->at(this->internet->getSelected())
+		);
+		
+	}
 }

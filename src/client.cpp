@@ -6,7 +6,6 @@
 #include <SDL.h>
 #include "rage.h"
 #include "http/client_stats.h"
-#include "http/serverlist.h"
 #include "util/windowicon.h"
 
 using namespace std;

@@ -145,7 +145,10 @@ class DialogNetJoin : public Dialog, public gcn::ActionListener {
 		DialogNetJoin();
 		
 	private:
+		gcn::TabbedArea * tabs;
 		gcn::TextField * host;
+		gcn::ListBox * internet;
+		vector<string> * internet_hosts;
 		
 	public:
 		virtual gcn::Container * setup();
