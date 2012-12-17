@@ -6,6 +6,7 @@
 #include <SDL.h>
 #include "rage.h"
 #include "http/client_stats.h"
+#include "http/serverlist.h"
 #include "util/windowicon.h"
 
 using namespace std;
@@ -15,7 +16,7 @@ int main (int argc, char ** argv)
 {
 	cout << ".";
 	cerr << ".";
-
+	
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 	SDL_EnableUNICODE(1);
 
