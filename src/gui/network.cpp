@@ -33,11 +33,10 @@ gcn::Container * DialogNetJoin::setup()
 	gcn::Button* button;
 	
 	c = new gcn::Window("Network game");
-	c->setDimension(gcn::Rectangle(0, 0, 265, 220));
+	c->setDimension(gcn::Rectangle(0, 0, 265, 250));
 	
 	this->tabs = new gcn::TabbedArea();
-	this->tabs->setPosition(10, 10);
-	this->tabs->setDimension(gcn::Rectangle(0, 0, 245, 180));
+	this->tabs->setDimension(gcn::Rectangle(10, 10, 245, 180));
 	c->add(this->tabs);
 	
 	// Direct connect to a host
@@ -71,7 +70,7 @@ gcn::Container * DialogNetJoin::setup()
 	}
 	
 	button = new gcn::Button("Join Game");
-	button->setPosition(170, 190);
+	button->setPosition(192, 200);
 	button->addActionListener(this);
 	c->add(button);
 	
@@ -89,9 +88,10 @@ void DialogNetJoin::action(const gcn::ActionEvent& actionEvent)
 		);
 		
 	} else if (this->tabs->getSelectedTabIndex() == 1) {
-		this->m->networkJoin(
-			this->internet_hosts->at(this->internet->getSelected())
-		);
-		
+		if (this->internet->getSelected() != -1) { 
+			this->m->networkJoin(
+				this->internet_hosts->at(this->internet->getSelected())
+			);
+		}
 	}
 }
