@@ -79,8 +79,9 @@ class NetServerClientInfo
 		SeqNum seq;		// TODO: again...big enough?
 		unsigned int slot;
 		bool inlist;
-		
-		NetServerClientInfo() { seq = 0; slot = 0; inlist = false; }
+		bool del;
+
+		NetServerClientInfo() { seq = 0; slot = 0; del = false; inlist = false; }
 };
 
 

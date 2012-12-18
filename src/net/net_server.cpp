@@ -32,6 +32,17 @@ NetServer::~NetServer()
 
 
 /**
+* Used for filtering
+**/
+static bool ClientEraser(NetServerClientInfo* c)
+{
+	if (c->del == false) return false;
+	delete c;
+	return true;
+}
+
+
+/**
 * Some time has passed, do stuff
 **/
 void NetServer::update()
@@ -103,6 +114,9 @@ void NetServer::update()
 			}
 		}
 		
+		// If any were marked for removal, actually remove them
+		std::remove_if(this->clients.begin(), this->clients.end(), ClientEraser);
+
 		// Debugging
 		cout << setw (6) << setfill(' ') << st->game_time << " MSG-QUEUE\n";
 		for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
@@ -181,12 +195,14 @@ void NetServer::dropClient(NetServerClientInfo *client)
 {
 	this->st->logic->raise_playerleave(client->slot);
 	
+	Unit * u = this->st->findUnitSlot(client->slot);
+	if (u) {
+		u->takeDamage(u->getHealth());
+	}
+
 	this->addmsgClientDrop(client);
 	
-	// TODO: Actually delete the client var in the "clients" vector
-	
-	//this->clients.erase(client);
-	//delete(client);
+	client->del = true;
 }
 
 
