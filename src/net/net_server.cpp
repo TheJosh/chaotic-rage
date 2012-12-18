@@ -38,9 +38,14 @@ void NetServer::update()
 {
 	UDPpacket *pkt = SDLNet_AllocPacket(1024);
 	
-	this->seq++;
+	
+	// Only update seq if we have clients
+	if (this->clients.size() > 0) {
+		this->seq++;
+	}
 	
 	
+	// We always recv. messages, so we can handle client joins
 	while (SDLNet_UDP_Recv(this->sock, pkt)) {
 		cout << setw (6) << setfill(' ') << st->game_time << " RECV ";
 		dumpPacket(pkt->data, pkt->len);
@@ -55,7 +60,7 @@ void NetServer::update()
 		ptr += 2; p += 2;
 		
 		NetServerClientInfo *client = NULL;
-		for (list<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
+		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
 			if ((*cli) != NULL && (*cli)->ipaddress.host == pkt->address.host && (*cli)->code == code) {
 				client = (*cli);
 				break;
@@ -88,50 +93,63 @@ void NetServer::update()
 	}
 	
 	
-	cout << setw (6) << setfill(' ') << st->game_time << " MSG-QUEUE\n";
-	for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
-		cout << "       " << setw (6) << setfill(' ') << ((*it).seq) << " " << ((*it).type);
-		dumpPacket((*it).data, (*it).size);
-	}
-	
-	cout << setw (6) << setfill(' ') << st->game_time << " CLIENT-INFO\n";
-	for (list<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
-		cout << "       " << setw (6) << setfill(' ') << ((*cli)->seq) << " " << ((*cli)->slot) << "\n";
-	}
-	
-	
-	for (list<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
-		if ((*cli) == NULL) continue;
-		
-		pkt->address.host = (*cli)->ipaddress.host;
-		pkt->address.port = (*cli)->ipaddress.port;
-		
-		pkt->len = 0;
-		
-		Uint8* ptr = pkt->data;
-		
-		SDLNet_Write16(this->seq, ptr);
-		ptr += 2; pkt->len += 2;
-		
-		SDLNet_Write16(0, ptr);		// pad
-		ptr += 2; pkt->len += 2;
-		
-		for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
-			if ((*cli)->seq > (*it).seq) continue;
-			if ((*it).dest != NULL && (*it).dest != (*cli)) continue;
-			
-			*ptr = (*it).type;
-			ptr++; pkt->len++;
-			
-			memcpy(ptr, (*it).data, (*it).size);
-			ptr += (*it).size; pkt->len += (*it).size;
+	// Only send messages if we have clients
+	if (this->clients.size() > 0) {
+		// Check the seq of all clients
+		// If they are too old, assume lost network connection
+		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
+			if ((this->seq - (*cli)->seq) > MAX_SEQ_LAG) {
+				this->dropClient(*cli);
+			}
 		}
 		
-		if (pkt->len > 0) {
-			cout << setw (6) << setfill(' ') << st->game_time << " SEND ";
-			dumpPacket(pkt->data, pkt->len);
+		// Debugging
+		cout << setw (6) << setfill(' ') << st->game_time << " MSG-QUEUE\n";
+		for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
+			cout << "       " << setw (6) << setfill(' ') << ((*it).seq) << " " << ((*it).type);
+			dumpPacket((*it).data, (*it).size);
+		}
+		
+		// Debugging
+		cout << setw (6) << setfill(' ') << st->game_time << " CLIENT-INFO\n";
+		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
+			cout << "       " << setw (6) << setfill(' ') << ((*cli)->seq) << " " << ((*cli)->slot) << "\n";
+		}
+		
+		// Send messages
+		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
+			if ((*cli) == NULL) continue;
+		
+			pkt->address.host = (*cli)->ipaddress.host;
+			pkt->address.port = (*cli)->ipaddress.port;
+		
+			pkt->len = 0;
+		
+			Uint8* ptr = pkt->data;
+		
+			SDLNet_Write16(this->seq, ptr);
+			ptr += 2; pkt->len += 2;
+		
+			SDLNet_Write16(0, ptr);		// pad
+			ptr += 2; pkt->len += 2;
+		
+			for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
+				if ((*cli)->seq > (*it).seq) continue;
+				if ((*it).dest != NULL && (*it).dest != (*cli)) continue;
 			
-			SDLNet_UDP_Send(this->sock, -1, pkt);
+				*ptr = (*it).type;
+				ptr++; pkt->len++;
+			
+				memcpy(ptr, (*it).data, (*it).size);
+				ptr += (*it).size; pkt->len += (*it).size;
+			}
+		
+			if (pkt->len > 0) {
+				cout << setw (6) << setfill(' ') << st->game_time << " SEND ";
+				dumpPacket(pkt->data, pkt->len);
+			
+				SDLNet_UDP_Send(this->sock, -1, pkt);
+			}
 		}
 	}
 	
@@ -153,6 +171,22 @@ void NetServer::listen(int port)
 	if (this->sock == NULL) {
 		reportFatalError(SDLNet_GetError());
 	}
+}
+
+
+/**
+* Drop a client
+**/
+void NetServer::dropClient(NetServerClientInfo *client)
+{
+	this->st->logic->raise_playerleave(client->slot);
+	
+	this->addmsgClientDrop(client);
+	
+	// TODO: Actually delete the client var in the "clients" vector
+	
+	//this->clients.erase(client);
+	//delete(client);
 }
 
 
@@ -199,14 +233,22 @@ NetMsg * NetServer::addmsgChat()
 	return NULL;
 }
 
-NetMsg * NetServer::addmsgPlayerDrop()
+NetMsg * NetServer::addmsgClientDrop(NetServerClientInfo *client)
 {
-	return NULL;
-}
-
-NetMsg * NetServer::addmsgPlayerQuit()
-{
-	return NULL;
+	messages.remove_if(IsTypeUniqPred(PLAYER_DROP, client->slot));
+	
+	NetMsg * msg = new NetMsg(PLAYER_DROP, 2);
+	msg->seq = this->seq;
+	msg->uniq = client->slot;
+	
+	pack(msg->data, "h",
+		client->slot
+	);
+	
+	cout << "       Dropped client: " << client->slot << "\n";
+	
+	messages.push_back(*msg);
+	return msg;
 }
 
 

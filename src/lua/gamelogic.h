@@ -57,6 +57,12 @@ class GameLogic
 		vector<int> binds_playerjoin;
 		
 		/**
+		* When a player leaves
+		**/
+		void raise_playerleave(int arg);
+		vector<int> binds_playerleave;
+		
+		/**
 		* When a player has died
 		**/
 		void raise_playerdied(int arg);

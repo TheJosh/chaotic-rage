@@ -12,6 +12,10 @@
 using namespace std;
 
 
+// How far behind a client can be before being dropped
+#define MAX_SEQ_LAG 20
+
+
 class NetServer {
 	friend class NetServerSeqPred;
 	
@@ -21,7 +25,7 @@ class NetServer {
 		UDPsocket sock;
 		list<NetMsg> messages;
 		SeqNum seq;		// TODO: is this big enough?
-		list<NetServerClientInfo*> clients;
+		vector<NetServerClientInfo*> clients;
 		
 		NetServerSeqPred * seq_pred;
 		
@@ -32,6 +36,7 @@ class NetServer {
 	public:
 		void update();
 		void listen(int port);
+		void dropClient(NetServerClientInfo *client);
 		
 	public:
 		// One method for each outgoing network message the server sends out
@@ -40,8 +45,7 @@ class NetServer {
 		NetMsg * addmsgJoinRej();
 		NetMsg * addmsgDataCompl();
 		NetMsg * addmsgChat();
-		NetMsg * addmsgPlayerDrop();
-		NetMsg * addmsgPlayerQuit();
+		NetMsg * addmsgClientDrop(NetServerClientInfo *client);
 		NetMsg * addmsgUnitState(Unit *u);
 		NetMsg * addmsgWallState(Wall *u);
 		NetMsg * addmsgObjectState(Object *u);
@@ -91,7 +95,7 @@ class NetServerSeqPred
 		// Remove any messages with a seq lower than the lowest client
 		bool operator() (const NetMsg& value) {
 			SeqNum lowest = server->seq;
-			for (list<NetServerClientInfo*>::iterator cli = server->clients.begin(); cli != server->clients.end(); cli++) {
+			for (vector<NetServerClientInfo*>::iterator cli = server->clients.begin(); cli != server->clients.end(); cli++) {
 				if ((*cli) == NULL) continue;
 				if ((*cli)->seq < lowest) lowest = (*cli)->seq;
 			}

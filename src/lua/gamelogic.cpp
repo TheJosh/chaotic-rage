@@ -123,6 +123,7 @@ void GameLogic::update(int delta)
 
 LUA_DEFINE_RAISE(gamestart)
 LUA_DEFINE_RAISE_INTARG(playerjoin)
+LUA_DEFINE_RAISE_INTARG(playerleave)
 LUA_DEFINE_RAISE_INTARG(playerdied)
 LUA_DEFINE_RAISE(npcdied)
 
@@ -213,6 +214,25 @@ LUA_FUNC(bind_playerjoin)
 	
 	int r = luaL_ref(L, LUA_REGISTRYINDEX);
 	gl->binds_playerjoin.push_back(r);
+	return 0;
+}
+
+
+/**
+* Binds a function to the playerleave event.
+* Multiple functions can be bound to the one event.
+**/
+LUA_FUNC(bind_playerleave)
+{
+	if (! lua_isfunction(L, 1)) {
+		lua_pushstring(L, "Arg #1 is not a function");
+		lua_error(L);
+	}
+	
+	lua_pushvalue(L, -1);
+	
+	int r = luaL_ref(L, LUA_REGISTRYINDEX);
+	gl->binds_playerleave.push_back(r);
 	return 0;
 }
 
@@ -549,6 +569,7 @@ void register_lua_functions()
 	LUA_REG(debug_physics);
 	LUA_REG(bind_gamestart);
 	LUA_REG(bind_playerjoin);
+	LUA_REG(bind_playerleave);
 	LUA_REG(bind_playerdied);
 	LUA_REG(bind_npcdied);
 	LUA_REG(add_interval);
