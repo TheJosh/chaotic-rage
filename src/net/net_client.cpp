@@ -243,7 +243,18 @@ unsigned int NetClient::handleChat(Uint8 *data, unsigned int size)
 unsigned int NetClient::handlePlayerDrop(Uint8 *data, unsigned int size)
 {
 	cout << "       handlePlayerDrop()\n";
-	return 0;
+	
+	unsigned int slot = 0;
+	unpack(data, "h",
+		&slot
+	);
+	
+	// Were we booted?
+	if (st->local_players[0]->slot == slot) {
+		st->running = false;
+	}
+	
+	return 2;
 }
 
 unsigned int NetClient::handlePlayerQuit(Uint8 *data, unsigned int size)

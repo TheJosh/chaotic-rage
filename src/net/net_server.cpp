@@ -104,19 +104,24 @@ void NetServer::update()
 	}
 	
 	
-	// Only send messages if we have clients
+	// Check the seq of all clients
+	// If they are too old, assume lost network connection
 	if (this->clients.size() > 0) {
-		// Check the seq of all clients
-		// If they are too old, assume lost network connection
 		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
 			if ((this->seq - (*cli)->seq) > MAX_SEQ_LAG) {
 				this->dropClient(*cli);
 			}
 		}
 		
-		// If any were marked for removal, actually remove them
-		std::remove_if(this->clients.begin(), this->clients.end(), ClientEraser);
-
+		this->clients.erase(
+			std::remove_if(this->clients.begin(), this->clients.end(), ClientEraser),
+			this->clients.end()
+		);
+	}
+	
+	
+	// Only send messages if we have clients
+	if (this->clients.size() > 0) {
 		// Debugging
 		cout << setw (6) << setfill(' ') << st->game_time << " MSG-QUEUE\n";
 		for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
@@ -199,7 +204,7 @@ void NetServer::dropClient(NetServerClientInfo *client)
 	if (u) {
 		u->takeDamage(u->getHealth());
 	}
-
+	
 	this->addmsgClientDrop(client);
 	
 	client->del = true;
