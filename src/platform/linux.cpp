@@ -82,40 +82,36 @@ void displayMessageBox(string msg)
 	
 	const char *charmsg = msg.c_str();
 	
-	   Display *d;
-   Window w;
-   XEvent e;
-   int s;
- 
-   d = wm.info.x11.display;
- 
- wm.info.x11.lock_func();
-   s = DefaultScreen(d);
-   w = XCreateSimpleWindow(d, RootWindow(d, s), 10, 10, 200, 70, 1,
-                           BlackPixel(d, s), WhitePixel(d, s));
-   
-   XSetStandardProperties(d,w,"Fatal Error","Fatal Error",None,NULL,0,NULL);
-   
-   XSelectInput(d, w, ExposureMask | ButtonPressMask | KeyPressMask);
-   XMapWindow(d, w);
- wm.info.x11.unlock_func();
- 
- SDL_Delay(10);
- 
-   while (1) {
-      wm.info.x11.lock_func();
-      XNextEvent(d, &e);
-      if (e.type == Expose) {
-         XDrawString(d, w, DefaultGC(d, s), 10, 50, charmsg, strlen(charmsg));
-      }
-      wm.info.x11.unlock_func();
-      
-      if (e.type == KeyPress) break;
-      
-      if (e.type == ButtonPress) break;
-   }
-
-   XDestroyWindow(d, w);
+	Display *d;
+	Window w;
+	XEvent e;
+	int s;
+	
+	d = wm.info.x11.display;
+	
+	wm.info.x11.lock_func();
+	s = DefaultScreen(d);
+	w = XCreateSimpleWindow(d, RootWindow(d, s), 10, 10, 50 + msg.length() * 10, 50, 1, BlackPixel(d, s), WhitePixel(d, s));
+	XSetStandardProperties(d,w,"Fatal Error","Fatal Error",None,NULL,0,NULL);
+	XSelectInput(d, w, ExposureMask | ButtonPressMask | KeyPressMask);
+	XMapWindow(d, w);
+	wm.info.x11.unlock_func();
+	
+	SDL_Delay(10);
+	
+	while (1) {
+		wm.info.x11.lock_func();
+		XNextEvent(d, &e);
+		if (e.type == Expose) {
+			XDrawString(d, w, DefaultGC(d, s), 10, 20, charmsg, strlen(charmsg));
+		}
+		wm.info.x11.unlock_func();
+		
+		if (e.type == KeyPress) break;
+		if (e.type == ButtonPress) break;
+	}
+	
+	XDestroyWindow(d, w);
 #endif
 }
 
