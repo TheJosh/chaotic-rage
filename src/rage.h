@@ -126,6 +126,7 @@ class Zone;
 #include "net/net.h"
 #include "net/net_client.h"
 #include "net/net_server.h"
+#include "net/net_gameinfo.h"
 
 #include "mod/mod.h"
 #include "mod/mod_manager.h"

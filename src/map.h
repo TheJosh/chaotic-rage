@@ -85,12 +85,13 @@ class Map {
 		int load(string name, Render * render);
 		void loadDefaultEntities();
 		
+		string getName() { return this->name; }
+		
 		Zone * getSpawnZone(Faction f);
 		Zone * getPrisonZone(Faction f);
 		Zone * getCollectZone(Faction f);
 		Zone * getDestZone(Faction f);
 		Zone * getNearbaseZone(Faction f);
-		
 		float getRandomX();
 		float getRandomY();
 		

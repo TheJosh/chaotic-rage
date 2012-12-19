@@ -25,6 +25,7 @@ class NetClient {
 		list<NetMsg> messages;    // queue of messages to go out
 		SeqNum seq;               // TODO: is this big enough?
 		unsigned int last_ack;    // the time we last got a seq from the server
+		NetGameinfo *gameinfo;    // Map, etc, provided at join time
 		
 		NetClientSeqPred * seq_pred;
 		
@@ -34,7 +35,7 @@ class NetClient {
 		
 	public:
 		void update();
-		bool attemptJoinGame(string address, int port);
+		NetGameinfo * attemptJoinGame(string address, int port);
 
 	public:
 		// One method for each outgoing network message the client sends out

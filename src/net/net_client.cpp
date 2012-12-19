@@ -16,6 +16,7 @@ NetClient::NetClient(GameState * st)
 	this->st = st;
 	st->client = this;
 	this->sock = NULL;
+	this->gameinfo = NULL;
 	
 	this->seq = 0;
 	this->seq_pred = new NetClientSeqPred(this);
@@ -30,6 +31,10 @@ NetClient::NetClient(GameState * st)
 NetClient::~NetClient()
 {
 	if (this->sock != NULL) SDLNet_UDP_Close(this->sock);
+	
+	if (this->gameinfo) {
+		delete(this->gameinfo);
+	}
 }
 
 
@@ -126,19 +131,27 @@ void NetClient::bind(string address, int port)
 /**
 * Try to join a game
 **/
-bool NetClient::attemptJoinGame(string address, int port)
+NetGameinfo * NetClient::attemptJoinGame(string address, int port)
 {
 	this->bind(address, port);
 	this->addmsgJoinReq();
-
+	
+	if (this->gameinfo) {
+		delete(this->gameinfo);
+		this->gameinfo = NULL;
+	}
+	
 	// Wait up to two seconds to be allocated a slot
 	for (int i = 0; i < 20; i++) {
 		this->update();
-		if (st->local_players[0]->slot != 0) return true;
+		if (st->local_players[0]->slot != 0) break;
 		SDL_Delay(100);
 	}
-
-	return false;
+	
+	// Time out
+	if (st->local_players[0]->slot == 0) return NULL;
+	
+	return this->gameinfo;
 }
 
 
@@ -208,8 +221,10 @@ unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 	cout << "       handleJoinAcc()\n";
 	
 	unsigned int slot = 0;
-	unpack(data, "h",
-		&slot
+	char map[128];
+	
+	unpack(data, "hs",
+		&slot, &map
 	);
 	
 	if (st->local_players[0]->slot == 0) {
@@ -219,7 +234,10 @@ unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 	
 	this->addmsgJoinAck();
 	
-	return 2;
+	NetGameinfo *gameinfo = new NetGameinfo();
+	gameinfo->map = std::string(map);
+	
+	return 4 + strlen(map);
 }
 
 unsigned int NetClient::handleJoinRej(Uint8 *data, unsigned int size)

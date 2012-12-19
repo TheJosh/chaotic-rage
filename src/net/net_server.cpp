@@ -226,11 +226,13 @@ NetMsg * NetServer::addmsgInfoResp()
 
 NetMsg * NetServer::addmsgJoinAcc(NetServerClientInfo *client)
 {
-	NetMsg * msg = new NetMsg(JOIN_OKAY, 2);
+	string map = this->st->curr_map->getName();
+	
+	NetMsg * msg = new NetMsg(JOIN_OKAY, 4 + map.length());
 	msg->seq = this->seq;
 	
-	pack(msg->data, "h",
-		client->slot
+	pack(msg->data, "hs",
+		client->slot, map.c_str()
 	);
 	
 	cout << "       Sent slot of: " << client->slot << "\n";

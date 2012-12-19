@@ -14,6 +14,7 @@
 class NetServerSeqPred;
 class NetServerClientInfo;
 class NetClientSeqPred;
+class NetGameinfo;
 
 
 /**
