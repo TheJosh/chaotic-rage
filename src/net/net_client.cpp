@@ -271,11 +271,13 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 	
 	short eid = 0, slot = 0;
 	float qx, qy, qz, qw, bx, by, bz;
+	float health;
 	
-	unpack(data, "hh ffff fff",
+	unpack(data, "hh ffff fff f",
 		&eid, &slot,
 		&qx, &qy, &qz, &qw,
-		&bx, &by, &bz
+		&bx, &by, &bz,
+		&health
 	);
 	
 	Entity* e = st->getEntity(eid);
@@ -307,7 +309,9 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 		btVector3(bx, by, bz)
 	));
 	
-	return 32;
+	u->health = health;
+	
+	return 36;
 }
 
 unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
@@ -421,14 +425,14 @@ unsigned int NetClient::handleEntityRem(Uint8 *data, unsigned int size)
 {
 	cout << "       handleEntityRem()\n";
 	
-	short slot;
+	EID eid;
 	
-	unpack(data, "h", &slot);
+	unpack(data, "h", &eid);
 	
-	Player *p = (Player*) st->findUnitSlot(slot);
-	if (p == NULL) return 2;
-	
-	p->del = true;
+	Entity *e = st->getEntity(eid);
+	if (e) {
+		e->del = true;
+	}
 	
 	return 2;
 }

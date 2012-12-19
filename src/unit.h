@@ -22,6 +22,9 @@ class UnitWeapon {
 
 class Unit : public Entity
 {
+	friend class NetClient;
+	friend class NetServer;
+	
 	public:
 		virtual EntityClass klass() const { return UNIT; }
 		

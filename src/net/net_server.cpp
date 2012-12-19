@@ -280,7 +280,7 @@ NetMsg * NetServer::addmsgUnitState(Unit *u)
 {
 	messages.remove_if(IsTypeUniqPred(UNIT_STATE, u->eid));
 	
-	NetMsg * msg = new NetMsg(UNIT_STATE, 32);
+	NetMsg * msg = new NetMsg(UNIT_STATE, 36);
 	msg->seq = this->seq;
 	msg->uniq = u->eid;
 	
@@ -289,10 +289,11 @@ NetMsg * NetServer::addmsgUnitState(Unit *u)
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 	
-	pack(msg->data, "hh ffff fff",
+	pack(msg->data, "hh ffff fff f",
 		u->eid, u->slot,
 		q.x(), q.y(), q.z(), q.w(),
-		b.x(), b.y(), b.z()
+		b.x(), b.y(), b.z(),
+		u->health
 	);
 	
 	messages.push_back(*msg);

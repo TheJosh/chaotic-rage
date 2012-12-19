@@ -189,6 +189,7 @@ PlayerState * GameState::localPlayerFromSlot(unsigned int slot)
 static bool EntityEraser(Entity* e)
 {
 	if (e->del == false) return false;
+	if (g_st->server != NULL) g_st->server->addmsgEntityRem(e);
 	delete e;
 	return true;
 }
