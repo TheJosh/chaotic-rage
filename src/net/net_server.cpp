@@ -17,7 +17,7 @@ NetServer::NetServer(GameState * st)
 	this->st = st;
 	st->server = this;
 	
-	this->seq = 0;
+	this->seq = 1;
 	this->seq_pred = new NetServerSeqPred(this);
 
 	if (SDLNet_Init() < 0) {

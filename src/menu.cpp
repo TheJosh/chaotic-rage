@@ -430,7 +430,7 @@ void Menu::networkJoin(string host)
 	// so we don't need to undo it all
 	// Also, some of this should be put into functions better
 	NetGameinfo *gameinfo = st->client->attemptJoinGame(host, 17778);
-	if (! gameinfo) {
+	if (gameinfo == NULL) {
 		st->audio->stopAll();
 		st->clear();
 		displayMessageBox("Unable to connect to server " + host);

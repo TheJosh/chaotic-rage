@@ -133,23 +133,20 @@ void NetClient::bind(string address, int port)
 **/
 NetGameinfo * NetClient::attemptJoinGame(string address, int port)
 {
-	this->bind(address, port);
-	this->addmsgJoinReq();
-	
 	if (this->gameinfo) {
 		delete(this->gameinfo);
 		this->gameinfo = NULL;
 	}
 	
+	this->bind(address, port);
+	this->addmsgJoinReq();
+	
 	// Wait up to two seconds to be allocated a slot
 	for (int i = 0; i < 20; i++) {
 		this->update();
-		if (st->local_players[0]->slot != 0) break;
+		if (this->gameinfo != NULL) break;
 		SDL_Delay(100);
 	}
-	
-	// Time out
-	if (st->local_players[0]->slot == 0) return NULL;
 	
 	return this->gameinfo;
 }
@@ -232,10 +229,10 @@ unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 		cout << "       Our slot: " << slot << "\n";
 	}
 	
-	this->addmsgJoinAck();
+	this->gameinfo = new NetGameinfo();
+	this->gameinfo->map = std::string(map);
 	
-	NetGameinfo *gameinfo = new NetGameinfo();
-	gameinfo->map = std::string(map);
+	this->addmsgJoinAck();
 	
 	return 4 + strlen(map);
 }
