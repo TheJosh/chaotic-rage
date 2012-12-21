@@ -401,7 +401,8 @@ void Menu::startGame(string map, string gametype, string unittype, int viewmode,
 * Join a network game
 **/
 void Menu::networkJoin(string host)
-{	
+{
+	if (st->client) delete (st->client);
 	new NetClient(st);
 	
 	st->physics->init();
@@ -441,4 +442,7 @@ void Menu::networkJoin(string host)
 
 	// Begin!
 	gameLoop(st, st->render);
+	
+	delete (st->client);
+	st->client = NULL;
 }
