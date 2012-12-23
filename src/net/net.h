@@ -30,7 +30,7 @@ enum NetMsgType {
 	JOIN_OKAY =     0x04,		// [S] Join accepted
 	JOIN_DENY =     0x05,		// [S] Join denied
 	JOIN_ACK =      0x06,		// [C] Client ack of join accept, server to send data
-	JOIN_DONE =     0x07,		// [S] Sending of data is complete
+	JOIN_DONE =     0x07,		// [S] Sending of data is complete; [C] Thanks for the data!
 	
 	CHAT_REQ =      0x08,		// [C] Client -> server w/ chat msg
 	CHAT_MSG =      0x09,		// [S] Server -> all w/ chat msg

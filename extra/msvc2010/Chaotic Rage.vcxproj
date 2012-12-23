@@ -220,6 +220,7 @@
     <ClInclude Include="..\..\src\mod\weapontype.h" />
     <ClInclude Include="..\..\src\net\net.h" />
     <ClInclude Include="..\..\src\net\net_client.h" />
+    <ClInclude Include="..\..\src\net\net_gameinfo.h" />
     <ClInclude Include="..\..\src\net\net_server.h" />
     <ClInclude Include="..\..\src\newparticle.h" />
     <ClInclude Include="..\..\src\npc.h" />

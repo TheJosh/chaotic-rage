@@ -108,7 +108,7 @@ void NetServer::update()
 	// If they are too old, assume lost network connection
 	if (this->clients.size() > 0) {
 		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
-			if ((this->seq - (*cli)->seq) > MAX_SEQ_LAG) {
+			if ((*cli)->inlist && (this->seq - (*cli)->seq) > MAX_SEQ_LAG) {
 				this->dropClient(*cli);
 			}
 		}
@@ -207,6 +207,7 @@ void NetServer::dropClient(NetServerClientInfo *client)
 	
 	this->addmsgClientDrop(client);
 	
+	client->inlist = false;
 	client->del = true;
 }
 
@@ -248,7 +249,10 @@ NetMsg * NetServer::addmsgJoinRej()
 
 NetMsg * NetServer::addmsgDataCompl()
 {
-	return NULL;
+	NetMsg * msg = new NetMsg(JOIN_DONE, 0);
+	msg->seq = this->seq;
+	messages.push_back(*msg);
+	return msg;
 }
 
 NetMsg * NetServer::addmsgChat()
@@ -424,10 +428,15 @@ unsigned int NetServer::handleJoinReq(NetServerClientInfo *client, Uint8 *data, 
 	client->seq = this->seq;
 	this->clients.push_back(client);
 	
-	this->st->logic->raise_playerjoin(client->slot);
-	
 	this->addmsgJoinAcc(client);
-	
+
+	return 0;
+}
+
+unsigned int NetServer::handleJoinAck(NetServerClientInfo *client, Uint8 *data, unsigned int size)
+{
+	cout << "       handleJoinAck()\n";
+
 	NetMsg* msg;
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
 		Entity *e = (*it);
@@ -458,12 +467,17 @@ unsigned int NetServer::handleJoinReq(NetServerClientInfo *client, Uint8 *data, 
 		}
 	}
 	
+	this->addmsgDataCompl();
+
 	return 0;
 }
 
-unsigned int NetServer::handleJoinAck(NetServerClientInfo *client, Uint8 *data, unsigned int size)
+unsigned int NetServer::handleJoinDone(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
-	cout << "       handleJoinAck()\n";
+	client->ingame = true;
+
+	this->st->logic->raise_playerjoin(client->slot);
+
 	return 0;
 }
 

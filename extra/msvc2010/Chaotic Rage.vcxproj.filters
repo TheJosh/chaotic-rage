@@ -480,6 +480,9 @@
     <ClInclude Include="..\..\src\http\url.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\net\net_gameinfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res\appicon.rc">

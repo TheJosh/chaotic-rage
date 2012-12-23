@@ -17,7 +17,8 @@ NetClient::NetClient(GameState * st)
 	st->client = this;
 	this->sock = NULL;
 	this->gameinfo = NULL;
-	
+	this->ingame = false;
+
 	this->seq = 0;
 	this->seq_pred = new NetClientSeqPred(this);
 	
@@ -148,6 +149,15 @@ NetGameinfo * NetClient::attemptJoinGame(string address, int port)
 		SDL_Delay(100);
 	}
 	
+	// Wait for game data to arrive
+	for (int i = 0; i < 20; i++) {
+		this->update();
+		if (this->ingame) break;
+		SDL_Delay(100);
+	}
+
+	this->addmsgDataCompl();
+
 	return this->gameinfo;
 }
 
@@ -157,29 +167,41 @@ NetGameinfo * NetClient::attemptJoinGame(string address, int port)
 ***  One method for each outgoing network message the client sends out
 **/
 
-void NetClient::addmsgInfoReq() {
+void NetClient::addmsgInfoReq()
+{
 	NetMsg * msg = new NetMsg(INFO_REQ, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
 }
 
-void NetClient::addmsgJoinReq() {
+void NetClient::addmsgJoinReq()
+{
 	NetMsg * msg = new NetMsg(JOIN_REQ, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
 }
 
-void NetClient::addmsgJoinAck() {
+void NetClient::addmsgJoinAck()
+{
 	NetMsg * msg = new NetMsg(JOIN_ACK, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
 }
 
-void NetClient::addmsgChat() {
+void NetClient::addmsgDataCompl()
+{
+	NetMsg * msg = new NetMsg(JOIN_DONE, 0);
+	msg->seq = this->seq;
+	messages.push_back(*msg);
+}
+
+void NetClient::addmsgChat()
+{
 	NetMsg * msg = new NetMsg(CHAT_REQ, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
 }
+
 
 void NetClient::addmsgKeyMouseStatus(int x, int y, int delta, Uint8 k)
 {
@@ -246,6 +268,7 @@ unsigned int NetClient::handleJoinRej(Uint8 *data, unsigned int size)
 unsigned int NetClient::handleDataCompl(Uint8 *data, unsigned int size)
 {
 	cout << "       handleDataCompl()\n";
+	this->ingame = true;
 	return 0;
 }
 

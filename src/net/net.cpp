@@ -49,7 +49,7 @@ MsgServerRecv msg_server_recv [] = {
 	NULL,                               //<--  0x04
 	NULL,                               //<--  0x05
 	&NetServer::handleJoinAck,          //<--  0x06
-	NULL,                               //<--  0x07
+	&NetServer::handleJoinDone,         //<--  0x07
 	&NetServer::handleChat,             //<--  0x08
 	NULL,                               //<--  0x09
 	NULL,                               //<--  0x0A

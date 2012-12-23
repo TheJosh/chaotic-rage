@@ -26,7 +26,8 @@ class NetClient {
 		SeqNum seq;               // TODO: is this big enough?
 		unsigned int last_ack;    // the time we last got a seq from the server
 		NetGameinfo *gameinfo;    // Map, etc, provided at join time
-		
+		bool ingame;              // We are in the game
+
 		NetClientSeqPred * seq_pred;
 		
 	public:
@@ -42,6 +43,7 @@ class NetClient {
 		void addmsgInfoReq();
 		void addmsgJoinReq();
 		void addmsgJoinAck();
+		void addmsgDataCompl();
 		void addmsgChat();
 		void addmsgQuit();
 		void addmsgKeyMouseStatus(int x, int y, int delta, Uint8 k);

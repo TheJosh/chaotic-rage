@@ -58,6 +58,7 @@ class NetServer {
 		unsigned int handleInfoReq(NetServerClientInfo *client, Uint8 *data, unsigned int size);
 		unsigned int handleJoinReq(NetServerClientInfo *client, Uint8 *data, unsigned int size);
 		unsigned int handleJoinAck(NetServerClientInfo *client, Uint8 *data, unsigned int size);
+		unsigned int handleJoinDone(NetServerClientInfo *client, Uint8 *data, unsigned int size);
 		unsigned int handleChat(NetServerClientInfo *client, Uint8 *data, unsigned int size);
 		unsigned int handleQuit(NetServerClientInfo *client, Uint8 *data, unsigned int size);
 		unsigned int handleKeyMouseStatus(NetServerClientInfo *client, Uint8 *data, unsigned int size);
@@ -79,9 +80,10 @@ class NetServerClientInfo
 		SeqNum seq;		// TODO: again...big enough?
 		unsigned int slot;
 		bool inlist;
+		bool ingame;
 		bool del;
 
-		NetServerClientInfo() { seq = 0; slot = 0; del = false; inlist = false; }
+		NetServerClientInfo() { seq = 0; slot = 0; del = false; inlist = false; ingame = false; }
 };
 
 
