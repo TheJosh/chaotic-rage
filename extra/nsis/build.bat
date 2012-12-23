@@ -4,6 +4,12 @@ mkdir files
 set CL=/DRELEASE
 "c:\WINDOWS\microsoft.net\Framework\v4.0.30319\MSBuild.exe" /t:Clean,Build /p:Platform="Win32" "..\msvc2010\Chaotic Rage.vcxproj" 
 if %errorlevel% neq 0 pause && exit /b %errorlevel% 
+copy /-Y ..\msvc2010\Debug\chaoticrage.exe files
+
+set CL=/DRELEASE
+"c:\WINDOWS\microsoft.net\Framework\v4.0.30319\MSBuild.exe" /t:Clean,Build /p:Platform="Win32" "..\msvc2010\DedicatedServer.vcxproj" 
+if %errorlevel% neq 0 pause && exit /b %errorlevel% 
+copy /-Y ..\msvc2010\Debug\dedicatedserver.exe files
 
 xcopy /E /I ..\..\data files\data
 xcopy /E /I ..\..\maps files\maps
@@ -21,7 +27,7 @@ copy /-Y blank.txt files\stdout.txt
 copy /-Y blank.txt files\stderr.txt
 
 copy /-Y ..\..\datatool\bin\Debug\datatool.exe files
-copy /-Y ..\msvc2010\Debug\chaoticrage.exe files
+
 
 "C:\Program Files (x86)\NSIS\makensis.exe" chaoticrage.nsi
 if %errorlevel% neq 0 pause && exit /b %errorlevel% 

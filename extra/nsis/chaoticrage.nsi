@@ -62,9 +62,10 @@ SectionEnd ; end the section
 Section "Start Menu Shortcuts"
 
   CreateDirectory "$SMPROGRAMS\Chaotic Rage"
-  CreateShortCut "$SMPROGRAMS\Chaotic Rage\Uninstall.lnk" "$INSTDIR\uninstall.exe"
   CreateShortCut "$SMPROGRAMS\Chaotic Rage\Chaotic Rage.lnk" "$INSTDIR\chaoticrage.exe"
+  CreateShortCut "$SMPROGRAMS\Chaotic Rage\Dedicated Server.lnk" "$INSTDIR\dedicatedserver.exe"
   CreateShortCut "$SMPROGRAMS\Chaotic Rage\Datatool.lnk" "$INSTDIR\datatool.exe"
+  CreateShortCut "$SMPROGRAMS\Chaotic Rage\Uninstall.lnk" "$INSTDIR\uninstall.exe"
   CreateShortCut "$SMPROGRAMS\Chaotic Rage\Modding Docs.lnk" "$INSTDIR\docs\"
   CreateShortCut "$SMPROGRAMS\Chaotic Rage\Manual.lnk" "$INSTDIR\manual\index.htm"
   
