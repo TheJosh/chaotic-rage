@@ -108,7 +108,7 @@ void NetServer::update()
 	// If they are too old, assume lost network connection
 	if (this->clients.size() > 0) {
 		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
-			if ((*cli)->inlist && (this->seq - (*cli)->seq) > MAX_SEQ_LAG) {
+			if ((*cli)->inlist && (*cli)->ingame && (this->seq - (*cli)->seq) > MAX_SEQ_LAG) {
 				this->dropClient(*cli);
 			}
 		}
@@ -208,6 +208,7 @@ void NetServer::dropClient(NetServerClientInfo *client)
 	this->addmsgClientDrop(client);
 	
 	client->inlist = false;
+	client->ingame = false;
 	client->del = true;
 }
 

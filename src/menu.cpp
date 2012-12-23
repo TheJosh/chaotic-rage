@@ -434,6 +434,8 @@ void Menu::networkJoin(string host)
 	if (gameinfo == NULL) {
 		st->audio->stopAll();
 		st->clear();
+		delete (st->client);
+		st->client = NULL;
 		displayMessageBox("Unable to connect to server " + host);
 		return;
 	}

@@ -23,6 +23,7 @@ NetClient::NetClient(GameState * st)
 	this->seq_pred = new NetClientSeqPred(this);
 	
 	this->code = getRandom(0, 32700);
+	this->last_ack = st->game_time;
 
 	if (SDLNet_Init() < 0) {
 		reportFatalError("SDL_net init failed");
@@ -48,7 +49,7 @@ void NetClient::update()
 	
 	
 	// Check the server is still chatting to us
-	if (this->seq != 0 && (st->game_time - this->last_ack) > 2500) {
+	if (this->ingame && (st->game_time - this->last_ack) > 2500) {
 		displayMessageBox("Disconnected from server.");
 		st->running = false;
 	}
