@@ -48,7 +48,11 @@ OBJFILES_SERVER=build/server.o build/linux.o $(filter-out $(OBJMAINS), $(OBJFILE
 OBJFILES_ANIMVIEWER=build/animviewer.o build/linux.o $(filter-out $(OBJMAINS), $(OBJFILES))
 
 
-OBJGUI=$(wildcard build/gui/*.o) \
+OBJGUI=build/gui/controls.o \
+	build/gui/dialog.o \
+	build/gui/network.o \
+	build/gui/newgame.o \
+	build/gui/settings.o \
 	build/render/render_opengl.o \
 	build/render/render_opengl_compat.o \
 	build/render/render_debug.o \
