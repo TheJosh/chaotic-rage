@@ -71,7 +71,8 @@ class GameState
 	friend class RenderDebug;
 	friend class AudioSDLMixer;
 	friend class NetServer;
-	
+	friend void gameLoop(GameState *st, Render *render);
+
 	protected:
 		list<Entity*> entities;
 		list<Entity*> entities_add;
@@ -81,6 +82,7 @@ class GameState
 		vector<Unit*> units;		// leaks: items are not removed
 		vector<Wall*> walls;		// leaks: items are not removed
 		
+		bool running;
 		bool reset_mouse;
 		unsigned int entropy;		// TODO: gamestate -> localplayers
 
@@ -94,7 +96,7 @@ class GameState
 		PlayerState * local_players[MAX_LOCAL];
 		unsigned int num_local;
 		
-		bool running;
+		
 		unsigned int anim_frame;
 		unsigned int game_time;
 		
@@ -138,7 +140,8 @@ class GameState
 		void update(int delta);
 		void update_particles(int delta);
 		void clear();
-		
+		void gameOver();
+
 		// Entropy
 		unsigned int getEntropy(unsigned int slot);
 		void increaseEntropy(unsigned int slot);

@@ -25,7 +25,7 @@ void handleEvents(GameState *st)
 	while (SDL_PollEvent(&event)) {
 		// General keys
 		if (event.type == SDL_QUIT) {
-			st->running = false;
+			st->gameOver();
 			
 		} else if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.sym) {

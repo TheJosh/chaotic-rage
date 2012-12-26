@@ -326,6 +326,16 @@ void GameState::update_particles(int delta)
 
 
 /**
+* Called by non-gameloop code (e.g. network, scripting) to indicate
+* a game-over situation
+**/
+void GameState::gameOver()
+{
+	this->running = false;
+}
+
+
+/**
 * Finds units visible to this unit.
 *
 * Returns a UnitQueryResult. Don't forget to delete() it when you are done!

@@ -76,7 +76,7 @@ gcn::Container * DialogQuit::setup()
 void DialogQuit::action(const gcn::ActionEvent& actionEvent)
 {
 	if (actionEvent.getSource()->getId() == "Y") {
-		this->st->running = false;
+		this->st->gameOver();
 	}
 	this->st->remDialog(this);
 }
