@@ -25,7 +25,7 @@ void OnBegin( const happyhttp::Response* r, void* userdata )
 
 void OnData( const happyhttp::Response* r, void* userdata, const unsigned char* data, int n )
 {
-	resp.append(std::string((const char *) data));
+	resp.append((const char *) data, n);
 	len += n;
 }
 
