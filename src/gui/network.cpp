@@ -55,12 +55,11 @@ gcn::Container * DialogNetJoin::setup()
 	}
 	
 	// List of internet hosts
-	{
+	this->internet_hosts = getServerList();
+	if (this->internet_hosts != NULL) {
 		gcn::Container* tabc = new gcn::Container();
 		tabc->setDimension(gcn::Rectangle(0, 0, 245, 180));
 		this->tabs->addTab("Internet", tabc);
-		
-		this->internet_hosts = getServerList();
 		
 		this->internet = new gcn::ListBox(new VectorListModel(this->internet_hosts));
 		this->internet->setPosition(10, 10);
