@@ -131,7 +131,8 @@ void NetClient::bind(string address, int port)
 
 
 /**
-* Try to join a game
+* Try to join a game.
+* Returns a GameInfo object, or NULL on failure.
 **/
 NetGameinfo * NetClient::attemptJoinGame(string address, int port)
 {
@@ -149,7 +150,16 @@ NetGameinfo * NetClient::attemptJoinGame(string address, int port)
 		if (this->gameinfo != NULL) break;
 		SDL_Delay(100);
 	}
-	
+
+	return this->gameinfo;
+}
+
+/**
+* Downloads the game state from the server.
+* Returns true on success or false on failure.
+**/
+bool NetClient::downloadGameState()
+{
 	// Wait for game data to arrive
 	for (int i = 0; i < 20; i++) {
 		this->update();
@@ -157,9 +167,19 @@ NetGameinfo * NetClient::attemptJoinGame(string address, int port)
 		SDL_Delay(100);
 	}
 
+	if (! this->ingame) return false;
+
 	this->addmsgDataCompl();
 
-	return this->gameinfo;
+	return true;
+}
+
+/**
+* Called at engine start time
+**/
+void NetClient::preGame()
+{
+	this->last_ack = st->game_time;
 }
 
 
@@ -255,6 +275,8 @@ unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 	this->gameinfo = new NetGameinfo();
 	this->gameinfo->map = std::string(map);
 	
+	this->last_ack = st->game_time;
+
 	this->addmsgJoinAck();
 	
 	return 4 + strlen(map);

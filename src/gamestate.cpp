@@ -251,6 +251,13 @@ void GameState::start()
 	this->reset_mouse = false;
 	
 	this->initGuichan();
+
+	// The client needs to do a couple things pre game
+	if (this->client) {
+		this->client->preGame();
+	}
+
+	// TODO: Other subsystems should be preGame'ed here, instead of menu.cpp or game.cpp
 }
 
 

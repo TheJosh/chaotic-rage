@@ -36,7 +36,11 @@ class NetClient {
 		
 	public:
 		void update();
+
+	public:
 		NetGameinfo * attemptJoinGame(string address, int port);
+		bool downloadGameState();
+		void preGame();
 
 	public:
 		// One method for each outgoing network message the client sends out

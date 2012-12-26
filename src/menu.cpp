@@ -404,12 +404,21 @@ void Menu::networkJoin(string host)
 {
 	if (st->client) delete (st->client);
 	new NetClient(st);
-	
+
 	st->physics->init();
-	
+
+	// Try to join the server
+	NetGameinfo *gameinfo = st->client->attemptJoinGame(host, 17778);
+	if (gameinfo == NULL) {
+		delete (st->client);
+		st->client = NULL;
+		displayMessageBox("Unable to connect to server " + host);
+		return;
+	}
+
 	// Load map
 	Map *m = new Map(st);
-	m->load("nettest", st->render);
+	m->load(gameinfo->map, st->render);
 	st->curr_map = m;
 	
 	// Load gametype
@@ -427,16 +436,15 @@ void Menu::networkJoin(string host)
 
 	st->render->viewmode = 0;
 	
-	// Perhaps this should be before all the init stuff
-	// so we don't need to undo it all
-	// Also, some of this should be put into functions better
-	NetGameinfo *gameinfo = st->client->attemptJoinGame(host, 17778);
-	if (gameinfo == NULL) {
+	// Download the gamestate
+	// When this is done, a final message is sent to tell the server we are done.
+	bool gotstate = st->client->downloadGameState();
+	if (! gotstate) {
 		st->audio->stopAll();
 		st->clear();
 		delete (st->client);
 		st->client = NULL;
-		displayMessageBox("Unable to connect to server " + host);
+		displayMessageBox("Unable to download intial game state from server " + host);
 		return;
 	}
 
