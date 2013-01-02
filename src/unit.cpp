@@ -608,14 +608,14 @@ void Unit::leaveVehicle()
 	
 	if (! this->drive) return;
 	
-	this->drive->body->getMotionState()->getWorldTransform(trans);
+	trans = this->drive->getTransform();
 	trans.setRotation(btQuaternion(0,0,0,1));
 
 	btVector3 spawn = this->st->physics->spawnLocation(trans.getOrigin().x(), trans.getOrigin().z(), 1.0f);
 	trans.setOrigin(spawn);
 	
-	//this->body->getMotionState()->setWorldTransform(trans);
-	//this->body->forceActivationState(ACTIVE_TAG);
+	this->ghost->setWorldTransform(trans);
+	this->ghost->forceActivationState(ACTIVE_TAG);
 	
 	this->drive->brakeForce = 10.0f;
 	this->drive->engineForce = 0.0f;

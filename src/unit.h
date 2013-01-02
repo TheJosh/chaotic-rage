@@ -26,7 +26,6 @@ class Unit : public Entity
 {
 	friend class NetClient;
 	friend class NetServer;
-	friend class RenderOpenGLCompat;		// TODO: REMOVE!
 
 
 	public:
@@ -94,6 +93,7 @@ class Unit : public Entity
 		virtual void update(int delta);
 		virtual void hasBeenHit(Entity * that);
 		virtual void entityClose(Entity * e, float dist);
+		virtual btTransform &getTransform() { return ghost->getWorldTransform(); }
 
 	public:
 		Entity * infront(float range);

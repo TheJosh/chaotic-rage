@@ -319,8 +319,7 @@ NetMsg * NetServer::addmsgWallState(Wall *w)
 	msg->seq = this->seq;
 	msg->uniq = w->eid;
 	
-	btTransform trans;
-	w->body->getMotionState()->getWorldTransform(trans);
+	btTransform trans = w->getTransform();
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 	
@@ -346,8 +345,7 @@ NetMsg * NetServer::addmsgObjectState(Object *o)
 	msg->seq = this->seq;
 	msg->uniq = o->eid;
 	
-	btTransform trans;
-	o->body->getMotionState()->getWorldTransform(trans);
+	btTransform trans = o->getTransform();
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 	
@@ -373,8 +371,7 @@ NetMsg * NetServer::addmsgVehicleState(Vehicle *v)
 	msg->seq = this->seq;
 	msg->uniq = v->eid;
 	
-	btTransform trans;
-	v->body->getMotionState()->getWorldTransform(trans);
+	btTransform trans = v->getTransform();
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 	

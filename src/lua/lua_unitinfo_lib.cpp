@@ -56,8 +56,7 @@ LUA_FUNC(get)
 		lua_pushnumber(L, uqr->dist);
 
 	} else if (strcmp(i, "location") == 0) {
-		btTransform trans;
-		uqr->u->getRigidBody()->getMotionState()->getWorldTransform(trans);
+		btTransform trans = uqr->u->getTransform();
 		btVector3 vecO = trans.getOrigin();
 		new_vector3bt(L, vecO);
 

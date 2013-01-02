@@ -35,9 +35,11 @@ class Entity
 	public:
 		bool del;
 		bool render;
+		EID eid;
+
+	protected:
 		btRigidBody* body;
 		GameState* st;
-		EID eid;
 
 	protected:
 		Entity(GameState *st);
@@ -58,10 +60,15 @@ class Entity
 		virtual Sound* getSound() = 0;
 		
 		/**
-		* Return the rigid body for this entity
+		* Return the world transform for this entity
 		**/
-		btRigidBody* getRigidBody();
-		
+		virtual btTransform &getTransform() { return body->getWorldTransform(); }
+
+		/**
+		* Set the world transform for this entity
+		**/
+		virtual void setTransform(btTransform &t) { body->setWorldTransform(t); }
+
 		/**
 		* Update the entity. Time is provided in milliseconds (ms)
 		**/

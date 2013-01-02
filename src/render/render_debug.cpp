@@ -170,8 +170,7 @@ void RenderDebug::render()
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
 		Entity *e = (*it);
 		
-		btTransform trans;
-		e->getRigidBody()->getMotionState()->getWorldTransform(trans);
+		btTransform trans = e->getTransform();
 		
 		dest.x = (trans.getOrigin().getX() / scalex) - 8;
 		dest.y = (trans.getOrigin().getZ() / scaley) - 8;

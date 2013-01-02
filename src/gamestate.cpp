@@ -346,13 +346,12 @@ list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 	
 	float visual_distance = 200;		// TODO: Should this be a unit property?
 	
-	btTransform trans;
+	btTransform trans = origin->getTransform();
 	UnitQueryResult uqr;
 	btVector3 vecO, vecS;
 	float dist;
 	Unit * u;
 	
-	origin->getRigidBody()->getMotionState()->getWorldTransform(trans);
 	vecO = trans.getOrigin();
 	
 	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); it++) {
@@ -360,7 +359,7 @@ list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 		u = (Unit*)(*it);
 		if (u == origin) continue;
 
-		u->getRigidBody()->getMotionState()->getWorldTransform(trans);
+		trans = u->getTransform();
 		vecS = trans.getOrigin();
 		vecS -= vecO;
 		

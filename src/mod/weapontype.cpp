@@ -162,8 +162,7 @@ WeaponType::WeaponType()
 **/
 void WeaponRaycast::doFire(Unit * u)
 {
-	btTransform xform;
-	u->body->getMotionState()->getWorldTransform(xform);
+	btTransform xform = u->getTransform();
 	
 	// Weapon angle ranges
 	int angle = this->angle_range / 2;
@@ -209,8 +208,7 @@ void WeaponRaycast::doFire(Unit * u)
 **/
 void WeaponDigdown::doFire(Unit * u)
 {
-	btTransform xform;
-	u->body->getMotionState()->getWorldTransform(xform);
+	btTransform xform = u->getTransform();
 	
 	btVector3 begin = xform.getOrigin();
 	btVector3 end = begin + btVector3(0.0f, -100.0f, 0.0f);
@@ -226,14 +224,14 @@ void WeaponDigdown::doFire(Unit * u)
 		btRigidBody * body = btRigidBody::upcast(cb.m_collisionObject);
 		if (body && !body->getUserPointer()) {
 			// Hit the ground, lets dig a hole
-			Map* map = u->st->curr_map;
+			Map* map = u->getGameState()->curr_map;
 			int mapX = begin.x() / map->width * map->heightmap_w;
 			int mapY = begin.z() / map->height * map->heightmap_h;
 
 			heightmapCircle(map, mapX, mapY, this->radius, this->depth);
 
-			u->st->render->freeHeightmap();
-			u->st->render->loadHeightmap();
+			u->getGameState()->render->freeHeightmap();
+			u->getGameState()->render->loadHeightmap();
 		}
 	}
 }
@@ -263,8 +261,7 @@ void heightmapCircle(Map* map, int x0, int y0, int radius, float depthadd)
 **/
 void WeaponFlamethrower::doFire(Unit * u)
 {
-	btTransform xform;
-	u->body->getMotionState()->getWorldTransform(xform);
+	btTransform xform = u->getTransform();
 	
 	// Weapon angle ranges
 	int angle = this->angle_range / 2;

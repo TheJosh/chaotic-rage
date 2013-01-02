@@ -402,7 +402,7 @@ unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 	}
 	
 	// Update the transform
-	w->body->getMotionState()->setWorldTransform(btTransform(
+	w->setTransform(btTransform(
 		btQuaternion(qx, qy, qz, qw),
 		btVector3(bx, by, bz)
 	));
@@ -436,7 +436,7 @@ unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 	}
 	
 	// Update the transform
-	o->body->getMotionState()->setWorldTransform(btTransform(
+	o->setTransform(btTransform(
 		btQuaternion(qx, qy, qz, qw),
 		btVector3(bx, by, bz)
 	));
@@ -474,7 +474,7 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 	}
 	
 	// Update the vehicle
-	v->body->getMotionState()->setWorldTransform(trans);
+	v->setTransform(trans);
 	v->engineForce = ef;
 	v->brakeForce = bf;
 	v->steering = s;

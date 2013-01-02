@@ -904,8 +904,7 @@ void RenderOpenGL::physics()
 void RenderOpenGL::background()
 {
 	if (this->render_player != NULL) {
-		btTransform trans;
-		this->render_player->body->getMotionState()->getWorldTransform(trans);
+		btTransform trans = this->render_player->getTransform();
 		btVector3 euler;
 		
 		glLoadIdentity();
@@ -950,10 +949,10 @@ void RenderOpenGL::mainRot()
 	
 		// Load the character details into the variables
 		if (this->render_player->drive) {
-			this->render_player->drive->body->getMotionState()->getWorldTransform(trans);
+			trans = this->render_player->drive->getTransform();
 			angle = RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 180.0f;
 		} else {
-			this->render_player->body->getMotionState()->getWorldTransform(trans);
+			trans = this->render_player->getTransform();
 			angle = this->render_player->mouse_angle + 180.0f;
 			//tilt += this->render_player->vertical_angle;
 		}
@@ -996,8 +995,7 @@ void RenderOpenGL::lights()
 				glLightfv(GL_LIGHT0 + i, GL_POSITION, dir_down);
 				
 			} else if (l->type == 2) {
-				btTransform trans;
-				this->render_player->getRigidBody()->getMotionState()->getWorldTransform(trans);
+				btTransform trans = this->render_player->getTransform();
 				
 				glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY() + 10.0f, trans.getOrigin().getZ());
 				glRotatef(RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 90.0f + 45.0f, 0.0f, 1.0f, 0.0f);
@@ -1106,8 +1104,7 @@ void RenderOpenGL::entities()
 
 		glPushMatrix();
 			
-		btTransform trans;
-		e->getRigidBody()->getMotionState()->getWorldTransform(trans);
+		btTransform trans = e->getTransform();
 		btScalar m[16];
 		trans.getOpenGLMatrix(m);
 		glMultMatrixf((GLfloat*)m);

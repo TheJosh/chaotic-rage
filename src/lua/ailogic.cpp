@@ -117,12 +117,15 @@ void AILogic::update(int delta)
 	}
 	
 	
+	// TODO: Rewrite AI code for kinematics instead of dynamics
+
+
+	// OLD
+	/*
 	this->dir.setY(0.0f);
-	this->u->body->activate(true);
 	
 	// Get transform
-	btTransform xform;
-	this->u->body->getMotionState()->getWorldTransform (xform);
+	btTransform xform = this->u->getTransform();
 	
 	this->u->putOnGround(&xform);
 
@@ -144,6 +147,7 @@ void AILogic::update(int delta)
 	// Set transform
 	this->u->body->getMotionState()->setWorldTransform(xform);
 	this->u->body->setCenterOfMassTransform(xform);
+	*/
 }
 
 

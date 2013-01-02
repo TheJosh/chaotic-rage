@@ -40,12 +40,4 @@ void Entity::hasDied()
 	this->del = true;
 }
 
-/**
-* Return the rigid body for this entity
-**/
-btRigidBody* Entity::getRigidBody()
-{
-	return this->body;
-}
-
 
