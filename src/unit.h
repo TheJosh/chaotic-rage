@@ -5,6 +5,8 @@
 #pragma once
 #include <iostream>
 #include <SDL.h>
+#include <BulletCollision/CollisionDispatch/btGhostObject.h>
+#include <BulletDynamics/Character/btKinematicCharacterController.h>
 #include "rage.h"
 
 using namespace std;
@@ -24,7 +26,9 @@ class Unit : public Entity
 {
 	friend class NetClient;
 	friend class NetServer;
-	
+	friend class RenderOpenGLCompat;		// TODO: REMOVE!
+
+
 	public:
 		virtual EntityClass klass() const { return UNIT; }
 		
@@ -42,6 +46,9 @@ class Unit : public Entity
 		int desired_angle_aim;
 		int angle_aim;
 		
+		btPairCachingGhostObject* ghost;
+		btKinematicCharacterController* character;
+
 		UnitWeapon* weapon;
 		bool firing;
 		vector<UnitWeapon*> avail_weapons;

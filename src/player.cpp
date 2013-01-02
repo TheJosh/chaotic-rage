@@ -172,6 +172,39 @@ void Player::update(int delta)
 	}
 
 
+	// NEW (kinematic controller)
+	btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
+
+	btScalar walkVelocity = btScalar(1.1) * 4.0; // 4 km/h -> 1.1 m/s
+	btScalar walkSpeed = walkVelocity * delta/1000.0f;
+
+	btTransform xform = ghost->getWorldTransform();
+
+	// Mouse rotation
+	btQuaternion rot = btQuaternion(btVector3(0.0f, 1.0f, 0.0f), DEG_TO_RAD(this->mouse_angle));
+	ghost->getWorldTransform().setBasis(btMatrix3x3(rot));
+
+	// Forward/backward
+	btVector3 forwardDir = xform.getBasis() * btVector3(0.0f, 0.0f, uts->accel);
+	if (this->key[KEY_UP]) {
+		walkDirection += forwardDir;
+	} else if (this->key[KEY_DOWN]) {
+		walkDirection -= forwardDir;
+	}
+
+	// Strafe
+	btVector3 strafeDir = xform.getBasis() * btVector3(uts->accel, 0.0f, 0.0f);
+	if (this->key[KEY_LEFT]) {
+		walkDirection += strafeDir;
+	} else if (this->key[KEY_RIGHT]) {
+		walkDirection -= strafeDir;
+	}
+
+	this->character->setWalkDirection(walkDirection * walkSpeed);
+
+
+	// OLD (dynamic controller)
+	/*
 	btTransform xform, xform2;
 	body->getMotionState()->getWorldTransform (xform);
 	xform.setRotation(btQuaternion (btVector3(0.0f, 1.0f, 0.0f), DEG_TO_RAD(this->mouse_angle)));
@@ -224,7 +257,9 @@ void Player::update(int delta)
 	body->getMotionState()->setWorldTransform (xform);
 	body->setCenterOfMassTransform (xform);
 	
-	
+	*/
+
+
 	Unit::update(delta);
 }
 

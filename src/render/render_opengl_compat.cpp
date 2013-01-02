@@ -917,7 +917,7 @@ void RenderOpenGLCompat::mainRot()
 			this->render_player->drive->body->getMotionState()->getWorldTransform(trans);
 			angle = RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 180.0f;
 		} else {
-			this->render_player->body->getMotionState()->getWorldTransform(trans);
+			trans = this->render_player->ghost->getWorldTransform();
 			angle = this->render_player->mouse_angle + 180.0f;
 			//tilt += this->render_player->vertical_angle;
 		}
@@ -960,8 +960,7 @@ void RenderOpenGLCompat::lights()
 				glLightfv(GL_LIGHT0 + i, GL_POSITION, dir_down);
 				
 			} else if (l->type == 2) {
-				btTransform trans;
-				this->render_player->getRigidBody()->getMotionState()->getWorldTransform(trans);
+				btTransform trans = this->render_player->ghost->getWorldTransform();
 				
 				glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY() + 10.0f, trans.getOrigin().getZ());
 				glRotatef(RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 90.0f + 45.0f, 0.0f, 1.0f, 0.0f);
@@ -1062,12 +1061,13 @@ void RenderOpenGLCompat::entities()
 		
 		if (this->viewmode == 2 && e == this->render_player) continue;
 		if (e->render == false) continue;
+		if (e->klass() == UNIT) continue;				// TODO: OBVIOUSLY REMOVE
 
 		AnimPlay *play = e->getAnimModel();
 		if (play == NULL) continue;
 
 		glPushMatrix();
-			
+		
 		btTransform trans;
 		e->getRigidBody()->getMotionState()->getWorldTransform(trans);
 		btScalar m[16];

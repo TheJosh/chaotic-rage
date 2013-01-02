@@ -6,6 +6,8 @@
 #include <SDL.h>
 #include <math.h>
 #include <btBulletDynamicsCommon.h>
+#include <BulletCollision/CollisionDispatch/btGhostObject.h>
+#include <BulletDynamics/Character/btKinematicCharacterController.h>
 #include "rage.h"
 
 using namespace std;
@@ -43,38 +45,39 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	this->uts = NULL;
 	this->setModifiers(0);
 
-	// TODO: The colShape should be tied to the wall type.
-	btCollisionShape* colShape = new btCapsuleShape(0.5f, 0.9f);
-	
-	// TODO: Store the colshape and nuke at some point
-	// collisionShapes.push_back(colShape);
-	
-	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(
+
+
+	btTransform xform = btTransform(
 		btQuaternion(btVector3(0,0,1),0),
 		st->physics->spawnLocation(x, y, 0.9f)
-	));
-	
-	this->body = st->physics->addRigidBody(colShape, 0.1f, motionState);
-	
-	this->body->setUserPointer(this);
-	
-	body->setSleepingThresholds(0.0, 0.0);
-	body->setAngularFactor(0.0);
-	body->setFriction(0.5f);
+	);
 
-	// access sounds using this->uc->getSound(type)
-	// see unittype.h for types (e.g. UNIT_SOUND_DEATH)
-	// example:
-	// Sound* snd;if (this->firing
-	// snd = this->uc->getSound(UNIT_SOUND_DEATH);
-	// if (snd != NULL) this->st->audio->playSound(snd);
+	this->ghost = new btPairCachingGhostObject();
+	this->ghost->setWorldTransform(xform);
+
+	// sweepBP->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
+
+	btConvexShape* capsule = new btCapsuleShape(0.5f, 0.9f);
+	this->ghost->setCollisionShape(capsule);
+	this->ghost->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
+
+	btScalar stepHeight = btScalar(0.75);
+	character = new btKinematicCharacterController(this->ghost, capsule, stepHeight);
+
+	st->physics->getWorld()->addCollisionObject(this->ghost, btBroadphaseProxy::CharacterFilter, btBroadphaseProxy::StaticFilter|btBroadphaseProxy::DefaultFilter);
+	st->physics->getWorld()->addAction(character);
+
+
+
+	this->body = NULL;
+	//this->body->setUserPointer(this);
 }
 
 Unit::~Unit()
 {
 	delete this->anim;
 	delete this->uts;
-	st->physics->delRigidBody(this->body);
+	//st->physics->delRigidBody(this->body);
 }
 
 
@@ -165,8 +168,7 @@ void Unit::emptySound()
 **/
 Entity * Unit::infront(float range)
 {
-	btTransform xform;
-	body->getMotionState()->getWorldTransform(xform);
+	btTransform xform = this->ghost->getWorldTransform();
 	
 	// Begin and end vectors
 	btVector3 begin = xform.getOrigin();
@@ -194,17 +196,7 @@ Entity * Unit::infront(float range)
 **/
 bool Unit::onground()
 {
-	btTransform xform;
-	body->getMotionState()->getWorldTransform(xform);
-
-	btVector3 begin = xform.getOrigin() + xform.getBasis() * btVector3(0.0f, 1.9f, 0.0f);
-	btVector3 end = xform.getOrigin() + xform.getBasis() * btVector3(0.0f, -1.9f, 0.0f);
-	st->addDebugLine(&begin, &end);
-
-	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
-	this->st->physics->getWorld()->rayTest(begin, end, cb);
-
-	return (cb.hasHit());
+	return this->character->canJump();
 }
 
 
@@ -472,8 +464,7 @@ void Unit::update(int delta)
 
 
 	// If they have fallen a considerable distance, they die
-	btTransform xform;
-	body->getMotionState()->getWorldTransform (xform);
+	btTransform xform = ghost->getWorldTransform();
 	if (xform.getOrigin().y() <= -100.0) {
 		this->takeDamage(this->health);
 	}
@@ -573,9 +564,8 @@ int Unit::takeDamage(int damage)
 {
 	this->health -= damage;
 	
-	btTransform trans;
-	this->body->getMotionState()->getWorldTransform(trans);
-	create_particles_blood_spray(this->st, new btVector3(trans.getOrigin()), damage);
+	btTransform xform = this->ghost->getWorldTransform();
+	create_particles_blood_spray(this->st, new btVector3(xform.getOrigin()), damage);
 	
 	this->st->increaseEntropy(1);
 	
@@ -583,7 +573,7 @@ int Unit::takeDamage(int damage)
 		this->setState(UNIT_STATE_DIE);
 		this->endFiring();
 		this->leaveVehicle();
-		this->st->physics->markDead(this->body);
+		//this->st->physics->markDead(this->body);
 		
 		remove_at = st->game_time + (10 * 60 * 1000);	// 10 mins
 		
@@ -601,7 +591,7 @@ void Unit::enterVehicle(Vehicle *v)
 {
 	this->drive = v;
 	this->render = false;
-	this->body->forceActivationState(DISABLE_SIMULATION);
+	//this->body->forceActivationState(DISABLE_SIMULATION);
 	
 	this->drive->brakeForce = 0.0f;
 	this->drive->engineForce = 0.0f;
@@ -624,8 +614,8 @@ void Unit::leaveVehicle()
 	btVector3 spawn = this->st->physics->spawnLocation(trans.getOrigin().x(), trans.getOrigin().z(), 1.0f);
 	trans.setOrigin(spawn);
 	
-	this->body->getMotionState()->setWorldTransform(trans);
-	this->body->forceActivationState(ACTIVE_TAG);
+	//this->body->getMotionState()->setWorldTransform(trans);
+	//this->body->forceActivationState(ACTIVE_TAG);
 	
 	this->drive->brakeForce = 10.0f;
 	this->drive->engineForce = 0.0f;

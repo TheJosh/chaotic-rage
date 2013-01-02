@@ -31,7 +31,12 @@ void PhysicsBullet::init()
 {
 	collisionConfiguration = new btDefaultCollisionConfiguration();
 	dispatcher = new btCollisionDispatcher(collisionConfiguration);
-	overlappingPairCache = new btDbvtBroadphase();
+
+	btVector3 worldMin(-1000,-1000,-1000);
+	btVector3 worldMax(1000,1000,1000);
+	overlappingPairCache = new btAxisSweep3(worldMin,worldMax);
+	overlappingPairCache->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
+	
 	solver = new btSequentialImpulseConstraintSolver();
 	
 	dynamicsWorld = new btDiscreteDynamicsWorld(

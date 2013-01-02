@@ -3,6 +3,8 @@
 ----
 
 
+debug_physics(true);
+
 bind_playerjoin(function(slot)
 	show_alert_message("Player Join; " .. slot);
 	
