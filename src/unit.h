@@ -26,6 +26,7 @@ class Unit : public Entity
 {
 	friend class NetClient;
 	friend class NetServer;
+	friend class AILogic;
 
 
 	public:
@@ -94,6 +95,7 @@ class Unit : public Entity
 		virtual void hasBeenHit(Entity * that);
 		virtual void entityClose(Entity * e, float dist);
 		virtual btTransform &getTransform() { return ghost->getWorldTransform(); }
+		virtual void setTransform(btTransform &t) { ghost->setWorldTransform(t); }
 
 	public:
 		Entity * infront(float range);

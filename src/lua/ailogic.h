@@ -21,6 +21,8 @@ using namespace std;
 **/
 class AILogic
 {
+	friend class Unit;
+	
 	public:
 		Unit *u;
 		lua_State *lua;

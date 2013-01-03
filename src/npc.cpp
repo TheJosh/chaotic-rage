@@ -16,9 +16,6 @@ NPC::NPC(UnitType *uc, GameState *st, float x, float y, float z, AIType *ai) : U
 	
 	this->setState(UNIT_STATE_RUNNING);
 	
-	body->setSleepingThresholds(0.0, 0.0);
-	body->setAngularFactor(0.0);
-	
 	logic = new AILogic(this);
 	logic->execScript(ai->script);
 	

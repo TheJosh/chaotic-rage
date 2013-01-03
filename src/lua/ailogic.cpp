@@ -117,8 +117,26 @@ void AILogic::update(int delta)
 	}
 	
 	
-	// TODO: Rewrite AI code for kinematics instead of dynamics
+	// NEW (kinematic controller)
+	this->dir.setY(0.0f);
 
+	btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
+
+	btScalar walkVelocity = btScalar(1.1) * 4.0; // 4 km/h -> 1.1 m/s
+	btScalar walkSpeed = walkVelocity * delta/1000.0f;
+
+	btTransform xform = u->ghost->getWorldTransform();
+
+	// Rotation update
+	btVector3 fwd = btVector3(0.0, 0.0, 1.0);
+	btVector3 axis = fwd.cross(this->dir);
+	axis.normalize();
+	float angle = acos(this->dir.dot(fwd));
+	btQuaternion rot = btQuaternion(axis, angle).normalize();
+	xform.setBasis(btMatrix3x3(rot));
+
+	// Position update
+	u->character->setWalkDirection(this->dir * walkSpeed);
 
 	// OLD
 	/*
