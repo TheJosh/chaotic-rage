@@ -74,7 +74,7 @@ void PhysicsBullet::preGame()
 	
 	this->groundRigidBody->setRestitution(0.f);
 	this->groundRigidBody->setFriction(10.f);
-	dynamicsWorld->addRigidBody(groundRigidBody);	//, COL_GROUND, COL_ALIVE | COL_DEAD
+	dynamicsWorld->addRigidBody(groundRigidBody, btBroadphaseProxy::StaticFilter, btBroadphaseProxy::DefaultFilter|btBroadphaseProxy::StaticFilter|btBroadphaseProxy::CharacterFilter|btBroadphaseProxy::KinematicFilter);
 	
 	collisionShapes = new btAlignedObjectArray<btCollisionShape*>();
 }
@@ -132,7 +132,7 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, fl
 	);
 	btRigidBody* body = new btRigidBody(rbInfo);
 	
-	dynamicsWorld->addRigidBody(body);	//, COL_ALIVE, COL_GROUND | COL_ALIVE
+	dynamicsWorld->addRigidBody(body, btBroadphaseProxy::DefaultFilter, btBroadphaseProxy::DefaultFilter|btBroadphaseProxy::StaticFilter|btBroadphaseProxy::CharacterFilter|btBroadphaseProxy::KinematicFilter);
 	
 	return body;
 }
@@ -162,7 +162,7 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, bt
 	);
 	btRigidBody* body = new btRigidBody(rbInfo);
 	
-	dynamicsWorld->addRigidBody(body);	//, COL_ALIVE, COL_GROUND | COL_ALIVE
+	dynamicsWorld->addRigidBody(body, btBroadphaseProxy::DefaultFilter, btBroadphaseProxy::DefaultFilter|btBroadphaseProxy::StaticFilter|btBroadphaseProxy::CharacterFilter|btBroadphaseProxy::KinematicFilter);
 	
 	return body;
 }
@@ -173,7 +173,7 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, bt
 **/
 void PhysicsBullet::addRigidBody(btRigidBody* body)
 {
-	dynamicsWorld->addRigidBody(body);	//, COL_ALIVE, COL_GROUND | COL_ALIVE
+	dynamicsWorld->addRigidBody(body, btBroadphaseProxy::DefaultFilter, btBroadphaseProxy::DefaultFilter|btBroadphaseProxy::StaticFilter|btBroadphaseProxy::CharacterFilter|btBroadphaseProxy::KinematicFilter);
 }
 
 
@@ -194,7 +194,7 @@ void PhysicsBullet::markDead(btRigidBody* body)
 	if (! body) return;
 	
 	dynamicsWorld->removeCollisionObject(body);
-	dynamicsWorld->addRigidBody(body);//, COL_DEAD, COL_GROUND
+	dynamicsWorld->addRigidBody(body, btBroadphaseProxy::DebrisFilter, btBroadphaseProxy::StaticFilter);
 }
 
 
@@ -258,24 +258,23 @@ void PhysicsBullet::doCollisions()
 		
 		if (entA == NULL || entB == NULL) continue;
 
+		if (entA == st->local_players[0]->p || entB == st->local_players[0]->p) {
+			st->addHUDMessage(0, "Contact!");
+		}
+
 		entA->hasBeenHit(entB);
 		entB->hasBeenHit(entA);
 		
-		/*int numContacts = contactManifold->getNumContacts();
+		int numContacts = contactManifold->getNumContacts();
 		
-		for (j = 0; j < numContacts; j++) {
+		for (int j = 0; j < numContacts; j++) {
 			btManifoldPoint& pt = contactManifold->getContactPoint(j);
-			
-			glBegin(GL_LINES);
-			glColor3f(0, 0, 0);
 			
 			btVector3 ptA = pt.getPositionWorldOnA();
 			btVector3 ptB = pt.getPositionWorldOnB();
-			
-			glVertex3d(ptA.x(),ptA.y(),ptA.z());
-			glVertex3d(ptB.x(),ptB.y(),ptB.z());
-			glEnd();
-		}*/
+
+			this->st->addDebugLine(&ptA, &ptB);
+		}
 		
 		//you can un-comment out this line, and then all points are removed
 		//contactManifold->clearManifold();	

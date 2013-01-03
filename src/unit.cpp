@@ -60,11 +60,11 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	btConvexShape* capsule = new btCapsuleShape(0.5f, 0.9f);
 	this->ghost->setCollisionShape(capsule);
 	this->ghost->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
-
+	
 	btScalar stepHeight = btScalar(0.75);
 	character = new btKinematicCharacterController(this->ghost, capsule, stepHeight);
 
-	st->physics->getWorld()->addCollisionObject(this->ghost, btBroadphaseProxy::CharacterFilter, btBroadphaseProxy::StaticFilter|btBroadphaseProxy::DefaultFilter);
+	st->physics->getWorld()->addCollisionObject(this->ghost, btBroadphaseProxy::CharacterFilter, btBroadphaseProxy::StaticFilter|btBroadphaseProxy::DefaultFilter|btBroadphaseProxy::CharacterFilter);
 	st->physics->getWorld()->addAction(character);
 
 
