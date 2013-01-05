@@ -16,12 +16,21 @@ PhysicsBullet::PhysicsBullet(GameState * st)
 {
 	this->st = st;
 	st->physics = this;
+
+	int moststuff = CollisionGroup::CG_TERRAIN | CollisionGroup::CG_DYNAMIC | CollisionGroup::CG_STATIC | CollisionGroup::CG_UNIT | CollisionGroup::CG_VEHICLE;
+
+	this->masks[CollisionGroup::CG_NOTHING] = 0;
+	this->masks[CollisionGroup::CG_TERRAIN] = CollisionGroup::CG_DEBRIS | CollisionGroup::CG_STATIC | CollisionGroup::CG_DYNAMIC | CollisionGroup::CG_UNIT | CollisionGroup::CG_VEHICLE;
+	this->masks[CollisionGroup::CG_DEBRIS] = CollisionGroup::CG_TERRAIN;
+	this->masks[CollisionGroup::CG_STATIC] = moststuff;
+	this->masks[CollisionGroup::CG_DYNAMIC] = moststuff;
+	this->masks[CollisionGroup::CG_UNIT] = moststuff;
+	this->masks[CollisionGroup::CG_VEHICLE] = moststuff;
 }
 
 PhysicsBullet::~PhysicsBullet()
 {
 }
-
 
 
 /**
@@ -74,7 +83,8 @@ void PhysicsBullet::preGame()
 	
 	this->groundRigidBody->setRestitution(0.f);
 	this->groundRigidBody->setFriction(10.f);
-	dynamicsWorld->addRigidBody(groundRigidBody, btBroadphaseProxy::StaticFilter, btBroadphaseProxy::DefaultFilter|btBroadphaseProxy::StaticFilter|btBroadphaseProxy::CharacterFilter|btBroadphaseProxy::KinematicFilter);
+	dynamicsWorld->addRigidBody(groundRigidBody, CollisionGroup::CG_TERRAIN, this->masks[CollisionGroup::CG_TERRAIN]);
+
 	
 	collisionShapes = new btAlignedObjectArray<btCollisionShape*>();
 }
@@ -112,7 +122,7 @@ btDiscreteDynamicsWorld* PhysicsBullet::getWorld()
 * m = mass
 * x,y,z = origin position
 **/
-btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, float x, float y, float z)
+btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, float x, float y, float z, CollisionGroup group)
 {
 	btDefaultMotionState* myMotionState =
 		new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(x,y,z)));
@@ -132,7 +142,7 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, fl
 	);
 	btRigidBody* body = new btRigidBody(rbInfo);
 	
-	dynamicsWorld->addRigidBody(body, btBroadphaseProxy::DefaultFilter, btBroadphaseProxy::DefaultFilter|btBroadphaseProxy::StaticFilter|btBroadphaseProxy::CharacterFilter|btBroadphaseProxy::KinematicFilter);
+	dynamicsWorld->addRigidBody(body, group, this->masks[group]);
 	
 	return body;
 }
@@ -145,7 +155,7 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, fl
 * m = mass
 * motionState = origin motion state (position and rotation)
 **/
-btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, btDefaultMotionState* motionState)
+btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, btDefaultMotionState* motionState, CollisionGroup group)
 {
 	btScalar mass(m);
 	bool isDynamic = (mass != 0.f);
@@ -162,7 +172,7 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, bt
 	);
 	btRigidBody* body = new btRigidBody(rbInfo);
 	
-	dynamicsWorld->addRigidBody(body, btBroadphaseProxy::DefaultFilter, btBroadphaseProxy::DefaultFilter|btBroadphaseProxy::StaticFilter|btBroadphaseProxy::CharacterFilter|btBroadphaseProxy::KinematicFilter);
+	dynamicsWorld->addRigidBody(body, group, this->masks[group]);
 	
 	return body;
 }
@@ -171,9 +181,27 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, bt
 /**
 * Add a rigid body which already exists
 **/
-void PhysicsBullet::addRigidBody(btRigidBody* body)
+void PhysicsBullet::addRigidBody(btRigidBody* body, CollisionGroup group)
 {
-	dynamicsWorld->addRigidBody(body, btBroadphaseProxy::DefaultFilter, btBroadphaseProxy::DefaultFilter|btBroadphaseProxy::StaticFilter|btBroadphaseProxy::CharacterFilter|btBroadphaseProxy::KinematicFilter);
+	dynamicsWorld->addRigidBody(body, group, this->masks[group]);
+}
+
+
+/**
+* Add a collision object
+**/
+void PhysicsBullet::addCollisionObject(btCollisionObject* obj, CollisionGroup group)
+{
+	dynamicsWorld->addCollisionObject(obj, group, this->masks[group]);
+}
+
+
+/**
+* Add a vehicle
+**/
+void PhysicsBullet::addAction(btActionInterface* action)
+{
+	dynamicsWorld->addAction(action);
 }
 
 
@@ -182,7 +210,7 @@ void PhysicsBullet::addRigidBody(btRigidBody* body)
 **/
 void PhysicsBullet::addVehicle(btRaycastVehicle* vehicle)
 {
-	dynamicsWorld->addVehicle(vehicle);
+	dynamicsWorld->addAction(vehicle);
 }
 
 
@@ -293,6 +321,9 @@ btVector3 PhysicsBullet::spawnLocation(float x, float z, float height)
 	btVector3 end(x, -y, z);
 	
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
+	cb.m_collisionFilterGroup = CollisionGroup::CG_STATIC;
+	cb.m_collisionFilterMask = CollisionGroup::CG_TERRAIN;
+
 	dynamicsWorld->rayTest(begin, end, cb);
 	
 	if (cb.hasHit()) {

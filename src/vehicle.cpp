@@ -66,7 +66,7 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	//compound->addChildShape(localTrans,chassisShape);
 	
 	btDefaultMotionState* motionState = new btDefaultMotionState(loc);
-	this->body = st->physics->addRigidBody(chassisShape, 120.0f, motionState);
+	this->body = st->physics->addRigidBody(chassisShape, 120.0f, motionState, CollisionGroup::CG_VEHICLE);
 	this->body->setUserPointer(this);
 	this->body->setActivationState(DISABLE_DEACTIVATION);
 	

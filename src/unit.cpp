@@ -55,17 +55,15 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	this->ghost = new btPairCachingGhostObject();
 	this->ghost->setWorldTransform(xform);
 
-	// sweepBP->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
-
 	btConvexShape* capsule = new btCapsuleShape(0.5f, 0.9f);
 	this->ghost->setCollisionShape(capsule);
-	this->ghost->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
+	this->ghost->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
 	
 	btScalar stepHeight = btScalar(0.75);
 	character = new btKinematicCharacterController(this->ghost, capsule, stepHeight);
 
-	st->physics->getWorld()->addCollisionObject(this->ghost, btBroadphaseProxy::CharacterFilter, btBroadphaseProxy::StaticFilter|btBroadphaseProxy::DefaultFilter|btBroadphaseProxy::CharacterFilter);
-	st->physics->getWorld()->addAction(character);
+	st->physics->addCollisionObject(this->ghost, CollisionGroup::CG_UNIT);
+	st->physics->addAction(character);
 
 
 
@@ -553,6 +551,57 @@ void Unit::update(int delta)
 	this->closest = NULL;
 	
 	
+	{
+		      btManifoldArray   manifoldArray;
+      btBroadphasePairArray& pairArray = ghost->getOverlappingPairCache()->getOverlappingPairArray();
+      int numPairs = pairArray.size();
+
+      for (int i=0;i<numPairs;i++)
+      {
+         manifoldArray.clear();
+
+         const btBroadphasePair& pair = pairArray[i];
+         
+         //unless we manually perform collision detection on this pair, the contacts are in the dynamics world paircache:
+         btBroadphasePair* collisionPair = st->physics->getWorld()->getPairCache()->findPair(pair.m_pProxy0,pair.m_pProxy1);
+         if (!collisionPair)
+            continue;
+
+         if (collisionPair->m_algorithm)
+            collisionPair->m_algorithm->getAllContactManifolds(manifoldArray);
+
+         for (int j=0;j<manifoldArray.size();j++)
+         {
+            btPersistentManifold* manifold = manifoldArray[j];
+            btScalar directionSign = manifold->getBody0() == ghost ? btScalar(-1.0) : btScalar(1.0);
+
+			btCollisionObject* obA = static_cast<btCollisionObject*>(manifold->getBody0());
+			btCollisionObject* obB = static_cast<btCollisionObject*>(manifold->getBody1());
+
+			btCollisionObject* other = obA == ghost ? obB : obA;
+
+			if (other->getBroadphaseHandle()->m_collisionFilterGroup == btBroadphaseProxy::DefaultFilter) {
+
+			for (int p=0;p<manifold->getNumContacts();p++)
+            {
+             	const btManifoldPoint&pt = manifold->getContactPoint(p);
+                if (pt.getDistance()<0.f)
+				{
+					const btVector3& ptA = pt.getPositionWorldOnA();
+					const btVector3& ptB = pt.getPositionWorldOnB();
+					const btVector3& normalOnB = pt.m_normalWorldOnB;
+					/// work here
+				}
+            }
+
+			}
+
+
+         }
+      }
+	}
+
+
 	if (this->anim->isDone()) this->anim->next();
 }
 

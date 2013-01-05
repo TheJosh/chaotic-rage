@@ -13,16 +13,19 @@ using namespace std;
 
 
 #define BIT(x) (1<<(x))
-enum ColissionTypes {
-	COL_NOTHING = 0,		// Nothing!
-	COL_GROUND = BIT(0),	// The ground
-	COL_ALIVE = BIT(1),		// Alive objects
-	COL_DEAD = BIT(2)		// Dead objects
+enum CollisionGroup {
+	CG_NOTHING = 0,           // Nothing!
+	CG_TERRAIN = BIT(0),      // The ground surface
+	CG_DEBRIS = BIT(1),       // Debris, dead stuff, etc
+	CG_STATIC = BIT(2),       // Walls and other statics
+	CG_DYNAMIC = BIT(3),      // Objects and other dynamics
+	CG_UNIT = BIT(4),         // Units (btKinematicCharacterController)
+	CG_VEHICLE = BIT(5),      // Vehicles (btRaycastVehicle)
 };
 
 
 /**
-* Thin wrapper around the "Bullet" physics library
+* Simple wrapper around the "Bullet" physics library
 **/
 class PhysicsBullet
 {
@@ -38,6 +41,9 @@ class PhysicsBullet
 		
 		btRigidBody* groundRigidBody;
 		
+		// Used by the add functions to set the right collision mask.
+		map<int, int> masks;
+
 	public:
 		PhysicsBullet(GameState * st);
 		~PhysicsBullet();
@@ -46,9 +52,11 @@ class PhysicsBullet
 		virtual void postGame();
 		
 	public:
-		btRigidBody* addRigidBody(btCollisionShape* colShape, float mass, float x, float y, float z);
-		btRigidBody* addRigidBody(btCollisionShape* colShape, float m, btDefaultMotionState* motionState);
-		void addRigidBody(btRigidBody* body);
+		btRigidBody* addRigidBody(btCollisionShape* colShape, float mass, float x, float y, float z, CollisionGroup group);
+		btRigidBody* addRigidBody(btCollisionShape* colShape, float m, btDefaultMotionState* motionState, CollisionGroup group);
+		void addRigidBody(btRigidBody* body, CollisionGroup group);
+		void addCollisionObject(btCollisionObject* obj, CollisionGroup group);
+		void addAction(btActionInterface* action);
 		void addVehicle(btRaycastVehicle* vehicle);
 		void markDead(btRigidBody* body);
 		void remRigidBody(btRigidBody* body);
