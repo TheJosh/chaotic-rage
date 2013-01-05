@@ -31,12 +31,10 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	
 	this->remove_at = 0;
 	
-	this->curr_obj = NULL;
 	this->lift_obj = NULL;
 	this->drive = NULL;
 	this->turret_obj = NULL;
 	
-	this->closest = NULL;
 	this->melee_time = 0;
 	this->melee_cooldown = 0;
 	
@@ -76,30 +74,6 @@ Unit::~Unit()
 	delete this->anim;
 	delete this->uts;
 	//st->physics->delRigidBody(this->body);
-}
-
-
-/**
-* Hit!
-**/
-void Unit::hasBeenHit(Entity * that)
-{
-	DEBUG("coll", "hasBeenHit %p %p", this, that);
-	
-	if (remove_at != 0) return;
-	if (that->klass() == WALL) {
-		this->setState(UNIT_STATE_STATIC);
-	}
-}
-
-/**
-* Near miss!
-**/
-void Unit::entityClose(Entity * e, float dist)
-{
-	if (e->klass() == UNIT) {
-		closest = (Unit*) e;
-	}
 }
 
 
@@ -510,17 +484,6 @@ void Unit::update(int delta)
 	if (this->weapon && this->weapon->next_use < st->game_time) {
 		this->weapon->reloading = false;
 	}
-	
-	
-	// Melee
-	if (this->melee_time != 0 && this->melee_time < st->game_time) {
-		if (this->closest) this->closest->takeDamage(this->uts->melee_damage);
-		this->melee_time = 0;
-
-	} else if (this->melee_cooldown != 0 && this->melee_cooldown < st->game_time) {
-		this->setState(UNIT_STATE_STATIC);
-		this->melee_cooldown = 0;
-	}
 
 
 	// Move the lifted object with the unit
@@ -545,10 +508,6 @@ void Unit::update(int delta)
 		this->turret_obj->angle = this->angle;
 	}*/
 	
-	
-	// This will be re-set by the collission code
-	this->curr_obj = NULL;
-	this->closest = NULL;
 	
 	
 	{
@@ -580,7 +539,11 @@ void Unit::update(int delta)
 
 			btCollisionObject* other = obA == ghost ? obB : obA;
 
-			if (other->getBroadphaseHandle()->m_collisionFilterGroup == btBroadphaseProxy::DefaultFilter) {
+			if (other->getBroadphaseHandle()->m_collisionFilterGroup == CollisionGroup::CG_DYNAMIC) {
+				Object* o = (Object*) other->getUserPointer();
+
+				if (o->ot->over) this->doUse();
+
 
 			for (int p=0;p<manifold->getNumContacts();p++)
             {
@@ -680,66 +643,66 @@ void Unit::leaveVehicle()
 **/
 void Unit::doUse()
 {
-	btTransform trans;
-
+	// Leave vehicle
 	if (this->drive != NULL) {
 		this->leaveVehicle();
 		return;
 	}
 
+	// Find closest entity
 	Entity *closest = this->infront(2.0f);
-	if (closest && closest->klass() == VEHICLE) {
+	if (! closest) return;
+
+	if (closest->klass() == VEHICLE) {
+		// If a vehicle, enter it
 		this->enterVehicle((Vehicle*)closest);
-		return;
-	}
+
+	} else if (closest->klass() == OBJECT) {
+		// If an object, use it
+		btTransform trans = this->getTransform();
+		ObjectType *ot = ((Object*)closest)->ot;
 	
-	
-	if (this->curr_obj == NULL) return;
-	
-	this->body->getMotionState()->getWorldTransform(trans);
-	
-	ObjectType *ot = this->curr_obj->ot;
-	
-	if (ot->show_message.length() != 0) {
-		this->st->addHUDMessage(this->slot, ot->show_message);
-	}
-	
-	if (ot->add_object.length() != 0) {
-		Object *nu = new Object(this->st->mm->getObjectType(ot->add_object), this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ(), trans.getRotation().getZ());
-		this->st->addObject(nu);
-	}
-	
-	if (ot->pickup_weapon.length() != 0) {
-		WeaponType *wt = this->st->mm->getWeaponType(ot->pickup_weapon);
-		if (wt) {
-			this->st->addHUDMessage(this->slot, "Picked up a ", wt->title);
-			this->pickupWeapon(wt);
-			this->curr_obj->del = 1;
+		if (ot->show_message.length() != 0) {
+			this->st->addHUDMessage(this->slot, ot->show_message);
 		}
-	}
 	
-	if (ot->ammo_crate.length() != 0) {
-		if (ot->ammo_crate.compare("current") == 0) {
-			if (this->pickupAmmo(weapon->wt)) {
-				this->st->addHUDMessage(this->slot, "Picked up some ammo");
-				this->curr_obj->del = 1;
+		if (ot->add_object.length() != 0) {
+			Object *nu = new Object(this->st->mm->getObjectType(ot->add_object), this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ(), trans.getRotation().getZ());
+			this->st->addObject(nu);
+		}
+	
+		if (ot->pickup_weapon.length() != 0) {
+			WeaponType *wt = this->st->mm->getWeaponType(ot->pickup_weapon);
+			if (wt) {
+				this->st->addHUDMessage(this->slot, "Picked up a ", wt->title);
+				this->pickupWeapon(wt);
+				closest->del = 1;
 			}
+		}
+	
+		if (ot->ammo_crate.length() != 0) {
+			if (ot->ammo_crate.compare("current") == 0) {
+				if (this->pickupAmmo(weapon->wt)) {
+					this->st->addHUDMessage(this->slot, "Picked up some ammo");
+					closest->del = 1;
+				}
 			
-		} else {
-			WeaponType *wt = this->st->mm->getWeaponType(ot->ammo_crate);
-			if (wt && this->pickupAmmo(wt)) {
-				this->st->addHUDMessage(this->slot, "Picked up some ammo");
-				this->curr_obj->del = 1;
+			} else {
+				WeaponType *wt = this->st->mm->getWeaponType(ot->ammo_crate);
+				if (wt && this->pickupAmmo(wt)) {
+					this->st->addHUDMessage(this->slot, "Picked up some ammo");
+					closest->del = 1;
+				}
 			}
 		}
-	}
 	
-	if (ot->turret == 1) {
-		if (this->turret_obj) {
-			this->turret_obj = NULL;
-			this->setWeapon(this->curr_weapon_id);
-		} else {
-			this->turret_obj = this->curr_obj;
+		if (ot->turret == 1) {
+			if (this->turret_obj) {
+				this->turret_obj = NULL;
+				this->setWeapon(this->curr_weapon_id);
+			} else {
+				this->turret_obj = (Object*)closest;
+			}
 		}
 	}
 }
@@ -749,7 +712,12 @@ void Unit::doUse()
 **/
 void Unit::doLift()
 {
-	this->lift_obj = this->curr_obj;
+	Entity *closest = this->infront(2.0f);
+	if (! closest) return;
+
+	if (closest->klass() == OBJECT) {
+		this->lift_obj = (Object*) closest;
+	}
 }
 
 /**

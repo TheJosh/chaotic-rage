@@ -70,11 +70,9 @@ class Unit : public Entity
 		float old_x;
 		float old_y;
 		
-		Object* curr_obj;
 		Object* lift_obj;
 		Object* turret_obj;
 		
-		Unit* closest;
 		unsigned int melee_time;
 		unsigned int melee_cooldown;
 		
@@ -92,8 +90,6 @@ class Unit : public Entity
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
-		virtual void hasBeenHit(Entity * that);
-		virtual void entityClose(Entity * e, float dist);
 		virtual btTransform &getTransform() { return ghost->getWorldTransform(); }
 		virtual void setTransform(btTransform &t) { ghost->setWorldTransform(t); }
 

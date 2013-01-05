@@ -292,7 +292,7 @@ void GameState::update(int delta)
 	this->physics->stepTime(delta);
 	
 	// What hit what?
-	this->physics->doCollisions();
+	//this->physics->doCollisions();
 	
 	// Particles
 	this->update_particles(delta);

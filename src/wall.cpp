@@ -42,11 +42,6 @@ Wall::~Wall()
 }
 
 
-void Wall::hasBeenHit(Entity * that)
-{
-}
-
-
 /**
 * Do stuff
 **/

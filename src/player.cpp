@@ -120,18 +120,6 @@ void Player::angleFromMouse(int x, int y, int delta)
 }
 
 
-void Player::hasBeenHit(Entity * that)
-{
-	Unit::hasBeenHit(that);
-	
-	if (that->klass() == OBJECT) {
-		this->curr_obj = (Object*)that;
-		
-		if (this->curr_obj->ot->over) this->doUse();
-	}
-}
-
-
 /**
 * Uses the currently pressed keys to change the player movement
 **/

@@ -27,12 +27,6 @@ NPC::~NPC()
 }
 
 
-void NPC::hasBeenHit(Entity * that)
-{
-	Unit::hasBeenHit(that);
-}
-
-
 /**
 * Try to find a player and attack them
 **/

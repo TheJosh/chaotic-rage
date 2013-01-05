@@ -73,16 +73,6 @@ class Entity
 		* Update the entity. Time is provided in milliseconds (ms)
 		**/
 		virtual void update(int delta) = 0;
-		
-		/**
-		* Called by the collission code when a collission has happened
-		**/
-		virtual void hasBeenHit(Entity * that) {};
-		
-		/**
-		* Called by the collission code when a collission didn't happen - but is close
-		**/
-		virtual void entityClose(Entity * e, float dist) {};
 
 
 	public:

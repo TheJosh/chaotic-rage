@@ -41,11 +41,6 @@ Object::~Object()
 }
 
 
-void Object::hasBeenHit(Entity * that)
-{
-}
-
-
 /**
 * Do stuff
 **/

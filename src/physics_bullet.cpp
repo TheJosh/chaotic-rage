@@ -290,8 +290,8 @@ void PhysicsBullet::doCollisions()
 			st->addHUDMessage(0, "Contact!");
 		}
 
-		entA->hasBeenHit(entB);
-		entB->hasBeenHit(entA);
+		//entA->hasBeenHit(entB);
+		//entB->hasBeenHit(entA);
 		
 		int numContacts = contactManifold->getNumContacts();
 		

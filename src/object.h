@@ -30,7 +30,6 @@ class Object : public Entity
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
-		virtual void hasBeenHit(Entity * that);
 		
 	public:
 		void takeDamage(int damage);
