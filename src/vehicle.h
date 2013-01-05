@@ -41,9 +41,23 @@ class Vehicle : public Entity
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
-		virtual void hasBeenHit(Entity * that);
 		
 	public:
 		void takeDamage(int damage);
 		float getSpeedKmHr();
+};
+
+
+class ChaoticRageVehicleRaycaster : public btVehicleRaycaster
+{
+	public:
+		btDynamicsWorld* m_dynamicsWorld;
+
+	public:
+		ChaoticRageVehicleRaycaster(btDynamicsWorld* world)
+			: m_dynamicsWorld(world)
+			{}
+
+		virtual void* castRay(const btVector3& from,const btVector3& to, btVehicleRaycasterResult& result);
+
 };

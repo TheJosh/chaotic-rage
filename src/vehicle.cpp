@@ -71,7 +71,7 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	this->body->setActivationState(DISABLE_DEACTIVATION);
 	
 	// Create Vehicle
-	this->vehicle_raycaster = new btDefaultVehicleRaycaster(st->physics->getWorld());
+	this->vehicle_raycaster = new ChaoticRageVehicleRaycaster(st->physics->getWorld());
 	this->vehicle = new btRaycastVehicle(this->tuning, this->body, this->vehicle_raycaster);
 	this->vehicle->setCoordinateSystem(0, 1, 2);
 	st->physics->addVehicle(this->vehicle);
@@ -119,11 +119,6 @@ Vehicle::~Vehicle()
 {
 	delete (this->anim);
 	st->physics->delRigidBody(this->body);
-}
-
-
-void Vehicle::hasBeenHit(Entity * that)
-{
 }
 
 
@@ -203,5 +198,31 @@ void Vehicle::takeDamage(int damage)
 			break;
 		}
 	}
+}
+
+
+
+void* ChaoticRageVehicleRaycaster::castRay(const btVector3& from,const btVector3& to, btVehicleRaycasterResult& result)
+{
+	btCollisionWorld::ClosestRayResultCallback rayCallback(from,to);
+	rayCallback.m_collisionFilterGroup = CollisionGroup::CG_VEHICLE;
+	rayCallback.m_collisionFilterMask = CollisionGroup::CG_TERRAIN;
+
+	m_dynamicsWorld->rayTest(from, to, rayCallback);
+
+	if (rayCallback.hasHit())
+	{
+		const btRigidBody* body = btRigidBody::upcast(rayCallback.m_collisionObject);
+        if (body && body->hasContactResponse())
+		{
+			result.m_hitPointInWorld = rayCallback.m_hitPointWorld;
+			result.m_hitNormalInWorld = rayCallback.m_hitNormalWorld;
+			result.m_hitNormalInWorld.normalize();
+			result.m_distFraction = rayCallback.m_closestHitFraction;
+			return (void*)body;
+		}
+	}
+
+	return 0;
 }
 
