@@ -177,13 +177,14 @@ void WeaponRaycast::doFire(Unit * u)
 	
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
+	cb.m_collisionFilterGroup = CollisionGroup::CG_UNIT;
+	cb.m_collisionFilterMask = PhysicsBullet::mask_entities;
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
 	
 	if (cb.hasHit()) {
-		btRigidBody * body = btRigidBody::upcast(cb.m_collisionObject);
-		if (body) {
-			Entity* entA = static_cast<Entity*>(body->getUserPointer());
-			DEBUG("weap", "Ray hit %p (%p)", body, entA);
+		if (cb.m_collisionObject->getUserPointer()) {
+			Entity* entA = static_cast<Entity*>(cb.m_collisionObject->getUserPointer());
+			DEBUG("weap", "Ray hit %p", entA);
 			if (entA) {
 				if (entA->klass() == UNIT) {
 					((Unit*)entA)->takeDamage(this->unit_damage);
@@ -218,6 +219,8 @@ void WeaponDigdown::doFire(Unit * u)
 	
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
+	cb.m_collisionFilterGroup = CollisionGroup::CG_UNIT;
+	cb.m_collisionFilterMask = CollisionGroup::CG_TERRAIN;
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
 	
 	if (cb.hasHit()) {
@@ -276,13 +279,14 @@ void WeaponFlamethrower::doFire(Unit * u)
 	
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
+	cb.m_collisionFilterGroup = CollisionGroup::CG_UNIT;
+	cb.m_collisionFilterMask = PhysicsBullet::mask_entities;
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
 	
 	if (cb.hasHit()) {
-		btRigidBody * body = btRigidBody::upcast(cb.m_collisionObject);
-		if (body) {
-			Entity* entA = static_cast<Entity*>(body->getUserPointer());
-			DEBUG("weap", "Ray hit %p (%p)", body, entA);
+		if (cb.m_collisionObject->getUserPointer()) {
+			Entity* entA = static_cast<Entity*>(cb.m_collisionObject->getUserPointer());
+			DEBUG("weap", "Ray hit %p", entA);
 			if (entA) {
 				if (entA->klass() == UNIT) {
 					((Unit*)entA)->takeDamage(this->unit_damage);
