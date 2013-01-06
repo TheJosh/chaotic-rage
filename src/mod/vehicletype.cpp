@@ -28,7 +28,9 @@ cfg_opt_t vehicletype_opts[] =
 	CFG_STR((char*) "name", (char*)"", CFGF_NONE),
 	CFG_STR((char*) "model", (char*)"", CFGF_NONE),
 	CFG_INT((char*) "health", 5000, CFGF_NONE),
-	
+	CFG_INT((char*) "land", 1, CFGF_NONE),
+	CFG_INT((char*) "water", 0, CFGF_NONE),
+
 	CFG_SEC((char*) "damage", damage_opts, CFGF_MULTI),
 	
 	CFG_END()
@@ -47,7 +49,9 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	wt = new VehicleType();
 	wt->name = cfg_getstr(cfg_item, "name");
 	wt->health = cfg_getint(cfg_item, "health");
-	
+	wt->land = cfg_getint(cfg_item, "land");
+	wt->water = cfg_getint(cfg_item, "water");
+
 	char * tmp = cfg_getstr(cfg_item, "model");
 	if (tmp != NULL) wt->model = mod->getAnimModel(tmp);
 	

@@ -74,6 +74,9 @@
     <None Include="..\..\data\cr\gametypes\free_for_all.lua">
       <Filter>Gametypes</Filter>
     </None>
+    <None Include="..\..\data\cr\vehicletypes.conf">
+      <Filter>Configs</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\client.cpp">

@@ -21,6 +21,7 @@ PhysicsBullet::PhysicsBullet(GameState * st)
 
 	this->masks[CollisionGroup::CG_NOTHING] = 0;
 	this->masks[CollisionGroup::CG_TERRAIN] = CollisionGroup::CG_DEBRIS | CollisionGroup::CG_WALL | CollisionGroup::CG_OBJECT | CollisionGroup::CG_UNIT | CollisionGroup::CG_VEHICLE;
+	this->masks[CollisionGroup::CG_WATER] = CollisionGroup::CG_VEHICLE;
 	this->masks[CollisionGroup::CG_DEBRIS] = CollisionGroup::CG_TERRAIN;
 	this->masks[CollisionGroup::CG_WALL] = moststuff;
 	this->masks[CollisionGroup::CG_OBJECT] = moststuff;
@@ -85,7 +86,27 @@ void PhysicsBullet::preGame()
 	this->groundRigidBody->setFriction(10.f);
 	dynamicsWorld->addRigidBody(groundRigidBody, CollisionGroup::CG_TERRAIN, this->masks[CollisionGroup::CG_TERRAIN]);
 
-	
+	// If there is water in the world, we create a water surface
+	// It doesn't collide with stuff, it's just so we can detect with a raycast
+	if (st->curr_map->water) {
+		btCollisionShape* groundShape = new btBoxShape(btVector3(this->st->curr_map->width/2.0f, 10.0f, this->st->curr_map->height/2.0f));
+		
+		btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(this->st->curr_map->width/2.0f, -10.0f + st->curr_map->water_level, this->st->curr_map->height/2.0f)));
+		btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
+			0,
+			groundMotionState,
+			groundShape,
+			btVector3(0,0,0)
+		);
+		
+		this->groundRigidBody = new btRigidBody(groundRigidBodyCI);
+
+		this->groundRigidBody->setRestitution(0.f);
+		this->groundRigidBody->setFriction(10.f);
+		dynamicsWorld->addRigidBody(groundRigidBody, CollisionGroup::CG_WATER, this->masks[CollisionGroup::CG_WATER]);
+	}
+
+
 	collisionShapes = new btAlignedObjectArray<btCollisionShape*>();
 }
 

@@ -108,6 +108,7 @@
     <None Include="..\..\data\cr\songs.conf" />
     <None Include="..\..\data\cr\sounds.conf" />
     <None Include="..\..\data\cr\unittypes.conf" />
+    <None Include="..\..\data\cr\vehicletypes.conf" />
     <None Include="..\..\data\cr\walltypes.conf" />
     <None Include="..\..\data\cr\weapontypes.conf" />
   </ItemGroup>

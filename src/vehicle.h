@@ -52,10 +52,11 @@ class ChaoticRageVehicleRaycaster : public btVehicleRaycaster
 {
 	public:
 		btDynamicsWorld* m_dynamicsWorld;
+		Vehicle* v;
 
 	public:
-		ChaoticRageVehicleRaycaster(btDynamicsWorld* world)
-			: m_dynamicsWorld(world)
+		ChaoticRageVehicleRaycaster(btDynamicsWorld* world, Vehicle* v)
+			: m_dynamicsWorld(world), v(v)
 			{}
 
 		virtual void* castRay(const btVector3& from,const btVector3& to, btVehicleRaycasterResult& result);

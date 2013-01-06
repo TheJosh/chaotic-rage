@@ -24,7 +24,9 @@ class VehicleType
 		string name;
 		AnimModel * model;
 		int health;
-		
+		bool land;
+		bool water;
+
 		vector <VehicleTypeDamage *> damage_models;
 		
 	public:

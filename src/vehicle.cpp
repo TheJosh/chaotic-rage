@@ -71,7 +71,7 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	this->body->setActivationState(DISABLE_DEACTIVATION);
 	
 	// Create Vehicle
-	this->vehicle_raycaster = new ChaoticRageVehicleRaycaster(st->physics->getWorld());
+	this->vehicle_raycaster = new ChaoticRageVehicleRaycaster(st->physics->getWorld(), this);
 	this->vehicle = new btRaycastVehicle(this->tuning, this->body, this->vehicle_raycaster);
 	this->vehicle->setCoordinateSystem(0, 1, 2);
 	st->physics->addVehicle(this->vehicle);
@@ -203,18 +203,26 @@ void Vehicle::takeDamage(int damage)
 
 /**
 * Handle raycasting for vehicle wheels.
-* We cannot use the default method because we need to set collision masks for the rays
+* We detect both terrain and water, but return a "miss" if it hits water.
 **/
 void* ChaoticRageVehicleRaycaster::castRay(const btVector3& from,const btVector3& to, btVehicleRaycasterResult& result)
 {
 	btCollisionWorld::ClosestRayResultCallback rayCallback(from,to);
 	rayCallback.m_collisionFilterGroup = CollisionGroup::CG_VEHICLE;
-	rayCallback.m_collisionFilterMask = CollisionGroup::CG_TERRAIN;
+	rayCallback.m_collisionFilterMask = CollisionGroup::CG_TERRAIN | CollisionGroup::CG_WATER;
 
 	m_dynamicsWorld->rayTest(from, to, rayCallback);
 
 	if (rayCallback.hasHit())
 	{
+		if (!this->v->vt->land && rayCallback.m_collisionObject->getBroadphaseHandle()->m_collisionFilterGroup == CollisionGroup::CG_TERRAIN) {
+			return 0;
+		}
+
+		if (!this->v->vt->water && rayCallback.m_collisionObject->getBroadphaseHandle()->m_collisionFilterGroup == CollisionGroup::CG_WATER) {
+			return 0;
+		}
+
 		const btRigidBody* body = btRigidBody::upcast(rayCallback.m_collisionObject);
         if (body && body->hasContactResponse())
 		{

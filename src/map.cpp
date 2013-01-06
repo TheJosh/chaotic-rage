@@ -584,6 +584,7 @@ btRigidBody * Map::createGroundBody()
 void MapRegistry::find(string dir)
 {
 	maps.push_back(MapReg("therlor_valley", "Therlor Valley"));
+	maps.push_back(MapReg("lakeside", "Lakeside"));
 	maps.push_back(MapReg("arena", "Arena"));
 	maps.push_back(MapReg("towers", "Towers"));
 	maps.push_back(MapReg("generaltest"));
