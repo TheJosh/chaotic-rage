@@ -97,11 +97,6 @@ void RenderOpenGLCompat::setScreenSize(int width, int height, bool fullscreen)
 		reportFatalError("Failed to init required png support.");
 	}
 	
-	// OpenGL
-	if (atof((char*) glGetString(GL_VERSION)) < 2.0) {
-		reportFatalError("OpenGL 2.0 or later is required, but not supported on this system.");
-	}
-	
 	// Glew
 	GLenum err = glewInit();
 	if (GLEW_OK != err) {

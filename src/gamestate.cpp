@@ -358,7 +358,7 @@ list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 		if ((*it)->klass() != UNIT) continue;
 		u = (Unit*)(*it);
 		if (u == origin) continue;
-
+		
 		trans = u->getTransform();
 		vecS = trans.getOrigin();
 		vecS -= vecO;
