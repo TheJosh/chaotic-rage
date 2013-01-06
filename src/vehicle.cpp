@@ -201,7 +201,10 @@ void Vehicle::takeDamage(int damage)
 }
 
 
-
+/**
+* Handle raycasting for vehicle wheels.
+* We cannot use the default method because we need to set collision masks for the rays
+**/
 void* ChaoticRageVehicleRaycaster::castRay(const btVector3& from,const btVector3& to, btVehicleRaycasterResult& result)
 {
 	btCollisionWorld::ClosestRayResultCallback rayCallback(from,to);

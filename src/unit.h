@@ -101,7 +101,6 @@ class Unit : public Entity
 		void endFiring();
 		void meleeAttack();
 		void specialAttack();
-		void putOnGround(btTransform * xform);
 
 		bool pickupWeapon(WeaponType* wt);
 		bool pickupAmmo(WeaponType* wt);

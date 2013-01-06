@@ -30,7 +30,7 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z, float angle) 
 			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)
 		));
 	
-	this->body = st->physics->addRigidBody(colShape, 0.0f, motionState, CollisionGroup::CG_STATIC);
+	this->body = st->physics->addRigidBody(colShape, 0.0f, motionState, CollisionGroup::CG_WALL);
 	
 	this->body->setUserPointer(this);
 }

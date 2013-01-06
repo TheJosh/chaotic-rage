@@ -149,6 +149,8 @@ Entity * Unit::infront(float range)
 	
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
+	cb.m_collisionFilterGroup = CollisionGroup::CG_UNIT;
+	cb.m_collisionFilterMask = PhysicsBullet::mask_entities;
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
 	
 	// Check the raytest result
@@ -169,46 +171,6 @@ Entity * Unit::infront(float range)
 bool Unit::onground()
 {
 	return this->character->canJump();
-}
-
-
-/**
-* Raises or lowers the unit a little so it's on the ground
-**/
-void Unit::putOnGround(btTransform * xform)
-{
-	return;		// This method is broken
-	
-	
-	// Falling
-	btVector3 begin = xform->getOrigin();
-	btVector3 end = xform->getOrigin() + xform->getBasis() * btVector3(0.0f, -2.0f, 0.0f);
-	st->addDebugLine(&begin, &end);
-
-	{
-	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
-	this->st->physics->getWorld()->rayTest(begin, end, cb);
-
-	if (cb.hasHit()) {
-		xform->setOrigin(cb.m_hitPointWorld + btVector3(0.0f, 1.0f, 0.0f));
-		return;
-	}
-	}
-
-	// Going up
-	begin = xform->getOrigin();
-	end = xform->getOrigin() + xform->getBasis() * btVector3(0.0f, 2.0f, 0.0f);
-	st->addDebugLine(&begin, &end);
-
-	{
-	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
-	this->st->physics->getWorld()->rayTest(begin, end, cb);
-
-	if (cb.hasHit()) {
-		xform->setOrigin(cb.m_hitPointWorld + btVector3(0.0f, 1.0f, 0.0f));
-		return;
-	}
-	}
 }
 
 
@@ -539,7 +501,7 @@ void Unit::update(int delta)
 
 			btCollisionObject* other = obA == ghost ? obB : obA;
 
-			if (other->getBroadphaseHandle()->m_collisionFilterGroup == CollisionGroup::CG_DYNAMIC) {
+			if (other->getBroadphaseHandle()->m_collisionFilterGroup == CollisionGroup::CG_OBJECT) {
 				Object* o = (Object*) other->getUserPointer();
 
 				if (o->ot->over) this->doUse();

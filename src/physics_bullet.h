@@ -17,8 +17,8 @@ enum CollisionGroup {
 	CG_NOTHING = 0,           // Nothing!
 	CG_TERRAIN = BIT(0),      // The ground surface
 	CG_DEBRIS = BIT(1),       // Debris, dead stuff, etc
-	CG_STATIC = BIT(2),       // Walls and other statics
-	CG_DYNAMIC = BIT(3),      // Objects and other dynamics
+	CG_WALL = BIT(2),         // Walls and other statics
+	CG_OBJECT = BIT(3),       // Objects and other dynamics
 	CG_UNIT = BIT(4),         // Units (btKinematicCharacterController)
 	CG_VEHICLE = BIT(5),      // Vehicles (btRaycastVehicle)
 };
@@ -41,8 +41,11 @@ class PhysicsBullet
 		
 		btRigidBody* groundRigidBody;
 		
-		// Used by the add functions to set the right collision mask.
+	public:
+		// I like to keep all of my mask suff in one place (this class).
+		// Various constants to achieve that goal
 		map<int, int> masks;
+		static const int mask_entities = (CollisionGroup::CG_WALL | CollisionGroup::CG_OBJECT | CollisionGroup::CG_UNIT | CollisionGroup::CG_VEHICLE);
 
 	public:
 		PhysicsBullet(GameState * st);

@@ -17,13 +17,13 @@ PhysicsBullet::PhysicsBullet(GameState * st)
 	this->st = st;
 	st->physics = this;
 
-	int moststuff = CollisionGroup::CG_TERRAIN | CollisionGroup::CG_DYNAMIC | CollisionGroup::CG_STATIC | CollisionGroup::CG_UNIT | CollisionGroup::CG_VEHICLE;
+	int moststuff = CollisionGroup::CG_TERRAIN | CollisionGroup::CG_WALL | CollisionGroup::CG_OBJECT | CollisionGroup::CG_UNIT | CollisionGroup::CG_VEHICLE;
 
 	this->masks[CollisionGroup::CG_NOTHING] = 0;
-	this->masks[CollisionGroup::CG_TERRAIN] = CollisionGroup::CG_DEBRIS | CollisionGroup::CG_STATIC | CollisionGroup::CG_DYNAMIC | CollisionGroup::CG_UNIT | CollisionGroup::CG_VEHICLE;
+	this->masks[CollisionGroup::CG_TERRAIN] = CollisionGroup::CG_DEBRIS | CollisionGroup::CG_WALL | CollisionGroup::CG_OBJECT | CollisionGroup::CG_UNIT | CollisionGroup::CG_VEHICLE;
 	this->masks[CollisionGroup::CG_DEBRIS] = CollisionGroup::CG_TERRAIN;
-	this->masks[CollisionGroup::CG_STATIC] = moststuff;
-	this->masks[CollisionGroup::CG_DYNAMIC] = moststuff;
+	this->masks[CollisionGroup::CG_WALL] = moststuff;
+	this->masks[CollisionGroup::CG_OBJECT] = moststuff;
 	this->masks[CollisionGroup::CG_UNIT] = moststuff;
 	this->masks[CollisionGroup::CG_VEHICLE] = moststuff;
 }
@@ -259,57 +259,6 @@ void PhysicsBullet::stepTime(int ms)
 }
 
 
-
-/**
-* Look for collissions of entities
-**/
-void PhysicsBullet::doCollisions()
-{
-	int i;
-	
-	int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
-	
-	DEBUG("coll", "Num manifolds: %i", numManifolds);
-	
-	for (i = 0; i < numManifolds; i++) {
-		btPersistentManifold* contactManifold = dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
-		
-		btCollisionObject* obA = static_cast<btCollisionObject*>(contactManifold->getBody0());
-		btCollisionObject* obB = static_cast<btCollisionObject*>(contactManifold->getBody1());
-		
-		if (obA == this->groundRigidBody || obB == this->groundRigidBody) continue;
-		
-		DEBUG("coll", "Collision: %p %p", obA, obB);
-		
-		Entity* entA = static_cast<Entity*>(obA->getUserPointer());
-		Entity* entB = static_cast<Entity*>(obB->getUserPointer());
-		
-		if (entA == NULL || entB == NULL) continue;
-
-		if (entA == st->local_players[0]->p || entB == st->local_players[0]->p) {
-			st->addHUDMessage(0, "Contact!");
-		}
-
-		//entA->hasBeenHit(entB);
-		//entB->hasBeenHit(entA);
-		
-		int numContacts = contactManifold->getNumContacts();
-		
-		for (int j = 0; j < numContacts; j++) {
-			btManifoldPoint& pt = contactManifold->getContactPoint(j);
-			
-			btVector3 ptA = pt.getPositionWorldOnA();
-			btVector3 ptB = pt.getPositionWorldOnB();
-
-			this->st->addDebugLine(&ptA, &ptB);
-		}
-		
-		//you can un-comment out this line, and then all points are removed
-		//contactManifold->clearManifold();	
-	}
-}
-
-
 /**
 * Use a raytest to find an appropriate spawn location on the ground
 **/
@@ -321,7 +270,7 @@ btVector3 PhysicsBullet::spawnLocation(float x, float z, float height)
 	btVector3 end(x, -y, z);
 	
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
-	cb.m_collisionFilterGroup = CollisionGroup::CG_STATIC;
+	cb.m_collisionFilterGroup = CollisionGroup::CG_WALL;
 	cb.m_collisionFilterMask = CollisionGroup::CG_TERRAIN;
 
 	dynamicsWorld->rayTest(begin, end, cb);
