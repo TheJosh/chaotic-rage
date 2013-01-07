@@ -413,6 +413,7 @@ void Unit::update(int delta)
 			
 		} else if (this->drive) {
 			w = this->st->mm->getWeaponType("rocket_launcher");
+			xform = this->drive->getTransform();
 			
 		} else if (this->weapon && this->weapon->next_use < st->game_time && this->weapon->magazine > 0) {
 			w = this->weapon->wt;
@@ -422,7 +423,7 @@ void Unit::update(int delta)
 	
 	// Fire!
 	if (w) {
-		w->doFire(this);
+		w->doFire(this, xform);
 		
 		if (w == this->weapon->wt) {
 			this->weapon->next_use = st->game_time + this->weapon->wt->fire_delay;

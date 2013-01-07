@@ -160,9 +160,9 @@ WeaponType::WeaponType()
 /**
 * Fires a weapon, from a specified Unit
 **/
-void WeaponRaycast::doFire(Unit * u)
+void WeaponRaycast::doFire(Unit *u, btTransform &origin)
 {
-	btTransform xform = u->getTransform();
+	btTransform xform = origin;
 	
 	// Weapon angle ranges
 	int angle = this->angle_range / 2;
@@ -207,9 +207,9 @@ void WeaponRaycast::doFire(Unit * u)
 /**
 * Fires a weapon, from a specified Unit
 **/
-void WeaponDigdown::doFire(Unit * u)
+void WeaponDigdown::doFire(Unit *u, btTransform &origin)
 {
-	btTransform xform = u->getTransform();
+	btTransform xform = origin;
 	
 	btVector3 begin = xform.getOrigin();
 	btVector3 end = begin + btVector3(0.0f, -100.0f, 0.0f);
@@ -262,9 +262,9 @@ void heightmapCircle(Map* map, int x0, int y0, int radius, float depthadd)
 /**
 * Fires a weapon, from a specified Unit
 **/
-void WeaponFlamethrower::doFire(Unit * u)
+void WeaponFlamethrower::doFire(Unit *u, btTransform &origin)
 {
-	btTransform xform = u->getTransform();
+	btTransform xform = origin;
 	
 	// Weapon angle ranges
 	int angle = this->angle_range / 2;

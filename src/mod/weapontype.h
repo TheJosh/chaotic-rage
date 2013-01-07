@@ -50,7 +50,7 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 		Sound* getSound(int type);
 
 	public:
-		virtual void doFire(Unit * u) = 0;
+		virtual void doFire(Unit *unit, btTransform &origin) = 0;
 		
 };
 
@@ -76,7 +76,7 @@ class WeaponRaycast : public WeaponType
 		float wall_damage;
 
 	public:
-		virtual void doFire(Unit * u);
+		virtual void doFire(Unit *unit, btTransform &origin);
 };
 
 
@@ -90,7 +90,7 @@ class WeaponDigdown : public WeaponType
 		float depth;		// negative = go down, positive = go up
 
 	public:
-		virtual void doFire(Unit * u);
+		virtual void doFire(Unit *unit, btTransform &origin);
 };
 
 
@@ -107,6 +107,6 @@ class WeaponFlamethrower : public WeaponType
 		float wall_damage;
 
 	public:
-		virtual void doFire(Unit * u);
+		virtual void doFire(Unit *unit, btTransform &origin);
 };
 

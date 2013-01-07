@@ -127,7 +127,9 @@ void Player::update(int delta)
 {
 	this->handleKeyChange();
 
+
 	if (this->drive) {
+		// Drivin my car...
 		if (this->key[KEY_UP]) {
 			this->drive->engineForce = MIN(this->drive->engineForce + 20.0f, 200.0f);		// TODO: Accel + Brake based on vt settings
 			this->drive->brakeForce = 0.0f;
@@ -155,96 +157,38 @@ void Player::update(int delta)
 		} else if  (this->drive->steering < 0.0f) {
 			this->drive->steering = MIN(this->drive->steering + 0.01f, 0.0f);
 		}
-
-		return;
-	}
-
-
-	// NEW (kinematic controller)
-	btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
-	btTransform xform = ghost->getWorldTransform();
-	btScalar walkSpeed = uts->max_speed * 1.0f/60.0f;		// Physics runs at 60hz
-
-	// Mouse rotation
-	btQuaternion rot = btQuaternion(btVector3(0.0f, 1.0f, 0.0f), DEG_TO_RAD(this->mouse_angle));
-	ghost->getWorldTransform().setBasis(btMatrix3x3(rot));
-
-	// Forward/backward
-	btVector3 forwardDir = xform.getBasis() * btVector3(0.0f, 0.0f, walkSpeed);
-	if (this->key[KEY_UP]) {
-		walkDirection += forwardDir;
-	} else if (this->key[KEY_DOWN]) {
-		walkDirection -= forwardDir;
-	}
-
-	// Strafe
-	btVector3 strafeDir = xform.getBasis() * btVector3(walkSpeed, 0.0f, 0.0f);
-	if (this->key[KEY_LEFT]) {
-		walkDirection += strafeDir;
-	} else if (this->key[KEY_RIGHT]) {
-		walkDirection -= strafeDir;
-	}
-
-	this->character->setWalkDirection(walkDirection);
-
-
-	// OLD (dynamic controller)
-	/*
-	btTransform xform, xform2;
-	body->getMotionState()->getWorldTransform (xform);
-	xform.setRotation(btQuaternion (btVector3(0.0f, 1.0f, 0.0f), DEG_TO_RAD(this->mouse_angle)));
-	
-	
-	btVector3 linearVelocity = body->getLinearVelocity();
-	btScalar speed = linearVelocity.length();
-	
-	DEBUG("unit", "%p Velocity: %f %f %f", this, linearVelocity.x(), linearVelocity.y(), linearVelocity.z());
-	
-	this->putOnGround(&xform);
-	body->activate(true);
-
-	if (!this->key[KEY_UP] && !this->key[KEY_DOWN] && !this->key[KEY_LEFT] && !this->key[KEY_RIGHT]) {
-		linearVelocity *= btScalar(0.2);		// TODO: unit-type-settings?
-		body->setLinearVelocity (linearVelocity);
 		
-	} else if (speed < uts->max_speed) {	
-		xform2 = xform;
-		btVector3 walkDirection = btVector3(0.0f, 0.0f, 0.0f);
-
-		// Forward/Backwards
-		btVector3 forwardDir = xform2.getBasis() * btVector3(0.0f, 0.0f, uts->accel);
 		
+	} else {
+		// Waling around
+		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
+		btTransform xform = ghost->getWorldTransform();
+		btScalar walkSpeed = uts->max_speed * 1.0f/60.0f;		// Physics runs at 60hz
+
+		// Mouse rotation
+		btQuaternion rot = btQuaternion(btVector3(0.0f, 1.0f, 0.0f), DEG_TO_RAD(this->mouse_angle));
+		ghost->getWorldTransform().setBasis(btMatrix3x3(rot));
+
+		// Forward/backward
+		btVector3 forwardDir = xform.getBasis() * btVector3(0.0f, 0.0f, walkSpeed);
 		if (this->key[KEY_UP]) {
 			walkDirection += forwardDir;
 		} else if (this->key[KEY_DOWN]) {
 			walkDirection -= forwardDir;
 		}
-		
+
 		// Strafe
-		btVector3 strafeDir = xform2.getBasis() * btVector3(uts->accel, 0.0f, 0.0f);
-		
+		btVector3 strafeDir = xform.getBasis() * btVector3(walkSpeed, 0.0f, 0.0f);
 		if (this->key[KEY_LEFT]) {
 			walkDirection += strafeDir;
 		} else if (this->key[KEY_RIGHT]) {
 			walkDirection -= strafeDir;
 		}
-		
-		// Hill climbing
-		btVector3 upDir = xform2.getBasis() * btVector3(0.0f, 0.7f, 0.0f); 
-		walkDirection += upDir;
 
-		// Apply velocity
-		linearVelocity += walkDirection;
-		body->setLinearVelocity (linearVelocity);
+		this->character->setWalkDirection(walkDirection);
 	}
 	
-
-	body->getMotionState()->setWorldTransform (xform);
-	body->setCenterOfMassTransform (xform);
 	
-	*/
-
-
 	Unit::update(delta);
 }
 
