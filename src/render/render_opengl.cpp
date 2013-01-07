@@ -522,6 +522,10 @@ void RenderOpenGL::postGame()
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_MULTISAMPLE);
 
+	for (unsigned int i = 0; i < 8; i++) {
+		glDisable(GL_LIGHT0 + i);
+	}
+
 	GLfloat em[] = {0.0, 0.0, 0.0, 0.0};
 	glMaterialfv(GL_FRONT, GL_EMISSION, em);
 }
