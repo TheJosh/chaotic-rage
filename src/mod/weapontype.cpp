@@ -177,7 +177,7 @@ void WeaponRaycast::doFire(Unit * u)
 	
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
-	cb.m_collisionFilterGroup = CollisionGroup::CG_UNIT;
+	cb.m_collisionFilterGroup = CG_UNIT;
 	cb.m_collisionFilterMask = PhysicsBullet::mask_entities;
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
 	
@@ -219,8 +219,8 @@ void WeaponDigdown::doFire(Unit * u)
 	
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
-	cb.m_collisionFilterGroup = CollisionGroup::CG_UNIT;
-	cb.m_collisionFilterMask = CollisionGroup::CG_TERRAIN;
+	cb.m_collisionFilterGroup = CG_UNIT;
+	cb.m_collisionFilterMask = CG_TERRAIN;
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
 	
 	if (cb.hasHit()) {
@@ -279,7 +279,7 @@ void WeaponFlamethrower::doFire(Unit * u)
 	
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
-	cb.m_collisionFilterGroup = CollisionGroup::CG_UNIT;
+	cb.m_collisionFilterGroup = CG_UNIT;
 	cb.m_collisionFilterMask = PhysicsBullet::mask_entities;
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
 	

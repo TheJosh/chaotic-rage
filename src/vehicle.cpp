@@ -66,7 +66,7 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	//compound->addChildShape(localTrans,chassisShape);
 	
 	btDefaultMotionState* motionState = new btDefaultMotionState(loc);
-	this->body = st->physics->addRigidBody(chassisShape, 120.0f, motionState, CollisionGroup::CG_VEHICLE);
+	this->body = st->physics->addRigidBody(chassisShape, 120.0f, motionState, CG_VEHICLE);
 	this->body->setUserPointer(this);
 	this->body->setActivationState(DISABLE_DEACTIVATION);
 	
@@ -208,18 +208,18 @@ void Vehicle::takeDamage(int damage)
 void* ChaoticRageVehicleRaycaster::castRay(const btVector3& from,const btVector3& to, btVehicleRaycasterResult& result)
 {
 	btCollisionWorld::ClosestRayResultCallback rayCallback(from,to);
-	rayCallback.m_collisionFilterGroup = CollisionGroup::CG_VEHICLE;
-	rayCallback.m_collisionFilterMask = CollisionGroup::CG_TERRAIN | CollisionGroup::CG_WATER;
+	rayCallback.m_collisionFilterGroup = CG_VEHICLE;
+	rayCallback.m_collisionFilterMask = CG_TERRAIN | CG_WATER;
 
 	m_dynamicsWorld->rayTest(from, to, rayCallback);
 
 	if (rayCallback.hasHit())
 	{
-		if (!this->v->vt->land && rayCallback.m_collisionObject->getBroadphaseHandle()->m_collisionFilterGroup == CollisionGroup::CG_TERRAIN) {
+		if (!this->v->vt->land && rayCallback.m_collisionObject->getBroadphaseHandle()->m_collisionFilterGroup == CG_TERRAIN) {
 			return 0;
 		}
 
-		if (!this->v->vt->water && rayCallback.m_collisionObject->getBroadphaseHandle()->m_collisionFilterGroup == CollisionGroup::CG_WATER) {
+		if (!this->v->vt->water && rayCallback.m_collisionObject->getBroadphaseHandle()->m_collisionFilterGroup == CG_WATER) {
 			return 0;
 		}
 

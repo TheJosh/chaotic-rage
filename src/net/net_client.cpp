@@ -402,10 +402,11 @@ unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 	}
 	
 	// Update the transform
-	w->setTransform(btTransform(
+	btTransform xform = btTransform(
 		btQuaternion(qx, qy, qz, qw),
 		btVector3(bx, by, bz)
-	));
+	);
+	w->setTransform(xform);
 	
 	return 30;
 }
@@ -436,10 +437,11 @@ unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 	}
 	
 	// Update the transform
-	o->setTransform(btTransform(
+	btTransform xform = btTransform(
 		btQuaternion(qx, qy, qz, qw),
 		btVector3(bx, by, bz)
-	));
+	);
+	o->setTransform(xform);
 	
 	return 30;
 }

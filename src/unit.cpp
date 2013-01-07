@@ -61,7 +61,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	btScalar stepHeight = btScalar(0.75);
 	character = new btKinematicCharacterController(this->ghost, capsule, stepHeight);
 
-	st->physics->addCollisionObject(this->ghost, CollisionGroup::CG_UNIT);
+	st->physics->addCollisionObject(this->ghost, CG_UNIT);
 	st->physics->addAction(character);
 
 
@@ -150,7 +150,7 @@ Entity * Unit::infront(float range)
 	
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
-	cb.m_collisionFilterGroup = CollisionGroup::CG_UNIT;
+	cb.m_collisionFilterGroup = CG_UNIT;
 	cb.m_collisionFilterMask = PhysicsBullet::mask_entities;
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
 	
@@ -495,30 +495,17 @@ void Unit::update(int delta)
          for (int j=0;j<manifoldArray.size();j++)
          {
             btPersistentManifold* manifold = manifoldArray[j];
-            btScalar directionSign = manifold->getBody0() == ghost ? btScalar(-1.0) : btScalar(1.0);
 
 			btCollisionObject* obA = static_cast<btCollisionObject*>(manifold->getBody0());
 			btCollisionObject* obB = static_cast<btCollisionObject*>(manifold->getBody1());
 
 			btCollisionObject* other = obA == ghost ? obB : obA;
 
-			if (other->getBroadphaseHandle()->m_collisionFilterGroup == CollisionGroup::CG_OBJECT) {
+			if (other->getBroadphaseHandle()->m_collisionFilterGroup == CG_OBJECT) {
 				Object* o = (Object*) other->getUserPointer();
 
 				if (o->ot->over) this->doUse();
 
-
-			for (int p=0;p<manifold->getNumContacts();p++)
-            {
-             	const btManifoldPoint&pt = manifold->getContactPoint(p);
-                if (pt.getDistance()<0.f)
-				{
-					const btVector3& ptA = pt.getPositionWorldOnA();
-					const btVector3& ptB = pt.getPositionWorldOnB();
-					const btVector3& normalOnB = pt.m_normalWorldOnB;
-					/// work here
-				}
-            }
 
 			}
 

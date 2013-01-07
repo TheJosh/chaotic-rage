@@ -17,16 +17,16 @@ PhysicsBullet::PhysicsBullet(GameState * st)
 	this->st = st;
 	st->physics = this;
 
-	int moststuff = CollisionGroup::CG_TERRAIN | CollisionGroup::CG_WALL | CollisionGroup::CG_OBJECT | CollisionGroup::CG_UNIT | CollisionGroup::CG_VEHICLE;
+	int moststuff = CG_TERRAIN | CG_WALL | CG_OBJECT | CG_UNIT | CG_VEHICLE;
 
-	this->masks[CollisionGroup::CG_NOTHING] = 0;
-	this->masks[CollisionGroup::CG_TERRAIN] = CollisionGroup::CG_DEBRIS | CollisionGroup::CG_WALL | CollisionGroup::CG_OBJECT | CollisionGroup::CG_UNIT | CollisionGroup::CG_VEHICLE;
-	this->masks[CollisionGroup::CG_WATER] = CollisionGroup::CG_VEHICLE;
-	this->masks[CollisionGroup::CG_DEBRIS] = CollisionGroup::CG_TERRAIN;
-	this->masks[CollisionGroup::CG_WALL] = moststuff;
-	this->masks[CollisionGroup::CG_OBJECT] = moststuff;
-	this->masks[CollisionGroup::CG_UNIT] = moststuff;
-	this->masks[CollisionGroup::CG_VEHICLE] = moststuff;
+	this->masks[CG_NOTHING] = 0;
+	this->masks[CG_TERRAIN] = CG_DEBRIS | CG_WALL | CG_OBJECT | CG_UNIT | CG_VEHICLE;
+	this->masks[CG_WATER] = CG_VEHICLE;
+	this->masks[CG_DEBRIS] = CG_TERRAIN;
+	this->masks[CG_WALL] = moststuff;
+	this->masks[CG_OBJECT] = moststuff;
+	this->masks[CG_UNIT] = moststuff;
+	this->masks[CG_VEHICLE] = moststuff;
 }
 
 PhysicsBullet::~PhysicsBullet()
@@ -84,7 +84,7 @@ void PhysicsBullet::preGame()
 	
 	this->groundRigidBody->setRestitution(0.f);
 	this->groundRigidBody->setFriction(10.f);
-	dynamicsWorld->addRigidBody(groundRigidBody, CollisionGroup::CG_TERRAIN, this->masks[CollisionGroup::CG_TERRAIN]);
+	dynamicsWorld->addRigidBody(groundRigidBody, CG_TERRAIN, this->masks[CG_TERRAIN]);
 
 	// If there is water in the world, we create a water surface
 	// It doesn't collide with stuff, it's just so we can detect with a raycast
@@ -103,7 +103,7 @@ void PhysicsBullet::preGame()
 
 		this->groundRigidBody->setRestitution(0.f);
 		this->groundRigidBody->setFriction(10.f);
-		dynamicsWorld->addRigidBody(groundRigidBody, CollisionGroup::CG_WATER, this->masks[CollisionGroup::CG_WATER]);
+		dynamicsWorld->addRigidBody(groundRigidBody, CG_WATER, this->masks[CG_WATER]);
 	}
 
 
@@ -291,8 +291,8 @@ btVector3 PhysicsBullet::spawnLocation(float x, float z, float height)
 	btVector3 end(x, -y, z);
 	
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
-	cb.m_collisionFilterGroup = CollisionGroup::CG_WALL;
-	cb.m_collisionFilterMask = CollisionGroup::CG_TERRAIN;
+	cb.m_collisionFilterGroup = CG_WALL;
+	cb.m_collisionFilterMask = CG_TERRAIN;
 
 	dynamicsWorld->rayTest(begin, end, cb);
 	
