@@ -30,7 +30,14 @@ cfg_opt_t vehicletype_opts[] =
 	CFG_INT((char*) "health", 5000, CFGF_NONE),
 	CFG_INT((char*) "land", 1, CFGF_NONE),
 	CFG_INT((char*) "water", 0, CFGF_NONE),
-
+	
+	CFG_FLOAT((char*) "engine-accel", 20.0f, CFGF_NONE),
+	CFG_FLOAT((char*) "engine-max", 200.0f, CFGF_NONE),
+	CFG_FLOAT((char*) "brake-accel", 10.0f, CFGF_NONE),
+	CFG_FLOAT((char*) "brake-max", 50.0f, CFGF_NONE),
+	CFG_FLOAT((char*) "reverse-accel", 5.0f, CFGF_NONE),
+	CFG_FLOAT((char*) "reverse-max", 30.0f, CFGF_NONE),
+	
 	CFG_SEC((char*) "damage", damage_opts, CFGF_MULTI),
 	
 	CFG_END()
@@ -52,6 +59,13 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	wt->land = cfg_getint(cfg_item, "land");
 	wt->water = cfg_getint(cfg_item, "water");
 
+	wt->engine_accel = cfg_getfloat(cfg_item, "engine-accel");
+	wt->engine_max = cfg_getfloat(cfg_item, "engine-max");
+	wt->brake_accel = cfg_getfloat(cfg_item, "brake-accel");
+	wt->brake_max = cfg_getfloat(cfg_item, "brake-max");
+	wt->reverse_accel = cfg_getfloat(cfg_item, "reverse-accel");
+	wt->reverse_max = cfg_getfloat(cfg_item, "reverse-max");
+	
 	char * tmp = cfg_getstr(cfg_item, "model");
 	if (tmp != NULL) wt->model = mod->getAnimModel(tmp);
 	

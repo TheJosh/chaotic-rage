@@ -10,10 +10,6 @@
 using namespace std;
 
 
-float	maxEngineForce = 1000.f;//this should be engine/velocity dependent
-float	maxBreakingForce = 100.f;
-float	steeringIncrement = 0.04f;
-float	steeringClamp = 0.3f;
 float	wheelRadius = 0.5f;
 float	wheelWidth = 0.4f;
 float	wheelFriction = 1000;

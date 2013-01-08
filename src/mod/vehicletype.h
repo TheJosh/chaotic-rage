@@ -26,7 +26,14 @@ class VehicleType
 		int health;
 		bool land;
 		bool water;
-
+		
+		float engine_accel;
+		float engine_max;
+		float brake_accel;
+		float brake_max;
+		float reverse_accel;
+		float reverse_max;
+		
 		vector <VehicleTypeDamage *> damage_models;
 		
 	public:

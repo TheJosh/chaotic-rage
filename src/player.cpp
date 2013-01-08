@@ -130,16 +130,18 @@ void Player::update(int delta)
 
 	if (this->drive) {
 		// Drivin my car...
+		VehicleType *vt = this->drive->vt;
+		
 		if (this->key[KEY_UP]) {
-			this->drive->engineForce = MIN(this->drive->engineForce + 20.0f, 200.0f);		// TODO: Accel + Brake based on vt settings
+			this->drive->engineForce = MIN(this->drive->engineForce + vt->engine_accel, vt->engine_max);
 			this->drive->brakeForce = 0.0f;
 
 		} else if (this->key[KEY_DOWN]) {
 			if (this->drive->getSpeedKmHr() > 0.0) {
-				this->drive->brakeForce = MIN(this->drive->brakeForce + 10.0f, 50.0f);		// Brake
+				this->drive->brakeForce = MIN(this->drive->brakeForce + vt->brake_accel, vt->brake_max);
 				this->drive->engineForce = 0.0f;
 			} else {
-				this->drive->engineForce = MAX(this->drive->engineForce - 5.0f, -30.0f);	// Reverse
+				this->drive->engineForce = MAX(this->drive->engineForce - vt->reverse_accel, 0.0f - vt->reverse_max);
 				this->drive->brakeForce = 0.0f;
 			}
 
