@@ -509,6 +509,15 @@ void RenderOpenGL::preGame()
 		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
 		glHint(GL_FOG_HINT, GL_FASTEST);
 	}
+	
+	// Set fog properties
+	if (st->curr_map->fog_density > 0.0f) {
+		glFogi(GL_FOG_MODE, GL_LINEAR);
+		glFogfv(GL_FOG_COLOR, st->curr_map->fog_color);
+		glFogf(GL_FOG_DENSITY, st->curr_map->fog_density);
+		glFogf(GL_FOG_START, 80.0f);
+		glFogf(GL_FOG_END, 100.0f);
+	}
 }
 
 void RenderOpenGL::postGame()
@@ -973,6 +982,11 @@ void RenderOpenGL::mainRot()
 	glRotatef(tilt, 1.0f, 0.0f, 0.0f);
 	glRotatef(360.0f - angle, 0.0f, 1.0f, 0.0f);
 	glTranslatef(-camerax, -cameray, -cameraz);
+	
+	// Enable fog
+	if (this->render_player != NULL && this->viewmode == 0 && st->curr_map->fog_density > 0.0f) {
+		glEnable(GL_FOG);
+	}
 }
 
 

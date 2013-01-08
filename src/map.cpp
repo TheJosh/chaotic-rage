@@ -84,7 +84,10 @@ static cfg_opt_t opts[] =
 	
 	CFG_FLOAT((char*) "heightmap-z", 4.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "water-level", 0.0f, CFGF_NONE),
-
+	
+	CFG_INT_LIST((char*) "fog-color", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "fog-density", 0.0f, CFGF_NONE),
+	
 	CFG_END()
 };
 
@@ -200,12 +203,24 @@ int Map::load(string name, Render * render)
 	if (this->width == 0 or this->height == 0) return 0;
 	
 	this->heightmap_z = cfg_getfloat(cfg, "heightmap-z");
-
+	
+	// Water surface
 	this->water = this->render->loadSprite("water.png", mod);
 	if (this->water) {
 		this->water_level = cfg_getfloat(cfg, "water-level");
 	}
 	
+	// Fog
+	if (cfg_size(cfg, "fog-color") != 0) {
+		this->fog_color[0] = cfg_getnint(cfg, "fog-color", 0) / 255.0f;
+		this->fog_color[1] = cfg_getnint(cfg, "fog-color", 1) / 255.0f;
+		this->fog_color[2] = cfg_getnint(cfg, "fog-color", 2) / 255.0f;
+		this->fog_color[3] = cfg_getnint(cfg, "fog-color", 3) / 255.0f;
+		
+		this->fog_density = cfg_getfloat(cfg, "fog-density");
+	} else {
+		this->fog_density = 0.0f;
+	}
 	
 	this->background = this->render->loadSprite("background.jpg", mod);
 	if (! this->background) reportFatalError("Unable to load map; no background img");

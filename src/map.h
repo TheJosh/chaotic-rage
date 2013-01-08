@@ -76,6 +76,9 @@ class Map {
 
 		float water_level;
 		SpritePtr water;
+		
+		float fog_color[4];
+		float fog_density;
 
 	public:
 		Map(GameState * st);
