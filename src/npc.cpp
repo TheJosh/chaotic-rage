@@ -16,14 +16,17 @@ NPC::NPC(UnitType *uc, GameState *st, float x, float y, float z, AIType *ai) : U
 	
 	this->setState(UNIT_STATE_RUNNING);
 	
-	logic = new AILogic(this);
-	logic->execScript(ai->script);
+	this->logic = new AILogic(this);
+	this->logic->execScript(ai->script);
 	
 	this->idle_sound_time = st->game_time + 15000;
 }
 
 NPC::~NPC()
 {
+	if (this->logic) {
+		delete(this->logic);
+	}
 }
 
 
@@ -59,7 +62,8 @@ int NPC::takeDamage(int damage)
 	
 	if (result == 1) {
 		this->st->logic->raise_npcdied();
-
+		
+		// Play a sound
 		int s = getRandom(1, 3);
 		if (s == 1) {
 			this->st->audio->playSound(this->st->mm->getSound("zombie_death1"), false, this);
@@ -68,6 +72,14 @@ int NPC::takeDamage(int damage)
 		} else if (s == 3) {
 			this->st->audio->playSound(this->st->mm->getSound("zombie_death3"), false, this);
 		}
+		
+		// Reset the unit
+		this->remove_at = st->game_time + 60 * 1000;
+		this->character->setWalkDirection(btVector3(0.0f, 0.0f, 0.0f));
+		
+		// Kill the Lua bits
+		delete(this->logic);
+		this->logic = NULL;
 	}
 	
 	return result;
