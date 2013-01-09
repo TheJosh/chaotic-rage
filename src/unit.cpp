@@ -556,8 +556,8 @@ void Unit::enterVehicle(Vehicle *v)
 	this->render = false;
 	//this->body->forceActivationState(DISABLE_SIMULATION);
 	
-	this->drive->brakeForce = 0.0f;
 	this->drive->engineForce = 0.0f;
+	this->drive->brakeForce = 0.0f;
 	this->drive->steering = 0.0f;
 }
 
@@ -580,8 +580,8 @@ void Unit::leaveVehicle()
 	this->ghost->setWorldTransform(trans);
 	this->ghost->forceActivationState(ACTIVE_TAG);
 	
-	this->drive->brakeForce = 10.0f;
 	this->drive->engineForce = 0.0f;
+	this->drive->brakeForce = 100.0f;		// handbrake
 	this->drive->steering = 0.0f;
 	
 	this->render = true;

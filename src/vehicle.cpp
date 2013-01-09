@@ -45,7 +45,7 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	this->health = vt->health;
 
 	this->engineForce = 0.0f;
-	this->brakeForce = 0.0f;
+	this->brakeForce = 100.0f;		// handbrake
 	this->steering = 0.0f;
 
 	btVector3 sizeHE = vt->model->getBoundingSizeHE();
