@@ -27,6 +27,7 @@ void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end)
 	
 	btVector3 velW = *end - *begin;
 	velW /= btScalar(375.f);
+	velW *= 5.0f;
 	
 	int time_death = st->game_time + 375;
 	

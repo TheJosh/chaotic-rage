@@ -1145,7 +1145,7 @@ void RenderOpenGL::particles()
 {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
-	glPointSize(10.f);
+	glPointSize(5.f);
 	glBegin(GL_POINTS);
 	for (list<NewParticle*>::iterator it = this->st->particles.begin(); it != this->st->particles.end(); it++) {
 		glColor4f((*it)->r, (*it)->g, (*it)->b, 1.0f);
