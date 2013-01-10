@@ -291,8 +291,7 @@ NetMsg * NetServer::addmsgUnitState(Unit *u)
 	msg->seq = this->seq;
 	msg->uniq = u->eid;
 	
-	btTransform trans;
-	u->body->getMotionState()->getWorldTransform(trans);
+	btTransform trans = u->getTransform();
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 	

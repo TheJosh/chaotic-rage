@@ -365,10 +365,11 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 	}
 	
 	// Update the transform
-	u->body->getMotionState()->setWorldTransform(btTransform(
+	btTransform xform = btTransform(
 		btQuaternion(qx, qy, qz, qw),
 		btVector3(bx, by, bz)
-	));
+	);
+	u->setTransform(xform);
 	
 	u->health = health;
 	
