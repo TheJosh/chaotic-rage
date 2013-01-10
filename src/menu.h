@@ -57,6 +57,7 @@ class Menu
 	public:
 		// Init etc
 		Menu(GameState *st);
+		GameState *getGameState() { return this->st; }
 		void doit();
 		
 	public:

@@ -20,10 +20,18 @@ using namespace std;
 /**
 * Constructor for "new game" dialog
 **/
-DialogNewGame::DialogNewGame(int num_local)
+DialogNewGame::DialogNewGame(int num_local, ModManager *mm)
 {
 	this->num_local = num_local;
+	
+	this->gametypes = new GametypeListModel(mm->getAllGameTypes());
 }
+
+DialogNewGame::~DialogNewGame()
+{
+	delete(this->gametypes);
+}
+
 
 /**
 * Setup routine for the "New Game" dialog
@@ -39,14 +47,15 @@ gcn::Container * DialogNewGame::setup()
 		c = new gcn::Window("Split Screen");
 	}
 	
-	c->setDimension(gcn::Rectangle(0, 0, 200, 200));
+	c->setDimension(gcn::Rectangle(0, 0, 255, 200));
 	
 	
 	label = new gcn::Label("Game type");
 	c->add(label, 10, 10);
 	
-	this->gametype = new gcn::DropDown(new VectorListModel(&this->m->gametypes));
+	this->gametype = new gcn::DropDown(this->gametypes);
 	this->gametype->setPosition(80, 10);
+	this->gametype->setWidth(160);
 	c->add(this->gametype);
 	
 	
@@ -55,6 +64,7 @@ gcn::Container * DialogNewGame::setup()
 	
 	this->map = new gcn::DropDown(new MapRegistryListModel(this->m->mapreg));
 	this->map->setPosition(80, 30);
+	this->map->setWidth(160);
 	c->add(this->map);
 	
 	
@@ -63,6 +73,7 @@ gcn::Container * DialogNewGame::setup()
 	
 	this->unittype = new gcn::DropDown(new VectorListModel(&this->m->unittypes));
 	this->unittype->setPosition(80, 50);
+	this->unittype->setWidth(160);
 	c->add(this->unittype);
 	
 	
@@ -71,6 +82,7 @@ gcn::Container * DialogNewGame::setup()
 	
 	this->viewmode = new gcn::DropDown(new VectorListModel(&this->m->viewmodes));
 	this->viewmode->setPosition(80, 70);
+	this->viewmode->setWidth(160);
 	c->add(this->viewmode);
 	
 	

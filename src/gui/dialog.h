@@ -54,6 +54,27 @@ class MapRegistryListModel: public gcn::ListModel
 };
 
 
+class GametypeListModel: public gcn::ListModel
+{
+	private:
+		vector<GameType*> * gametypes;
+		
+	public:
+		GametypeListModel(vector<GameType*> * gametypes) : gametypes(gametypes) {}
+		~GametypeListModel() { delete(gametypes); }
+		
+		std::string getElementAt(int i)
+		{
+			return gametypes->at(i)->title;
+		}
+		
+		int getNumberOfElements()
+		{
+			return gametypes->size();
+		}
+};
+
+
 /**
 * Base dialog class
 **/

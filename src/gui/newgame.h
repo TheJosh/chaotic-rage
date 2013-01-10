@@ -16,14 +16,20 @@ using namespace std;
 **/
 class DialogNewGame : public Dialog, public gcn::ActionListener {
 	public:
-		DialogNewGame(int num_local);
+		DialogNewGame(int num_local, ModManager *mm);
+		~DialogNewGame();
 		
 	private:
 		int num_local;
-		gcn::DropDown * map;
-		gcn::DropDown * gametype;
-		gcn::DropDown * unittype;
-		gcn::DropDown * viewmode;
+		
+		gcn::DropDown *map;
+		
+		gcn::DropDown *gametype;
+		GametypeListModel *gametypes;
+		
+		gcn::DropDown *unittype;
+		
+		gcn::DropDown *viewmode;
 		
 	public:
 		virtual gcn::Container * setup();

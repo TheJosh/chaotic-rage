@@ -330,12 +330,12 @@ void Menu::setDialog(Dialog * dialog)
 
 void Menu::doSingleplayer()
 {
-	this->setDialog(new DialogNewGame(1));
+	this->setDialog(new DialogNewGame(1, this->st->mm));
 }
 
 void Menu::doSplitscreen()
 {
-	this->setDialog(new DialogNewGame(2));
+	this->setDialog(new DialogNewGame(2, this->st->mm));
 }
 
 void Menu::doNetwork()
