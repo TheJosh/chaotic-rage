@@ -603,6 +603,7 @@ void MapRegistry::find(string dir)
 	maps.push_back(MapReg("stormy_desert", "Stormy Desert"));
 	maps.push_back(MapReg("arena", "Arena"));
 	maps.push_back(MapReg("towers", "Towers"));
+	maps.push_back(MapReg("maze", "Maze of the Lost"));
 	
 	maps.push_back(MapReg("generaltest"));
 	maps.push_back(MapReg("tanktest"));
