@@ -68,6 +68,7 @@ class HUD;
 class HUDLabel;
 class Intro;
 class Map;
+class MapMesh;
 class MapRegistry;
 class MapReg;
 class Menu;

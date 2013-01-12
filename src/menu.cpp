@@ -391,7 +391,8 @@ void Menu::startGame(string map, string gametype, string unittype, int viewmode,
 	st->render->viewmode = viewmode;
 	
 	st->physics->preGame();
-	
+	st->curr_map->preGame();
+
 	// Begin!
 	gameLoop(st, st->render);
 }
@@ -449,6 +450,7 @@ void Menu::networkJoin(string host)
 	}
 
 	st->physics->preGame();
+	st->curr_map->preGame();
 
 	// Begin!
 	gameLoop(st, st->render);

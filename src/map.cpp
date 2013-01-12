@@ -70,6 +70,16 @@ static cfg_opt_t light_opts[] =
 	CFG_END()
 };
 
+static cfg_opt_t mesh_opts[] =
+{
+	CFG_FLOAT_LIST((char*) "pos", 0, CFGF_NONE),
+
+	CFG_STR((char*) "mesh", ((char*)""), CFGF_NONE),
+	CFG_STR((char*) "texture", ((char*)""), CFGF_NONE),
+	
+	CFG_END()
+};
+
 // Main config
 static cfg_opt_t opts[] =
 {
@@ -78,7 +88,8 @@ static cfg_opt_t opts[] =
 	CFG_SEC((char*) "object", object_opts, CFGF_MULTI),
 	CFG_SEC((char*) "zone", zone_opts, CFGF_MULTI),
 	CFG_SEC((char*) "light", light_opts, CFGF_MULTI),
-	
+	CFG_SEC((char*) "mesh", mesh_opts, CFGF_MULTI),
+
 	CFG_INT((char*) "width", 0, CFGF_NONE),
 	CFG_INT((char*) "height", 0, CFGF_NONE),
 	
@@ -247,6 +258,39 @@ int Map::load(string name, Render * render)
 		this->zones.push_back(z);
 	}
 	
+	// Meshes
+	num_types = cfg_size(cfg, "mesh");
+	for (j = 0; j < num_types; j++) {
+		cfg_sub = cfg_getnsec(cfg, "mesh", j);
+		
+		MapMesh * m = new MapMesh();
+		m->xform = btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 0.0f), btVector3(cfg_getnfloat(cfg_sub, "pos", 0), cfg_getnfloat(cfg_sub, "pos", 1), cfg_getnfloat(cfg_sub, "pos", 2)));
+
+		{
+			string filename = mod->directory;
+			filename.append(cfg_getstr(cfg, "mesh"));
+			filename.append(".obj");
+
+			WavefrontObj *obj = loadObj(filename);
+			if (! obj) reportFatalError("Unable to load map; mesh didn't load");
+
+			m->mesh = obj;
+		}
+
+		{
+			string filename = mod->directory;
+			filename.append(cfg_getstr(cfg, "texture"));
+			filename.append(".png");
+
+			SpritePtr tex = mod->st->render->loadSprite(filename, mod);
+			if (! tex) reportFatalError("Unable to load map; mesh texture didn't load");
+
+			m->texture = tex;
+		}
+
+		this->meshes.push_back(m);
+	}
+
 	// Lights
 	num_types = cfg_size(cfg, "light");
 	for (j = 0; j < num_types; j++) {
@@ -547,6 +591,44 @@ float Map::heightmapScaleZ()
 {
 	return this->heightmap_z;
 }
+
+
+bool Map::preGame()
+{
+	btRigidBody *ground = this->createGroundBody();
+	if (ground == NULL) return false;
+
+	ground->setRestitution(0.f);
+	ground->setFriction(10.f);
+
+	this->st->physics->addRigidBody(ground, CG_TERRAIN);
+
+
+	// If there is water in the world, we create a water surface
+	// It doesn't collide with stuff, it's just so we can detect with a raycast
+	if (this->water) {
+		btCollisionShape* groundShape = new btBoxShape(btVector3(this->st->curr_map->width/2.0f, 10.0f, this->st->curr_map->height/2.0f));
+		
+		btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(this->st->curr_map->width/2.0f, -10.0f + st->curr_map->water_level, this->st->curr_map->height/2.0f)));
+		btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
+			0,
+			groundMotionState,
+			groundShape,
+			btVector3(0,0,0)
+		);
+		
+		ground = new btRigidBody(groundRigidBodyCI);
+
+		ground->setRestitution(0.f);
+		ground->setFriction(10.f);
+		this->st->physics->addRigidBody(ground, CG_WATER);
+	}
+}
+
+void Map::postGame()
+{
+}
+
 
 /*
 * Create the "ground" for the map

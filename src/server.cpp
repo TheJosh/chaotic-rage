@@ -69,7 +69,8 @@ void runGame(GameState * st, string map, string gametype)
 	st->num_local = 0;
 	
 	st->physics->preGame();
-	
+	st->curr_map->preGame();
+
 	st->server->listen(st->sconf->port);
 	
 	gameLoop(st, st->render);

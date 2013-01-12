@@ -48,6 +48,13 @@ class Light {
 };
 
 
+class MapMesh {
+	public:
+		btTransform xform;
+		btRigidBody *body;
+		WavefrontObj *mesh;
+		SpritePtr texture;
+};
 
 class Map {
 	friend class RenderSDL;
@@ -58,6 +65,7 @@ class Map {
 		vector<Area*> areas;
 		vector<Zone*> zones;
 		vector<Light*> lights;
+		vector<MapMesh*> meshes;
 		Render * render;
 		GameState * st;
 		Mod * mod;
@@ -83,7 +91,9 @@ class Map {
 	public:
 		Map(GameState * st);
 		~Map();
-		
+		bool preGame();
+		void postGame();
+
 	public:
 		int load(string name, Render * render);
 		void loadDefaultEntities();
@@ -98,6 +108,7 @@ class Map {
 		float getRandomX();
 		float getRandomY();
 		
+		// todo: support for multiple heightmaps (in different areas)?
 		void createHeightmapRaw();
 		float heightmapGet(int X, int Y);
 		float heightmapSet(int X, int Y, float val);
