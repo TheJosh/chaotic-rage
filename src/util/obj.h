@@ -1,13 +1,16 @@
 #pragma once
 
 #include <vector>
+#include <btBulletDynamicsCommon.h>
 
 using namespace std;
 
 
-typedef struct vertex {
-	float x, y, z;
-} Vertex;
+class Vertex {
+	public:
+		float x, y, z;
+		btVector3 toBtVector3() { return btVector3(x, y, z); }
+};
 
 typedef struct texuv {
 	float x, y;

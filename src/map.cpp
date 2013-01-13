@@ -268,7 +268,7 @@ int Map::load(string name, Render * render)
 
 		{
 			string filename = mod->directory;
-			filename.append(cfg_getstr(cfg, "mesh"));
+			filename.append(cfg_getstr(cfg_sub, "mesh"));
 			filename.append(".obj");
 
 			WavefrontObj *obj = loadObj(filename);
@@ -278,8 +278,7 @@ int Map::load(string name, Render * render)
 		}
 
 		{
-			string filename = mod->directory;
-			filename.append(cfg_getstr(cfg, "texture"));
+			string filename = cfg_getstr(cfg_sub, "texture");
 			filename.append(".png");
 
 			SpritePtr tex = mod->st->render->loadSprite(filename, mod);
@@ -622,6 +621,37 @@ bool Map::preGame()
 		ground->setRestitution(0.f);
 		ground->setFriction(10.f);
 		this->st->physics->addRigidBody(ground, CG_WATER);
+	}
+
+	// Meshy goodness
+	for (vector<MapMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); it++) {
+		btTriangleMesh *trimesh = new btTriangleMesh(false, false);
+
+		WavefrontObj *obj = (*it)->mesh;
+		int j = 0;
+		for (unsigned int i = 0; i < obj->faces.size(); i++) {
+			Face * f = &obj->faces.at(i);
+			trimesh->addTriangle(
+				obj->vertexes.at(f->v1 - 1).toBtVector3(),
+				obj->vertexes.at(f->v2 - 1).toBtVector3(),
+				obj->vertexes.at(f->v3 - 1).toBtVector3()
+			);
+		}
+
+		btCollisionShape* mesh = new btBvhTriangleMeshShape(trimesh, true, true);
+
+		btDefaultMotionState* motionState = new btDefaultMotionState((*it)->xform);
+		btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
+			0,
+			motionState,
+			mesh,
+			btVector3(0,0,0)
+		);
+		
+		ground = new btRigidBody(groundRigidBodyCI);
+		ground->setRestitution(0.f);
+		ground->setFriction(10.f);
+		this->st->physics->addRigidBody(ground, CG_TERRAIN);
 	}
 }
 
