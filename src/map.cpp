@@ -259,12 +259,13 @@ int Map::load(string name, Render * render)
 	}
 	
 	// Meshes
+	// These should be a Y-up wavefront OBJ file.
 	num_types = cfg_size(cfg, "mesh");
 	for (j = 0; j < num_types; j++) {
 		cfg_sub = cfg_getnsec(cfg, "mesh", j);
 		
 		MapMesh * m = new MapMesh();
-		m->xform = btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 0.0f), btVector3(cfg_getnfloat(cfg_sub, "pos", 0), cfg_getnfloat(cfg_sub, "pos", 1), cfg_getnfloat(cfg_sub, "pos", 2)));
+		m->xform = btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f), btVector3(cfg_getnfloat(cfg_sub, "pos", 0), cfg_getnfloat(cfg_sub, "pos", 1), cfg_getnfloat(cfg_sub, "pos", 2)));
 
 		{
 			string filename = mod->directory;
@@ -625,9 +626,10 @@ bool Map::preGame()
 
 	// Meshy goodness
 	for (vector<MapMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); it++) {
-		btTriangleMesh *trimesh = new btTriangleMesh(false, false);
-
 		WavefrontObj *obj = (*it)->mesh;
+		obj->calcBoundingSize();
+
+		btTriangleMesh *trimesh = new btTriangleMesh(false, false);
 		int j = 0;
 		for (unsigned int i = 0; i < obj->faces.size(); i++) {
 			Face * f = &obj->faces.at(i);
@@ -637,21 +639,20 @@ bool Map::preGame()
 				obj->vertexes.at(f->v3 - 1).toBtVector3()
 			);
 		}
-
-		btCollisionShape* mesh = new btBvhTriangleMeshShape(trimesh, true, true);
-
+		btCollisionShape* meshShape = new btBvhTriangleMeshShape(trimesh, true, true);
+		
 		btDefaultMotionState* motionState = new btDefaultMotionState((*it)->xform);
-		btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
+		btRigidBody::btRigidBodyConstructionInfo meshRigidBodyCI(
 			0,
 			motionState,
-			mesh,
+			meshShape,
 			btVector3(0,0,0)
 		);
-		
-		ground = new btRigidBody(groundRigidBodyCI);
-		ground->setRestitution(0.f);
-		ground->setFriction(10.f);
-		this->st->physics->addRigidBody(ground, CG_TERRAIN);
+		btRigidBody *meshBody = new btRigidBody(meshRigidBodyCI);
+		meshBody->setRestitution(0.f);
+		meshBody->setFriction(10.f);
+
+		this->st->physics->addRigidBody(meshBody, CG_TERRAIN);
 	}
 }
 

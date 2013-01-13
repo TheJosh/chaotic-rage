@@ -1007,6 +1007,7 @@ void RenderOpenGLCompat::map()
 	// TODO: Should this be a part of the mesh create instead of part of the render?
 	glScalef(this->st->curr_map->heightmapScaleX(), 1.0f, this->st->curr_map->heightmapScaleY());
 	
+	// Main terrain
 	glBindBuffer(GL_ARRAY_BUFFER, this->ter_vboid);
 	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
 	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
@@ -1016,12 +1017,30 @@ void RenderOpenGLCompat::map()
 	
 	glPopMatrix();
 	
+	// Static geometry
+	glFrontFace(GL_CCW);
+	for (vector<MapMesh*>::iterator it = st->curr_map->meshes.begin(); it != st->curr_map->meshes.end(); it++) {
+		glBindTexture(GL_TEXTURE_2D, (*it)->texture->pixels);
+
+		glPushMatrix();
+
+		btScalar m[16];
+		(*it)->xform.getOpenGLMatrix(m);
+		glMultMatrixf((GLfloat*)m);
+
+		this->renderObj((*it)->mesh);
+
+		glPopMatrix();
+	}
+
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	
 	glDisable(GL_CULL_FACE);
 
+
+	
 
 	// Water surface
 	if (this->st->curr_map->water) {
