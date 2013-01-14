@@ -630,7 +630,6 @@ bool Map::preGame()
 		obj->calcBoundingSize();
 
 		btTriangleMesh *trimesh = new btTriangleMesh(false, false);
-		int j = 0;
 		for (unsigned int i = 0; i < obj->faces.size(); i++) {
 			Face * f = &obj->faces.at(i);
 			trimesh->addTriangle(
@@ -654,6 +653,8 @@ bool Map::preGame()
 
 		this->st->physics->addRigidBody(meshBody, CG_TERRAIN);
 	}
+	
+	return true;
 }
 
 void Map::postGame()
