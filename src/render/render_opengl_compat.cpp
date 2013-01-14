@@ -1017,7 +1017,7 @@ void RenderOpenGLCompat::map()
 	
 	glPopMatrix();
 	
-	// Static geometry
+	// Static geometry meshes
 	glFrontFace(GL_CCW);
 	for (vector<MapMesh*>::iterator it = st->curr_map->meshes.begin(); it != st->curr_map->meshes.end(); it++) {
 		glBindTexture(GL_TEXTURE_2D, (*it)->texture->pixels);
