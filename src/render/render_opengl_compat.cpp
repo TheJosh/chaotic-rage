@@ -959,13 +959,8 @@ void RenderOpenGLCompat::lights()
 				
 			} else if (l->type == 2) {
 				btTransform trans = this->render_player->getTransform();
+				glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY() + 2.0f, trans.getOrigin().getZ());
 				
-				glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY() + 10.0f, trans.getOrigin().getZ());
-				glRotatef(RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 90.0f + 45.0f, 0.0f, 1.0f, 0.0f);
-				
-				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_torch);
-				glLightf(GL_LIGHT0 + i, GL_SPOT_CUTOFF, 22.0f);
-				glLightf(GL_LIGHT0 + i, GL_SPOT_EXPONENT, 1.0f);
 				glLightfv(GL_LIGHT0 + i, GL_POSITION, position);
 				
 			} else if (l->type == 3) {
