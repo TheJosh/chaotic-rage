@@ -945,7 +945,6 @@ void RenderOpenGLCompat::lights()
 	// Lights
 	GLfloat dir_down[] = { 0.0f, 1.0f, 0.0f, 0.0f };
 	GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	GLfloat spot_torch[] = { -1.0f, 0.0f, -1.0f };
 	GLfloat spot_down[] = { 0.0f, -1.0f, 0.0f };
 	
 	for (i = 0; i < st->curr_map->lights.size(); i++) {
