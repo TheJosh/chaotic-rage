@@ -6,19 +6,28 @@
 #
 
 # Fetch
-wget http://bullet.googlecode.com/files/bullet-2.79-rev2440.tgz
-tar -zvxf bullet-2.79-rev2440.tgz
+wget https://bullet.googlecode.com/files/bullet-2.81-rev2613.tgz
+tar -zvxf bullet-2.81-rev2613.tgz
 
 # Prep
 mkdir bullet-build
 cd bullet-build
-cmake ../bullet-2.79 -G "Unix Makefiles" -DINSTALL_LIBS=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo
+cmake ../bullet-2.81 -G "Unix Makefiles" -DINSTALL_LIBS=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo
 
 # Compile
 make -j4
 
 # Install
+echo
+echo "We are about to a 'sudo make install'."
+echo "You will be asked your password."
+echo
 sudo make install
+
+# Update lib caches
+echo
+echo "Installed, doing an 'updatedb' and 'ldconfig'."
+echo
 sudo updatedb
 sudo ldconfig
 
