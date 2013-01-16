@@ -78,9 +78,11 @@ class Map {
 		int height;
 		
 		float * heightmap;
-		int heightmap_w;
-		int heightmap_h;
-		float heightmap_z;
+		int heightmap_sx;
+		int heightmap_sz;
+		int heightmap_tx;
+		int heightmap_tz;
+		float heightmap_y;
 
 		float water_level;
 		SpritePtr water;
@@ -110,13 +112,13 @@ class Map {
 		
 		// todo: support for multiple heightmaps (in different areas)?
 		void createHeightmapRaw();
-		float heightmapGet(int X, int Y);
-		float heightmapSet(int X, int Y, float val);
-		float heightmapAdd(int X, int Y, float amt);
+		float heightmapGet(int X, int Z);
+		float heightmapSet(int X, int Z, float val);
+		float heightmapAdd(int X, int Z, float amt);
 		float heightmapScaleX();
 		float heightmapScaleY();
 		float heightmapScaleZ();
-		btRigidBody * createGroundBody();
+		btRigidBody * createGroundBodyTile(int tX, int tZ);
 };
 
 

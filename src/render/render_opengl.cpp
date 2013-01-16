@@ -386,12 +386,12 @@ void RenderOpenGL::loadHeightmap()
 	if (st->curr_map->heightmap == NULL) st->curr_map->createHeightmapRaw();
 	if (st->curr_map->heightmap == NULL) return;
 	
-	this->ter_size = st->curr_map->heightmap_w * st->curr_map->heightmap_h * 6;
+	this->ter_size = st->curr_map->heightmap_sx * st->curr_map->heightmap_sz * 6;
 	VBOvertex* vertexes = new VBOvertex[this->ter_size];
 	
 	j = 0;
-	for( nZ = 0; nZ < st->curr_map->heightmap_h - 1; nZ += 1 ) {
-		for( nX = 0; nX < st->curr_map->heightmap_w - 1; nX += 1 ) {
+	for( nZ = 0; nZ < st->curr_map->heightmap_sz - 1; nZ += 1 ) {
+		for( nX = 0; nX < st->curr_map->heightmap_sx - 1; nX += 1 ) {
 			
 			// u = p2 - p1; v = p3 - p1
 			btVector3 u = btVector3(nX + 1.0f, st->curr_map->heightmapGet(nX + 1, nZ + 1), nZ + 1.0f) - btVector3(nX, st->curr_map->heightmapGet(nX, nZ), nZ);
@@ -415,8 +415,8 @@ void RenderOpenGL::loadHeightmap()
 				vertexes[j].nx = normal.x();
 				vertexes[j].ny = normal.y();
 				vertexes[j].nz = normal.z();
-				vertexes[j].tx = flX / st->curr_map->heightmap_w;
-				vertexes[j].ty = flZ / st->curr_map->heightmap_h;
+				vertexes[j].tx = flX / st->curr_map->heightmap_sx;
+				vertexes[j].ty = flZ / st->curr_map->heightmap_sz;
 				j++;
 			}
 		}
@@ -1056,7 +1056,7 @@ void RenderOpenGL::map()
 	glPushMatrix();
 	
 	// TODO: Should this be a part of the mesh create instead of part of the render?
-	glScalef(this->st->curr_map->heightmapScaleX(), 1.0f, this->st->curr_map->heightmapScaleY());
+	glScalef(this->st->curr_map->heightmapScaleX(), 1.0f, this->st->curr_map->heightmapScaleZ());
 	
 	glBindBuffer(GL_ARRAY_BUFFER, this->ter_vboid);
 	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));

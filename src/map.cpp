@@ -213,7 +213,7 @@ int Map::load(string name, Render * render)
 	this->height = cfg_getint(cfg, "height");
 	if (this->width == 0 or this->height == 0) return 0;
 	
-	this->heightmap_z = cfg_getfloat(cfg, "heightmap-z");
+	this->heightmap_y = cfg_getfloat(cfg, "heightmap-z");
 	
 	// Water surface
 	this->water = this->render->loadSprite("water.png", mod);
@@ -528,19 +528,19 @@ void Map::createHeightmapRaw()
 	Uint8 r,g,b;
 	
 	SpritePtr sprite = this->render->loadSprite("heightmap.png", mod);
-	if (! sprite) return;;
+	if (! sprite) return;
 	
 	heightmap = new float[sprite->w * sprite->h];
-	heightmap_w = sprite->w;
-	heightmap_h = sprite->h;
+	heightmap_sx = sprite->w;
+	heightmap_sz = sprite->h;
 	
-	for ( nZ = 0; nZ < heightmap_h; nZ += 1 ) {
-		for ( nX = 0; nX < heightmap_w; nX += 1 ) {
+	for ( nZ = 0; nZ < heightmap_sz; nZ += 1 ) {
+		for ( nX = 0; nX < heightmap_sx; nX += 1 ) {
 			
 			Uint32 pixel = getPixel(sprite->orig, nX, nZ);
 			SDL_GetRGB(pixel, sprite->orig->format, &r, &g, &b);
 			
-			heightmap[nZ * heightmap_w + nX] = r / 255.0f * this->heightmap_z;
+			heightmap[nZ * heightmap_sx + nX] = r / 255.0f * this->heightmap_y;
 			
 		}
 	}
@@ -552,50 +552,49 @@ void Map::createHeightmapRaw()
 /**
 * Get a map cell.
 **/
-float Map::heightmapGet(int X, int Y)
+float Map::heightmapGet(int X, int Z)
 {
-	return heightmap[Y * heightmap_w + X];
+	return heightmap[Z * heightmap_sx + X];
 }
 
 
 /**
 * Set a map cell. Returns the new value.
 **/
-float Map::heightmapSet(int X, int Y, float val)
+float Map::heightmapSet(int X, int Z, float val)
 {
-	return heightmap[Y * heightmap_w + X] = val;
+	return heightmap[Z * heightmap_sx + X] = val;
 }
 
 
 /**
 * Increase (use neg nums to decrease) a map cell. Returns the new value.
 **/
-float Map::heightmapAdd(int X, int Y, float amt)
+float Map::heightmapAdd(int X, int Z, float amt)
 {
-	return heightmap[Y * heightmap_w + X] += amt;
+	return heightmap[Z * heightmap_sx + X] += amt;
 }
 
 
 float Map::heightmapScaleX()
 {
-	return (float)width / (float)heightmap_w;
+	return (float)width / (float)heightmap_sx;
 }
-
 
 float Map::heightmapScaleY()
 {
-	return (float)height / (float)heightmap_h;
+	return this->heightmap_y;
 }
 
 float Map::heightmapScaleZ()
 {
-	return this->heightmap_z;
+	return (float)height / (float)heightmap_sz;
 }
 
 
 bool Map::preGame()
 {
-	btRigidBody *ground = this->createGroundBody();
+	btRigidBody *ground = this->createGroundBodyTile(0,0);
 	if (ground == NULL) return false;
 
 	ground->setRestitution(0.f);
@@ -664,10 +663,8 @@ void Map::postGame()
 
 /*
 * Create the "ground" for the map
-*
-* This is a bit crap - the image is loaded twice (1x physics, 1x render)
 **/
-btRigidBody * Map::createGroundBody()
+btRigidBody * Map::createGroundBodyTile(int tX, int tZ)
 {
 	if (heightmap == NULL) createHeightmapRaw();
 	if (heightmap == NULL) return NULL;
@@ -675,9 +672,9 @@ btRigidBody * Map::createGroundBody()
 	bool flipQuadEdges = false;
 	
 	btHeightfieldTerrainShape * groundShape = new btHeightfieldTerrainShape(
-		heightmap_w, heightmap_h, heightmap,
+		heightmap_sx, heightmap_sz, heightmap,
 		0,
-		0.0f, this->heightmap_z,
+		0.0f, this->heightmap_y,
 		1, PHY_FLOAT, flipQuadEdges
 	);
 	
@@ -689,7 +686,7 @@ btRigidBody * Map::createGroundBody()
 	
 	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(
 		btQuaternion(0, 0, 0, 1),
-		btVector3(this->width/2.0f, this->heightmap_z/2.0f, this->height/2.0f)
+		btVector3(this->width/2.0f, this->heightmap_y/2.0f, this->height/2.0f)
 	));
 	
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
