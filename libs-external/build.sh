@@ -10,9 +10,10 @@ wget https://bullet.googlecode.com/files/bullet-2.81-rev2613.tgz
 tar -zvxf bullet-2.81-rev2613.tgz
 
 # Prep
+rm -r bullet-build
 mkdir bullet-build
 cd bullet-build
-cmake ../bullet-2.81 -G "Unix Makefiles" -DINSTALL_LIBS=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo
+cmake ../bullet-2.81-rev2613 -G "Unix Makefiles" -DINSTALL_LIBS=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo
 
 # Compile
 make -j4

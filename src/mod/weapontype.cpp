@@ -224,7 +224,7 @@ void WeaponDigdown::doFire(Unit *u, btTransform &origin)
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
 	
 	if (cb.hasHit()) {
-		btRigidBody * body = btRigidBody::upcast(cb.m_collisionObject);
+		const btRigidBody *body = btRigidBody::upcast(cb.m_collisionObject);
 		if (body && !body->getUserPointer()) {
 			// Hit the ground, lets dig a hole
 			Map* map = u->getGameState()->curr_map;

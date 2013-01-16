@@ -156,7 +156,7 @@ Entity * Unit::infront(float range)
 	
 	// Check the raytest result
 	if (cb.hasHit()) {
-		btRigidBody * body = btRigidBody::upcast(cb.m_collisionObject);
+		const btRigidBody *body = btRigidBody::upcast(cb.m_collisionObject);
 		if (body) {
 			return static_cast<Entity*>(body->getUserPointer());
 		}
@@ -497,10 +497,10 @@ void Unit::update(int delta)
          {
             btPersistentManifold* manifold = manifoldArray[j];
 
-			btCollisionObject* obA = static_cast<btCollisionObject*>(manifold->getBody0());
-			btCollisionObject* obB = static_cast<btCollisionObject*>(manifold->getBody1());
+			const btCollisionObject* obA = static_cast<const btCollisionObject*>(manifold->getBody0());
+			const btCollisionObject* obB = static_cast<const btCollisionObject*>(manifold->getBody1());
 
-			btCollisionObject* other = obA == ghost ? obB : obA;
+			const btCollisionObject* other = obA == ghost ? obB : obA;
 
 			if (other->getBroadphaseHandle()->m_collisionFilterGroup == CG_OBJECT) {
 				Object* o = (Object*) other->getUserPointer();
