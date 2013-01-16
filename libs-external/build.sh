@@ -12,7 +12,7 @@ tar -zvxf bullet-2.79-rev2440.tgz
 # Prep
 mkdir bullet-build
 cd bullet-build
-cmake ../bullet-2.79 -G "Unix Makefiles" -DINSTALL_LIBS=ON -DBUILD_SHARED_LIBS=ON
+cmake ../bullet-2.79 -G "Unix Makefiles" -DINSTALL_LIBS=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo
 
 # Compile
 make -j4
