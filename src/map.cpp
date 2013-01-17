@@ -5,7 +5,7 @@
 #include <iostream>
 #include <math.h>
 #include <btBulletDynamicsCommon.h>
-#include <BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
+#include "util/btStrideHeightfieldTerrainShape.h"
 #include "rage.h"
 
 using namespace std;
@@ -594,15 +594,15 @@ float Map::heightmapScaleZ()
 
 bool Map::preGame()
 {
-	btRigidBody *ground = this->createGroundBodyTile(0,0);
+	btRigidBody *ground = this->createGroundBody();
 	if (ground == NULL) return false;
-
+	
 	ground->setRestitution(0.f);
 	ground->setFriction(10.f);
-
+	
 	this->st->physics->addRigidBody(ground, CG_TERRAIN);
-
-
+	
+	
 	// If there is water in the world, we create a water surface
 	// It doesn't collide with stuff, it's just so we can detect with a raycast
 	if (this->water) {
@@ -616,11 +616,11 @@ bool Map::preGame()
 			btVector3(0,0,0)
 		);
 		
-		ground = new btRigidBody(groundRigidBodyCI);
+		btRigidBody *water = new btRigidBody(groundRigidBodyCI);
 
-		ground->setRestitution(0.f);
-		ground->setFriction(10.f);
-		this->st->physics->addRigidBody(ground, CG_WATER);
+		water->setRestitution(0.f);
+		water->setFriction(10.f);
+		this->st->physics->addRigidBody(water, CG_WATER);
 	}
 
 	// Meshy goodness
@@ -664,19 +664,21 @@ void Map::postGame()
 /*
 * Create the "ground" for the map
 **/
-btRigidBody * Map::createGroundBodyTile(int tX, int tZ)
+btRigidBody * Map::createGroundBody()
 {
 	if (heightmap == NULL) createHeightmapRaw();
 	if (heightmap == NULL) return NULL;
 	
 	bool flipQuadEdges = false;
 	
-	btHeightfieldTerrainShape * groundShape = new btHeightfieldTerrainShape(
+	btStrideHeightfieldTerrainShape * groundShape = new btStrideHeightfieldTerrainShape(
 		heightmap_sx, heightmap_sz, heightmap,
 		0,
 		0.0f, this->heightmap_y,
 		1, PHY_FLOAT, flipQuadEdges
 	);
+	
+	groundShape->setWidthStride(stride);
 	
 	groundShape->setLocalScaling(btVector3(
 		heightmapScaleX(),

@@ -118,7 +118,7 @@ class Map {
 		float heightmapScaleX();
 		float heightmapScaleY();
 		float heightmapScaleZ();
-		btRigidBody * createGroundBodyTile(int tX, int tZ);
+		btRigidBody * createGroundBodyTile(int tX, int tZ, int stride);
 };
 
 
