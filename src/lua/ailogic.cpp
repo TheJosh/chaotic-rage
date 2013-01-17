@@ -49,6 +49,7 @@ AILogic::AILogic(Unit *u)
 	register_lua_functions();
 	
 	this->dir = btVector3(0,0,0);
+	this->dir_flag = true;
 	this->speed = 0;
 }
 
@@ -118,23 +119,26 @@ void AILogic::update(int delta)
 	
 	
 	// NEW (kinematic controller)
-	this->dir.setY(0.0f);
+	if (this->dir_flag) {
+		this->dir.setY(0.0f);
 
-	btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
-	btTransform xform = u->ghost->getWorldTransform();
-	btScalar walkSpeed = u->getSettings()->max_speed * 1.0f/60.0f;		// Physics runs at 60hz
+		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
+		btTransform xform = u->ghost->getWorldTransform();
+		btScalar walkSpeed = u->getSettings()->max_speed * 1.0f/60.0f;		// Physics runs at 60hz
 
-	// Rotation update
-	btVector3 fwd = btVector3(0.0, 0.0, 1.0);
-	btVector3 axis = fwd.cross(this->dir);
-	axis.normalize();
-	float angle = acos(this->dir.dot(fwd));
-	btQuaternion rot = btQuaternion(axis, angle).normalize();
-	xform.setBasis(btMatrix3x3(rot));
+		// Rotation update
+		btVector3 fwd = btVector3(0.0, 0.0, 1.0);
+		btVector3 axis = fwd.cross(this->dir);
+		axis.normalize();
+		float angle = acos(this->dir.dot(fwd));
+		btQuaternion rot = btQuaternion(axis, angle).normalize();
+		xform.setBasis(btMatrix3x3(rot));
 
-	// Position update
-	u->character->setWalkDirection(this->dir * walkSpeed);
+		// Position update
+		u->character->setWalkDirection(this->dir * walkSpeed);
 
+		this->dir_flag = false;
+	}
 	// OLD
 	/*
 	this->dir.setY(0.0f);
@@ -358,8 +362,10 @@ LUA_FUNC(move)
 	double * v = get_vector3(L, 1);
 	btVector3 walkDirection = btVector3(v[0], v[1], v[2]);
 	walkDirection.normalize();
+
 	gl->dir = walkDirection;
-	
+	gl->dir_flag = true;
+
 	float speed = lua_tonumber(L, 2);
 	if (speed != 0.0f) {
 		gl->speed = MAX(speed, gl->u->getSettings()->max_speed);

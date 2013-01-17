@@ -28,7 +28,8 @@ class AILogic
 		lua_State *lua;
 		GameState *st;
 		vector<LuaTimer*> timers;
-		btVector3 dir;
+		btVector3 dir;              // Direction of movement
+		bool dir_flag;              // Set when direction has changed
 		float speed;
 		
 	public:
