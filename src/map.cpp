@@ -671,19 +671,17 @@ btRigidBody * Map::createGroundBody()
 	
 	bool flipQuadEdges = false;
 	
-	btStrideHeightfieldTerrainShape * groundShape = new btStrideHeightfieldTerrainShape(
+	btFasterHeightfieldTerrainShape * groundShape = new btFasterHeightfieldTerrainShape(
 		heightmap_sx, heightmap_sz, heightmap,
 		0,
 		0.0f, this->heightmap_y,
 		1, PHY_FLOAT, flipQuadEdges
 	);
 	
-	groundShape->setWidthStride(stride);
-	
 	groundShape->setLocalScaling(btVector3(
 		heightmapScaleX(),
 		1.0f,
-		heightmapScaleY()
+		heightmapScaleZ()
 	));
 	
 	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(

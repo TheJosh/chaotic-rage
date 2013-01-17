@@ -80,8 +80,6 @@ class Map {
 		float * heightmap;
 		int heightmap_sx;
 		int heightmap_sz;
-		int heightmap_tx;
-		int heightmap_tz;
 		float heightmap_y;
 
 		float water_level;
@@ -118,7 +116,7 @@ class Map {
 		float heightmapScaleX();
 		float heightmapScaleY();
 		float heightmapScaleZ();
-		btRigidBody * createGroundBodyTile(int tX, int tZ, int stride);
+		btRigidBody * createGroundBody();
 };
 
 
