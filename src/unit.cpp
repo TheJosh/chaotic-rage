@@ -53,7 +53,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	this->ghost = new btPairCachingGhostObject();
 	this->ghost->setWorldTransform(xform);
 
-	btConvexShape* capsule = new btCapsuleShape(0.5f, 0.9f);
+	btConvexShape* capsule = new btCapsuleShape(0.3f, 0.9f);
 	this->ghost->setCollisionShape(capsule);
 	this->ghost->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
 	this->ghost->setUserPointer(this);
