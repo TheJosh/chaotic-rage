@@ -393,6 +393,8 @@ LUA_FUNC(melee)
 **/
 LUA_FUNC(stop)
 {
+	gl->dir = btVector3(0.0f, 0.0f, 0.0f);
+	gl->dir_flag = true;
 	gl->speed = 0;
 	return 0;
 }

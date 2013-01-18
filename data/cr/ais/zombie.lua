@@ -22,7 +22,7 @@ end
 -- Main function for doing stuff, gets run every 2 seconds
 --
 function target() 
-	units = visible_units();
+	units = visible_units()
 	if (#units == 0) then return end
 	
 	me = get_info()
@@ -37,16 +37,22 @@ function target()
 		return a.dist < b.dist				-- sorts by distance
 	end);
 	
-	-- move in that direction
+	-- direction of player
 	dir = units[1].location - me.location
-	move(dir)
+	
+	-- move, or if too far, stop
+	if (#dir > 50) then
+		stop()
+	else 
+		move(dir)
+	end
 	
 	-- do melee attack
 	if (#dir < 5) then
-		melee();
+		melee()
 	end
 end
 
 
-add_interval(2 * 1000, target)
-target();
+add_interval(3 * 1000, target)
+target()
