@@ -55,6 +55,7 @@ class AnimPlay;
 class Audio;
 class CommandLineArgs;
 class ClientConfig;
+class Decaying;
 class Dialog;
 class DialogNewGame;
 class DialogNull;
@@ -155,6 +156,7 @@ class Zone;
 #include "newparticle.h"
 #include "vehicle.h"
 #include "wall.h"
+#include "decaying.h"
 
 #include "map.h"
 #include "zone.h"

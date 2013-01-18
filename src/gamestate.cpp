@@ -155,6 +155,24 @@ void GameState::addNewParticle(NewParticle* particle)
 
 
 /**
+* It's dead, but not buried!
+*
+* Marks a given entity as ->del=1
+* Creates a new entity in the same location, with the specified animmodel.
+* The new entity is of type Decaying
+**/
+Entity* GameState::deadButNotBuried(Entity* e)
+{
+	e->del = true;
+	
+	Decaying *d = new Decaying(this, e->getTransform(), e->getAnimModel()->getModel());
+	this->entities_add.push_back(d);
+	
+	return d;
+}
+
+
+/**
 * Finds the unit which matches a given slot
 *
 * THIS IS CRAP
@@ -290,9 +308,6 @@ void GameState::update(int delta)
 	
 	// Update physics
 	this->physics->stepTime(delta);
-	
-	// What hit what?
-	//this->physics->doCollisions();
 	
 	// Particles
 	this->update_particles(delta);

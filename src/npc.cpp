@@ -73,13 +73,7 @@ int NPC::takeDamage(int damage)
 			this->st->audio->playSound(this->st->mm->getSound("zombie_death3"), false, this);
 		}
 		
-		// Reset the unit
-		this->remove_at = st->game_time + 60 * 1000;
-		this->character->setWalkDirection(btVector3(0.0f, 0.0f, 0.0f));
-		
-		// Kill the Lua bits
-		delete(this->logic);
-		this->logic = NULL;
+		this->st->deadButNotBuried(this);
 	}
 	
 	return result;

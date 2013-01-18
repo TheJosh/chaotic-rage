@@ -65,16 +65,15 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	st->physics->addAction(character);
 
 
-
 	this->body = NULL;
-	//this->body->setUserPointer(this);
 }
 
 Unit::~Unit()
 {
 	delete this->anim;
 	delete this->uts;
-	//st->physics->delRigidBody(this->body);
+	st->physics->delAction(this->character);
+	st->physics->delCollisionObject(this->ghost);
 }
 
 
@@ -540,7 +539,6 @@ int Unit::takeDamage(int damage)
 		this->setState(UNIT_STATE_DIE);
 		this->endFiring();
 		this->leaveVehicle();
-		//this->st->physics->markDead(this->body);
 		
 		remove_at = st->game_time + (10 * 60 * 1000);	// 10 mins
 		

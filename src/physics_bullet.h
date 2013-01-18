@@ -62,9 +62,10 @@ class PhysicsBullet
 		void addCollisionObject(btCollisionObject* obj, CollisionGroup group);
 		void addAction(btActionInterface* action);
 		void addVehicle(btRaycastVehicle* vehicle);
-		void markDead(btRigidBody* body);
-		void remRigidBody(btRigidBody* body);
+		void remRigidBody(btCollisionObject* body);
 		void delRigidBody(btRigidBody* body);
+		void delCollisionObject(btCollisionObject* body);
+		void delAction(btActionInterface* action);
 		
 		void stepTime(int ms);
 		void doCollisions();

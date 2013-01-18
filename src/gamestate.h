@@ -127,11 +127,12 @@ class GameState
 		void addObject(Object* object);
 		void addNewParticle(NewParticle* particle);
 		
-		// Get an EID
+		// Removing
+		Entity* deadButNotBuried(Entity* e);
+		
+		// Network bits (EID = entity-id; slots are for players)
 		EID getNextEID();
 		Entity * getEntity(EID eid);
-		
-		// For network
 		Unit * findUnitSlot(unsigned int slot);
 		PlayerState * localPlayerFromSlot(unsigned int slot);
 		

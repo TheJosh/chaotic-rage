@@ -194,21 +194,9 @@ void PhysicsBullet::addVehicle(btRaycastVehicle* vehicle)
 
 
 /**
-* Remove and reinsert a rigid body, but with different flags
+* Remove a btCollisionObject from the game world, but keep the object around for adding later.
 **/
-void PhysicsBullet::markDead(btRigidBody* body)
-{
-	if (! body) return;
-	
-	dynamicsWorld->removeCollisionObject(body);
-	dynamicsWorld->addRigidBody(body, btBroadphaseProxy::DebrisFilter, btBroadphaseProxy::StaticFilter);
-}
-
-
-/**
-* Remove a rigid body from the game world, but keep the object around for adding later.
-**/
-void PhysicsBullet::remRigidBody(btRigidBody* body)
+void PhysicsBullet::remRigidBody(btCollisionObject* body)
 {
 	dynamicsWorld->removeCollisionObject(body);
 }
@@ -226,6 +214,26 @@ void PhysicsBullet::delRigidBody(btRigidBody* body)
 	dynamicsWorld->removeCollisionObject(body);
 	
 	delete body;
+}
+
+
+/**
+* Delete a btCollisionObject, and remove it from the game world too
+**/
+void PhysicsBullet::delCollisionObject(btCollisionObject* body)
+{
+	dynamicsWorld->removeCollisionObject(body);
+	delete body;
+}
+
+
+/**
+* Delete an action
+**/
+void PhysicsBullet::delAction(btActionInterface* action)
+{
+	dynamicsWorld->removeAction(action);
+	delete action;
 }
 
 
