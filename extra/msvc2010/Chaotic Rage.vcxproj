@@ -117,6 +117,7 @@
     <ClCompile Include="..\..\src\audio\audio_null.cpp" />
     <ClCompile Include="..\..\src\audio\audio_sdlmixer.cpp" />
     <ClCompile Include="..\..\src\client.cpp" />
+    <ClCompile Include="..\..\src\decaying.cpp" />
     <ClCompile Include="..\..\src\entity.cpp" />
     <ClCompile Include="..\..\src\events.cpp" />
     <ClCompile Include="..\..\src\game.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="..\..\src\audio\audio.h" />
     <ClInclude Include="..\..\src\audio\audio_null.h" />
     <ClInclude Include="..\..\src\audio\audio_sdlmixer.h" />
+    <ClInclude Include="..\..\src\decaying.h" />
     <ClInclude Include="..\..\src\entity.h" />
     <ClInclude Include="..\..\src\game.h" />
     <ClInclude Include="..\..\src\gamestate.h" />

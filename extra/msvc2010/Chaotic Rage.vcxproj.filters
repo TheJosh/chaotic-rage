@@ -286,6 +286,9 @@
     <ClCompile Include="..\..\src\util\btStrideHeightfieldTerrainShape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\decaying.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\entity.h">
@@ -490,6 +493,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\util\btStrideHeightfieldTerrainShape.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\decaying.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
