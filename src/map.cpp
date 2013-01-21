@@ -102,6 +102,18 @@ static cfg_opt_t opts[] =
 	CFG_END()
 };
 
+static cfg_opt_t modmap_inner_opts[] =
+{
+	CFG_STR((char*) "name", ((char*)""), CFGF_NONE),
+	CFG_STR((char*) "title", ((char*)""), CFGF_NONE),
+	CFG_END()
+};
+
+static cfg_opt_t modmap_opts[] =
+{
+	CFG_SEC((char*) "map", modmap_inner_opts, CFGF_MULTI),
+	CFG_END()
+};
 
 Area::Area(FloorType * type)
 {
@@ -721,4 +733,34 @@ void MapRegistry::find(string dir)
 	maps.push_back(MapReg("heighttest"));
 }
 
+
+/**
+* Find maps which are contained within a specified mod
+**/
+void MapRegistry::find(Mod* mod)
+{
+	cfg_t *cfg, *cfg_sub;
+	int num_types, j;
+
+	// Grab the map list from the mod
+	char *buffer = mod->loadText("maps.conf");
+	if (buffer == NULL) {
+		return;
+	}
+	
+	// Parse it
+	cfg = cfg_init(modmap_opts, CFGF_NONE);
+	cfg_parse_buf(cfg, buffer);
+	free(buffer);
+	
+	// Process the parsed config
+	num_types = cfg_size(cfg, "map");
+	for (j = 0; j < num_types; j++) {
+		cfg_sub = cfg_getnsec(cfg, "map", j);
+		
+		maps.push_back(MapReg(cfg_getstr(cfg_sub, "name"), cfg_getstr(cfg_sub, "title"), mod));
+	}
+
+	cfg_free(cfg);
+}
 

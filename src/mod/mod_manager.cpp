@@ -26,6 +26,14 @@ void loadMods(GameState *st)
 	}
 	st->mm->addMod(mod);
 
+	// TODO: Support for dynamic loading!
+	// Load australia day mod
+	mod = new Mod(st, "data/australia_day");
+	if (! mod->load()) {
+		reportFatalError("Unable to load data module 'australia_day'.");
+	}
+	st->mm->addMod(mod);
+
 	// Load user mods
 	vector<string> * userfiles = getUserModFilenames();
 	for (unsigned int i = 0; i < userfiles->size(); i++) {

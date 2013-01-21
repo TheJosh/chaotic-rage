@@ -129,11 +129,13 @@ class MapReg {
 	protected:
 		string name;
 		string title;
-		
+		Mod* mod;
+
 	public:
-		MapReg() : name(""), title("") {}
-		MapReg(string name) : name(name), title(name) {}
-		MapReg(string name, string title) : name(name), title(title) {}
+		MapReg() : name(""), title(""), mod(NULL) {}
+		MapReg(string name) : name(name), title(name), mod(NULL) {}
+		MapReg(string name, string title) : name(name), title(title), mod(NULL) {}
+		MapReg(string name, string title, Mod* mod) : name(name), title(title), mod(mod) {}
 };
 
 
@@ -146,7 +148,8 @@ class MapRegistry {
 		
 	public:
 		void find(string dir);
-		
+		void find(Mod* mod);
+
 		string nameAt(int index) { return maps.at(index).name; }
 		string titleAt(int index) { return maps.at(index).title; }
 		unsigned int size() { return maps.size(); }

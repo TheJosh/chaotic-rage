@@ -41,15 +41,16 @@ void Menu::doit()
 	
 	WavefrontObj * bgmesh = loadObj("data/menu/bg.obj");
 	SpritePtr bg = this->render->loadSprite("bg.jpg", mod);
-	float bg_rot1_pos = -10;
-	float bg_rot1_dir = 0.006;
-	float bg_rot2_pos = 3;
-	float bg_rot2_dir = -0.004;
+	float bg_rot1_pos = -10.0f;
+	float bg_rot1_dir = 0.006f;
+	float bg_rot2_pos = 3.0f;
+	float bg_rot2_dir = -0.004f;
 	
 	// Load maps
 	mapreg = new MapRegistry();
 	mapreg->find("maps");
-	
+	mapreg->find(st->mm->getMod("australia_day"));
+
 	// Gametypes
 	{
 		vector<GameType*> * ut = st->mm->getAllGameTypes();
