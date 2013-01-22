@@ -105,10 +105,10 @@ void Menu::doit()
 	this->menuAdd("Network Game", 40, y, MC_NETWORK);
 	y += 40;
 	
-	this->menuAdd("Settings", 40, y, MC_SETTINGS);
+	this->menuAdd("Mods", 40, y, MC_SETTINGS);
 	y += 40;
 	
-	this->menuAdd("Controls", 40, y, MC_CONTROLS);
+	this->menuAdd("Help", 40, y, MC_CONTROLS);
 	y += 40;
 	
 	this->menuAdd("Quit", 40, y, MC_QUIT);
