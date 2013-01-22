@@ -33,23 +33,44 @@ Menu::Menu(GameState *st)
 
 void Menu::doit()
 {
-	Mod * mod = new Mod(st, "data/menu");
+	Mod *mod = st->mm->getBase();
 	
-	SpritePtr logo = this->render->loadSprite("logo.png", mod);
 	
+	// A few bits always load off base
 	this->render->loadFont("orb.otf", mod);
 	
-	WavefrontObj * bgmesh = loadObj("data/menu/bg.obj");
-	SpritePtr bg = this->render->loadSprite("bg.jpg", mod);
+	gcn::SDLInput* input;
+	input = new gcn::SDLInput();
+	
+	this->gui = new gcn::Gui();
+	this->gui->setInput(input);
+	this->render->initGuichan(gui, mod);
+	
+	WavefrontObj * bgmesh = loadObj("data/cr/menu/bg.obj");
 	float bg_rot1_pos = -10.0f;
 	float bg_rot1_dir = 0.006f;
 	float bg_rot2_pos = 3.0f;
 	float bg_rot2_dir = -0.004f;
 	
+	
+	// Background and logo may be off base or supplementary mod
+	mod = st->mm->getSupplOrBase();
+	
+	SpritePtr logo = this->render->loadSprite("menu/logo.png", mod);
+	if (!logo) {
+		logo = this->render->loadSprite("menu/logo.png", st->mm->getBase());
+	}
+	
+	SpritePtr bg = this->render->loadSprite("menu/bg.jpg", mod);
+	if (!bg) {
+		bg = this->render->loadSprite("menu/bg.jpg", st->mm->getBase());
+	}
+	
+	
 	// Load maps
 	mapreg = new MapRegistry();
 	mapreg->find("maps");
-	mapreg->find(st->mm->getMod("australia_day"));
+	mapreg->find(mod);
 
 	// Gametypes
 	{
@@ -72,10 +93,7 @@ void Menu::doit()
 	}
 	
 	
-	int mousex, mousey;
-	SDL_Event event;
-	
-	
+	// Main menu items
 	int y = render->getHeight() - (40 * 6) - 20;
 	
 	this->menuAdd("Single Player", 40, y, MC_SINGLEPLAYER);
@@ -96,16 +114,9 @@ void Menu::doit()
 	this->menuAdd("Quit", 40, y, MC_QUIT);
 	
 	
-	
-
-	gcn::SDLInput* input;
-	input = new gcn::SDLInput();
-
-	this->gui = new gcn::Gui();
-	this->gui->setInput(input);
-	this->render->initGuichan(gui, mod);
-	
-	
+	// Menu loop
+	int mousex, mousey;
+	SDL_Event event;
 	this->running = true;
 	while (this->running) {
 		

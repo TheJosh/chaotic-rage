@@ -13,15 +13,22 @@ using namespace std;
 class ModManager {
 	private:
 		vector<Mod*> * mods;
+		Mod* base;
+		Mod* suppl;
 		GameState * st;
 		
 	public:
 		ModManager(GameState * st);
 		
 	public:	
-		void addMod(Mod * mod);
+		void addMod(Mod *mod);
+		void setBase(Mod *mod) { this->base = mod; }
+		void setSuppl(Mod *mod) { this->suppl = mod; }
+		Mod * getDefaultMod() { return this->base; }
+		Mod * getBase() { return this->base; }
+		Mod * getSuppl() { return this->suppl; }
+		Mod * getSupplOrBase();
 		Mod * getMod(string name);
-		Mod * getDefaultMod();
 		vector<string> * getLoadedMods();
 		vector<string> * getAvailMods();
 

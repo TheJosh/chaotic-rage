@@ -25,6 +25,7 @@ void loadMods(GameState *st)
 		reportFatalError("Unable to load data module 'cr'.");
 	}
 	st->mm->addMod(mod);
+	st->mm->setBase(mod);
 
 	// TODO: Support for dynamic loading!
 	// Load australia day mod
@@ -33,6 +34,7 @@ void loadMods(GameState *st)
 		reportFatalError("Unable to load data module 'australia_day'.");
 	}
 	st->mm->addMod(mod);
+	st->mm->setSuppl(mod);
 
 	// Load user mods
 	vector<string> * userfiles = getUserModFilenames();
@@ -55,6 +57,8 @@ ModManager::ModManager(GameState * st)
 	st->mm = this;
 
 	this->mods = new vector<Mod*>();
+	this->base = NULL;
+	this->suppl = NULL;
 }
 
 
@@ -83,12 +87,14 @@ Mod * ModManager::getMod(string name)
 	return NULL;
 }
 
+
 /**
-* Get the 'default' mod
+* If there is a suppl mod, return it.
+* Otherwise return the base mod.
 **/
-Mod * ModManager::getDefaultMod()
+Mod * ModManager::getSupplOrBase()
 {
-	return this->mods->at(0);
+	return (this->suppl ? this->suppl : this->base);
 }
 
 
