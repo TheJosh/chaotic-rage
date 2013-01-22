@@ -35,9 +35,9 @@ class Mod {
 		string directory;
 		
 	public:
-		char * loadText(string filename);
-		Uint8 * loadBinary(string resname, int * len);
-		SDL_RWops * loadRWops(string filename);
+		virtual char* loadText(string filename);
+		virtual Uint8* loadBinary(string resname, int * len);
+		virtual SDL_RWops* loadRWops(string filename);
 		
 	public:
 		Mod(GameState * st, string directory);

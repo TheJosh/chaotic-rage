@@ -95,7 +95,7 @@ class Map {
 		void postGame();
 
 	public:
-		int load(string name, Render * render);
+		int load(string name, Render *render, Mod* insideof);
 		void loadDefaultEntities();
 		
 		string getName() { return this->name; }
@@ -130,12 +130,17 @@ class MapReg {
 		string name;
 		string title;
 		Mod* mod;
-
+		
 	public:
 		MapReg() : name(""), title(""), mod(NULL) {}
 		MapReg(string name) : name(name), title(name), mod(NULL) {}
 		MapReg(string name, string title) : name(name), title(title), mod(NULL) {}
 		MapReg(string name, string title, Mod* mod) : name(name), title(title), mod(mod) {}
+		
+	public:
+		string getName() { return this->name; }
+		string getTitle() { return this->title; }
+		Mod* getMod() { return this->mod; }
 };
 
 
@@ -152,6 +157,7 @@ class MapRegistry {
 
 		string nameAt(int index) { return maps.at(index).name; }
 		string titleAt(int index) { return maps.at(index).title; }
+		MapReg* at(int index) { return &maps.at(index); }
 		unsigned int size() { return maps.size(); }
 };
 

@@ -181,7 +181,7 @@ Map::~Map()
 *
 * @todo rehash for epicenter positioning
 **/
-int Map::load(string name, Render * render)
+int Map::load(string name, Render *render, Mod* insideof)
 {
 	Area *a;
 	
@@ -202,15 +202,19 @@ int Map::load(string name, Render * render)
 	this->areas.push_back(a);
 	
 	
-	string filename = "maps/";
-	filename.append(name);
-	mod = new Mod(st, filename);
+	if (insideof) {
+		this->mod = new ModProxy(insideof, "maps/" + name + '/');
+	} else {
+		string filename = "maps/";
+		filename.append(name);
+		this->mod = new Mod(st, filename);
+	}
 	
 	
 	cfg_t *cfg, *cfg_sub;
 	int num_types, j, k;
 	
-	char *buffer = mod->loadText("map.conf");
+	char *buffer = this->mod->loadText("map.conf");
 	if (buffer == NULL) {
 		reportFatalError("Unable to load map; no configuration file");
 	}
@@ -228,7 +232,7 @@ int Map::load(string name, Render * render)
 	this->heightmap_y = cfg_getfloat(cfg, "heightmap-z");
 	
 	// Water surface
-	this->water = this->render->loadSprite("water.png", mod);
+	this->water = this->render->loadSprite("water.png", this->mod);
 	if (this->water) {
 		this->water_level = cfg_getfloat(cfg, "water-level");
 	}
@@ -245,10 +249,10 @@ int Map::load(string name, Render * render)
 		this->fog_density = 0.0f;
 	}
 	
-	this->background = this->render->loadSprite("background.jpg", mod);
+	this->background = this->render->loadSprite("background.jpg", this->mod);
 	if (! this->background) reportFatalError("Unable to load map; no background img");
 	
-	this->terrain = this->render->loadSprite("terrain.png", mod);
+	this->terrain = this->render->loadSprite("terrain.png", this->mod);
 	if (! this->terrain) reportFatalError("Unable to load map; no terran img");
 	
 
@@ -280,7 +284,7 @@ int Map::load(string name, Render * render)
 		m->xform = btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f), btVector3(cfg_getnfloat(cfg_sub, "pos", 0), cfg_getnfloat(cfg_sub, "pos", 1), cfg_getnfloat(cfg_sub, "pos", 2)));
 
 		{
-			string filename = mod->directory;
+			string filename = this->mod->directory;
 			filename.append(cfg_getstr(cfg_sub, "mesh"));
 			filename.append(".obj");
 
@@ -294,7 +298,7 @@ int Map::load(string name, Render * render)
 			string filename = cfg_getstr(cfg_sub, "texture");
 			filename.append(".png");
 
-			SpritePtr tex = mod->st->render->loadSprite(filename, mod);
+			SpritePtr tex = this->mod->st->render->loadSprite(filename, this->mod);
 			if (! tex) reportFatalError("Unable to load map; mesh texture didn't load");
 
 			m->texture = tex;
@@ -364,7 +368,7 @@ void Map::loadDefaultEntities()
 	int num_types, j;
 	
 	
-	char *buffer = mod->loadText("map.conf");
+	char *buffer = this->mod->loadText("map.conf");
 	if (buffer == NULL) {
 		return;
 	}
@@ -539,7 +543,7 @@ void Map::createHeightmapRaw()
 	int nX, nZ;
 	Uint8 r,g,b;
 	
-	SpritePtr sprite = this->render->loadSprite("heightmap.png", mod);
+	SpritePtr sprite = this->render->loadSprite("heightmap.png", this->mod);
 	if (! sprite) return;
 	
 	heightmap = new float[sprite->w * sprite->h];

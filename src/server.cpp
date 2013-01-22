@@ -58,7 +58,7 @@ void runGame(GameState * st, string map, string gametype)
 	st->physics->init();
 	
 	Map *m = new Map(st);
-	m->load(map, st->render);
+	m->load(map, st->render, NULL);
 	st->curr_map = m;
 	
 	new GameLogic(st);

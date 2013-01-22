@@ -375,13 +375,13 @@ void Menu::doQuit()
 /**
 * Starts a game with the specified settings
 **/
-void Menu::startGame(string map, string gametype, string unittype, int viewmode, unsigned int num_local)
+void Menu::startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local)
 {
 	st->physics->init();
 	
 	// Load map
 	Map *m = new Map(st);
-	m->load(map, st->render);
+	m->load(map->getName(), st->render, map->getMod());
 	st->curr_map = m;
 	
 	// Load gametype
@@ -431,7 +431,7 @@ void Menu::networkJoin(string host)
 
 	// Load map
 	Map *m = new Map(st);
-	m->load(gameinfo->map, st->render);
+	m->load(gameinfo->map, st->render, NULL);
 	st->curr_map = m;
 	
 	// Load gametype

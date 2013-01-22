@@ -50,7 +50,7 @@ int main (int argc, char * argv[])
 	
 	// Load map
 	Map *m = new Map(st);
-	m->load("blank", st->render);
+	m->load("blank", st->render, NULL);
 	st->curr_map = m;
 	
 	// Load gametype

@@ -74,6 +74,7 @@ class MapRegistry;
 class MapReg;
 class Menu;
 class Mod;
+class ModProxy;
 class ModManager;
 class NetClient;
 class NetServer;
@@ -131,6 +132,7 @@ class Zone;
 #include "net/net_gameinfo.h"
 
 #include "mod/mod.h"
+#include "mod/mod_proxy.h"
 #include "mod/mod_manager.h"
 #include "mod/aitype.h"
 #include "mod/animmodel.h"
