@@ -53,11 +53,14 @@ class Menu
 		vector<string> viewmodes;
 		vector<string> unittypes;
 		ModManager *mm;
+		SpritePtr logo;
+		SpritePtr bg;
 
 	public:
 		// Init etc
 		Menu(GameState *st);
 		GameState *getGameState() { return this->st; }
+		void loadModBits();
 		void doit();
 		
 	public:

@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <list>
 #include "../rage.h"
 
 using namespace std;
@@ -48,6 +49,20 @@ void reportFatalError(string msg);
 * Shows a message box (like a non-fatal error)
 **/
 void displayMessageBox(string msg);
+
+
+/**
+* Returns an array of names of system mods
+*
+* Example return value:
+*    <
+*    cr
+*    debug
+*    >
+*
+* Please free the result when you are done.
+**/
+list<string> * getSystemModNames();
 
 
 /**

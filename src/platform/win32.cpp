@@ -75,6 +75,45 @@ void displayMessageBox(string msg)
 
 
 /**
+* Returns an array of names of system mods
+*
+* Example return value:
+*    <
+*    cr
+*    debug
+*    >
+*
+* Please free the result when you are done.
+**/
+list<string> * getSystemModNames()
+{
+	list<string> * ret = new list<string>();
+	
+	WIN32_FIND_DATA fdFile;
+	HANDLE hFind = NULL;
+	
+	// Initial search
+	if ((hFind = FindFirstFile("data\\*", &fdFile)) == INVALID_HANDLE_VALUE) {
+		return ret;
+	}
+	
+	// Iterate over results
+	do {
+		if (fdFile.cFileName[0] != '.') {
+			if (fdFile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+				ret->push_back(string(fdFile.cFileName));
+			}
+			// TODO: check for .crk's as well
+		}
+	} while(FindNextFile(hFind, &fdFile));
+	
+	FindClose(hFind);
+	
+	return ret;
+}
+
+
+/**
 * Returns an array of full paths to user modules
 * The returned paths include the ".crk" part.
 *

@@ -22,26 +22,17 @@ void loadMods(GameState *st)
 	// Load main mod
 	Mod * mod = new Mod(st, "data/cr");
 	if (! mod->load()) {
-		reportFatalError("Unable to load data module 'cr'.");
+		reportFatalError("Unable to load mod 'cr'.");
 	}
 	st->mm->addMod(mod);
 	st->mm->setBase(mod);
-
-	// TODO: Support for dynamic loading!
-	// Load australia day mod
-	mod = new Mod(st, "data/australia_day");
-	if (! mod->load()) {
-		reportFatalError("Unable to load data module 'australia_day'.");
-	}
-	st->mm->addMod(mod);
-	st->mm->setSuppl(mod);
 
 	// Load user mods
 	vector<string> * userfiles = getUserModFilenames();
 	for (unsigned int i = 0; i < userfiles->size(); i++) {
 		mod = new Mod(st, userfiles->at(i));
 		if (! mod->load()) {
-			reportFatalError("Unable to load data module '" + userfiles->at(i) + "'.");
+			reportFatalError("Unable to load user mod '" + userfiles->at(i) + "'.");
 		}
 		st->mm->addMod(mod);
 	}
@@ -68,6 +59,18 @@ ModManager::ModManager(GameState * st)
 void ModManager::addMod(Mod * mod)
 {
 	this->mods->push_back(mod);
+}
+
+
+/**
+* Remove a mod from the list, and nuke it too
+**/
+void ModManager::remMod(Mod *mod)
+{
+	if (mod == NULL) return;
+	if (mod == this->suppl) this->suppl = NULL;
+	this->mods->erase(std::remove(this->mods->begin(), this->mods->end(), mod), this->mods->end());
+	delete(mod);
 }
 
 
@@ -119,11 +122,14 @@ vector<string> * ModManager::getLoadedMods()
 **/
 vector<string> * ModManager::getAvailMods()
 {
-	vector<string> * out = new vector<string>();
-	for (unsigned int i = 0; i < this->mods->size(); i++) {
-		Mod *mod = this->mods->at(i);
-		out->push_back(mod->name);
+	list<string>* mods = getSystemModNames();
+	vector<string>* out = new vector<string>();
+	for (list<string>::iterator it = mods->begin(); it != mods->end(); it++) {
+		if ((*it) != "debug" && (*it) != "intro") {
+			out->push_back(*it);
+		}
 	}
+	delete(mods);
 	return out;
 }
 

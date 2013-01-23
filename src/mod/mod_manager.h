@@ -22,6 +22,7 @@ class ModManager {
 		
 	public:	
 		void addMod(Mod *mod);
+		void remMod(Mod *mod);
 		void setBase(Mod *mod) { this->base = mod; }
 		void setSuppl(Mod *mod) { this->suppl = mod; }
 		Mod * getDefaultMod() { return this->base; }

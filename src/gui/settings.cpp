@@ -21,8 +21,10 @@ using namespace std;
 /**
 * Dialog for mod selection
 **/
-DialogMods::DialogMods(ModManager* mm)
+DialogMods::DialogMods(GameState* st, ModManager* mm)
 {
+	this->st = st;
+	this->mm = mm;
 	this->mods = mm->getAvailMods();
 }
 
@@ -56,10 +58,9 @@ gcn::Container * DialogMods::setup()
 	this->modlist->setHeight(h - bh - p - p - p);
 	c->add(this->modlist);
 	
-	button = new gcn::Button("Save");
+	button = new gcn::Button("OK");
 	button->setPosition(w - bw - p, h - bh - p);
 	button->setSize(bw, bh);
-	button->setId("S");
 	button->addActionListener(this);
 	c->add(button);
 	
@@ -71,8 +72,27 @@ gcn::Container * DialogMods::setup()
 **/
 void DialogMods::action(const gcn::ActionEvent& actionEvent)
 {
-	if (actionEvent.getSource()->getId() == "S") {
-		this->m->setDialog(NULL);
+	Mod* newsuppl = NULL;
+
+	// Try to load new mod
+	string modname = this->mods->at(this->modlist->getSelected());
+	if (modname != "cr") {
+		newsuppl = new Mod(this->st, "data/" + modname);
+		if (! newsuppl->load()) {
+			reportFatalError("Unable to load mod '" + modname + "'.");
+		}
 	}
+
+	// If there was a suppl, remove it
+	this->mm->remMod(this->mm->getSuppl());
+	
+	// If there is a new suppl, add it
+	if (newsuppl) {
+		this->mm->addMod(newsuppl);
+		this->mm->setSuppl(newsuppl);
+	}
+	
+	this->m->loadModBits();
+	this->m->setDialog(NULL);
 }
 

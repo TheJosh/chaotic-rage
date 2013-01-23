@@ -18,9 +18,11 @@ class DialogMods : public Dialog, public gcn::ActionListener {
 	private:
 		vector<string>* mods;
 		gcn::ListBox* modlist;
-		
+		GameState* st;
+		ModManager* mm;
+
 	public:
-		DialogMods(ModManager* mm);
+		DialogMods(GameState* st, ModManager* mm);
 		~DialogMods();
 		
 		virtual gcn::Container * setup();

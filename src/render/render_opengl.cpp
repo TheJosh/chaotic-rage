@@ -196,7 +196,7 @@ void RenderOpenGL::initGuichan(gcn::Gui * gui, Mod * mod)
 	
 	try {
 		// If you update the font, you gotta do in both cr and menu mods
-		font = new gcn::ImageFont("fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?!.,\"'");
+		font = new gcn::ImageFont("fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?!.,\"'_");
 		gcn::Widget::setGlobalFont(font);
 	} catch (gcn::Exception ex) {
 		reportFatalError(ex.getMessage());

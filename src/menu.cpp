@@ -28,6 +28,63 @@ Menu::Menu(GameState *st)
 	this->mm = st->mm;
 	this->render = (Render3D*) st->render;
 	this->dialog = NULL;
+	this->mapreg = NULL;
+	this->logo = NULL;
+	this->bg = NULL;
+}
+
+
+/**
+* Load stuff from the currently loaded mods into some arrays.
+**/
+void Menu::loadModBits()
+{
+	Mod* mod = st->mm->getSupplOrBase();
+	
+	// Logo
+	delete(this->logo);
+	this->logo = this->render->loadSprite("menu/logo.png", mod);
+	if (!logo) {
+		this->logo = this->render->loadSprite("menu/logo.png", st->mm->getBase());
+	}
+	
+	// Background
+	delete(this->bg);
+	this->bg = this->render->loadSprite("menu/bg.jpg", mod);
+	if (!bg) {
+		this->bg = this->render->loadSprite("menu/bg.jpg", st->mm->getBase());
+	}
+		
+	// Load maps
+	delete(this->mapreg);
+	this->mapreg = new MapRegistry();
+	this->mapreg->find("maps");
+	this->mapreg->find(mod);
+
+	// Gametypes
+	this->gametypes.clear();
+	{
+		vector<GameType*> * ut = st->mm->getAllGameTypes();
+		for (vector<GameType*>::iterator it = ut->begin(); it != ut->end(); it++) {
+			this->gametypes.push_back((*it)->name);
+		}
+		delete(ut);
+	}
+	
+	// Viewmodes
+	this->viewmodes.clear();
+	this->viewmodes.push_back("Behind player");
+	this->viewmodes.push_back("Above player");
+	
+	// Unittypes
+	this->unittypes.clear();
+	{
+		vector<UnitType*> * ut = st->mm->getAllUnitTypes();
+		for (vector<UnitType*>::iterator it = ut->begin(); it != ut->end(); it++) {
+			if ((*it)->playable) this->unittypes.push_back((*it)->name);
+		}
+		delete(ut);
+	}
 }
 
 
@@ -52,45 +109,8 @@ void Menu::doit()
 	float bg_rot2_pos = 3.0f;
 	float bg_rot2_dir = -0.004f;
 	
-	
-	// Background and logo may be off base or supplementary mod
-	mod = st->mm->getSupplOrBase();
-	
-	SpritePtr logo = this->render->loadSprite("menu/logo.png", mod);
-	if (!logo) {
-		logo = this->render->loadSprite("menu/logo.png", st->mm->getBase());
-	}
-	
-	SpritePtr bg = this->render->loadSprite("menu/bg.jpg", mod);
-	if (!bg) {
-		bg = this->render->loadSprite("menu/bg.jpg", st->mm->getBase());
-	}
-	
-	
-	// Load maps
-	mapreg = new MapRegistry();
-	mapreg->find("maps");
-	mapreg->find(mod);
 
-	// Gametypes
-	{
-		vector<GameType*> * ut = st->mm->getAllGameTypes();
-		for (vector<GameType*>::iterator it = ut->begin(); it != ut->end(); it++) {
-			gametypes.push_back((*it)->name);
-		}
-	}
-	
-	// Viewmodes
-	viewmodes.push_back("Behind player");
-	viewmodes.push_back("Above player");
-	
-	// Unittypes
-	{
-		vector<UnitType*> * ut = st->mm->getAllUnitTypes();
-		for (vector<UnitType*>::iterator it = ut->begin(); it != ut->end(); it++) {
-			if ((*it)->playable) unittypes.push_back((*it)->name);
-		}
-	}
+	this->loadModBits();
 	
 	
 	// Main menu items
@@ -357,7 +377,7 @@ void Menu::doNetwork()
 
 void Menu::doMods()
 {
-	this->setDialog(new DialogMods(this->st->mm));
+	this->setDialog(new DialogMods(this->st, this->st->mm));
 }
 
 void Menu::doHelp()
