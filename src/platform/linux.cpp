@@ -117,6 +117,27 @@ void displayMessageBox(string msg)
 
 
 /**
+* Returns an array of names of system mods
+*
+* Example return value:
+*    <
+*    cr
+*    debug
+*    >
+*
+* Please free the result when you are done.
+**/
+list<string> * getSystemModNames()
+{
+	// TODO: Actually code this!
+	list<string> * out = new list<string>();
+	out->push_back("cr");
+	out->push_back("australia_day");
+	return out;
+}
+
+
+/**
 * Returns an array of full paths to user modules
 * The returned paths include the ".crk" part.
 *

@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include <SDL.h>
 #include <confuse.h>
 #include <zzip/zzip.h>
