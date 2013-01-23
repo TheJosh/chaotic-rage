@@ -1,0 +1,20 @@
+== COMPILING ==
+
+You need SDL without audio and video.
+You can use full SDL, but the package will bring in all of X11 too.
+
+You also need:
+   libconfuse-dev
+   libzzip-dev
+   lua5.1-dev
+   
+   cmake
+   make
+   g++
+   pkg-config
+
+guichan?
+sdl_image?
+
+And bullet bits too
+
