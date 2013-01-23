@@ -15,8 +15,14 @@ using namespace std;
 * Show mod selection
 **/
 class DialogMods : public Dialog, public gcn::ActionListener {
+	private:
+		vector<string>* mods;
+		gcn::ListBox* modlist;
+		
 	public:
-		DialogMods();
+		DialogMods(ModManager* mm);
+		~DialogMods();
+		
 		virtual gcn::Container * setup();
 		virtual string getName() { return "mods"; }
 		virtual void action(const gcn::ActionEvent& actionEvent);

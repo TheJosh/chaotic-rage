@@ -21,8 +21,8 @@ enum MenuCommand {
 	MC_SINGLEPLAYER,
 	MC_SPLITSCREEN,
 	MC_NETWORK,
-	MC_SETTINGS,
-	MC_CONTROLS,
+	MC_MODS,
+	MC_HELP,
 	MC_QUIT,
 };
 
@@ -71,8 +71,8 @@ class Menu
 		void doSingleplayer();
 		void doSplitscreen();
 		void doNetwork();
-		void doSettings();
-		void doControls();
+		void doMods();
+		void doHelp();
 		void doQuit();
 		
 		// Game dialogs

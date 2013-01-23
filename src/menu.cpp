@@ -105,10 +105,10 @@ void Menu::doit()
 	this->menuAdd("Network Game", 40, y, MC_NETWORK);
 	y += 40;
 	
-	this->menuAdd("Mods", 40, y, MC_SETTINGS);
+	this->menuAdd("Mods", 40, y, MC_MODS);
 	y += 40;
 	
-	this->menuAdd("Help", 40, y, MC_CONTROLS);
+	this->menuAdd("Help", 40, y, MC_HELP);
 	y += 40;
 	
 	this->menuAdd("Quit", 40, y, MC_QUIT);
@@ -166,8 +166,8 @@ void Menu::doit()
 			case MC_SINGLEPLAYER: this->doSingleplayer(); break;
 			case MC_SPLITSCREEN: this->doSplitscreen(); break;
 			case MC_NETWORK: this->doNetwork(); break;
-			case MC_SETTINGS: this->doSettings(); break;
-			case MC_CONTROLS: this->doControls(); break;
+			case MC_MODS: this->doMods(); break;
+			case MC_HELP: this->doHelp(); break;
 			case MC_QUIT: this->doQuit(); break;
 			default: break;
 		}
@@ -355,12 +355,12 @@ void Menu::doNetwork()
 	this->setDialog(new DialogNetJoin());
 }
 
-void Menu::doSettings()
+void Menu::doMods()
 {
-	this->setDialog(new DialogMods());
+	this->setDialog(new DialogMods(this->st->mm));
 }
 
-void Menu::doControls()
+void Menu::doHelp()
 {
 	this->setDialog(new DialogControls());
 }

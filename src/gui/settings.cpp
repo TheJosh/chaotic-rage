@@ -21,8 +21,17 @@ using namespace std;
 /**
 * Dialog for mod selection
 **/
-DialogMods::DialogMods()
+DialogMods::DialogMods(ModManager* mm)
 {
+	this->mods = mm->getAvailMods();
+}
+
+/**
+* Dialog for mod selection
+**/
+DialogMods::~DialogMods()
+{
+	delete(this->mods);
 }
 
 /**
@@ -31,37 +40,29 @@ DialogMods::DialogMods()
 gcn::Container * DialogMods::setup()
 {
 	const int w = 300;	// width
-	const int h = 500;	// height
+	const int h = 200;	// height
 	const int p = 10;	// padding
 	const int bw = 60;	// buttonwidth
 	const int bh = 20;	// buttonheight
-
-	gcn::Button* button;
-	gcn::CheckBox* chk;
-
-	c = new gcn::Window("Mod selector");
-	c->setDimension(gcn::Rectangle(0, 0, w, h));
 	
-	vector<string> * avail = m->mm->getAvailMods();
-	int y = p;
-	for (vector<string>::iterator it = avail->begin(); it != avail->end(); it++) {
-		chk = new gcn::CheckBox(*it);
-		chk->adjustSize();
-		chk->setPosition(p, y);
-		c->add(chk);
-		y += chk->getHeight() + p;
-	}
-	delete(avail);
-
+	gcn::Button* button;
+	
+	c = new gcn::Window("Choose current mod");
+	c->setDimension(gcn::Rectangle(0, 0, w, h + 15));
+	
+	this->modlist = new gcn::ListBox(new VectorListModel(this->mods));
+	this->modlist->setPosition(p, p);
+	this->modlist->setWidth(w - p - p);
+	this->modlist->setHeight(h - bh - p - p - p);
+	c->add(this->modlist);
+	
 	button = new gcn::Button("Save");
-	button->setPosition(w - bw - p, y);
+	button->setPosition(w - bw - p, h - bh - p);
 	button->setSize(bw, bh);
 	button->setId("S");
 	button->addActionListener(this);
 	c->add(button);
 	
-	c->setHeight(y + bh + p + 15);
-
 	return c;
 }
 
