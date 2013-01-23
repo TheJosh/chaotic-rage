@@ -58,8 +58,8 @@ void Menu::loadModBits()
 	// Load maps
 	delete(this->mapreg);
 	this->mapreg = new MapRegistry();
-	this->mapreg->find("maps");
 	this->mapreg->find(mod);
+	this->mapreg->find("maps");
 
 	// Gametypes
 	this->gametypes.clear();

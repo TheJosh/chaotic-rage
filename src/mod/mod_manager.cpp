@@ -124,8 +124,9 @@ vector<string> * ModManager::getAvailMods()
 {
 	list<string>* mods = getSystemModNames();
 	vector<string>* out = new vector<string>();
+	out->push_back("cr");	// force to top of list
 	for (list<string>::iterator it = mods->begin(); it != mods->end(); it++) {
-		if ((*it) != "debug" && (*it) != "intro") {
+		if ((*it) != "debug" && (*it) != "intro" && (*it) != "cr") {
 			out->push_back(*it);
 		}
 	}
