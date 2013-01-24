@@ -14,12 +14,15 @@ using namespace std;
 /**
 * Show mod selection
 **/
-class DialogMods : public Dialog, public gcn::ActionListener {
+class DialogMods : public Dialog, public gcn::ActionListener, public gcn::SelectionListener {
 	private:
 		ModListModel* mods;
-		gcn::ListBox* modlist;
 		GameState* st;
 		ModManager* mm;
+		gcn::DropDown* modlist;
+		gcn::Icon* icon;
+		gcn::Image* img;
+		gcn::Button* button;
 
 	public:
 		DialogMods(GameState* st, ModManager* mm);
@@ -28,6 +31,7 @@ class DialogMods : public Dialog, public gcn::ActionListener {
 		virtual gcn::Container * setup();
 		virtual string getName() { return "mods"; }
 		virtual void action(const gcn::ActionEvent& actionEvent);
+		virtual void valueChanged(const gcn::SelectionEvent& selectionEvent);
 };
 
 

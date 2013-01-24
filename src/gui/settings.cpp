@@ -13,6 +13,12 @@
 #include "dialog.h"
 #include "../http/serverlist.h"
 
+#include <SDL_image.h>
+#include <guichan.hpp>
+#include <guichan/sdl.hpp>
+#include <guichan/opengl.hpp>
+#include "../render/guichan_imageloader.h"
+
 
 using namespace std;
 
@@ -36,6 +42,8 @@ DialogMods::DialogMods(GameState* st, ModManager* mm)
 	delete(modnames);
 	
 	this->mods = new ModListModel(modlist);
+
+	this->img = NULL;
 }
 
 /**
@@ -47,6 +55,8 @@ DialogMods::~DialogMods()
 		delete(this->mods->getModAt(i));
 	}
 	delete(this->mods);
+	delete(this->img);
+	delete(this->icon);
 }
 
 /**
@@ -54,35 +64,38 @@ DialogMods::~DialogMods()
 **/
 gcn::Container * DialogMods::setup()
 {
-	const int w = 300;	// width
-	const int h = 200;	// height
+	const int w = 532;	// width
+	const int h = 326;	// height
 	const int p = 10;	// padding
 	const int bw = 60;	// buttonwidth
 	const int bh = 20;	// buttonheight
-	
-	gcn::Button* button;
-	
+
 	c = new gcn::Window("Choose current mod");
 	c->setDimension(gcn::Rectangle(0, 0, w, h + 15));
 	
-	this->modlist = new gcn::ListBox(this->mods);
+	this->modlist = new gcn::DropDown(this->mods);
 	this->modlist->setPosition(p, p);
 	this->modlist->setWidth(w - p - p);
-	this->modlist->setHeight(h - bh - p - p - p);
+	this->modlist->setSelected(this->mods->findMod(this->mm->getSupplOrBase()));
+	this->modlist->addSelectionListener(this);
 	c->add(this->modlist);
 	
-	button = new gcn::Button("OK");
-	button->setPosition(w - bw - p, h - bh - p);
-	button->setSize(bw, bh);
-	button->addActionListener(this);
-	c->add(button);
+	this->icon = new gcn::Icon();
+	this->icon->setPosition(p, p + 20);
+	this->icon->setSize(512, 256);
+	c->add(this->icon);
+	this->valueChanged(NULL);
+
+	this->button = new gcn::Button("OK");
+	this->button->setPosition(w - bw - p, h - bh - p);
+	this->button->setSize(bw, bh);
+	this->button->addActionListener(this);
+	c->add(this->button);
 	
 	return c;
 }
 
-/**
-* Handle a button click
-**/
+
 void DialogMods::action(const gcn::ActionEvent& actionEvent)
 {
 	Mod* newsuppl = NULL;
@@ -109,3 +122,16 @@ void DialogMods::action(const gcn::ActionEvent& actionEvent)
 	this->m->setDialog(NULL);
 }
 
+
+/**
+* Handle a change to the selection
+**/
+void DialogMods::valueChanged(const gcn::SelectionEvent& selectionEvent)
+{
+	delete(this->img);
+	gcn::ImageLoader* oldloader = gcn::Image::getImageLoader();
+	gcn::Image::setImageLoader(new gcn::ChaoticRageOpenGLSDLImageLoader(this->mods->getModAt(this->modlist->getSelected())));
+	this->img = gcn::Image::load("menu/mod.jpg", true);
+	this->icon->setImage(this->img);
+	gcn::Image::setImageLoader(oldloader);
+}

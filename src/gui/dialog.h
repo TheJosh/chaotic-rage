@@ -98,6 +98,14 @@ class ModListModel: public gcn::ListModel
 		{
 			return mods->size();
 		}
+
+		unsigned int findMod(Mod* mod)
+		{
+			for (unsigned int i = 0; i < mods->size(); i++) {
+				if (mods->at(i)->name == mod->name) return i;
+			}
+			return 0;
+		}
 };
 
 
