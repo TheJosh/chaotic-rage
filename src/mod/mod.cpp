@@ -57,6 +57,7 @@ Mod::Mod(GameState * st, string directory)
 	this->vehicletypes = NULL;
 	this->walltypes = NULL;
 	this->weapontypes = NULL;
+	this->mapnames = NULL;
 }
 
 
@@ -78,15 +79,17 @@ bool Mod::loadMetadata()
 	cfg = cfg_init(mod_opts, CFGF_NONE);
 	cfg_parse_buf(cfg, buffer);
 	free(buffer);
-
+	
+	// Basic metadata
 	this->title = cfg_getstr(cfg, "title");
 	
-	// Process the parsed config
+	// Map names for in-mod maps
+	delete(this->mapnames);
+	this->mapnames = new vector<string>();
 	num_types = cfg_size(cfg, "map");
 	for (j = 0; j < num_types; j++) {
 		cfg_sub = cfg_getnsec(cfg, "map", j);
-		
-		//maps.push_back(MapReg(cfg_getstr(cfg_sub, "name"), cfg_getstr(cfg_sub, "title"), this));
+		this->mapnames->push_back(cfg_getstr(cfg_sub, "name"));
 	}
 
 	cfg_free(cfg);

@@ -17,7 +17,11 @@ using namespace std;
 
 class Mod {
 	private:
+		// metadata
 		string title;
+		vector<string> * mapnames;
+		
+		// full data
 		vector<AIType*> * ais;
 		vector<AnimModel*> * animmodels;
 		vector<FloorType*> * areatypes;
@@ -50,6 +54,7 @@ class Mod {
 		
 		string getName() { return this->name; }
 		string getTitle() { return this->title; }
+		vector<string>* getMapNames() { return this->mapnames; }
 		
 		AIType * getAIType(int id);
 		AnimModel * getAnimModel(int id);

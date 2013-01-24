@@ -730,6 +730,11 @@ void MapRegistry::find(string dir)
 **/
 void MapRegistry::find(Mod* mod)
 {
-	// TODO: Rejig
+	mod->loadMetadata();
+	vector<string>* mapnames = mod->getMapNames();
+	
+	for (vector<string>::iterator it = mapnames->begin(); it != mapnames->end(); it++) {
+		maps.push_back(MapReg(*it, *it, mod));
+	}
 }
 
