@@ -25,7 +25,17 @@ DialogMods::DialogMods(GameState* st, ModManager* mm)
 {
 	this->st = st;
 	this->mm = mm;
-	this->mods = mm->getAvailMods();
+	
+	vector<string>* modnames = mm->getAvailMods();
+	vector<Mod*>* modlist = new vector<Mod*>();
+	for (vector<string>::iterator it = modnames->begin(); it != modnames->end(); it++) {
+		Mod* m = new Mod(st, "data/" + *it);
+		m->loadMetadata();
+		modlist->push_back(m);
+	}
+	delete(modnames);
+	
+	this->mods = new ModListModel(modlist);
 }
 
 /**
@@ -33,6 +43,9 @@ DialogMods::DialogMods(GameState* st, ModManager* mm)
 **/
 DialogMods::~DialogMods()
 {
+	for (int i = this->mods->getNumberOfElements(); i != 0; i++) {
+		delete(this->mods->getModAt(i));
+	}
 	delete(this->mods);
 }
 
@@ -52,7 +65,7 @@ gcn::Container * DialogMods::setup()
 	c = new gcn::Window("Choose current mod");
 	c->setDimension(gcn::Rectangle(0, 0, w, h + 15));
 	
-	this->modlist = new gcn::ListBox(new VectorListModel(this->mods));
+	this->modlist = new gcn::ListBox(this->mods);
 	this->modlist->setPosition(p, p);
 	this->modlist->setWidth(w - p - p);
 	this->modlist->setHeight(h - bh - p - p - p);
@@ -75,7 +88,7 @@ void DialogMods::action(const gcn::ActionEvent& actionEvent)
 	Mod* newsuppl = NULL;
 
 	// Try to load new mod
-	string modname = this->mods->at(this->modlist->getSelected());
+	string modname = this->mods->getModAt(this->modlist->getSelected())->getName();
 	if (modname != "cr") {
 		newsuppl = new Mod(this->st, "data/" + modname);
 		if (! newsuppl->load()) {

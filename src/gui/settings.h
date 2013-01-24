@@ -16,7 +16,7 @@ using namespace std;
 **/
 class DialogMods : public Dialog, public gcn::ActionListener {
 	private:
-		vector<string>* mods;
+		ModListModel* mods;
 		gcn::ListBox* modlist;
 		GameState* st;
 		ModManager* mm;

@@ -16,6 +16,22 @@ using namespace std;
 static zzip_strings_t mod_zzip_ext[] = { ".crk", ".CRK", 0 };
 
 
+static cfg_opt_t mod_map_opts[] =
+{
+	CFG_STR((char*) "name", ((char*)""), CFGF_NONE),
+	CFG_STR((char*) "title", ((char*)""), CFGF_NONE),
+	CFG_END()
+};
+
+static cfg_opt_t mod_opts[] =
+{
+	CFG_STR((char*) "title", ((char*)""), CFGF_NONE),
+	CFG_SEC((char*) "map", mod_map_opts, CFGF_MULTI),
+	CFG_END()
+};
+
+
+
 /**
 * Inits the mod. Does not load yet.
 * Directory should NOT contain a trailing slash
@@ -41,6 +57,41 @@ Mod::Mod(GameState * st, string directory)
 	this->vehicletypes = NULL;
 	this->walltypes = NULL;
 	this->weapontypes = NULL;
+}
+
+
+/**
+* Load just metadata for this mod
+**/
+bool Mod::loadMetadata()
+{
+	cfg_t *cfg, *cfg_sub;
+	int num_types, j;
+
+	// Grab the map list from the mod
+	char *buffer = this->loadText("mod.conf");
+	if (buffer == NULL) {
+		return false;
+	}
+
+	// Parse it
+	cfg = cfg_init(mod_opts, CFGF_NONE);
+	cfg_parse_buf(cfg, buffer);
+	free(buffer);
+
+	this->title = cfg_getstr(cfg, "title");
+	
+	// Process the parsed config
+	num_types = cfg_size(cfg, "map");
+	for (j = 0; j < num_types; j++) {
+		cfg_sub = cfg_getnsec(cfg, "map", j);
+		
+		//maps.push_back(MapReg(cfg_getstr(cfg_sub, "name"), cfg_getstr(cfg_sub, "title"), this));
+	}
+
+	cfg_free(cfg);
+	
+	return true;
 }
 
 
@@ -114,7 +165,6 @@ vector<T> * loadModFile(Mod* mod, const char* filename, const char* section, cfg
 	
 	return models;
 }
-
 
 
 /**

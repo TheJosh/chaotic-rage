@@ -17,6 +17,7 @@ using namespace std;
 
 class Mod {
 	private:
+		string title;
 		vector<AIType*> * ais;
 		vector<AnimModel*> * animmodels;
 		vector<FloorType*> * areatypes;
@@ -43,8 +44,12 @@ class Mod {
 		Mod(GameState * st, string directory);
 		
 	public:
+		bool loadMetadata();
 		bool load();
 		bool reloadAttrs();
+		
+		string getName() { return this->name; }
+		string getTitle() { return this->title; }
 		
 		AIType * getAIType(int id);
 		AnimModel * getAnimModel(int id);

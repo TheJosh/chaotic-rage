@@ -75,6 +75,32 @@ class GametypeListModel: public gcn::ListModel
 };
 
 
+class ModListModel: public gcn::ListModel
+{
+	private:
+		vector<Mod*> * mods;
+		
+	public:
+		ModListModel(vector<Mod*> * mods) : mods(mods) {}
+		~ModListModel() { delete(mods); }
+		
+		std::string getElementAt(int i)
+		{
+			return mods->at(i)->getTitle();
+		}
+		
+		Mod* getModAt(int i)
+		{
+			return mods->at(i);
+		}
+		
+		int getNumberOfElements()
+		{
+			return mods->size();
+		}
+};
+
+
 /**
 * Base dialog class
 **/
