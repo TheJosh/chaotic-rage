@@ -32,6 +32,13 @@ typedef struct range {
 	int max;
 } Range;
 
+class RangeF {
+	public:
+		float min;
+		float max;
+		RangeF() { min = 0.0f, max = 0.0f; }
+};
+
 
 // See the document docs/factions.txt for info.
 enum Faction {

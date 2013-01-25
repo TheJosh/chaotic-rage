@@ -84,7 +84,9 @@ class Map {
 
 		float water_level;
 		SpritePtr water;
-		
+		RangeF water_range;
+		float water_speed;		// distance per ms
+
 		float fog_color[4];
 		float fog_density;
 
@@ -98,6 +100,8 @@ class Map {
 		int load(string name, Render *render, Mod* insideof);
 		void loadDefaultEntities();
 		
+		void update(int delta);
+
 		string getName() { return this->name; }
 		
 		Zone * getSpawnZone(Faction f);

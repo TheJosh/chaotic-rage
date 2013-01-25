@@ -94,8 +94,10 @@ static cfg_opt_t opts[] =
 	CFG_INT((char*) "height", 0, CFGF_NONE),
 	
 	CFG_FLOAT((char*) "heightmap-z", 4.0f, CFGF_NONE),
-	CFG_FLOAT((char*) "water-level", 0.0f, CFGF_NONE),
-	
+	CFG_FLOAT((char*) "water-level", 0.0f, CFGF_NONE),			// initial water level
+	CFG_FLOAT((char*) "water-movement", 0.0f, CFGF_NONE),		// total distance between low and high
+	CFG_FLOAT((char*) "water-speed", 0.0f, CFGF_NONE),			// speed (metres/second)
+
 	CFG_INT_LIST((char*) "fog-color", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "fog-density", 0.0f, CFGF_NONE),
 	
@@ -222,6 +224,15 @@ int Map::load(string name, Render *render, Mod* insideof)
 	this->water = this->render->loadSprite("water.png", this->mod);
 	if (this->water) {
 		this->water_level = cfg_getfloat(cfg, "water-level");
+	}
+	float move = cfg_getfloat(cfg, "water-movement");
+	if (move) {
+		move /= 2.0f;
+		this->water_range.min = this->water_level - move;
+		this->water_range.max = this->water_level + move;
+		this->water_speed = cfg_getfloat(cfg, "water-speed") / 1000.0f;		// per sec -> per ms
+	} else {
+		this->water_speed = 0.0f;
 	}
 	
 	// Fog
@@ -419,6 +430,23 @@ void Map::loadDefaultEntities()
 		Object * ob = new Object(ot, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), 1, cfg_getint(cfg_sub, "angle"));
 		
 		this->st->addObject(ob);
+	}
+}
+
+
+/**
+* Update map stuff
+* Only water level at the moment...
+**/
+void Map::update(int delta)
+{
+	if (this->water_speed != 0.0f) {
+		this->water_level += (this->water_speed * delta);
+		if (this->water_level > this->water_range.max) {
+			this->water_speed = -abs(this->water_speed);
+		} else if (this->water_level < this->water_range.min) {
+			this->water_speed = abs(this->water_speed);
+		}
 	}
 }
 

@@ -313,6 +313,9 @@ void GameState::update(int delta)
 	this->update_particles(delta);
 	this->particles.remove_if(ParticleEraser);
 
+	// Map animationss
+	this->curr_map->update(delta);
+
 	// Decrease entropy
 	if (this->entropy > 0) {
 		this->entropy--;
