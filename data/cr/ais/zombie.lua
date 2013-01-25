@@ -40,8 +40,8 @@ function target()
 	-- direction of player
 	dir = units[1].location - me.location
 	
-	-- move, or if too far, stop
-	if (#dir > 50) then
+	-- move, or if too far away, stop
+	if (#dir > 100) then
 		stop()
 	else 
 		move(dir)

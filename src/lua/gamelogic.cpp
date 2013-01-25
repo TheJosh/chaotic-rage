@@ -394,8 +394,7 @@ LUA_FUNC(add_npc)
 	
 	Zone *zn = gl->map->getSpawnZone(fac);
 	if (zn == NULL) {
-		cerr << "Map does not have any spawnpoints\n";
-		exit(1);
+		reportFatalError("Map does not have any spawnpoints");
 	}
 	
 	p = new NPC(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 2, ai);
@@ -438,8 +437,7 @@ LUA_FUNC(add_player)
 	
 	Zone *zn = gl->map->getSpawnZone(fac);
 	if (zn == NULL) {
-		cerr << "Map does not have any spawnpoints\n";
-		exit(1);
+		reportFatalError("Map does not have any spawnpoints");
 	}
 	
 	p = new Player(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 0);
