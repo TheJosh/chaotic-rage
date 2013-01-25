@@ -583,7 +583,7 @@ void Unit::leaveVehicle()
 	this->ghost->forceActivationState(ACTIVE_TAG);
 	
 	this->drive->engineForce = 0.0f;
-	this->drive->brakeForce = 100.0f;		// handbrake
+	this->drive->brakeForce = 0.0f;
 	this->drive->steering = 0.0f;
 	
 	this->render = true;
