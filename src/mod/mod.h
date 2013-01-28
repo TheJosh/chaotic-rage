@@ -20,6 +20,8 @@ class Mod {
 		// metadata
 		string title;
 		vector<string> * mapnames;
+		bool has_arcade;
+		bool has_campaign;
 		
 		// full data
 		vector<AIType*> * ais;
@@ -56,6 +58,8 @@ class Mod {
 		string getName() { return this->name; }
 		string getTitle() { return this->title; }
 		vector<string>* getMapNames() { return this->mapnames; }
+		bool hasArcade() { return this->has_arcade; }
+		bool hasCampaign() { return this->has_campaign; }
 		
 		AIType * getAIType(int id);
 		AnimModel * getAnimModel(int id);

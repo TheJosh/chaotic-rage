@@ -56,6 +56,7 @@ class Menu
 		ModManager *mm;
 		SpritePtr logo;
 		SpritePtr bg;
+		bool has_campaigns;
 
 	public:
 		// Init etc
@@ -66,6 +67,7 @@ class Menu
 		
 	public:
 		// Main menu
+		void menuClear();
 		void menuAdd(string name, int x, int y, MenuCommand cmd);
 		void menuRender();
 		void menuHover(int x, int y);

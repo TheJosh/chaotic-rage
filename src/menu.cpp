@@ -40,21 +40,21 @@ Menu::Menu(GameState *st)
 void Menu::loadModBits()
 {
 	Mod* mod = st->mm->getSupplOrBase();
-	
+
 	// Logo
 	delete(this->logo);
 	this->logo = this->render->loadSprite("menu/logo.png", mod);
 	if (!logo) {
 		this->logo = this->render->loadSprite("menu/logo.png", st->mm->getBase());
 	}
-	
+
 	// Background
 	delete(this->bg);
 	this->bg = this->render->loadSprite("menu/bg.jpg", mod);
 	if (!bg) {
 		this->bg = this->render->loadSprite("menu/bg.jpg", st->mm->getBase());
 	}
-		
+
 	// Load maps
 	delete(this->mapreg);
 	this->mapreg = new MapRegistry();
@@ -70,12 +70,12 @@ void Menu::loadModBits()
 		}
 		delete(ut);
 	}
-	
+
 	// Viewmodes
 	this->viewmodes.clear();
 	this->viewmodes.push_back("Behind player");
 	this->viewmodes.push_back("Above player");
-	
+
 	// Unittypes
 	this->unittypes.clear();
 	{
@@ -84,6 +84,34 @@ void Menu::loadModBits()
 			if ((*it)->playable) this->unittypes.push_back((*it)->name);
 		}
 		delete(ut);
+	}
+	
+	// Main menu items
+	this->menuClear();
+	int y = render->getHeight() - 60;
+	
+	this->menuAdd("Quit", 40, y, MC_QUIT);
+	y -= 40;
+	
+	this->menuAdd("Help", 40, y, MC_HELP);
+	y -= 40;
+	
+	this->menuAdd("Mods", 40, y, MC_MODS);
+	y -= 40;
+	
+	if (mod->hasArcade()) {
+		this->menuAdd("Network Game", 40, y, MC_NETWORK);
+		y -= 40;
+		
+		this->menuAdd("Split Screen", 40, y, MC_SPLITSCREEN);
+		y -= 40;
+		
+		this->menuAdd("Single Player", 40, y, MC_SINGLEPLAYER);
+		y -= 40;
+	}
+	
+	if (mod->hasCampaign()) {
+		this->menuAdd("Campaign", 40, y, MC_CAMPAIGN);
 	}
 }
 
@@ -111,30 +139,6 @@ void Menu::doit()
 	
 
 	this->loadModBits();
-	
-	
-	// Main menu items
-	int y = render->getHeight() - (40 * 7) - 20;
-	
-	this->menuAdd("Campaign", 40, y, MC_CAMPAIGN);
-	y += 40;
-
-	this->menuAdd("Single Player", 40, y, MC_SINGLEPLAYER);
-	y += 40;
-	
-	this->menuAdd("Split Screen", 40, y, MC_SPLITSCREEN);
-	y += 40;
-	
-	this->menuAdd("Network Game", 40, y, MC_NETWORK);
-	y += 40;
-	
-	this->menuAdd("Mods", 40, y, MC_MODS);
-	y += 40;
-	
-	this->menuAdd("Help", 40, y, MC_HELP);
-	y += 40;
-	
-	this->menuAdd("Quit", 40, y, MC_QUIT);
 	
 	
 	// Menu loop
@@ -267,6 +271,16 @@ void Menu::doit()
 		SDL_GL_SwapBuffers();
 	}
 	
+}
+
+
+void Menu::menuClear()
+{
+	for (vector<MenuItem*>::iterator it = this->menuitems.begin(); it != this->menuitems.end(); it++) {
+		delete(*it);
+	}
+	this->menuitems.clear();
+	this->menuitems.reserve(7);
 }
 
 

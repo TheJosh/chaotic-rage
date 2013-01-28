@@ -27,6 +27,8 @@ static cfg_opt_t mod_opts[] =
 {
 	CFG_STR((char*) "title", ((char*)""), CFGF_NONE),
 	CFG_SEC((char*) "map", mod_map_opts, CFGF_MULTI),
+	CFG_INT((char*) "arcade", 1, CFGF_NONE),
+	CFG_INT((char*) "campaign", 0, CFGF_NONE),
 	CFG_END()
 };
 
@@ -45,6 +47,9 @@ Mod::Mod(GameState * st, string directory)
 	
 	directory.append("/");
 	this->directory = directory;
+	
+	this->has_arcade = false;
+	this->has_campaign = false;
 	
 	this->ais = NULL;
 	this->animmodels = NULL;
@@ -79,10 +84,12 @@ bool Mod::loadMetadata()
 	cfg = cfg_init(mod_opts, CFGF_NONE);
 	cfg_parse_buf(cfg, buffer);
 	free(buffer);
-	
+
 	// Basic metadata
 	this->title = cfg_getstr(cfg, "title");
-	
+	this->has_arcade = (cfg_getint(cfg, "arcade") == 1);
+	this->has_campaign = (cfg_getint(cfg, "campaign") == 1);
+
 	// Map names for in-mod maps
 	delete(this->mapnames);
 	this->mapnames = new vector<string>();
@@ -93,7 +100,7 @@ bool Mod::loadMetadata()
 	}
 
 	cfg_free(cfg);
-	
+
 	return true;
 }
 
