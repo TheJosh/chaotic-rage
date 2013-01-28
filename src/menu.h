@@ -18,6 +18,7 @@ class VectorListModel;
 
 enum MenuCommand {
 	MC_NOTHING = 0,
+	MC_CAMPAIGN,
 	MC_SINGLEPLAYER,
 	MC_SPLITSCREEN,
 	MC_NETWORK,
@@ -71,6 +72,7 @@ class Menu
 		MenuCommand menuClick(int x, int y);
 		
 		// Main menu actions
+		void doCampaign();
 		void doSingleplayer();
 		void doSplitscreen();
 		void doNetwork();
@@ -80,6 +82,7 @@ class Menu
 		
 		// Game dialogs
 		void setDialog(Dialog * dialog);
+		void startCampaign(Campaign* c, string unittype, int viewmode, unsigned int num_local);
 		void startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local);
 		void networkJoin(string host);
 };

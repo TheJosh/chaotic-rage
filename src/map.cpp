@@ -766,3 +766,14 @@ void MapRegistry::find(Mod* mod)
 	}
 }
 
+
+/**
+* Find a map, by name
+**/
+MapReg * MapRegistry::get(string name) 
+{
+	for (vector<MapReg>::iterator it = maps.begin(); it != maps.end(); it++) {
+		if (it->getName() == name) return &(*it);
+	}
+	return NULL;
+}

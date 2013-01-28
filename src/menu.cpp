@@ -114,8 +114,11 @@ void Menu::doit()
 	
 	
 	// Main menu items
-	int y = render->getHeight() - (40 * 6) - 20;
+	int y = render->getHeight() - (40 * 7) - 20;
 	
+	this->menuAdd("Campaign", 40, y, MC_CAMPAIGN);
+	y += 40;
+
 	this->menuAdd("Single Player", 40, y, MC_SINGLEPLAYER);
 	y += 40;
 	
@@ -183,6 +186,7 @@ void Menu::doit()
 		
 		// Handle main menu commands
 		switch (cmd) {
+			case MC_CAMPAIGN: this->doCampaign(); break;
 			case MC_SINGLEPLAYER: this->doSingleplayer(); break;
 			case MC_SPLITSCREEN: this->doSplitscreen(); break;
 			case MC_NETWORK: this->doNetwork(); break;
@@ -360,6 +364,11 @@ void Menu::setDialog(Dialog * dialog)
 
 
 
+void Menu::doCampaign()
+{
+	this->setDialog(new DialogNewCampaign(1, this->mm->getSupplOrBase()));
+}
+
 void Menu::doSingleplayer()
 {
 	this->setDialog(new DialogNewGame(1, this->st->mm));
@@ -390,6 +399,25 @@ void Menu::doQuit()
 	this->running = false;
 }
 
+
+
+/**
+* Plays through each game of a campaign
+**/
+void Menu::startCampaign(Campaign* c, string unittype, int viewmode, unsigned int num_local)
+{
+	for (vector<CampaignStage*>::iterator it = c->stages->begin(); it != c->stages->end();) {
+		CampaignStage* stage = *it;
+
+		MapReg* m = mapreg->get(stage->map);
+		if (m == NULL) return;
+
+		this->startGame(m, stage->gametype, unittype, 0, 1);
+
+		// TODO: Some way for a gametype to specify if the player advances to the next stage or not
+		it++;
+	}
+}
 
 
 /**

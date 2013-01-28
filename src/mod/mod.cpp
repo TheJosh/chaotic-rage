@@ -217,6 +217,10 @@ bool Mod::load()
 	gametypes = loadModFile<GameType*>(this, "gametypes.conf", "gametype", gametype_opts, &loadItemGameType);
 	if (gametypes == NULL) return false;
 	
+
+	campaigns = loadModFile<Campaign*>(this, "campaigns.conf", "campaign", campaign_opts, &loadItemCampaign);
+	if (campaigns == NULL) return false;
+
 	
 	// Anim models ->next linkup
 	for (int i = animmodels->size() - 1; i >= 0; --i) {
@@ -337,6 +341,16 @@ AnimModel * Mod::getAnimModel(string name)
 		if (animmodels->at(i)->name.compare(name) == 0) return animmodels->at(i);
 	}
 	return NULL;
+}
+
+
+
+/**
+* Get the list of campaigns
+**/
+vector<Campaign*> * Mod::getCampaigns()
+{
+	return this->campaigns;
 }
 
 

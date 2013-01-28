@@ -10,6 +10,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <vector>
+#include <list>
 
 
 // Engine features to optionally compile into the game
@@ -60,6 +61,8 @@ class AILogic;
 class AnimModel;
 class AnimPlay;
 class Audio;
+class CampaignStage;
+class Campaign;
 class CommandLineArgs;
 class ClientConfig;
 class Decaying;
@@ -144,6 +147,7 @@ class Zone;
 #include "mod/aitype.h"
 #include "mod/animmodel.h"
 #include "mod/animplay.h"
+#include "mod/campaign.h"
 #include "mod/floortype.h"
 #include "mod/objecttype.h"
 #include "mod/unittype.h"
@@ -174,6 +178,7 @@ class Zone;
 #include "gui/controls.h"
 #include "gui/network.h"
 #include "gui/newgame.h"
+#include "gui/newcampaign.h"
 #include "gui/settings.h"
 
 #include "gamestate.h"

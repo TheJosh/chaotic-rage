@@ -24,6 +24,7 @@ class Mod {
 		// full data
 		vector<AIType*> * ais;
 		vector<AnimModel*> * animmodels;
+		vector<Campaign*> * campaigns;
 		vector<FloorType*> * areatypes;
 		vector<GameType*> * gametypes;
 		vector<ObjectType*> * objecttypes;
@@ -33,7 +34,7 @@ class Mod {
 		vector<VehicleType*> * vehicletypes;
 		vector<WallType*> * walltypes;
 		vector<WeaponType*> * weapontypes;
-		
+
 	public:
 		GameState * st;
 		string name;
@@ -80,6 +81,8 @@ class Mod {
 		WallType * getWallType(string name);
 		WeaponType * getWeaponType(string name);
 		
+		vector<Campaign*> * getCampaigns();
+
 		void addObjectType(ObjectType * ot);
 		
 		Song * getRandomSong();

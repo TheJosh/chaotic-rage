@@ -145,6 +145,7 @@
     <ClCompile Include="..\..\src\mod\gametype.cpp" />
     <ClCompile Include="..\..\src\mod\mod.cpp" />
     <ClCompile Include="..\..\src\mod\mod_manager.cpp" />
+    <ClCompile Include="..\..\src\mod\mod_proxy.cpp" />
     <ClCompile Include="..\..\src\mod\objecttype.cpp" />
     <ClCompile Include="..\..\src\mod\song.cpp" />
     <ClCompile Include="..\..\src\mod\sound.cpp" />
@@ -214,6 +215,7 @@
     <ClInclude Include="..\..\src\mod\gametype.h" />
     <ClInclude Include="..\..\src\mod\mod.h" />
     <ClInclude Include="..\..\src\mod\mod_manager.h" />
+    <ClInclude Include="..\..\src\mod\mod_proxy.h" />
     <ClInclude Include="..\..\src\mod\objecttype.h" />
     <ClInclude Include="..\..\src\mod\song.h" />
     <ClInclude Include="..\..\src\mod\sound.h" />

@@ -125,6 +125,7 @@
     <ClCompile Include="..\..\src\gui\controls.cpp" />
     <ClCompile Include="..\..\src\gui\dialog.cpp" />
     <ClCompile Include="..\..\src\gui\network.cpp" />
+    <ClCompile Include="..\..\src\gui\newcampaign.cpp" />
     <ClCompile Include="..\..\src\gui\newgame.cpp" />
     <ClCompile Include="..\..\src\gui\settings.cpp" />
     <ClCompile Include="..\..\src\http\client_stats.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="..\..\src\mod\aitype.cpp" />
     <ClCompile Include="..\..\src\mod\animmodel.cpp" />
     <ClCompile Include="..\..\src\mod\animplay.cpp" />
+    <ClCompile Include="..\..\src\mod\campaign.cpp" />
     <ClCompile Include="..\..\src\mod\floortype.cpp" />
     <ClCompile Include="..\..\src\mod\gametype.cpp" />
     <ClCompile Include="..\..\src\mod\mod.cpp" />
@@ -196,6 +198,7 @@
     <ClInclude Include="..\..\src\gui\controls.h" />
     <ClInclude Include="..\..\src\gui\dialog.h" />
     <ClInclude Include="..\..\src\gui\network.h" />
+    <ClInclude Include="..\..\src\gui\newcampaign.h" />
     <ClInclude Include="..\..\src\gui\newgame.h" />
     <ClInclude Include="..\..\src\gui\settings.h" />
     <ClInclude Include="..\..\src\http\client_stats.h" />
@@ -212,6 +215,7 @@
     <ClInclude Include="..\..\src\mod\aitype.h" />
     <ClInclude Include="..\..\src\mod\animmodel.h" />
     <ClInclude Include="..\..\src\mod\animplay.h" />
+    <ClInclude Include="..\..\src\mod\campaign.h" />
     <ClInclude Include="..\..\src\mod\floortype.h" />
     <ClInclude Include="..\..\src\mod\gametype.h" />
     <ClInclude Include="..\..\src\mod\mod.h" />

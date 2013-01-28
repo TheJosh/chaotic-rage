@@ -158,6 +158,7 @@ class MapRegistry {
 	public:
 		void find(string dir);
 		void find(Mod* mod);
+		MapReg* get(string name);
 
 		string nameAt(int index) { return maps.at(index).name; }
 		string titleAt(int index) { return maps.at(index).title; }
