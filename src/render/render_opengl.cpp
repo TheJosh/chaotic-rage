@@ -147,6 +147,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		}
 	}
 	
+	this->loadShaders();
+	
 	// OpenGL env
 	glDepthFunc(GL_LEQUAL);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -573,6 +575,99 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 }
 
 
+
+static const char* pVS = "                                                    \n\
+#version 110                                                                  \n\
+void main()                                                                   \n\
+{                                                                             \n\
+    gl_Position = ftransform();                                               \n\
+}";
+
+static const char* pFS = "                                                    \n\
+#version 110                                                                  \n\
+void main()                                                                   \n\
+{                                                                             \n\
+    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);                                  \n\
+}";
+
+
+/**
+* Create shaders
+**/
+void RenderOpenGL::loadShaders()
+{
+	this->prog_objects = this->createProgram(pVS, pFS);
+}
+
+
+/**
+* Creates and compile a shader
+* Returns the shader id.
+**/
+GLuint RenderOpenGL::createShader(const char* code, GLenum type)
+{
+	GLint success;
+	
+	GLuint shader = glCreateShader(type);
+	if (shader == 0) {
+		reportFatalError("Error creating OpenGL shader");
+	}
+	
+	GLint len = strlen(code);
+	glShaderSource(shader, 1, &code, &len);
+	glCompileShader(shader);
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+	if (! success) {
+		GLchar InfoLog[1024];
+        glGetShaderInfoLog(shader, 1024, NULL, InfoLog);
+        fprintf(stderr, "Error compiling shader type %d:\n%s\n", type, InfoLog);
+		reportFatalError("Error compiling OpenGL shader");
+	}
+	
+	return shader;
+}
+
+
+/**
+* Creates and compile a shader program from two shader code strings
+* Returns the program id.
+**/
+GLuint RenderOpenGL::createProgram(const char* vertex, const char* fragment)
+{
+	GLint success;
+	GLuint shader;
+	
+	GLuint program = glCreateProgram();
+	if (program == 0) {
+		reportFatalError("Error creating OpenGL program");
+	}
+	
+	// Create and attach vertex shader
+	shader = this->createShader(vertex, GL_VERTEX_SHADER);
+	glAttachShader(program, shader);
+	
+	// Same with frag shader
+	shader = this->createShader(fragment, GL_FRAGMENT_SHADER);
+	glAttachShader(program, shader);
+	
+	// Link
+	glLinkProgram(program);
+	glGetProgramiv(program, GL_LINK_STATUS, &success);
+	if (! success) {
+		reportFatalError("Error linking OpenGL program");
+	}
+	
+	// Validate
+	glValidateProgram(program);
+	glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
+	if (! success) {
+		reportFatalError("Error validating OpenGL program");
+	}
+	
+	return program;
+}
+
+
 /**
 * For VBO pointer offsets
 **/
@@ -670,12 +765,15 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 	if (obj->ibo_count == 0) this->createVBO(obj);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, obj->vbo);
-
 	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
 	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
 	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
 
+	glUseProgram(this->prog_objects);
+	
 	glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
+	
+	glUseProgram(0);
 }
 
 

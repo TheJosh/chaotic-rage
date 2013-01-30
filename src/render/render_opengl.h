@@ -63,6 +63,9 @@ class RenderOpenGL : public Render3D
 		AnimPlay *test;
 		btIDebugDraw *physicsdebug;
 		
+		// Shaders
+		GLuint prog_objects;
+		
 	public:
 		unsigned int q_tex;
 		unsigned int q_alias;
@@ -120,6 +123,10 @@ class RenderOpenGL : public Render3D
 		void particles();
 		void guichan();
 		void hud(HUD * hud);
+		
+		void loadShaders();
+		GLuint createShader(const char* code, GLenum type);
+		GLuint createProgram(const char* vertex, const char* fragment);
 };
 
 
