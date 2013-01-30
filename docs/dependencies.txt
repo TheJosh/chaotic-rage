@@ -13,6 +13,7 @@ You will need at least these:
  - Freetype2
  - Bullet Physics (and cmake if building yourself)
  - Guichan
+ - Assimp
 
 
 Compiling on Ubuntu 10.04:
@@ -41,7 +42,10 @@ Compiling on Ubuntu 10.04:
  2. Compile bullet from lib-external
     This will install bullet also
 
- 3. Compile using make
+ 3. Compile assimp from lib-external
+    This will install assimp also
+
+ 4. Compile using make
 
 
 Compiling on Windows:
