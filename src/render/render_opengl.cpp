@@ -575,19 +575,27 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 }
 
 
-
+// GLSL 1.2 = OpenGL 2.1 ~ DX9
+// GLSL 1.3 = OpenGL 3.0 ~ DX10
+// GLSL 1.4 = OpenGL 3.1 ~ DX10
+// GLSL 1.5 = OpenGL 3.2 ~ DX10 ~ GeForce 9600 GT
+// GLSL 4.2 = OpenGL 4.2 ~ DX11 ~ GeForce GT 610
 static const char* pVS = "                                                    \n\
-#version 110                                                                  \n\
+#version 120                                                                  \n\
+varying vec2 TexCoord0;                                                       \n\
 void main()                                                                   \n\
 {                                                                             \n\
     gl_Position = ftransform();                                               \n\
+    TexCoord0 = gl_MultiTexCoord0.st;                                         \n\
 }";
 
 static const char* pFS = "                                                    \n\
-#version 110                                                                  \n\
+#version 120                                                                  \n\
+varying vec2 TexCoord0;                                                       \n\
+uniform sampler2D uTex;                                                       \n\
 void main()                                                                   \n\
 {                                                                             \n\
-    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);                                  \n\
+    gl_FragColor = texture2D(uTex, TexCoord0.st);                             \n\
 }";
 
 
@@ -768,8 +776,12 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
 	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
 	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
-
+	
+	
 	glUseProgram(this->prog_objects);
+	GLuint gScaleLocation = glGetUniformLocation(this->prog_objects, "uTex");
+	glUniform1i(gScaleLocation, 0);
+	
 	
 	glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
 	
