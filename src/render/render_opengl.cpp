@@ -815,8 +815,10 @@ void RenderOpenGL::postVBOrender()
 
 
 /**
-* Renders an object.
-* Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender afterwards()
+* Renders a WavefrontObj.
+* This is only use by external callers (i.e. `Menu`).
+* Other parts of this class just do these bits themselves, but slightly differently each time.
+* Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender afterwards().
 **/
 void RenderOpenGL::renderObj (WavefrontObj * obj)
 {
@@ -826,7 +828,6 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
 	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
 	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
-	
 	
 	glUseProgram(this->shaders["basic"]);
 	glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
@@ -873,7 +874,20 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play)
 		
 		glScalef(model->meshframes[d]->sx, model->meshframes[d]->sy, model->meshframes[d]->sz);
 		
-		this->renderObj(model->meshframes[d]->mesh);
+		{
+			WavefrontObj * obj = model->meshframes[d]->mesh;
+
+			if (obj->ibo_count == 0) this->createVBO(obj);
+	
+			glBindBuffer(GL_ARRAY_BUFFER, obj->vbo);
+			glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
+			glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
+			glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
+	
+			glUseProgram(this->shaders["entities"]);
+			glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
+			glUseProgram(0);
+		}
 		
 		glPopMatrix();
 	}
@@ -1218,10 +1232,9 @@ void RenderOpenGL::map()
 	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
 	glClientActiveTexture(GL_TEXTURE0);
 	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
-	
 	glUseProgram(this->shaders["map"]);
+
 	glDrawArrays(GL_TRIANGLES, 0, this->ter_size);
-	glUseProgram(0);
 	
 	glPopMatrix();
 	
@@ -1236,7 +1249,18 @@ void RenderOpenGL::map()
 		(*it)->xform.getOpenGLMatrix(m);
 		glMultMatrixf((GLfloat*)m);
 
-		this->renderObj((*it)->mesh);
+		{
+			WavefrontObj * obj = (*it)->mesh;
+
+			if (obj->ibo_count == 0) this->createVBO(obj);
+	
+			glBindBuffer(GL_ARRAY_BUFFER, obj->vbo);
+			glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
+			glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
+			glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
+	
+			glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
+		}
 
 		glPopMatrix();
 	}
@@ -1244,7 +1268,7 @@ void RenderOpenGL::map()
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	
+	glUseProgram(0);
 	glDisable(GL_CULL_FACE);
 
 
