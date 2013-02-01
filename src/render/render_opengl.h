@@ -64,6 +64,7 @@ class RenderOpenGL : public Render3D
 		btIDebugDraw *physicsdebug;
 		
 		// Shaders
+		bool prog_loaded;		// true if loaded from a mod
 		GLuint prog_objects;
 		
 	public:
@@ -127,6 +128,7 @@ class RenderOpenGL : public Render3D
 		void loadShaders();
 		GLuint createShader(const char* code, GLenum type);
 		GLuint createProgram(const char* vertex, const char* fragment);
+		GLuint loadProgram(Mod* mod, string name);
 };
 
 

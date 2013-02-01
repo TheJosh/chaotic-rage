@@ -57,6 +57,9 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render3D(st)
 	q_tex = 4;
 	q_alias = 4;
 	q_general = 4;
+	
+	prog_loaded = false;
+	prog_objects = 0;
 }
 
 RenderOpenGL::~RenderOpenGL()
@@ -520,6 +523,9 @@ void RenderOpenGL::preGame()
 		glFogf(GL_FOG_START, 80.0f);
 		glFogf(GL_FOG_END, 100.0f);
 	}
+	
+	// This will load the shaders (from the base mod) if they aren't loaded.
+	this->loadShaders();
 }
 
 void RenderOpenGL::postGame()
@@ -575,36 +581,52 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 }
 
 
-// GLSL 1.2 = OpenGL 2.1 ~ DX9
-// GLSL 1.3 = OpenGL 3.0 ~ DX10
-// GLSL 1.4 = OpenGL 3.1 ~ DX10
-// GLSL 1.5 = OpenGL 3.2 ~ DX10 ~ GeForce 9600 GT
-// GLSL 4.2 = OpenGL 4.2 ~ DX11 ~ GeForce GT 610
+
+/**
+* Basic vertex shader for use before the base mod has been loaded
+* Just textures, no lighting
+**/
 static const char* pVS = "                                                    \n\
 #version 120                                                                  \n\
 varying vec2 TexCoord0;                                                       \n\
-void main()                                                                   \n\
-{                                                                             \n\
-    gl_Position = ftransform();                                               \n\
-    TexCoord0 = gl_MultiTexCoord0.st;                                         \n\
-}";
+void main() { gl_Position = ftransform(); TexCoord0 = gl_MultiTexCoord0.st; }";
 
+/**
+* Basic fragment shader for use before the base mod has been loaded
+* Just textures, no lighting
+**/
 static const char* pFS = "                                                    \n\
 #version 120                                                                  \n\
 varying vec2 TexCoord0;                                                       \n\
 uniform sampler2D uTex;                                                       \n\
-void main()                                                                   \n\
-{                                                                             \n\
-    gl_FragColor = texture2D(uTex, TexCoord0.st);                             \n\
-}";
+void main() { gl_FragColor = texture2D(uTex, TexCoord0.st); }";
 
 
 /**
-* Create shaders
+* Load all of the general shaders we use for rendering
+* such as object rendering, background, etc.
+* Doesn't include various special-effects shaders that may be in use.
 **/
 void RenderOpenGL::loadShaders()
 {
-	this->prog_objects = this->createProgram(pVS, pFS);
+	Mod *base;
+	
+	// Don't even bother if they are already loaded
+	if (this->prog_loaded) return;
+	
+	// Before the mod is loaded, we need some basic shaders
+	// These are hardcoded (see above)
+	if (! this->st->mm) {
+		this->prog_objects = createProgram(pVS, pFS);
+		return;
+	} else {
+		glDeleteProgram(this->prog_objects);
+	}
+	
+	base = this->st->mm->getBase();
+	this->prog_objects = loadProgram(base, "objects");
+	
+	this->prog_loaded = true;
 }
 
 
@@ -627,8 +649,8 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 	if (! success) {
 		GLchar InfoLog[1024];
-        glGetShaderInfoLog(shader, 1024, NULL, InfoLog);
-        fprintf(stderr, "Error compiling shader type %d:\n%s\n", type, InfoLog);
+		glGetShaderInfoLog(shader, 1024, NULL, InfoLog);
+		fprintf(stderr, "Error compiling shader type %d:\n%s\n", type, InfoLog);
 		reportFatalError("Error compiling OpenGL shader");
 	}
 	
@@ -643,7 +665,7 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 GLuint RenderOpenGL::createProgram(const char* vertex, const char* fragment)
 {
 	GLint success;
-	GLuint shader;
+	GLuint sVertex, sFragment;
 	
 	GLuint program = glCreateProgram();
 	if (program == 0) {
@@ -651,15 +673,19 @@ GLuint RenderOpenGL::createProgram(const char* vertex, const char* fragment)
 	}
 	
 	// Create and attach vertex shader
-	shader = this->createShader(vertex, GL_VERTEX_SHADER);
-	glAttachShader(program, shader);
+	sVertex = this->createShader(vertex, GL_VERTEX_SHADER);
+	glAttachShader(program, sVertex);
 	
 	// Same with frag shader
-	shader = this->createShader(fragment, GL_FRAGMENT_SHADER);
-	glAttachShader(program, shader);
+	sFragment = this->createShader(fragment, GL_FRAGMENT_SHADER);
+	glAttachShader(program, sFragment);
 	
 	// Link
 	glLinkProgram(program);
+	glDeleteShader(sVertex);
+	glDeleteShader(sFragment);
+	
+	// Check link worked
 	glGetProgramiv(program, GL_LINK_STATUS, &success);
 	if (! success) {
 		reportFatalError("Error linking OpenGL program");
@@ -673,6 +699,31 @@ GLuint RenderOpenGL::createProgram(const char* vertex, const char* fragment)
 	}
 	
 	return program;
+}
+
+
+/**
+* Load shaders using source found in a mod
+*
+* Will load the files:
+*   shaders/<name>.glslv (vertex)
+*   shaders/<name>.glslf (fragment)
+**/
+GLuint RenderOpenGL::loadProgram(Mod* mod, string name)
+{
+	char* v = mod->loadText("shaders/" + name + ".glslv");
+	char* f = mod->loadText("shaders/" + name + ".glslf");
+	
+	if (v == NULL or f == NULL) {
+		reportFatalError("Unable to load shader program " + name);
+	}
+	
+	GLuint prog = this->createProgram(v, f);
+	
+	delete(v);
+	delete(f);
+	
+	return prog;
 }
 
 
