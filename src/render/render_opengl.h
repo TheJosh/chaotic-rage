@@ -5,6 +5,8 @@
 #pragma once
 #include <iostream>
 #include <SDL.h>
+#include <map>
+
 #include "../rage.h"
 
 #include <ft2build.h>
@@ -64,9 +66,8 @@ class RenderOpenGL : public Render3D
 		btIDebugDraw *physicsdebug;
 		
 		// Shaders
-		bool prog_loaded;		// true if loaded from a mod
-		GLuint prog_objects;
-		GLuint prog_map;
+		bool shaders_loaded;		// true if loaded from a mod
+		map<string, GLuint> shaders;
 		
 	public:
 		unsigned int q_tex;

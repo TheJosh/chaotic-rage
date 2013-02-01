@@ -24,6 +24,9 @@
     <Filter Include="AIs">
       <UniqueIdentifier>{70dfa020-46d5-49a9-a13b-b8044be4e017}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{432924fd-8ead-40c4-adfc-00272d5eef3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\data\cr\animmodels.conf">
@@ -76,6 +79,18 @@
     </None>
     <None Include="..\..\data\cr\vehicletypes.conf">
       <Filter>Configs</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders\entities.glslf">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders\entities.glslv">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders\map.glslf">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders\map.glslv">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

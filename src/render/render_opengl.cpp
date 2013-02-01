@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <map>
 
 #include <GL/glew.h>
 #include <GL/gl.h>
@@ -58,9 +59,7 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render3D(st)
 	q_alias = 4;
 	q_general = 4;
 	
-	prog_loaded = false;
-	prog_objects = 0;
-	prog_map = 0;
+	shaders_loaded = false;
 }
 
 RenderOpenGL::~RenderOpenGL()
@@ -613,22 +612,20 @@ void RenderOpenGL::loadShaders()
 	Mod *base;
 	
 	// Don't even bother if they are already loaded
-	if (this->prog_loaded) return;
+	if (this->shaders_loaded) return;
 	
 	// Before the mod is loaded, we need some basic shaders
 	// These are hardcoded (see above)
 	if (! this->st->mm) {
-		this->prog_objects = createProgram(pVS, pFS);
+		this->shaders["basic"] = createProgram(pVS, pFS);
 		return;
-	} else {
-		glDeleteProgram(this->prog_objects);
 	}
 	
 	base = this->st->mm->getBase();
-	this->prog_objects = loadProgram(base, "objects");
-	this->prog_map = loadProgram(base, "map");
+	this->shaders["entities"] = loadProgram(base, "entities");
+	this->shaders["map"] = loadProgram(base, "map");
 	
-	this->prog_loaded = true;
+	this->shaders_loaded = true;
 }
 
 
@@ -831,7 +828,7 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
 	
 	
-	glUseProgram(this->prog_objects);
+	glUseProgram(this->shaders["basic"]);
 	glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
 	glUseProgram(0);
 }
@@ -1222,7 +1219,7 @@ void RenderOpenGL::map()
 	glClientActiveTexture(GL_TEXTURE0);
 	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
 	
-	glUseProgram(this->prog_map);
+	glUseProgram(this->shaders["map"]);
 	glDrawArrays(GL_TRIANGLES, 0, this->ter_size);
 	glUseProgram(0);
 	
