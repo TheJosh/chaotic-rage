@@ -55,7 +55,12 @@ GameState::GameState()
 	this->logic = NULL;
 	this->client = NULL;
 	this->server = NULL;
-	
+	this->physics = NULL;
+	this->cmdline = NULL;
+	this->cconf = NULL;
+	this->sconf = NULL;
+	this->mm = NULL;
+
 	g_st = this;
 }
 

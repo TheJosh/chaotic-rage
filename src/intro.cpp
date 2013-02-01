@@ -26,10 +26,17 @@ Intro::Intro(GameState *st)
 void Intro::load()
 {
 	Mod * mod = new Mod(st, "data/intro");
+	if (!mod) {
+		reportFatalError("Intro failed to load. Is the working directory correct?");
+	}
 
 	img1 = this->render->loadSprite("joshcorp.png", mod);
 	img2 = this->render->loadSprite("sdl.png", mod);
 	img3 = this->render->loadSprite("game.png", mod);
+
+	if (img1 == NULL || img2 == NULL || img3 == NULL) {
+		reportFatalError("Intro failed to load.  Is the working directory correct?");
+	}
 
 	sg = new Song();
 	sg->name = "intro";
