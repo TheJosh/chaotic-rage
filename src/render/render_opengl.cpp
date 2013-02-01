@@ -60,6 +60,7 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render3D(st)
 	
 	prog_loaded = false;
 	prog_objects = 0;
+	prog_map = 0;
 }
 
 RenderOpenGL::~RenderOpenGL()
@@ -625,6 +626,7 @@ void RenderOpenGL::loadShaders()
 	
 	base = this->st->mm->getBase();
 	this->prog_objects = loadProgram(base, "objects");
+	this->prog_map = loadProgram(base, "map");
 	
 	this->prog_loaded = true;
 }
@@ -830,12 +832,7 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 	
 	
 	glUseProgram(this->prog_objects);
-	GLuint gScaleLocation = glGetUniformLocation(this->prog_objects, "uTex");
-	glUniform1i(gScaleLocation, 0);
-	
-	
 	glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
-	
 	glUseProgram(0);
 }
 
@@ -1224,7 +1221,10 @@ void RenderOpenGL::map()
 	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
 	glClientActiveTexture(GL_TEXTURE0);
 	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
+	
+	glUseProgram(this->prog_map);
 	glDrawArrays(GL_TRIANGLES, 0, this->ter_size);
+	glUseProgram(0);
 	
 	glPopMatrix();
 	

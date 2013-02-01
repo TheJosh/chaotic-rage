@@ -66,6 +66,7 @@ class RenderOpenGL : public Render3D
 		// Shaders
 		bool prog_loaded;		// true if loaded from a mod
 		GLuint prog_objects;
+		GLuint prog_map;
 		
 	public:
 		unsigned int q_tex;
