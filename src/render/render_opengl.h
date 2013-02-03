@@ -120,7 +120,7 @@ class RenderOpenGL : public Render3D
 		void background();
 		void mainRot();
 		void lights();
-		void map();
+		void terrain();
 		void entities();
 		void physics();
 		void particles();

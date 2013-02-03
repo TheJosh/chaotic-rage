@@ -1038,7 +1038,7 @@ void RenderOpenGL::render()
 		//background();
 		mainRot();
 		lights();
-		map();
+		terrain();
 		entities();
 		particles();
 		if (physicsdebug != NULL) physics();
@@ -1210,7 +1210,7 @@ void RenderOpenGL::lights()
 /**
 * Floor
 **/
-void RenderOpenGL::map()
+void RenderOpenGL::terrain()
 {
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
