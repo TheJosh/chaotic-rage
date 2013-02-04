@@ -315,6 +315,14 @@ int Unit::getHealth()
 	return this->health;
 }
 
+/**
+* Gets the unit health, as a percent of starting health
+**/
+float Unit::getHealthPercent()
+{
+	return (float)this->health / (float)this->uc->begin_health;
+}
+
 
 
 AnimPlay* Unit::getAnimModel()

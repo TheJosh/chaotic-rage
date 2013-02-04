@@ -646,7 +646,8 @@ void RenderOpenGL::loadShaders()
 	base = this->st->mm->getBase();
 	this->shaders["entities"] = loadProgram(base, "entities");
 	this->shaders["map"] = loadProgram(base, "map");
-	
+	this->shaders["dissolve"] = loadProgram(base, "dissolve");
+
 	this->shaders_loaded = true;
 }
 
@@ -864,7 +865,7 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 * Renders an animation.
 * Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender() afterwards.
 **/
-void RenderOpenGL::renderAnimPlay(AnimPlay * play)
+void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 {
 	AnimModel * model;
 	
@@ -881,6 +882,14 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play)
 		if (model->meshframes[d]->mesh == NULL) continue;
 		if (model->meshframes[d]->texture == NULL) continue;
 		
+		// Dissolve texture, if required
+		if (model->meshframes[d]->dissolve) {
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, model->meshframes[d]->dissolve->pixels);
+		}
+
+		// Regular texure
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, model->meshframes[d]->texture->pixels);
 		
 		glMaterialfv(GL_FRONT, GL_EMISSION, model->meshframes[d]->emission);
@@ -895,24 +904,42 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play)
 		
 		// This is only temporary until the models get changed to be Y-up instead of Z-up
 		glRotatef(270.0f, 1, 0, 0);
-		
-		
+
 		glScalef(model->meshframes[d]->sx, model->meshframes[d]->sy, model->meshframes[d]->sz);
 		
+
+		if (model->meshframes[d]->dissolve) {
+			// Dissolve shader
+			GLuint shader = this->shaders["dissolve"];
+			float health = 1.0f;
+			if (e->klass() == UNIT) {
+				health = ((Unit*)e)->getHealthPercent();
+			}
+			glUseProgram(shader);
+			glUniform1i(glGetUniformLocation(shader, "uTex"), 0);		// tex unit 0
+			glUniform1i(glGetUniformLocation(shader, "uDissolve"), 1);	// tex unit 1
+			glUniform1f(glGetUniformLocation(shader, "uDeath"), 1.0f - health);
+
+		} else {
+			// Regular shader
+			GLuint shader = this->shaders["entities"];
+			glUseProgram(shader);
+			glUniform1i(glGetUniformLocation(shader, "uTex"), 0);		// tex unit 0
+		}
+		
+
 		{
 			WavefrontObj * obj = model->meshframes[d]->mesh;
 
 			if (obj->ibo_count == 0) this->createVBO(obj);
 			
 			glBindVertexArray(obj->vao);
-			glUseProgram(this->shaders["entities"]);
-			
 			glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
-			
-			glUseProgram(0);
 			glBindVertexArray(0);
 		}
 		
+		glUseProgram(0);
+
 		glPopMatrix();
 	}
 
@@ -1336,7 +1363,7 @@ void RenderOpenGL::entities()
 		trans.getOpenGLMatrix(m);
 		glMultMatrixf((GLfloat*)m);
 
-		renderAnimPlay(play);
+		renderAnimPlay(play, e);
 			
 		glPopMatrix();
 	}

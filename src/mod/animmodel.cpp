@@ -29,6 +29,7 @@ cfg_opt_t _meshframe_opts[] =
 	CFG_INT((char*) "frame", 0, CFGF_NONE),
 	CFG_STR((char*) "mesh", 0, CFGF_NONE),
 	CFG_STR((char*) "texture", 0, CFGF_NONE),
+	CFG_STR((char*) "dissolve", 0, CFGF_NONE),
 
 	CFG_FLOAT((char*) "px", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "py", 0, CFGF_NONE),
@@ -99,6 +100,7 @@ WavefrontObj * cachedLoadMesh(string name, Mod * mod)
 SpritePtr cachedLoadTexture(string name, Mod * mod)
 {
 	SpritePtr tex = NULL;
+	if (name.empty()) return NULL;
 
 	map<string, SpritePtr>::iterator it = loaded_textures.find(name);
 	if (it == loaded_textures.end()) {
@@ -166,7 +168,10 @@ AnimModel* loadItemAnimModel(cfg_t *cfg_model, Mod * mod)
 		mf->mesh = cachedLoadMesh(cfg_getstr(cfg_meshframe, "mesh"), mod);
 		mf->texture = cachedLoadTexture(cfg_getstr(cfg_meshframe, "texture"), mod);
 		mf->texture_name = cfg_getstr(cfg_meshframe, "texture");
-		
+
+		char* tmp = cfg_getstr(cfg_meshframe, "dissolve");
+		if (tmp) mf->dissolve = cachedLoadTexture(std::string(tmp), mod);
+
 		mf->px = cfg_getfloat(cfg_meshframe, "px");
 		mf->py = cfg_getfloat(cfg_meshframe, "py");
 		mf->pz = cfg_getfloat(cfg_meshframe, "pz");
@@ -216,6 +221,7 @@ MeshFrame::MeshFrame()
 {
 	mesh = NULL;
 	texture = NULL;
+	dissolve = NULL;
 	emission[0] = emission[1] = emission[2] = emission[3] = 0;
 }
 

@@ -114,8 +114,9 @@ class Unit : public Entity
 		unsigned int getNextWeaponID();
 		int getBelt();
 		int getMagazine();
+
 		int getHealth();
-		
+		float getHealthPercent();
 		virtual int takeDamage(int damage);
 		
 		UnitTypeSettings * getSettings();

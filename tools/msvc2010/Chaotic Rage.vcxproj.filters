@@ -92,6 +92,12 @@
     <None Include="..\..\data\cr\shaders\map.glslv">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\..\data\cr\shaders\dissolve.glslf">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders\dissolve.glslv">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\client.cpp">

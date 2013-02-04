@@ -117,11 +117,6 @@ class Render3D : public Render
 		virtual void postVBOrender() = 0;
 		
 		/**
-		* Render a single animation
-		**/
-		virtual void renderAnimPlay(AnimPlay * play) = 0;
-		
-		/**
 		* Render a object (i.e. a mesh + tex)
 		**/
 		virtual void renderObj (WavefrontObj * obj) = 0;

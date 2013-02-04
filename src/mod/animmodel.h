@@ -16,8 +16,8 @@ class MeshFrame
 	public:
 		// from data file
 		int frame;
-		string mesh_name;
-		string texture_name;
+		string mesh_name;		// in use?
+		string texture_name;	// in use?
 		float px, py, pz;		// pos
 		float rx, ry, rz;		// rotate
 		float sx, sy, sz;		// scale
@@ -27,7 +27,8 @@ class MeshFrame
 		// dynamic
 		WavefrontObj * mesh;
 		SpritePtr texture;
-		
+		SpritePtr dissolve;
+
 	public:
 		MeshFrame();
 };

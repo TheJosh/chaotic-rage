@@ -105,6 +105,8 @@
     <None Include="..\..\data\cr\objecttypes.conf" />
     <None Include="..\..\data\cr\particlegenerators.conf" />
     <None Include="..\..\data\cr\particletypes.conf" />
+    <None Include="..\..\data\cr\shaders\dissolve.glslf" />
+    <None Include="..\..\data\cr\shaders\dissolve.glslv" />
     <None Include="..\..\data\cr\shaders\entities.glslf" />
     <None Include="..\..\data\cr\shaders\entities.glslv" />
     <None Include="..\..\data\cr\shaders\map.glslf" />
