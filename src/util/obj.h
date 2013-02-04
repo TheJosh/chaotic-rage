@@ -31,13 +31,14 @@ class WavefrontObj {
 		vector<string> materials;
 		vector<Face> faces;
 		
-		unsigned int ibo_count;
-		unsigned int vbo;		// vertex, normal, textures
-		unsigned int ibo;		// vertex index
+		unsigned int vao;		// Vertex Array Object (all the bindings etc)
+		unsigned int vbo;		// Vertex Buffer Object (actual vertex data)
+		unsigned int ibo_count;	// size of vbo array
 		
 		Vertex size;
 		
 	public:
+		WavefrontObj();
 		void calcBoundingSize();
 };
 

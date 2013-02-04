@@ -60,6 +60,7 @@ class RenderOpenGL : public Render3D
 		// Heightmap
 		unsigned int ter_size;
 		GLuint ter_vboid;
+		GLuint ter_vaoid;
 		
 		// Debugging
 		AnimPlay *test;

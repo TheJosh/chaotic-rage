@@ -28,6 +28,12 @@
 using namespace std;
 
 
+/**
+* For VBO pointer offsets
+**/
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
+
 
 /**
 * Gets the next highest power-of-two for a number
@@ -427,9 +433,25 @@ void RenderOpenGL::loadHeightmap()
 		}
 	}
 	
+	glGenVertexArrays(1, &this->ter_vaoid);
+	glBindVertexArray(this->ter_vaoid);
+	
 	glGenBuffers(1, &this->ter_vboid);
 	glBindBuffer(GL_ARRAY_BUFFER, this->ter_vboid);
+	
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * this->ter_size, vertexes, GL_STATIC_DRAW);
+	
+	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
+	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
+	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
+	
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glClientActiveTexture(GL_TEXTURE0);
+	
+	glBindVertexArray(0);
+	
 	delete [] vertexes;
 }
 
@@ -727,22 +749,19 @@ GLuint RenderOpenGL::loadProgram(Mod* mod, string name)
 
 
 /**
-* For VBO pointer offsets
-**/
-#define BUFFER_OFFSET(i) ((char *)NULL + (i))
-
-/**
 * Builds a VBO for this object
 **/
 void RenderOpenGL::createVBO (WavefrontObj * obj)
 {
+	GLuint vaoid;
+	glGenVertexArrays(1, &vaoid);
+	glBindVertexArray(vaoid);
+
 	GLuint vboid;
-	
 	glGenBuffers(1, &vboid);
 	glBindBuffer(GL_ARRAY_BUFFER, vboid);
 	
 	VBOvertex* vertexes = new VBOvertex[obj->faces.size() * 3];
-	
 	int j = 0;
 	for (unsigned int i = 0; i < obj->faces.size(); i++) {
 		Face * f = &obj->faces.at(i);
@@ -784,33 +803,40 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 	
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * obj->faces.size() * 3, vertexes, GL_STATIC_DRAW);
 	
-	obj->ibo_count = obj->faces.size() * 3;
+	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
+	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
+	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
+	
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glClientActiveTexture(GL_TEXTURE0);
+	
+	glBindVertexArray(0);
+	
+	obj->vao = vaoid;
 	obj->vbo = vboid;
+	obj->ibo_count = obj->faces.size() * 3;
 	
 	delete [] vertexes;
 }
 
 
 /**
-* Call this before VBO render
+* Call this before VBO render.
+* It's actually a noop in this renderer.
 **/
 void RenderOpenGL::preVBOrender()
 {
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glClientActiveTexture(GL_TEXTURE0);
 }
 
 
 /**
-* Call this after VBO render, to clean up the OpenGL state
+* Call this after VBO render, to clean up the OpenGL state.
+* It's actually a noop in this renderer.
 **/
 void RenderOpenGL::postVBOrender()
 {
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
 
@@ -818,26 +844,25 @@ void RenderOpenGL::postVBOrender()
 * Renders a WavefrontObj.
 * This is only use by external callers (i.e. `Menu`).
 * Other parts of this class just do these bits themselves, but slightly differently each time.
-* Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender afterwards().
+* Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender() afterwards.
 **/
 void RenderOpenGL::renderObj (WavefrontObj * obj)
 {
 	if (obj->ibo_count == 0) this->createVBO(obj);
 	
-	glBindBuffer(GL_ARRAY_BUFFER, obj->vbo);
-	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
-	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
-	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
-	
+	glBindVertexArray(obj->vao);
 	glUseProgram(this->shaders["basic"]);
+	
 	glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
+	
 	glUseProgram(0);
+	glBindVertexArray(0);
 }
 
 
 /**
 * Renders an animation.
-* Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender afterwards()
+* Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender() afterwards.
 **/
 void RenderOpenGL::renderAnimPlay(AnimPlay * play)
 {
@@ -878,15 +903,14 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play)
 			WavefrontObj * obj = model->meshframes[d]->mesh;
 
 			if (obj->ibo_count == 0) this->createVBO(obj);
-	
-			glBindBuffer(GL_ARRAY_BUFFER, obj->vbo);
-			glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
-			glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
-			glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
-	
+			
+			glBindVertexArray(obj->vao);
 			glUseProgram(this->shaders["entities"]);
+			
 			glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
+			
 			glUseProgram(0);
+			glBindVertexArray(0);
 		}
 		
 		glPopMatrix();
@@ -1218,25 +1242,23 @@ void RenderOpenGL::terrain()
 	glFrontFace(GL_CW);
 	glBindTexture(GL_TEXTURE_2D, st->curr_map->terrain->pixels);
 	
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	
+	glUseProgram(this->shaders["map"]);
+	
 	
 	glPushMatrix();
 	
 	// TODO: Should this be a part of the mesh create instead of part of the render?
 	glScalef(this->st->curr_map->heightmapScaleX(), 1.0f, this->st->curr_map->heightmapScaleZ());
 	
-	glBindBuffer(GL_ARRAY_BUFFER, this->ter_vboid);
-	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
-	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
-	glClientActiveTexture(GL_TEXTURE0);
-	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
-	glUseProgram(this->shaders["map"]);
-
+	glBindVertexArray(this->ter_vaoid);
+	
 	glDrawArrays(GL_TRIANGLES, 0, this->ter_size);
 	
+	glBindVertexArray(0);
+	
 	glPopMatrix();
+	
 	
 	// Static geometry meshes
 	glFrontFace(GL_CCW);
@@ -1251,23 +1273,19 @@ void RenderOpenGL::terrain()
 
 		{
 			WavefrontObj * obj = (*it)->mesh;
-
+			
 			if (obj->ibo_count == 0) this->createVBO(obj);
-	
-			glBindBuffer(GL_ARRAY_BUFFER, obj->vbo);
-			glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
-			glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
-			glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
-	
+			
+			glBindVertexArray(obj->vao);
+			
 			glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
+			
+			glBindVertexArray(0);
 		}
 
 		glPopMatrix();
 	}
 	
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glUseProgram(0);
 	glDisable(GL_CULL_FACE);
 
@@ -1299,8 +1317,6 @@ void RenderOpenGL::terrain()
 **/
 void RenderOpenGL::entities()
 {
-	preVBOrender();
-
 	glFrontFace(GL_CCW);
 	glEnable(GL_CULL_FACE);
 
@@ -1324,8 +1340,6 @@ void RenderOpenGL::entities()
 			
 		glPopMatrix();
 	}
-
-	postVBOrender();
 
 	glDisable(GL_CULL_FACE);
 

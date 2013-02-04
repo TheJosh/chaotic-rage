@@ -10,6 +10,14 @@
 using namespace std;
 
 
+WavefrontObj::WavefrontObj()
+{
+	this->vao = 0;
+	this->vbo = 0;
+	this->ibo_count = 0;
+}
+
+
 /**
 * Calculates the size of the bounding box for a given mesh
 **/
