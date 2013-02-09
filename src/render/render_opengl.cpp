@@ -23,6 +23,7 @@
 #include "guichan_imageloader.h"
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -245,6 +246,8 @@ void RenderOpenGL::mainViewport(int s, int of)
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
+	
+	this->projection = glm::perspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 150.0f);
 	
 	gluPerspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 150.f);
 	//glScalef(-1.0f,1.0f,1.0f);
@@ -876,6 +879,13 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 	
 	int frame = play->getFrame();
 	
+	glPushMatrix();
+			
+	btTransform trans = e->getTransform();
+	btScalar m[16];
+	trans.getOpenGLMatrix(m);
+	glMultMatrixf((GLfloat*)m);
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
@@ -944,6 +954,8 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 
 		glPopMatrix();
 	}
+
+	glPopMatrix();
 
 	glDisable(GL_BLEND);
 }
@@ -1358,16 +1370,7 @@ void RenderOpenGL::entities()
 		AnimPlay *play = e->getAnimModel();
 		if (play == NULL) continue;
 
-		glPushMatrix();
-			
-		btTransform trans = e->getTransform();
-		btScalar m[16];
-		trans.getOpenGLMatrix(m);
-		glMultMatrixf((GLfloat*)m);
-
 		renderAnimPlay(play, e);
-			
-		glPopMatrix();
 	}
 
 	glDisable(GL_CULL_FACE);

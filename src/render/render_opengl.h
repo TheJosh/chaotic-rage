@@ -19,6 +19,8 @@
 #include <guichan/opengl.hpp>
 #include <guichan/opengl/openglsdlimageloader.hpp>
 
+#include <glm/glm.hpp>
+
 #include "LinearMath/btIDebugDraw.h"
 
 
@@ -70,6 +72,8 @@ class RenderOpenGL : public Render3D
 		bool shaders_loaded;		// true if loaded from a mod
 		map<string, GLuint> shaders;
 		
+		glm::mat4 projection;
+
 	public:
 		unsigned int q_tex;
 		unsigned int q_alias;
