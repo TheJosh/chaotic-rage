@@ -8,7 +8,7 @@ ifeq ($(PLATFORM),linux)
 	SERVER_NOGUI=dedicatedserver-nogui
 	ANIMVIEWER=animviewer
 	
-	CFLAGS=`sdl-config --cflags` `pkg-config zziplib libconfuse gl glu lua5.1 bullet assimp --cflags` `freetype-config --cflags` -DGETOPT -Werror -Wall -ggdb
+	CFLAGS=`sdl-config --cflags` `pkg-config zziplib libconfuse gl glu lua5.1 bullet assimp --cflags` `freetype-config --cflags` -DGETOPT -Werror -Wall -ggdb -Itools/include
 	LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse lua5.1 bullet assimp --libs` `freetype-config --libs` -lGL -lGLU -lGLEW -lSDL_mixer -lSDL_image -lSDL_net -lguichan_sdl -lguichan_opengl -lguichan -L/usr/X11R6/lib -lX11
 	
 	CFLAGS_NOGUI=`sdl-config --cflags` `pkg-config zziplib libconfuse lua5.1 bullet assimp --cflags` -DGETOPT -Werror -Wall -ggdb
