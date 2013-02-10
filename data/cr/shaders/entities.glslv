@@ -1,9 +1,16 @@
-#version 120
+#version 140
 
-varying vec2 TexCoord0;
+in vec3 vPosition;
+in vec3 vNormal;
+in vec2 vTexUV;
+
+out vec2 fTexUV;
+
+uniform mat4 uMVP;
+
 
 void main()
 {
-	gl_Position = ftransform();
-	TexCoord0 = gl_MultiTexCoord0.st;
+	gl_Position = uMVP * vec4(vPosition, 1.0f);
+	fTexUV = vTexUV;
 }

@@ -72,7 +72,8 @@ class RenderOpenGL : public Render3D
 		bool shaders_loaded;		// true if loaded from a mod
 		map<string, GLuint> shaders;
 		
-		glm::mat4 projection;
+		glm::mat4 projection;	// perspective
+		glm::mat4 camera;		// camera
 
 	public:
 		unsigned int q_tex;

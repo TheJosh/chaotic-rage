@@ -24,6 +24,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -677,7 +678,7 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 	if (! success) {
 		GLchar InfoLog[1024];
 		glGetShaderInfoLog(shader, 1024, NULL, InfoLog);
-		fprintf(stderr, "Error compiling shader type %d:\n%s\n", type, InfoLog);
+		fprintf(stderr, "Error compiling shader '%s' type %d:\n%s\n", code, type, InfoLog);
 		reportFatalError("Error compiling OpenGL shader");
 	}
 	
@@ -809,13 +810,14 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 	
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * obj->faces.size() * 3, vertexes, GL_STATIC_DRAW);
 	
-	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
-	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
-	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
-	
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(0));	// Position
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(12));	// Normals
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(24));	// TexUVs
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+
 	glClientActiveTexture(GL_TEXTURE0);
 	
 	glBindVertexArray(0);
@@ -873,18 +875,18 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 {
 	AnimModel * model;
-	
+	GLuint shader;
+
 	model = play->getModel();
 	if (model == NULL) return;
 	
 	int frame = play->getFrame();
 	
-	glPushMatrix();
-			
 	btTransform trans = e->getTransform();
-	btScalar m[16];
+	float m[16];
 	trans.getOpenGLMatrix(m);
-	glMultMatrixf((GLfloat*)m);
+	glm::mat4 modelMatrix = glm::make_mat4(m);
+
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
@@ -906,23 +908,20 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 		
 		glMaterialfv(GL_FRONT, GL_EMISSION, model->meshframes[d]->emission);
 		
-		glPushMatrix();
 		
-		glTranslatef(model->meshframes[d]->px, model->meshframes[d]->py, model->meshframes[d]->pz);
-		glRotatef(model->meshframes[d]->rx, 1, 0, 0);
-		glRotatef(model->meshframes[d]->ry, 0, 1, 0);
-		glRotatef(model->meshframes[d]->rz, 0, 0, 1);
-		
-		
-		// This is only temporary until the models get changed to be Y-up instead of Z-up
-		glRotatef(270.0f, 1, 0, 0);
+		glm::mat4 frameMatrix = glm::translate(modelMatrix, glm::vec3(model->meshframes[d]->px, model->meshframes[d]->py, model->meshframes[d]->pz));
+		frameMatrix = glm::rotate(frameMatrix, model->meshframes[d]->rx, glm::vec3(1.0f, 0.0f, 0.0f));
+		frameMatrix = glm::rotate(frameMatrix, model->meshframes[d]->ry, glm::vec3(0.0f, 1.0f, 0.0f));
+		frameMatrix = glm::rotate(frameMatrix, model->meshframes[d]->rz, glm::vec3(0.0f, 0.0f, 1.0f));
 
-		glScalef(model->meshframes[d]->sx, model->meshframes[d]->sy, model->meshframes[d]->sz);
-		
+		// This is only temporary until the models get changed to be Y-up instead of Z-up
+		frameMatrix = glm::rotate(frameMatrix, 270.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+
+		frameMatrix = glm::scale(frameMatrix, glm::vec3(model->meshframes[d]->sx, model->meshframes[d]->sy, model->meshframes[d]->sz));
 
 		if (model->meshframes[d]->dissolve) {
 			// Dissolve shader
-			GLuint shader = this->shaders["dissolve"];
+			shader = this->shaders["dissolve"];
 			float health = 1.0f;
 			if (e->klass() == UNIT) {
 				health = ((Unit*)e)->getHealthPercent();
@@ -934,28 +933,28 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 
 		} else {
 			// Regular shader
-			GLuint shader = this->shaders["entities"];
+			shader = this->shaders["entities"];
 			glUseProgram(shader);
 			glUniform1i(glGetUniformLocation(shader, "uTex"), 0);		// tex unit 0
 		}
 		
 
-		{
-			WavefrontObj * obj = model->meshframes[d]->mesh;
+		glBindAttribLocation(shader, 0, "vPosition");
+		glBindAttribLocation(shader, 1, "vNormal");
+		glBindAttribLocation(shader, 2, "vTexUV");
 
-			if (obj->ibo_count == 0) this->createVBO(obj);
+		glm::mat4 MVP = this->projection * this->camera * frameMatrix;
+		glUniformMatrix4fv(glGetUniformLocation(shader, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+
+		WavefrontObj * obj = model->meshframes[d]->mesh;
+		if (obj->ibo_count == 0) this->createVBO(obj);
 			
-			glBindVertexArray(obj->vao);
-			glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
-			glBindVertexArray(0);
-		}
+		glBindVertexArray(obj->vao);
+		glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
+		glBindVertexArray(0);
 		
 		glUseProgram(0);
-
-		glPopMatrix();
 	}
-
-	glPopMatrix();
 
 	glDisable(GL_BLEND);
 }
@@ -1217,6 +1216,11 @@ void RenderOpenGL::mainRot()
 	glRotatef(360.0f - angle, 0.0f, 1.0f, 0.0f);
 	glTranslatef(-camerax, -cameray, -cameraz);
 	
+	this->camera = glm::mat4(1.0f);
+	this->camera = glm::rotate(this->camera, tilt, glm::vec3(1.0f, 0.0f, 0.0f));
+	this->camera = glm::rotate(this->camera, 360.0f - angle, glm::vec3(0.0f, 1.0f, 0.0f));
+	this->camera = glm::translate(this->camera, glm::vec3(-camerax, -cameray, -cameraz));
+
 	// Enable fog
 	if (this->render_player != NULL && this->viewmode == 0 && st->curr_map->fog_density > 0.0f) {
 		glEnable(GL_FOG);
@@ -1261,6 +1265,7 @@ void RenderOpenGL::lights()
 				glLightfv(GL_LIGHT0 + i, GL_POSITION, position);
 			}
 			
+
 			glLightfv(GL_LIGHT0 + i, GL_AMBIENT, l->ambient);
 			glLightfv(GL_LIGHT0 + i, GL_DIFFUSE, l->diffuse);
 			glLightfv(GL_LIGHT0 + i, GL_SPECULAR, l->specular);
