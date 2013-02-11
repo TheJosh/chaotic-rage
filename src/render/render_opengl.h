@@ -63,6 +63,7 @@ class RenderOpenGL : public Render3D
 		unsigned int ter_size;
 		GLuint ter_vboid;
 		GLuint ter_vaoid;
+		WavefrontObj *water;
 		
 		// Debugging
 		AnimPlay *test;
@@ -118,6 +119,7 @@ class RenderOpenGL : public Render3D
 		virtual unsigned int widthText(string text);
 
 	private:
+		void createWater();
 		void renderAnimPlay(AnimPlay * play, Entity * e);
 		void renderCharacter(char c);
 		void createVBO (WavefrontObj * obj);

@@ -463,6 +463,50 @@ void RenderOpenGL::freeHeightmap()
 
 
 /**
+* Create the "water" mesh
+* We save it in a WavefrontObj.
+**/
+void RenderOpenGL::createWater()
+{
+	Vertex v;
+	TexUV t;
+	Face f;
+	
+	water = new WavefrontObj();
+	v.y = 0.0;
+	
+	v.x = 0.0f; v.z = 0.0f; t.x = 0.0f; t.y = 0.0f;
+	water->vertexes.push_back(v);
+	water->texuvs.push_back(t);
+	
+	v.x = 0.0f; v.z = 1.0f; t.x = 0.0f; t.y = 1.0f;
+	water->vertexes.push_back(v);
+	water->texuvs.push_back(t);
+	
+	v.x = 1.0f; v.z = 1.0f; t.x = 1.0f; t.y = 1.0f;
+	water->vertexes.push_back(v);
+	water->texuvs.push_back(t);
+	
+	v.x = 1.0f; v.z = 0.0f; t.x = 1.0f; t.y = 0.0f;
+	water->vertexes.push_back(v);
+	water->texuvs.push_back(t);
+	
+	v.x = 0.0f; v.y = 1.0f; v.z = 0.0f;
+	water->normals.push_back(v);
+	
+	f.v1 = 1; f.v2 = 2; f.v3 = 3;
+	f.t1 = 1; f.t2 = 2; f.t3 = 3;
+	f.n1 = 1; f.n2 = 1; f.n3 = 1;
+	water->faces.push_back(f);
+	
+	f.v1 = 1; f.v2 = 3; f.v3 = 4;
+	f.t1 = 1; f.t2 = 3; f.t3 = 4;
+	f.n1 = 1; f.n2 = 1; f.n3 = 1;
+	water->faces.push_back(f);
+}
+
+
+/**
 * Renders a sprite.
 * Should only be used if the the caller was called by this classes 'Render' function.
 **/
@@ -545,6 +589,9 @@ void RenderOpenGL::preGame()
 	
 	// This will load the shaders (from the base mod) if they aren't loaded.
 	this->loadShaders();
+	
+	// The water object
+	this->createWater();
 }
 
 void RenderOpenGL::postGame()
@@ -564,6 +611,8 @@ void RenderOpenGL::postGame()
 
 	GLfloat em[] = {0.0, 0.0, 0.0, 0.0};
 	glMaterialfv(GL_FRONT, GL_EMISSION, em);
+	
+	delete(this->water);
 }
 
 
@@ -1245,32 +1294,24 @@ void RenderOpenGL::terrain()
 		glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
 	}
 	
-	glBindVertexArray(0);
-	glUseProgram(0);
 	
-	glDisable(GL_CULL_FACE);
-
-
 	// Water surface
 	// TODO: Rejig for GLSL
 	if (this->st->curr_map->water) {
- 		glBindTexture(GL_TEXTURE_2D, st->curr_map->water->pixels);
-		glEnable(GL_BLEND);
-
-		glBegin(GL_QUADS);
-			glTexCoord2f(0.0f, this->st->curr_map->height/10.0f);
-			glVertex3f(0, this->st->curr_map->water_level, this->st->curr_map->height);
+		glUseProgram(this->shaders["map"]);
 		
-			glTexCoord2f(this->st->curr_map->width/10.0f, this->st->curr_map->height/10.0f);
-			glVertex3f(this->st->curr_map->width, this->st->curr_map->water_level, this->st->curr_map->height);
+		if (this->water->ibo_count == 0) this->createVBO(this->water);
 		
-			glTexCoord2f(this->st->curr_map->width/10.0f, 0.0f);
-			glVertex3f(this->st->curr_map->width, this->st->curr_map->water_level, 0);
-
-			glTexCoord2f(0.0f, 0.0f);
-			glVertex3f(0, this->st->curr_map->water_level, 0);
-		glEnd();
+		glm::mat4 MVP = this->projection * this->view;
+		glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"], "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+		
+		glBindVertexArray(this->water->vao);
+		glDrawArrays(GL_TRIANGLES, 0, this->water->ibo_count);
 	}
+	
+	glBindVertexArray(0);
+	glUseProgram(0);
+	glDisable(GL_CULL_FACE);
 }
 
 
