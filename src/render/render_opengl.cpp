@@ -447,13 +447,13 @@ void RenderOpenGL::loadHeightmap()
 	
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * this->ter_size, vertexes, GL_STATIC_DRAW);
 	
-	glVertexPointer(3, GL_FLOAT, 32, BUFFER_OFFSET(0));
-	glNormalPointer(GL_FLOAT, 32, BUFFER_OFFSET(12));
-	glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
-	
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(0));	// Position
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(12));	// Normals
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(24));	// TexUVs
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
 	glClientActiveTexture(GL_TEXTURE0);
 	
 	glBindVertexArray(0);
@@ -707,6 +707,11 @@ GLuint RenderOpenGL::createProgram(const char* vertex, const char* fragment)
 	// Same with frag shader
 	sFragment = this->createShader(fragment, GL_FRAGMENT_SHADER);
 	glAttachShader(program, sFragment);
+	
+	// Bind attribs
+	glBindAttribLocation(program, 0, "vPosition");
+	glBindAttribLocation(program, 1, "vNormal");
+	glBindAttribLocation(program, 2, "vTexUV");
 	
 	// Link
 	glLinkProgram(program);
@@ -1288,9 +1293,10 @@ void RenderOpenGL::terrain()
 	glFrontFace(GL_CW);
 	glBindTexture(GL_TEXTURE_2D, st->curr_map->terrain->pixels);
 	
-	
 	glUseProgram(this->shaders["map"]);
 	
+	glm::mat4 MVP = this->projection * this->camera;
+	glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"], "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
 	glPushMatrix();
 	
