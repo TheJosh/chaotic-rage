@@ -472,37 +472,37 @@ void RenderOpenGL::createWater()
 	TexUV t;
 	Face f;
 	
-	water = new WavefrontObj();
+	waterobj = new WavefrontObj();
 	v.y = 0.0;
 	
 	v.x = 0.0f; v.z = 0.0f; t.x = 0.0f; t.y = 0.0f;
-	water->vertexes.push_back(v);
-	water->texuvs.push_back(t);
+	waterobj->vertexes.push_back(v);
+	waterobj->texuvs.push_back(t);
 	
 	v.x = 0.0f; v.z = 1.0f; t.x = 0.0f; t.y = 1.0f;
-	water->vertexes.push_back(v);
-	water->texuvs.push_back(t);
+	waterobj->vertexes.push_back(v);
+	waterobj->texuvs.push_back(t);
 	
 	v.x = 1.0f; v.z = 1.0f; t.x = 1.0f; t.y = 1.0f;
-	water->vertexes.push_back(v);
-	water->texuvs.push_back(t);
+	waterobj->vertexes.push_back(v);
+	waterobj->texuvs.push_back(t);
 	
 	v.x = 1.0f; v.z = 0.0f; t.x = 1.0f; t.y = 0.0f;
-	water->vertexes.push_back(v);
-	water->texuvs.push_back(t);
+	waterobj->vertexes.push_back(v);
+	waterobj->texuvs.push_back(t);
 	
 	v.x = 0.0f; v.y = 1.0f; v.z = 0.0f;
-	water->normals.push_back(v);
+	waterobj->normals.push_back(v);
 	
 	f.v1 = 1; f.v2 = 2; f.v3 = 3;
 	f.t1 = 1; f.t2 = 2; f.t3 = 3;
 	f.n1 = 1; f.n2 = 1; f.n3 = 1;
-	water->faces.push_back(f);
+	waterobj->faces.push_back(f);
 	
 	f.v1 = 1; f.v2 = 3; f.v3 = 4;
 	f.t1 = 1; f.t2 = 3; f.t3 = 4;
 	f.n1 = 1; f.n2 = 1; f.n3 = 1;
-	water->faces.push_back(f);
+	waterobj->faces.push_back(f);
 }
 
 
@@ -612,7 +612,7 @@ void RenderOpenGL::postGame()
 	GLfloat em[] = {0.0, 0.0, 0.0, 0.0};
 	glMaterialfv(GL_FRONT, GL_EMISSION, em);
 	
-	delete(this->water);
+	delete(this->waterobj);
 }
 
 
@@ -692,6 +692,7 @@ void RenderOpenGL::loadShaders()
 	base = this->st->mm->getBase();
 	this->shaders["entities"] = loadProgram(base, "entities");
 	this->shaders["map"] = loadProgram(base, "map");
+	this->shaders["water"] = loadProgram(base, "water");
 	this->shaders["dissolve"] = loadProgram(base, "dissolve");
 
 	this->shaders_loaded = true;
@@ -1148,6 +1149,7 @@ void RenderOpenGL::render()
 		terrain();
 		entities();
 		particles();
+		water();
 		if (physicsdebug != NULL) physics();
 		hud(this->st->local_players[i]->hud);
 	}
@@ -1256,7 +1258,6 @@ void RenderOpenGL::terrain()
 {
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
-	glDisable(GL_BLEND);
 	glFrontFace(GL_CW);
 	glBindTexture(GL_TEXTURE_2D, st->curr_map->terrain->pixels);
 	
@@ -1293,25 +1294,46 @@ void RenderOpenGL::terrain()
 		glBindVertexArray(obj->vao);
 		glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
 	}
-	
-	
-	// Water surface
-	// TODO: Rejig for GLSL
-	if (this->st->curr_map->water) {
-		glUseProgram(this->shaders["map"]);
-		
-		if (this->water->ibo_count == 0) this->createVBO(this->water);
-		
-		glm::mat4 MVP = this->projection * this->view;
-		glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"], "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-		
-		glBindVertexArray(this->water->vao);
-		glDrawArrays(GL_TRIANGLES, 0, this->water->ibo_count);
-	}
-	
+
 	glBindVertexArray(0);
 	glUseProgram(0);
 	glDisable(GL_CULL_FACE);
+}
+
+/**
+* Water goes last because of blending
+**/
+void RenderOpenGL::water()
+{
+	if (! this->st->curr_map->water) return;
+
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	//glDisable(GL_DEPTH_TEST);
+	glFrontFace(GL_CCW);
+
+	glBindTexture(GL_TEXTURE_2D, this->st->curr_map->water->pixels);
+	glUseProgram(this->shaders["water"]);
+		
+	if (this->waterobj->ibo_count == 0) this->createVBO(this->waterobj);
+	
+	glm::mat4 modelMatrix = glm::scale(
+		glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, this->st->curr_map->water_level, 0.0f)),
+		glm::vec3(this->st->curr_map->width, 1.0f, this->st->curr_map->height)
+	);
+
+	glm::mat4 MVP = this->projection * this->view * modelMatrix;
+	glUniformMatrix4fv(glGetUniformLocation(this->shaders["water"], "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+		
+	glBindVertexArray(this->waterobj->vao);
+	glDrawArrays(GL_TRIANGLES, 0, this->waterobj->ibo_count);
+
+	glBindVertexArray(0);
+	glUseProgram(0);
+
+	//glEnable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_BLEND);
 }
 
 

@@ -111,6 +111,8 @@
     <None Include="..\..\data\cr\shaders\entities.glslv" />
     <None Include="..\..\data\cr\shaders\map.glslf" />
     <None Include="..\..\data\cr\shaders\map.glslv" />
+    <None Include="..\..\data\cr\shaders\water.glslf" />
+    <None Include="..\..\data\cr\shaders\water.glslv" />
     <None Include="..\..\data\cr\songs.conf" />
     <None Include="..\..\data\cr\sounds.conf" />
     <None Include="..\..\data\cr\unittypes.conf" />

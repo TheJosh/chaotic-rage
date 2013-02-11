@@ -63,7 +63,7 @@ class RenderOpenGL : public Render3D
 		unsigned int ter_size;
 		GLuint ter_vboid;
 		GLuint ter_vaoid;
-		WavefrontObj *water;
+		WavefrontObj *waterobj;
 		
 		// Debugging
 		AnimPlay *test;
@@ -129,6 +129,7 @@ class RenderOpenGL : public Render3D
 		void terrain();
 		void entities();
 		void physics();
+		void water();
 		void particles();
 		void guichan();
 		void hud(HUD * hud);

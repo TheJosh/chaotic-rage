@@ -98,6 +98,12 @@
     <None Include="..\..\data\cr\shaders\dissolve.glslv">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\..\data\cr\shaders\water.glslf">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders\water.glslv">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\client.cpp">
