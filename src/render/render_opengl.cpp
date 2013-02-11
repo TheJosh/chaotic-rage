@@ -245,16 +245,7 @@ void RenderOpenGL::mainViewport(int s, int of)
 	
 	glViewport(x, y, w, h);
 	
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	
 	this->projection = glm::perspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 150.0f);
-	
-	gluPerspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 150.f);
-	//glScalef(-1.0f,1.0f,1.0f);
-	//glTranslatef(0.f, 0.f, -120.0f);
-	
-	glMatrixMode(GL_MODELVIEW);
 }
 
 
@@ -948,7 +939,7 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 		glBindAttribLocation(shader, 1, "vNormal");
 		glBindAttribLocation(shader, 2, "vTexUV");
 
-		glm::mat4 MVP = this->projection * this->camera * frameMatrix;
+		glm::mat4 MVP = this->projection * this->view * frameMatrix;
 		glUniformMatrix4fv(glGetUniformLocation(shader, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 
 		WavefrontObj * obj = model->meshframes[d]->mesh;
@@ -1104,9 +1095,7 @@ void RenderOpenGL::render()
 		this->render_player = this->st->local_players[i]->p;
 		mainViewport(i, this->st->num_local);
 		
-		//background();
 		mainRot();
-		lights();
 		terrain();
 		entities();
 		particles();
@@ -1146,24 +1135,6 @@ void RenderOpenGL::physics()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_FOG);
 	glEnable(GL_TEXTURE_2D);
-}
-
-
-/**
-* Background
-**/
-void RenderOpenGL::background()
-{
-	if (this->render_player != NULL) {
-		btTransform trans = this->render_player->getTransform();
-		btVector3 euler;
-		
-		glLoadIdentity();
-		glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
-		glRotatef(RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())), 0.f, 0.f, 1.f);
-		glTranslatef(0.f - st->curr_map->background->w / 2.f, 0 - st->curr_map->background->h / 2.f, 0.f);
-		this->renderSprite(st->curr_map->background, 0.f, 0.f);
-	}
 }
 
 
@@ -1216,68 +1187,15 @@ void RenderOpenGL::mainRot()
 	float cameray = dist * sin(DEG_TO_RAD(tilt)) + trans.getOrigin().y();
 	float cameraz = dist * cos(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().z();
 	
-	// OpenGL transforms
-	glRotatef(tilt, 1.0f, 0.0f, 0.0f);
-	glRotatef(360.0f - angle, 0.0f, 1.0f, 0.0f);
-	glTranslatef(-camerax, -cameray, -cameraz);
-	
-	this->camera = glm::mat4(1.0f);
-	this->camera = glm::rotate(this->camera, tilt, glm::vec3(1.0f, 0.0f, 0.0f));
-	this->camera = glm::rotate(this->camera, 360.0f - angle, glm::vec3(0.0f, 1.0f, 0.0f));
-	this->camera = glm::translate(this->camera, glm::vec3(-camerax, -cameray, -cameraz));
+	// Prep the view matrix
+	this->view = glm::mat4(1.0f);
+	this->view = glm::rotate(this->view, tilt, glm::vec3(1.0f, 0.0f, 0.0f));
+	this->view = glm::rotate(this->view, 360.0f - angle, glm::vec3(0.0f, 1.0f, 0.0f));
+	this->view = glm::translate(this->view, glm::vec3(-camerax, -cameray, -cameraz));
 
 	// Enable fog
 	if (this->render_player != NULL && this->viewmode == 0 && st->curr_map->fog_density > 0.0f) {
 		glEnable(GL_FOG);
-	}
-}
-
-
-/**
-* Lighting
-**/
-void RenderOpenGL::lights()
-{
-	unsigned int i;
-
-	// Lights
-	GLfloat dir_down[] = { 0.0f, 1.0f, 0.0f, 0.0f };
-	GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	//GLfloat spot_torch[] = { -1.0f, 0.0f, -1.0f };
-	GLfloat spot_down[] = { 0.0f, -1.0f, 0.0f };
-	
-	for (i = 0; i < st->curr_map->lights.size(); i++) {
-		Light * l = st->curr_map->lights[i];
-		
-		if (l->type == 2 && this->render_player == NULL) continue;
-		
-		glPushMatrix();
-			if (l->type == 1) {
-				glLightfv(GL_LIGHT0 + i, GL_POSITION, dir_down);
-				
-			} else if (l->type == 2) {
-				btTransform trans = this->render_player->getTransform();
-				glTranslatef(trans.getOrigin().getX(), trans.getOrigin().getY() + 2.0f, trans.getOrigin().getZ());
-				
-				glLightfv(GL_LIGHT0 + i, GL_POSITION, position);
-				
-			} else if (l->type == 3) {
-				glTranslatef(l->x, l->y, l->z);
-				
-				glLightfv(GL_LIGHT0 + i, GL_SPOT_DIRECTION, spot_down);
-				glLightf(GL_LIGHT0 + i, GL_SPOT_CUTOFF, 40.0f);
-				glLightf(GL_LIGHT0 + i, GL_SPOT_EXPONENT, 1.7f);
-				glLightfv(GL_LIGHT0 + i, GL_POSITION, position);
-			}
-			
-
-			glLightfv(GL_LIGHT0 + i, GL_AMBIENT, l->ambient);
-			glLightfv(GL_LIGHT0 + i, GL_DIFFUSE, l->diffuse);
-			glLightfv(GL_LIGHT0 + i, GL_SPECULAR, l->specular);
-			glEnable(GL_LIGHT0 + i);
-		glPopMatrix();
-		
-		if (i == 7) break;
 	}
 }
 
@@ -1295,54 +1213,46 @@ void RenderOpenGL::terrain()
 	
 	glUseProgram(this->shaders["map"]);
 	
-	glm::mat4 MVP = this->projection * this->camera;
+	
+	glm::mat4 modelMatrix = glm::scale(
+		glm::mat4(1.0f),
+		glm::vec3(this->st->curr_map->heightmapScaleX(), 1.0f, this->st->curr_map->heightmapScaleZ())
+	);
+	
+	glm::mat4 MVP = this->projection * this->view * modelMatrix;
 	glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"], "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
-	glPushMatrix();
-	
-	// TODO: Should this be a part of the mesh create instead of part of the render?
-	glScalef(this->st->curr_map->heightmapScaleX(), 1.0f, this->st->curr_map->heightmapScaleZ());
-	
 	glBindVertexArray(this->ter_vaoid);
-	
 	glDrawArrays(GL_TRIANGLES, 0, this->ter_size);
-	
-	glBindVertexArray(0);
-	
-	glPopMatrix();
 	
 	
 	// Static geometry meshes
 	glFrontFace(GL_CCW);
 	for (vector<MapMesh*>::iterator it = st->curr_map->meshes.begin(); it != st->curr_map->meshes.end(); it++) {
 		glBindTexture(GL_TEXTURE_2D, (*it)->texture->pixels);
-
-		glPushMatrix();
-
-		btScalar m[16];
+		
+		float m[16];
 		(*it)->xform.getOpenGLMatrix(m);
-		glMultMatrixf((GLfloat*)m);
-
-		{
-			WavefrontObj * obj = (*it)->mesh;
-			
-			if (obj->ibo_count == 0) this->createVBO(obj);
-			
-			glBindVertexArray(obj->vao);
-			
-			glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
-			
-			glBindVertexArray(0);
-		}
-
-		glPopMatrix();
+		modelMatrix = glm::make_mat4(m);
+		
+		WavefrontObj * obj = (*it)->mesh;
+		if (obj->ibo_count == 0) this->createVBO(obj);
+		
+		glm::mat4 MVP = this->projection * this->view * modelMatrix;
+		glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"], "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+		
+		glBindVertexArray(obj->vao);
+		glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
 	}
 	
+	glBindVertexArray(0);
 	glUseProgram(0);
+	
 	glDisable(GL_CULL_FACE);
 
 
 	// Water surface
+	// TODO: Rejig for GLSL
 	if (this->st->curr_map->water) {
  		glBindTexture(GL_TEXTURE_2D, st->curr_map->water->pixels);
 		glEnable(GL_BLEND);
@@ -1391,8 +1301,13 @@ void RenderOpenGL::entities()
 }
 
 
+/**
+* Particle effects
+**/
 void RenderOpenGL::particles()
 {
+	// TODO: Rejig for GLSL
+	
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 	glPointSize(5.f);

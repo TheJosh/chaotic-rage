@@ -73,7 +73,7 @@ class RenderOpenGL : public Render3D
 		map<string, GLuint> shaders;
 		
 		glm::mat4 projection;	// perspective
-		glm::mat4 camera;		// camera
+		glm::mat4 view;			// camera
 
 	public:
 		unsigned int q_tex;
@@ -123,9 +123,7 @@ class RenderOpenGL : public Render3D
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
 		void mainViewport(int s, int of);
-		void background();
 		void mainRot();
-		void lights();
 		void terrain();
 		void entities();
 		void physics();
