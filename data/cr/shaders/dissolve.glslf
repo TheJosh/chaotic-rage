@@ -1,14 +1,14 @@
-#version 120
+#version 140
 
-varying vec2 TexCoord0;
+in vec2 fTexUV;
 uniform sampler2D uTex;
 uniform sampler2D uDissolve;
 uniform float uDeath;
 
 void main()
 {
-	if (texture2D(uDissolve, TexCoord0.st).r < uDeath)
+	if (texture2D(uDissolve, fTexUV).r < uDeath)
 		discard;
 
-	gl_FragColor = texture2D(uTex, TexCoord0.st);
+	gl_FragColor = texture2D(uTex, fTexUV);
 }
