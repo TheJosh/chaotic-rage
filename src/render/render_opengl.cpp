@@ -693,6 +693,7 @@ void RenderOpenGL::loadShaders()
 	this->shaders["entities"] = loadProgram(base, "entities");
 	this->shaders["map"] = loadProgram(base, "map");
 	this->shaders["water"] = loadProgram(base, "water");
+	this->shaders["particles"] = loadProgram(base, "particles");
 	this->shaders["dissolve"] = loadProgram(base, "dissolve");
 
 	this->shaders_loaded = true;
@@ -1309,7 +1310,6 @@ void RenderOpenGL::water()
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
-	//glDisable(GL_DEPTH_TEST);
 	glFrontFace(GL_CCW);
 
 	glBindTexture(GL_TEXTURE_2D, this->st->curr_map->water->pixels);
@@ -1331,7 +1331,6 @@ void RenderOpenGL::water()
 	glBindVertexArray(0);
 	glUseProgram(0);
 
-	//glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
 }
@@ -1369,19 +1368,18 @@ void RenderOpenGL::entities()
 **/
 void RenderOpenGL::particles()
 {
-	// TODO: Rejig for GLSL
+	glUseProgram(this->shaders["particles"]);
 	
-	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_LIGHTING);
-	glPointSize(5.f);
+	glm::mat4 MVP = this->projection * this->view;
+	glUniformMatrix4fv(glGetUniformLocation(this->shaders["particles"], "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	
 	glBegin(GL_POINTS);
 	for (list<NewParticle*>::iterator it = this->st->particles.begin(); it != this->st->particles.end(); it++) {
-		glColor4f((*it)->r, (*it)->g, (*it)->b, 1.0f);
 		glVertex3f((*it)->pos.x(), (*it)->pos.y(), (*it)->pos.z());
 	}
 	glEnd();
-	glEnable(GL_LIGHTING);
-	glEnable(GL_TEXTURE_2D);
+	
+	glUseProgram(0);
 }
 
 
