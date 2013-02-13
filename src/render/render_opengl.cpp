@@ -24,6 +24,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 #include <ft2build.h>
@@ -592,6 +593,8 @@ void RenderOpenGL::preGame()
 	
 	// The water object
 	this->createWater();
+	
+	this->st->addDebugPoint(100.0f, 20.0f, 100.0f);
 }
 
 void RenderOpenGL::postGame()
@@ -1171,7 +1174,14 @@ void RenderOpenGL::physics()
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_FOG);
 	glDisable(GL_TEXTURE_2D);
-
+	
+	glm::mat4 MVP = this->projection * this->view;
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glMultMatrixf(glm::value_ptr(MVP));
+	
 	st->physics->getWorld()->debugDrawWorld();
 
 	for (list<DebugLine*>::iterator it = st->lines.begin(); it != st->lines.end(); it++) {
@@ -1272,6 +1282,15 @@ void RenderOpenGL::terrain()
 	
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;
 	glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"], "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	
+	glm::mat4 MV = this->view * modelMatrix;
+	glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"], "uMV"), 1, GL_FALSE, glm::value_ptr(MV));
+	
+	glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
+	glUniformMatrix3fv(glGetUniformLocation(this->shaders["map"], "uN"), 1, GL_FALSE, glm::value_ptr(N));
+	
+	glm::vec3 LightPos = glm::vec3(100.0f, 20.0f, 100.0f);
+	glUniform3fv(glGetUniformLocation(this->shaders["map"], "uLightPos"), 1, glm::value_ptr(LightPos));
 	
 	glBindVertexArray(this->ter_vaoid);
 	glDrawArrays(GL_TRIANGLES, 0, this->ter_size);

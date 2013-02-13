@@ -167,6 +167,7 @@ class GameState
 		HUDLabel* addHUDLabel(unsigned int slot, int x, int y, string data);
 
 		void addDebugLine(btVector3 * a, btVector3 * b);
+		void addDebugPoint(float x, float y, float z);
 };
 
 

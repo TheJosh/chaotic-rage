@@ -556,3 +556,23 @@ void GameState::addDebugLine(btVector3 * a, btVector3 * b)
 	dl->b = new btVector3(*b);
 	lines.push_back(dl);
 }
+
+void GameState::addDebugPoint(float x, float y, float z)
+{
+	DebugLine* dl = new DebugLine();
+	dl->a = new btVector3(x - 1.0f, y, z);
+	dl->b = new btVector3(x + 1.0f, y, z);
+	lines.push_back(dl);
+	
+	dl = new DebugLine();
+	dl->a = new btVector3(x, y - 1.0f, z);
+	dl->b = new btVector3(x, y + 1.0f, z);
+	lines.push_back(dl);
+	
+	dl = new DebugLine();
+	dl->a = new btVector3(x, y, z - 1.0f);
+	dl->b = new btVector3(x, y, z + 1.0f);
+	lines.push_back(dl);
+}
+
+
