@@ -2,7 +2,7 @@
 
 in vec2 fTexUV;
 in vec3 fNormal;
-in vec3 fLightDir;
+in vec3 fLightDir[2];
 
 uniform mat4 uMVP;
 uniform mat4 uMV;
@@ -18,16 +18,20 @@ const vec4 ambient = vec4(0.1, 0.1, 0.1, 1.0);
 
 void main()
 {
-	// Dot product effects strength of light
-	float NdotL = max(0.0, dot(normalize(fNormal), -normalize(fLightDir)));
+	vec4 light = ambient;
+	float NdotL, dist, att;
+
+	for (int i = 0; i < 2; i++) {
+		// Dot product affects strength of light
+		NdotL = max(0.0, dot(normalize(fNormal), -normalize(fLightDir[i])));
 	
-	// Calculate attenuation
-	float dist = length(fLightDir);
-	float att = 1.0 / (constantAttenuation + linearAttenuation*dist + quadraticAttenuation*dist*dist);
+		// Calculate attenuation
+		dist = length(fLightDir[i]);
+		att = 1.0 / (constantAttenuation + linearAttenuation*dist + quadraticAttenuation*dist*dist);
 	
-	// Calculate brightness
-	vec4 light = (diffuse * NdotL + ambient) * att;
-	
+		// Calculate brightness
+		light += diffuse * NdotL * att;
+	}
 	
 	gl_FragColor = texture2D(uTex, fTexUV) * light;
 }

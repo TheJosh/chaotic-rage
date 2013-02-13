@@ -1274,6 +1274,19 @@ void RenderOpenGL::terrain()
 	
 	glUseProgram(this->shaders["map"]);
 	
+
+	static float z = 15.0f;
+	static float d = 0.1f;
+	z += d;
+	if (z >= 20.0f) d = -d;
+	if (z <= 10.0f) d = -d;
+
+	glm::vec3 LightPos[2];
+	LightPos[0] = glm::vec3(50.0f, z, 100.0f);
+	LightPos[1] = glm::vec3(150.0f, z, 100.0f);
+
+	glUniform3fv(glGetUniformLocation(this->shaders["map"], "uLightPos"), 2, glm::value_ptr(LightPos[0]));
+
 	
 	glm::mat4 modelMatrix = glm::scale(
 		glm::mat4(1.0f),
@@ -1288,9 +1301,6 @@ void RenderOpenGL::terrain()
 	
 	glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
 	glUniformMatrix3fv(glGetUniformLocation(this->shaders["map"], "uN"), 1, GL_FALSE, glm::value_ptr(N));
-	
-	glm::vec3 LightPos = glm::vec3(100.0f, 20.0f, 100.0f);
-	glUniform3fv(glGetUniformLocation(this->shaders["map"], "uLightPos"), 1, glm::value_ptr(LightPos));
 	
 	glBindVertexArray(this->ter_vaoid);
 	glDrawArrays(GL_TRIANGLES, 0, this->ter_size);
@@ -1311,6 +1321,12 @@ void RenderOpenGL::terrain()
 		glm::mat4 MVP = this->projection * this->view * modelMatrix;
 		glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"], "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 		
+		glm::mat4 MV = this->view * modelMatrix;
+		glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"], "uMV"), 1, GL_FALSE, glm::value_ptr(MV));
+	
+		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
+		glUniformMatrix3fv(glGetUniformLocation(this->shaders["map"], "uN"), 1, GL_FALSE, glm::value_ptr(N));
+
 		glBindVertexArray(obj->vao);
 		glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
 	}
@@ -1387,6 +1403,7 @@ void RenderOpenGL::entities()
 **/
 void RenderOpenGL::particles()
 {
+	return;
 	glUseProgram(this->shaders["particles"]);
 	
 	glm::mat4 MVP = this->projection * this->view;
