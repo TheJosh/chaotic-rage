@@ -1160,6 +1160,7 @@ void RenderOpenGL::render()
 
 	mainViewport(0,1);
 	guichan();
+	fps();
 
 	SDL_GL_SwapBuffers();
 }
@@ -1451,6 +1452,19 @@ void RenderOpenGL::hud(HUD * hud)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	hud->render(this);
+}
+
+
+void RenderOpenGL::fps()
+{
+	char buf[50];
+	float tick = this->st->getAveTick();
+	
+	sprintf(buf, "%.2f ms", tick);
+	this->renderText(buf, 400.0f, 50.0f);
+	
+	sprintf(buf, "%.1f fps", 1000.0f/tick);
+	this->renderText(buf, 550.0f, 50.0f);
 }
 
 

@@ -61,6 +61,10 @@ GameState::GameState()
 	this->sconf = NULL;
 	this->mm = NULL;
 
+	this->ticksum = 0;
+	this->tickindex = 0;
+	memset(&this->ticklist, 0, sizeof(this->ticklist));
+	
 	g_st = this;
 }
 
@@ -332,6 +336,7 @@ void GameState::update(int delta)
 	}
 
 	// Update time
+	this->calcAverageTick(delta);
 	this->game_time += delta;
 	this->anim_frame = (int) floor(this->game_time * ANIMATION_FPS / 1000.0);
 }
@@ -573,6 +578,26 @@ void GameState::addDebugPoint(float x, float y, float z)
 	dl->a = new btVector3(x, y, z - 1.0f);
 	dl->b = new btVector3(x, y, z + 1.0f);
 	lines.push_back(dl);
+}
+
+/**
+* Add a new tick to the ringbuffer, for FPS calcs.
+* Borrowed from http://stackoverflow.com/questions/87304/calculating-frames-per-second-in-a-game
+**/
+void GameState::calcAverageTick(int newtick)
+{
+	this->ticksum -= ticklist[tickindex];
+	this->ticksum += newtick;
+	this->ticklist[tickindex] = newtick;
+	
+	if(++tickindex == FPS_SAMPLES) {
+		this->tickindex = 0;
+	}
+}
+
+float GameState::getAveTick()
+{
+	return ((float)this->ticksum/FPS_SAMPLES);
 }
 
 

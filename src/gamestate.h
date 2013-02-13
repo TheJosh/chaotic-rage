@@ -58,6 +58,8 @@ class DebugLine
 		btVector3 *b;
 };
 
+#define FPS_SAMPLES 100
+
 
 /**
 * Main game state storage. Contains pointers to everything.
@@ -87,6 +89,9 @@ class GameState
 		unsigned int entropy;		// TODO: gamestate -> localplayers
 
 		list<DebugLine*>lines;
+		int ticksum;
+		int tickindex;
+		int ticklist[FPS_SAMPLES];
 
 		EID eid_next;
 
@@ -166,8 +171,11 @@ class GameState
 		void addHUDMessage(unsigned int slot, string text, string text2);
 		HUDLabel* addHUDLabel(unsigned int slot, int x, int y, string data);
 
+		// Debugging
 		void addDebugLine(btVector3 * a, btVector3 * b);
 		void addDebugPoint(float x, float y, float z);
+		void calcAverageTick(int newtick);
+		float getAveTick();
 };
 
 

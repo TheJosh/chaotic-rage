@@ -133,6 +133,7 @@ class RenderOpenGL : public Render3D
 		void particles();
 		void guichan();
 		void hud(HUD * hud);
+		void fps();
 		
 		void loadShaders();
 		GLuint createShader(const char* code, GLenum type);
