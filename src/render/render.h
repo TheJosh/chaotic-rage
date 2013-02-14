@@ -104,6 +104,16 @@ class Render
 		virtual bool getPhysicsDebug() { return false; }
 		
 		/**
+		* Enable or disable speed debugging
+		**/
+		virtual void setSpeedDebug(bool status) {}
+		
+		/**
+		* Get current speed debug status
+		**/
+		virtual bool getSpeedDebug() { return false; }
+		
+		/**
 		* Load a heightmap from an image.
 		**/
 		virtual void loadHeightmap() {}

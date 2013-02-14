@@ -55,6 +55,7 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render3D(st)
 {
 	this->screen = NULL;
 	this->physicsdebug = NULL;
+	this->speeddebug = false;
 	this->viewmode = 0;
 	this->face = NULL;
 	
@@ -1164,7 +1165,7 @@ void RenderOpenGL::render()
 
 	mainViewport(0,1);
 	guichan();
-	fps();
+	if (this->speeddebug) fps();
 
 	SDL_GL_SwapBuffers();
 }

@@ -68,6 +68,11 @@ void handleEvents(GameState *st)
 					st->addHUDMessage(ALL_SLOTS, "Physics debug ", st->render->getPhysicsDebug() ? "on" : "off");
 					break;
 					
+				case SDLK_F8:
+					st->render->setSpeedDebug(! st->render->getSpeedDebug());
+					st->addHUDMessage(ALL_SLOTS, "Speed debug ", st->render->getSpeedDebug() ? "on" : "off");
+					break;
+					
 				default: break;
 			}
 		}

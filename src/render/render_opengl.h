@@ -68,6 +68,7 @@ class RenderOpenGL : public Render3D
 		// Debugging
 		AnimPlay *test;
 		btIDebugDraw *physicsdebug;
+		bool speeddebug;
 		
 		// Shaders
 		bool shaders_loaded;		// true if loaded from a mod
@@ -100,12 +101,15 @@ class RenderOpenGL : public Render3D
 		virtual void freeSprite(SpritePtr sprite);
 		virtual int getSpriteWidth(SpritePtr sprite);
 		virtual int getSpriteHeight(SpritePtr sprite);
-		virtual void setPhysicsDebug(bool status);
-		virtual bool getPhysicsDebug();
 		virtual void loadHeightmap();
 		virtual void freeHeightmap();
 		virtual int getWidth() { return real_width; }
 		virtual int getHeight() { return real_height; }
+		
+		virtual void setPhysicsDebug(bool status);
+		virtual bool getPhysicsDebug();
+		virtual void setSpeedDebug(bool status) { this->speeddebug = status; }
+		virtual bool getSpeedDebug() { return this->speeddebug; }
 		
 	public:
 		// From class Render3D
