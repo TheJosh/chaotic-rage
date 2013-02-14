@@ -92,8 +92,6 @@ void gameLoop(GameState *st, Render *render)
 		
 		st->render->render();
 		st->audio->play();
-		
-		SDL_Delay(10);
 	}
 	
 	cout << "\n\n\n\n\n";
