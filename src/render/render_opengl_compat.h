@@ -67,8 +67,8 @@ class RenderOpenGLCompat : public Render3D
 		virtual void freeSprite(SpritePtr sprite);
 		virtual int getSpriteWidth(SpritePtr sprite);
 		virtual int getSpriteHeight(SpritePtr sprite);
-		virtual void enablePhysicsDebug();
-		virtual void disablePhysicsDebug();
+		virtual void setPhysicsDebug(bool status);
+		virtual bool getPhysicsDebug();
 		virtual void loadHeightmap();
 		virtual void freeHeightmap();
 		virtual int getWidth() { return real_width; }

@@ -170,12 +170,7 @@ LUA_FUNC(debug)
 **/
 LUA_FUNC(debug_physics)
 {
-	if (lua_toboolean(L, 1)) {
-		gl->st->render->enablePhysicsDebug();
-	} else {
-		gl->st->render->disablePhysicsDebug();
-	}
-	
+	gl->st->render->setPhysicsDebug(lua_toboolean(L, 1));
 	return 0;
 }
 

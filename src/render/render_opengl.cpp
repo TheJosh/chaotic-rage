@@ -251,26 +251,30 @@ void RenderOpenGL::mainViewport(int s, int of)
 
 
 /**
-* Enable debug drawing
+* Enable physics debug drawing
 **/
-void RenderOpenGL::enablePhysicsDebug()
+void RenderOpenGL::setPhysicsDebug(bool status)
 {
-	this->physicsdebug = new GLDebugDrawer();
-	this->physicsdebug->setDebugMode(
-		btIDebugDraw::DBG_DrawWireframe | btIDebugDraw::DBG_DrawAabb | btIDebugDraw::DBG_DrawContactPoints | btIDebugDraw::DBG_NoDeactivation
-	);
-	this->st->physics->getWorld()->setDebugDrawer(this->physicsdebug);
+	if (status) {
+		this->physicsdebug = new GLDebugDrawer();
+		this->physicsdebug->setDebugMode(
+			btIDebugDraw::DBG_DrawWireframe | btIDebugDraw::DBG_DrawAabb | btIDebugDraw::DBG_DrawContactPoints | btIDebugDraw::DBG_NoDeactivation
+		);
+		this->st->physics->getWorld()->setDebugDrawer(this->physicsdebug);
+	} else {
+		this->st->physics->getWorld()->setDebugDrawer(NULL);
+		delete this->physicsdebug;
+		this->physicsdebug = NULL;
+	}
 }
 
 
 /**
-* Disable debug drawing
+* Get current physics debug status
 **/
-void RenderOpenGL::disablePhysicsDebug()
+bool RenderOpenGL::getPhysicsDebug()
 {
-	this->st->physics->getWorld()->setDebugDrawer(NULL);
-	delete this->physicsdebug;
-	this->physicsdebug = NULL;
+	return (this->physicsdebug != NULL);
 }
 
 

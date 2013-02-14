@@ -94,14 +94,14 @@ class Render
 		bool wasLoadSpriteError();
 		
 		/**
-		* Enable physics debugging
+		* Enable or disable physics debugging
 		**/
-		virtual void enablePhysicsDebug() {}
+		virtual void setPhysicsDebug(bool status) {}
 		
 		/**
-		* Disable physics debugging
+		* Get current physics debug status
 		**/
-		virtual void disablePhysicsDebug() {}
+		virtual bool getPhysicsDebug() { return false; }
 		
 		/**
 		* Load a heightmap from an image.
@@ -130,4 +130,8 @@ class Render
 		
 	public:
 		Render(GameState * st);
+		
+		bool togglePhysicsDebug();
 };
+
+
