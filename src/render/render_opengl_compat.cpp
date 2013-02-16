@@ -43,6 +43,7 @@ RenderOpenGLCompat::RenderOpenGLCompat(GameState * st) : Render3D(st)
 {
 	this->screen = NULL;
 	this->physicsdebug = NULL;
+	this->speeddebug = false;
 	this->viewmode = 0;
 	this->face = NULL;
 	
@@ -830,8 +831,8 @@ void RenderOpenGLCompat::render()
 		hud(this->st->local_players[i]->hud);
 	}
 
-	mainViewport(0,1);
 	guichan();
+	if (speeddebug) fps();
 
 	SDL_GL_SwapBuffers();
 }
@@ -1130,6 +1131,27 @@ void RenderOpenGLCompat::guichan()
 	
 	glLoadIdentity();
 	this->st->gui->draw();
+}
+
+
+/**
+* FPS info
+**/
+void RenderOpenGLCompat::fps()
+{
+	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_FOG);
+	glLoadIdentity();
+
+	char buf[50];
+	float tick = this->st->getAveTick();
+	
+	sprintf(buf, "%.2f ms", tick);
+	this->renderText(buf, 400.0f, 50.0f);
+	
+	sprintf(buf, "%.1f fps", 1000.0f/tick);
+	this->renderText(buf, 550.0f, 50.0f);
 }
 
 

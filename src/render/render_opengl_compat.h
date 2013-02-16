@@ -47,7 +47,8 @@ class RenderOpenGLCompat : public Render3D
 		// Debugging
 		AnimPlay *test;
 		btIDebugDraw *physicsdebug;
-		
+		bool speeddebug;
+
 	public:
 		RenderOpenGLCompat(GameState * st);
 		virtual ~RenderOpenGLCompat();
@@ -67,13 +68,16 @@ class RenderOpenGLCompat : public Render3D
 		virtual void freeSprite(SpritePtr sprite);
 		virtual int getSpriteWidth(SpritePtr sprite);
 		virtual int getSpriteHeight(SpritePtr sprite);
-		virtual void setPhysicsDebug(bool status);
-		virtual bool getPhysicsDebug();
 		virtual void loadHeightmap();
 		virtual void freeHeightmap();
 		virtual int getWidth() { return real_width; }
 		virtual int getHeight() { return real_height; }
 		
+		virtual void setPhysicsDebug(bool status);
+		virtual bool getPhysicsDebug();
+		virtual void setSpeedDebug(bool status) { this->speeddebug = status; }
+		virtual bool getSpeedDebug() { return this->speeddebug; }
+
 	public:
 		// From class Render3D
 		virtual void saveScreenshot(string filename);
@@ -100,6 +104,7 @@ class RenderOpenGLCompat : public Render3D
 		void physics();
 		void particles();
 		void guichan();
+		void fps();
 		void hud(HUD * hud);
 };
 
