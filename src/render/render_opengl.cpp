@@ -1291,20 +1291,22 @@ void RenderOpenGL::terrain()
 	glUseProgram(this->shaders["map"]);
 	
 
-	static float z = 15.0f;
-	static float d = 0.1f;
-	z += d;
-	if (z >= 20.0f) d = -d;
-	if (z <= 10.0f) d = -d;
-
 	glm::vec3 LightPos[2];
-	LightPos[0] = glm::vec3(50.0f, z, 100.0f);
-	LightPos[1] = glm::vec3(150.0f, z, 100.0f);
-	glUniform3fv(glGetUniformLocation(this->shaders["map"], "uLightPos"), 2, glm::value_ptr(LightPos[0]));
-
 	glm::vec3 LightColor[2];
-	LightColor[0] = glm::vec3(1.0f, 0.0f, 0.0f);
-	LightColor[1] = glm::vec3(0.0f, 0.0f, 1.0f);
+	
+	int idx = 0;
+	for (int i = 0; i < st->curr_map->lights.size(); i++) {
+		Light * l = st->curr_map->lights[i];
+
+		if (l->type == 3) {
+			LightPos[idx] = glm::vec3(l->x, l->y, l->z);
+			LightColor[idx] = glm::vec3(l->diffuse[0], l->diffuse[1], l->diffuse[2]);
+			idx++;
+			if (idx == 2) break;
+		}
+	}
+	
+	glUniform3fv(glGetUniformLocation(this->shaders["map"], "uLightPos"), 2, glm::value_ptr(LightPos[0]));
 	glUniform3fv(glGetUniformLocation(this->shaders["map"], "uLightColor"), 2, glm::value_ptr(LightColor[0]));
 
 
