@@ -664,8 +664,13 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 **/
 static const char* pVS = "                                                    \n\
 #version 120                                                                  \n\
-varying vec2 TexCoord0;                                                       \n\
-void main() { gl_Position = ftransform(); TexCoord0 = gl_MultiTexCoord0.st; }";
+attribute  vec3 vPosition;                                                    \n\
+attribute  vec3 vNormal;                                                      \n\
+attribute  vec2 vTexUV;                                                       \n\
+varying vec2 fTexUV;                                                          \n\
+void main() {                                                                 \n\
+    gl_Position = gl_ModelViewProjectionMatrix * vec4(vPosition, 1.0f); fTexUV = vTexUV; \n\
+}";
 
 /**
 * Basic fragment shader for use before the base mod has been loaded
@@ -673,10 +678,11 @@ void main() { gl_Position = ftransform(); TexCoord0 = gl_MultiTexCoord0.st; }";
 **/
 static const char* pFS = "                                                    \n\
 #version 120                                                                  \n\
-varying vec2 TexCoord0;                                                       \n\
+varying vec2 fTexUV;                                                          \n\
 uniform sampler2D uTex;                                                       \n\
-void main() { gl_FragColor = texture2D(uTex, TexCoord0.st); }";
-
+void main() {                                                                 \n\
+    gl_FragColor = texture2D(uTex, fTexUV);                                   \n\
+}";
 
 /**
 * Load all of the general shaders we use for rendering
@@ -916,6 +922,10 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 	glBindVertexArray(obj->vao);
 	glUseProgram(this->shaders["basic"]);
 	
+	glBindAttribLocation(this->shaders["basic"], 0, "vPosition");
+	glBindAttribLocation(this->shaders["basic"], 1, "vNormal");
+	glBindAttribLocation(this->shaders["basic"], 2, "vTexUV");
+
 	glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
 	
 	glUseProgram(0);
