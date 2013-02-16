@@ -8,12 +8,12 @@ uniform mat4 uMVP;
 uniform mat4 uMV;
 uniform mat4 uN;
 uniform sampler2D uTex;
+uniform vec3 uLightColor[2];
 
 // Light params; these could become uniforms
 const float constantAttenuation = 0.3;
 const float linearAttenuation = 0.01;
 const float quadraticAttenuation = 0.00001;
-const vec4 diffuse = vec4(0.5, 0.5, 0.5, 1.0);
 const vec4 ambient = vec4(0.1, 0.1, 0.1, 1.0);
 
 void main()
@@ -30,7 +30,7 @@ void main()
 		att = 1.0 / (constantAttenuation + linearAttenuation*dist + quadraticAttenuation*dist*dist);
 	
 		// Calculate brightness
-		light += diffuse * NdotL * att;
+		light += uLightColor[i] * NdotL * att;
 	}
 	
 	gl_FragColor = texture2D(uTex, fTexUV) * light;

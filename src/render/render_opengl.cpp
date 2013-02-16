@@ -1300,10 +1300,14 @@ void RenderOpenGL::terrain()
 	glm::vec3 LightPos[2];
 	LightPos[0] = glm::vec3(50.0f, z, 100.0f);
 	LightPos[1] = glm::vec3(150.0f, z, 100.0f);
-
 	glUniform3fv(glGetUniformLocation(this->shaders["map"], "uLightPos"), 2, glm::value_ptr(LightPos[0]));
 
-	
+	glm::vec3 LightColor[2];
+	LightColor[0] = glm::vec3(1.0f, 0.0f, 0.0f);
+	LightColor[1] = glm::vec3(0.0f, 0.0f, 1.0f);
+	glUniform3fv(glGetUniformLocation(this->shaders["map"], "uLightColor"), 2, glm::value_ptr(LightColor[0]));
+
+
 	glm::mat4 modelMatrix = glm::scale(
 		glm::mat4(1.0f),
 		glm::vec3(this->st->curr_map->heightmapScaleX(), 1.0f, this->st->curr_map->heightmapScaleZ())
