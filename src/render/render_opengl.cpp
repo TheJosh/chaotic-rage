@@ -1294,8 +1294,8 @@ void RenderOpenGL::terrain()
 	glm::vec3 LightPos[2];
 	glm::vec3 LightColor[2];
 	
-	int idx = 0;
-	for (int i = 0; i < st->curr_map->lights.size(); i++) {
+	unsigned int idx = 0;
+	for (unsigned int i = 0; i < st->curr_map->lights.size(); i++) {
 		Light * l = st->curr_map->lights[i];
 
 		if (l->type == 3) {
