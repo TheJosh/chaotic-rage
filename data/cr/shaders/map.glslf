@@ -30,7 +30,7 @@ void main()
 		att = 1.0 / (constantAttenuation + linearAttenuation*dist + quadraticAttenuation*dist*dist);
 	
 		// Calculate brightness
-		light += uLightColor[i] * NdotL * att;
+		light += vec4(uLightColor[i], 1.0f) * NdotL * att;
 	}
 	
 	gl_FragColor = texture2D(uTex, fTexUV) * light;

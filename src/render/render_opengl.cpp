@@ -699,7 +699,7 @@ void RenderOpenGL::loadShaders()
 	// Before the mod is loaded, we need some basic shaders
 	// These are hardcoded (see above)
 	if (! this->st->mm) {
-		this->shaders["basic"] = createProgram(pVS, pFS);
+		this->shaders["basic"] = createProgram(pVS, pFS, "basic");
 		return;
 	}
 	
@@ -734,7 +734,7 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 	if (! success) {
 		GLchar InfoLog[1024];
 		glGetShaderInfoLog(shader, 1024, NULL, InfoLog);
-		fprintf(stderr, "Error compiling shader '%s' type %d:\n%s\n", code, type, InfoLog);
+		fprintf(stderr, "Error compiling shader:\n%s\n", InfoLog);
 		reportFatalError("Error compiling OpenGL shader");
 	}
 	
@@ -746,7 +746,7 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 * Creates and compile a shader program from two shader code strings
 * Returns the program id.
 **/
-GLuint RenderOpenGL::createProgram(const char* vertex, const char* fragment)
+GLuint RenderOpenGL::createProgram(const char* vertex, const char* fragment, string name)
 {
 	GLint success;
 	GLuint sVertex, sFragment;
@@ -777,14 +777,17 @@ GLuint RenderOpenGL::createProgram(const char* vertex, const char* fragment)
 	// Check link worked
 	glGetProgramiv(program, GL_LINK_STATUS, &success);
 	if (! success) {
-		reportFatalError("Error linking OpenGL program");
+		GLchar InfoLog[1024];
+		glGetProgramInfoLog(program, 1024, NULL, InfoLog);
+		fprintf(stderr, "Error linking program:\n%s\n", InfoLog);
+		reportFatalError("Error linking OpenGL program " + name);
 	}
 	
 	// Validate
 	glValidateProgram(program);
 	glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
 	if (! success) {
-		reportFatalError("Error validating OpenGL program");
+		reportFatalError("Error validating OpenGL program " + name);
 	}
 	
 	return program;
@@ -807,7 +810,7 @@ GLuint RenderOpenGL::loadProgram(Mod* mod, string name)
 		reportFatalError("Unable to load shader program " + name);
 	}
 	
-	GLuint prog = this->createProgram(v, f);
+	GLuint prog = this->createProgram(v, f, name);
 	
 	delete(v);
 	delete(f);

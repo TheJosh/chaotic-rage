@@ -141,7 +141,7 @@ class RenderOpenGL : public Render3D
 		
 		void loadShaders();
 		GLuint createShader(const char* code, GLenum type);
-		GLuint createProgram(const char* vertex, const char* fragment);
+		GLuint createProgram(const char* vertex, const char* fragment, string name);
 		GLuint loadProgram(Mod* mod, string name);
 };
 
