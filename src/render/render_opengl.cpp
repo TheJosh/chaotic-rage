@@ -1295,7 +1295,7 @@ void RenderOpenGL::terrain()
 	
 
 	glm::vec3 LightPos[2];
-	glm::vec3 LightColor[2];
+	glm::vec4 LightColor[2];
 	
 	unsigned int idx = 0;
 	for (unsigned int i = 0; i < st->curr_map->lights.size(); i++) {
@@ -1303,14 +1303,14 @@ void RenderOpenGL::terrain()
 
 		if (l->type == 3) {
 			LightPos[idx] = glm::vec3(l->x, l->y, l->z);
-			LightColor[idx] = glm::vec3(l->diffuse[0], l->diffuse[1], l->diffuse[2]);
+			LightColor[idx] = glm::vec4(l->diffuse[0], l->diffuse[1], l->diffuse[2], getRandomf(0.8f, 0.9f));
 			idx++;
 			if (idx == 2) break;
 		}
 	}
 	
 	glUniform3fv(glGetUniformLocation(this->shaders["map"], "uLightPos"), 2, glm::value_ptr(LightPos[0]));
-	glUniform3fv(glGetUniformLocation(this->shaders["map"], "uLightColor"), 2, glm::value_ptr(LightColor[0]));
+	glUniform4fv(glGetUniformLocation(this->shaders["map"], "uLightColor"), 2, glm::value_ptr(LightColor[0]));
 
 
 	glm::mat4 modelMatrix = glm::scale(
