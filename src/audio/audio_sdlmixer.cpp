@@ -19,8 +19,10 @@ AudioSDLMixer::AudioSDLMixer(GameState * st) : Audio(st)
 {
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
 	Mix_AllocateChannels(100);
+
 	this->audio_start = false;
 	this->audio_stop = false;
+	this->lastsong = NULL;
 
 	Mix_VolumeMusic(75);
 }
@@ -59,7 +61,7 @@ void AudioSDLMixer::play()
 {
 	if (Mix_PlayingMusic() == 0) {
 		Song *sg = this->st->mm->getRandomSong();
-		if (sg != NULL) {
+		if (sg != NULL && sg != this->lastsong) {
 			this->playSong(sg);
 			this->st->addHUDMessage(ALL_SLOTS, "Now playing ", sg->name);
 		}
@@ -73,6 +75,7 @@ void AudioSDLMixer::play()
 void AudioSDLMixer::playSong(Song * sg)
 {
 	Mix_PlayMusic(sg->music, 1);
+	this->lastsong = sg;
 }
 
 
