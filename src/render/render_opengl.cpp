@@ -27,6 +27,10 @@
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <assimp/cimport.h>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -553,6 +557,7 @@ void RenderOpenGL::preGame()
 {
 	AnimModel *model = st->mm->getAnimModel("_test_cube");
 	this->test = new AnimPlay(model);
+	this->test2 = aiImportFile("orig/crate/crate.blend", aiProcessPreset_TargetRealtime_MaxQuality);
 	
 	SDL_ShowCursor(SDL_DISABLE);
 
@@ -1029,6 +1034,61 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 
 
 /**
+* This is an incomplete renderer for an assimp scene object.
+* Borrowed from the assimp sample code.
+* It doesn't actually work at the moment - it's using fixed function, which we don't support.
+**/
+void RenderOpenGL::renderAssimpScene(const struct aiScene *sc, const struct aiNode* nd)
+{
+	unsigned int i;
+	unsigned int n = 0, t;
+	aiMatrix4x4 m = nd->mTransformation;
+
+	// update transform
+	aiTransposeMatrix4(&m);
+	glPushMatrix();
+	glMultMatrixf((float*)&m);
+
+	// draw all meshes assigned to this node
+	for (; n < nd->mNumMeshes; ++n) {
+		const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
+
+		for (t = 0; t < mesh->mNumFaces; ++t) {
+			const struct aiFace* face = &mesh->mFaces[t];
+			GLenum face_mode;
+
+			switch(face->mNumIndices) {
+				case 1: face_mode = GL_POINTS; break;
+				case 2: face_mode = GL_LINES; break;
+				case 3: face_mode = GL_TRIANGLES; break;
+				default: face_mode = GL_POLYGON; break;
+			}
+
+			glBegin(face_mode);
+
+			for(i = 0; i < face->mNumIndices; i++) {
+				int index = face->mIndices[i];
+				if(mesh->mColors[0] != NULL)
+					glColor4fv((GLfloat*)&mesh->mColors[0][index]);
+				if(mesh->mNormals != NULL)
+				glNormal3fv(&mesh->mNormals[index].x);
+				glVertex3fv(&mesh->mVertices[index].x);
+			}
+
+			glEnd();
+		}
+	}
+
+	// draw all children
+	for (n = 0; n < nd->mNumChildren; ++n) {
+		this->renderAssimpScene(sc, nd->mChildren[n]);
+	}
+	
+	glPopMatrix();
+}
+
+
+/**
 * Draws text
 *
 * Note that the Y is for the baseline of the text.
@@ -1179,6 +1239,8 @@ void RenderOpenGL::render()
 	mainViewport(0,1);
 	guichan();
 	if (this->speeddebug) fps();
+
+	renderAssimpScene(this->test2, this->test2->mRootNode);
 
 	SDL_GL_SwapBuffers();
 }
