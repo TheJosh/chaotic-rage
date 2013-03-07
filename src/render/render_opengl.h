@@ -71,7 +71,7 @@ class RenderOpenGL : public Render3D
 		
 		// Debugging
 		AnimPlay *test;
-		const struct aiScene* test2;
+		AssimpModel *test2;
 		btIDebugDraw *physicsdebug;
 		bool speeddebug;
 		
@@ -133,7 +133,8 @@ class RenderOpenGL : public Render3D
 		void renderCharacter(char c);
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
-		void renderAssimpScene(const struct aiScene *sc, const struct aiNode* nd);
+		void createVAOassimp(AssimpModel *am);
+		void renderAssimpModel(AssimpModel *am);
 		void mainViewport(int s, int of);
 		void mainRot();
 		void terrain();

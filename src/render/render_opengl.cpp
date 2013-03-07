@@ -15,6 +15,7 @@
 
 #include <SDL_image.h>
 #include <math.h>
+
 #include "../rage.h"
 
 #include <guichan.hpp>
@@ -557,7 +558,9 @@ void RenderOpenGL::preGame()
 {
 	AnimModel *model = st->mm->getAnimModel("_test_cube");
 	this->test = new AnimPlay(model);
-	this->test2 = aiImportFile("orig/crate/crate.blend", aiProcessPreset_TargetRealtime_MaxQuality);
+	
+	this->test2 = new AssimpModel(st->mm->getBase(), "crate.blend");
+	this->test2->load();
 	
 	SDL_ShowCursor(SDL_DISABLE);
 
@@ -1033,58 +1036,74 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 }
 
 
+void RenderOpenGL::createVAOassimp(AssimpModel *am)
+{
+	const struct aiScene* sc = am->getScene();
+	
+	GLuint buffer;
+	
+	//for (; n < sc->mNumMeshes; ++n) {
+		const struct aiMesh* mesh = sc->mMeshes[0];		// TODO: support multiple meshes
+
+		unsigned int *faceArray;
+		faceArray = (unsigned int *)malloc(sizeof(unsigned int) * mesh->mNumFaces * 3);
+		unsigned int faceIndex = 0;
+
+		for (unsigned int t = 0; t < mesh->mNumFaces; ++t) {
+			const struct aiFace* face = &mesh->mFaces[t];
+			
+			memcpy(&faceArray[faceIndex], face->mIndices, 3 * sizeof(int));
+			faceIndex += 3;
+		}
+		am->numFaces = sc->mMeshes[0]->mNumFaces;		// TODO: support multiple meshes
+		
+		// Vertex Array Object
+		glGenVertexArrays(1,&(am->vao));
+		glBindVertexArray(am->vao);
+		
+		// Faces
+		glGenBuffers(1, &buffer);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * am->numFaces * 3, faceArray, GL_STATIC_DRAW);
+		
+		// Positions
+		if (mesh->HasPositions()) {
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mVertices, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
+		}
+		
+		glBindVertexArray(0);
+	//}
+}
+
+
 /**
 * This is an incomplete renderer for an assimp scene object.
 * Borrowed from the assimp sample code.
 * It doesn't actually work at the moment - it's using fixed function, which we don't support.
 **/
-void RenderOpenGL::renderAssimpScene(const struct aiScene *sc, const struct aiNode* nd)
+void RenderOpenGL::renderAssimpModel(AssimpModel *am)
 {
-	unsigned int i;
-	unsigned int n = 0, t;
-	aiMatrix4x4 m = nd->mTransformation;
-
-	// update transform
-	aiTransposeMatrix4(&m);
-	glPushMatrix();
-	glMultMatrixf((float*)&m);
-
-	// draw all meshes assigned to this node
-	for (; n < nd->mNumMeshes; ++n) {
-		const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
-
-		for (t = 0; t < mesh->mNumFaces; ++t) {
-			const struct aiFace* face = &mesh->mFaces[t];
-			GLenum face_mode;
-
-			switch(face->mNumIndices) {
-				case 1: face_mode = GL_POINTS; break;
-				case 2: face_mode = GL_LINES; break;
-				case 3: face_mode = GL_TRIANGLES; break;
-				default: face_mode = GL_POLYGON; break;
-			}
-
-			glBegin(face_mode);
-
-			for(i = 0; i < face->mNumIndices; i++) {
-				int index = face->mIndices[i];
-				if(mesh->mColors[0] != NULL)
-					glColor4fv((GLfloat*)&mesh->mColors[0][index]);
-				if(mesh->mNormals != NULL)
-				glNormal3fv(&mesh->mNormals[index].x);
-				glVertex3fv(&mesh->mVertices[index].x);
-			}
-
-			glEnd();
-		}
-	}
-
-	// draw all children
-	for (n = 0; n < nd->mNumChildren; ++n) {
-		this->renderAssimpScene(sc, nd->mChildren[n]);
-	}
+	const struct aiScene* sc = am->getScene();
+	if (sc == NULL) return;
 	
-	glPopMatrix();
+	this->createVAOassimp(am);
+	
+	GLuint shader = this->shaders["entities"];
+	glUseProgram(shader);
+	
+	glBindAttribLocation(shader, 0, "vPosition");
+	glBindAttribLocation(shader, 1, "vNormal");
+	glBindAttribLocation(shader, 2, "vTexUV");
+	
+	glBindVertexArray(am->vao);
+	glDrawElements(GL_TRIANGLES, am->numFaces*3, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+	
+	glUseProgram(0);
 }
 
 
@@ -1230,6 +1249,9 @@ void RenderOpenGL::render()
 		mainRot();
 		terrain();
 		entities();
+		
+		renderAssimpModel(this->test2);
+		
 		particles();
 		water();
 		if (physicsdebug != NULL) physics();
@@ -1239,8 +1261,6 @@ void RenderOpenGL::render()
 	mainViewport(0,1);
 	guichan();
 	if (this->speeddebug) fps();
-
-	renderAssimpScene(this->test2, this->test2->mRootNode);
 
 	SDL_GL_SwapBuffers();
 }

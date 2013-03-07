@@ -60,6 +60,7 @@ class AIType;
 class AILogic;
 class AnimModel;
 class AnimPlay;
+class AssimpModel;
 class Audio;
 class CampaignStage;
 class Campaign;
@@ -147,6 +148,7 @@ class Zone;
 #include "mod/aitype.h"
 #include "mod/animmodel.h"
 #include "mod/animplay.h"
+#include "mod/assimpmodel.h"
 #include "mod/campaign.h"
 #include "mod/floortype.h"
 #include "mod/objecttype.h"
