@@ -460,9 +460,6 @@ void RenderOpenGLCompat::renderSprite(SpritePtr sprite, int x, int y, int w, int
 
 void RenderOpenGLCompat::preGame()
 {
-	AnimModel *model = st->mm->getAnimModel("_test_cube");
-	this->test = new AnimPlay(model);
-	
 	SDL_ShowCursor(SDL_DISABLE);
 
 	glEnable(GL_TEXTURE_2D);
@@ -644,6 +641,8 @@ void RenderOpenGLCompat::renderObj (WavefrontObj * obj)
 **/
 void RenderOpenGLCompat::renderAnimPlay(AnimPlay * play)
 {
+	// TODO: Get assimpmodels working on this renderer
+	/*
 	AnimModel * model;
 	
 	model = play->getModel();
@@ -678,6 +677,7 @@ void RenderOpenGLCompat::renderAnimPlay(AnimPlay * play)
 		
 		glPopMatrix();
 	}
+	*/
 }
 
 

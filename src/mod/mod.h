@@ -85,6 +85,8 @@ class Mod {
 		WallType * getWallType(string name);
 		WeaponType * getWeaponType(string name);
 		
+		AssimpModel * getAssimpModel(string name);
+		
 		vector<Campaign*> * getCampaigns();
 
 		void addObjectType(ObjectType * ot);

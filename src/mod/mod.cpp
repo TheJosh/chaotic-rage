@@ -230,9 +230,10 @@ bool Mod::load()
 
 	
 	// Anim models ->next linkup
-	for (int i = animmodels->size() - 1; i >= 0; --i) {
-		animmodels->at(i)->next = this->getAnimModel(animmodels->at(i)->next_name);
-	}
+	// TODO: next
+	/*for (int i = animmodels->size() - 1; i >= 0; --i) {
+		animmodels->at(i)->next = this->getAssimpModel(animmodels->at(i)->next_name);
+	}*/
 	
 	// Auto-create object types for weapons (pickup)
 	for (int i = weapontypes->size() - 1; i >= 0; --i) {
@@ -246,9 +247,9 @@ bool Mod::load()
 		ot->pickup_weapon = weapontypes->at(i)->name;
 		ot->over = true;
 		
-		ot->model = this->getAnimModel(tmp);
+		ot->model = this->getAssimpModel(tmp);
 		if (ot->model == NULL) {
-			ot->model = this->getAnimModel("generic_pickup");
+			ot->model = this->getAssimpModel("generic_pickup");
 		}
 		
 		objecttypes->push_back(ot);
@@ -266,9 +267,9 @@ bool Mod::load()
 		ot->ammo_crate = weapontypes->at(i)->name;
 		ot->over = true;
 		
-		ot->model = this->getAnimModel(tmp);
+		ot->model = this->getAssimpModel(tmp);
 		if (ot->model == NULL) {
-			ot->model = this->getAnimModel("generic_ammocrate");
+			ot->model = this->getAssimpModel("generic_ammocrate");
 		}
 		
 		objecttypes->push_back(ot);
@@ -350,6 +351,22 @@ AnimModel * Mod::getAnimModel(string name)
 	return NULL;
 }
 
+
+/**
+* Load an assimp model
+* TODO: Save these in an array, so we don't re-load the same model multiple times.
+**/
+AssimpModel * Mod::getAssimpModel(string name)
+{
+	AssimpModel *am = new AssimpModel(this, name + ".blend");
+	
+	if (! am->load()) {
+		delete(am);
+		return NULL;
+	}
+	
+	return am;
+}
 
 
 /**

@@ -31,6 +31,7 @@ AssimpModel::AssimpModel(Mod* mod, string name)
 	this->sc = NULL;
 	this->mod = mod;
 	this->name = name;
+	this->vao = 0;
 }
 
 
@@ -61,6 +62,46 @@ bool AssimpModel::load()
 	free(data);
 	
 	return true;
+}
+
+
+/**
+* Returns the bounding size of the mesh of the first frame
+**/
+btVector3 AssimpModel::getBoundingSize()
+{
+	float x = 0.0f, y = 0.0f, z = 0.0f;
+	unsigned int n = 0, t;
+	
+	if (sc == NULL) return btVector3(0.0f, 0.0f, 0.0f);
+	
+	for (; n < sc->mRootNode->mNumMeshes; ++n) {
+		const struct aiMesh* mesh = sc->mMeshes[sc->mRootNode->mMeshes[n]];
+		
+		for (t = 0; t < mesh->mNumVertices; ++t) {
+			aiVector3D tmp = mesh->mVertices[t];
+
+			x = MAX(x, tmp.x);
+			y = MAX(y, tmp.y);
+			z = MAX(z, tmp.z);
+		}
+	}
+
+	return btVector3(x, y, z);
+}
+
+
+/**
+* Returns the bounding size of the mesh of the first frame
+* HE = half extents
+**/
+btVector3 AssimpModel::getBoundingSizeHE()
+{
+	btVector3 ret = getBoundingSize();
+	ret.setX(ret.x() / 2.0f);
+	ret.setY(ret.y() / 2.0f);
+	ret.setZ(ret.z() / 2.0f);
+	return ret;
 }
 
 

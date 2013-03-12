@@ -67,14 +67,17 @@ ObjectType* loadItemObjectType(cfg_t* cfg_item, Mod* mod)
 	wt->over = (cfg_getint(cfg_item, "over") == 1);
 	
 	char * tmp = cfg_getstr(cfg_item, "model");
-	if (tmp != NULL) wt->model = mod->getAnimModel(tmp);
+	if (tmp != NULL) {
+		wt->model = mod->getAssimpModel(tmp);
+		if (! wt->model) return NULL;
+	}
 	
 	// Load damage states
 	size = cfg_size(cfg_item, "damage");
 	if (size == 0) {
 		ObjectTypeDamage * dam = new ObjectTypeDamage();
 		dam->health = 0;
-		dam->model = mod->getAnimModel("null");
+		dam->model = mod->getAssimpModel("null");
 		wt->damage_models.push_back(dam);
 		
 	} else {
@@ -87,7 +90,8 @@ ObjectType* loadItemObjectType(cfg_t* cfg_item, Mod* mod)
 			ObjectTypeDamage * dam = new ObjectTypeDamage();
 			
 			dam->health = cfg_getint(cfg_damage, "health");
-			dam->model = mod->getAnimModel(tmp);
+			dam->model = mod->getAssimpModel(tmp);
+			if (! dam->model) return NULL;
 			
 			wt->damage_models.push_back(dam);
 		}

@@ -10,7 +10,7 @@
 using namespace std;
 
 
-Decaying::Decaying(GameState *st, btTransform &xform, AnimModel *model) : Entity(st)
+Decaying::Decaying(GameState *st, btTransform &xform, AssimpModel *model) : Entity(st)
 {
 	this->model = model;
 	this->anim = new AnimPlay(model);

@@ -67,14 +67,17 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	wt->reverse_max = cfg_getfloat(cfg_item, "reverse-max");
 	
 	char * tmp = cfg_getstr(cfg_item, "model");
-	if (tmp != NULL) wt->model = mod->getAnimModel(tmp);
+	if (tmp != NULL) {
+		wt->model = mod->getAssimpModel(tmp);
+		if (! wt->model) return NULL;
+	}
 	
 	// Load damage states
 	size = cfg_size(cfg_item, "damage");
 	if (size == 0) {
 		VehicleTypeDamage * dam = new VehicleTypeDamage();
 		dam->health = 0;
-		dam->model = mod->getAnimModel("null");
+		dam->model = mod->getAssimpModel("null");
 		wt->damage_models.push_back(dam);
 		
 	} else {
@@ -87,7 +90,8 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 			VehicleTypeDamage * dam = new VehicleTypeDamage();
 			
 			dam->health = cfg_getint(cfg_damage, "health");
-			dam->model = mod->getAnimModel(tmp);
+			dam->model = mod->getAssimpModel(tmp);
+			if (! dam->model) return NULL;
 			
 			wt->damage_models.push_back(dam);
 		}

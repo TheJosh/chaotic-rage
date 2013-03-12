@@ -31,6 +31,8 @@ class AssimpModel
 		
 	public:
 		const struct aiScene* getScene() { return this->sc; }
+		btVector3 getBoundingSize();
+		btVector3 getBoundingSizeHE();
 };
 
 

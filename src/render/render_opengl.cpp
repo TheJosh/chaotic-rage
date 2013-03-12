@@ -556,9 +556,6 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 
 void RenderOpenGL::preGame()
 {
-	AnimModel *model = st->mm->getAnimModel("_test_cube");
-	this->test = new AnimPlay(model);
-	
 	this->test2 = new AssimpModel(st->mm->getBase(), "crate.blend");
 	this->test2->load();
 	
@@ -950,13 +947,13 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 **/
 void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 {
-	AnimModel * model;
+	AssimpModel* am;
 	GLuint shader;
 
-	model = play->getModel();
-	if (model == NULL) return;
+	am = play->getModel();
+	if (am == NULL) return;
 	
-	int frame = play->getFrame();
+	//int frame = play->getFrame();
 	
 	btTransform trans = e->getTransform();
 	float m[16];
@@ -967,7 +964,7 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
-	for (unsigned int d = 0; d < model->meshframes.size(); d++) {
+	/*for (unsigned int d = 0; d < model->meshframes.size(); d++) {
 		if (model->meshframes[d]->frame != frame) continue;
 		if (model->meshframes[d]->mesh == NULL) continue;
 		if (model->meshframes[d]->texture == NULL) continue;
@@ -1007,30 +1004,25 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 			glUniform1i(glGetUniformLocation(shader, "uDissolve"), 1);	// tex unit 1
 			glUniform1f(glGetUniformLocation(shader, "uDeath"), 1.0f - health);
 
-		} else {
+		} else {*/
 			// Regular shader
 			shader = this->shaders["entities"];
 			glUseProgram(shader);
 			glUniform1i(glGetUniformLocation(shader, "uTex"), 0);		// tex unit 0
-		}
+		/*}*/
 		
 
 		glBindAttribLocation(shader, 0, "vPosition");
 		glBindAttribLocation(shader, 1, "vNormal");
 		glBindAttribLocation(shader, 2, "vTexUV");
 
-		glm::mat4 MVP = this->projection * this->view * frameMatrix;
+		glm::mat4 MVP = this->projection * this->view * modelMatrix;
 		glUniformMatrix4fv(glGetUniformLocation(shader, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 
-		WavefrontObj * obj = model->meshframes[d]->mesh;
-		if (obj->ibo_count == 0) this->createVBO(obj);
-			
-		glBindVertexArray(obj->vao);
-		glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
-		glBindVertexArray(0);
-		
+		renderAssimpModel(am);
+
 		glUseProgram(0);
-	}
+	/*}*/
 
 	glDisable(GL_BLEND);
 }
@@ -1090,20 +1082,15 @@ void RenderOpenGL::renderAssimpModel(AssimpModel *am)
 	const struct aiScene* sc = am->getScene();
 	if (sc == NULL) return;
 	
-	this->createVAOassimp(am);
+	if (!am->vao) this->createVAOassimp(am);
 	
-	GLuint shader = this->shaders["entities"];
-	glUseProgram(shader);
+	// TODO: support multiple meshes
 	
-	glBindAttribLocation(shader, 0, "vPosition");
-	glBindAttribLocation(shader, 1, "vNormal");
-	glBindAttribLocation(shader, 2, "vTexUV");
-	
-	glBindVertexArray(am->vao);
-	glDrawElements(GL_TRIANGLES, am->numFaces*3, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
-	
-	glUseProgram(0);
+	//for (; n < sc->mNumMeshes; ++n) {
+		glBindVertexArray(am->vao);
+		glDrawElements(GL_TRIANGLES, am->numFaces*3, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+	//}
 }
 
 

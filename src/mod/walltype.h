@@ -13,7 +13,7 @@ using namespace std;
 class WallTypeDamage {
 	public:
 		int health;
-		AnimModel * model;
+		AssimpModel * model;
 };
 
 class WallType
@@ -28,7 +28,7 @@ class WallType
 		vector <WallTypeDamage *> damage_models;
 		vector <AudioPtr> walk_sounds;
 		
-		AnimModel * model;
+		AssimpModel * model;
 		
 		int check_radius;
 		int health;

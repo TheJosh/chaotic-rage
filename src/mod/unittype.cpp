@@ -122,7 +122,8 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 		
 		char * tmp = cfg_getstr(cfg_state, "model");
 		if (tmp == NULL) return NULL;
-		uct->model = mod->getAnimModel(tmp);
+		uct->model = mod->getAssimpModel(tmp);
+		if (uct->model == NULL) return NULL;
 		
 		uc->states.push_back(uct);
 		uct->id = uc->states.size() - 1;

@@ -13,7 +13,7 @@ using namespace std;
 class VehicleTypeDamage {
 	public:
 		int health;
-		AnimModel * model;
+		AssimpModel * model;
 };
 
 class VehicleType
@@ -22,7 +22,7 @@ class VehicleType
 		int id;
 		
 		string name;
-		AnimModel * model;
+		AssimpModel * model;
 		int health;
 		bool land;
 		bool water;

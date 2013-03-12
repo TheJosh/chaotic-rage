@@ -13,14 +13,14 @@ using namespace std;
 class AnimPlay
 {
 	private:
-		AnimModel * model;
+		AssimpModel * model;
 		int start_frame;
 		
 	public:
-		AnimPlay(AnimModel * model);
+		AnimPlay(AssimpModel * model);
 		
 	public:
-		AnimModel * getModel();
+		AssimpModel * getModel();
 		int getFrame();
 		bool isDone();
 		void reset();

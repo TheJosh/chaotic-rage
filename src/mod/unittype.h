@@ -52,7 +52,7 @@ class UnitTypeState
 {
 	public:
 		int id;
-		AnimModel * model;
+		AssimpModel * model;
 		int type;
 };
 

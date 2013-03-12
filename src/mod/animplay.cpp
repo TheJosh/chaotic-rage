@@ -9,7 +9,7 @@
 using namespace std;
 
 
-AnimPlay::AnimPlay(AnimModel * m)
+AnimPlay::AnimPlay(AssimpModel * m)
 {
 	this->model = m;
 	this->start_frame = -1;
@@ -19,7 +19,7 @@ AnimPlay::AnimPlay(AnimModel * m)
 /**
 * Returns the model to render
 **/
-AnimModel * AnimPlay::getModel()
+AssimpModel * AnimPlay::getModel()
 {
 	return this->model;
 }
@@ -32,7 +32,9 @@ void AnimPlay::reset()
 void AnimPlay::next()
 {
 	this->start_frame = -1;
-	this->model = this->model->next;
+	
+	// TODO: Next
+	/*this->model = this->model->next;*/
 }
 
 
@@ -41,6 +43,9 @@ void AnimPlay::next()
 **/
 int AnimPlay::getFrame()
 {
+	return 1;
+	// TODO: Animations
+	/*
 	// Only start the animation once it's actually rendered
 	// Allows them to be set up in constructors, etc, which may be several hundred ms before the
 	// game starts
@@ -57,6 +62,7 @@ int AnimPlay::getFrame()
 	}
 	
 	return framenum;
+	*/
 }
 
 /**
@@ -64,6 +70,9 @@ int AnimPlay::getFrame()
 **/
 bool AnimPlay::isDone()
 {
+	return false;
+	// TODO: Animations
+	/*
 	if (this->model == NULL) return false;
 	if (this->model->next == NULL) return false;
 	if (this->start_frame == -1) return false;
@@ -74,4 +83,5 @@ bool AnimPlay::isDone()
 	}
 	
 	return false;
+	*/
 }

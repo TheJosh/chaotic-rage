@@ -13,7 +13,7 @@ using namespace std;
 class ObjectTypeDamage {
 	public:
 		int health;
-		AnimModel * model;
+		AssimpModel * model;
 };
 
 class ObjectType
@@ -24,7 +24,7 @@ class ObjectType
 		bool stretch;
 		bool wall;
 		ObjectType * ground_type;
-		AnimModel * model;
+		AssimpModel * model;
 		int check_radius;
 		int health;
 		

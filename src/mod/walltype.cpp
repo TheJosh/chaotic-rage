@@ -49,7 +49,8 @@ WallType* loadItemWallType(cfg_t* cfg_item, Mod* mod)
 
 	char * tmp = cfg_getstr(cfg_item, "model");
 	if (tmp != NULL) {
-		wt->model = mod->getAnimModel(tmp);
+		wt->model = mod->getAssimpModel(tmp);
+		if (! wt->model) return NULL;
 	}
 	
 	// Load damage states
@@ -57,7 +58,7 @@ WallType* loadItemWallType(cfg_t* cfg_item, Mod* mod)
 	if (size == 0) {
 		WallTypeDamage * dam = new WallTypeDamage();
 		dam->health = 0;
-		dam->model = mod->getAnimModel("null");
+		dam->model = mod->getAssimpModel("null");
 		wt->damage_models.push_back(dam);
 		
 	} else {
@@ -70,7 +71,9 @@ WallType* loadItemWallType(cfg_t* cfg_item, Mod* mod)
 			WallTypeDamage * dam = new WallTypeDamage();
 			
 			dam->health = cfg_getint(cfg_damage, "health");
-			dam->model = mod->getAnimModel(tmp);
+			
+			dam->model = mod->getAssimpModel(tmp);
+			if (! dam->model) return NULL;
 			
 			wt->damage_models.push_back(dam);
 		}

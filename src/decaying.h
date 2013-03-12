@@ -16,11 +16,11 @@ class Decaying : public Entity
 		virtual EntityClass klass() const { return NONE; }
 		
 	public:
-		AnimModel *model;
+		AssimpModel *model;
 		AnimPlay *anim;
 		
 	public:
-		Decaying(GameState *st, btTransform &xform, AnimModel *model);
+		Decaying(GameState *st, btTransform &xform, AssimpModel *model);
 		virtual ~Decaying();
 		
 	public:
