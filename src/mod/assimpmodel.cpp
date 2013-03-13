@@ -28,10 +28,10 @@ static Assimp::Importer importer;
 **/
 AssimpModel::AssimpModel(Mod* mod, string name)
 {
-	this->sc = NULL;
 	this->mod = mod;
 	this->name = name;
-	this->vao = 0;
+	this->sc = NULL;
+	this->hasVAO = false;
 }
 
 
@@ -70,13 +70,22 @@ bool AssimpModel::load()
 **/
 btVector3 AssimpModel::getBoundingSize()
 {
+	return this->getBoundingSizeNode(sc->mRootNode);
+}
+
+
+/**
+* Returns the bounding size of the mesh of the first frame
+**/
+btVector3 AssimpModel::getBoundingSizeNode(const struct aiNode* nd)
+{
 	float x = 0.0f, y = 0.0f, z = 0.0f;
 	unsigned int n = 0, t;
 	
 	if (sc == NULL) return btVector3(0.0f, 0.0f, 0.0f);
 	
-	for (; n < sc->mRootNode->mNumMeshes; ++n) {
-		const struct aiMesh* mesh = sc->mMeshes[sc->mRootNode->mMeshes[n]];
+	for (; n < nd->mNumMeshes; ++n) {
+		const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
 		
 		for (t = 0; t < mesh->mNumVertices; ++t) {
 			aiVector3D tmp = mesh->mVertices[t];
@@ -86,7 +95,14 @@ btVector3 AssimpModel::getBoundingSize()
 			z = MAX(z, tmp.z);
 		}
 	}
-
+	
+	for (n = 0; n < nd->mNumChildren; ++n) {
+		btVector3 size = this->getBoundingSizeNode(nd->mChildren[n]);
+		x = MAX(x, size.x());
+		y = MAX(y, size.y());
+		z = MAX(z, size.z());
+	}
+	
 	return btVector3(x, y, z);
 }
 

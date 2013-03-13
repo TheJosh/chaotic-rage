@@ -1031,12 +1031,15 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 void RenderOpenGL::createVAOassimp(AssimpModel *am)
 {
 	const struct aiScene* sc = am->getScene();
-	
+	unsigned int n = 0;
 	GLuint buffer;
 	
-	//for (; n < sc->mNumMeshes; ++n) {
-		const struct aiMesh* mesh = sc->mMeshes[0];		// TODO: support multiple meshes
-
+	const struct aiNode* nd = sc->mRootNode;
+	
+	for (; n < sc->mRootNode->mNumMeshes; ++n) {
+		const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
+		AssimpMesh *myMesh = new AssimpMesh();
+		
 		unsigned int *faceArray;
 		faceArray = (unsigned int *)malloc(sizeof(unsigned int) * mesh->mNumFaces * 3);
 		unsigned int faceIndex = 0;
@@ -1047,16 +1050,16 @@ void RenderOpenGL::createVAOassimp(AssimpModel *am)
 			memcpy(&faceArray[faceIndex], face->mIndices, 3 * sizeof(int));
 			faceIndex += 3;
 		}
-		am->numFaces = sc->mMeshes[0]->mNumFaces;		// TODO: support multiple meshes
+		myMesh->numFaces = mesh->mNumFaces;		// TODO: support multiple meshes
 		
 		// Vertex Array Object
-		glGenVertexArrays(1,&(am->vao));
-		glBindVertexArray(am->vao);
+		glGenVertexArrays(1,&(myMesh->vao));
+		glBindVertexArray(myMesh->vao);
 		
 		// Faces
 		glGenBuffers(1, &buffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * am->numFaces * 3, faceArray, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mesh->mNumFaces * 3, faceArray, GL_STATIC_DRAW);
 		
 		// Positions
 		if (mesh->HasPositions()) {
@@ -1068,7 +1071,11 @@ void RenderOpenGL::createVAOassimp(AssimpModel *am)
 		}
 		
 		glBindVertexArray(0);
-	//}
+		
+		am->meshes.push_back(myMesh);
+	}
+	
+	am->hasVAO = true;
 }
 
 
@@ -1082,15 +1089,17 @@ void RenderOpenGL::renderAssimpModel(AssimpModel *am)
 	const struct aiScene* sc = am->getScene();
 	if (sc == NULL) return;
 	
-	if (!am->vao) this->createVAOassimp(am);
+	if (!am->hasVAO) this->createVAOassimp(am);
 	
-	// TODO: support multiple meshes
+	const struct aiNode* nd = sc->mRootNode;
 	
-	//for (; n < sc->mNumMeshes; ++n) {
-		glBindVertexArray(am->vao);
-		glDrawElements(GL_TRIANGLES, am->numFaces*3, GL_UNSIGNED_INT, 0);
+	for (unsigned int n=0; n < nd->mNumMeshes; ++n) {
+		AssimpMesh* myMesh = am->meshes[nd->mMeshes[n]];
+		
+		glBindVertexArray(myMesh->vao);
+		glDrawElements(GL_TRIANGLES, myMesh->numFaces*3, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
-	//}
+	}
 }
 
 

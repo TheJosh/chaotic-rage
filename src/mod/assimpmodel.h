@@ -12,6 +12,14 @@
 using namespace std;
 
 
+class AssimpMesh
+{
+	public:
+		GLuint vao;
+		int numFaces;
+};
+
+
 class AssimpModel
 {
 	friend class RenderOpenGL;
@@ -22,8 +30,8 @@ class AssimpModel
 		string name;
 		
 	protected:
-		GLuint vao;
-		int numFaces;
+		vector<AssimpMesh*> meshes;
+		bool hasVAO;
 		
 	public:
 		AssimpModel(Mod* mod, string name);
@@ -33,6 +41,9 @@ class AssimpModel
 		const struct aiScene* getScene() { return this->sc; }
 		btVector3 getBoundingSize();
 		btVector3 getBoundingSizeHE();
+		
+	private:
+		btVector3 getBoundingSizeNode(const struct aiNode* nd);
 };
 
 
