@@ -21,9 +21,7 @@
 
 #include <glm/glm.hpp>
 
-#include <assimp/cimport.h>
 #include <assimp/scene.h>
-#include <assimp/postprocess.h>
 
 #include "LinearMath/btIDebugDraw.h"
 
@@ -70,8 +68,6 @@ class RenderOpenGL : public Render3D
 		WavefrontObj *waterobj;
 		
 		// Debugging
-		AnimPlay *test;
-		AssimpModel *test2;
 		btIDebugDraw *physicsdebug;
 		bool speeddebug;
 		
@@ -126,14 +122,15 @@ class RenderOpenGL : public Render3D
 		virtual void loadFont(string name, Mod * mod);
 		virtual void renderText(string text, float x = 0.0f, float y = 0.0f, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
 		virtual unsigned int widthText(string text);
-
+		virtual bool loadAssimpModel(AssimpModel *am);
+		
 	private:
 		void createWater();
 		void renderAnimPlay(AnimPlay * play, Entity * e);
 		void renderCharacter(char c);
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
-		void createVAOassimp(AssimpModel *am);
+		
 		void renderAssimpModel(AssimpModel *am);
 		void mainViewport(int s, int of);
 		void mainRot();

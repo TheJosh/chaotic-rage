@@ -360,9 +360,11 @@ AssimpModel * Mod::getAssimpModel(string name)
 {
 	AssimpModel *am = new AssimpModel(this, name + ".blend");
 	
-	if (! am->load()) {
-		delete(am);
-		return NULL;
+	if (st->render->is3D()) {
+		if (! am->load((Render3D*) st->render)) {
+			delete(am);
+			return NULL;
+		}
 	}
 	
 	return am;

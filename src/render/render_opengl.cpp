@@ -28,9 +28,7 @@
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <assimp/cimport.h>
 #include <assimp/scene.h>
-#include <assimp/postprocess.h>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -556,9 +554,6 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 
 void RenderOpenGL::preGame()
 {
-	this->test2 = new AssimpModel(st->mm->getBase(), "crate.blend");
-	this->test2->load();
-	
 	SDL_ShowCursor(SDL_DISABLE);
 
 	glEnable(GL_TEXTURE_2D);
@@ -609,8 +604,6 @@ void RenderOpenGL::preGame()
 
 void RenderOpenGL::postGame()
 {
-	delete(this->test);
-	
 	SDL_ShowCursor(SDL_ENABLE);
 	mainViewport(1, 1);
 
@@ -1028,16 +1021,14 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 }
 
 
-void RenderOpenGL::createVAOassimp(AssimpModel *am)
+bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 {
 	const struct aiScene* sc = am->getScene();
 	unsigned int n = 0;
 	GLuint buffer;
 	
-	const struct aiNode* nd = sc->mRootNode;
-	
-	for (; n < sc->mRootNode->mNumMeshes; ++n) {
-		const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
+	for (; n < sc->mNumMeshes; ++n) {
+		const struct aiMesh* mesh = sc->mMeshes[n];
 		AssimpMesh *myMesh = new AssimpMesh();
 		
 		unsigned int *faceArray;
@@ -1075,7 +1066,7 @@ void RenderOpenGL::createVAOassimp(AssimpModel *am)
 		am->meshes.push_back(myMesh);
 	}
 	
-	am->hasVAO = true;
+	return true;
 }
 
 
@@ -1086,18 +1077,9 @@ void RenderOpenGL::createVAOassimp(AssimpModel *am)
 **/
 void RenderOpenGL::renderAssimpModel(AssimpModel *am)
 {
-	const struct aiScene* sc = am->getScene();
-	if (sc == NULL) return;
-	
-	if (!am->hasVAO) this->createVAOassimp(am);
-	
-	const struct aiNode* nd = sc->mRootNode;
-	
-	for (unsigned int n=0; n < nd->mNumMeshes; ++n) {
-		AssimpMesh* myMesh = am->meshes[nd->mMeshes[n]];
-		
-		glBindVertexArray(myMesh->vao);
-		glDrawElements(GL_TRIANGLES, myMesh->numFaces*3, GL_UNSIGNED_INT, 0);
+	for (vector<AssimpMesh*>::iterator it = am->meshes.begin(); it != am->meshes.end(); it++) {
+		glBindVertexArray((*it)->vao);
+		glDrawElements(GL_TRIANGLES, (*it)->numFaces*3, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
 }
@@ -1245,9 +1227,6 @@ void RenderOpenGL::render()
 		mainRot();
 		terrain();
 		entities();
-		
-		renderAssimpModel(this->test2);
-		
 		particles();
 		water();
 		if (physicsdebug != NULL) physics();

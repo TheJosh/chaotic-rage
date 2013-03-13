@@ -31,7 +31,6 @@ AssimpModel::AssimpModel(Mod* mod, string name)
 	this->mod = mod;
 	this->name = name;
 	this->sc = NULL;
-	this->hasVAO = false;
 }
 
 
@@ -39,7 +38,7 @@ AssimpModel::AssimpModel(Mod* mod, string name)
 * Load the model.
 * Return true on success, false on failure.
 **/
-bool AssimpModel::load()
+bool AssimpModel::load(Render3D* render)
 {
 	unsigned int flags = aiProcess_CalcTangentSpace
 		| aiProcess_Triangulate
@@ -61,6 +60,14 @@ bool AssimpModel::load()
 	
 	free(data);
 	
+	this->calcBoundingSize();
+	
+	if (! render->loadAssimpModel(this)) {
+		return false;
+	}
+	
+	this->sc = NULL;
+	
 	return true;
 }
 
@@ -68,16 +75,16 @@ bool AssimpModel::load()
 /**
 * Returns the bounding size of the mesh of the first frame
 **/
-btVector3 AssimpModel::getBoundingSize()
+void AssimpModel::calcBoundingSize()
 {
-	return this->getBoundingSizeNode(sc->mRootNode);
+	this->boundingSize = this->calcBoundingSizeNode(sc->mRootNode);
 }
 
 
 /**
 * Returns the bounding size of the mesh of the first frame
 **/
-btVector3 AssimpModel::getBoundingSizeNode(const struct aiNode* nd)
+btVector3 AssimpModel::calcBoundingSizeNode(const struct aiNode* nd)
 {
 	float x = 0.0f, y = 0.0f, z = 0.0f;
 	unsigned int n = 0, t;
@@ -97,7 +104,7 @@ btVector3 AssimpModel::getBoundingSizeNode(const struct aiNode* nd)
 	}
 	
 	for (n = 0; n < nd->mNumChildren; ++n) {
-		btVector3 size = this->getBoundingSizeNode(nd->mChildren[n]);
+		btVector3 size = this->calcBoundingSizeNode(nd->mChildren[n]);
 		x = MAX(x, size.x());
 		y = MAX(y, size.y());
 		z = MAX(z, size.z());
@@ -107,17 +114,21 @@ btVector3 AssimpModel::getBoundingSizeNode(const struct aiNode* nd)
 }
 
 
+
+
+btVector3 AssimpModel::getBoundingSize()
+{
+	return this->boundingSize;
+}
+
+
 /**
 * Returns the bounding size of the mesh of the first frame
 * HE = half extents
 **/
 btVector3 AssimpModel::getBoundingSizeHE()
 {
-	btVector3 ret = getBoundingSize();
-	ret.setX(ret.x() / 2.0f);
-	ret.setY(ret.y() / 2.0f);
-	ret.setZ(ret.z() / 2.0f);
-	return ret;
+	return btVector3(this->boundingSize.x() / 2.0f, this->boundingSize.y() / 2.0f, this->boundingSize.z() / 2.0f);
 }
 
 

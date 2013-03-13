@@ -28,14 +28,14 @@ class AssimpModel
 		const struct aiScene* sc;
 		Mod *mod;
 		string name;
+		btVector3 boundingSize;
 		
 	protected:
 		vector<AssimpMesh*> meshes;
-		bool hasVAO;
 		
 	public:
 		AssimpModel(Mod* mod, string name);
-		bool load();
+		bool load(Render3D* render);
 		
 	public:
 		const struct aiScene* getScene() { return this->sc; }
@@ -43,7 +43,8 @@ class AssimpModel
 		btVector3 getBoundingSizeHE();
 		
 	private:
-		btVector3 getBoundingSizeNode(const struct aiNode* nd);
+		void calcBoundingSize();
+		btVector3 calcBoundingSizeNode(const struct aiNode* nd);
 };
 
 
