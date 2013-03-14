@@ -36,7 +36,6 @@ class ModManager {
 		bool reloadAttrs();
 		
 		AIType * getAIType(string name);
-		AnimModel * getAnimModel(string name);
 		FloorType * getFloorType(string name);
 		GameType * getGameType(string name);
 		ObjectType * getObjectType(string name);

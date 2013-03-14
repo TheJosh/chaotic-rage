@@ -52,7 +52,6 @@ Mod::Mod(GameState * st, string directory)
 	this->has_campaign = false;
 	
 	this->ais = NULL;
-	this->animmodels = NULL;
 	this->areatypes = NULL;
 	this->gametypes = NULL;
 	this->objecttypes = NULL;
@@ -182,10 +181,6 @@ vector<T> * loadModFile(Mod* mod, const char* filename, const char* section, cfg
 **/
 bool Mod::load()
 {
-	animmodels = loadModFile<AnimModel*>(this, "animmodels.conf", "animmodel", animmodel_opts, &loadItemAnimModel);
-	if (animmodels == NULL) return false;
-	
-	
 #ifdef NOGUI
 	sounds = new vector<Sound*>();
 	songs = new vector<Song*>();
@@ -325,28 +320,6 @@ AIType * Mod::getAIType(string name)
 	int i;
 	for (i = ais->size() - 1; i >= 0; --i) {
 		if (ais->at(i)->name.compare(name) == 0) return ais->at(i);
-	}
-	return NULL;
-}
-
-
-
-/**
-* Gets an animmodel by ID
-**/
-AnimModel * Mod::getAnimModel(int id)
-{
-	if (id < 0 or ((unsigned int) id) > animmodels->size()) return NULL;
-	return animmodels->at(id);
-}
-
-AnimModel * Mod::getAnimModel(string name)
-{
-	if (name.empty()) return NULL;
-	
-	int i;
-	for (i = animmodels->size() - 1; i >= 0; --i) {
-		if (animmodels->at(i)->name.compare(name) == 0) return animmodels->at(i);
 	}
 	return NULL;
 }

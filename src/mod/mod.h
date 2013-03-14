@@ -25,7 +25,6 @@ class Mod {
 		
 		// full data
 		vector<AIType*> * ais;
-		vector<AnimModel*> * animmodels;
 		vector<Campaign*> * campaigns;
 		vector<FloorType*> * areatypes;
 		vector<GameType*> * gametypes;
@@ -62,7 +61,6 @@ class Mod {
 		bool hasCampaign() { return this->has_campaign; }
 		
 		AIType * getAIType(int id);
-		AnimModel * getAnimModel(int id);
 		FloorType * getFloorType(int id);
 		GameType * getGameType(int id);
 		ObjectType * getObjectType(int id);
@@ -74,7 +72,6 @@ class Mod {
 		WeaponType * getWeaponType(int id);
 		
 		AIType * getAIType(string name);
-		AnimModel * getAnimModel(string name);
 		FloorType * getFloorType(string name);
 		GameType * getGameType(string name);
 		ObjectType * getObjectType(string name);
