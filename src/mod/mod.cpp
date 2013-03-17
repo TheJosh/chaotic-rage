@@ -242,9 +242,9 @@ bool Mod::load()
 		ot->pickup_weapon = weapontypes->at(i)->name;
 		ot->over = true;
 		
-		ot->model = this->getAssimpModel(tmp);
+		ot->model = this->getAssimpModel(tmp + ".blend");
 		if (ot->model == NULL) {
-			ot->model = this->getAssimpModel("generic_pickup");
+			ot->model = this->getAssimpModel("generic_pickup.blend");
 		}
 		
 		objecttypes->push_back(ot);
@@ -262,9 +262,9 @@ bool Mod::load()
 		ot->ammo_crate = weapontypes->at(i)->name;
 		ot->over = true;
 		
-		ot->model = this->getAssimpModel(tmp);
+		ot->model = this->getAssimpModel(tmp + ".blend");
 		if (ot->model == NULL) {
-			ot->model = this->getAssimpModel("generic_ammocrate");
+			ot->model = this->getAssimpModel("generic_ammocrate.blend");
 		}
 		
 		objecttypes->push_back(ot);
@@ -331,7 +331,7 @@ AIType * Mod::getAIType(string name)
 **/
 AssimpModel * Mod::getAssimpModel(string name)
 {
-	AssimpModel *am = new AssimpModel(this, name + ".blend");
+	AssimpModel *am = new AssimpModel(this, name);
 	
 	if (st->render->is3D()) {
 		if (! am->load((Render3D*) st->render)) {

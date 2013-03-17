@@ -77,7 +77,7 @@ ObjectType* loadItemObjectType(cfg_t* cfg_item, Mod* mod)
 	if (size == 0) {
 		ObjectTypeDamage * dam = new ObjectTypeDamage();
 		dam->health = 0;
-		dam->model = mod->getAssimpModel("null");
+		dam->model = mod->getAssimpModel("null.blend");
 		wt->damage_models.push_back(dam);
 		
 	} else {
