@@ -1041,7 +1041,7 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 			memcpy(&faceArray[faceIndex], face->mIndices, 3 * sizeof(int));
 			faceIndex += 3;
 		}
-		myMesh->numFaces = mesh->mNumFaces;		// TODO: support multiple meshes
+		myMesh->numFaces = mesh->mNumFaces;
 		
 		// Vertex Array Object
 		glGenVertexArrays(1,&(myMesh->vao));
@@ -1059,6 +1059,24 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mVertices, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
+		}
+		
+		// Normals
+		if (mesh->HasNormals()) {
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mNormals, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, 0, 0, 0);
+		}
+		
+		// UVs
+		if (mesh->HasTextureCoords(0)) {
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mTextureCoords[0], GL_STATIC_DRAW);
+			glEnableVertexAttribArray(2);
+			glVertexAttribPointer(2, 3, GL_FLOAT, 0, 0, 0);
 		}
 		
 		glBindVertexArray(0);
