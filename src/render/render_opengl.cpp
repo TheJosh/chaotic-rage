@@ -1021,6 +1021,11 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 }
 
 
+/**
+* Load a model into VBOs etc.
+*
+* TODO: Does this actually belong in the AssimModel class?
+**/
 bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 {
 	const struct aiScene* sc = am->getScene();
@@ -1041,7 +1046,9 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 			memcpy(&faceArray[faceIndex], face->mIndices, 3 * sizeof(int));
 			faceIndex += 3;
 		}
+		
 		myMesh->numFaces = mesh->mNumFaces;
+		myMesh->materialIndex = mesh->mMaterialIndex;
 		
 		// Vertex Array Object
 		glGenVertexArrays(1,&(myMesh->vao));
@@ -1084,6 +1091,30 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 		am->meshes.push_back(myMesh);
 	}
 	
+	// Load materials. Only supports simple materials with a single texture at the moment.
+	// TODO: We should save these in a list so we don't load the same stuff multiple times.
+	for (n = 0; n < sc->mNumMaterials; n++) {
+		const aiMaterial* pMaterial = sc->mMaterials[n];
+		
+		AssimpMaterial *myMat = new AssimpMaterial();
+		
+		if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
+			aiString Path;
+			if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path, NULL, NULL, NULL, NULL, NULL) != AI_SUCCESS) continue;
+			string p(Path.data);
+			
+			if (p.substr(0, 2) == ".\\") p = p.substr(2, p.size() - 2);
+			if (p.substr(0, 2) == "./") p = p.substr(2, p.size() - 2);
+			if (p.substr(0, 2) == "//") p = p.substr(2, p.size() - 2);
+			
+			SpritePtr tex = this->loadSprite("models/" + p, am->mod); 
+			
+			myMat->tex = tex;
+		}
+		
+		am->materials.push_back(myMat);
+	}
+	
 	return true;
 }
 
@@ -1096,10 +1127,17 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 void RenderOpenGL::renderAssimpModel(AssimpModel *am)
 {
 	for (vector<AssimpMesh*>::iterator it = am->meshes.begin(); it != am->meshes.end(); it++) {
+		if (am->materials[(*it)->materialIndex]->tex == NULL) {
+			glBindTexture(GL_TEXTURE_2D, 0);
+		} else {
+			glBindTexture(GL_TEXTURE_2D, am->materials[(*it)->materialIndex]->tex->pixels);
+		}
+		
 		glBindVertexArray((*it)->vao);
 		glDrawElements(GL_TRIANGLES, (*it)->numFaces*3, GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
 	}
+	
+	glBindVertexArray(0);
 }
 
 

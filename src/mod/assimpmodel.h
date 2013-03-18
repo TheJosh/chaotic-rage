@@ -17,6 +17,16 @@ class AssimpMesh
 	public:
 		GLuint vao;
 		int numFaces;
+		int materialIndex;
+};
+
+class AssimpMaterial
+{
+	public:
+		AssimpMaterial() : tex(NULL) {}
+		
+	public:
+		SpritePtr tex;
 };
 
 
@@ -26,12 +36,13 @@ class AssimpModel
 	
 	private:
 		const struct aiScene* sc;
-		Mod *mod;
-		string name;
 		btVector3 boundingSize;
 		
 	protected:
+		Mod *mod;
+		string name;
 		vector<AssimpMesh*> meshes;
+		vector<AssimpMaterial*> materials;
 		
 	public:
 		AssimpModel(Mod* mod, string name);
