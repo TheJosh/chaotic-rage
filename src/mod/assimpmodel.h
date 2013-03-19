@@ -29,13 +29,32 @@ class AssimpMaterial
 		SpritePtr tex;
 };
 
+class AssimpNode
+{
+	private:
+		AssimpNode* parent;
+		vector<AssimpNode*> children;
+	
+	public:
+		vector<unsigned int> meshes;
+		glm::mat4 transformation;
+		
+	public:
+		AssimpNode() : parent(NULL) {}
+		
+		void addChild(AssimpNode* child) {
+			this->children.push_back(child);
+			child->parent = this;
+		}
+};
+
 
 class AssimpModel
 {
 	friend class RenderOpenGL;
 	
 	private:
-		const struct aiScene* sc;
+		const struct aiScene* sc;			// TODO: remove this, pass it as a func. arg everywhere instead.
 		btVector3 boundingSize;
 		
 	protected:
@@ -43,19 +62,22 @@ class AssimpModel
 		string name;
 		vector<AssimpMesh*> meshes;
 		vector<AssimpMaterial*> materials;
+		AssimpNode* rootNode;
 		
 	public:
 		AssimpModel(Mod* mod, string name);
 		bool load(Render3D* render);
 		
 	public:
-		const struct aiScene* getScene() { return this->sc; }
+		const struct aiScene* getScene() { return this->sc; }		// TODO: remove this too
 		btVector3 getBoundingSize();
 		btVector3 getBoundingSizeHE();
 		
 	private:
 		void calcBoundingSize();
 		btVector3 calcBoundingSizeNode(const struct aiNode* nd);
+		void loadNodes();
+		AssimpNode* loadNode(aiNode* nd);
 };
 
 

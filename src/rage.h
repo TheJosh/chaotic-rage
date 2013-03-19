@@ -59,7 +59,9 @@ enum Faction {
 class AIType;
 class AILogic;
 class AnimPlay;
+class AssimpMaterial;
 class AssimpModel;
+class AssimpNode;
 class Audio;
 class CampaignStage;
 class Campaign;

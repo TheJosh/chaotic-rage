@@ -130,8 +130,8 @@ class RenderOpenGL : public Render3D
 		void renderCharacter(char c);
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
+		void recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd);
 		
-		void renderAssimpModel(AssimpModel *am);
 		void mainViewport(int s, int of);
 		void mainRot();
 		void terrain();

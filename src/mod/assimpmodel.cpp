@@ -11,6 +11,10 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "assimpmodel.h"
 #include "../rage.h"
 
@@ -61,6 +65,7 @@ bool AssimpModel::load(Render3D* render)
 	free(data);
 	
 	this->calcBoundingSize();
+	this->loadNodes();
 	
 	if (! render->loadAssimpModel(this)) {
 		return false;
@@ -114,6 +119,38 @@ btVector3 AssimpModel::calcBoundingSizeNode(const struct aiNode* nd)
 }
 
 
+/**
+* Load the node tree
+**/
+void AssimpModel::loadNodes()
+{
+	this->rootNode = this->loadNode(this->sc->mRootNode);
+}
+
+
+/**
+* Load a node (and it's children) from the node tree
+**/
+AssimpNode* AssimpModel::loadNode(aiNode* nd)
+{
+	unsigned int i;
+	AssimpNode* myNode = new AssimpNode();
+	
+	for (i = 0; i < nd->mNumMeshes; i++) {
+		myNode->meshes.push_back(nd->mMeshes[i]);
+	}
+	
+	for (i = 0; i < nd->mNumChildren; i++) {
+		AssimpNode* child = loadNode(nd->mChildren[i]);
+		myNode->addChild(child);
+	}
+	
+	aiMatrix4x4 m = nd->mTransformation;
+	m.Transpose();
+	myNode->transformation = glm::make_mat4((float *) &m);
+	
+	return myNode;
+}
 
 
 btVector3 AssimpModel::getBoundingSize()

@@ -1012,7 +1012,7 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 		glm::mat4 MVP = this->projection * this->view * modelMatrix;
 		glUniformMatrix4fv(glGetUniformLocation(shader, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 
-		renderAssimpModel(am);
+		recursiveRenderAssimpModel(am, am->rootNode);
 
 		glUseProgram(0);
 	/*}*/
@@ -1124,7 +1124,7 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 * Borrowed from the assimp sample code.
 * It doesn't actually work at the moment - it's using fixed function, which we don't support.
 **/
-void RenderOpenGL::renderAssimpModel(AssimpModel *am)
+void RenderOpenGL::recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd)
 {
 	for (vector<AssimpMesh*>::iterator it = am->meshes.begin(); it != am->meshes.end(); it++) {
 		if (am->materials[(*it)->materialIndex]->tex == NULL) {
