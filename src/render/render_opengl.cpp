@@ -1032,8 +1032,8 @@ void RenderOpenGL::recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd, G
 	glm::mat4 MVP = this->projection * this->view * transform;
 	glUniformMatrix4fv(glGetUniformLocation(shader, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
-	for (vector<int*>::iterator it = nd->meshes.begin(); msh != nd->meshes.end(); it++) {
-		AnimMesh* mesh = am->meshes[(*it)];
+	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); it++) {
+		AssimpMesh* mesh = am->meshes[(*it)];
 		
 		if (am->materials[mesh->materialIndex]->tex == NULL) {
 			glBindTexture(GL_TEXTURE_2D, 0);
