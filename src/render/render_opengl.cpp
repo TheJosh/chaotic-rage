@@ -1009,15 +1009,47 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 		glBindAttribLocation(shader, 1, "vNormal");
 		glBindAttribLocation(shader, 2, "vTexUV");
 
-		glm::mat4 MVP = this->projection * this->view * modelMatrix;
-		glUniformMatrix4fv(glGetUniformLocation(shader, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-
-		recursiveRenderAssimpModel(am, am->rootNode);
+		recursiveRenderAssimpModel(am, am->rootNode, shader, modelMatrix);
 
 		glUseProgram(0);
 	/*}*/
 
 	glDisable(GL_BLEND);
+}
+
+
+
+
+/**
+* This is an incomplete renderer for an assimp scene object.
+* Borrowed from the assimp sample code.
+* It doesn't actually work at the moment - it's using fixed function, which we don't support.
+**/
+void RenderOpenGL::recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd, GLuint shader, glm::mat4 transform)
+{
+	transform *= nd->transform;
+	
+	glm::mat4 MVP = this->projection * this->view * transform;
+	glUniformMatrix4fv(glGetUniformLocation(shader, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	
+	for (vector<int*>::iterator it = nd->meshes.begin(); msh != nd->meshes.end(); it++) {
+		AnimMesh* mesh = am->meshes[(*it)];
+		
+		if (am->materials[mesh->materialIndex]->tex == NULL) {
+			glBindTexture(GL_TEXTURE_2D, 0);
+		} else {
+			glBindTexture(GL_TEXTURE_2D, am->materials[mesh->materialIndex]->tex->pixels);
+		}
+		
+		glBindVertexArray(mesh->vao);
+		glDrawElements(GL_TRIANGLES, mesh->numFaces*3, GL_UNSIGNED_INT, 0);
+	}
+	
+	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {
+		recursiveRenderAssimpModel(am, (*it), shader, transform);
+	}
+	
+	glBindVertexArray(0);
 }
 
 
@@ -1116,28 +1148,6 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 	}
 	
 	return true;
-}
-
-
-/**
-* This is an incomplete renderer for an assimp scene object.
-* Borrowed from the assimp sample code.
-* It doesn't actually work at the moment - it's using fixed function, which we don't support.
-**/
-void RenderOpenGL::recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd)
-{
-	for (vector<AssimpMesh*>::iterator it = am->meshes.begin(); it != am->meshes.end(); it++) {
-		if (am->materials[(*it)->materialIndex]->tex == NULL) {
-			glBindTexture(GL_TEXTURE_2D, 0);
-		} else {
-			glBindTexture(GL_TEXTURE_2D, am->materials[(*it)->materialIndex]->tex->pixels);
-		}
-		
-		glBindVertexArray((*it)->vao);
-		glDrawElements(GL_TRIANGLES, (*it)->numFaces*3, GL_UNSIGNED_INT, 0);
-	}
-	
-	glBindVertexArray(0);
 }
 
 

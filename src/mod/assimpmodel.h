@@ -37,7 +37,7 @@ class AssimpNode
 	
 	public:
 		vector<unsigned int> meshes;
-		glm::mat4 transformation;
+		glm::mat4 transform;
 		
 	public:
 		AssimpNode() : parent(NULL) {}

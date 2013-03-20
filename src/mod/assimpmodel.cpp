@@ -147,7 +147,7 @@ AssimpNode* AssimpModel::loadNode(aiNode* nd)
 	
 	aiMatrix4x4 m = nd->mTransformation;
 	m.Transpose();
-	myNode->transformation = glm::make_mat4((float *) &m);
+	myNode->transform = glm::make_mat4((float *) &m);
 	
 	return myNode;
 }
