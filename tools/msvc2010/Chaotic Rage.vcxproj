@@ -150,8 +150,6 @@
     <ClCompile Include="..\..\src\map.cpp" />
     <ClCompile Include="..\..\src\menu.cpp" />
     <ClCompile Include="..\..\src\mod\aitype.cpp" />
-    <ClCompile Include="..\..\src\mod\animmodel.cpp" />
-    <ClCompile Include="..\..\src\mod\animplay.cpp" />
     <ClCompile Include="..\..\src\mod\campaign.cpp" />
     <ClCompile Include="..\..\src\mod\floortype.cpp" />
     <ClCompile Include="..\..\src\mod\gametype.cpp" />
@@ -175,6 +173,8 @@
     <ClCompile Include="..\..\src\physics_bullet.cpp" />
     <ClCompile Include="..\..\src\platform\win32.cpp" />
     <ClCompile Include="..\..\src\player.cpp" />
+    <ClCompile Include="..\..\src\render\animplay.cpp" />
+    <ClCompile Include="..\..\src\render\assimpmodel.cpp" />
     <ClCompile Include="..\..\src\render\hud.cpp" />
     <ClCompile Include="..\..\src\render\render.cpp" />
     <ClCompile Include="..\..\src\render\render_debug.cpp" />
@@ -221,8 +221,6 @@
     <ClInclude Include="..\..\src\map.h" />
     <ClInclude Include="..\..\src\menu.h" />
     <ClInclude Include="..\..\src\mod\aitype.h" />
-    <ClInclude Include="..\..\src\mod\animmodel.h" />
-    <ClInclude Include="..\..\src\mod\animplay.h" />
     <ClInclude Include="..\..\src\mod\campaign.h" />
     <ClInclude Include="..\..\src\mod\floortype.h" />
     <ClInclude Include="..\..\src\mod\gametype.h" />
@@ -247,6 +245,8 @@
     <ClInclude Include="..\..\src\platform\platform.h" />
     <ClInclude Include="..\..\src\player.h" />
     <ClInclude Include="..\..\src\rage.h" />
+    <ClInclude Include="..\..\src\render\animplay.h" />
+    <ClInclude Include="..\..\src\render\assimpmodel.h" />
     <ClInclude Include="..\..\src\render\hud.h" />
     <ClInclude Include="..\..\src\render\hud_label.h" />
     <ClInclude Include="..\..\src\render\render.h" />

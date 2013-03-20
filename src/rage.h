@@ -131,6 +131,8 @@ class Zone;
 #include "render/render_null.h"
 #include "render/render_debug.h"
 #include "render/hud.h"
+#include "render/animplay.h"
+#include "render/assimpmodel.h"
 
 #include "audio/audio.h"
 #include "audio/audio_sdlmixer.h"
@@ -147,8 +149,6 @@ class Zone;
 #include "mod/mod_proxy.h"
 #include "mod/mod_manager.h"
 #include "mod/aitype.h"
-#include "mod/animplay.h"
-#include "mod/assimpmodel.h"
 #include "mod/campaign.h"
 #include "mod/floortype.h"
 #include "mod/objecttype.h"
