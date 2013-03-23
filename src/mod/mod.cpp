@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include <map>
 #include <SDL.h>
 #include <confuse.h>
 #include <zzip/zzip.h>
@@ -62,6 +63,21 @@ Mod::Mod(GameState * st, string directory)
 	this->walltypes = NULL;
 	this->weapontypes = NULL;
 	this->mapnames = NULL;
+}
+
+Mod::~Mod()
+{
+	delete(this->ais);
+	delete(this->areatypes);
+	delete(this->gametypes);
+	delete(this->objecttypes);
+	delete(this->songs);
+	delete(this->sounds);
+	delete(this->unitclasses);
+	delete(this->walltypes);
+	delete(this->vehicletypes);
+	delete(this->weapontypes);
+	delete(this->mapnames);
 }
 
 
@@ -331,6 +347,10 @@ AIType * Mod::getAIType(string name)
 **/
 AssimpModel * Mod::getAssimpModel(string name)
 {
+	if (this->models[name]) {
+		return this->models[name];
+	}
+		
 	AssimpModel *am = new AssimpModel(this, name);
 	
 	if (st->render->is3D()) {
@@ -340,6 +360,8 @@ AssimpModel * Mod::getAssimpModel(string name)
 		}
 	}
 	
+	this->models.insert(std::pair<string, AssimpModel*>(name, am));
+
 	return am;
 }
 

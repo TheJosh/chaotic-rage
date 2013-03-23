@@ -6,6 +6,7 @@
 #include <iostream>
 #include <SDL.h>
 #include "../rage.h"
+#include <map>
 
 #ifndef O_BINARY
 #define O_BINARY 0
@@ -36,6 +37,8 @@ class Mod {
 		vector<WallType*> * walltypes;
 		vector<WeaponType*> * weapontypes;
 
+		map<string, AssimpModel*> models;
+
 	public:
 		GameState * st;
 		string name;
@@ -48,7 +51,8 @@ class Mod {
 		
 	public:
 		Mod(GameState * st, string directory);
-		
+		~Mod();
+
 	public:
 		bool loadMetadata();
 		bool load();
