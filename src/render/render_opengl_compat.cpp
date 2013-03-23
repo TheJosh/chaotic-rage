@@ -41,6 +41,8 @@ static inline int next_pot (int a)
 
 RenderOpenGLCompat::RenderOpenGLCompat(GameState * st) : Render3D(st)
 {
+	reportFatalError("Compatibility renderer does not work at the moment; sorry about that.");
+
 	this->screen = NULL;
 	this->physicsdebug = NULL;
 	this->speeddebug = false;
