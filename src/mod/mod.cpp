@@ -347,11 +347,10 @@ AIType * Mod::getAIType(string name)
 **/
 AssimpModel * Mod::getAssimpModel(string name)
 {
-	if (this->models[name]) {
-		return this->models[name];
-	}
-		
-	AssimpModel *am = new AssimpModel(this, name);
+	AssimpModel *am = this->models[name];
+	if (am) return this->models[name];
+	
+	am = new AssimpModel(this, name);
 	
 	if (st->render->is3D()) {
 		if (! am->load((Render3D*) st->render)) {

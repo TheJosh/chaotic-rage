@@ -42,6 +42,25 @@ using namespace std;
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 
+/**
+* For reporting errors - but only in debug mode
+**/
+#ifdef RELEASE
+	#define CHECK_OPENGL_ERROR
+#else
+	#define CHECK_OPENGL_ERROR \
+	{	GLenum error; \
+		error = glGetError(); \
+		if (error != GL_NO_ERROR) { \
+			while (error) { \
+				cout << "OpenGL Error: " << gluErrorString(error) << "\n"; \
+			} \
+			cout << "Location: " << __FILE__ << ":" << __LINE__ << "\n"; \
+			reportFatalError("OpenGL error detected; exiting."); \
+		} \
+	}
+#endif
+
 
 /**
 * Gets the next highest power-of-two for a number
@@ -954,6 +973,8 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 	glm::mat4 modelMatrix = glm::make_mat4(m);
 
 
+	CHECK_OPENGL_ERROR;
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
@@ -1015,6 +1036,8 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 	/*}*/
 
 	glDisable(GL_BLEND);
+
+	CHECK_OPENGL_ERROR;
 }
 
 
@@ -1029,6 +1052,8 @@ void RenderOpenGL::recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd, G
 {
 	transform *= nd->transform;
 	
+	CHECK_OPENGL_ERROR;
+
 	glm::mat4 MVP = this->projection * this->view * transform;
 	glUniformMatrix4fv(glGetUniformLocation(shader, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
@@ -1049,6 +1074,8 @@ void RenderOpenGL::recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd, G
 		recursiveRenderAssimpModel(am, (*it), shader, transform);
 	}
 	
+	CHECK_OPENGL_ERROR;
+
 	glBindVertexArray(0);
 }
 
@@ -1064,6 +1091,8 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 	unsigned int n = 0;
 	GLuint buffer;
 	
+	CHECK_OPENGL_ERROR;
+
 	for (; n < sc->mNumMeshes; ++n) {
 		const struct aiMesh* mesh = sc->mMeshes[n];
 		AssimpMesh *myMesh = new AssimpMesh();
@@ -1123,6 +1152,8 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 		am->meshes.push_back(myMesh);
 	}
 	
+	CHECK_OPENGL_ERROR;
+
 	// Load materials. Only supports simple materials with a single texture at the moment.
 	// TODO: We should save these in a list so we don't load the same stuff multiple times.
 	for (n = 0; n < sc->mNumMaterials; n++) {
@@ -1147,6 +1178,8 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 		am->materials.push_back(myMat);
 	}
 	
+	CHECK_OPENGL_ERROR;
+
 	return true;
 }
 
@@ -1286,6 +1319,8 @@ void RenderOpenGL::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	CHECK_OPENGL_ERROR;
+
 	for (unsigned int i = 0; i < this->st->num_local; i++) {
 		this->render_player = this->st->local_players[i]->p;
 		mainViewport(i, this->st->num_local);
@@ -1302,6 +1337,8 @@ void RenderOpenGL::render()
 	mainViewport(0,1);
 	guichan();
 	if (this->speeddebug) fps();
+
+	CHECK_OPENGL_ERROR;
 
 	SDL_GL_SwapBuffers();
 }
