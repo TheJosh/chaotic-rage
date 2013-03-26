@@ -1164,7 +1164,10 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 		if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
 			aiString Path;
 			if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path, NULL, NULL, NULL, NULL, NULL) != AI_SUCCESS) continue;
+			
 			string p(Path.data);
+			
+			cout << "Assimp texture: " << p << "\n";
 			
 			if (p.substr(0, 2) == ".\\") p = p.substr(2, p.size() - 2);
 			if (p.substr(0, 2) == "./") p = p.substr(2, p.size() - 2);
