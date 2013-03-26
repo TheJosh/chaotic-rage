@@ -46,6 +46,31 @@ class AssimpNode
 		}
 };
 
+class AssimpAnimKey
+{
+	public:
+		glm::vec4 val;		// vector for position/scale or quaternion for rotation
+		double time;
+};
+
+class AssimpNodeAnim
+{
+	public:
+		string name;
+		vector<AssimpAnimKey*> position;
+		vector<AssimpAnimKey*> rotation;
+		vector<AssimpAnimKey*> scale;
+};
+
+class AssimpAnimation
+{
+	public:
+		string name;
+		double duration;
+		double ticsPerSec;
+		vector<AssimpNodeAnim*> anims;
+};
+
 
 class AssimpModel
 {
