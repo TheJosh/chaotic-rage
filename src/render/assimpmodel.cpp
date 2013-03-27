@@ -44,6 +44,8 @@ AssimpModel::AssimpModel(Mod* mod, string name)
 **/
 bool AssimpModel::load(Render3D* render)
 {
+	cout << "Assimp model: " << this->name << "\n";
+	
 	unsigned int flags = aiProcess_CalcTangentSpace
 		| aiProcess_Triangulate
 		| aiProcess_JoinIdenticalVertices
