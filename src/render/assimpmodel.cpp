@@ -9,6 +9,7 @@
 #include <zzip/zzip.h>
 #include <map>
 #include <assimp/Importer.hpp>
+#include <assimp/cimport.h>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <glm/glm.hpp>
@@ -84,26 +85,31 @@ bool AssimpModel::load(Render3D* render)
 **/
 void AssimpModel::calcBoundingSize()
 {
-	this->boundingSize = this->calcBoundingSizeNode(sc->mRootNode);
+	aiMatrix4x4 trafo;
+	aiIdentityMatrix4(&trafo);
+	
+	this->boundingSize = this->calcBoundingSizeNode(sc->mRootNode, &trafo);
 }
 
 
 /**
 * Returns the bounding size of the mesh of the first frame
 **/
-btVector3 AssimpModel::calcBoundingSizeNode(const struct aiNode* nd)
+btVector3 AssimpModel::calcBoundingSizeNode(const struct aiNode* nd, aiMatrix4x4* trafo)
 {
 	float x = 0.0f, y = 0.0f, z = 0.0f;
 	unsigned int n = 0, t;
+	aiMatrix4x4 prev = *trafo;
 	
-	if (sc == NULL) return btVector3(0.0f, 0.0f, 0.0f);
+	aiMultiplyMatrix4(trafo, &nd->mTransformation);
 	
 	for (; n < nd->mNumMeshes; ++n) {
 		const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
 		
 		for (t = 0; t < mesh->mNumVertices; ++t) {
 			aiVector3D tmp = mesh->mVertices[t];
-
+			aiTransformVecByMatrix4(&tmp, trafo);
+			
 			x = MAX(x, tmp.x);
 			y = MAX(y, tmp.y);
 			z = MAX(z, tmp.z);
@@ -111,12 +117,13 @@ btVector3 AssimpModel::calcBoundingSizeNode(const struct aiNode* nd)
 	}
 	
 	for (n = 0; n < nd->mNumChildren; ++n) {
-		btVector3 size = this->calcBoundingSizeNode(nd->mChildren[n]);
+		btVector3 size = this->calcBoundingSizeNode(nd->mChildren[n], trafo);
 		x = MAX(x, size.x());
 		y = MAX(y, size.y());
 		z = MAX(z, size.z());
 	}
 	
+	*trafo = prev;
 	return btVector3(x, y, z);
 }
 

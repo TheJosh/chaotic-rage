@@ -98,7 +98,7 @@ class AssimpModel
 		
 	private:
 		void calcBoundingSize();
-		btVector3 calcBoundingSizeNode(const struct aiNode* nd);
+		btVector3 calcBoundingSizeNode(const struct aiNode* nd, aiMatrix4x4* trafo);
 		void loadNodes();
 		AssimpNode* loadNode(aiNode* nd);
 };
