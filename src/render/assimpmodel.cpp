@@ -50,7 +50,8 @@ bool AssimpModel::load(Render3D* render)
 	unsigned int flags = aiProcess_CalcTangentSpace
 		| aiProcess_Triangulate
 		| aiProcess_JoinIdenticalVertices
-		| aiProcess_SortByPType;
+		| aiProcess_SortByPType
+		| aiProcess_FlipUVs;
 	
 	int len;
 	Uint8 * data = this->mod->loadBinary("models/" + this->name, &len);
