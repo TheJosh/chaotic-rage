@@ -1388,7 +1388,7 @@ void RenderOpenGL::physics()
 void RenderOpenGL::mainRot()
 {
 	btTransform trans;
-	float tilt, angle, dist;		// Up/down; left/right; distance of camera
+	float tilt, angle, dist, lift;		// Up/down; left/right; distance of camera, dist off ground
 	static float deadang = 22.0f;
 
 	glEnable(GL_LIGHTING);
@@ -1408,11 +1408,18 @@ void RenderOpenGL::mainRot()
 		if (this->viewmode == 0) {
 			tilt = 17.0f;
 			dist = 25.0f;
+			lift = 0.0f;
 		} else if (this->viewmode == 1) {
 			tilt = 70.0f;
 			dist = 50.0f;
+			lift = 0.0f;
+			
+		} else if (this->viewmode == 2) {
+			tilt = 10.0f;
+			dist = 0.0f;
+			lift = 0.5f;
 		}
-	
+		
 		// Load the character details into the variables
 		if (this->render_player->drive) {
 			trans = this->render_player->drive->getTransform();
@@ -1428,7 +1435,7 @@ void RenderOpenGL::mainRot()
 	
 	// Camera angle calculations
 	float camerax = dist * sin(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().x();
-	float cameray = dist * sin(DEG_TO_RAD(tilt)) + trans.getOrigin().y();
+	float cameray = dist * sin(DEG_TO_RAD(tilt)) + trans.getOrigin().y() + lift;
 	float cameraz = dist * cos(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().z();
 	
 	// Prep the view matrix
