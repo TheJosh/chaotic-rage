@@ -133,6 +133,7 @@ list<string> * getSystemModNames()
 	list<string> * out = new list<string>();
 	out->push_back("cr");
 	out->push_back("australia_day");
+	out->push_back("test");
 	return out;
 }
 
