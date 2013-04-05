@@ -15,8 +15,8 @@ using namespace std;
 class CommandLineArgs
 {
 	public:
-		
+		string mod;
 		
 	public:
-		CommandLineArgs(int argc, char ** argv);
+		CommandLineArgs(GameState *st, int argc, char ** argv);
 };

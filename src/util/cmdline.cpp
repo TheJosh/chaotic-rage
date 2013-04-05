@@ -15,13 +15,16 @@ using namespace std;
 /**
 * Parses the command line arguments using GetOpt
 **/
-CommandLineArgs::CommandLineArgs(int argc, char ** argv)
+CommandLineArgs::CommandLineArgs(GameState *st, int argc, char ** argv)
 {
 	#ifdef GETOPT
 	
 	
 	static struct option long_options[] = {
 		{"help",			0, 0, 'h'},
+		{"mod",				1, 0, 'm'},
+		{"mod-list",		0, 0, 'n'},
+		
 		#ifdef DEBUG_OPTIONS
 		{"debug",			1, 0, 'a'},
 		{"debug-list",		0, 0, 'b'},
@@ -40,6 +43,8 @@ CommandLineArgs::CommandLineArgs(int argc, char ** argv)
 					"Chaotic Rage\n\n"
 					"Options:\n"
 					" -h\t--help                 Show this help\n"
+					" -m\t--mod NAME             Load a mod at startup\n"
+					"   \t--mod-list             List all available mods, and exit\n"
 					#ifdef DEBUG_OPTIONS
 					"   \t--debug SECTION        Enable debug mode for a given section\n"
 					"   \t--debug-list           Show a list of available debug sections\n"
@@ -50,6 +55,23 @@ CommandLineArgs::CommandLineArgs(int argc, char ** argv)
 				exit(0);
 				break;
 			
+			case 'm':
+				this->mod = optarg;
+				break;
+				
+			case 'n':
+				{
+					cout << "Available mods:\n";
+					vector<string>* modnames = st->mm->getAvailMods();
+					for (vector<string>::iterator it = modnames->begin(); it != modnames->end(); it++) {
+						cout << "    " << (*it) << "\n";
+					}
+					delete(modnames);
+					exit(0);
+				}
+				break;
+				
+				
 			#ifdef DEBUG_OPTIONS
 			case 'a':
 				debug_enable(optarg);

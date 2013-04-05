@@ -33,7 +33,7 @@ int main (int argc, char ** argv)
 	GameState *st = new GameState();
 	
 	#ifdef GETOPT
-	st->cmdline = new CommandLineArgs(argc, argv);
+	st->cmdline = new CommandLineArgs(st, argc, argv);
 	#endif
 
 	st->cconf = new ClientConfig();
