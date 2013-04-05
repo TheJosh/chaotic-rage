@@ -532,6 +532,26 @@ LUA_FUNC(get_selected_unittype)
 
 
 /**
+* Get the view mode
+**/
+LUA_FUNC(get_viewmode)
+{
+	lua_pushinteger(L, gl->st->render->viewmode);
+	return 1;
+}
+
+
+/**
+* Set tie view mode
+**/
+LUA_FUNC(set_viewmode)
+{
+	gl->st->render->viewmode = lua_tointeger(L, 1);
+	return 0;
+}
+
+
+/**
 * 
 *
 * @return String: The currently selected unit type
@@ -574,6 +594,8 @@ void register_lua_functions()
 	LUA_REG(show_alert_message);
 	LUA_REG(get_selected_unittype);
 	LUA_REG(add_label);
+	LUA_REG(get_viewmode);		// TODO: Add a 'camera' object
+	LUA_REG(set_viewmode);		// dynamic position, animation, etc.
 	LUA_REG(random);
 	
 	
