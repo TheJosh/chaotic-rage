@@ -159,6 +159,9 @@ vector<string> * getUserModFilenames()
 **/
 bool threadedModLoader(GameState *st)
 {
+	loadMods(st);
+	return true;
+
 	SDL_SysWMinfo info;
 	SDL_VERSION(&info.version);
 	if (! SDL_GetWMInfo(&info)) {
