@@ -77,7 +77,7 @@ void Intro::doit()
 /**
 * This is called at regular intervals by the module loading code
 **/
-void Intro::update()
+void Intro::updateUI()
 {
 	int time = SDL_GetTicks() - start;
 	SpritePtr img;

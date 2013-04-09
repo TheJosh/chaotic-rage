@@ -20,7 +20,7 @@ using namespace std;
 **/
 bool loadMods(GameState *st, UIUpdate* ui)
 {
-	if (ui) ui->update();
+	if (ui) ui->updateUI();
 	
 	// Load main mod
 	Mod * mod = new Mod(st, "data/cr");
@@ -30,7 +30,7 @@ bool loadMods(GameState *st, UIUpdate* ui)
 	st->mm->addMod(mod);
 	st->mm->setBase(mod);
 	
-	if (ui) ui->update();
+	if (ui) ui->updateUI();
 	
 	// If a suppl mod has been specified on the cmdline, try to load it
 	if (st->cmdline && st->cmdline->mod != "" && st->cmdline->mod != mod->name) {
@@ -42,7 +42,7 @@ bool loadMods(GameState *st, UIUpdate* ui)
 		st->mm->setSuppl(newsuppl);
 	}
 	
-	if (ui) ui->update();
+	if (ui) ui->updateUI();
 	
 	// Load user mods
 	vector<string> * userfiles = getUserModFilenames();
@@ -54,7 +54,7 @@ bool loadMods(GameState *st, UIUpdate* ui)
 		st->mm->addMod(mod);
 	}
 	
-	if (ui) ui->update();
+	if (ui) ui->updateUI();
 	
 	return true;
 }

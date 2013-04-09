@@ -55,7 +55,7 @@ gcn::Container * DialogNetJoin::setup()
 	}
 	
 	// List of internet hosts
-	this->internet_hosts = getServerList();
+	this->internet_hosts = getServerList(this->m);
 	if (this->internet_hosts != NULL) {
 		gcn::Container* tabc = new gcn::Container();
 		tabc->setDimension(gcn::Rectangle(0, 0, 245, 180));

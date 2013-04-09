@@ -125,153 +125,156 @@ void Menu::doit()
 	// A few bits always load off base
 	this->render->loadFont("orb.otf", mod);
 	
-	gcn::SDLInput* input;
-	input = new gcn::SDLInput();
-	
+	this->input = new gcn::SDLInput();
 	this->gui = new gcn::Gui();
 	this->gui->setInput(input);
 	this->render->initGuichan(gui, mod);
 	
-	WavefrontObj * bgmesh = loadObj("data/cr/menu/bg.obj");
-	float bg_rot1_pos = -10.0f;
-	float bg_rot1_dir = 0.006f;
-	float bg_rot2_pos = 3.0f;
-	float bg_rot2_dir = -0.004f;
-	
+	this->bgmesh = loadObj("data/cr/menu/bg.obj");
+	this->bg_rot1_pos = -10.0f;
+	this->bg_rot1_dir = 0.006f;
+	this->bg_rot2_pos = 3.0f;
+	this->bg_rot2_dir = -0.004f;
 	
 	this->loadModBits();
 	
-	
 	// Menu loop
-	int mousex, mousey;
-	SDL_Event event;
 	this->running = true;
 	while (this->running) {
-		
-		SDL_GetMouseState(&mousex, &mousey);
-		
-		MenuCommand cmd = MC_NOTHING;
-		
-		
-		while (SDL_PollEvent(&event)) {
+		this->updateUI();
+	}
+}
 
-			if (event.type == SDL_QUIT) {
-				cmd = MC_QUIT;
-				
-			} else if (event.type == SDL_MOUSEBUTTONUP) {
-				cmd = this->menuClick(mousex, mousey);
-				
-			} else if (event.type == SDL_KEYDOWN) {
-				// Key press
-				switch (event.key.keysym.sym) {
-					case SDLK_ESCAPE:
-						if (this->dialog != NULL) {
-							this->setDialog(NULL);
-						} else {
-							cmd = MC_QUIT;
-						}
-						break;
 
-					case SDLK_PRINT:
-						{
-							string filename = getUserDataDir();
-							filename.append("menu_screenshot.bmp");
-							render->saveScreenshot(filename);
-						}
-						break;
+/**
+* Update the UI for the menu
+**/
+void Menu::updateUI()
+{
+	int mousex, mousey;
+	SDL_Event event;
+	SDL_GetMouseState(&mousex, &mousey);
+	
+	MenuCommand cmd = MC_NOTHING;
+	
+	
+	while (SDL_PollEvent(&event)) {
 
-					default: break;
-				}
-				
+		if (event.type == SDL_QUIT) {
+			cmd = MC_QUIT;
+			
+		} else if (event.type == SDL_MOUSEBUTTONUP) {
+			cmd = this->menuClick(mousex, mousey);
+			
+		} else if (event.type == SDL_KEYDOWN) {
+			// Key press
+			switch (event.key.keysym.sym) {
+				case SDLK_ESCAPE:
+					if (this->dialog != NULL) {
+						this->setDialog(NULL);
+					} else {
+						cmd = MC_QUIT;
+					}
+					break;
+
+				case SDLK_PRINT:
+					{
+						string filename = getUserDataDir();
+						filename.append("menu_screenshot.bmp");
+						render->saveScreenshot(filename);
+					}
+					break;
+
+				default: break;
 			}
-
-			input->pushInput(event);
-		}
-		
-		
-		// Handle main menu commands
-		switch (cmd) {
-			case MC_CAMPAIGN: this->doCampaign(); break;
-			case MC_SINGLEPLAYER: this->doSingleplayer(); break;
-			case MC_SPLITSCREEN: this->doSplitscreen(); break;
-			case MC_NETWORK: this->doNetwork(); break;
-			case MC_MODS: this->doMods(); break;
-			case MC_HELP: this->doHelp(); break;
-			case MC_QUIT: this->doQuit(); break;
-			default: break;
-		}
-		
-
-		// Background animation
-		bg_rot1_pos += bg_rot1_dir;
-		if (bg_rot1_pos >= 10.0 or bg_rot1_pos <= -10.0) {
-			bg_rot1_dir = 0.0 - bg_rot1_dir;
-		}
-		
-		bg_rot2_pos += bg_rot2_dir;
-		if (bg_rot2_pos >= 3.0 or bg_rot2_pos <= -3.0) {
-			bg_rot2_dir = 0.0 - bg_rot2_dir;
-		}
-		
-		
-		
-		// Set up everything for render
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		glDisable(GL_LIGHTING);
-		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_FOG);
-		glDisable(GL_MULTISAMPLE);
-
-
-		// Perspective mode for the background
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		
-		gluPerspective(30.0f, render->virt_width / render->virt_height, 1.0f, 2500.f);
-		glScalef (1.0f, -1.0f, 1.0f);
-		glTranslatef(0 - (render->virt_width / 2), 0 - (render->virt_height / 2), -1250.0f);
-		
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		glTranslatef((render->virt_width / 2), (render->virt_height / 2), 0);
-		glRotatef(90, 1, 0, 0);
-		glRotatef(bg_rot1_pos, 0, 0, 1);
-		glRotatef(bg_rot2_pos, 1, 0, 0);
-		glScalef(650, 50, 650);
-		glBindTexture(GL_TEXTURE_2D, bg->pixels);
-		render->preVBOrender();
-		render->renderObj(bgmesh);
-		render->postVBOrender();
-
-		
-		// Ortho mode for the logo and main menu
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glOrtho(0.0f, render->real_width, render->real_height, 0.0f, 0.0f, 10.0f);
-		
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-		glEnable(GL_BLEND);
-		render->renderSprite(logo, 40, 40);
-
-		this->menuHover(mousex, mousey);
-		this->menuRender();
-
-
-		// If a guichan dialog is set, render it and process events
-		if (this->dialog != NULL) {
-			gui->logic();
-			gui->draw();
+			
 		}
 
-
-		SDL_GL_SwapBuffers();
+		input->pushInput(event);
 	}
 	
+	
+	// Handle main menu commands
+	switch (cmd) {
+		case MC_CAMPAIGN: this->doCampaign(); break;
+		case MC_SINGLEPLAYER: this->doSingleplayer(); break;
+		case MC_SPLITSCREEN: this->doSplitscreen(); break;
+		case MC_NETWORK: this->doNetwork(); break;
+		case MC_MODS: this->doMods(); break;
+		case MC_HELP: this->doHelp(); break;
+		case MC_QUIT: this->doQuit(); break;
+		default: break;
+	}
+	
+
+	// Background animation
+	bg_rot1_pos += bg_rot1_dir;
+	if (bg_rot1_pos >= 10.0 or bg_rot1_pos <= -10.0) {
+		bg_rot1_dir = 0.0 - bg_rot1_dir;
+	}
+	
+	bg_rot2_pos += bg_rot2_dir;
+	if (bg_rot2_pos >= 3.0 or bg_rot2_pos <= -3.0) {
+		bg_rot2_dir = 0.0 - bg_rot2_dir;
+	}
+	
+	
+	
+	// Set up everything for render
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_FOG);
+	glDisable(GL_MULTISAMPLE);
+
+
+	// Perspective mode for the background
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	
+	gluPerspective(30.0f, render->virt_width / render->virt_height, 1.0f, 2500.f);
+	glScalef (1.0f, -1.0f, 1.0f);
+	glTranslatef(0 - (render->virt_width / 2), 0 - (render->virt_height / 2), -1250.0f);
+	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glTranslatef((render->virt_width / 2), (render->virt_height / 2), 0);
+	glRotatef(90, 1, 0, 0);
+	glRotatef(bg_rot1_pos, 0, 0, 1);
+	glRotatef(bg_rot2_pos, 1, 0, 0);
+	glScalef(650, 50, 650);
+	glBindTexture(GL_TEXTURE_2D, bg->pixels);
+	render->preVBOrender();
+	render->renderObj(bgmesh);
+	render->postVBOrender();
+
+	
+	// Ortho mode for the logo and main menu
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0.0f, render->real_width, render->real_height, 0.0f, 0.0f, 10.0f);
+	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	glEnable(GL_BLEND);
+	render->renderSprite(logo, 40, 40);
+
+	this->menuHover(mousex, mousey);
+	this->menuRender();
+
+
+	// If a guichan dialog is set, render it and process events
+	if (this->dialog != NULL) {
+		gui->logic();
+		gui->draw();
+	}
+
+
+	SDL_GL_SwapBuffers();
 }
 
 
@@ -366,15 +369,17 @@ MenuCommand Menu::menuClick(int x, int y)
 **/
 void Menu::setDialog(Dialog * dialog)
 {
+	this->dialog = NULL;
+	if (dialog == NULL) return;
+	
+	dialog->m = this;
+	gcn::Container * c = dialog->setup();
+	
+	c->setPosition((this->render->real_width - c->getWidth()) / 2, (this->render->real_height - c->getHeight()) / 2);
+	c->setBaseColor(gcn::Color(150, 150, 150, 200));
+	
+	gui->setTop(c);
 	this->dialog = dialog;
-
-	if (this->dialog != NULL) {
-		dialog->m = this;
-		gcn::Container * c = dialog->setup();
-		c->setPosition((this->render->real_width - c->getWidth()) / 2, (this->render->real_height - c->getHeight()) / 2);
-		c->setBaseColor(gcn::Color(150, 150, 150, 200));
-		gui->setTop(c);
-	}
 }
 
 

@@ -189,7 +189,7 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 		am->id = models->size() - 1;
 	}
 	
-	if (ui) ui->update();
+	if (ui) ui->updateUI();
 	
 	return models;
 }

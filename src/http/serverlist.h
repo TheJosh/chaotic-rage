@@ -11,7 +11,7 @@ using namespace std;
 /**
 * Get a list of registered game servers
 **/
-vector<string> * getServerList();
+vector<string> * getServerList(UIUpdate * ui);
 
 
 /**

@@ -37,15 +37,22 @@ class MenuItem {
 };
 
 
-class Menu
+class Menu : public UIUpdate
 {
 	private:
 		GameState *st;
 		Render3D *render;
 		int running;
 		vector<MenuItem*> menuitems;
+		gcn::SDLInput* input;
 		gcn::Gui* gui;
 		Dialog *dialog;
+		
+		WavefrontObj * bgmesh;
+		float bg_rot1_pos;
+		float bg_rot1_dir;
+		float bg_rot2_pos;
+		float bg_rot2_dir;
 		
 	public:
 		// Data for the dialogs
@@ -87,5 +94,8 @@ class Menu
 		void startCampaign(Campaign* c, string unittype, int viewmode, unsigned int num_local);
 		void startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local);
 		void networkJoin(string host);
+		
+	public:
+		virtual void updateUI();
 };
 

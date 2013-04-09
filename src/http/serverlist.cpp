@@ -33,8 +33,10 @@ void OnData( const happyhttp::Response* r, void* userdata, const unsigned char* 
 /**
 * Get a list of registered game servers
 **/
-vector<string> * getServerList()
+vector<string> * getServerList(UIUpdate * ui)
 {
+	if (ui) ui->updateUI();
+	
 	// Grab the server list
 	try {
 		happyhttp::Connection conn("servers.chaoticrage.com", 80);
@@ -43,12 +45,15 @@ vector<string> * getServerList()
 		conn.request("GET", "/list");
 		
 		while (conn.outstanding()) {
+			if (ui) ui->updateUI();
 			conn.pump();
 		}
 		
 	} catch (happyhttp::Wobbly w) {
 		return NULL;
 	}
+	
+	if (ui) ui->updateUI();
 	
 	// Split on newline
 	vector<string> * elems = new vector<string>();

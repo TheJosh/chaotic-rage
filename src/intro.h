@@ -29,6 +29,6 @@ class Intro : public UIUpdate
 		void doit();
 		
 	public:
-		virtual void update();
+		virtual void updateUI();
 };
 

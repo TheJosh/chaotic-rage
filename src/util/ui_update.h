@@ -20,6 +20,6 @@ class UIUpdate
 		/**
 		* The UI should update.
 		**/
-		virtual void update() = 0;
+		virtual void updateUI() = 0;
 };
 
