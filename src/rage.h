@@ -162,6 +162,8 @@ class Zone;
 #include "mod/weapontype.h"
 #include "mod/gametype.h"
 
+#include "weapons/weapons.h"
+
 #include "lua/gamelogic.h"
 #include "lua/ailogic.h"
 

@@ -38,6 +38,7 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/lua/*.cpp \
 	$(SRCPATH)/gui/*.cpp \
 	$(SRCPATH)/http/*.cpp \
+	$(SRCPATH)/weapons/*.cpp \
 )
 
 OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES)) $(OBJPATH)/objload.o

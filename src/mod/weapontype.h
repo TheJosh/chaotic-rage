@@ -16,9 +16,7 @@ using namespace std;
 #define WEAPON_SOUND_RELOAD 4
 #define WEAPON_SOUND_EMPTY 5
 
-#define WEAPON_TYPE_RAYCAST 1
-#define WEAPON_TYPE_DIGDOWN 2
-#define WEAPON_TYPE_FLAMETHROWER 3
+
 
 
 class WeaponTypeSound
@@ -60,53 +58,4 @@ extern cfg_opt_t weapontype_opts [];
 
 // Item loading function handler
 WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod);
-
-
-
-/**
-* Weapons which fire by doing a raycast
-* This is most common weapons (e.g. machineguns, pistols, etc)
-**/
-class WeaponRaycast : public WeaponType
-{
-	public:
-		int angle_range;
-		float range;
-		float unit_damage;
-		float wall_damage;
-
-	public:
-		virtual void doFire(Unit *unit, btTransform &origin);
-};
-
-
-/**
-* Weapons which affect the heightmap
-**/
-class WeaponDigdown : public WeaponType
-{
-	public:
-		int radius;
-		float depth;		// negative = go down, positive = go up
-
-	public:
-		virtual void doFire(Unit *unit, btTransform &origin);
-};
-
-
-/**
-* These do raycasts, but the effects are different to raycast weapons
-* And the implementation might change down the line
-**/
-class WeaponFlamethrower : public WeaponType
-{
-	public:
-		int angle_range;
-		float range;
-		float unit_damage;
-		float wall_damage;
-
-	public:
-		virtual void doFire(Unit *unit, btTransform &origin);
-};
 
