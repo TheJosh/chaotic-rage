@@ -18,26 +18,47 @@ using namespace std;
 * Load the main mod and user mods.
 * Run while the intro is being displayed, on a background thread.
 **/
-void loadMods(GameState *st)
+bool loadMods(GameState *st, UIUpdate* ui)
 {
+	if (ui) ui->update();
+	
 	// Load main mod
 	Mod * mod = new Mod(st, "data/cr");
-	if (! mod->load()) {
+	if (! mod->load(ui)) {
 		reportFatalError("Unable to load mod 'cr'.");
 	}
 	st->mm->addMod(mod);
 	st->mm->setBase(mod);
-
+	
+	if (ui) ui->update();
+	
+	// If a suppl mod has been specified on the cmdline, try to load it
+	if (st->cmdline && st->cmdline->mod != "" && st->cmdline->mod != mod->name) {
+		Mod* newsuppl = new Mod(st, "data/" + st->cmdline->mod);
+		if (! newsuppl->load(NULL)) {
+			reportFatalError("Unable to load mod '" + st->cmdline->mod + "'.");
+		}
+		st->mm->addMod(newsuppl);
+		st->mm->setSuppl(newsuppl);
+	}
+	
+	if (ui) ui->update();
+	
 	// Load user mods
 	vector<string> * userfiles = getUserModFilenames();
 	for (unsigned int i = 0; i < userfiles->size(); i++) {
 		mod = new Mod(st, userfiles->at(i));
-		if (! mod->load()) {
+		if (! mod->load(ui)) {
 			reportFatalError("Unable to load user mod '" + userfiles->at(i) + "'.");
 		}
 		st->mm->addMod(mod);
 	}
+	
+	if (ui) ui->update();
+	
+	return true;
 }
+
 
 
 /**

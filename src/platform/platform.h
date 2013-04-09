@@ -80,10 +80,3 @@ list<string> * getSystemModNames();
 vector<string> * getUserModFilenames();
 
 
-/**
-* Loads the mods, in a multi-threaded way, if possible
-* True on success, false on failure
-**/
-bool threadedModLoader(GameState *st);
-
-

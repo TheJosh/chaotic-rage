@@ -129,6 +129,7 @@ bool Mod::loadMetadata()
 *
 * Params:
 *   mod         The mod which is loading the data
+*   ui          UI to update while loading
 *   filename    The .conf filename to load data from, relative to the mod directory
 *   section     The section name to load from the file
 *   item_opts   The libconfuse option definition for the item
@@ -141,7 +142,7 @@ bool Mod::loadMetadata()
 *                 AnimModel* loadItemAnimModel(cfg_t* cfg_item, Mod* mod);
 **/
 template <class T>
-vector<T> * loadModFile(Mod* mod, const char* filename, const char* section, cfg_opt_t* item_opts, T (*item_f)(cfg_t*, Mod*))
+vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char* section, cfg_opt_t* item_opts, T (*item_f)(cfg_t*, Mod*))
 {
 	vector<T> * models = new vector<T>();
 	
@@ -188,6 +189,8 @@ vector<T> * loadModFile(Mod* mod, const char* filename, const char* section, cfg
 		am->id = models->size() - 1;
 	}
 	
+	if (ui) ui->update();
+	
 	return models;
 }
 
@@ -195,48 +198,48 @@ vector<T> * loadModFile(Mod* mod, const char* filename, const char* section, cfg
 /**
 * Loads the mod
 **/
-bool Mod::load()
+bool Mod::load(UIUpdate* ui)
 {
 #ifdef NOGUI
 	sounds = new vector<Sound*>();
 	songs = new vector<Song*>();
 	
 #else
-	sounds = loadModFile<Sound*>(this, "sounds.conf", "sound", sound_opts, &loadItemSound);
+	sounds = loadModFile<Sound*>(this, ui, "sounds.conf", "sound", sound_opts, &loadItemSound);
 	if (sounds == NULL) return false;
 	
-	songs = loadModFile<Song*>(this, "songs.conf", "song", song_opts, &loadItemSong);
+	songs = loadModFile<Song*>(this, ui, "songs.conf", "song", song_opts, &loadItemSong);
 	if (songs == NULL) return false;
 #endif
 	
 	
-	areatypes = loadModFile<FloorType*>(this, "floortypes.conf", "floortype", floortype_opts, &loadItemFloorType);
+	areatypes = loadModFile<FloorType*>(this, ui, "floortypes.conf", "floortype", floortype_opts, &loadItemFloorType);
 	if (areatypes == NULL) return false;
 	
-	objecttypes = loadModFile<ObjectType*>(this, "objecttypes.conf", "objecttype", objecttype_opts, &loadItemObjectType);
+	objecttypes = loadModFile<ObjectType*>(this, ui, "objecttypes.conf", "objecttype", objecttype_opts, &loadItemObjectType);
 	if (objecttypes == NULL) return false;
 	
-	walltypes = loadModFile<WallType*>(this, "walltypes.conf", "walltype", walltype_opts, &loadItemWallType);
+	walltypes = loadModFile<WallType*>(this, ui, "walltypes.conf", "walltype", walltype_opts, &loadItemWallType);
 	if (walltypes == NULL) return false;
 	
-	vehicletypes = loadModFile<VehicleType*>(this, "vehicletypes.conf", "vehicletype", vehicletype_opts, &loadItemVehicleType);
+	vehicletypes = loadModFile<VehicleType*>(this, ui, "vehicletypes.conf", "vehicletype", vehicletype_opts, &loadItemVehicleType);
 	if (vehicletypes == NULL) return false;
 	
-	weapontypes = loadModFile<WeaponType*>(this, "weapontypes.conf", "weapon", weapontype_opts, &loadItemWeaponType);
+	weapontypes = loadModFile<WeaponType*>(this, ui, "weapontypes.conf", "weapon", weapontype_opts, &loadItemWeaponType);
 	if (weapontypes == NULL) return false;
 	
-	unitclasses = loadModFile<UnitType*>(this, "unittypes.conf", "unittype", unittype_opts, &loadItemUnitType);
+	unitclasses = loadModFile<UnitType*>(this, ui, "unittypes.conf", "unittype", unittype_opts, &loadItemUnitType);
 	if (unitclasses == NULL) return false;
 	
 	
-	ais = loadModFile<AIType*>(this, "ais.conf", "ai", ai_opts, &loadItemAIType);
+	ais = loadModFile<AIType*>(this, ui, "ais.conf", "ai", ai_opts, &loadItemAIType);
 	if (ais == NULL) return false;
 	
-	gametypes = loadModFile<GameType*>(this, "gametypes.conf", "gametype", gametype_opts, &loadItemGameType);
+	gametypes = loadModFile<GameType*>(this, ui, "gametypes.conf", "gametype", gametype_opts, &loadItemGameType);
 	if (gametypes == NULL) return false;
 	
 
-	campaigns = loadModFile<Campaign*>(this, "campaigns.conf", "campaign", campaign_opts, &loadItemCampaign);
+	campaigns = loadModFile<Campaign*>(this, ui, "campaigns.conf", "campaign", campaign_opts, &loadItemCampaign);
 	if (campaigns == NULL) return false;
 
 	
@@ -299,7 +302,7 @@ bool Mod::reloadAttrs()
 	int i;
 	
 	// Weapons
-	vector<WeaponType*> * n_weapontypes = loadModFile<WeaponType*>(this, "weapontypes.conf", "weapon", weapontype_opts, &loadItemWeaponType);
+	vector<WeaponType*> * n_weapontypes = loadModFile<WeaponType*>(this, NULL, "weapontypes.conf", "weapon", weapontype_opts, &loadItemWeaponType);
 	if (n_weapontypes == NULL) return false;
 	
 	for (i = n_weapontypes->size() - 1; i >= 0; --i) {

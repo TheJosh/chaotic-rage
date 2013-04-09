@@ -37,7 +37,7 @@ int main (int argc, char ** argv)
 	new ModManager(st);
 	
 	// Load the mods, with threads if possible
-	if (! threadedModLoader(st)) {
+	if (! loadMods(st, NULL)) {
 		exit(0);
 	}
 	

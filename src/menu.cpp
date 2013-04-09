@@ -139,17 +139,6 @@ void Menu::doit()
 	float bg_rot2_dir = -0.004f;
 	
 	
-	// If a suppl mod has been specified on the cmdline, try to load it
-	if (st->cmdline && st->cmdline->mod != "" && st->cmdline->mod != mod->name) {
-		Mod* newsuppl = new Mod(this->st, "data/" + st->cmdline->mod);
-		if (! newsuppl->load()) {
-			reportFatalError("Unable to load mod '" + st->cmdline->mod + "'.");
-		}
-		this->mm->addMod(newsuppl);
-		this->mm->setSuppl(newsuppl);
-	}
-	
-	
 	this->loadModBits();
 	
 	

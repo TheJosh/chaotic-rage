@@ -55,7 +55,7 @@ class Mod {
 
 	public:
 		bool loadMetadata();
-		bool load();
+		bool load(UIUpdate* ui);
 		bool reloadAttrs();
 		
 		string getName() { return this->name; }

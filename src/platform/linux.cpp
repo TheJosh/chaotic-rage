@@ -168,13 +168,3 @@ vector<string> * getUserModFilenames()
 }
 
 
-/**
-* Loads the mods, in a multi-threaded way, if possible
-**/
-bool threadedModLoader(GameState *st)
-{
-	loadMods(st);
-	return true;
-}
-
-

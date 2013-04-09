@@ -10,7 +10,7 @@
 using namespace std;
 
 
-class Intro
+class Intro : public UIUpdate
 {
 	private:
 		GameState *st;
@@ -20,10 +20,15 @@ class Intro
 		SpritePtr img1;
 		SpritePtr img2;
 		SpritePtr img3;
-
+		int start;
+		
 	public:
 		Intro(GameState *st);
+		~Intro();
 		void load();
 		void doit();
+		
+	public:
+		virtual void update();
 };
 

@@ -40,7 +40,7 @@ int main (int argc, char * argv[])
 	
 	// Load data
 	Mod * mod = new Mod(st, "data/cr");
-	if (! mod->load()) {
+	if (! mod->load(NULL)) {
 		reportFatalError("Unable to load data module 'cr'.");
 	}
 	st->mm->addMod(mod);

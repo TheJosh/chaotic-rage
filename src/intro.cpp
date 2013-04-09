@@ -17,11 +17,17 @@ Intro::Intro(GameState *st)
 	this->render = st->render;
 }
 
+Intro::~Intro()
+{
+	delete(img1);
+	delete(img2);
+	delete(img3);
+}
+
 
 /**
 * Load intro assets.
 * Has to be before doit()
-* Is not part of doit() because that's sometimes run with a different context.
 **/
 void Intro::load()
 {
@@ -46,7 +52,7 @@ void Intro::load()
 
 
 /**
-* Run the intro
+* Prepare to run the intro
 **/
 void Intro::doit()
 {
@@ -54,52 +60,43 @@ void Intro::doit()
 		st->audio->playSong(sg);
 	}
 
-	SpritePtr img = this->img1;
-	SDL_Event event;
-	
-	glTranslatef(0, 0, 40);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 	
-	
-	// Ortho mode for the logos
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(0.0f, this->render->getWidth(), this->render->getHeight(), 0.0f, 0.0f, 10.0f);
 	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 	
-	int start = SDL_GetTicks();
-	int time = 0;
-	
-	bool animdone = false;
-	while (!animdone) {
-		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) {
-				animdone = true;
-			}
-		}
-		
-		time = SDL_GetTicks() - start;
-		
-		if (time > 1500) {
-			animdone = true;
-
-		} else if (time > 1000) {
-			img = this->img3;
-			
-		} else if (time > 500) {
-			img = this->img2;
-		}
-		
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		
-		int x = (this->render->getWidth() - img->w) / 2;
-		int y = (this->render->getHeight() - img->h) / 2;
-		this->render->renderSprite(img, x, y);
-		
-		SDL_GL_SwapBuffers();
-		SDL_Delay(50);
-	}
+	start = SDL_GetTicks();
 }
+
+
+/**
+* This is called at regular intervals by the module loading code
+**/
+void Intro::update()
+{
+	int time = SDL_GetTicks() - start;
+	SpritePtr img;
+	
+	if (time > 1000) {
+		img = this->img3;
+	} else if (time > 500) {
+		img = this->img2;
+	} else {
+		img = this->img1;
+	}
+	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	int x = (this->render->getWidth() - img->w) / 2;
+	int y = (this->render->getHeight() - img->h) / 2;
+	this->render->renderSprite(img, x, y);
+	
+	SDL_GL_SwapBuffers();
+}
+
+

@@ -104,7 +104,7 @@ void DialogMods::action(const gcn::ActionEvent& actionEvent)
 	string modname = this->mods->getModAt(this->modlist->getSelected())->getName();
 	if (modname != "cr") {
 		newsuppl = new Mod(this->st, "data/" + modname);
-		if (! newsuppl->load()) {
+		if (! newsuppl->load(NULL)) {
 			reportFatalError("Unable to load mod '" + modname + "'.");
 		}
 	}

@@ -53,7 +53,7 @@ class ModManager {
 };
 
 
-void loadMods(GameState *st);
+bool loadMods(GameState *st, UIUpdate* ui);
 
 
 

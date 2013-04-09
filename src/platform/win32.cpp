@@ -16,16 +16,6 @@
 using namespace std;
 
 
-static int threadedModLoader_thread(void *indata);
-
-class ThreadData {
-	public:
-		GameState * st;
-		HDC hdc;
-		HGLRC hglrc;
-		bool done;
-};
-
 
 /**
 * Returns the path for a directory which we can put some user data.
@@ -152,73 +142,4 @@ vector<string> * getUserModFilenames()
 	
 	return ret;
 }
-
-
-/**
-* Loads the mods, in a multi-threaded way, if possible
-**/
-bool threadedModLoader(GameState *st)
-{
-	loadMods(st);
-	return true;
-
-	SDL_SysWMinfo info;
-	SDL_VERSION(&info.version);
-	if (! SDL_GetWMInfo(&info)) {
-		return false;
-	}
-
-	// Create and link contexts
-	HDC hdc = GetDC(info.window);
-	HGLRC mainContext = wglGetCurrentContext();
-	HGLRC loaderContext = wglCreateContext(hdc);
-	wglShareLists(mainContext, loaderContext);
-	wglMakeCurrent(hdc, mainContext);
-	
-	// Prep data going to the thread
-	ThreadData * td = new ThreadData();
-	td->st = st;
-	td->hdc = hdc;
-	td->hglrc = loaderContext;
-	td->done = false;
-
-	// Create and run the thread
-	SDL_Thread * thread = SDL_CreateThread(threadedModLoader_thread, td);
-
-	// Wait for the load to finish
-	SDL_Event event;
-	while (! td->done) {
-		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) {
-				 SDL_KillThread(thread);
-				 return false;
-			}
-		}
-		SDL_GL_SwapBuffers();
-		SDL_Delay(50);
-	}
-
-	// Just in case
-	SDL_WaitThread(thread, NULL);
-
-	wglMakeCurrent(hdc, mainContext);
-
-	return true;
-}
-
-
-/**
-* Thread which loads the mods
-**/
-int threadedModLoader_thread(void *indata)
-{
-	ThreadData * td = (ThreadData*) indata;
-	wglMakeCurrent(td->hdc, td->hglrc);
-	loadMods(td->st);
-	wglMakeCurrent(NULL, NULL);
-	wglDeleteContext(td->hglrc);
-	td->done = true;
-	return 0;
-}
-
 

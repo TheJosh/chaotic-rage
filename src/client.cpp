@@ -59,7 +59,7 @@ int main (int argc, char ** argv)
 	//displayMessageBox("Intro finished, loading game data");
 
 	// Load the mods, with threads if possible
-	if (! threadedModLoader(st)) {
+	if (! loadMods(st, i)) {
 		exit(0);
 	}
 
