@@ -216,7 +216,16 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 				const btCollisionObject* other = (obA == data->ghost ? obB : obA);
 				
 				Entity* e = (Entity*) other->getUserPointer();
-
+				
+				cout << "Hit " << e << "\n";
+				
+				if (e->klass() == UNIT) {
+					((Unit*)e)->takeDamage(100.0f);
+					
+				} else if (e->klass() == WALL) {
+					((Wall*)e)->takeDamage(100.0f);
+				}
+				
 				// TODO: Do something to the entity
 			}
 		}
