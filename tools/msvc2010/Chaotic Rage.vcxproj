@@ -121,6 +121,7 @@
     <None Include="..\..\data\cr\weapontypes.conf" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\ammo_round.cpp" />
     <ClCompile Include="..\..\src\audio\audio.cpp" />
     <ClCompile Include="..\..\src\audio\audio_null.cpp" />
     <ClCompile Include="..\..\src\audio\audio_sdlmixer.cpp" />
@@ -192,10 +193,12 @@
     <ClCompile Include="..\..\src\util\util.cpp" />
     <ClCompile Include="..\..\src\vehicle.cpp" />
     <ClCompile Include="..\..\src\wall.cpp" />
+    <ClCompile Include="..\..\src\weapons\weapons.cpp" />
     <ClCompile Include="..\..\src\zone.cpp" />
     <ClCompile Include="..\flex\objload.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\ammo_round.h" />
     <ClInclude Include="..\..\src\audio\audio.h" />
     <ClInclude Include="..\..\src\audio\audio_null.h" />
     <ClInclude Include="..\..\src\audio\audio_sdlmixer.h" />
@@ -267,6 +270,7 @@
     <ClInclude Include="..\..\src\util\util.h" />
     <ClInclude Include="..\..\src\vehicle.h" />
     <ClInclude Include="..\..\src\wall.h" />
+    <ClInclude Include="..\..\src\weapons\weapons.h" />
     <ClInclude Include="..\..\src\zone.h" />
   </ItemGroup>
   <ItemGroup>

@@ -17,12 +17,13 @@ PhysicsBullet::PhysicsBullet(GameState * st)
 	this->st = st;
 	st->physics = this;
 
-	int moststuff = CG_TERRAIN | CG_WALL | CG_OBJECT | CG_UNIT | CG_VEHICLE;
+	int moststuff = CG_TERRAIN | CG_AMMO | CG_WALL | CG_OBJECT | CG_UNIT | CG_VEHICLE;
 
 	this->masks[CG_NOTHING] = 0;
 	this->masks[CG_TERRAIN] = CG_DEBRIS | CG_WALL | CG_OBJECT | CG_UNIT | CG_VEHICLE;
 	this->masks[CG_WATER] = CG_VEHICLE;
 	this->masks[CG_DEBRIS] = CG_TERRAIN;
+	this->masks[CG_AMMO] = CG_WALL | CG_OBJECT | CG_UNIT | CG_VEHICLE;
 	this->masks[CG_WALL] = moststuff;
 	this->masks[CG_OBJECT] = moststuff;
 	this->masks[CG_UNIT] = moststuff;

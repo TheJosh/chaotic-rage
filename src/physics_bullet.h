@@ -18,10 +18,11 @@ enum CollisionGroup {
 	CG_TERRAIN = BIT(0),      // The ground surface
 	CG_WATER = BIT(1),        // Water terrain, or perhaps quicksand
 	CG_DEBRIS = BIT(2),       // Debris, dead stuff, etc
-	CG_WALL = BIT(3),         // Walls and other statics
-	CG_OBJECT = BIT(4),       // Objects and other dynamics
-	CG_UNIT = BIT(5),         // Units (btKinematicCharacterController)
-	CG_VEHICLE = BIT(6),      // Vehicles (btRaycastVehicle)
+	CG_AMMO = BIT(3),         // AmmoRound entities
+	CG_WALL = BIT(4),         // Walls and other statics
+	CG_OBJECT = BIT(5),       // Objects and other dynamics
+	CG_UNIT = BIT(6),         // Units (btKinematicCharacterController)
+	CG_VEHICLE = BIT(7),      // Vehicles (btRaycastVehicle)
 };
 
 

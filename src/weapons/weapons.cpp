@@ -215,12 +215,13 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 				const btCollisionObject* obB = static_cast<const btCollisionObject*>(manifold->getBody1());
 				const btCollisionObject* other = (obA == data->ghost ? obB : obA);
 				
-				cout << "Hit: " << other << "\n";
+				Entity* e = (Entity*) other->getUserPointer();
+
+				// TODO: Do something to the entity
 			}
 		}
 		
 		e->getGameState()->physics->delCollisionObject(data->ghost);
-		
 		delete(data);
 		e->del = true;
 		
@@ -235,11 +236,11 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 		data->ghost = new btPairCachingGhostObject();
 		data->ghost->setWorldTransform(e->getTransform());
 
-		btSphereShape* shape = new btSphereShape(30.0f);
+		btSphereShape* shape = new btSphereShape(10.0f);
 		data->ghost->setCollisionShape(shape);
-		data->ghost->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE);
+		data->ghost->setCollisionFlags(data->ghost->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
     
-		st->physics->addCollisionObject(data->ghost, CG_UNIT);
+		st->physics->addCollisionObject(data->ghost, CG_AMMO);
 	}
 }
 
