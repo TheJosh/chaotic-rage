@@ -14,7 +14,7 @@ uniform vec4 uLightColor[2];
 const float constantAttenuation = 0.3;
 const float linearAttenuation = 0.1;
 const float quadraticAttenuation = 0.01;
-const vec4 ambient = vec4(0.1, 0.1, 0.1, 1.0);
+const vec4 ambient = vec4(0.2, 0.2, 0.2, 1.0);
 
 void main()
 {
