@@ -131,6 +131,7 @@ class GameState
 		void addVehicle(Vehicle* vehicle);
 		void addObject(Object* object);
 		void addNewParticle(NewParticle* particle);
+		void addAmmoRound(AmmoRound* e);
 		
 		// Removing
 		Entity* deadButNotBuried(Entity* e);

@@ -48,7 +48,15 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 		Sound* getSound(int type);
 
 	public:
+		/**
+		* Called by the unit class when we should fire
+		**/
 		virtual void doFire(Unit *unit, btTransform &origin) = 0;
+		
+		/**
+		* Called by the associated ammo round to update stuff
+		**/
+		virtual void entityUpdate(AmmoRound *e, int delta) {}
 		
 };
 

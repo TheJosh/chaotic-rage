@@ -62,6 +62,7 @@ class AnimPlay;
 class AssimpMaterial;
 class AssimpModel;
 class AssimpNode;
+class AmmoRound;
 class Audio;
 class CampaignStage;
 class Campaign;
@@ -176,6 +177,7 @@ class Zone;
 #include "vehicle.h"
 #include "wall.h"
 #include "decaying.h"
+#include "ammo_round.h"
 
 #include "map.h"
 #include "zone.h"

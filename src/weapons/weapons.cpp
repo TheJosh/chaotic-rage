@@ -11,9 +11,6 @@
 using namespace std;
 
 
-static void heightmapCircle(Map* map, int x0, int y0, int radius, float depthadd);
-
-
 
 /**
 * Fires a weapon, from a specified Unit
@@ -61,6 +58,9 @@ void WeaponRaycast::doFire(Unit *u, btTransform &origin)
 	create_particles_weapon(u->getGameState(), &begin, &end);
 }
 
+
+
+static void heightmapCircle(Map* map, int x0, int y0, int radius, float depthadd);
 
 /**
 * Fires a weapon, from a specified Unit
@@ -117,6 +117,7 @@ void heightmapCircle(Map* map, int x0, int y0, int radius, float depthadd)
 }
 
 
+
 /**
 * Fires a weapon, from a specified Unit
 **/
@@ -161,3 +162,36 @@ void WeaponFlamethrower::doFire(Unit *u, btTransform &origin)
 	// Show the weapon fire
 	create_particles_flamethrower(u->getGameState(), &begin, &end);
 }
+
+
+
+/**
+* Fires a weapon, from a specified Unit
+**/
+void WeaponTimedMine::doFire(Unit *u, btTransform &origin)
+{
+	btTransform xform = origin;	
+	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this);
+	
+	WeaponTimedMineData* data = new WeaponTimedMineData();
+	data->time = this->time;
+	ar->data = data;
+	
+	u->getGameState()->addAmmoRound(ar);
+}
+
+void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
+{
+	WeaponTimedMineData* data = (WeaponTimedMineData*)e->data;
+	
+	data->time -= delta;
+	
+	if (data->time <= 0) {
+		cout << "BOOM!\n";
+		
+		delete(data);
+		e->del = true;
+	}
+}
+
+

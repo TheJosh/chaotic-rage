@@ -34,6 +34,7 @@ cfg_opt_t weapontype_opts[] =
 	CFG_INT((char*) "belt_limit", 1000, CFGF_NONE),
 
 	// WEAPON_TYPE_RAYCAST
+	// WEAPON_TYPE_FLAMETHROWER
 	CFG_INT((char*) "angle_range", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "range", 50, CFGF_NONE),
 	CFG_FLOAT((char*) "unit_damage", 10, CFGF_NONE),
@@ -42,7 +43,10 @@ cfg_opt_t weapontype_opts[] =
 	// WEAPON_TYPE_DIGDOWN
 	CFG_INT((char*) "radius", 2, CFGF_NONE),
 	CFG_FLOAT((char*) "depth", -0.1, CFGF_NONE),
-
+	
+	// WEAPON_TYPE_TIMED_MINE
+	CFG_INT((char*) "time", 1000, CFGF_NONE),
+	
 	CFG_SEC((char*) "sound", weaponsound_opts, CFGF_MULTI),
 	CFG_END()
 };
@@ -83,6 +87,11 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		w->wall_damage = cfg_getfloat(cfg_item, "wall_damage");
 		wt = w;
 
+	} else if (type == WEAPON_TYPE_TIMED_MINE) {
+		WeaponTimedMine* w = new WeaponTimedMine();
+		w->time = cfg_getint(cfg_item, "time");
+		wt = w;
+		
 	} else {
 		return NULL;
 	}

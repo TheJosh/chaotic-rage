@@ -13,7 +13,7 @@ using namespace std;
 #define WEAPON_TYPE_RAYCAST 1
 #define WEAPON_TYPE_DIGDOWN 2
 #define WEAPON_TYPE_FLAMETHROWER 3
-
+#define WEAPON_TYPE_TIMED_MINE 4
 
 
 /**
@@ -61,5 +61,23 @@ class WeaponFlamethrower : public WeaponType
 
 	public:
 		virtual void doFire(Unit *unit, btTransform &origin);
+};
+
+
+/**
+* Mine which goes off after a set amount of time
+**/
+class WeaponTimedMine : public WeaponType
+{
+	public:
+		int time;		// ms
+
+	public:
+		virtual void doFire(Unit *unit, btTransform &origin);
+		virtual void entityUpdate(AmmoRound *e, int delta);
+};
+
+struct WeaponTimedMineData {
+	int time;
 };
 

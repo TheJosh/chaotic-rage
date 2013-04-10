@@ -162,6 +162,14 @@ void GameState::addNewParticle(NewParticle* particle)
 	this->particles.push_back(particle);
 }
 
+/**
+* Add an AmmoRound
+**/
+void GameState::addAmmoRound(AmmoRound* e)
+{
+	this->entities_add.push_back(e);
+}
+
 
 /**
 * It's dead, but not buried!
