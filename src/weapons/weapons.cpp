@@ -6,6 +6,8 @@
 #include <SDL.h>
 #include <confuse.h>
 #include <zzip/zzip.h>
+#include <btBulletDynamicsCommon.h>
+#include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include "../rage.h"
 
 using namespace std;
@@ -175,6 +177,7 @@ void WeaponTimedMine::doFire(Unit *u, btTransform &origin)
 	
 	WeaponTimedMineData* data = new WeaponTimedMineData();
 	data->time = this->time;
+	data->ghost = NULL;
 	ar->data = data;
 	
 	u->getGameState()->addAmmoRound(ar);
@@ -184,13 +187,59 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 {
 	WeaponTimedMineData* data = (WeaponTimedMineData*)e->data;
 	
-	data->time -= delta;
-	
-	if (data->time <= 0) {
-		cout << "BOOM!\n";
+	if (data->ghost) {
+		cout << "BOOM (check)\n";
+		
+		btManifoldArray manifoldArray;
+		btBroadphasePairArray& pairArray = data->ghost->getOverlappingPairCache()->getOverlappingPairArray();
+		
+		int numPairs = pairArray.size();
+		for (int i=0;i<numPairs;i++){
+			const btBroadphasePair& pair = pairArray[i];
+
+			// unless we manually perform collision detection on this pair, the contacts are in the dynamics world paircache:
+			btBroadphasePair* collisionPair = e->getGameState()->physics->getWorld()->getPairCache()->findPair(pair.m_pProxy0,pair.m_pProxy1);
+			if (!collisionPair) continue;
+			
+			// get the manifolds
+			manifoldArray.clear();
+			if (collisionPair->m_algorithm) {
+				collisionPair->m_algorithm->getAllContactManifolds(manifoldArray);
+			}
+			
+			// take a look at them
+			for (int j=0;j<manifoldArray.size();j++) {
+				btPersistentManifold* manifold = manifoldArray[j];
+				
+				const btCollisionObject* obA = static_cast<const btCollisionObject*>(manifold->getBody0());
+				const btCollisionObject* obB = static_cast<const btCollisionObject*>(manifold->getBody1());
+				const btCollisionObject* other = (obA == data->ghost ? obB : obA);
+				
+				cout << "Hit: " << other << "\n";
+			}
+		}
+		
+		e->getGameState()->physics->delCollisionObject(data->ghost);
 		
 		delete(data);
 		e->del = true;
+		
+		cout << "BOOM (done)\n";
+		return;
+	}
+	
+	data->time -= delta;
+	if (data->time <= 0) {
+		cout << "BOOM (create)\n";
+		
+		data->ghost = new btPairCachingGhostObject();
+		data->ghost->setWorldTransform(e->getTransform());
+
+		btSphereShape* shape = new btSphereShape(30.0f);
+		data->ghost->setCollisionShape(shape);
+		data->ghost->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE);
+    
+		st->physics->addCollisionObject(data->ghost, CG_UNIT);
 	}
 }
 

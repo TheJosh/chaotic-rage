@@ -34,6 +34,7 @@ AmmoRound::~AmmoRound()
 **/
 void AmmoRound::update(int delta)
 {
+	if (this->del) return;
 	this->wt->entityUpdate(this, delta);
 }
 

@@ -5,6 +5,8 @@
 #pragma once
 #include <iostream>
 #include <SDL.h>
+#include <btBulletDynamicsCommon.h>
+#include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include "../rage.h"
 
 using namespace std;
@@ -79,5 +81,6 @@ class WeaponTimedMine : public WeaponType
 
 struct WeaponTimedMineData {
 	int time;
+	btPairCachingGhostObject* ghost;
 };
 
