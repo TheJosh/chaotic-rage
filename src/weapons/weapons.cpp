@@ -190,6 +190,27 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 	if (data->ghost) {
 		cout << "BOOM (check)\n";
 		
+		const btAlignedObjectArray <btCollisionObject*>* pObjsInsideGhostObject;
+		
+		pObjsInsideGhostObject = &data->ghost->getOverlappingPairs();
+		cout << "Number of hits: " << pObjsInsideGhostObject->size() << endl;
+		
+		for (int i = 0; i < pObjsInsideGhostObject->size(); ++i) {
+			btCollisionObject* co = pObjsInsideGhostObject->at(i);
+			
+			Entity* e = (Entity*) co->getUserPointer();
+			if (e == NULL) continue;
+			
+			cout << "Hit " << e << "\n";
+			
+			if (e->klass() == UNIT) {
+				((Unit*)e)->takeDamage(1000.0f);
+			} else if (e->klass() == WALL) {
+				((Wall*)e)->takeDamage(1000.0f);
+			}
+		}
+		
+		/*
 		btManifoldArray manifoldArray;
 		btBroadphasePairArray& pairArray = data->ghost->getOverlappingPairCache()->getOverlappingPairArray();
 		
@@ -229,6 +250,7 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 				// TODO: Do something to the entity
 			}
 		}
+		*/
 		
 		e->getGameState()->physics->delCollisionObject(data->ghost);
 		delete(data);
@@ -242,7 +264,7 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 	if (data->time <= 0) {
 		cout << "BOOM (create)\n";
 		
-		data->ghost = new btPairCachingGhostObject();
+		data->ghost = new btGhostObject();
 		data->ghost->setWorldTransform(e->getTransform());
 
 		btSphereShape* shape = new btSphereShape(10.0f);

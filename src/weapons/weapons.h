@@ -81,6 +81,6 @@ class WeaponTimedMine : public WeaponType
 
 struct WeaponTimedMineData {
 	int time;
-	btPairCachingGhostObject* ghost;
+	btGhostObject* ghost;
 };
 
