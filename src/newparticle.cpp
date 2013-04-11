@@ -97,3 +97,26 @@ void create_particles_blood_spray(GameState * st, btVector3 * location, float da
 }
 
 
+/**
+* It's an EXPLOSION!
+**/
+void create_particles_explosion(GameState * st, btVector3 & location, float damage)
+{
+	NewParticle * p;
+	
+	int num = (int)(damage * 0.5f);
+	
+	for (int i = 0; i <= num; i++) {
+		p = new NewParticle();
+		
+		p->pos = location + btVector3(getRandomf(-1.0f, 1.0f), getRandomf(-1.0f, 1.0f), getRandomf(-1.0f, 1.0f));
+		p->vel = btVector3(getRandomf(-0.022f, 0.022f), getRandomf(0.01f, 0.02f), getRandomf(-0.022f, 0.022f));
+		p->r = getRandomf(0.7f, 1.0f);
+		p->g = getRandomf(0.7f, 1.0f);
+		p->b = getRandomf(0.0f, 0.2f);
+		p->time_death = st->game_time + 375;
+		
+		st->addNewParticle(p);
+	}
+}
+

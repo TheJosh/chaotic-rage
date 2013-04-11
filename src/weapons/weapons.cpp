@@ -272,6 +272,8 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 		data->ghost->setCollisionFlags(data->ghost->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
     
 		st->physics->addCollisionObject(data->ghost, CG_AMMO);
+		
+		create_particles_explosion(st, e->getTransform().getOrigin(), 100);
 	}
 }
 
