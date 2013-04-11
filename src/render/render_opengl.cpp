@@ -1598,7 +1598,6 @@ void RenderOpenGL::entities()
 **/
 void RenderOpenGL::particles()
 {
-	return;
 	glUseProgram(this->shaders["particles"]);
 	
 	glm::mat4 MVP = this->projection * this->view;
