@@ -23,12 +23,6 @@ using namespace std;
 
 
 /**
-* Our importer
-**/
-static Assimp::Importer importer;
-
-
-/**
 * Create a model. It's not loaded yet, use load() to load it.
 **/
 AssimpModel::AssimpModel(Mod* mod, string name)
@@ -46,7 +40,8 @@ AssimpModel::AssimpModel(Mod* mod, string name)
 bool AssimpModel::load(Render3D* render)
 {
 	cout << "Assimp model: " << this->name << "\n";
-	
+	Assimp::Importer importer;
+
 	unsigned int flags = aiProcess_CalcTangentSpace
 		| aiProcess_Triangulate
 		| aiProcess_JoinIdenticalVertices

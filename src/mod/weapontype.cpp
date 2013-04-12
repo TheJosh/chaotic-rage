@@ -46,7 +46,8 @@ cfg_opt_t weapontype_opts[] =
 	
 	// WEAPON_TYPE_TIMED_MINE
 	CFG_INT((char*) "time", 1000, CFGF_NONE),
-	
+	CFG_STR((char*) "model", 0, CFGF_NONE),
+
 	CFG_SEC((char*) "sound", weaponsound_opts, CFGF_MULTI),
 	CFG_END()
 };
@@ -90,6 +91,14 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	} else if (type == WEAPON_TYPE_TIMED_MINE) {
 		WeaponTimedMine* w = new WeaponTimedMine();
 		w->time = cfg_getint(cfg_item, "time");
+
+		char* tmp = cfg_getstr(cfg_item, "model");
+		if (tmp) {
+			w->model = mod->getAssimpModel(tmp);
+		} else {
+			w->model = NULL;
+		}
+
 		wt = w;
 		
 	} else {

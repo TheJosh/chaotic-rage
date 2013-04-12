@@ -173,7 +173,7 @@ void WeaponFlamethrower::doFire(Unit *u, btTransform &origin)
 void WeaponTimedMine::doFire(Unit *u, btTransform &origin)
 {
 	btTransform xform = origin;	
-	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this);
+	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->model);
 	
 	WeaponTimedMineData* data = new WeaponTimedMineData();
 	data->time = this->time;

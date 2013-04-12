@@ -73,6 +73,7 @@ class WeaponTimedMine : public WeaponType
 {
 	public:
 		int time;		// ms
+		AssimpModel* model;
 
 	public:
 		virtual void doFire(Unit *unit, btTransform &origin);

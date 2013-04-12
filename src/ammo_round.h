@@ -25,7 +25,7 @@ class AmmoRound : public Entity
 		void* data;
 		
 	public:
-		AmmoRound(GameState *st, btTransform &xform, WeaponType *wt);
+		AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model);
 		virtual ~AmmoRound();
 		
 	public:
