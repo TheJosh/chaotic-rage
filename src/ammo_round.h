@@ -17,15 +17,16 @@ using namespace std;
 class AmmoRound : public Entity
 {
 	public:
-		virtual EntityClass klass() const { return NONE; }
+		virtual EntityClass klass() const { return AMMOROUND; }
 		
 	public:
 		WeaponType *wt;
 		AnimPlay *anim;
 		void* data;
-		
+		Unit* owner;
+
 	public:
-		AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model);
+		AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model, Unit* owner);
 		virtual ~AmmoRound();
 		
 	public:

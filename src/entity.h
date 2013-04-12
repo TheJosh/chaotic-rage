@@ -18,6 +18,7 @@ enum EntityClass {
 	WALL = 4,
 	OBJECT = 5,
 	VEHICLE = 6,
+	AMMOROUND = 7,
 };
 
 

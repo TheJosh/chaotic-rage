@@ -34,7 +34,8 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 		string name;
 		string title;
 		GameState * st;
-		
+		int type;
+
 		unsigned int fire_delay;
 		unsigned int reload_delay;
 		bool continuous;

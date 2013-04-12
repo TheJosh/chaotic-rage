@@ -192,7 +192,7 @@ Entity* GameState::deadButNotBuried(Entity* e)
 /**
 * Finds the unit which matches a given slot
 *
-* THIS IS CRAP
+* TODO: Make the implementation less crappy and slow.
 **/
 Unit* GameState::findUnitSlot(unsigned int slot)
 {
@@ -205,6 +205,28 @@ Unit* GameState::findUnitSlot(unsigned int slot)
 	
 	return NULL;
 }
+
+
+/**
+* Finds ammoround entities for a given unit.
+* Please delete() the result when you are done.
+*
+* TODO: Make the implementation less crappy and slow.
+**/
+list<AmmoRound*>* GameState::findAmmoRoundsUnit(Unit* u)
+{
+	list<AmmoRound*>* out = new list<AmmoRound*>();
+
+	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); it++) {
+		if ((*it)->klass() != AMMOROUND) continue;
+		if (((AmmoRound*)*it)->owner == u) {
+			out->push_back((AmmoRound*)*it);
+		}
+	}
+
+	return out;
+}
+
 
 /**
 * Return the PlayerState for a local player, with the given slot number.

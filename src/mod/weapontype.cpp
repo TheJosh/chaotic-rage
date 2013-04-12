@@ -105,6 +105,18 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 
 		wt = w;
 
+	} else if (type == WEAPON_TYPE_REMOTE_MINE) {
+		WeaponRemoteMine* w = new WeaponRemoteMine();
+
+		char* tmp = cfg_getstr(cfg_item, "model");
+		if (tmp) w->model = mod->getAssimpModel(tmp);
+
+		wt = w;
+
+	} else if (type == WEAPON_TYPE_REMOTE_TRIG) {
+		WeaponRemoteTrigger* w = new WeaponRemoteTrigger();
+		wt = w;
+
 	} else {
 		return NULL;
 	}
@@ -114,7 +126,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	wt->name = cfg_getstr(cfg_item, "name");
 	wt->title = cfg_getstr(cfg_item, "title");
 	wt->st = mod->st;
-	
+	wt->type = type;
+
 	wt->fire_delay = cfg_getint(cfg_item, "fire_delay");
 	wt->reload_delay = cfg_getint(cfg_item, "reload_delay");
 	wt->continuous = (cfg_getint(cfg_item, "continuous") == 1);

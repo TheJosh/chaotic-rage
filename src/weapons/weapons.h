@@ -17,6 +17,8 @@ using namespace std;
 #define WEAPON_TYPE_FLAMETHROWER 3
 #define WEAPON_TYPE_TIMED_MINE 4
 #define WEAPON_TYPE_PROXI_MINE 5
+#define WEAPON_TYPE_REMOTE_MINE 6
+#define WEAPON_TYPE_REMOTE_TRIG 7
 
 
 /**
@@ -111,3 +113,35 @@ struct WeaponProxiMineData {
 	btGhostObject* ghost;
 };
 
+
+/**
+* Mine which goes off using a remote trigger unit
+**/
+class WeaponRemoteMine : public WeaponType
+{
+	public:
+		WeaponRemoteMine() : model(NULL) {};
+
+	public:
+		AssimpModel* model;
+
+	public:
+		virtual void doFire(Unit *unit, btTransform &origin);
+		virtual void entityUpdate(AmmoRound *e, int delta);
+		void trigger(AmmoRound *e);
+};
+
+struct WeaponRemoteMineData {
+	btGhostObject* ghost;
+};
+
+
+
+/**
+* Trigger all remote mines
+**/
+class WeaponRemoteTrigger : public WeaponType
+{
+	public:
+		virtual void doFire(Unit *unit, btTransform &origin);
+};

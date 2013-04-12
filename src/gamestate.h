@@ -139,9 +139,13 @@ class GameState
 		// Network bits (EID = entity-id; slots are for players)
 		EID getNextEID();
 		Entity * getEntity(EID eid);
+
+		// Data queries
+		list<UnitQueryResult> * findVisibleUnits(Unit* origin);
 		Unit * findUnitSlot(unsigned int slot);
 		PlayerState * localPlayerFromSlot(unsigned int slot);
-		
+		list<AmmoRound*>* findAmmoRoundsUnit(Unit* u);
+
 		// Start and run
 		void start();
 		void update(int delta);
@@ -157,9 +161,6 @@ class GameState
 		void setMouseGrab(bool reset);
 		bool getMouseGrab();
 
-		// Data queries
-		list<UnitQueryResult> * findVisibleUnits(Unit* origin);
-		
 		// GUI
 		void initGuichan();
 		bool hasDialog(string name);

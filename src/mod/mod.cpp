@@ -288,8 +288,7 @@ bool Mod::load(UIUpdate* ui)
 		
 		objecttypes->push_back(ot);
 	}
-	
-	
+
 	return true;
 }
 
