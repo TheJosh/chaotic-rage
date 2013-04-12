@@ -751,7 +751,7 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 	if (! success) {
 		GLchar InfoLog[1024];
 		glGetShaderInfoLog(shader, 1024, NULL, InfoLog);
-		fprintf(stderr, "Error compiling shader:\n%s\n", InfoLog);
+		cout << "Error compiling shader:\n" << InfoLog << "\n";
 		reportFatalError("Error compiling OpenGL shader");
 	}
 	
@@ -796,7 +796,7 @@ GLuint RenderOpenGL::createProgram(const char* vertex, const char* fragment, str
 	if (! success) {
 		GLchar InfoLog[1024];
 		glGetProgramInfoLog(program, 1024, NULL, InfoLog);
-		fprintf(stderr, "Error linking program:\n%s\n", InfoLog);
+		cout << "Error compiling shader:\n" << InfoLog << "\n";
 		reportFatalError("Error linking OpenGL program " + name);
 	}
 	

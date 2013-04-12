@@ -1,6 +1,6 @@
 #version 120
 
-in vec3 vPosition;
+varying vec3 vPosition;
 
 uniform mat4 uMVP;
 
