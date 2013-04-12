@@ -13,8 +13,70 @@
 using namespace std;
 
 
-btGhostObject* create_ghost(Entity* e, float radius);
-void apply_ghost_damage(btGhostObject* ghost, float damage);
+
+
+/**
+* Create a chost object for collision detection
+**/
+btGhostObject* create_ghost(btTransform& xform, float radius)
+{
+	btGhostObject* ghost = new btGhostObject();
+
+	ghost->setWorldTransform(xform);
+	ghost->setCollisionFlags(ghost->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
+
+	btSphereShape* shape = new btSphereShape(radius);
+	ghost->setCollisionShape(shape);
+
+	return ghost;
+}
+
+
+/**
+* If there is anything within the ghost radius, apply damage as appropriate
+**/
+void apply_ghost_damage(btGhostObject* ghost, float damage)
+{
+	const btAlignedObjectArray <btCollisionObject*>* pObjsInsideGhostObject;
+	pObjsInsideGhostObject = &ghost->getOverlappingPairs();
+		
+	for (int i = 0; i < pObjsInsideGhostObject->size(); ++i) {
+		btCollisionObject* co = pObjsInsideGhostObject->at(i);
+			
+		Entity* e = (Entity*) co->getUserPointer();
+		if (e == NULL) continue;
+			
+		if (e->klass() == UNIT) {
+			((Unit*)e)->takeDamage(damage);
+		} else if (e->klass() == WALL) {
+			((Wall*)e)->takeDamage(damage);
+		}
+	}
+}
+
+
+/**
+* If there is anything within the ghost radius, apply damage as appropriate
+**/
+bool check_ghost_triggered(btGhostObject* ghost)
+{
+	const btAlignedObjectArray <btCollisionObject*>* pObjsInsideGhostObject;
+	pObjsInsideGhostObject = &ghost->getOverlappingPairs();
+		
+	for (int i = 0; i < pObjsInsideGhostObject->size(); ++i) {
+		btCollisionObject* co = pObjsInsideGhostObject->at(i);
+			
+		Entity* e = (Entity*) co->getUserPointer();
+		if (e == NULL) continue;
+			
+		if (e->klass() == UNIT) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 
 
 /**
@@ -58,7 +120,7 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 	// If the time has passed, it's boom time
 	// We create a ghost, and apply the damage in the next tick.
 	if (data->time <= 0) {
-		data->ghost = create_ghost(e, 10.0f);
+		data->ghost = create_ghost(e->getTransform(), 10.0f);
 		st->physics->addCollisionObject(data->ghost, CG_AMMO);
 
 		create_particles_explosion(st, e->getTransform().getOrigin(), 100);
@@ -66,41 +128,49 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 }
 
 
+
 /**
-* Create a chost object for collision detection
+* Fires a weapon, from a specified Unit
 **/
-btGhostObject* create_ghost(Entity* e, float radius)
+void WeaponProxiMine::doFire(Unit *u, btTransform &origin)
 {
-	btGhostObject* ghost = new btGhostObject();
-
-	ghost->setWorldTransform(e->getTransform());
-	ghost->setCollisionFlags(ghost->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
-
-	btSphereShape* shape = new btSphereShape(radius);
-	ghost->setCollisionShape(shape);
-
-	return ghost;
+	btTransform xform = origin;	
+	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->model);
+	
+	WeaponProxiMineData* data = new WeaponProxiMineData();
+	data->delay = 2000;
+	data->ghost = create_ghost(xform, 10.0f);
+	ar->data = data;
+	
+	u->getGameState()->addAmmoRound(ar);
+	st->physics->addCollisionObject(data->ghost, CG_AMMO);
 }
 
 
 /**
-* If there is anything within the ghost radius, apply damage as appropriate
+* Called at regular intervals by the mine entity
 **/
-void apply_ghost_damage(btGhostObject* ghost, float damage)
+void WeaponProxiMine::entityUpdate(AmmoRound *e, int delta)
 {
-	const btAlignedObjectArray <btCollisionObject*>* pObjsInsideGhostObject;
-	pObjsInsideGhostObject = &ghost->getOverlappingPairs();
+	WeaponProxiMineData* data = (WeaponProxiMineData*)e->data;
+	
+	// Give the user a chance
+	if (data->delay > 0) {
+		data->delay -= delta;
+		return;
+	}
+
+	// If there is something within range...
+	if (check_ghost_triggered(data->ghost)) {
+		// ...kaboom
+		apply_ghost_damage(data->ghost, 1000.0f);
 		
-	for (int i = 0; i < pObjsInsideGhostObject->size(); ++i) {
-		btCollisionObject* co = pObjsInsideGhostObject->at(i);
-			
-		Entity* e = (Entity*) co->getUserPointer();
-		if (e == NULL) continue;
-			
-		if (e->klass() == UNIT) {
-			((Unit*)e)->takeDamage(damage);
-		} else if (e->klass() == WALL) {
-			((Wall*)e)->takeDamage(damage);
-		}
+		create_particles_explosion(st, e->getTransform().getOrigin(), 100);
+
+		// Remove the mine
+		e->getGameState()->physics->delCollisionObject(data->ghost);
+		delete(data);
+		e->del = true;
 	}
 }
+

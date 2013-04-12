@@ -16,6 +16,7 @@ using namespace std;
 #define WEAPON_TYPE_DIGDOWN 2
 #define WEAPON_TYPE_FLAMETHROWER 3
 #define WEAPON_TYPE_TIMED_MINE 4
+#define WEAPON_TYPE_PROXI_MINE 5
 
 
 /**
@@ -72,6 +73,9 @@ class WeaponFlamethrower : public WeaponType
 class WeaponTimedMine : public WeaponType
 {
 	public:
+		WeaponTimedMine() : model(NULL) {};
+
+	public:
 		int time;		// ms
 		AssimpModel* model;
 
@@ -82,6 +86,28 @@ class WeaponTimedMine : public WeaponType
 
 struct WeaponTimedMineData {
 	int time;
+	btGhostObject* ghost;
+};
+
+
+/**
+* Mine which goes off when a unit is nearby
+**/
+class WeaponProxiMine : public WeaponType
+{
+	public:
+		WeaponProxiMine() : model(NULL) {};
+
+	public:
+		AssimpModel* model;
+
+	public:
+		virtual void doFire(Unit *unit, btTransform &origin);
+		virtual void entityUpdate(AmmoRound *e, int delta);
+};
+
+struct WeaponProxiMineData {
+	int delay;
 	btGhostObject* ghost;
 };
 

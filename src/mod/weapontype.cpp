@@ -93,17 +93,22 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		w->time = cfg_getint(cfg_item, "time");
 
 		char* tmp = cfg_getstr(cfg_item, "model");
-		if (tmp) {
-			w->model = mod->getAssimpModel(tmp);
-		} else {
-			w->model = NULL;
-		}
+		if (tmp) w->model = mod->getAssimpModel(tmp);
 
 		wt = w;
-		
+
+	} else if (type == WEAPON_TYPE_PROXI_MINE) {
+		WeaponProxiMine* w = new WeaponProxiMine();
+
+		char* tmp = cfg_getstr(cfg_item, "model");
+		if (tmp) w->model = mod->getAssimpModel(tmp);
+
+		wt = w;
+
 	} else {
 		return NULL;
 	}
+
 
 	// These settings are common to all weapon types
 	wt->name = cfg_getstr(cfg_item, "name");
