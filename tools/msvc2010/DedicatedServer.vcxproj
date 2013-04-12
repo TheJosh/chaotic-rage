@@ -184,6 +184,7 @@
     <ClCompile Include="..\..\src\util\util.cpp" />
     <ClCompile Include="..\..\src\vehicle.cpp" />
     <ClCompile Include="..\..\src\wall.cpp" />
+    <ClCompile Include="..\..\src\weapons\mines.cpp" />
     <ClCompile Include="..\..\src\weapons\weapons.cpp" />
     <ClCompile Include="..\..\src\zone.cpp" />
     <ClCompile Include="..\flex\objload.cpp" />
