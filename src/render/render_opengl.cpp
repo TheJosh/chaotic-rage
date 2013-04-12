@@ -80,7 +80,8 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render3D(st)
 	this->speeddebug = false;
 	this->viewmode = 0;
 	this->face = NULL;
-	
+	this->particle_vao = 0;
+
 	const SDL_VideoInfo* mode = SDL_GetVideoInfo();
 	this->desktop_width = mode->current_w;
 	this->desktop_height = mode->current_h;
@@ -1598,19 +1599,58 @@ void RenderOpenGL::entities()
 **/
 void RenderOpenGL::particles()
 {
+	unsigned int size = this->st->particles.size();
+	if (size == 0) return;
+
+	// Create some buffers, if required
+	if (!this->particle_vao) {
+		GLuint buffer;
+
+		glGenVertexArrays(1,&(this->particle_vao));
+		glBindVertexArray(this->particle_vao);
+
+		glGenBuffers(1, &buffer);
+		glBindBuffer(GL_ARRAY_BUFFER, buffer);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(0));		// Position
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(12));		// Colour
+		
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+
+	} else {
+		glBindVertexArray(this->particle_vao);
+	}
+
+	// This is a pretty horrible way to do this, because we malloc() and free() once per frame
+	// but it's still better than glBegin/glEnd.
+	// TODO: Save our particles in a simple ready-to-go struct, so we can skip all this
+	float* data = (float*) malloc(sizeof(float) * 6 * size);
+	int i = 0;
+	for (list<NewParticle*>::iterator it = this->st->particles.begin(); it != this->st->particles.end(); it++) {
+		data[i] = (*it)->pos.x();
+		data[i+1] = (*it)->pos.y();
+		data[i+2] = (*it)->pos.z();
+		data[i+3] = (*it)->r;
+		data[i+4] = (*it)->g;
+		data[i+5] = (*it)->b;
+		i += 6;
+	}
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * size, data, GL_DYNAMIC_DRAW);
+	free(data);
+
+	// Bind shader and draw
 	glUseProgram(this->shaders["particles"]);
 	
+	glBindAttribLocation(this->shaders["particles"], 0, "vPosition");
+	glBindAttribLocation(this->shaders["particles"], 1, "vColor");
+
 	glm::mat4 MVP = this->projection * this->view;
 	glUniformMatrix4fv(glGetUniformLocation(this->shaders["particles"], "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
-	glBegin(GL_POINTS);
-	for (list<NewParticle*>::iterator it = this->st->particles.begin(); it != this->st->particles.end(); it++) {
-		glColor3f((*it)->r, (*it)->g, (*it)->b);
-		glVertex3f((*it)->pos.x(), (*it)->pos.y(), (*it)->pos.z());
-	}
-	glEnd();
+	glDrawArrays(GL_POINTS, 0, size);
 	
 	glUseProgram(0);
+	glBindVertexArray(0);
 }
 
 

@@ -67,6 +67,9 @@ class RenderOpenGL : public Render3D
 		GLuint ter_vaoid;
 		WavefrontObj *waterobj;
 		
+		// Particles
+		GLuint particle_vao;
+
 		// Debugging
 		btIDebugDraw *physicsdebug;
 		bool speeddebug;
