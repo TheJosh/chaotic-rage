@@ -80,13 +80,13 @@ void create_particles_blood_spray(GameState * st, btVector3 * location, float da
 {
 	NewParticle * p;
 	
-	int num = (int)(damage * 0.5f);
+	int num = (int)(damage * 0.2f);
 	
 	for (int i = 0; i <= num; i++) {
 		p = new NewParticle();
 		
 		p->pos = *location + btVector3(0.0f, getRandomf(0.3f, 2.0f), 0.0f);
-		p->vel = btVector3(getRandomf(-0.022f, 0.022f), getRandomf(-0.01f, -0.02f), getRandomf(-0.022f, 0.022f));
+		p->vel = btVector3(getRandomf(-0.01f, 0.01f), getRandomf(-0.01f, -0.02f), getRandomf(-0.01f, 0.01f));
 		p->r = getRandomf(0.7f, 1.0f);
 		p->g = getRandomf(0.0f, 0.2f);
 		p->b = getRandomf(0.0f, 0.2f);
@@ -104,14 +104,14 @@ void create_particles_explosion(GameState * st, btVector3 & location, float dama
 {
 	NewParticle * p;
 	
-	int num = (int)(damage * 0.5f);
+	int num = (int)(damage * 10.0f);
 	
 	for (int i = 0; i <= num; i++) {
 		p = new NewParticle();
 		
 		p->pos = location + btVector3(getRandomf(-1.0f, 1.0f), getRandomf(-1.0f, 1.0f), getRandomf(-1.0f, 1.0f));
-		p->vel = btVector3(getRandomf(-0.022f, 0.022f), getRandomf(0.01f, 0.02f), getRandomf(-0.022f, 0.022f));
-		p->r = getRandomf(0.7f, 1.0f);
+		p->vel = btVector3(getRandomf(-0.022f, 0.022f), getRandomf(-0.022f, 0.022f), getRandomf(-0.022f, 0.022f));
+		p->r = getRandomf(0.5f, 1.0f);
 		p->g = getRandomf(0.7f, 1.0f);
 		p->b = getRandomf(0.0f, 0.2f);
 		p->time_death = st->game_time + 375;

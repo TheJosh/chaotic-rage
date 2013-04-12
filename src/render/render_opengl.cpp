@@ -1605,6 +1605,7 @@ void RenderOpenGL::particles()
 	
 	glBegin(GL_POINTS);
 	for (list<NewParticle*>::iterator it = this->st->particles.begin(); it != this->st->particles.end(); it++) {
+		glColor3f((*it)->r, (*it)->g, (*it)->b);
 		glVertex3f((*it)->pos.x(), (*it)->pos.y(), (*it)->pos.z());
 	}
 	glEnd();
