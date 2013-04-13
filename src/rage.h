@@ -15,7 +15,7 @@
 
 // Engine features to optionally compile into the game
 #ifdef RELEASE
-	#define VERSION "Beta 14"
+	#define VERSION "Beta 15"
 #else
 	#define DEBUG_OPTIONS
 	#define VERSION "Git Master"
