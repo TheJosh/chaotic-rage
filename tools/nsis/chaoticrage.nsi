@@ -67,7 +67,6 @@ Section "Start Menu Shortcuts"
   CreateShortCut "$SMPROGRAMS\Chaotic Rage\Datatool.lnk" "$INSTDIR\datatool.exe"
   CreateShortCut "$SMPROGRAMS\Chaotic Rage\Uninstall.lnk" "$INSTDIR\uninstall.exe"
   CreateShortCut "$SMPROGRAMS\Chaotic Rage\Modding Docs.lnk" "$INSTDIR\docs\"
-  CreateShortCut "$SMPROGRAMS\Chaotic Rage\Manual.lnk" "$INSTDIR\manual\index.htm"
   
 SectionEnd
 
@@ -86,7 +85,6 @@ Section "Uninstall"
   RMDir /r "$INSTDIR\maps"
   RMDir /r "$INSTDIR\data"
   RMDir /r "$INSTDIR\docs"
-  RMDir /r "$INSTDIR\manual"
   Delete "$INSTDIR\*.dll"
   Delete "$INSTDIR\*.manifest"
   Delete "$INSTDIR\*.exe"

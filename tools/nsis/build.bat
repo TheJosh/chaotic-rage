@@ -14,7 +14,6 @@ copy /-Y ..\msvc2010\Debug\dedicatedserver.exe files
 xcopy /E /I ..\..\data files\data
 xcopy /E /I ..\..\maps files\maps
 xcopy /E /I ..\..\docs files\docs
-xcopy /E /I ..\..\manual files\manual
 
 copy /-Y ..\..\*.bmp files
 copy /-Y ..\lib\*.dll files
