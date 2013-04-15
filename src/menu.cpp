@@ -450,7 +450,7 @@ void Menu::startGame(MapReg *map, string gametype, string unittype, int viewmode
 	// Load map
 	Map *m = new Map(st);
 	m->load(map->getName(), st->render, map->getMod());
-	st->curr_map = m;
+	st->map = m;
 	
 	// Load gametype
 	new GameLogic(st);
@@ -471,7 +471,7 @@ void Menu::startGame(MapReg *map, string gametype, string unittype, int viewmode
 	st->render->viewmode = viewmode;
 	
 	st->physics->preGame();
-	st->curr_map->preGame();
+	st->map->preGame();
 
 	// Begin!
 	gameLoop(st, st->render);
@@ -500,7 +500,7 @@ void Menu::networkJoin(string host)
 	// Load map
 	Map *m = new Map(st);
 	m->load(gameinfo->map, st->render, NULL);
-	st->curr_map = m;
+	st->map = m;
 	
 	// Load gametype
 	new GameLogic(st);
@@ -530,7 +530,7 @@ void Menu::networkJoin(string host)
 	}
 
 	st->physics->preGame();
-	st->curr_map->preGame();
+	st->map->preGame();
 
 	// Begin!
 	gameLoop(st, st->render);

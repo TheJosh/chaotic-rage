@@ -59,7 +59,7 @@ void runGame(GameState * st, string map, string gametype)
 	
 	Map *m = new Map(st);
 	m->load(map, st->render, NULL);
-	st->curr_map = m;
+	st->map = m;
 	
 	new GameLogic(st);
 	GameType *gt = st->mm->getGameType(gametype);
@@ -69,7 +69,7 @@ void runGame(GameState * st, string map, string gametype)
 	st->num_local = 0;
 	
 	st->physics->preGame();
-	st->curr_map->preGame();
+	st->map->preGame();
 
 	st->server->listen(st->sconf->port);
 	

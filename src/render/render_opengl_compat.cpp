@@ -368,19 +368,19 @@ void RenderOpenGLCompat::loadHeightmap()
 	int nX, nZ, nTri, j;
 	float flX, flZ;
 	
-	if (st->curr_map->heightmap == NULL) st->curr_map->createHeightmapRaw();
-	if (st->curr_map->heightmap == NULL) return;
+	if (st->map->heightmap == NULL) st->map->createHeightmapRaw();
+	if (st->map->heightmap == NULL) return;
 	
-	this->ter_size = st->curr_map->heightmap_sx * st->curr_map->heightmap_sz * 6;
+	this->ter_size = st->map->heightmap_sx * st->map->heightmap_sz * 6;
 	VBOvertex* vertexes = new VBOvertex[this->ter_size];
 	
 	j = 0;
-	for( nZ = 0; nZ < st->curr_map->heightmap_sz - 1; nZ += 1 ) {
-		for( nX = 0; nX < st->curr_map->heightmap_sx - 1; nX += 1 ) {
+	for( nZ = 0; nZ < st->map->heightmap_sz - 1; nZ += 1 ) {
+		for( nX = 0; nX < st->map->heightmap_sx - 1; nX += 1 ) {
 			
 			// u = p2 - p1; v = p3 - p1
-			btVector3 u = btVector3(nX + 1.0f, st->curr_map->heightmapGet(nX + 1, nZ + 1), nZ + 1.0f) - btVector3(nX, st->curr_map->heightmapGet(nX, nZ), nZ);
-			btVector3 v = btVector3(nX + 1.0f, st->curr_map->heightmapGet(nX + 1, nZ), nZ) - btVector3(nX, st->curr_map->heightmapGet(nX, nZ), nZ);
+			btVector3 u = btVector3(nX + 1.0f, st->map->heightmapGet(nX + 1, nZ + 1), nZ + 1.0f) - btVector3(nX, st->map->heightmapGet(nX, nZ), nZ);
+			btVector3 v = btVector3(nX + 1.0f, st->map->heightmapGet(nX + 1, nZ), nZ) - btVector3(nX, st->map->heightmapGet(nX, nZ), nZ);
 			
 			// calc vector
 			btVector3 normal = btVector3(
@@ -395,13 +395,13 @@ void RenderOpenGLCompat::loadHeightmap()
 				flZ = (float) nZ + (( nTri == 2 || nTri == 4 || nTri == 5 ) ? 1.0f : 0.0f);
 				
 		 		vertexes[j].x = flX;
-				vertexes[j].y = st->curr_map->heightmapGet(flX, flZ);
+				vertexes[j].y = st->map->heightmapGet(flX, flZ);
 				vertexes[j].z = flZ;
 				vertexes[j].nx = normal.x();
 				vertexes[j].ny = normal.y();
 				vertexes[j].nz = normal.z();
-				vertexes[j].tx = flX / st->curr_map->heightmap_sx;
-				vertexes[j].ty = flZ / st->curr_map->heightmap_sz;
+				vertexes[j].tx = flX / st->map->heightmap_sx;
+				vertexes[j].ty = flZ / st->map->heightmap_sz;
 				j++;
 			}
 		}
@@ -889,8 +889,8 @@ void RenderOpenGLCompat::background()
 		glLoadIdentity();
 		glTranslatef(this->virt_width / 2, this->virt_height / 2, 0);
 		glRotatef(RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())), 0.f, 0.f, 1.f);
-		glTranslatef(0.f - st->curr_map->background->w / 2.f, 0 - st->curr_map->background->h / 2.f, 0.f);
-		this->renderSprite(st->curr_map->background, 0.f, 0.f);
+		glTranslatef(0.f - st->map->background->w / 2.f, 0 - st->map->background->h / 2.f, 0.f);
+		this->renderSprite(st->map->background, 0.f, 0.f);
 	}
 }
 
@@ -911,7 +911,7 @@ void RenderOpenGLCompat::mainRot()
 	glLoadIdentity();
 	
 	if (this->render_player == NULL) {
-		trans = btTransform(btQuaternion(0,0,0,0),btVector3(st->curr_map->width/2.0f, 0.0f, st->curr_map->height/2.0f));
+		trans = btTransform(btQuaternion(0,0,0,0),btVector3(st->map->width/2.0f, 0.0f, st->map->height/2.0f));
 		tilt = 22.0f;
 		dist = 80.0f;
 		angle = deadang;
@@ -963,8 +963,8 @@ void RenderOpenGLCompat::lights()
 	GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	GLfloat spot_down[] = { 0.0f, -1.0f, 0.0f };
 	
-	for (i = 0; i < st->curr_map->lights.size(); i++) {
-		Light * l = st->curr_map->lights[i];
+	for (i = 0; i < st->map->lights.size(); i++) {
+		Light * l = st->map->lights[i];
 		
 		if (l->type == 2 && this->render_player == NULL) continue;
 		
@@ -1006,7 +1006,7 @@ void RenderOpenGLCompat::map()
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
-	glBindTexture(GL_TEXTURE_2D, st->curr_map->terrain->pixels);
+	glBindTexture(GL_TEXTURE_2D, st->map->terrain->pixels);
 	
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
@@ -1015,7 +1015,7 @@ void RenderOpenGLCompat::map()
 	glPushMatrix();
 	
 	// TODO: Should this be a part of the mesh create instead of part of the render?
-	glScalef(this->st->curr_map->heightmapScaleX(), 1.0f, this->st->curr_map->heightmapScaleZ());
+	glScalef(this->st->map->heightmapScaleX(), 1.0f, this->st->map->heightmapScaleZ());
 	
 	// Main terrain
 	glBindBuffer(GL_ARRAY_BUFFER, this->ter_vboid);
@@ -1029,7 +1029,7 @@ void RenderOpenGLCompat::map()
 	
 	// Static geometry meshes
 	glFrontFace(GL_CCW);
-	for (vector<MapMesh*>::iterator it = st->curr_map->meshes.begin(); it != st->curr_map->meshes.end(); it++) {
+	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); it++) {
 		glBindTexture(GL_TEXTURE_2D, (*it)->texture->pixels);
 
 		glPushMatrix();
@@ -1053,21 +1053,21 @@ void RenderOpenGLCompat::map()
 	
 
 	// Water surface
-	if (this->st->curr_map->water) {
- 		glBindTexture(GL_TEXTURE_2D, st->curr_map->water->pixels);
+	if (this->st->map->water) {
+ 		glBindTexture(GL_TEXTURE_2D, st->map->water->pixels);
 
 		glBegin(GL_QUADS);
-			glTexCoord2f(0.0f, this->st->curr_map->height/10.0f);
-			glVertex3f(0, this->st->curr_map->water_level, this->st->curr_map->height);
+			glTexCoord2f(0.0f, this->st->map->height/10.0f);
+			glVertex3f(0, this->st->map->water_level, this->st->map->height);
 		
-			glTexCoord2f(this->st->curr_map->width/10.0f, this->st->curr_map->height/10.0f);
-			glVertex3f(this->st->curr_map->width, this->st->curr_map->water_level, this->st->curr_map->height);
+			glTexCoord2f(this->st->map->width/10.0f, this->st->map->height/10.0f);
+			glVertex3f(this->st->map->width, this->st->map->water_level, this->st->map->height);
 		
-			glTexCoord2f(this->st->curr_map->width/10.0f, 0.0f);
-			glVertex3f(this->st->curr_map->width, this->st->curr_map->water_level, 0);
+			glTexCoord2f(this->st->map->width/10.0f, 0.0f);
+			glVertex3f(this->st->map->width, this->st->map->water_level, 0);
 
 			glTexCoord2f(0.0f, 0.0f);
-			glVertex3f(0, this->st->curr_map->water_level, 0);
+			glVertex3f(0, this->st->map->water_level, 0);
 		glEnd();
 	}
 }

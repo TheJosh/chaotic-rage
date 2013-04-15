@@ -38,7 +38,7 @@ void gameLoop(GameState *st, Render *render)
 	st->render->loadHeightmap();
 
 	if (st->client == NULL) {
-		st->curr_map->loadDefaultEntities();
+		st->map->loadDefaultEntities();
 	}
 
 	st->preGame();

@@ -42,7 +42,7 @@ GameLogic::GameLogic(GameState *st)
 	st->logic = this;
 
 	this->st = st;
-	this->map = st->curr_map;
+	this->map = st->map;
 	
 	L = lua_open();
 	register_lua_functions();
@@ -468,8 +468,8 @@ LUA_FUNC(ammo_drop)
 	o = new Object(
 		gl->st->mm->getObjectType("current_ammocrate"),
 		gl->st,
-		gl->st->curr_map->getRandomX(),
-		gl->st->curr_map->getRandomY(),
+		gl->st->map->getRandomX(),
+		gl->st->map->getRandomY(),
 		15,
 		0
 	);

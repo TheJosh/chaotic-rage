@@ -228,7 +228,7 @@ NetMsg * NetServer::addmsgInfoResp()
 
 NetMsg * NetServer::addmsgJoinAcc(NetServerClientInfo *client)
 {
-	string map = this->st->curr_map->getName();
+	string map = this->st->map->getName();
 	
 	NetMsg * msg = new NetMsg(JOIN_OKAY, 4 + map.length());
 	msg->seq = this->seq;

@@ -420,19 +420,19 @@ void RenderOpenGL::loadHeightmap()
 	int nX, nZ, nTri, j;
 	float flX, flZ;
 	
-	if (st->curr_map->heightmap == NULL) st->curr_map->createHeightmapRaw();
-	if (st->curr_map->heightmap == NULL) return;
+	if (st->map->heightmap == NULL) st->map->createHeightmapRaw();
+	if (st->map->heightmap == NULL) return;
 	
-	this->ter_size = st->curr_map->heightmap_sx * st->curr_map->heightmap_sz * 6;
+	this->ter_size = st->map->heightmap_sx * st->map->heightmap_sz * 6;
 	VBOvertex* vertexes = new VBOvertex[this->ter_size];
 	
 	j = 0;
-	for( nZ = 0; nZ < st->curr_map->heightmap_sz - 1; nZ += 1 ) {
-		for( nX = 0; nX < st->curr_map->heightmap_sx - 1; nX += 1 ) {
+	for( nZ = 0; nZ < st->map->heightmap_sz - 1; nZ += 1 ) {
+		for( nX = 0; nX < st->map->heightmap_sx - 1; nX += 1 ) {
 			
 			// u = p2 - p1; v = p3 - p1
-			btVector3 u = btVector3(nX + 1.0f, st->curr_map->heightmapGet(nX + 1, nZ + 1), nZ + 1.0f) - btVector3(nX, st->curr_map->heightmapGet(nX, nZ), nZ);
-			btVector3 v = btVector3(nX + 1.0f, st->curr_map->heightmapGet(nX + 1, nZ), nZ) - btVector3(nX, st->curr_map->heightmapGet(nX, nZ), nZ);
+			btVector3 u = btVector3(nX + 1.0f, st->map->heightmapGet(nX + 1, nZ + 1), nZ + 1.0f) - btVector3(nX, st->map->heightmapGet(nX, nZ), nZ);
+			btVector3 v = btVector3(nX + 1.0f, st->map->heightmapGet(nX + 1, nZ), nZ) - btVector3(nX, st->map->heightmapGet(nX, nZ), nZ);
 			
 			// calc vector
 			btVector3 normal = btVector3(
@@ -447,13 +447,13 @@ void RenderOpenGL::loadHeightmap()
 				flZ = (float) nZ + (( nTri == 2 || nTri == 4 || nTri == 5 ) ? 1.0f : 0.0f);
 				
 		 		vertexes[j].x = flX;
-				vertexes[j].y = st->curr_map->heightmapGet(flX, flZ);
+				vertexes[j].y = st->map->heightmapGet(flX, flZ);
 				vertexes[j].z = flZ;
 				vertexes[j].nx = normal.x();
 				vertexes[j].ny = normal.y();
 				vertexes[j].nz = normal.z();
-				vertexes[j].tx = flX / st->curr_map->heightmap_sx;
-				vertexes[j].ty = flZ / st->curr_map->heightmap_sz;
+				vertexes[j].tx = flX / st->map->heightmap_sx;
+				vertexes[j].ty = flZ / st->map->heightmap_sz;
 				j++;
 			}
 		}
@@ -605,10 +605,10 @@ void RenderOpenGL::preGame()
 	}
 	
 	// Set fog properties
-	if (st->curr_map->fog_density > 0.0f) {
+	if (st->map->fog_density > 0.0f) {
 		glFogi(GL_FOG_MODE, GL_LINEAR);
-		glFogfv(GL_FOG_COLOR, st->curr_map->fog_color);
-		glFogf(GL_FOG_DENSITY, st->curr_map->fog_density);
+		glFogfv(GL_FOG_COLOR, st->map->fog_color);
+		glFogf(GL_FOG_DENSITY, st->map->fog_density);
 		glFogf(GL_FOG_START, 80.0f);
 		glFogf(GL_FOG_END, 100.0f);
 	}
@@ -1399,7 +1399,7 @@ void RenderOpenGL::mainRot()
 	glLoadIdentity();
 	
 	if (this->render_player == NULL) {
-		trans = btTransform(btQuaternion(0,0,0,0),btVector3(st->curr_map->width/2.0f, 0.0f, st->curr_map->height/2.0f));
+		trans = btTransform(btQuaternion(0,0,0,0),btVector3(st->map->width/2.0f, 0.0f, st->map->height/2.0f));
 		tilt = 22.0f;
 		dist = 80.0f;
 		angle = deadang;
@@ -1446,7 +1446,7 @@ void RenderOpenGL::mainRot()
 	this->view = glm::translate(this->view, glm::vec3(-camerax, -cameray, -cameraz));
 
 	// Enable fog
-	if (this->render_player != NULL && this->viewmode == 0 && st->curr_map->fog_density > 0.0f) {
+	if (this->render_player != NULL && this->viewmode == 0 && st->map->fog_density > 0.0f) {
 		glEnable(GL_FOG);
 	}
 }
@@ -1460,7 +1460,7 @@ void RenderOpenGL::terrain()
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
-	glBindTexture(GL_TEXTURE_2D, st->curr_map->terrain->pixels);
+	glBindTexture(GL_TEXTURE_2D, st->map->terrain->pixels);
 	
 	glUseProgram(this->shaders["map"]);
 	
@@ -1469,8 +1469,8 @@ void RenderOpenGL::terrain()
 	glm::vec4 LightColor[2];
 	
 	unsigned int idx = 0;
-	for (unsigned int i = 0; i < st->curr_map->lights.size(); i++) {
-		Light * l = st->curr_map->lights[i];
+	for (unsigned int i = 0; i < st->map->lights.size(); i++) {
+		Light * l = st->map->lights[i];
 
 		if (l->type == 3) {
 			LightPos[idx] = glm::vec3(l->x, l->y, l->z);
@@ -1486,7 +1486,7 @@ void RenderOpenGL::terrain()
 
 	glm::mat4 modelMatrix = glm::scale(
 		glm::mat4(1.0f),
-		glm::vec3(this->st->curr_map->heightmapScaleX(), 1.0f, this->st->curr_map->heightmapScaleZ())
+		glm::vec3(this->st->map->heightmapScaleX(), 1.0f, this->st->map->heightmapScaleZ())
 	);
 	
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;
@@ -1504,7 +1504,7 @@ void RenderOpenGL::terrain()
 	
 	// Static geometry meshes
 	glFrontFace(GL_CCW);
-	for (vector<MapMesh*>::iterator it = st->curr_map->meshes.begin(); it != st->curr_map->meshes.end(); it++) {
+	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); it++) {
 		glBindTexture(GL_TEXTURE_2D, (*it)->texture->pixels);
 		
 		float m[16];
@@ -1537,20 +1537,20 @@ void RenderOpenGL::terrain()
 **/
 void RenderOpenGL::water()
 {
-	if (! this->st->curr_map->water) return;
+	if (! this->st->map->water) return;
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glFrontFace(GL_CCW);
 
-	glBindTexture(GL_TEXTURE_2D, this->st->curr_map->water->pixels);
+	glBindTexture(GL_TEXTURE_2D, this->st->map->water->pixels);
 	glUseProgram(this->shaders["water"]);
 		
 	if (this->waterobj->ibo_count == 0) this->createVBO(this->waterobj);
 	
 	glm::mat4 modelMatrix = glm::scale(
-		glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, this->st->curr_map->water_level, 0.0f)),
-		glm::vec3(this->st->curr_map->width, 1.0f, this->st->curr_map->height)
+		glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, this->st->map->water_level, 0.0f)),
+		glm::vec3(this->st->map->width, 1.0f, this->st->map->height)
 	);
 
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;

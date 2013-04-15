@@ -87,7 +87,7 @@ void WeaponDigdown::doFire(Unit *u, btTransform &origin)
 		const btRigidBody *body = btRigidBody::upcast(cb.m_collisionObject);
 		if (body && !body->getUserPointer()) {
 			// Hit the ground, lets dig a hole
-			Map* map = u->getGameState()->curr_map;
+			Map* map = u->getGameState()->map;
 			int mapX = begin.x() / map->width * map->heightmap_sx;
 			int mapY = begin.z() / map->height * map->heightmap_sz;
 

@@ -152,8 +152,8 @@ void RenderDebug::render()
 	last_render = st->game_time;
 	
 	
-	float scalex = ((float)st->curr_map->width) / ((float)this->width);
-	float scaley = ((float)st->curr_map->height) / ((float)this->height);
+	float scalex = ((float)st->map->width) / ((float)this->width);
+	float scaley = ((float)st->map->height) / ((float)this->height);
 
 	SDL_Rect src, dest;
 

@@ -96,7 +96,7 @@ class GameState
 		EID eid_next;
 
 	public:
-		Map* curr_map;
+		Map* map;
 		
 		PlayerState * local_players[MAX_LOCAL];
 		unsigned int num_local;
