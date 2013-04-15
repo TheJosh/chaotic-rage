@@ -41,8 +41,7 @@ void gameLoop(GameState *st, Render *render)
 		st->curr_map->loadDefaultEntities();
 	}
 
-	st->start();
-	st->setMouseGrab(true);
+	st->preGame();
 	st->logic->raise_gamestart();
 	
 	if (st->client == NULL) {
@@ -104,6 +103,6 @@ void gameLoop(GameState *st, Render *render)
 	st->audio->postGame();
 	st->physics->postGame();
 	
-	st->clear();
+	st->postGame();
 }
 

@@ -522,7 +522,7 @@ void Menu::networkJoin(string host)
 	bool gotstate = st->client->downloadGameState();
 	if (! gotstate) {
 		st->audio->postGame();
-		st->clear();
+		st->postGame();
 		delete (st->client);
 		st->client = NULL;
 		displayMessageBox("Unable to download intial game state from server " + host);

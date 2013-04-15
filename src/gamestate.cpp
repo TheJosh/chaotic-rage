@@ -280,10 +280,37 @@ void GameState::increaseEntropy(unsigned int slot)
 
 
 
+
+
+
+/**
+* Game has started
+**/
+void GameState::preGame()
+{
+	// It should technically be 0, but 1 avoids division-by-zero
+	this->game_time = 1;
+	this->anim_frame = 1;
+	this->reset_mouse = false;
+	
+	this->initGuichan();
+	this->setMouseGrab(true);
+	
+	// The client needs to do a couple things pre game
+	if (this->client) {
+		this->client->preGame();
+	}
+	
+	
+	
+	// TODO: Other subsystems should be preGame'ed here, instead of menu.cpp or game.cpp
+}
+
+
 /**
 * Clears all game state, ready for a new game
 **/
-void GameState::clear()
+void GameState::postGame()
 {
 	// TODO: Are these leaky?
 	this->entities.clear();
@@ -294,27 +321,8 @@ void GameState::clear()
 	this->walls.clear();
 	
 	this->eid_next = 1;
-}
-
-
-/**
-* Game has started
-**/
-void GameState::start()
-{
-	// It should technically be 0, but 1 avoids division-by-zero
-	this->game_time = 1;
-	this->anim_frame = 1;
-	this->reset_mouse = false;
 	
-	this->initGuichan();
-
-	// The client needs to do a couple things pre game
-	if (this->client) {
-		this->client->preGame();
-	}
-
-	// TODO: Other subsystems should be preGame'ed here, instead of menu.cpp or game.cpp
+	this->setMouseGrab(false);
 }
 
 

@@ -147,10 +147,12 @@ class GameState
 		list<AmmoRound*>* findAmmoRoundsUnit(Unit* u);
 
 		// Start and run
-		void start();
+		void preGame();
 		void update(int delta);
 		void update_particles(int delta);
-		void clear();
+		void postGame();
+		
+		// Called by Lua, etc
 		void gameOver();
 
 		// Entropy
