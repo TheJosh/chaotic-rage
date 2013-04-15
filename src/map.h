@@ -14,20 +14,6 @@ using namespace std;
 #define RENDER_FRAME_BG -2
 
 
-class Area {
-	public:
-		int x;
-		int y;
-		int width;
-		int height;
-		int angle;
-		FloorType * type;
-		
-	public:
-		Area(FloorType * type);
-		~Area();
-};
-
 class Light {
 	public:
 		unsigned int type;		// 1, 2 or 3
@@ -62,7 +48,6 @@ class Map {
 	friend class RenderOpenGLCompat;
 	
 	private:
-		vector<Area*> areas;
 		vector<Zone*> zones;
 		vector<Light*> lights;
 		vector<MapMesh*> meshes;

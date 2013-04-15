@@ -104,15 +104,6 @@ static cfg_opt_t opts[] =
 	CFG_END()
 };
 
-Area::Area(FloorType * type)
-{
-	this->type = type;
-}
-
-Area::~Area()
-{
-}
-
 
 Light::Light(unsigned int type)
 {
@@ -172,23 +163,10 @@ Map::~Map()
 **/
 int Map::load(string name, Render *render, Mod* insideof)
 {
-	Area *a;
-	
 	this->render = render;
 	this->width = 100;
 	this->height = 100;
 	this->name = name;
-	
-	
-	// Default area
-	// TODO: Flooring support in the map
-	a = new Area(this->st->mm->getFloorType("sandy"));
-	a->x = 0;
-	a->y = 0;
-	a->width = this->width;
-	a->height = this->height;
-	a->angle = 0;
-	this->areas.push_back(a);
 	
 	
 	if (insideof) {
