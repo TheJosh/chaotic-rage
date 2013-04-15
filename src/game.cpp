@@ -101,7 +101,7 @@ void gameLoop(GameState *st, Render *render)
 
 	st->render->postGame();
 	st->render->freeHeightmap();
-	st->audio->stopAll();
+	st->audio->postGame();
 	st->physics->postGame();
 	
 	st->clear();

@@ -116,7 +116,7 @@ void AudioSDLMixer::stopSound(int id)
 /**
 * Stops all audio
 **/
-void AudioSDLMixer::stopAll()
+void AudioSDLMixer::postGame()
 {
 	Mix_HaltChannel(-1);
 	Mix_HaltMusic();

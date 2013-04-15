@@ -49,7 +49,7 @@ class Audio
 		/**
 		* Stop everything (sound-wise at least)
 		**/
-		virtual void stopAll() = 0;
+		virtual void postGame() = 0;
 
 	public:
 		Audio(GameState * st);

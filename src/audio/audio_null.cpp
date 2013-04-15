@@ -30,4 +30,4 @@ void AudioNull::playSong(Song * sng) {}
 
 void AudioNull::stopSound(int id) {}
 
-void AudioNull::stopAll() {}
+void AudioNull::postGame() {}

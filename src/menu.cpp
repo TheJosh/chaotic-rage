@@ -521,7 +521,7 @@ void Menu::networkJoin(string host)
 	// When this is done, a final message is sent to tell the server we are done.
 	bool gotstate = st->client->downloadGameState();
 	if (! gotstate) {
-		st->audio->stopAll();
+		st->audio->postGame();
 		st->clear();
 		delete (st->client);
 		st->client = NULL;

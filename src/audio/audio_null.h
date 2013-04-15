@@ -40,7 +40,7 @@ class AudioNull : Audio
 		/**
 		* Stop everything (sound-wise at least)
 		**/
-		virtual void stopAll();
+		virtual void postGame();
 
 	public:
 		AudioNull(GameState * st);
