@@ -176,6 +176,16 @@ LUA_FUNC(debug_physics)
 
 
 /**
+* Enables or disables framerate debugging
+**/
+LUA_FUNC(debug_framerate)
+{
+	gl->st->render->setSpeedDebug(lua_toboolean(L, 1));
+	return 0;
+}
+
+
+/**
 * Binds a function to the gamestart event.
 * Multiple functions can be bound to the one event.
 **/
@@ -456,6 +466,18 @@ LUA_FUNC(add_player)
 
 
 /**
+* Game is over
+* First and only paramater is the result - 1 = success, 0 = failure
+* Success -> next stage of campaign
+**/
+LUA_FUNC(game_over)
+{
+	gl->st->gameOver(lua_tointeger(L, 1));
+	return 0;
+}
+
+
+/**
 * Drop ammo onto the game level
 *
 * TODO: This function is a bit specialised - it might be better to just use add_object
@@ -574,12 +596,13 @@ LUA_FUNC(random)
 #define LUA_REG(name) lua_register(L, #name, name)
 
 /**
-* Register aglgl of the Lua functions glisted above
+* Register all of the Lua functions glisted above
 **/
 void register_lua_functions()
 {
 	LUA_REG(debug);
 	LUA_REG(debug_physics);
+	LUA_REG(debug_framerate);
 	LUA_REG(bind_gamestart);
 	LUA_REG(bind_playerjoin);
 	LUA_REG(bind_playerleave);
@@ -588,15 +611,20 @@ void register_lua_functions()
 	LUA_REG(add_interval);
 	LUA_REG(add_timer);
 	LUA_REG(remove_timer);
-	LUA_REG(add_npc);
-	LUA_REG(add_player);
-	LUA_REG(ammo_drop);
-	LUA_REG(show_alert_message);
-	LUA_REG(get_selected_unittype);
-	LUA_REG(add_label);
-	LUA_REG(get_viewmode);		// TODO: Add a 'camera' object
-	LUA_REG(set_viewmode);		// dynamic position, animation, etc.
 	LUA_REG(random);
+
+	LUA_REG(add_npc);				// TODO: Think up improved
+	LUA_REG(add_player);			// entity handling
+	LUA_REG(ammo_drop);				// - this too
+
+	LUA_REG(show_alert_message);	// TODO: needs network support
+	LUA_REG(add_label);				// - this too
+	LUA_REG(game_over);				// - and this one
+
+	LUA_REG(get_selected_unittype);	// TODO: other player deets too?
+
+	LUA_REG(get_viewmode);			// TODO: Add a 'camera' object
+	LUA_REG(set_viewmode);			// dynamic position, animation, etc.
 	
 	
 	// Factions constants table

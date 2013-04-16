@@ -434,8 +434,15 @@ void Menu::startCampaign(Campaign* c, string unittype, int viewmode, unsigned in
 
 		this->startGame(m, stage->gametype, unittype, 0, 1);
 
-		// TODO: Some way for a gametype to specify if the player advances to the next stage or not
-		it++;
+		int result = st->getLastGameResult();
+
+		// A result of 1 is success, 0 is failure.
+		if (result == 1) {
+			it++;
+
+		} else if (result == -1) {
+			break;			// error
+		}
 	}
 }
 

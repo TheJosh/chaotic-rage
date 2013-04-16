@@ -1400,6 +1400,7 @@ void RenderOpenGL::mainRot()
 		trans = btTransform(btQuaternion(0,0,0,0),btVector3(st->map->width/2.0f, 0.0f, st->map->height/2.0f));
 		tilt = 22.0f;
 		dist = 80.0f;
+		lift = 0.0f;
 		angle = deadang;
 		deadang += 0.05f;
 

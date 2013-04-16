@@ -100,7 +100,7 @@ class GameState
 		
 		PlayerState * local_players[MAX_LOCAL];
 		unsigned int num_local;
-		
+		int last_game_result;
 		
 		unsigned int anim_frame;
 		unsigned int game_time;
@@ -154,6 +154,8 @@ class GameState
 		
 		// Called by Lua, etc
 		void gameOver();
+		void gameOver(int result);
+		int getLastGameResult();
 
 		// Entropy
 		unsigned int getEntropy(unsigned int slot);

@@ -398,6 +398,32 @@ void GameState::update_particles(int delta)
 void GameState::gameOver()
 {
 	this->running = false;
+	this->last_game_result = -1;
+}
+
+
+/**
+* Called by non-gameloop code (e.g. network, scripting) to indicate
+* a game-over situation
+*
+* This variant also sets a "result" flag (1 = success, 0 = failure)
+* which is passed to the campaign logic to decide what to do next.
+**/
+void GameState::gameOver(int result)
+{
+	this->running = false;
+	this->last_game_result = result;
+}
+
+
+/**
+* Returns the result of the last game.
+* A result of 1 indicates success, and 0 indicates failure
+* A result of -1 means undefined - network error or likewise
+**/
+int GameState::getLastGameResult()
+{
+	return this->last_game_result;
 }
 
 
