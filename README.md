@@ -7,3 +7,17 @@ Choose from multiple characters with unique skills and abilities.
 
 See also:
   http://chaoticrage.com
+
+
+Making Modifications
+--------------------
+
+The game is designed with extensability in mind. All of game data
+is abstracted into data modules, and multiple mods can be loaded at once.
+
+The mods contain the definitions for everything in the game,
+as well as 3D models, sounds, songs, etc. The game also uses the scripting
+language Lua, which provides logic for AIs, as well as managed game types.
+
+You can read the official modding documentation at:
+  http://chaoticrage.com/modding_docs
