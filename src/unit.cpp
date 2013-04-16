@@ -22,12 +22,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	this->weapon = NULL;
 	this->firing = false;
 	
-	this->anim = NULL;
-	this->current_state_type = 0;
-	this->setState(UNIT_STATE_STATIC);
-	
-	this->walk_state = uc->getState(UNIT_STATE_WALK);
-	this->walk_time = 0;
+	this->anim = new AnimPlay(this->uc->model);
 	
 	this->remove_at = 0;
 	
@@ -77,32 +72,11 @@ Unit::~Unit()
 }
 
 
-/**
-* Sets the unit state. If the unit state type changes, a new state is randomly
-* chosen with the specified state type
-**/
-void Unit::setState(int new_type)
-{
-	if (this->current_state_type == new_type) return;
-	
-	if (new_type == UNIT_STATE_STATIC && this->firing) new_type = UNIT_STATE_FIRING;
-	
-	this->current_state_type = new_type;
-	this->current_state = this->uc->getState(new_type);
-	this->animation_start = this->st->anim_frame;
-	
-	delete (this->anim);
-	this->anim = new AnimPlay(this->current_state->model);
-}
-
-
 void Unit::beginFiring()
 {
 	if (this->weapon == NULL) return;
 	
 	this->firing = true;
-	
-	this->setState(UNIT_STATE_FIRING);
 	
 	Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_BEGIN);
 	weapon_sound = this->st->audio->playSound(snd, true, this);
@@ -113,8 +87,6 @@ void Unit::endFiring()
 	if (this->weapon == NULL) return;
 	
 	this->firing = false;
-	
-	this->setState(UNIT_STATE_STATIC);
 	
 	this->st->audio->stopSound(this->weapon_sound);
 
@@ -181,8 +153,6 @@ void Unit::meleeAttack()
 	
 	this->melee_time = st->game_time + this->uts->melee_delay;
 	this->melee_cooldown = this->melee_time + this->uts->melee_cooldown;
-	
-	this->setState(UNIT_STATE_MELEE);
 	
 	Entity *e = this->infront(5.0f);	// TODO: settings (melee range)
 	if (e == NULL) return;
@@ -399,11 +369,9 @@ void Unit::update(int delta)
 		return;
 	}
 	
-	
 	if (st->server) {
 		st->server->addmsgUnitState(this);
 	}
-
 
 	// If they have fallen a considerable distance, they die
 	btTransform xform = ghost->getWorldTransform();
@@ -544,7 +512,6 @@ int Unit::takeDamage(int damage)
 	this->st->increaseEntropy(1);
 	
 	if (this->health <= 0 && remove_at == 0) {
-		this->setState(UNIT_STATE_DIE);
 		this->endFiring();
 		this->leaveVehicle();
 		

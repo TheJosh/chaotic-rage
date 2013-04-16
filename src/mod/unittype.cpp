@@ -27,14 +27,6 @@ static cfg_opt_t unitsettings_opts[] =
 	CFG_END()
 };
 
-// State section
-static cfg_opt_t unitstate_opts[] =
-{
-	CFG_STR((char*) "model", 0, CFGF_NONE),
-	CFG_INT((char*) "type", 0, CFGF_NONE),
-	CFG_END()
-};
-
 // Sound section
 static cfg_opt_t unitsound_opts[] =
 {
@@ -47,9 +39,9 @@ static cfg_opt_t unitsound_opts[] =
 cfg_opt_t unittype_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
-
+	CFG_STR((char*) "model", 0, CFGF_NONE),
+	
 	CFG_SEC((char*) "settings", unitsettings_opts, CFGF_MULTI),
-	CFG_SEC((char*) "state", unitstate_opts, CFGF_MULTI),
 	CFG_SEC((char*) "sound", unitsound_opts, CFGF_MULTI),
 	CFG_STR_LIST((char*) "spawn_weapons", 0, CFGF_NONE),
 
@@ -66,7 +58,7 @@ cfg_opt_t unittype_opts[] =
 UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 {
 	UnitType* uc;
-	cfg_t *cfg_settings, *cfg_state, *cfg_sound;
+	cfg_t *cfg_settings, *cfg_sound;
 	int j;
 	
 	
@@ -75,8 +67,13 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	uc->name = cfg_getstr(cfg_item, "name");
 	uc->begin_health = cfg_getint(cfg_item, "health");
 	uc->playable = cfg_getint(cfg_item, "playable");
-
-
+	
+	char * tmp = cfg_getstr(cfg_item, "model");
+	if (tmp == NULL) return NULL;
+	uc->model = mod->getAssimpModel(tmp);
+	if (uc->model == NULL) return NULL;
+	
+	
 	/// Settings ///
 	int num_settings = cfg_size(cfg_item, "settings");
 	if (num_settings - 1 != UNIT_NUM_MODIFIERS) return NULL;
@@ -104,29 +101,6 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 		uc->modifiers[j - 1].melee_damage = cfg_getint(cfg_settings, "melee_damage");
 		uc->modifiers[j - 1].melee_delay = cfg_getint(cfg_settings, "melee_delay");
 		uc->modifiers[j - 1].melee_cooldown = cfg_getint(cfg_settings, "melee_cooldown");
-	}
-	
-	
-	/// States ///
-	int num_states = cfg_size(cfg_item, "state");
-	if (num_states < 1) return NULL;
-	
-	// load states
-	uc->max_frames = 0;
-	for (j = 0; j < num_states; j++) {
-		cfg_state = cfg_getnsec(cfg_item, "state", j);
-		
-		UnitTypeState* uct = new UnitTypeState();
-		
-		uct->type = cfg_getint(cfg_state, "type");
-		
-		char * tmp = cfg_getstr(cfg_state, "model");
-		if (tmp == NULL) return NULL;
-		uct->model = mod->getAssimpModel(tmp);
-		if (uct->model == NULL) return NULL;
-		
-		uc->states.push_back(uct);
-		uct->id = uc->states.size() - 1;
 	}
 	
 
@@ -195,40 +169,6 @@ UnitTypeSettings* UnitType::getSettings(Uint8 modifier_flags)
 	}
 	
 	return ret;
-}
-
-
-/**
-* Returns a random state which matches the specified type.
-* If no state for the specified type is found, uses a state from the UNIT_STATE_STATIC type.
-**/
-UnitTypeState* UnitType::getState(int type)
-{
-	unsigned int j = 0;
-	unsigned int num = 0;
-	
-	// Find out how many of this time exist
-	for (j = 0; j < this->states.size(); j++) {
-		if (this->states.at(j)->type == type) num++;
-	}
-	
-	// Randomly choose one
-	num = getRandom(0, num - 1);
-	for (j = 0; j < this->states.size(); j++) {
-		if (this->states.at(j)->type == type) {
-			if (num == 0) {
-				return this->states.at(j);
-			}
-			num--;
-		}
-	}
-	
-	// If no state of this type found, do a search for a static type
-	if (type == UNIT_STATE_STATIC) {
-		reportFatalError("Cannot find state of type UNIT_STATE_STATIC for unit type " + this->name);
-	}
-	
-	return this->getState(UNIT_STATE_STATIC);
 }
 
 

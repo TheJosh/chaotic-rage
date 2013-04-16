@@ -14,8 +14,6 @@ NPC::NPC(UnitType *uc, GameState *st, float x, float y, float z, AIType *ai) : U
 {
 	vals[0] = vals[1] = vals[2] = vals[3] = 0;
 	
-	this->setState(UNIT_STATE_RUNNING);
-	
 	this->logic = new AILogic(this);
 	this->logic->execScript(ai->script);
 	

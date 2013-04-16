@@ -55,11 +55,6 @@ class Unit : public Entity
 		unsigned int curr_weapon_id;
 		
 		UnitType* uc;
-		UnitTypeState* current_state;
-		int current_state_type;
-		
-		UnitTypeState* walk_state;
-		unsigned int walk_time;
 		
 		unsigned int animation_start;
 		

@@ -33,7 +33,6 @@ using namespace std;
 
 
 class UnitTypeSettings;
-class UnitTypeStates;
 class UnitType;
 
 
@@ -46,14 +45,6 @@ class UnitTypeSettings
 		int melee_damage;     // hit points
 		int melee_delay;      // milliseconds
 		int melee_cooldown;   // milliseconds
-};
-
-class UnitTypeState
-{
-	public:
-		int id;
-		AssimpModel * model;
-		int type;
 };
 
 class UnitTypeSound
@@ -70,6 +61,7 @@ class UnitType
 	
 	public:
 		string name;
+		AssimpModel * model;
 		int id;
 		int width, height;
 		int begin_health;
@@ -79,7 +71,6 @@ class UnitType
 	private:
 		UnitTypeSettings initial;
 		UnitTypeSettings modifiers[UNIT_NUM_MODIFIERS];
-		vector<UnitTypeState*> states;
 		vector<UnitTypeSound*> sounds;
 		unsigned int max_frames;
 		Mod * mod;
@@ -90,7 +81,6 @@ class UnitType
 		
 	public:
 		UnitTypeSettings* getSettings(Uint8 modifier_flags);
-		UnitTypeState* getState(int type);
 		Sound* getSound(int type);
 		
 		Mod * getMod() { return this->mod; }
