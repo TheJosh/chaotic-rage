@@ -19,5 +19,5 @@ class AnimPlay
 		AnimPlay(AssimpModel * model);
 		
 	public:
-		AssimpModel * getModel();
+		AssimpModel* getModel();
 };

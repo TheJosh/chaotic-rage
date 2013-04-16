@@ -85,6 +85,7 @@ class AssimpModel
 		string name;
 		vector<AssimpMesh*> meshes;
 		vector<AssimpMaterial*> materials;
+		vector<AssimpAnimation*> animations;
 		AssimpNode* rootNode;
 		
 	public:
@@ -101,6 +102,7 @@ class AssimpModel
 		btVector3 calcBoundingSizeNode(const struct aiNode* nd, aiMatrix4x4* trafo);
 		void loadNodes();
 		AssimpNode* loadNode(aiNode* nd);
+		void loadAnimations();
 };
 
 

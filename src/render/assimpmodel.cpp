@@ -65,6 +65,7 @@ bool AssimpModel::load(Render3D* render)
 	
 	this->calcBoundingSize();
 	this->loadNodes();
+	this->loadAnimations();
 	
 	if (! render->loadAssimpModel(this)) {
 		return false;
@@ -158,6 +159,29 @@ AssimpNode* AssimpModel::loadNode(aiNode* nd)
 }
 
 
+/**
+* Load the animations for this assimp model
+**/
+void AssimpModel::loadAnimations()
+{
+	unsigned int n;
+	
+	for (n = 0; n < sc->mNumAnimations; n++) {
+		const aiAnimation* pAnimation = sc->mAnimations[n];
+		
+		cout << "Assimp animation: " << std::string(pAnimation->mName.C_Str()) << "\n";
+		cout << "Assimp tickspersecond: " << pAnimation->mTicksPerSecond << "\n";
+		
+		// TODO: Actually load stuff
+		
+	}
+}
+
+
+/**
+* Returns the bounding size of the mesh of the first frame
+* HE = half extents
+**/
 btVector3 AssimpModel::getBoundingSize()
 {
 	return this->boundingSize;
