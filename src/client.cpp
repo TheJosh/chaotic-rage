@@ -67,12 +67,14 @@ int main (int argc, char ** argv)
 
 	Menu *m = new Menu(st);
 	
-	// If you have a lot of debugging work to do, uncomment this
-	// and change your settings as required.
-	//   map, gametype, character, viewmode, num players
-	//m->startGame("tanktest", "boredem", "robot", 0, 1);
+	// If a campaign has been specified on the cmdline, run it
+	if (st->cmdline != NULL && st->cmdline->campaign != "") {
+		m->loadModBits();
+		Campaign *c = st->mm->getSupplOrBase()->getCampaign(st->cmdline->campaign);
+		m->startCampaign(c, "robot", 0, 1);
+		exit(0);
+	}
 	
-	// Run the menu
 	m->doit();
 	
 	exit(0);

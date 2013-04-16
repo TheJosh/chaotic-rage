@@ -76,6 +76,7 @@ class Mod {
 		WeaponType * getWeaponType(int id);
 		
 		AIType * getAIType(string name);
+		Campaign * getCampaign(string name);
 		FloorType * getFloorType(string name);
 		GameType * getGameType(string name);
 		ObjectType * getObjectType(string name);

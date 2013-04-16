@@ -369,6 +369,22 @@ AssimpModel * Mod::getAssimpModel(string name)
 }
 
 
+
+/**
+* Return a campaign by it's name
+**/
+Campaign * Mod::getCampaign(string name)
+{
+	if (name.empty()) return NULL;
+	
+	int i;
+	for (i = campaigns->size() - 1; i >= 0; --i) {
+		if (campaigns->at(i)->name.compare(name) == 0) return campaigns->at(i);
+	}
+	return NULL;
+}
+
+
 /**
 * Get the list of campaigns
 **/

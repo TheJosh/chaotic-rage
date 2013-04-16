@@ -24,12 +24,13 @@ CommandLineArgs::CommandLineArgs(GameState *st, int argc, char ** argv)
 		{"help",			0, 0, 'h'},
 		{"mod",				1, 0, 'm'},
 		{"mod-list",		0, 0, 'n'},
+		{"campaign",		1, 0, 'c'},
 		
 		#ifdef DEBUG_OPTIONS
-		{"debug",			1, 0, 'a'},
-		{"debug-list",		0, 0, 'b'},
-		{"debug-lineno",	0, 0, 'c'},
-		{"debug-file",		1, 0, 'd'},
+		{"debug",			1, 0, 'w'},
+		{"debug-list",		0, 0, 'x'},
+		{"debug-lineno",	0, 0, 'y'},
+		{"debug-file",		1, 0, 'z'},
 		#endif
 		{NULL, 0, NULL, 0}
 	};
@@ -45,6 +46,8 @@ CommandLineArgs::CommandLineArgs(GameState *st, int argc, char ** argv)
 					" -h\t--help                 Show this help\n"
 					" -m\t--mod NAME             Load a mod at startup\n"
 					"   \t--mod-list             List all available mods, and exit\n"
+					" -c\t--campaign NAME        Run the specified campaign, then exit\n"
+					
 					#ifdef DEBUG_OPTIONS
 					"   \t--debug SECTION        Enable debug mode for a given section\n"
 					"   \t--debug-list           Show a list of available debug sections\n"
@@ -71,14 +74,18 @@ CommandLineArgs::CommandLineArgs(GameState *st, int argc, char ** argv)
 				}
 				break;
 				
+			case 'c':
+				this->campaign = optarg;
+				break;
+				
 				
 			#ifdef DEBUG_OPTIONS
-			case 'a':
+			case 'w':
 				debug_enable(optarg);
 				cout << "Enabling debug for '" << optarg << "'.\n";
 				break;
 				
-			case 'b':
+			case 'x':
 				cout <<
 					"Chaotic Rage\n\n"
 					"Debug Sections:\n"
@@ -96,12 +103,12 @@ CommandLineArgs::CommandLineArgs(GameState *st, int argc, char ** argv)
 				exit(0);
 				break;
 				
-			case 'c':
+			case 'y':
 				debug_lineno(true);
 				cout << "Enabling file and line numbers in debug.\n";
 				break;
 				
-			case 'd':
+			case 'z':
 				debug_tofile(optarg);
 				cout << "Saving debug data to file '" << optarg << "'.\n";
 				break;

@@ -16,6 +16,7 @@ class CommandLineArgs
 {
 	public:
 		string mod;
+		string campaign;
 		
 	public:
 		CommandLineArgs(GameState *st, int argc, char ** argv);
