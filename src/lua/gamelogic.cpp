@@ -437,7 +437,7 @@ LUA_FUNC(add_player)
 	
 	Faction fac = (Faction) lua_tointeger(L, 2);
 	
-	int slot = (Faction) lua_tointeger(L, 3);
+	int slot = lua_tointeger(L, 3);
 	
 	
 	Zone *zn = gl->map->getSpawnZone(fac);
@@ -461,6 +461,22 @@ LUA_FUNC(add_player)
 	
 	gl->st->addUnit(p);
 	
+	return 0;
+}
+
+
+/**
+* Kills off the player with a given slot #
+**/
+LUA_FUNC(kill_player)
+{
+	int slot = lua_tointeger(L, 1);
+
+	Unit* u = gl->st->findUnitSlot(slot);
+	if (u == NULL) return 0;
+
+	u->takeDamage(u->getHealth());
+
 	return 0;
 }
 
@@ -615,7 +631,8 @@ void register_lua_functions()
 
 	LUA_REG(add_npc);				// TODO: Think up improved
 	LUA_REG(add_player);			// entity handling
-	LUA_REG(ammo_drop);				// - this too
+	LUA_REG(kill_player);			// - this too
+	LUA_REG(ammo_drop);				// - and this one
 
 	LUA_REG(show_alert_message);	// TODO: needs network support
 	LUA_REG(add_label);				// - this too

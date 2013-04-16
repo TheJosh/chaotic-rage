@@ -200,7 +200,8 @@ Unit* GameState::findUnitSlot(unsigned int slot)
 	
 	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); it++) {
 		if ((*it)->klass() != UNIT) continue;
-		if (((Unit*)*it)->slot == slot) return ((Unit*)*it);
+		Unit* u = (Unit*)*it;
+		if (u->slot == slot) return u;
 	}
 	
 	return NULL;

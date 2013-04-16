@@ -512,9 +512,7 @@ int Unit::takeDamage(int damage)
 	if (this->health <= 0 && remove_at == 0) {
 		this->endFiring();
 		this->leaveVehicle();
-		
-		remove_at = st->game_time + (10 * 60 * 1000);	// 10 mins
-		
+		this->st->deadButNotBuried(this);
 		return 1;
 	}
 	
