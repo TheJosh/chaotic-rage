@@ -54,7 +54,7 @@ cfg_opt_t unittype_opts[] =
 	CFG_STR_LIST((char*) "spawn_weapons", 0, CFGF_NONE),
 
 	CFG_INT((char*) "playable", 1, CFGF_NONE),
-	CFG_INT((char*) "begin_health", 0, CFGF_NONE),
+	CFG_INT((char*) "health", 0, CFGF_NONE),
 
 	CFG_END()
 };
@@ -73,7 +73,7 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	uc = new UnitType();
 	uc->mod = mod;
 	uc->name = cfg_getstr(cfg_item, "name");
-	uc->begin_health = cfg_getint(cfg_item, "begin_health");
+	uc->begin_health = cfg_getint(cfg_item, "health");
 	uc->playable = cfg_getint(cfg_item, "playable");
 
 
