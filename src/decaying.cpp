@@ -33,7 +33,6 @@ Decaying::~Decaying()
 **/
 void Decaying::update(int delta)
 {
-	if (this->anim->isDone()) this->anim->next();
 }
 
 AnimPlay* Decaying::getAnimModel()

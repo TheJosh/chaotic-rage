@@ -14,15 +14,10 @@ class AnimPlay
 {
 	private:
 		AssimpModel * model;
-		int start_frame;
 		
 	public:
 		AnimPlay(AssimpModel * model);
 		
 	public:
 		AssimpModel * getModel();
-		int getFrame();
-		bool isDone();
-		void reset();
-		void next();
 };

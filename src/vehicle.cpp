@@ -131,7 +131,6 @@ void Vehicle::update(int delta)
 {
 	int wheelIndex;
 
-	if (this->anim->isDone()) this->anim->next();
 	if (this->health == 0) return;
 	
 	

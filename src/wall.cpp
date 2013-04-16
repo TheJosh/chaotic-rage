@@ -47,9 +47,6 @@ Wall::~Wall()
 **/
 void Wall::update(int delta)
 {
-	if (this->anim->isDone()) this->anim->next();
-	
-	if (this->health == 0) return;
 }
 
 AnimPlay* Wall::getAnimModel()

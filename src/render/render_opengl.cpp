@@ -966,8 +966,6 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 	am = play->getModel();
 	if (am == NULL) return;
 	
-	//int frame = play->getFrame();
-	
 	btTransform trans = e->getTransform();
 	float m[16];
 	trans.getOpenGLMatrix(m);

@@ -46,8 +46,6 @@ Object::~Object()
 **/
 void Object::update(int delta)
 {
-	if (this->anim->isDone()) this->anim->next();
-	if (this->health == 0) return;
 }
 
 AnimPlay* Object::getAnimModel()

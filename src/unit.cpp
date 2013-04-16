@@ -494,8 +494,6 @@ void Unit::update(int delta)
 	if (health < (this->uc->begin_health / 2)) {
 		create_particles_blood_spray(this->st, new btVector3(xform.getOrigin()), 1);
 	}
-	
-	if (this->anim->isDone()) this->anim->next();
 }
 
 
