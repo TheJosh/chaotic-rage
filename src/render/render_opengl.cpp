@@ -412,6 +412,17 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 
 
 /**
+* Free sprite memory
+**/
+void RenderOpenGL::freeSprite(SpritePtr sprite)
+{
+	glDeleteTextures(1, &sprite->pixels);
+	SDL_FreeSurface(sprite->orig);
+	delete(sprite);
+}
+
+
+/**
 * Loads a heightmap from the raw heightmap data (an array of floats).
 * TODO: This should use TRIANGLE_STRIPS not TRIANGLES for rendering.
 **/
@@ -647,15 +658,6 @@ void RenderOpenGL::postGame()
 **/
 void RenderOpenGL::clearPixel(int x, int y)
 {
-}
-
-/**
-* Free sprite memory
-**/
-void RenderOpenGL::freeSprite(SpritePtr sprite)
-{
-	glDeleteTextures(1, &sprite->pixels);
-	delete(sprite);
 }
 
 /**

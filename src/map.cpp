@@ -537,11 +537,11 @@ void Map::createHeightmapRaw()
 	Uint8 r,g,b;
 	
 	SpritePtr sprite = this->render->loadSprite("heightmap.png", this->mod);
-	if (! sprite) return;
+	if (sprite == NULL) return;
 	
-	heightmap = new float[sprite->w * sprite->h];
-	heightmap_sx = sprite->w;
-	heightmap_sz = sprite->h;
+	this->heightmap = new float[sprite->w * sprite->h];
+	this->heightmap_sx = sprite->w;
+	this->heightmap_sz = sprite->h;
 	
 	for ( nZ = 0; nZ < heightmap_sz; nZ += 1 ) {
 		for ( nX = 0; nX < heightmap_sx; nX += 1 ) {
@@ -667,6 +667,8 @@ bool Map::preGame()
 
 void Map::postGame()
 {
+	delete(this->heightmap);
+	this->heightmap = NULL;
 }
 
 
