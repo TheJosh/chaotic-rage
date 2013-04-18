@@ -191,6 +191,7 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 	
 	if (ui) ui->updateUI();
 	
+	cfg_free(cfg);
 	return models;
 }
 

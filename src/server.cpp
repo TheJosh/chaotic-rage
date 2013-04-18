@@ -68,11 +68,6 @@ void runGame(GameState * st, string map, string gametype)
 	st->client = NULL;
 	st->num_local = 0;
 	
-	st->physics->preGame();
-	st->map->preGame();
-
-	st->server->listen(st->sconf->port);
-	
 	gameLoop(st, st->render);
 	
 	delete(st->server);

@@ -329,7 +329,8 @@ int Map::load(string name, Render *render, Mod* insideof)
 		this->lights.push_back(l);
 	}
 	
-
+	
+	cfg_free(cfg);
 	return 1;
 }
 
@@ -409,6 +410,8 @@ void Map::loadDefaultEntities()
 		
 		this->st->addObject(ob);
 	}
+	
+	cfg_free(cfg);
 }
 
 

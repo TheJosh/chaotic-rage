@@ -476,9 +476,6 @@ void Menu::startGame(MapReg *map, string gametype, string unittype, int viewmode
 	}
 
 	st->render->viewmode = viewmode;
-	
-	st->physics->preGame();
-	st->map->preGame();
 
 	// Begin!
 	gameLoop(st, st->render);
@@ -535,9 +532,6 @@ void Menu::networkJoin(string host)
 		displayMessageBox("Unable to download intial game state from server " + host);
 		return;
 	}
-
-	st->physics->preGame();
-	st->map->preGame();
 
 	// Begin!
 	gameLoop(st, st->render);

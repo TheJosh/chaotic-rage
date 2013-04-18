@@ -34,8 +34,14 @@ void gameLoop(GameState *st, Render *render)
 
 	start = SDL_GetTicks();
 
+	st->physics->preGame();
+	st->map->preGame();
 	st->render->preGame();
 	st->render->loadHeightmap();
+
+	if (st->server != NULL) {
+		st->server->listen(st->sconf->port);
+	}
 
 	if (st->client == NULL) {
 		st->map->loadDefaultEntities();
@@ -102,6 +108,7 @@ void gameLoop(GameState *st, Render *render)
 	st->render->freeHeightmap();
 	st->audio->postGame();
 	st->physics->postGame();
+	st->map->postGame();
 	
 	st->postGame();
 }
