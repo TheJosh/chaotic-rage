@@ -1,0 +1,9 @@
+{
+  nvidia leak - malloc
+  Memcheck:Leak
+  fun:malloc
+  fun:realloc
+  fun:calloc
+  obj:/usr/lib/opengl/nvidia/lib/libGL*
+  obj:/usr/lib/nvidia-current/libGL*
+}
