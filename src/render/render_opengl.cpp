@@ -81,6 +81,7 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render3D(st)
 	this->viewmode = 0;
 	this->face = NULL;
 	this->particle_vao = 0;
+	this->font_vbo = 0;
 
 	const SDL_VideoInfo* mode = SDL_GetVideoInfo();
 	this->desktop_width = mode->current_w;
@@ -219,6 +220,8 @@ void RenderOpenGL::loadFont(string name, Mod * mod)
 		fprintf(stderr, "Freetype: Unable to load font size\n");
 		exit(1);
 	}
+
+	this->loadShaders();
 }
 
 
@@ -271,6 +274,8 @@ void RenderOpenGL::mainViewport(int s, int of)
 	glViewport(x, y, w, h);
 	
 	this->projection = glm::perspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 150.0f);
+
+	this->ortho = glm::ortho<float>(0.0f, (float)this->virt_width, (float)this->virt_height, 0.0f, -1.0f, 1.0f);
 }
 
 
@@ -729,6 +734,7 @@ void RenderOpenGL::loadShaders()
 	this->shaders["water"] = loadProgram(base, "water");
 	this->shaders["particles"] = loadProgram(base, "particles");
 	this->shaders["dissolve"] = loadProgram(base, "dissolve");
+	this->shaders["text"] = loadProgram(base, "text");
 
 	this->shaders_loaded = true;
 }
@@ -1196,45 +1202,49 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 void RenderOpenGL::renderText(string text, float x, float y, float r, float g, float b, float a)
 {
 	if (face == NULL) return;
+	if (font_vbo == 0) glGenBuffers(1, &font_vbo);
 
-	glPushMatrix();
-	glTranslatef(x, y, 0);
-	
-	unsigned int n;
-	
-	glColor4f(r, g, b, a);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	
-	for ( n = 0; n < text.length(); n++ ) {
-		this->renderCharacter(text[n]);
+	glBindBuffer(GL_ARRAY_BUFFER, font_vbo);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+
+	GLuint shader = this->shaders["text"];
+	glUseProgram(shader);
+
+	glBindAttribLocation(shader, 0, "vCoord");
+	glUniform1i(glGetUniformLocation(shader, "uTex"), 0);
+	glUniform4f(glGetUniformLocation(shader, "uColor"), r, g, b, a);
+	glUniformMatrix4fv(glGetUniformLocation(shader, "uMVP"), 1, GL_FALSE, glm::value_ptr(this->ortho));
+
+	for (unsigned int n = 0; n < text.length(); n++ ) {
+		this->renderCharacter(text[n], x, y);
 	}
 	
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glUseProgram(0);
 	glDisable(GL_BLEND);
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	
-	glPopMatrix();
 }
 
 
 /**
 * Draws a single character
 **/
-void RenderOpenGL::renderCharacter(char character)
+void RenderOpenGL::renderCharacter(char character, float &x, float &y)
 {
 	if ((int) character < 32 || (int) character > 128) return;
 	
-	FT_GlyphSlot slot = face->glyph;
 	FreetypeChar *c = &(this->char_tex[(int) character - 32]);
-	
-	
-	// Load glyph image into the slot
-	int error = FT_Load_Char(this->face, character, FT_LOAD_DEFAULT);
-	if (error) return;
-	
 	
 	// If the OpenGL tex does not exist for this character, create it
 	if (c->tex == 0) {
+		FT_GlyphSlot slot = face->glyph;
+
+		int error = FT_Load_Char(this->face, character, FT_LOAD_DEFAULT);
+		if (error) return;
+
 		error = FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL);
 		if (error) return;
 		
@@ -1266,25 +1276,32 @@ void RenderOpenGL::renderCharacter(char character)
 		c->h = slot->bitmap.rows;
 		c->x = slot->bitmap_left;
 		c->y = slot->bitmap_top;
+		c->advance = slot->advance.x;
 		c->tx = (float)slot->bitmap.width / (float)width;
 		c->ty = (float)slot->bitmap.rows / (float)height;
 	}
 	
-	
-	// Render
-	glPushMatrix();
-	glTranslatef(c->x, 0.f - c->y, 0.f);
 	glBindTexture(GL_TEXTURE_2D, c->tex);
+	glUniform1i(glGetUniformLocation(this->shaders["text"], "uTex"), 0);
+
+	GLfloat box[4][4] = {
+        {x + c->x,         y + -c->y + c->h,  0.f,    c->ty},
+        {x + c->x,         y + -c->y,         0.f,    0.f},
+		{x + c->x + c->w,  y + -c->y + c->h,  c->tx,  c->ty},
+        {x + c->x + c->w,  y + -c->y,         c->tx,  0.f},
+        
+    };
 	
-	glBegin(GL_QUADS);
-		glTexCoord2d(0.f,c->ty); glVertex2f(0.f,c->h);
-		glTexCoord2d(0.f,0.f); glVertex2f(0.f,0.f);
-		glTexCoord2d(c->tx,0.f); glVertex2f(c->w,0.f);
-		glTexCoord2d(c->tx,c->ty); glVertex2f(c->w,c->h);
-	glEnd();
+	glBindBuffer(GL_ARRAY_BUFFER, font_vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+	glBindAttribLocation(this->shaders["text"], 0, "vCoord");
+
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	
-	glPopMatrix();
-	glTranslatef(slot->advance.x >> 6, 0.f, 0.f);
+	x += c->advance >> 6;
 }
 
 

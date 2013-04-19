@@ -15,6 +15,11 @@
 #include <guichan/opengl.hpp>
 #include <guichan/opengl/openglsdlimageloader.hpp>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "rage.h"
 #include "menu.h"
 
@@ -256,6 +261,8 @@ void Menu::updateUI()
 	glLoadIdentity();
 	glOrtho(0.0f, render->real_width, render->real_height, 0.0f, 0.0f, 10.0f);
 	
+	((RenderOpenGL*)render)->ortho = glm::ortho<float>(0.0f, render->real_width, render->real_height, 0.0f, 0.0f, 10.0f);
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
