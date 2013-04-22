@@ -104,12 +104,11 @@ void gameLoop(GameState *st, Render *render)
 	SDL_WM_GrabInput(SDL_GRAB_OFF);
 	SDL_EnableUNICODE(1);
 
+	st->postGame();
 	st->render->postGame();
 	st->render->freeHeightmap();
 	st->audio->postGame();
-	st->physics->postGame();
 	st->map->postGame();
-	
-	st->postGame();
+	st->physics->postGame();
 }
 
