@@ -54,6 +54,7 @@ using namespace std;
 		if (error != GL_NO_ERROR) { \
 			while (error) { \
 				cout << "OpenGL Error: " << gluErrorString(error) << "\n"; \
+				error = glGetError(); \
 			} \
 			cout << "Location: " << __FILE__ << ":" << __LINE__ << "\n"; \
 			reportFatalError("OpenGL error detected; exiting."); \
@@ -836,7 +837,11 @@ GLuint RenderOpenGL::loadProgram(Mod* mod, string name)
 		reportFatalError("Unable to load shader program " + name);
 	}
 	
+	CHECK_OPENGL_ERROR;
+	
 	GLuint prog = this->createProgram(v, f, name);
+	
+	CHECK_OPENGL_ERROR;
 	
 	delete(v);
 	delete(f);
@@ -850,6 +855,8 @@ GLuint RenderOpenGL::loadProgram(Mod* mod, string name)
 **/
 void RenderOpenGL::createVBO (WavefrontObj * obj)
 {
+	CHECK_OPENGL_ERROR;
+	
 	GLuint vaoid;
 	glGenVertexArrays(1, &vaoid);
 	glBindVertexArray(vaoid);
@@ -916,6 +923,8 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 	obj->vbo = vboid;
 	obj->ibo_count = obj->faces.size() * 3;
 	
+	CHECK_OPENGL_ERROR;
+	
 	delete [] vertexes;
 }
 
@@ -948,6 +957,8 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 {
 	if (obj->ibo_count == 0) this->createVBO(obj);
 	
+	CHECK_OPENGL_ERROR;
+	
 	glBindVertexArray(obj->vao);
 	glUseProgram(this->shaders["basic"]);
 	
@@ -959,6 +970,8 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 	
 	glUseProgram(0);
 	glBindVertexArray(0);
+	
+	CHECK_OPENGL_ERROR;
 }
 
 
@@ -1204,6 +1217,8 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 **/
 void RenderOpenGL::renderText(string text, float x, float y, float r, float g, float b, float a)
 {
+	CHECK_OPENGL_ERROR;
+	
 	if (face == NULL) return;
 	if (font_vbo == 0) glGenBuffers(1, &font_vbo);
 
@@ -1229,6 +1244,8 @@ void RenderOpenGL::renderText(string text, float x, float y, float r, float g, f
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glUseProgram(0);
 	glDisable(GL_BLEND);
+	
+	CHECK_OPENGL_ERROR;
 }
 
 
@@ -1269,8 +1286,10 @@ void RenderOpenGL::renderCharacter(char character, float &x, float &y)
 		// Create a texture
 		glGenTextures(1, &c->tex);
 		glBindTexture(GL_TEXTURE_2D, c->tex);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, gl_data);
 		
 		delete [] gl_data;
@@ -1282,9 +1301,11 @@ void RenderOpenGL::renderCharacter(char character, float &x, float &y)
 		c->advance = slot->advance.x;
 		c->tx = (float)slot->bitmap.width / (float)width;
 		c->ty = (float)slot->bitmap.rows / (float)height;
+		
+	} else {
+		glBindTexture(GL_TEXTURE_2D, c->tex);
 	}
 	
-	glBindTexture(GL_TEXTURE_2D, c->tex);
 	glUniform1i(glGetUniformLocation(this->shaders["text"], "uTex"), 0);
 
 	GLfloat box[4][4] = {
@@ -1373,6 +1394,8 @@ void RenderOpenGL::render()
 **/
 void RenderOpenGL::physics()
 {
+	CHECK_OPENGL_ERROR;
+	
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_FOG);
@@ -1400,6 +1423,8 @@ void RenderOpenGL::physics()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_FOG);
 	glEnable(GL_TEXTURE_2D);
+	
+	CHECK_OPENGL_ERROR;
 }
 
 
@@ -1408,6 +1433,8 @@ void RenderOpenGL::physics()
 **/
 void RenderOpenGL::mainRot()
 {
+	CHECK_OPENGL_ERROR;
+	
 	btTransform trans;
 	float tilt, angle, dist, lift;		// Up/down; left/right; distance of camera, dist off ground
 	static float deadang = 22.0f;
@@ -1470,6 +1497,8 @@ void RenderOpenGL::mainRot()
 	if (this->render_player != NULL && this->viewmode == 0 && st->map->fog_density > 0.0f) {
 		glEnable(GL_FOG);
 	}
+	
+	CHECK_OPENGL_ERROR;
 }
 
 
@@ -1478,6 +1507,8 @@ void RenderOpenGL::mainRot()
 **/
 void RenderOpenGL::terrain()
 {
+	CHECK_OPENGL_ERROR;
+	
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
@@ -1551,6 +1582,8 @@ void RenderOpenGL::terrain()
 	glBindVertexArray(0);
 	glUseProgram(0);
 	glDisable(GL_CULL_FACE);
+	
+	CHECK_OPENGL_ERROR;
 }
 
 /**
@@ -1559,6 +1592,8 @@ void RenderOpenGL::terrain()
 void RenderOpenGL::water()
 {
 	if (! this->st->map->water) return;
+
+	CHECK_OPENGL_ERROR;
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
@@ -1585,6 +1620,8 @@ void RenderOpenGL::water()
 
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
+	
+	CHECK_OPENGL_ERROR;
 }
 
 
@@ -1593,6 +1630,8 @@ void RenderOpenGL::water()
 **/
 void RenderOpenGL::entities()
 {
+	CHECK_OPENGL_ERROR;
+	
 	glFrontFace(GL_CCW);
 	glEnable(GL_CULL_FACE);
 
@@ -1612,6 +1651,8 @@ void RenderOpenGL::entities()
 
 	GLfloat em[] = {0.0, 0.0, 0.0, 0.0};
 	glMaterialfv(GL_FRONT, GL_EMISSION, em);
+	
+	CHECK_OPENGL_ERROR;
 }
 
 
@@ -1622,6 +1663,8 @@ void RenderOpenGL::particles()
 {
 	unsigned int size = this->st->particles.size();
 	if (size == 0) return;
+
+	CHECK_OPENGL_ERROR;
 
 	// Create some buffers, if required
 	if (!this->particle_vao) {
@@ -1672,6 +1715,8 @@ void RenderOpenGL::particles()
 	
 	glUseProgram(0);
 	glBindVertexArray(0);
+	
+	CHECK_OPENGL_ERROR;
 }
 
 
@@ -1682,12 +1727,16 @@ void RenderOpenGL::guichan()
 {
 	if (! st->hasDialogs()) return;
 
+	CHECK_OPENGL_ERROR;
+	
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_FOG);
 	
 	glLoadIdentity();
 	this->st->gui->draw();
+	
+	CHECK_OPENGL_ERROR;
 }
 
 
@@ -1696,6 +1745,8 @@ void RenderOpenGL::guichan()
 **/
 void RenderOpenGL::hud(HUD * hud)
 {
+	CHECK_OPENGL_ERROR;
+	
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_FOG);
@@ -1707,6 +1758,8 @@ void RenderOpenGL::hud(HUD * hud)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	hud->render(this);
+	
+	CHECK_OPENGL_ERROR;
 }
 
 
