@@ -1098,10 +1098,19 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 		const struct aiMesh* mesh = sc->mMeshes[n];
 		AssimpMesh *myMesh = new AssimpMesh();
 		
+		myMesh->numFaces = mesh->mNumFaces;
+		myMesh->materialIndex = mesh->mMaterialIndex;
+		
+		// VAO
+		glGenVertexArrays(1,&(myMesh->vao));
+		glBindVertexArray(myMesh->vao);
+		
+		// Prep face array for VBO
 		unsigned int *faceArray;
 		faceArray = (unsigned int *)malloc(sizeof(unsigned int) * mesh->mNumFaces * 3);
 		unsigned int faceIndex = 0;
-
+		
+		// Copy face data
 		for (unsigned int t = 0; t < mesh->mNumFaces; ++t) {
 			const struct aiFace* face = &mesh->mFaces[t];
 			
@@ -1109,17 +1118,11 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 			faceIndex += 3;
 		}
 		
-		myMesh->numFaces = mesh->mNumFaces;
-		myMesh->materialIndex = mesh->mMaterialIndex;
-		
-		// Vertex Array Object
-		glGenVertexArrays(1,&(myMesh->vao));
-		glBindVertexArray(myMesh->vao);
-		
 		// Faces
 		glGenBuffers(1, &buffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mesh->mNumFaces * 3, faceArray, GL_STATIC_DRAW);
+		free(faceArray);
 		
 		// Positions
 		if (mesh->HasPositions()) {

@@ -18,8 +18,51 @@ using namespace std;
 static GameState *g_st;
 
 
-static bool EntityEraser(Entity *e);
-static bool ParticleEraser(NewParticle *p);
+/**
+* Called by remove_if to kill off dead entities
+* Also reports to clients if it's a server
+**/
+static bool EntityEraserDead(Entity* e)
+{
+	if (e->del == false) return false;
+	if (g_st->server != NULL) g_st->server->addmsgEntityRem(e);
+	delete e;
+	return true;
+}
+
+
+/**
+* Called by remove_if to kill off particles which are too old
+**/
+static bool ParticleEraserTooOld(NewParticle* p)
+{
+	if (p->time_death > g_st->game_time) return false;
+	delete p;
+	return true;
+}
+
+
+/**
+* Called by remove_if to kill off ALL entities.
+* Should only be called at end-of-game
+**/
+static bool EntityEraserAll(Entity* e)
+{
+	delete e;
+	return true;
+}
+
+
+/**
+* Called by remove_if to kill off ALL particles.
+* Should only be called at end-of-game
+**/
+static bool ParticleEraserAll(NewParticle* p)
+{
+	delete p;
+	return true;
+}
+
 
 
 
@@ -241,26 +284,7 @@ PlayerState * GameState::localPlayerFromSlot(unsigned int slot)
 	return NULL;
 }
 
-/**
-* Used for filtering
-**/
-static bool EntityEraser(Entity* e)
-{
-	if (e->del == false) return false;
-	if (g_st->server != NULL) g_st->server->addmsgEntityRem(e);
-	delete e;
-	return true;
-}
 
-/**
-* Used for filtering
-**/
-static bool ParticleEraser(NewParticle* p)
-{
-	if (p->time_death > g_st->game_time) return false;
-	delete p;
-	return true;
-}
 
 
 /**
@@ -301,10 +325,6 @@ void GameState::preGame()
 	if (this->client) {
 		this->client->preGame();
 	}
-	
-	
-	
-	// TODO: Other subsystems should be preGame'ed here, instead of menu.cpp or game.cpp
 }
 
 
@@ -313,9 +333,9 @@ void GameState::preGame()
 **/
 void GameState::postGame()
 {
-	// TODO: Are these leaky?
-	this->entities.clear();
-	this->entities_add.clear();
+	this->entities.remove_if(EntityEraserAll);
+	this->entities_add.remove_if(EntityEraserAll);
+	this->particles.remove_if(ParticleEraserAll);
 	
 	// TODO: Are these needed?
 	this->units.clear();
@@ -352,14 +372,14 @@ void GameState::update(int delta)
 	}
 	
 	// Remove stuff
-	this->entities.remove_if(EntityEraser);
+	this->entities.remove_if(EntityEraserDead);
 	
 	// Update physics
 	this->physics->stepTime(delta);
 	
 	// Particles
 	this->update_particles(delta);
-	this->particles.remove_if(ParticleEraser);
+	this->particles.remove_if(ParticleEraserTooOld);
 
 	// Map animationss
 	this->map->update(delta);
