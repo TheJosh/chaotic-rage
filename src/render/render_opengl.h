@@ -39,6 +39,7 @@ struct FreetypeChar
 	GLuint tex;
 	int x, y, w, h;
 	float tx, ty;
+	int advance;
 };
 
 
@@ -60,7 +61,8 @@ class RenderOpenGL : public Render3D
 		FT_Face face;
 		vector<SpritePtr> loaded;
 		FreetypeChar char_tex[NUM_CHAR_TEX];
-		
+		GLuint font_vbo;
+
 		// Heightmap
 		unsigned int ter_size;
 		GLuint ter_vboid;
@@ -79,6 +81,7 @@ class RenderOpenGL : public Render3D
 		map<string, GLuint> shaders;
 		
 		glm::mat4 projection;	// perspective
+		glm::mat4 ortho;		// ortho
 		glm::mat4 view;			// camera
 
 	public:
@@ -130,7 +133,7 @@ class RenderOpenGL : public Render3D
 	private:
 		void createWater();
 		void renderAnimPlay(AnimPlay * play, Entity * e);
-		void renderCharacter(char c);
+		void renderCharacter(char c, float &x, float &y);
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
 		void recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd, GLuint shader, glm::mat4 transform);
