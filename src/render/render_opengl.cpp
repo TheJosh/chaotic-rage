@@ -444,7 +444,6 @@ void RenderOpenGL::freeSprite(SpritePtr sprite)
 /**
 * Loads a heightmap from the raw heightmap data (an array of floats).
 * TODO: This should use TRIANGLE_STRIPS not TRIANGLES for rendering.
-* TODO: It's CW instead of CCW at the moment :(
 **/
 void RenderOpenGL::loadHeightmap()
 {
@@ -473,9 +472,9 @@ void RenderOpenGL::loadHeightmap()
 			);
 			
 			for( nTri = 0; nTri < 6; nTri++ ) {
-				// Using This Quick Hack, Figure The X,Z Position Of The Point
-				flX = (float) nX + (( nTri == 1 || nTri == 2 || nTri == 4 ) ? 1.0f : 0.0f);
-				flZ = (float) nZ + (( nTri == 2 || nTri == 4 || nTri == 5 ) ? 1.0f : 0.0f);
+				// Using This Quick Hack, Figure The X,Z Position Of The Point; CCW wound
+				flX = (float) nX + (( nTri == 1 || nTri == 2 || nTri == 5 ) ? 1.0f : 0.0f);
+				flZ = (float) nZ + (( nTri == 1 || nTri == 4 || nTri == 5 ) ? 1.0f : 0.0f);
 				
 		 		vertexes[j].x = flX;
 				vertexes[j].y = st->map->heightmapGet(flX, flZ);
@@ -618,6 +617,7 @@ void RenderOpenGL::preGame()
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 	
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	
@@ -658,8 +658,6 @@ void RenderOpenGL::preGame()
 	// The water object
 	this->createWater();
 	
-	this->st->addDebugPoint(100.0f, 20.0f, 100.0f);
-
 	// Init the viewport for single screen only once
 	if (this->st->num_local == 1) {
 		this->mainViewport(0, 0);
@@ -1535,8 +1533,6 @@ void RenderOpenGL::terrain()
 	CHECK_OPENGL_ERROR;
 	
 	glEnable(GL_NORMALIZE);
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CW);
 	glBindTexture(GL_TEXTURE_2D, st->map->terrain->pixels);
 	
 	glUseProgram(this->shaders["map"]);
@@ -1580,7 +1576,6 @@ void RenderOpenGL::terrain()
 	
 	
 	// Static geometry meshes
-	glFrontFace(GL_CCW);
 	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); it++) {
 		glBindTexture(GL_TEXTURE_2D, (*it)->texture->pixels);
 		
@@ -1606,7 +1601,6 @@ void RenderOpenGL::terrain()
 
 	glBindVertexArray(0);
 	glUseProgram(0);
-	glDisable(GL_CULL_FACE);
 	
 	CHECK_OPENGL_ERROR;
 }
@@ -1621,9 +1615,7 @@ void RenderOpenGL::water()
 
 	CHECK_OPENGL_ERROR;
 
-	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
-	glFrontFace(GL_CCW);
 
 	glBindTexture(GL_TEXTURE_2D, this->st->map->water->pixels);
 	glUseProgram(this->shaders["water"]);
@@ -1644,7 +1636,6 @@ void RenderOpenGL::water()
 	glBindVertexArray(0);
 	glUseProgram(0);
 
-	glDisable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
 	
 	CHECK_OPENGL_ERROR;
@@ -1657,9 +1648,6 @@ void RenderOpenGL::water()
 void RenderOpenGL::entities()
 {
 	CHECK_OPENGL_ERROR;
-	
-	glFrontFace(GL_CCW);
-	glEnable(GL_CULL_FACE);
 
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
 		Entity *e = (*it);
@@ -1672,8 +1660,6 @@ void RenderOpenGL::entities()
 
 		renderAnimPlay(play, e);
 	}
-
-	glDisable(GL_CULL_FACE);
 
 	CHECK_OPENGL_ERROR;
 }

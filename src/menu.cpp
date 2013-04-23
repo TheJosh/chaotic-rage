@@ -168,6 +168,7 @@ void Menu::setupGLstate()
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_FOG);
 	glDisable(GL_MULTISAMPLE);
+	glDisable(GL_CULL_FACE);
 	
 	for (unsigned int i = 0; i < 8; i++) {
 		glDisable(GL_LIGHT0 + i);
