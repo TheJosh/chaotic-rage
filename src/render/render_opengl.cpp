@@ -1666,23 +1666,20 @@ void RenderOpenGL::particles()
 
 	CHECK_OPENGL_ERROR;
 
-	// Create some buffers, if required
+	// First time set up
 	if (!this->particle_vao) {
-		GLuint buffer;
-
 		glGenVertexArrays(1,&(this->particle_vao));
 		glBindVertexArray(this->particle_vao);
 
-		glGenBuffers(1, &buffer);
-		glBindBuffer(GL_ARRAY_BUFFER, buffer);
+		glGenBuffers(1, &(this->particle_vbo));
+		glBindBuffer(GL_ARRAY_BUFFER, this->particle_vbo);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(0));		// Position
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(12));		// Colour
 		
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 
-	} else {
-		glBindVertexArray(this->particle_vao);
+		glBindVertexArray(0);
 	}
 
 	// This is a pretty horrible way to do this, because we malloc() and free() once per frame
@@ -1699,23 +1696,30 @@ void RenderOpenGL::particles()
 		data[i+5] = (*it)->b;
 		i += 6;
 	}
+	glBindBuffer(GL_ARRAY_BUFFER, this->particle_vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * size, data, GL_DYNAMIC_DRAW);
 	free(data);
 
-	// Bind shader and draw
+
+	// Now we can draw
+	glBindVertexArray(this->particle_vao);
+
+	// Bind shader
 	glUseProgram(this->shaders["particles"]);
 	
+	// Uniforms
 	glBindAttribLocation(this->shaders["particles"], 0, "vPosition");
 	glBindAttribLocation(this->shaders["particles"], 1, "vColor");
-
 	glm::mat4 MVP = this->projection * this->view;
 	glUniformMatrix4fv(glGetUniformLocation(this->shaders["particles"], "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
+	// Draw
 	glDrawArrays(GL_POINTS, 0, size);
 	
 	glUseProgram(0);
 	glBindVertexArray(0);
 	
+
 	CHECK_OPENGL_ERROR;
 }
 

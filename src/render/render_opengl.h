@@ -71,6 +71,7 @@ class RenderOpenGL : public Render3D
 		
 		// Particles
 		GLuint particle_vao;
+		GLuint particle_vbo;
 
 		// Debugging
 		btIDebugDraw *physicsdebug;
