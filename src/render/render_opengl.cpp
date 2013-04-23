@@ -74,6 +74,9 @@ static inline int next_pot (int a)
 }
 
 
+/**
+* Just set a few things up
+**/
 RenderOpenGL::RenderOpenGL(GameState * st) : Render3D(st)
 {
 	this->screen = NULL;
@@ -99,13 +102,19 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render3D(st)
 	shaders_loaded = false;
 }
 
+
+/**
+* Cleanup
+**/
 RenderOpenGL::~RenderOpenGL()
 {
+	// TODO: Delete all buffers, tex, etc.
 }
 
 
 /**
 * Sets the screen size
+* Also sets stuff up, check version, init libraries, etc
 **/
 void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 {
@@ -199,6 +208,9 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 }
 
 
+/**
+* Load a font using freetype
+**/
 void RenderOpenGL::loadFont(string name, Mod * mod)
 {
 	int error, len;
@@ -374,7 +386,7 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 
 
 /**
-* Loads an SDL_Surface into OpenGL
+* Loads an SDL_Surface into an OpenGL texture
 **/
 void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 {
@@ -432,6 +444,7 @@ void RenderOpenGL::freeSprite(SpritePtr sprite)
 /**
 * Loads a heightmap from the raw heightmap data (an array of floats).
 * TODO: This should use TRIANGLE_STRIPS not TRIANGLES for rendering.
+* TODO: It's CW instead of CCW at the moment :(
 **/
 void RenderOpenGL::loadHeightmap()
 {
@@ -477,14 +490,18 @@ void RenderOpenGL::loadHeightmap()
 		}
 	}
 	
+	// Create VAO
 	glGenVertexArrays(1, &this->ter_vaoid);
 	glBindVertexArray(this->ter_vaoid);
 	
+	// Create interleaved VBO
 	glGenBuffers(1, &this->ter_vboid);
 	glBindBuffer(GL_ARRAY_BUFFER, this->ter_vboid);
 	
+	// Set data
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * this->ter_size, vertexes, GL_STATIC_DRAW);
 	
+	// and attributes
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(0));	// Position
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(12));	// Normals
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(24));	// TexUVs
@@ -590,6 +607,10 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 }
 
 
+/**
+* Various bits of set up before a game begins
+* Some state variables get clobbered by the menu, so we have to set them here instead.
+**/
 void RenderOpenGL::preGame()
 {
 	SDL_ShowCursor(SDL_DISABLE);
@@ -645,6 +666,10 @@ void RenderOpenGL::preGame()
 	}
 }
 
+
+/**
+* Put the state back the way we found it
+**/
 void RenderOpenGL::postGame()
 {
 	SDL_ShowCursor(SDL_ENABLE);
@@ -714,6 +739,7 @@ uniform sampler2D uTex;                                                       \n
 void main() {                                                                 \n\
     gl_FragColor = texture2D(uTex, fTexUV);                                   \n\
 }";
+
 
 /**
 * Load all of the general shaders we use for rendering
@@ -862,14 +888,17 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 {
 	CHECK_OPENGL_ERROR;
 	
+	// Create VAO
 	GLuint vaoid;
 	glGenVertexArrays(1, &vaoid);
 	glBindVertexArray(vaoid);
 
+	// Create VBO; we interleave the attributess
 	GLuint vboid;
 	glGenBuffers(1, &vboid);
 	glBindBuffer(GL_ARRAY_BUFFER, vboid);
 	
+	// Build the data array
 	VBOvertex* vertexes = new VBOvertex[obj->faces.size() * 3];
 	int j = 0;
 	for (unsigned int i = 0; i < obj->faces.size(); i++) {
@@ -910,6 +939,7 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 		
 	}
 	
+	// Set data
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * obj->faces.size() * 3, vertexes, GL_STATIC_DRAW);
 	
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(0));	// Position
@@ -924,6 +954,7 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 	
 	glBindVertexArray(0);
 	
+	// Save if of VAO, VBO, etc.
 	obj->vao = vaoid;
 	obj->vbo = vboid;
 	obj->ibo_count = obj->faces.size() * 3;
@@ -983,6 +1014,8 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 /**
 * Renders an animation.
 * Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender() afterwards.
+*
+* TODO: This needs HEAPS more work with the new animation system
 **/
 void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 {
@@ -1064,11 +1097,14 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 
 
 
-
 /**
-* This is an incomplete renderer for an assimp scene object.
-* Borrowed from the assimp sample code.
-* It doesn't actually work at the moment - it's using fixed function, which we don't support.
+* Render an Assimp model.
+* It's a recursive function because Assimp models have a node tree
+*
+* @param AssimpModel *am The model
+* @param AssimpNode *nd The root node of the model
+* @param GLuint shader The bound shader, so uniforms will work
+* @param glm::mat4 transform The node transform matrix
 **/
 void RenderOpenGL::recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd, GLuint shader, glm::mat4 transform)
 {
@@ -1251,7 +1287,8 @@ void RenderOpenGL::renderText(string text, float x, float y, float r, float g, f
 
 
 /**
-* Draws a single character
+* Draws a single character of text
+* Called by ::renderText; you probably want that function instead
 **/
 void RenderOpenGL::renderCharacter(char character, float &x, float &y)
 {
@@ -1504,7 +1541,7 @@ void RenderOpenGL::mainRot()
 
 
 /**
-* Floor
+* Terrain heightmap
 **/
 void RenderOpenGL::terrain()
 {
@@ -1587,8 +1624,9 @@ void RenderOpenGL::terrain()
 	CHECK_OPENGL_ERROR;
 }
 
+
 /**
-* Water goes last because of blending
+* Water goes last because of we do fun things with blending
 **/
 void RenderOpenGL::water()
 {
@@ -1627,7 +1665,7 @@ void RenderOpenGL::water()
 
 
 /**
-* Entities
+* The entities are basically just AnimPlay objects
 **/
 void RenderOpenGL::entities()
 {
@@ -1656,6 +1694,7 @@ void RenderOpenGL::entities()
 
 /**
 * Particle effects
+* This is a bit incomplete and sloppy at the moment
 **/
 void RenderOpenGL::particles()
 {
@@ -1723,7 +1762,7 @@ void RenderOpenGL::particles()
 
 
 /**
-* Heads-up display
+* Guichan dialogs
 **/
 void RenderOpenGL::guichan()
 {
@@ -1743,7 +1782,7 @@ void RenderOpenGL::guichan()
 
 
 /**
-* Heads-up display
+* Heads-up display (ammo, health, etc)
 **/
 void RenderOpenGL::hud(HUD * hud)
 {
@@ -1765,6 +1804,9 @@ void RenderOpenGL::hud(HUD * hud)
 }
 
 
+/**
+* FPS counter - a testing option
+**/
 void RenderOpenGL::fps()
 {
 	char buf[50];
