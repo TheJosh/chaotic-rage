@@ -69,8 +69,11 @@ class Menu : public UIUpdate
 		// Init etc
 		Menu(GameState *st);
 		GameState *getGameState() { return this->st; }
+		
 		void loadModBits();
 		void doit();
+		void setupGLstate();
+		virtual void updateUI();
 		
 	public:
 		// Main menu
@@ -94,8 +97,5 @@ class Menu : public UIUpdate
 		void startCampaign(Campaign* c, string unittype, int viewmode, unsigned int num_local);
 		void startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local);
 		void networkJoin(string host);
-		
-	public:
-		virtual void updateUI();
 };
 

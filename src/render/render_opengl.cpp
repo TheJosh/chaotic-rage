@@ -668,23 +668,10 @@ void RenderOpenGL::preGame()
 
 
 /**
-* Put the state back the way we found it
+* Clear memory we allocated
 **/
 void RenderOpenGL::postGame()
 {
-	SDL_ShowCursor(SDL_ENABLE);
-	this->mainViewport(0, 0);
-
-	glDisable(GL_LIGHTING);
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_FOG);
-	glDisable(GL_MULTISAMPLE);
-
-	
-	for (unsigned int i = 0; i < 8; i++) {
-		glDisable(GL_LIGHT0 + i);
-	}
-
 	delete(this->waterobj);
 }
 

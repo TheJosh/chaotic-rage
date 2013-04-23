@@ -142,19 +142,35 @@ void Menu::doit()
 	this->bg_rot2_dir = -0.004f;
 	
 	this->loadModBits();
-	
-
-	// Set up everything for render
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glDisable(GL_LIGHTING);
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_FOG);
-	glDisable(GL_MULTISAMPLE);
+	this->setupGLstate();
 	
 	// Menu loop
 	this->running = true;
 	while (this->running) {
 		this->updateUI();
+	}
+}
+
+
+/**
+* Set the OpenGL state just the way we like it.
+**/
+void Menu::setupGLstate()
+{
+	SDL_ShowCursor(SDL_ENABLE);
+	((RenderOpenGL*)this->render)->mainViewport(0, 0);
+	
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	
+	glEnable(GL_TEXTURE_2D);
+	
+	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_FOG);
+	glDisable(GL_MULTISAMPLE);
+	
+	for (unsigned int i = 0; i < 8; i++) {
+		glDisable(GL_LIGHT0 + i);
 	}
 }
 
@@ -483,6 +499,9 @@ void Menu::startGame(MapReg *map, string gametype, string unittype, int viewmode
 
 	// Begin!
 	gameLoop(st, st->render);
+	
+	// Post game, we need to restore menu GL settings
+	this->setupGLstate();
 }
 
 	
@@ -542,4 +561,7 @@ void Menu::networkJoin(string host)
 	
 	delete (st->client);
 	st->client = NULL;
+
+	// Post game, we need to restore menu GL settings
+	this->setupGLstate();
 }
