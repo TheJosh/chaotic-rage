@@ -196,8 +196,6 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glFlush();
 	SDL_GL_SwapBuffers();
-	
-	mainViewport(1, 1);
 }
 
 
@@ -253,12 +251,15 @@ void RenderOpenGL::initGuichan(gcn::Gui * gui, Mod * mod)
 
 /**
 * Set up the OpenGL viewport
+* Doesn't run for single-screen (but you can trick it with of = 0)
 *
 * s = Screen no
 * of = Total number of screens
 **/
 void RenderOpenGL::mainViewport(int s, int of)
 {
+	if (of == 1) return;
+
 	int w = this->real_width;
 	int h = this->real_height;
 	int x = 0;
@@ -637,24 +638,28 @@ void RenderOpenGL::preGame()
 	this->createWater();
 	
 	this->st->addDebugPoint(100.0f, 20.0f, 100.0f);
+
+	// Init the viewport for single screen only once
+	if (this->st->num_local == 1) {
+		this->mainViewport(0, 0);
+	}
 }
 
 void RenderOpenGL::postGame()
 {
 	SDL_ShowCursor(SDL_ENABLE);
-	mainViewport(1, 1);
+	this->mainViewport(0, 0);
 
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_FOG);
 	glDisable(GL_MULTISAMPLE);
 
+	
 	for (unsigned int i = 0; i < 8; i++) {
 		glDisable(GL_LIGHT0 + i);
 	}
 
-	GLfloat em[] = {0.0, 0.0, 0.0, 0.0};
-	glMaterialfv(GL_FRONT, GL_EMISSION, em);
-	
 	delete(this->waterobj);
 }
 
@@ -996,8 +1001,7 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 	CHECK_OPENGL_ERROR;
 
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-
+	
 	/*for (unsigned int d = 0; d < model->meshframes.size(); d++) {
 		if (model->meshframes[d]->frame != frame) continue;
 		if (model->meshframes[d]->mesh == NULL) continue;
@@ -1012,8 +1016,6 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 		// Regular texure
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, model->meshframes[d]->texture->pixels);
-		
-		glMaterialfv(GL_FRONT, GL_EMISSION, model->meshframes[d]->emission);
 		
 		
 		glm::mat4 frameMatrix = glm::translate(modelMatrix, glm::vec3(model->meshframes[d]->px, model->meshframes[d]->py, model->meshframes[d]->pz));
@@ -1223,7 +1225,6 @@ void RenderOpenGL::renderText(string text, float x, float y, float r, float g, f
 	if (font_vbo == 0) glGenBuffers(1, &font_vbo);
 
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, font_vbo);
 	glEnableVertexAttribArray(0);
@@ -1649,9 +1650,6 @@ void RenderOpenGL::entities()
 
 	glDisable(GL_CULL_FACE);
 
-	GLfloat em[] = {0.0, 0.0, 0.0, 0.0};
-	glMaterialfv(GL_FRONT, GL_EMISSION, em);
-	
 	CHECK_OPENGL_ERROR;
 }
 

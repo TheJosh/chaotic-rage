@@ -143,6 +143,14 @@ void Menu::doit()
 	
 	this->loadModBits();
 	
+
+	// Set up everything for render
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_FOG);
+	glDisable(GL_MULTISAMPLE);
+	
 	// Menu loop
 	this->running = true;
 	while (this->running) {
@@ -222,18 +230,9 @@ void Menu::updateUI()
 	if (bg_rot2_pos >= 3.0 or bg_rot2_pos <= -3.0) {
 		bg_rot2_dir = 0.0 - bg_rot2_dir;
 	}
-	
-	
-	
-	// Set up everything for render
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glDisable(GL_LIGHTING);
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_FOG);
-	glDisable(GL_MULTISAMPLE);
 
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Perspective mode for the background
 	glMatrixMode(GL_PROJECTION);
@@ -266,9 +265,9 @@ void Menu::updateUI()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 	glEnable(GL_BLEND);
 	render->renderSprite(logo, 40, 40);
+	glDisable(GL_BLEND);
 
 	this->menuHover(mousex, mousey);
 	this->menuRender();
@@ -330,8 +329,6 @@ void Menu::menuRender()
 		} else {
 			render->renderText(m->name, m->x1, m->y1 + 20, 1.0, 1.0, 1.0);
 		}
-		
-		glColor3f(1, 1, 1);
 	}
 }
 
