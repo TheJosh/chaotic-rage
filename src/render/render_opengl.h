@@ -42,6 +42,12 @@ struct FreetypeChar
 	int advance;
 };
 
+struct GLShader
+{
+	GLuint p;		// shader program
+	map<string, GLuint> uniforms;		// uniform locations
+};
+
 
 class RenderOpenGL : public Render3D
 {
@@ -79,7 +85,7 @@ class RenderOpenGL : public Render3D
 		
 		// Shaders
 		bool shaders_loaded;		// true if loaded from a mod
-		map<string, GLuint> shaders;
+		map<string, GLShader> shaders;
 		
 		glm::mat4 projection;	// perspective
 		glm::mat4 ortho;		// ortho
@@ -152,8 +158,8 @@ class RenderOpenGL : public Render3D
 		
 		void loadShaders();
 		GLuint createShader(const char* code, GLenum type);
-		GLuint createProgram(const char* vertex, const char* fragment, string name);
-		GLuint loadProgram(Mod* mod, string name);
+		GLShader createProgram(const char* vertex, const char* fragment, string name);
+		GLShader loadProgram(Mod* mod, string name);
 };
 
 

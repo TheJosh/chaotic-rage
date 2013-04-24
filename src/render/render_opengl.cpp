@@ -789,10 +789,11 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 * Creates and compile a shader program from two shader code strings
 * Returns the program id.
 **/
-GLuint RenderOpenGL::createProgram(const char* vertex, const char* fragment, string name)
+GLShader RenderOpenGL::createProgram(const char* vertex, const char* fragment, string name)
 {
 	GLint success;
 	GLuint sVertex, sFragment;
+	GLShader s;
 	
 	GLuint program = glCreateProgram();
 	if (program == 0) {
@@ -833,7 +834,9 @@ GLuint RenderOpenGL::createProgram(const char* vertex, const char* fragment, str
 		reportFatalError("Error validating OpenGL program " + name);
 	}
 	
-	return program;
+	s.p = program;
+	
+	return s;
 }
 
 
@@ -844,10 +847,11 @@ GLuint RenderOpenGL::createProgram(const char* vertex, const char* fragment, str
 *   shaders/<name>.glslv (vertex)
 *   shaders/<name>.glslf (fragment)
 **/
-GLuint RenderOpenGL::loadProgram(Mod* mod, string name)
+GLShader RenderOpenGL::loadProgram(Mod* mod, string name)
 {
 	char* v = mod->loadText("shaders/" + name + ".glslv");
 	char* f = mod->loadText("shaders/" + name + ".glslf");
+	GLShader s;
 	
 	if (v == NULL or f == NULL) {
 		reportFatalError("Unable to load shader program " + name);
@@ -855,14 +859,14 @@ GLuint RenderOpenGL::loadProgram(Mod* mod, string name)
 	
 	CHECK_OPENGL_ERROR;
 	
-	GLuint prog = this->createProgram(v, f, name);
+	s = this->createProgram(v, f, name);
 	
 	CHECK_OPENGL_ERROR;
 	
 	delete(v);
 	delete(f);
 	
-	return prog;
+	return s;
 }
 
 
@@ -981,11 +985,11 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 	CHECK_OPENGL_ERROR;
 	
 	glBindVertexArray(obj->vao);
-	glUseProgram(this->shaders["basic"]);
+	glUseProgram(this->shaders["basic"].p);
 	
-	glBindAttribLocation(this->shaders["basic"], 0, "vPosition");
-	glBindAttribLocation(this->shaders["basic"], 1, "vNormal");
-	glBindAttribLocation(this->shaders["basic"], 2, "vTexUV");
+	glBindAttribLocation(this->shaders["basic"].p, 0, "vPosition");
+	glBindAttribLocation(this->shaders["basic"].p, 1, "vNormal");
+	glBindAttribLocation(this->shaders["basic"].p, 2, "vTexUV");
 
 	glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
 	
@@ -1059,7 +1063,7 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 
 		} else {*/
 			// Regular shader
-			shader = this->shaders["entities"];
+			shader = this->shaders["entities"].p;
 			glUseProgram(shader);
 		/*}*/
 		
@@ -1249,7 +1253,7 @@ void RenderOpenGL::renderText(string text, float x, float y, float r, float g, f
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
 
-	GLuint shader = this->shaders["text"];
+	GLuint shader = this->shaders["text"].p;
 	glUseProgram(shader);
 
 	glBindAttribLocation(shader, 0, "vCoord");
@@ -1339,7 +1343,7 @@ void RenderOpenGL::renderCharacter(char character, float &x, float &y)
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
-	glBindAttribLocation(this->shaders["text"], 0, "vCoord");
+	glBindAttribLocation(this->shaders["text"].p, 0, "vCoord");
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	
@@ -1530,7 +1534,7 @@ void RenderOpenGL::terrain()
 	glEnable(GL_NORMALIZE);
 	glBindTexture(GL_TEXTURE_2D, st->map->terrain->pixels);
 	
-	glUseProgram(this->shaders["map"]);
+	glUseProgram(this->shaders["map"].p);
 	
 
 	glm::vec3 LightPos[2];
@@ -1548,8 +1552,8 @@ void RenderOpenGL::terrain()
 		}
 	}
 	
-	glUniform3fv(glGetUniformLocation(this->shaders["map"], "uLightPos"), 2, glm::value_ptr(LightPos[0]));
-	glUniform4fv(glGetUniformLocation(this->shaders["map"], "uLightColor"), 2, glm::value_ptr(LightColor[0]));
+	glUniform3fv(glGetUniformLocation(this->shaders["map"].p, "uLightPos"), 2, glm::value_ptr(LightPos[0]));
+	glUniform4fv(glGetUniformLocation(this->shaders["map"].p, "uLightColor"), 2, glm::value_ptr(LightColor[0]));
 
 
 	glm::mat4 modelMatrix = glm::scale(
@@ -1558,13 +1562,13 @@ void RenderOpenGL::terrain()
 	);
 	
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;
-	glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"], "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"].p, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
 	glm::mat4 MV = this->view * modelMatrix;
-	glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"], "uMV"), 1, GL_FALSE, glm::value_ptr(MV));
+	glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"].p, "uMV"), 1, GL_FALSE, glm::value_ptr(MV));
 	
 	glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
-	glUniformMatrix3fv(glGetUniformLocation(this->shaders["map"], "uN"), 1, GL_FALSE, glm::value_ptr(N));
+	glUniformMatrix3fv(glGetUniformLocation(this->shaders["map"].p, "uN"), 1, GL_FALSE, glm::value_ptr(N));
 	
 	glBindVertexArray(this->ter_vaoid);
 	glDrawArrays(GL_TRIANGLES, 0, this->ter_size);
@@ -1582,13 +1586,13 @@ void RenderOpenGL::terrain()
 		if (obj->ibo_count == 0) this->createVBO(obj);
 		
 		glm::mat4 MVP = this->projection * this->view * modelMatrix;
-		glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"], "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+		glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"].p, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 		
 		glm::mat4 MV = this->view * modelMatrix;
-		glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"], "uMV"), 1, GL_FALSE, glm::value_ptr(MV));
+		glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"].p, "uMV"), 1, GL_FALSE, glm::value_ptr(MV));
 	
 		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
-		glUniformMatrix3fv(glGetUniformLocation(this->shaders["map"], "uN"), 1, GL_FALSE, glm::value_ptr(N));
+		glUniformMatrix3fv(glGetUniformLocation(this->shaders["map"].p, "uN"), 1, GL_FALSE, glm::value_ptr(N));
 
 		glBindVertexArray(obj->vao);
 		glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
@@ -1613,7 +1617,7 @@ void RenderOpenGL::water()
 	glEnable(GL_BLEND);
 
 	glBindTexture(GL_TEXTURE_2D, this->st->map->water->pixels);
-	glUseProgram(this->shaders["water"]);
+	glUseProgram(this->shaders["water"].p);
 		
 	if (this->waterobj->ibo_count == 0) this->createVBO(this->waterobj);
 	
@@ -1623,7 +1627,7 @@ void RenderOpenGL::water()
 	);
 
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;
-	glUniformMatrix4fv(glGetUniformLocation(this->shaders["water"], "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(glGetUniformLocation(this->shaders["water"].p, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 		
 	glBindVertexArray(this->waterobj->vao);
 	glDrawArrays(GL_TRIANGLES, 0, this->waterobj->ibo_count);
@@ -1710,13 +1714,13 @@ void RenderOpenGL::particles()
 	glBindVertexArray(this->particle_vao);
 
 	// Bind shader
-	glUseProgram(this->shaders["particles"]);
+	glUseProgram(this->shaders["particles"].p);
 	
 	// Uniforms
-	glBindAttribLocation(this->shaders["particles"], 0, "vPosition");
-	glBindAttribLocation(this->shaders["particles"], 1, "vColor");
+	glBindAttribLocation(this->shaders["particles"].p, 0, "vPosition");
+	glBindAttribLocation(this->shaders["particles"].p, 1, "vColor");
 	glm::mat4 MVP = this->projection * this->view;
-	glUniformMatrix4fv(glGetUniformLocation(this->shaders["particles"], "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(glGetUniformLocation(this->shaders["particles"].p, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
 	// Draw
 	glDrawArrays(GL_POINTS, 0, size);
