@@ -20,15 +20,6 @@ using namespace std;
 
 
 /**
-* Set the program ID for later use
-**/
-void GLShader::setProgram(const GLuint p)
-{
-	this->program = p;
-}
-
-
-/**
 * Return the shader program id
 **/
 GLuint GLShader::p()

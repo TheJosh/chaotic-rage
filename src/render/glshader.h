@@ -24,7 +24,7 @@ class GLShader
 		map<const char*, GLuint> uniforms;
 		
 	public:
-		void setProgram(const GLuint p);
+		GLShader(const GLuint p) : program(p) {}
 		
 		GLuint p();
 		GLuint uniform(const char* name);

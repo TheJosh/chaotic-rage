@@ -80,7 +80,7 @@ class RenderOpenGL : public Render3D
 		
 		// Shaders
 		bool shaders_loaded;		// true if loaded from a mod
-		map<string, GLShader> shaders;
+		map<string, GLShader*> shaders;
 		
 		glm::mat4 projection;	// perspective
 		glm::mat4 ortho;		// ortho
@@ -138,7 +138,7 @@ class RenderOpenGL : public Render3D
 		void renderCharacter(char c, float &x, float &y);
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
-		void recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd, GLShader shader, glm::mat4 transform);
+		void recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd, GLShader *shader, glm::mat4 transform);
 		
 		void mainViewport(int s, int of);
 		void mainRot();
@@ -153,8 +153,8 @@ class RenderOpenGL : public Render3D
 		
 		void loadShaders();
 		GLuint createShader(const char* code, GLenum type);
-		GLShader createProgram(const char* vertex, const char* fragment, string name);
-		GLShader loadProgram(Mod* mod, string name);
+		GLShader* createProgram(const char* vertex, const char* fragment, string name);
+		GLShader* loadProgram(Mod* mod, string name);
 };
 
 
