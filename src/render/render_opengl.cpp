@@ -1054,7 +1054,6 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 				health = ((Unit*)e)->getHealthPercent();
 			}
 			glUseProgram(shader);
-			glUniform1i(glGetUniformLocation(shader, "uTex"), 0);		// tex unit 0
 			glUniform1i(glGetUniformLocation(shader, "uDissolve"), 1);	// tex unit 1
 			glUniform1f(glGetUniformLocation(shader, "uDeath"), 1.0f - health);
 
@@ -1062,7 +1061,6 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 			// Regular shader
 			shader = this->shaders["entities"];
 			glUseProgram(shader);
-			glUniform1i(glGetUniformLocation(shader, "uTex"), 0);		// tex unit 0
 		/*}*/
 		
 
@@ -1255,7 +1253,7 @@ void RenderOpenGL::renderText(string text, float x, float y, float r, float g, f
 	glUseProgram(shader);
 
 	glBindAttribLocation(shader, 0, "vCoord");
-	glUniform1i(glGetUniformLocation(shader, "uTex"), 0);
+	
 	glUniform4f(glGetUniformLocation(shader, "uColor"), r, g, b, a);
 	glUniformMatrix4fv(glGetUniformLocation(shader, "uMVP"), 1, GL_FALSE, glm::value_ptr(this->ortho));
 
@@ -1329,24 +1327,21 @@ void RenderOpenGL::renderCharacter(char character, float &x, float &y)
 		glBindTexture(GL_TEXTURE_2D, c->tex);
 	}
 	
-	glUniform1i(glGetUniformLocation(this->shaders["text"], "uTex"), 0);
-
 	GLfloat box[4][4] = {
-        {x + c->x,         y + -c->y + c->h,  0.f,    c->ty},
-        {x + c->x,         y + -c->y,         0.f,    0.f},
+		{x + c->x,         y + -c->y + c->h,  0.f,    c->ty},
+		{x + c->x,         y + -c->y,         0.f,    0.f},
 		{x + c->x + c->w,  y + -c->y + c->h,  c->tx,  c->ty},
-        {x + c->x + c->w,  y + -c->y,         c->tx,  0.f},
-        
-    };
+		{x + c->x + c->w,  y + -c->y,         c->tx,  0.f},
+	};
 	
 	glBindBuffer(GL_ARRAY_BUFFER, font_vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
 	glBindAttribLocation(this->shaders["text"], 0, "vCoord");
 
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	
 	x += c->advance >> 6;
 }
