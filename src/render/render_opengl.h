@@ -8,6 +8,7 @@
 #include <map>
 
 #include "../rage.h"
+#include "glshader.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -40,12 +41,6 @@ struct FreetypeChar
 	int x, y, w, h;
 	float tx, ty;
 	int advance;
-};
-
-struct GLShader
-{
-	GLuint p;		// shader program
-	map<string, GLuint> uniforms;		// uniform locations
 };
 
 
@@ -143,7 +138,7 @@ class RenderOpenGL : public Render3D
 		void renderCharacter(char c, float &x, float &y);
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
-		void recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd, GLuint shader, glm::mat4 transform);
+		void recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd, GLShader shader, glm::mat4 transform);
 		
 		void mainViewport(int s, int of);
 		void mainRot();

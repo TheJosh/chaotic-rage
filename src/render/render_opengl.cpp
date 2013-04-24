@@ -17,6 +17,7 @@
 #include <math.h>
 
 #include "../rage.h"
+#include "glshader.h"
 
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
@@ -834,7 +835,7 @@ GLShader RenderOpenGL::createProgram(const char* vertex, const char* fragment, s
 		reportFatalError("Error validating OpenGL program " + name);
 	}
 	
-	s.p = program;
+	s.setProgram(program);
 	
 	return s;
 }
@@ -985,11 +986,11 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 	CHECK_OPENGL_ERROR;
 	
 	glBindVertexArray(obj->vao);
-	glUseProgram(this->shaders["basic"].p);
+	glUseProgram(this->shaders["basic"].p());
 	
-	glBindAttribLocation(this->shaders["basic"].p, 0, "vPosition");
-	glBindAttribLocation(this->shaders["basic"].p, 1, "vNormal");
-	glBindAttribLocation(this->shaders["basic"].p, 2, "vTexUV");
+	glBindAttribLocation(this->shaders["basic"].p(), 0, "vPosition");
+	glBindAttribLocation(this->shaders["basic"].p(), 1, "vNormal");
+	glBindAttribLocation(this->shaders["basic"].p(), 2, "vTexUV");
 
 	glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
 	
@@ -1009,7 +1010,7 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 {
 	AssimpModel* am;
-	GLuint shader;
+	GLShader shader;
 
 	am = play->getModel();
 	if (am == NULL) return;
@@ -1058,19 +1059,19 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 				health = ((Unit*)e)->getHealthPercent();
 			}
 			glUseProgram(shader);
-			glUniform1i(glGetUniformLocation(shader, "uDissolve"), 1);	// tex unit 1
-			glUniform1f(glGetUniformLocation(shader, "uDeath"), 1.0f - health);
-
-		} else {*/
-			// Regular shader
-			shader = this->shaders["entities"].p;
-			glUseProgram(shader);
-		/*}*/
+			glUniform1i(shader.uniform("uDissolve"), 1);	// tex unit 1
+			glUniform1f(shader.uniform("uDeath"), 1.0f - health);
+		*/
 		
-
-		glBindAttribLocation(shader, 0, "vPosition");
-		glBindAttribLocation(shader, 1, "vNormal");
-		glBindAttribLocation(shader, 2, "vTexUV");
+		
+		
+		shader = this->shaders["entities"];
+		
+		glUseProgram(shader.p());
+		
+		glBindAttribLocation(shader.p(), 0, "vPosition");
+		glBindAttribLocation(shader.p(), 1, "vNormal");
+		glBindAttribLocation(shader.p(), 2, "vTexUV");
 
 		recursiveRenderAssimpModel(am, am->rootNode, shader, modelMatrix);
 
@@ -1093,14 +1094,14 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 * @param GLuint shader The bound shader, so uniforms will work
 * @param glm::mat4 transform The node transform matrix
 **/
-void RenderOpenGL::recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd, GLuint shader, glm::mat4 transform)
+void RenderOpenGL::recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd, GLShader shader, glm::mat4 transform)
 {
 	transform *= nd->transform;
 	
 	CHECK_OPENGL_ERROR;
 
 	glm::mat4 MVP = this->projection * this->view * transform;
-	glUniformMatrix4fv(glGetUniformLocation(shader, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(shader.uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); it++) {
 		AssimpMesh* mesh = am->meshes[(*it)];
@@ -1253,13 +1254,15 @@ void RenderOpenGL::renderText(string text, float x, float y, float r, float g, f
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
 
-	GLuint shader = this->shaders["text"].p;
-	glUseProgram(shader);
-
-	glBindAttribLocation(shader, 0, "vCoord");
+	GLShader shader = this->shaders["text"];
 	
-	glUniform4f(glGetUniformLocation(shader, "uColor"), r, g, b, a);
-	glUniformMatrix4fv(glGetUniformLocation(shader, "uMVP"), 1, GL_FALSE, glm::value_ptr(this->ortho));
+	glUseProgram(shader.p());
+
+	glBindAttribLocation(shader.p(), 0, "vCoord");
+	
+	glUniform1i(shader.uniform("uTex"), 0);
+	glUniform4f(shader.uniform("uColor"), r, g, b, a);
+	glUniformMatrix4fv(shader.uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(this->ortho));
 
 	for (unsigned int n = 0; n < text.length(); n++ ) {
 		this->renderCharacter(text[n], x, y);
@@ -1343,7 +1346,7 @@ void RenderOpenGL::renderCharacter(char character, float &x, float &y)
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
-	glBindAttribLocation(this->shaders["text"].p, 0, "vCoord");
+	glBindAttribLocation(this->shaders["text"].p(), 0, "vCoord");
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	
@@ -1534,7 +1537,7 @@ void RenderOpenGL::terrain()
 	glEnable(GL_NORMALIZE);
 	glBindTexture(GL_TEXTURE_2D, st->map->terrain->pixels);
 	
-	glUseProgram(this->shaders["map"].p);
+	glUseProgram(this->shaders["map"].p());
 	
 
 	glm::vec3 LightPos[2];
@@ -1552,8 +1555,8 @@ void RenderOpenGL::terrain()
 		}
 	}
 	
-	glUniform3fv(glGetUniformLocation(this->shaders["map"].p, "uLightPos"), 2, glm::value_ptr(LightPos[0]));
-	glUniform4fv(glGetUniformLocation(this->shaders["map"].p, "uLightColor"), 2, glm::value_ptr(LightColor[0]));
+	glUniform3fv(this->shaders["map"].uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
+	glUniform4fv(this->shaders["map"].uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
 
 
 	glm::mat4 modelMatrix = glm::scale(
@@ -1562,13 +1565,13 @@ void RenderOpenGL::terrain()
 	);
 	
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;
-	glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"].p, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(this->shaders["map"].uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
 	glm::mat4 MV = this->view * modelMatrix;
-	glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"].p, "uMV"), 1, GL_FALSE, glm::value_ptr(MV));
+	glUniformMatrix4fv(this->shaders["map"].uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
 	
 	glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
-	glUniformMatrix3fv(glGetUniformLocation(this->shaders["map"].p, "uN"), 1, GL_FALSE, glm::value_ptr(N));
+	glUniformMatrix3fv(this->shaders["map"].uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
 	
 	glBindVertexArray(this->ter_vaoid);
 	glDrawArrays(GL_TRIANGLES, 0, this->ter_size);
@@ -1586,13 +1589,13 @@ void RenderOpenGL::terrain()
 		if (obj->ibo_count == 0) this->createVBO(obj);
 		
 		glm::mat4 MVP = this->projection * this->view * modelMatrix;
-		glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"].p, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+		glUniformMatrix4fv(this->shaders["map"].uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 		
 		glm::mat4 MV = this->view * modelMatrix;
-		glUniformMatrix4fv(glGetUniformLocation(this->shaders["map"].p, "uMV"), 1, GL_FALSE, glm::value_ptr(MV));
+		glUniformMatrix4fv(this->shaders["map"].uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
 	
 		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
-		glUniformMatrix3fv(glGetUniformLocation(this->shaders["map"].p, "uN"), 1, GL_FALSE, glm::value_ptr(N));
+		glUniformMatrix3fv(this->shaders["map"].uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
 
 		glBindVertexArray(obj->vao);
 		glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
@@ -1617,7 +1620,7 @@ void RenderOpenGL::water()
 	glEnable(GL_BLEND);
 
 	glBindTexture(GL_TEXTURE_2D, this->st->map->water->pixels);
-	glUseProgram(this->shaders["water"].p);
+	glUseProgram(this->shaders["water"].p());
 		
 	if (this->waterobj->ibo_count == 0) this->createVBO(this->waterobj);
 	
@@ -1627,7 +1630,7 @@ void RenderOpenGL::water()
 	);
 
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;
-	glUniformMatrix4fv(glGetUniformLocation(this->shaders["water"].p, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(this->shaders["water"].uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 		
 	glBindVertexArray(this->waterobj->vao);
 	glDrawArrays(GL_TRIANGLES, 0, this->waterobj->ibo_count);
@@ -1714,13 +1717,13 @@ void RenderOpenGL::particles()
 	glBindVertexArray(this->particle_vao);
 
 	// Bind shader
-	glUseProgram(this->shaders["particles"].p);
+	glUseProgram(this->shaders["particles"].p());
 	
 	// Uniforms
-	glBindAttribLocation(this->shaders["particles"].p, 0, "vPosition");
-	glBindAttribLocation(this->shaders["particles"].p, 1, "vColor");
+	glBindAttribLocation(this->shaders["particles"].p(), 0, "vPosition");
+	glBindAttribLocation(this->shaders["particles"].p(), 1, "vColor");
 	glm::mat4 MVP = this->projection * this->view;
-	glUniformMatrix4fv(glGetUniformLocation(this->shaders["particles"].p, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(this->shaders["particles"].uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
 	// Draw
 	glDrawArrays(GL_POINTS, 0, size);

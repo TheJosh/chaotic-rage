@@ -346,7 +346,6 @@ AIType * Mod::getAIType(string name)
 
 /**
 * Load an assimp model
-* TODO: Save these in an array, so we don't re-load the same model multiple times.
 **/
 AssimpModel * Mod::getAssimpModel(string name)
 {
