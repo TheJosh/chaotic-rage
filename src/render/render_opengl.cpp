@@ -271,8 +271,6 @@ void RenderOpenGL::initGuichan(gcn::Gui * gui, Mod * mod)
 **/
 void RenderOpenGL::mainViewport(int s, int of)
 {
-	if (of == 1) return;
-
 	int w = this->real_width;
 	int h = this->real_height;
 	int x = 0;
@@ -661,7 +659,7 @@ void RenderOpenGL::preGame()
 	
 	// Init the viewport for single screen only once
 	if (this->st->num_local == 1) {
-		this->mainViewport(0, 0);
+		this->mainViewport(1, 1);
 	}
 }
 
@@ -794,7 +792,6 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 {
 	GLint success;
 	GLuint sVertex, sFragment;
-	GLShader* s;
 	
 	GLuint program = glCreateProgram();
 	if (program == 0) {
@@ -1334,8 +1331,8 @@ void RenderOpenGL::renderCharacter(char character, float &x, float &y)
 	
 	GLfloat box[4][4] = {
 		{x + c->x,         y + -c->y + c->h,  0.f,    c->ty},
-		{x + c->x,         y + -c->y,         0.f,    0.f},
 		{x + c->x + c->w,  y + -c->y + c->h,  c->tx,  c->ty},
+		{x + c->x,         y + -c->y,         0.f,    0.f},
 		{x + c->x + c->w,  y + -c->y,         c->tx,  0.f},
 	};
 	
@@ -1391,7 +1388,10 @@ void RenderOpenGL::render()
 
 	for (unsigned int i = 0; i < this->st->num_local; i++) {
 		this->render_player = this->st->local_players[i]->p;
-		mainViewport(i, this->st->num_local);
+		
+		if (this->st->num_local != 1) {
+			this->mainViewport(i, this->st->num_local);
+		}
 		
 		mainRot();
 		terrain();
@@ -1402,7 +1402,10 @@ void RenderOpenGL::render()
 		hud(this->st->local_players[i]->hud);
 	}
 
-	mainViewport(0,1);
+	if (this->st->num_local != 1) {
+		this->mainViewport(0, 1);
+	}
+	
 	guichan();
 	if (this->speeddebug) fps();
 
