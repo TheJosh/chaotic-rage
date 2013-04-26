@@ -207,6 +207,7 @@
     <ClInclude Include="..\..\src\audio\audio.h" />
     <ClInclude Include="..\..\src\audio\audio_null.h" />
     <ClInclude Include="..\..\src\audio\audio_sdlmixer.h" />
+    <ClInclude Include="..\..\src\audio\_audio.h" />
     <ClInclude Include="..\..\src\entity\ammo_round.h" />
     <ClInclude Include="..\..\src\entity\decaying.h" />
     <ClInclude Include="..\..\src\entity\entity.h" />
@@ -216,7 +217,9 @@
     <ClInclude Include="..\..\src\entity\unit.h" />
     <ClInclude Include="..\..\src\entity\vehicle.h" />
     <ClInclude Include="..\..\src\entity\wall.h" />
+    <ClInclude Include="..\..\src\entity\_entity.h" />
     <ClInclude Include="..\..\src\fx\newparticle.h" />
+    <ClInclude Include="..\..\src\fx\_fx.h" />
     <ClInclude Include="..\..\src\game.h" />
     <ClInclude Include="..\..\src\gamestate.h" />
     <ClInclude Include="..\..\src\gui\controls.h" />
@@ -225,10 +228,12 @@
     <ClInclude Include="..\..\src\gui\newcampaign.h" />
     <ClInclude Include="..\..\src\gui\newgame.h" />
     <ClInclude Include="..\..\src\gui\settings.h" />
+    <ClInclude Include="..\..\src\gui\_gui.h" />
     <ClInclude Include="..\..\src\http\client_stats.h" />
     <ClInclude Include="..\..\src\http\happyhttp.h" />
     <ClInclude Include="..\..\src\http\serverlist.h" />
     <ClInclude Include="..\..\src\http\url.h" />
+    <ClInclude Include="..\..\src\http\_http.h" />
     <ClInclude Include="..\..\src\intro.h" />
     <ClInclude Include="..\..\src\lua\ailogic.h" />
     <ClInclude Include="..\..\src\lua\gamelogic.h" />
@@ -250,10 +255,12 @@
     <ClInclude Include="..\..\src\mod\vehicletype.h" />
     <ClInclude Include="..\..\src\mod\walltype.h" />
     <ClInclude Include="..\..\src\mod\weapontype.h" />
+    <ClInclude Include="..\..\src\mod\_mod.h" />
     <ClInclude Include="..\..\src\net\net.h" />
     <ClInclude Include="..\..\src\net\net_client.h" />
     <ClInclude Include="..\..\src\net\net_gameinfo.h" />
     <ClInclude Include="..\..\src\net\net_server.h" />
+    <ClInclude Include="..\..\src\net\_net.h" />
     <ClInclude Include="..\..\src\physics_bullet.h" />
     <ClInclude Include="..\..\src\platform\platform.h" />
     <ClInclude Include="..\..\src\rage.h" />
@@ -268,6 +275,7 @@
     <ClInclude Include="..\..\src\render\render_null.h" />
     <ClInclude Include="..\..\src\render\render_opengl.h" />
     <ClInclude Include="..\..\src\render\render_opengl_compat.h" />
+    <ClInclude Include="..\..\src\render\_render.h" />
     <ClInclude Include="..\..\src\util\btStrideHeightfieldTerrainShape.h" />
     <ClInclude Include="..\..\src\util\clientconfig.h" />
     <ClInclude Include="..\..\src\util\cmdline.h" />
@@ -279,6 +287,7 @@
     <ClInclude Include="..\..\src\util\ui_update.h" />
     <ClInclude Include="..\..\src\util\util.h" />
     <ClInclude Include="..\..\src\util\windowicon.h" />
+    <ClInclude Include="..\..\src\util\_util.h" />
     <ClInclude Include="..\..\src\weapons\weapons.h" />
     <ClInclude Include="..\..\src\zone.h" />
   </ItemGroup>
