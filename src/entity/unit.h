@@ -7,7 +7,7 @@
 #include <SDL.h>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include <BulletDynamics/Character/btKinematicCharacterController.h>
-#include "rage.h"
+#include "../rage.h"
 
 using namespace std;
 

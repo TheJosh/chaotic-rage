@@ -5,26 +5,26 @@
 #pragma once
 #include <iostream>
 #include <SDL.h>
-#include "rage.h"
+#include "../rage.h"
 
 using namespace std;
 
 
-class Object : public Entity
+class Wall : public Entity
 {
 	public:
-		virtual EntityClass klass() const { return OBJECT; }
+		virtual EntityClass klass() const { return WALL; }
 		
 	public:
-		ObjectType* ot;
+		WallType* wt;
 		int health;
 		
 	protected:
 		AnimPlay * anim;
 		
 	public:
-		Object(ObjectType *pt, GameState *st, float x, float y, float z, float angle);
-		virtual ~Object();
+		Wall(WallType *pt, GameState *st, float x, float y, float z, float angle);
+		virtual ~Wall();
 		
 	public:
 		virtual AnimPlay* getAnimModel();

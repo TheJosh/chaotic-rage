@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -26,6 +18,46 @@
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{432924fd-8ead-40c4-adfc-00272d5eef3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx;h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="src\audio">
+      <UniqueIdentifier>{05646fb5-f84f-41b6-b8b1-15530f62ffcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\gui">
+      <UniqueIdentifier>{19b3f537-fe74-4a9d-9321-5f1368b8b771}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\http">
+      <UniqueIdentifier>{39b73462-a4e1-4065-8e44-dd022647ef41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lua">
+      <UniqueIdentifier>{b32e0843-7838-4cc8-9999-fda49099a1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mod">
+      <UniqueIdentifier>{08b66cb9-3616-4a6b-b944-d62c8d11e509}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\net">
+      <UniqueIdentifier>{ca562b1b-4fc6-409b-87c5-fd23c7b2aab4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\render">
+      <UniqueIdentifier>{8d7dcbce-5146-48c6-b55d-7a8b1485e282}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\util">
+      <UniqueIdentifier>{c7dbd7ee-7928-4eb6-9ae8-20f5d49aac17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\weapons">
+      <UniqueIdentifier>{ae255c16-00ab-4a20-98ac-e72cfc0d5b3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform">
+      <UniqueIdentifier>{b9dee332-7b4e-4858-834e-c22aa5eee736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entity">
+      <UniqueIdentifier>{e476e754-42f8-49ea-8356-2f61c8104798}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\fx">
+      <UniqueIdentifier>{64b84db7-3509-4ce4-8797-94f526553a16}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -119,462 +151,468 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\client.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\entity.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\game.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\gamestate.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\intro.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\map.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\npc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\object.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\physics_bullet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\unit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\wall.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\zone.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\audio\audio.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\audio\audio_null.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\audio\audio_sdlmixer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lua\ailogic.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lua\gamelogic.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lua\lua_vector3_lib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\mod\floortype.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\mod\gametype.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\mod\mod.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\mod\objecttype.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\mod\song.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\mod\sound.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\mod\unittype.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\mod\walltype.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\mod\weapontype.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\net\net.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\net\net_client.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\net\net_pack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\net\net_server.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\platform\win32.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render\hud.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render\render.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render\render_debug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render\render_null.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render\render_opengl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\util\debug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\util\SDL_rwops_zzip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\util\sdl_util.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\util\util.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\mod\mod_manager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lua\lua_unitinfo_lib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lua\lua_standard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\newparticle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\gui\dialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\mod\aitype.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\util\obj.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\flex\objload.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\vehicle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\mod\vehicletype.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\http\client_stats.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\http\happyhttp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render\render_opengl_compat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\util\clientconfig.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lua\lua_hudlabel_lib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\util\serverconfig.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\events.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\audio\audio.cpp">
+      <Filter>src\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\audio\audio_null.cpp">
+      <Filter>src\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\audio\audio_sdlmixer.cpp">
+      <Filter>src\audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\gui\controls.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gui\dialog.cpp">
+      <Filter>src\gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\gui\network.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\gui\newgame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\gui\settings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\http\serverlist.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\http\url.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\util\btStrideHeightfieldTerrainShape.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\decaying.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\mod\mod_proxy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\mod\campaign.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src\gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\gui\newcampaign.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gui\newgame.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gui\settings.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\http\client_stats.cpp">
+      <Filter>src\http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\http\happyhttp.cpp">
+      <Filter>src\http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\http\serverlist.cpp">
+      <Filter>src\http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\http\url.cpp">
+      <Filter>src\http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\ailogic.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mod\aitype.cpp">
+      <Filter>src\mod</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\render\animplay.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\render\assimpmodel.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src\render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ammo_round.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\src\util\btStrideHeightfieldTerrainShape.cpp">
+      <Filter>src\util</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\weapons\weapons.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\src\util\clientconfig.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\util\debug.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\util\obj.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\util\SDL_rwops_zzip.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\util\sdl_util.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\util\serverconfig.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\util\util.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\render_debug.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\render_null.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\render_opengl.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\render_opengl_compat.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\render.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\platform\win32.cpp">
+      <Filter>src\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mod\mod.cpp">
+      <Filter>src\mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mod\mod_manager.cpp">
+      <Filter>src\mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mod\mod_proxy.cpp">
+      <Filter>src\mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\net\net.cpp">
+      <Filter>src\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\net\net_client.cpp">
+      <Filter>src\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\net\net_pack.cpp">
+      <Filter>src\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\net\net_server.cpp">
+      <Filter>src\net</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\weapons\mines.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src\weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\weapons\weapons.cpp">
+      <Filter>src\weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mod\weapontype.cpp">
+      <Filter>src\mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mod\walltype.cpp">
+      <Filter>src\mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mod\vehicletype.cpp">
+      <Filter>src\mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mod\unittype.cpp">
+      <Filter>src\mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mod\sound.cpp">
+      <Filter>src\mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mod\song.cpp">
+      <Filter>src\mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mod\objecttype.cpp">
+      <Filter>src\mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\flex\objload.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\gamelogic.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\lua_hudlabel_lib.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\lua_vector3_lib.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\lua_standard.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\lua_unitinfo_lib.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mod\campaign.cpp">
+      <Filter>src\mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mod\floortype.cpp">
+      <Filter>src\mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mod\gametype.cpp">
+      <Filter>src\mod</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\render\glshader.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\hud.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entity\ammo_round.cpp">
+      <Filter>src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entity\decaying.cpp">
+      <Filter>src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entity\entity.cpp">
+      <Filter>src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entity\npc.cpp">
+      <Filter>src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entity\object.cpp">
+      <Filter>src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entity\player.cpp">
+      <Filter>src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entity\unit.cpp">
+      <Filter>src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entity\vehicle.cpp">
+      <Filter>src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entity\wall.cpp">
+      <Filter>src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\fx\newparticle.cpp">
+      <Filter>src\fx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\entity.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\src\zone.h">
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game.h">
-      <Filter>Header Files</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\gamestate.h">
-      <Filter>Header Files</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\intro.h">
-      <Filter>Header Files</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\map.h">
-      <Filter>Header Files</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\menu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\npc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\object.h">
-      <Filter>Header Files</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\physics_bullet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\player.h">
-      <Filter>Header Files</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\unit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\wall.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\zone.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\audio\audio.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\audio\audio_null.h">
-      <Filter>Header Files</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\audio\audio_sdlmixer.h">
-      <Filter>Header Files</Filter>
+      <Filter>src\audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\lua\ailogic.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\src\audio\audio.h">
+      <Filter>src\audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\lua\gamelogic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\lua\lua_libs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\lua\luatimer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mod\floortype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mod\gametype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mod\mod.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mod\objecttype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mod\song.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mod\sound.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mod\unittype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mod\walltype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mod\weapontype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\net\net.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\net\net_client.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\net\net_server.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\platform\platform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render\hud.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render\render.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render\render_debug.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render\render_null.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render\render_opengl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\util\cmdline.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\util\debug.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\util\SDL_rwops_zzip.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\util\sdl_util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\util\util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mod\mod_manager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\newparticle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\gui\dialog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mod\aitype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\util\obj.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\vehicle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mod\vehicletype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\http\client_stats.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\http\happyhttp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render\render_3d.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render\render_opengl_compat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\util\clientconfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render\hud_label.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\util\serverconfig.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\src\audio\audio_null.h">
+      <Filter>src\audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\gui\controls.h">
-      <Filter>Header Files</Filter>
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\gui\dialog.h">
+      <Filter>src\gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\gui\network.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\gui\newgame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\gui\settings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\http\serverlist.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\http\url.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\net\net_gameinfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\util\btStrideHeightfieldTerrainShape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\decaying.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mod\mod_proxy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mod\campaign.h">
-      <Filter>Header Files</Filter>
+      <Filter>src\gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\gui\newcampaign.h">
-      <Filter>Header Files</Filter>
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\gui\newgame.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\gui\settings.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\http\client_stats.h">
+      <Filter>src\http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\http\happyhttp.h">
+      <Filter>src\http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\http\serverlist.h">
+      <Filter>src\http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\http\url.h">
+      <Filter>src\http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lua\ailogic.h">
+      <Filter>src\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\aitype.h">
+      <Filter>src\mod</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\render\animplay.h">
-      <Filter>Header Files</Filter>
+      <Filter>src\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\render\assimpmodel.h">
-      <Filter>Header Files</Filter>
+      <Filter>src\render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\ammo_round.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\src\util\btStrideHeightfieldTerrainShape.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\clientconfig.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\cmdline.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\debug.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\obj.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\SDL_rwops_zzip.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\sdl_util.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\serverconfig.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\ui_update.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\util.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\windowicon.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render\render.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render\render_opengl_compat.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render\render_3d.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render\render_debug.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render\render_null.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render\render_opengl.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\platform\platform.h">
+      <Filter>src\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\mod_proxy.h">
+      <Filter>src\mod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\mod.h">
+      <Filter>src\mod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\mod_manager.h">
+      <Filter>src\mod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\net\net_server.h">
+      <Filter>src\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\net\net.h">
+      <Filter>src\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\net\net_client.h">
+      <Filter>src\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\net\net_gameinfo.h">
+      <Filter>src\net</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\weapons\weapons.h">
-      <Filter>Header Files</Filter>
+      <Filter>src\weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\weapontype.h">
+      <Filter>src\mod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\walltype.h">
+      <Filter>src\mod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\vehicletype.h">
+      <Filter>src\mod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\unittype.h">
+      <Filter>src\mod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\sound.h">
+      <Filter>src\mod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\song.h">
+      <Filter>src\mod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\objecttype.h">
+      <Filter>src\mod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lua\gamelogic.h">
+      <Filter>src\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lua\lua_libs.h">
+      <Filter>src\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\campaign.h">
+      <Filter>src\mod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\floortype.h">
+      <Filter>src\mod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\gametype.h">
+      <Filter>src\mod</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\render\glshader.h">
-      <Filter>Header Files</Filter>
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render\hud.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render\hud_label.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lua\luatimer.h">
+      <Filter>src\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\entity\ammo_round.h">
+      <Filter>src\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\entity\decaying.h">
+      <Filter>src\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\entity\entity.h">
+      <Filter>src\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\entity\npc.h">
+      <Filter>src\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\entity\object.h">
+      <Filter>src\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\entity\player.h">
+      <Filter>src\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\entity\unit.h">
+      <Filter>src\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\entity\vehicle.h">
+      <Filter>src\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\entity\wall.h">
+      <Filter>src\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\fx\newparticle.h">
+      <Filter>src\fx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

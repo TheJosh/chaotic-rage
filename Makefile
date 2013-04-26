@@ -34,6 +34,8 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/mod/*.cpp \
 	$(SRCPATH)/net/*.cpp \
 	$(SRCPATH)/render/*.cpp \
+	$(SRCPATH)/entity/*.cpp \
+	$(SRCPATH)/fx/*.cpp \
 	$(SRCPATH)/util/*.cpp \
 	$(SRCPATH)/lua/*.cpp \
 	$(SRCPATH)/gui/*.cpp \

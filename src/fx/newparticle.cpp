@@ -5,7 +5,7 @@
 #include <iostream>
 #include <SDL.h>
 #include <math.h>
-#include "rage.h"
+#include "../rage.h"
 
 using namespace std;
 

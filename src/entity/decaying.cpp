@@ -5,17 +5,15 @@
 #include <iostream>
 #include <SDL.h>
 #include <math.h>
-#include "rage.h"
+#include "../rage.h"
 
 using namespace std;
 
 
-AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model, Unit* owner) : Entity(st)
+Decaying::Decaying(GameState *st, btTransform &xform, AssimpModel *model) : Entity(st)
 {
-	this->wt = wt;
-	this->data = NULL;
+	this->model = model;
 	this->anim = new AnimPlay(model);
-	this->owner = owner;
 
 	btCollisionShape* colShape = new btBoxShape(btVector3(0.1f, 0.1f, 0.1f));
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
@@ -23,7 +21,7 @@ AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpMo
 	this->body = st->physics->addRigidBody(colShape, 0.0f, motionState, CG_DEBRIS);
 }
 
-AmmoRound::~AmmoRound()
+Decaying::~Decaying()
 {
 	delete(this->anim);
 	st->physics->delRigidBody(this->body);
@@ -33,18 +31,16 @@ AmmoRound::~AmmoRound()
 /**
 * Do stuff
 **/
-void AmmoRound::update(int delta)
+void Decaying::update(int delta)
 {
-	if (this->del) return;
-	this->wt->entityUpdate(this, delta);
 }
 
-AnimPlay* AmmoRound::getAnimModel()
+AnimPlay* Decaying::getAnimModel()
 {
 	return this->anim;
 }
 
-Sound* AmmoRound::getSound()
+Sound* Decaying::getSound()
 {
 	return NULL;
 }

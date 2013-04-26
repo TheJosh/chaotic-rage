@@ -125,14 +125,21 @@
     <None Include="..\..\data\cr\weapontypes.conf" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\ammo_round.cpp" />
     <ClCompile Include="..\..\src\audio\audio.cpp" />
     <ClCompile Include="..\..\src\audio\audio_null.cpp" />
     <ClCompile Include="..\..\src\audio\audio_sdlmixer.cpp" />
     <ClCompile Include="..\..\src\client.cpp" />
-    <ClCompile Include="..\..\src\decaying.cpp" />
-    <ClCompile Include="..\..\src\entity.cpp" />
+    <ClCompile Include="..\..\src\entity\ammo_round.cpp" />
+    <ClCompile Include="..\..\src\entity\decaying.cpp" />
+    <ClCompile Include="..\..\src\entity\entity.cpp" />
+    <ClCompile Include="..\..\src\entity\npc.cpp" />
+    <ClCompile Include="..\..\src\entity\object.cpp" />
+    <ClCompile Include="..\..\src\entity\player.cpp" />
+    <ClCompile Include="..\..\src\entity\unit.cpp" />
+    <ClCompile Include="..\..\src\entity\vehicle.cpp" />
+    <ClCompile Include="..\..\src\entity\wall.cpp" />
     <ClCompile Include="..\..\src\events.cpp" />
+    <ClCompile Include="..\..\src\fx\newparticle.cpp" />
     <ClCompile Include="..\..\src\game.cpp" />
     <ClCompile Include="..\..\src\gamestate.cpp" />
     <ClCompile Include="..\..\src\gui\controls.cpp" />
@@ -172,12 +179,8 @@
     <ClCompile Include="..\..\src\net\net_client.cpp" />
     <ClCompile Include="..\..\src\net\net_pack.cpp" />
     <ClCompile Include="..\..\src\net\net_server.cpp" />
-    <ClCompile Include="..\..\src\newparticle.cpp" />
-    <ClCompile Include="..\..\src\npc.cpp" />
-    <ClCompile Include="..\..\src\object.cpp" />
     <ClCompile Include="..\..\src\physics_bullet.cpp" />
     <ClCompile Include="..\..\src\platform\win32.cpp" />
-    <ClCompile Include="..\..\src\player.cpp" />
     <ClCompile Include="..\..\src\render\animplay.cpp" />
     <ClCompile Include="..\..\src\render\assimpmodel.cpp" />
     <ClCompile Include="..\..\src\render\glshader.cpp" />
@@ -187,7 +190,6 @@
     <ClCompile Include="..\..\src\render\render_null.cpp" />
     <ClCompile Include="..\..\src\render\render_opengl.cpp" />
     <ClCompile Include="..\..\src\render\render_opengl_compat.cpp" />
-    <ClCompile Include="..\..\src\unit.cpp" />
     <ClCompile Include="..\..\src\util\btStrideHeightfieldTerrainShape.cpp" />
     <ClCompile Include="..\..\src\util\clientconfig.cpp" />
     <ClCompile Include="..\..\src\util\debug.cpp" />
@@ -196,20 +198,25 @@
     <ClCompile Include="..\..\src\util\sdl_util.cpp" />
     <ClCompile Include="..\..\src\util\serverconfig.cpp" />
     <ClCompile Include="..\..\src\util\util.cpp" />
-    <ClCompile Include="..\..\src\vehicle.cpp" />
-    <ClCompile Include="..\..\src\wall.cpp" />
     <ClCompile Include="..\..\src\weapons\mines.cpp" />
     <ClCompile Include="..\..\src\weapons\weapons.cpp" />
     <ClCompile Include="..\..\src\zone.cpp" />
     <ClCompile Include="..\flex\objload.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\ammo_round.h" />
     <ClInclude Include="..\..\src\audio\audio.h" />
     <ClInclude Include="..\..\src\audio\audio_null.h" />
     <ClInclude Include="..\..\src\audio\audio_sdlmixer.h" />
-    <ClInclude Include="..\..\src\decaying.h" />
-    <ClInclude Include="..\..\src\entity.h" />
+    <ClInclude Include="..\..\src\entity\ammo_round.h" />
+    <ClInclude Include="..\..\src\entity\decaying.h" />
+    <ClInclude Include="..\..\src\entity\entity.h" />
+    <ClInclude Include="..\..\src\entity\npc.h" />
+    <ClInclude Include="..\..\src\entity\object.h" />
+    <ClInclude Include="..\..\src\entity\player.h" />
+    <ClInclude Include="..\..\src\entity\unit.h" />
+    <ClInclude Include="..\..\src\entity\vehicle.h" />
+    <ClInclude Include="..\..\src\entity\wall.h" />
+    <ClInclude Include="..\..\src\fx\newparticle.h" />
     <ClInclude Include="..\..\src\game.h" />
     <ClInclude Include="..\..\src\gamestate.h" />
     <ClInclude Include="..\..\src\gui\controls.h" />
@@ -247,12 +254,8 @@
     <ClInclude Include="..\..\src\net\net_client.h" />
     <ClInclude Include="..\..\src\net\net_gameinfo.h" />
     <ClInclude Include="..\..\src\net\net_server.h" />
-    <ClInclude Include="..\..\src\newparticle.h" />
-    <ClInclude Include="..\..\src\npc.h" />
-    <ClInclude Include="..\..\src\object.h" />
     <ClInclude Include="..\..\src\physics_bullet.h" />
     <ClInclude Include="..\..\src\platform\platform.h" />
-    <ClInclude Include="..\..\src\player.h" />
     <ClInclude Include="..\..\src\rage.h" />
     <ClInclude Include="..\..\src\render\animplay.h" />
     <ClInclude Include="..\..\src\render\assimpmodel.h" />
@@ -265,7 +268,6 @@
     <ClInclude Include="..\..\src\render\render_null.h" />
     <ClInclude Include="..\..\src\render\render_opengl.h" />
     <ClInclude Include="..\..\src\render\render_opengl_compat.h" />
-    <ClInclude Include="..\..\src\unit.h" />
     <ClInclude Include="..\..\src\util\btStrideHeightfieldTerrainShape.h" />
     <ClInclude Include="..\..\src\util\clientconfig.h" />
     <ClInclude Include="..\..\src\util\cmdline.h" />
@@ -274,9 +276,9 @@
     <ClInclude Include="..\..\src\util\SDL_rwops_zzip.h" />
     <ClInclude Include="..\..\src\util\sdl_util.h" />
     <ClInclude Include="..\..\src\util\serverconfig.h" />
+    <ClInclude Include="..\..\src\util\ui_update.h" />
     <ClInclude Include="..\..\src\util\util.h" />
-    <ClInclude Include="..\..\src\vehicle.h" />
-    <ClInclude Include="..\..\src\wall.h" />
+    <ClInclude Include="..\..\src\util\windowicon.h" />
     <ClInclude Include="..\..\src\weapons\weapons.h" />
     <ClInclude Include="..\..\src\zone.h" />
   </ItemGroup>

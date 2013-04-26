@@ -7,7 +7,7 @@
 #include <SDL.h>
 #include <btBulletDynamicsCommon.h>
 #include <list>
-#include "rage.h"
+#include "../rage.h"
 
 using namespace std;
 
