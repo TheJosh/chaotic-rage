@@ -446,13 +446,13 @@ void RenderOpenGL::freeSprite(SpritePtr sprite)
 **/
 void RenderOpenGL::loadHeightmap()
 {
-	int nX, nZ, nTri, j;
+	int nX, nZ, j;
 	float flX, flZ;
 	
 	if (st->map->heightmap == NULL) st->map->createHeightmapRaw();
 	if (st->map->heightmap == NULL) return;
 	
-	this->ter_size = st->map->heightmap_sx * st->map->heightmap_sz * 6;
+	this->ter_size = (st->map->heightmap_sx * st->map->heightmap_sz * 2) + (st->map->heightmap_sx * 2);
 	VBOvertex* vertexes = new VBOvertex[this->ter_size];
 	
 	j = 0;
@@ -470,12 +470,22 @@ void RenderOpenGL::loadHeightmap()
 				u.x() * v.y() - u.y() * v.x()
 			);
 			
-			for( nTri = 0; nTri < 6; nTri++ ) {
-				// Using This Quick Hack, Figure The X,Z Position Of The Point; CCW wound
-				flX = (float) nX + (( nTri == 1 || nTri == 2 || nTri == 5 ) ? 1.0f : 0.0f);
-				flZ = (float) nZ + (( nTri == 1 || nTri == 4 || nTri == 5 ) ? 1.0f : 0.0f);
+			
+			// First cell on the row has two extra verticies
+			if (nX == 0) {
+				flX = nX; flZ = nZ;
+				vertexes[j].x = flX;
+				vertexes[j].y = st->map->heightmapGet(flX, flZ);
+				vertexes[j].z = flZ;
+				vertexes[j].nx = normal.x();
+				vertexes[j].ny = normal.y();
+				vertexes[j].nz = normal.z();
+				vertexes[j].tx = flX / st->map->heightmap_sx;
+				vertexes[j].ty = flZ / st->map->heightmap_sz;
+				j++;
 				
-		 		vertexes[j].x = flX;
+				flX = nX; flZ = nZ + 1;
+				vertexes[j].x = flX;
 				vertexes[j].y = st->map->heightmapGet(flX, flZ);
 				vertexes[j].z = flZ;
 				vertexes[j].nx = normal.x();
@@ -485,6 +495,30 @@ void RenderOpenGL::loadHeightmap()
 				vertexes[j].ty = flZ / st->map->heightmap_sz;
 				j++;
 			}
+			
+			// Top
+			flX = nX + 1; flZ = nZ;
+			vertexes[j].x = flX;
+			vertexes[j].y = st->map->heightmapGet(flX, flZ);
+			vertexes[j].z = flZ;
+			vertexes[j].nx = normal.x();
+			vertexes[j].ny = normal.y();
+			vertexes[j].nz = normal.z();
+			vertexes[j].tx = flX / st->map->heightmap_sx;
+			vertexes[j].ty = flZ / st->map->heightmap_sz;
+			j++;
+			
+			// Bottom
+			flX = nX + 1; flZ = nZ + 1;
+			vertexes[j].x = flX;
+			vertexes[j].y = st->map->heightmapGet(flX, flZ);
+			vertexes[j].z = flZ;
+			vertexes[j].nx = normal.x();
+			vertexes[j].ny = normal.y();
+			vertexes[j].nz = normal.z();
+			vertexes[j].tx = flX / st->map->heightmap_sx;
+			vertexes[j].ty = flZ / st->map->heightmap_sz;
+			j++;
 		}
 	}
 	
@@ -1575,7 +1609,7 @@ void RenderOpenGL::terrain()
 	glUniformMatrix3fv(this->shaders["map"]->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
 	
 	glBindVertexArray(this->ter_vaoid);
-	glDrawArrays(GL_TRIANGLES, 0, this->ter_size);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, this->ter_size);
 	
 	
 	// Static geometry meshes
