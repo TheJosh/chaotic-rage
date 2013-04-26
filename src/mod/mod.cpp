@@ -262,9 +262,9 @@ bool Mod::load(UIUpdate* ui)
 		ot->pickup_weapon = weapontypes->at(i)->name;
 		ot->over = true;
 		
-		ot->model = this->getAssimpModel(tmp + ".blend");
+		ot->model = this->getAssimpModel(tmp + ".dae");
 		if (ot->model == NULL) {
-			ot->model = this->getAssimpModel("generic_pickup.blend");
+			ot->model = this->getAssimpModel("generic_pickup.dae");
 		}
 		
 		objecttypes->push_back(ot);
