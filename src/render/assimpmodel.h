@@ -57,9 +57,9 @@ class AssimpNodeAnim
 {
 	public:
 		string name;
-		vector<AssimpAnimKey*> position;
-		vector<AssimpAnimKey*> rotation;
-		vector<AssimpAnimKey*> scale;
+		vector<AssimpAnimKey> position;
+		vector<AssimpAnimKey> rotation;
+		vector<AssimpAnimKey> scale;
 };
 
 class AssimpAnimation
@@ -100,9 +100,15 @@ class AssimpModel
 	private:
 		void calcBoundingSize();
 		btVector3 calcBoundingSizeNode(const struct aiNode* nd, aiMatrix4x4* trafo);
+
 		void loadNodes();
 		AssimpNode* loadNode(aiNode* nd);
+
 		void loadAnimations();
+		AssimpAnimation* loadAnimation(const aiAnimation* anim);
+
+		glm::vec4 convVector(aiVector3D in);
+		glm::vec4 convQuaternion(aiQuaternion in);
 };
 
 

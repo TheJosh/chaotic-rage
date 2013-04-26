@@ -169,12 +169,64 @@ void AssimpModel::loadAnimations()
 	for (n = 0; n < sc->mNumAnimations; n++) {
 		const aiAnimation* pAnimation = sc->mAnimations[n];
 		
-		cout << "Assimp animation: " << std::string(pAnimation->mName.C_Str()) << "\n";
-		cout << "Assimp tickspersecond: " << pAnimation->mTicksPerSecond << "\n";
-		
-		// TODO: Actually load stuff
-		
+		AssimpAnimation* loaded = this->loadAnimation(pAnimation);
+		if (loaded) {
+			this->animations.push_back(loaded);
+		}
 	}
+}
+
+
+/**
+* Load a single animation
+**/
+AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
+{
+	unsigned int n, m;
+	AssimpAnimKey key;
+	AssimpAnimation *out;
+
+	out = new AssimpAnimation();
+	out->name = std::string(anim->mName.C_Str());
+	out->ticsPerSec = anim->mTicksPerSecond;
+	out->duration = anim->mDuration;
+
+	// Load animation channels
+	out->anims.reserve(anim->mNumChannels);
+	for (n = 0; n < anim->mNumChannels; n++) {
+		const aiNodeAnim* pNodeAnim = anim->mChannels[n];
+
+		AssimpNodeAnim* na = new AssimpNodeAnim();
+		na->name = std::string(pNodeAnim->mNodeName.C_Str());
+
+		// Positions
+		na->position.reserve(pNodeAnim->mNumPositionKeys);
+		for (m = 0; m < pNodeAnim->mNumPositionKeys; m++) {
+			key.time = pNodeAnim->mPositionKeys[m].mTime;
+			key.val = this->convVector(pNodeAnim->mPositionKeys[m].mValue);
+			na->position.push_back(key);
+		}
+
+		// Rotations
+		na->rotation.reserve(pNodeAnim->mNumRotationKeys);
+		for (m = 0; m < pNodeAnim->mNumRotationKeys; m++) {
+			key.time = pNodeAnim->mRotationKeys[m].mTime;
+			key.val = this->convQuaternion(pNodeAnim->mRotationKeys[m].mValue);
+			na->rotation.push_back(key);
+		}
+
+		// Scales
+		na->scale.reserve(pNodeAnim->mNumScalingKeys);
+		for (m = 0; m < pNodeAnim->mNumScalingKeys; m++) {
+			key.time = pNodeAnim->mScalingKeys[m].mTime;
+			key.val = this->convVector(pNodeAnim->mScalingKeys[m].mValue);
+			na->scale.push_back(key);
+		}
+
+		out->anims.push_back(na);
+	}
+
+	return out;
 }
 
 
@@ -198,3 +250,19 @@ btVector3 AssimpModel::getBoundingSizeHE()
 }
 
 
+/**
+* Convert a vector to our internal format
+**/
+glm::vec4 AssimpModel::convVector(aiVector3D in)
+{
+	return glm::vec4(in.x, in.y, in.z, 0.0f);
+}
+
+
+/**
+* Convert a vector to our internal format
+**/
+glm::vec4 AssimpModel::convQuaternion(aiQuaternion in)
+{
+	return glm::vec4(in.x, in.y, in.z, in.w);
+}
