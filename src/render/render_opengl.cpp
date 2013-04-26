@@ -1509,11 +1509,10 @@ void RenderOpenGL::mainRot()
 			tilt = 70.0f;
 			dist = 50.0f;
 			lift = 0.0f;
-			
 		} else if (this->viewmode == 2) {
 			tilt = 10.0f;
 			dist = 0.0f;
-			lift = 0.5f;
+			lift = 1.72f;
 		}
 		
 		// Load the character details into the variables
