@@ -9,16 +9,16 @@ uniform mat4 uMV;
 uniform mat4 uN;
 uniform sampler2D uTex;
 uniform vec4 uLightColor[2];
+uniform vec4 uAmbient;
 
 // Light params; these could become uniforms
 const float constantAttenuation = 0.3;
 const float linearAttenuation = 0.1;
 const float quadraticAttenuation = 0.01;
-const vec4 ambient = vec4(0.2, 0.2, 0.2, 1.0);
 
 void main()
 {
-	vec4 light = ambient;
+	vec4 light = uAmbient;
 	float NdotL, dist, att;
 
 	for (int i = 0; i < 2; i++) {

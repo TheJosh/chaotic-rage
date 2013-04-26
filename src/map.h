@@ -20,7 +20,6 @@ class Light {
 		float x;
 		float y;
 		float z;
-		float ambient [4];
 		float diffuse [4];
 		float specular [4];
 		
@@ -28,7 +27,6 @@ class Light {
 		Light(unsigned int type);
 		~Light();
 		
-		void setAmbient(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 		void setDiffuse(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 		void setSpecular(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 };
@@ -50,6 +48,7 @@ class Map {
 	private:
 		vector<Zone*> zones;
 		vector<Light*> lights;
+		float ambient[3];
 		vector<MapMesh*> meshes;
 		Render * render;
 		GameState * st;

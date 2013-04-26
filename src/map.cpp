@@ -63,7 +63,6 @@ static cfg_opt_t light_opts[] =
 	CFG_INT((char*) "y", 0, CFGF_NONE),
 	CFG_INT((char*) "z", 0, CFGF_NONE),
 	
-	CFG_INT_LIST((char*) "ambient", 0, CFGF_NONE),
 	CFG_INT_LIST((char*) "diffuse", 0, CFGF_NONE),
 	CFG_INT_LIST((char*) "specular", 0, CFGF_NONE),
 	
@@ -90,6 +89,8 @@ static cfg_opt_t opts[] =
 	CFG_SEC((char*) "light", light_opts, CFGF_MULTI),
 	CFG_SEC((char*) "mesh", mesh_opts, CFGF_MULTI),
 
+	CFG_INT_LIST((char*) "ambient", 0, CFGF_NONE),
+
 	CFG_INT((char*) "width", 0, CFGF_NONE),
 	CFG_INT((char*) "height", 0, CFGF_NONE),
 	
@@ -108,21 +109,12 @@ static cfg_opt_t opts[] =
 Light::Light(unsigned int type)
 {
 	this->type = type;
-	this->ambient[0] = this->ambient[1] = this->ambient[2] = this->ambient[3] = 0.0;
 	this->diffuse[0] = this->diffuse[1] = this->diffuse[2] = this->diffuse[3] = 0.0;
 	this->specular[0] = this->specular[1] = this->specular[2] = this->specular[3] = 0.0;
 }
 
 Light::~Light()
 {
-}
-
-void Light::setAmbient(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-{
-	this->ambient[0] = r / 255.0;
-	this->ambient[1] = g / 255.0;
-	this->ambient[2] = b / 255.0;
-	this->ambient[3] = a / 255.0;
 }
 
 void Light::setDiffuse(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
@@ -149,6 +141,8 @@ Map::Map(GameState * st)
 	this->background = NULL;
 	this->terrain = NULL;
 	this->water = NULL;
+
+	this->ambient[0] = this->ambient[1] = this->ambient[2] = 0.3f;
 }
 
 Map::~Map()
@@ -231,8 +225,16 @@ int Map::load(string name, Render *render, Mod* insideof)
 	this->terrain = this->render->loadSprite("terrain.png", this->mod);
 	if (! this->terrain) reportFatalError("Unable to load map; no terran img");
 	
+	// Ambient lighting
+	int num = cfg_size(cfg, "ambient");
+	if (num == 3) {
+		this->ambient[0] = cfg_getnint(cfg, "ambient", 0) / 255.0;
+		this->ambient[1] = cfg_getnint(cfg, "ambient", 1) / 255.0;
+		this->ambient[2] = cfg_getnint(cfg, "ambient", 2) / 255.0;
+	}
 
-	
+		
+
 	// Zones
 	num_types = cfg_size(cfg, "zone");
 	for (j = 0; j < num_types; j++) {
@@ -295,16 +297,6 @@ int Map::load(string name, Render *render, Mod* insideof)
 		l->x = cfg_getint(cfg_sub, "x");
 		l->y = cfg_getint(cfg_sub, "y");
 		l->z = cfg_getint(cfg_sub, "z");
-		
-		num = cfg_size(cfg_sub, "ambient");
-		if (num == 4) {
-			l->setAmbient(
-				cfg_getnint(cfg_sub, "ambient", 0),
-				cfg_getnint(cfg_sub, "ambient", 1),
-				cfg_getnint(cfg_sub, "ambient", 2),
-				cfg_getnint(cfg_sub, "ambient", 3)
-			);
-		}
 		
 		num = cfg_size(cfg_sub, "diffuse");
 		if (num == 4) {

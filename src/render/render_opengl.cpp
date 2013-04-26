@@ -1573,6 +1573,9 @@ void RenderOpenGL::terrain()
 	glUniform3fv(this->shaders["map"]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
 	glUniform4fv(this->shaders["map"]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
 
+	glm::vec4 AmbientColor(this->st->map->ambient[0], this->st->map->ambient[1], this->st->map->ambient[2], 1.0f);
+	glUniform4fv(this->shaders["map"]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
+
 
 	glm::mat4 modelMatrix = glm::scale(
 		glm::mat4(1.0f),

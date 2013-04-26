@@ -987,7 +987,6 @@ void RenderOpenGLCompat::lights()
 				glLightfv(GL_LIGHT0 + i, GL_POSITION, position);
 			}
 			
-			glLightfv(GL_LIGHT0 + i, GL_AMBIENT, l->ambient);
 			glLightfv(GL_LIGHT0 + i, GL_DIFFUSE, l->diffuse);
 			glLightfv(GL_LIGHT0 + i, GL_SPECULAR, l->specular);
 			glEnable(GL_LIGHT0 + i);
