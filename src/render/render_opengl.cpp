@@ -651,6 +651,7 @@ void RenderOpenGL::preGame()
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_NORMALIZE);
 	
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	
@@ -670,19 +671,13 @@ void RenderOpenGL::preGame()
 
 	if (q_general >= 2) {
 		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-		glHint(GL_FOG_HINT, GL_NICEST);
 	} else {
 		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
-		glHint(GL_FOG_HINT, GL_FASTEST);
 	}
 	
 	// Set fog properties
 	if (st->map->fog_density > 0.0f) {
-		glFogi(GL_FOG_MODE, GL_LINEAR);
-		glFogfv(GL_FOG_COLOR, st->map->fog_color);
-		glFogf(GL_FOG_DENSITY, st->map->fog_density);
-		glFogf(GL_FOG_START, 80.0f);
-		glFogf(GL_FOG_END, 100.0f);
+		// TODO: GLSL fog
 	}
 	
 	// This will load the shaders (from the base mod) if they aren't loaded.
@@ -695,6 +690,9 @@ void RenderOpenGL::preGame()
 	if (this->st->num_local == 1) {
 		this->mainViewport(1, 1);
 	}
+	
+	// For the HUD etc
+	glMatrixMode(GL_MODELVIEW);
 }
 
 
@@ -1051,8 +1049,6 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 
 
 	CHECK_OPENGL_ERROR;
-
-	glEnable(GL_BLEND);
 	
 	/*for (unsigned int d = 0; d < model->meshframes.size(); d++) {
 		if (model->meshframes[d]->frame != frame) continue;
@@ -1106,8 +1102,6 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 
 		glUseProgram(0);
 	/*}*/
-
-	glDisable(GL_BLEND);
 
 	CHECK_OPENGL_ERROR;
 }
@@ -1458,13 +1452,9 @@ void RenderOpenGL::physics()
 	
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_FOG);
 	glDisable(GL_TEXTURE_2D);
 	
 	glm::mat4 MVP = this->projection * this->view;
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glMultMatrixf(glm::value_ptr(MVP));
 	
@@ -1481,7 +1471,6 @@ void RenderOpenGL::physics()
 
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_FOG);
 	glEnable(GL_TEXTURE_2D);
 	
 	CHECK_OPENGL_ERROR;
@@ -1501,8 +1490,6 @@ void RenderOpenGL::mainRot()
 
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_NORMALIZE);
-	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
 	if (this->render_player == NULL) {
@@ -1553,11 +1540,6 @@ void RenderOpenGL::mainRot()
 	this->view = glm::rotate(this->view, 360.0f - angle, glm::vec3(0.0f, 1.0f, 0.0f));
 	this->view = glm::translate(this->view, glm::vec3(-camerax, -cameray, -cameraz));
 
-	// Enable fog
-	if (this->render_player != NULL && this->viewmode == 0 && st->map->fog_density > 0.0f) {
-		glEnable(GL_FOG);
-	}
-	
 	CHECK_OPENGL_ERROR;
 }
 
@@ -1569,7 +1551,6 @@ void RenderOpenGL::terrain()
 {
 	CHECK_OPENGL_ERROR;
 	
-	glEnable(GL_NORMALIZE);
 	glBindTexture(GL_TEXTURE_2D, st->map->terrain->pixels);
 	
 	glUseProgram(this->shaders["map"]->p());
@@ -1686,6 +1667,8 @@ void RenderOpenGL::entities()
 {
 	CHECK_OPENGL_ERROR;
 
+	glEnable(GL_BLEND);
+
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
 		Entity *e = (*it);
 		
@@ -1697,6 +1680,8 @@ void RenderOpenGL::entities()
 
 		renderAnimPlay(play, e);
 	}
+
+	glDisable(GL_BLEND);
 
 	CHECK_OPENGL_ERROR;
 }
@@ -1782,7 +1767,6 @@ void RenderOpenGL::guichan()
 	
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_FOG);
 	
 	glLoadIdentity();
 	this->st->gui->draw();
@@ -1800,14 +1784,9 @@ void RenderOpenGL::hud(HUD * hud)
 	
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_FOG);
 	
-	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(0.0, this->virt_width, this->virt_height, 0.0, -1.0, 1.0);
-	
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
 	hud->render(this);
 	
 	CHECK_OPENGL_ERROR;
