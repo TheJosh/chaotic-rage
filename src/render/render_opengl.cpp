@@ -692,7 +692,7 @@ void RenderOpenGL::preGame()
 	}
 	
 	// For the HUD etc
-	glMatrixMode(GL_MODELVIEW);
+	glMatrixMode(GL_PROJECTION);
 }
 
 
@@ -1454,8 +1454,8 @@ void RenderOpenGL::physics()
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_TEXTURE_2D);
 	
-	glm::mat4 MVP = this->projection * this->view;
 	glLoadIdentity();
+	glm::mat4 MVP = this->projection * this->view;
 	glMultMatrixf(glm::value_ptr(MVP));
 	
 	st->physics->getWorld()->debugDrawWorld();
