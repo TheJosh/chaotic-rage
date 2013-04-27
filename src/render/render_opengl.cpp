@@ -1097,8 +1097,12 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 		glBindAttribLocation(shader->p(), 0, "vPosition");
 		glBindAttribLocation(shader->p(), 1, "vNormal");
 		glBindAttribLocation(shader->p(), 2, "vTexUV");
+		
+		if (play->isAnimated()) {
+			play->calcTransforms();
+		}
 
-		recursiveRenderAssimpModel(am, am->rootNode, shader, modelMatrix);
+		recursiveRenderAssimpModel(play, am, am->rootNode, shader, modelMatrix);
 
 		glUseProgram(0);
 	/*}*/
@@ -1117,10 +1121,15 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 * @param GLuint shader The bound shader, so uniforms will work
 * @param glm::mat4 transform The node transform matrix
 **/
-void RenderOpenGL::recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd, GLShader* shader, glm::mat4 transform)
+void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, AssimpNode* nd, GLShader* shader, glm::mat4 xform_global)
 {
-	transform *= nd->transform;
+	glm::mat4 transform = xform_global;
 	
+	std::map<AssimpNode*, glm::mat4>::iterator local = ap->transforms.find(nd);
+	if (local != ap->transforms.end()) {
+		transform *= local->second;
+	}
+
 	CHECK_OPENGL_ERROR;
 
 	glm::mat4 MVP = this->projection * this->view * transform;
@@ -1140,7 +1149,7 @@ void RenderOpenGL::recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd, G
 	}
 	
 	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {
-		recursiveRenderAssimpModel(am, (*it), shader, transform);
+		recursiveRenderAssimpModel(ap, am, (*it), shader, xform_global);
 	}
 	
 	CHECK_OPENGL_ERROR;

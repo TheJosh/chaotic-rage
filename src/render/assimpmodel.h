@@ -75,7 +75,8 @@ class AssimpAnimation
 class AssimpModel
 {
 	friend class RenderOpenGL;
-	
+	friend class AnimPlay;
+
 	private:
 		const struct aiScene* sc;			// TODO: remove this, pass it as a func. arg everywhere instead.
 		btVector3 boundingSize;

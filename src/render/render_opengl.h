@@ -138,7 +138,7 @@ class RenderOpenGL : public Render3D
 		void renderCharacter(char c, float &x, float &y);
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
-		void recursiveRenderAssimpModel(AssimpModel *am, AssimpNode *nd, GLShader *shader, glm::mat4 transform);
+		void recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader, glm::mat4 transform);
 		
 		void mainViewport(int s, int of);
 		void mainRot();
