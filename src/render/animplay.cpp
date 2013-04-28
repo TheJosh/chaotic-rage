@@ -6,6 +6,10 @@
 #include <SDL.h>
 #include "../rage.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
+
 using namespace std;
 
 
@@ -46,14 +50,19 @@ AssimpModel* AnimPlay::getModel()
 void AnimPlay::setAnimation(unsigned int animation)
 {
 	this->animation = animation;
-
+	this->frame = 0;
+	
 	if (this->model->animations.size() == 0) {
 		this->animation = ANIMATION_NONE;
 	}
 
 	// If it's static, calculate once only
 	if (this->animation == ANIMATION_NONE) {
+		this->anim = NULL;
 		this->calcTransforms();
+		
+	} else {
+		this->anim = this->model->animations[this->animation];
 	}
 }
 
@@ -67,6 +76,13 @@ void AnimPlay::setAnimation(unsigned int animation)
 void AnimPlay::calcTransforms()
 {
 	this->calcTransformNode(this->model->rootNode, glm::mat4());
+
+	if (this->anim == NULL) return;
+
+	this->frame++;
+	if (this->frame > this->anim->anims[0]->position.size()) {
+		this->frame = 0;
+	}
 }
 
 
@@ -76,6 +92,12 @@ void AnimPlay::calcTransforms()
 void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform)
 {
 	transform *= nd->transform;
+
+	if (this->anim != NULL) {
+		transform = glm::translate(transform, this->anim->anims[0]->position[this->frame].vec);
+		transform *= glm::toMat4(this->anim->anims[0]->rotation[this->frame].quat);
+		transform = glm::scale(transform, this->anim->anims[0]->scale[this->frame].vec);
+	}
 
 	this->transforms[nd] = transform;
 

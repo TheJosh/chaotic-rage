@@ -15,6 +15,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "assimpmodel.h"
 #include "../rage.h"
@@ -203,7 +205,7 @@ AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
 		na->position.reserve(pNodeAnim->mNumPositionKeys);
 		for (m = 0; m < pNodeAnim->mNumPositionKeys; m++) {
 			key.time = pNodeAnim->mPositionKeys[m].mTime;
-			key.val = this->convVector(pNodeAnim->mPositionKeys[m].mValue);
+			key.vec = this->convVector(pNodeAnim->mPositionKeys[m].mValue);
 			na->position.push_back(key);
 		}
 
@@ -211,7 +213,7 @@ AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
 		na->rotation.reserve(pNodeAnim->mNumRotationKeys);
 		for (m = 0; m < pNodeAnim->mNumRotationKeys; m++) {
 			key.time = pNodeAnim->mRotationKeys[m].mTime;
-			key.val = this->convQuaternion(pNodeAnim->mRotationKeys[m].mValue);
+			key.quat = this->convQuaternion(pNodeAnim->mRotationKeys[m].mValue);
 			na->rotation.push_back(key);
 		}
 
@@ -219,7 +221,7 @@ AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
 		na->scale.reserve(pNodeAnim->mNumScalingKeys);
 		for (m = 0; m < pNodeAnim->mNumScalingKeys; m++) {
 			key.time = pNodeAnim->mScalingKeys[m].mTime;
-			key.val = this->convVector(pNodeAnim->mScalingKeys[m].mValue);
+			key.vec = this->convVector(pNodeAnim->mScalingKeys[m].mValue);
 			na->scale.push_back(key);
 		}
 
@@ -253,16 +255,16 @@ btVector3 AssimpModel::getBoundingSizeHE()
 /**
 * Convert a vector to our internal format
 **/
-glm::vec4 AssimpModel::convVector(aiVector3D in)
+glm::vec3 AssimpModel::convVector(aiVector3D in)
 {
-	return glm::vec4(in.x, in.y, in.z, 0.0f);
+	return glm::vec3(in.x, in.y, in.z);
 }
 
 
 /**
 * Convert a vector to our internal format
 **/
-glm::vec4 AssimpModel::convQuaternion(aiQuaternion in)
+glm::quat AssimpModel::convQuaternion(aiQuaternion in)
 {
-	return glm::vec4(in.x, in.y, in.z, in.w);
+	return glm::quat(in.w, in.x, in.y, in.z);
 }

@@ -8,6 +8,7 @@
 #include <map>
 #include <glm/glm.hpp>
 #include "../rage.h"
+#include "assimpmodel.h"
 
 using namespace std;
 
@@ -24,8 +25,12 @@ class AnimPlay
 
 	private:
 		AssimpModel* model;
+		AssimpAnimation* anim;
 		unsigned int animation;
 		map<AssimpNode*, glm::mat4> transforms;
+
+		// just temporary(tm)
+		int frame;
 
 	public:
 		AnimPlay(AssimpModel* model);

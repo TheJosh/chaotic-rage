@@ -7,6 +7,8 @@
 #include <SDL.h>
 #include <confuse.h>
 #include <assimp/scene.h>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 #include "../rage.h"
 
 using namespace std;
@@ -49,7 +51,8 @@ class AssimpNode
 class AssimpAnimKey
 {
 	public:
-		glm::vec4 val;		// vector for position/scale or quaternion for rotation
+		glm::vec3 vec;		// vector for position/scale
+		glm::quat quat;		// quaternion for rotation
 		double time;
 };
 
@@ -108,8 +111,8 @@ class AssimpModel
 		void loadAnimations();
 		AssimpAnimation* loadAnimation(const aiAnimation* anim);
 
-		glm::vec4 convVector(aiVector3D in);
-		glm::vec4 convQuaternion(aiQuaternion in);
+		glm::vec3 convVector(aiVector3D in);
+		glm::quat convQuaternion(aiQuaternion in);
 };
 
 

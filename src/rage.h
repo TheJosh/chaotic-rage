@@ -61,6 +61,7 @@ class AILogic;
 class AnimPlay;
 class AssimpMaterial;
 class AssimpModel;
+class AssimpAnimation;
 class AssimpNode;
 class AmmoRound;
 class Audio;
