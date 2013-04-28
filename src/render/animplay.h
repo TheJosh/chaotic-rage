@@ -30,7 +30,7 @@ class AnimPlay
 		map<AssimpNode*, glm::mat4> transforms;
 
 		// just temporary(tm)
-		int frame;
+		unsigned int frame;
 
 	public:
 		AnimPlay(AssimpModel* model);

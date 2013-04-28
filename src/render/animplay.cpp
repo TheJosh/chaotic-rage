@@ -80,7 +80,7 @@ void AnimPlay::calcTransforms()
 	if (this->anim == NULL) return;
 
 	this->frame++;
-	if (this->frame > this->anim->anims[0]->position.size()) {
+	if (this->frame == this->anim->anims[0]->position.size()) {
 		this->frame = 0;
 	}
 }
