@@ -159,9 +159,15 @@ void AnimPlay::calcTransformNodeStatic(AssimpNode* nd, glm::mat4 transform)
 **/
 void AnimPlay::calcTransforms()
 {
-	float timeSecs = (st->game_time - this->start_time) / 1000.0f;
-	float ticsPerSec = this->anim->ticsPerSec != 0.0 ? this->anim->ticsPerSec : 25.0f;
-	float animTick = fmod(timeSecs * ticsPerSec, this->anim->duration);
+	float animTick;
+	
+	if (this->anim) {
+		float timeSecs = (st->game_time - this->start_time) / 1000.0f;
+		float ticsPerSec = this->anim->ticsPerSec != 0.0 ? this->anim->ticsPerSec : 25.0f;
+		animTick = fmod(timeSecs * ticsPerSec, this->anim->duration);
+	} else {
+		animTick = 0.0f;
+	}
 	
 	this->calcTransformNode(this->model->rootNode, glm::mat4(), animTick);
 }
@@ -179,7 +185,7 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float anim
 	glm::mat4 local;
 
 	if (this->move && this->move == nd) {
-		local = this->move_transform;
+		local = nd->transform * this->move_transform;
 
 	} else if (this->anim && this->anim->anims[0]->name == nd->name) {
 		AssimpNodeAnim* animNode = this->anim->anims[0];

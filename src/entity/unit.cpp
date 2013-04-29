@@ -559,10 +559,10 @@ void Unit::leaveVehicle()
 	this->drive->brakeForce = 0.0f;
 	this->drive->steering = 0.0f;
 	
+	this->drive->getAnimModel()->clearMoveNode();
+	
 	this->render = true;
 	this->drive = NULL;
-
-	this->drive->getAnimModel()->clearMoveNode();
 }
 
 
