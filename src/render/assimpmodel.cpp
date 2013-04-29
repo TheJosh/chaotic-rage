@@ -133,6 +133,7 @@ btVector3 AssimpModel::calcBoundingSizeNode(const struct aiNode* nd, aiMatrix4x4
 void AssimpModel::loadNodes()
 {
 	this->rootNode = this->loadNode(this->sc->mRootNode);
+	assert(this->rootNode != NULL);
 }
 
 
@@ -141,6 +142,8 @@ void AssimpModel::loadNodes()
 **/
 AssimpNode* AssimpModel::loadNode(aiNode* nd)
 {
+	if (nd->mNumMeshes == 0 && nd->mNumChildren == 0) return NULL;
+
 	unsigned int i;
 	AssimpNode* myNode = new AssimpNode();
 	myNode->name = std::string(nd->mName.C_Str());
@@ -151,7 +154,7 @@ AssimpNode* AssimpModel::loadNode(aiNode* nd)
 	
 	for (i = 0; i < nd->mNumChildren; i++) {
 		AssimpNode* child = loadNode(nd->mChildren[i]);
-		myNode->addChild(child);
+		if (child != NULL) myNode->addChild(child);
 	}
 	
 	aiMatrix4x4 m = nd->mTransformation;
