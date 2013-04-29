@@ -19,6 +19,10 @@ using namespace std;
 #define ANIMATION_NONE 255
 
 
+/**
+* Stores info about a single animation which is currently running
+* Also used for static meshes.
+**/
 class AnimPlay
 {
 	friend class RenderOpenGL;
@@ -26,20 +30,31 @@ class AnimPlay
 	private:
 		GameState* st;
 		AssimpModel* model;
-		AssimpAnimation* anim;
-		map<AssimpNode*, glm::mat4> transforms;
 
-		// just temporary(tm)
+		// Currently running animation
+		AssimpAnimation* anim;
 		unsigned int start_time;
+		
+		// Current "move node"
+		AssimpNode* move;
+		glm::mat4 move_transform;
+
+		// These are calculated by calcTransforms()
+		// and then fed into the renderer
+		map<AssimpNode*, glm::mat4> transforms;
 		
 	public:
 		AnimPlay(AssimpModel* model);
 		AnimPlay(AssimpModel* model, unsigned int animation);
 
 		AssimpModel* getModel() { return this->model; }
-		bool isAnimated() { return (this->anim != NULL); }
+		bool isAnimated();
 
 		void setAnimation(unsigned int animation);
+		void clearAnimation();
+		void setMoveNode(string node);
+		void clearMoveNode();
+		void setMoveTransform(glm::mat4 transform);
 		void calcTransformsStatic();
 		void calcTransforms();
 

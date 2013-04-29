@@ -532,6 +532,8 @@ void Unit::enterVehicle(Vehicle *v)
 	this->drive->engineForce = 0.0f;
 	this->drive->brakeForce = 0.0f;
 	this->drive->steering = 0.0f;
+
+	this->drive->getAnimModel()->setMoveNode("Turret");
 }
 
 
@@ -559,6 +561,8 @@ void Unit::leaveVehicle()
 	
 	this->render = true;
 	this->drive = NULL;
+
+	this->drive->getAnimModel()->clearMoveNode();
 }
 
 

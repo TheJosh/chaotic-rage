@@ -5,6 +5,7 @@
 #include <iostream>
 #include <SDL.h>
 #include "../rage.h"
+#include "_render.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -14,13 +15,15 @@ using namespace std;
 
 
 /**
-* Create an anim play
+* Create a static anim play
 **/
 AnimPlay::AnimPlay(AssimpModel* model)
 	: model(model)
 {
 	this->st = model->mod->st;
-	this->setAnimation(ANIMATION_NONE);
+	this->move = NULL;
+	this->anim = NULL;
+	this->calcTransformsStatic();
 }
 
 
@@ -32,7 +35,18 @@ AnimPlay::AnimPlay(AssimpModel* model, unsigned int animation)
 	: model(model)
 {
 	this->st = model->mod->st;
+	this->move = NULL;
 	this->setAnimation(animation);
+}
+
+
+/**
+* Is this animPlay animated (true) or static (false)
+* Note that "animated" is also the case for move nodes
+**/
+bool AnimPlay::isAnimated()
+{
+	return (this->anim != NULL || this->move != NULL);
 }
 
 
@@ -46,15 +60,65 @@ void AnimPlay::setAnimation(unsigned int animation)
 		animation = ANIMATION_NONE;
 	}
 
-	// If it's static, calculate transforms once only
+	// Grab the anim info
 	if (animation == ANIMATION_NONE) {
-		this->anim = NULL;
-		this->calcTransformsStatic();
-		
+		this->clearAnimation();
 	} else {
 		this->anim = this->model->animations[animation];
 		this->start_time = st->game_time;
 	}
+}
+
+
+/**
+* Clear the animation
+**/
+void AnimPlay::clearAnimation()
+{
+	this->anim = NULL;
+
+	// If it's static, the calcs are really easy
+	if (this->anim == NULL && this->move == NULL) {
+		this->calcTransformsStatic();
+	}
+}
+
+
+/**
+* Sets the "move node", a node which is transformed by some aspect of the game engine
+* e.g. gun turrets
+**/
+void AnimPlay::setMoveNode(string node)
+{
+	this->move = this->model->findNode(this->model->rootNode, node);
+	if (this->move == NULL) {
+		this->clearMoveNode();
+	}
+	this->move_transform = glm::mat4();
+}
+
+
+/**
+* Clears the "move node", a node which is transformed by some aspect of the game engine.
+* Because this might bring the model back to static, we re-calc the transforms.
+**/
+void AnimPlay::clearMoveNode()
+{
+	this->move = NULL;
+
+	// If it's static, the calcs are really easy
+	if (this->anim == NULL && this->move == NULL) {
+		this->calcTransformsStatic();
+	}
+}
+
+
+/**
+* Set the transform for the move node
+**/
+void AnimPlay::setMoveTransform(glm::mat4 transform)
+{
+	this->move_transform = transform;
 }
 
 
@@ -112,23 +176,28 @@ void AnimPlay::calcTransforms()
 **/
 void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float animTick)
 {
-	AssimpNodeAnim* anim = this->anim->anims[0];
 	glm::mat4 local;
 
-	if (anim->name == nd->name) {
-		unsigned int positionKey = this->findFrameTime(&anim->position, animTick);
-		unsigned int rotationKey = this->findFrameTime(&anim->rotation, animTick);
-		unsigned int scaleKey = this->findFrameTime(&anim->scale, animTick);
+	if (this->move && this->move == nd) {
+		local = this->move_transform;
 
-		float positionMix = this->mixFactor(&anim->position, positionKey, animTick);
-		float rotationMix = this->mixFactor(&anim->rotation, rotationKey, animTick);
-		float scaleMix = this->mixFactor(&anim->scale, scaleKey, animTick);
+	} else if (this->anim && this->anim->anims[0]->name == nd->name) {
+		AssimpNodeAnim* animNode = this->anim->anims[0];
 
-		glm::mat4 trans = glm::translate(glm::mat4(), glm::mix(anim->position[positionKey].vec, anim->position[positionKey + 1].vec, positionMix));
-		glm::mat4 rot = glm::toMat4(glm::mix(anim->rotation[rotationKey].quat, anim->rotation[rotationKey + 1].quat, rotationMix));
-		glm::mat4 scale = glm::scale(glm::mat4(), glm::mix(anim->scale[scaleKey].vec, anim->scale[scaleKey + 1].vec, scaleMix));
+		unsigned int positionKey = this->findFrameTime(&animNode->position, animTick);
+		unsigned int rotationKey = this->findFrameTime(&animNode->rotation, animTick);
+		unsigned int scaleKey = this->findFrameTime(&animNode->scale, animTick);
+
+		float positionMix = this->mixFactor(&animNode->position, positionKey, animTick);
+		float rotationMix = this->mixFactor(&animNode->rotation, rotationKey, animTick);
+		float scaleMix = this->mixFactor(&animNode->scale, scaleKey, animTick);
+
+		glm::mat4 trans = glm::translate(glm::mat4(), glm::mix(animNode->position[positionKey].vec, animNode->position[positionKey + 1].vec, positionMix));
+		glm::mat4 rot = glm::toMat4(glm::mix(animNode->rotation[rotationKey].quat, animNode->rotation[rotationKey + 1].quat, rotationMix));
+		glm::mat4 scale = glm::scale(glm::mat4(), glm::mix(animNode->scale[scaleKey].vec, animNode->scale[scaleKey + 1].vec, scaleMix));
 	
 		local = trans * rot * scale;
+
 	} else {
 		local = nd->transform;
 	}

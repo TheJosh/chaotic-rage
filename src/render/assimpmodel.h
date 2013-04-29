@@ -108,6 +108,7 @@ class AssimpModel
 
 		void loadNodes();
 		AssimpNode* loadNode(aiNode* nd);
+		AssimpNode* findNode(AssimpNode* nd, string name);
 
 		void loadAnimations();
 		AssimpAnimation* loadAnimation(const aiAnimation* anim);

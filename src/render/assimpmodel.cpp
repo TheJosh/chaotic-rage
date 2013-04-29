@@ -166,6 +166,22 @@ AssimpNode* AssimpModel::loadNode(aiNode* nd)
 
 
 /**
+* Find a node by name
+**/
+AssimpNode* AssimpModel::findNode(AssimpNode* nd, string name)
+{
+	if (nd->name == name) return nd;
+
+	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {
+		AssimpNode* maybe = this->findNode((*it), name);
+		if (maybe) return maybe;
+	}
+
+	return NULL;
+}
+
+
+/**
 * Load the animations for this assimp model
 **/
 void AssimpModel::loadAnimations()
