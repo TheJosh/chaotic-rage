@@ -24,24 +24,28 @@ class AnimPlay
 	friend class RenderOpenGL;
 
 	private:
+		GameState* st;
 		AssimpModel* model;
 		AssimpAnimation* anim;
-		unsigned int animation;
 		map<AssimpNode*, glm::mat4> transforms;
 
 		// just temporary(tm)
-		unsigned int frame;
-
+		unsigned int start_time;
+		
 	public:
 		AnimPlay(AssimpModel* model);
 		AnimPlay(AssimpModel* model, unsigned int animation);
 
-		AssimpModel* getModel();
-		bool isAnimated() { return this->animation != ANIMATION_NONE; }
+		AssimpModel* getModel() { return this->model; }
+		bool isAnimated() { return (this->anim != NULL); }
 
 		void setAnimation(unsigned int animation);
+		void calcTransformsStatic();
 		void calcTransforms();
 
 	private:
-		void calcTransformNode(AssimpNode* nd, glm::mat4 transform);
+		void calcTransformNodeStatic(AssimpNode* nd, glm::mat4 transform);
+		
+		AssimpAnimKey* findFrameTime(vector<AssimpAnimKey>* keys, float animTick);
+		void calcTransformNode(AssimpNode* nd, glm::mat4 transform, float animTick);
 };

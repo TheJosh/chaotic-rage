@@ -19,6 +19,7 @@ using namespace std;
 AnimPlay::AnimPlay(AssimpModel* model)
 	: model(model)
 {
+	this->st = model->mod->st;
 	this->setAnimation(ANIMATION_NONE);
 }
 
@@ -30,16 +31,8 @@ AnimPlay::AnimPlay(AssimpModel* model)
 AnimPlay::AnimPlay(AssimpModel* model, unsigned int animation)
 	: model(model)
 {
+	this->st = model->mod->st;
 	this->setAnimation(animation);
-}
-
-
-/**
-* Returns the model to render
-**/
-AssimpModel* AnimPlay::getModel()
-{
-	return this->model;
 }
 
 
@@ -49,22 +42,49 @@ AssimpModel* AnimPlay::getModel()
 **/
 void AnimPlay::setAnimation(unsigned int animation)
 {
-	this->animation = animation;
-	this->frame = 0;
-	
 	if (this->model->animations.size() == 0) {
-		this->animation = ANIMATION_NONE;
+		animation = ANIMATION_NONE;
 	}
 
-	// If it's static, calculate once only
-	if (this->animation == ANIMATION_NONE) {
+	// If it's static, calculate transforms once only
+	if (animation == ANIMATION_NONE) {
 		this->anim = NULL;
-		this->calcTransforms();
+		this->calcTransformsStatic();
 		
 	} else {
-		this->anim = this->model->animations[this->animation];
+		this->anim = this->model->animations[animation];
+		this->start_time = st->game_time;
 	}
 }
+
+
+/**
+* Calculate the transforms, without any animation logic
+* It's just a performance optimisation
+**/
+void AnimPlay::calcTransformsStatic()
+{
+	this->calcTransformNodeStatic(this->model->rootNode, glm::mat4());
+}
+
+
+/**
+* Calculate the animation transforms for an assimp node and it's children
+*
+* @param AssimpNode* nd The node to calculate the tranform for
+* @param glm::mat4 transform The transform of the parent node
+**/
+void AnimPlay::calcTransformNodeStatic(AssimpNode* nd, glm::mat4 transform)
+{
+	transform *= nd->transform;
+	
+	this->transforms[nd] = transform;
+	
+	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {
+		calcTransformNodeStatic((*it), transform);
+	}
+}
+
 
 
 /**
@@ -75,33 +95,55 @@ void AnimPlay::setAnimation(unsigned int animation)
 **/
 void AnimPlay::calcTransforms()
 {
-	this->calcTransformNode(this->model->rootNode, glm::mat4());
-
-	if (this->anim == NULL) return;
-
-	this->frame++;
-	if (this->frame == this->anim->anims[0]->position.size()) {
-		this->frame = 0;
-	}
+	float timeSecs = (st->game_time - this->start_time) / 1000.0f;
+	float ticsPerSec = this->anim->ticsPerSec != 0.0 ? this->anim->ticsPerSec : 25.0f;
+	float animTick = fmod(timeSecs * ticsPerSec, this->anim->duration);
+	
+	this->calcTransformNode(this->model->rootNode, glm::mat4(), animTick);
 }
 
 
 /**
 * Calculate the animation transforms for an assimp node and it's children
+*
+* @param AssimpNode* nd The node to calculate the tranform for
+* @param glm::mat4 transform The transform of the parent node
+* @param unsigned int time The current animation time
 **/
-void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform)
+void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float animTick)
 {
+	AssimpAnimKey* scaleKey = this->findFrameTime(&this->anim->anims[0]->scale, animTick);
+	AssimpAnimKey* rotationKey = this->findFrameTime(&this->anim->anims[0]->rotation, animTick);
+	AssimpAnimKey* positionKey = this->findFrameTime(&this->anim->anims[0]->position, animTick);
+	
 	transform *= nd->transform;
-
-	if (this->anim != NULL) {
-		transform = glm::translate(transform, this->anim->anims[0]->position[this->frame].vec);
-		transform *= glm::toMat4(this->anim->anims[0]->rotation[this->frame].quat);
-		transform = glm::scale(transform, this->anim->anims[0]->scale[this->frame].vec);
-	}
+	
+	transform = glm::translate(transform, positionKey->vec);
+	transform *= glm::toMat4(rotationKey->quat);
+	transform = glm::scale(transform, scaleKey->vec);
+	
+	
 
 	this->transforms[nd] = transform;
 
 	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {
-		calcTransformNode((*it), transform);
+		calcTransformNode((*it), transform, animTick);
 	}
 }
+
+
+/**
+* Find a valid key from the list of keys, for a given time value (in ticks)
+**/
+AssimpAnimKey* AnimPlay::findFrameTime(vector<AssimpAnimKey>* keys, float animTick)
+{
+	for (vector<AssimpAnimKey>::iterator it = keys->begin(); it != keys->end(); it++) {
+		if (animTick < (*it).time) {
+			return &(*it);
+		}
+	}
+	
+	assert(0);
+}
+
+

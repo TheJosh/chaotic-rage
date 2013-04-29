@@ -53,7 +53,7 @@ class AssimpAnimKey
 	public:
 		glm::vec3 vec;		// vector for position/scale
 		glm::quat quat;		// quaternion for rotation
-		double time;
+		float time;
 };
 
 class AssimpNodeAnim
@@ -69,8 +69,8 @@ class AssimpAnimation
 {
 	public:
 		string name;
-		double duration;
-		double ticsPerSec;
+		float duration;
+		float ticsPerSec;
 		vector<AssimpNodeAnim*> anims;
 };
 

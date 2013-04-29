@@ -63,6 +63,8 @@ class AssimpMaterial;
 class AssimpModel;
 class AssimpAnimation;
 class AssimpNode;
+class AssimpNodeAnim;
+class AssimpAnimKey;
 class AmmoRound;
 class Audio;
 class CampaignStage;
