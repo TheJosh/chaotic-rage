@@ -1123,16 +1123,18 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 **/
 void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, AssimpNode* nd, GLShader* shader, glm::mat4 xform_global)
 {
-	glm::mat4 transform = xform_global;
+	glm::mat4 transform;
 	
 	std::map<AssimpNode*, glm::mat4>::iterator local = ap->transforms.find(nd);
 	if (local != ap->transforms.end()) {
-		transform *= local->second;
+		transform = local->second;
+	} else {
+		assert(0);
 	}
 
 	CHECK_OPENGL_ERROR;
 
-	glm::mat4 MVP = this->projection * this->view * transform;
+	glm::mat4 MVP = this->projection * this->view * xform_global * transform;
 	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); it++) {

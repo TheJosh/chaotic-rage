@@ -38,7 +38,8 @@ class AssimpNode
 		vector<AssimpNode*> children;
 		vector<unsigned int> meshes;
 		glm::mat4 transform;
-		
+		string name;
+
 	public:
 		AssimpNode() : parent(NULL) {}
 		

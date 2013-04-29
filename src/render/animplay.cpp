@@ -113,21 +113,27 @@ void AnimPlay::calcTransforms()
 void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float animTick)
 {
 	AssimpNodeAnim* anim = this->anim->anims[0];
+	glm::mat4 local;
 
-	unsigned int positionKey = this->findFrameTime(&anim->position, animTick);
-	unsigned int rotationKey = this->findFrameTime(&anim->rotation, animTick);
-	unsigned int scaleKey = this->findFrameTime(&anim->scale, animTick);
+	if (anim->name == nd->name) {
+		unsigned int positionKey = this->findFrameTime(&anim->position, animTick);
+		unsigned int rotationKey = this->findFrameTime(&anim->rotation, animTick);
+		unsigned int scaleKey = this->findFrameTime(&anim->scale, animTick);
 
-	float positionMix = this->mixFactor(&anim->position, positionKey, animTick);
-	float rotationMix = this->mixFactor(&anim->rotation, rotationKey, animTick);
-	float scaleMix = this->mixFactor(&anim->scale, scaleKey, animTick);
+		float positionMix = this->mixFactor(&anim->position, positionKey, animTick);
+		float rotationMix = this->mixFactor(&anim->rotation, rotationKey, animTick);
+		float scaleMix = this->mixFactor(&anim->scale, scaleKey, animTick);
 
-	transform *= nd->transform;
+		glm::mat4 trans = glm::translate(glm::mat4(), glm::mix(anim->position[positionKey].vec, anim->position[positionKey + 1].vec, positionMix));
+		glm::mat4 rot = glm::toMat4(glm::mix(anim->rotation[rotationKey].quat, anim->rotation[rotationKey + 1].quat, rotationMix));
+		glm::mat4 scale = glm::scale(glm::mat4(), glm::mix(anim->scale[scaleKey].vec, anim->scale[scaleKey + 1].vec, scaleMix));
+	
+		local = trans * rot * scale;
+	} else {
+		local = nd->transform;
+	}
 
-	transform = glm::translate(transform, glm::mix(anim->position[positionKey].vec, anim->position[positionKey + 1].vec, positionMix));
-	transform *= glm::toMat4(glm::mix(anim->rotation[rotationKey].quat, anim->rotation[rotationKey + 1].quat, rotationMix));
-	transform = glm::scale(transform, glm::mix(anim->scale[scaleKey].vec, anim->scale[scaleKey + 1].vec, scaleMix));
-
+	transform *= local;
 	this->transforms[nd] = transform;
 
 	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {

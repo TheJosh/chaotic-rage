@@ -143,7 +143,8 @@ AssimpNode* AssimpModel::loadNode(aiNode* nd)
 {
 	unsigned int i;
 	AssimpNode* myNode = new AssimpNode();
-	
+	myNode->name = std::string(nd->mName.C_Str());
+
 	for (i = 0; i < nd->mNumMeshes; i++) {
 		myNode->meshes.push_back(nd->mMeshes[i]);
 	}
