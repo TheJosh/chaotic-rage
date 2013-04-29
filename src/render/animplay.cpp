@@ -112,17 +112,21 @@ void AnimPlay::calcTransforms()
 **/
 void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float animTick)
 {
-	AssimpAnimKey* scaleKey = this->findFrameTime(&this->anim->anims[0]->scale, animTick);
-	AssimpAnimKey* rotationKey = this->findFrameTime(&this->anim->anims[0]->rotation, animTick);
-	AssimpAnimKey* positionKey = this->findFrameTime(&this->anim->anims[0]->position, animTick);
-	
+	AssimpNodeAnim* anim = this->anim->anims[0];
+
+	unsigned int positionKey = this->findFrameTime(&anim->position, animTick);
+	unsigned int rotationKey = this->findFrameTime(&anim->rotation, animTick);
+	unsigned int scaleKey = this->findFrameTime(&anim->scale, animTick);
+
+	float positionMix = this->mixFactor(&anim->position, positionKey, animTick);
+	float rotationMix = this->mixFactor(&anim->rotation, rotationKey, animTick);
+	float scaleMix = this->mixFactor(&anim->scale, scaleKey, animTick);
+
 	transform *= nd->transform;
-	
-	transform = glm::translate(transform, positionKey->vec);
-	transform *= glm::toMat4(rotationKey->quat);
-	transform = glm::scale(transform, scaleKey->vec);
-	
-	
+
+	transform = glm::translate(transform, glm::mix(anim->position[positionKey].vec, anim->position[positionKey + 1].vec, positionMix));
+	transform *= glm::toMat4(glm::mix(anim->rotation[rotationKey].quat, anim->rotation[rotationKey + 1].quat, rotationMix));
+	transform = glm::scale(transform, glm::mix(anim->scale[scaleKey].vec, anim->scale[scaleKey + 1].vec, scaleMix));
 
 	this->transforms[nd] = transform;
 
@@ -135,15 +139,30 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float anim
 /**
 * Find a valid key from the list of keys, for a given time value (in ticks)
 **/
-AssimpAnimKey* AnimPlay::findFrameTime(vector<AssimpAnimKey>* keys, float animTick)
+unsigned int AnimPlay::findFrameTime(vector<AssimpAnimKey>* keys, float animTick)
 {
-	for (vector<AssimpAnimKey>::iterator it = keys->begin(); it != keys->end(); it++) {
-		if (animTick < (*it).time) {
-			return &(*it);
+	for (unsigned int i = 0; i < keys->size() - 1; i++) {
+		if (animTick < keys->at(i + 1).time) {
+			return i;
 		}
 	}
 	
 	assert(0);
+}
+
+
+/**
+* Find a valid key from the list of keys, for a given time value (in ticks)
+**/
+float AnimPlay::mixFactor(vector<AssimpAnimKey>* keys, unsigned int index, float animTick)
+{
+	AssimpAnimKey* curr = &(keys->at(index));
+	AssimpAnimKey* next = &(keys->at(index+1));
+	
+	return
+		(animTick - curr->time)
+		/
+		(next->time - curr->time);
 }
 
 
