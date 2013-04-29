@@ -38,6 +38,9 @@ cfg_opt_t vehicletype_opts[] =
 	CFG_FLOAT((char*) "reverse-accel", 5.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "reverse-max", 30.0f, CFGF_NONE),
 	
+	CFG_STR((char*) "move-node", (char*)"", CFGF_NONE),
+	CFG_FLOAT_LIST((char*) "move-axis", 0, CFGF_NONE),
+	
 	CFG_SEC((char*) "damage", damage_opts, CFGF_MULTI),
 	
 	CFG_END()
@@ -52,6 +55,7 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	VehicleType* wt;
 	string filename;
 	int size;
+	char* tmp;
 	
 	wt = new VehicleType();
 	wt->name = cfg_getstr(cfg_item, "name");
@@ -66,11 +70,20 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	wt->reverse_accel = cfg_getfloat(cfg_item, "reverse-accel");
 	wt->reverse_max = cfg_getfloat(cfg_item, "reverse-max");
 	
-	char * tmp = cfg_getstr(cfg_item, "model");
+	tmp = cfg_getstr(cfg_item, "model");
 	if (tmp != NULL) {
 		wt->model = mod->getAssimpModel(tmp);
 		if (! wt->model) return NULL;
 	}
+	
+	tmp = cfg_getstr(cfg_item, "move-node");
+	if (tmp != NULL) {
+		wt->move_node = tmp;
+		wt->move_axis = cfg_getvec3(cfg_item, "move-axis");
+	} else {
+		wt->move_node = "";
+	}
+	
 	
 	// Load damage states
 	size = cfg_size(cfg_item, "damage");

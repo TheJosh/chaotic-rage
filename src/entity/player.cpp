@@ -160,8 +160,10 @@ void Player::update(int delta)
 			this->drive->steering = MIN(this->drive->steering + 0.01f, 0.0f);
 		}
 		
-		glm::mat4 turret = glm::toMat4(glm::rotate(glm::quat(), this->vertical_angle, glm::vec3(1.0f, 0.0f, 0.0f)));
-		this->drive->getAnimModel()->setMoveTransform(turret);
+		if (this->drive->vt->move_node != "") {
+			glm::mat4 turret = glm::toMat4(glm::rotate(glm::quat(), this->vertical_angle, this->drive->vt->move_axis));
+			this->drive->getAnimModel()->setMoveTransform(turret);
+		}
 
 	} else {
 		// Waling around

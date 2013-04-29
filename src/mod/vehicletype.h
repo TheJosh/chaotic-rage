@@ -34,6 +34,9 @@ class VehicleType
 		float reverse_accel;
 		float reverse_max;
 		
+		string move_node;
+		glm::vec3 move_axis;
+		
 		vector <VehicleTypeDamage *> damage_models;
 		
 	public:

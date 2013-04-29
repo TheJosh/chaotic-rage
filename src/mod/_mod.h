@@ -12,6 +12,7 @@
 #include "mod.h"
 #include "mod_proxy.h"
 #include "mod_manager.h"
+#include "confuse_types.h"
 #include "aitype.h"
 #include "campaign.h"
 #include "floortype.h"
