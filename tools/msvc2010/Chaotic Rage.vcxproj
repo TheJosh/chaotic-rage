@@ -163,6 +163,7 @@
     <ClCompile Include="..\..\src\menu.cpp" />
     <ClCompile Include="..\..\src\mod\aitype.cpp" />
     <ClCompile Include="..\..\src\mod\campaign.cpp" />
+    <ClCompile Include="..\..\src\mod\confuse_types.cpp" />
     <ClCompile Include="..\..\src\mod\floortype.cpp" />
     <ClCompile Include="..\..\src\mod\gametype.cpp" />
     <ClCompile Include="..\..\src\mod\mod.cpp" />
@@ -243,6 +244,7 @@
     <ClInclude Include="..\..\src\menu.h" />
     <ClInclude Include="..\..\src\mod\aitype.h" />
     <ClInclude Include="..\..\src\mod\campaign.h" />
+    <ClInclude Include="..\..\src\mod\confuse_types.h" />
     <ClInclude Include="..\..\src\mod\floortype.h" />
     <ClInclude Include="..\..\src\mod\gametype.h" />
     <ClInclude Include="..\..\src\mod\mod.h" />

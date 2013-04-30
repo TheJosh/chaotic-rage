@@ -83,6 +83,8 @@ class AssimpModel
 
 	private:
 		const struct aiScene* sc;			// TODO: remove this, pass it as a func. arg everywhere instead.
+		unsigned int* boneIds;
+		float* boneWeights;
 		btVector3 boundingSize;
 		
 	protected:
@@ -115,6 +117,11 @@ class AssimpModel
 
 		glm::vec3 convVector(aiVector3D in);
 		glm::quat convQuaternion(aiQuaternion in);
+
+		void loadBones(const aiMesh* mesh);
+		unsigned int* getBoneIds();
+		float* getBoneWeights();
+		void freeBones();
 };
 
 

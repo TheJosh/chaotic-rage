@@ -288,3 +288,74 @@ glm::quat AssimpModel::convQuaternion(aiQuaternion in)
 {
 	return glm::quat(in.w, in.x, in.y, in.z);
 }
+
+
+/**
+* Calculate the bone ids and bone weights
+**/
+void AssimpModel::loadBones(const aiMesh* mesh)
+{
+	unsigned int n, m;
+	unsigned int *idx;
+
+	// Allocate space for the IDs and weights
+	this->boneIds = (unsigned int*) malloc(sizeof(unsigned int) * 4 * mesh->mNumVertices);
+	this->boneWeights = (float*) malloc(sizeof(float) * 4 * mesh->mNumVertices);
+	memset(this->boneIds, 0, sizeof(unsigned int) * mesh->mNumVertices);
+	memset(this->boneWeights, 0, sizeof(float) * 4 * mesh->mNumVertices);
+
+	// Keeps track of which index a given vertex is up to
+	idx = (unsigned int*) malloc(sizeof(unsigned int) * mesh->mNumVertices);
+	memset(idx, 0, sizeof(unsigned int) * mesh->mNumVertices);
+
+	// Loop through the weights of all the bones
+	// Save the id and the weight in the arrays as required
+	for (n = 0; n < mesh->mNumBones; n++) {
+		aiBone* bone = mesh->mBones[n];
+		
+		for (m = 0; m < bone->mNumWeights; m++) {
+			aiVertexWeight w = bone->mWeights[m];
+
+			if (idx[w.mVertexId] == 4) continue;
+
+			this->boneIds[w.mVertexId * 4 + idx[w.mVertexId]] = n;
+			this->boneWeights[w.mVertexId * 4 + idx[w.mVertexId]] = w.mWeight;
+
+			idx[w.mVertexId]++;
+		}
+	}
+
+	free(idx);
+}
+
+
+/**
+* Returns an array where each index refers to four
+* ints (which get mapped to a glm::ivec4) of bone ids
+* The index is the vertex index
+**/
+unsigned int* AssimpModel::getBoneIds()
+{
+	return this->boneIds;
+}
+
+
+/**
+* Returns an array where each index refers to four
+* floats (which get mapped to a glm::vec4) of bone weights
+* The index is the vertex index
+**/
+float* AssimpModel::getBoneWeights()
+{
+	return this->boneWeights;
+}
+
+
+/**
+* Free the bone data loaded in loadBones(
+**/
+void AssimpModel::freeBones()
+{
+	free(this->boneIds);
+	free(this->boneWeights);
+}

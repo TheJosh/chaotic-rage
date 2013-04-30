@@ -381,6 +381,9 @@
     <ClCompile Include="..\..\src\fx\newparticle.cpp">
       <Filter>src\fx</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\mod\confuse_types.cpp">
+      <Filter>src\mod</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">
@@ -640,6 +643,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\util\_util.h">
       <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\confuse_types.h">
+      <Filter>src\mod</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

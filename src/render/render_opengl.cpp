@@ -1230,6 +1230,25 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 			glVertexAttribPointer(2, 3, GL_FLOAT, 0, 0, 0);
 		}
 		
+		// Bone IDs and Weights
+		if (mesh->HasBones()) {
+			am->loadBones(mesh);
+
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned int)*4*mesh->mNumVertices, am->getBoneIds(), GL_STATIC_DRAW);
+			glEnableVertexAttribArray(3);
+			glVertexAttribIPointer(3, 4, GL_UNSIGNED_INT, 0, 0);
+
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*4*mesh->mNumVertices, am->getBoneWeights(), GL_STATIC_DRAW);
+			glEnableVertexAttribArray(3);
+			glVertexAttribPointer(4, 4, GL_FLOAT, 0, 0, 0);
+
+			am->freeBones();
+		}
+
 		glBindVertexArray(0);
 		
 		am->meshes.push_back(myMesh);
