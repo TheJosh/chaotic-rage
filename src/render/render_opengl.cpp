@@ -1232,7 +1232,7 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 		
 		// Bone IDs and Weights
 		if (mesh->HasBones()) {
-			am->loadBones(mesh);
+			am->loadBones(mesh, myMesh);
 
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);

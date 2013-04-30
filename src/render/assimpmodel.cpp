@@ -293,7 +293,7 @@ glm::quat AssimpModel::convQuaternion(aiQuaternion in)
 /**
 * Calculate the bone ids and bone weights
 **/
-void AssimpModel::loadBones(const aiMesh* mesh)
+void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 {
 	unsigned int n, m;
 	unsigned int *idx;
@@ -323,6 +323,12 @@ void AssimpModel::loadBones(const aiMesh* mesh)
 
 			idx[w.mVertexId]++;
 		}
+
+		// We also have to save the bone data in our structure
+		AssimpBone* b = new AssimpBone();
+		b->name = std::string(bone->mName.C_Str());
+		b->offset = glm::make_mat4((float *) &(bone->mOffsetMatrix));
+		myMesh->bones.push_back(b);
 	}
 
 	free(idx);

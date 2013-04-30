@@ -14,12 +14,21 @@
 using namespace std;
 
 
+
+class AssimpBone
+{
+	public:
+		string name;
+		glm::mat4 offset;
+};
+
 class AssimpMesh
 {
 	public:
 		GLuint vao;
 		int numFaces;
 		int materialIndex;
+		vector<AssimpBone*> bones; 
 };
 
 class AssimpMaterial
@@ -118,7 +127,7 @@ class AssimpModel
 		glm::vec3 convVector(aiVector3D in);
 		glm::quat convQuaternion(aiQuaternion in);
 
-		void loadBones(const aiMesh* mesh);
+		void loadBones(const aiMesh* mesh, AssimpMesh* myMesh);
 		unsigned int* getBoneIds();
 		float* getBoneWeights();
 		void freeBones();
