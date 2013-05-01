@@ -843,7 +843,9 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	glBindAttribLocation(program, 0, "vPosition");
 	glBindAttribLocation(program, 1, "vNormal");
 	glBindAttribLocation(program, 2, "vTexUV");
-	
+	glBindAttribLocation(program, 3, "vBoneIDs");
+	glBindAttribLocation(program, 4, "vBoneWeights");
+
 	// Link
 	glLinkProgram(program);
 	glDeleteShader(sVertex);
@@ -1248,14 +1250,14 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned int)*4*mesh->mNumVertices, am->getBoneIds(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned int)*4*mesh->mNumVertices, am->boneIds, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(3);
-			glVertexAttribIPointer(3, 4, GL_UNSIGNED_INT, 0, 0);
-
+			glVertexAttribIPointer(3, 4, GL_INT, 0, 0);
+			
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*4*mesh->mNumVertices, am->getBoneWeights(), GL_STATIC_DRAW);
-			glEnableVertexAttribArray(3);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*4*mesh->mNumVertices, am->boneWeights, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(4);
 			glVertexAttribPointer(4, 4, GL_FLOAT, 0, 0, 0);
 
 			am->freeBones();

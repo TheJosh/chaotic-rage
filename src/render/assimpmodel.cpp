@@ -301,8 +301,12 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 	// Allocate space for the IDs and weights
 	this->boneIds = (unsigned int*) malloc(sizeof(unsigned int) * 4 * mesh->mNumVertices);
 	this->boneWeights = (float*) malloc(sizeof(float) * 4 * mesh->mNumVertices);
-	memset(this->boneIds, 0, sizeof(unsigned int) * mesh->mNumVertices);
-	memset(this->boneWeights, 0, sizeof(float) * 4 * mesh->mNumVertices);
+
+	// Set to nothing
+	for (unsigned int i = 0; i < (4 * mesh->mNumVertices); i++) {
+		this->boneIds[i] = 0;
+		this->boneWeights[i] = 0.0f;
+	}
 
 	// Keeps track of which index a given vertex is up to
 	idx = (unsigned int*) malloc(sizeof(unsigned int) * mesh->mNumVertices);
@@ -335,7 +339,7 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 		
 		cout << "    Found bone " << n << "; name = " << b->name << "\n";
 	}
-
+	
 	free(idx);
 }
 

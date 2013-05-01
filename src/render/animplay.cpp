@@ -245,7 +245,7 @@ void AnimPlay::calcBoneTransforms()
 		for (unsigned int i = 0; i < mesh->bones.size(); i++) {
 			if (iter->first->name == mesh->bones[i]->name) {
 				
-				glm::mat4 transform = GlobalInverseTransform * iter->second * mesh->bones[i]->offset;
+				glm::mat4 transform = GlobalInverseTransform * iter->second * glm::inverse(mesh->bones[i]->offset);
 				
 				//transform = iter->second * mesh->bones[i]->offset;
 				

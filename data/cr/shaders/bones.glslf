@@ -6,5 +6,5 @@ uniform sampler2D uTex;
 
 void main()
 {
-	gl_FragColor = vec4(fBoneWeights.rgb, 1.0f); //texture2D(uTex, fTexUV);
+	gl_FragColor = vec4(fBoneWeights.rgb, 0.5f) + texture2D(uTex, fTexUV);
 }
