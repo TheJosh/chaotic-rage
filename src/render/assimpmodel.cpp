@@ -318,8 +318,9 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 		for (m = 0; m < bone->mNumWeights; m++) {
 			aiVertexWeight w = bone->mWeights[m];
 
+			if (w.mWeight < 0.01f) continue;
 			if (idx[w.mVertexId] == MAX_WEIGHTS) continue;
-
+			
 			this->boneIds[w.mVertexId * 4 + idx[w.mVertexId]] = n;
 			this->boneWeights[w.mVertexId * 4 + idx[w.mVertexId]] = w.mWeight;
 
