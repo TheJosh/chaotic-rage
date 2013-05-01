@@ -43,6 +43,9 @@ class AnimPlay
 		// and then fed into the renderer
 		map<AssimpNode*, glm::mat4> transforms;
 		
+		// Calculated bone transforms
+		vector<glm::mat4> bone_transforms;
+		
 	public:
 		AnimPlay(AssimpModel* model);
 		AnimPlay(AssimpModel* model, unsigned int animation);
@@ -57,6 +60,7 @@ class AnimPlay
 		void setMoveTransform(glm::mat4 transform);
 		void calcTransformsStatic();
 		void calcTransforms();
+		void calcBoneTransforms();
 
 	private:
 		void calcTransformNodeStatic(AssimpNode* nd, glm::mat4 transform);

@@ -308,6 +308,8 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 	idx = (unsigned int*) malloc(sizeof(unsigned int) * mesh->mNumVertices);
 	memset(idx, 0, sizeof(unsigned int) * mesh->mNumVertices);
 
+	cout << "Doing bones for mesh " << myMesh << "\n";
+	
 	// Loop through the weights of all the bones
 	// Save the id and the weight in the arrays as required
 	for (n = 0; n < mesh->mNumBones; n++) {
@@ -316,7 +318,7 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 		for (m = 0; m < bone->mNumWeights; m++) {
 			aiVertexWeight w = bone->mWeights[m];
 
-			if (idx[w.mVertexId] == 4) continue;
+			if (idx[w.mVertexId] == MAX_WEIGHTS) continue;
 
 			this->boneIds[w.mVertexId * 4 + idx[w.mVertexId]] = n;
 			this->boneWeights[w.mVertexId * 4 + idx[w.mVertexId]] = w.mWeight;
@@ -329,6 +331,8 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 		b->name = std::string(bone->mName.C_Str());
 		b->offset = glm::make_mat4((float *) &(bone->mOffsetMatrix));
 		myMesh->bones.push_back(b);
+		
+		cout << "    Found bone " << n << "; name = " << b->name << "\n";
 	}
 
 	free(idx);

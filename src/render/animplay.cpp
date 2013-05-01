@@ -10,6 +10,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace std;
 
@@ -141,7 +142,7 @@ void AnimPlay::calcTransformsStatic()
 void AnimPlay::calcTransformNodeStatic(AssimpNode* nd, glm::mat4 transform)
 {
 	transform *= nd->transform;
-	
+
 	this->transforms[nd] = transform;
 	
 	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {
@@ -213,6 +214,47 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float anim
 
 	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {
 		calcTransformNode((*it), transform, animTick);
+	}
+}
+
+
+/**
+* Calculate the bone transforms
+**/
+void AnimPlay::calcBoneTransforms()
+{
+	cout << "Calculating bone transforms...\n";
+	
+	// set all bones to empty transform
+	bone_transforms.clear();
+	for (unsigned int i = 0; i < MAX_BONES; i++) {
+		bone_transforms.push_back(glm::mat4(1.0f));
+	}
+	
+	
+	// For now we only operate on the first mesh
+	AssimpMesh* mesh = this->model->meshes[0];
+	
+	glm::mat4 GlobalInverseTransform = glm::inverse(this->model->rootNode->transform);
+	
+	// Iterate over the transforms we already have and load into the bone array
+	map<AssimpNode*, glm::mat4>::iterator iter;
+	for (iter = transforms.begin(); iter != transforms.end(); ++iter) {
+		
+		// Look for a matching bone
+		for (unsigned int i = 0; i < mesh->bones.size(); i++) {
+			if (iter->first->name == mesh->bones[i]->name) {
+				
+				glm::mat4 transform = GlobalInverseTransform * iter->second * mesh->bones[i]->offset;
+				
+				//transform = iter->second * mesh->bones[i]->offset;
+				
+				this->bone_transforms[i] = transform;
+				
+				cout << "   set transform for bone " << i << "; name = " << mesh->bones[i]->name << "\n";
+			}
+		}
+		
 	}
 }
 

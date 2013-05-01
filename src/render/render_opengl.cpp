@@ -778,6 +778,7 @@ void RenderOpenGL::loadShaders()
 	
 	base = this->st->mm->getBase();
 	this->shaders["entities"] = loadProgram(base, "entities");
+	this->shaders["bones"] = loadProgram(base, "bones");
 	this->shaders["map"] = loadProgram(base, "map");
 	this->shaders["water"] = loadProgram(base, "water");
 	this->shaders["particles"] = loadProgram(base, "particles");
@@ -1089,18 +1090,29 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 		*/
 		
 		
-		
-		shader = this->shaders["entities"];
-		
-		glUseProgram(shader->p());
-		
-		glBindAttribLocation(shader->p(), 0, "vPosition");
-		glBindAttribLocation(shader->p(), 1, "vNormal");
-		glBindAttribLocation(shader->p(), 2, "vTexUV");
-		
 		if (play->isAnimated()) {
 			play->calcTransforms();
 		}
+		
+		
+		if (am->meshes[0]->bones.size() > 0) {
+			shader = this->shaders["bones"];
+			glUseProgram(shader->p());
+			
+			glBindAttribLocation(shader->p(), 3, "vBoneIDs");
+			glBindAttribLocation(shader->p(), 4, "vBoneWeights");
+			
+			play->calcBoneTransforms();
+			glUniformMatrix4fv(shader->uniform("uBones[0]"), MAX_BONES, GL_FALSE, &play->bone_transforms[0][0][0]);
+			
+		} else {
+			shader = this->shaders["entities"];
+			glUseProgram(shader->p());
+		}
+
+		glBindAttribLocation(shader->p(), 0, "vPosition");
+		glBindAttribLocation(shader->p(), 1, "vNormal");
+		glBindAttribLocation(shader->p(), 2, "vTexUV");
 
 		recursiveRenderAssimpModel(play, am, am->rootNode, shader, modelMatrix);
 
