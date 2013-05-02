@@ -25,6 +25,15 @@ using namespace std;
 #define MAX_WEIGHTS 4
 
 
+class AssimpAnimation;
+class AssimpAnimKey;
+class AssimpBone;
+class AssimpMaterial;
+class AssimpMesh;
+class AssimpModel;
+class AssimpNode;
+class AssimpNodeAnim;
+
 
 class AssimpBone
 {
@@ -39,7 +48,11 @@ class AssimpMesh
 		GLuint vao;
 		int numFaces;
 		int materialIndex;
-		vector<AssimpBone*> bones; 
+		vector<AssimpBone*> bones;
+		AssimpNode* nd;
+		
+	public:
+		AssimpMesh() : nd(NULL) {}
 };
 
 class AssimpMaterial

@@ -254,13 +254,18 @@ void AnimPlay::calcBoneTransforms()
 		glm::mat4 transform = bn->offset;
 		
 		AssimpNode* tempNode = nd;
-		while (tempNode) {
+		//while (tempNode) {
 			map<AssimpNode*, glm::mat4>::iterator it = this->transforms.find(tempNode);
 			if (it != this->transforms.end()) {
 				transform *= it->second;
 			}
 			
-			tempNode = tempNode->parent;
+		//	tempNode = tempNode->parent;
+		//}
+		
+		it = this->transforms.find(mesh->nd);
+		if (it != this->transforms.end()) {
+			transform *= glm::inverse(it->second);
 		}
 		
 		this->bone_transforms[i] = transform;

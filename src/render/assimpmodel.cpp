@@ -65,13 +65,13 @@ bool AssimpModel::load(Render3D* render)
 	
 	free(data);
 	
-	this->calcBoundingSize();
-	this->loadNodes();
-	this->loadAnimations();
-	
 	if (! render->loadAssimpModel(this)) {
 		return false;
 	}
+	
+	this->calcBoundingSize();
+	this->loadNodes();
+	this->loadAnimations();
 	
 	this->sc = NULL;
 	
@@ -150,6 +150,7 @@ AssimpNode* AssimpModel::loadNode(aiNode* nd)
 
 	for (i = 0; i < nd->mNumMeshes; i++) {
 		myNode->meshes.push_back(nd->mMeshes[i]);
+		this->meshes[nd->mMeshes[i]]->nd = myNode;
 	}
 	
 	for (i = 0; i < nd->mNumChildren; i++) {
