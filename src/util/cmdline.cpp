@@ -15,7 +15,7 @@ using namespace std;
 /**
 * Parses the command line arguments using GetOpt
 **/
-CommandLineArgs::CommandLineArgs(GameState *st, int argc, char ** argv)
+void CommandLineArgs::process()
 {
 	#ifdef GETOPT
 	

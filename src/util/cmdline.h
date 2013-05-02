@@ -14,10 +14,19 @@ using namespace std;
 
 class CommandLineArgs
 {
+	private:
+		GameState *st;
+		int argc;
+		char ** argv;
+		
 	public:
 		string mod;
 		string campaign;
 		
 	public:
-		CommandLineArgs(GameState *st, int argc, char ** argv);
+		CommandLineArgs(GameState *st, int argc, char ** argv)
+			: st(st), argc(argc), argv(argv)
+			{}
+			
+		void process();
 };
