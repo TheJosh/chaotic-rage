@@ -1147,12 +1147,18 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 	}
 
 	CHECK_OPENGL_ERROR;
-
-	glm::mat4 MVP = this->projection * this->view * xform_global * transform;
-	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	
+	glm::mat4 MVPstatic = this->projection * this->view * xform_global * transform;
+	glm::mat4 MVPbones = this->projection * this->view * xform_global;
 	
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); it++) {
 		AssimpMesh* mesh = am->meshes[(*it)];
+		
+		if (mesh->bones.size() == 0) {
+			glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPstatic));
+		} else {
+			glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPbones));
+		}
 		
 		if (am->materials[mesh->materialIndex]->tex == NULL) {
 			glBindTexture(GL_TEXTURE_2D, 0);

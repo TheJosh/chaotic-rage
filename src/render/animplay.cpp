@@ -218,18 +218,6 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float anim
 }
 
 
-std::ostream &operator<< (std::ostream &out, const glm::mat4 &mat) {
-    out << "{\n" 
-        << mat[0].x << " " << mat[0].y << " " << mat[0].z << " " << mat[0].w << "\n"
-        << mat[1].x << " " << mat[1].y << " " << mat[1].z << " " << mat[1].w << "\n"
-        << mat[2].x << " " << mat[2].y << " " << mat[2].z << " " << mat[2].w << "\n"
-        << mat[3].x << " " << mat[3].y << " " << mat[3].z << " " << mat[3].w << "\n"
-        << "}";
-
-    return out;
-}
-
-
 /**
 * Calculate the bone transforms
 **/
@@ -241,35 +229,37 @@ void AnimPlay::calcBoneTransforms()
 		bone_transforms.push_back(glm::mat4(1.0f));
 	}
 	
+	
 	// For now we only operate on the first mesh
 	AssimpMesh* mesh = this->model->meshes[0];
 	
 	for (unsigned int i = 0; i < mesh->bones.size(); i++) {
 		AssimpBone *bn = mesh->bones[i];
-		AssimpNode *nd = this->model->findNode(this->model->rootNode, bn->name);
-		if (nd == NULL) continue;
+		if (bn->nd == NULL) continue;
 		
-		cout << "Bone " << i << ", node " << nd->name << "\n";
+		cout << "Bone " << i << ", node " << bn->nd->name << "\n";
 		
-		glm::mat4 transform = bn->offset;
+		glm::mat4 transform;
 		
-		AssimpNode* tempNode = nd;
-		//while (tempNode) {
+		/*AssimpNode* tempNode = bn->nd;
+		while (tempNode) {
 			map<AssimpNode*, glm::mat4>::iterator it = this->transforms.find(tempNode);
 			if (it != this->transforms.end()) {
 				transform *= it->second;
 			}
 			
-		//	tempNode = tempNode->parent;
-		//}
+			//transform *= tempNode->transform;
+			tempNode = tempNode->parent;
+		}*/
 		
-		it = this->transforms.find(mesh->nd);
+		map<AssimpNode*, glm::mat4>::iterator it = this->transforms.find(bn->nd);
 		if (it != this->transforms.end()) {
-			transform *= glm::inverse(it->second);
+			transform = it->second;
 		}
 		
-		this->bone_transforms[i] = transform;
+		this->bone_transforms[i] = transform * bn->offset;
 	}
+	
 }
 
 

@@ -72,6 +72,7 @@ bool AssimpModel::load(Render3D* render)
 	this->calcBoundingSize();
 	this->loadNodes();
 	this->loadAnimations();
+	this->setBoneNodes();
 	
 	this->sc = NULL;
 	
@@ -333,17 +334,17 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 		}
 
 		// We also have to save the bone data in our structure
-		AssimpBone* b = new AssimpBone();
-		b->name = std::string(bone->mName.C_Str());
-		b->offset = glm::make_mat4((float *) &(bone->mOffsetMatrix));
+		AssimpBone* bn = new AssimpBone();
+		bn->name = std::string(bone->mName.C_Str());
+		bn->offset = glm::make_mat4((float *) &(bone->mOffsetMatrix));
 		
 		aiMatrix4x4 m = bone->mOffsetMatrix;
 		m.Transpose();
-		b->offset = glm::make_mat4((float *) &m);
-	
-		myMesh->bones.push_back(b);
+		bn->offset = glm::make_mat4((float *) &m);
 		
-		cout << "    Found bone " << n << "; name = " << b->name << "\n";
+		myMesh->bones.push_back(bn);
+		
+		cout << "    Found bone " << n << "; name = " << bn->name << "\n";
 	}
 	
 	free(idx);
@@ -380,3 +381,22 @@ void AssimpModel::freeBones()
 	free(this->boneIds);
 	free(this->boneWeights);
 }
+
+
+/**
+* The AssimpBones have a pointer to their associated AssimpNode
+* We need to hook these up
+**/
+void AssimpModel::setBoneNodes()
+{
+	for (vector<AssimpMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); it++) {
+		AssimpMesh* mesh = (*it);
+		
+		for (unsigned int i = 0; i < mesh->bones.size(); i++) {
+			AssimpBone *bn = mesh->bones[i];
+			bn->nd = this->findNode(this->rootNode, bn->name);
+		}
+	}
+}
+
+		

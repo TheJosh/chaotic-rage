@@ -40,6 +40,7 @@ class AssimpBone
 	public:
 		string name;
 		glm::mat4 offset;
+		AssimpNode* nd;
 };
 
 class AssimpMesh
@@ -155,6 +156,7 @@ class AssimpModel
 		unsigned int* getBoneIds();
 		float* getBoneWeights();
 		void freeBones();
+		void setBoneNodes();
 };
 
 
