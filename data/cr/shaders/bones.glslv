@@ -28,5 +28,6 @@ void main()
 	gl_Position = uMVP * BoneTransform * vec4(vPosition, 1.0f);
 
 	fTexUV = vTexUV;
-	fBoneWeights = vBoneWeights;
+	
+	fBoneWeights = vBoneIDs;
 }

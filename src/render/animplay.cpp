@@ -218,43 +218,52 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float anim
 }
 
 
+std::ostream &operator<< (std::ostream &out, const glm::mat4 &mat) {
+    out << "{\n" 
+        << mat[0].x << " " << mat[0].y << " " << mat[0].z << " " << mat[0].w << "\n"
+        << mat[1].x << " " << mat[1].y << " " << mat[1].z << " " << mat[1].w << "\n"
+        << mat[2].x << " " << mat[2].y << " " << mat[2].z << " " << mat[2].w << "\n"
+        << mat[3].x << " " << mat[3].y << " " << mat[3].z << " " << mat[3].w << "\n"
+        << "}";
+
+    return out;
+}
+
+
 /**
 * Calculate the bone transforms
 **/
 void AnimPlay::calcBoneTransforms()
 {
-	cout << "Calculating bone transforms...\n";
-	
 	// set all bones to empty transform
 	bone_transforms.clear();
 	for (unsigned int i = 0; i < MAX_BONES; i++) {
 		bone_transforms.push_back(glm::mat4(1.0f));
 	}
 	
-	
 	// For now we only operate on the first mesh
 	AssimpMesh* mesh = this->model->meshes[0];
 	
-	glm::mat4 GlobalInverseTransform = glm::inverse(this->model->rootNode->transform);
-	
-	// Iterate over the transforms we already have and load into the bone array
-	map<AssimpNode*, glm::mat4>::iterator iter;
-	for (iter = transforms.begin(); iter != transforms.end(); ++iter) {
+	for (unsigned int i = 0; i < mesh->bones.size(); i++) {
+		AssimpBone *bn = mesh->bones[i];
+		AssimpNode *nd = this->model->findNode(this->model->rootNode, bn->name);
+		if (nd == NULL) continue;
 		
-		// Look for a matching bone
-		for (unsigned int i = 0; i < mesh->bones.size(); i++) {
-			if (iter->first->name == mesh->bones[i]->name) {
-				
-				glm::mat4 transform = GlobalInverseTransform * iter->second * glm::inverse(mesh->bones[i]->offset);
-				
-				//transform = iter->second * mesh->bones[i]->offset;
-				
-				this->bone_transforms[i] = transform;
-				
-				cout << "   set transform for bone " << i << "; name = " << mesh->bones[i]->name << "\n";
+		cout << "Bone " << i << ", node " << nd->name << "\n";
+		
+		glm::mat4 transform = bn->offset;
+		
+		AssimpNode* tempNode = nd;
+		while (tempNode) {
+			map<AssimpNode*, glm::mat4>::iterator it = this->transforms.find(tempNode);
+			if (it != this->transforms.end()) {
+				transform *= it->second;
 			}
+			
+			tempNode = tempNode->parent;
 		}
 		
+		this->bone_transforms[i] = transform;
 	}
 }
 

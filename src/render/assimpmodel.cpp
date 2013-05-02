@@ -335,6 +335,11 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 		AssimpBone* b = new AssimpBone();
 		b->name = std::string(bone->mName.C_Str());
 		b->offset = glm::make_mat4((float *) &(bone->mOffsetMatrix));
+		
+		aiMatrix4x4 m = bone->mOffsetMatrix;
+		m.Transpose();
+		b->offset = glm::make_mat4((float *) &m);
+	
 		myMesh->bones.push_back(b);
 		
 		cout << "    Found bone " << n << "; name = " << b->name << "\n";
