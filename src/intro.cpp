@@ -82,6 +82,14 @@ void Intro::updateUI()
 	int time = SDL_GetTicks() - start;
 	SpritePtr img;
 	
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		if (event.type == SDL_QUIT) {
+			// TODO: Think up a way to inform the loader to abort
+		}
+	}
+
+	// Update the image
 	if (time > 1000) {
 		img = this->img3;
 	} else if (time > 500) {
@@ -90,12 +98,13 @@ void Intro::updateUI()
 		img = this->img1;
 	}
 	
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+	// Calculate the position...
 	int x = (this->render->getWidth() - img->w) / 2;
 	int y = (this->render->getHeight() - img->h) / 2;
+
+	// ...and render!
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	this->render->renderSprite(img, x, y);
-	
 	SDL_GL_SwapBuffers();
 }
 
