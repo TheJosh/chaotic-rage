@@ -143,8 +143,6 @@ void AssimpModel::loadNodes()
 **/
 AssimpNode* AssimpModel::loadNode(aiNode* nd)
 {
-	if (nd->mNumMeshes == 0 && nd->mNumChildren == 0) return NULL;
-
 	unsigned int i;
 	AssimpNode* myNode = new AssimpNode();
 	myNode->name = std::string(nd->mName.C_Str());

@@ -229,37 +229,19 @@ void AnimPlay::calcBoneTransforms()
 		bone_transforms.push_back(glm::mat4(1.0f));
 	}
 	
-	
 	// For now we only operate on the first mesh
 	AssimpMesh* mesh = this->model->meshes[0];
 	
+	// Iterate through the bones and set the transforms from the nodes
 	for (unsigned int i = 0; i < mesh->bones.size(); i++) {
 		AssimpBone *bn = mesh->bones[i];
 		if (bn->nd == NULL) continue;
 		
-		cout << "Bone " << i << ", node " << bn->nd->name << "\n";
-		
-		glm::mat4 transform;
-		
-		/*AssimpNode* tempNode = bn->nd;
-		while (tempNode) {
-			map<AssimpNode*, glm::mat4>::iterator it = this->transforms.find(tempNode);
-			if (it != this->transforms.end()) {
-				transform *= it->second;
-			}
-			
-			//transform *= tempNode->transform;
-			tempNode = tempNode->parent;
-		}*/
-		
 		map<AssimpNode*, glm::mat4>::iterator it = this->transforms.find(bn->nd);
-		if (it != this->transforms.end()) {
-			transform = it->second;
-		}
+		if (it == this->transforms.end()) continue;
 		
-		this->bone_transforms[i] = transform * bn->offset;
+		this->bone_transforms[i] = it->second * bn->offset;
 	}
-	
 }
 
 
