@@ -22,7 +22,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	this->weapon = NULL;
 	this->firing = false;
 	
-	this->anim = new AnimPlay(this->uc->model);
+	this->anim = new AnimPlay(this->uc->model, 0);
 	
 	this->remove_at = 0;
 	
