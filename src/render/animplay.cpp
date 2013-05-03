@@ -188,22 +188,34 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float anim
 	if (this->move && this->move == nd) {
 		local = nd->transform * this->move_transform;
 
-	} else if (this->anim && this->anim->anims[0]->name == nd->name) {
-		AssimpNodeAnim* animNode = this->anim->anims[0];
+	} else if (this->anim) {
+		// Find animation channel
+		AssimpNodeAnim* animNode = NULL;
+		for (vector<AssimpNodeAnim*>::iterator it = this->anim->anims.begin(); it != this->anim->anims.end(); it++) {
+			if ((*it)->name == nd->name) {
+				animNode = (*it);
+				break;
+			}
+		}
 
-		unsigned int positionKey = this->findFrameTime(&animNode->position, animTick);
-		unsigned int rotationKey = this->findFrameTime(&animNode->rotation, animTick);
-		unsigned int scaleKey = this->findFrameTime(&animNode->scale, animTick);
+		// If channel found, do animation
+		if (animNode) {
+			unsigned int positionKey = this->findFrameTime(&animNode->position, animTick);
+			unsigned int rotationKey = this->findFrameTime(&animNode->rotation, animTick);
+			unsigned int scaleKey = this->findFrameTime(&animNode->scale, animTick);
 
-		float positionMix = this->mixFactor(&animNode->position, positionKey, animTick);
-		float rotationMix = this->mixFactor(&animNode->rotation, rotationKey, animTick);
-		float scaleMix = this->mixFactor(&animNode->scale, scaleKey, animTick);
+			float positionMix = this->mixFactor(&animNode->position, positionKey, animTick);
+			float rotationMix = this->mixFactor(&animNode->rotation, rotationKey, animTick);
+			float scaleMix = this->mixFactor(&animNode->scale, scaleKey, animTick);
 
-		glm::mat4 trans = glm::translate(glm::mat4(), glm::mix(animNode->position[positionKey].vec, animNode->position[positionKey + 1].vec, positionMix));
-		glm::mat4 rot = glm::toMat4(glm::mix(animNode->rotation[rotationKey].quat, animNode->rotation[rotationKey + 1].quat, rotationMix));
-		glm::mat4 scale = glm::scale(glm::mat4(), glm::mix(animNode->scale[scaleKey].vec, animNode->scale[scaleKey + 1].vec, scaleMix));
+			glm::mat4 trans = glm::translate(glm::mat4(), glm::mix(animNode->position[positionKey].vec, animNode->position[positionKey + 1].vec, positionMix));
+			glm::mat4 rot = glm::toMat4(glm::mix(animNode->rotation[rotationKey].quat, animNode->rotation[rotationKey + 1].quat, rotationMix));
+			glm::mat4 scale = glm::scale(glm::mat4(), glm::mix(animNode->scale[scaleKey].vec, animNode->scale[scaleKey + 1].vec, scaleMix));
 	
-		local = trans * rot * scale;
+			local = trans * rot * scale;
+		} else {
+			local = nd->transform;
+		}
 
 	} else {
 		local = nd->transform;
