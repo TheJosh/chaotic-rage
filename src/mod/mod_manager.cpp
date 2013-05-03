@@ -35,7 +35,7 @@ bool loadMods(GameState *st, UIUpdate* ui)
 	// If a suppl mod has been specified on the cmdline, try to load it
 	if (st->cmdline && st->cmdline->mod != "" && st->cmdline->mod != mod->name) {
 		Mod* newsuppl = new Mod(st, "data/" + st->cmdline->mod);
-		if (! newsuppl->load(NULL)) {
+		if (! newsuppl->load(ui)) {
 			reportFatalError("Unable to load mod '" + st->cmdline->mod + "'.");
 		}
 		st->mm->addMod(newsuppl);

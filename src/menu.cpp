@@ -42,7 +42,7 @@ Menu::Menu(GameState *st)
 /**
 * Load stuff from the currently loaded mods into some arrays.
 **/
-void Menu::loadModBits()
+void Menu::loadModBits(UIUpdate* ui)
 {
 	Mod* mod = st->mm->getSupplOrBase();
 
@@ -53,6 +53,8 @@ void Menu::loadModBits()
 		this->logo = this->render->loadSprite("menu/logo.png", st->mm->getBase());
 	}
 
+	if (ui) ui->updateUI();
+
 	// Background
 	delete(this->bg);
 	this->bg = this->render->loadSprite("menu/bg.jpg", mod);
@@ -60,11 +62,15 @@ void Menu::loadModBits()
 		this->bg = this->render->loadSprite("menu/bg.jpg", st->mm->getBase());
 	}
 
+	if (ui) ui->updateUI();
+
 	// Load maps
 	delete(this->mapreg);
 	this->mapreg = new MapRegistry();
 	this->mapreg->find(mod);
 	this->mapreg->find("maps");
+
+	if (ui) ui->updateUI();
 
 	// Gametypes
 	this->gametypes.clear();
@@ -122,7 +128,11 @@ void Menu::loadModBits()
 }
 
 
-void Menu::doit()
+/**
+* Run the menu
+* The UIUpdate is for the first-run on the menu, duing initial loading of the menu stuff
+**/
+void Menu::doit(UIUpdate* ui)
 {
 	Mod *mod = st->mm->getBase();
 	
@@ -130,18 +140,24 @@ void Menu::doit()
 	// A few bits always load off base
 	this->render->loadFont("orb.otf", mod);
 	
+	if (ui) ui->updateUI();
+
 	this->input = new gcn::SDLInput();
 	this->gui = new gcn::Gui();
 	this->gui->setInput(input);
 	this->render->initGuichan(gui, mod);
 	
+	if (ui) ui->updateUI();
+
 	this->bgmesh = loadObj("data/cr/menu/bg.obj");
 	this->bg_rot1_pos = -10.0f;
 	this->bg_rot1_dir = 0.006f;
 	this->bg_rot2_pos = 3.0f;
 	this->bg_rot2_dir = -0.004f;
 	
-	this->loadModBits();
+	if (ui) ui->updateUI();
+
+	this->loadModBits(ui);
 	this->setupGLstate();
 	
 	// Menu loop

@@ -39,6 +39,7 @@ void Intro::load()
 	img1 = this->render->loadSprite("joshcorp.png", mod);
 	img2 = this->render->loadSprite("sdl.png", mod);
 	img3 = this->render->loadSprite("game.png", mod);
+	text = this->render->loadSprite("loading.png", mod);
 
 	if (img1 == NULL || img2 == NULL || img3 == NULL) {
 		reportFatalError("Intro failed to load.  Is the working directory correct?");
@@ -71,6 +72,9 @@ void Intro::doit()
 	glLoadIdentity();
 	
 	start = SDL_GetTicks();
+	lasttime = 0;
+
+	this->updateUI();
 }
 
 
@@ -98,13 +102,21 @@ void Intro::updateUI()
 		img = this->img1;
 	}
 	
-	// Calculate the position...
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Render img
 	int x = (this->render->getWidth() - img->w) / 2;
 	int y = (this->render->getHeight() - img->h) / 2;
-
-	// ...and render!
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	this->render->renderSprite(img, x, y);
+
+	// Flashing message
+	int frame = (int)floor(time / 500.0f);
+	if (frame % 2 == 0) {
+		x = (this->render->getWidth() - text->w) / 2;
+		y = this->render->getHeight() - text->h - 50;
+		this->render->renderSprite(text, x, y);
+	}
+
 	SDL_GL_SwapBuffers();
 }
 

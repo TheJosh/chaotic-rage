@@ -28,8 +28,6 @@ int main (int argc, char ** argv)
 	SDL_WM_SetIcon(icon, NULL);
 	SDL_FreeSurface(icon);
 	
-	//displayMessageBox("Basic init done, let's init the subsystems.");
-
 	GameState *st = new GameState();
 	
 	st->cmdline = new CommandLineArgs(st, argc, argv);
@@ -51,21 +49,15 @@ int main (int argc, char ** argv)
 		sendClientStats();
 	#endif
 	
-	//displayMessageBox("Init of all subsystems done, loading intro");
-
 	// Intro
 	Intro *i = new Intro(st);
 	i->load();
 	i->doit();
 
-	//displayMessageBox("Intro finished, loading game data");
-
 	// Load the mods, with threads if possible
 	if (! loadMods(st, i)) {
 		exit(0);
 	}
-
-	//displayMessageBox("That's done, let's show the menu!");
 
 	Menu *m = new Menu(st);
 	
@@ -77,7 +69,7 @@ int main (int argc, char ** argv)
 		exit(0);
 	}
 	
-	m->doit();
+	m->doit(i);
 	
 	exit(0);
 }

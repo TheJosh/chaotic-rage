@@ -20,8 +20,10 @@ class Intro : public UIUpdate
 		SpritePtr img1;
 		SpritePtr img2;
 		SpritePtr img3;
+		SpritePtr text;
 		int start;
-		
+		int lasttime;
+
 	public:
 		Intro(GameState *st);
 		~Intro();

@@ -70,8 +70,8 @@ class Menu : public UIUpdate
 		Menu(GameState *st);
 		GameState *getGameState() { return this->st; }
 		
-		void loadModBits();
-		void doit();
+		void loadModBits(UIUpdate* ui = NULL);
+		void doit(UIUpdate* ui);
 		void setupGLstate();
 		virtual void updateUI();
 		
