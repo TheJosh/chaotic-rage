@@ -6,10 +6,10 @@ set CL=/DRELEASE
 if %errorlevel% neq 0 pause && exit /b %errorlevel% 
 copy /-Y ..\msvc2010\Debug\chaoticrage.exe files
 
-set CL=/DRELEASE
-"c:\WINDOWS\microsoft.net\Framework\v4.0.30319\MSBuild.exe" /t:Clean,Build /p:Platform="Win32" "..\msvc2010\DedicatedServer.vcxproj" 
-if %errorlevel% neq 0 pause && exit /b %errorlevel% 
-copy /-Y ..\msvc2010\Debug\dedicatedserver.exe files
+:: set CL=/DRELEASE
+:: "c:\WINDOWS\microsoft.net\Framework\v4.0.30319\MSBuild.exe" /t:Clean,Build /p:Platform="Win32" "..\msvc2010\DedicatedServer.vcxproj" 
+:: if %errorlevel% neq 0 pause && exit /b %errorlevel% 
+:: copy /-Y ..\msvc2010\Debug\dedicatedserver.exe files
 
 xcopy /E /I ..\..\data files\data
 xcopy /E /I ..\..\maps files\maps
