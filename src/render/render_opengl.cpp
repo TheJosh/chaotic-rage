@@ -1092,11 +1092,12 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 		*/
 		
 		
-		if (play->isAnimated()) {
+		// Re-calc animation as needed
+		if (play->isDynamic()) {
 			play->calcTransforms();
 		}
 		
-		
+		// Bones? Calculate and send through bone transforms
 		if (am->meshes[0]->bones.size() > 0) {
 			shader = this->shaders["bones"];
 			glUseProgram(shader->p());

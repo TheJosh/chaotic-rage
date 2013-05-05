@@ -13,8 +13,10 @@ using namespace std;
 Object::Object(ObjectType *ot, GameState *st, float x, float y, float z, float angle) : Entity(st)
 {
 	this->ot = ot;
-	this->anim = new AnimPlay(ot->model, 0);
 	this->health = ot->health;
+
+	this->anim = new AnimPlay(ot->model);
+	this->anim->setAnimation(0);
 
 	// TODO: The colShape should be tied to the object type.
 	btVector3 sizeHE = ot->model->getBoundingSizeHE();

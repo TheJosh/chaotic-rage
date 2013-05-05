@@ -29,23 +29,10 @@ AnimPlay::AnimPlay(AssimpModel* model)
 
 
 /**
-* Create an anim play, and set an animation
-* If there isn't any animations, it will fall back to the static mesh
-**/
-AnimPlay::AnimPlay(AssimpModel* model, unsigned int animation)
-	: model(model)
-{
-	this->st = model->mod->st;
-	this->move = NULL;
-	this->setAnimation(animation);
-}
-
-
-/**
 * Is this animPlay animated (true) or static (false)
 * Note that "animated" is also the case for move nodes
 **/
-bool AnimPlay::isAnimated()
+bool AnimPlay::isDynamic()
 {
 	return (this->anim != NULL || this->move != NULL);
 }
@@ -55,19 +42,29 @@ bool AnimPlay::isAnimated()
 * Set the current animation.
 * If there isn't any animations, does nothing.
 **/
-void AnimPlay::setAnimation(unsigned int animation)
+void AnimPlay::setAnimation(unsigned int animation, unsigned int start_frame, unsigned int end_frame)
 {
+	// No animations? Fall back to static
 	if (this->model->animations.size() == 0) {
-		animation = ANIMATION_NONE;
+		this->clearAnimation();
+		return;
 	}
 
-	// Grab the anim info
-	if (animation == ANIMATION_NONE) {
-		this->clearAnimation();
-	} else {
-		this->anim = this->model->animations[animation];
-		this->start_time = st->game_time;
-	}
+	// Set animation properties
+	this->anim = this->model->animations[animation];
+	this->start_time = st->game_time;
+	this->start_frame = start_frame;
+	this->end_frame = end_frame;
+}
+
+
+/**
+* Set the current animation.
+* If there isn't any animations, does nothing.
+**/
+void AnimPlay::setAnimation(unsigned int animation)
+{
+	this->setAnimation(animation, 0, 0);
 }
 
 
@@ -165,7 +162,18 @@ void AnimPlay::calcTransforms()
 	if (this->anim) {
 		float timeSecs = (st->game_time - this->start_time) / 1000.0f;
 		float ticsPerSec = this->anim->ticsPerSec != 0.0 ? this->anim->ticsPerSec : 25.0f;
-		animTick = fmod(timeSecs * ticsPerSec, this->anim->duration);
+
+		// If a start/end frame has been specified, we assume a fixed frame length
+		if (this->start_frame != 0 && this->end_frame != 0) {
+			float frameTime = this->anim->anims[0]->position[1].time - this->anim->anims[0]->position[0].time;
+			float totalTime = frameTime * (this->start_frame + this->end_frame);
+
+			animTick = fmod((timeSecs * ticsPerSec) + (frameTime * this->start_frame), totalTime);
+
+		} else {
+			animTick = fmod(timeSecs * ticsPerSec, this->anim->duration);
+		}
+
 	} else {
 		animTick = 0.0f;
 	}

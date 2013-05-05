@@ -38,6 +38,8 @@ class AnimPlay
 		// Current "move node"
 		AssimpNode* move;
 		glm::mat4 move_transform;
+		unsigned int start_frame;
+		unsigned int end_frame;
 
 		// These are calculated by calcTransforms()
 		// and then fed into the renderer
@@ -48,15 +50,16 @@ class AnimPlay
 		
 	public:
 		AnimPlay(AssimpModel* model);
-		AnimPlay(AssimpModel* model, unsigned int animation);
-
-		AssimpModel* getModel() { return this->model; }
-		bool isAnimated();
 
 		void setAnimation(unsigned int animation);
+		void setAnimation(unsigned int animation, unsigned int start_frame, unsigned int end_frame);
 		void clearAnimation();
 		void setMoveNode(string node);
 		void clearMoveNode();
+
+		AssimpModel* getModel() { return this->model; }
+		bool isDynamic();
+
 		void setMoveTransform(glm::mat4 transform);
 		void calcTransformsStatic();
 		void calcTransforms();
