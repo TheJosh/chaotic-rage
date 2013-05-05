@@ -513,6 +513,7 @@ int Unit::takeDamage(int damage)
 	if (this->health <= 0 && remove_at == 0) {
 		this->endFiring();
 		this->leaveVehicle();
+		this->anim->setAnimation(0, 91, 103, false);
 		this->st->deadButNotBuried(this);
 		return 1;
 	}

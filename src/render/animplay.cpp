@@ -24,6 +24,7 @@ AnimPlay::AnimPlay(AssimpModel* model)
 	this->st = model->mod->st;
 	this->move = NULL;
 	this->anim = NULL;
+	this->loop = true;
 	this->calcTransformsStatic();
 }
 
@@ -39,10 +40,10 @@ bool AnimPlay::isDynamic()
 
 
 /**
-* Set the current animation.
-* If there isn't any animations, does nothing.
+* Set the current animation
+* Also sets start and end frames, and looping options.
 **/
-void AnimPlay::setAnimation(unsigned int animation, unsigned int start_frame, unsigned int end_frame)
+void AnimPlay::setAnimation(unsigned int animation, unsigned int start_frame, unsigned int end_frame, bool loop)
 {
 	// No animations? Fall back to static
 	if (this->model->animations.size() == 0) {
@@ -55,16 +56,28 @@ void AnimPlay::setAnimation(unsigned int animation, unsigned int start_frame, un
 	this->start_time = st->game_time;
 	this->start_frame = start_frame;
 	this->end_frame = end_frame;
+	this->loop = loop;
 }
 
 
 /**
-* Set the current animation.
-* If there isn't any animations, does nothing.
+* Set the current animation
+* Also sets start and end frames
+* Looping will be enabled
+**/
+void AnimPlay::setAnimation(unsigned int animation, unsigned int start_frame, unsigned int end_frame)
+{
+	this->setAnimation(animation, start_frame, end_frame, true);
+}
+
+
+/**
+* Set the current animation
+* Animation will be for all frames
 **/
 void AnimPlay::setAnimation(unsigned int animation)
 {
-	this->setAnimation(animation, 0, 0);
+	this->setAnimation(animation, 0, 0, true);
 }
 
 
@@ -166,12 +179,23 @@ void AnimPlay::calcTransforms()
 		// If a start/end frame has been specified, we assume a fixed frame length
 		if (this->start_frame != 0 && this->end_frame != 0) {
 			float frameTime = this->anim->anims[0]->position[1].time - this->anim->anims[0]->position[0].time;
-			float totalTime = frameTime * (this->start_frame + this->end_frame);
+			float totalTime = frameTime * (this->end_frame - this->start_frame);
 
-			animTick = fmod((timeSecs * ticsPerSec) + (frameTime * this->start_frame), totalTime);
+			if (this->loop) {
+				animTick = fmod(timeSecs * ticsPerSec, totalTime);
+			} else {
+				animTick = timeSecs * ticsPerSec;
+				if (animTick > totalTime) animTick = totalTime;
+			}
+			
+			animTick += (frameTime * this->start_frame);
 
-		} else {
+		} else if (this->loop) {
 			animTick = fmod(timeSecs * ticsPerSec, this->anim->duration);
+			
+		} else {
+			animTick = timeSecs * ticsPerSec;
+			if (animTick > this->anim->duration) animTick = this->anim->duration;
 		}
 
 	} else {

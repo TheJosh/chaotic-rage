@@ -225,7 +225,7 @@ Entity* GameState::deadButNotBuried(Entity* e)
 {
 	e->del = true;
 	
-	Decaying *d = new Decaying(this, e->getTransform(), e->getAnimModel()->getModel());
+	Decaying *d = new Decaying(this, e->getTransform(), e->getAnimModel());
 	this->entities_add.push_back(d);
 	
 	return d;

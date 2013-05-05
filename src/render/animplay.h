@@ -34,12 +34,13 @@ class AnimPlay
 		// Currently running animation
 		AssimpAnimation* anim;
 		unsigned int start_time;
-		
+		unsigned int start_frame;
+		unsigned int end_frame;
+		bool loop;
+
 		// Current "move node"
 		AssimpNode* move;
 		glm::mat4 move_transform;
-		unsigned int start_frame;
-		unsigned int end_frame;
 
 		// These are calculated by calcTransforms()
 		// and then fed into the renderer
@@ -51,9 +52,11 @@ class AnimPlay
 	public:
 		AnimPlay(AssimpModel* model);
 
-		void setAnimation(unsigned int animation);
+		void setAnimation(unsigned int animation, unsigned int start_frame, unsigned int end_frame, bool loop);
 		void setAnimation(unsigned int animation, unsigned int start_frame, unsigned int end_frame);
+		void setAnimation(unsigned int animation);
 		void clearAnimation();
+		
 		void setMoveNode(string node);
 		void clearMoveNode();
 

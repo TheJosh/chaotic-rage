@@ -10,10 +10,9 @@
 using namespace std;
 
 
-Decaying::Decaying(GameState *st, btTransform &xform, AssimpModel *model) : Entity(st)
+Decaying::Decaying(GameState *st, btTransform &xform, AnimPlay *play) : Entity(st)
 {
-	this->model = model;
-	this->anim = new AnimPlay(model);
+	this->anim = new AnimPlay(*play);
 
 	btCollisionShape* colShape = new btBoxShape(btVector3(0.1f, 0.1f, 0.1f));
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
