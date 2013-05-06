@@ -73,7 +73,6 @@ class AnimPlay
 		void clearMoveNode();
 
 		AssimpModel* getModel() { return this->model; }
-		bool isDynamic();
 
 		void setMoveTransform(glm::mat4 transform);
 		void calcTransformsStatic();

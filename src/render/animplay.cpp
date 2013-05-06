@@ -32,16 +32,6 @@ AnimPlay::AnimPlay(AssimpModel* model)
 
 
 /**
-* Is this animPlay animated (true) or static (false)
-* Note that "animated" is also the case for move nodes
-**/
-bool AnimPlay::isDynamic()
-{
-	return (this->anim != NULL || this->move != NULL);
-}
-
-
-/**
 * Set the current animation
 * Also sets start and end frames, and looping options.
 **/
@@ -87,8 +77,8 @@ void AnimPlay::setAnimation(unsigned int animation)
 * Set callback when animation ends.
 * This only gets called for non-loop animations.
 *
-* After the callback has been called, the callback gets cleared (but the data pointer remains).
-* The data pointer WILL NOT be freed when the AnimPlay is destroyed; you need to do that yourself.
+* After the animation has ended and the callback has been called,
+* the animation is unset (but the transforms remain intact).
 **/
 void AnimPlay::setEndedCallback(AnimPlayCallback func, void* data)
 {
@@ -206,6 +196,8 @@ void AnimPlay::calcTransformNodeStatic(AssimpNode* nd, glm::mat4 transform)
 **/
 void AnimPlay::calcTransforms()
 {
+	if (this->anim == NULL && this->move == NULL) return;
+
 	float animTick;
 	
 	if (this->anim) {
@@ -224,7 +216,7 @@ void AnimPlay::calcTransforms()
 				if (animTick > totalTime) {
 					animTick = totalTime;
 					if (this->ended_func) { (*this->ended_func)(this, this->ended_data); }
-					this->ended_func = NULL;
+					this->anim = NULL;
 				}
 			}
 			
@@ -238,7 +230,7 @@ void AnimPlay::calcTransforms()
 			if (animTick > this->anim->duration) {
 				animTick = this->anim->duration;
 				if (this->ended_func) { (*this->ended_func)(this, this->ended_data); }
-				this->ended_func = NULL;
+				this->anim = NULL;
 			}
 		}
 
@@ -311,8 +303,11 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float anim
 **/
 void AnimPlay::calcBoneTransforms()
 {
+	if (this->anim == NULL && this->move == NULL && bone_transforms.size() != 0) return;
+
 	// set all bones to empty transform
 	bone_transforms.clear();
+	bone_transforms.reserve(MAX_BONES);
 	for (unsigned int i = 0; i < MAX_BONES; i++) {
 		bone_transforms.push_back(glm::mat4(1.0f));
 	}
