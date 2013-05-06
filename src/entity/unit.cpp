@@ -41,8 +41,9 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	
 	// Set animation
 	UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_STATIC);
-	this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
-	
+	if (uta) {
+		this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
+	}
 	
 
 	btTransform xform = btTransform(
@@ -519,8 +520,10 @@ int Unit::takeDamage(int damage)
 		this->leaveVehicle();
 		
 		UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_DEATH);
-		this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
-		
+		if (uta) {
+			this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
+		}
+
 		this->st->deadButNotBuried(this);
 		return 1;
 	}
