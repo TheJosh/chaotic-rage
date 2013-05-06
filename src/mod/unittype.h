@@ -16,12 +16,10 @@ using namespace std;
 #define UNIT_MOD_SHIELD (1 << 1)
 #define UNIT_MOD_SPEED (1 << 2)
 
-#define UNIT_STATE_WALK 0		// this is going to be removed
-#define UNIT_STATE_STATIC 1
-#define UNIT_STATE_RUNNING 2
-#define UNIT_STATE_FIRING 3
-#define UNIT_STATE_DIE 4
-#define UNIT_STATE_MELEE 5
+#define UNIT_ANIM_STATIC 1
+#define UNIT_ANIM_WALK 2
+#define UNIT_ANIM_DEATH 3
+#define UNIT_ANIM_SPAWN 4
 
 #define UNIT_SOUND_STATIC 1
 #define UNIT_SOUND_HIT 2
@@ -45,6 +43,16 @@ class UnitTypeSettings
 		int melee_damage;     // hit points
 		int melee_delay;      // milliseconds
 		int melee_cooldown;   // milliseconds
+};
+
+class UnitTypeAnimation
+{
+	public:
+		int type;
+		int animation;
+		int start_frame;
+		int end_frame;
+		bool loop;
 };
 
 class UnitTypeSound
@@ -72,6 +80,7 @@ class UnitType
 		UnitTypeSettings initial;
 		UnitTypeSettings modifiers[UNIT_NUM_MODIFIERS];
 		vector<UnitTypeSound*> sounds;
+		vector<UnitTypeAnimation*> animations;
 		unsigned int max_frames;
 		Mod * mod;
 		
@@ -82,6 +91,7 @@ class UnitType
 	public:
 		UnitTypeSettings* getSettings(Uint8 modifier_flags);
 		Sound* getSound(int type);
+		UnitTypeAnimation* getAnimation(int type);
 		
 		Mod * getMod() { return this->mod; }
 };

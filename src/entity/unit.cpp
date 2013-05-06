@@ -23,7 +23,6 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	this->firing = false;
 	
 	this->anim = new AnimPlay(this->uc->model);
-	this->anim->setAnimation(0, 2, 20);
 
 	this->remove_at = 0;
 	
@@ -39,7 +38,12 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	this->uts = NULL;
 	this->setModifiers(0);
 
-
+	
+	// Set animation
+	UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_STATIC);
+	this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
+	
+	
 
 	btTransform xform = btTransform(
 		btQuaternion(btVector3(0,0,1),0),
@@ -513,7 +517,10 @@ int Unit::takeDamage(int damage)
 	if (this->health <= 0 && remove_at == 0) {
 		this->endFiring();
 		this->leaveVehicle();
-		this->anim->setAnimation(0, 91, 103, false);
+		
+		UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_DEATH);
+		this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
+		
 		this->st->deadButNotBuried(this);
 		return 1;
 	}

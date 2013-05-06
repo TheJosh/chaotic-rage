@@ -27,13 +27,25 @@ static cfg_opt_t unitsettings_opts[] =
 	CFG_END()
 };
 
+// Animation section
+static cfg_opt_t unitanim_opts[] =
+{
+	CFG_INT((char*) "type", 0, CFGF_NONE),		// UNIT_ANIM_*
+	CFG_INT((char*) "animation", 0, CFGF_NONE),
+	CFG_INT((char*) "start_frame", 0, CFGF_NONE),
+	CFG_INT((char*) "end_frame", 0, CFGF_NONE),
+	CFG_INT((char*) "loop", 1, CFGF_NONE),
+	CFG_END()
+};
+
 // Sound section
 static cfg_opt_t unitsound_opts[] =
 {
+	CFG_INT((char*) "type", 0, CFGF_NONE),		// UNIT_SOUND_*
 	CFG_STR((char*) "sound", 0, CFGF_NONE),
-	CFG_INT((char*) "type", 0, CFGF_NONE),
 	CFG_END()
 };
+
 
 // Unitclass section
 cfg_opt_t unittype_opts[] =
@@ -42,6 +54,7 @@ cfg_opt_t unittype_opts[] =
 	CFG_STR((char*) "model", 0, CFGF_NONE),
 	
 	CFG_SEC((char*) "settings", unitsettings_opts, CFGF_MULTI),
+	CFG_SEC((char*) "animation", unitanim_opts, CFGF_MULTI),
 	CFG_SEC((char*) "sound", unitsound_opts, CFGF_MULTI),
 	CFG_STR_LIST((char*) "spawn_weapons", 0, CFGF_NONE),
 
@@ -58,7 +71,7 @@ cfg_opt_t unittype_opts[] =
 UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 {
 	UnitType* uc;
-	cfg_t *cfg_settings, *cfg_sound;
+	cfg_t *cfg_settings, *cfg_sound, *cfg_anim;
 	int j;
 	
 	
@@ -103,6 +116,25 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 		uc->modifiers[j - 1].melee_cooldown = cfg_getint(cfg_settings, "melee_cooldown");
 	}
 	
+
+	/// Animations ///
+	int num_animations = cfg_size(cfg_item, "animation");
+	
+	// load sounds
+	for (j = 0; j < num_animations; j++) {
+		cfg_anim = cfg_getnsec(cfg_item, "animation", j);
+		
+		UnitTypeAnimation* uta = new UnitTypeAnimation();
+		
+		uta->type = cfg_getint(cfg_anim, "type");
+		uta->animation = cfg_getint(cfg_anim, "animation");
+		uta->start_frame = cfg_getint(cfg_anim, "start_frame");
+		uta->end_frame = cfg_getint(cfg_anim, "end_frame");
+		uta->loop = (cfg_getint(cfg_anim, "loop") == 1);
+		
+		uc->animations.push_back(uta);
+	}
+
 
 	/// Sounds ///
 	int num_sounds = cfg_size(cfg_item, "sound");
@@ -200,6 +232,34 @@ Sound* UnitType::getSound(int type)
 	return NULL;
 }
 
+
+/**
+* Returns a random animation which matches the specified type.
+* If it can't find an animation for that type, returns NULL
+**/
+UnitTypeAnimation* UnitType::getAnimation(int type)
+{
+	unsigned int j = 0;
+	unsigned int num = 0;
+	
+	// Find out how many of this type exist
+	for (j = 0; j < this->animations.size(); j++) {
+		if (this->animations.at(j)->type == type) num++;
+	}
+	
+	// Randomly choose one
+	num = getRandom(0, num - 1);
+	for (j = 0; j < this->animations.size(); j++) {
+		if (this->animations.at(j)->type == type) {
+			if (num == 0) {
+				return this->animations.at(j);
+			}
+			num--;
+		}
+	}
+	
+	return NULL;
+}
 
 
 UnitType::UnitType()
