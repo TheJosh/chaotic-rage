@@ -457,16 +457,16 @@ void RenderOpenGL::freeSprite(SpritePtr sprite)
 **/
 void RenderOpenGL::loadHeightmap()
 {
-	int nX, nZ, j;
+	unsigned int nX, nZ, j;
 	float flX, flZ;
 	
 	if (st->map->heightmap == NULL) st->map->createHeightmapRaw();
 	if (st->map->heightmap == NULL) return;
 	
-	int maxX = st->map->heightmap_sx - 1;
-	int maxZ = st->map->heightmap_sz - 1;
+	unsigned int maxX = st->map->heightmap_sx - 1;
+	unsigned int maxZ = st->map->heightmap_sz - 1;
 
-	this->ter_size = (maxX * maxZ * 2) + (maxX * 2);
+	this->ter_size = (maxX * maxZ * 2) + (maxZ * 2);
 	VBOvertex* vertexes = new VBOvertex[this->ter_size];
 	
 	j = 0;

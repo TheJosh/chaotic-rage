@@ -181,9 +181,12 @@ int Map::load(string name, Render *render, Mod* insideof)
 	}
 	
 	cfg = cfg_init(opts, CFGF_NONE);
-	cfg_parse_buf(cfg, buffer);
-	
+	int result = cfg_parse_buf(cfg, buffer);
 	free(buffer);
+	
+	if (result != CFG_SUCCESS) {
+		reportFatalError("Unable to load map; configuration file syntax error");
+	}
 	
 	
 	this->width = cfg_getint(cfg, "width");
@@ -427,7 +430,6 @@ void Map::update(int delta)
 /**
 * Finds a spawn zone for a specific faction.
 * Returns NULL if none are found.
-* @todo Choose one randomly instead of grabbing the first one
 **/
 Zone * Map::getSpawnZone(Faction f)
 {
