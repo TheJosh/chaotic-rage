@@ -463,12 +463,15 @@ void RenderOpenGL::loadHeightmap()
 	if (st->map->heightmap == NULL) st->map->createHeightmapRaw();
 	if (st->map->heightmap == NULL) return;
 	
-	this->ter_size = (st->map->heightmap_sx * st->map->heightmap_sz * 2) + (st->map->heightmap_sx * 2);
+	int maxX = st->map->heightmap_sx - 1;
+	int maxZ = st->map->heightmap_sz - 1;
+
+	this->ter_size = (maxX * maxZ * 2) + (maxX * 2);
 	VBOvertex* vertexes = new VBOvertex[this->ter_size];
 	
 	j = 0;
-	for( nZ = 0; nZ < st->map->heightmap_sz - 1; nZ += 1 ) {
-		for( nX = 0; nX < st->map->heightmap_sx - 1; nX += 1 ) {
+	for (nZ = 0; nZ < maxZ; nZ++) {
+		for(nX = 0; nX < maxX; nX++) {
 			
 			// u = p2 - p1; v = p3 - p1
 			btVector3 u = btVector3(nX + 1.0f, st->map->heightmapGet(nX + 1, nZ + 1), nZ + 1.0f) - btVector3(nX, st->map->heightmapGet(nX, nZ), nZ);
@@ -533,6 +536,8 @@ void RenderOpenGL::loadHeightmap()
 		}
 	}
 	
+	assert(j == this->ter_size);
+
 	// Create VAO
 	glGenVertexArrays(1, &this->ter_vaoid);
 	glBindVertexArray(this->ter_vaoid);
@@ -1600,8 +1605,12 @@ void RenderOpenGL::terrain()
 	glUniformMatrix3fv(this->shaders["map"]->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
 	
 	glBindVertexArray(this->ter_vaoid);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, this->ter_size);
-	
+
+	int numPerStrip = 2 + ((st->map->heightmap_sx-1) * 2);
+	for (int z = 0; z < st->map->heightmap_sz - 1; z++) {
+		glDrawArrays(GL_TRIANGLE_STRIP, numPerStrip * z, numPerStrip);
+	}
+
 	
 	// Static geometry meshes
 	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); it++) {

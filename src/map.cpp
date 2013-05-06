@@ -538,8 +538,8 @@ void Map::createHeightmapRaw()
 	this->heightmap_sx = sprite->w;
 	this->heightmap_sz = sprite->h;
 	
-	for ( nZ = 0; nZ < heightmap_sz; nZ += 1 ) {
-		for ( nX = 0; nX < heightmap_sx; nX += 1 ) {
+	for (nZ = 0; nZ < heightmap_sz; nZ++) {
+		for (nX = 0; nX < heightmap_sx; nX++) {
 			
 			Uint32 pixel = getPixel(sprite->orig, nX, nZ);
 			SDL_GetRGB(pixel, sprite->orig->format, &r, &g, &b);
