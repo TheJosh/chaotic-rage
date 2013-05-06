@@ -22,9 +22,11 @@ AnimPlay::AnimPlay(AssimpModel* model)
 	: model(model)
 {
 	this->st = model->mod->st;
-	this->move = NULL;
 	this->anim = NULL;
 	this->loop = true;
+	this->ended_func = NULL;
+	this->ended_data = NULL;
+	this->move = NULL;
 	this->calcTransformsStatic();
 }
 
@@ -78,6 +80,40 @@ void AnimPlay::setAnimation(unsigned int animation, unsigned int start_frame, un
 void AnimPlay::setAnimation(unsigned int animation)
 {
 	this->setAnimation(animation, 0, 0, true);
+}
+
+
+/**
+* Set callback when animation ends.
+* This only gets called for non-loop animations.
+*
+* After the callback has been called, the callback gets cleared (but the data pointer remains).
+* The data pointer WILL NOT be freed when the AnimPlay is destroyed; you need to do that yourself.
+**/
+void AnimPlay::setEndedCallback(AnimPlayCallback func, void* data)
+{
+	this->ended_func = func;
+	this->ended_data = data;
+}
+
+
+/**
+* Set callback when animation ends.
+* Only sets the function, not the data
+**/
+void AnimPlay::setEndedCallback(AnimPlayCallback func)
+{
+	this->ended_func = func;
+}
+
+
+/**
+* Set callback when animation ends.
+* Only sets the data, not the function
+**/
+void AnimPlay::setEndedCallback(void* data)
+{
+	this->ended_data = data;
 }
 
 
@@ -185,7 +221,11 @@ void AnimPlay::calcTransforms()
 				animTick = fmod(timeSecs * ticsPerSec, totalTime);
 			} else {
 				animTick = timeSecs * ticsPerSec;
-				if (animTick > totalTime) animTick = totalTime;
+				if (animTick > totalTime) {
+					animTick = totalTime;
+					if (this->ended_func) { (*this->ended_func)(this, this->ended_data); }
+					this->ended_func = NULL;
+				}
 			}
 			
 			animTick += (frameTime * this->start_frame);
@@ -195,7 +235,11 @@ void AnimPlay::calcTransforms()
 			
 		} else {
 			animTick = timeSecs * ticsPerSec;
-			if (animTick > this->anim->duration) animTick = this->anim->duration;
+			if (animTick > this->anim->duration) {
+				animTick = this->anim->duration;
+				if (this->ended_func) { (*this->ended_func)(this, this->ended_data); }
+				this->ended_func = NULL;
+			}
 		}
 
 	} else {

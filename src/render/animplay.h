@@ -20,6 +20,12 @@ using namespace std;
 
 
 /**
+* Function signature for callbacks when animations are finished
+**/
+typedef void (*AnimPlayCallback) (AnimPlay* play, void* data);
+
+
+/**
 * Stores info about a single animation which is currently running
 * Also used for static meshes.
 **/
@@ -37,6 +43,8 @@ class AnimPlay
 		unsigned int start_frame;
 		unsigned int end_frame;
 		bool loop;
+		AnimPlayCallback ended_func;
+		void* ended_data;
 
 		// Current "move node"
 		AssimpNode* move;
@@ -56,6 +64,10 @@ class AnimPlay
 		void setAnimation(unsigned int animation, unsigned int start_frame, unsigned int end_frame);
 		void setAnimation(unsigned int animation);
 		void clearAnimation();
+		
+		void setEndedCallback(AnimPlayCallback func, void* data);
+		void setEndedCallback(AnimPlayCallback func);
+		void setEndedCallback(void* data);
 		
 		void setMoveNode(string node);
 		void clearMoveNode();
