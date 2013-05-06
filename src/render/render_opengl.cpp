@@ -64,6 +64,17 @@ using namespace std;
 #endif
 
 
+// Constants for VBOs <-> Shaders
+// (glBindAttribLocation)
+#define ATTRIB_POSITION 0         // vPosition
+#define ATTRIB_NORMAL 1           // vNormal
+#define ATTRIB_TEXUV 2            // vTexUV
+#define ATTRIB_BONEID 3           // vBoneIDs
+#define ATTRIB_BONEWEIGHT 4       // vBoneWeights
+#define ATTRIB_TEXTCOORD 5        // vCoord
+#define ATTRIB_COLOR 6            // vColor
+
+
 /**
 * Gets the next highest power-of-two for a number
 **/
@@ -534,13 +545,13 @@ void RenderOpenGL::loadHeightmap()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * this->ter_size, vertexes, GL_STATIC_DRAW);
 	
 	// and attributes
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(0));	// Position
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(12));	// Normals
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(24));	// TexUVs
+	glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(0));	// Position
+	glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(12));	// Normals
+	glVertexAttribPointer(ATTRIB_TEXUV, 2, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(24));	// TexUVs
 
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(ATTRIB_POSITION);
+	glEnableVertexAttribArray(ATTRIB_NORMAL);
+	glEnableVertexAttribArray(ATTRIB_TEXUV);
 	glClientActiveTexture(GL_TEXTURE0);
 	
 	glBindVertexArray(0);
@@ -840,11 +851,13 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	glAttachShader(program, sFragment);
 	
 	// Bind attribs
-	glBindAttribLocation(program, 0, "vPosition");
-	glBindAttribLocation(program, 1, "vNormal");
-	glBindAttribLocation(program, 2, "vTexUV");
-	glBindAttribLocation(program, 3, "vBoneIDs");
-	glBindAttribLocation(program, 4, "vBoneWeights");
+	glBindAttribLocation(program, ATTRIB_POSITION, "vPosition");
+	glBindAttribLocation(program, ATTRIB_NORMAL, "vNormal");
+	glBindAttribLocation(program, ATTRIB_TEXUV, "vTexUV");
+	glBindAttribLocation(program, ATTRIB_BONEID, "vBoneIDs");
+	glBindAttribLocation(program, ATTRIB_BONEWEIGHT, "vBoneWeights");
+	glBindAttribLocation(program, ATTRIB_TEXTCOORD, "vCoord");
+	glBindAttribLocation(program, ATTRIB_COLOR, "vColor");
 
 	// Link
 	glLinkProgram(program);
@@ -962,13 +975,13 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 	// Set data
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * obj->faces.size() * 3, vertexes, GL_STATIC_DRAW);
 	
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(0));	// Position
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(12));	// Normals
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(24));	// TexUVs
+	glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(0));	// Position
+	glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(12));	// Normals
+	glVertexAttribPointer(ATTRIB_TEXUV, 2, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(24));	// TexUVs
 
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(ATTRIB_POSITION);
+	glEnableVertexAttribArray(ATTRIB_NORMAL);
+	glEnableVertexAttribArray(ATTRIB_TEXUV);
 
 	glClientActiveTexture(GL_TEXTURE0);
 	
@@ -1017,10 +1030,6 @@ void RenderOpenGL::renderObj (WavefrontObj * obj)
 	
 	glBindVertexArray(obj->vao);
 	glUseProgram(this->shaders["basic"]->p());
-	
-	glBindAttribLocation(this->shaders["basic"]->p(), 0, "vPosition");
-	glBindAttribLocation(this->shaders["basic"]->p(), 1, "vNormal");
-	glBindAttribLocation(this->shaders["basic"]->p(), 2, "vTexUV");
 
 	glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
 	
@@ -1052,73 +1061,26 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 
 
 	CHECK_OPENGL_ERROR;
-	
-	/*for (unsigned int d = 0; d < model->meshframes.size(); d++) {
-		if (model->meshframes[d]->frame != frame) continue;
-		if (model->meshframes[d]->mesh == NULL) continue;
-		if (model->meshframes[d]->texture == NULL) continue;
 		
-		// Dissolve texture, if required
-		if (model->meshframes[d]->dissolve) {
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, model->meshframes[d]->dissolve->pixels);
-		}
-
-		// Regular texure
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, model->meshframes[d]->texture->pixels);
+	// Re-calc animation if needed
+	play->calcTransforms();
 		
+	// Bones? Calculate and send through bone transforms
+	if (am->meshes[0]->bones.size() > 0) {
+		shader = this->shaders["bones"];
+		glUseProgram(shader->p());
 		
-		glm::mat4 frameMatrix = glm::translate(modelMatrix, glm::vec3(model->meshframes[d]->px, model->meshframes[d]->py, model->meshframes[d]->pz));
-		frameMatrix = glm::rotate(frameMatrix, model->meshframes[d]->rx, glm::vec3(1.0f, 0.0f, 0.0f));
-		frameMatrix = glm::rotate(frameMatrix, model->meshframes[d]->ry, glm::vec3(0.0f, 1.0f, 0.0f));
-		frameMatrix = glm::rotate(frameMatrix, model->meshframes[d]->rz, glm::vec3(0.0f, 0.0f, 1.0f));
-
-		// This is only temporary until the models get changed to be Y-up instead of Z-up
-		frameMatrix = glm::rotate(frameMatrix, 270.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-
-		frameMatrix = glm::scale(frameMatrix, glm::vec3(model->meshframes[d]->sx, model->meshframes[d]->sy, model->meshframes[d]->sz));
-
-		if (model->meshframes[d]->dissolve) {
-			// Dissolve shader
-			shader = this->shaders["dissolve"];
-			float health = 1.0f;
-			if (e->klass() == UNIT) {
-				health = ((Unit*)e)->getHealthPercent();
-			}
-			glUseProgram(shader);
-			glUniform1i(shader->uniform("uDissolve"), 1);	// tex unit 1
-			glUniform1f(shader->uniform("uDeath"), 1.0f - health);
-		*/
-		
-		
-		// Re-calc animation if needed
-		play->calcTransforms();
-		
-		// Bones? Calculate and send through bone transforms
-		if (am->meshes[0]->bones.size() > 0) {
-			shader = this->shaders["bones"];
-			glUseProgram(shader->p());
+		play->calcBoneTransforms();
+		glUniformMatrix4fv(shader->uniform("uBones[0]"), MAX_BONES, GL_FALSE, &play->bone_transforms[0][0][0]);
 			
-			glBindAttribLocation(shader->p(), 3, "vBoneIDs");
-			glBindAttribLocation(shader->p(), 4, "vBoneWeights");
-			
-			play->calcBoneTransforms();
-			glUniformMatrix4fv(shader->uniform("uBones[0]"), MAX_BONES, GL_FALSE, &play->bone_transforms[0][0][0]);
-			
-		} else {
-			shader = this->shaders["entities"];
-			glUseProgram(shader->p());
-		}
+	} else {
+		shader = this->shaders["entities"];
+		glUseProgram(shader->p());
+	}
 
-		glBindAttribLocation(shader->p(), 0, "vPosition");
-		glBindAttribLocation(shader->p(), 1, "vNormal");
-		glBindAttribLocation(shader->p(), 2, "vTexUV");
+	recursiveRenderAssimpModel(play, am, am->rootNode, shader, modelMatrix);
 
-		recursiveRenderAssimpModel(play, am, am->rootNode, shader, modelMatrix);
-
-		glUseProgram(0);
-	/*}*/
+	glUseProgram(0);
 
 	CHECK_OPENGL_ERROR;
 }
@@ -1227,8 +1189,8 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mVertices, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
+			glEnableVertexAttribArray(ATTRIB_POSITION);
+			glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, 0, 0, 0);
 		}
 		
 		// Normals
@@ -1236,8 +1198,8 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mNormals, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 3, GL_FLOAT, 0, 0, 0);
+			glEnableVertexAttribArray(ATTRIB_NORMAL);
+			glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, 0, 0, 0);
 		}
 		
 		// UVs
@@ -1245,8 +1207,8 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mTextureCoords[0], GL_STATIC_DRAW);
-			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 3, GL_FLOAT, 0, 0, 0);
+			glEnableVertexAttribArray(ATTRIB_TEXUV);
+			glVertexAttribPointer(ATTRIB_TEXUV, 3, GL_FLOAT, 0, 0, 0);
 		}
 		
 		// Bone IDs and Weights
@@ -1256,14 +1218,14 @@ bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned int)*4*mesh->mNumVertices, am->boneIds, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(3);
-			glVertexAttribIPointer(3, 4, GL_INT, 0, 0);
+			glEnableVertexAttribArray(ATTRIB_BONEID);
+			glVertexAttribIPointer(ATTRIB_BONEID, 4, GL_INT, 0, 0);
 			
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*4*mesh->mNumVertices, am->boneWeights, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(4);
-			glVertexAttribPointer(4, 4, GL_FLOAT, 0, 0, 0);
+			glEnableVertexAttribArray(ATTRIB_BONEWEIGHT);
+			glVertexAttribPointer(ATTRIB_BONEWEIGHT, 4, GL_FLOAT, 0, 0, 0);
 
 			am->freeBones();
 		}
@@ -1323,15 +1285,13 @@ void RenderOpenGL::renderText(string text, float x, float y, float r, float g, f
 	glEnable(GL_BLEND);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, font_vbo);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(ATTRIB_TEXTCOORD);
+	glVertexAttribPointer(ATTRIB_TEXTCOORD, 4, GL_FLOAT, GL_FALSE, 0, 0);
 
 	GLShader* shader = this->shaders["text"];
 	
 	glUseProgram(shader->p());
 
-	glBindAttribLocation(shader->p(), 0, "vCoord");
-	
 	glUniform1i(shader->uniform("uTex"), 0);
 	glUniform4f(shader->uniform("uColor"), r, g, b, a);
 	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(this->ortho));
@@ -1416,9 +1376,8 @@ void RenderOpenGL::renderCharacter(char character, float &x, float &y)
 	glBindBuffer(GL_ARRAY_BUFFER, font_vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
 
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
-	glBindAttribLocation(this->shaders["text"]->p(), 0, "vCoord");
+	glEnableVertexAttribArray(ATTRIB_TEXTCOORD);
+	glVertexAttribPointer(ATTRIB_TEXTCOORD, 4, GL_FLOAT, GL_FALSE, 0, 0);
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	
@@ -1756,11 +1715,11 @@ void RenderOpenGL::particles()
 
 		glGenBuffers(1, &(this->particle_vbo));
 		glBindBuffer(GL_ARRAY_BUFFER, this->particle_vbo);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(0));		// Position
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(12));		// Colour
+		glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(0));		// Position
+		glVertexAttribPointer(ATTRIB_COLOR, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(12));		// Colour
 		
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(ATTRIB_POSITION);
+		glEnableVertexAttribArray(ATTRIB_COLOR);
 
 		glBindVertexArray(0);
 	}
@@ -1791,8 +1750,6 @@ void RenderOpenGL::particles()
 	glUseProgram(this->shaders["particles"]->p());
 	
 	// Uniforms
-	glBindAttribLocation(this->shaders["particles"]->p(), 0, "vPosition");
-	glBindAttribLocation(this->shaders["particles"]->p(), 1, "vColor");
 	glm::mat4 MVP = this->projection * this->view;
 	glUniformMatrix4fv(this->shaders["particles"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
