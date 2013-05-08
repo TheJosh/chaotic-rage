@@ -44,6 +44,8 @@ struct FreetypeChar
 };
 
 
+class RenderOpenGLSettings;
+
 class RenderOpenGL : public Render3D
 {
 	friend class HUD;
@@ -85,14 +87,11 @@ class RenderOpenGL : public Render3D
 		glm::mat4 projection;	// perspective
 		glm::mat4 ortho;		// ortho
 		glm::mat4 view;			// camera
-
-	public:
-		unsigned int q_tex;
-		unsigned int q_alias;
-		unsigned int q_general;
+		
+		RenderOpenGLSettings* settings;
 		
 	public:
-		RenderOpenGL(GameState * st);
+		RenderOpenGL(GameState * st, RenderOpenGLSettings* settings);
 		virtual ~RenderOpenGL();
 		
 	protected:

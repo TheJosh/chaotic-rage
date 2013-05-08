@@ -6,6 +6,7 @@
 #include <SDL.h>
 #include <confuse.h>
 #include "../rage.h"
+#include "../render/render_opengl_settings.h"
 
 
 using namespace std;
@@ -108,7 +109,13 @@ void ClientConfig::savedefault()
 void ClientConfig::initRender(GameState *st)
 {
 	if (this->render == RENDER_OPENGL) {
-		new RenderOpenGL(st);
+		RenderOpenGLSettings* settings = new RenderOpenGLSettings();
+		
+		settings->msaa = 4;
+		settings->texture_filtering = 4;
+		settings->texture_anisotropy = 0;
+		
+		new RenderOpenGL(st, settings);
 
 	} else if (this->render == RENDER_OPENGL_COMPAT) {
 		new RenderOpenGLCompat(st);

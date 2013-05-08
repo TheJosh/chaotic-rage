@@ -5,7 +5,7 @@
 #include <string>
 #include <SDL.h>
 #include "rage.h"
-
+#include "render/render_opengl_settings.h"
 
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
@@ -30,7 +30,7 @@ int main (int argc, char * argv[])
 	
 	GameState *st = new GameState();
 	
-	new RenderOpenGL(st);
+	new RenderOpenGL(st, new RenderOpenGLSettings());
 	new AudioSDLMixer(st);
 	new PhysicsBullet(st);
 	new ModManager(st);

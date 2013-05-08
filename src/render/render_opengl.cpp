@@ -18,6 +18,7 @@
 
 #include "../rage.h"
 #include "glshader.h"
+#include "render_opengl_settings.h"
 
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
@@ -89,7 +90,7 @@ static inline int next_pot (int a)
 /**
 * Just set a few things up
 **/
-RenderOpenGL::RenderOpenGL(GameState * st) : Render3D(st)
+RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Render3D(st)
 {
 	this->screen = NULL;
 	this->physicsdebug = NULL;
@@ -98,7 +99,9 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render3D(st)
 	this->face = NULL;
 	this->particle_vao = 0;
 	this->font_vbo = 0;
-
+	
+	this->settings = settings;
+	
 	const SDL_VideoInfo* mode = SDL_GetVideoInfo();
 	this->desktop_width = mode->current_w;
 	this->desktop_height = mode->current_h;
@@ -106,10 +109,6 @@ RenderOpenGL::RenderOpenGL(GameState * st) : Render3D(st)
 	for (unsigned int i = 0; i < NUM_CHAR_TEX; i++) {
 		this->char_tex[i].tex = 0;
 	}
-	
-	q_tex = 4;
-	q_alias = 4;
-	q_general = 4;
 	
 	shaders_loaded = false;
 }
@@ -139,9 +138,9 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	// SDL
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	if (q_alias >= 2) {
+	if (this->settings->msaa >= 2) {
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, q_alias);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, this->settings->msaa);
 	} else {
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
@@ -426,7 +425,7 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
 	
 	// Set stretching properties
-	if (q_tex >= 2) {
+	if (this->settings->texture_filtering >= 2) {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	} else {
@@ -671,24 +670,13 @@ void RenderOpenGL::preGame()
 	
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	
-	if (q_tex >= 2) {
-		glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
-	} else {
-		glHint(GL_GENERATE_MIPMAP_HINT, GL_FASTEST);
-	}
-
-	if (q_alias >= 2) {
+	glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	
+	if (this->settings->msaa >= 2) {
 		glEnable(GL_MULTISAMPLE);
-		glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 	} else {
 		glDisable(GL_MULTISAMPLE);
-		glHint(GL_POINT_SMOOTH_HINT, GL_FASTEST);
-	}
-
-	if (q_general >= 2) {
-		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	} else {
-		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
 	}
 	
 	// Set fog properties
