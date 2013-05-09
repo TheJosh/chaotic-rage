@@ -14,4 +14,5 @@
 #include "network.h"
 #include "newgame.h"
 #include "newcampaign.h"
-#include "settings.h"
+#include "mods.h"
+#include "client_settings.h"

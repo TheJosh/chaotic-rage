@@ -134,6 +134,7 @@ class RenderOpenGL : public Render3D
 		virtual bool loadAssimpModel(AssimpModel *am);
 		
 		void setSettings(RenderOpenGLSettings* settings);
+		RenderOpenGLSettings* getSettings();
 		
 	private:
 		void createWater();

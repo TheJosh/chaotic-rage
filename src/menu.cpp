@@ -111,6 +111,9 @@ void Menu::loadModBits(UIUpdate* ui)
 	this->menuAdd("Mods", 40, y, MC_MODS);
 	y -= 40;
 	
+	this->menuAdd("Settings", 40, y, MC_SETTINGS);
+	y -= 40;
+	
 	if (mod->hasArcade()) {
 		this->menuAdd("Network Game", 40, y, MC_NETWORK);
 		y -= 40;
@@ -246,6 +249,7 @@ void Menu::updateUI()
 		case MC_SINGLEPLAYER: this->doSingleplayer(); break;
 		case MC_SPLITSCREEN: this->doSplitscreen(); break;
 		case MC_NETWORK: this->doNetwork(); break;
+		case MC_SETTINGS: this->doSettings(); break;
 		case MC_MODS: this->doMods(); break;
 		case MC_HELP: this->doHelp(); break;
 		case MC_QUIT: this->doQuit(); break;
@@ -439,6 +443,11 @@ void Menu::doSplitscreen()
 void Menu::doNetwork()
 {
 	this->setDialog(new DialogNetJoin());
+}
+
+void Menu::doSettings()
+{
+	this->setDialog(new DialogClientSettings(this->st));
 }
 
 void Menu::doMods()

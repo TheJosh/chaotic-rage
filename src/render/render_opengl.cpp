@@ -166,6 +166,15 @@ void RenderOpenGL::setSettings(RenderOpenGLSettings* settings)
 
 
 /**
+* Return a pointer to the settings object
+**/
+RenderOpenGLSettings* RenderOpenGL::getSettings()
+{
+	return this->settings;
+}
+
+
+/**
 * Sets the screen size
 * Also sets stuff up, check version, init libraries, etc
 **/
