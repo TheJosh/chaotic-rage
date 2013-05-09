@@ -15,18 +15,18 @@ class RenderOpenGLSettings
 		
 		// Texture filtering
 		// 1 = GL_NEAREST (worst), 4 = GL_LINEAR_MIPMAP_LINEAR (best)
-		int texture_filtering;
+		int tex_filter;
 		
 		// Anisotropy
 		// Requires GL_EXT_texture_filter_anisotropic
-		float texture_anisotropy;
+		float tex_aniso;
 		
 		
 	public:
 		RenderOpenGLSettings():
 			msaa(1),
-			texture_filtering(1),
-			texture_anisotropy(0)
+			tex_filter(1),
+			tex_aniso(0.0f)
 			{}
 };
 

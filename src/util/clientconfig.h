@@ -15,10 +15,14 @@ using namespace std;
 #define RENDER_OPENGL_COMPAT 2
 
 
+class RenderOpenGLSettings;
+
+
 class ClientConfig
 {
 	public:
 		int render;
+		RenderOpenGLSettings* gl;
 		
 	public:
 		ClientConfig();

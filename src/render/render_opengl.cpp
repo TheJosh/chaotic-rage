@@ -100,8 +100,6 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->particle_vao = 0;
 	this->font_vbo = 0;
 	
-	this->settings = settings;
-	
 	const SDL_VideoInfo* mode = SDL_GetVideoInfo();
 	this->desktop_width = mode->current_w;
 	this->desktop_height = mode->current_h;
@@ -109,6 +107,9 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	for (unsigned int i = 0; i < NUM_CHAR_TEX; i++) {
 		this->char_tex[i].tex = 0;
 	}
+	
+	this->settings = NULL;
+	this->setSettings(settings);
 	
 	shaders_loaded = false;
 }
@@ -119,7 +120,48 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 **/
 RenderOpenGL::~RenderOpenGL()
 {
+	delete(this->settings);
+	
 	// TODO: Delete all buffers, tex, etc.
+}
+
+
+
+/**
+* Set the settings to use
+**/
+void RenderOpenGL::setSettings(RenderOpenGLSettings* settings)
+{
+	delete(this->settings);
+	this->settings = settings;
+	
+	// Texture filtering modes
+	switch (this->settings->tex_filter) {
+		case 4:
+			this->min_filter = GL_LINEAR_MIPMAP_LINEAR; this->mag_filter = GL_LINEAR;		// trilinear
+			break;
+			
+		case 3:
+			this->min_filter = GL_LINEAR_MIPMAP_NEAREST; this->mag_filter = GL_LINEAR;		// bilinear
+			break;
+			
+		case 2:
+			this->min_filter = GL_LINEAR_MIPMAP_NEAREST; this->mag_filter = GL_NEAREST;		// bilinear
+			break;
+			
+		default:
+			this->min_filter = GL_NEAREST_MIPMAP_NEAREST; this->mag_filter = GL_NEAREST;	// crappy
+			break;
+	}
+	
+	// Update tex with new filtering modes
+	if (loaded.size() > 0) {
+		for (unsigned int i = 0; i != loaded.size(); i++) {
+			glBindTexture(GL_TEXTURE_2D, loaded[i]->pixels);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this->min_filter);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, this->mag_filter);
+		}
+	}
 }
 
 
@@ -425,13 +467,8 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
 	
 	// Set stretching properties
-	if (this->settings->texture_filtering >= 2) {
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	} else {
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	}
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this->min_filter);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, this->mag_filter);
 
 	// Load it
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sprite->orig->w, sprite->orig->h, 0, texture_format, GL_UNSIGNED_BYTE, sprite->orig->pixels);
@@ -1339,8 +1376,8 @@ void RenderOpenGL::renderCharacter(char character, float &x, float &y)
 		// Create a texture
 		glGenTextures(1, &c->tex);
 		glBindTexture(GL_TEXTURE_2D, c->tex);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, gl_data);

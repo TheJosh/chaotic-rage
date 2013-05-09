@@ -15,6 +15,10 @@ using namespace std;
 static cfg_opt_t config_opts[] =
 {
 	CFG_INT((char*) "render", RENDER_OPENGL, CFGF_NONE),
+	
+	CFG_INT((char*) "gl-msaa", 1, CFGF_NONE),
+	CFG_INT((char*) "gl-tex-filter", 1, CFGF_NONE),
+	
 	CFG_END()
 };
 
@@ -45,9 +49,14 @@ void ClientConfig::load()
 	if (cfg_parse(cfg, filename.c_str()) == CFG_FILE_ERROR) {
 		this->savedefault();
 	}
-
+	
+	this->gl = new RenderOpenGLSettings();
+	
 	this->render = cfg_getint(cfg, "render");
-
+	
+	this->gl->msaa = cfg_getint(cfg, "gl-msaa");
+	this->gl->tex_filter = cfg_getint(cfg, "gl-tex-filter");
+	
 	cfg_free(cfg);
 }
 
@@ -92,6 +101,14 @@ void ClientConfig::savedefault()
 		"#   1 - OpenGL full version. Requires OpenGL 2.0 or later.\n"
 		"#   2 - OpenGL compatibility version, good if you're on integrated graphics.\n"
 		"render = 1\n"
+		"\n"
+		"# OpenGL - MSAA:\n"
+		"#   Options available depends on your GPU; common options are 1, 2, 4, 8, 16.\n"
+		"gl-msaa = 1\n"
+		"\n"
+		"# OpenGL - Texture Filtering:\n"
+		"#   1 - no filtering  2,3 - bilinear  4 - trilinear\n"
+		"gl-tex-filter = 1\n"
 		;
 
 	filename = getUserDataDir().append("client.conf");
@@ -109,13 +126,7 @@ void ClientConfig::savedefault()
 void ClientConfig::initRender(GameState *st)
 {
 	if (this->render == RENDER_OPENGL) {
-		RenderOpenGLSettings* settings = new RenderOpenGLSettings();
-		
-		settings->msaa = 4;
-		settings->texture_filtering = 4;
-		settings->texture_anisotropy = 0;
-		
-		new RenderOpenGL(st, settings);
+		new RenderOpenGL(st, this->gl);
 
 	} else if (this->render == RENDER_OPENGL_COMPAT) {
 		new RenderOpenGLCompat(st);

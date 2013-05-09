@@ -89,6 +89,8 @@ class RenderOpenGL : public Render3D
 		glm::mat4 view;			// camera
 		
 		RenderOpenGLSettings* settings;
+		int min_filter;
+		int mag_filter;
 		
 	public:
 		RenderOpenGL(GameState * st, RenderOpenGLSettings* settings);
@@ -130,6 +132,8 @@ class RenderOpenGL : public Render3D
 		virtual void renderText(string text, float x = 0.0f, float y = 0.0f, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
 		virtual unsigned int widthText(string text);
 		virtual bool loadAssimpModel(AssimpModel *am);
+		
+		void setSettings(RenderOpenGLSettings* settings);
 		
 	private:
 		void createWater();
