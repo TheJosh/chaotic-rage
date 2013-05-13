@@ -30,8 +30,6 @@
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <assimp/scene.h>
-
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -1090,10 +1088,10 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 
 
 	CHECK_OPENGL_ERROR;
-		
+
 	// Re-calc animation if needed
 	play->calcTransforms();
-		
+
 	// Bones? Calculate and send through bone transforms
 	if (am->meshes[0]->bones.size() > 0) {
 		shader = this->shaders["bones"];
@@ -1130,11 +1128,8 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 	glm::mat4 transform;
 	
 	std::map<AssimpNode*, glm::mat4>::iterator local = ap->transforms.find(nd);
-	if (local != ap->transforms.end()) {
-		transform = local->second;
-	} else {
-		assert(0);
-	}
+	assert(local != ap->transforms.end());
+	transform = local->second;
 
 	CHECK_OPENGL_ERROR;
 	
