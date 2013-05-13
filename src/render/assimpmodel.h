@@ -59,10 +59,13 @@ class AssimpMesh
 class AssimpMaterial
 {
 	public:
-		AssimpMaterial() : tex(NULL) {}
+		SpritePtr diffuse;
+		SpritePtr normal;
 		
 	public:
-		SpritePtr tex;
+		AssimpMaterial():
+			diffuse(NULL), normal(NULL)
+			{}
 };
 
 class AssimpNode
@@ -142,6 +145,10 @@ class AssimpModel
 		void calcBoundingSize();
 		btVector3 calcBoundingSizeNode(const struct aiNode* nd, aiMatrix4x4* trafo);
 
+		void loadMeshes();
+		void loadMaterials(Render3D* render);
+		SpritePtr loadTexture(Render3D* render, aiString path);
+		
 		void loadNodes();
 		AssimpNode* loadNode(aiNode* nd);
 		AssimpNode* findNode(AssimpNode* nd, string name);

@@ -12,6 +12,12 @@
 #include <assimp/cimport.h>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <GL/glew.h>
+#include <GL/gl.h>
+#if defined(__WIN32__)
+	#include <GL/glext.h>
+#endif
+#include <GL/glu.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
@@ -65,13 +71,12 @@ bool AssimpModel::load(Render3D* render)
 	
 	free(data);
 	
-	if (! render->loadAssimpModel(this)) {
-		return false;
-	}
-	
-	this->calcBoundingSize();
+	this->loadMeshes();
+	this->loadMaterials(render);
 	this->loadNodes();
 	this->loadAnimations();
+	
+	this->calcBoundingSize();
 	this->setBoneNodes();
 	
 	this->sc = NULL;
@@ -125,6 +130,145 @@ btVector3 AssimpModel::calcBoundingSizeNode(const struct aiNode* nd, aiMatrix4x4
 	
 	*trafo = prev;
 	return btVector3(x, y, z);
+}
+
+
+/**
+* Load a model into a VAO, VBOs etc.
+**/
+void AssimpModel::loadMeshes()
+{
+	unsigned int n = 0;
+	GLuint buffer;
+
+	for (; n < sc->mNumMeshes; ++n) {
+		const struct aiMesh* mesh = sc->mMeshes[n];
+		AssimpMesh *myMesh = new AssimpMesh();
+		
+		myMesh->numFaces = mesh->mNumFaces;
+		myMesh->materialIndex = mesh->mMaterialIndex;
+		
+		// VAO
+		glGenVertexArrays(1,&(myMesh->vao));
+		glBindVertexArray(myMesh->vao);
+		
+		// Prep face array for VBO
+		unsigned int *faceArray;
+		faceArray = (unsigned int *)malloc(sizeof(unsigned int) * mesh->mNumFaces * 3);
+		unsigned int faceIndex = 0;
+		
+		// Copy face data
+		for (unsigned int t = 0; t < mesh->mNumFaces; ++t) {
+			const struct aiFace* face = &mesh->mFaces[t];
+			
+			memcpy(&faceArray[faceIndex], face->mIndices, 3 * sizeof(int));
+			faceIndex += 3;
+		}
+		
+		// Faces
+		glGenBuffers(1, &buffer);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mesh->mNumFaces * 3, faceArray, GL_STATIC_DRAW);
+		free(faceArray);
+		
+		// Positions
+		if (mesh->HasPositions()) {
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mVertices, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(ATTRIB_POSITION);
+			glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, 0, 0, 0);
+		}
+		
+		// Normals
+		if (mesh->HasNormals()) {
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mNormals, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(ATTRIB_NORMAL);
+			glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, 0, 0, 0);
+		}
+		
+		// UVs
+		if (mesh->HasTextureCoords(0)) {
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mTextureCoords[0], GL_STATIC_DRAW);
+			glEnableVertexAttribArray(ATTRIB_TEXUV);
+			glVertexAttribPointer(ATTRIB_TEXUV, 3, GL_FLOAT, 0, 0, 0);
+		}
+		
+		// Bone IDs and Weights
+		if (mesh->HasBones()) {
+			this->loadBones(mesh, myMesh);
+
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned int)*4*mesh->mNumVertices, this->boneIds, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(ATTRIB_BONEID);
+			glVertexAttribIPointer(ATTRIB_BONEID, 4, GL_INT, 0, 0);
+			
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*4*mesh->mNumVertices, this->boneWeights, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(ATTRIB_BONEWEIGHT);
+			glVertexAttribPointer(ATTRIB_BONEWEIGHT, 4, GL_FLOAT, 0, 0, 0);
+
+			this->freeBones();
+		}
+
+		glBindVertexArray(0);
+		
+		this->meshes.push_back(myMesh);
+	}
+}
+
+/**
+* Load materials.
+* Only supports simple materials with a single texture at the moment.
+**/
+void AssimpModel::loadMaterials(Render3D* render)
+{
+	unsigned int n;
+	aiString path;
+	
+	for (n = 0; n < sc->mNumMaterials; n++) {
+		const aiMaterial* pMaterial = sc->mMaterials[n];
+		AssimpMaterial *myMat = new AssimpMaterial();
+		
+		// Diffuse texture
+		if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
+			if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
+				myMat->diffuse = this->loadTexture(render, path);
+			}
+		}
+		
+		// Normal map
+		if (pMaterial->GetTextureCount(aiTextureType_NORMALS) > 0) {
+			if (pMaterial->GetTexture(aiTextureType_NORMALS, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
+				myMat->normal = this->loadTexture(render, path);
+			}
+		}
+		
+		this->materials.push_back(myMat);
+	}
+}
+
+
+/**
+* Load a texture specified at a specified path.
+*
+* TODO: We should save these in a std::map so we don't load the same stuff multiple times.
+**/
+SpritePtr AssimpModel::loadTexture(Render3D* render, aiString path)
+{
+	std::string p(path.data);
+	
+	if (p.substr(0, 2) == ".\\") p = p.substr(2, p.size() - 2);
+	if (p.substr(0, 2) == "./") p = p.substr(2, p.size() - 2);
+	if (p.substr(0, 2) == "//") p = p.substr(2, p.size() - 2);
+	
+	return render->loadSprite("models/" + p, this->mod); 
 }
 
 

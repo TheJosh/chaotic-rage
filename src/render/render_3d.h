@@ -135,11 +135,6 @@ class Render3D : public Render
 		* Render some text
 		**/
 		virtual unsigned int widthText(string text) = 0;
-		
-		/**
-		* Load an assimp model into a VBO
-		**/
-		virtual bool loadAssimpModel(AssimpModel* am) = 0;
 };
 
 

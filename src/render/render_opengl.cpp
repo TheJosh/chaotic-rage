@@ -65,16 +65,6 @@ using namespace std;
 #endif
 
 
-// Constants for VBOs <-> Shaders
-// (glBindAttribLocation)
-#define ATTRIB_POSITION 0         // vPosition
-#define ATTRIB_NORMAL 1           // vNormal
-#define ATTRIB_TEXUV 2            // vTexUV
-#define ATTRIB_BONEID 3           // vBoneIDs
-#define ATTRIB_BONEWEIGHT 4       // vBoneWeights
-#define ATTRIB_TEXTCOORD 5        // vCoord
-#define ATTRIB_COLOR 6            // vColor
-
 
 /**
 * Gets the next highest power-of-two for a number
@@ -1160,10 +1150,10 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 			glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPbones));
 		}
 		
-		if (am->materials[mesh->materialIndex]->tex == NULL) {
+		if (am->materials[mesh->materialIndex]->diffuse == NULL) {
 			glBindTexture(GL_TEXTURE_2D, 0);
 		} else {
-			glBindTexture(GL_TEXTURE_2D, am->materials[mesh->materialIndex]->tex->pixels);
+			glBindTexture(GL_TEXTURE_2D, am->materials[mesh->materialIndex]->diffuse->pixels);
 		}
 		
 		glBindVertexArray(mesh->vao);
@@ -1177,135 +1167,6 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 	CHECK_OPENGL_ERROR;
 
 	glBindVertexArray(0);
-}
-
-
-/**
-* Load a model into VBOs etc.
-*
-* TODO: Does this actually belong in the AssimModel class?
-**/
-bool RenderOpenGL::loadAssimpModel(AssimpModel *am)
-{
-	const struct aiScene* sc = am->getScene();
-	unsigned int n = 0;
-	GLuint buffer;
-	
-	CHECK_OPENGL_ERROR;
-
-	for (; n < sc->mNumMeshes; ++n) {
-		const struct aiMesh* mesh = sc->mMeshes[n];
-		AssimpMesh *myMesh = new AssimpMesh();
-		
-		myMesh->numFaces = mesh->mNumFaces;
-		myMesh->materialIndex = mesh->mMaterialIndex;
-		
-		// VAO
-		glGenVertexArrays(1,&(myMesh->vao));
-		glBindVertexArray(myMesh->vao);
-		
-		// Prep face array for VBO
-		unsigned int *faceArray;
-		faceArray = (unsigned int *)malloc(sizeof(unsigned int) * mesh->mNumFaces * 3);
-		unsigned int faceIndex = 0;
-		
-		// Copy face data
-		for (unsigned int t = 0; t < mesh->mNumFaces; ++t) {
-			const struct aiFace* face = &mesh->mFaces[t];
-			
-			memcpy(&faceArray[faceIndex], face->mIndices, 3 * sizeof(int));
-			faceIndex += 3;
-		}
-		
-		// Faces
-		glGenBuffers(1, &buffer);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mesh->mNumFaces * 3, faceArray, GL_STATIC_DRAW);
-		free(faceArray);
-		
-		// Positions
-		if (mesh->HasPositions()) {
-			glGenBuffers(1, &buffer);
-			glBindBuffer(GL_ARRAY_BUFFER, buffer);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mVertices, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(ATTRIB_POSITION);
-			glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, 0, 0, 0);
-		}
-		
-		// Normals
-		if (mesh->HasNormals()) {
-			glGenBuffers(1, &buffer);
-			glBindBuffer(GL_ARRAY_BUFFER, buffer);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mNormals, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(ATTRIB_NORMAL);
-			glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, 0, 0, 0);
-		}
-		
-		// UVs
-		if (mesh->HasTextureCoords(0)) {
-			glGenBuffers(1, &buffer);
-			glBindBuffer(GL_ARRAY_BUFFER, buffer);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mTextureCoords[0], GL_STATIC_DRAW);
-			glEnableVertexAttribArray(ATTRIB_TEXUV);
-			glVertexAttribPointer(ATTRIB_TEXUV, 3, GL_FLOAT, 0, 0, 0);
-		}
-		
-		// Bone IDs and Weights
-		if (mesh->HasBones()) {
-			am->loadBones(mesh, myMesh);
-
-			glGenBuffers(1, &buffer);
-			glBindBuffer(GL_ARRAY_BUFFER, buffer);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned int)*4*mesh->mNumVertices, am->boneIds, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(ATTRIB_BONEID);
-			glVertexAttribIPointer(ATTRIB_BONEID, 4, GL_INT, 0, 0);
-			
-			glGenBuffers(1, &buffer);
-			glBindBuffer(GL_ARRAY_BUFFER, buffer);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*4*mesh->mNumVertices, am->boneWeights, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(ATTRIB_BONEWEIGHT);
-			glVertexAttribPointer(ATTRIB_BONEWEIGHT, 4, GL_FLOAT, 0, 0, 0);
-
-			am->freeBones();
-		}
-
-		glBindVertexArray(0);
-		
-		am->meshes.push_back(myMesh);
-	}
-	
-	CHECK_OPENGL_ERROR;
-
-	// Load materials. Only supports simple materials with a single texture at the moment.
-	// TODO: We should save these in a list so we don't load the same stuff multiple times.
-	for (n = 0; n < sc->mNumMaterials; n++) {
-		const aiMaterial* pMaterial = sc->mMaterials[n];
-		
-		AssimpMaterial *myMat = new AssimpMaterial();
-		
-		if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
-			aiString Path;
-			if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path, NULL, NULL, NULL, NULL, NULL) != AI_SUCCESS) continue;
-			
-			string p(Path.data);
-			
-			cout << "Assimp texture: " << p << "\n";
-			
-			if (p.substr(0, 2) == ".\\") p = p.substr(2, p.size() - 2);
-			if (p.substr(0, 2) == "./") p = p.substr(2, p.size() - 2);
-			if (p.substr(0, 2) == "//") p = p.substr(2, p.size() - 2);
-			
-			SpritePtr tex = this->loadSprite("models/" + p, am->mod); 
-			
-			myMat->tex = tex;
-		}
-		
-		am->materials.push_back(myMat);
-	}
-	
-	CHECK_OPENGL_ERROR;
-
-	return true;
 }
 
 

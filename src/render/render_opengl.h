@@ -28,6 +28,17 @@
 
 
 
+// Constants for VBOs <-> Shaders
+// (glBindAttribLocation)
+#define ATTRIB_POSITION 0         // vPosition
+#define ATTRIB_NORMAL 1           // vNormal
+#define ATTRIB_TEXUV 2            // vTexUV
+#define ATTRIB_BONEID 3           // vBoneIDs
+#define ATTRIB_BONEWEIGHT 4       // vBoneWeights
+#define ATTRIB_TEXTCOORD 5        // vCoord
+#define ATTRIB_COLOR 6            // vColor
+
+
 struct VBOvertex
 {
 	float x, y, z;        // Vertex
@@ -131,7 +142,6 @@ class RenderOpenGL : public Render3D
 		virtual void loadFont(string name, Mod * mod);
 		virtual void renderText(string text, float x = 0.0f, float y = 0.0f, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
 		virtual unsigned int widthText(string text);
-		virtual bool loadAssimpModel(AssimpModel *am);
 		
 		void setSettings(RenderOpenGLSettings* settings);
 		RenderOpenGLSettings* getSettings();

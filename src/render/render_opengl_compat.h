@@ -88,7 +88,6 @@ class RenderOpenGLCompat : public Render3D
 		virtual void loadFont(string name, Mod * mod);
 		virtual void renderText(string text, float x = 0.0f, float y = 0.0f, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
 		virtual unsigned int widthText(string text);
-		virtual bool loadAssimpModel(AssimpModel* am);
 		
 	private:
 		void renderAnimPlay(AnimPlay * play);

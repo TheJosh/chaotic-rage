@@ -638,15 +638,6 @@ void RenderOpenGLCompat::renderObj (WavefrontObj * obj)
 
 
 /**
-* Load an assimp model into a VBO
-**/
-bool RenderOpenGLCompat::loadAssimpModel(AssimpModel* am)
-{
-	return false;
-}
-
-
-/**
 * Renders an animation.
 * Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender afterwards()
 **/
