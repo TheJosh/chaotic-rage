@@ -14,9 +14,6 @@
 #include <assimp/postprocess.h>
 #include <GL/glew.h>
 #include <GL/gl.h>
-#if defined(__WIN32__)
-	#include <GL/glext.h>
-#endif
 #include <GL/glu.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
