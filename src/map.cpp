@@ -75,6 +75,7 @@ static cfg_opt_t mesh_opts[] =
 
 	CFG_STR((char*) "mesh", ((char*)""), CFGF_NONE),
 	CFG_STR((char*) "texture", ((char*)""), CFGF_NONE),
+	CFG_STR((char*) "normals", ((char*)""), CFGF_NONE),
 	
 	CFG_END()
 };
@@ -283,6 +284,12 @@ int Map::load(string name, Render *render, Mod* insideof)
 			if (! tex) reportFatalError("Unable to load map; mesh texture didn't load");
 
 			m->texture = tex;
+		}
+		
+		{
+			string filename = cfg_getstr(cfg_sub, "normals");
+			filename.append(".png");
+			m->normals = this->mod->st->render->loadSprite(filename, this->mod);
 		}
 
 		this->meshes.push_back(m);

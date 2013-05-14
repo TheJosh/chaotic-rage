@@ -818,6 +818,7 @@ void RenderOpenGL::loadShaders()
 	this->shaders["entities"] = loadProgram(base, "entities");
 	this->shaders["bones"] = loadProgram(base, "bones");
 	this->shaders["map"] = loadProgram(base, "map");
+	this->shaders["map_bumpmap"] = loadProgram(base, "map_bumpmap");
 	this->shaders["water"] = loadProgram(base, "water");
 	this->shaders["particles"] = loadProgram(base, "particles");
 	this->shaders["dissolve"] = loadProgram(base, "dissolve");
@@ -1504,7 +1505,30 @@ void RenderOpenGL::terrain()
 	
 	// Static geometry meshes
 	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); it++) {
+		GLShader* s;
+		
+		if ((*it)->normals != NULL) {
+			s = this->shaders["map_bumpmap"];
+		} else {
+			s = this->shaders["map"];
+		}
+		
+		glUseProgram(s->p());
+		
+		if ((*it)->normals != NULL) {
+			glUniform1i(s->uniform("uBump"), 1);
+			
+			glUniform3fv(s->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
+			glUniform4fv(s->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
+			glUniform4fv(s->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
+		
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, (*it)->normals->pixels);
+			glActiveTexture(GL_TEXTURE0);
+		}
+		
 		glBindTexture(GL_TEXTURE_2D, (*it)->texture->pixels);
+		
 		
 		float m[16];
 		(*it)->xform.getOpenGLMatrix(m);
@@ -1514,13 +1538,13 @@ void RenderOpenGL::terrain()
 		if (obj->ibo_count == 0) this->createVBO(obj);
 		
 		glm::mat4 MVP = this->projection * this->view * modelMatrix;
-		glUniformMatrix4fv(this->shaders["map"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+		glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 		
 		glm::mat4 MV = this->view * modelMatrix;
-		glUniformMatrix4fv(this->shaders["map"]->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
+		glUniformMatrix4fv(s->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
 	
 		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
-		glUniformMatrix3fv(this->shaders["map"]->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
+		glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
 
 		glBindVertexArray(obj->vao);
 		glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);

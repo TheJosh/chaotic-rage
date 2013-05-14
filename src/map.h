@@ -38,6 +38,7 @@ class MapMesh {
 		btRigidBody *body;
 		WavefrontObj *mesh;
 		SpritePtr texture;
+		SpritePtr normals;
 };
 
 class Map {
