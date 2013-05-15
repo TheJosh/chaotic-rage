@@ -37,6 +37,7 @@
 #define ATTRIB_BONEWEIGHT 4       // vBoneWeights
 #define ATTRIB_TEXTCOORD 5        // vCoord
 #define ATTRIB_COLOR 6            // vColor
+#define ATTRIB_TANGENT 7          // vTangent
 
 
 struct VBOvertex

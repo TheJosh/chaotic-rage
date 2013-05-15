@@ -33,5 +33,5 @@ void main()
 		light += uLightColor[i] * NdotL * att;
 	}
 	
-	gl_FragColor = texture2D(uTex, fTexUV) * light;
+	gl_FragColor = vec4(fNormal, 1.0f) * light;
 }

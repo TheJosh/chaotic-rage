@@ -886,7 +886,8 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	glBindAttribLocation(program, ATTRIB_BONEWEIGHT, "vBoneWeights");
 	glBindAttribLocation(program, ATTRIB_TEXTCOORD, "vCoord");
 	glBindAttribLocation(program, ATTRIB_COLOR, "vColor");
-
+	glBindAttribLocation(program, ATTRIB_TANGENT, "vTangent");
+	
 	// Link
 	glLinkProgram(program);
 	glDeleteShader(sVertex);
@@ -1507,7 +1508,7 @@ void RenderOpenGL::terrain()
 	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); it++) {
 		GLShader* s;
 		
-		if ((*it)->normals != NULL) {
+		if (false && (*it)->normals != NULL) {
 			s = this->shaders["map_bumpmap"];
 		} else {
 			s = this->shaders["map"];
@@ -1515,8 +1516,8 @@ void RenderOpenGL::terrain()
 		
 		glUseProgram(s->p());
 		
-		if ((*it)->normals != NULL) {
-			glUniform1i(s->uniform("uBump"), 1);
+		if (false && (*it)->normals != NULL) {
+			glUniform1i(s->uniform("uNormals"), 1);
 			
 			glUniform3fv(s->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
 			glUniform4fv(s->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
@@ -1538,14 +1539,14 @@ void RenderOpenGL::terrain()
 		if (obj->ibo_count == 0) this->createVBO(obj);
 		
 		glm::mat4 MVP = this->projection * this->view * modelMatrix;
-		glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+		glUniformMatrix4fv(this->shaders["map"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 		
 		glm::mat4 MV = this->view * modelMatrix;
-		glUniformMatrix4fv(s->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
-	
+		glUniformMatrix4fv(this->shaders["map"]->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
+		
 		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
-		glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
-
+		glUniformMatrix3fv(this->shaders["map"]->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
+		
 		glBindVertexArray(obj->vao);
 		glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
 	}

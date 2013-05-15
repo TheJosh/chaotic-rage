@@ -214,6 +214,16 @@ void AssimpModel::loadMeshes()
 			this->freeBones();
 		}
 
+		// Tangent s and Bittangents, for normal mapping
+		// TODO: Determine if there actually is a normal map in use on this mesh!
+		if (mesh->HasTangentsAndBitangents()) {
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mTangents, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(ATTRIB_TANGENT);
+			glVertexAttribPointer(ATTRIB_TANGENT, 3, GL_FLOAT, 0, 0, 0);
+		}
+		
 		glBindVertexArray(0);
 		
 		this->meshes.push_back(myMesh);
