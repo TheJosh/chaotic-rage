@@ -807,12 +807,14 @@ void RenderOpenGL::loadShaders()
 	// Don't even bother if they are already loaded
 	if (this->shaders_loaded) return;
 	
-	// Before the mod is loaded, we need some basic shaders
-	// These are hardcoded (see above)
-	if (! this->st->mm) {
+	// Before the mod is loaded, we only need the basic shader
+	// It's are hardcoded (see above)
+	if (! this->shaders.count("basic")) {
 		this->shaders["basic"] = createProgram(pVS, pFS, "basic");
-		return;
 	}
+	
+	// No mod loaded yet, can't load the shaders
+	if (! this->st->mm) return;
 	
 	base = this->st->mm->getBase();
 	this->shaders["entities"] = loadProgram(base, "entities");
@@ -825,6 +827,23 @@ void RenderOpenGL::loadShaders()
 	this->shaders["text"] = loadProgram(base, "text");
 
 	this->shaders_loaded = true;
+}
+
+
+/**
+* Force a reload of the shaders
+**/
+void RenderOpenGL::reloadShaders()
+{
+	// Kill off old
+	for (map<string, GLShader*>::iterator it = this->shaders.begin(); it != this->shaders.end(); ++it) {
+		this->deleteProgram(it->second);
+	}
+	this->shaders.clear();
+	
+	// Load new
+	this->shaders_loaded = false;
+	this->loadShaders();
 }
 
 
@@ -940,6 +959,17 @@ GLShader* RenderOpenGL::loadProgram(Mod* mod, string name)
 	delete(f);
 	
 	return s;
+}
+
+
+/**
+* Unlinks a shader, freeing OpenGL and system memory
+* The pointer passed in the variable `shader` will become INVALID after this call is made.
+**/
+void RenderOpenGL::deleteProgram(GLShader* shader)
+{
+	glDeleteProgram(shader->p());
+	delete(shader);
 }
 
 

@@ -147,6 +147,8 @@ class RenderOpenGL : public Render3D
 		void setSettings(RenderOpenGLSettings* settings);
 		RenderOpenGLSettings* getSettings();
 		
+		void reloadShaders();
+		
 	private:
 		void createWater();
 		void renderAnimPlay(AnimPlay * play, Entity * e);
@@ -170,6 +172,7 @@ class RenderOpenGL : public Render3D
 		GLuint createShader(const char* code, GLenum type);
 		GLShader* createProgram(const char* vertex, const char* fragment, string name);
 		GLShader* loadProgram(Mod* mod, string name);
+		void deleteProgram(GLShader* shader);
 };
 
 
