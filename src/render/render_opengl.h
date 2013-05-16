@@ -94,6 +94,7 @@ class RenderOpenGL : public Render3D
 		
 		// Shaders
 		bool shaders_loaded;		// true if loaded from a mod
+		bool shaders_error;			// true if a shader load failed
 		map<string, GLShader*> shaders;
 		
 		glm::mat4 projection;	// perspective
@@ -147,7 +148,7 @@ class RenderOpenGL : public Render3D
 		void setSettings(RenderOpenGLSettings* settings);
 		RenderOpenGLSettings* getSettings();
 		
-		void reloadShaders();
+		bool reloadShaders();
 		
 	private:
 		void createWater();

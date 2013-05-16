@@ -247,6 +247,9 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	}
 	
 	this->loadShaders();
+	if (this->shaders_error) {
+		reportFatalError("Error loading OpenGL shaders");
+	}
 	
 	// OpenGL env
 	glDepthFunc(GL_LEQUAL);
@@ -283,6 +286,9 @@ void RenderOpenGL::loadFont(string name, Mod * mod)
 	}
 
 	this->loadShaders();
+	if (this->shaders_error) {
+		reportFatalError("Error loading OpenGL shaders");
+	}
 }
 
 
@@ -720,6 +726,9 @@ void RenderOpenGL::preGame()
 	
 	// This will load the shaders (from the base mod) if they aren't loaded.
 	this->loadShaders();
+	if (this->shaders_error) {
+		reportFatalError("Error loading OpenGL shaders");
+	}
 	
 	// The water object
 	this->createWater();
@@ -807,6 +816,8 @@ void RenderOpenGL::loadShaders()
 	// Don't even bother if they are already loaded
 	if (this->shaders_loaded) return;
 	
+	this->shaders_error = false;
+	
 	// Before the mod is loaded, we only need the basic shader
 	// It's are hardcoded (see above)
 	if (! this->shaders.count("basic")) {
@@ -817,6 +828,7 @@ void RenderOpenGL::loadShaders()
 	if (! this->st->mm) return;
 	
 	base = this->st->mm->getBase();
+	
 	this->shaders["entities"] = loadProgram(base, "entities");
 	this->shaders["bones"] = loadProgram(base, "bones");
 	this->shaders["map"] = loadProgram(base, "map");
@@ -825,7 +837,7 @@ void RenderOpenGL::loadShaders()
 	this->shaders["particles"] = loadProgram(base, "particles");
 	this->shaders["dissolve"] = loadProgram(base, "dissolve");
 	this->shaders["text"] = loadProgram(base, "text");
-
+	
 	this->shaders_loaded = true;
 }
 
@@ -833,17 +845,29 @@ void RenderOpenGL::loadShaders()
 /**
 * Force a reload of the shaders
 **/
-void RenderOpenGL::reloadShaders()
+bool RenderOpenGL::reloadShaders()
 {
-	// Kill off old
-	for (map<string, GLShader*>::iterator it = this->shaders.begin(); it != this->shaders.end(); ++it) {
-		this->deleteProgram(it->second);
-	}
-	this->shaders.clear();
+	map<string, GLShader*> old = map<string, GLShader*>(this->shaders);
 	
 	// Load new
+	this->shaders.clear();
 	this->shaders_loaded = false;
 	this->loadShaders();
+	
+	// If error, revert to old
+	if (this->shaders_error) {
+		for (map<string, GLShader*>::iterator it = old.begin(); it != old.end(); ++it) {
+			this->shaders[it->first] = it->second;
+		}
+		return false;
+	}
+	
+	// Kill off the old shaders
+	for (map<string, GLShader*>::iterator it = old.begin(); it != old.end(); ++it) {
+		this->deleteProgram(it->second);
+	}
+	
+	return true;
 }
 
 
@@ -857,7 +881,7 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 	
 	GLuint shader = glCreateShader(type);
 	if (shader == 0) {
-		reportFatalError("Error creating OpenGL shader");
+		return 0;
 	}
 	
 	GLint len = strlen(code);
@@ -868,7 +892,7 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 		GLchar InfoLog[1024];
 		glGetShaderInfoLog(shader, 1024, NULL, InfoLog);
 		cout << "Error compiling shader:\n" << InfoLog << "\n";
-		reportFatalError("Error compiling OpenGL shader");
+		return 0;
 	}
 	
 	return shader;
@@ -886,15 +910,21 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	
 	GLuint program = glCreateProgram();
 	if (program == 0) {
-		reportFatalError("Error creating OpenGL program");
+		return NULL;
 	}
 	
 	// Create and attach vertex shader
 	sVertex = this->createShader(vertex, GL_VERTEX_SHADER);
+	if (sVertex == 0) {
+		return NULL;
+	}
 	glAttachShader(program, sVertex);
 	
 	// Same with frag shader
 	sFragment = this->createShader(fragment, GL_FRAGMENT_SHADER);
+	if (sFragment == 0) {
+		return NULL;
+	}
 	glAttachShader(program, sFragment);
 	
 	// Bind attribs
@@ -917,15 +947,15 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	if (! success) {
 		GLchar InfoLog[1024];
 		glGetProgramInfoLog(program, 1024, NULL, InfoLog);
-		cout << "Error compiling shader:\n" << InfoLog << "\n";
-		reportFatalError("Error linking OpenGL program " + name);
+		cout << "Error linking program:\n" << InfoLog << "\n";
+		return NULL;
 	}
 	
 	// Validate
 	glValidateProgram(program);
 	glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
 	if (! success) {
-		reportFatalError("Error validating OpenGL program " + name);
+		return NULL;
 	}
 	
 	return new GLShader(program);
@@ -946,7 +976,11 @@ GLShader* RenderOpenGL::loadProgram(Mod* mod, string name)
 	GLShader* s;
 	
 	if (v == NULL or f == NULL) {
-		reportFatalError("Unable to load shader program " + name);
+		free(v);
+		free(f);
+		cout << "Unable to load shader program " << name << endl;
+		this->shaders_error = true;
+		return NULL;
 	}
 	
 	CHECK_OPENGL_ERROR;
@@ -955,8 +989,13 @@ GLShader* RenderOpenGL::loadProgram(Mod* mod, string name)
 	
 	CHECK_OPENGL_ERROR;
 	
-	delete(v);
-	delete(f);
+	free(v);
+	free(f);
+	
+	if (s == NULL) {
+		cout << "Unable to create shader program " << name << endl;
+		this->shaders_error = true;
+	}
 	
 	return s;
 }

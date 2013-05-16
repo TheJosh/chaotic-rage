@@ -55,8 +55,7 @@ void handleEvents(GameState *st)
 					break;
 					
 				case SDLK_F5:
-					((RenderOpenGL*)st->render)->reloadShaders();
-					st->addHUDMessage(ALL_SLOTS, "Shaders reloaded successfully");
+					st->addHUDMessage(ALL_SLOTS, "Shaders reload: ", ((RenderOpenGL*)st->render)->reloadShaders() ? "success" : "failure");
 					break;
 					
 				case SDLK_F6:
