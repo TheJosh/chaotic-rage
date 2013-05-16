@@ -6,7 +6,7 @@ in vec3 fLightDir[2];
 
 uniform mat4 uMVP;
 uniform mat4 uMV;
-uniform mat4 uN;
+uniform mat3 uN;
 uniform sampler2D uTex;
 uniform vec4 uLightColor[2];
 uniform vec4 uAmbient;
@@ -33,5 +33,5 @@ void main()
 		light += uLightColor[i] * NdotL * att;
 	}
 	
-	gl_FragColor = vec4(fNormal, 1.0f) * light;
+	gl_FragColor = mix(texture2D(uTex, fTexUV), vec4(fNormal, 1.0f), 1.0) * light;
 }

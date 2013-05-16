@@ -1575,7 +1575,7 @@ void RenderOpenGL::terrain()
 	
 	// Static geometry meshes
 	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); it++) {
-		GLShader* s;
+		/*GLShader* s;
 		
 		if (false && (*it)->normals != NULL) {
 			s = this->shaders["map_bumpmap"];
@@ -1585,17 +1585,16 @@ void RenderOpenGL::terrain()
 		
 		glUseProgram(s->p());
 		
-		if (false && (*it)->normals != NULL) {
-			glUniform1i(s->uniform("uNormals"), 1);
-			
-			glUniform3fv(s->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
-			glUniform4fv(s->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
-			glUniform4fv(s->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
+		glUniform3fv(s->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
+		glUniform4fv(s->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
+		glUniform4fv(s->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
 		
+		if (false && (*it)->normals != NULL) {
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, (*it)->normals->pixels);
+			glUniform1i(s->uniform("uNormals"), 1);
 			glActiveTexture(GL_TEXTURE0);
-		}
+		}*/
 		
 		glBindTexture(GL_TEXTURE_2D, (*it)->texture->pixels);
 		
@@ -1609,10 +1608,10 @@ void RenderOpenGL::terrain()
 		
 		glm::mat4 MVP = this->projection * this->view * modelMatrix;
 		glUniformMatrix4fv(this->shaders["map"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-		
+	
 		glm::mat4 MV = this->view * modelMatrix;
 		glUniformMatrix4fv(this->shaders["map"]->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
-		
+	
 		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
 		glUniformMatrix3fv(this->shaders["map"]->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
 		

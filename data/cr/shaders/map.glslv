@@ -21,9 +21,10 @@ void main()
 	fTexUV = vTexUV;
 	fNormal = uN * vNormal;
 	
-	vec3 worldPos = vec3(uMV * vec4(vPosition, 1.0f));
+	vec4 worldPos = uMV * vec4(vPosition, 1.0f);
 
 	for (int i = 0; i < 2; i++) {
-		fLightDir[i] = worldPos - vec3(uMV * vec4(uLightPos[i], 1.0f));
+		vec4 dir = worldPos - uMV * vec4(uLightPos[i], 1.0f);
+		fLightDir[i] = dir.xyz;
 	}
 }
