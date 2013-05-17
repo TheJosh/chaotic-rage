@@ -15,6 +15,7 @@ namespace Maptool
             set { entities = value; }
         }
 
+
         /**
          * Saves a map
          **/
@@ -24,13 +25,7 @@ namespace Maptool
 
             foreach (Entity ent in entities) {
                 if (ent is ZoneEntity) {
-                    o += "zone {";
-                    o += "  width = " + ((ZoneEntity)ent).Width;
-                    o += "  height = " + ((ZoneEntity)ent).Height;
-                    o += "  x = " + ent.X;
-                    o += "  y = " + ent.Y;
-                    o += "  angle = " + ent.Angle;
-                    o += "  }\n";
+                    o += Tools.Zone.saveConfig(ent) + "\n";
                 }
             }
 
@@ -49,21 +44,13 @@ namespace Maptool
             string input = System.IO.File.ReadAllText(filename);
             ConfuseSection parsed = rdr.Parse(input);
 
-            List<EntityType> zone_types = (new ZoneTool()).getTypes();
-
-            entities = new List<Entity> ();
+            entities = new List<Entity>();
 
             foreach (ConfuseSection sect in parsed.subsections) {
                 Entity ent = null;
 
                 if (sect.name == "zone") {
-                    ent = new ZoneEntity();
-                    ent.Type = zone_types[0];
-                    ((ZoneEntity)ent).Width = sect.get_int("width", 20);
-                    ((ZoneEntity)ent).Height = sect.get_int("height", 20);
-                    ent.X = sect.get_int("x", 0);
-                    ent.Y = sect.get_int("y", 0);
-                    ent.Angle = sect.get_int("angle", 0);
+                    ent = Tools.Zone.loadConfig(sect);
                 }
 
                 if (ent == null) continue;

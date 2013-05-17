@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using datatool;
 
 namespace Maptool
 {
@@ -13,5 +14,9 @@ namespace Maptool
         public abstract bool isAreaBased();
 
         public abstract List<EntityType> getTypes();
+
+        public abstract string saveConfig(Entity ent);
+
+        public abstract Entity loadConfig(ConfuseSection sect);
     }
 }

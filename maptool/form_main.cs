@@ -19,8 +19,6 @@ namespace Maptool
         private int downX, downY;
         private List<Entity> entities;
 
-        private ZoneTool tool_zone = new ZoneTool();
-
 
 
         public frmMain()
@@ -47,7 +45,7 @@ namespace Maptool
             panMap.Size = new Size(1, 1);
             panMap.Size = new Size(2000, 2000);
 
-            toggleOn(toolAreas);
+            toggleOn(toolZones);
             setCurrEntity(null);
             setCurrEntityType(null);
             setCurrTool(null);
@@ -60,50 +58,10 @@ namespace Maptool
          **/
         private void toggleOn(ToolStripButton on)
         {
-            toolAreas.Checked = false;
-            toolWalls.Checked = false;
-            toolObjects.Checked = false;
-            toolParticleGenerators.Checked = false;
             toolZones.Checked = false;
             on.Checked = true;
         }
 
-
-        /**
-         * Engages the 'Areas' tool
-         **/
-        private void toolAreas_Click(object sender, EventArgs e)
-        {
-            toggleOn(toolAreas);
-            setCurrTool(null);
-        }
-
-        /**
-         * Engages the 'Walls' tool
-         **/
-        private void toolWalls_Click(object sender, EventArgs e)
-        {
-            toggleOn(toolWalls);
-            setCurrTool(null);
-        }
-
-        /**
-         * Engages the 'Objects' tool
-         **/
-        private void toolObjects_Click(object sender, EventArgs e)
-        {
-            toggleOn(toolObjects);
-            setCurrTool(null);
-        }
-
-        /**
-         * Engages the 'Particle Generators' tool
-         **/
-        private void toolParticleGenerators_Click(object sender, EventArgs e)
-        {
-            toggleOn(toolParticleGenerators);
-            setCurrTool(null);
-        }
 
         /**
          * Engages the 'Zones' tool
@@ -111,7 +69,7 @@ namespace Maptool
         private void toolZones_Click(object sender, EventArgs e)
         {
             toggleOn(toolZones);
-            setCurrTool(this.tool_zone);
+            setCurrTool(Tools.Zone);
         }
 
 
