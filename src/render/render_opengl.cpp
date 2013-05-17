@@ -52,12 +52,13 @@ using namespace std;
 	{	GLenum error; \
 		error = glGetError(); \
 		if (error != GL_NO_ERROR) { \
+			cerr << "OpenGL Error:\n"; \
 			while (error) { \
-				cout << "OpenGL Error: " << gluErrorString(error) << "\n"; \
+				cerr << " - " << gluErrorString(error) << "\n"; \
 				error = glGetError(); \
 			} \
-			cout << "Location: " << __FILE__ << ":" << __LINE__ << "\n"; \
-			reportFatalError("OpenGL error detected; exiting."); \
+			cerr << "Location: " << __FILE__ << ":" << __LINE__ << "\n"; \
+			reportFatalError("OpenGL error!"); \
 		} \
 	}
 #endif
@@ -730,6 +731,9 @@ void RenderOpenGL::preGame()
 		reportFatalError("Error loading OpenGL shaders");
 	}
 	
+	// Setup all the uniforms and such
+	this->setupShaders();
+
 	// The water object
 	this->createWater();
 	
@@ -740,6 +744,44 @@ void RenderOpenGL::preGame()
 	
 	// For the HUD etc
 	glMatrixMode(GL_PROJECTION);
+}
+
+
+/**
+* Set up shaders uniforms which are const throughout the game - lights, etc
+**/
+void RenderOpenGL::setupShaders()
+{
+	// Prep point lights...
+	// TODO: Think about dynamic lights?
+	glm::vec3 LightPos[2];
+	glm::vec4 LightColor[2];
+	unsigned int idx = 0;
+	for (unsigned int i = 0; i < st->map->lights.size(); i++) {
+		Light * l = st->map->lights[i];
+
+		if (l->type == 3) {
+			LightPos[idx] = glm::vec3(l->x, l->y, l->z);
+			LightColor[idx] = glm::vec4(l->diffuse[0], l->diffuse[1], l->diffuse[2], 0.8f);
+			idx++;
+			if (idx == 2) break;
+		}
+	}
+	
+	// ...and ambient too
+	glm::vec4 AmbientColor(this->st->map->ambient[0], this->st->map->ambient[1], this->st->map->ambient[2], 1.0f);
+
+	// Assign to phong shader
+	glUseProgram(this->shaders["phong"]->p());
+	glUniform3fv(this->shaders["phong"]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
+	glUniform4fv(this->shaders["phong"]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
+	glUniform4fv(this->shaders["phong"]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
+
+	// Assign to phong_bump shader
+	glUseProgram(this->shaders["phong_bump"]->p());
+	glUniform3fv(this->shaders["phong_bump"]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
+	glUniform4fv(this->shaders["phong_bump"]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
+	glUniform4fv(this->shaders["phong_bump"]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
 }
 
 
@@ -831,8 +873,8 @@ void RenderOpenGL::loadShaders()
 	
 	this->shaders["entities"] = loadProgram(base, "entities");
 	this->shaders["bones"] = loadProgram(base, "bones");
-	this->shaders["map"] = loadProgram(base, "map");
-	this->shaders["map_bumpmap"] = loadProgram(base, "map_bumpmap");
+	this->shaders["phong"] = loadProgram(base, "phong");
+	this->shaders["phong_bump"] = loadProgram(base, "phong_bump");
 	this->shaders["water"] = loadProgram(base, "water");
 	this->shaders["particles"] = loadProgram(base, "particles");
 	this->shaders["dissolve"] = loadProgram(base, "dissolve");
@@ -1524,32 +1566,12 @@ void RenderOpenGL::terrain()
 {
 	CHECK_OPENGL_ERROR;
 	
+	GLShader* s = this->shaders["phong"];
+
+
 	glBindTexture(GL_TEXTURE_2D, st->map->terrain->pixels);
 	
-	glUseProgram(this->shaders["map"]->p());
-	
-
-	glm::vec3 LightPos[2];
-	glm::vec4 LightColor[2];
-	
-	unsigned int idx = 0;
-	for (unsigned int i = 0; i < st->map->lights.size(); i++) {
-		Light * l = st->map->lights[i];
-
-		if (l->type == 3) {
-			LightPos[idx] = glm::vec3(l->x, l->y, l->z);
-			LightColor[idx] = glm::vec4(l->diffuse[0], l->diffuse[1], l->diffuse[2], getRandomf(0.8f, 0.9f));
-			idx++;
-			if (idx == 2) break;
-		}
-	}
-	
-	glUniform3fv(this->shaders["map"]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
-	glUniform4fv(this->shaders["map"]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
-
-	glm::vec4 AmbientColor(this->st->map->ambient[0], this->st->map->ambient[1], this->st->map->ambient[2], 1.0f);
-	glUniform4fv(this->shaders["map"]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
-
+	glUseProgram(s->p());
 
 	glm::mat4 modelMatrix = glm::scale(
 		glm::mat4(1.0f),
@@ -1557,13 +1579,13 @@ void RenderOpenGL::terrain()
 	);
 	
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;
-	glUniformMatrix4fv(this->shaders["map"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
 	glm::mat4 MV = this->view * modelMatrix;
-	glUniformMatrix4fv(this->shaders["map"]->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
+	glUniformMatrix4fv(s->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
 	
 	glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
-	glUniformMatrix3fv(this->shaders["map"]->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
+	glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
 	
 	glBindVertexArray(this->ter_vaoid);
 
@@ -1575,29 +1597,25 @@ void RenderOpenGL::terrain()
 	
 	// Static geometry meshes
 	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); it++) {
-		/*GLShader* s;
-		
-		if (false && (*it)->normals != NULL) {
-			s = this->shaders["map_bumpmap"];
+
+		// Bump mapping for meshes; not yet supported though
+		/*if ((*it)->normals != NULL) {
+			s = this->shaders["phong_bump"];
 		} else {
-			s = this->shaders["map"];
+			s = this->shaders["phong"];
 		}
 		
 		glUseProgram(s->p());
 		
-		glUniform3fv(s->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
-		glUniform4fv(s->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
-		glUniform4fv(s->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
-		
-		if (false && (*it)->normals != NULL) {
+		if ((*it)->normals != NULL) {
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, (*it)->normals->pixels);
 			glUniform1i(s->uniform("uNormals"), 1);
 			glActiveTexture(GL_TEXTURE0);
 		}*/
 		
+
 		glBindTexture(GL_TEXTURE_2D, (*it)->texture->pixels);
-		
 		
 		float m[16];
 		(*it)->xform.getOpenGLMatrix(m);
@@ -1610,13 +1628,13 @@ void RenderOpenGL::terrain()
 		}
 		
 		glm::mat4 MVP = this->projection * this->view * modelMatrix;
-		glUniformMatrix4fv(this->shaders["map"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+		glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
 		glm::mat4 MV = this->view * modelMatrix;
-		glUniformMatrix4fv(this->shaders["map"]->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
+		glUniformMatrix4fv(s->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
 	
 		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
-		glUniformMatrix3fv(this->shaders["map"]->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
+		glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
 		
 		glBindVertexArray(obj->vao);
 		glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);

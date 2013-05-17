@@ -174,6 +174,7 @@ class RenderOpenGL : public Render3D
 		GLShader* createProgram(const char* vertex, const char* fragment, string name);
 		GLShader* loadProgram(Mod* mod, string name);
 		void deleteProgram(GLShader* shader);
+		void setupShaders();
 };
 
 
