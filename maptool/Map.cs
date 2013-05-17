@@ -2,17 +2,37 @@
 using System.Collections.Generic;
 using System.Text;
 using datatool;
+using System.Drawing;
 
 namespace Maptool
 {
-    class Map
+    public class Map
     {
         private List<Entity> entities;
+        private Bitmap terrain;
+        private Bitmap heightmap;
 
         public List<Entity> Entities
         {
             get { return entities; }
-            set { entities = value; }
+        }
+
+        public Bitmap Terrain
+        {
+            get { return terrain; }
+        }
+
+        public Bitmap Heightmap
+        {
+            get { return heightmap; }
+        }
+
+
+        public Map()
+        {
+            this.entities = new List<Entity>();
+            this.terrain = null;
+            this.heightmap = null;
         }
 
 
@@ -44,8 +64,7 @@ namespace Maptool
             string input = System.IO.File.ReadAllText(filename);
             ConfuseSection parsed = rdr.Parse(input);
 
-            entities = new List<Entity>();
-
+            this.entities = new List<Entity>();
             foreach (ConfuseSection sect in parsed.subsections) {
                 Entity ent = null;
 
@@ -63,6 +82,10 @@ namespace Maptool
                 entities.Add(ent);
             }
             
+            string basename = System.IO.Path.GetDirectoryName(filename);
+            this.terrain = new Bitmap(basename + "\\terrain.png");
+            this.heightmap = new Bitmap(basename + "\\heightmap.png");
+
             return true;
         }
     }

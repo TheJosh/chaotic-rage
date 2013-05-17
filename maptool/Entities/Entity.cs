@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace Maptool
 {
-    abstract class Entity
+    abstract public class Entity
     {
         private int x;
         private int y;

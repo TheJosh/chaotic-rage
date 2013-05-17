@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace Maptool
 {
-    class EntityType
+    public class EntityType
     {
         protected string name;
         protected Image image;

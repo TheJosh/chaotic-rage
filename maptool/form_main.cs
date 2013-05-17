@@ -17,14 +17,14 @@ namespace Maptool
         private EntityType currEntityType = null;
 
         private int downX, downY;
-        private List<Entity> entities;
 
+        private Map map;
 
 
         public frmMain()
         {
             InitializeComponent();
-            entities = new List<Entity>();
+            map = new Map();
 
         }
 
@@ -101,16 +101,15 @@ namespace Maptool
          **/
         private void mnuFileNew_Click(object sender, EventArgs e)
         {
-            entities.Clear();
+            map.Entities.Clear();
             resetUI();
         }
 
         private void mnuFileOpen_Click(object sender, EventArgs e)
         {
             if (diaOpen.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                Map m = new Map();
-                m.Load(diaOpen.FileName);
-                this.entities = m.Entities;
+                map = new Map();
+                map.Load(diaOpen.FileName);
                 resetUI();
             }
         }
@@ -118,9 +117,7 @@ namespace Maptool
         private void mnuFileSaveas_Click(object sender, EventArgs e)
         {
             if (diaSave.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                Map m = new Map();
-                m.Entities = this.entities;
-                m.Save(diaSave.FileName);
+                map.Save(diaSave.FileName);
             }
         }
 
@@ -278,7 +275,7 @@ namespace Maptool
 
                 case Keys.Delete:
                     if (currEntity != null) {
-                        entities.Remove(currEntity);
+                        map.Entities.Remove(currEntity);
                         setCurrEntity(null);
                     }
                     break;
@@ -297,8 +294,12 @@ namespace Maptool
         {
             Brush br_darkgray = new SolidBrush(Color.FromArgb(20, 20, 20));
 
+            if (map.Terrain != null) {
+                g.DrawImage(map.Terrain, 0, 0);
+            }
+
             // Zones
-            foreach (Entity ent in entities) {
+            foreach (Entity ent in map.Entities) {
                 if (!(ent is ZoneEntity)) continue;
 
                 ZoneEntity entc = (ZoneEntity)ent;
@@ -307,7 +308,7 @@ namespace Maptool
             }
 
             // Lights
-            foreach (Entity ent in entities) {
+            foreach (Entity ent in map.Entities) {
                 if (!(ent is LightEntity)) continue;
 
                 LightEntity entc = (LightEntity)ent;
@@ -316,7 +317,7 @@ namespace Maptool
             }
 
             // Objects
-            foreach (Entity ent in entities) {
+            foreach (Entity ent in map.Entities) {
                 if (!(ent is ObjectEntity)) continue;
 
                 ObjectEntity entc = (ObjectEntity)ent;
@@ -343,7 +344,7 @@ namespace Maptool
 
             setCurrEntity(null);
 
-            foreach (Entity e in entities) {
+            foreach (Entity e in map.Entities) {
                 if (!currTool.isThisOurs(e)) continue;
 
                 double dist = Math.Sqrt(((e.X - mousex) * (e.X - mousex)) + ((e.Y - mousey) * (e.Y - mousey)));
@@ -367,7 +368,7 @@ namespace Maptool
             ent.X = mousex;
             ent.Y = mousey;
             ent.Type = currEntityType;
-            entities.Add(ent);
+            map.Entities.Add(ent);
             setCurrEntity(ent);
         }
 
