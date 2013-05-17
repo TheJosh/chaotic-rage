@@ -7,6 +7,15 @@ namespace Maptool
 {
     class ZoneTool : Tool
     {
+        private List<EntityType> types;
+
+        public ZoneTool()
+        {
+            types = new List<EntityType>();
+            types.Add(new ZoneEntityType());
+        }
+
+
         public override Entity createEntity()
         {
             return new ZoneEntity();
@@ -24,9 +33,7 @@ namespace Maptool
 
         public override List<EntityType> getTypes()
         {
-            List<EntityType> ret = new List<EntityType>();
-            ret.Add(new ZoneEntityType());
-            return ret;
+            return types;
         }
 
         public override string saveConfig(Entity ent)
@@ -48,8 +55,7 @@ namespace Maptool
         public override Entity loadConfig(ConfuseSection sect)
         {
             ZoneEntity ent = new ZoneEntity();
-
-            ent.Type = new ZoneEntityType();
+            ent.Type = types[0];
 
             ent.Width = sect.get_int("width", 20);
             ent.Height = sect.get_int("height", 20);
