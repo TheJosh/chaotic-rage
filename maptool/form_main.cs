@@ -43,7 +43,7 @@ namespace Maptool
         private void resetUI()
         {
             panMap.Size = new Size(1, 1);
-            panMap.Size = new Size(2000, 2000);
+            panMap.Size = new Size(200, 200);
 
             toggleOn(toolZones);
             setCurrEntity(null);
@@ -60,6 +60,7 @@ namespace Maptool
         {
             toolZones.Checked = false;
             toolLights.Checked = false;
+            toolObjects.Checked = false;
 
             on.Checked = true;
         }
@@ -82,6 +83,16 @@ namespace Maptool
         {
             toggleOn(toolLights);
             setCurrTool(Tools.Light);
+        }
+
+
+        /**
+        * Engages the 'Objects' tools
+        **/
+        private void toolObjects_Click(object sender, EventArgs e)
+        {
+            toggleOn(toolObjects);
+            setCurrTool(Tools.Object);
         }
 
 
@@ -302,6 +313,15 @@ namespace Maptool
                 LightEntity entc = (LightEntity)ent;
 
                 g.DrawEllipse((ent == currEntity ? Pens.Red : Pens.White), entc.X, entc.Y, 10, 10);
+            }
+
+            // Objects
+            foreach (Entity ent in entities) {
+                if (!(ent is ObjectEntity)) continue;
+
+                ObjectEntity entc = (ObjectEntity)ent;
+
+                g.DrawRectangle((ent == currEntity ? Pens.Red : Pens.White), entc.X - 5, entc.Y - 5, 10, 10);
             }
         }
 

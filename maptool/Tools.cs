@@ -8,6 +8,7 @@ namespace Maptool
     {
         public static ZoneTool Zone;
         public static LightTool Light;
+        public static ObjectTool Object;
 
 
         /**
@@ -17,6 +18,7 @@ namespace Maptool
         {
             Tools.Zone = new ZoneTool();
             Tools.Light = new LightTool();
+            Tools.Object = new ObjectTool();
         }
     }
 }

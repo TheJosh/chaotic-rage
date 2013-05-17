@@ -51,6 +51,7 @@
             this.diaSave = new System.Windows.Forms.SaveFileDialog();
             this.diaOpen = new System.Windows.Forms.OpenFileDialog();
             this.panMap = new Maptool.DoubleBufferPanel();
+            this.toolObjects = new System.Windows.Forms.ToolStripButton();
             this.panOuter.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -159,7 +160,8 @@
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolZones,
-            this.toolLights});
+            this.toolLights,
+            this.toolObjects});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(746, 25);
@@ -281,6 +283,15 @@
             this.panMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseMove);
             this.panMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseUp);
             // 
+            // toolObjects
+            // 
+            this.toolObjects.Image = global::Maptool.Properties.Resources.zones;
+            this.toolObjects.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolObjects.Name = "toolObjects";
+            this.toolObjects.Size = new System.Drawing.Size(67, 22);
+            this.toolObjects.Text = "Objects";
+            this.toolObjects.Click += new System.EventHandler(this.toolObjects_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -335,6 +346,7 @@
         private System.Windows.Forms.OpenFileDialog diaOpen;
         private System.Windows.Forms.ImageList imgList;
         private System.Windows.Forms.ToolStripButton toolLights;
+        private System.Windows.Forms.ToolStripButton toolObjects;
     }
 }
 

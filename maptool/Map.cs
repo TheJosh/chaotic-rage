@@ -51,6 +51,10 @@ namespace Maptool
 
                 if (sect.name == "zone") {
                     ent = Tools.Zone.loadConfig(sect);
+                } else if (sect.name == "light") {
+                    ent = Tools.Light.loadConfig(sect);
+                } else if (sect.name == "object") {
+                    ent = Tools.Object.loadConfig(sect);
                 }
 
                 if (ent == null) continue;

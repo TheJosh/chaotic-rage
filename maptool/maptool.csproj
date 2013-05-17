@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\LightEntity.cs" />
+    <Compile Include="Entities\ObjectEntity.cs" />
     <Compile Include="Entities\ZoneEntity.cs" />
     <Compile Include="Entities\ZoneFactions\frmZoneFaction.cs">
       <SubType>Form</SubType>
@@ -53,6 +54,7 @@
     <Compile Include="Entities\ZoneFactions\ZoneFactions.cs" />
     <Compile Include="Entities\ZoneFactions\ZoneFactionUI.cs" />
     <Compile Include="EntityTypes\LightEntityType.cs" />
+    <Compile Include="EntityTypes\ObjectEntityType.cs" />
     <Compile Include="EntityTypes\ZoneEntityType.cs" />
     <Compile Include="FromDatatool\range.cs" />
     <Compile Include="Map.cs" />
@@ -75,6 +77,7 @@
     <Compile Include="FromDatatool\ConfuseReader.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="Tools\LightTool.cs" />
+    <Compile Include="Tools\ObjectTool.cs" />
     <Compile Include="Tools\Tool.cs" />
     <Compile Include="Tools\ZoneTool.cs" />
     <EmbeddedResource Include="Entities\ZoneFactions\frmZoneFaction.resx">
