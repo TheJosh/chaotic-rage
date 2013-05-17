@@ -1604,7 +1604,10 @@ void RenderOpenGL::terrain()
 		modelMatrix = glm::make_mat4(m);
 		
 		WavefrontObj * obj = (*it)->mesh;
-		if (obj->ibo_count == 0) this->createVBO(obj);
+		if (obj->ibo_count == 0) {
+			cout << "creating vbo\n";
+			this->createVBO(obj);
+		}
 		
 		glm::mat4 MVP = this->projection * this->view * modelMatrix;
 		glUniformMatrix4fv(this->shaders["map"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));

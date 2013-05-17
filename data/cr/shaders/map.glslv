@@ -17,14 +17,13 @@ uniform vec3 uLightPos[2];
 void main()
 {
 	gl_Position = uMVP * vec4(vPosition, 1.0f);
-
 	fTexUV = vTexUV;
 	fNormal = uN * vNormal;
 	
-	vec4 worldPos = uMV * vec4(vPosition, 1.0f);
-
+	vec4 pos4 = uMV * vec4(vPosition, 1.0f);
+	vec3 pos3 = pos4.xyz / pos4.w;
+	
 	for (int i = 0; i < 2; i++) {
-		vec4 dir = worldPos - uMV * vec4(uLightPos[i], 1.0f);
-		fLightDir[i] = dir.xyz;
+		fLightDir[i] = normalize(uN * uLightPos[i] - pos3);
 	}
 }
