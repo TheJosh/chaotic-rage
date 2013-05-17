@@ -45,6 +45,7 @@ class AnimPlay
 		bool loop;
 		AnimPlayCallback ended_func;
 		void* ended_data;
+		unsigned int pause_time;
 
 		// Current "move node"
 		AssimpNode* move;
@@ -78,6 +79,9 @@ class AnimPlay
 		void calcTransformsStatic();
 		void calcTransforms();
 		void calcBoneTransforms();
+
+		void pause();
+		void resume();
 
 	private:
 		void calcTransformNodeStatic(AssimpNode* nd, glm::mat4 transform);

@@ -15,6 +15,9 @@ Player::Player(UnitType *uc, GameState *st, float x, float y, float z) : Unit(uc
 	for (int i = 0; i < 16; i++) this->key[i] = 0;
 	this->mouse_angle = 0.0f;
 	this->vertical_angle = 0.0f;
+
+	this->walking = false;
+	this->anim->pause();
 }
 
 Player::~Player()
@@ -166,7 +169,9 @@ void Player::update(int delta)
 		}
 
 	} else {
-		// Waling around
+		bool walking = false;
+
+		// Walking around
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		btTransform xform = ghost->getWorldTransform();
 		btScalar walkSpeed = uts->max_speed * 1.0f/60.0f;		// Physics runs at 60hz
@@ -179,19 +184,31 @@ void Player::update(int delta)
 		btVector3 forwardDir = xform.getBasis() * btVector3(0.0f, 0.0f, walkSpeed);
 		if (this->key[KEY_UP]) {
 			walkDirection += forwardDir;
+			walking = true;
 		} else if (this->key[KEY_DOWN]) {
 			walkDirection -= forwardDir;
+			walking = true;
 		}
 
 		// Strafe
 		btVector3 strafeDir = xform.getBasis() * btVector3(walkSpeed, 0.0f, 0.0f);
 		if (this->key[KEY_LEFT]) {
 			walkDirection += strafeDir;
+			walking = true;
 		} else if (this->key[KEY_RIGHT]) {
 			walkDirection -= strafeDir;
+			walking = true;
 		}
 
 		this->character->setWalkDirection(walkDirection);
+
+		// If "walking" state changes, update animation.
+		if (walking && !this->walking) {
+			this->anim->resume();
+		} else if (!walking && this->walking) {
+			this->anim->pause();
+		}
+		this->walking = walking;
 	}
 	
 	

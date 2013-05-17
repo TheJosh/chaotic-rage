@@ -27,6 +27,7 @@ AnimPlay::AnimPlay(AssimpModel* model)
 	this->ended_func = NULL;
 	this->ended_data = NULL;
 	this->move = NULL;
+	this->pause_time = 0;
 	this->calcTransformsStatic();
 }
 
@@ -49,6 +50,7 @@ void AnimPlay::setAnimation(unsigned int animation, unsigned int start_frame, un
 	this->start_frame = start_frame;
 	this->end_frame = end_frame;
 	this->loop = loop;
+	this->pause_time = 0;
 }
 
 
@@ -160,6 +162,26 @@ void AnimPlay::setMoveTransform(glm::mat4 transform)
 
 
 /**
+* Pause the animation (goes hand-in-hand with resume() method)
+**/
+void AnimPlay::pause()
+{
+	this->pause_time = st->game_time;
+}
+
+
+/**
+* Resume the animation (goes hand-in-hand with pause() method)
+**/
+void AnimPlay::resume()
+{
+	float time_elapsed = st->game_time - this->pause_time;
+	this->start_time += time_elapsed;
+	this->pause_time = 0;
+}
+
+
+/**
 * Calculate the transforms, without any animation logic
 * It's just a performance optimisation
 **/
@@ -199,9 +221,15 @@ void AnimPlay::calcTransforms()
 	if (this->anim == NULL && this->move == NULL) return;
 
 	float animTick;
-	
+	float timeSecs;
+
 	if (this->anim) {
-		float timeSecs = (st->game_time - this->start_time) / 1000.0f;
+		if (this->pause_time == 0) {
+			timeSecs = (st->game_time - this->start_time) / 1000.0f;
+		} else {
+			timeSecs = (this->pause_time - this->start_time) / 1000.0f;
+		}
+
 		float ticsPerSec = this->anim->ticsPerSec != 0.0 ? this->anim->ticsPerSec : 25.0f;
 
 		// If a start/end frame has been specified, we assume a fixed frame length

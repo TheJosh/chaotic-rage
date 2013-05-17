@@ -28,7 +28,8 @@ class Player : public Unit
 		bool lkey[16];
 		float mouse_angle;
 		float vertical_angle;
-		
+		bool walking;
+
 	public:
 		Player(UnitType *uc, GameState *st, float x, float y, float z);
 		virtual ~Player();
