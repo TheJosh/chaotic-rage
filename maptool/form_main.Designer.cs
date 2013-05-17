@@ -50,8 +50,10 @@
             this.splitOuter = new System.Windows.Forms.SplitContainer();
             this.diaSave = new System.Windows.Forms.SaveFileDialog();
             this.diaOpen = new System.Windows.Forms.OpenFileDialog();
-            this.panMap = new Maptool.DoubleBufferPanel();
             this.toolObjects = new System.Windows.Forms.ToolStripButton();
+            this.dropdownBGtype = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.panMap = new Maptool.DoubleBufferPanel();
             this.panOuter.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -161,7 +163,9 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolZones,
             this.toolLights,
-            this.toolObjects});
+            this.toolObjects,
+            this.toolStripSeparator2,
+            this.dropdownBGtype});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(746, 25);
@@ -271,6 +275,30 @@
             // 
             this.diaOpen.Filter = "Maps|*.conf";
             // 
+            // toolObjects
+            // 
+            this.toolObjects.Image = global::Maptool.Properties.Resources.zones;
+            this.toolObjects.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolObjects.Name = "toolObjects";
+            this.toolObjects.Size = new System.Drawing.Size(67, 22);
+            this.toolObjects.Text = "Objects";
+            this.toolObjects.Click += new System.EventHandler(this.toolObjects_Click);
+            // 
+            // dropdownBGtype
+            // 
+            this.dropdownBGtype.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.dropdownBGtype.Items.AddRange(new object[] {
+            "Terrain",
+            "Heightmap"});
+            this.dropdownBGtype.Name = "dropdownBGtype";
+            this.dropdownBGtype.Size = new System.Drawing.Size(75, 25);
+            this.dropdownBGtype.SelectedIndexChanged += new System.EventHandler(this.dropdownBGtype_SelectedIndexChanged);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
             // panMap
             // 
             this.panMap.BackColor = System.Drawing.Color.Black;
@@ -282,15 +310,6 @@
             this.panMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseDown);
             this.panMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseMove);
             this.panMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseUp);
-            // 
-            // toolObjects
-            // 
-            this.toolObjects.Image = global::Maptool.Properties.Resources.zones;
-            this.toolObjects.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolObjects.Name = "toolObjects";
-            this.toolObjects.Size = new System.Drawing.Size(67, 22);
-            this.toolObjects.Text = "Objects";
-            this.toolObjects.Click += new System.EventHandler(this.toolObjects_Click);
             // 
             // frmMain
             // 
@@ -347,6 +366,8 @@
         private System.Windows.Forms.ImageList imgList;
         private System.Windows.Forms.ToolStripButton toolLights;
         private System.Windows.Forms.ToolStripButton toolObjects;
+        private System.Windows.Forms.ToolStripComboBox dropdownBGtype;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }
 

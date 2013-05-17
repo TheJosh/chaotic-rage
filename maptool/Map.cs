@@ -9,30 +9,24 @@ namespace Maptool
     public class Map
     {
         private List<Entity> entities;
-        private Bitmap terrain;
-        private Bitmap heightmap;
+        public Bitmap Terrain;
+        public Bitmap Heightmap;
+        public int Width;
+        public int Height;
 
         public List<Entity> Entities
         {
             get { return entities; }
         }
 
-        public Bitmap Terrain
-        {
-            get { return terrain; }
-        }
-
-        public Bitmap Heightmap
-        {
-            get { return heightmap; }
-        }
-
 
         public Map()
         {
             this.entities = new List<Entity>();
-            this.terrain = null;
-            this.heightmap = null;
+            this.Terrain = null;
+            this.Heightmap = null;
+            this.Width = 200;
+            this.Height = 200;
         }
 
 
@@ -64,6 +58,9 @@ namespace Maptool
             string input = System.IO.File.ReadAllText(filename);
             ConfuseSection parsed = rdr.Parse(input);
 
+            this.Width = parsed.get_int("width", 200);
+            this.Height = parsed.get_int("height", 200);
+
             this.entities = new List<Entity>();
             foreach (ConfuseSection sect in parsed.subsections) {
                 Entity ent = null;
@@ -83,8 +80,8 @@ namespace Maptool
             }
             
             string basename = System.IO.Path.GetDirectoryName(filename);
-            this.terrain = new Bitmap(basename + "\\terrain.png");
-            this.heightmap = new Bitmap(basename + "\\heightmap.png");
+            this.Terrain = new Bitmap(basename + "\\terrain.png");
+            this.Heightmap = new Bitmap(basename + "\\heightmap.png");
 
             return true;
         }

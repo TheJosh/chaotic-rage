@@ -25,7 +25,7 @@ namespace Maptool
         {
             InitializeComponent();
             map = new Map();
-
+            this.dropdownBGtype.SelectedIndex = 0;
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -43,7 +43,7 @@ namespace Maptool
         private void resetUI()
         {
             panMap.Size = new Size(1, 1);
-            panMap.Size = new Size(200, 200);
+            panMap.Size = new Size(map.Width, map.Height);
 
             toggleOn(toolZones);
             setCurrEntity(null);
@@ -294,8 +294,11 @@ namespace Maptool
         {
             Brush br_darkgray = new SolidBrush(Color.FromArgb(20, 20, 20));
 
-            if (map.Terrain != null) {
-                g.DrawImage(map.Terrain, 0, 0);
+            // Background img
+            if (this.dropdownBGtype.SelectedIndex == 0 && map.Terrain != null) {
+                g.DrawImage(map.Terrain, 0, 0, map.Width, map.Height);
+            } else if (this.dropdownBGtype.SelectedIndex == 1 && map.Terrain != null) {
+                g.DrawImage(map.Heightmap, 0, 0, map.Width, map.Height);
             }
 
             // Zones
@@ -380,6 +383,11 @@ namespace Maptool
         private void list_Resize(object sender, EventArgs e)
         {
             list.Columns[0].Width = list.Width - 10;
+        }
+
+        private void dropdownBGtype_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            panMap.Refresh();
         }
     }
 
