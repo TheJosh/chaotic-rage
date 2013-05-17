@@ -55,9 +55,7 @@
     <Compile Include="FromDatatool\range.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\WallEntity.cs" />
     <Compile Include="EntityTypes\EntityType.cs" />
-    <Compile Include="EntityTypes\WallEntityType.cs" />
     <Compile Include="form_main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,7 +72,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FromDatatool\ConfuseReader.cs" />
     <Compile Include="Tools\Tool.cs" />
-    <Compile Include="Tools\WallTool.cs" />
     <Compile Include="Tools\ZoneTool.cs" />
     <EmbeddedResource Include="Entities\ZoneFactions\frmZoneFaction.resx">
       <DependentUpon>frmZoneFaction.cs</DependentUpon>

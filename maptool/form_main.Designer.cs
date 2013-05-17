@@ -28,8 +28,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.panOuter = new System.Windows.Forms.Panel();
+            this.panMap = new Maptool.DoubleBufferPanel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,10 +41,6 @@
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuEditMapsettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolAreas = new System.Windows.Forms.ToolStripButton();
-            this.toolWalls = new System.Windows.Forms.ToolStripButton();
-            this.toolObjects = new System.Windows.Forms.ToolStripButton();
-            this.toolParticleGenerators = new System.Windows.Forms.ToolStripButton();
             this.toolZones = new System.Windows.Forms.ToolStripButton();
             this.splitRight = new System.Windows.Forms.SplitContainer();
             this.grid = new System.Windows.Forms.PropertyGrid();
@@ -54,7 +50,6 @@
             this.splitOuter = new System.Windows.Forms.SplitContainer();
             this.diaSave = new System.Windows.Forms.SaveFileDialog();
             this.diaOpen = new System.Windows.Forms.OpenFileDialog();
-            this.panMap = new Maptool.DoubleBufferPanel();
             this.panOuter.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -79,6 +74,18 @@
             this.panOuter.Size = new System.Drawing.Size(563, 453);
             this.panOuter.TabIndex = 0;
             // 
+            // panMap
+            // 
+            this.panMap.BackColor = System.Drawing.Color.Black;
+            this.panMap.Location = new System.Drawing.Point(50, 50);
+            this.panMap.Name = "panMap";
+            this.panMap.Size = new System.Drawing.Size(139, 127);
+            this.panMap.TabIndex = 0;
+            this.panMap.Paint += new System.Windows.Forms.PaintEventHandler(this.panMap_Paint);
+            this.panMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseDown);
+            this.panMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseMove);
+            this.panMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseUp);
+            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -100,20 +107,20 @@
             this.toolStripSeparator1,
             this.mnuFileExit});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "&File";
             // 
             // mnuFileNew
             // 
             this.mnuFileNew.Name = "mnuFileNew";
-            this.mnuFileNew.Size = new System.Drawing.Size(136, 22);
+            this.mnuFileNew.Size = new System.Drawing.Size(123, 22);
             this.mnuFileNew.Text = "&New";
             this.mnuFileNew.Click += new System.EventHandler(this.mnuFileNew_Click);
             // 
             // mnuFileOpen
             // 
             this.mnuFileOpen.Name = "mnuFileOpen";
-            this.mnuFileOpen.Size = new System.Drawing.Size(136, 22);
+            this.mnuFileOpen.Size = new System.Drawing.Size(123, 22);
             this.mnuFileOpen.Text = "&Open...";
             this.mnuFileOpen.Click += new System.EventHandler(this.mnuFileOpen_Click);
             // 
@@ -121,25 +128,25 @@
             // 
             this.mnuFileSave.Enabled = false;
             this.mnuFileSave.Name = "mnuFileSave";
-            this.mnuFileSave.Size = new System.Drawing.Size(136, 22);
+            this.mnuFileSave.Size = new System.Drawing.Size(123, 22);
             this.mnuFileSave.Text = "&Save";
             // 
             // mnuFileSaveas
             // 
             this.mnuFileSaveas.Name = "mnuFileSaveas";
-            this.mnuFileSaveas.Size = new System.Drawing.Size(136, 22);
+            this.mnuFileSaveas.Size = new System.Drawing.Size(123, 22);
             this.mnuFileSaveas.Text = "&Save As...";
             this.mnuFileSaveas.Click += new System.EventHandler(this.mnuFileSaveas_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(133, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(120, 6);
             // 
             // mnuFileExit
             // 
             this.mnuFileExit.Name = "mnuFileExit";
-            this.mnuFileExit.Size = new System.Drawing.Size(136, 22);
+            this.mnuFileExit.Size = new System.Drawing.Size(123, 22);
             this.mnuFileExit.Text = "E&xit";
             this.mnuFileExit.Click += new System.EventHandler(this.mnuFileExit_Click);
             // 
@@ -148,24 +155,20 @@
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuEditMapsettings});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "&Edit";
             // 
             // mnuEditMapsettings
             // 
             this.mnuEditMapsettings.Enabled = false;
             this.mnuEditMapsettings.Name = "mnuEditMapsettings";
-            this.mnuEditMapsettings.Size = new System.Drawing.Size(147, 22);
+            this.mnuEditMapsettings.Size = new System.Drawing.Size(143, 22);
             this.mnuEditMapsettings.Text = "Map &Settings";
             this.mnuEditMapsettings.Click += new System.EventHandler(this.mnuEditMapsettings_Click);
             // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolAreas,
-            this.toolWalls,
-            this.toolObjects,
-            this.toolParticleGenerators,
             this.toolZones});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
@@ -173,53 +176,12 @@
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // toolAreas
-            // 
-            this.toolAreas.Checked = true;
-            this.toolAreas.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.toolAreas.Enabled = false;
-            this.toolAreas.Image = global::Maptool.Properties.Resources.areas;
-            this.toolAreas.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolAreas.Name = "toolAreas";
-            this.toolAreas.Size = new System.Drawing.Size(55, 22);
-            this.toolAreas.Text = "Areas";
-            this.toolAreas.Click += new System.EventHandler(this.toolAreas_Click);
-            // 
-            // toolWalls
-            // 
-            this.toolWalls.Image = ((System.Drawing.Image)(resources.GetObject("toolWalls.Image")));
-            this.toolWalls.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolWalls.Name = "toolWalls";
-            this.toolWalls.Size = new System.Drawing.Size(52, 22);
-            this.toolWalls.Text = "Walls";
-            this.toolWalls.Click += new System.EventHandler(this.toolWalls_Click);
-            // 
-            // toolObjects
-            // 
-            this.toolObjects.Enabled = false;
-            this.toolObjects.Image = global::Maptool.Properties.Resources.objects;
-            this.toolObjects.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolObjects.Name = "toolObjects";
-            this.toolObjects.Size = new System.Drawing.Size(64, 22);
-            this.toolObjects.Text = "Objects";
-            this.toolObjects.Click += new System.EventHandler(this.toolObjects_Click);
-            // 
-            // toolParticleGenerators
-            // 
-            this.toolParticleGenerators.Enabled = false;
-            this.toolParticleGenerators.Image = ((System.Drawing.Image)(resources.GetObject("toolParticleGenerators.Image")));
-            this.toolParticleGenerators.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolParticleGenerators.Name = "toolParticleGenerators";
-            this.toolParticleGenerators.Size = new System.Drawing.Size(119, 22);
-            this.toolParticleGenerators.Text = "Particle Generators";
-            this.toolParticleGenerators.Click += new System.EventHandler(this.toolParticleGenerators_Click);
-            // 
             // toolZones
             // 
             this.toolZones.Image = global::Maptool.Properties.Resources.zones;
             this.toolZones.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolZones.Name = "toolZones";
-            this.toolZones.Size = new System.Drawing.Size(56, 22);
+            this.toolZones.Size = new System.Drawing.Size(59, 22);
             this.toolZones.Text = "Zones";
             this.toolZones.Click += new System.EventHandler(this.toolZones_Click);
             // 
@@ -308,18 +270,6 @@
             // 
             this.diaOpen.Filter = "Maps|*.conf";
             // 
-            // panMap
-            // 
-            this.panMap.BackColor = System.Drawing.Color.Black;
-            this.panMap.Location = new System.Drawing.Point(50, 50);
-            this.panMap.Name = "panMap";
-            this.panMap.Size = new System.Drawing.Size(139, 127);
-            this.panMap.TabIndex = 0;
-            this.panMap.Paint += new System.Windows.Forms.PaintEventHandler(this.panMap_Paint);
-            this.panMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseDown);
-            this.panMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseMove);
-            this.panMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseUp);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -362,18 +312,14 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem mnuFileExit;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolAreas;
-        private System.Windows.Forms.ToolStripButton toolObjects;
         private System.Windows.Forms.ToolStripButton toolZones;
         private System.Windows.Forms.SplitContainer splitRight;
         private System.Windows.Forms.ListView list;
         private System.Windows.Forms.PropertyGrid grid;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.SplitContainer splitOuter;
-        private System.Windows.Forms.ToolStripButton toolParticleGenerators;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mnuEditMapsettings;
-        private System.Windows.Forms.ToolStripButton toolWalls;
         private System.Windows.Forms.SaveFileDialog diaSave;
         private System.Windows.Forms.OpenFileDialog diaOpen;
         private System.Windows.Forms.ImageList imgList;

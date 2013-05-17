@@ -23,20 +23,15 @@ namespace Maptool
             string o = "";
 
             foreach (Entity ent in entities) {
-                if (ent is WallEntity) {
-                    o += "wall {";
-                    o += "  type = \"" + ((WallEntity)ent).Type.Name + "\"";
-
-                } else if (ent is ZoneEntity) {
+                if (ent is ZoneEntity) {
                     o += "zone {";
                     o += "  width = " + ((ZoneEntity)ent).Width;
                     o += "  height = " + ((ZoneEntity)ent).Height;
+                    o += "  x = " + ent.X;
+                    o += "  y = " + ent.Y;
+                    o += "  angle = " + ent.Angle;
+                    o += "  }\n";
                 }
-
-                o += "  x = " + ent.X;
-                o += "  y = " + ent.Y;
-                o += "  angle = " + ent.Angle;
-                o += "  }\n";
             }
 
             System.IO.File.WriteAllText(filename, o);
@@ -54,7 +49,6 @@ namespace Maptool
             string input = System.IO.File.ReadAllText(filename);
             ConfuseSection parsed = rdr.Parse(input);
 
-            List<EntityType> wall_types = (new WallTool()).getTypes();
             List<EntityType> zone_types = (new ZoneTool()).getTypes();
 
             entities = new List<Entity> ();
@@ -62,25 +56,18 @@ namespace Maptool
             foreach (ConfuseSection sect in parsed.subsections) {
                 Entity ent = null;
 
-                if (sect.name == "wall") {
-                    ent = new WallEntity();
-
-                    string type = sect.get_string("type", "");
-                    ent.Type = wall_types.Find(delegate(EntityType ty) { return ty.Name == type; });
-
-                } else if (sect.name == "zone") {
+                if (sect.name == "zone") {
                     ent = new ZoneEntity();
                     ent.Type = zone_types[0];
                     ((ZoneEntity)ent).Width = sect.get_int("width", 20);
                     ((ZoneEntity)ent).Height = sect.get_int("height", 20);
+                    ent.X = sect.get_int("x", 0);
+                    ent.Y = sect.get_int("y", 0);
+                    ent.Angle = sect.get_int("angle", 0);
                 }
 
                 if (ent == null) continue;
                 if (ent.Type == null) continue;
-
-                ent.X = sect.get_int("x", 0);
-                ent.Y = sect.get_int("y", 0);
-                ent.Angle = sect.get_int("angle", 0);
 
                 entities.Add(ent);
             }

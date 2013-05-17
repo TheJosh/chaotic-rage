@@ -19,7 +19,6 @@ namespace Maptool
         private int downX, downY;
         private List<Entity> entities;
 
-        private WallTool tool_wall = new WallTool();
         private ZoneTool tool_zone = new ZoneTool();
 
 
@@ -85,7 +84,7 @@ namespace Maptool
         private void toolWalls_Click(object sender, EventArgs e)
         {
             toggleOn(toolWalls);
-            setCurrTool(this.tool_wall);
+            setCurrTool(null);
         }
 
         /**
@@ -324,14 +323,6 @@ namespace Maptool
                 ZoneEntity entc = (ZoneEntity)ent;
 
                 g.DrawRectangle((ent == currEntity ? Pens.Red : Pens.White), entc.X - entc.Width / 2, entc.Y - entc.Height / 2, entc.Width, entc.Height);
-            }
-
-            // Walls
-            foreach (Entity ent in entities) {
-                if (!(ent is WallEntity)) continue;
-
-                g.FillEllipse(br_darkgray, ent.X - 30, ent.Y - 30, 60, 60);
-                g.DrawEllipse((ent == currEntity ? Pens.Red : Pens.White), ent.X - 5, ent.Y - 5, 10, 10);
             }
         }
 
