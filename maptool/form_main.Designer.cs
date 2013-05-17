@@ -29,7 +29,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panOuter = new System.Windows.Forms.Panel();
-            this.panMap = new Maptool.DoubleBufferPanel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,6 +41,7 @@
             this.mnuEditMapsettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolZones = new System.Windows.Forms.ToolStripButton();
+            this.toolLights = new System.Windows.Forms.ToolStripButton();
             this.splitRight = new System.Windows.Forms.SplitContainer();
             this.grid = new System.Windows.Forms.PropertyGrid();
             this.list = new System.Windows.Forms.ListView();
@@ -50,6 +50,7 @@
             this.splitOuter = new System.Windows.Forms.SplitContainer();
             this.diaSave = new System.Windows.Forms.SaveFileDialog();
             this.diaOpen = new System.Windows.Forms.OpenFileDialog();
+            this.panMap = new Maptool.DoubleBufferPanel();
             this.panOuter.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -73,18 +74,6 @@
             this.panOuter.Name = "panOuter";
             this.panOuter.Size = new System.Drawing.Size(563, 453);
             this.panOuter.TabIndex = 0;
-            // 
-            // panMap
-            // 
-            this.panMap.BackColor = System.Drawing.Color.Black;
-            this.panMap.Location = new System.Drawing.Point(50, 50);
-            this.panMap.Name = "panMap";
-            this.panMap.Size = new System.Drawing.Size(139, 127);
-            this.panMap.TabIndex = 0;
-            this.panMap.Paint += new System.Windows.Forms.PaintEventHandler(this.panMap_Paint);
-            this.panMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseDown);
-            this.panMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseMove);
-            this.panMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseUp);
             // 
             // menuStrip1
             // 
@@ -169,7 +158,8 @@
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolZones});
+            this.toolZones,
+            this.toolLights});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(746, 25);
@@ -184,6 +174,15 @@
             this.toolZones.Size = new System.Drawing.Size(59, 22);
             this.toolZones.Text = "Zones";
             this.toolZones.Click += new System.EventHandler(this.toolZones_Click);
+            // 
+            // toolLights
+            // 
+            this.toolLights.Image = global::Maptool.Properties.Resources.zones;
+            this.toolLights.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolLights.Name = "toolLights";
+            this.toolLights.Size = new System.Drawing.Size(59, 22);
+            this.toolLights.Text = "Lights";
+            this.toolLights.Click += new System.EventHandler(this.toolLights_Click);
             // 
             // splitRight
             // 
@@ -270,6 +269,18 @@
             // 
             this.diaOpen.Filter = "Maps|*.conf";
             // 
+            // panMap
+            // 
+            this.panMap.BackColor = System.Drawing.Color.Black;
+            this.panMap.Location = new System.Drawing.Point(50, 50);
+            this.panMap.Name = "panMap";
+            this.panMap.Size = new System.Drawing.Size(139, 127);
+            this.panMap.TabIndex = 0;
+            this.panMap.Paint += new System.Windows.Forms.PaintEventHandler(this.panMap_Paint);
+            this.panMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseDown);
+            this.panMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseMove);
+            this.panMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseUp);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -323,6 +334,7 @@
         private System.Windows.Forms.SaveFileDialog diaSave;
         private System.Windows.Forms.OpenFileDialog diaOpen;
         private System.Windows.Forms.ImageList imgList;
+        private System.Windows.Forms.ToolStripButton toolLights;
     }
 }
 

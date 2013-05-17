@@ -59,6 +59,8 @@ namespace Maptool
         private void toggleOn(ToolStripButton on)
         {
             toolZones.Checked = false;
+            toolLights.Checked = false;
+
             on.Checked = true;
         }
 
@@ -70,6 +72,16 @@ namespace Maptool
         {
             toggleOn(toolZones);
             setCurrTool(Tools.Zone);
+        }
+
+
+        /**
+        * Engages the 'Lights' tool
+        **/
+        private void toolLights_Click(object sender, EventArgs e)
+        {
+            toggleOn(toolLights);
+            setCurrTool(Tools.Light);
         }
 
 
@@ -281,6 +293,15 @@ namespace Maptool
                 ZoneEntity entc = (ZoneEntity)ent;
 
                 g.DrawRectangle((ent == currEntity ? Pens.Red : Pens.White), entc.X - entc.Width / 2, entc.Y - entc.Height / 2, entc.Width, entc.Height);
+            }
+
+            // Lights
+            foreach (Entity ent in entities) {
+                if (!(ent is LightEntity)) continue;
+
+                LightEntity entc = (LightEntity)ent;
+
+                g.DrawEllipse((ent == currEntity ? Pens.Red : Pens.White), entc.X, entc.Y, 10, 10);
             }
         }
 
