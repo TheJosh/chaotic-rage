@@ -1214,7 +1214,7 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 		glUniformMatrix4fv(shader->uniform("uBones[0]"), MAX_BONES, GL_FALSE, &play->bone_transforms[0][0][0]);
 			
 	} else {
-		shader = this->shaders["entities"];
+		shader = this->shaders["phong"];
 		glUseProgram(shader->p());
 	}
 
