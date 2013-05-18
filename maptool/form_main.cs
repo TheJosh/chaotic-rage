@@ -15,6 +15,7 @@ namespace Maptool
         private Tool currTool = null;
         private Entity currEntity = null;
         private EntityType currEntityType = null;
+        private int zoom = 8;
 
         private int downX, downY;
 
@@ -43,7 +44,7 @@ namespace Maptool
         private void resetUI()
         {
             panMap.Size = new Size(1, 1);
-            panMap.Size = new Size(map.Width, map.Height);
+            panMap.Size = new Size(map.Width * this.zoom, map.Height * this.zoom);
 
             toggleOn(toolZones);
             setCurrEntity(null);
@@ -223,8 +224,8 @@ namespace Maptool
             if (downX == -1) return;
             if (currEntity == null) return;
 
-            currEntity.X = e.X;
-            currEntity.Y = e.Y;
+            currEntity.X = e.X / this.zoom;
+            currEntity.Y = e.Y / this.zoom;
 
             panMap.Refresh();
             grid.Refresh();
@@ -296,9 +297,9 @@ namespace Maptool
 
             // Background img
             if (this.dropdownBGtype.SelectedIndex == 0 && map.Terrain != null) {
-                g.DrawImage(map.Terrain, 0, 0, map.Width, map.Height);
+                g.DrawImage(map.Terrain, 0, 0, map.Width * this.zoom, map.Height * this.zoom);
             } else if (this.dropdownBGtype.SelectedIndex == 1 && map.Terrain != null) {
-                g.DrawImage(map.Heightmap, 0, 0, map.Width, map.Height);
+                g.DrawImage(map.Heightmap, 0, 0, map.Width * this.zoom, map.Height * this.zoom);
             }
 
             // Zones
@@ -307,7 +308,7 @@ namespace Maptool
 
                 ZoneEntity entc = (ZoneEntity)ent;
 
-                g.DrawRectangle((ent == currEntity ? Pens.Red : Pens.White), entc.X - entc.Width / 2, entc.Y - entc.Height / 2, entc.Width, entc.Height);
+                g.DrawRectangle((ent == currEntity ? Pens.Red : Pens.White), entc.X * this.zoom - entc.Width * this.zoom / 2, entc.Y * this.zoom - entc.Height * this.zoom / 2, entc.Width * this.zoom, entc.Height * this.zoom);
             }
 
             // Lights
@@ -316,7 +317,7 @@ namespace Maptool
 
                 LightEntity entc = (LightEntity)ent;
 
-                g.DrawEllipse((ent == currEntity ? Pens.Red : Pens.White), entc.X, entc.Y, 10, 10);
+                g.DrawEllipse((ent == currEntity ? Pens.Red : Pens.White), entc.X * this.zoom, entc.Y * this.zoom, 10, 10);
             }
 
             // Objects
@@ -325,7 +326,7 @@ namespace Maptool
 
                 ObjectEntity entc = (ObjectEntity)ent;
 
-                g.DrawRectangle((ent == currEntity ? Pens.Red : Pens.White), entc.X - 5, entc.Y - 5, 10, 10);
+                g.DrawRectangle((ent == currEntity ? Pens.Red : Pens.White), entc.X * this.zoom - 5, entc.Y * this.zoom - 5, 10, 10);
             }
         }
 
@@ -346,6 +347,9 @@ namespace Maptool
             if (currTool == null) return;
 
             setCurrEntity(null);
+
+            mousex /= this.zoom;
+            mousey /= this.zoom;
 
             foreach (Entity e in map.Entities) {
                 if (!currTool.isThisOurs(e)) continue;
@@ -368,8 +372,8 @@ namespace Maptool
             if (currEntityType == null) return;
 
             Entity ent = currTool.createEntity();
-            ent.X = mousex;
-            ent.Y = mousey;
+            ent.X = mousex / this.zoom;
+            ent.Y = mousey / this.zoom;
             ent.Type = currEntityType;
             map.Entities.Add(ent);
             setCurrEntity(ent);
