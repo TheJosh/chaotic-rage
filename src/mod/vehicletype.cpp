@@ -41,6 +41,8 @@ cfg_opt_t vehicletype_opts[] =
 	CFG_STR((char*) "move-node", (char*)"", CFGF_NONE),
 	CFG_FLOAT_LIST((char*) "move-axis", 0, CFGF_NONE),
 	
+	CFG_STR((char*) "weapon-primary", (char*)"", CFGF_NONE),
+	
 	CFG_SEC((char*) "damage", damage_opts, CFGF_MULTI),
 	
 	CFG_END()
@@ -71,19 +73,28 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	wt->reverse_max = cfg_getfloat(cfg_item, "reverse-max");
 	
 	tmp = cfg_getstr(cfg_item, "model");
-	if (tmp != NULL) {
+	if (tmp != NULL && strlen(tmp) != 0) {
 		wt->model = mod->getAssimpModel(tmp);
-		if (! wt->model) return NULL;
+		if (! wt->model) {
+			cerr << "Invalid model: " << tmp << endl;
+			return NULL;
+		}
 	}
 	
 	tmp = cfg_getstr(cfg_item, "move-node");
 	if (tmp != NULL) {
 		wt->move_node = tmp;
 		wt->move_axis = cfg_getvec3(cfg_item, "move-axis");
-	} else {
-		wt->move_node = "";
 	}
 	
+	tmp = cfg_getstr(cfg_item, "weapon-primary");
+	if (tmp != NULL && strlen(tmp) != 0) {
+		wt->weapon_primary = mod->getWeaponType(tmp);
+		if (! wt->weapon_primary) {
+			cerr << "Invalid primary weapon: " << tmp << endl;
+			return NULL;
+		}
+	}
 	
 	// Load damage states
 	size = cfg_size(cfg_item, "damage");
@@ -116,4 +127,6 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 
 VehicleType::VehicleType()
 {
+	this->weapon_primary = NULL;
+	this->move_node = "";
 }

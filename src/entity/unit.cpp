@@ -393,7 +393,7 @@ void Unit::update(int delta)
 			w = this->st->mm->getWeaponType("poopgun");
 			
 		} else if (this->drive) {
-			w = this->st->mm->getWeaponType("rocket_launcher");
+			w = this->drive->vt->weapon_primary;
 			xform = this->drive->getTransform();
 			
 		} else if (this->weapon && this->weapon->next_use < st->game_time && this->weapon->magazine > 0) {
@@ -403,7 +403,7 @@ void Unit::update(int delta)
 	}
 	
 	// Fire!
-	if (w) {
+	if (w != NULL) {
 		w->doFire(this, xform);
 		
 		if (w == this->weapon->wt) {

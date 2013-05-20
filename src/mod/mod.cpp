@@ -225,15 +225,14 @@ bool Mod::load(UIUpdate* ui)
 	walltypes = loadModFile<WallType*>(this, ui, "walltypes.conf", "walltype", walltype_opts, &loadItemWallType);
 	if (walltypes == NULL) return false;
 	
-	vehicletypes = loadModFile<VehicleType*>(this, ui, "vehicletypes.conf", "vehicletype", vehicletype_opts, &loadItemVehicleType);
-	if (vehicletypes == NULL) return false;
-	
 	weapontypes = loadModFile<WeaponType*>(this, ui, "weapontypes.conf", "weapon", weapontype_opts, &loadItemWeaponType);
 	if (weapontypes == NULL) return false;
 	
+	vehicletypes = loadModFile<VehicleType*>(this, ui, "vehicletypes.conf", "vehicletype", vehicletype_opts, &loadItemVehicleType);
+	if (vehicletypes == NULL) return false;
+	
 	unitclasses = loadModFile<UnitType*>(this, ui, "unittypes.conf", "unittype", unittype_opts, &loadItemUnitType);
 	if (unitclasses == NULL) return false;
-	
 	
 	ais = loadModFile<AIType*>(this, ui, "ais.conf", "ai", ai_opts, &loadItemAIType);
 	if (ais == NULL) return false;
@@ -241,16 +240,9 @@ bool Mod::load(UIUpdate* ui)
 	gametypes = loadModFile<GameType*>(this, ui, "gametypes.conf", "gametype", gametype_opts, &loadItemGameType);
 	if (gametypes == NULL) return false;
 	
-
 	campaigns = loadModFile<Campaign*>(this, ui, "campaigns.conf", "campaign", campaign_opts, &loadItemCampaign);
 	if (campaigns == NULL) return false;
-
 	
-	// Anim models ->next linkup
-	// TODO: next
-	/*for (int i = animmodels->size() - 1; i >= 0; --i) {
-		animmodels->at(i)->next = this->getAssimpModel(animmodels->at(i)->next_name);
-	}*/
 	
 	// Auto-create object types for weapons (pickup)
 	for (int i = weapontypes->size() - 1; i >= 0; --i) {

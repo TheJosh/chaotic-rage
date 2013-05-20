@@ -37,6 +37,8 @@ class VehicleType
 		string move_node;
 		glm::vec3 move_axis;
 		
+		WeaponType* weapon_primary;
+		
 		vector <VehicleTypeDamage *> damage_models;
 		
 	public:
