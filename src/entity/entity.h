@@ -37,9 +37,9 @@ class Entity
 		bool del;
 		bool render;
 		EID eid;
-
-	protected:
 		btRigidBody* body;
+		
+	protected:
 		GameState* st;
 
 	protected:

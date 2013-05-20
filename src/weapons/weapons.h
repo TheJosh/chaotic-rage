@@ -19,6 +19,7 @@ using namespace std;
 #define WEAPON_TYPE_PROXI_MINE 5
 #define WEAPON_TYPE_REMOTE_MINE 6
 #define WEAPON_TYPE_REMOTE_TRIG 7
+#define WEAPON_TYPE_ROCKET 8
 
 
 /**
@@ -145,3 +146,26 @@ class WeaponRemoteTrigger : public WeaponType
 	public:
 		virtual void doFire(Unit *unit, btTransform &origin);
 };
+
+
+/**
+* Mine which goes off when a unit is nearby
+**/
+class WeaponRocket : public WeaponType
+{
+	public:
+		WeaponRocket() : model(NULL) {};
+
+	public:
+		AssimpModel* model;
+
+	public:
+		virtual void doFire(Unit *unit, btTransform &origin);
+		virtual void entityUpdate(AmmoRound *e, int delta);
+};
+
+struct WeaponRocketData {
+	int delay;
+	btGhostObject* ghost;
+};
+

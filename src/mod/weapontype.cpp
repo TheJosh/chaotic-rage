@@ -95,6 +95,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		char* tmp = cfg_getstr(cfg_item, "model");
 		if (tmp) w->model = mod->getAssimpModel(tmp);
 
+		// TODO: detection radius and/or blast radius, damage
+		
 		wt = w;
 
 	} else if (type == WEAPON_TYPE_PROXI_MINE) {
@@ -103,6 +105,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		char* tmp = cfg_getstr(cfg_item, "model");
 		if (tmp) w->model = mod->getAssimpModel(tmp);
 
+		// TODO: detection radius and/or blast radius, damage, delay
+		
 		wt = w;
 
 	} else if (type == WEAPON_TYPE_REMOTE_MINE) {
@@ -111,12 +115,23 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		char* tmp = cfg_getstr(cfg_item, "model");
 		if (tmp) w->model = mod->getAssimpModel(tmp);
 
+		// TODO: detection radius and/or blast radius, damage
+		
 		wt = w;
 
 	} else if (type == WEAPON_TYPE_REMOTE_TRIG) {
 		WeaponRemoteTrigger* w = new WeaponRemoteTrigger();
 		wt = w;
 
+	} else if (type == WEAPON_TYPE_ROCKET) {
+		WeaponRocket* w = new WeaponRocket();
+		wt = w;
+		
+		char* tmp = cfg_getstr(cfg_item, "model");
+		if (tmp) w->model = mod->getAssimpModel(tmp);
+		
+		// TODO: detection radius and/or blast radius, damage, delay
+		
 	} else {
 		return NULL;
 	}

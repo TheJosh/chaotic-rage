@@ -10,6 +10,9 @@
 using namespace std;
 
 
+/**
+* Create an ammo round (static)
+**/
 AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model, Unit* owner) : Entity(st)
 {
 	this->wt = wt;
@@ -23,6 +26,27 @@ AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpMo
 	this->body = st->physics->addRigidBody(colShape, 0.0f, motionState, CG_DEBRIS);
 }
 
+
+/**
+* Create an ammo round (dynamic with specified mass)
+**/
+AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model, Unit* owner, float mass) : Entity(st)
+{
+	this->wt = wt;
+	this->data = NULL;
+	this->anim = new AnimPlay(model);
+	this->owner = owner;
+
+	btCollisionShape* colShape = new btBoxShape(btVector3(0.1f, 0.1f, 0.1f));
+	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
+	
+	this->body = st->physics->addRigidBody(colShape, mass, motionState, CG_DEBRIS);
+}
+
+
+/**
+* Remove the ammo round
+**/
 AmmoRound::~AmmoRound()
 {
 	delete(this->anim);

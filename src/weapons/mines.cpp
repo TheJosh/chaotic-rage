@@ -9,73 +9,10 @@
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include "../rage.h"
+#include "ghost_objects.h"
 
 using namespace std;
 
-
-
-
-/**
-* Create a chost object for collision detection
-**/
-btGhostObject* create_ghost(btTransform& xform, float radius)
-{
-	btGhostObject* ghost = new btGhostObject();
-
-	ghost->setWorldTransform(xform);
-	ghost->setCollisionFlags(ghost->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
-
-	btSphereShape* shape = new btSphereShape(radius);
-	ghost->setCollisionShape(shape);
-
-	return ghost;
-}
-
-
-/**
-* If there is anything within the ghost radius, apply damage as appropriate
-**/
-void apply_ghost_damage(btGhostObject* ghost, float damage)
-{
-	const btAlignedObjectArray <btCollisionObject*>* pObjsInsideGhostObject;
-	pObjsInsideGhostObject = &ghost->getOverlappingPairs();
-		
-	for (int i = 0; i < pObjsInsideGhostObject->size(); ++i) {
-		btCollisionObject* co = pObjsInsideGhostObject->at(i);
-			
-		Entity* e = (Entity*) co->getUserPointer();
-		if (e == NULL) continue;
-			
-		if (e->klass() == UNIT) {
-			((Unit*)e)->takeDamage(damage);
-		} else if (e->klass() == WALL) {
-			((Wall*)e)->takeDamage(damage);
-		}
-	}
-}
-
-
-/**
-* If there is anything within the ghost radius, apply damage as appropriate
-**/
-bool check_ghost_triggered(btGhostObject* ghost)
-{
-	const btAlignedObjectArray <btCollisionObject*>* pObjsInsideGhostObject;
-	pObjsInsideGhostObject = &ghost->getOverlappingPairs();
-		
-	for (int i = 0; i < pObjsInsideGhostObject->size(); ++i) {
-		btCollisionObject* co = pObjsInsideGhostObject->at(i);
-			
-		Entity* e = (Entity*) co->getUserPointer();
-		if (e == NULL) continue;
-			
-		if (e->klass() == UNIT) {
-			return true;
-		}
-	}
-
-	return false;
-}
 
 
 
