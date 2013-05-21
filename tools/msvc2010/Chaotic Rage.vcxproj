@@ -202,7 +202,9 @@
     <ClCompile Include="..\..\src\util\sdl_util.cpp" />
     <ClCompile Include="..\..\src\util\serverconfig.cpp" />
     <ClCompile Include="..\..\src\util\util.cpp" />
+    <ClCompile Include="..\..\src\weapons\ghost_objects.cpp" />
     <ClCompile Include="..\..\src\weapons\mines.cpp" />
+    <ClCompile Include="..\..\src\weapons\rockets.cpp" />
     <ClCompile Include="..\..\src\weapons\weapons.cpp" />
     <ClCompile Include="..\..\src\zone.cpp" />
     <ClCompile Include="..\flex\objload.cpp" />
@@ -294,6 +296,7 @@
     <ClInclude Include="..\..\src\util\util.h" />
     <ClInclude Include="..\..\src\util\windowicon.h" />
     <ClInclude Include="..\..\src\util\_util.h" />
+    <ClInclude Include="..\..\src\weapons\ghost_objects.h" />
     <ClInclude Include="..\..\src\weapons\weapons.h" />
     <ClInclude Include="..\..\src\zone.h" />
   </ItemGroup>

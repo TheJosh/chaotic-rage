@@ -28,6 +28,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.panOuter = new System.Windows.Forms.Panel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,9 +40,6 @@
             this.mnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuEditMapsettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolZones = new System.Windows.Forms.ToolStripButton();
-            this.toolLights = new System.Windows.Forms.ToolStripButton();
             this.splitRight = new System.Windows.Forms.SplitContainer();
             this.grid = new System.Windows.Forms.PropertyGrid();
             this.list = new System.Windows.Forms.ListView();
@@ -50,19 +48,27 @@
             this.splitOuter = new System.Windows.Forms.SplitContainer();
             this.diaSave = new System.Windows.Forms.SaveFileDialog();
             this.diaOpen = new System.Windows.Forms.OpenFileDialog();
+            this.toolZones = new System.Windows.Forms.ToolStripButton();
+            this.toolLights = new System.Windows.Forms.ToolStripButton();
             this.toolObjects = new System.Windows.Forms.ToolStripButton();
+            this.toolPaint = new System.Windows.Forms.ToolStripSplitButton();
+            this.paintTerrain = new System.Windows.Forms.ToolStripMenuItem();
+            this.paintHeightmap = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.dropdownBGtype = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.panMap = new Maptool.DoubleBufferPanel();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.panOuter.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
             this.splitRight.Panel1.SuspendLayout();
             this.splitRight.Panel2.SuspendLayout();
             this.splitRight.SuspendLayout();
             this.splitOuter.Panel1.SuspendLayout();
             this.splitOuter.Panel2.SuspendLayout();
             this.splitOuter.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panOuter
@@ -158,38 +164,6 @@
             this.mnuEditMapsettings.Text = "Map &Settings";
             this.mnuEditMapsettings.Click += new System.EventHandler(this.mnuEditMapsettings_Click);
             // 
-            // toolStrip1
-            // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolZones,
-            this.toolLights,
-            this.toolObjects,
-            this.toolStripSeparator2,
-            this.dropdownBGtype});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(746, 25);
-            this.toolStrip1.TabIndex = 1;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // toolZones
-            // 
-            this.toolZones.Image = global::Maptool.Properties.Resources.zones;
-            this.toolZones.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolZones.Name = "toolZones";
-            this.toolZones.Size = new System.Drawing.Size(59, 22);
-            this.toolZones.Text = "Zones";
-            this.toolZones.Click += new System.EventHandler(this.toolZones_Click);
-            // 
-            // toolLights
-            // 
-            this.toolLights.Image = global::Maptool.Properties.Resources.zones;
-            this.toolLights.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolLights.Name = "toolLights";
-            this.toolLights.Size = new System.Drawing.Size(59, 22);
-            this.toolLights.Text = "Lights";
-            this.toolLights.Click += new System.EventHandler(this.toolLights_Click);
-            // 
             // splitRight
             // 
             this.splitRight.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -207,7 +181,7 @@
             this.splitRight.Panel2.AutoScroll = true;
             this.splitRight.Panel2.Controls.Add(this.list);
             this.splitRight.Size = new System.Drawing.Size(179, 453);
-            this.splitRight.SplitterDistance = 238;
+            this.splitRight.SplitterDistance = 211;
             this.splitRight.TabIndex = 5;
             // 
             // grid
@@ -216,7 +190,7 @@
             this.grid.Location = new System.Drawing.Point(0, 0);
             this.grid.Name = "grid";
             this.grid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
-            this.grid.Size = new System.Drawing.Size(179, 238);
+            this.grid.Size = new System.Drawing.Size(179, 211);
             this.grid.TabIndex = 0;
             this.grid.ToolbarVisible = false;
             this.grid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.grid_PropertyValueChanged);
@@ -231,7 +205,7 @@
             this.list.Location = new System.Drawing.Point(0, 0);
             this.list.MultiSelect = false;
             this.list.Name = "list";
-            this.list.Size = new System.Drawing.Size(179, 211);
+            this.list.Size = new System.Drawing.Size(179, 238);
             this.list.SmallImageList = this.imgList;
             this.list.TabIndex = 0;
             this.list.UseCompatibleStateImageBehavior = false;
@@ -275,6 +249,24 @@
             // 
             this.diaOpen.Filter = "Maps|*.conf";
             // 
+            // toolZones
+            // 
+            this.toolZones.Image = global::Maptool.Properties.Resources.zones;
+            this.toolZones.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolZones.Name = "toolZones";
+            this.toolZones.Size = new System.Drawing.Size(59, 22);
+            this.toolZones.Text = "Zones";
+            this.toolZones.Click += new System.EventHandler(this.toolZones_Click);
+            // 
+            // toolLights
+            // 
+            this.toolLights.Image = global::Maptool.Properties.Resources.zones;
+            this.toolLights.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolLights.Name = "toolLights";
+            this.toolLights.Size = new System.Drawing.Size(59, 22);
+            this.toolLights.Text = "Lights";
+            this.toolLights.Click += new System.EventHandler(this.toolLights_Click);
+            // 
             // toolObjects
             // 
             this.toolObjects.Image = global::Maptool.Properties.Resources.zones;
@@ -283,6 +275,44 @@
             this.toolObjects.Size = new System.Drawing.Size(67, 22);
             this.toolObjects.Text = "Objects";
             this.toolObjects.Click += new System.EventHandler(this.toolObjects_Click);
+            // 
+            // toolPaint
+            // 
+            this.toolPaint.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.paintTerrain,
+            this.paintHeightmap});
+            this.toolPaint.Image = ((System.Drawing.Image)(resources.GetObject("toolPaint.Image")));
+            this.toolPaint.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolPaint.Name = "toolPaint";
+            this.toolPaint.Size = new System.Drawing.Size(106, 22);
+            this.toolPaint.Tag = "";
+            this.toolPaint.Text = "Paint Terrain";
+            this.toolPaint.ButtonClick += new System.EventHandler(this.paint_ButtonClick);
+            // 
+            // paintTerrain
+            // 
+            this.paintTerrain.Name = "paintTerrain";
+            this.paintTerrain.Size = new System.Drawing.Size(152, 22);
+            this.paintTerrain.Text = "Terrain";
+            this.paintTerrain.Click += new System.EventHandler(this.paintTerrain_Click);
+            // 
+            // paintHeightmap
+            // 
+            this.paintHeightmap.Name = "paintHeightmap";
+            this.paintHeightmap.Size = new System.Drawing.Size(152, 22);
+            this.paintHeightmap.Text = "Heightmap";
+            this.paintHeightmap.Click += new System.EventHandler(this.paintHeightmap_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(74, 22);
+            this.toolStripLabel1.Text = "Background:";
             // 
             // dropdownBGtype
             // 
@@ -294,10 +324,22 @@
             this.dropdownBGtype.Size = new System.Drawing.Size(75, 25);
             this.dropdownBGtype.SelectedIndexChanged += new System.EventHandler(this.dropdownBGtype_SelectedIndexChanged);
             // 
-            // toolStripSeparator2
+            // toolStrip1
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolZones,
+            this.toolLights,
+            this.toolObjects,
+            this.toolStripSeparator2,
+            this.toolPaint,
+            this.toolStripSeparator3,
+            this.toolStripLabel1,
+            this.dropdownBGtype});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(746, 25);
+            this.toolStrip1.TabIndex = 1;
+            this.toolStrip1.Text = "toolStrip1";
             // 
             // panMap
             // 
@@ -310,6 +352,11 @@
             this.panMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseDown);
             this.panMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseMove);
             this.panMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panMap_MouseUp);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
             // frmMain
             // 
@@ -327,14 +374,14 @@
             this.panOuter.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
             this.splitRight.Panel1.ResumeLayout(false);
             this.splitRight.Panel2.ResumeLayout(false);
             this.splitRight.ResumeLayout(false);
             this.splitOuter.Panel1.ResumeLayout(false);
             this.splitOuter.Panel2.ResumeLayout(false);
             this.splitOuter.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -352,8 +399,6 @@
         private System.Windows.Forms.ToolStripMenuItem mnuFileSaveas;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem mnuFileExit;
-        private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolZones;
         private System.Windows.Forms.SplitContainer splitRight;
         private System.Windows.Forms.ListView list;
         private System.Windows.Forms.PropertyGrid grid;
@@ -364,9 +409,16 @@
         private System.Windows.Forms.SaveFileDialog diaSave;
         private System.Windows.Forms.OpenFileDialog diaOpen;
         private System.Windows.Forms.ImageList imgList;
+        private System.Windows.Forms.ToolStripButton toolZones;
         private System.Windows.Forms.ToolStripButton toolLights;
         private System.Windows.Forms.ToolStripButton toolObjects;
+        private System.Windows.Forms.ToolStripSplitButton toolPaint;
+        private System.Windows.Forms.ToolStripMenuItem paintTerrain;
+        private System.Windows.Forms.ToolStripMenuItem paintHeightmap;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripComboBox dropdownBGtype;
+        private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }

@@ -23,8 +23,8 @@ namespace Maptool
         public Map()
         {
             this.entities = new List<Entity>();
-            this.Terrain = null;
-            this.Heightmap = null;
+            this.Terrain = new Bitmap(200, 200);
+            this.Heightmap = new Bitmap(200, 200);
             this.Width = 200;
             this.Height = 200;
         }

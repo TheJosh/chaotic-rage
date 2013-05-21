@@ -78,6 +78,7 @@
     <Compile Include="Tools.cs" />
     <Compile Include="Tools\LightTool.cs" />
     <Compile Include="Tools\ObjectTool.cs" />
+    <Compile Include="Tools\Paint.cs" />
     <Compile Include="Tools\Tool.cs" />
     <Compile Include="Tools\ZoneTool.cs" />
     <EmbeddedResource Include="Entities\ZoneFactions\frmZoneFaction.resx">

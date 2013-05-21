@@ -13,8 +13,10 @@ namespace Maptool
     public partial class frmMain : Form
     {
         private Tool currTool = null;
+        private Bitmap currPaint = null;
         private Entity currEntity = null;
         private EntityType currEntityType = null;
+        private Paint paintTool = null;
         private int zoom = 8;
 
         private int downX, downY;
@@ -46,12 +48,18 @@ namespace Maptool
             panMap.Size = new Size(1, 1);
             panMap.Size = new Size(map.Width * this.zoom, map.Height * this.zoom);
 
-            toggleOn(toolZones);
+            paintTool = new Paint();
+            toolPaint.Tag = 'T';
+
             setCurrEntity(null);
             setCurrEntityType(null);
             setCurrTool(null);
+            setPaintMode(null);
             panMap.Refresh();
             grid.Refresh();
+
+            toggleOn(toolZones);
+            setCurrTool(Tools.Zone);
         }
 
         /**
@@ -63,7 +71,7 @@ namespace Maptool
             toolLights.Checked = false;
             toolObjects.Checked = false;
 
-            on.Checked = true;
+            if (on != null) on.Checked = true;
         }
 
 
@@ -96,6 +104,37 @@ namespace Maptool
             setCurrTool(Tools.Object);
         }
 
+        /**
+        * Painting the terrain
+        **/
+        private void paintTerrain_Click(object sender, EventArgs e)
+        {
+            this.setPaintMode(map.Terrain);
+            toolPaint.Tag = 'T';
+            toolPaint.Text = "Paint Terrain";
+            paintTerrain.Checked = true;
+        }
+
+        /**
+         * Painting the heightmap
+         **/
+        private void paintHeightmap_Click(object sender, EventArgs e)
+        {
+            this.setPaintMode(map.Heightmap);
+            toolPaint.Tag = 'H';
+            toolPaint.Text = "Paint Heightmap";
+            paintHeightmap.Checked = true;
+        }
+
+
+        private void paint_ButtonClick(object sender, EventArgs e)
+        {
+            if ((char)toolPaint.Tag == 'T') {
+                paintTerrain_Click(sender, e);
+            } else if ((char)toolPaint.Tag == 'H') {
+                paintHeightmap_Click(sender, e);
+            }
+        }
 
         /**
          * Blanks the map
@@ -149,6 +188,8 @@ namespace Maptool
 
             if (tool == null) return;
 
+            setPaintMode(null);
+
             int j = 0;
             foreach (EntityType type in tool.getTypes()) {
                 EntityTypeListItem itm = new EntityTypeListItem();
@@ -167,6 +208,25 @@ namespace Maptool
                 list.Items[0].Selected = true;
                 setCurrEntityType(((EntityTypeListItem)list.Items[0]).EntityType);
             }
+        }
+
+        /**
+         * Enables paint mode
+         **/
+        private void setPaintMode(Bitmap target)
+        {
+            this.currPaint = target;
+            this.paintTool.Target = target;
+
+            if (target == null) return;
+
+            toggleOn(null);
+            setCurrTool(null);
+            grid.SelectedObject = this.paintTool;
+            splitRight.Panel2Collapsed = true;
+
+            paintTerrain.Checked = false;
+            paintHeightmap.Checked = false;
         }
 
         /**
@@ -206,29 +266,45 @@ namespace Maptool
         {
             downX = downY = -1;
 
-            if (e.Button == System.Windows.Forms.MouseButtons.Left) {
-                try_select(e.X, e.Y);
-                if (currEntity != null) {
-                    downX = e.X;
-                    downY = e.Y;
+            if (currTool != null) {
+                if (e.Button == System.Windows.Forms.MouseButtons.Left) {
+                    try_select(e.X, e.Y);
+                    if (currEntity != null) {
+                        downX = e.X;
+                        downY = e.Y;
+                    }
                 }
-            }
+                panMap.Refresh();
+                grid.Refresh();
 
-            panMap.Focus();
-            panMap.Refresh();
-            grid.Refresh();
+            } else if (currPaint != null) {
+                if (e.Button == System.Windows.Forms.MouseButtons.Left) {
+                    this.paintTool.mouseDown(e.X / this.zoom, e.Y / this.zoom);
+                }
+                panMap.Refresh();
+                grid.Refresh();
+            }
         }
 
+        /**
+        * Mouse moves
+        **/
         private void panMap_MouseMove(object sender, MouseEventArgs e)
         {
-            if (downX == -1) return;
-            if (currEntity == null) return;
+            if (currTool != null) {
+                if (downX == -1) return;
+                if (currEntity == null) return;
 
-            currEntity.X = e.X / this.zoom;
-            currEntity.Y = e.Y / this.zoom;
+                currEntity.X = e.X / this.zoom;
+                currEntity.Y = e.Y / this.zoom;
+                panMap.Refresh();
+                grid.Refresh();
 
-            panMap.Refresh();
-            grid.Refresh();
+            } else if (currPaint != null) {
+                this.paintTool.mouseMove(e.X / this.zoom, e.Y / this.zoom);
+                panMap.Refresh();
+                grid.Refresh();
+            }
         }
 
         /**
@@ -236,14 +312,21 @@ namespace Maptool
         **/
         private void panMap_MouseUp(object sender, MouseEventArgs e)
         {
-            downX = downY = -1;
+            if (currTool != null) {
+                downX = downY = -1;
 
-            if (e.Button == System.Windows.Forms.MouseButtons.Left) {
-                try_add(e.X, e.Y);
+                if (e.Button == System.Windows.Forms.MouseButtons.Left) {
+                    try_add(e.X, e.Y);
+                }
+
+                panMap.Refresh();
+                grid.Refresh();
+
+            } else if (currPaint != null) {
+                this.paintTool.mouseUp(e.X / this.zoom, e.Y / this.zoom);
+                panMap.Refresh();
+                grid.Refresh();
             }
-
-            panMap.Refresh();
-            grid.Refresh();
         }
 
 
