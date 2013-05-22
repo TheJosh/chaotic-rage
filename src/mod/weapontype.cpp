@@ -133,7 +133,10 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		char* tmp = cfg_getstr(cfg_item, "model");
 		if (tmp) w->model = mod->getAssimpModel(tmp);
 		
-		// TODO: detection radius and/or blast radius, damage, delay
+		// TODO: blast radius vs detection radius?
+		w->range = cfg_getfloat(cfg_item, "range");
+		w->damage = cfg_getfloat(cfg_item, "unit_damage");		// TODO: merge unit/wall damage
+		
 		
 	} else {
 		return NULL;

@@ -25,8 +25,8 @@ void WeaponRocket::doFire(Unit *u, btTransform &origin)
 	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->model, u, 0.1f);
 	
 	WeaponRocketData* data = new WeaponRocketData();
-	data->delay = 2000;
-	data->ghost = create_ghost(xform, 5.0f);
+	data->delay = 250;		// So the user doesn't blow themselves up
+	data->ghost = create_ghost(xform, this->range);
 	ar->data = data;
 	
 	u->getGameState()->addAmmoRound(ar);
@@ -61,7 +61,7 @@ void WeaponRocket::entityUpdate(AmmoRound *e, int delta)
 	// If there is something within range...
 	if (check_ghost_triggered(data->ghost)) {
 		// ...kaboom
-		apply_ghost_damage(data->ghost, 1000.0f);
+		apply_ghost_damage(data->ghost, this->damage);
 		
 		create_particles_explosion(st, e->getTransform().getOrigin(), 100);
 
