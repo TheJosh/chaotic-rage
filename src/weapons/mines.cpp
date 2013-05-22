@@ -42,7 +42,7 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 	
 	// If there is a ghost, see what we hit
 	if (data->ghost) {
-		apply_ghost_damage(data->ghost, 1000.0f);
+		apply_ghost_damage(data->ghost, ((WeaponTimedMine*)e->wt)->damage);
 		
 		// Remove the mine
 		e->getGameState()->physics->delCollisionObject(data->ghost);
@@ -57,7 +57,7 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 	// If the time has passed, it's boom time
 	// We create a ghost, and apply the damage in the next tick.
 	if (data->time <= 0) {
-		data->ghost = create_ghost(e->getTransform(), 10.0f);
+		data->ghost = create_ghost(e->getTransform(), ((WeaponTimedMine*)e->wt)->range);
 		st->physics->addCollisionObject(data->ghost, CG_AMMO);
 
 		create_particles_explosion(st, e->getTransform().getOrigin(), 100);
@@ -76,7 +76,7 @@ void WeaponProxiMine::doFire(Unit *u, btTransform &origin)
 	
 	WeaponProxiMineData* data = new WeaponProxiMineData();
 	data->delay = 2000;
-	data->ghost = create_ghost(xform, 10.0f);
+	data->ghost = create_ghost(xform, this->range);
 	ar->data = data;
 	
 	u->getGameState()->addAmmoRound(ar);
@@ -100,7 +100,7 @@ void WeaponProxiMine::entityUpdate(AmmoRound *e, int delta)
 	// If there is something within range...
 	if (check_ghost_triggered(data->ghost)) {
 		// ...kaboom
-		apply_ghost_damage(data->ghost, 1000.0f);
+		apply_ghost_damage(data->ghost, ((WeaponProxiMine*)e->wt)->damage);
 		
 		create_particles_explosion(st, e->getTransform().getOrigin(), 100);
 
@@ -138,7 +138,7 @@ void WeaponRemoteMine::entityUpdate(AmmoRound *e, int delta)
 	if (! data->ghost) return;
 
 	// If there is a ghost, we have just boomed, let's see what we hit
-	apply_ghost_damage(data->ghost, 1000.0f);
+	apply_ghost_damage(data->ghost, ((WeaponRemoteMine*)e->wt)->damage);
 		
 	// Remove the mine
 	e->getGameState()->physics->delCollisionObject(data->ghost);
@@ -154,7 +154,7 @@ void WeaponRemoteMine::trigger(AmmoRound *e)
 {
 	WeaponRemoteMineData* data = (WeaponRemoteMineData*)e->data;
 
-	data->ghost = create_ghost(e->getTransform(), 10.0f);
+	data->ghost = create_ghost(e->getTransform(), ((WeaponRemoteMine*)e->wt)->range);
 	st->physics->addCollisionObject(data->ghost, CG_AMMO);
 
 	create_particles_explosion(st, e->getTransform().getOrigin(), 100);

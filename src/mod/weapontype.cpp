@@ -70,8 +70,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		WeaponRaycast* w = new WeaponRaycast();
 		w->angle_range = cfg_getint(cfg_item, "angle_range");
 		w->range = cfg_getfloat(cfg_item, "range");
-		w->unit_damage = cfg_getfloat(cfg_item, "unit_damage");
-		w->wall_damage = cfg_getfloat(cfg_item, "wall_damage");
+		w->unit_damage = cfg_getfloat(cfg_item, "unit_damage");		// TODO: merge unit/wall damage
+		w->wall_damage = cfg_getfloat(cfg_item, "wall_damage");		// TODO: merge unit/wall damage
 		wt = w;
 
 	} else if (type == WEAPON_TYPE_DIGDOWN) {
@@ -84,8 +84,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		WeaponFlamethrower* w = new WeaponFlamethrower();
 		w->angle_range = cfg_getint(cfg_item, "angle_range");
 		w->range = cfg_getfloat(cfg_item, "range");
-		w->unit_damage = cfg_getfloat(cfg_item, "unit_damage");
-		w->wall_damage = cfg_getfloat(cfg_item, "wall_damage");
+		w->unit_damage = cfg_getfloat(cfg_item, "unit_damage");		// TODO: merge unit/wall damage
+		w->wall_damage = cfg_getfloat(cfg_item, "wall_damage");		// TODO: merge unit/wall damage
 		wt = w;
 
 	} else if (type == WEAPON_TYPE_TIMED_MINE) {
@@ -95,8 +95,9 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		char* tmp = cfg_getstr(cfg_item, "model");
 		if (tmp) w->model = mod->getAssimpModel(tmp);
 
-		// TODO: detection radius and/or blast radius, damage
-		
+		w->range = cfg_getfloat(cfg_item, "range");
+		w->damage = cfg_getfloat(cfg_item, "unit_damage");		// TODO: merge unit/wall damage
+
 		wt = w;
 
 	} else if (type == WEAPON_TYPE_PROXI_MINE) {
@@ -105,8 +106,9 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		char* tmp = cfg_getstr(cfg_item, "model");
 		if (tmp) w->model = mod->getAssimpModel(tmp);
 
-		// TODO: detection radius and/or blast radius, damage, delay
-		
+		w->range = cfg_getfloat(cfg_item, "range");
+		w->damage = cfg_getfloat(cfg_item, "unit_damage");		// TODO: merge unit/wall damage
+
 		wt = w;
 
 	} else if (type == WEAPON_TYPE_REMOTE_MINE) {
@@ -115,8 +117,9 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		char* tmp = cfg_getstr(cfg_item, "model");
 		if (tmp) w->model = mod->getAssimpModel(tmp);
 
-		// TODO: detection radius and/or blast radius, damage
-		
+		w->range = cfg_getfloat(cfg_item, "range");
+		w->damage = cfg_getfloat(cfg_item, "unit_damage");		// TODO: merge unit/wall damage
+
 		wt = w;
 
 	} else if (type == WEAPON_TYPE_REMOTE_TRIG) {

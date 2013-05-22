@@ -45,7 +45,9 @@ void apply_ghost_damage(btGhostObject* ghost, float damage)
 			
 		Entity* e = (Entity*) co->getUserPointer();
 		if (e == NULL) continue;
-			
+		
+		// TODO: scale damage based on distance from centre of ghost
+
 		if (e->klass() == UNIT) {
 			((Unit*)e)->takeDamage(damage);
 		} else if (e->klass() == WALL) {

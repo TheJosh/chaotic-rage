@@ -440,12 +440,6 @@ void Unit::update(int delta)
 		this->lift_obj->z = 70;
 		this->lift_obj->angle = this->angle;
 		
-	} else if (this->drive_obj) {
-		this->drive_obj->x = pointPlusAngleX(this->x, this->angle, -2);
-		this->drive_obj->y = pointPlusAngleY(this->y, this->angle, -2);
-		this->drive_obj->z = this->z;
-		this->drive_obj->angle = this->angle;
-		
 	} else if (this->turret_obj) {
 		this->x = this->turret_obj->x;
 		this->y = this->turret_obj->y;

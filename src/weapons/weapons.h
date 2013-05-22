@@ -79,6 +79,8 @@ class WeaponTimedMine : public WeaponType
 		WeaponTimedMine() : model(NULL) {};
 
 	public:
+		float range;
+		float damage;
 		int time;		// ms
 		AssimpModel* model;
 
@@ -102,6 +104,8 @@ class WeaponProxiMine : public WeaponType
 		WeaponProxiMine() : model(NULL) {};
 
 	public:
+		float range;
+		float damage;
 		AssimpModel* model;
 
 	public:
@@ -124,6 +128,8 @@ class WeaponRemoteMine : public WeaponType
 		WeaponRemoteMine() : model(NULL) {};
 
 	public:
+		float range;
+		float damage;
 		AssimpModel* model;
 
 	public:
