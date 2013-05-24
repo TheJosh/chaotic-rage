@@ -53,10 +53,15 @@ gcn::Container * DialogClientSettings::setup()
 	const int bh = 20;	// buttonheight
 	char buf[100];
 	
+	gcn::Label* label;
+	
 	c = new gcn::Window("Client Settings");
 	c->setDimension(gcn::Rectangle(0, 0, w, h + 15));
 	
 	RenderOpenGLSettings* gl = ((RenderOpenGL*)st->render)->getSettings();
+	
+	label = new gcn::Label("MSAA");
+	c->add(label, 10, 10);
 	
 	sprintf(buf, "%i", gl->msaa);
 	this->gl_msaa = new gcn::TextField(std::string(buf));
@@ -64,9 +69,12 @@ gcn::Container * DialogClientSettings::setup()
 	this->gl_msaa->setWidth(50);
 	c->add(this->gl_msaa);
 	
+	label = new gcn::Label("Tex Filter");
+	c->add(label, 10, 30);
+	
 	sprintf(buf, "%i", gl->tex_filter);
 	this->gl_tex_filter = new gcn::TextField(std::string(buf));
-	this->gl_tex_filter->setPosition(80, 50);
+	this->gl_tex_filter->setPosition(80, 30);
 	this->gl_tex_filter->setWidth(50);
 	c->add(this->gl_tex_filter);
 	
