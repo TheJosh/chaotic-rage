@@ -13,19 +13,16 @@ copy /-Y ..\msvc2010\Debug\chaoticrage.exe files
 
 xcopy /E /I ..\..\data files\data
 xcopy /E /I ..\..\maps files\maps
-xcopy /E /I ..\..\docs files\docs
 
 copy /-Y ..\..\*.bmp files
 copy /-Y ..\lib\*.dll files
 copy /-Y ..\redist-msvc\*.dll files
-copy /-Y ..\..\datatool\lib\*.dll files
-copy /-Y ..\..\datatool\lib\SharpGL\*.dll files
 copy /-Y ..\redist-msvc\*.manifest files
 
 copy /-Y blank.txt files\stdout.txt
 copy /-Y blank.txt files\stderr.txt
 
-copy /-Y ..\..\datatool\bin\Debug\datatool.exe files
+copy /-Y ..\..\maptool\bin\Debug\maptool.exe files
 
 
 "C:\Program Files (x86)\NSIS\makensis.exe" chaoticrage.nsi
