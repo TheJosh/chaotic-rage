@@ -14,11 +14,13 @@ using namespace std;
 
 static cfg_opt_t config_opts[] =
 {
-	CFG_INT((char*) "render", RENDER_OPENGL, CFGF_NONE),
-	
 	CFG_INT((char*) "gl-msaa", 1, CFGF_NONE),
-	CFG_INT((char*) "gl-tex-filter", 1, CFGF_NONE),
+	CFG_INT((char*) "gl-tex-filter", 4, CFGF_NONE),
 	
+
+	// Deprecated; only in place to not break existing confings
+	CFG_INT((char*) "render", 0, CFGF_NONE),
+
 	CFG_END()
 };
 
@@ -40,20 +42,13 @@ ClientConfig::ClientConfig()
 void ClientConfig::load()
 {
 	cfg_t *cfg;
-	string filename;
+	string filename = getUserDataDir().append("client.conf");
 
 	// Load config
-	filename = getUserDataDir().append("client.conf");
 	cfg = cfg_init(config_opts, CFGF_NONE);
-
-	if (cfg_parse(cfg, filename.c_str()) == CFG_FILE_ERROR) {
-		this->savedefault();
-	}
+	cfg_parse(cfg, filename.c_str());
 	
 	this->gl = new RenderOpenGLSettings();
-	
-	this->render = cfg_getint(cfg, "render");
-	
 	this->gl->msaa = cfg_getint(cfg, "gl-msaa");
 	this->gl->tex_filter = cfg_getint(cfg, "gl-tex-filter");
 	
@@ -66,57 +61,21 @@ void ClientConfig::load()
 **/
 void ClientConfig::save()
 {
-	cfg_t *cfg;
-	string filename;
+	string filename = getUserDataDir().append("client.conf");
 
-	// Load config
-	filename = getUserDataDir().append("client.conf");
-	cfg = cfg_init(config_opts, CFGF_NONE);
-	cfg_parse(cfg, filename.c_str());
-
-	// Fill from variables
-	cfg_setint(cfg, "render", this->render);
-
-	// Write to file
 	FILE * fp = fopen(filename.c_str(), "w");
-	if (fp != NULL) {
-		cfg_print(cfg, fp);
-		fclose(fp);
+	if (fp == NULL) {
+		return;
 	}
 
-	cfg_free(cfg);
-}
+	// TODO: Save config _properly_
+	// Okay so the correct way is the libConfuse cfg_print function
+	// but it wasn't working, and I'm getting too tired to keep trying
+	fprintf(fp, "# Config file for CR\n");
+	fprintf(fp, "gl-msaa = %i\n", this->gl->msaa);
+	fprintf(fp, "gl-tex-filter = %i\n", this->gl->tex_filter);
 
-
-void ClientConfig::savedefault()
-{
-	string filename;
-
-	char * def = (char*)
-		"#\n"
-		"# This is the configuration file for the Chaotic Rage game client.\n"
-		"#\n"
-		"\n"
-		"# Rendering engine:\n"
-		"#   1 - OpenGL full version. Requires OpenGL 2.0 or later.\n"
-		"#   2 - OpenGL compatibility version, good if you're on integrated graphics.\n"
-		"render = 1\n"
-		"\n"
-		"# OpenGL - MSAA:\n"
-		"#   Options available depends on your GPU; common options are 1, 2, 4, 8, 16.\n"
-		"gl-msaa = 1\n"
-		"\n"
-		"# OpenGL - Texture Filtering:\n"
-		"#   1 - no filtering  2,3 - bilinear  4 - trilinear\n"
-		"gl-tex-filter = 1\n"
-		;
-
-	filename = getUserDataDir().append("client.conf");
-	FILE * fp = fopen(filename.c_str(), "w");
-	if (fp != NULL) {
-		fwrite(def, strlen(def), 1, fp);
-		fclose(fp);
-	}
+	fclose(fp);
 }
 
 
@@ -125,15 +84,7 @@ void ClientConfig::savedefault()
 **/
 void ClientConfig::initRender(GameState *st)
 {
-	if (this->render == RENDER_OPENGL) {
-		new RenderOpenGL(st, this->gl);
-
-	} else if (this->render == RENDER_OPENGL_COMPAT) {
-		new RenderOpenGLCompat(st);
-
-	} else {
-		exit(1);
-	}
+	new RenderOpenGL(st, this->gl);
 
 	st->render->setScreenSize(1000, 700, false);
 }

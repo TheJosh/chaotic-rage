@@ -78,7 +78,7 @@ gcn::Container * DialogClientSettings::setup()
 	this->gl_tex_filter->setWidth(50);
 	c->add(this->gl_tex_filter);
 	
-	this->button = new gcn::Button("Try em out but no saving yet");
+	this->button = new gcn::Button("Save");
 	this->button->setPosition(w - bw - p, h - bh - p);
 	this->button->setSize(bw, bh);
 	this->button->addActionListener(this);
@@ -107,7 +107,14 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 	// Set
 	((RenderOpenGL*)st->render)->setSettings(nu);
 	
-	// TODO: If we need a restart, tell the user
+	// Save
+	this->st->cconf->gl = nu;
+	this->st->cconf->save();
+
+	// If we need a restart, tell the user
+	if (restart) {
+		displayMessageBox("One or more of your changes will require a game restart to become effective");
+	}
 	
 	this->m->setDialog(NULL);
 }

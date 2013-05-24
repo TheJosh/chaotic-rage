@@ -21,7 +21,6 @@ class RenderOpenGLSettings;
 class ClientConfig
 {
 	public:
-		int render;
 		RenderOpenGLSettings* gl;
 		
 	public:
