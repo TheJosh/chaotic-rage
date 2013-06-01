@@ -431,6 +431,13 @@ void Unit::update(int delta)
 	}
 
 
+	if (this->lift_obj) {
+		btVector3 pos = xform.getOrigin() + xform.getBasis() * btVector3(0.0f, 0.0f, 1.0f);
+		btTransform lift(xform.getBasis(), pos);
+		this->lift_obj->setTransform(lift);
+	}
+
+
 	// Move the lifted object with the unit
 	// Or driving, or turrets
 	// TODO: New Physics
