@@ -399,6 +399,9 @@
     <ClCompile Include="..\..\src\weapons\rockets.cpp">
       <Filter>src\weapons</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\mod\pickup.cpp">
+      <Filter>src\mod</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">
@@ -667,6 +670,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\weapons\ghost_objects.h">
       <Filter>src\weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\pickup.h">
+      <Filter>src\mod</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

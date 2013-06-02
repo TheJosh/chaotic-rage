@@ -56,6 +56,7 @@ Mod::Mod(GameState * st, string directory)
 	this->areatypes = NULL;
 	this->gametypes = NULL;
 	this->objecttypes = NULL;
+	this->pickuptypes = NULL;
 	this->songs = NULL;
 	this->sounds = NULL;
 	this->unitclasses = NULL;
@@ -71,6 +72,7 @@ Mod::~Mod()
 	delete(this->areatypes);
 	delete(this->gametypes);
 	delete(this->objecttypes);
+	delete(this->pickuptypes);
 	delete(this->songs);
 	delete(this->sounds);
 	delete(this->unitclasses);
@@ -243,7 +245,10 @@ bool Mod::load(UIUpdate* ui)
 	campaigns = loadModFile<Campaign*>(this, ui, "campaigns.conf", "campaign", campaign_opts, &loadItemCampaign);
 	if (campaigns == NULL) return false;
 	
-	
+	pickuptypes = loadModFile<PickupType*>(this, ui, "pickuptypes.conf", "pickup", pickuptype_opts, &loadItemPickupType);
+	if (pickuptypes == NULL) return false;
+
+
 	// Auto-create object types for weapons (pickup)
 	for (int i = weapontypes->size() - 1; i >= 0; --i) {
 		string tmp = weapontypes->at(i)->name;

@@ -30,6 +30,7 @@ class Mod {
 		vector<FloorType*> * areatypes;
 		vector<GameType*> * gametypes;
 		vector<ObjectType*> * objecttypes;
+		vector<PickupType*> * pickuptypes;
 		vector<Song*> * songs;
 		vector<Sound*> * sounds;
 		vector<UnitType*> * unitclasses;

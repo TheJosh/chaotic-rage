@@ -173,6 +173,7 @@
     <ClCompile Include="..\..\src\mod\mod_manager.cpp" />
     <ClCompile Include="..\..\src\mod\mod_proxy.cpp" />
     <ClCompile Include="..\..\src\mod\objecttype.cpp" />
+    <ClCompile Include="..\..\src\mod\pickup.cpp" />
     <ClCompile Include="..\..\src\mod\song.cpp" />
     <ClCompile Include="..\..\src\mod\sound.cpp" />
     <ClCompile Include="..\..\src\mod\unittype.cpp" />
@@ -257,6 +258,7 @@
     <ClInclude Include="..\..\src\mod\mod_manager.h" />
     <ClInclude Include="..\..\src\mod\mod_proxy.h" />
     <ClInclude Include="..\..\src\mod\objecttype.h" />
+    <ClInclude Include="..\..\src\mod\pickup.h" />
     <ClInclude Include="..\..\src\mod\song.h" />
     <ClInclude Include="..\..\src\mod\sound.h" />
     <ClInclude Include="..\..\src\mod\unittype.h" />

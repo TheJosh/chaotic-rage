@@ -17,6 +17,7 @@
 #include "campaign.h"
 #include "floortype.h"
 #include "objecttype.h"
+#include "pickup.h"
 #include "unittype.h"
 #include "song.h"
 #include "sound.h"

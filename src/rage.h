@@ -98,6 +98,7 @@ class NewParticle;
 class NPC;
 class Object;
 class ObjectType;
+class PickupType;
 class PhysicsBullet;
 class Player;
 class PlayerState;
