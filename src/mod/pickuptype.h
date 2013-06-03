@@ -11,15 +11,20 @@
 using namespace std;
 
 
+#define PICKUP_TYPE_WEAPON 1
+#define PICKUP_TYPE_AMMO 2
+
+
 class PickupType
 {
 	public:
 		int id;
 		string name;
 		AssimpModel * model;
+		int type;
 		
-		WeaponType *weapon;
-		WeaponType *ammo;
+		WeaponType *weapon;       // Weapon, ammo
+		
 		
 	public:
 		PickupType();

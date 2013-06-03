@@ -19,6 +19,8 @@ using namespace std;
 cfg_opt_t pickuptype_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
+	CFG_STR((char*) "model", 0, CFGF_NONE),
+	CFG_INT((char*) "type", 0, CFGF_NONE),
 	CFG_END()
 };
 
@@ -28,6 +30,7 @@ cfg_opt_t pickuptype_opts[] =
 **/
 PickupType::PickupType()
 {
+	this->weapon = NULL;
 }
 
 /**
@@ -47,6 +50,7 @@ PickupType* loadItemPickupType(cfg_t* cfg_item, Mod* mod)
 
 	pt = new PickupType();
 	pt->name = cfg_getstr(cfg_item, "name");
+	pt->type = cfg_getint(cfg_item, "type");
 	
 	char * tmp = cfg_getstr(cfg_item, "model");
 	if (tmp != NULL) {
