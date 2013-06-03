@@ -399,7 +399,10 @@
     <ClCompile Include="..\..\src\weapons\rockets.cpp">
       <Filter>src\weapons</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\mod\pickup.cpp">
+    <ClCompile Include="..\..\src\entity\pickup.cpp">
+      <Filter>src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mod\pickuptype.cpp">
       <Filter>src\mod</Filter>
     </ClCompile>
   </ItemGroup>
@@ -671,7 +674,10 @@
     <ClInclude Include="..\..\src\weapons\ghost_objects.h">
       <Filter>src\weapons</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\mod\pickup.h">
+    <ClInclude Include="..\..\src\entity\pickup.h">
+      <Filter>src\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mod\pickuptype.h">
       <Filter>src\mod</Filter>
     </ClInclude>
   </ItemGroup>

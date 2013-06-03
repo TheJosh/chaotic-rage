@@ -256,7 +256,7 @@ bool Mod::load(UIUpdate* ui)
 		PickupType* pt = new PickupType();
 		pt->name = tmp;
 		pt->type = PICKUP_TYPE_WEAPON;
-		pt->weapon = weapontypes->at(i);
+		pt->wt = weapontypes->at(i);
 		
 		pt->model = this->getAssimpModel("pickup_" + tmp + ".dae");
 		if (pt->model == NULL) {
@@ -271,7 +271,7 @@ bool Mod::load(UIUpdate* ui)
 		pt = new PickupType();
 		pt->name = tmp;
 		pt->type = PICKUP_TYPE_AMMO;
-		pt->weapon = weapontypes->at(i);
+		pt->wt = weapontypes->at(i);
 		
 		pt->model = this->getAssimpModel("pickup_" + tmp + ".dae");
 		if (pt->model == NULL) {

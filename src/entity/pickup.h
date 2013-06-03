@@ -22,7 +22,12 @@ class Pickup : public Entity
 	public:
 		Pickup(PickupType *pt, GameState *st, float x, float y, float z);
 		virtual ~Pickup();
-		
+
+		/**
+		* Called by the unit when it interacts with a pickup
+		**/
+		void doUse(Unit *u);
+
 	public:
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();

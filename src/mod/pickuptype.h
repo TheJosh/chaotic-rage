@@ -23,12 +23,18 @@ class PickupType
 		AssimpModel * model;
 		int type;
 		
-		WeaponType *weapon;       // Weapon, ammo
+		WeaponType *wt;       // Weapon, ammo
 		
 		
 	public:
 		PickupType();
 		~PickupType();
+
+	public:
+		/**
+		* Called by the unit when it interacts with a pickup
+		**/
+		void doUse(Unit *u);
 };
 
 

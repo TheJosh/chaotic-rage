@@ -102,7 +102,8 @@ class Unit : public Entity
 		unsigned int getNumWeapons();
 		UnitWeapon * getWeaponAt(unsigned int id);
 		WeaponType * getWeaponTypeAt(unsigned int id);
-		
+		WeaponType * getWeaponTypeCurr();
+
 		void setWeapon(int id);
 		unsigned int getCurrentWeaponID();
 		unsigned int getPrevWeaponID();

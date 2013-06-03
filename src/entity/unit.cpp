@@ -226,10 +226,16 @@ WeaponType * Unit::getWeaponTypeAt(unsigned int id)
 	return this->avail_weapons[id]->wt;
 }
 
+WeaponType * Unit::getWeaponTypeCurr()
+{
+	return this->weapon->wt;
+}
+
 UnitWeapon * Unit::getWeaponAt(unsigned int id)
 {
 	return this->avail_weapons[id];
 }
+
 
 /**
 * Sets the unit weapon
@@ -457,7 +463,7 @@ void Unit::update(int delta)
 	
 	
 	{
-		      btManifoldArray   manifoldArray;
+	  btManifoldArray   manifoldArray;
       btBroadphasePairArray& pairArray = ghost->getOverlappingPairCache()->getOverlappingPairArray();
       int numPairs = pairArray.size();
 
@@ -484,15 +490,11 @@ void Unit::update(int delta)
 
 			const btCollisionObject* other = obA == ghost ? obB : obA;
 
-			if (other->getBroadphaseHandle()->m_collisionFilterGroup == CG_OBJECT) {
-				Object* o = (Object*) other->getUserPointer();
+			if (other->getBroadphaseHandle()->m_collisionFilterGroup == CG_PICKUP) {
+				Pickup* p = (Pickup*) other->getUserPointer();
 
-				if (o->ot->over) this->doUse();
-
-
+				p->doUse(this);
 			}
-
-
          }
       }
 	}

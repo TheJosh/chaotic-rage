@@ -7,7 +7,7 @@
 #include <list>
 #include <confuse.h>
 #include <zzip/zzip.h>
-#include "campaign.h"
+#include "pickuptype.h"
 #include "../rage.h"
 
 using namespace std;
@@ -30,7 +30,7 @@ cfg_opt_t pickuptype_opts[] =
 **/
 PickupType::PickupType()
 {
-	this->weapon = NULL;
+	this->wt = NULL;
 }
 
 /**
@@ -62,3 +62,31 @@ PickupType* loadItemPickupType(cfg_t* cfg_item, Mod* mod)
 }
 
 
+/**
+* Handle a pickup by a unit
+**/
+void PickupType::doUse(Unit *u)
+{
+	GameState *st = u->getGameState();
+
+	switch (this->type) {
+		case PICKUP_TYPE_WEAPON:
+			assert(this->wt);
+			st->addHUDMessage(u->slot, "Picked up a ", this->wt->title);
+			u->pickupWeapon(this->wt);
+			break;
+
+		case PICKUP_TYPE_AMMO:
+			if (this->wt == NULL) {
+				u->pickupAmmo(u->getWeaponTypeCurr());
+			} else {
+				u->pickupAmmo(this->wt);
+			}
+
+			st->addHUDMessage(u->slot, "Picked up some ammo");
+			break;
+
+		default:
+			assert(0);
+	}
+}

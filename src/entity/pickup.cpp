@@ -35,6 +35,10 @@ Pickup::Pickup(PickupType *pt, GameState *st, float x, float y, float z) : Entit
 	this->body->setUserPointer(this);
 }
 
+
+/**
+* Kill this pickup off
+**/
 Pickup::~Pickup()
 {
 	delete (this->anim);
@@ -49,13 +53,29 @@ void Pickup::update(int delta)
 {
 }
 
+
+/**
+* Return the 3D model for the pickup
+**/
 AnimPlay* Pickup::getAnimModel()
 {
 	return this->anim;
 }
 
+/**
+* Return a sound for the pickup
+**/
 Sound* Pickup::getSound()
 {
 	return NULL;
 }
 
+
+/**
+* Handle interaction by the user
+**/
+void Pickup::doUse(Unit *u)
+{
+	this->pt->doUse(u);
+	this->del = true;
+}

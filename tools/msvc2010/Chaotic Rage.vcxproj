@@ -136,6 +136,7 @@
     <ClCompile Include="..\..\src\entity\entity.cpp" />
     <ClCompile Include="..\..\src\entity\npc.cpp" />
     <ClCompile Include="..\..\src\entity\object.cpp" />
+    <ClCompile Include="..\..\src\entity\pickup.cpp" />
     <ClCompile Include="..\..\src\entity\player.cpp" />
     <ClCompile Include="..\..\src\entity\unit.cpp" />
     <ClCompile Include="..\..\src\entity\vehicle.cpp" />
@@ -173,7 +174,7 @@
     <ClCompile Include="..\..\src\mod\mod_manager.cpp" />
     <ClCompile Include="..\..\src\mod\mod_proxy.cpp" />
     <ClCompile Include="..\..\src\mod\objecttype.cpp" />
-    <ClCompile Include="..\..\src\mod\pickup.cpp" />
+    <ClCompile Include="..\..\src\mod\pickuptype.cpp" />
     <ClCompile Include="..\..\src\mod\song.cpp" />
     <ClCompile Include="..\..\src\mod\sound.cpp" />
     <ClCompile Include="..\..\src\mod\unittype.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="..\..\src\entity\entity.h" />
     <ClInclude Include="..\..\src\entity\npc.h" />
     <ClInclude Include="..\..\src\entity\object.h" />
+    <ClInclude Include="..\..\src\entity\pickup.h" />
     <ClInclude Include="..\..\src\entity\player.h" />
     <ClInclude Include="..\..\src\entity\unit.h" />
     <ClInclude Include="..\..\src\entity\vehicle.h" />
@@ -258,7 +260,7 @@
     <ClInclude Include="..\..\src\mod\mod_manager.h" />
     <ClInclude Include="..\..\src\mod\mod_proxy.h" />
     <ClInclude Include="..\..\src\mod\objecttype.h" />
-    <ClInclude Include="..\..\src\mod\pickup.h" />
+    <ClInclude Include="..\..\src\mod\pickuptype.h" />
     <ClInclude Include="..\..\src\mod\song.h" />
     <ClInclude Include="..\..\src\mod\sound.h" />
     <ClInclude Include="..\..\src\mod\unittype.h" />
