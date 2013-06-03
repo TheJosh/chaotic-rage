@@ -32,12 +32,13 @@ cfg_opt_t adjust_opts[] =
 cfg_opt_t pickuptype_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
-	CFG_STR((char*) "title", 0, CFGF_NONE),
+	CFG_STR((char*) "title", (char*)"Powerup", CFGF_NONE),
 	CFG_STR((char*) "model", 0, CFGF_NONE),
 	CFG_INT((char*) "type", 0, CFGF_NONE),
 
 	CFG_SEC((char*) "perm", adjust_opts, CFGF_NONE),
 	CFG_SEC((char*) "temp", adjust_opts, CFGF_NONE),
+	CFG_INT((char*) "delay", 15 * 1000, CFGF_NONE),		// default 15 secs
 
 	CFG_END()
 };
@@ -81,14 +82,11 @@ PickupType* loadItemPickupType(cfg_t* cfg_item, Mod* mod)
 		if (! pt->model) return NULL;
 	}
 	
-	// Load perm and temp adjustments
+	
+	// Powerups have a bunch more fields
 	if (pt->type == PICKUP_TYPE_POWERUP) {
-		tmp = cfg_getstr(cfg_item, "title");
-		if (tmp != NULL) {
-			pt->title = std::string(tmp);
-		} else {
-			pt->title = "Powerup";
-		}
+		pt->title = std::string(cfg_getstr(cfg_item, "title"));
+		pt->delay = cfg_getint(cfg_item, "delay");
 
 		if (cfg_size(cfg_item, "perm") > 0) {
 			pt->perm = pt->loadAdjust(cfg_getnsec(cfg_item, "perm", 0));
@@ -141,9 +139,8 @@ void PickupType::doUse(Unit *u)
 			break;
 
 		case PICKUP_TYPE_POWERUP:
-
-			// TODO: apply perm and temp adjustments
-
+			u->applyPickupAdjust(this->perm);
+			u->applyPickupAdjust(this->temp);
 			st->addHUDMessage(u->slot, "Picked up a ", this->title);
 			break;
 
@@ -151,3 +148,15 @@ void PickupType::doUse(Unit *u)
 			assert(0);
 	}
 }
+
+
+/**
+* Apply an adjustment to a unit
+**/
+void PickupType::finished(Unit *u)
+{
+	if (this->type == PICKUP_TYPE_POWERUP) {
+		u->rollbackPickupAdjust(this->temp);
+	}
+}
+

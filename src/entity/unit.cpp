@@ -9,6 +9,7 @@
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include <BulletDynamics/Character/btKinematicCharacterController.h>
 #include "../rage.h"
+#include "../mod/pickuptype.h"
 
 using namespace std;
 
@@ -672,3 +673,23 @@ void Unit::doDrop()
 {
 	this->lift_obj = NULL;
 }
+
+
+/**
+* Apply an adjustment to a unit
+**/
+void Unit::applyPickupAdjust(PickupTypeAdjust* adj)
+{
+	this->health *= adj->health;
+	this->takeDamage(0);		// check the player isn't dead.
+}
+
+
+/**
+* Rollback an applied adjustment
+**/
+void Unit::rollbackPickupAdjust(PickupTypeAdjust* adj)
+{
+	this->health /= adj->health;
+}
+

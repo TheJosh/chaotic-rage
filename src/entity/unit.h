@@ -8,8 +8,12 @@
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include <BulletDynamics/Character/btKinematicCharacterController.h>
 #include "../rage.h"
+#include "../mod/pickuptype.h"
 
 using namespace std;
+
+
+class PickupTypeAdjust;
 
 
 class UnitWeapon {
@@ -120,7 +124,10 @@ class Unit : public Entity
 		void setModifiers(Uint8 modifiers);
 		void addModifier(int modifier);
 		void remModifier(int modifier);
-
+		
+		void applyPickupAdjust(PickupTypeAdjust* adj);
+		void rollbackPickupAdjust(PickupTypeAdjust* adj);
+		
 	protected:
 		void setState(int new_type);
 		void doUse();

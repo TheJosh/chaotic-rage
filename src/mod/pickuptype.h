@@ -34,7 +34,6 @@ class PickupType
 	public:
 		int id;
 		string name;
-		string title;
 		AssimpModel * model;
 		int type;
 		
@@ -44,6 +43,8 @@ class PickupType
 		// Powerups, permanant and temporary changes
 		PickupTypeAdjust* perm;
 		PickupTypeAdjust* temp;
+		string title;
+		int delay;
 		
 	public:
 		PickupType();
@@ -54,6 +55,16 @@ class PickupType
 		* Called by the unit when it interacts with a pickup
 		**/
 		void doUse(Unit *u);
+		
+		/**
+		* Called by the unit when the powerup is finished
+		**/
+		void finished(Unit *u);
+		
+		/**
+		* Return the delay (before we mark as finished) in ms
+		**/
+		int getDelay() { return this->delay; }
 };
 
 
