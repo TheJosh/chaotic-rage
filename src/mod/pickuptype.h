@@ -13,24 +13,43 @@ using namespace std;
 
 #define PICKUP_TYPE_WEAPON 1
 #define PICKUP_TYPE_AMMO 2
+#define PICKUP_TYPE_POWERUP 3
 
 
+/**
+* The amount, in percent, to adjust player attributes
+**/
+class PickupTypeAdjust
+{
+	public:
+		float health;
+};
+
+
+/**
+* The pickup details
+**/
 class PickupType
 {
 	public:
 		int id;
 		string name;
+		string title;
 		AssimpModel * model;
 		int type;
 		
-		WeaponType *wt;       // Weapon, ammo
+		// Weapon and ammo crates
+		WeaponType* wt;
 		
+		// Powerups, permanant and temporary changes
+		PickupTypeAdjust* perm;
+		PickupTypeAdjust* temp;
 		
 	public:
 		PickupType();
 		~PickupType();
+		PickupTypeAdjust* loadAdjust(cfg_t* cfg);
 
-	public:
 		/**
 		* Called by the unit when it interacts with a pickup
 		**/
