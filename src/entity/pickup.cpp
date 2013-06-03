@@ -1,0 +1,61 @@
+// This file is part of Chaotic Rage (c) 2010 Josh Heidenreich
+//
+// kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
+
+#include <iostream>
+#include <SDL.h>
+#include <math.h>
+#include "../rage.h"
+
+using namespace std;
+
+
+Pickup::Pickup(PickupType *pt, GameState *st, float x, float y, float z) : Entity(st)
+{
+	this->pt = pt;
+
+	this->anim = new AnimPlay(pt->model);
+	this->anim->setAnimation(0);
+
+	// TODO: The colShape should be tied to the object type.
+	btVector3 sizeHE = pt->model->getBoundingSizeHE();
+	btCollisionShape* colShape = new btBoxShape(sizeHE);
+	
+	// TODO: Store the colshape and nuke at some point
+	// collisionShapes.push_back(colShape);
+	
+	btDefaultMotionState* motionState =
+		new btDefaultMotionState(btTransform(
+			btQuaternion(0.0f, 0.0f, 0.0f),
+			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)
+		));
+	
+	this->body = st->physics->addRigidBody(colShape, 0.0f, motionState, CG_PICKUP);
+	
+	this->body->setUserPointer(this);
+}
+
+Pickup::~Pickup()
+{
+	delete (this->anim);
+	st->physics->delRigidBody(this->body);
+}
+
+
+/**
+* Do stuff
+**/
+void Pickup::update(int delta)
+{
+}
+
+AnimPlay* Pickup::getAnimModel()
+{
+	return this->anim;
+}
+
+Sound* Pickup::getSound()
+{
+	return NULL;
+}
+

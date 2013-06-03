@@ -277,6 +277,23 @@ ObjectType * ModManager::getObjectType(string name)
 
 
 /**
+* Gets a pickup type by name
+**/
+PickupType * ModManager::getPickupType(string name)
+{
+	if (name.empty()) return NULL;
+	
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		PickupType *et = mod->getPickupType(name);
+		if (et) return et;
+	}
+	
+	return NULL;
+}
+
+
+/**
 * Gets a unit type by name
 **/
 UnitType * ModManager::getUnitType(string name)

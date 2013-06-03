@@ -18,3 +18,4 @@
 #include "wall.h"
 #include "decaying.h"
 #include "ammo_round.h"
+#include "pickup.h"

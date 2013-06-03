@@ -99,6 +99,7 @@ class NPC;
 class Object;
 class ObjectType;
 class PickupType;
+class Pickup;
 class PhysicsBullet;
 class Player;
 class PlayerState;

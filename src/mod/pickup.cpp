@@ -48,5 +48,13 @@ PickupType* loadItemPickupType(cfg_t* cfg_item, Mod* mod)
 	pt = new PickupType();
 	pt->name = cfg_getstr(cfg_item, "name");
 	
+	char * tmp = cfg_getstr(cfg_item, "model");
+	if (tmp != NULL) {
+		pt->model = mod->getAssimpModel(tmp);
+		if (! pt->model) return NULL;
+	}
+	
 	return pt;
 }
+
+

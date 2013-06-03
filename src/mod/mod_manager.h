@@ -39,6 +39,7 @@ class ModManager {
 		FloorType * getFloorType(string name);
 		GameType * getGameType(string name);
 		ObjectType * getObjectType(string name);
+		PickupType * getPickupType(string name);
 		UnitType * getUnitType(string name);
 		Song * getSong(string name);
 		Sound * getSound(string name);

@@ -245,48 +245,38 @@ bool Mod::load(UIUpdate* ui)
 	campaigns = loadModFile<Campaign*>(this, ui, "campaigns.conf", "campaign", campaign_opts, &loadItemCampaign);
 	if (campaigns == NULL) return false;
 	
-	pickuptypes = loadModFile<PickupType*>(this, ui, "pickuptypes.conf", "pickup", pickuptype_opts, &loadItemPickupType);
+	pickuptypes = loadModFile<PickupType*>(this, ui, "pickuptypes.conf", "pickuptype", pickuptype_opts, &loadItemPickupType);
 	if (pickuptypes == NULL) return false;
 
 
-	// Auto-create object types for weapons (pickup)
+	// Auto-create pickup types for weapons, ammocrates
 	for (int i = weapontypes->size() - 1; i >= 0; --i) {
-		string tmp = weapontypes->at(i)->name;
-		tmp.append("_pickup");
+		string tmp = "weapon_" + weapontypes->at(i)->name;
 		
-		ObjectType *ot = new ObjectType();
-		ot->name = tmp;
-		ot->check_radius = 30;
-		ot->health = 20000;
-		ot->pickup_weapon = weapontypes->at(i)->name;
-		ot->over = true;
+		PickupType* pt = new PickupType();
+		pt->name = tmp;
+		pt->weapon = weapontypes->at(i);
 		
-		ot->model = this->getAssimpModel(tmp + ".dae");
-		if (ot->model == NULL) {
-			ot->model = this->getAssimpModel("generic_pickup.dae");
+		pt->model = this->getAssimpModel("pickup_" + tmp + ".dae");
+		if (pt->model == NULL) {
+			pt->model = this->getAssimpModel("pickup_weapon_generic.dae");
 		}
 		
-		objecttypes->push_back(ot);
-	}
-	
-	// Auto-create object types for weapons (ammocrate)
-	for (int i = weapontypes->size() - 1; i >= 0; --i) {
-		string tmp = weapontypes->at(i)->name;
-		tmp.append("_ammocrate");
+		pickuptypes->push_back(pt);
 		
-		ObjectType *ot = new ObjectType();
-		ot->name = tmp;
-		ot->check_radius = 30;
-		ot->health = 20000;
-		ot->ammo_crate = weapontypes->at(i)->name;
-		ot->over = true;
 		
-		ot->model = this->getAssimpModel(tmp + ".blend");
-		if (ot->model == NULL) {
-			ot->model = this->getAssimpModel("generic_ammocrate.blend");
+		tmp = "ammo_" + weapontypes->at(i)->name;
+		
+		pt = new PickupType();
+		pt->name = tmp;
+		pt->ammo = weapontypes->at(i);
+		
+		pt->model = this->getAssimpModel("pickup_" + tmp + ".dae");
+		if (pt->model == NULL) {
+			pt->model = this->getAssimpModel("pickup_ammo_generic.dae");
 		}
 		
-		objecttypes->push_back(ot);
+		pickuptypes->push_back(pt);
 	}
 
 	return true;
@@ -475,6 +465,21 @@ ObjectType * Mod::getObjectType(string name)
 void Mod::addObjectType(ObjectType * ot)
 {
 	objecttypes->push_back(ot);
+}
+
+
+/**
+* Gets a pickup type by name
+**/
+PickupType * Mod::getPickupType(string name)
+{
+	if (name.empty()) return NULL;
+	
+	int i;
+	for (i = pickuptypes->size() - 1; i >= 0; --i) {
+		if (pickuptypes->at(i)->name.compare(name) == 0) return pickuptypes->at(i);
+	}
+	return NULL;
 }
 
 

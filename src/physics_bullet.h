@@ -23,6 +23,7 @@ enum CollisionGroup {
 	CG_OBJECT = BIT(5),       // Objects and other dynamics
 	CG_UNIT = BIT(6),         // Units (btKinematicCharacterController)
 	CG_VEHICLE = BIT(7),      // Vehicles (btRaycastVehicle)
+	CG_PICKUP = BIT(8),       // Pickups, Powerups, etc.
 };
 
 

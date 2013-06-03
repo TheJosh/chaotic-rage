@@ -130,6 +130,7 @@ class GameState
 		void addWall(Wall* wall);
 		void addVehicle(Vehicle* vehicle);
 		void addObject(Object* object);
+		void addPickup(Pickup* pickup);
 		void addNewParticle(NewParticle* particle);
 		void addAmmoRound(AmmoRound* e);
 		

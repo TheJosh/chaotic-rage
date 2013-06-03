@@ -198,6 +198,16 @@ void GameState::addObject(Object* object)
 }
 
 /**
+* Add a pickup
+**/
+void GameState::addPickup(Pickup* pickup)
+{
+	pickup->eid = this->getNextEID();
+	
+	this->entities_add.push_back(pickup);
+}
+
+/**
 * Add a particle
 **/
 void GameState::addNewParticle(NewParticle* particle)

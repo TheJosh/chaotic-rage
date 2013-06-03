@@ -33,6 +33,16 @@ static cfg_opt_t object_opts[] =
 	CFG_END()
 };
 
+// Pickup
+static cfg_opt_t pickup_opts[] =
+{
+	CFG_INT((char*) "x", 0, CFGF_NONE),
+	CFG_INT((char*) "y", 0, CFGF_NONE),
+	CFG_INT((char*) "z", 0, CFGF_NONE),
+	CFG_STR((char*) "type", ((char*)""), CFGF_NONE),
+	CFG_END()
+};
+
 // Vehicle
 static cfg_opt_t vehicle_opts[] =
 {
@@ -86,6 +96,7 @@ static cfg_opt_t opts[] =
 	CFG_SEC((char*) "wall", wall_opts, CFGF_MULTI),
 	CFG_SEC((char*) "vehicle", vehicle_opts, CFGF_MULTI),
 	CFG_SEC((char*) "object", object_opts, CFGF_MULTI),
+	CFG_SEC((char*) "pickup", pickup_opts, CFGF_MULTI),
 	CFG_SEC((char*) "zone", zone_opts, CFGF_MULTI),
 	CFG_SEC((char*) "light", light_opts, CFGF_MULTI),
 	CFG_SEC((char*) "mesh", mesh_opts, CFGF_MULTI),
@@ -411,6 +422,22 @@ void Map::loadDefaultEntities()
 		Object * ob = new Object(ot, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), 1, cfg_getint(cfg_sub, "angle"));
 		
 		this->st->addObject(ob);
+	}
+	
+	// Pickups
+	num_types = cfg_size(cfg, "pickup");
+	for (j = 0; j < num_types; j++) {
+		cfg_sub = cfg_getnsec(cfg, "pickup", j);
+		
+		string type = cfg_getstr(cfg_sub, "type");
+		if (type.empty()) continue;
+		
+		PickupType *pt = this->st->mm->getPickupType(type);
+		if (pt == NULL) reportFatalError("Unable to load map; missing or invalid pickup type '" + type + "'");
+		
+		Pickup * pu = new Pickup(pt, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), 1);
+		
+		this->st->addPickup(pu);
 	}
 	
 	cfg_free(cfg);

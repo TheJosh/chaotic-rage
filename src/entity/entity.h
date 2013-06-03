@@ -19,6 +19,7 @@ enum EntityClass {
 	OBJECT = 5,
 	VEHICLE = 6,
 	AMMOROUND = 7,
+	PICKUP = 8,
 };
 
 

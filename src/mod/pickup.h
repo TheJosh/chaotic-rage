@@ -16,6 +16,10 @@ class PickupType
 	public:
 		int id;
 		string name;
+		AssimpModel * model;
+		
+		WeaponType *weapon;
+		WeaponType *ammo;
 		
 	public:
 		PickupType();
