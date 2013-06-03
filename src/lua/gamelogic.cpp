@@ -500,18 +500,17 @@ LUA_FUNC(game_over)
 **/
 LUA_FUNC(ammo_drop)
 {
-	Object *o;
+	Pickup *pu;
 	
 	// special ammocrate for current weapon
-	o = new Object(
-		gl->st->mm->getObjectType("current_ammocrate"),
+	pu = new Pickup(
+		gl->st->mm->getPickupType("ammo_current"),
 		gl->st,
 		gl->st->map->getRandomX(),
 		gl->st->map->getRandomY(),
-		15,
-		0
+		15
 	);
-	gl->st->addObject(o);
+	gl->st->addPickup(pu);
 	
 	return 0;
 }
