@@ -35,9 +35,6 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	this->melee_cooldown = 0;
 	
 	this->weapon_sound = -1;
-	
-	this->uts = NULL;
-	this->setModifiers(0);
 
 	
 	// Set animation
@@ -73,7 +70,6 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 Unit::~Unit()
 {
 	delete this->anim;
-	delete this->uts;
 	st->physics->delAction(this->character);
 	st->physics->delCollisionObject(this->ghost);
 }
@@ -158,16 +154,16 @@ void Unit::meleeAttack()
 	if (this->melee_time != 0) return;
 	if (this->melee_cooldown != 0) return;
 	
-	this->melee_time = st->game_time + this->uts->melee_delay;
-	this->melee_cooldown = this->melee_time + this->uts->melee_cooldown;
+	this->melee_time = st->game_time + this->uc->melee_delay;
+	this->melee_cooldown = this->melee_time + this->uc->melee_cooldown;
 	
-	Entity *e = this->infront(5.0f);	// TODO: settings (melee range)
+	Entity *e = this->infront(5.0f);	// TODO: unit settings (melee range)
 	if (e == NULL) return;
 	
 	DEBUG("weap", "Ray hit %p", e);
 	
 	if (e->klass() == UNIT) {
-		((Unit*)e)->takeDamage(this->uts->melee_damage);
+		((Unit*)e)->takeDamage(this->uc->melee_damage);
 	}
 }
 
@@ -320,58 +316,6 @@ Sound* Unit::getSound()
 
 
 /**
-* Get the current UnitTypeSettings object.
-* It's updated each time the modifiers are changed
-**/
-UnitTypeSettings * Unit::getSettings()
-{
-	return this->uts;
-}
-
-
-/**
-* Get the Uint8 bitfield of modifiers
-**/
-Uint8 Unit::getModifiers()
-{
-	return this->modifiers;
-}
-
-
-/**
-* Set all the modifiers
-**/
-void Unit::setModifiers(Uint8 modifiers)
-{
-	this->modifiers = modifiers;
-	delete this->uts;
-	this->uts = this->uc->getSettings(this->modifiers);
-}
-
-
-/**
-* Turn on a modifier
-**/
-void Unit::addModifier(int modifier)
-{
-	this->modifiers |= modifier;
-	delete this->uts;
-	this->uts = this->uc->getSettings(this->modifiers);
-}
-
-
-/**
-* Turn off a modifier
-**/
-void Unit::remModifier(int modifier)
-{
-	this->modifiers &= ~modifier;
-	delete this->uts;
-	this->uts = this->uc->getSettings(this->modifiers);
-}
-
-
-/**
 * Removes any pickups which are due to finish,
 * and runs their finished() method.
 **/
@@ -450,80 +394,59 @@ void Unit::update(int delta)
 		this->weapon->reloading = false;
 	}
 
-
+	// Move any object which is being "lifted".
 	if (this->lift_obj) {
 		btVector3 pos = xform.getOrigin() + xform.getBasis() * btVector3(0.0f, 0.0f, 1.0f);
 		btTransform lift(xform.getBasis(), pos);
 		this->lift_obj->setTransform(lift);
 	}
-
-
-	// Move the lifted object with the unit
-	// Or driving, or turrets
-	// TODO: New Physics
-	/*if (this->lift_obj) {
-		this->lift_obj->x = this->x;
-		this->lift_obj->y = this->y;
-		this->lift_obj->z = 70;
-		this->lift_obj->angle = this->angle;
-		
-	} else if (this->turret_obj) {
-		this->x = this->turret_obj->x;
-		this->y = this->turret_obj->y;
-		this->z = this->turret_obj->z + 5;
-		this->turret_obj->angle = this->angle;
-	}*/
 	
-	
-	
+	// Iterate through the physics pairs to see if there are any Pickups to pick up.
 	{
-	  btManifoldArray   manifoldArray;
-      btBroadphasePairArray& pairArray = ghost->getOverlappingPairCache()->getOverlappingPairArray();
-      int numPairs = pairArray.size();
+		btManifoldArray   manifoldArray;
+		btBroadphasePairArray& pairArray = ghost->getOverlappingPairCache()->getOverlappingPairArray();
+		int numPairs = pairArray.size();
 
-      for (int i=0;i<numPairs;i++)
-      {
-         manifoldArray.clear();
+		for (int i=0;i<numPairs;i++){
+			manifoldArray.clear();
 
-         const btBroadphasePair& pair = pairArray[i];
-         
-         //unless we manually perform collision detection on this pair, the contacts are in the dynamics world paircache:
-         btBroadphasePair* collisionPair = st->physics->getWorld()->getPairCache()->findPair(pair.m_pProxy0,pair.m_pProxy1);
-         if (!collisionPair)
-            continue;
+			const btBroadphasePair& pair = pairArray[i];
 
-         if (collisionPair->m_algorithm)
-            collisionPair->m_algorithm->getAllContactManifolds(manifoldArray);
+			//unless we manually perform collision detection on this pair, the contacts are in the dynamics world paircache:
+			btBroadphasePair* collisionPair = st->physics->getWorld()->getPairCache()->findPair(pair.m_pProxy0,pair.m_pProxy1);
+			if (!collisionPair) continue;
 
-         for (int j=0;j<manifoldArray.size();j++)
-         {
-            btPersistentManifold* manifold = manifoldArray[j];
-
-			const btCollisionObject* obA = static_cast<const btCollisionObject*>(manifold->getBody0());
-			const btCollisionObject* obB = static_cast<const btCollisionObject*>(manifold->getBody1());
-
-			const btCollisionObject* other = obA == ghost ? obB : obA;
-
-			if (other->getBroadphaseHandle()->m_collisionFilterGroup == CG_PICKUP) {
-				Pickup* p = (Pickup*) other->getUserPointer();
-
-				UnitPickup up;
-				up.pt = p->getPickupType();
-				up.u = this;
-				up.end_time = st->game_time + up.pt->getDelay();
-				pickups.push_back(up);
-
-				p->doUse(this);
+			if (collisionPair->m_algorithm) {
+				collisionPair->m_algorithm->getAllContactManifolds(manifoldArray);
 			}
-         }
-      }
+			
+			for (int j=0;j<manifoldArray.size();j++) {
+				btPersistentManifold* manifold = manifoldArray[j];
+
+				const btCollisionObject* obA = static_cast<const btCollisionObject*>(manifold->getBody0());
+				const btCollisionObject* obB = static_cast<const btCollisionObject*>(manifold->getBody1());
+
+				const btCollisionObject* other = obA == ghost ? obB : obA;
+
+				if (other->getBroadphaseHandle()->m_collisionFilterGroup == CG_PICKUP) {
+					Pickup* p = (Pickup*) other->getUserPointer();
+
+					UnitPickup up;
+					up.pt = p->getPickupType();
+					up.u = this;
+					up.end_time = st->game_time + up.pt->getDelay();
+					pickups.push_back(up);
+
+					p->doUse(this);
+				}
+			}
+		}
 	}
 
-	
+	// Create blood if health is low
 	if (health < (this->uc->begin_health / 2)) {
 		create_particles_blood_spray(this->st, new btVector3(xform.getOrigin()), 1);
 	}
-	
 	
 	// Remove (and rollback) old pickups
 	pickups.remove_if(remove_finished_pickup);

@@ -51,46 +51,30 @@ class Unit : public Entity
 		Vehicle* drive;
 
 	protected:
-		// TODO: Cleanup
+		UnitType* uc;
+
 		int health;
-		int desired_angle_move;
-		int angle_move;
-		int desired_angle_aim;
-		int angle_aim;
-		
+		unsigned int remove_at;
+
+		AnimPlay * anim;
+		int weapon_sound;
+
 		btPairCachingGhostObject* ghost;
 		btKinematicCharacterController* character;
+
+		Object* lift_obj;
+		Object* turret_obj;
 
 		UnitWeapon* weapon;
 		bool firing;
 		vector<UnitWeapon*> avail_weapons;
 		unsigned int curr_weapon_id;
-		
-		UnitType* uc;
-		
-		unsigned int animation_start;
-		
-		AnimPlay * anim;
-		
-		unsigned int remove_at;
-		
-		float old_x;
-		float old_y;
-		
-		Object* lift_obj;
-		Object* turret_obj;
-		
+
 		unsigned int melee_time;
 		unsigned int melee_cooldown;
-		
-		Uint8 modifiers;
-		UnitTypeSettings *uts;
-		
+
 		list<UnitPickup> pickups;
-		
-		int weapon_sound;
-		
-		
+
 	public:
 		Unit(UnitType *uc, GameState *st, float x, float y, float z);
 		virtual ~Unit();
@@ -129,14 +113,10 @@ class Unit : public Entity
 		float getHealthPercent();
 		virtual int takeDamage(int damage);
 		
-		UnitTypeSettings * getSettings();
-		Uint8 getModifiers();
-		void setModifiers(Uint8 modifiers);
-		void addModifier(int modifier);
-		void remModifier(int modifier);
-		
 		void applyPickupAdjust(PickupTypeAdjust* adj);
 		void rollbackPickupAdjust(PickupTypeAdjust* adj);
+		
+		UnitType* getUnitType() { return this->uc; }
 		
 	protected:
 		void setState(int new_type);

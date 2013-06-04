@@ -12,20 +12,6 @@
 using namespace std;
 
 
-/**
-* Config file opts
-**/
-// Settings section
-static cfg_opt_t unitsettings_opts[] =
-{
-	CFG_FLOAT((char*) "max_speed", 0.0f, CFGF_NONE),
-	CFG_FLOAT((char*) "accel", 0.0f, CFGF_NONE),
-	CFG_INT((char*) "turn", 0, CFGF_NONE),
-	CFG_INT((char*) "melee_damage", 1000, CFGF_NONE),
-	CFG_INT((char*) "melee_delay", 100, CFGF_NONE),
-	CFG_INT((char*) "melee_cooldown", 100, CFGF_NONE),
-	CFG_END()
-};
 
 // Animation section
 static cfg_opt_t unitanim_opts[] =
@@ -53,7 +39,13 @@ cfg_opt_t unittype_opts[] =
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_STR((char*) "model", 0, CFGF_NONE),
 	
-	CFG_SEC((char*) "settings", unitsettings_opts, CFGF_MULTI),
+	CFG_FLOAT((char*) "max_speed", 0.0f, CFGF_NONE),
+	CFG_FLOAT((char*) "accel", 0.0f, CFGF_NONE),
+	CFG_INT((char*) "turn", 0, CFGF_NONE),
+	CFG_INT((char*) "melee_damage", 1000, CFGF_NONE),
+	CFG_INT((char*) "melee_delay", 100, CFGF_NONE),
+	CFG_INT((char*) "melee_cooldown", 100, CFGF_NONE),
+	
 	CFG_SEC((char*) "animation", unitanim_opts, CFGF_MULTI),
 	CFG_SEC((char*) "sound", unitsound_opts, CFGF_MULTI),
 	CFG_STR_LIST((char*) "spawn_weapons", 0, CFGF_NONE),
@@ -71,7 +63,7 @@ cfg_opt_t unittype_opts[] =
 UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 {
 	UnitType* uc;
-	cfg_t *cfg_settings, *cfg_sound, *cfg_anim;
+	cfg_t *cfg_sound, *cfg_anim;
 	int j;
 	
 	
@@ -88,33 +80,16 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	
 	
 	/// Settings ///
-	int num_settings = cfg_size(cfg_item, "settings");
-	if (num_settings - 1 != UNIT_NUM_MODIFIERS) return NULL;
-	
-	// Load initial config
-	cfg_settings = cfg_getnsec(cfg_item, "settings", 0);
-	uc->initial.max_speed = cfg_getfloat(cfg_settings, "max_speed");
-	uc->initial.accel = cfg_getfloat(cfg_settings, "accel");
-	uc->initial.turn = cfg_getint(cfg_settings, "turn");
-	uc->initial.melee_damage = cfg_getint(cfg_settings, "melee_damage");
-	uc->initial.melee_delay = cfg_getint(cfg_settings, "melee_delay");
-	uc->initial.melee_cooldown = cfg_getint(cfg_settings, "melee_cooldown");
+	uc->max_speed = cfg_getfloat(cfg_item, "max_speed");
+	uc->accel = cfg_getfloat(cfg_item, "accel");
+	uc->turn = cfg_getint(cfg_item, "turn");
+	uc->melee_damage = cfg_getint(cfg_item, "melee_damage");
+	uc->melee_delay = cfg_getint(cfg_item, "melee_delay");
+	uc->melee_cooldown = cfg_getint(cfg_item, "melee_cooldown");
 
-	if (uc->initial.max_speed == 0) return NULL;
-	if (uc->initial.accel == 0) return NULL;
-	if (uc->initial.turn == 0) return NULL;
-	
-	// load modifiers
-	for (j = 1; j < num_settings; j++) {
-		cfg_settings = cfg_getnsec(cfg_item, "settings", j);
-		
-		uc->modifiers[j - 1].max_speed = cfg_getfloat(cfg_settings, "max_speed");
-		uc->modifiers[j - 1].accel = cfg_getfloat(cfg_settings, "accel");
-		uc->modifiers[j - 1].turn = cfg_getint(cfg_settings, "turn");
-		uc->modifiers[j - 1].melee_damage = cfg_getint(cfg_settings, "melee_damage");
-		uc->modifiers[j - 1].melee_delay = cfg_getint(cfg_settings, "melee_delay");
-		uc->modifiers[j - 1].melee_cooldown = cfg_getint(cfg_settings, "melee_cooldown");
-	}
+	if (uc->max_speed == 0) return NULL;
+	if (uc->accel == 0) return NULL;
+	if (uc->turn == 0) return NULL;
 	
 
 	/// Animations ///
@@ -168,39 +143,6 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 
 
 	return uc;
-}
-
-
-
-/**
-* Returns the settings to use for any given set of modifier flags.
-* The returned object should be freed by the caller.
-**/
-UnitTypeSettings* UnitType::getSettings(Uint8 modifier_flags)
-{
-	UnitTypeSettings *ret;
-	
-	ret = new UnitTypeSettings();
-	
-	ret->max_speed = this->initial.max_speed;
-	ret->accel = this->initial.accel;
-	ret->turn = this->initial.turn;
-	ret->melee_cooldown = this->initial.melee_cooldown;
-	ret->melee_damage = this->initial.melee_damage;
-	ret->melee_delay = this->initial.melee_delay;
-
-	for (int i = 0; i < UNIT_NUM_MODIFIERS; i++) {
-		if ((modifier_flags & (1 << i)) != 0) {
-			ret->max_speed += this->modifiers[i - 1].max_speed;
-			ret->accel += this->modifiers[i - 1].accel;
-			ret->turn += this->modifiers[i - 1].turn;
-			ret->melee_cooldown += this->modifiers[i - 1].melee_cooldown;
-			ret->melee_damage += this->modifiers[i - 1].melee_damage;
-			ret->melee_delay += this->modifiers[i - 1].melee_delay;
-		}
-	}
-	
-	return ret;
 }
 
 

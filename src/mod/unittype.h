@@ -11,11 +11,6 @@
 using namespace std;
 
 
-#define UNIT_NUM_MODIFIERS 3
-#define UNIT_MOD_CLOAK (1 << 0)
-#define UNIT_MOD_SHIELD (1 << 1)
-#define UNIT_MOD_SPEED (1 << 2)
-
 #define UNIT_ANIM_STATIC 1
 #define UNIT_ANIM_WALK 2
 #define UNIT_ANIM_DEATH 3
@@ -30,20 +25,8 @@ using namespace std;
 #define UNIT_SOUND_FAIL 7
 
 
-class UnitTypeSettings;
 class UnitType;
 
-
-class UnitTypeSettings
-{
-	public:
-		float max_speed;      // meters/second
-		float accel;          // meters/second/second
-		int turn;             // degrees/second
-		int melee_damage;     // hit points
-		int melee_delay;      // milliseconds
-		int melee_cooldown;   // milliseconds
-};
 
 class UnitTypeAnimation
 {
@@ -76,9 +59,14 @@ class UnitType
 		vector<WeaponType*> spawn_weapons;
 		int playable;
 
+		float max_speed;      // meters/second
+		float accel;          // meters/second/second
+		int turn;             // degrees/second
+		int melee_damage;     // hit points
+		int melee_delay;      // milliseconds
+		int melee_cooldown;   // milliseconds
+
 	private:
-		UnitTypeSettings initial;
-		UnitTypeSettings modifiers[UNIT_NUM_MODIFIERS];
 		vector<UnitTypeSound*> sounds;
 		vector<UnitTypeAnimation*> animations;
 		unsigned int max_frames;
@@ -89,7 +77,6 @@ class UnitType
 		~UnitType();
 		
 	public:
-		UnitTypeSettings* getSettings(Uint8 modifier_flags);
 		Sound* getSound(int type);
 		UnitTypeAnimation* getAnimation(int type);
 		

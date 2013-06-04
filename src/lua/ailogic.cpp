@@ -124,7 +124,7 @@ void AILogic::update(int delta)
 
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		btTransform xform = u->ghost->getWorldTransform();
-		btScalar walkSpeed = u->getSettings()->max_speed * 1.0f/60.0f;		// Physics runs at 60hz
+		btScalar walkSpeed = u->uc->max_speed * 1.0f/60.0f;		// Physics runs at 60hz
 
 		// Rotation update
 		btVector3 fwd = btVector3(0.0, 0.0, 1.0);
@@ -139,34 +139,6 @@ void AILogic::update(int delta)
 
 		this->dir_flag = false;
 	}
-	// OLD
-	/*
-	this->dir.setY(0.0f);
-	
-	// Get transform
-	btTransform xform = this->u->getTransform();
-	
-	this->u->putOnGround(&xform);
-
-	// Rotation update
-	btVector3 fwd = btVector3(0.0, 0.0, 1.0);
-	btVector3 axis = fwd.cross(this->dir);
-	axis.normalize();
-	float angle = acos(this->dir.dot(fwd));
-	xform.setRotation(btQuaternion(axis, angle).normalize());
-	
-	// Position update
-	btVector3 linearVelocity = this->u->body->getLinearVelocity();
-	btScalar currspeed = linearVelocity.length();
-	if (currspeed < this->speed) {
-		btVector3 move = this->dir * (currspeed + btScalar(this->u->getSettings()->accel));
-		this->u->body->setLinearVelocity(move);
-	}
-	
-	// Set transform
-	this->u->body->getMotionState()->setWorldTransform(xform);
-	this->u->body->setCenterOfMassTransform(xform);
-	*/
 }
 
 
@@ -368,9 +340,9 @@ LUA_FUNC(move)
 
 	float speed = lua_tonumber(L, 2);
 	if (speed != 0.0f) {
-		gl->speed = MAX(speed, gl->u->getSettings()->max_speed);
+		gl->speed = MAX(speed, gl->u->getUnitType()->max_speed);
 	} else {
-		gl->speed = gl->u->getSettings()->max_speed;
+		gl->speed = gl->u->getUnitType()->max_speed;
 	}
 	
 	return 0;
