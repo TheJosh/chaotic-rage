@@ -40,8 +40,6 @@ cfg_opt_t unittype_opts[] =
 	CFG_STR((char*) "model", 0, CFGF_NONE),
 	
 	CFG_FLOAT((char*) "max_speed", 0.0f, CFGF_NONE),
-	CFG_FLOAT((char*) "accel", 0.0f, CFGF_NONE),
-	CFG_INT((char*) "turn", 0, CFGF_NONE),
 	CFG_INT((char*) "melee_damage", 1000, CFGF_NONE),
 	CFG_INT((char*) "melee_delay", 100, CFGF_NONE),
 	CFG_INT((char*) "melee_cooldown", 100, CFGF_NONE),
@@ -81,15 +79,9 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	
 	/// Settings ///
 	uc->max_speed = cfg_getfloat(cfg_item, "max_speed");
-	uc->accel = cfg_getfloat(cfg_item, "accel");
-	uc->turn = cfg_getint(cfg_item, "turn");
 	uc->melee_damage = cfg_getint(cfg_item, "melee_damage");
 	uc->melee_delay = cfg_getint(cfg_item, "melee_delay");
 	uc->melee_cooldown = cfg_getint(cfg_item, "melee_cooldown");
-
-	if (uc->max_speed == 0) return NULL;
-	if (uc->accel == 0) return NULL;
-	if (uc->turn == 0) return NULL;
 	
 
 	/// Animations ///

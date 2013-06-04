@@ -60,8 +60,6 @@ class UnitType
 		int playable;
 
 		float max_speed;      // meters/second
-		float accel;          // meters/second/second
-		int turn;             // degrees/second
 		int melee_damage;     // hit points
 		int melee_delay;      // milliseconds
 		int melee_cooldown;   // milliseconds
