@@ -371,6 +371,19 @@ void Unit::remModifier(int modifier)
 }
 
 
+/**
+* Removes any pickups which are due to finish,
+* and runs their finished() method.
+**/
+bool remove_finished_pickup(const UnitPickup& up)
+{
+	if (up.end_time > up.u->getGameState()->game_time) return false;
+	
+	up.pt->finished(up.u);
+	
+	return true;
+}
+
 
 /**
 * Moves units around
@@ -494,6 +507,12 @@ void Unit::update(int delta)
 			if (other->getBroadphaseHandle()->m_collisionFilterGroup == CG_PICKUP) {
 				Pickup* p = (Pickup*) other->getUserPointer();
 
+				UnitPickup up;
+				up.pt = p->getPickupType();
+				up.u = this;
+				up.end_time = st->game_time + up.pt->getDelay();
+				pickups.push_back(up);
+
 				p->doUse(this);
 			}
          }
@@ -504,6 +523,10 @@ void Unit::update(int delta)
 	if (health < (this->uc->begin_health / 2)) {
 		create_particles_blood_spray(this->st, new btVector3(xform.getOrigin()), 1);
 	}
+	
+	
+	// Remove (and rollback) old pickups
+	pickups.remove_if(remove_finished_pickup);
 }
 
 

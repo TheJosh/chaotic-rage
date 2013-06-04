@@ -27,7 +27,13 @@ class Pickup : public Entity
 		* Called by the unit when it interacts with a pickup
 		**/
 		void doUse(Unit *u);
-
+		
+		/**
+		* Get the pickup type
+		**/
+		PickupType* getPickupType() { return this->pt; }
+		
+		
 	public:
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();

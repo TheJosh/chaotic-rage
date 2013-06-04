@@ -26,6 +26,14 @@ class UnitWeapon {
 		bool reloading;
 };
 
+class UnitPickup {
+	public:
+		Unit* u;
+		PickupType* pt;
+		unsigned int end_time;
+};
+
+
 class Unit : public Entity
 {
 	friend class NetClient;
@@ -77,7 +85,9 @@ class Unit : public Entity
 		
 		Uint8 modifiers;
 		UnitTypeSettings *uts;
-
+		
+		list<UnitPickup> pickups;
+		
 		int weapon_sound;
 		
 		

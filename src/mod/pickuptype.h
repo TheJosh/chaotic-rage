@@ -73,3 +73,4 @@ extern cfg_opt_t pickuptype_opts [];
 
 // Item loading function handler
 PickupType* loadItemPickupType(cfg_t* cfg_item, Mod* mod);
+
