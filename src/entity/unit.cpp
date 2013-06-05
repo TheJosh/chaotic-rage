@@ -626,6 +626,11 @@ void Unit::applyPickupAdjust(PickupTypeAdjust* adj)
 {
 	this->health *= adj->health;
 	this->takeDamage(0);		// check the player isn't dead.
+	
+	this->params.max_speed *= adj->max_speed;
+	this->params.melee_damage *= adj->melee_damage;
+	this->params.melee_delay *= adj->melee_delay;
+	this->params.melee_cooldown *= adj->melee_cooldown;
 }
 
 
@@ -635,5 +640,11 @@ void Unit::applyPickupAdjust(PickupTypeAdjust* adj)
 void Unit::rollbackPickupAdjust(PickupTypeAdjust* adj)
 {
 	this->health /= adj->health;
+	this->takeDamage(0);		// check the player isn't dead.
+	
+	this->params.max_speed /= adj->max_speed;
+	this->params.melee_damage /= adj->melee_damage;
+	this->params.melee_delay /= adj->melee_delay;
+	this->params.melee_cooldown /= adj->melee_cooldown;
 }
 

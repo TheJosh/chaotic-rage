@@ -23,6 +23,10 @@ class PickupTypeAdjust
 {
 	public:
 		float health;
+		float max_speed;
+		float melee_damage;
+		float melee_delay;
+		float melee_cooldown;
 };
 
 
