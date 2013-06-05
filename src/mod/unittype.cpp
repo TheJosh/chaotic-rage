@@ -41,12 +41,15 @@ cfg_opt_t unittype_opts[] =
 	
 	CFG_FLOAT((char*) "max_speed", 0.0f, CFGF_NONE),
 	CFG_INT((char*) "melee_damage", 1000, CFGF_NONE),
-	CFG_INT((char*) "melee_delay", 100, CFGF_NONE),
-	CFG_INT((char*) "melee_cooldown", 100, CFGF_NONE),
+	CFG_INT((char*) "melee_delay", 500, CFGF_NONE),
+	CFG_INT((char*) "melee_cooldown", 1000, CFGF_NONE),
+	CFG_INT((char*) "special_delay", 500, CFGF_NONE),
+	CFG_INT((char*) "special_cooldown", 1000, CFGF_NONE),
 	
 	CFG_SEC((char*) "animation", unitanim_opts, CFGF_MULTI),
 	CFG_SEC((char*) "sound", unitsound_opts, CFGF_MULTI),
 	CFG_STR_LIST((char*) "spawn_weapons", 0, CFGF_NONE),
+	CFG_STR((char*) "special_weapon", 0, CFGF_NONE),
 
 	CFG_INT((char*) "playable", 1, CFGF_NONE),
 	CFG_INT((char*) "health", 0, CFGF_NONE),
@@ -63,31 +66,30 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	UnitType* uc;
 	cfg_t *cfg_sound, *cfg_anim;
 	int j;
-	
-	
+
+	// Basics
 	uc = new UnitType();
 	uc->mod = mod;
 	uc->name = cfg_getstr(cfg_item, "name");
 	uc->begin_health = cfg_getint(cfg_item, "health");
 	uc->playable = cfg_getint(cfg_item, "playable");
-	
+
+	// 3D model
 	char * tmp = cfg_getstr(cfg_item, "model");
 	if (tmp == NULL) return NULL;
 	uc->model = mod->getAssimpModel(tmp);
 	if (uc->model == NULL) return NULL;
-	
-	
-	/// Settings ///
+
+	// Params
 	uc->params.max_speed = cfg_getfloat(cfg_item, "max_speed");
 	uc->params.melee_damage = cfg_getint(cfg_item, "melee_damage");
 	uc->params.melee_delay = cfg_getint(cfg_item, "melee_delay");
 	uc->params.melee_cooldown = cfg_getint(cfg_item, "melee_cooldown");
-	
+	uc->params.special_delay = cfg_getint(cfg_item, "special_delay");
+	uc->params.special_cooldown = cfg_getint(cfg_item, "special_cooldown");
 
-	/// Animations ///
+	// Animations
 	int num_animations = cfg_size(cfg_item, "animation");
-	
-	// load sounds
 	for (j = 0; j < num_animations; j++) {
 		cfg_anim = cfg_getnsec(cfg_item, "animation", j);
 		
@@ -102,11 +104,8 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 		uc->animations.push_back(uta);
 	}
 
-
-	/// Sounds ///
+	// Sounds
 	int num_sounds = cfg_size(cfg_item, "sound");
-	
-	// load sounds
 	for (j = 0; j < num_sounds; j++) {
 		cfg_sound = cfg_getnsec(cfg_item, "sound", j);
 		
@@ -121,10 +120,8 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 		uc->sounds.push_back(uts);
 	}
 
-
-	/// Spawn Weapons ///
+	// Spawn weapons
 	int num_weapons = cfg_size(cfg_item, "spawn_weapons");
-
 	for (j = 0; j < num_weapons; j++) {
 		WeaponType * wt = mod->getWeaponType(cfg_getnstr(cfg_item, "spawn_weapons", j));
 		
@@ -133,6 +130,11 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 		}
 	}
 
+	// Special weapon
+	tmp = cfg_getstr(cfg_item, "special_weapon");
+	if (tmp != NULL) {
+		uc->special_weapon = mod->getWeaponType(tmp);
+	}
 
 	return uc;
 }
@@ -202,8 +204,7 @@ UnitTypeAnimation* UnitType::getAnimation(int type)
 
 UnitType::UnitType()
 {
-	this->width = 20;
-	this->height = 20;
+	this->special_weapon = NULL;
 }
 
 UnitType::~UnitType()

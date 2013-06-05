@@ -49,10 +49,12 @@ class UnitTypeSound
 class UnitParams
 {
 	public:
-		float max_speed;      // meters/second
-		int melee_damage;     // hit points
-		int melee_delay;      // milliseconds
-		int melee_cooldown;   // milliseconds
+		float max_speed;        // meters/second
+		int melee_damage;       // hit points
+		int melee_delay;        // milliseconds
+		int melee_cooldown;     // milliseconds
+		int special_delay;      // milliseconds
+		int special_cooldown;   // milliseconds
 };
 
 class UnitType
@@ -63,9 +65,9 @@ class UnitType
 		string name;
 		AssimpModel * model;
 		int id;
-		int width, height;
 		int begin_health;
 		vector<WeaponType*> spawn_weapons;
+		WeaponType* special_weapon;
 		int playable;
 		UnitParams params;
 

@@ -29,6 +29,9 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	this->melee_time = 0;
 	this->melee_cooldown = 0;
 	this->weapon_sound = -1;
+	this->special_firing = false;
+	this->special_time = 0;
+	this->special_cooldown = 0;
 	
 	this->lift_obj = NULL;
 	this->drive = NULL;
@@ -147,6 +150,9 @@ bool Unit::onground()
 }
 
 
+/**
+* Do a melee attack
+**/
 void Unit::meleeAttack()
 {
 	if (this->melee_time != 0) return;
@@ -165,10 +171,33 @@ void Unit::meleeAttack()
 	}
 }
 
+
+/**
+* Begin a special attack, if there isn't one alreayd running or cooling down
+* We also set the end time for the attack (->special_time)
+**/
 void Unit::specialAttack()
 {
-	// TODO: Code this one
-	this->st->addHUDMessage(this->slot, "TODO: special attack");
+	if (this->uc->special_weapon == NULL) return;
+	if (this->special_time != 0) return;
+	if (this->special_cooldown > st->game_time) return;
+	
+	this->special_firing = true;
+	this->special_time = st->game_time + this->params.special_delay;
+}
+
+
+/**
+* End a special attack and determine how long we have to wait (->special_cooldown)
+**/
+void Unit::endSpecialAttack()
+{
+	if (this->uc->special_weapon == NULL) return;
+	if (this->special_cooldown > st->game_time) return;
+	
+	this->special_time = 0;
+	this->special_cooldown = st->game_time + this->params.special_cooldown;
+	this->special_firing = false;
 }
 
 
@@ -397,6 +426,18 @@ void Unit::update(int delta)
 		btVector3 pos = xform.getOrigin() + xform.getBasis() * btVector3(0.0f, 0.0f, 1.0f);
 		btTransform lift(xform.getBasis(), pos);
 		this->lift_obj->setTransform(lift);
+	}
+	
+	// Do the special attack
+	// If it's single-shot or run for too long, we stop it
+	if (special_firing) {
+		w = this->uc->special_weapon;
+		
+		w->doFire(this, xform);
+		
+		if (!w->continuous || st->game_time > this->special_time) {
+			this->endSpecialAttack();
+		}
 	}
 	
 	// Iterate through the physics pairs to see if there are any Pickups to pick up.

@@ -100,6 +100,8 @@ void Player::handleKeyChange()
 
 	if (this->key[KEY_SPECIAL] && !this->lkey[KEY_SPECIAL]) {
 		this->specialAttack();
+	} else if (!this->key[KEY_SPECIAL] && this->lkey[KEY_SPECIAL]) {
+		this->endSpecialAttack();
 	}
 
 	for (int i = 0; i < 16; i++) this->lkey[i] = this->key[i];

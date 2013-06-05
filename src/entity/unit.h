@@ -76,6 +76,10 @@ class Unit : public Entity
 		unsigned int melee_time;
 		unsigned int melee_cooldown;
 
+		bool special_firing;
+		unsigned int special_time;
+		unsigned int special_cooldown;
+
 		list<UnitPickup> pickups;
 
 	public:
@@ -97,6 +101,7 @@ class Unit : public Entity
 		void endFiring();
 		void meleeAttack();
 		void specialAttack();
+		void endSpecialAttack();
 
 		bool pickupWeapon(WeaponType* wt);
 		bool pickupAmmo(WeaponType* wt);
