@@ -5,9 +5,6 @@
 #include <iostream>
 #include <algorithm>
 #include <SDL.h>
-#include "../rage.h"
-#include "luatimer.h"
-#include "lua_libs.h"
 
 extern "C" {
 	#include <lua.h>
@@ -15,8 +12,15 @@ extern "C" {
 	#include <lualib.h>
 }
 
+#include "../rage.h"
+#include "../mod/unittype.h"
+#include "luatimer.h"
+#include "lua_libs.h"
+
 
 using namespace std;
+
+class UnitParams;
 
 
 /**
@@ -124,7 +128,7 @@ void AILogic::update(int delta)
 
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		btTransform xform = u->ghost->getWorldTransform();
-		btScalar walkSpeed = u->uc->max_speed * 1.0f/60.0f;		// Physics runs at 60hz
+		btScalar walkSpeed = u->params.max_speed * 1.0f/60.0f;		// Physics runs at 60hz
 
 		// Rotation update
 		btVector3 fwd = btVector3(0.0, 0.0, 1.0);
@@ -340,9 +344,9 @@ LUA_FUNC(move)
 
 	float speed = lua_tonumber(L, 2);
 	if (speed != 0.0f) {
-		gl->speed = MAX(speed, gl->u->getUnitType()->max_speed);
+		gl->speed = MAX(speed, gl->u->getParams()->max_speed);
 	} else {
-		gl->speed = gl->u->getUnitType()->max_speed;
+		gl->speed = gl->u->getParams()->max_speed;
 	}
 	
 	return 0;

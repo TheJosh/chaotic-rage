@@ -10,6 +10,7 @@
 #include <BulletDynamics/Character/btKinematicCharacterController.h>
 #include "../rage.h"
 #include "../mod/pickuptype.h"
+#include "../mod/unittype.h"
 
 using namespace std;
 
@@ -17,25 +18,23 @@ using namespace std;
 Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 {
 	this->uc = uc;
-	this->health = uc->begin_health;
+	this->params = uc->params;
 	this->slot = 0;
+	
+	this->health = uc->begin_health;
+	this->remove_at = 0;
 	
 	this->weapon = NULL;
 	this->firing = false;
-	
-	this->anim = new AnimPlay(this->uc->model);
-
-	this->remove_at = 0;
+	this->melee_time = 0;
+	this->melee_cooldown = 0;
+	this->weapon_sound = -1;
 	
 	this->lift_obj = NULL;
 	this->drive = NULL;
 	this->turret_obj = NULL;
 	
-	this->melee_time = 0;
-	this->melee_cooldown = 0;
-	
-	this->weapon_sound = -1;
-
+	this->anim = new AnimPlay(this->uc->model);
 	
 	// Set animation
 	UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_STATIC);
@@ -43,7 +42,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 		this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
 	}
 	
-
+	// Create physics objects
 	btTransform xform = btTransform(
 		btQuaternion(btVector3(0,0,1),0),
 		st->physics->spawnLocation(x, y, 0.9f)
@@ -62,7 +61,6 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 
 	st->physics->addCollisionObject(this->ghost, CG_UNIT);
 	st->physics->addAction(character);
-
 
 	this->body = NULL;
 }
@@ -154,8 +152,8 @@ void Unit::meleeAttack()
 	if (this->melee_time != 0) return;
 	if (this->melee_cooldown != 0) return;
 	
-	this->melee_time = st->game_time + this->uc->melee_delay;
-	this->melee_cooldown = this->melee_time + this->uc->melee_cooldown;
+	this->melee_time = st->game_time + this->params.melee_delay;
+	this->melee_cooldown = this->melee_time + this->params.melee_cooldown;
 	
 	Entity *e = this->infront(5.0f);	// TODO: unit settings (melee range)
 	if (e == NULL) return;
@@ -163,7 +161,7 @@ void Unit::meleeAttack()
 	DEBUG("weap", "Ray hit %p", e);
 	
 	if (e->klass() == UNIT) {
-		((Unit*)e)->takeDamage(this->uc->melee_damage);
+		((Unit*)e)->takeDamage(this->params.melee_damage);
 	}
 }
 

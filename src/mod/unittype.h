@@ -46,6 +46,15 @@ class UnitTypeSound
 		int type;
 };
 
+class UnitParams
+{
+	public:
+		float max_speed;      // meters/second
+		int melee_damage;     // hit points
+		int melee_delay;      // milliseconds
+		int melee_cooldown;   // milliseconds
+};
+
 class UnitType
 {
 	friend UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod);
@@ -58,11 +67,7 @@ class UnitType
 		int begin_health;
 		vector<WeaponType*> spawn_weapons;
 		int playable;
-
-		float max_speed;      // meters/second
-		int melee_damage;     // hit points
-		int melee_delay;      // milliseconds
-		int melee_cooldown;   // milliseconds
+		UnitParams params;
 
 	private:
 		vector<UnitTypeSound*> sounds;

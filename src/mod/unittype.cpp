@@ -78,10 +78,10 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	
 	
 	/// Settings ///
-	uc->max_speed = cfg_getfloat(cfg_item, "max_speed");
-	uc->melee_damage = cfg_getint(cfg_item, "melee_damage");
-	uc->melee_delay = cfg_getint(cfg_item, "melee_delay");
-	uc->melee_cooldown = cfg_getint(cfg_item, "melee_cooldown");
+	uc->params.max_speed = cfg_getfloat(cfg_item, "max_speed");
+	uc->params.melee_damage = cfg_getint(cfg_item, "melee_damage");
+	uc->params.melee_delay = cfg_getint(cfg_item, "melee_delay");
+	uc->params.melee_cooldown = cfg_getint(cfg_item, "melee_cooldown");
 	
 
 	/// Animations ///

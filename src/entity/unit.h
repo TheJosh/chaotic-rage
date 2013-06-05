@@ -9,11 +9,13 @@
 #include <BulletDynamics/Character/btKinematicCharacterController.h>
 #include "../rage.h"
 #include "../mod/pickuptype.h"
+#include "../mod/unittype.h"
 
 using namespace std;
 
 
 class PickupTypeAdjust;
+class UnitParams;
 
 
 class UnitWeapon {
@@ -52,6 +54,7 @@ class Unit : public Entity
 
 	protected:
 		UnitType* uc;
+		UnitParams params;
 
 		int health;
 		unsigned int remove_at;
@@ -117,6 +120,7 @@ class Unit : public Entity
 		void rollbackPickupAdjust(PickupTypeAdjust* adj);
 		
 		UnitType* getUnitType() { return this->uc; }
+		UnitParams* getParams() { return &this->params; }
 		
 	protected:
 		void setState(int new_type);

@@ -12,7 +12,9 @@ using namespace std;
 
 Player::Player(UnitType *uc, GameState *st, float x, float y, float z) : Unit(uc, st, x, y, z)
 {
-	for (int i = 0; i < 16; i++) this->key[i] = 0;
+	for (int i = 0; i < 16; i++) {
+		this->key[i] = 0;
+	}
 	this->mouse_angle = 0.0f;
 	this->vertical_angle = 0.0f;
 
@@ -174,7 +176,7 @@ void Player::update(int delta)
 		// Walking around
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		btTransform xform = ghost->getWorldTransform();
-		btScalar walkSpeed = this->uc->max_speed * 1.0f/60.0f;		// Physics runs at 60hz
+		btScalar walkSpeed = this->params.max_speed * 1.0f/60.0f;		// Physics runs at 60hz
 
 		// Mouse rotation
 		btQuaternion rot = btQuaternion(btVector3(0.0f, 1.0f, 0.0f), DEG_TO_RAD(this->mouse_angle));
