@@ -20,6 +20,7 @@ using namespace std;
 #define WEAPON_TYPE_REMOTE_MINE 6
 #define WEAPON_TYPE_REMOTE_TRIG 7
 #define WEAPON_TYPE_ROCKET 8
+#define WEAPON_TYPE_ATTRACTOR 9
 
 
 /**
@@ -176,4 +177,29 @@ struct WeaponRocketData {
 	int delay;
 	btGhostObject* ghost;
 };
+
+
+/**
+* Sucks stuff into it's vortex - or pushes stuff out!
+**/
+class WeaponAttractor : public WeaponType
+{
+	public:
+		WeaponAttractor() : model(NULL) {};
+
+	public:
+		float range;
+		float time;
+		AssimpModel* model;
+
+	public:
+		virtual void doFire(Unit *unit, btTransform &origin);
+		virtual void entityUpdate(AmmoRound *e, int delta);
+};
+
+struct WeaponAttractorData {
+	unsigned int destroy_time;
+	btGhostObject* ghost;
+};
+
 

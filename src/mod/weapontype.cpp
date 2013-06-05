@@ -136,7 +136,16 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		// TODO: blast radius vs detection radius?
 		w->range = cfg_getfloat(cfg_item, "range");
 		w->damage = cfg_getfloat(cfg_item, "unit_damage");		// TODO: merge unit/wall damage
+
+	} else if (type == WEAPON_TYPE_ATTRACTOR) {
+		WeaponAttractor* w = new WeaponAttractor();
+		wt = w;
 		
+		char* tmp = cfg_getstr(cfg_item, "model");
+		if (tmp) w->model = mod->getAssimpModel(tmp);
+		
+		w->range = cfg_getfloat(cfg_item, "range");
+		w->time = cfg_getint(cfg_item, "time");
 		
 	} else {
 		return NULL;
