@@ -408,6 +408,12 @@
     <ClCompile Include="..\..\src\mod\pickuptype.cpp">
       <Filter>src\mod</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\weapons\attractor.cpp">
+      <Filter>src\weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\util\btCRKinematicCharacterController.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">
@@ -682,6 +688,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\mod\pickuptype.h">
       <Filter>src\mod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\btCRKinematicCharacterController.h">
+      <Filter>src\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

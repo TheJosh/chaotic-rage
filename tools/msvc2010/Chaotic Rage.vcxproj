@@ -197,6 +197,7 @@
     <ClCompile Include="..\..\src\render\render_null.cpp" />
     <ClCompile Include="..\..\src\render\render_opengl.cpp" />
     <ClCompile Include="..\..\src\render\render_opengl_compat.cpp" />
+    <ClCompile Include="..\..\src\util\btCRKinematicCharacterController.cpp" />
     <ClCompile Include="..\..\src\util\btStrideHeightfieldTerrainShape.cpp" />
     <ClCompile Include="..\..\src\util\clientconfig.cpp" />
     <ClCompile Include="..\..\src\util\debug.cpp" />
@@ -205,6 +206,7 @@
     <ClCompile Include="..\..\src\util\sdl_util.cpp" />
     <ClCompile Include="..\..\src\util\serverconfig.cpp" />
     <ClCompile Include="..\..\src\util\util.cpp" />
+    <ClCompile Include="..\..\src\weapons\attractor.cpp" />
     <ClCompile Include="..\..\src\weapons\ghost_objects.cpp" />
     <ClCompile Include="..\..\src\weapons\mines.cpp" />
     <ClCompile Include="..\..\src\weapons\rockets.cpp" />
@@ -289,6 +291,7 @@
     <ClInclude Include="..\..\src\render\render_opengl.h" />
     <ClInclude Include="..\..\src\render\render_opengl_compat.h" />
     <ClInclude Include="..\..\src\render\_render.h" />
+    <ClInclude Include="..\..\src\util\btCRKinematicCharacterController.h" />
     <ClInclude Include="..\..\src\util\btStrideHeightfieldTerrainShape.h" />
     <ClInclude Include="..\..\src\util\clientconfig.h" />
     <ClInclude Include="..\..\src\util\cmdline.h" />

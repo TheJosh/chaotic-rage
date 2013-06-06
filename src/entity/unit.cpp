@@ -7,7 +7,7 @@
 #include <math.h>
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
-#include <BulletDynamics/Character/btKinematicCharacterController.h>
+#include "../util/btCRKinematicCharacterController.h"
 #include "../rage.h"
 #include "../mod/pickuptype.h"
 #include "../mod/unittype.h"
@@ -60,7 +60,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	this->ghost->setUserPointer(this);
 
 	btScalar stepHeight = btScalar(0.75);
-	character = new btKinematicCharacterController(this->ghost, capsule, stepHeight);
+	character = new btCRKinematicCharacterController(this->ghost, capsule, stepHeight);
 
 	st->physics->addCollisionObject(this->ghost, CG_UNIT);
 	st->physics->addAction(character);

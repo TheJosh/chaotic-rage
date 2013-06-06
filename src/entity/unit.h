@@ -6,7 +6,7 @@
 #include <iostream>
 #include <SDL.h>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
-#include <BulletDynamics/Character/btKinematicCharacterController.h>
+#include "../util/btCRKinematicCharacterController.h"
 #include "../rage.h"
 #include "../mod/pickuptype.h"
 #include "../mod/unittype.h"
@@ -63,7 +63,7 @@ class Unit : public Entity
 		int weapon_sound;
 
 		btPairCachingGhostObject* ghost;
-		btKinematicCharacterController* character;
+		btCRKinematicCharacterController* character;
 
 		Object* lift_obj;
 		Object* turret_obj;
