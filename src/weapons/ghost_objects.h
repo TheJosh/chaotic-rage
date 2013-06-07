@@ -5,6 +5,7 @@
 #pragma once
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
+#include "../util/quadratic.h"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ btGhostObject* create_ghost(btTransform& xform, float radius);
 /**
 * If there is anything within the ghost radius, apply damage as appropriate
 **/
-void apply_ghost_damage(btGhostObject* ghost, float damage);
+void apply_ghost_damage(btGhostObject* ghost, Quadratic damage, float radius);
 
 
 /**

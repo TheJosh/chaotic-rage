@@ -61,7 +61,7 @@ void WeaponRocket::entityUpdate(AmmoRound *e, int delta)
 	// If there is something within range...
 	if (check_ghost_triggered(data->ghost)) {
 		// ...kaboom
-		apply_ghost_damage(data->ghost, this->damage);
+		apply_ghost_damage(data->ghost, Quadratic(0.0f, 0.0f, this->damage), this->range);
 		
 		create_particles_explosion(st, e->getTransform().getOrigin(), 100);
 

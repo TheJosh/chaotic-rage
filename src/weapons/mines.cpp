@@ -42,7 +42,7 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 	
 	// If there is a ghost, see what we hit
 	if (data->ghost) {
-		apply_ghost_damage(data->ghost, this->damage);
+		apply_ghost_damage(data->ghost, Quadratic(0.0f, this->damage, 0.0f), this->range);
 		
 		// Remove the mine
 		e->getGameState()->physics->delCollisionObject(data->ghost);
@@ -100,7 +100,7 @@ void WeaponProxiMine::entityUpdate(AmmoRound *e, int delta)
 	// If there is something within range...
 	if (check_ghost_triggered(data->ghost)) {
 		// ...kaboom
-		apply_ghost_damage(data->ghost, this->damage);
+		apply_ghost_damage(data->ghost, Quadratic(0.0f, this->damage, 0.0f), this->range);
 		
 		create_particles_explosion(st, e->getTransform().getOrigin(), 100);
 
@@ -138,7 +138,7 @@ void WeaponRemoteMine::entityUpdate(AmmoRound *e, int delta)
 	if (! data->ghost) return;
 
 	// If there is a ghost, we have just boomed, let's see what we hit
-	apply_ghost_damage(data->ghost, this->damage);
+	apply_ghost_damage(data->ghost, Quadratic(0.0f, this->damage, 0.0f), this->range);
 		
 	// Remove the mine
 	e->getGameState()->physics->delCollisionObject(data->ghost);

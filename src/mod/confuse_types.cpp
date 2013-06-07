@@ -7,6 +7,7 @@
 #include <map>
 #include <confuse.h>
 #include "../rage.h"
+#include "../util/quadratic.h"
 
 using namespace std;
 
@@ -27,3 +28,23 @@ glm::vec3 cfg_getvec3(cfg_t* cfg, const char* name)
 		return glm::vec3();
 	}
 }
+
+
+/**
+* Load a Quadratic
+* The expected config type is CFG_FLOAT_LIST
+**/
+Quadratic cfg_getquadratic(cfg_t* cfg, const char* name)
+{
+	if (cfg_size(cfg, name) == 3) {
+		return Quadratic(
+			cfg_getnfloat(cfg, name, 0),
+			cfg_getnfloat(cfg, name, 1),
+			cfg_getnfloat(cfg, name, 2)
+		);
+	} else {
+		return Quadratic();
+	}
+}
+
+
