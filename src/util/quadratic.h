@@ -3,10 +3,6 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <iostream>
-#include <SDL.h>
-#include "../rage.h"
-
 using namespace std;
 
 
@@ -14,7 +10,8 @@ using namespace std;
 * Represents a exponetial + linear + constant quadratic equation
 *   ax^2 + bx + c = 0
 **/
-class Quadratic {
+class Quadratic
+{
 	public:
 		float exp;
 		float lin;
@@ -49,3 +46,4 @@ class Quadratic {
 			return (x * this->exp * this->exp) + (x * this->lin) + this->con;
 		}
 };
+

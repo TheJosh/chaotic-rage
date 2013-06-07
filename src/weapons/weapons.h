@@ -7,6 +7,7 @@
 #include <SDL.h>
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
+#include "../util/quadratic.h"
 #include "../rage.h"
 
 using namespace std;
@@ -191,6 +192,7 @@ class WeaponAttractor : public WeaponType
 		float range;
 		float time;
 		AssimpModel* model;
+		Quadratic force;
 
 	public:
 		virtual void doFire(Unit *unit, btTransform &origin);

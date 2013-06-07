@@ -6,6 +6,7 @@
 #include <iostream>
 #include <SDL.h>
 #include "../rage.h"
+#include "../util/quadratic.h"
 
 using namespace std;
 

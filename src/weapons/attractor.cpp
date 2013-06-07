@@ -10,6 +10,7 @@
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include "../rage.h"
 #include "ghost_objects.h"
+#include "../util/quadratic.h"
 
 using namespace std;
 
@@ -48,9 +49,33 @@ void WeaponAttractor::entityUpdate(AmmoRound *e, int delta)
 		return;
 	}
 
-	// If there is something within range...
-	if (check_ghost_triggered(data->ghost)) {
-		cout << "In the attractor!\n";
+	// Apply a force to anything within range
+	{
+		float dist, force;
+		const btAlignedObjectArray <btCollisionObject*>* pObjsInsideGhostObject;
+		
+		pObjsInsideGhostObject = &data->ghost->getOverlappingPairs();
+		
+		// Iterate stuff and apply a force
+		for (int i = 0; i < pObjsInsideGhostObject->size(); ++i) {
+			btCollisionObject* co = pObjsInsideGhostObject->at(i);
+			
+			Entity* e = (Entity*) co->getUserPointer();
+			if (e == NULL) continue;
+			if (e->klass() != UNIT) continue;
+			
+			// Determine distance
+			dist = data->ghost->getWorldTransform().getOrigin().distance(co->getWorldTransform().getOrigin());
+			if (dist >= this->range) continue;
+			
+			// We solve the Quadratic based on the distance from the OUTSIDE of the ghost
+			force = this->force.solve(this->range - dist);
+			
+			// TODO: apply a force
+			
+			// The code ight look something like this:
+			//((Unit*)e)->applyForceTowards(data->ghost->getWorldTransform().getOrigin(), force);
+		}
 	}
 }
 

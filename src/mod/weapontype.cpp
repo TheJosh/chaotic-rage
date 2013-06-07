@@ -7,6 +7,7 @@
 #include <confuse.h>
 #include <zzip/zzip.h>
 #include "../rage.h"
+#include "../util/quadratic.h"
 
 using namespace std;
 
@@ -146,6 +147,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		
 		w->range = cfg_getfloat(cfg_item, "range");
 		w->time = cfg_getint(cfg_item, "time");
+		w->force = Quadratic(0.0f, 1.0f, 0.0f);		// TODO configuration
 		
 	} else {
 		return NULL;
