@@ -40,10 +40,18 @@ namespace Maptool
             foreach (Entity ent in entities) {
                 if (ent is ZoneEntity) {
                     o += Tools.Zone.saveConfig(ent) + "\n";
+                } else if (ent is LightEntity) {
+                    o += Tools.Light.saveConfig(ent) + "\n";
+                } else if (ent is ObjectEntity) {
+                    o += Tools.Object.saveConfig(ent) + "\n";
                 }
             }
 
             System.IO.File.WriteAllText(filename, o);
+
+            string basename = System.IO.Path.GetDirectoryName(filename);
+            this.Terrain.Save(basename + "\\terrain.png", System.Drawing.Imaging.ImageFormat.Png);
+            this.Heightmap.Save(basename + "\\heightmap.png", System.Drawing.Imaging.ImageFormat.Png);
 
             return true;
         }
@@ -80,8 +88,20 @@ namespace Maptool
             }
             
             string basename = System.IO.Path.GetDirectoryName(filename);
-            this.Terrain = new Bitmap(basename + "\\terrain.png");
-            this.Heightmap = new Bitmap(basename + "\\heightmap.png");
+
+            // Load terrain
+            if (System.IO.File.Exists(basename + "\\terrain.png")) {
+                this.Terrain = new Bitmap(basename + "\\terrain.png");
+            } else {
+                this.Terrain = new Bitmap(this.Width, this.Height);
+            }
+
+            // Load heightmap
+            if (System.IO.File.Exists(basename + "\\heightmap.png")) {
+                this.Heightmap = new Bitmap(basename + "\\heightmap.png");
+            } else {
+                this.Heightmap = new Bitmap(this.Width, this.Height);
+            }
 
             return true;
         }
