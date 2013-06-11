@@ -51,7 +51,7 @@ void WeaponAttractor::entityUpdate(AmmoRound *e, int delta)
 
 	// Apply a force to anything within range
 	{
-		float dist, force;
+		float dist, forceAmt;
 		const btAlignedObjectArray <btCollisionObject*>* pObjsInsideGhostObject;
 		
 		pObjsInsideGhostObject = &data->ghost->getOverlappingPairs();
@@ -69,12 +69,15 @@ void WeaponAttractor::entityUpdate(AmmoRound *e, int delta)
 			if (dist >= this->range) continue;
 			
 			// We solve the Quadratic based on the distance from the OUTSIDE of the ghost
-			force = this->force.solve(this->range - dist);
+			forceAmt = this->force.solve(this->range - dist) / 1000.f * ((float)delta);
 			
-			// TODO: apply a force
+			// Calculate force vector...
+			btVector3 force = data->ghost->getWorldTransform().getOrigin();
+			force.normalize();
+			force *= MIN(forceAmt, dist);
 			
-			// The code ight look something like this:
-			//((Unit*)e)->applyForceTowards(data->ghost->getWorldTransform().getOrigin(), force);
+			// ...and apply
+			((Unit*)e)->applyForce(force);
 		}
 	}
 }

@@ -36,6 +36,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	this->lift_obj = NULL;
 	this->drive = NULL;
 	this->turret_obj = NULL;
+	this->force = btVector3(0.0f, 0.0f, 0.0f);
 	
 	this->anim = new AnimPlay(this->uc->model);
 	
@@ -688,4 +689,15 @@ void Unit::rollbackPickupAdjust(PickupTypeAdjust* adj)
 	this->params.melee_delay /= adj->melee_delay;
 	this->params.melee_cooldown /= adj->melee_cooldown;
 }
+
+
+/**
+* Force the unit to move in a given direction
+**/
+void Unit::applyForce(btVector3 &force)
+{
+	this->force += force;
+	cout << "applyForce (this = " << this << ", force = " << force.x() << ";" << force.y() << ";" << force.z() << ")" << endl;
+}
+
 

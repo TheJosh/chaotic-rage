@@ -204,6 +204,9 @@ void Player::update(int delta)
 			walking = true;
 		}
 
+		// Apply any force present on the unit
+		walkDirection += this->force;
+
 		this->character->setWalkDirection(walkDirection);
 
 		// If "walking" state changes, update animation.
@@ -215,6 +218,8 @@ void Player::update(int delta)
 		this->walking = walking;
 	}
 	
+	
+	this->force = btVector3(0.0f, 0.0f, 0.0f);
 	
 	Unit::update(delta);
 }

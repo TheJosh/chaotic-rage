@@ -67,6 +67,7 @@ class Unit : public Entity
 
 		Object* lift_obj;
 		Object* turret_obj;
+		btVector3 force;
 
 		UnitWeapon* weapon;
 		bool firing;
@@ -123,6 +124,7 @@ class Unit : public Entity
 		
 		void applyPickupAdjust(PickupTypeAdjust* adj);
 		void rollbackPickupAdjust(PickupTypeAdjust* adj);
+		void applyForce(btVector3 &force);
 		
 		UnitType* getUnitType() { return this->uc; }
 		UnitParams* getParams() { return &this->params; }
