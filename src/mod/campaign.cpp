@@ -16,8 +16,14 @@ using namespace std;
 // Campaign stage
 static cfg_opt_t campaign_stage_opts[] =
 {
+	// Game stage
 	CFG_STR((char*) "map", 0, CFGF_NONE),
 	CFG_STR((char*) "gametype", 0, CFGF_NONE),
+	
+	// image
+	CFG_STR((char*) "image", 0, CFGF_NONE),
+	CFG_INT((char*) "time", 5000, CFGF_NONE),
+	
 	CFG_END()
 };
 
@@ -67,18 +73,44 @@ Campaign* loadItemCampaign(cfg_t* cfg_item, Mod* mod)
 	c->name = cfg_getstr(cfg_item, "name");
 	c->title = cfg_getstr(cfg_item, "title");
 	c->st = mod->st;
-	
-	// Load sounds
-	int num_sounds = cfg_size(cfg_item, "stage");
-	for (j = 0; j < num_sounds; j++) {
+	c->mod = mod;
+
+	// Load stages
+	int num_stages = cfg_size(cfg_item, "stage");
+	for (j = 0; j < num_stages; j++) {
 		cfg_sub = cfg_getnsec(cfg_item, "stage", j);
-		
+
 		CampaignStage *stage = new CampaignStage();
-		stage->map = cfg_getstr(cfg_sub, "map");
-		stage->gametype = cfg_getstr(cfg_sub, "gametype");
+		char* tmp;
+
+		// Game stage
+		tmp = cfg_getstr(cfg_sub, "map");
+		if (tmp != NULL) {
+			stage->map = std::string(tmp);
+			
+			tmp = cfg_getstr(cfg_sub, "gametype");
+			if (tmp == NULL) {
+				cerr << "Invalid campaign stage, no 'gametype' specified." << endl;
+				return NULL;
+			}
+			stage->gametype = std::string(tmp);
+		}
+
+		// Image stage
+		tmp = cfg_getstr(cfg_sub, "image");
+		if (tmp != NULL) {
+			stage->image_filename = std::string(tmp);
+			stage->image_time = cfg_getint(cfg_sub, "time");
+		}
+
+		// Check is valid
+		if (stage->map == "" && stage->image_filename == "") {
+			cerr << "Invalid campaign stage, no 'map' or 'image' specified." << endl;
+			return NULL;
+		}
 
 		c->stages->push_back(stage);
 	}
-	
+
 	return c;
 }

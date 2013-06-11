@@ -475,19 +475,45 @@ void Menu::startCampaign(Campaign* c, string unittype, int viewmode, unsigned in
 	for (vector<CampaignStage*>::iterator it = c->stages->begin(); it != c->stages->end();) {
 		CampaignStage* stage = *it;
 
-		MapReg* m = mapreg->get(stage->map);
-		if (m == NULL) return;
+		if (stage->map != "") {
+			// Game stage
+			MapReg* m = mapreg->get(stage->map);
+			if (m == NULL) return;
 
-		this->startGame(m, stage->gametype, unittype, 0, 1);
+			this->startGame(m, stage->gametype, unittype, 0, 1);
 
-		int result = st->getLastGameResult();
+			// A result of 1 is success, 0 is failure, -1 is an error.
+			int result = st->getLastGameResult();
+			if (result == 1) {
+				it++;
+			} else if (result == -1) {
+				break;			// error
+			}
+			
+		} else if (stage->image_filename != "") {
+			// Display image
+			SpritePtr img = this->render->loadSprite("campaigns/" + stage->image_filename, c->mod);
+			if (img) {
+				((RenderOpenGL*)render)->ortho = glm::ortho<float>(0.0f, render->real_width, render->real_height, 0.0f, 0.0f, 10.0f);
 
-		// A result of 1 is success, 0 is failure.
-		if (result == 1) {
+				float w = render->getSpriteWidth(img), h = render->getSpriteHeight(img);
+				if (w > h) {
+					render->renderSprite(img, 0, 0, render->real_width, render->real_height * w/h);
+				} else if (h > w) {
+					render->renderSprite(img, 0, 0, render->real_width * w/h, render->real_height);
+				} else {
+					render->renderSprite(img, 0, 0, render->real_width, render->real_height * w/h);
+				}
+
+				SDL_GL_SwapBuffers();
+
+				// TODO: Use a loop and regularlly swap + events
+				SDL_Delay(stage->image_time);
+			}
 			it++;
-
-		} else if (result == -1) {
-			break;			// error
+			
+		} else {
+			assert(0);
 		}
 	}
 }

@@ -11,12 +11,20 @@
 using namespace std;
 
 
+// A stage of the campaign
+// TODO: Should this be a union?
 class CampaignStage {
 	public:
+		// Game stage
 		string map;
 		string gametype;
+		
+		// Image stage
+		string image_filename;
+		int image_time;
 };
 
+// A campaign; it's just a list of stages, played in order
 class Campaign
 {
 	public:
@@ -24,6 +32,7 @@ class Campaign
 		string name;
 		string title;
 		GameState * st;
+		Mod* mod;
 		
 		vector<CampaignStage*>* stages;
 		
