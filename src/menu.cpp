@@ -475,8 +475,10 @@ void Menu::startCampaign(Campaign* c, string unittype, int viewmode, unsigned in
 	for (vector<CampaignStage*>::iterator it = c->stages->begin(); it != c->stages->end();) {
 		CampaignStage* stage = *it;
 
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		if (stage->map != "") {
-			// Game stage
+			///-- Game stage --
 			MapReg* m = mapreg->get(stage->map);
 			if (m == NULL) return;
 
@@ -487,28 +489,61 @@ void Menu::startCampaign(Campaign* c, string unittype, int viewmode, unsigned in
 			if (result == 1) {
 				it++;
 			} else if (result == -1) {
-				break;			// error
+				return;			// error
 			}
 			
+
 		} else if (stage->image_filename != "") {
-			// Display image
+			///-- Display image --
+
 			SpritePtr img = this->render->loadSprite("campaigns/" + stage->image_filename, c->mod);
 			if (img) {
+				// We don't want the image to wrap
+				glBindTexture(GL_TEXTURE_2D, img->pixels);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
 				((RenderOpenGL*)render)->ortho = glm::ortho<float>(0.0f, render->real_width, render->real_height, 0.0f, 0.0f, 10.0f);
 
-				float w = render->getSpriteWidth(img), h = render->getSpriteHeight(img);
-				if (w > h) {
-					render->renderSprite(img, 0, 0, render->real_width, render->real_height * w/h);
-				} else if (h > w) {
-					render->renderSprite(img, 0, 0, render->real_width * w/h, render->real_height);
+				// Determine position...
+				float width = render->getSpriteWidth(img), height = render->getSpriteHeight(img);
+				float ratImg = width/height, ratScr = (float)render->real_width/(float)render->real_height;
+
+				// ...using ratios and fit-with-black-bars system
+				if (ratImg > ratScr) {
+					width = render->real_width;
+					height = render->real_height * ratScr/ratImg;
+				} else if (ratImg < ratScr) {
+					width = render->real_width * ratImg/ratScr;
+					height = render->real_height;
 				} else {
-					render->renderSprite(img, 0, 0, render->real_width, render->real_height * w/h);
+					width = render->real_width;
+					height = render->real_height;
 				}
 
-				SDL_GL_SwapBuffers();
+				// Render image
+				render->renderSprite(img, (render->real_width - width) / 2.0f, (render->real_height - height) / 2.0f, width, height);
 
-				// TODO: Use a loop and regularlly swap + events
-				SDL_Delay(stage->image_time);
+				// Wait
+				unsigned int start = SDL_GetTicks();
+				bool running = true;
+				SDL_Event event;
+				while (running) {
+					if ((SDL_GetTicks() - start) > stage->image_time) {
+						running = false;
+					}
+
+					while (SDL_PollEvent(&event)) {
+						if (event.type == SDL_QUIT) {
+							this->render->freeSprite(img);
+							return;			// window close = campaign exit
+						}
+					}
+
+					SDL_GL_SwapBuffers();
+				}
+
+				this->render->freeSprite(img);
 			}
 			it++;
 			

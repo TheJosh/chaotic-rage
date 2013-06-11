@@ -21,7 +21,7 @@ class CampaignStage {
 		
 		// Image stage
 		string image_filename;
-		int image_time;
+		unsigned int image_time;
 };
 
 // A campaign; it's just a list of stages, played in order
