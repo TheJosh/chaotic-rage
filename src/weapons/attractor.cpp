@@ -51,8 +51,11 @@ void WeaponAttractor::entityUpdate(AmmoRound *e, int delta)
 
 	// Apply a force to anything within range
 	{
-		float dist, forceAmt;
+		float forceAmt, dist, sign;
 		const btAlignedObjectArray <btCollisionObject*>* pObjsInsideGhostObject;
+		btVector3 unitToCenter, force;
+		
+		sign = -1.0f;		// TODO: configuration. set to 1.0f for attract, -1.0f for repel
 		
 		pObjsInsideGhostObject = &data->ghost->getOverlappingPairs();
 		
@@ -65,19 +68,27 @@ void WeaponAttractor::entityUpdate(AmmoRound *e, int delta)
 			if (e->klass() != UNIT) continue;
 			
 			// Determine distance
-			dist = data->ghost->getWorldTransform().getOrigin().distance(co->getWorldTransform().getOrigin());
+			unitToCenter = data->ghost->getWorldTransform().getOrigin() - co->getWorldTransform().getOrigin();
+			dist = unitToCenter.length();
 			if (dist >= this->range) continue;
 			
 			// We solve the Quadratic based on the distance from the OUTSIDE of the ghost
 			forceAmt = this->force.solve(this->range - dist) / 1000.f * ((float)delta);
 			
-			// Calculate force vector...
-			btVector3 force = data->ghost->getWorldTransform().getOrigin();
-			force.normalize();
-			force *= MIN(forceAmt, dist);
+			// If the unit is in the center and it's a repel, choose a random direction
+			if (dist < 0.1f and sign < 0.0f) {
+				unitToCenter = btVector3(getRandomf(-1.0f, 1.0f), getRandomf(-1.0f, 1.0f), getRandomf(-1.0f, 1.0f));
+			}
 			
-			// ...and apply
-			((Unit*)e)->applyForce(force);
+			// Calculate force vector
+			force = unitToCenter;
+			force.normalize();
+			force *= MIN(forceAmt, dist) * sign;
+			
+			// Apply force if non-zero
+			if (force.length2() != 0.0f) {
+				((Unit*)e)->applyForce(force);
+			}
 		}
 	}
 }

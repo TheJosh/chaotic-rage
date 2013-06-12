@@ -147,7 +147,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		
 		w->range = cfg_getfloat(cfg_item, "range");
 		w->time = cfg_getint(cfg_item, "time");
-		w->force = Quadratic(0.0f, 1.0f, 0.0f);		// TODO configuration
+		w->force = Quadratic(3.0f, 3.0f, 3.0f);		// TODO configuration
 		
 	} else {
 		return NULL;
