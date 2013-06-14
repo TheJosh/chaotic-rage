@@ -36,9 +36,8 @@ class MapMesh {
 	public:
 		btTransform xform;
 		btRigidBody *body;
-		WavefrontObj *mesh;
-		SpritePtr texture;
-		SpritePtr normals;
+		AssimpModel *model;
+		AnimPlay *play;
 };
 
 class Map {

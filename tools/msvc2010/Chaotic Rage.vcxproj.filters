@@ -118,12 +118,6 @@
     <None Include="..\..\data\cr\shaders\entities.glslv">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\..\data\cr\shaders\map.glslf">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders\map.glslv">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="..\..\data\cr\shaders\dissolve.glslf">
       <Filter>Shaders</Filter>
     </None>
@@ -156,6 +150,18 @@
     </None>
     <None Include="..\..\data\cr\pickuptypes.conf">
       <Filter>Configs</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders\phong.glslf">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders\phong.glslv">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders\phong_bump.glslf">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders\phong_bump.glslv">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

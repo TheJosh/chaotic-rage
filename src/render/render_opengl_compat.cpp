@@ -1016,22 +1016,6 @@ void RenderOpenGLCompat::map()
 	glDrawArrays(GL_TRIANGLES, 0, this->ter_size);
 	
 	glPopMatrix();
-	
-	// Static geometry meshes
-	glFrontFace(GL_CCW);
-	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); it++) {
-		glBindTexture(GL_TEXTURE_2D, (*it)->texture->pixels);
-
-		glPushMatrix();
-
-		btScalar m[16];
-		(*it)->xform.getOpenGLMatrix(m);
-		glMultMatrixf((GLfloat*)m);
-
-		this->renderObj((*it)->mesh);
-
-		glPopMatrix();
-	}
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);

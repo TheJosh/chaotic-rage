@@ -56,13 +56,13 @@ bool AssimpModel::load(Render3D* render)
 	int len;
 	Uint8 * data = this->mod->loadBinary("models/" + this->name, &len);
 	if (! data) {
-		cout << "Failed to load " << this->name << "; file read failed\n";
+		cerr << "Failed to load " << this->name << "; file read failed\n";
 		return false;
 	}
 	
 	this->sc = importer.ReadFileFromMemory((const void*) data, len, flags, this->name.c_str());
 	if (! this->sc) {
-		cout << "Failed to load " << this->name << "; " << importer.GetErrorString() << "\n";
+		cerr << "Failed to load " << this->name << "; " << importer.GetErrorString() << "\n";
 		return false;
 	}
 	

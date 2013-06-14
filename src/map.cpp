@@ -82,11 +82,7 @@ static cfg_opt_t light_opts[] =
 static cfg_opt_t mesh_opts[] =
 {
 	CFG_FLOAT_LIST((char*) "pos", 0, CFGF_NONE),
-
-	CFG_STR((char*) "mesh", ((char*)""), CFGF_NONE),
-	CFG_STR((char*) "texture", ((char*)""), CFGF_NONE),
-	CFG_STR((char*) "normals", ((char*)""), CFGF_NONE),
-	
+	CFG_STR((char*) "model", ((char*)""), CFGF_NONE),
 	CFG_END()
 };
 
@@ -276,32 +272,18 @@ int Map::load(string name, Render *render, Mod* insideof)
 		MapMesh * m = new MapMesh();
 		m->xform = btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f), btVector3(cfg_getnfloat(cfg_sub, "pos", 0), cfg_getnfloat(cfg_sub, "pos", 1), cfg_getnfloat(cfg_sub, "pos", 2)));
 
-		{
-			string filename = this->mod->directory;
-			filename.append(cfg_getstr(cfg_sub, "mesh"));
-			filename.append(".obj");
+		char* tmp = cfg_getstr(cfg_sub, "model");
+		if (tmp == NULL) continue;
 
-			WavefrontObj *obj = loadObj(filename);
-			if (! obj) reportFatalError("Unable to load map; mesh didn't load");
+		m->model = new AssimpModel(this->mod, std::string(tmp));
 
-			m->mesh = obj;
+		// TODO: Fix for dedicated server (no Render3D)
+		if (! m->model->load((Render3D*)this->render)) {
+			cerr << "Map model " << tmp << " failed to load.\n";
+			continue;
 		}
 
-		{
-			string filename = cfg_getstr(cfg_sub, "texture");
-			filename.append(".png");
-
-			SpritePtr tex = this->mod->st->render->loadSprite(filename, this->mod);
-			if (! tex) reportFatalError("Unable to load map; mesh texture didn't load");
-
-			m->texture = tex;
-		}
-		
-		{
-			string filename = cfg_getstr(cfg_sub, "normals");
-			filename.append(".png");
-			m->normals = this->mod->st->render->loadSprite(filename, this->mod);
-		}
+		m->play = new AnimPlay(m->model);
 
 		this->meshes.push_back(m);
 	}
@@ -663,8 +645,8 @@ bool Map::preGame()
 		this->st->physics->addRigidBody(water, CG_WATER);
 	}
 
-	// Meshy goodness
-	for (vector<MapMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); it++) {
+	// TODO: Port over the physics bits
+	/*for (vector<MapMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); it++) {
 		WavefrontObj *obj = (*it)->mesh;
 		obj->calcBoundingSize();
 
@@ -691,7 +673,7 @@ bool Map::preGame()
 		meshBody->setFriction(10.f);
 
 		this->st->physics->addRigidBody(meshBody, CG_TERRAIN);
-	}
+	}*/
 	
 	return true;
 }

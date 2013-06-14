@@ -1597,47 +1597,20 @@ void RenderOpenGL::terrain()
 	
 	// Static geometry meshes
 	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); it++) {
+		MapMesh* mm = (*it);
 
-		// Bump mapping for meshes; not yet supported though
-		/*if ((*it)->normals != NULL) {
-			s = this->shaders["phong_bump"];
-		} else {
-			s = this->shaders["phong"];
-		}
-		
-		glUseProgram(s->p());
-		
-		if ((*it)->normals != NULL) {
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, (*it)->normals->pixels);
-			glUniform1i(s->uniform("uNormals"), 1);
-			glActiveTexture(GL_TEXTURE0);
-		}*/
-		
-
-		glBindTexture(GL_TEXTURE_2D, (*it)->texture->pixels);
-		
 		float m[16];
-		(*it)->xform.getOpenGLMatrix(m);
-		modelMatrix = glm::make_mat4(m);
-		
-		WavefrontObj * obj = (*it)->mesh;
-		if (obj->ibo_count == 0) {
-			cout << "creating vbo\n";
-			this->createVBO(obj);
-		}
-		
-		glm::mat4 MVP = this->projection * this->view * modelMatrix;
-		glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-	
+		mm->xform.getOpenGLMatrix(m);
+		glm::mat4 modelMatrix = glm::make_mat4(m);
+
+		// TODO: Do I need these two for the entity renders too?
 		glm::mat4 MV = this->view * modelMatrix;
 		glUniformMatrix4fv(s->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
 	
 		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
 		glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
-		
-		glBindVertexArray(obj->vao);
-		glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
+
+		recursiveRenderAssimpModel(mm->play, mm->model, mm->model->rootNode, s, modelMatrix);
 	}
 
 	glBindVertexArray(0);
