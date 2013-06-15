@@ -105,6 +105,9 @@ class Map {
 		float heightmapScaleY();
 		float heightmapScaleZ();
 		btRigidBody * createGroundBody();
+
+	private:
+		void fillTriangeMesh(btTriangleMesh* trimesh, AssimpModel *am, AssimpNode *nd);
 };
 
 

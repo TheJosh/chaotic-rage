@@ -645,20 +645,12 @@ bool Map::preGame()
 		this->st->physics->addRigidBody(water, CG_WATER);
 	}
 
-	// TODO: Port over the physics bits
-	/*for (vector<MapMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); it++) {
-		WavefrontObj *obj = (*it)->mesh;
-		obj->calcBoundingSize();
+	// Load the assimp models into the physics engine
+	for (vector<MapMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); it++) {
+		MapMesh *mm = (*it);
 
 		btTriangleMesh *trimesh = new btTriangleMesh(false, false);
-		for (unsigned int i = 0; i < obj->faces.size(); i++) {
-			Face * f = &obj->faces.at(i);
-			trimesh->addTriangle(
-				obj->vertexes.at(f->v1 - 1).toBtVector3(),
-				obj->vertexes.at(f->v2 - 1).toBtVector3(),
-				obj->vertexes.at(f->v3 - 1).toBtVector3()
-			);
-		}
+		this->fillTriangeMesh(trimesh, mm->model, mm->model->rootNode);
 		btCollisionShape* meshShape = new btBvhTriangleMeshShape(trimesh, true, true);
 		
 		btDefaultMotionState* motionState = new btDefaultMotionState((*it)->xform);
@@ -673,10 +665,29 @@ bool Map::preGame()
 		meshBody->setFriction(10.f);
 
 		this->st->physics->addRigidBody(meshBody, CG_TERRAIN);
-	}*/
+	}
 	
 	return true;
 }
+
+
+/**
+* Fill a triangle mesh with triangles
+**/
+void Map::fillTriangeMesh(btTriangleMesh* trimesh, AssimpModel *am, AssimpNode *nd)
+{
+	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); it++) {
+		AssimpMesh* mesh = am->meshes[(*it)];
+		
+		// TODO: Load the actual mesh data here
+
+	}
+	
+	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {
+		fillTriangeMesh(trimesh, am, (*it));
+	}
+}
+
 
 void Map::postGame()
 {

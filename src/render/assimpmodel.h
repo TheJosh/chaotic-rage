@@ -117,6 +117,7 @@ class AssimpModel
 {
 	friend class RenderOpenGL;
 	friend class AnimPlay;
+	friend class Map;
 
 	private:
 		const struct aiScene* sc;			// TODO: remove this, pass it as a func. arg everywhere instead.
