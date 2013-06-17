@@ -348,7 +348,7 @@ AssimpModel * Mod::getAssimpModel(string name)
 	AssimpModel* am = new AssimpModel(this, name);
 	
 	if (st->render->is3D()) {
-		if (! am->load((Render3D*) st->render)) {
+		if (! am->load((Render3D*) st->render, false)) {
 			delete(am);
 			return NULL;
 		}

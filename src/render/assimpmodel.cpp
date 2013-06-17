@@ -42,9 +42,9 @@ AssimpModel::AssimpModel(Mod* mod, string name)
 * Load the model.
 * Return true on success, false on failure.
 **/
-bool AssimpModel::load(Render3D* render)
+bool AssimpModel::load(Render3D* render, bool meshdata)
 {
-	cout << "Assimp model: " << this->name << "\n";
+	cout << "Loading assimp model: " << this->name << "\n";
 	Assimp::Importer importer;
 
 	unsigned int flags = aiProcess_CalcTangentSpace
@@ -68,11 +68,17 @@ bool AssimpModel::load(Render3D* render)
 	
 	free(data);
 	
-	this->loadMeshes();
-	this->loadMaterials(render);
+	if (render != NULL) {
+		this->loadMeshes();
+		this->loadMaterials(render);
+	}
+	
+	if (meshdata) {
+		this->loadMeshdata((render != NULL));
+	}
+	
 	this->loadNodes();
 	this->loadAnimations();
-	
 	this->calcBoundingSize();
 	this->setBoneNodes();
 	
@@ -229,6 +235,46 @@ void AssimpModel::loadMeshes()
 		this->meshes.push_back(myMesh);
 	}
 }
+
+
+/**
+* The physics code needs the actual mesh data.
+* If the mesh is used for physics, we load the faces and verts
+*
+* @param bool update Update the existing arrya of `AssimpMesh`, v.s. creating anew.
+**/
+void AssimpModel::loadMeshdata(bool update)
+{
+	unsigned int n = 0;
+	AssimpMesh *myMesh;
+
+	for (; n < sc->mNumMeshes; ++n) {
+		const struct aiMesh* mesh = sc->mMeshes[n];
+		
+		// Grab existing object or create new one
+		if (update) {
+			myMesh = this->meshes[n];
+		} else {
+			myMesh = new AssimpMesh();
+			myMesh->numFaces = mesh->mNumFaces;
+			this->meshes.push_back(myMesh);
+		}
+		
+		// Copy face data
+		for (unsigned int t = 0; t < mesh->mNumFaces; ++t) {
+			AssimpFace face;
+			face.a = mesh->mFaces[t].mIndices[0];
+			face.b = mesh->mFaces[t].mIndices[1];
+			face.c = mesh->mFaces[t].mIndices[2];
+			myMesh->faces->push_back(face);
+		}
+		
+		// Copy verticies
+		myMesh->verticies = (float *)malloc(sizeof(float)*3*mesh->mNumVertices);
+		memcpy(&myMesh->verticies, mesh->mVertices, sizeof(float)*3*mesh->mNumVertices);
+	}
+}
+
 
 /**
 * Load materials.

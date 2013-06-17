@@ -278,7 +278,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 		m->model = new AssimpModel(this->mod, std::string(tmp));
 
 		// TODO: Fix for dedicated server (no Render3D)
-		if (! m->model->load((Render3D*)this->render)) {
+		if (! m->model->load((Render3D*)this->render, true)) {
 			cerr << "Map model " << tmp << " failed to load.\n";
 			continue;
 		}
@@ -673,14 +673,26 @@ bool Map::preGame()
 
 /**
 * Fill a triangle mesh with triangles
+*
+* TODO: It would be better to use btTriangleIndexVertexArray or make AssimpModel implement btStridingMeshInterface
 **/
 void Map::fillTriangeMesh(btTriangleMesh* trimesh, AssimpModel *am, AssimpNode *nd)
 {
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); it++) {
 		AssimpMesh* mesh = am->meshes[(*it)];
 		
-		// TODO: Load the actual mesh data here
-
+		// TODO: support node transform
+		
+		// Load triangles
+		for (vector<AssimpFace>::iterator itt = mesh->faces->begin(); itt != mesh->faces->end(); itt++) {
+			AssimpFace face = (*itt);
+			
+			btVector3 a = btVector3(mesh->verticies[face.a * 3], mesh->verticies[face.a * 3 + 1], mesh->verticies[face.a * 3 + 2]);
+			btVector3 b = btVector3(mesh->verticies[face.b * 3], mesh->verticies[face.b * 3 + 1], mesh->verticies[face.b * 3 + 2]);
+			btVector3 c = btVector3(mesh->verticies[face.c * 3], mesh->verticies[face.c * 3 + 1], mesh->verticies[face.c * 3 + 2]);
+			
+			trimesh->addTriangle(a, b, c);
+		}
 	}
 	
 	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {

@@ -43,6 +43,14 @@ class AssimpBone
 		AssimpNode* nd;
 };
 
+class AssimpFace
+{
+	public:
+		unsigned int a;
+		unsigned int b;
+		unsigned int c;
+};
+
 class AssimpMesh
 {
 	public:
@@ -52,8 +60,12 @@ class AssimpMesh
 		vector<AssimpBone*> bones;
 		AssimpNode* nd;
 		
+		// For the physics bits
+		vector<AssimpFace>* faces;
+		float* verticies;
+		
 	public:
-		AssimpMesh() : nd(NULL) {}
+		AssimpMesh() : nd(NULL), faces(NULL), verticies(NULL) {}
 };
 
 class AssimpMaterial
@@ -135,7 +147,7 @@ class AssimpModel
 		
 	public:
 		AssimpModel(Mod* mod, string name);
-		bool load(Render3D* render);
+		bool load(Render3D* render, bool meshdata);
 		
 	public:
 		const struct aiScene* getScene() { return this->sc; }		// TODO: remove this too
@@ -149,6 +161,7 @@ class AssimpModel
 		void loadMeshes();
 		void loadMaterials(Render3D* render);
 		SpritePtr loadTexture(Render3D* render, aiString path);
+		void loadMeshdata(bool update);
 		
 		void loadNodes();
 		AssimpNode* loadNode(aiNode* nd);
