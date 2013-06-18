@@ -271,7 +271,10 @@ int Map::load(string name, Render *render, Mod* insideof)
 		cfg_sub = cfg_getnsec(cfg, "mesh", j);
 		
 		MapMesh * m = new MapMesh();
-		m->xform = btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f), btVector3(cfg_getnfloat(cfg_sub, "pos", 0), cfg_getnfloat(cfg_sub, "pos", 1), cfg_getnfloat(cfg_sub, "pos", 2)));
+		m->xform = btTransform(
+			btQuaternion(0.0f, 0.0f, 0.0f),
+			btVector3(cfg_getnfloat(cfg_sub, "pos", 0), cfg_getnfloat(cfg_sub, "pos", 1), cfg_getnfloat(cfg_sub, "pos", 2))
+		);
 
 		char* tmp = cfg_getstr(cfg_sub, "model");
 		if (tmp == NULL) continue;
@@ -686,16 +689,16 @@ void Map::fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *ap, AssimpModel *am
 	// Grab the transform for this node
 	std::map<AssimpNode*, glm::mat4>::iterator local = ap->transforms.find(nd);
 	assert(local != ap->transforms.end());
-	transform = local->second;
+	transform = glm::transpose(local->second);
 	
 	// Iterate the meshes and add triangles
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); it++) {
 		mesh = am->meshes[(*it)];
 		
 		for (vector<AssimpFace>::iterator itt = mesh->faces->begin(); itt != mesh->faces->end(); itt++) {
-			a = mesh->verticies->at((*itt).a) * -transform;
-			b = mesh->verticies->at((*itt).b) * -transform;
-			c = mesh->verticies->at((*itt).c) * -transform;
+			a = mesh->verticies->at((*itt).a) * transform;
+			b = mesh->verticies->at((*itt).b) * transform;
+			c = mesh->verticies->at((*itt).c) * transform;
 			
 			trimesh->addTriangle(btVector3(a.x, a.y, a.z), btVector3(b.x, b.y, b.z), btVector3(c.x, c.y, c.z));
 		}

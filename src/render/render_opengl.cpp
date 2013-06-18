@@ -1258,6 +1258,8 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 			glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPbones));
 		}
 		
+		// TODO: Do we need uMV and uN for phong shading?
+		
 		if (am->materials[mesh->materialIndex]->diffuse == NULL) {
 			glBindTexture(GL_TEXTURE_2D, 0);
 		} else {
@@ -1602,13 +1604,6 @@ void RenderOpenGL::terrain()
 		float m[16];
 		mm->xform.getOpenGLMatrix(m);
 		glm::mat4 modelMatrix = glm::make_mat4(m);
-
-		// TODO: Do I need these two for the entity renders too?
-		glm::mat4 MV = this->view * modelMatrix;
-		glUniformMatrix4fv(s->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
-	
-		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
-		glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
 
 		recursiveRenderAssimpModel(mm->play, mm->model, mm->model->rootNode, s, modelMatrix);
 	}
