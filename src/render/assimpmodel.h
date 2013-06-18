@@ -62,7 +62,7 @@ class AssimpMesh
 		
 		// For the physics bits
 		vector<AssimpFace>* faces;
-		float* verticies;
+		vector<glm::vec4>* verticies;
 		
 	public:
 		AssimpMesh() : nd(NULL), faces(NULL), verticies(NULL) {}

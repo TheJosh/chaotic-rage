@@ -272,8 +272,11 @@ void AssimpModel::loadMeshdata(bool update)
 		}
 		
 		// Copy verticies
-		myMesh->verticies = (float*) malloc(sizeof(float) * 3 * mesh->mNumVertices);
-		memcpy(myMesh->verticies, mesh->mVertices, sizeof(float) * 3 * mesh->mNumVertices);
+		myMesh->verticies = new vector<glm::vec4>();
+		myMesh->verticies->reserve(mesh->mNumVertices);
+		for (unsigned int t = 0; t < mesh->mNumVertices; ++t) {
+			myMesh->verticies->push_back(glm::vec4(mesh->mVertices[t].x, mesh->mVertices[t].y, mesh->mVertices[t].z, 0.0f));
+		}
 	}
 }
 

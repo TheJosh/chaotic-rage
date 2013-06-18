@@ -107,7 +107,7 @@ class Map {
 		btRigidBody * createGroundBody();
 
 	private:
-		void fillTriangeMesh(btTriangleMesh* trimesh, AssimpModel *am, AssimpNode *nd);
+		void fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *play, AssimpModel *am, AssimpNode *nd);
 };
 
 

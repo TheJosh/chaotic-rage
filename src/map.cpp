@@ -5,6 +5,7 @@
 #include <iostream>
 #include <math.h>
 #include <btBulletDynamicsCommon.h>
+#include <glm/glm.hpp>
 #include "util/btStrideHeightfieldTerrainShape.h"
 #include "rage.h"
 
@@ -650,7 +651,7 @@ bool Map::preGame()
 		MapMesh *mm = (*it);
 
 		btTriangleMesh *trimesh = new btTriangleMesh(false, false);
-		this->fillTriangeMesh(trimesh, mm->model, mm->model->rootNode);
+		this->fillTriangeMesh(trimesh, mm->play, mm->model, mm->model->rootNode);
 		btCollisionShape* meshShape = new btBvhTriangleMeshShape(trimesh, true, true);
 		
 		btDefaultMotionState* motionState = new btDefaultMotionState((*it)->xform);
@@ -676,27 +677,33 @@ bool Map::preGame()
 *
 * TODO: It would be better to use btTriangleIndexVertexArray or make AssimpModel implement btStridingMeshInterface
 **/
-void Map::fillTriangeMesh(btTriangleMesh* trimesh, AssimpModel *am, AssimpNode *nd)
+void Map::fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *ap, AssimpModel *am, AssimpNode *nd)
 {
+	glm::mat4 transform;
+	glm::vec4 a, b, c;
+	AssimpMesh* mesh;
+	
+	// Grab the transform for this node
+	std::map<AssimpNode*, glm::mat4>::iterator local = ap->transforms.find(nd);
+	assert(local != ap->transforms.end());
+	transform = local->second;
+	
+	// Iterate the meshes and add triangles
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); it++) {
-		AssimpMesh* mesh = am->meshes[(*it)];
+		mesh = am->meshes[(*it)];
 		
-		// TODO: support node transform
-		
-		// Load triangles
 		for (vector<AssimpFace>::iterator itt = mesh->faces->begin(); itt != mesh->faces->end(); itt++) {
-			AssimpFace face = (*itt);
+			a = mesh->verticies->at((*itt).a) * -transform;
+			b = mesh->verticies->at((*itt).b) * -transform;
+			c = mesh->verticies->at((*itt).c) * -transform;
 			
-			btVector3 a = btVector3(mesh->verticies[face.a * 3], mesh->verticies[face.a * 3 + 1], mesh->verticies[face.a * 3 + 2]);
-			btVector3 b = btVector3(mesh->verticies[face.b * 3], mesh->verticies[face.b * 3 + 1], mesh->verticies[face.b * 3 + 2]);
-			btVector3 c = btVector3(mesh->verticies[face.c * 3], mesh->verticies[face.c * 3 + 1], mesh->verticies[face.c * 3 + 2]);
-			
-			trimesh->addTriangle(a, b, c);
+			trimesh->addTriangle(btVector3(a.x, a.y, a.z), btVector3(b.x, b.y, b.z), btVector3(c.x, c.y, c.z));
 		}
 	}
 	
+	// Iterate children nodes
 	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {
-		fillTriangeMesh(trimesh, am, (*it));
+		fillTriangeMesh(trimesh, ap, am, (*it));
 	}
 }
 
