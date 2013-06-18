@@ -74,7 +74,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 	}
 	
 	if (meshdata) {
-		this->loadMeshdata((render != NULL));
+		this->loadMeshdata(render != NULL);
 	}
 	
 	this->loadNodes();
@@ -253,7 +253,7 @@ void AssimpModel::loadMeshdata(bool update)
 		
 		// Grab existing object or create new one
 		if (update) {
-			myMesh = this->meshes[n];
+			myMesh = this->meshes.at(n);
 		} else {
 			myMesh = new AssimpMesh();
 			myMesh->numFaces = mesh->mNumFaces;
@@ -261,6 +261,8 @@ void AssimpModel::loadMeshdata(bool update)
 		}
 		
 		// Copy face data
+		myMesh->faces = new vector<AssimpFace>();
+		myMesh->faces->reserve(mesh->mNumFaces);
 		for (unsigned int t = 0; t < mesh->mNumFaces; ++t) {
 			AssimpFace face;
 			face.a = mesh->mFaces[t].mIndices[0];
@@ -270,8 +272,8 @@ void AssimpModel::loadMeshdata(bool update)
 		}
 		
 		// Copy verticies
-		myMesh->verticies = (float *)malloc(sizeof(float)*3*mesh->mNumVertices);
-		memcpy(&myMesh->verticies, mesh->mVertices, sizeof(float)*3*mesh->mNumVertices);
+		myMesh->verticies = (float*) malloc(sizeof(float) * 3 * mesh->mNumVertices);
+		memcpy(myMesh->verticies, mesh->mVertices, sizeof(float) * 3 * mesh->mNumVertices);
 	}
 }
 
