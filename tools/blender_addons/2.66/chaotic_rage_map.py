@@ -21,19 +21,34 @@ import bpy
 from bpy.props import *
 import bpy_extras
 from bpy_extras.io_utils import ExportHelper 
-
+import time
+import os
 
 
 ######  DOES EXPORT  #######
 def do_export(context, props, filepath):
 	out = open(filepath, "w")
 	
+	width = 200
+	height = 200
+	
+	out.write("width=" + str(width) + "\n")
+	out.write("height=" + str(height) + "\n")
+	
+	out.write("\n")
+	out.write("mesh {  model=\"scene.dae\"  pos={ " + str(width/2) + ", 0.0, " + str(height/2) + " }  }\n")
+	
+	out.write("\n")
+	out.write("zone {  width = 2  height = 2  x = 20  y = 20  angle = 0  spawn = {0, 1, 2}  }\n")
+	
+	out.write("\n")
 	for obj in bpy.data.objects:
-		out.write(obj.type + ": " + obj.name + "\n")
+		out.write("# " + obj.type + ": " + obj.name + "\n")
 	
 	out.close()
 	
-	bpy.ops.wm.collada_export(filepath=filepath + ".dae", check_existing=False)
+	os.path.dirname(filepath) + "models/"
+	bpy.ops.wm.collada_export(filepath=os.path.dirname(filepath) + "/models/scene.dae", check_existing=False, selected=False)
 	
 	return True
 
