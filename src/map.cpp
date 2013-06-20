@@ -653,6 +653,8 @@ bool Map::preGame()
 	for (vector<MapMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); it++) {
 		MapMesh *mm = (*it);
 
+		st->addDebugPoint((*it)->xform.getOrigin().x(), (*it)->xform.getOrigin().y(), (*it)->xform.getOrigin().z());
+		
 		btTriangleMesh *trimesh = new btTriangleMesh(false, false);
 		this->fillTriangeMesh(trimesh, mm->play, mm->model, mm->model->rootNode);
 		btCollisionShape* meshShape = new btBvhTriangleMeshShape(trimesh, true, true);

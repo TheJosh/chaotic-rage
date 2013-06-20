@@ -3,6 +3,7 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <string>
+#include <sstream>
 #include <SDL.h>
 #include <getopt.h>
 #include "../rage.h"
@@ -25,6 +26,7 @@ void CommandLineArgs::process()
 		{"mod",				1, 0, 'm'},
 		{"mod-list",		0, 0, 'n'},
 		{"campaign",		1, 0, 'c'},
+		{"arcade",		    1, 0, 'a'},
 		
 		#ifdef DEBUG_OPTIONS
 		{"debug",			1, 0, 'w'},
@@ -43,16 +45,17 @@ void CommandLineArgs::process()
 				cout <<
 					"Chaotic Rage\n\n"
 					"Options:\n"
-					" -h\t--help                 Show this help\n"
-					" -m\t--mod NAME             Load a mod at startup\n"
-					"   \t--mod-list             List all available mods, and exit\n"
-					" -c\t--campaign NAME        Run the specified campaign, then exit\n"
+					" -h\t--help                  Show this help\n"
+					" -m\t--mod NAME              Load a mod at startup\n"
+					"   \t--mod-list              List all available mods, and exit\n"
+					" -c\t--campaign NAME         Run the specified campaign, then exit\n"
+					" -a\t--arcade MAP,GAME,UNIT  Play an arcade game, then exit\n"
 					
 					#ifdef DEBUG_OPTIONS
-					"   \t--debug SECTION        Enable debug mode for a given section\n"
-					"   \t--debug-list           Show a list of available debug sections\n"
-					"   \t--debug-lineno         Show file and line no in debugging output\n"
-					"   \t--debug-file           Save debug logs in a file instead of stdout\n"
+					"   \t--debug SECTION         Enable debug mode for a given section\n"
+					"   \t--debug-list            Show a list of available debug sections\n"
+					"   \t--debug-lineno          Show file and line no in debugging output\n"
+					"   \t--debug-file            Save debug logs in a file instead of stdout\n"
 					#endif
 				;
 				exit(0);
@@ -76,6 +79,15 @@ void CommandLineArgs::process()
 				
 			case 'c':
 				this->campaign = optarg;
+				break;
+				
+			case 'a':
+				{
+					std::stringstream ss(optarg);
+					std::getline(ss, this->map, ',');
+					std::getline(ss, this->gametype, ',');
+					std::getline(ss, this->unittype, ',');
+				}
 				break;
 				
 				

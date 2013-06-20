@@ -22,6 +22,9 @@ class CommandLineArgs
 	public:
 		string mod;
 		string campaign;
+		string map;
+		string gametype;
+		string unittype;
 		
 	public:
 		CommandLineArgs(GameState *st, int argc, char ** argv)

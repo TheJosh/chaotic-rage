@@ -35,7 +35,7 @@ int main (int argc, char ** argv)
 	#ifdef GETOPT
 	st->cmdline->process();
 	#endif
-
+	
 	st->cconf = new ClientConfig();
 
 	// Load render, audio, etc according to config
@@ -61,12 +61,19 @@ int main (int argc, char ** argv)
 
 	Menu *m = new Menu(st);
 	
-	// If a campaign has been specified on the cmdline, run it
-	if (st->cmdline != NULL && st->cmdline->campaign != "") {
-		m->loadModBits();
-		Campaign *c = st->mm->getSupplOrBase()->getCampaign(st->cmdline->campaign);
-		m->startCampaign(c, "robot", 0, 1);
-		exit(0);
+	// If a campaign or arcade game has been specified on the cmd line, run it
+	if (st->cmdline != NULL) {
+		if (st->cmdline->campaign != "") {
+			m->loadModBits();
+			Campaign *c = st->mm->getSupplOrBase()->getCampaign(st->cmdline->campaign);
+			m->startCampaign(c, "robot", 0, 1);
+			exit(0);
+			
+		} else if (st->cmdline->map != "" && st->cmdline->gametype != "" && st->cmdline->unittype != "") {
+			m->loadModBits();
+			m->startGame(m->mapreg->get(st->cmdline->map), st->cmdline->gametype, st->cmdline->unittype, 0, 1);
+			exit(0);
+		}
 	}
 	
 	m->doit(i);
