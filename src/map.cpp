@@ -653,13 +653,17 @@ bool Map::preGame()
 	for (vector<MapMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); it++) {
 		MapMesh *mm = (*it);
 
-		st->addDebugPoint((*it)->xform.getOrigin().x(), (*it)->xform.getOrigin().y(), (*it)->xform.getOrigin().z());
-		
+		// Fill the triangle mesh
 		btTriangleMesh *trimesh = new btTriangleMesh(false, false);
 		this->fillTriangeMesh(trimesh, mm->play, mm->model, mm->model->rootNode);
 		btCollisionShape* meshShape = new btBvhTriangleMeshShape(trimesh, true, true);
-		
-		btDefaultMotionState* motionState = new btDefaultMotionState((*it)->xform);
+
+		// Offset pos by hald of height so it sits on the ground
+		btVector3 pos = (*it)->xform.getOrigin();
+		pos.setY(pos.y() + mm->model->boundingSize.y() / 2);
+
+		// Create body
+		btDefaultMotionState* motionState = new btDefaultMotionState(btTransform((*it)->xform.getBasis(), pos));
 		btRigidBody::btRigidBodyConstructionInfo meshRigidBodyCI(
 			0,
 			motionState,
@@ -669,7 +673,6 @@ bool Map::preGame()
 		btRigidBody *meshBody = new btRigidBody(meshRigidBodyCI);
 		meshBody->setRestitution(0.f);
 		meshBody->setFriction(10.f);
-
 		this->st->physics->addRigidBody(meshBody, CG_TERRAIN);
 	}
 	
@@ -691,18 +694,36 @@ void Map::fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *ap, AssimpModel *am
 	// Grab the transform for this node
 	std::map<AssimpNode*, glm::mat4>::iterator local = ap->transforms.find(nd);
 	assert(local != ap->transforms.end());
-	transform = glm::transpose(local->second);
+	transform = local->second;
+
+	st->addDebugPoint(transform[0][3], transform[1][3], transform[2][3]);
+
+	cout << "node\n";
+	
+	cout << "transform:\n";
+	cout << nd->transform[0][0] << " " << nd->transform[0][1] << " " << nd->transform[0][2] << " " << nd->transform[0][3] << "\n";
+	cout << nd->transform[1][0] << " " << nd->transform[1][1] << " " << nd->transform[1][2] << " " << nd->transform[1][3] << "\n";
+	cout << nd->transform[2][0] << " " << nd->transform[2][1] << " " << nd->transform[2][2] << " " << nd->transform[2][3] << "\n";
+	cout << nd->transform[3][0] << " " << nd->transform[3][1] << " " << nd->transform[3][2] << " " << nd->transform[3][3] << "\n";
 	
 	// Iterate the meshes and add triangles
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); it++) {
 		mesh = am->meshes[(*it)];
 		
+		cout << "  mesh\n";
+		
 		for (vector<AssimpFace>::iterator itt = mesh->faces->begin(); itt != mesh->faces->end(); itt++) {
-			a = mesh->verticies->at((*itt).a) * transform;
-			b = mesh->verticies->at((*itt).b) * transform;
-			c = mesh->verticies->at((*itt).c) * transform;
+			a = glm::transpose(nd->transform) * mesh->verticies->at((*itt).a);
+			b = nd->transform * mesh->verticies->at((*itt).b);
+			c = nd->transform * mesh->verticies->at((*itt).c);
+			
+			cout << "    orig: " << mesh->verticies->at((*itt).a).x << "," << mesh->verticies->at((*itt).a).y << "," << mesh->verticies->at((*itt).a).z << "," << mesh->verticies->at((*itt).a).w << "\n";
+			cout << "    mult: " << a.x << "," << a.y << "," << a.z << "," << a.w << "\n";
 			
 			trimesh->addTriangle(btVector3(a.x, a.y, a.z), btVector3(b.x, b.y, b.z), btVector3(c.x, c.y, c.z));
+			
+			cout << "     idx: " << ((*itt).a) << "," << ((*itt).b) << "," << ((*itt).c) << "\n";
+			cout << "     tri: " << a.x << "," << a.y << "," << a.z << "; " << b.x << "," << b.y << "," << b.z << "; " << c.x << "," << c.y << "," << c.z << "\n";
 		}
 	}
 	
