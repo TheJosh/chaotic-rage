@@ -43,6 +43,11 @@ void debug_enable(const char * sect)
 	enabled_sects.push_back(sect);
 }
 
+bool debug_enabled(const char * sect)
+{
+	return (std::find(enabled_sects.begin(), enabled_sects.end(), sect) != enabled_sects.end());
+}
+
 void debug_lineno(bool enabled)
 {
 	lineno = enabled;

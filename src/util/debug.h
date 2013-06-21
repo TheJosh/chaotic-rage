@@ -25,6 +25,8 @@ void write_debug(const char * sect, const char * file, int line, const char * fm
 
 void debug_enable(const char * sect);
 
+bool debug_enabled(const char * sect);
+
 void debug_lineno(bool enabled);
 
 void debug_tofile(const char * filename);

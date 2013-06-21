@@ -757,12 +757,16 @@ btRigidBody * Map::createGroundBody()
 
 	btRigidBody * terrain = new btRigidBody(groundRigidBodyCI);
 
-	terrain->setCollisionFlags(terrain->getCollisionFlags()|btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);   // Disable debug drawing
-
-	st->addDebugPoint(0.0f, 0.0f, 0.0f, 100.0f);
-	st->addDebugPoint(this->width, 0.0f, 0.0f, 50.0f);
-	st->addDebugPoint(0.0f, 0.0f, this->height, 50.0f);
-	st->addDebugPoint(this->width, 0.0f, this->height, 50.0f);
+	// Debugging for the terrain without needing to recompile
+	if (debug_enabled("terrain")) {
+		st->addDebugPoint(0.0f, 0.0f, 0.0f, 100.0f);
+		st->addDebugPoint(this->width, 0.0f, 0.0f, 50.0f);
+		st->addDebugPoint(0.0f, 0.0f, this->height, 50.0f);
+		st->addDebugPoint(this->width, 0.0f, this->height, 50.0f);
+	} else {
+		// Disable debug drawing
+		terrain->setCollisionFlags(terrain->getCollisionFlags()|btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);
+	}
 	
 	return terrain;
 }

@@ -111,6 +111,7 @@ void CommandLineArgs::process()
 					"  loop               Main game loop\n"
 					"  net                Network (also: net_pack)\n"
 					"  weap               Weapons\n"
+					"  terrain            Terrain/Heightmap physics\n"
 				;
 				exit(0);
 				break;
