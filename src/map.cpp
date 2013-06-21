@@ -604,7 +604,7 @@ float Map::heightmapAdd(int X, int Z, float amt)
 
 float Map::heightmapScaleX()
 {
-	return (float)width / (float)heightmap_sx;
+	return (float)width / (float)(heightmap_sx-1);
 }
 
 float Map::heightmapScaleY()
@@ -614,7 +614,7 @@ float Map::heightmapScaleY()
 
 float Map::heightmapScaleZ()
 {
-	return (float)height / (float)heightmap_sz;
+	return (float)height / (float)(heightmap_sz-1);
 }
 
 
@@ -759,6 +759,11 @@ btRigidBody * Map::createGroundBody()
 
 	terrain->setCollisionFlags(terrain->getCollisionFlags()|btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);   // Disable debug drawing
 
+	st->addDebugPoint(0.0f, 0.0f, 0.0f, 100.0f);
+	st->addDebugPoint(this->width, 0.0f, 0.0f, 50.0f);
+	st->addDebugPoint(0.0f, 0.0f, this->height, 50.0f);
+	st->addDebugPoint(this->width, 0.0f, this->height, 50.0f);
+	
 	return terrain;
 }
 

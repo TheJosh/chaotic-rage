@@ -181,6 +181,7 @@ class GameState
 		// Debugging
 		void addDebugLine(btVector3 * a, btVector3 * b);
 		void addDebugPoint(float x, float y, float z);
+		void addDebugPoint(float x, float y, float z, float len);
 		void calcAverageTick(int newtick);
 		float getAveTick();
 };
