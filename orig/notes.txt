@@ -1,8 +1,0 @@
-There is a tool called "copyorig.sh", which will copy all .obj and .png files into dara/cr/animmodels
-
-It will exclude files containing "uv" or "render".
-
-You should probably:
- - Name everything the same (e.g. war_fence.blend, war_fence.obj, war_fence.png)
- - Keep a copy of the texture in layered (with overlay as a layer) e.g. war_fence.xcf
- - Don't commit .blend1 or .blend2s
