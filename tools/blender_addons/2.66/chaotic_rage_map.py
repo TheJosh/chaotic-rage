@@ -29,27 +29,48 @@ import os
 def do_export(context, props, filepath):
 	out = open(filepath, "w")
 	
-	width = 200
-	height = 200
+	# Determine size
+	sizeX = 200
+	sizeZ = 200
+	for obj in bpy.data.objects:
+		if obj.name == 'heightmap':
+			sizeX = int(obj.dimensions[0])
+			sizeZ = int(obj.dimensions[1])
 	
-	out.write("width=" + str(width) + "\n")
-	out.write("height=" + str(height) + "\n")
+	# Write details to the file
+	out.write("width=" + str(sizeX) + "\n")
+	out.write("height=" + str(sizeZ) + "\n")
 	
+	# We have just one mesh, which we export later
 	out.write("\n")
-	out.write("mesh {  model=\"scene.dae\"  pos={ " + str(width/2) + ", 0.0, " + str(height/2) + " }  }\n")
+	out.write("mesh {  model=\"scene.dae\"  pos={ " + str(sizeX/2) + ", 0.0, " + str(sizeZ/2) + " }  }\n")
 	
+	# Also need a zone
 	out.write("\n")
 	out.write("zone {  width = 2  height = 2  x = 20  y = 20  angle = 0  spawn = {0, 1, 2}  }\n")
 	
+	# just for debugging
 	out.write("\n")
 	for obj in bpy.data.objects:
 		out.write("# " + obj.type + ": " + obj.name + "\n")
 	
 	out.close()
 	
+	# Only select meshes, and exclude some stuff (heightmap plane)
+	for obj in bpy.data.objects:
+		obj.select = (obj.type == 'MESH')
+		
+		if obj.name == 'heightmap':
+			obj.select = False
+
+	# Export the model in collada format, plus images
 	os.path.dirname(filepath) + "models/"
-	bpy.ops.wm.collada_export(filepath=os.path.dirname(filepath) + "/models/scene.dae", check_existing=False, selected=False)
-	
+	bpy.ops.wm.collada_export(
+		filepath=os.path.dirname(filepath) + "/models/scene.dae",
+		check_existing=False, selected=True, apply_modifiers=True, active_uv_only=False,
+		include_uv_textures=True, include_material_textures=True, use_texture_copies=True,
+		include_armatures=False, include_shapekeys=False, include_children=True)
+
 	return True
 
 
