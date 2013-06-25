@@ -55,7 +55,7 @@ class Map {
 		string name;
 		
 	public:
-		SpritePtr background;
+		SpritePtr skybox;
 		SpritePtr terrain;
 		int width;
 		int height;

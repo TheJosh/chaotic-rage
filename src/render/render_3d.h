@@ -92,7 +92,7 @@ class Render3D : public Render
 		/**
 		* Loads a cubemap from a mod into memeory
 		**/
-		virtual SpritePtr loadCubemap(string filename_base, Mod * mod) = 0;
+		virtual SpritePtr loadCubemap(string filename_base, string filename_ext, Mod * mod) = 0;
 
 		/**
 		* Is it a 3D renderer?

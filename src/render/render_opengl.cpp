@@ -483,12 +483,72 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 /**
 * Load a cubemap
 **/
-SpritePtr RenderOpenGL::loadCubemap(string filename_base, Mod * mod)
+SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, Mod * mod)
 {
-	SpritePtr cubemap = new struct sprite();
-
-	// TODO: Implement me!
-
+	SpritePtr cubemap;
+	SDL_RWops* rw;
+	SDL_Surface* surf;
+	GLenum texture_format;
+	
+	DEBUG("vid", "Loading cubemap '%s'", filename_base.c_str());
+	
+	cubemap = new struct sprite();
+	
+	glGenTextures(1, &cubemap->pixels);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap->pixels);
+	
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, this->min_filter);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, this->mag_filter);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	
+	const char* faces[6] = { "posx", "negx", "posy", "negy", "posz", "negz" };
+	
+	for (unsigned int i = 0; i < 6; i++) {
+		string filename = filename_base + faces[i] + filename_ext;
+		
+		rw = mod->loadRWops(filename);
+		if (rw == NULL) {
+			glDeleteTextures(1, &cubemap->pixels);
+			return NULL;
+		}
+	
+		surf = IMG_Load_RW(rw, 0);
+		if (surf == NULL) {
+			glDeleteTextures(1, &cubemap->pixels);
+			SDL_RWclose(rw);
+			return NULL;
+		}
+	
+		SDL_RWclose(rw);
+	
+		if (surf->format->BytesPerPixel == 4) {
+			if (surf->format->Rmask == 0x000000ff) {
+				texture_format = GL_RGBA;
+			} else {
+				texture_format = GL_BGRA;
+			}
+		
+		} else if (surf->format->BytesPerPixel == 3) {
+			if (surf->format->Rmask == 0x000000ff) {
+				texture_format = GL_RGB;
+			} else {
+				texture_format = GL_BGR;
+			}
+		
+		} else {
+			glDeleteTextures(1, &cubemap->pixels);
+			SDL_FreeSurface(surf);
+			return NULL;
+		}
+	
+		glTexImage2D(GL_TEXTURE_CUBE_MAP, 0, GL_RGBA, surf->w, surf->h, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
+		SDL_FreeSurface(surf);
+	}
+	
+	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+	
 	return cubemap;
 }
 
@@ -861,7 +921,6 @@ void main() {                                                                 \n
 
 /**
 * Load all of the general shaders we use for rendering
-* such as object rendering, background, etc.
 * Doesn't include various special-effects shaders that may be in use.
 **/
 void RenderOpenGL::loadShaders()
@@ -1455,6 +1514,7 @@ void RenderOpenGL::render()
 		mainRot();
 		terrain();
 		entities();
+		skybox();
 		particles();
 		water();
 		if (physicsdebug != NULL) physics();
@@ -1571,6 +1631,17 @@ void RenderOpenGL::mainRot()
 	this->view = glm::translate(this->view, glm::vec3(-camerax, -cameray, -cameraz));
 
 	CHECK_OPENGL_ERROR;
+}
+
+
+/**
+* Render the skybox
+**/
+void RenderOpenGL::skybox()
+{
+	if (st->map->skybox == NULL) return;
+	
+	
 }
 
 

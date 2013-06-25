@@ -144,7 +144,7 @@ class RenderOpenGL : public Render3D
 		virtual void loadFont(string name, Mod * mod);
 		virtual void renderText(string text, float x = 0.0f, float y = 0.0f, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
 		virtual unsigned int widthText(string text);
-		virtual SpritePtr loadCubemap(string filename_base, Mod * mod);
+		virtual SpritePtr loadCubemap(string filename_base, string filename_ext, Mod * mod);
 
 		void setSettings(RenderOpenGLSettings* settings);
 		RenderOpenGLSettings* getSettings();
@@ -161,6 +161,7 @@ class RenderOpenGL : public Render3D
 		
 		void mainViewport(int s, int of);
 		void mainRot();
+		void skybox();
 		void terrain();
 		void entities();
 		void physics();

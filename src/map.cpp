@@ -147,7 +147,7 @@ Map::Map(GameState * st)
 {
 	this->st = st;
 	this->heightmap = NULL;
-	this->background = NULL;
+	this->skybox = NULL;
 	this->terrain = NULL;
 	this->water = NULL;
 
@@ -231,11 +231,14 @@ int Map::load(string name, Render *render, Mod* insideof)
 		this->fog_density = 0.0f;
 	}
 	
-	this->background = this->render->loadSprite("background.jpg", this->mod);
-	if (! this->background) reportFatalError("Unable to load map; no background img");
-	
-	this->terrain = this->render->loadSprite("terrain.png", this->mod);
-	if (! this->terrain) reportFatalError("Unable to load map; no terran img");
+	if (render->is3D()) {
+		Render3D* render3d = (Render3D*)render;
+		
+		this->skybox = render3d->loadCubemap("skybox_", ".jpg", this->mod);
+		
+		this->terrain = render3d->loadSprite("terrain.png", this->mod);
+		if (! this->terrain) reportFatalError("Unable to load map; terrain failed to load");
+	}
 	
 	// Ambient lighting
 	int num = cfg_size(cfg, "ambient");
