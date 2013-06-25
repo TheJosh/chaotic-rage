@@ -111,7 +111,7 @@ class RenderOpenGL : public Render3D
 		
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
-		
+
 	public:
 		// From class Render
 		virtual void setScreenSize(int width, int height, bool fullscreen);
@@ -144,7 +144,8 @@ class RenderOpenGL : public Render3D
 		virtual void loadFont(string name, Mod * mod);
 		virtual void renderText(string text, float x = 0.0f, float y = 0.0f, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
 		virtual unsigned int widthText(string text);
-		
+		virtual SpritePtr loadCubemap(string filename_base, Mod * mod);
+
 		void setSettings(RenderOpenGLSettings* settings);
 		RenderOpenGLSettings* getSettings();
 		

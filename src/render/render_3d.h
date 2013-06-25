@@ -90,6 +90,11 @@ class Render3D : public Render
 		virtual int getSpriteHeight(SpritePtr sprite) = 0;
 		
 		/**
+		* Loads a cubemap from a mod into memeory
+		**/
+		virtual SpritePtr loadCubemap(string filename_base, Mod * mod) = 0;
+
+		/**
 		* Is it a 3D renderer?
 		**/
 		virtual bool is3D() { return true; }

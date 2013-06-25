@@ -481,6 +481,19 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 
 
 /**
+* Load a cubemap
+**/
+SpritePtr RenderOpenGL::loadCubemap(string filename_base, Mod * mod)
+{
+	SpritePtr cubemap = new struct sprite();
+
+	// TODO: Implement me!
+
+	return cubemap;
+}
+
+
+/**
 * Free sprite memory
 **/
 void RenderOpenGL::freeSprite(SpritePtr sprite)
