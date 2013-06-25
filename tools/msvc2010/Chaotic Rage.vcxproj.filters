@@ -273,9 +273,6 @@
     <ClCompile Include="..\..\src\render\render_opengl.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\render\render_opengl_compat.cpp">
-      <Filter>src\render</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\render\render.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
@@ -528,9 +525,6 @@
       <Filter>src\util</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\render\render.h">
-      <Filter>src\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render\render_opengl_compat.h">
       <Filter>src\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\render\render_3d.h">

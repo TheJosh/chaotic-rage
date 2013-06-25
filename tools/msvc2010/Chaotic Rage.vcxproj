@@ -198,7 +198,6 @@
     <ClCompile Include="..\..\src\render\render_debug.cpp" />
     <ClCompile Include="..\..\src\render\render_null.cpp" />
     <ClCompile Include="..\..\src\render\render_opengl.cpp" />
-    <ClCompile Include="..\..\src\render\render_opengl_compat.cpp" />
     <ClCompile Include="..\..\src\util\btCRKinematicCharacterController.cpp" />
     <ClCompile Include="..\..\src\util\btStrideHeightfieldTerrainShape.cpp" />
     <ClCompile Include="..\..\src\util\clientconfig.cpp" />
@@ -291,7 +290,6 @@
     <ClInclude Include="..\..\src\render\render_debug.h" />
     <ClInclude Include="..\..\src\render\render_null.h" />
     <ClInclude Include="..\..\src\render\render_opengl.h" />
-    <ClInclude Include="..\..\src\render\render_opengl_compat.h" />
     <ClInclude Include="..\..\src\render\_render.h" />
     <ClInclude Include="..\..\src\util\btCRKinematicCharacterController.h" />
     <ClInclude Include="..\..\src\util\btStrideHeightfieldTerrainShape.h" />
