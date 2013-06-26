@@ -155,8 +155,8 @@ class AssimpModel
 		btVector3 getBoundingSizeHE();
 		
 	private:
-		void calcBoundingSize();
-		btVector3 calcBoundingSizeNode(const struct aiNode* nd, aiMatrix4x4* trafo);
+		void calcBoundingBox();
+		void calcBoundingBoxNode(const aiNode* nd, aiVector3D* min, aiVector3D* max, aiMatrix4x4* trafo);
 
 		void loadMeshes();
 		void loadMaterials(Render3D* render);

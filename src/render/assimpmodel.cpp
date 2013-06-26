@@ -79,7 +79,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 	
 	this->loadNodes();
 	this->loadAnimations();
-	this->calcBoundingSize();
+	this->calcBoundingBox();
 	this->setBoneNodes();
 	
 	this->sc = NULL;
@@ -91,48 +91,54 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 /**
 * Returns the bounding size of the mesh of the first frame
 **/
-void AssimpModel::calcBoundingSize()
+void AssimpModel::calcBoundingBox()
 {
 	aiMatrix4x4 trafo;
 	aiIdentityMatrix4(&trafo);
-	
-	this->boundingSize = this->calcBoundingSizeNode(sc->mRootNode, &trafo);
+	aiVector3D min, max;
+
+	min.x = min.y = min.z = 1e10f;
+	max.x = max.y = max.z = -1e10f;
+
+	this->calcBoundingBoxNode(sc->mRootNode, &min, &max, &trafo);
+
+	boundingSize = btVector3(max.x - min.x, max.y - min.y, max.z - min.z);
 }
 
 
 /**
 * Returns the bounding size of the mesh of the first frame
 **/
-btVector3 AssimpModel::calcBoundingSizeNode(const struct aiNode* nd, aiMatrix4x4* trafo)
+void AssimpModel::calcBoundingBoxNode(const aiNode* nd, aiVector3D* min, aiVector3D* max, aiMatrix4x4* trafo)
 {
-	float x = 0.0f, y = 0.0f, z = 0.0f;
+	aiMatrix4x4 prev;
 	unsigned int n = 0, t;
-	aiMatrix4x4 prev = *trafo;
-	
+
+	prev = *trafo;
 	aiMultiplyMatrix4(trafo, &nd->mTransformation);
-	
+
 	for (; n < nd->mNumMeshes; ++n) {
 		const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
-		
+
 		for (t = 0; t < mesh->mNumVertices; ++t) {
 			aiVector3D tmp = mesh->mVertices[t];
 			aiTransformVecByMatrix4(&tmp, trafo);
-			
-			x = MAX(x, tmp.x);
-			y = MAX(y, tmp.y);
-			z = MAX(z, tmp.z);
+
+			min->x = MIN(min->x, tmp.x);
+			min->y = MIN(min->y, tmp.y);
+			min->z = MIN(min->z, tmp.z);
+
+			max->x = MAX(max->x, tmp.x);
+			max->y = MAX(max->y, tmp.y);
+			max->z = MAX(max->z, tmp.z);
 		}
 	}
-	
+
 	for (n = 0; n < nd->mNumChildren; ++n) {
-		btVector3 size = this->calcBoundingSizeNode(nd->mChildren[n], trafo);
-		x = MAX(x, size.x());
-		y = MAX(y, size.y());
-		z = MAX(z, size.z());
+		this->calcBoundingBoxNode(nd->mChildren[n], min, max, trafo);
 	}
-	
+
 	*trafo = prev;
-	return btVector3(x, y, z);
 }
 
 
