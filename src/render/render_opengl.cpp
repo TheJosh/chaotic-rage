@@ -740,25 +740,18 @@ void RenderOpenGL::createSkybox()
 	GLuint vertex;
 	GLuint index;
 	
-	float vertexData[] = {
-		-1.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, 1.0f, -1.0f,
-		-1.0f, 1.0f, -1.0f
+	float vertexData[] = {  
+		-0.5f, -0.5f,  0.5f,
+		0.5f, -0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+		-0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+		-0.5f,  0.5f, -0.5f,
+		0.5f,  0.5f, -0.5f,
 	};
 	
-	unsigned int indexData[] = {
-		0, 1, 2,  2, 3, 0,
-		3, 2, 6,  6, 7, 3,
-		7, 6, 5,  5, 4, 7,
-		4, 0, 3,  3, 7, 4,
-		0, 1, 5,  5, 4, 0,
-		1, 5, 6,  6, 2, 1
-	};
+	unsigned int indexData[] = {0, 1, 2, 3, 7, 1, 5, 4, 7, 6, 2, 4, 0, 1};
 	
 	// Create VAO
 	glGenVertexArrays(1, &this->skybox_vaoid);
@@ -1692,26 +1685,26 @@ void RenderOpenGL::skybox()
 {
 	if (st->map->skybox == NULL) return;
 	
+	float sizeX = this->st->map->width;
+	float sizeY = 20.0f;
+	float sizeZ = this->st->map->height;
+
 	GLShader* s = this->shaders["skybox"];
 	
 	glBindTexture(GL_TEXTURE_CUBE_MAP, st->map->skybox->pixels);
 	glUseProgram(s->p());
 	glCullFace(GL_FRONT);
 	
-	glDisable(GL_CULL_FACE);	// TODO: fix finding and remove this
-	
 	glm::mat4 modelMatrix = glm::scale(
-		glm::mat4(1.0f),
-		glm::vec3(this->st->map->width, 20.0f, this->st->map->height)
+		glm::translate(glm::mat4(1.0f), glm::vec3(sizeX/2.0f, sizeY/2.0f, sizeZ/2.0f)),
+		glm::vec3(sizeX, sizeY, sizeZ)
 	);
 	
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;
 	glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
 	glBindVertexArray(skybox_vaoid);
-	glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, 0);		// 12 faces, 3 vertex per face
-	
-	glEnable(GL_CULL_FACE);	// TODO: fix finding and remove this
+	glDrawElements(GL_TRIANGLE_STRIP, 14, GL_UNSIGNED_INT, 0);
 	
 	glCullFace(GL_BACK);
 	glUseProgram(0);
