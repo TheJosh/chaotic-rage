@@ -9,5 +9,5 @@ void main()
 {
 	vec4 pos = uMVP * vec4(vPosition, 1.0f);
 	gl_Position = pos.xyww;
-	fTexUV = vPosition;
+	fTexUV.xyz = vPosition.zyx;
 }
