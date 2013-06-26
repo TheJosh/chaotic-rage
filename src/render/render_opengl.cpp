@@ -543,7 +543,7 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 			return NULL;
 		}
 	
-		glTexImage2D(GL_TEXTURE_CUBE_MAP, 0, GL_RGBA, surf->w, surf->h, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, surf->w, surf->h, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
 		SDL_FreeSurface(surf);
 	}
 	
@@ -732,6 +732,55 @@ void RenderOpenGL::createWater()
 
 
 /**
+* Create the "water" mesh
+* We save it in a WavefrontObj.
+**/
+void RenderOpenGL::createSkybox()
+{
+	GLuint vertex;
+	GLuint index;
+	
+	float vertexData[] = {
+		-1.0f, -1.0f, 1.0f,
+		1.0f, -1.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,
+		-1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, 1.0f, -1.0f,
+		-1.0f, 1.0f, -1.0f
+	};
+	
+	unsigned int indexData[] = {
+		0, 1, 2,  2, 3, 0,
+		3, 2, 6,  6, 7, 3,
+		7, 6, 5,  5, 4, 7,
+		4, 0, 3,  3, 7, 4,
+		0, 1, 5,  5, 4, 0,
+		1, 5, 6,  6, 2, 1
+	};
+	
+	// Create VAO
+	glGenVertexArrays(1, &this->skybox_vaoid);
+	glBindVertexArray(this->skybox_vaoid);
+	
+	// Position
+	glGenBuffers(1, &vertex);
+	glBindBuffer(GL_ARRAY_BUFFER, vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
+	glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), 0);
+	glEnableVertexAttribArray(ATTRIB_POSITION);
+	
+	// Index
+	glGenBuffers(1, &index);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexData), indexData, GL_STATIC_DRAW);
+	
+	glBindVertexArray(0);
+}
+
+
+/**
 * Renders a sprite.
 * Should only be used if the the caller was called by this classes 'Render' function.
 **/
@@ -807,8 +856,9 @@ void RenderOpenGL::preGame()
 	// Setup all the uniforms and such
 	this->setupShaders();
 
-	// The water object
+	// Create some VBOs
 	this->createWater();
+	this->createSkybox();
 	
 	// Init the viewport for single screen only once
 	if (this->st->num_local == 1) {
@@ -951,6 +1001,7 @@ void RenderOpenGL::loadShaders()
 	this->shaders["particles"] = loadProgram(base, "particles");
 	this->shaders["dissolve"] = loadProgram(base, "dissolve");
 	this->shaders["text"] = loadProgram(base, "text");
+	this->shaders["skybox"] = loadProgram(base, "skybox");
 	
 	this->shaders_loaded = true;
 }
@@ -1641,7 +1692,25 @@ void RenderOpenGL::skybox()
 {
 	if (st->map->skybox == NULL) return;
 	
+	GLShader* s = this->shaders["skybox"];
 	
+	glBindTexture(GL_TEXTURE_CUBE_MAP, st->map->skybox->pixels);
+	glUseProgram(s->p());
+	//glCullFace(GL_FRONT);
+	
+	glm::mat4 modelMatrix = glm::scale(
+		glm::mat4(1.0f),
+		glm::vec3(this->st->map->width, 20.0f, this->st->map->height)
+	);
+	
+	glm::mat4 MVP = this->projection * this->view * modelMatrix;
+	glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	
+	glBindVertexArray(skybox_vaoid);
+	glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, 0);		// 12 faces, 3 vertex per face
+	
+	//glCullFace(GL_BACK);
+	glUseProgram(0);
 }
 
 

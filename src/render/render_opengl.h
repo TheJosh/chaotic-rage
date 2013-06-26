@@ -82,7 +82,12 @@ class RenderOpenGL : public Render3D
 		unsigned int ter_size;
 		GLuint ter_vboid;
 		GLuint ter_vaoid;
+		
+		// Water
 		WavefrontObj *waterobj;
+		
+		// skybox
+		GLuint skybox_vaoid;
 		
 		// Particles
 		GLuint particle_vao;
@@ -153,6 +158,7 @@ class RenderOpenGL : public Render3D
 		
 	private:
 		void createWater();
+		void createSkybox();
 		void renderAnimPlay(AnimPlay * play, Entity * e);
 		void renderCharacter(char c, float &x, float &y);
 		void createVBO (WavefrontObj * obj);
