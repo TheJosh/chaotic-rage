@@ -768,8 +768,8 @@ void RenderOpenGL::createSkybox()
 	glGenBuffers(1, &vertex);
 	glBindBuffer(GL_ARRAY_BUFFER, vertex);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
-	glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), 0);
 	glEnableVertexAttribArray(ATTRIB_POSITION);
+	glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	
 	// Index
 	glGenBuffers(1, &index);
@@ -1696,7 +1696,9 @@ void RenderOpenGL::skybox()
 	
 	glBindTexture(GL_TEXTURE_CUBE_MAP, st->map->skybox->pixels);
 	glUseProgram(s->p());
-	//glCullFace(GL_FRONT);
+	glCullFace(GL_FRONT);
+	
+	glDisable(GL_CULL_FACE);	// TODO: fix finding and remove this
 	
 	glm::mat4 modelMatrix = glm::scale(
 		glm::mat4(1.0f),
@@ -1709,7 +1711,9 @@ void RenderOpenGL::skybox()
 	glBindVertexArray(skybox_vaoid);
 	glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, 0);		// 12 faces, 3 vertex per face
 	
-	//glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);	// TODO: fix finding and remove this
+	
+	glCullFace(GL_BACK);
 	glUseProgram(0);
 }
 
