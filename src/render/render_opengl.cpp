@@ -835,11 +835,6 @@ void RenderOpenGL::preGame()
 		glDisable(GL_MULTISAMPLE);
 	}
 	
-	// Set fog properties
-	if (st->map->fog_density > 0.0f) {
-		// TODO: GLSL fog
-	}
-	
 	// This will load the shaders (from the base mod) if they aren't loaded.
 	this->loadShaders();
 	if (this->shaders_error) {

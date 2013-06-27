@@ -87,30 +87,50 @@ static cfg_opt_t mesh_opts[] =
 	CFG_END()
 };
 
+static cfg_opt_t heightmap_opts[] =
+{
+	CFG_STR((char*) "data", ((char*)""), CFGF_NONE),
+	CFG_STR((char*) "texture", ((char*)""), CFGF_NONE),
+	CFG_FLOAT((char*) "scale-z", 4.0f, CFGF_NONE),
+	CFG_END()
+};
+
+static cfg_opt_t water_opts[] =
+{
+	CFG_STR((char*) "texture", ((char*)""), CFGF_NONE),
+	CFG_FLOAT((char*) "level", 0.0f, CFGF_NONE),			// initial water level
+	CFG_FLOAT((char*) "movement", 0.0f, CFGF_NONE),		// total distance between low and high
+	CFG_FLOAT((char*) "speed", 0.0f, CFGF_NONE),			// speed (metres/second)
+	CFG_END()
+};
+
+static cfg_opt_t skybox_opts[] =
+{
+	CFG_STR((char*) "base", ((char*)""), CFGF_NONE),
+	CFG_STR((char*) "ext", ((char*)""), CFGF_NONE),
+	CFG_END()
+};
+
 // Main config
 static cfg_opt_t opts[] =
 {
+	CFG_INT((char*) "width", 0, CFGF_NONE),
+	CFG_INT((char*) "height", 0, CFGF_NONE),
+	
 	CFG_SEC((char*) "wall", wall_opts, CFGF_MULTI),
 	CFG_SEC((char*) "vehicle", vehicle_opts, CFGF_MULTI),
 	CFG_SEC((char*) "object", object_opts, CFGF_MULTI),
 	CFG_SEC((char*) "pickup", pickup_opts, CFGF_MULTI),
+	
 	CFG_SEC((char*) "zone", zone_opts, CFGF_MULTI),
 	CFG_SEC((char*) "light", light_opts, CFGF_MULTI),
 	CFG_SEC((char*) "mesh", mesh_opts, CFGF_MULTI),
-
+	CFG_SEC((char*) "heightmap", heightmap_opts, CFGF_MULTI),
+	CFG_SEC((char*) "water", water_opts, CFGF_MULTI),
+	CFG_SEC((char*) "skybox", skybox_opts, CFGF_MULTI),
+	
 	CFG_INT_LIST((char*) "ambient", 0, CFGF_NONE),
 
-	CFG_INT((char*) "width", 0, CFGF_NONE),
-	CFG_INT((char*) "height", 0, CFGF_NONE),
-	
-	CFG_FLOAT((char*) "heightmap-z", 4.0f, CFGF_NONE),
-	CFG_FLOAT((char*) "water-level", 0.0f, CFGF_NONE),			// initial water level
-	CFG_FLOAT((char*) "water-movement", 0.0f, CFGF_NONE),		// total distance between low and high
-	CFG_FLOAT((char*) "water-speed", 0.0f, CFGF_NONE),			// speed (metres/second)
-
-	CFG_INT_LIST((char*) "fog-color", 0, CFGF_NONE),
-	CFG_FLOAT((char*) "fog-density", 0.0f, CFGF_NONE),
-	
 	CFG_END()
 };
 
@@ -202,42 +222,41 @@ int Map::load(string name, Render *render, Mod* insideof)
 	this->height = cfg_getint(cfg, "height");
 	if (this->width == 0 or this->height == 0) return 0;
 	
-	this->heightmap_y = cfg_getfloat(cfg, "heightmap-z");
 	
-	// Water surface
-	this->water = this->render->loadSprite("water.png", this->mod);
-	if (this->water) {
-		this->water_level = cfg_getfloat(cfg, "water-level");
-	}
-	float move = cfg_getfloat(cfg, "water-movement");
-	if (move) {
-		move /= 2.0f;
-		this->water_range.min = this->water_level - move;
-		this->water_range.max = this->water_level + move;
-		this->water_speed = cfg_getfloat(cfg, "water-speed") / 1000.0f;		// per sec -> per ms
-	} else {
-		this->water_speed = 0.0f;
+	// Heightmap
+	cfg_sub = cfg_getnsec(cfg, "heightmap", 0);
+	if (cfg_sub) {
+		this->heightmap_y = cfg_getfloat(cfg_sub, "scale-z");
+	
+		this->terrain = render->loadSprite("terrain.png", this->mod);
+		if (! this->terrain) return 0;
 	}
 	
-	// Fog
-	if (cfg_size(cfg, "fog-color") != 0) {
-		this->fog_color[0] = cfg_getnint(cfg, "fog-color", 0) / 255.0f;
-		this->fog_color[1] = cfg_getnint(cfg, "fog-color", 1) / 255.0f;
-		this->fog_color[2] = cfg_getnint(cfg, "fog-color", 2) / 255.0f;
-		this->fog_color[3] = cfg_getnint(cfg, "fog-color", 3) / 255.0f;
+	// Water
+	cfg_sub = cfg_getnsec(cfg, "water", 0);
+	if (cfg_sub) {
+		this->water = this->render->loadSprite("water.png", this->mod);
 		
-		this->fog_density = cfg_getfloat(cfg, "fog-density");
-	} else {
-		this->fog_density = 0.0f;
+		if (this->water) {
+			this->water_level = cfg_getfloat(cfg_sub, "level");
+		}
+		
+		float move = cfg_getfloat(cfg_sub, "movement");
+		if (move) {
+			move /= 2.0f;
+			this->water_range.min = this->water_level - move;
+			this->water_range.max = this->water_level + move;
+			this->water_speed = cfg_getfloat(cfg_sub, "speed") / 1000.0f;		// per sec -> per ms
+		} else {
+			this->water_speed = 0.0f;
+		}
 	}
 	
-	if (render->is3D()) {
+	// Skybox
+	cfg_sub = cfg_getnsec(cfg, "skybox", 0);
+	if (cfg_sub and render->is3D()) {
 		Render3D* render3d = (Render3D*)render;
-		
 		this->skybox = render3d->loadCubemap("skybox_", ".jpg", this->mod);
-		
-		this->terrain = render3d->loadSprite("terrain.png", this->mod);
-		if (! this->terrain) reportFatalError("Unable to load map; terrain failed to load");
 	}
 	
 	// Ambient lighting
@@ -247,8 +266,6 @@ int Map::load(string name, Render *render, Mod* insideof)
 		this->ambient[1] = cfg_getnint(cfg, "ambient", 1) / 255.0;
 		this->ambient[2] = cfg_getnint(cfg, "ambient", 2) / 255.0;
 	}
-
-		
 
 	// Zones
 	num_types = cfg_size(cfg, "zone");
@@ -268,7 +285,6 @@ int Map::load(string name, Render *render, Mod* insideof)
 	}
 	
 	// Meshes
-	// These should be a Y-up wavefront OBJ file.
 	num_types = cfg_size(cfg, "mesh");
 	for (j = 0; j < num_types; j++) {
 		cfg_sub = cfg_getnsec(cfg, "mesh", j);

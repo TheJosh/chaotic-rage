@@ -70,9 +70,6 @@ class Map {
 		RangeF water_range;
 		float water_speed;		// distance per ms
 
-		float fog_color[4];
-		float fog_density;
-
 	public:
 		Map(GameState * st);
 		~Map();
