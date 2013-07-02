@@ -41,6 +41,18 @@ def do_export(context, props, filepath):
 	out.write("width=" + str(sizeX) + "\n")
 	out.write("height=" + str(sizeZ) + "\n")
 	
+	# Heightmap
+	out.write("\n")
+	out.write("heightmap {  texture=\"terrain.png\"  data=\"heightmap.png\"  }\n")
+	
+	# TODO: have a way to choose if this is exported or not
+	out.write("\n")
+	out.write("skybox  {  base=\"skybox_\"  ext=\".jpg\"  }\n")
+	
+	# TODO: have a way to choose if this is exported or not
+	out.write("\n")
+	out.write("water {  texture=\"water.png\"  }\n")
+	
 	# We have just one mesh, which we export later
 	out.write("\n")
 	out.write("mesh {  model=\"scene.dae\"  pos={ " + str(sizeX/2) + ", 0.0, " + str(sizeZ/2) + " }  }\n")
