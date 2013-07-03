@@ -55,10 +55,13 @@ class Map {
 		string name;
 		
 	public:
-		SpritePtr skybox;
-		SpritePtr terrain;
 		int width;
 		int height;
+		
+		SpritePtr terrain;
+		
+		SpritePtr skybox;
+		glm::vec3 skybox_size;
 		
 		float * heightmap;
 		int heightmap_sx;

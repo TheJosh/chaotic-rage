@@ -1680,10 +1680,6 @@ void RenderOpenGL::skybox()
 {
 	if (st->map->skybox == NULL) return;
 	
-	float sizeX = this->st->map->width;
-	float sizeY = 20.0f;
-	float sizeZ = this->st->map->height;
-
 	GLShader* s = this->shaders["skybox"];
 	
 	glBindTexture(GL_TEXTURE_CUBE_MAP, st->map->skybox->pixels);
@@ -1691,8 +1687,8 @@ void RenderOpenGL::skybox()
 	glCullFace(GL_FRONT);
 	
 	glm::mat4 modelMatrix = glm::scale(
-		glm::translate(glm::mat4(1.0f), glm::vec3(sizeX/2.0f, sizeY/2.0f, sizeZ/2.0f)),
-		glm::vec3(sizeX, sizeY, sizeZ)
+		glm::translate(glm::mat4(1.0f), glm::vec3(st->map->skybox_size.x*0.25f, st->map->skybox_size.y*0.5f, st->map->skybox_size.z*0.25f)),
+		st->map->skybox_size
 	);
 	
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;

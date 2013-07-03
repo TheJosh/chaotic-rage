@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #include "util/btStrideHeightfieldTerrainShape.h"
 #include "rage.h"
+#include "mod/confuse_types.h"
 
 using namespace std;
 
@@ -108,6 +109,7 @@ static cfg_opt_t skybox_opts[] =
 {
 	CFG_STR((char*) "base", ((char*)""), CFGF_NONE),
 	CFG_STR((char*) "ext", ((char*)""), CFGF_NONE),
+	CFG_FLOAT_LIST((char*) "size", 0, CFGF_NONE),
 	CFG_END()
 };
 
@@ -257,6 +259,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 	if (cfg_sub and render->is3D()) {
 		Render3D* render3d = (Render3D*)render;
 		this->skybox = render3d->loadCubemap("skybox_", ".jpg", this->mod);
+		this->skybox_size = cfg_getvec3(cfg_sub, "size");
 	}
 	
 	// Ambient lighting

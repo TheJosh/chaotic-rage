@@ -6,6 +6,7 @@
 #include <iostream>
 #include <SDL.h>
 #include "../rage.h"
+#include "../util/quadratic.h"
 
 using namespace std;
 
@@ -16,3 +17,10 @@ using namespace std;
 * The expected config type is CFG_FLOAT_LIST
 **/
 glm::vec3 cfg_getvec3(cfg_t* cfg, const char* name);
+
+
+/**
+* Load a Quadratic
+* The expected config type is CFG_FLOAT_LIST
+**/
+Quadratic cfg_getquadratic(cfg_t* cfg, const char* name);
