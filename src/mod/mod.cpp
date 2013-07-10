@@ -21,6 +21,7 @@ static cfg_opt_t mod_map_opts[] =
 {
 	CFG_STR((char*) "name", ((char*)""), CFGF_NONE),
 	CFG_STR((char*) "title", ((char*)""), CFGF_NONE),
+	CFG_INT((char*) "arcade", 1, CFGF_NONE),
 	CFG_END()
 };
 
@@ -63,7 +64,7 @@ Mod::Mod(GameState * st, string directory)
 	this->vehicletypes = NULL;
 	this->walltypes = NULL;
 	this->weapontypes = NULL;
-	this->mapnames = NULL;
+	this->maps = NULL;
 }
 
 Mod::~Mod()
@@ -79,7 +80,7 @@ Mod::~Mod()
 	delete(this->walltypes);
 	delete(this->vehicletypes);
 	delete(this->weapontypes);
-	delete(this->mapnames);
+	delete(this->maps);
 }
 
 
@@ -107,13 +108,20 @@ bool Mod::loadMetadata()
 	this->has_arcade = (cfg_getint(cfg, "arcade") == 1);
 	this->has_campaign = (cfg_getint(cfg, "campaign") == 1);
 
-	// Map names for in-mod maps
-	delete(this->mapnames);
-	this->mapnames = new vector<string>();
+	// Maps
+	delete(this->maps);
+	this->maps = new vector<MapReg>();
+	
 	num_types = cfg_size(cfg, "map");
 	for (j = 0; j < num_types; j++) {
 		cfg_sub = cfg_getnsec(cfg, "map", j);
-		this->mapnames->push_back(cfg_getstr(cfg_sub, "name"));
+		
+		this->maps->push_back(MapReg(
+			cfg_getstr(cfg_sub, "name"),
+			cfg_getstr(cfg_sub, "title"),
+			this,
+			cfg_getint(cfg_sub, "arcade") == 1
+		));
 	}
 
 	cfg_free(cfg);

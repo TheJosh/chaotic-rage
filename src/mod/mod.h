@@ -20,7 +20,7 @@ class Mod {
 	private:
 		// metadata
 		string title;
-		vector<string> * mapnames;
+		vector<MapReg> * maps;
 		bool has_arcade;
 		bool has_campaign;
 		
@@ -61,7 +61,7 @@ class Mod {
 		
 		string getName() { return this->name; }
 		string getTitle() { return this->title; }
-		vector<string>* getMapNames() { return this->mapnames; }
+		vector<MapReg>* getMaps() { return this->maps; }
 		bool hasArcade() { return this->has_arcade; }
 		bool hasCampaign() { return this->has_campaign; }
 		

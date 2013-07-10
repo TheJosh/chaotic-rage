@@ -120,17 +120,20 @@ class MapReg {
 		string name;
 		string title;
 		Mod* mod;
+		bool arcade;
 		
 	public:
-		MapReg() : name(""), title(""), mod(NULL) {}
-		MapReg(string name) : name(name), title(name), mod(NULL) {}
-		MapReg(string name, string title) : name(name), title(title), mod(NULL) {}
-		MapReg(string name, string title, Mod* mod) : name(name), title(title), mod(mod) {}
+		MapReg() : name(""), title(""), mod(NULL), arcade(true) {}
+		MapReg(string name) : name(name), title(name), mod(NULL), arcade(true) {}
+		MapReg(string name, string title) : name(name), title(title), mod(NULL), arcade(true) {}
+		MapReg(string name, string title, Mod* mod) : name(name), title(title), mod(mod), arcade(true) {}
+		MapReg(string name, string title, Mod* mod, bool arcade) : name(name), title(title), mod(mod), arcade(arcade) {}
 		
 	public:
 		string getName() { return this->name; }
 		string getTitle() { return this->title; }
 		Mod* getMod() { return this->mod; }
+		bool getArcade() { return this->arcade; }
 };
 
 

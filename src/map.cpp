@@ -815,10 +815,10 @@ void MapRegistry::find(string dir)
 void MapRegistry::find(Mod* mod)
 {
 	mod->loadMetadata();
-	vector<string>* mapnames = mod->getMapNames();
+	vector<MapReg>* maps = mod->getMaps();
 	
-	for (vector<string>::iterator it = mapnames->begin(); it != mapnames->end(); it++) {
-		maps.push_back(MapReg(*it, *it, mod));
+	for (vector<MapReg>::iterator it = maps->begin(); it != maps->end(); it++) {
+		this->maps.push_back(*it);
 	}
 }
 
@@ -833,3 +833,5 @@ MapReg * MapRegistry::get(string name)
 	}
 	return NULL;
 }
+
+
