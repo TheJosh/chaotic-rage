@@ -3,9 +3,7 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <iostream>
 #include <vector>
-#include <SDL.h>
 #include <confuse.h>
 
 using namespace std;

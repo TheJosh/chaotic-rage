@@ -3,7 +3,6 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <iostream>
-#include <SDL.h>
 #include <confuse.h>
 #include <zzip/zzip.h>
 #include <string>

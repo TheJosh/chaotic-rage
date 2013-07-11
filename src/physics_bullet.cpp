@@ -5,7 +5,6 @@
 #include <iostream>
 #include <algorithm>
 #include <map>
-#include <SDL.h>
 #include <btBulletDynamicsCommon.h>
 #include "rage.h"
 #include "physics_bullet.h"

@@ -4,7 +4,6 @@
 
 #pragma once
 #include <iostream>
-#include <SDL.h>
 #include "../rage.h"
 #include "../audio/audio.h"
 
