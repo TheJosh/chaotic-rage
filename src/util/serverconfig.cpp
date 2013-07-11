@@ -6,6 +6,7 @@
 #include <SDL.h>
 #include <confuse.h>
 #include "../rage.h"
+#include "serverconfig.h"
 
 
 using namespace std;

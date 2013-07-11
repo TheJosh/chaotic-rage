@@ -13,6 +13,7 @@
 #include "../rage.h"
 #include "../menu.h"
 #include "../http/serverlist.h"
+#include "../mod/mod_manager.h"
 #include "dialog.h"
 #include "newgame.h"
 

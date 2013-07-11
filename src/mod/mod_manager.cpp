@@ -10,6 +10,8 @@
 #include <zzip/zzip.h>
 #include "../rage.h"
 #include "../gamestate.h"
+#include "../util/ui_update.h"
+#include "../render/assimpmodel.h"
 #include "mod.h"
 #include "confuse_types.h"
 #include "aitype.h"
@@ -24,7 +26,6 @@
 #include "vehicletype.h"
 #include "weapontype.h"
 #include "gametype.h"
-#include "../render/assimpmodel.h"
 
 
 

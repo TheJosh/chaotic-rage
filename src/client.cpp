@@ -7,6 +7,7 @@
 #include "rage.h"
 #include "http/client_stats.h"
 #include "util/windowicon.h"
+#include "util/ui_update.h"
 #include "gamestate.h"
 #include "menu.h"
 #include "intro.h"

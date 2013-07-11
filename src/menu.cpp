@@ -33,6 +33,7 @@
 #include "mod/campaign.h"
 #include "net/net.h"
 #include "net/net_gameinfo.h"
+#include "util/obj.h"
 
 using namespace std;
 

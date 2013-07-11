@@ -9,6 +9,7 @@
 #include "../rage.h"
 #include "happyhttp.h"
 #include "url.h"
+#include "../util/ui_update.h"
 
 using namespace std;
 

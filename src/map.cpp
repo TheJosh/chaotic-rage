@@ -20,6 +20,7 @@
 #include "entity/vehicle.h"
 #include "entity/wall.h"
 #include "entity/pickup.h"
+#include "util/sdl_util.h"
 
 
 using namespace std;

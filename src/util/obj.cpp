@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <math.h>
 #include "../rage.h"
+#include "obj.h"
 
 using namespace std;
 

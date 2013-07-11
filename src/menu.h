@@ -7,7 +7,9 @@
 #include <SDL.h>
 #include <guichan.hpp>
 #include "rage.h"
-#include "gamestate.h"
+#include "render/render.h"
+#include "util/ui_update.h"
+
 
 using namespace std;
 

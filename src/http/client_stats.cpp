@@ -4,6 +4,7 @@
 
 #include <string>
 #include <iostream>
+#include <GL/gl.h>
 #include "../rage.h"
 #include "happyhttp.h"
 #include "url.h"

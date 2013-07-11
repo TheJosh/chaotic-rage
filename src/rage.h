@@ -6,9 +6,6 @@
 
 #include "platform/platform.h"
 #include <iostream>
-#include <SDL.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
 #include <vector>
 #include <list>
 #include <string>
@@ -109,7 +106,10 @@ class WavefrontObj;
 class Zone;
 
 
-#include "util/_util.h"
+#include "util/util.h"
+#include "util/debug.h"
+
+
 
 
 

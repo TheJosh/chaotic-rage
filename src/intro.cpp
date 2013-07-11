@@ -8,6 +8,7 @@
 #include "mod/mod.h"
 #include "mod/song.h"
 #include "audio/audio.h"
+#include "util/ui_update.h"
 #include "gamestate.h"
 
 
