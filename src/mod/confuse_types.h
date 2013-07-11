@@ -5,6 +5,7 @@
 #pragma once
 #include "../rage.h"
 #include "../util/quadratic.h"
+#include <confuse.h>
 #include <glm/glm.hpp>
 
 using namespace std;
@@ -23,3 +24,10 @@ glm::vec3 cfg_getvec3(cfg_t* cfg, const char* name);
 * The expected config type is CFG_FLOAT_LIST
 **/
 Quadratic cfg_getquadratic(cfg_t* cfg, const char* name);
+
+
+/**
+* Gets a range for a libconfuse config option.
+* A range is a min-max value pair in a list
+**/
+Range cfg_getrange(cfg_t *cfg, const char * name);

@@ -4,7 +4,7 @@
 
 #pragma once
 #include <btBulletDynamicsCommon.h>
-#include <list>
+#include <stdint.h>
 #include "../physics_bullet.h"
 
 
@@ -25,7 +25,7 @@ enum EntityClass {
 /**
 * Type for EIDs - unique entity identifiers, for network play
 **/
-typedef Uint16 EID;
+typedef uint16_t EID;
 
 
 class GameState;

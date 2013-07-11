@@ -37,8 +37,8 @@ class Light {
 		Light(unsigned int type);
 		~Light();
 		
-		void setDiffuse(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-		void setSpecular(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+		void setDiffuse(short r, short g, short b, short a);
+		void setSpecular(short r, short g, short b, short a);
 };
 
 

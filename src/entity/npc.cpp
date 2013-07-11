@@ -63,7 +63,7 @@ void NPC::update(int delta)
 	}
 }
 
-int NPC::takeDamage(int damage)
+int NPC::takeDamage(float damage)
 {
 	int result = Unit::takeDamage(damage);
 	

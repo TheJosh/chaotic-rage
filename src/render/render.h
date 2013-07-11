@@ -5,6 +5,7 @@
 #pragma once
 #include "../rage.h"
 #include <GL/gl.h>
+#include <SDL.h>
 
 
 using namespace std;

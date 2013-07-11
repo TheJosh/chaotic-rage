@@ -130,42 +130,6 @@ float pointPlusAngleY (float point_y, int angle, float distance)
 
 
 /**
-* Returns 1 if the two rectangles intersect, else returns 0
-**/
-int intersect (SDL_Rect one, SDL_Rect two)
-{
-	if (
-		(one.x > (two.x + two.w)) ||
-		((one.x + one.w) < two.x) ||
-		(one.y > (two.y + two.h)) ||
-		((one.y + one.h) < two.y)
-	) {
-		return 0;
-	}
-	
-	return 1;
-}
-
-
-/**
-* Returns 1 if a point is inside a rectangle, else returns 0
-**/
-int inside (SDL_Rect rect, int x, int y)
-{
-	if (
-		(x > rect.x) &&
-		(y > rect.y) &&
-		(x < rect.x + rect.w) &&
-		(y < rect.y + rect.h)
-	) {
-		return 1;
-	}
-	
-	return 0;
-}
-
-
-/**
 * Converts a pps distance, and a delta into a fixed pixel distance.
 * INTEGER version of function, for speed, position, etc.
 *
@@ -222,27 +186,6 @@ float getRandomf(float low, float high)
 	if (high < low) swap(low, high);
 	if (high == low) return low;
 	return ((float)rand()/(float)RAND_MAX) * (high - low) + low;
-}
-
-
-/**
-* Gets a range for a libconfuse config option.
-* A range is a min-max value pair in a list
-**/
-Range cfg_getrange(cfg_t *cfg, const char * name)
-{
-	Range res;
-	
-	if (cfg_size(cfg, name) == 1) {
-		res.min = cfg_getnint(cfg, name, 0);
-		res.max = res.min;
-		
-	} else {
-		res.min = cfg_getnint(cfg, name, 0);
-		res.max = cfg_getnint(cfg, name, 1);
-	}
-	
-	return res;
 }
 
 

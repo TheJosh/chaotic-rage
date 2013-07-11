@@ -6,6 +6,8 @@
 #include <math.h>
 #include <btBulletDynamicsCommon.h>
 #include <glm/glm.hpp>
+#include <SDL.h>
+
 #include "util/btStrideHeightfieldTerrainShape.h"
 #include "rage.h"
 #include "mod/confuse_types.h"
@@ -162,7 +164,7 @@ Light::~Light()
 {
 }
 
-void Light::setDiffuse(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+void Light::setDiffuse(short r, short g, short b, short a)
 {
 	this->diffuse[0] = r / 255.0f;
 	this->diffuse[1] = g / 255.0f;
@@ -170,7 +172,7 @@ void Light::setDiffuse(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 	this->diffuse[3] = a / 255.0f;
 }
 
-void Light::setSpecular(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+void Light::setSpecular(short r, short g, short b, short a)
 {
 	this->specular[0] = r / 255.0f;
 	this->specular[1] = g / 255.0f;

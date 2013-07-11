@@ -3,9 +3,6 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <SDL.h>
-#include <confuse.h>
-#include <zzip/zzip.h>
 #include "../rage.h"
 
 using namespace std;
@@ -33,10 +30,6 @@ int angleFromDesired(int current, int desired, int turn_speed);
 float pointPlusAngleX (float point_x, int angle, float distance);
 float pointPlusAngleY (float point_y, int angle, float distance);
 
-// Boxes and stuff
-int intersect (SDL_Rect one, SDL_Rect two);
-int inside (SDL_Rect rect, int x, int y);
-
 // Time
 int ppsDeltai(int pps, int delta);
 float ppsDeltaf(float pps, int delta);
@@ -46,9 +39,6 @@ float mpsDeltaf(float mps, int delta);
 void seedRandom();
 int getRandom(int low, int high);
 float getRandomf(float low, float high);
-
-// libconfuse helpers
-Range cfg_getrange(cfg_t *cfg, const char * name);
 
 // Game mods
 string getDataDirectory(int datafile);

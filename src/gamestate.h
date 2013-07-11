@@ -10,29 +10,12 @@
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
 
-
 #include "entity/unit.h"
 #include "entity/wall.h"
 #include "entity/vehicle.h"
 #include "entity/object.h"
 #include "entity/pickup.h"
 #include "entity/ammo_round.h"
-
-#if 0
-#include "gui/dialog.h"
-#include "render/render.h"
-#include "audio/audio.h"
-#include "lua/gamelogic.h"
-#include "net/net_client.h"
-#include "net/net_server.h"
-#include "physics_bullet.h"
-#include "util/cmdline.h"
-#include "util/clientconfig.h"
-#include "util/serverconfig.h"
-#include "mod/mod_manager.h"
-#include "map.h"
-#include "render/hud_label.h"
-#endif
 
 
 using namespace std;

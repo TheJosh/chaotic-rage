@@ -4,8 +4,9 @@
 
 #pragma once
 #include <list>
-#include <list>
+#include <confuse.h>
 #include "../rage.h"
+#include "mod.h"
 
 using namespace std;
 
