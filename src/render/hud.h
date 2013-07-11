@@ -3,7 +3,6 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <iostream>
 #include <SDL.h>
 #include "../rage.h"
 #include "hud_label.h"
@@ -42,7 +41,7 @@ class HUD {
 		void addMessage(string text);
 		void addMessage(string text1, string text2);
 		
-		HUDLabel * addLabel(int x, int y, string data);
+		HUDLabel * addLabel(float x, float y, string data);
 };
 
 

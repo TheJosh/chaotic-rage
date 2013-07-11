@@ -179,8 +179,7 @@ void AnimPlay::pause()
 **/
 void AnimPlay::resume()
 {
-	float time_elapsed = st->game_time - this->pause_time;
-	this->start_time += time_elapsed;
+	this->start_time += (st->game_time - this->pause_time);
 	this->pause_time = 0;
 }
 
@@ -372,6 +371,7 @@ unsigned int AnimPlay::findFrameTime(vector<AssimpAnimKey>* keys, float animTick
 	}
 	
 	assert(0);
+	return 0;
 }
 
 

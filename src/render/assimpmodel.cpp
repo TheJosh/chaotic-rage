@@ -420,8 +420,8 @@ AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
 
 	out = new AssimpAnimation();
 	out->name = std::string(anim->mName.C_Str());
-	out->ticsPerSec = anim->mTicksPerSecond;
-	out->duration = anim->mDuration;
+	out->ticsPerSec = (float)anim->mTicksPerSecond;
+	out->duration = (float)anim->mDuration;
 
 	// Load animation channels
 	out->anims.reserve(anim->mNumChannels);
@@ -434,7 +434,7 @@ AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
 		// Positions
 		na->position.reserve(pNodeAnim->mNumPositionKeys);
 		for (m = 0; m < pNodeAnim->mNumPositionKeys; m++) {
-			key.time = pNodeAnim->mPositionKeys[m].mTime;
+			key.time = (float)pNodeAnim->mPositionKeys[m].mTime;
 			key.vec = this->convVector(pNodeAnim->mPositionKeys[m].mValue);
 			na->position.push_back(key);
 		}
@@ -442,7 +442,7 @@ AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
 		// Rotations
 		na->rotation.reserve(pNodeAnim->mNumRotationKeys);
 		for (m = 0; m < pNodeAnim->mNumRotationKeys; m++) {
-			key.time = pNodeAnim->mRotationKeys[m].mTime;
+			key.time = (float)pNodeAnim->mRotationKeys[m].mTime;
 			key.quat = this->convQuaternion(pNodeAnim->mRotationKeys[m].mValue);
 			na->rotation.push_back(key);
 		}
@@ -450,7 +450,7 @@ AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
 		// Scales
 		na->scale.reserve(pNodeAnim->mNumScalingKeys);
 		for (m = 0; m < pNodeAnim->mNumScalingKeys; m++) {
-			key.time = pNodeAnim->mScalingKeys[m].mTime;
+			key.time = (float)pNodeAnim->mScalingKeys[m].mTime;
 			key.vec = this->convVector(pNodeAnim->mScalingKeys[m].mValue);
 			na->scale.push_back(key);
 		}

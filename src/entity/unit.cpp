@@ -504,7 +504,7 @@ void Unit::update(int delta)
 /**
 * We have been hit! Take some damage
 **/
-int Unit::takeDamage(int damage)
+int Unit::takeDamage(float damage)
 {
 	this->health -= damage;
 	

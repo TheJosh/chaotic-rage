@@ -42,7 +42,7 @@ void HUD::addMessage(string text1, string text2)
 /**
 * Add a data table to the HUD
 **/
-HUDLabel * HUD::addLabel(int x, int y, string data)
+HUDLabel * HUD::addLabel(float x, float y, string data)
 {
 	HUDLabel * l = new HUDLabel(x, y, data);
 	l->width = ((Render3D*)this->ps->st->render)->virt_width;
@@ -86,7 +86,7 @@ void HUD::render(Render3D * render)
 		
 	} else {
 		// Messages
-		int y = 1000;
+		float y = 1000.0f;
 		for (list<HUDMessage*>::iterator it = this->msgs.begin(); it != this->msgs.end(); it++) {
 			HUDMessage *msg = (*it);
 			
@@ -95,7 +95,7 @@ void HUD::render(Render3D * render)
 				continue;
 			}
 			
-			y -= 20;
+			y -= 20.0f;
 			render->renderText(msg->text, 20.0f, y);
 		}
 		

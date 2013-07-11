@@ -207,7 +207,7 @@ float mpsDeltaf(float mps, int delta)
 
 void seedRandom()
 {
-	srand (time(NULL));
+	srand(time(NULL));
 }
 
 int getRandom(int low, int high)

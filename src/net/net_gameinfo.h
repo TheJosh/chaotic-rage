@@ -3,7 +3,6 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <iostream>
 #include <list>
 #include "../rage.h"
 #include "net.h"

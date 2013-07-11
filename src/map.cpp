@@ -164,18 +164,18 @@ Light::~Light()
 
 void Light::setDiffuse(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
-	this->diffuse[0] = r / 255.0;
-	this->diffuse[1] = g / 255.0;
-	this->diffuse[2] = b / 255.0;
-	this->diffuse[3] = a / 255.0;
+	this->diffuse[0] = r / 255.0f;
+	this->diffuse[1] = g / 255.0f;
+	this->diffuse[2] = b / 255.0f;
+	this->diffuse[3] = a / 255.0f;
 }
 
 void Light::setSpecular(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
-	this->specular[0] = r / 255.0;
-	this->specular[1] = g / 255.0;
-	this->specular[2] = b / 255.0;
-	this->specular[3] = a / 255.0;
+	this->specular[0] = r / 255.0f;
+	this->specular[1] = g / 255.0f;
+	this->specular[2] = b / 255.0f;
+	this->specular[3] = a / 255.0f;
 }
 
 

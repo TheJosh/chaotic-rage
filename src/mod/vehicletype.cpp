@@ -65,8 +65,8 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	wt = new VehicleType();
 	wt->name = cfg_getstr(cfg_item, "name");
 	wt->health = cfg_getint(cfg_item, "health");
-	wt->land = cfg_getint(cfg_item, "land");
-	wt->water = cfg_getint(cfg_item, "water");
+	wt->land = (cfg_getint(cfg_item, "land") == 1);
+	wt->water = (cfg_getint(cfg_item, "water") == 1);
 
 	wt->engine_accel = cfg_getfloat(cfg_item, "engine-accel");
 	wt->engine_max = cfg_getfloat(cfg_item, "engine-max");

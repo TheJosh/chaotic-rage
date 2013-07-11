@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 #include <SDL.h>
 #include "../rage.h"
 #include "../gamestate.h"

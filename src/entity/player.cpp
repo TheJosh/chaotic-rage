@@ -231,7 +231,10 @@ void Player::update(int delta)
 }
 
 
-int Player::takeDamage(int damage)
+/**
+* Receive damage from an outside source
+**/
+int Player::takeDamage(float damage)
 {
 	int result = Unit::takeDamage(damage);
 	

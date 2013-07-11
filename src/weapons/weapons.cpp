@@ -94,8 +94,8 @@ void WeaponDigdown::doFire(Unit *u, btTransform &origin)
 		if (body && !body->getUserPointer()) {
 			// Hit the ground, lets dig a hole
 			Map* map = u->getGameState()->map;
-			int mapX = begin.x() / map->width * map->heightmap_sx;
-			int mapY = begin.z() / map->height * map->heightmap_sz;
+			int mapX = ((int)begin.x()) / map->width * map->heightmap_sx;
+			int mapY = ((int)begin.z()) / map->height * map->heightmap_sz;
 
 			heightmapCircle(map, mapX, mapY, this->radius, this->depth);
 
@@ -118,7 +118,7 @@ void heightmapCircle(Map* map, int x0, int y0, int radius, float depthadd)
 			d = (radius * radius) - ((x * x) + (y * y));
 			if (d > 0) {
 				// distance in = d
-				map->heightmapAdd(x0 + x, y0 + y, depthadd * d * 0.14);
+				map->heightmapAdd(x0 + x, y0 + y, depthadd * d * 0.14f);
 			}
 		}
 	}

@@ -175,8 +175,8 @@ void RenderDebug::render()
 		
 		btTransform trans = e->getTransform();
 		
-		dest.x = (trans.getOrigin().getX() / scalex) - 8;
-		dest.y = (trans.getOrigin().getZ() / scaley) - 8;
+		dest.x = (int)round(trans.getOrigin().getX() / scalex) - 8;
+		dest.y = (int)round(trans.getOrigin().getZ() / scaley) - 8;
 		
 		if (e->klass() == WALL) {
 			SDL_BlitSurface(this->sprite_wall, &src, screen, &dest);

@@ -67,7 +67,7 @@ Sound* Wall::getSound()
 /**
 * We have been hit! Take some damage
 **/
-void Wall::takeDamage(int damage)
+void Wall::takeDamage(float damage)
 {
 	this->health -= damage;
 	if (this->health < 0) this->health = 0;

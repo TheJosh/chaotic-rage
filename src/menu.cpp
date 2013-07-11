@@ -276,13 +276,13 @@ void Menu::updateUI()
 
 	// Background animation
 	bg_rot1_pos += bg_rot1_dir;
-	if (bg_rot1_pos >= 10.0 or bg_rot1_pos <= -10.0) {
-		bg_rot1_dir = 0.0 - bg_rot1_dir;
+	if (bg_rot1_pos >= 10.0f or bg_rot1_pos <= -10.0f) {
+		bg_rot1_dir = 0.0f - bg_rot1_dir;
 	}
 	
 	bg_rot2_pos += bg_rot2_dir;
-	if (bg_rot2_pos >= 3.0 or bg_rot2_pos <= -3.0) {
-		bg_rot2_dir = 0.0 - bg_rot2_dir;
+	if (bg_rot2_pos >= 3.0f or bg_rot2_pos <= -3.0f) {
+		bg_rot2_dir = 0.0f - bg_rot2_dir;
 	}
 
 
@@ -376,12 +376,12 @@ void Menu::menuRender()
 	for (unsigned int i = 0; i < this->menuitems.size(); i++) {
 		MenuItem * m = this->menuitems.at(i);
 		
-		render->renderText(m->name, m->x1 + 1, m->y1 + 20 + 1, 0.1, 0.1, 0.1);
+		render->renderText(m->name, m->x1 + 1, m->y1 + 20 + 1, 0.1f, 0.1f, 0.1f);
 		
 		if (m->hover) {
-			render->renderText(m->name, m->x1, m->y1 + 20, 161.0/255.0, 0.0, 0.0);
+			render->renderText(m->name, m->x1, m->y1 + 20, 161.0f/255.0f, 0.0f, 0.0f);
 		} else {
-			render->renderText(m->name, m->x1, m->y1 + 20, 1.0, 1.0, 1.0);
+			render->renderText(m->name, m->x1, m->y1 + 20, 1.0f, 1.0f, 1.0f);
 		}
 	}
 }

@@ -5,7 +5,6 @@
 #pragma once
 
 #include "platform/platform.h"
-#include <iostream>
 #include <vector>
 #include <list>
 #include <string>
