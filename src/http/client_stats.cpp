@@ -4,7 +4,13 @@
 
 #include <string>
 #include <iostream>
+
+#include <GL/glew.h>
 #include <GL/gl.h>
+#if defined(__WIN32__)
+	#include <GL/glext.h>
+#endif
+
 #include "../rage.h"
 #include "happyhttp.h"
 #include "url.h"
