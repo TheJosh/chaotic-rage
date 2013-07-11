@@ -10,6 +10,9 @@
 #include "../mod/unittype.h"
 #include "../mod/aitype.h"
 #include "../lua/ailogic.h"
+#include "../audio/audio.h"
+#include "../mod/mod_manager.h"
+#include  "../lua/gamelogic.h"
 #include "npc.h"
 
 

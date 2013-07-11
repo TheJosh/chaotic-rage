@@ -12,6 +12,8 @@
 #include "../rage.h"
 #include "../gamestate.h"
 #include "../util/quadratic.h"
+#include "../map.h"
+#include "../fx/newparticle.h"
 #include "weapons.h"
 
 using namespace std;

@@ -6,6 +6,7 @@
 #include <math.h>
 #include "../rage.h"
 #include "../gamestate.h"
+#include "../lua/gamelogic.h"
 #include "../render/animplay.h"
 #include "../mod/unittype.h"
 #include "../mod/vehicletype.h"

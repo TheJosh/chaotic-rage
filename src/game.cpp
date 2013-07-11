@@ -7,7 +7,14 @@
 #include <math.h>
 #include "rage.h"
 #include "gamestate.h"
+#include "map.h"
+#include "render/render.h"
+#include "audio/audio.h"
+#include "lua/gamelogic.h"
+#include "net/net_client.h"
+#include "net/net_server.h"
 #include "entity/player.h"
+#include "util/serverconfig.h"
 #include "game.h"
 
 

@@ -9,12 +9,15 @@
 #include "../util/btCRKinematicCharacterController.h"
 #include "../rage.h"
 #include "../gamestate.h"
+#include "../mod/mod_manager.h"
 #include "../mod/pickuptype.h"
 #include "../mod/unittype.h"
 #include "../mod/objecttype.h"
 #include "../mod/vehicletype.h"
 #include "../mod/weapontype.h"
 #include "../render/animplay.h"
+#include "../net/net_server.h"
+#include "../fx/newparticle.h"
 #include "unit.h"
 
 using namespace std;

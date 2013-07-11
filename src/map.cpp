@@ -14,6 +14,7 @@
 #include "render/animplay.h"
 #include "render/render_3d.h"
 #include "mod/mod.h"
+#include "mod/mod_manager.h"
 #include "mod/mod_proxy.h"
 #include "gamestate.h"
 #include "entity/object.h"

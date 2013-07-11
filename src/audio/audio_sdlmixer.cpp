@@ -10,6 +10,7 @@
 #include "../rage.h"
 #include "audio_sdlmixer.h"
 #include "../mod/mod.h"
+#include "../mod/mod_manager.h"
 #include "../mod/sound.h"
 #include "../mod/song.h"
 #include "../entity/entity.h"

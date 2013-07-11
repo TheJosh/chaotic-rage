@@ -8,6 +8,8 @@
 #include <SDL_net.h>
 #include "../rage.h"
 #include "../gamestate.h"
+#include "../map.h"
+#include "../lua/gamelogic.h"
 #include "../entity/player.h"
 #include "net.h"
 #include "net_server.h"

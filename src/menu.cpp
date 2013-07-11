@@ -23,6 +23,7 @@
 #include "rage.h"
 #include "menu.h"
 #include "render/render_opengl.h"
+#include "audio/audio.h"
 #include "gamestate.h"
 #include "gui/client_settings.h"
 #include "gui/newcampaign.h"
@@ -32,8 +33,13 @@
 #include "gui/controls.h"
 #include "mod/campaign.h"
 #include "net/net.h"
+#include "net/net_client.h"
+#include "net/net_server.h"
 #include "net/net_gameinfo.h"
 #include "util/obj.h"
+#include "mod/mod_manager.h"
+#include "map.h"
+#include "lua/gamelogic.h"
 
 using namespace std;
 

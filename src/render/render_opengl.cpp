@@ -22,6 +22,8 @@
 #include "../util/obj.h"
 #include "../util/sdl_util.h"
 #include "../util/SDL_rwops_zzip.h"
+#include "../fx/newparticle.h"
+#include "../mod/mod_manager.h"
 #include "render_opengl.h"
 #include "render_opengl_settings.h"
 #include "glshader.h"

@@ -8,9 +8,14 @@
 #include "../rage.h"
 #include "../gamestate.h"
 #include "../zone.h"
+#include "../map.h"
 #include "../entity/player.h"
 #include "../entity/npc.h"
+#include "../render/render.h"
+#include "../mod/mod_manager.h"
 #include "lua_libs.h"
+#include "gamelogic.h"
+
 
 extern "C" {
 	#include <lua.h>

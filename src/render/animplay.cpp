@@ -6,6 +6,7 @@
 #include <SDL.h>
 #include "../rage.h"
 #include "../gamestate.h"
+#include "../mod/mod.h"
 #include "animplay.h"
 #include "assimpmodel.h"
 #include "render.h"

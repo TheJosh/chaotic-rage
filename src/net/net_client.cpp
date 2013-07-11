@@ -8,6 +8,7 @@
 #include "../rage.h"
 #include "../gamestate.h"
 #include "../entity/player.h"
+#include "../mod/mod_manager.h"
 #include "net.h"
 #include "net_client.h"
 #include "net_gameinfo.h"

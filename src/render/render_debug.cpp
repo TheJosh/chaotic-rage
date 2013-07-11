@@ -5,6 +5,7 @@
 #include <iostream>
 #include "../rage.h"
 #include "../gamestate.h"
+#include "../map.h"
 #include "render_debug.h"
 #include <SDL_image.h>
 

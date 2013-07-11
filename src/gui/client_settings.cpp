@@ -16,6 +16,7 @@
 #include "../render/render_opengl_settings.h"
 #include "../render/guichan_imageloader.h"
 #include "../mod/mod.h"
+#include "../util/clientconfig.h"
 #include "dialog.h"
 #include "client_settings.h"
 

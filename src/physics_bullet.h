@@ -4,6 +4,7 @@
 
 #pragma once
 #include <iostream>
+#include <map>
 #include <btBulletDynamicsCommon.h>
 #include "rage.h"
 
@@ -46,7 +47,7 @@ class PhysicsBullet
 	public:
 		// I like to keep all of my mask suff in one place (this class).
 		// Various constants to achieve that goal
-		map<int, int> masks;
+		std::map<int, int> masks;
 		static const int mask_entities = (CG_WALL | CG_OBJECT | CG_UNIT | CG_VEHICLE);
 
 	public:

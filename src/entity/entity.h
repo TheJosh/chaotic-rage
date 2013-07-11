@@ -5,6 +5,8 @@
 #pragma once
 #include <btBulletDynamicsCommon.h>
 #include <list>
+#include "../physics_bullet.h"
+
 
 using namespace std;
 

@@ -7,6 +7,7 @@
 #include <SDL.h>
 #include "../rage.h"
 #include "../gamestate.h"
+#include "../mod/mod.h"
 #include "render.h"
 
 using namespace std;

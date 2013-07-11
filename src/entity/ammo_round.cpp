@@ -6,6 +6,7 @@
 #include <math.h>
 #include "../rage.h"
 #include "../gamestate.h"
+#include "../physics_bullet.h"
 #include "../render/animplay.h"
 #include "../mod/weapontype.h"
 #include "ammo_round.h"

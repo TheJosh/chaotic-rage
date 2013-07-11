@@ -4,14 +4,21 @@
 
 #pragma once
 
+#include "rage.h"
 #include "entity/entity.h"
-#include "fx/newparticle.h"
+#include <btBulletDynamicsCommon.h>
+#include <guichan.hpp>
+#include <guichan/sdl.hpp>
+
+
 #include "entity/unit.h"
 #include "entity/wall.h"
 #include "entity/vehicle.h"
 #include "entity/object.h"
 #include "entity/pickup.h"
 #include "entity/ammo_round.h"
+
+#if 0
 #include "gui/dialog.h"
 #include "render/render.h"
 #include "audio/audio.h"
@@ -25,9 +32,7 @@
 #include "mod/mod_manager.h"
 #include "map.h"
 #include "render/hud_label.h"
-
-#include <guichan.hpp>
-#include <guichan/sdl.hpp>
+#endif
 
 
 using namespace std;
@@ -207,5 +212,4 @@ class GameState
 
 
 GameState * getGameState();
-
 

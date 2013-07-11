@@ -11,6 +11,7 @@
 
 #include "../rage.h"
 #include "../gamestate.h"
+#include "../fx/newparticle.h"
 #include "ghost_objects.h"
 #include "weapons.h"
 
