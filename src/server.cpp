@@ -5,7 +5,11 @@
 #include <iostream>
 #include <SDL.h>
 #include "rage.h"
-
+#include "gamestate.h"
+#include "menu.h"
+#include "intro.h"
+#include "render/render_debug.h"
+#include "audio/audio_null.h"
 
 using namespace std;
 

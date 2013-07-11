@@ -9,6 +9,8 @@
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include "../util/quadratic.h"
 #include "../rage.h"
+#include "../mod/weapontype.h"
+
 
 using namespace std;
 
@@ -22,6 +24,7 @@ using namespace std;
 #define WEAPON_TYPE_REMOTE_TRIG 7
 #define WEAPON_TYPE_ROCKET 8
 #define WEAPON_TYPE_ATTRACTOR 9
+
 
 
 /**

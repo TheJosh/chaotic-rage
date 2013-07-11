@@ -9,8 +9,14 @@
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include "../util/btCRKinematicCharacterController.h"
 #include "../rage.h"
+#include "../gamestate.h"
 #include "../mod/pickuptype.h"
 #include "../mod/unittype.h"
+#include "../mod/objecttype.h"
+#include "../mod/vehicletype.h"
+#include "../mod/weapontype.h"
+#include "../render/animplay.h"
+#include "unit.h"
 
 using namespace std;
 

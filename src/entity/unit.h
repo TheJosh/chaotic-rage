@@ -3,20 +3,39 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <iostream>
-#include <SDL.h>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include "../util/btCRKinematicCharacterController.h"
-#include "../rage.h"
-#include "../mod/pickuptype.h"
+
+#include "entity.h"
 #include "../mod/unittype.h"
+
 
 using namespace std;
 
 
 class PickupTypeAdjust;
 class UnitParams;
+class Entity;
+class WeaponType;
+class Unit;
+class PickupType;
+class Vehicle;
+class Object;
+class UnitType;
 
+
+enum Faction {
+	FACTION_INDIVIDUAL = 0,
+	FACTION_TEAM1 = 1,
+	FACTION_TEAM2 = 2,
+	FACTION_TEAM3 = 3,
+	FACTION_TEAM4 = 4,
+	FACTION_TEAM5 = 5,
+	FACTION_TEAM6 = 6,
+	FACTION_TEAM7 = 7,
+	FACTION_TEAM8 = 8,
+	FACTION_COMMON = 9,
+};
 
 class UnitWeapon {
 	friend class Unit;

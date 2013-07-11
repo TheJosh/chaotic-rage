@@ -13,9 +13,13 @@ extern "C" {
 }
 
 #include "../rage.h"
+#include "../gamestate.h"
 #include "../mod/unittype.h"
+#include "../entity/npc.h"
+#include "../entity/unit.h"
 #include "luatimer.h"
 #include "lua_libs.h"
+#include "ailogic.h"
 
 
 using namespace std;

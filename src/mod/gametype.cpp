@@ -7,6 +7,8 @@
 #include <confuse.h>
 #include <zzip/zzip.h>
 #include "../rage.h"
+#include "mod.h"
+#include "gametype.h"
 
 using namespace std;
 

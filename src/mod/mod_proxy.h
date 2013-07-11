@@ -10,6 +10,8 @@
 
 using namespace std;
 
+class Mod;
+
 
 /**
 * Proxies one mod into the directory of another

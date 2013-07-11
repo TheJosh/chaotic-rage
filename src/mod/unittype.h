@@ -4,9 +4,9 @@
 
 #pragma once
 #include <iostream>
+#include <vector>
 #include <SDL.h>
 #include <confuse.h>
-#include "../rage.h"
 
 using namespace std;
 
@@ -26,6 +26,9 @@ using namespace std;
 
 
 class UnitType;
+class Mod;
+class WeaponType;
+class AssimpModel;
 
 
 class UnitTypeAnimation

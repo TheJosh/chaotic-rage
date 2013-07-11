@@ -9,15 +9,20 @@
 #include <guichan/sdl.hpp>
 #include <guichan/opengl.hpp>
 #include <guichan/opengl/openglsdlimageloader.hpp>
+
 #include "../rage.h"
-#include "dialog.h"
 #include "../http/serverlist.h"
+#include "../render/guichan_imageloader.h"
+#include "../mod/mod.h"
+#include "../mod/mod_manager.h"
+#include "../menu.h"
+#include "dialog.h"
+#include "mods.h"
 
 #include <SDL_image.h>
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
 #include <guichan/opengl.hpp>
-#include "../render/guichan_imageloader.h"
 
 
 using namespace std;

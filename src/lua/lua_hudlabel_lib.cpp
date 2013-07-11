@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "../rage.h"
+#include "../render/hud_label.h"
 #include "lua_libs.h"
 
 extern "C" {

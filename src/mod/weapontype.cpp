@@ -8,6 +8,10 @@
 #include <zzip/zzip.h>
 #include "../rage.h"
 #include "../util/quadratic.h"
+#include "mod.h"
+#include "weapontype.h"
+#include "../weapons/weapons.h"
+
 
 using namespace std;
 

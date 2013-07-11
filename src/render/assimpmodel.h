@@ -10,6 +10,7 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include "../rage.h"
+#include "render.h"
 
 using namespace std;
 
@@ -33,6 +34,7 @@ class AssimpMesh;
 class AssimpModel;
 class AssimpNode;
 class AssimpNodeAnim;
+class Mod;
 
 
 class AssimpBone

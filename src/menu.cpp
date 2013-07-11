@@ -22,7 +22,17 @@
 
 #include "rage.h"
 #include "menu.h"
-
+#include "render/render_opengl.h"
+#include "gamestate.h"
+#include "gui/client_settings.h"
+#include "gui/newcampaign.h"
+#include "gui/newgame.h"
+#include "gui/network.h"
+#include "gui/mods.h"
+#include "gui/controls.h"
+#include "mod/campaign.h"
+#include "net/net.h"
+#include "net/net_gameinfo.h"
 
 using namespace std;
 

@@ -9,6 +9,10 @@
 #include <zzip/zzip.h>
 #include "pickuptype.h"
 #include "../rage.h"
+#include "../gamestate.h"
+#include "mod.h"
+#include "weapontype.h"
+
 
 using namespace std;
 

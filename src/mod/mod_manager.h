@@ -10,6 +10,23 @@
 using namespace std;
 
 
+class Mod;
+class GameState;
+class AIType;
+class Campaign;
+class FloorType;
+class GameType;
+class ObjectType;
+class PickupType;
+class Song;
+class Sound;
+class UnitType;
+class VehicleType;
+class WallType;
+class WeaponType;
+class AssimpModel;
+
+
 class ModManager {
 	private:
 		vector<Mod*> * mods;

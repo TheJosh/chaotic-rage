@@ -7,6 +7,8 @@
 #include <confuse.h>
 #include <zzip/zzip.h>
 #include "../rage.h"
+#include "mod.h"
+#include "song.h"
 
 using namespace std;
 

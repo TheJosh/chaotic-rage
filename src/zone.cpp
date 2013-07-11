@@ -5,6 +5,7 @@
 #include <iostream>
 #include <SDL.h>
 #include "rage.h"
+#include "zone.h"
 
 using namespace std;
 

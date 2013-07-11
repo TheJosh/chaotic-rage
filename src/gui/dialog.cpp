@@ -10,6 +10,7 @@
 #include <guichan/opengl.hpp>
 #include <guichan/opengl/openglsdlimageloader.hpp>
 #include "../rage.h"
+#include "../gamestate.h"
 #include "dialog.h"
 
 

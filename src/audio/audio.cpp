@@ -6,9 +6,11 @@
 #include <algorithm>
 #include <SDL.h>
 #include "../rage.h"
+#include "audio.h"
+#include "../gamestate.h"
+
 
 using namespace std;
-
 
 
 Audio::Audio(GameState * st)

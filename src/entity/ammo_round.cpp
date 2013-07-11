@@ -6,6 +6,11 @@
 #include <SDL.h>
 #include <math.h>
 #include "../rage.h"
+#include "../gamestate.h"
+#include "../render/animplay.h"
+#include "../mod/weapontype.h"
+#include "ammo_round.h"
+#include "unit.h"
 
 using namespace std;
 

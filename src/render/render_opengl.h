@@ -9,6 +9,7 @@
 
 #include "../rage.h"
 #include "glshader.h"
+#include "render_3d.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H

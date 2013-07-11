@@ -4,12 +4,8 @@
 
 #pragma once
 #include <string>
-#include <iostream>
-#include <vector>
 #include <list>
-#include "../rage.h"
-
-using namespace std;
+#include <vector>
 
 class GameState;
 
@@ -35,20 +31,20 @@ class GameState;
 * Example return value:
 *    /home/josh/.chaoticrage/
 **/
-string getUserDataDir();
+std::string getUserDataDir();
 
 
 /**
 * Reports a fatal error, and then exits.
 * The message should not include a trailing newline.
 **/
-void reportFatalError(string msg);
+void reportFatalError(std::string msg);
 
 
 /**
 * Shows a message box (like a non-fatal error)
 **/
-void displayMessageBox(string msg);
+void displayMessageBox(std::string msg);
 
 
 /**
@@ -62,7 +58,7 @@ void displayMessageBox(string msg);
 *
 * Please free the result when you are done.
 **/
-list<string> * getSystemModNames();
+std::list<std::string> * getSystemModNames();
 
 
 /**
@@ -77,6 +73,6 @@ list<string> * getSystemModNames();
 *
 * Please free the result when you are done.
 **/
-vector<string> * getUserModFilenames();
+std::vector<std::string> * getUserModFilenames();
 
 

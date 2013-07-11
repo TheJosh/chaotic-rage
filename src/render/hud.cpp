@@ -5,7 +5,11 @@
 #include <iostream>
 #include <SDL.h>
 #include "../rage.h"
-
+#include "../gamestate.h"
+#include "../entity/player.h"
+#include "../mod/weapontype.h"
+#include "hud.h"
+#include "render_3d.h"
 
 using namespace std;
 

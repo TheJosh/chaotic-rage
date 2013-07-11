@@ -7,6 +7,10 @@
 #include <confuse.h>
 #include <zzip/zzip.h>
 #include "../rage.h"
+#include "../audio/audio.h"
+#include "../gamestate.h"
+#include "mod.h"
+#include "sound.h"
 
 using namespace std;
 

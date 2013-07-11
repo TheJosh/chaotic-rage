@@ -6,7 +6,13 @@
 #include <SDL.h>
 #include <confuse.h>
 #include "../rage.h"
+#include "../gamestate.h"
+#include "../render/render_opengl.h"
 #include "../render/render_opengl_settings.h"
+#include "../audio/audio_sdlmixer.h"
+#include "../mod/mod_manager.h"
+#include "../physics_bullet.h"
+#include "clientconfig.h"
 
 
 using namespace std;

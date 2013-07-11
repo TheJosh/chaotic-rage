@@ -6,7 +6,11 @@
 #include <math.h>
 #include <SDL_net.h>
 #include "../rage.h"
+#include "../gamestate.h"
+#include "../entity/player.h"
 #include "net.h"
+#include "net_client.h"
+#include "net_gameinfo.h"
 
 using namespace std;
 

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <SDL.h>
 #include "../rage.h"
+#include "../gamestate.h"
 
 extern "C" {
 	#include <lua.h>

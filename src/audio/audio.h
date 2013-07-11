@@ -10,7 +10,10 @@
 
 using namespace std;
 
+
 typedef Mix_Chunk* AudioPtr;
+
+class GameState;
 
 
 class Audio

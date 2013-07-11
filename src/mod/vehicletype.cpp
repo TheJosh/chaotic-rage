@@ -7,6 +7,10 @@
 #include <confuse.h>
 #include <zzip/zzip.h>
 #include "../rage.h"
+#include "mod.h"
+#include "vehicletype.h"
+#include "confuse_types.h"
+
 
 using namespace std;
 

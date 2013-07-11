@@ -6,11 +6,18 @@
 #include <iostream>
 #include <map>
 #include <algorithm>
+#include <vector>
+#include <list>
+
 #include <SDL.h>
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
 #include <math.h>
-#include "rage.h"
+
+#include "gamestate.h"
+#include "render/hud.h"
+#include "entity/decaying.h"
+#include "render/render_3d.h"
 
 using namespace std;
 

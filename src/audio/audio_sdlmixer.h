@@ -7,8 +7,16 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 #include "../rage.h"
+#include "audio.h"
 
 using namespace std;
+
+
+class GameState;
+class Mod;
+class Sound;
+class Entity;
+class Song;
 
 
 class AudioSDLMixer : Audio

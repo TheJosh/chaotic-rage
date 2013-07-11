@@ -7,6 +7,9 @@
 #include <confuse.h>
 #include <zzip/zzip.h>
 #include "../rage.h"
+#include "../gamestate.h"
+#include "mod.h"
+#include "floortype.h"
 
 using namespace std;
 

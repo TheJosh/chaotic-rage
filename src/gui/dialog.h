@@ -3,13 +3,21 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <iostream>
-#include <SDL.h>
+#include <vector>
 #include <guichan.hpp>
+#include "../map.h"
+#include "../mod/mod.h"
+#include "../mod/gametype.h"
 #include "../rage.h"
+
 
 using namespace std;
 
+
+class MapRegistry;
+class GameType;
+class Mod;
+class GameType;
 
 
 class VectorListModel: public gcn::ListModel

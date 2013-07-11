@@ -9,7 +9,7 @@
 #include <shlwapi.h>
 #include <SDL.h>
 #include <SDL_syswm.h>
-#include "../rage.h"
+#include "../gamestate.h"
 
 #pragma comment(lib,"shlwapi.lib")
 

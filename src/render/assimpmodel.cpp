@@ -21,8 +21,10 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "assimpmodel.h"
 #include "../rage.h"
+#include "../mod/mod.h"
+#include "assimpmodel.h"
+#include "render_opengl.h"
 
 using namespace std;
 

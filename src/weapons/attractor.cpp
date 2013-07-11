@@ -8,9 +8,14 @@
 #include <zzip/zzip.h>
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
+
 #include "../rage.h"
-#include "ghost_objects.h"
+#include "../gamestate.h"
 #include "../util/quadratic.h"
+#include "../entity/ammo_round.h"
+#include "../entity/unit.h"
+#include "ghost_objects.h"
+#include "weapons.h"
 
 using namespace std;
 

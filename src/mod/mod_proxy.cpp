@@ -6,6 +6,8 @@
 #include <string>
 #include <SDL.h>
 #include "../rage.h"
+#include "mod.h"
+#include "mod_proxy.h"
 
 using namespace std;
 

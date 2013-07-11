@@ -7,7 +7,6 @@
 #include <SDL.h>
 #include <btBulletDynamicsCommon.h>
 #include <list>
-#include "../rage.h"
 
 using namespace std;
 
@@ -28,6 +27,10 @@ enum EntityClass {
 **/
 typedef Uint16 EID;
 
+
+class GameState;
+class AnimPlay;
+class Sound;
 
 class Entity
 {

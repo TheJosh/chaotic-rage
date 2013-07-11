@@ -6,6 +6,7 @@
 #include <iostream>
 #include <SDL.h>
 #include "../rage.h"
+#include "../map.h"
 #include <map>
 
 #ifndef O_BINARY
@@ -14,6 +15,21 @@
 
 
 using namespace std;
+
+
+class AIType;
+class Campaign;
+class FloorType;
+class GameType;
+class ObjectType;
+class PickupType;
+class Song;
+class Sound;
+class UnitType;
+class VehicleType;
+class WallType;
+class WeaponType;
+class AssimpModel;
 
 
 class Mod {

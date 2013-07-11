@@ -5,6 +5,7 @@
 #pragma once
 #include <iostream>
 #include "../rage.h"
+#include "audio.h"
 
 using namespace std;
 

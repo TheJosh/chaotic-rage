@@ -10,14 +10,19 @@
 #include <guichan/opengl.hpp>
 
 #include "../rage.h"
-#include "dialog.h"
+#include "../gamestate.h"
+#include "../menu.h"
+#include "../render/render_opengl.h"
 #include "../render/render_opengl_settings.h"
+#include "../render/guichan_imageloader.h"
+#include "../mod/mod.h"
+#include "dialog.h"
+#include "client_settings.h"
 
 #include <SDL_image.h>
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
 #include <guichan/opengl.hpp>
-#include "../render/guichan_imageloader.h"
 
 
 using namespace std;

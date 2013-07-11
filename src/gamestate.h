@@ -3,11 +3,32 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <iostream>
-#include <SDL.h>
+
+#include "entity/entity.h"
+#include "fx/newparticle.h"
+#include "entity/unit.h"
+#include "entity/wall.h"
+#include "entity/vehicle.h"
+#include "entity/object.h"
+#include "entity/pickup.h"
+#include "entity/ammo_round.h"
+#include "gui/dialog.h"
+#include "render/render.h"
+#include "audio/audio.h"
+#include "lua/gamelogic.h"
+#include "net/net_client.h"
+#include "net/net_server.h"
+#include "physics_bullet.h"
+#include "util/cmdline.h"
+#include "util/clientconfig.h"
+#include "util/serverconfig.h"
+#include "mod/mod_manager.h"
+#include "map.h"
+#include "render/hud_label.h"
+
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
-#include "rage.h"
+
 
 using namespace std;
 
@@ -66,7 +87,6 @@ class DebugLine
 **/
 class GameState
 {
-	friend class RenderSDL;
 	friend class RenderOpenGL;
 	friend class RenderNull;
 	friend class RenderDebug;

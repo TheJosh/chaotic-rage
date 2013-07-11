@@ -9,6 +9,18 @@
 #include "util/btStrideHeightfieldTerrainShape.h"
 #include "rage.h"
 #include "mod/confuse_types.h"
+#include "map.h"
+#include "zone.h"
+#include "render/animplay.h"
+#include "render/render_3d.h"
+#include "mod/mod.h"
+#include "mod/mod_proxy.h"
+#include "gamestate.h"
+#include "entity/object.h"
+#include "entity/vehicle.h"
+#include "entity/wall.h"
+#include "entity/pickup.h"
+
 
 using namespace std;
 

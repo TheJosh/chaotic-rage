@@ -7,7 +7,12 @@
 #include <iostream>
 #include <SDL.h>
 #include "../rage.h"
+#include "../mod/mod.h"
 
+#include <SDL_image.h>
+#include <guichan.hpp>
+#include <guichan/sdl.hpp>
+#include <guichan/opengl.hpp>
 #include <guichan/sdl/sdlimageloader.hpp>
 #include <guichan/exception.hpp>
 #include <guichan/opengl/openglimage.hpp>

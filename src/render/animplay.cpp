@@ -5,7 +5,10 @@
 #include <iostream>
 #include <SDL.h>
 #include "../rage.h"
-#include "_render.h"
+#include "../gamestate.h"
+#include "animplay.h"
+#include "assimpmodel.h"
+#include "render.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>

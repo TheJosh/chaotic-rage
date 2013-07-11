@@ -8,6 +8,14 @@
 #include <SDL_mixer.h>
 #include <math.h>
 #include "../rage.h"
+#include "audio_sdlmixer.h"
+#include "../mod/mod.h"
+#include "../mod/sound.h"
+#include "../mod/song.h"
+#include "../entity/entity.h"
+#include "../entity/player.h"
+#include "../gamestate.h"
+
 
 using namespace std;
 

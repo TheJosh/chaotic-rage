@@ -17,8 +17,14 @@
 #include <math.h>
 
 #include "../rage.h"
-#include "glshader.h"
+#include "../gamestate.h"
+#include "../entity/player.h"
+#include "render_opengl.h"
 #include "render_opengl_settings.h"
+#include "glshader.h"
+#include "assimpmodel.h"
+#include "animplay.h"
+#include "hud.h"
 
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>

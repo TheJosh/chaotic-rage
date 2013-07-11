@@ -5,6 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include "../rage.h"
+#include "audio_null.h"
 
 using namespace std;
 

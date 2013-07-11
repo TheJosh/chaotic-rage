@@ -6,6 +6,11 @@
 #include <SDL.h>
 #include <math.h>
 #include "../rage.h"
+#include "../gamestate.h"
+#include "../render/animplay.h"
+#include "../mod/vehicletype.h"
+#include "vehicle.h"
+
 
 using namespace std;
 

@@ -7,6 +7,9 @@
 #include <confuse.h>
 #include <zzip/zzip.h>
 #include "../rage.h"
+#include "aitype.h"
+#include "mod.h"
+
 
 using namespace std;
 

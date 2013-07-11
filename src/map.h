@@ -3,15 +3,25 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <iostream>
-#include <SDL.h>
+#include "render/render.h"
+#include <glm/glm.hpp>
+#include <string>
 #include "rage.h"
+#include "entity/unit.h"
 
 using namespace std;
 
 
 #define RENDER_FRAME_DATA -1
 #define RENDER_FRAME_BG -2
+
+
+class Zone;
+class Render;
+class Mod;
+class Light;
+class MapMesh;
+class RangeF;
 
 
 class Light {
@@ -87,11 +97,11 @@ class Map {
 
 		string getName() { return this->name; }
 		
-		Zone * getSpawnZone(Faction f);
-		Zone * getPrisonZone(Faction f);
-		Zone * getCollectZone(Faction f);
-		Zone * getDestZone(Faction f);
-		Zone * getNearbaseZone(Faction f);
+		Zone* getSpawnZone(Faction f);
+		Zone* getPrisonZone(Faction f);
+		Zone* getCollectZone(Faction f);
+		Zone* getDestZone(Faction f);
+		Zone* getNearbaseZone(Faction f);
 		float getRandomX();
 		float getRandomY();
 		

@@ -6,6 +6,10 @@
 #include <algorithm>
 #include <SDL.h>
 #include "../rage.h"
+#include "../gamestate.h"
+#include "../zone.h"
+#include "../entity/player.h"
+#include "../entity/npc.h"
 #include "lua_libs.h"
 
 extern "C" {

@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include "../rage.h"
+#include "../gamestate.h"
+#include "render_null.h"
 #include <SDL.h>
 #include <SDL_image.h>
 

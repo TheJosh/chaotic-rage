@@ -6,6 +6,9 @@
 #include <SDL.h>
 #include <btBulletDynamicsCommon.h>
 #include "../rage.h"
+#include "../gamestate.h"
+#include "entity.h"
+
 
 using namespace std;
 

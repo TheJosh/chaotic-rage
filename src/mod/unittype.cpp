@@ -8,6 +8,8 @@
 #include <zzip/zzip.h>
 #include <string>
 #include "../rage.h"
+#include "mod.h"
+#include "unittype.h"
 
 using namespace std;
 

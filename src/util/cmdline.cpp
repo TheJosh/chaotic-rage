@@ -7,6 +7,7 @@
 #include <SDL.h>
 #include <getopt.h>
 #include "../rage.h"
+#include "../gamestate.h"
 
 
 using namespace std;

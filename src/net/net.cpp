@@ -7,6 +7,8 @@
 #include <SDL_net.h>
 #include "../rage.h"
 #include "net.h"
+#include "net_client.h"
+#include "net_server.h"
 
 using namespace std;
 

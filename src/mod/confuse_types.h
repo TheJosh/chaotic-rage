@@ -7,6 +7,7 @@
 #include <SDL.h>
 #include "../rage.h"
 #include "../util/quadratic.h"
+#include <glm/glm.hpp>
 
 using namespace std;
 

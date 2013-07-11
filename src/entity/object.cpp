@@ -6,6 +6,11 @@
 #include <SDL.h>
 #include <math.h>
 #include "../rage.h"
+#include "../gamestate.h"
+#include "../render/animplay.h"
+#include "../mod/objecttype.h"
+#include "object.h"
+
 
 using namespace std;
 

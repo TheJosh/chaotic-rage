@@ -9,10 +9,13 @@
 #include <guichan/sdl.hpp>
 #include <guichan/opengl.hpp>
 #include <guichan/opengl/openglsdlimageloader.hpp>
+
 #include "../rage.h"
+#include "../menu.h"
+#include "../http/serverlist.h"
+#include "../mod/campaign.h"
 #include "dialog.h"
 #include "newcampaign.h"
-#include "../http/serverlist.h"
 
 
 using namespace std;

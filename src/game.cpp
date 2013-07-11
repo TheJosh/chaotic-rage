@@ -6,6 +6,9 @@
 #include <SDL.h>
 #include <math.h>
 #include "rage.h"
+#include "gamestate.h"
+#include "entity/player.h"
+#include "game.h"
 
 
 using namespace std;

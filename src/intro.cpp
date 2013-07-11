@@ -2,10 +2,13 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <SDL.h>
-#include <math.h>
+#include "intro.h"
 #include "rage.h"
+#include "render/render.h"
+#include "mod/mod.h"
+#include "mod/song.h"
+#include "audio/audio.h"
+#include "gamestate.h"
 
 
 using namespace std;

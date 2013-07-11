@@ -6,6 +6,7 @@
 #include <iostream>
 #include <SDL.h>
 #include <list>
+#include <list>
 #include "../rage.h"
 
 using namespace std;

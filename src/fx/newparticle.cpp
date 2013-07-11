@@ -6,6 +6,8 @@
 #include <SDL.h>
 #include <math.h>
 #include "../rage.h"
+#include "../gamestate.h"
+#include "newparticle.h"
 
 using namespace std;
 

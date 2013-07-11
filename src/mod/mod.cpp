@@ -9,6 +9,22 @@
 #include <confuse.h>
 #include <zzip/zzip.h>
 #include "../rage.h"
+#include "../gamestate.h"
+#include "mod.h"
+#include "confuse_types.h"
+#include "aitype.h"
+#include "campaign.h"
+#include "floortype.h"
+#include "objecttype.h"
+#include "pickuptype.h"
+#include "unittype.h"
+#include "song.h"
+#include "sound.h"
+#include "walltype.h"
+#include "vehicletype.h"
+#include "weapontype.h"
+#include "gametype.h"
+#include "../render/assimpmodel.h"
 
 using namespace std;
 

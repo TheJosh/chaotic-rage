@@ -6,6 +6,10 @@
 #include <SDL.h>
 #include <math.h>
 #include "../rage.h"
+#include "../gamestate.h"
+#include "../render/animplay.h"
+#include "decaying.h"
+
 
 using namespace std;
 

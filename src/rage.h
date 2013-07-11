@@ -11,6 +11,7 @@
 #include <GL/glu.h>
 #include <vector>
 #include <list>
+#include <string>
 
 
 // Engine features to optionally compile into the game
@@ -38,21 +39,6 @@ class RangeF {
 		float min;
 		float max;
 		RangeF() { min = 0.0f, max = 0.0f; }
-};
-
-
-// See the document docs/factions.txt for info.
-enum Faction {
-	FACTION_INDIVIDUAL = 0,
-	FACTION_TEAM1 = 1,
-	FACTION_TEAM2 = 2,
-	FACTION_TEAM3 = 3,
-	FACTION_TEAM4 = 4,
-	FACTION_TEAM5 = 5,
-	FACTION_TEAM6 = 6,
-	FACTION_TEAM7 = 7,
-	FACTION_TEAM8 = 8,
-	FACTION_COMMON = 9,
 };
 
 
@@ -124,32 +110,6 @@ class Zone;
 
 
 #include "util/_util.h"
-#include "render/_render.h"
-#include "audio/_audio.h"
 
-#include "physics_bullet.h"
-
-#include "net/_net.h"
-
-#include "mod/_mod.h"
-
-#include "weapons/weapons.h"
-
-#include "lua/gamelogic.h"
-#include "lua/ailogic.h"
-
-#include "entity/_entity.h"
-
-#include "fx/newparticle.h"
-
-#include "map.h"
-#include "zone.h"
-
-#include "gui/_gui.h"
-
-#include "gamestate.h"
-#include "game.h"
-#include "intro.h"
-#include "menu.h"
 
 

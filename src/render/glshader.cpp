@@ -14,6 +14,7 @@
 #include <GL/glu.h>
 
 #include "../rage.h"
+#include "glshader.h"
 
 using namespace std;
 

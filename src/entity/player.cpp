@@ -4,8 +4,14 @@
 
 #include <iostream>
 #include <SDL.h>
-#include "../rage.h"
 #include <math.h>
+#include "../rage.h"
+#include "../gamestate.h"
+#include "../render/animplay.h"
+#include "../mod/unittype.h"
+#include "../mod/vehicletype.h"
+#include "player.h"
+
 
 using namespace std;
 

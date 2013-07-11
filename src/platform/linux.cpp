@@ -17,7 +17,7 @@
 	#include <X11/Xos.h>
 #endif
 
-#include "../rage.h"
+#include "../gamestate.h"
 
 using namespace std;
 

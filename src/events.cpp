@@ -7,6 +7,10 @@
 #include <math.h>
 #include "rage.h"
 #include "game.h"
+#include "gamestate.h"
+#include "entity/player.h"
+#include "render/hud.h"
+#include "render/render_opengl.h"
 
 using namespace std;
 

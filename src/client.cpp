@@ -7,6 +7,9 @@
 #include "rage.h"
 #include "http/client_stats.h"
 #include "util/windowicon.h"
+#include "gamestate.h"
+#include "menu.h"
+#include "intro.h"
 
 using namespace std;
 

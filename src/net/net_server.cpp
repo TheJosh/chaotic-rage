@@ -7,7 +7,10 @@
 #include <algorithm>
 #include <SDL_net.h>
 #include "../rage.h"
+#include "../gamestate.h"
+#include "../entity/player.h"
 #include "net.h"
+#include "net_server.h"
 
 using namespace std;
 

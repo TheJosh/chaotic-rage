@@ -3,9 +3,9 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <iostream>
-#include <SDL.h>
 #include "../rage.h"
+#include <GL/gl.h>
+
 
 using namespace std;
 
@@ -17,6 +17,9 @@ struct sprite {
 	SDL_Surface *orig;		// TODO: remove dependency on this...perhaps
 };
 typedef sprite* SpritePtr;
+
+
+class GameState;
 
 
 class Render
