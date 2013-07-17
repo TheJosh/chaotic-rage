@@ -8,6 +8,8 @@
 #include <getopt.h>
 #include "../rage.h"
 #include "../gamestate.h"
+#include "../mod/mod_manager.h"
+#include "cmdline.h"
 
 
 using namespace std;

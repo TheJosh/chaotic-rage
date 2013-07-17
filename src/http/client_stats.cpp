@@ -4,6 +4,9 @@
 
 #include <string>
 #include <iostream>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 #include <GL/glew.h>
 #include <GL/gl.h>

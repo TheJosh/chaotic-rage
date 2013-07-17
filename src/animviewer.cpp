@@ -7,10 +7,13 @@
 #include "rage.h"
 #include "gamestate.h"
 #include "mod/mod.h"
+#include "mod/mod_manager.h"
 #include "mod/objecttype.h"
+#include "mod/gametype.h"
 #include "render/render_opengl_settings.h"
 #include "render/render_opengl.h"
 #include "audio/audio_sdlmixer.h"
+#include "lua/gamelogic.h"
 
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>

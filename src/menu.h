@@ -3,8 +3,9 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <SDL.h>
 #include <guichan.hpp>
+#include <guichan/sdl.hpp>
+
 #include "rage.h"
 #include "render/render.h"
 #include "util/ui_update.h"

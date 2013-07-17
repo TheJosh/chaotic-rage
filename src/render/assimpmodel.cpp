@@ -4,9 +4,6 @@
 
 #include <iostream>
 #include <string>
-#include <SDL.h>
-#include <confuse.h>
-#include <zzip/zzip.h>
 #include <map>
 #include <assimp/Importer.hpp>
 #include <assimp/cimport.h>

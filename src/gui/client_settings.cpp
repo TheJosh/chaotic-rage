@@ -3,11 +3,8 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <iostream>
-#include <SDL.h>
 #include <math.h>
 #include <guichan.hpp>
-#include <guichan/sdl.hpp>
-#include <guichan/opengl.hpp>
 
 #include "../rage.h"
 #include "../gamestate.h"
@@ -19,11 +16,6 @@
 #include "../util/clientconfig.h"
 #include "dialog.h"
 #include "client_settings.h"
-
-#include <SDL_image.h>
-#include <guichan.hpp>
-#include <guichan/sdl.hpp>
-#include <guichan/opengl.hpp>
 
 
 using namespace std;

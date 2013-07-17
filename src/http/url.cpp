@@ -3,6 +3,8 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <string>
+#include <string.h>
+#include <stdlib.h>
 #include "../rage.h"
 
 using namespace std;

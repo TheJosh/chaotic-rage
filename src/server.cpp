@@ -8,6 +8,13 @@
 #include "gamestate.h"
 #include "menu.h"
 #include "intro.h"
+#include "mod/mod_manager.h"
+#include "mod/gametype.h"
+#include "mod/mod.h"
+#include "map.h"
+#include "lua/gamelogic.h"
+#include "net/net_server.h"
+#include "util/serverconfig.h"
 #include "render/render_debug.h"
 #include "audio/audio_null.h"
 
