@@ -13,7 +13,13 @@ tar -zvxf bullet-2.81-rev2613.tgz
 rm -r bullet-build
 mkdir bullet-build
 cd bullet-build
-cmake ../bullet-2.81-rev2613 -G "Unix Makefiles" -DINSTALL_LIBS=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo
+cmake ../bullet-2.81-rev2613 -G "Unix Makefiles" \
+	-DINSTALL_LIBS=ON \
+	-DBUILD_SHARED_LIBS=ON \
+	-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+	-DBUILD_DEMOS:BOOL=OFF \
+	-DBUILD_CPU_DEMOS:BOOL=OFF \
+	-DBUILD_EXTRAS:BOOL=OFF
 
 # Compile
 make -j4
@@ -29,6 +35,6 @@ sudo make install
 echo
 echo "Installed, doing an 'updatedb' and 'ldconfig'."
 echo
-sudo updatedb
+#sudo updatedb
 sudo ldconfig
 
