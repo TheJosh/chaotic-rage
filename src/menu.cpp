@@ -635,9 +635,10 @@ void Menu::networkJoin(string host)
 	
 	// Load gametype
 	new GameLogic(st);
-	GameType *gt = st->mm->getGameType("boredem");
 	st->logic->selected_unittype = st->mm->getUnitType("robot");
-	st->logic->execScript(gt->script);
+	
+	/*GameType *gt = st->mm->getGameType("boredem");
+	st->logic->execScript(gt->script);*/
 	
 	// Create players in GameState.
 	st->num_local = 1;
