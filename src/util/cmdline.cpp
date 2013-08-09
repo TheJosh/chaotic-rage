@@ -30,6 +30,7 @@ void CommandLineArgs::process()
 		{"mod-list",		0, 0, 'n'},
 		{"campaign",		1, 0, 'c'},
 		{"arcade",		    1, 0, 'a'},
+		{"join",		    1, 0, 'j'},
 		
 		#ifdef DEBUG_OPTIONS
 		{"debug",			1, 0, 'w'},
@@ -48,13 +49,15 @@ void CommandLineArgs::process()
 				cout <<
 					"Chaotic Rage\n\n"
 					"Options:\n"
+					" -a\t--arcade MAP,GAME,UNIT  Play an arcade game, then exit\n"
+					" -c\t--campaign NAME         Run the specified campaign, then exit\n"
 					" -h\t--help                  Show this help\n"
+					" -j\t--join SERVER           Join a network game\n"
 					" -m\t--mod NAME              Load a mod at startup\n"
 					"   \t--mod-list              List all available mods, and exit\n"
-					" -c\t--campaign NAME         Run the specified campaign, then exit\n"
-					" -a\t--arcade MAP,GAME,UNIT  Play an arcade game, then exit\n"
 					
 					#ifdef DEBUG_OPTIONS
+					"\n"
 					"   \t--debug SECTION         Enable debug mode for a given section\n"
 					"   \t--debug-list            Show a list of available debug sections\n"
 					"   \t--debug-lineno          Show file and line no in debugging output\n"
@@ -91,6 +94,10 @@ void CommandLineArgs::process()
 					std::getline(ss, this->gametype, ',');
 					std::getline(ss, this->unittype, ',');
 				}
+				break;
+				
+			case 'j':
+				this->join = optarg;
 				break;
 				
 				

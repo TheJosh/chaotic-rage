@@ -24,6 +24,7 @@ class CommandLineArgs
 		string map;
 		string gametype;
 		string unittype;
+		string join;
 		
 	public:
 		CommandLineArgs(GameState *st, int argc, char ** argv)

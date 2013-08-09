@@ -82,6 +82,11 @@ int main (int argc, char ** argv)
 			m->loadModBits();
 			m->startGame(m->mapreg->get(st->cmdline->map), st->cmdline->gametype, st->cmdline->unittype, 0, 1);
 			exit(0);
+			
+		} else if (st->cmdline->join != "") {
+			m->loadModBits();
+			m->networkJoin(st->cmdline->join);
+			exit(0);
 		}
 	}
 	
