@@ -37,6 +37,7 @@
 #include "net/net_server.h"
 #include "net/net_gameinfo.h"
 #include "util/obj.h"
+#include "util/serverconfig.h"
 #include "mod/mod_manager.h"
 #include "map.h"
 #include "lua/gamelogic.h"
@@ -582,7 +583,13 @@ void Menu::startGame(MapReg *map, string gametype, string unittype, int viewmode
 {
 	st->physics->init();
 	
-	if (host) new NetServer(st);
+	if (host) {
+		if (st->sconf == NULL) {
+			st->sconf = new ServerConfig();
+		}
+		
+		new NetServer(st);
+	}
 	
 	// Load map
 	Map *m = new Map(st);
