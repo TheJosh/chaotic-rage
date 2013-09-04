@@ -104,7 +104,8 @@ void DialogNewGame::action(const gcn::ActionEvent& actionEvent)
 		this->m->gametypes[this->gametype->getSelected()],
 		this->m->unittypes[this->unittype->getSelected()],
 		this->viewmode->getSelected(),
-		this->num_local
+		this->num_local,
+		false
 	);
 }
 

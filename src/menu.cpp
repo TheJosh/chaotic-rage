@@ -499,7 +499,7 @@ void Menu::startCampaign(Campaign* c, string unittype, int viewmode, unsigned in
 			MapReg* m = mapreg->get(stage->map);
 			if (m == NULL) return;
 
-			this->startGame(m, stage->gametype, unittype, 0, 1);
+			this->startGame(m, stage->gametype, unittype, 0, 1, false);
 
 			// A result of 1 is success, 0 is failure, -1 is an error.
 			int result = st->getLastGameResult();
@@ -573,10 +573,16 @@ void Menu::startCampaign(Campaign* c, string unittype, int viewmode, unsigned in
 
 /**
 * Starts a game with the specified settings
+*
+* @param int viewmode The camera view mode for the local player(s)
+* @param int num_local The number of local players; 1 for single, 2+ for splitscreen
+* @param int host Set to 1 to host a network game, 0 for a local-only game
 **/
-void Menu::startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local)
+void Menu::startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local, bool host)
 {
 	st->physics->init();
+	
+	if (host) new NetServer(st);
 	
 	// Load map
 	Map *m = new Map(st);
@@ -606,6 +612,8 @@ void Menu::startGame(MapReg *map, string gametype, string unittype, int viewmode
 	
 	// Post game, we need to restore menu GL settings
 	this->setupGLstate();
+	
+	if (host) delete(st->server);
 }
 
 	

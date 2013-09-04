@@ -80,7 +80,7 @@ int main (int argc, char ** argv)
 			
 		} else if (st->cmdline->map != "" && st->cmdline->gametype != "" && st->cmdline->unittype != "") {
 			m->loadModBits();
-			m->startGame(m->mapreg->get(st->cmdline->map), st->cmdline->gametype, st->cmdline->unittype, 0, 1);
+			m->startGame(m->mapreg->get(st->cmdline->map), st->cmdline->gametype, st->cmdline->unittype, 0, 1, st->cmdline->host);
 			exit(0);
 			
 		} else if (st->cmdline->join != "") {

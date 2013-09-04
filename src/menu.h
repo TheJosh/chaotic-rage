@@ -102,7 +102,7 @@ class Menu : public UIUpdate
 		// Game dialogs
 		void setDialog(Dialog * dialog);
 		void startCampaign(Campaign* c, string unittype, int viewmode, unsigned int num_local);
-		void startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local);
+		void startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local, bool host);
 		void networkJoin(string host);
 };
 

@@ -25,13 +25,15 @@ void CommandLineArgs::process()
 	
 	
 	static struct option long_options[] = {
+		{"arcade",		    1, 0, 'a'},
+		{"host",		    0, 0, 'n'},
+		{"campaign",		1, 0, 'c'},
+		{"join",		    1, 0, 'j'},
+		
+		{"mod",				1, 0, 'm'},
+		{"mod-list",		0, 0, 'l'},
 		{"help",			0, 0, 'h'},
 		{"version",			0, 0, 'v'},
-		{"mod",				1, 0, 'm'},
-		{"mod-list",		0, 0, 'n'},
-		{"campaign",		1, 0, 'c'},
-		{"arcade",		    1, 0, 'a'},
-		{"join",		    1, 0, 'j'},
 		
 		#ifdef DEBUG_OPTIONS
 		{"debug",			1, 0, 'w'},
@@ -52,6 +54,7 @@ void CommandLineArgs::process()
 					
 					"\nOptions:\n"
 					" -a\t--arcade MAP,GAME,UNIT  Play an arcade game, then exit\n"
+					" -n\t--host                  Listen as a network host (requires --arcade)\n"
 					" -c\t--campaign NAME         Run the specified campaign, then exit\n"
 					" -j\t--join SERVER           Join a network game\n"
 					"\n"
@@ -76,26 +79,8 @@ void CommandLineArgs::process()
 				exit(0);
 				break;
 				
-			case 'm':
-				this->mod = optarg;
-				break;
-				
-			case 'n':
-				{
-					cout << "Available mods:\n";
-					vector<string>* modnames = st->mm->getAvailMods();
-					for (vector<string>::iterator it = modnames->begin(); it != modnames->end(); it++) {
-						cout << "    " << (*it) << "\n";
-					}
-					delete(modnames);
-					exit(0);
-				}
-				break;
-				
-			case 'c':
-				this->campaign = optarg;
-				break;
-				
+			
+			// Arcade, Host, Campaign, Join
 			case 'a':
 				{
 					std::stringstream ss(optarg);
@@ -105,8 +90,34 @@ void CommandLineArgs::process()
 				}
 				break;
 				
+			case 'n':
+				this->host = true;
+				break;
+				
+			case 'c':
+				this->campaign = optarg;
+				break;
+				
 			case 'j':
 				this->join = optarg;
+				break;
+				
+				
+			// Mod load, mod list
+			case 'm':
+				this->mod = optarg;
+				break;
+				
+			case 'l':
+				{
+					cout << "Available mods:\n";
+					vector<string>* modnames = st->mm->getAvailMods();
+					for (vector<string>::iterator it = modnames->begin(); it != modnames->end(); it++) {
+						cout << "    " << (*it) << "\n";
+					}
+					delete(modnames);
+					exit(0);
+				}
 				break;
 				
 				
