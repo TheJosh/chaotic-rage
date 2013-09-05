@@ -643,9 +643,13 @@ void Menu::networkJoin(string host)
 		return;
 	}
 
+	// Try to find the map
+	MapReg *map = this->mapreg->get(gameinfo->map);
+	if (! map) displayMessageBox("Map not found: " + map->getName());
+
 	// Load map
 	Map *m = new Map(st);
-	m->load(gameinfo->map, st->render, NULL);
+	m->load(map->getName(), st->render, map->getMod());
 	st->map = m;
 	
 	// Load gametype
