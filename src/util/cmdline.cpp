@@ -36,10 +36,11 @@ void CommandLineArgs::process()
 		{"version",			0, 0, 'v'},
 		
 		#ifdef DEBUG_OPTIONS
-		{"debug",			1, 0, 'w'},
-		{"debug-list",		0, 0, 'x'},
-		{"debug-lineno",	0, 0, 'y'},
-		{"debug-file",		1, 0, 'z'},
+		{"debug",			1, 0, '1'},
+		{"debug-list",		0, 0, '2'},
+		{"debug-lineno",	0, 0, '3'},
+		{"debug-file",		1, 0, '4'},
+		{"no-mouse-grab",	0, 0, '5'},
 		#endif
 		{NULL, 0, NULL, 0}
 	};
@@ -69,6 +70,7 @@ void CommandLineArgs::process()
 					"   \t--debug-list            Show a list of available debug sections\n"
 					"   \t--debug-lineno          Show file and line no in debugging output\n"
 					"   \t--debug-file            Save debug logs in a file instead of stdout\n"
+					"   \t--no-mouse-grab         Disable mouse grab\n"
 					#endif
 				;
 				exit(0);
@@ -122,12 +124,12 @@ void CommandLineArgs::process()
 				
 				
 			#ifdef DEBUG_OPTIONS
-			case 'w':
+			case '1':
 				debug_enable(optarg);
 				cout << "Enabling debug for '" << optarg << "'.\n";
 				break;
 				
-			case 'x':
+			case '2':
 				cout <<
 					"Chaotic Rage\n\n"
 					"Debug Sections:\n"
@@ -146,14 +148,18 @@ void CommandLineArgs::process()
 				exit(0);
 				break;
 				
-			case 'y':
+			case '3':
 				debug_lineno(true);
 				cout << "Enabling file and line numbers in debug.\n";
 				break;
 				
-			case 'z':
+			case '4':
 				debug_tofile(optarg);
 				cout << "Saving debug data to file '" << optarg << "'.\n";
+				break;
+				
+			case '5':
+				this->mouseGrab = false;
 				break;
 			#endif
 			

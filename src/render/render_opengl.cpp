@@ -827,8 +827,6 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 **/
 void RenderOpenGL::preGame()
 {
-	SDL_ShowCursor(SDL_DISABLE);
-
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);

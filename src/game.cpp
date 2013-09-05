@@ -38,10 +38,6 @@ void gameLoop(GameState *st, Render *render)
 		game_x[i] = game_y[i] = net_x[i] = net_y[i] = mk_down_x[i] = mk_down_y[i] = 0;
 	}
 
-	SDL_WM_GrabInput(SDL_GRAB_ON);
-	SDL_WarpMouse(400, 300);
-	SDL_EnableUNICODE(0);
-
 	start = SDL_GetTicks();
 
 	st->physics->preGame();
@@ -64,6 +60,10 @@ void gameLoop(GameState *st, Render *render)
 		for (unsigned int i = 0; i < st->num_local; i++) {
 			st->logic->raise_playerjoin(st->local_players[i]->slot);
 		}
+	}
+
+	if (st->getMouseGrab()) {
+		SDL_WarpMouse(400, 300);
 	}
 
 
@@ -111,9 +111,6 @@ void gameLoop(GameState *st, Render *render)
 	
 	cout << "\n\n\n\n\n";
 	
-	SDL_WM_GrabInput(SDL_GRAB_OFF);
-	SDL_EnableUNICODE(1);
-
 	st->postGame();
 	st->render->postGame();
 	st->render->freeHeightmap();

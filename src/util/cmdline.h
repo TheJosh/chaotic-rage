@@ -26,10 +26,11 @@ class CommandLineArgs
 		string unittype;
 		string join;
 		bool host;
+		bool mouseGrab;
 		
 	public:
 		CommandLineArgs(GameState *st, int argc, char ** argv)
-			: st(st), argc(argc), argv(argv), host(false)
+			: st(st), argc(argc), argv(argv), host(false), mouseGrab(true)
 			{}
 			
 		void process();

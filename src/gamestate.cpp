@@ -24,6 +24,7 @@
 #include "net/net_client.h"
 #include "fx/newparticle.h"
 #include "gui/dialog.h"
+#include "util/cmdline.h"
 
 using namespace std;
 
@@ -339,7 +340,6 @@ void GameState::preGame()
 	// It should technically be 0, but 1 avoids division-by-zero
 	this->game_time = 1;
 	this->anim_frame = 1;
-	this->reset_mouse = false;
 	
 	this->initGuichan();
 	this->setMouseGrab(true);
@@ -514,11 +514,16 @@ list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 
 /**
 * Sets the status of the mouse grab
+* This method is ignored if the debugging option "no-mouse-grab" is set
 **/
 void GameState::setMouseGrab(bool reset)
 {
+	if (this->cmdline->mouseGrab == false) return;
+	
 	this->reset_mouse = reset;
+	
 	SDL_ShowCursor(!this->reset_mouse);
+	SDL_EnableUNICODE(!this->reset_mouse);
 	SDL_WM_GrabInput(this->reset_mouse == 1 ? SDL_GRAB_ON : SDL_GRAB_OFF);
 }
 
@@ -589,7 +594,6 @@ void GameState::addDialog(Dialog * dialog)
 	this->dialogs.push_back(dialog);
 	
 	this->setMouseGrab(false);
-	SDL_EnableUNICODE(1);
 }
 
 
@@ -603,7 +607,6 @@ void GameState::remDialog(Dialog * dialog)
 	
 	if (this->dialogs.size() == 0) {
 		this->setMouseGrab(true);
-		SDL_EnableUNICODE(0);
 	}
 
 	delete(dialog);

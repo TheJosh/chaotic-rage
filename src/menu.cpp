@@ -194,7 +194,6 @@ void Menu::doit(UIUpdate* ui)
 **/
 void Menu::setupGLstate()
 {
-	SDL_ShowCursor(SDL_ENABLE);
 	((RenderOpenGL*)this->render)->mainViewport(0, 0);
 	
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -210,6 +209,8 @@ void Menu::setupGLstate()
 	for (unsigned int i = 0; i < 8; i++) {
 		glDisable(GL_LIGHT0 + i);
 	}
+	
+	this->st->setMouseGrab(false);
 }
 
 

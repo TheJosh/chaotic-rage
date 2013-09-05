@@ -48,7 +48,6 @@ void RenderDebug::setScreenSize(int width, int height, bool fullscreen)
 	}
 	
 	SDL_WM_SetCaption("Chaotic Rage (debug)", "Chaotic Rage (debug)");
-	SDL_ShowCursor(SDL_ENABLE);
 }
 
 
@@ -198,8 +197,6 @@ void RenderDebug::render()
 	
 	SDL_Flip(screen);
 	
-	SDL_WM_GrabInput(SDL_GRAB_OFF);
-	SDL_ShowCursor(SDL_ENABLE);
 	st->reset_mouse = false;
 }
 

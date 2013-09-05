@@ -26,7 +26,6 @@ int main (int argc, char ** argv)
 	cerr << ".";
 	
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-	SDL_EnableUNICODE(1);
 
 	seedRandom();
 	
