@@ -75,7 +75,7 @@ class Unit : public Entity
 		UnitType* uc;
 		UnitParams params;
 
-		int health;
+		float health;
 		unsigned int remove_at;
 
 		AnimPlay * anim;
@@ -137,7 +137,7 @@ class Unit : public Entity
 		int getBelt();
 		int getMagazine();
 
-		int getHealth();
+		float getHealth();
 		float getHealthPercent();
 		virtual int takeDamage(float damage);
 		

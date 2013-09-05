@@ -325,7 +325,7 @@ int Unit::getMagazine()
 /**
 * Gets the unit health
 **/
-int Unit::getHealth()
+float Unit::getHealth()
 {
 	return this->health;
 }
