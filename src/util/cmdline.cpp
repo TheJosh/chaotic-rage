@@ -141,7 +141,7 @@ void CommandLineArgs::process()
 					"  unit               Unit movements\n"
 					"  vid                Video\n"
 					"  loop               Main game loop\n"
-					"  net                Network (also: net_pack)\n"
+					"  net                Network (also: net_pack, net_pkt, net_info)\n"
 					"  weap               Weapons\n"
 					"  terrain            Terrain/Heightmap physics\n"
 				;

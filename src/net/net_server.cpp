@@ -63,8 +63,10 @@ void NetServer::update()
 	
 	// We always recv. messages, so we can handle client joins
 	while (SDLNet_UDP_Recv(this->sock, pkt)) {
-		cout << setw (6) << setfill(' ') << st->game_time << " RECV ";
-		dumpPacket(pkt->data, pkt->len);
+		if (debug_enabled("net_pkt")) {
+			cout << setw (6) << setfill(' ') << st->game_time << " RECV ";
+			dumpPacket(pkt->data, pkt->len);
+		}
 		
 		Uint8* ptr = pkt->data;
 		int p = 0;
@@ -127,17 +129,18 @@ void NetServer::update()
 	
 	// Only send messages if we have clients
 	if (this->clients.size() > 0) {
-		// Debugging
-		cout << setw (6) << setfill(' ') << st->game_time << " MSG-QUEUE\n";
-		for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
-			cout << "       " << setw (6) << setfill(' ') << ((*it).seq) << " " << ((*it).type);
-			dumpPacket((*it).data, (*it).size);
-		}
-		
-		// Debugging
-		cout << setw (6) << setfill(' ') << st->game_time << " CLIENT-INFO\n";
-		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
-			cout << "       " << setw (6) << setfill(' ') << ((*cli)->seq) << " " << ((*cli)->slot) << "\n";
+		// Dump debug info
+		if (debug_enabled("net_info")) {
+			cout << setw (6) << setfill(' ') << st->game_time << " MSG-QUEUE\n";
+			for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
+				cout << "       " << setw (6) << setfill(' ') << ((*it).seq) << " " << ((*it).type);
+				dumpPacket((*it).data, (*it).size);
+			}
+			
+			cout << setw (6) << setfill(' ') << st->game_time << " CLIENT-INFO\n";
+			for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
+				cout << "       " << setw (6) << setfill(' ') << ((*cli)->seq) << " " << ((*cli)->slot) << "\n";
+			}
 		}
 		
 		// Send messages
@@ -169,9 +172,11 @@ void NetServer::update()
 			}
 		
 			if (pkt->len > 0) {
-				cout << setw (6) << setfill(' ') << st->game_time << " SEND ";
-				dumpPacket(pkt->data, pkt->len);
-			
+				if (debug_enabled("net_pkt")) {
+					cout << setw (6) << setfill(' ') << st->game_time << " SEND ";
+					dumpPacket(pkt->data, pkt->len);
+				}
+				
 				SDLNet_UDP_Send(this->sock, -1, pkt);
 			}
 		}

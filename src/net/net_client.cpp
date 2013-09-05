@@ -61,8 +61,10 @@ void NetClient::update()
 	
 	// Handle packets coming in
 	while (SDLNet_UDP_Recv(this->sock, pkt)) {
-		cout << setw (6) << setfill(' ') << st->game_time << " RECV ";
-		dumpPacket(pkt->data, pkt->len);
+		if (debug_enabled("net_pkt")) {
+			cout << setw (6) << setfill(' ') << st->game_time << " RECV ";
+			dumpPacket(pkt->data, pkt->len);
+		}
 		
 		Uint8* ptr = pkt->data;
 		int p = 0;
@@ -112,8 +114,10 @@ void NetClient::update()
 	}
 	
 	if (pkt->len > 0) {
-		cout << setw (6) << setfill(' ') << st->game_time << " SEND ";
-		dumpPacket(pkt->data, pkt->len);
+		if (debug_enabled("net_pkt")) {
+			cout << setw (6) << setfill(' ') << st->game_time << " SEND ";
+			dumpPacket(pkt->data, pkt->len);
+		}
 		
 		SDLNet_UDP_Send(this->sock, -1, pkt);
 	}
