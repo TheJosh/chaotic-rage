@@ -635,6 +635,10 @@ void Menu::networkJoin(string host)
 
 	st->physics->init();
 
+	// Create local player
+	st->num_local = 1;
+	st->local_players[0] = new PlayerState(st);
+	
 	// Try to join the server
 	NetGameinfo *gameinfo = st->client->attemptJoinGame(host, 17778);
 	if (gameinfo == NULL) {
@@ -656,16 +660,6 @@ void Menu::networkJoin(string host)
 	// Load gametype
 	new GameLogic(st);
 	st->logic->selected_unittype = st->mm->getUnitType("robot");
-	
-	/*GameType *gt = st->mm->getGameType("boredem");
-	st->logic->execScript(gt->script);*/
-	
-	// Create players in GameState.
-	st->num_local = 1;
-	for (unsigned int i = 0; i < st->num_local; i++) {
-		st->local_players[i] = new PlayerState(st);
-		st->local_players[i]->slot = 0;		// allocated by the server
-	}
 
 	st->render->viewmode = 0;
 	

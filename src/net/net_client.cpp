@@ -73,7 +73,6 @@ void NetClient::update()
 		if (newseq > this->seq) {
 			this->seq = newseq;
 			this->last_ack = st->game_time;
-			cout << "       The server has sent " << newseq << ", will ACK.\n";
 		}
 		ptr += 2; p += 2;
 		
@@ -336,7 +335,7 @@ unsigned int NetClient::handlePlayerQuit(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 {
-	cout << "       handleUnitState()\n";
+	//cout << "       handleUnitState()\n";
 	
 	
 	short eid = 0, slot = 0;
@@ -355,6 +354,9 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 
 	// If don't exist, create
 	if (u == NULL) {
+		cout << "       CREATE:\n";
+		cout << "       eid: " << eid << "   slot: " << slot << "   our slot: " << st->local_players[0]->slot << "\n";
+		
 		UnitType *ut = st->mm->getUnitType("robot");
 		u = new Player(ut, st, bx, bz, by);
 		u->slot = slot;

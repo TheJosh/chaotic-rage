@@ -87,7 +87,6 @@ void NetServer::update()
 		
 		if (client != NULL && newseq > client->seq) {
 			client->seq = newseq;
-			cout << "       The client has ACKed " << newseq << "\n";
 		}
 		
 		if (client == NULL) {
@@ -247,7 +246,7 @@ NetMsg * NetServer::addmsgJoinAcc(NetServerClientInfo *client)
 		client->slot, map.c_str()
 	);
 	
-	cout << "       Sent slot of: " << client->slot << "\n";
+	cout << "       Sent slot of: " << client->slot << "  map: " << map << "\n";
 	
 	messages.push_back(*msg);
 	return msg;
@@ -430,7 +429,7 @@ unsigned int NetServer::handleJoinReq(NetServerClientInfo *client, Uint8 *data, 
 	
 	if (client->inlist) return 0;
 	
-	client->slot = this->clients.size() + 1;
+	client->slot = this->st->num_local + this->clients.size() + 1;
 	client->inlist = true;
 	client->seq = this->seq;
 	this->clients.push_back(client);
@@ -481,8 +480,12 @@ unsigned int NetServer::handleJoinAck(NetServerClientInfo *client, Uint8 *data, 
 
 unsigned int NetServer::handleJoinDone(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
+	cout << "       handleChat()\n";
+	
 	client->ingame = true;
 
+	cout << "       client->slot: " << client->slot << "\n";
+	
 	this->st->logic->raise_playerjoin(client->slot);
 
 	return 0;
