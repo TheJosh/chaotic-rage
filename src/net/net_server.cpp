@@ -441,7 +441,7 @@ unsigned int NetServer::handleJoinReq(NetServerClientInfo *client, Uint8 *data, 
 
 unsigned int NetServer::handleJoinAck(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
-	cout << "       handleJoinAck()\n";
+	cout << "       handleJoinAck() from slot " << client->slot << "\n";
 
 	NetMsg* msg;
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
@@ -480,11 +480,9 @@ unsigned int NetServer::handleJoinAck(NetServerClientInfo *client, Uint8 *data, 
 
 unsigned int NetServer::handleJoinDone(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
-	cout << "       handleChat()\n";
+	cout << "       handleJoinDone() from slot " << client->slot << "\n";
 	
 	client->ingame = true;
-
-	cout << "       client->slot: " << client->slot << "\n";
 	
 	this->st->logic->raise_playerjoin(client->slot);
 
@@ -493,14 +491,13 @@ unsigned int NetServer::handleJoinDone(NetServerClientInfo *client, Uint8 *data,
 
 unsigned int NetServer::handleChat(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
-	cout << "       handleChat()\n";
+	cout << "       handleChat() from slot " << client->slot << "\n";
 	return 0;
 }
 
 unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
-	cout << "       handleKeyMouseStatus()\n";
-	cout << "       " << client->slot << "\n";
+	cout << "       handleKeyMouseStatus() from slot " << client->slot << "\n";
 	
 	Sint16 x, y, delta;
 	Uint8 keys;
@@ -522,7 +519,7 @@ unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 
 
 unsigned int NetServer::handleQuit(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
-	cout << "       handleQuit()\n";
+	cout << "       handleQuit() from slot " << client->slot << "\n";
 	return 0;
 }
 

@@ -79,7 +79,7 @@ void gameLoop(GameState *st, Render *render)
 		handleEvents(st);
 		
 		if (st->getMouseGrab()) {
-			if (st->local_players[0]->p) st->local_players[0]->p->angleFromMouse(game_x[0], game_y[0], delta);		// one of these two is correct...(this one or the one 15 lines below)
+			if (st->local_players[0]->p) st->local_players[0]->p->angleFromMouse(game_x[0], game_y[0], delta);
 			if (st->local_players[1]->p) st->local_players[1]->p->angleFromMouse(game_x[1], game_y[1], delta);
 			game_x[0] = game_y[0] = 0;
 			game_x[1] = game_y[1] = 0;
@@ -92,8 +92,7 @@ void gameLoop(GameState *st, Render *render)
 			net_time -= net_timestep;
 			
 			if (st->client) {
-				if (st->local_players[0]->p && st->getMouseGrab()) {
-					//st->local_players[0]->p->angleFromMouse(net_x, net_y, net_timestep);
+				if (st->local_players[0]->p) {
 					st->client->addmsgKeyMouseStatus(net_x[0], net_y[0], net_timestep, st->local_players[0]->p->packKeys());
 					net_x[0] = net_y[0] = 0;
 				}
