@@ -29,6 +29,8 @@ class DialogNewGame : public Dialog, public gcn::ActionListener {
 		
 		gcn::DropDown *viewmode;
 		
+		gcn::CheckBox *host;
+		
 	public:
 		virtual gcn::Container * setup();
 		virtual void action(const gcn::ActionEvent& actionEvent);

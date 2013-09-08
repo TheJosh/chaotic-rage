@@ -86,8 +86,14 @@ gcn::Container * DialogNewGame::setup()
 	c->add(this->viewmode);
 	
 	
+	this->host = new gcn::CheckBox("Host network game");
+	this->host->setPosition(80, 100);
+	this->host->setWidth(160);
+	c->add(this->host);
+	
+	
 	button = new gcn::Button("Start Game");
-	button->setPosition(120, 150);
+	button->setPosition((255 - button->getWidth()) / 2, 150);
 	button->addActionListener(this);
 	c->add(button);
 	
@@ -105,7 +111,7 @@ void DialogNewGame::action(const gcn::ActionEvent& actionEvent)
 		this->m->unittypes[this->unittype->getSelected()],
 		this->viewmode->getSelected(),
 		this->num_local,
-		false
+		this->host->isSelected()
 	);
 }
 
