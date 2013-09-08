@@ -70,22 +70,22 @@ OBJGUI=build/gui/controls.o \
 OBJFILES_SERVER_NOGUI=build/server.o build/linux.o build/platform/nogui.o $(filter-out $(OBJMAINS) $(OBJGUI), $(OBJFILES))
 
 
-default: all
+default: chaoticrage
 
-.PHONY: all client clean
+.PHONY: all chaoticrage clean
 
-all: client server animviewer
+all: chaoticrage dedicatedserver animviewer
 
 
-client: $(OBJFILES_CLIENT)
+chaoticrage: $(OBJFILES_CLIENT)
 	@echo [LINK] $@
 	@$(CXX) $(CFLAGS) $(OBJFILES_CLIENT) -o $(CLIENT) $(LIBS)
 	
-server: $(OBJFILES_SERVER)
+dedicatedserver: $(OBJFILES_SERVER)
 	@echo [LINK] $@
 	@$(CXX) $(CFLAGS) $(OBJFILES_SERVER) -o $(SERVER) $(LIBS) 
 	
-server-nogui: $(OBJFILES_SERVER_NOGUI:%.o=%_nogui.o)
+dedicatedserver-nogui: $(OBJFILES_SERVER_NOGUI:%.o=%_nogui.o)
 	@echo [LINK] $@
 	@$(CXX) $(CFLAGS_NOGUI) $(OBJFILES_SERVER_NOGUI:%.o=%_nogui.o) -o $(SERVER_NOGUI) $(LIBS_NOGUI)
 	
