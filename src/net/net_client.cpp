@@ -8,6 +8,7 @@
 #include "../rage.h"
 #include "../gamestate.h"
 #include "../entity/player.h"
+#include "../entity/ammo_round.h"
 #include "../mod/mod_manager.h"
 #include "net.h"
 #include "net_client.h"
@@ -494,6 +495,78 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 	v->steering = s;
 
 	return 42;
+}
+
+unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
+{
+	cout << "       handleAmmoroundState()\n";
+
+	/*short eid = 0;
+	float qx, qy, qz, qw, bx, by, bz;
+	
+	unpack(data, "h ffff fff",
+		&eid,
+		&qx, &qy, &qz, &qw,
+		&bx, &by, &bz
+	);
+	
+	Entity* e = st->getEntity(eid);
+	AmmoRound* ar = (AmmoRound*) e;
+	
+
+	// If don't exist, create
+	if (ar == NULL) {
+		ObjectType *ot = st->mm->getObjectType("machinegun_pickup");
+		o = new AmmoRound(ot, st, bx, bz, by, 0);
+		
+		st->addObject(o);
+		o->eid = eid;
+	}
+	
+	// Update the transform
+	btTransform xform = btTransform(
+		btQuaternion(qx, qy, qz, qw),
+		btVector3(bx, by, bz)
+	);
+	o->setTransform(xform);
+	*/
+	
+	return 30;
+}
+
+unsigned int NetClient::handlePickupState(Uint8 *data, unsigned int size)
+{
+	cout << "       handlePickupState()\n";
+
+	short eid = 0;
+	float qx, qy, qz, qw, bx, by, bz;
+	
+	unpack(data, "h ffff fff",
+		&eid,
+		&qx, &qy, &qz, &qw,
+		&bx, &by, &bz
+	);
+	
+	Entity* e = st->getEntity(eid);
+	Pickup* p = (Pickup*) e;
+
+	// If don't exist, create
+	if (p == NULL) {
+		PickupType *pt = st->mm->getPickupType("ammo_current");
+		p = new Pickup(pt, st, bx, bz, by);
+		
+		st->addPickup(p);
+		p->eid = eid;
+	}
+	
+	// Update the transform
+	btTransform xform = btTransform(
+		btQuaternion(qx, qy, qz, qw),
+		btVector3(bx, by, bz)
+	);
+	p->setTransform(xform);
+	
+	return 30;
 }
 
 unsigned int NetClient::handleEntityRem(Uint8 *data, unsigned int size)

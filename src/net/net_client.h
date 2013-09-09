@@ -66,6 +66,8 @@ class NetClient {
 		unsigned int handleWallState(Uint8 *data, unsigned int size);
 		unsigned int handleObjectState(Uint8 *data, unsigned int size);
 		unsigned int handleVehicleState(Uint8 *data, unsigned int size);
+		unsigned int handleAmmoroundState(Uint8 *data, unsigned int size);
+		unsigned int handlePickupState(Uint8 *data, unsigned int size);
 		unsigned int handleEntityRem(Uint8 *data, unsigned int size);
 
 

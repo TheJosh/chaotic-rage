@@ -396,6 +396,58 @@ NetMsg * NetServer::addmsgVehicleState(Vehicle *v)
 
 
 /**
+* An ammoround has been updated
+**/
+NetMsg * NetServer::addmsgAmmoRoundState(AmmoRound *ar)
+{
+	messages.remove_if(IsTypeUniqPred(AMMOROUND_STATE, ar->eid));
+	
+	NetMsg * msg = new NetMsg(AMMOROUND_STATE, 30);
+	msg->seq = this->seq;
+	msg->uniq = ar->eid;
+	
+	btTransform trans = ar->getTransform();
+	btQuaternion q = trans.getRotation();
+	btVector3 b = trans.getOrigin();
+	
+	pack(msg->data, "h ffff fff",
+		ar->eid,
+		q.x(), q.y(), q.z(), q.w(),
+		b.x(), b.y(), b.z()
+	);
+	
+	messages.push_back(*msg);
+	return msg;
+}
+
+
+/**
+* A pickup has been updated
+**/
+NetMsg * NetServer::addmsgPickupState(Pickup *p)
+{
+	messages.remove_if(IsTypeUniqPred(PICKUP_STATE, p->eid));
+	
+	NetMsg * msg = new NetMsg(PICKUP_STATE, 30);
+	msg->seq = this->seq;
+	msg->uniq = p->eid;
+	
+	btTransform trans = p->getTransform();
+	btQuaternion q = trans.getRotation();
+	btVector3 b = trans.getOrigin();
+	
+	pack(msg->data, "h ffff fff",
+		p->eid,
+		q.x(), q.y(), q.z(), q.w(),
+		b.x(), b.y(), b.z()
+	);
+	
+	messages.push_back(*msg);
+	return msg;
+}
+
+
+/**
 * An entity has been removed
 **/
 NetMsg * NetServer::addmsgEntityRem(Entity *e)

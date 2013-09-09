@@ -49,6 +49,8 @@ class NetServer {
 		NetMsg * addmsgWallState(Wall *u);
 		NetMsg * addmsgObjectState(Object *u);
 		NetMsg * addmsgVehicleState(Vehicle *v);
+		NetMsg * addmsgAmmoRoundState(AmmoRound *ar);
+		NetMsg * addmsgPickupState(Pickup *p);
 		NetMsg * addmsgEntityRem(Entity *e);
 
 

@@ -35,9 +35,11 @@ MsgClientRecv msg_client_recv [] = {
 	&NetClient::handleWallState,        //<--  0x0F
 	&NetClient::handleObjectState,      //<--  0x10
 	&NetClient::handleVehicleState,     //<--  0x11
-	&NetClient::handleEntityRem,        //<--  0x12
+	&NetClient::handleAmmoroundState,   //<--  0x12
+	&NetClient::handlePickupState,      //<--  0x13
+	&NetClient::handleEntityRem,        //<--  0x14
 	
-	NULL,                               //<--  0x13
+	NULL,                               //<--  0x15
 };
 
 
@@ -63,8 +65,10 @@ MsgServerRecv msg_server_recv [] = {
 	NULL,                               //<--  0x10
 	NULL,                               //<--  0x11
 	NULL,                               //<--  0x12
+	NULL,                               //<--  0x13
+	NULL,                               //<--  0x14
 	
-	&NetServer::handleQuit,             //<--  0x13
+	&NetServer::handleQuit,             //<--  0x15
 };
 
 

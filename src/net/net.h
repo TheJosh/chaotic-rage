@@ -44,9 +44,12 @@ enum NetMsgType {
 	WALL_STATE =    0x0F,		// [S] Wall dets have changed
 	OBJECT_STATE =  0x10,		// [S] Object dets have changed
 	VEHICLE_STATE = 0x11,		// [S] Vehicle dets have changed
-	ENTITY_REM =    0x12,		// [S] An entity has been removed
+	AMMOROUND_STATE = 0x12,		// [S] Ammo round (mine, rocket, etc) dets have changed
+	PICKUP_STATE =  0x13,		// [S] Pickup has changed
 	
-	BOTTOM =        0x13,
+	ENTITY_REM =    0x14,		// [S] An entity has been removed
+	
+	BOTTOM =        0x15,
 };
 
 

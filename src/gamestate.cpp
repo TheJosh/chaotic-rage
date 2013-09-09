@@ -219,6 +219,10 @@ void GameState::addPickup(Pickup* pickup)
 	pickup->eid = this->getNextEID();
 	
 	this->entities_add.push_back(pickup);
+	
+	if (this->server) {
+		this->server->addmsgPickupState(pickup);
+	}
 }
 
 /**
@@ -232,9 +236,13 @@ void GameState::addNewParticle(NewParticle* particle)
 /**
 * Add an AmmoRound
 **/
-void GameState::addAmmoRound(AmmoRound* e)
+void GameState::addAmmoRound(AmmoRound* ar)
 {
-	this->entities_add.push_back(e);
+	this->entities_add.push_back(ar);
+	
+	if (this->server) {
+		this->server->addmsgAmmoRoundState(ar);
+	}
 }
 
 
