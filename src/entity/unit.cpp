@@ -73,7 +73,12 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 
 	st->physics->addCollisionObject(this->ghost, CG_UNIT);
 	st->physics->addAction(character);
-
+	
+	// give them some weapons
+	for (unsigned int i = 0; i < uc->spawn_weapons.size(); i++) {
+		this->pickupWeapon(uc->spawn_weapons.at(i));
+	}
+	
 	this->body = NULL;
 }
 

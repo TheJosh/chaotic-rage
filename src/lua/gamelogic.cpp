@@ -458,10 +458,6 @@ LUA_FUNC(add_player)
 	p->fac = fac;
 	p->slot = slot;
 	
-	for (unsigned int i = 0; i < uc->spawn_weapons.size(); i++) {
-		p->pickupWeapon(uc->spawn_weapons.at(i));
-	}
-	
 	// Is it a local player?
 	PlayerState *ps = gl->st->localPlayerFromSlot(slot);
 	if (ps) {

@@ -350,6 +350,8 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 		&health
 	);
 	
+	// TODO: unit type, faction, drive, lift, current weapon, weapons
+	
 	Entity* e = st->getEntity(eid);
 	Unit* u = (Unit*) e;
 
@@ -361,11 +363,6 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 		UnitType *ut = st->mm->getUnitType("robot");
 		u = new Player(ut, st, bx, bz, by);
 		u->slot = slot;
-		
-		// Give them some weapons
-		for (unsigned int i = 0; i < ut->spawn_weapons.size(); i++) {
-			u->pickupWeapon(ut->spawn_weapons.at(i));
-		}
 		
 		// If the player is this client, save in the local_players obj
 		if (st->local_players[0]->slot == u->slot) {
