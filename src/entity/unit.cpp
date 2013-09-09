@@ -226,7 +226,9 @@ bool Unit::pickupWeapon(WeaponType* wt)
 	
 	this->avail_weapons.push_back(uw);
 	
-	this->setWeapon(this->avail_weapons.size() - 1);
+	if (this->avail_weapons.size() == 1) {
+		this->setWeapon(0);
+	}
 	
 	return true;
 }
