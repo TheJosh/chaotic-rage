@@ -219,5 +219,6 @@ Sound* WeaponType::getSound(int type)
 
 WeaponType::WeaponType()
 {
+	this->model = NULL;
 }
 

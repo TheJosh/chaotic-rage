@@ -79,13 +79,12 @@ class WeaponFlamethrower : public WeaponType
 class WeaponTimedMine : public WeaponType
 {
 	public:
-		WeaponTimedMine() : model(NULL) {};
+		WeaponTimedMine() {};
 
 	public:
 		float range;
 		float damage;
 		int time;		// ms
-		AssimpModel* model;
 
 	public:
 		virtual void doFire(Unit *unit, btTransform &origin);
@@ -104,12 +103,11 @@ struct WeaponTimedMineData {
 class WeaponProxiMine : public WeaponType
 {
 	public:
-		WeaponProxiMine() : model(NULL) {};
+		WeaponProxiMine() {};
 
 	public:
 		float range;
 		float damage;
-		AssimpModel* model;
 
 	public:
 		virtual void doFire(Unit *unit, btTransform &origin);
@@ -128,12 +126,11 @@ struct WeaponProxiMineData {
 class WeaponRemoteMine : public WeaponType
 {
 	public:
-		WeaponRemoteMine() : model(NULL) {};
+		WeaponRemoteMine() {};
 
 	public:
 		float range;
 		float damage;
-		AssimpModel* model;
 
 	public:
 		virtual void doFire(Unit *unit, btTransform &origin);

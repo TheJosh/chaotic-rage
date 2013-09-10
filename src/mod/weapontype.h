@@ -41,9 +41,10 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 		bool continuous;
 		int magazine_limit;
 		int belt_limit;
-		
+
 		vector<WeaponTypeSound*> sounds;
-		
+		AssimpModel* model;
+
 	public:
 		WeaponType();
 		Sound* getSound(int type);

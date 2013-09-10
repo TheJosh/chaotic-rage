@@ -24,6 +24,7 @@ AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpMo
 	this->data = NULL;
 	this->anim = new AnimPlay(model);
 	this->owner = owner;
+	this->mass = 0.0f;
 
 	btCollisionShape* colShape = new btBoxShape(btVector3(0.1f, 0.1f, 0.1f));
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
@@ -41,6 +42,7 @@ AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpMo
 	this->data = NULL;
 	this->anim = new AnimPlay(model);
 	this->owner = owner;
+	this->mass = mass;
 
 	btCollisionShape* colShape = new btBoxShape(btVector3(0.1f, 0.1f, 0.1f));
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));

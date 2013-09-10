@@ -29,6 +29,7 @@ class AmmoRound : public Entity
 		AnimPlay *anim;
 		void* data;
 		Unit* owner;
+		float mass;
 
 	public:
 		AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model, Unit* owner);

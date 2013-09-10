@@ -9,6 +9,7 @@
 #include "../gamestate.h"
 #include "../entity/player.h"
 #include "../entity/ammo_round.h"
+#include "../mod/weapontype.h"
 #include "../mod/mod_manager.h"
 #include "net.h"
 #include "net_client.h"
@@ -235,8 +236,6 @@ void NetClient::addmsgChat()
 
 void NetClient::addmsgKeyMouseStatus(int x, int y, int delta, Uint8 k)
 {
-	cout << "       addmsgKeyMouseStatus(" << x << ", " << y << ", " << delta << ")\n";
-	
 	NetMsg * msg = new NetMsg(CLIENT_STATE, 7);
 	msg->seq = this->seq;
 	
@@ -439,7 +438,7 @@ unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 
 	// If don't exist, create
 	if (o == NULL) {
-		ObjectType *ot = st->mm->getObjectType("machinegun_pickup");
+		ObjectType *ot = st->mm->getObjectType("machinegun_pickup");		// TODO: support this
 		o = new Object(ot, st, bx, bz, by, 0);
 		
 		st->addObject(o);
@@ -477,7 +476,7 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 
 	// If don't exist, create
 	if (v == NULL) {
-		VehicleType *vt = st->mm->getVehicleType("tank");
+		VehicleType *vt = st->mm->getVehicleType("tank");		// TODO: support this
 
 		v = new Vehicle(vt, st, trans);
 		
@@ -498,37 +497,43 @@ unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
 {
 	cout << "       handleAmmoroundState()\n";
 
-	/*short eid = 0;
-	float qx, qy, qz, qw, bx, by, bz;
+	short eid = 0, unit_eid = 0;
+	float qx, qy, qz, qw, bx, by, bz, mass;
 	
-	unpack(data, "h ffff fff",
-		&eid,
+	unpack(data, "hh ffff fff f",
+		&eid, &unit_eid,
 		&qx, &qy, &qz, &qw,
-		&bx, &by, &bz
+		&bx, &by, &bz,
+		&mass
 	);
 	
-	Entity* e = st->getEntity(eid);
-	AmmoRound* ar = (AmmoRound*) e;
+	// Find existing entity, unit, and weapon
+	AmmoRound* ar = (AmmoRound*) st->getEntity(eid);
+	Unit* u = (Unit*) st->getEntity(unit_eid);
+	WeaponType* wt = st->mm->getWeaponType("remote_mine");		// TODO: support this
 	
-
-	// If don't exist, create
-	if (ar == NULL) {
-		ObjectType *ot = st->mm->getObjectType("machinegun_pickup");
-		o = new AmmoRound(ot, st, bx, bz, by, 0);
-		
-		st->addObject(o);
-		o->eid = eid;
-	}
+	// Check valid
+	if (u == NULL) return 36;
+	if (wt == NULL) return 36;
+	if (wt->model == NULL) return 36;
 	
-	// Update the transform
+	// Construct transform obj
 	btTransform xform = btTransform(
 		btQuaternion(qx, qy, qz, qw),
 		btVector3(bx, by, bz)
 	);
-	o->setTransform(xform);
-	*/
 	
-	return 30;
+	// Create or update
+	if (ar == NULL) {
+		ar = new AmmoRound(st, xform, wt, wt->model, u, mass);
+		st->addAmmoRound(ar);
+		ar->eid = eid;
+		
+	} else {
+		ar->setTransform(xform);
+	}
+	
+	return 36;
 }
 
 unsigned int NetClient::handlePickupState(Uint8 *data, unsigned int size)
@@ -549,7 +554,7 @@ unsigned int NetClient::handlePickupState(Uint8 *data, unsigned int size)
 
 	// If don't exist, create
 	if (p == NULL) {
-		PickupType *pt = st->mm->getPickupType("ammo_current");
+		PickupType *pt = st->mm->getPickupType("ammo_current");		// TODO: support this
 		p = new Pickup(pt, st, bx, bz, by);
 		
 		st->addPickup(p);

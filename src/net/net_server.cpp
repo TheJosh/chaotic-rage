@@ -402,7 +402,9 @@ NetMsg * NetServer::addmsgAmmoRoundState(AmmoRound *ar)
 {
 	messages.remove_if(IsTypeUniqPred(AMMOROUND_STATE, ar->eid));
 	
-	NetMsg * msg = new NetMsg(AMMOROUND_STATE, 30);
+	cout << "       addmsgAmmoRoundState()\n";
+	
+	NetMsg * msg = new NetMsg(AMMOROUND_STATE, 36);
 	msg->seq = this->seq;
 	msg->uniq = ar->eid;
 	
@@ -410,10 +412,11 @@ NetMsg * NetServer::addmsgAmmoRoundState(AmmoRound *ar)
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 	
-	pack(msg->data, "h ffff fff",
-		ar->eid,
+	pack(msg->data, "hh ffff fff f",
+		ar->eid, ar->owner->eid,
 		q.x(), q.y(), q.z(), q.w(),
-		b.x(), b.y(), b.z()
+		b.x(), b.y(), b.z(),
+		ar->mass
 	);
 	
 	messages.push_back(*msg);
@@ -549,8 +552,6 @@ unsigned int NetServer::handleChat(NetServerClientInfo *client, Uint8 *data, uns
 
 unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
-	cout << "       handleKeyMouseStatus() from slot " << client->slot << "\n";
-	
 	Sint16 x, y, delta;
 	Uint8 keys;
 	
