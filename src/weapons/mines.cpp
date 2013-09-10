@@ -40,6 +40,7 @@ void WeaponTimedMine::doFire(Unit *u, btTransform &origin)
 void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 {
 	WeaponTimedMineData* data = (WeaponTimedMineData*)e->data;
+	if (!data) return;
 	
 	// If there is a ghost, see what we hit
 	if (data->ghost) {
@@ -91,6 +92,7 @@ void WeaponProxiMine::doFire(Unit *u, btTransform &origin)
 void WeaponProxiMine::entityUpdate(AmmoRound *e, int delta)
 {
 	WeaponProxiMineData* data = (WeaponProxiMineData*)e->data;
+	if (!data) return;
 	
 	// Give the user a chance
 	if (data->delay > 0) {
@@ -136,11 +138,11 @@ void WeaponRemoteMine::doFire(Unit *u, btTransform &origin)
 void WeaponRemoteMine::entityUpdate(AmmoRound *e, int delta)
 {
 	WeaponRemoteMineData* data = (WeaponRemoteMineData*)e->data;
-	if (! data->ghost) return;
+	if (!data || !data->ghost) return;
 
 	// If there is a ghost, we have just boomed, let's see what we hit
 	apply_ghost_damage(data->ghost, Quadratic(0.0f, this->damage, 0.0f), this->range);
-		
+	
 	// Remove the mine
 	e->getGameState()->physics->delCollisionObject(data->ghost);
 	delete(data);
