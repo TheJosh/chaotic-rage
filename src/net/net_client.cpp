@@ -579,9 +579,15 @@ unsigned int NetClient::handleEntityRem(Uint8 *data, unsigned int size)
 	
 	unpack(data, "h", &eid);
 	
+	// Find and remove
 	Entity *e = st->getEntity(eid);
 	if (e) {
 		e->del = true;
+	}
+	
+	// Is it us? unset the player ref
+	if (e == this->st->local_players[0]->p) {
+		this->st->local_players[0]->p = NULL;
 	}
 	
 	return 2;
