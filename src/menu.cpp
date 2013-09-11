@@ -678,6 +678,7 @@ void Menu::networkJoin(string host)
 	// Begin!
 	gameLoop(st, st->render);
 	
+	// Quit
 	delete (st->client);
 	st->client = NULL;
 

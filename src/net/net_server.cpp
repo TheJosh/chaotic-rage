@@ -119,15 +119,12 @@ void NetServer::update()
 			}
 		}
 		
+		// Scrub any dropped clients from the array
 		this->clients.erase(
 			std::remove_if(this->clients.begin(), this->clients.end(), ClientEraser),
 			this->clients.end()
 		);
-	}
-	
-	
-	// Only send messages if we have clients
-	if (this->clients.size() > 0) {
+		
 		// Dump debug info
 		if (debug_enabled("net_info")) {
 			cout << setw (6) << setfill(' ') << st->game_time << " MSG-QUEUE\n";
@@ -184,7 +181,7 @@ void NetServer::update()
 	
 	this->messages.remove_if(*this->seq_pred);
 	
-	//SDLNet_FreePacket(pkt);
+	SDLNet_FreePacket(pkt);
 }
 
 
@@ -207,13 +204,12 @@ void NetServer::listen(int port)
 **/
 void NetServer::dropClient(NetServerClientInfo *client)
 {
-	this->st->logic->raise_playerleave(client->slot);
-	
 	Unit * u = this->st->findUnitSlot(client->slot);
 	if (u) {
-		u->takeDamage(u->getHealth());
+		u->del = 1;
 	}
 	
+	this->st->logic->raise_playerleave(client->slot);
 	this->addmsgClientDrop(client);
 	
 	client->inlist = false;
@@ -573,6 +569,7 @@ unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 
 unsigned int NetServer::handleQuit(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
 	cout << "       handleQuit() from slot " << client->slot << "\n";
+	this->dropClient(client);
 	return 0;
 }
 

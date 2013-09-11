@@ -40,7 +40,7 @@ class NetClient {
 		NetGameinfo * attemptJoinGame(string address, int port);
 		bool downloadGameState();
 		void preGame();
-
+		
 	public:
 		// One method for each outgoing network message the client sends out
 		void addmsgInfoReq();
@@ -60,7 +60,6 @@ class NetClient {
 		unsigned int handleDataCompl(Uint8 *data, unsigned int size);
 		unsigned int handleChat(Uint8 *data, unsigned int size);
 		unsigned int handlePlayerDrop(Uint8 *data, unsigned int size);
-		unsigned int handlePlayerQuit(Uint8 *data, unsigned int size);
 		
 		unsigned int handleUnitState(Uint8 *data, unsigned int size);
 		unsigned int handleWallState(Uint8 *data, unsigned int size);

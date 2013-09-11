@@ -29,7 +29,7 @@ MsgClientRecv msg_client_recv [] = {
 	&NetClient::handleChat,             //<--  0x09
 	&NetClient::handlePlayerDrop,       //<--  0x0A
 	NULL,                               //<--  0x0B
-	&NetClient::handlePlayerQuit,       //<--  0x0C
+	NULL,                               //<--  0x0C
 	NULL,                               //<--  0x0D
 	&NetClient::handleUnitState,        //<--  0x0E
 	&NetClient::handleWallState,        //<--  0x0F

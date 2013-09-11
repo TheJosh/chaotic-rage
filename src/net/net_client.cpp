@@ -250,6 +250,8 @@ void NetClient::addmsgQuit() {
 	NetMsg * msg = new NetMsg(QUIT_REQ, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
+	
+	this->ingame = false;
 }
 
 
@@ -324,12 +326,6 @@ unsigned int NetClient::handlePlayerDrop(Uint8 *data, unsigned int size)
 	}
 	
 	return 2;
-}
-
-unsigned int NetClient::handlePlayerQuit(Uint8 *data, unsigned int size)
-{
-	cout << "       handlePlayerQuit()\n";
-	return 0;
 }
 
 

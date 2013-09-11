@@ -36,7 +36,8 @@ enum NetMsgType {
 	
 	PLAYER_DROP =   0x0A,		// [S] Player dropped. too laggy -> all clients
 	QUIT_REQ =      0x0B,		// [C] Player want's to leave -> server
-	PLAYER_QUIT =   0x0C,		// [S] Player has left -> all clients
+	
+	UNUSED1 =       0x0C,		// Unused at the moment
 	
 	CLIENT_STATE =  0x0D,		// [C] Keyboard (buttons) and mouse (buttons, position) status -> server
 	
