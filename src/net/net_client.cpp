@@ -11,6 +11,7 @@
 #include "../entity/ammo_round.h"
 #include "../mod/weapontype.h"
 #include "../mod/mod_manager.h"
+#include "../util/ui_update.h"
 #include "net.h"
 #include "net_client.h"
 #include "net_gameinfo.h"
@@ -144,7 +145,7 @@ void NetClient::bind(string address, int port)
 * Try to join a game.
 * Returns a GameInfo object, or NULL on failure.
 **/
-NetGameinfo * NetClient::attemptJoinGame(string address, int port)
+NetGameinfo * NetClient::attemptJoinGame(string address, int port, UIUpdate *ui)
 {
 	if (this->gameinfo) {
 		delete(this->gameinfo);
@@ -155,11 +156,12 @@ NetGameinfo * NetClient::attemptJoinGame(string address, int port)
 	this->addmsgJoinReq();
 	
 	// Wait up to two seconds to be allocated a slot
-	for (int i = 0; i < 20; i++) {
+	unsigned int now = SDL_GetTicks();
+	do {
 		this->update();
 		if (this->gameinfo != NULL) break;
-		SDL_Delay(100);
-	}
+		if (ui) ui->updateUI();
+	} while (SDL_GetTicks() - now > 2000);
 
 	return this->gameinfo;
 }

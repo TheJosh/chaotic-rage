@@ -12,6 +12,8 @@
 using namespace std;
 
 
+class UIUpdate;
+
 
 class NetClient {
 	friend class NetClientSeqPred;
@@ -37,7 +39,7 @@ class NetClient {
 		void update();
 
 	public:
-		NetGameinfo * attemptJoinGame(string address, int port);
+		NetGameinfo * attemptJoinGame(string address, int port, UIUpdate *ui);
 		bool downloadGameState();
 		void preGame();
 		

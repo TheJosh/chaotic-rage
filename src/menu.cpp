@@ -640,7 +640,7 @@ void Menu::networkJoin(string host)
 	st->local_players[0] = new PlayerState(st);
 	
 	// Try to join the server
-	NetGameinfo *gameinfo = st->client->attemptJoinGame(host, 17778);
+	NetGameinfo *gameinfo = st->client->attemptJoinGame(host, 17778, this);
 	if (gameinfo == NULL) {
 		delete (st->client);
 		st->client = NULL;
