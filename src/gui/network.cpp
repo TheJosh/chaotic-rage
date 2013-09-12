@@ -23,7 +23,24 @@ using namespace std;
 **/
 DialogNetJoin::DialogNetJoin()
 {
+	this->internet_hosts = NULL;
+	this->internet_model = NULL;
+	this->internet_refresh_action = new InternetRefreshAction(this);
 }
+
+
+/**
+* Destructor for join network game dialog
+**/
+DialogNetJoin::~DialogNetJoin()
+{
+	// TODO: kill off widgets
+	
+	delete(this->internet_hosts);
+	delete(this->internet_model);
+	delete(this->internet_refresh_action);
+}
+
 
 /**
 * Setup routine for the join network game dialog
@@ -55,17 +72,21 @@ gcn::Container * DialogNetJoin::setup()
 	}
 	
 	// List of internet hosts
-	this->internet_hosts = getServerList(this->m);
-	if (this->internet_hosts != NULL) {
+	{
 		gcn::Container* tabc = new gcn::Container();
 		tabc->setDimension(gcn::Rectangle(0, 0, 245, 180));
 		this->tabs->addTab("Internet", tabc);
 		
-		this->internet = new gcn::ListBox(new VectorListModel(this->internet_hosts));
-		this->internet->setPosition(10, 10);
-		this->internet->setWidth(225);
-		this->internet->setHeight(140);
-		tabc->add(this->internet);
+		this->internet_list = new gcn::ListBox(NULL);
+		this->internet_list->setPosition(10, 10);
+		this->internet_list->setWidth(225);
+		this->internet_list->setHeight(110);
+		tabc->add(this->internet_list);
+		
+		this->internet_button = new gcn::Button("Refresh list");
+		this->internet_button->setPosition(10, 125);
+		this->internet_button->addActionListener(this->internet_refresh_action);
+		tabc->add(this->internet_button);
 	}
 	
 	button = new gcn::Button("Join Game");
@@ -75,6 +96,7 @@ gcn::Container * DialogNetJoin::setup()
 	
 	return c;
 }
+
 
 /**
 * Button click processing for the "New Game" dialog
@@ -87,10 +109,28 @@ void DialogNetJoin::action(const gcn::ActionEvent& actionEvent)
 		);
 		
 	} else if (this->tabs->getSelectedTabIndex() == 1) {
-		if (this->internet->getSelected() != -1) { 
+		if (this->internet_list->getSelected() != -1) { 
 			this->m->networkJoin(
-				this->internet_hosts->at(this->internet->getSelected())
+				this->internet_hosts->at(this->internet_list->getSelected())
 			);
 		}
 	}
 }
+
+
+/**
+* Internet refresh button
+**/
+void InternetRefreshAction::action(const gcn::ActionEvent& actionEvent)
+{
+	this->owner->internet_list->setListModel(NULL);
+	
+	delete(this->owner->internet_hosts);
+	delete(this->owner->internet_model);
+	
+	this->owner->internet_hosts = getServerList(this->owner->m);
+	this->owner->internet_model = new VectorListModel(this->owner->internet_hosts);
+	
+	this->owner->internet_list->setListModel(this->owner->internet_model);
+}
+
