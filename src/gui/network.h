@@ -10,6 +10,7 @@
 using namespace std;
 
 
+class LocalRefreshAction;
 class InternetRefreshAction;
 
 
@@ -18,6 +19,7 @@ class InternetRefreshAction;
 **/
 class DialogNetJoin : public Dialog, public gcn::ActionListener
 {
+	friend class LocalRefreshAction;
 	friend class InternetRefreshAction;
 	
 	public:
@@ -28,6 +30,12 @@ class DialogNetJoin : public Dialog, public gcn::ActionListener
 		gcn::TabbedArea * tabs;
 		gcn::TextField * host;
 		
+		gcn::ListBox * local_list;
+		gcn::Button * local_button;
+		vector<string> * local_hosts;
+		VectorListModel * local_model;
+		LocalRefreshAction * local_refresh_action;
+		
 		gcn::ListBox * internet_list;
 		gcn::Button * internet_button;
 		vector<string> * internet_hosts;
@@ -36,6 +44,22 @@ class DialogNetJoin : public Dialog, public gcn::ActionListener
 		
 	public:
 		virtual gcn::Container * setup();
+		virtual void action(const gcn::ActionEvent& actionEvent);
+};
+
+
+/**
+* Handles clicks on the "internet refresh" button
+**/
+class LocalRefreshAction : public gcn::ActionListener
+{
+	private:
+		DialogNetJoin* owner;
+		
+	public:
+		LocalRefreshAction(DialogNetJoin* owner) : owner(owner) {};
+		
+	public:
 		virtual void action(const gcn::ActionEvent& actionEvent);
 };
 
