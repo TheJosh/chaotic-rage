@@ -10,6 +10,7 @@
 #include "../rage.h"
 #include "../menu.h"
 #include "../http/serverlist.h"
+#include "../net/net_browse.h"
 #include "dialog.h"
 #include "network.h"
 
@@ -161,7 +162,7 @@ void LocalRefreshAction::action(const gcn::ActionEvent& actionEvent)
 	delete(this->owner->local_hosts);
 	delete(this->owner->local_model);
 	
-	this->owner->local_hosts = getServerList(this->owner->m);
+	this->owner->local_hosts = getLocalServers(this->owner->m);
 	this->owner->local_model = new VectorListModel(this->owner->local_hosts);
 	
 	this->owner->local_list->setListModel(this->owner->local_model);
