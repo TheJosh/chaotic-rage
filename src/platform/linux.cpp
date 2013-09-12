@@ -89,17 +89,23 @@ void displayMessageBox(string msg)
 	
 	d = wm.info.x11.display;
 	
+	// Create window
 	wm.info.x11.lock_func();
 	s = DefaultScreen(d);
 	w = XCreateSimpleWindow(d, RootWindow(d, s), 10, 10, 50 + msg.length() * 10, 50, 0, BlackPixel(d, s), WhitePixel(d, s));
 	XSetStandardProperties(d,w,"Fatal Error","Fatal Error",None,NULL,0,NULL);
 	XSelectInput(d, w, ExposureMask | ButtonPressMask | KeyPressMask);
 	XMapWindow(d, w);
+	Atom wmDeleteMessage = XInternAtom(d, "WM_DELETE_WINDOW", False);
+	XSetWMProtocols(d, w, &wmDeleteMessage, 1);
 	wm.info.x11.unlock_func();
 	
-	SDL_Delay(10);
-	
-	while (1) {
+	// Event loop
+	bool running = 1;
+	while (running) {
+		SDL_Delay(10);
+		
+		// Fetch event and handle draw from within WM lock
 		wm.info.x11.lock_func();
 		XNextEvent(d, &e);
 		if (e.type == Expose) {
@@ -107,11 +113,27 @@ void displayMessageBox(string msg)
 		}
 		wm.info.x11.unlock_func();
 		
-		if (e.type == KeyPress) break;
-		if (e.type == ButtonPress) break;
+		// Other events can be handled without lock
+		switch (e.type) {
+			case ButtonPress:
+			case KeyPress:
+				running = 0;
+				break;
+				
+			case ClientMessage:
+				if (e.xclient.data.l[0] == (long)wmDeleteMessage) {
+					running = false;
+				}
+				break;
+			
+			default:
+				break;
+		}
 	}
 	
+	wm.info.x11.lock_func();
 	XDestroyWindow(d, w);
+	wm.info.x11.unlock_func();
 #endif
 }
 
