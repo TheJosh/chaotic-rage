@@ -91,7 +91,7 @@ void displayMessageBox(string msg)
 	
 	wm.info.x11.lock_func();
 	s = DefaultScreen(d);
-	w = XCreateSimpleWindow(d, RootWindow(d, s), 10, 10, 50 + msg.length() * 10, 50, 1, BlackPixel(d, s), WhitePixel(d, s));
+	w = XCreateSimpleWindow(d, RootWindow(d, s), 10, 10, 50 + msg.length() * 10, 50, 0, BlackPixel(d, s), WhitePixel(d, s));
 	XSetStandardProperties(d,w,"Fatal Error","Fatal Error",None,NULL,0,NULL);
 	XSelectInput(d, w, ExposureMask | ButtonPressMask | KeyPressMask);
 	XMapWindow(d, w);
