@@ -8,7 +8,7 @@
 Name "Chaotic Rage"
 
 ; The file to write
-OutFile "chaoticrage-win32-betaXX.exe"
+OutFile "chaoticrage-win32-1.XX.exe"
 
 ; The default installation directory
 InstallDir $PROGRAMFILES32\ChaoticRage

@@ -77,6 +77,13 @@ void NetServer::update()
 		Uint16 code = SDLNet_Read16(ptr);
 		ptr += 2; p += 2;
 		
+		// Handle a "browse" packet by echoing back
+		if (pkt->len == 4 && newseq == 0 && code == 0xFFFF) {
+			SDLNet_UDP_Send(this->sock, -1, pkt);
+			continue;
+		}
+
+		// Find the appropriate client
 		NetServerClientInfo *client = NULL;
 		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
 			if ((*cli) != NULL && (*cli)->ipaddress.host == pkt->address.host && (*cli)->code == code) {
@@ -85,10 +92,12 @@ void NetServer::update()
 			}
 		}
 		
+		// Update their seq
 		if (client != NULL && newseq > client->seq) {
 			client->seq = newseq;
 		}
 		
+		// Create a new client if required
 		if (client == NULL) {
 			client = new NetServerClientInfo();
 			client->ipaddress.host = pkt->address.host;
@@ -96,6 +105,7 @@ void NetServer::update()
 			client->code = code;
 		}
 		
+		// Handle messages
 		while (p < pkt->len) {
 			unsigned int type = (*ptr);
 			ptr++; p++;

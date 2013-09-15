@@ -417,6 +417,12 @@
     <ClCompile Include="..\..\src\util\btCRKinematicCharacterController.cpp">
       <Filter>src\util</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\render\guichan_imageloader.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\net\net_browse.cpp">
+      <Filter>src\net</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">
@@ -691,6 +697,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\util\btCRKinematicCharacterController.h">
       <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\net\net_browse.h">
+      <Filter>src\net</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
