@@ -161,7 +161,7 @@ NetGameinfo * NetClient::attemptJoinGame(string address, int port, UIUpdate *ui)
 		this->update();
 		if (this->gameinfo != NULL) break;
 		if (ui) ui->updateUI();
-	} while (SDL_GetTicks() - now > 2000);
+	} while (SDL_GetTicks() - now < 2000);
 
 	return this->gameinfo;
 }

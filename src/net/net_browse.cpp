@@ -33,7 +33,7 @@ vector<string>* getLocalServers(UIUpdate * ui)
 
 	// Create "browse" packet
 	pkt->len = 4;
-	SDLNet_Write16(0, pkt->data);
+	SDLNet_Write16(0x0000, pkt->data);
 	SDLNet_Write16(0xFFFF, pkt->data + 2);
 
 	// UDP broadcast
@@ -48,6 +48,7 @@ vector<string>* getLocalServers(UIUpdate * ui)
 
 	// Wait up to five seconds for any responses
 	unsigned int now = SDL_GetTicks();
+	char buf[16];
 	do {
 		pkt->len = 0;
 		while (SDLNet_UDP_Recv(sock, pkt)) {
@@ -57,7 +58,7 @@ vector<string>* getLocalServers(UIUpdate * ui)
 			}
 		}
 
-	} while (SDL_GetTicks() - now > 5000);
+	} while (SDL_GetTicks() - now < 5000);
 
 	SDLNet_FreePacket(pkt);
 	SDLNet_UDP_Close(sock);

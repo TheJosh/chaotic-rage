@@ -78,7 +78,7 @@ void NetServer::update()
 		ptr += 2; p += 2;
 		
 		// Handle a "browse" packet by echoing back
-		if (pkt->len == 4 && newseq == 0 && code == 0xFFFF) {
+		if (pkt->len == 4 && newseq == 0x0000 && code == 0xFFFF) {
 			SDLNet_UDP_Send(this->sock, -1, pkt);
 			continue;
 		}
