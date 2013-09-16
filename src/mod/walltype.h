@@ -20,6 +20,8 @@ class WallType
 	public:
 		// from data file
 		string name;
+		Uint32 crc;
+		
 		bool stretch;
 		bool wall;
 		WallType * ground_type;

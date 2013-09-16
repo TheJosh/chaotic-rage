@@ -32,6 +32,8 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 	public:
 		int id;
 		string name;
+		Uint32 crc;
+		
 		string title;
 		GameState * st;
 		int type;

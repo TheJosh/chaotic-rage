@@ -13,6 +13,7 @@
 #include "../util/ui_update.h"
 #include "../render/assimpmodel.h"
 #include "../util/SDL_rwops_zzip.h"
+#include "../util/crc32.h"
 #include "mod.h"
 #include "confuse_types.h"
 #include "aitype.h"
@@ -214,6 +215,8 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 			cerr << "Bad definition in file " << filename << " at index " << j << "\n";
 			return NULL;
 		}
+		
+		am->crc = crc32(0, am->name.c_str(), am->name.size());
 		
 		models->push_back(am);
 		am->id = models->size() - 1;

@@ -36,6 +36,7 @@ class PickupType
 	public:
 		int id;
 		string name;
+		Uint32 crc;
 		AssimpModel * model;
 		int type;
 		

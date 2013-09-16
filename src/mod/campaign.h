@@ -30,6 +30,7 @@ class Campaign
 	public:
 		int id;
 		string name;
+		Uint32 crc;
 		string title;
 		GameState * st;
 		Mod* mod;

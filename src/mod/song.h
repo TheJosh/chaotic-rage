@@ -14,6 +14,7 @@ class Song
 	public:
 		// from data file
 		string name;
+		Uint32 crc;
 		
 		// dynamic
 		int id;

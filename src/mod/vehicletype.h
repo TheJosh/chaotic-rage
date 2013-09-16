@@ -21,6 +21,8 @@ class VehicleType
 		int id;
 		
 		string name;
+		Uint32 crc;
+		
 		AssimpModel * model;
 		int health;
 		bool land;

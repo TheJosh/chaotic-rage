@@ -64,6 +64,7 @@ class UnitType
 	
 	public:
 		string name;
+		Uint32 crc;
 		AssimpModel * model;
 		int id;
 		int begin_health;

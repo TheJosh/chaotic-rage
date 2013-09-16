@@ -25,6 +25,7 @@ class ObjectType
 	public:
 		// from data file
 		string name;
+		Uint32 crc;
 		bool stretch;
 		bool wall;
 		ObjectType * ground_type;

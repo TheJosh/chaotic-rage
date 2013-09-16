@@ -12,6 +12,7 @@ class GameType
 {
 	public:
 		string name;
+		Uint32 crc;
 		string script;
 		string title;
 		int id;

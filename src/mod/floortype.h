@@ -13,6 +13,7 @@ class FloorType
 	public:
 		// from data file
 		string name;
+		Uint32 crc;
 		bool stretch;
 		
 		// dynamic
