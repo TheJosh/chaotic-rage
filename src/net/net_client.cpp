@@ -577,6 +577,8 @@ unsigned int NetClient::handleEntityRem(Uint8 *data, unsigned int size)
 	
 	unpack(data, "h", &eid);
 	
+	cout << "       REMOVE  eid: " << eid << "\n";
+	
 	// Find and remove
 	Entity *e = st->getEntity(eid);
 	if (e) {

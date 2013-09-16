@@ -464,7 +464,7 @@ NetMsg * NetServer::addmsgEntityRem(Entity *e)
 	NetMsg * msg = new NetMsg(ENTITY_REM, 2);
 	msg->seq = this->seq;
 	
-	cout << "       addmsgEntityRem()\n";
+	cout << "       addmsgEntityRem()  klass: " << e->klass() << "  eid: " << e->eid << "\n";
 	
 	pack(msg->data, "h", e->eid);
 	

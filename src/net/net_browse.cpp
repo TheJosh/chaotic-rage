@@ -48,7 +48,6 @@ vector<string>* getLocalServers(UIUpdate * ui)
 
 	// Wait up to five seconds for any responses
 	unsigned int now = SDL_GetTicks();
-	char buf[16];
 	do {
 		pkt->len = 0;
 		while (SDLNet_UDP_Recv(sock, pkt)) {
