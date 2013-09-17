@@ -14,10 +14,9 @@ class Sound
 	public:
 		// from data file
 		string name;
-		Uint32 crc;
+		CRC32 id;
 		
 		// dynamic
-		int id;
 		AudioPtr sound;
 		
 	public:

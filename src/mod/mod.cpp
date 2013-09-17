@@ -65,6 +65,7 @@ Mod::Mod(GameState * st, string directory)
 	
 	int bp = directory.rfind('/');
 	this->name = directory.substr(bp + 1, 100);
+	this->id = crc32(0, this->name.c_str(), this->name.size());
 	
 	directory.append("/");
 	this->directory = directory;
@@ -216,11 +217,12 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 			return NULL;
 		}
 		
-		am->crc = crc32(0, am->name.c_str(), am->name.size());
+		am->id = crc32(0, am->name.c_str(), am->name.size());
 		
 		models->push_back(am);
-		am->id = models->size() - 1;
-
+		
+		cout << std::hex << am->id << " " << am->name << "\n";
+		
 		if (ui) ui->updateUI();
 	}
 	
@@ -234,6 +236,8 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 **/
 bool Mod::load(UIUpdate* ui)
 {
+	cout << "Mod: " << std::hex << this->id << " " << this->name << "\n";
+	
 #ifdef NOGUI
 	sounds = new vector<Sound*>();
 	songs = new vector<Song*>();
@@ -310,6 +314,8 @@ bool Mod::load(UIUpdate* ui)
 		pickuptypes->push_back(pt);
 	}
 
+	cout << "\n";
+	
 	return true;
 }
 
@@ -346,20 +352,22 @@ bool Mod::reloadAttrs()
 /**
 * Gets an AIType by ID
 **/
-AIType * Mod::getAIType(int id)
+AIType * Mod::getAIType(CRC32 id)
 {
-	if (id < 0 or ((unsigned int) id) > ais->size()) return NULL;
-	return ais->at(id);
+	for (int i = ais->size() - 1; i >= 0; --i) {
+		if (ais->at(i)->id == id) return ais->at(i);
+	}
+	return NULL;
 }
 
 AIType * Mod::getAIType(string name)
 {
 	if (name.empty()) return NULL;
 	
-	int i;
-	for (i = ais->size() - 1; i >= 0; --i) {
+	for (int i = ais->size() - 1; i >= 0; --i) {
 		if (ais->at(i)->name.compare(name) == 0) return ais->at(i);
 	}
+	
 	return NULL;
 }
 
@@ -414,40 +422,9 @@ vector<Campaign*> * Mod::getCampaigns()
 }
 
 
-
 /**
-* Gets an floor type by ID
+* Gets a gametype by name
 **/
-FloorType * Mod::getFloorType(int id)
-{
-	if (id < 0 or ((unsigned int) id) > areatypes->size()) return NULL;
-	return areatypes->at(id);
-}
-
-/**
-* Gets an floor type by name
-**/
-FloorType * Mod::getFloorType(string name)
-{
-	if (name.empty()) return NULL;
-	
-	int i;
-	for (i = areatypes->size() - 1; i >= 0; --i) {
-		if (areatypes->at(i)->name.compare(name) == 0) return areatypes->at(i);
-	}
-	return NULL;
-}
-
-
-/**
-* Gets a gametype by ID
-**/
-GameType * Mod::getGameType(int id)
-{
-	if (id < 0 or ((unsigned int) id) > gametypes->size()) return NULL;
-	return gametypes->at(id);
-}
-
 GameType * Mod::getGameType(string name)
 {
 	if (name.empty()) return NULL;
@@ -473,10 +450,12 @@ void Mod::getAllGameTypes(vector<GameType*>::iterator * start, vector<GameType*>
 /**
 * Gets a unitclass by ID
 **/
-ObjectType * Mod::getObjectType(int id)
+ObjectType * Mod::getObjectType(CRC32 id)
 {
-	if (id < 0 or ((unsigned int) id) > objecttypes->size()) return NULL;
-	return objecttypes->at(id);
+	for (int i = objecttypes->size() - 1; i >= 0; --i) {
+		if (objecttypes->at(i)->id == id) return objecttypes->at(i);
+	}
+	return NULL;
 }
 
 /**
@@ -500,6 +479,17 @@ void Mod::addObjectType(ObjectType * ot)
 
 
 /**
+* Gets a vehicle type by ID
+**/
+PickupType * Mod::getPickupType(CRC32 id)
+{
+	for (int i = pickuptypes->size() - 1; i >= 0; --i) {
+		if (pickuptypes->at(i)->id == id) return pickuptypes->at(i);
+	}
+	return NULL;
+}
+
+/**
 * Gets a pickup type by name
 **/
 PickupType * Mod::getPickupType(string name)
@@ -517,10 +507,12 @@ PickupType * Mod::getPickupType(string name)
 /**
 * Gets a unitclass by ID
 **/
-UnitType * Mod::getUnitType(int id)
+UnitType * Mod::getUnitType(CRC32 id)
 {
-	if (id < 0 or ((unsigned int) id) > unitclasses->size()) return NULL;
-	return unitclasses->at(id);
+	for (int i = unitclasses->size() - 1; i >= 0; --i) {
+		if (unitclasses->at(i)->id == id) return unitclasses->at(i);
+	}
+	return NULL;
 }
 
 /**
@@ -537,7 +529,6 @@ UnitType * Mod::getUnitType(string name)
 	return NULL;
 }
 
-
 /**
 * Returns two iterators for getting all gametypes
 **/
@@ -551,10 +542,12 @@ void Mod::getAllUnitTypes(vector<UnitType*>::iterator * start, vector<UnitType*>
 /**
 * Gets a vehicle type by ID
 **/
-VehicleType * Mod::getVehicleType(int id)
+VehicleType * Mod::getVehicleType(CRC32 id)
 {
-	if (id < 0 or ((unsigned int) id) > vehicletypes->size()) return NULL;
-	return vehicletypes->at(id);
+	for (int i = vehicletypes->size() - 1; i >= 0; --i) {
+		if (vehicletypes->at(i)->id == id) return vehicletypes->at(i);
+	}
+	return NULL;
 }
 
 /**
@@ -573,15 +566,6 @@ VehicleType * Mod::getVehicleType(string name)
 	return NULL;
 }
 
-
-/**
-* Gets a song by ID
-**/
-Song * Mod::getSong(int id)
-{
-	if (id < 0 or ((unsigned int) id) > songs->size()) return NULL;
-	return songs->at(id);
-}
 
 /**
 * Gets a unitclass by name
@@ -608,14 +592,8 @@ Song * Mod::getRandomSong()
 
 
 /**
-* Gets a sound by ID
+* Gets a sound by name
 **/
-Sound * Mod::getSound(int id)
-{
-	if (id < 0 or ((unsigned int) id) > sounds->size()) return NULL;
-	return sounds->at(id);
-}
-
 Sound * Mod::getSound(string name)
 {
 	if (name.empty()) return NULL;
@@ -631,10 +609,12 @@ Sound * Mod::getSound(string name)
 /**
 * Gets a wall type by ID
 **/
-WallType * Mod::getWallType(int id)
+WallType * Mod::getWallType(CRC32 id)
 {
-	if (id < 0 or ((unsigned int) id) > walltypes->size()) return NULL;
-	return walltypes->at(id);
+	for (int i = walltypes->size() - 1; i >= 0; --i) {
+		if (walltypes->at(i)->id == id) return walltypes->at(i);
+	}
+	return NULL;
 }
 
 WallType * Mod::getWallType(string name)
@@ -652,10 +632,12 @@ WallType * Mod::getWallType(string name)
 /**
 * Gets a weapon type by ID
 **/
-WeaponType * Mod::getWeaponType(int id)
+WeaponType * Mod::getWeaponType(CRC32 id)
 {
-	if (id < 0 or ((unsigned int) id) > weapontypes->size()) return NULL;
-	return weapontypes->at(id);
+	for (int i = weapontypes->size() - 1; i >= 0; --i) {
+		if (weapontypes->at(i)->id == id) return weapontypes->at(i);
+	}
+	return NULL;
 }
 
 WeaponType * Mod::getWeaponType(string name)

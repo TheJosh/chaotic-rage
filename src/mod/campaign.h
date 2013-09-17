@@ -28,9 +28,9 @@ class CampaignStage {
 class Campaign
 {
 	public:
-		int id;
 		string name;
-		Uint32 crc;
+		CRC32 id;
+		
 		string title;
 		GameState * st;
 		Mod* mod;

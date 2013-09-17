@@ -20,7 +20,7 @@ class WallType
 	public:
 		// from data file
 		string name;
-		Uint32 crc;
+		CRC32 id;
 		
 		bool stretch;
 		bool wall;
@@ -34,8 +34,6 @@ class WallType
 		int check_radius;
 		int health;
 
-		// dynamic
-		int id;
 		SpritePtr surf;
 		
 	public:

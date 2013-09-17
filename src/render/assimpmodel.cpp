@@ -43,7 +43,6 @@ AssimpModel::AssimpModel(Mod* mod, string name)
 **/
 bool AssimpModel::load(Render3D* render, bool meshdata)
 {
-	cout << "Loading assimp model: " << this->name << "\n";
 	Assimp::Importer importer;
 
 	unsigned int flags = aiProcess_CalcTangentSpace
@@ -519,8 +518,6 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 	idx = (unsigned int*) malloc(sizeof(unsigned int) * mesh->mNumVertices);
 	memset(idx, 0, sizeof(unsigned int) * mesh->mNumVertices);
 
-	cout << "Doing bones for mesh " << myMesh << "\n";
-	
 	// Loop through the weights of all the bones
 	// Save the id and the weight in the arrays as required
 	for (n = 0; n < mesh->mNumBones; n++) {
@@ -548,8 +545,6 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 		bn->offset = glm::make_mat4((float *) &m);
 		
 		myMesh->bones.push_back(bn);
-		
-		cout << "    Found bone " << n << "; name = " << bn->name << "\n";
 	}
 	
 	free(idx);

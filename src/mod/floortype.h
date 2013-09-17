@@ -11,13 +11,10 @@ using namespace std;
 class FloorType
 {
 	public:
-		// from data file
 		string name;
-		Uint32 crc;
-		bool stretch;
+		CRC32 id;
 		
-		// dynamic
-		int id;
+		bool stretch;
 		SpritePtr texture;
 		
 	public:

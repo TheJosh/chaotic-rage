@@ -18,10 +18,8 @@ class VehicleTypeDamage {
 class VehicleType
 {
 	public:
-		int id;
-		
 		string name;
-		Uint32 crc;
+		CRC32 id;
 		
 		AssimpModel * model;
 		int health;
@@ -37,9 +35,7 @@ class VehicleType
 		
 		string move_node;
 		glm::vec3 move_axis;
-		
 		WeaponType* weapon_primary;
-		
 		vector <VehicleTypeDamage *> damage_models;
 		
 	public:

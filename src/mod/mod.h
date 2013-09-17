@@ -58,6 +58,7 @@ class Mod {
 	public:
 		GameState * st;
 		string name;
+		CRC32 id;
 		string directory;
 		
 	public:
@@ -80,26 +81,22 @@ class Mod {
 		bool hasArcade() { return this->has_arcade; }
 		bool hasCampaign() { return this->has_campaign; }
 		
-		AIType * getAIType(int id);
-		FloorType * getFloorType(int id);
-		GameType * getGameType(int id);
-		ObjectType * getObjectType(int id);
-		Song * getSong(int id);
-		Sound * getSound(int id);
-		UnitType * getUnitType(int id);
-		VehicleType * getVehicleType(int id);
-		WallType * getWallType(int id);
-		WeaponType * getWeaponType(int id);
+		AIType * getAIType(CRC32 id);
+		ObjectType * getObjectType(CRC32 id);
+		PickupType * getPickupType(CRC32 id);
+		UnitType * getUnitType(CRC32 id);
+		VehicleType * getVehicleType(CRC32 id);
+		WallType * getWallType(CRC32 id);
+		WeaponType * getWeaponType(CRC32 id);
 		
 		AIType * getAIType(string name);
 		Campaign * getCampaign(string name);
-		FloorType * getFloorType(string name);
 		GameType * getGameType(string name);
 		ObjectType * getObjectType(string name);
 		PickupType * getPickupType(string name);
-		UnitType * getUnitType(string name);
 		Song * getSong(string name);
 		Sound * getSound(string name);
+		UnitType * getUnitType(string name);
 		VehicleType * getVehicleType(string name);
 		WallType * getWallType(string name);
 		WeaponType * getWeaponType(string name);

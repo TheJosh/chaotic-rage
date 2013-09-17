@@ -25,7 +25,8 @@ class ObjectType
 	public:
 		// from data file
 		string name;
-		Uint32 crc;
+		CRC32 id;
+		
 		bool stretch;
 		bool wall;
 		ObjectType * ground_type;
@@ -44,8 +45,6 @@ class ObjectType
 		bool turret;
 		bool over;
 		
-		// dynamic
-		int id;
 		SpritePtr surf;
 		
 	public:

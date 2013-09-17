@@ -12,9 +12,9 @@ class AIType
 {
 	public:
 		string name;
-		Uint32 crc;
+		CRC32 id;
+		
 		string script;
-		int id;
 		
 	public:
 		AIType();

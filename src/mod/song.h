@@ -14,10 +14,8 @@ class Song
 	public:
 		// from data file
 		string name;
-		Uint32 crc;
+		CRC32 id;
 		
-		// dynamic
-		int id;
 		Mix_Music * music;
 		
 	public:

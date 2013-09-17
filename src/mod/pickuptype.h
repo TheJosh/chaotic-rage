@@ -34,9 +34,9 @@ class PickupTypeAdjust
 class PickupType
 {
 	public:
-		int id;
 		string name;
-		Uint32 crc;
+		CRC32 id;
+		
 		AssimpModel * model;
 		int type;
 		

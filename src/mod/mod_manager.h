@@ -51,13 +51,12 @@ class ModManager {
 		bool reloadAttrs();
 		
 		AIType * getAIType(string name);
-		FloorType * getFloorType(string name);
 		GameType * getGameType(string name);
 		ObjectType * getObjectType(string name);
 		PickupType * getPickupType(string name);
-		UnitType * getUnitType(string name);
 		Song * getSong(string name);
 		Sound * getSound(string name);
+		UnitType * getUnitType(string name);
 		VehicleType * getVehicleType(string name);
 		WallType * getWallType(string name);
 		WeaponType * getWeaponType(string name);

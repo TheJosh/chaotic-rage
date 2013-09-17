@@ -29,6 +29,7 @@ typedef int16_t		Sint16;
 typedef uint16_t	Uint16;
 typedef int32_t		Sint32;
 typedef uint32_t	Uint32;
+typedef uint32_t	CRC32;
 
 
 // Some values for things are a randomly chosen between a min and a max

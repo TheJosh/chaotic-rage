@@ -226,23 +226,6 @@ VehicleType * ModManager::getVehicleType(string name)
 
 
 /**
-* Gets an floor type by name
-**/
-FloorType * ModManager::getFloorType(string name)
-{
-	if (name.empty()) return NULL;
-	
-	for (unsigned int i = 0; i < this->mods->size(); i++) {
-		Mod *mod = this->mods->at(i);
-		FloorType *et = mod->getFloorType(name);
-		if (et) return et;
-	}
-	
-	return NULL;
-}
-
-
-/**
 * Gets a gametype by name
 **/
 GameType * ModManager::getGameType(string name)

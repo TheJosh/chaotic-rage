@@ -64,9 +64,9 @@ class UnitType
 	
 	public:
 		string name;
-		Uint32 crc;
+		CRC32 id;
+		
 		AssimpModel * model;
-		int id;
 		int begin_health;
 		vector<WeaponType*> spawn_weapons;
 		WeaponType* special_weapon;

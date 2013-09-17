@@ -30,9 +30,8 @@ class WeaponTypeSound
 class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 {
 	public:
-		int id;
 		string name;
-		Uint32 crc;
+		CRC32 id;
 		
 		string title;
 		GameState * st;
