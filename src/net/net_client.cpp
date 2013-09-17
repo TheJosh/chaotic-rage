@@ -336,18 +336,19 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 	//cout << "       handleUnitState()\n";
 	
 	
-	short eid = 0, slot = 0;
+	Uint16 eid, slot;
+	CRC32 type;
 	float qx, qy, qz, qw, bx, by, bz;
 	float health;
 	
-	unpack(data, "hh ffff fff f",
-		&eid, &slot,
+	unpack(data, "hhl ffff fff f",
+		&eid, &slot, &type,
 		&qx, &qy, &qz, &qw,
 		&bx, &by, &bz,
 		&health
 	);
 	
-	// TODO: unit type, faction, drive, lift, current weapon, weapons
+	// TODO: drive, lift, current weapon, weapons
 	
 	Entity* e = st->getEntity(eid);
 	Unit* u = (Unit*) e;
@@ -357,7 +358,7 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 		cout << "       CREATE:\n";
 		cout << "       eid: " << eid << "   slot: " << slot << "   our slot: " << st->local_players[0]->slot << "\n";
 		
-		UnitType *ut = st->mm->getUnitType("robot");
+		UnitType *ut = st->mm->getUnitType(type);
 		u = new Player(ut, st, bx, bz, by);
 		u->slot = slot;
 		
@@ -379,7 +380,7 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 	
 	u->health = health;
 	
-	return 36;
+	return 40;
 }
 
 unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)

@@ -218,7 +218,7 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 		}
 		
 		strncpy(buf, mod->name.c_str(), 64);
-		strncat(buf, am->name.c_str(), 64);
+		strncpy(buf + 64, am->name.c_str(), 64);
 		am->id = crc32(0, buf, 128);
 		
 		models->push_back(am);
