@@ -65,7 +65,6 @@ Mod::Mod(GameState * st, string directory)
 	
 	int bp = directory.rfind('/');
 	this->name = directory.substr(bp + 1, 100);
-	this->id = crc32(0, this->name.c_str(), this->name.size());
 	
 	directory.append("/");
 	this->directory = directory;
@@ -208,6 +207,7 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 
 	// Process area type sections
 	int j;
+	char buf[128];
 	for (j = 0; j < num_types; j++) {
 		cfg_item = cfg_getnsec(cfg, section, j);
 		
@@ -217,7 +217,9 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 			return NULL;
 		}
 		
-		am->id = crc32(0, am->name.c_str(), am->name.size());
+		strncpy(buf, mod->name.c_str(), 64);
+		strncat(buf, am->name.c_str(), 64);
+		am->id = crc32(0, buf, 128);
 		
 		models->push_back(am);
 		
@@ -236,7 +238,7 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 **/
 bool Mod::load(UIUpdate* ui)
 {
-	cout << "Mod: " << std::hex << this->id << " " << this->name << "\n";
+	cout << "Mod: " << this->name << "\n";
 	
 #ifdef NOGUI
 	sounds = new vector<Sound*>();

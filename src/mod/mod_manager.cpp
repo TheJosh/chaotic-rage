@@ -191,6 +191,117 @@ bool ModManager::reloadAttrs()
 }
 
 
+
+/***********   GET BY ID   ***********/
+
+/**
+* Gets an AI type by ID
+**/
+AIType * ModManager::getAIType(CRC32 id)
+{
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		AIType *et = mod->getAIType(id);
+		if (et) return et;
+	}
+	
+	return NULL;
+}
+
+
+/**
+* Gets a object type by ID
+**/
+ObjectType * ModManager::getObjectType(CRC32 id)
+{
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		ObjectType *et = mod->getObjectType(id);
+		if (et) return et;
+	}
+	
+	return NULL;
+}
+
+
+/**
+* Gets a pickup type by ID
+**/
+PickupType * ModManager::getPickupType(CRC32 id)
+{
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		PickupType *et = mod->getPickupType(id);
+		if (et) return et;
+	}
+	
+	return NULL;
+}
+
+
+/**
+* Gets a unit type by ID
+**/
+UnitType * ModManager::getUnitType(CRC32 id)
+{
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		UnitType *et = mod->getUnitType(id);
+		if (et) return et;
+	}
+	
+	return NULL;
+}
+
+
+/**
+* Gets an vehicle type by ID
+**/
+VehicleType * ModManager::getVehicleType(CRC32 id)
+{
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		VehicleType *et = mod->getVehicleType(id);
+		if (et) return et;
+	}
+	
+	return NULL;
+}
+
+
+/**
+* Gets a wall type by ID
+**/
+WallType * ModManager::getWallType(CRC32 id)
+{
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		WallType *et = mod->getWallType(id);
+		if (et) return et;
+	}
+	
+	return NULL;
+}
+
+
+/**
+* Gets a weapon type by ID
+**/
+WeaponType * ModManager::getWeaponType(CRC32 id)
+{
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		WeaponType *et = mod->getWeaponType(id);
+		if (et) return et;
+	}
+	
+	return NULL;
+}
+
+
+
+/***********   GET BY NAME   ***********/
+
 /**
 * Gets an animmodel by name
 **/

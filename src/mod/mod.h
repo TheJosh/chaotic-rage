@@ -58,7 +58,6 @@ class Mod {
 	public:
 		GameState * st;
 		string name;
-		CRC32 id;
 		string directory;
 		
 	public:

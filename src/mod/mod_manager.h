@@ -50,6 +50,14 @@ class ModManager {
 
 		bool reloadAttrs();
 		
+		AIType * getAIType(CRC32 id);
+		ObjectType * getObjectType(CRC32 id);
+		PickupType * getPickupType(CRC32 id);
+		UnitType * getUnitType(CRC32 id);
+		VehicleType * getVehicleType(CRC32 id);
+		WallType * getWallType(CRC32 id);
+		WeaponType * getWeaponType(CRC32 id);
+		
 		AIType * getAIType(string name);
 		GameType * getGameType(string name);
 		ObjectType * getObjectType(string name);
