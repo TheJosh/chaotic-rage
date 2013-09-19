@@ -327,9 +327,6 @@
     <ClCompile Include="..\..\src\mod\objecttype.cpp">
       <Filter>src\mod</Filter>
     </ClCompile>
-    <ClCompile Include="..\flex\objload.cpp">
-      <Filter>src\util</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\lua\gamelogic.cpp">
       <Filter>src\lua</Filter>
     </ClCompile>
