@@ -54,6 +54,7 @@ Menu::Menu(GameState *st)
 	this->mapreg = NULL;
 	this->logo = NULL;
 	this->bg = NULL;
+	this->bgmesh = NULL;
 }
 
 
@@ -150,6 +151,52 @@ void Menu::loadModBits(UIUpdate* ui)
 
 
 /**
+* Create the "background" mesh
+* We save it in a WavefrontObj.
+**/
+void Menu::createBGmesh()
+{
+	if (bgmesh != NULL) return;
+	
+	Vertex v;
+	TexUV t;
+	Face f;
+	
+	bgmesh = new WavefrontObj();
+	v.y = 0.0;
+	
+	v.x = -1.0f; v.z = -1.0f; t.x = 0.0f; t.y = 0.0f;
+	bgmesh->vertexes.push_back(v);
+	bgmesh->texuvs.push_back(t);
+	
+	v.x = -1.0f; v.z = 1.0f; t.x = 0.0f; t.y = 1.0f;
+	bgmesh->vertexes.push_back(v);
+	bgmesh->texuvs.push_back(t);
+	
+	v.x = 1.0f; v.z = 1.0f; t.x = 1.0f; t.y = 1.0f;
+	bgmesh->vertexes.push_back(v);
+	bgmesh->texuvs.push_back(t);
+	
+	v.x = 1.0f; v.z = -1.0f; t.x = 1.0f; t.y = 0.0f;
+	bgmesh->vertexes.push_back(v);
+	bgmesh->texuvs.push_back(t);
+	
+	v.x = 0.0f; v.y = 1.0f; v.z = 0.0f;
+	bgmesh->normals.push_back(v);
+	
+	f.v1 = 1; f.v2 = 2; f.v3 = 3;
+	f.t1 = 1; f.t2 = 2; f.t3 = 3;
+	f.n1 = 1; f.n2 = 1; f.n3 = 1;
+	bgmesh->faces.push_back(f);
+	
+	f.v1 = 1; f.v2 = 3; f.v3 = 4;
+	f.t1 = 1; f.t2 = 3; f.t3 = 4;
+	f.n1 = 1; f.n2 = 1; f.n3 = 1;
+	bgmesh->faces.push_back(f);
+}
+
+
+/**
 * Run the menu
 * The UIUpdate is for the first-run on the menu, duing initial loading of the menu stuff
 **/
@@ -170,7 +217,7 @@ void Menu::doit(UIUpdate* ui)
 	
 	if (ui) ui->updateUI();
 
-	this->bgmesh = loadObj("data/cr/menu/bg.obj");
+	this->createBGmesh();
 	this->bg_rot1_pos = -10.0f;
 	this->bg_rot1_dir = 0.006f;
 	this->bg_rot2_pos = 3.0f;
