@@ -22,7 +22,7 @@ CPPFILES=$(wildcard \
 )
 
 OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES))
-OBJMAINS=build/client.o build/server.o build/animviewer.o
+OBJMAINS=build/client.o build/server.o
 
 OBJFILES_CLIENT=build/client.o build/linux.o $(filter-out $(OBJMAINS), $(OBJFILES))
 
