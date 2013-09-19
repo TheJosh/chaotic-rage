@@ -17,6 +17,11 @@
 #include "menu.h"
 #include "intro.h"
 
+#ifdef __gnu_linux__
+#include <sys/stat.h>
+#endif
+
+
 
 using namespace std;
 
@@ -25,6 +30,14 @@ int main (int argc, char ** argv)
 {
 	cout << ".";
 	cerr << ".";
+	
+	#ifdef __gnu_linux__
+		struct stat sb;
+		if (stat("../share/chaoticrage", &sb) == 0) {
+			chdir("../share/chaoticrage");
+		}
+	#endif
+	
 	
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 	
