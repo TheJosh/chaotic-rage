@@ -2,6 +2,8 @@ CXX=g++
 CFLAGS=`sdl-config --cflags` `pkg-config zziplib libconfuse gl glu lua5.1 bullet assimp --cflags` `freetype-config --cflags` -DGETOPT -Werror -Wall -ggdb -Itools/include
 LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse lua5.1 bullet assimp --libs` `freetype-config --libs` -lGL -lGLU -lGLEW -lSDL_mixer -lSDL_image -lSDL_net -lguichan_sdl -lguichan_opengl -lguichan -L/usr/X11R6/lib -lX11
 
+VERSION := $(shell grep -E --only-matching 'VERSION ".+"' src/rage.h | sed -n 1p | sed "s/VERSION //" | sed 's/"//g')
+
 
 OBJPATH=build
 SRCPATH=src
@@ -46,6 +48,23 @@ install: chaoticrage
 	cp -r --no-preserve=ownership maps $(DESTPATH)/usr/share/chaoticrage
 
 
+dist: src data maps
+	mkdir -p chaotic-rage-$(VERSION)
+	
+	cp -r Makefile chaotic-rage-$(VERSION)
+	cp -r LICENSE chaotic-rage-$(VERSION)
+	cp -r README.md chaotic-rage-$(VERSION)
+	
+	cp -r src chaotic-rage-$(VERSION)
+	cp -r data chaotic-rage-$(VERSION)
+	cp -r maps chaotic-rage-$(VERSION)
+	
+	mkdir -p chaotic-rage-$(VERSION)/tools/include
+	cp -r tools/include/glm chaotic-rage-$(VERSION)/tools/include
+	
+	tar -cvjf chaotic-rage-$(VERSION).tar.bz2 chaotic-rage-$(VERSION)
+	rm -rf chaotic-rage-$(VERSION)
+	
 clean:
 	rm -f chaoticrage
 	rm -f $(OBJFILES)
