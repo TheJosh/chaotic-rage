@@ -22,6 +22,25 @@
 using namespace std;
 
 
+/**
+* Switch the cwd to an appropriate directory to find data files
+**/
+void chdirToDataDir()
+{
+	struct stat sb;
+	
+	// Look in current directory - nothing to do
+	if (stat("data", &sb) == 0) {
+		return;
+	}
+	
+	// Look in /usr/share
+	if (stat("/usr/share/chaoticrage/data", &sb) == 0) {
+		chdir("/usr/share/chaoticrage");
+		return;
+	}
+}
+
 
 /**
 * Returns the path for a directory which we can put some user data.

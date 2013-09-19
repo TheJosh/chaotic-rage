@@ -25,6 +25,12 @@ class GameState;
 
 
 /**
+* Switch the cwd to an appropriate directory to find data files
+**/
+void chdirToDataDir();
+
+
+/**
 * Returns the path for a directory which we can put some user data.
 * The returned path includes a trailing slash.
 *

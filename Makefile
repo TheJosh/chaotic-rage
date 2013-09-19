@@ -36,6 +36,7 @@ chaoticrage: $(OBJFILES_CLIENT)
 	@echo [LINK] $@
 	@$(CXX) $(CFLAGS) $(OBJFILES_CLIENT) -o chaoticrage $(LIBS)
 
+
 install: chaoticrage
 	mkdir -p $(DESTPATH)/usr/bin
 	install chaoticrage $(DESTPATH)/usr/bin
@@ -43,7 +44,8 @@ install: chaoticrage
 	mkdir -p $(DESTPATH)/usr/share/chaoticrage
 	cp -r --no-preserve=ownership data $(DESTPATH)/usr/share/chaoticrage
 	cp -r --no-preserve=ownership maps $(DESTPATH)/usr/share/chaoticrage
-	
+
+
 clean:
 	rm -f chaoticrage
 	rm -f $(OBJFILES)
