@@ -18,6 +18,7 @@
 #include "intro.h"
 
 
+
 using namespace std;
 
 
@@ -26,8 +27,8 @@ int main (int argc, char ** argv)
 	cout << ".";
 	cerr << ".";
 	
+	chdirToDataDir();
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-	
 	seedRandom();
 	
 	// Load icon

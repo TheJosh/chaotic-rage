@@ -41,6 +41,3 @@ class WavefrontObj {
 		WavefrontObj();
 		void calcBoundingSize();
 };
-
-
-WavefrontObj * loadObj(string filename);

@@ -148,6 +148,7 @@
     <ClCompile Include="..\..\src\mod\mod_manager.cpp" />
     <ClCompile Include="..\..\src\mod\mod_proxy.cpp" />
     <ClCompile Include="..\..\src\mod\objecttype.cpp" />
+
     <ClCompile Include="..\..\src\mod\song.cpp" />
     <ClCompile Include="..\..\src\mod\sound.cpp" />
     <ClCompile Include="..\..\src\mod\unittype.cpp" />
@@ -187,7 +188,6 @@
     <ClCompile Include="..\..\src\weapons\mines.cpp" />
     <ClCompile Include="..\..\src\weapons\weapons.cpp" />
     <ClCompile Include="..\..\src\zone.cpp" />
-    <ClCompile Include="..\flex\objload.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\ammo_round.h" />
