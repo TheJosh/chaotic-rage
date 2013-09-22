@@ -423,6 +423,9 @@
     <ClCompile Include="..\..\src\net\net_browse.cpp">
       <Filter>src\net</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\util\crc32.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">
@@ -700,6 +703,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\net\net_browse.h">
       <Filter>src\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\crc32.h">
+      <Filter>src\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

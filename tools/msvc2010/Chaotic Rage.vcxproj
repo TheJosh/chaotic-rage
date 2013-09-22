@@ -203,6 +203,7 @@
     <ClCompile Include="..\..\src\util\btCRKinematicCharacterController.cpp" />
     <ClCompile Include="..\..\src\util\btStrideHeightfieldTerrainShape.cpp" />
     <ClCompile Include="..\..\src\util\clientconfig.cpp" />
+    <ClCompile Include="..\..\src\util\crc32.cpp" />
     <ClCompile Include="..\..\src\util\debug.cpp" />
     <ClCompile Include="..\..\src\util\obj.cpp" />
     <ClCompile Include="..\..\src\util\SDL_rwops_zzip.cpp" />
@@ -298,6 +299,7 @@
     <ClInclude Include="..\..\src\util\btStrideHeightfieldTerrainShape.h" />
     <ClInclude Include="..\..\src\util\clientconfig.h" />
     <ClInclude Include="..\..\src\util\cmdline.h" />
+    <ClInclude Include="..\..\src\util\crc32.h" />
     <ClInclude Include="..\..\src\util\debug.h" />
     <ClInclude Include="..\..\src\util\obj.h" />
     <ClInclude Include="..\..\src\util\SDL_rwops_zzip.h" />
