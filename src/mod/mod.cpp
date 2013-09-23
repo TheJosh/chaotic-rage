@@ -27,6 +27,7 @@
 #include "walltype.h"
 #include "vehicletype.h"
 #include "weapontype.h"
+#include "../weapons/weapons.h"
 #include "gametype.h"
 
 using namespace std;

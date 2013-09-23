@@ -24,6 +24,12 @@ using namespace std;
 #define WEAPON_TYPE_ATTRACTOR 9
 
 
+extern cfg_opt_t weapconf_raycast [];
+extern cfg_opt_t weapconf_digdown [];
+extern cfg_opt_t weapconf_mine [];
+extern cfg_opt_t weapconf_rocket [];
+extern cfg_opt_t weapconf_attractor [];
+
 
 /**
 * Weapons which fire by doing a raycast

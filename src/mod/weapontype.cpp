@@ -36,23 +36,17 @@ cfg_opt_t weapontype_opts[] =
 	CFG_INT((char*) "continuous", 0, CFGF_NONE),
 	CFG_INT((char*) "magazine_limit", 100, CFGF_NONE),
 	CFG_INT((char*) "belt_limit", 1000, CFGF_NONE),
-
-	// WEAPON_TYPE_RAYCAST
-	// WEAPON_TYPE_FLAMETHROWER
-	CFG_INT((char*) "angle_range", 0, CFGF_NONE),
-	CFG_FLOAT((char*) "range", 50, CFGF_NONE),
-	CFG_FLOAT((char*) "unit_damage", 10, CFGF_NONE),
-	CFG_FLOAT((char*) "wall_damage", 10, CFGF_NONE),
 	
-	// WEAPON_TYPE_DIGDOWN
-	CFG_INT((char*) "radius", 2, CFGF_NONE),
-	CFG_FLOAT((char*) "depth", -0.1, CFGF_NONE),
-	
-	// WEAPON_TYPE_TIMED_MINE
-	CFG_INT((char*) "time", 1000, CFGF_NONE),
-	CFG_STR((char*) "model", 0, CFGF_NONE),
-
+	// Sounds
 	CFG_SEC((char*) "sound", weaponsound_opts, CFGF_MULTI),
+	
+	// The per-type settings fall into one of five categories:
+	CFG_SEC((char*) "raycast", weapconf_raycast, CFGF_NONE),
+	CFG_SEC((char*) "digdown", weapconf_digdown, CFGF_NONE),
+	CFG_SEC((char*) "mine", weapconf_mine, CFGF_NONE),
+	CFG_SEC((char*) "rocket", weapconf_rocket, CFGF_NONE),
+	CFG_SEC((char*) "attractor", weapconf_attractor, CFGF_NONE),
+	
 	CFG_END()
 };
 
@@ -63,100 +57,128 @@ cfg_opt_t weapontype_opts[] =
 WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 {
 	WeaponType* wt;
-	cfg_t *cfg_sound;
+	cfg_t *cfg_sound, *cfg_sec;
 	string filename;
 	int j, type;
 	
 	type = cfg_getint(cfg_item, "type");
-
+	
 	// The exact class is dependent on the type
-	if (type == WEAPON_TYPE_RAYCAST) {
-		WeaponRaycast* w = new WeaponRaycast();
-		w->angle_range = cfg_getint(cfg_item, "angle_range");
-		w->range = cfg_getfloat(cfg_item, "range");
-		w->unit_damage = cfg_getfloat(cfg_item, "unit_damage");		// TODO: merge unit/wall damage
-		w->wall_damage = cfg_getfloat(cfg_item, "wall_damage");		// TODO: merge unit/wall damage
-		wt = w;
+	switch (type) {
+		case WEAPON_TYPE_RAYCAST:
+			{
+				WeaponRaycast* w = new WeaponRaycast();
+				cfg_sec = cfg_getnsec(cfg_item, "raycast", 0);
+				wt = w;
 
-	} else if (type == WEAPON_TYPE_DIGDOWN) {
-		WeaponDigdown* w = new WeaponDigdown();
-		w->radius = cfg_getint(cfg_item, "radius");
-		w->depth = cfg_getfloat(cfg_item, "depth");
-		wt = w;
+				w->angle_range = cfg_getint(cfg_sec, "angle_range");
+				w->range = cfg_getfloat(cfg_sec, "range");
+				w->unit_damage = cfg_getfloat(cfg_sec, "unit_damage");		// TODO: merge unit/wall damage
+				w->wall_damage = cfg_getfloat(cfg_sec, "wall_damage");		// TODO: merge unit/wall damage
+			}
+			break;
 
-	} else if (type == WEAPON_TYPE_FLAMETHROWER) {
-		WeaponFlamethrower* w = new WeaponFlamethrower();
-		w->angle_range = cfg_getint(cfg_item, "angle_range");
-		w->range = cfg_getfloat(cfg_item, "range");
-		w->unit_damage = cfg_getfloat(cfg_item, "unit_damage");		// TODO: merge unit/wall damage
-		w->wall_damage = cfg_getfloat(cfg_item, "wall_damage");		// TODO: merge unit/wall damage
-		wt = w;
+		case WEAPON_TYPE_DIGDOWN:
+			{
+				WeaponDigdown* w = new WeaponDigdown();
+				cfg_sec = cfg_getnsec(cfg_item, "digdown", 0);
+				wt = w;
 
-	} else if (type == WEAPON_TYPE_TIMED_MINE) {
-		WeaponTimedMine* w = new WeaponTimedMine();
-		w->time = cfg_getint(cfg_item, "time");
+				w->radius = cfg_getint(cfg_sec, "radius");
+				w->depth = cfg_getfloat(cfg_sec, "depth");
+			}
+			break;
 
-		char* tmp = cfg_getstr(cfg_item, "model");
-		if (tmp) w->model = mod->getAssimpModel(tmp);
+		case WEAPON_TYPE_FLAMETHROWER:
+			{
+				WeaponFlamethrower* w = new WeaponFlamethrower();
+				cfg_sec = cfg_getnsec(cfg_item, "raycast", 0);
+				wt = w;
 
-		w->range = cfg_getfloat(cfg_item, "range");
-		w->damage = cfg_getfloat(cfg_item, "unit_damage");		// TODO: merge unit/wall damage
+				w->angle_range = cfg_getint(cfg_sec, "angle_range");
+				w->range = cfg_getfloat(cfg_sec, "range");
+				w->unit_damage = cfg_getfloat(cfg_sec, "unit_damage");		// TODO: merge unit/wall damage
+				w->wall_damage = cfg_getfloat(cfg_sec, "wall_damage");		// TODO: merge unit/wall damage
+			}
+			break;
 
-		wt = w;
+		case WEAPON_TYPE_TIMED_MINE:
+			{
+				WeaponTimedMine* w = new WeaponTimedMine();
+				cfg_sec = cfg_getnsec(cfg_item, "mine", 0);
+				wt = w;
 
-	} else if (type == WEAPON_TYPE_PROXI_MINE) {
-		WeaponProxiMine* w = new WeaponProxiMine();
+				w->time = cfg_getint(cfg_sec, "time");
+				char* tmp = cfg_getstr(cfg_sec, "model");
+				if (tmp) w->model = mod->getAssimpModel(tmp);
+				w->range = cfg_getfloat(cfg_sec, "range");
+				w->damage = cfg_getfloat(cfg_sec, "unit_damage");		// TODO: merge unit/wall damage
+			}
+			break;
 
-		char* tmp = cfg_getstr(cfg_item, "model");
-		if (tmp) w->model = mod->getAssimpModel(tmp);
+		case WEAPON_TYPE_PROXI_MINE:
+			{
+				WeaponProxiMine* w = new WeaponProxiMine();
+				cfg_sec = cfg_getnsec(cfg_item, "mine", 0);
+				wt = w;
 
-		w->range = cfg_getfloat(cfg_item, "range");
-		w->damage = cfg_getfloat(cfg_item, "unit_damage");		// TODO: merge unit/wall damage
+				char* tmp = cfg_getstr(cfg_sec, "model");
+				if (tmp) w->model = mod->getAssimpModel(tmp);
+				w->range = cfg_getfloat(cfg_sec, "range");
+				w->damage = cfg_getfloat(cfg_sec, "unit_damage");		// TODO: merge unit/wall damage
+			}
+			break;
 
-		wt = w;
+		case WEAPON_TYPE_REMOTE_MINE:
+			{
+				WeaponRemoteMine* w = new WeaponRemoteMine();
+				cfg_sec = cfg_getnsec(cfg_item, "mine", 0);
+				wt = w;
 
-	} else if (type == WEAPON_TYPE_REMOTE_MINE) {
-		WeaponRemoteMine* w = new WeaponRemoteMine();
+				char* tmp = cfg_getstr(cfg_sec, "model");
+				if (tmp) w->model = mod->getAssimpModel(tmp);
+				w->range = cfg_getfloat(cfg_sec, "range");
+				w->damage = cfg_getfloat(cfg_sec, "unit_damage");		// TODO: merge unit/wall damage
+			}
+			break;
 
-		char* tmp = cfg_getstr(cfg_item, "model");
-		if (tmp) w->model = mod->getAssimpModel(tmp);
+		case WEAPON_TYPE_REMOTE_TRIG:
+			wt = new WeaponRemoteTrigger();
+			break;
 
-		w->range = cfg_getfloat(cfg_item, "range");
-		w->damage = cfg_getfloat(cfg_item, "unit_damage");		// TODO: merge unit/wall damage
+		case WEAPON_TYPE_ROCKET:
+			{
+				WeaponRocket* w = new WeaponRocket();
+				cfg_sec = cfg_getnsec(cfg_item, "rocket", 0);
+				wt = w;
 
-		wt = w;
+				char* tmp = cfg_getstr(cfg_sec, "model");
+				if (tmp) w->model = mod->getAssimpModel(tmp);
+				// TODO: blast radius vs detection radius?
+				w->range = cfg_getfloat(cfg_sec, "range");
+				w->damage = cfg_getfloat(cfg_sec, "unit_damage");		// TODO: merge unit/wall damage
+			}
+			break;
 
-	} else if (type == WEAPON_TYPE_REMOTE_TRIG) {
-		WeaponRemoteTrigger* w = new WeaponRemoteTrigger();
-		wt = w;
+		case WEAPON_TYPE_ATTRACTOR:
+			{
+				WeaponAttractor* w = new WeaponAttractor();
+				cfg_sec = cfg_getnsec(cfg_item, "attractor", 0);
+				wt = w;
 
-	} else if (type == WEAPON_TYPE_ROCKET) {
-		WeaponRocket* w = new WeaponRocket();
-		wt = w;
-		
-		char* tmp = cfg_getstr(cfg_item, "model");
-		if (tmp) w->model = mod->getAssimpModel(tmp);
-		
-		// TODO: blast radius vs detection radius?
-		w->range = cfg_getfloat(cfg_item, "range");
-		w->damage = cfg_getfloat(cfg_item, "unit_damage");		// TODO: merge unit/wall damage
+				char* tmp = cfg_getstr(cfg_sec, "model");
+				if (tmp) w->model = mod->getAssimpModel(tmp);
+				w->range = cfg_getfloat(cfg_sec, "range");
+				w->time = cfg_getint(cfg_sec, "time");
+				w->force = Quadratic(3.0f, 3.0f, 3.0f);		// TODO configuration
+			}
+			break;
 
-	} else if (type == WEAPON_TYPE_ATTRACTOR) {
-		WeaponAttractor* w = new WeaponAttractor();
-		wt = w;
-		
-		char* tmp = cfg_getstr(cfg_item, "model");
-		if (tmp) w->model = mod->getAssimpModel(tmp);
-		
-		w->range = cfg_getfloat(cfg_item, "range");
-		w->time = cfg_getint(cfg_item, "time");
-		w->force = Quadratic(3.0f, 3.0f, 3.0f);		// TODO configuration
-		
-	} else {
-		return NULL;
+		default:
+			return NULL;
 	}
-
-
+	
+	
 	// These settings are common to all weapon types
 	wt->name = cfg_getstr(cfg_item, "name");
 	wt->title = cfg_getstr(cfg_item, "title");
@@ -168,6 +190,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	wt->continuous = (cfg_getint(cfg_item, "continuous") == 1);
 	wt->magazine_limit = cfg_getint(cfg_item, "magazine_limit");
 	wt->belt_limit = cfg_getint(cfg_item, "belt_limit");
+	
 	
 	// Load sounds
 	int num_sounds = cfg_size(cfg_item, "sound");
