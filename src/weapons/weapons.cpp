@@ -26,8 +26,7 @@ cfg_opt_t weapconf_raycast[] =
 {
 	CFG_INT((char*) "angle_range", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "range", 50, CFGF_NONE),
-	CFG_FLOAT((char*) "unit_damage", 10, CFGF_NONE),
-	CFG_FLOAT((char*) "wall_damage", 10, CFGF_NONE),
+	CFG_FLOAT((char*) "damage", 10, CFGF_NONE),
 	CFG_END()
 };
 
@@ -52,7 +51,7 @@ cfg_opt_t weapconf_mine[] =
 {
 	CFG_INT((char*) "time", 1000, CFGF_NONE),
 	CFG_STR((char*) "model", 0, CFGF_NONE),
-	CFG_FLOAT((char*) "unit_damage", 10, CFGF_NONE),
+	CFG_FLOAT((char*) "damage", 10, CFGF_NONE),
 	CFG_FLOAT((char*) "range", 50, CFGF_NONE),
 	CFG_END()
 };
@@ -65,7 +64,7 @@ cfg_opt_t weapconf_rocket[] =
 {
 	CFG_STR((char*) "model", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "range", 50, CFGF_NONE),
-	CFG_FLOAT((char*) "unit_damage", 10, CFGF_NONE),
+	CFG_FLOAT((char*) "damage", 10, CFGF_NONE),
 	CFG_END()
 };
 

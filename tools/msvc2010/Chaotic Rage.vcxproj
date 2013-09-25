@@ -211,8 +211,10 @@
     <ClCompile Include="..\..\src\util\serverconfig.cpp" />
     <ClCompile Include="..\..\src\util\util.cpp" />
     <ClCompile Include="..\..\src\weapons\attractor.cpp" />
+    <ClCompile Include="..\..\src\weapons\digdown.cpp" />
     <ClCompile Include="..\..\src\weapons\ghost_objects.cpp" />
     <ClCompile Include="..\..\src\weapons\mines.cpp" />
+    <ClCompile Include="..\..\src\weapons\raycast.cpp" />
     <ClCompile Include="..\..\src\weapons\rockets.cpp" />
     <ClCompile Include="..\..\src\weapons\weapons.cpp" />
     <ClCompile Include="..\..\src\zone.cpp" />

@@ -73,8 +73,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 
 				w->angle_range = cfg_getint(cfg_sec, "angle_range");
 				w->range = cfg_getfloat(cfg_sec, "range");
-				w->unit_damage = cfg_getfloat(cfg_sec, "unit_damage");		// TODO: merge unit/wall damage
-				w->wall_damage = cfg_getfloat(cfg_sec, "wall_damage");		// TODO: merge unit/wall damage
+				w->damage = cfg_getfloat(cfg_sec, "damage");
 			}
 			break;
 
@@ -97,8 +96,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 
 				w->angle_range = cfg_getint(cfg_sec, "angle_range");
 				w->range = cfg_getfloat(cfg_sec, "range");
-				w->unit_damage = cfg_getfloat(cfg_sec, "unit_damage");		// TODO: merge unit/wall damage
-				w->wall_damage = cfg_getfloat(cfg_sec, "wall_damage");		// TODO: merge unit/wall damage
+				w->damage = cfg_getfloat(cfg_sec, "damage");
 			}
 			break;
 
@@ -112,7 +110,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				char* tmp = cfg_getstr(cfg_sec, "model");
 				if (tmp) w->model = mod->getAssimpModel(tmp);
 				w->range = cfg_getfloat(cfg_sec, "range");
-				w->damage = cfg_getfloat(cfg_sec, "unit_damage");		// TODO: merge unit/wall damage
+				w->damage = cfg_getfloat(cfg_sec, "damage");
 			}
 			break;
 
@@ -125,7 +123,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				char* tmp = cfg_getstr(cfg_sec, "model");
 				if (tmp) w->model = mod->getAssimpModel(tmp);
 				w->range = cfg_getfloat(cfg_sec, "range");
-				w->damage = cfg_getfloat(cfg_sec, "unit_damage");		// TODO: merge unit/wall damage
+				w->damage = cfg_getfloat(cfg_sec, "damage");
 			}
 			break;
 
@@ -138,7 +136,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				char* tmp = cfg_getstr(cfg_sec, "model");
 				if (tmp) w->model = mod->getAssimpModel(tmp);
 				w->range = cfg_getfloat(cfg_sec, "range");
-				w->damage = cfg_getfloat(cfg_sec, "unit_damage");		// TODO: merge unit/wall damage
+				w->damage = cfg_getfloat(cfg_sec, "damage");
 			}
 			break;
 
@@ -156,7 +154,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				if (tmp) w->model = mod->getAssimpModel(tmp);
 				// TODO: blast radius vs detection radius?
 				w->range = cfg_getfloat(cfg_sec, "range");
-				w->damage = cfg_getfloat(cfg_sec, "unit_damage");		// TODO: merge unit/wall damage
+				w->damage = cfg_getfloat(cfg_sec, "damage");
 			}
 			break;
 

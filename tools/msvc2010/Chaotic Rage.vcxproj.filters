@@ -423,6 +423,12 @@
     <ClCompile Include="..\..\src\util\crc32.cpp">
       <Filter>src\util</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\weapons\digdown.cpp">
+      <Filter>src\weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\weapons\raycast.cpp">
+      <Filter>src\weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">

@@ -47,9 +47,9 @@ void WeaponRaycast::doFire(Unit *u, btTransform &origin)
 			DEBUG("weap", "Ray hit %p", entA);
 			if (entA) {
 				if (entA->klass() == UNIT) {
-					((Unit*)entA)->takeDamage(this->unit_damage);
+					((Unit*)entA)->takeDamage(this->damage);
 				} else if (entA->klass() == WALL) {
-					((Wall*)entA)->takeDamage(this->wall_damage);
+					((Wall*)entA)->takeDamage(this->damage);
 				}
 			}
 		}
@@ -95,9 +95,9 @@ void WeaponFlamethrower::doFire(Unit *u, btTransform &origin)
 			DEBUG("weap", "Ray hit %p", entA);
 			if (entA) {
 				if (entA->klass() == UNIT) {
-					((Unit*)entA)->takeDamage(this->unit_damage);
+					((Unit*)entA)->takeDamage(this->damage);
 				} else if (entA->klass() == WALL) {
-					((Wall*)entA)->takeDamage(this->wall_damage);
+					((Wall*)entA)->takeDamage(this->damage);
 				}
 			}
 		}

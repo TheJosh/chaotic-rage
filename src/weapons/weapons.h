@@ -40,8 +40,7 @@ class WeaponRaycast : public WeaponType
 	public:
 		int angle_range;
 		float range;
-		float unit_damage;
-		float wall_damage;
+		float damage;
 
 	public:
 		virtual void doFire(Unit *unit, btTransform &origin);
@@ -71,8 +70,7 @@ class WeaponFlamethrower : public WeaponType
 	public:
 		int angle_range;
 		float range;
-		float unit_damage;
-		float wall_damage;
+		float damage;
 
 	public:
 		virtual void doFire(Unit *unit, btTransform &origin);
