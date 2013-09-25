@@ -57,7 +57,7 @@ void WeaponAttractor::entityUpdate(AmmoRound *e, int delta)
 		const btAlignedObjectArray <btCollisionObject*>* pObjsInsideGhostObject;
 		btVector3 unitToCenter, force;
 		
-		sign = -1.0f;		// TODO: configuration. set to 1.0f for attract, -1.0f for repel
+		sign = (this->inwards ? 1.0f : -1.0f);
 		
 		pObjsInsideGhostObject = &data->ghost->getOverlappingPairs();
 		

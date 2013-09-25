@@ -152,8 +152,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 
 				char* tmp = cfg_getstr(cfg_sec, "model");
 				if (tmp) w->model = mod->getAssimpModel(tmp);
-				// TODO: blast radius vs detection radius?
-				w->range = cfg_getfloat(cfg_sec, "range");
+				w->range = cfg_getfloat(cfg_sec, "range");		// TODO: blast radius vs detection radius?
 				w->damage = cfg_getfloat(cfg_sec, "damage");
 			}
 			break;
@@ -169,6 +168,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				w->range = cfg_getfloat(cfg_sec, "range");
 				w->time = cfg_getint(cfg_sec, "time");
 				w->force = Quadratic(3.0f, 3.0f, 3.0f);		// TODO configuration
+				w->inwards = (cfg_getint(cfg_sec, "inwards") == 1);
 			}
 			break;
 

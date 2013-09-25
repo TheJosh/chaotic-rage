@@ -195,6 +195,7 @@ class WeaponAttractor : public WeaponType
 		float time;
 		AssimpModel* model;
 		Quadratic force;
+		bool inwards;
 
 	public:
 		virtual void doFire(Unit *unit, btTransform &origin);
