@@ -12,7 +12,7 @@
 
 // Engine features to optionally compile into the game
 #ifdef RELEASE
-	#define VERSION "1.0"
+	#define VERSION "1.1"
 #else
 	#define DEBUG_OPTIONS
 	#define VERSION "Git Master"
