@@ -2,13 +2,17 @@
 ;
 ; Installer script for Choatic Rage
 
+
+!searchparse /file ..\..\src\rage.h `$\t#define VERSION "` VERMAJOR `.` VERMINOR `"`
+
+
 ;--------------------------------
 
 ; The name of the installer
-Name "Chaotic Rage"
+Name "Chaotic Rage ${VERMAJOR}.${VERMINOR}"
 
 ; The file to write
-OutFile "chaoticrage-win32-1.XX.exe"
+OutFile "chaoticrage-win32-${VERMAJOR}.${VERMINOR}.exe"
 
 ; The default installation directory
 InstallDir $PROGRAMFILES32\ChaoticRage
