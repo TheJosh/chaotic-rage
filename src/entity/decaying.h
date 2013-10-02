@@ -3,6 +3,7 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
+#include <btBulletDynamicsCommon.h>
 #include "../rage.h"
 
 using namespace std;
@@ -16,11 +17,13 @@ class Decaying : public Entity
 	public:
 		AnimPlay *anim;
 		
+	private:
+		static btCollisionShape* col_shape;
+		
 	public:
 		Decaying(GameState *st, btTransform &xform, AnimPlay *model);
 		virtual ~Decaying();
 		
-	public:
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);

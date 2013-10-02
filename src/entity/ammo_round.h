@@ -31,12 +31,14 @@ class AmmoRound : public Entity
 		Unit* owner;
 		float mass;
 
+	private:
+		static btCollisionShape* col_shape;
+		
 	public:
 		AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model, Unit* owner);
 		AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model, Unit* owner, float mass);
 		virtual ~AmmoRound();
 		
-	public:
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);

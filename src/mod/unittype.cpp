@@ -6,6 +6,7 @@
 #include <confuse.h>
 #include <zzip/zzip.h>
 #include <string>
+#include <btBulletDynamicsCommon.h>
 #include "../rage.h"
 #include "mod.h"
 #include "unittype.h"
@@ -81,6 +82,9 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	uc->model = mod->getAssimpModel(tmp);
 	if (uc->model == NULL) return NULL;
 
+	// Col shape
+	uc->col_shape = new btCapsuleShape(0.3f, 0.9f);
+	
 	// Params
 	uc->params.max_speed = cfg_getfloat(cfg_item, "max_speed");
 	uc->params.melee_damage = cfg_getint(cfg_item, "melee_damage");
@@ -206,8 +210,12 @@ UnitTypeAnimation* UnitType::getAnimation(int type)
 UnitType::UnitType()
 {
 	this->special_weapon = NULL;
+	this->col_shape = NULL;
 }
 
 UnitType::~UnitType()
 {
+	delete(this->col_shape);
 }
+
+

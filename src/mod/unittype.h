@@ -27,6 +27,7 @@ class UnitType;
 class Mod;
 class WeaponType;
 class AssimpModel;
+class btConvexShape;
 
 
 class UnitTypeAnimation
@@ -67,6 +68,7 @@ class UnitType
 		CRC32 id;
 		
 		AssimpModel * model;
+		btConvexShape* col_shape;
 		int begin_health;
 		vector<WeaponType*> spawn_weapons;
 		WeaponType* special_weapon;

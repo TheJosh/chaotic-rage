@@ -54,27 +54,28 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 		this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
 	}
 	
-	// Create physics objects
+	// Ghost position
 	btTransform xform = btTransform(
 		btQuaternion(btVector3(0,0,1),0),
 		st->physics->spawnLocation(x, y, 0.9f)
 	);
-
+	
+	// Create ghost
 	this->ghost = new btPairCachingGhostObject();
 	this->ghost->setWorldTransform(xform);
-
-	btConvexShape* capsule = new btCapsuleShape(0.3f, 0.9f);
-	this->ghost->setCollisionShape(capsule);
+	this->ghost->setCollisionShape(uc->col_shape);
 	this->ghost->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
 	this->ghost->setUserPointer(this);
 
+	// Create Kinematic Character Controller
 	btScalar stepHeight = btScalar(0.75);
-	character = new btCRKinematicCharacterController(this->ghost, capsule, stepHeight);
+	character = new btCRKinematicCharacterController(this->ghost, uc->col_shape, stepHeight);
 
+	// Add character and ghost to the world
 	st->physics->addCollisionObject(this->ghost, CG_UNIT);
 	st->physics->addAction(character);
 	
-	// give them some weapons
+	// Give them some weapons
 	for (unsigned int i = 0; i < uc->spawn_weapons.size(); i++) {
 		this->pickupWeapon(uc->spawn_weapons.at(i));
 	}
@@ -84,7 +85,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 
 Unit::~Unit()
 {
-	delete this->anim;
+	delete(this->anim);
 	st->physics->delAction(this->character);
 	st->physics->delCollisionObject(this->ghost);
 }

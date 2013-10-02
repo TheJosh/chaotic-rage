@@ -15,6 +15,9 @@
 using namespace std;
 
 
+btCollisionShape* AmmoRound::col_shape;
+
+
 /**
 * Create an ammo round (static)
 **/
@@ -26,10 +29,13 @@ AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpMo
 	this->owner = owner;
 	this->mass = 0.0f;
 
-	btCollisionShape* colShape = new btBoxShape(btVector3(0.1f, 0.1f, 0.1f));
+	if (! AmmoRound::col_shape) {
+		AmmoRound::col_shape = new btBoxShape(btVector3(0.1f, 0.1f, 0.1f));
+	}
+	
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
 	
-	this->body = st->physics->addRigidBody(colShape, 0.0f, motionState, CG_DEBRIS);
+	this->body = st->physics->addRigidBody(AmmoRound::col_shape, 0.0f, motionState, CG_DEBRIS);
 }
 
 
@@ -44,10 +50,13 @@ AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpMo
 	this->owner = owner;
 	this->mass = mass;
 
-	btCollisionShape* colShape = new btBoxShape(btVector3(0.1f, 0.1f, 0.1f));
+	if (! AmmoRound::col_shape) {
+		AmmoRound::col_shape = new btBoxShape(btVector3(0.1f, 0.1f, 0.1f));
+	}
+	
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
 	
-	this->body = st->physics->addRigidBody(colShape, mass, motionState, CG_DEBRIS);
+	this->body = st->physics->addRigidBody(AmmoRound::col_shape, mass, motionState, CG_DEBRIS);
 }
 
 

@@ -13,14 +13,20 @@
 using namespace std;
 
 
+btCollisionShape* Decaying::col_shape;
+
+
 Decaying::Decaying(GameState *st, btTransform &xform, AnimPlay *play) : Entity(st)
 {
 	this->anim = new AnimPlay(*play);
 
-	btCollisionShape* colShape = new btBoxShape(btVector3(0.1f, 0.1f, 0.1f));
+	if (! Decaying::col_shape) {
+		Decaying::col_shape = new btBoxShape(btVector3(0.1f, 0.1f, 0.1f));
+	}
+	
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
 	
-	this->body = st->physics->addRigidBody(colShape, 0.0f, motionState, CG_DEBRIS);
+	this->body = st->physics->addRigidBody(Decaying::col_shape, 0.0f, motionState, CG_DEBRIS);
 }
 
 Decaying::~Decaying()
