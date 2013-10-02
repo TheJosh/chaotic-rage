@@ -6,8 +6,10 @@
 #include <list>
 #include <confuse.h>
 #include <zzip/zzip.h>
+#include <btBulletDynamicsCommon.h>
 #include "pickuptype.h"
 #include "../rage.h"
+#include "../render/assimpmodel.h"
 #include "../gamestate.h"
 #include "mod.h"
 #include "weapontype.h"
@@ -59,6 +61,7 @@ PickupType::PickupType()
 	this->wt = NULL;
 	this->perm = NULL;
 	this->temp = NULL;
+	this->col_shape = NULL;
 }
 
 /**
@@ -68,6 +71,7 @@ PickupType::~PickupType()
 {
 	delete(this->perm);
 	delete(this->temp);
+	delete(this->col_shape);
 }
 
 
@@ -89,6 +93,9 @@ PickupType* loadItemPickupType(cfg_t* cfg_item, Mod* mod)
 		if (! pt->model) return NULL;
 	}
 	
+	// Load the collision shape
+	btVector3 sizeHE = pt->model->getBoundingSizeHE();
+	pt->col_shape = new btBoxShape(sizeHE);
 	
 	// Powerups have a bunch more fields
 	if (pt->type == PICKUP_TYPE_POWERUP) {

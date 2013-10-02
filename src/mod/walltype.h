@@ -9,6 +9,8 @@
 using namespace std;
 
 
+class btCollisionShape;
+
 class WallTypeDamage {
 	public:
 		int health;
@@ -30,6 +32,7 @@ class WallType
 		vector <AudioPtr> walk_sounds;
 		
 		AssimpModel * model;
+		btCollisionShape* col_shape;
 		
 		int check_radius;
 		int health;
@@ -38,6 +41,7 @@ class WallType
 		
 	public:
 		WallType();
+		~WallType();
 };
 
 

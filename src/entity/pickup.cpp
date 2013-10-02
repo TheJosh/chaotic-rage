@@ -20,13 +20,8 @@ Pickup::Pickup(PickupType *pt, GameState *st, float x, float y, float z) : Entit
 
 	this->anim = new AnimPlay(pt->model);
 	this->anim->setAnimation(0);
-
-	// TODO: The colShape should be tied to the object type.
-	btVector3 sizeHE = pt->model->getBoundingSizeHE();
-	btCollisionShape* colShape = new btBoxShape(sizeHE);
 	
-	// TODO: Store the colshape and nuke at some point
-	// collisionShapes.push_back(colShape);
+	btVector3 sizeHE = pt->model->getBoundingSizeHE();
 	
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
@@ -34,7 +29,7 @@ Pickup::Pickup(PickupType *pt, GameState *st, float x, float y, float z) : Entit
 			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)
 		));
 	
-	this->body = st->physics->addRigidBody(colShape, 0.0f, motionState, CG_PICKUP);
+	this->body = st->physics->addRigidBody(pt->col_shape, 0.0f, motionState, CG_PICKUP);
 	
 	this->body->setUserPointer(this);
 }

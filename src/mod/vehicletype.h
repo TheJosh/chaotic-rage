@@ -9,6 +9,8 @@
 using namespace std;
 
 
+class btCollisionShape;
+
 class VehicleTypeDamage {
 	public:
 		int health;
@@ -22,6 +24,7 @@ class VehicleType
 		CRC32 id;
 		
 		AssimpModel * model;
+		btCollisionShape* col_shape;
 		int health;
 		bool land;
 		bool water;
@@ -40,6 +43,7 @@ class VehicleType
 		
 	public:
 		VehicleType();
+		~VehicleType();
 };
 
 

@@ -5,7 +5,9 @@
 #include <iostream>
 #include <confuse.h>
 #include <zzip/zzip.h>
+#include <btBulletDynamicsCommon.h>
 #include "../rage.h"
+#include "../render/assimpmodel.h"
 #include "mod.h"
 #include "walltype.h"
 
@@ -48,11 +50,16 @@ WallType* loadItemWallType(cfg_t* cfg_item, Mod* mod)
 	wt->check_radius = 30;	//TODO: dynamic
 	wt->health = cfg_getint(cfg_item, "health");
 
+	// Load model
 	char * tmp = cfg_getstr(cfg_item, "model");
 	if (tmp != NULL) {
 		wt->model = mod->getAssimpModel(tmp);
 		if (! wt->model) return NULL;
 	}
+	
+	// Load the collision shape
+	btVector3 sizeHE = wt->model->getBoundingSizeHE();
+	wt->col_shape = new btBoxShape(sizeHE);
 	
 	// Load damage states
 	size = cfg_size(cfg_item, "damage");
@@ -94,4 +101,12 @@ WallType::WallType()
 {
 	this->surf = NULL;
 	this->ground_type = NULL;
+	this->col_shape = NULL;
 }
+
+WallType::~WallType()
+{
+	delete(this->col_shape);
+}
+
+

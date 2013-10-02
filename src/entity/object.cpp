@@ -22,12 +22,7 @@ Object::Object(ObjectType *ot, GameState *st, float x, float y, float z, float a
 	this->anim = new AnimPlay(ot->model);
 	this->anim->setAnimation(0);
 
-	// TODO: The colShape should be tied to the object type.
 	btVector3 sizeHE = ot->model->getBoundingSizeHE();
-	btCollisionShape* colShape = new btBoxShape(sizeHE);
-	
-	// TODO: Store the colshape and nuke at some point
-	// collisionShapes.push_back(colShape);
 	
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
@@ -35,7 +30,7 @@ Object::Object(ObjectType *ot, GameState *st, float x, float y, float z, float a
 			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)
 		));
 	
-	this->body = st->physics->addRigidBody(colShape, 0.0f, motionState, CG_OBJECT);
+	this->body = st->physics->addRigidBody(ot->col_shape, 0.0f, motionState, CG_OBJECT);
 	
 	this->body->setUserPointer(this);
 }

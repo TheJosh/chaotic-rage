@@ -5,7 +5,9 @@
 #include <iostream>
 #include <confuse.h>
 #include <zzip/zzip.h>
+#include <btBulletDynamicsCommon.h>
 #include "../rage.h"
+#include "../render/assimpmodel.h"
 #include "mod.h"
 #include "objecttype.h"
 
@@ -67,11 +69,16 @@ ObjectType* loadItemObjectType(cfg_t* cfg_item, Mod* mod)
 	wt->turret = (cfg_getint(cfg_item, "turret") == 1);
 	wt->over = (cfg_getint(cfg_item, "over") == 1);
 	
+	// Load model
 	char * tmp = cfg_getstr(cfg_item, "model");
 	if (tmp != NULL) {
 		wt->model = mod->getAssimpModel(tmp);
 		if (! wt->model) return NULL;
 	}
+	
+	// Load the collision shape
+	btVector3 sizeHE = wt->model->getBoundingSizeHE();
+	wt->col_shape = new btBoxShape(sizeHE);
 	
 	// Load damage states
 	size = cfg_size(cfg_item, "damage");
@@ -106,4 +113,12 @@ ObjectType::ObjectType()
 {
 	this->surf = NULL;
 	this->ground_type = NULL;
+	this->col_shape = NULL;
 }
+
+ObjectType::~ObjectType()
+{
+	delete(this->col_shape);
+}
+
+

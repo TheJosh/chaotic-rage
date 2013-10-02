@@ -5,7 +5,9 @@
 #include <iostream>
 #include <confuse.h>
 #include <zzip/zzip.h>
+#include <btBulletDynamicsCommon.h>
 #include "../rage.h"
+#include "../render/assimpmodel.h"
 #include "mod.h"
 #include "vehicletype.h"
 #include "confuse_types.h"
@@ -75,6 +77,7 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	wt->reverse_accel = cfg_getfloat(cfg_item, "reverse-accel");
 	wt->reverse_max = cfg_getfloat(cfg_item, "reverse-max");
 	
+	// Load model
 	tmp = cfg_getstr(cfg_item, "model");
 	if (tmp != NULL && strlen(tmp) != 0) {
 		wt->model = mod->getAssimpModel(tmp);
@@ -84,12 +87,18 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 		}
 	}
 	
+	// Load the collision shape
+	btVector3 sizeHE = wt->model->getBoundingSizeHE();
+	wt->col_shape = new btBoxShape(sizeHE);
+	
+	// Load move node, if set
 	tmp = cfg_getstr(cfg_item, "move-node");
 	if (tmp != NULL) {
 		wt->move_node = tmp;
 		wt->move_axis = cfg_getvec3(cfg_item, "move-axis");
 	}
 	
+	// Load primary weapon, if set
 	tmp = cfg_getstr(cfg_item, "weapon-primary");
 	if (tmp != NULL && strlen(tmp) != 0) {
 		wt->weapon_primary = mod->getWeaponType(tmp);
@@ -132,4 +141,12 @@ VehicleType::VehicleType()
 {
 	this->weapon_primary = NULL;
 	this->move_node = "";
+	this->col_shape = NULL;
 }
+
+VehicleType::~VehicleType()
+{
+	delete(this->col_shape);
+}
+
+

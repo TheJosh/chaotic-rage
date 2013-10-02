@@ -30,6 +30,7 @@ btVector3 wheelAxleCS(-1,0,0);
 Vehicle::Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy) : Entity(st)
 {
 	btVector3 sizeHE = vt->model->getBoundingSizeHE();
+	
 	btTransform trans = btTransform(
 		btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
 		st->physics->spawnLocation(mapx, mapy, sizeHE.z() * 2.0f)
@@ -55,19 +56,14 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 
 	btVector3 sizeHE = vt->model->getBoundingSizeHE();
 	
-	// TODO: The colShape should be tied to the object type.
-	// TODO: Store the colshape and nuke at some point
-	btCollisionShape* chassisShape = new btBoxShape(sizeHE);
-	//btCompoundShape* compound = new btCompoundShape();
-	
 	// LocalTrans effectively shifts the center of mass with respect to the chassis
 	//btTransform localTrans;
 	//localTrans.setIdentity();
 	//localTrans.setOrigin(btVector3(0,0,0.5f));
-	//compound->addChildShape(localTrans,chassisShape);
+	//compound->addChildShape(localTrans,vt->col_shape);
 	
 	btDefaultMotionState* motionState = new btDefaultMotionState(loc);
-	this->body = st->physics->addRigidBody(chassisShape, 120.0f, motionState, CG_VEHICLE);
+	this->body = st->physics->addRigidBody(vt->col_shape, 120.0f, motionState, CG_VEHICLE);
 	this->body->setUserPointer(this);
 	this->body->setActivationState(DISABLE_DEACTIVATION);
 	

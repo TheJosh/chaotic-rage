@@ -14,6 +14,9 @@ using namespace std;
 #define PICKUP_TYPE_POWERUP 3
 
 
+class btCollisionShape;
+
+
 /**
 * The amount, in percent, to adjust player attributes
 **/
@@ -38,6 +41,7 @@ class PickupType
 		CRC32 id;
 		
 		AssimpModel * model;
+		btCollisionShape* col_shape;
 		int type;
 		
 		// Weapon and ammo crates

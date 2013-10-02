@@ -12,6 +12,7 @@ using namespace std;
 
 class AssimpModel;
 class Mod;
+class btCollisionShape;
 
 
 class ObjectTypeDamage {
@@ -31,6 +32,7 @@ class ObjectType
 		bool wall;
 		ObjectType * ground_type;
 		AssimpModel * model;
+		btCollisionShape* col_shape;
 		int check_radius;
 		int health;
 		
@@ -49,6 +51,7 @@ class ObjectType
 		
 	public:
 		ObjectType();
+		~ObjectType();
 };
 
 

@@ -20,13 +20,7 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z, float angle) 
 	this->anim = new AnimPlay(wt->model);
 	this->health = wt->health;
 	
-	
-	// TODO: The colShape should be tied to the wall type.
 	btVector3 sizeHE = wt->model->getBoundingSizeHE();
-	btCollisionShape* colShape = new btBoxShape(sizeHE);
-	
-	// TODO: Store the colshape and nuke at some point
-	// collisionShapes.push_back(colShape);
 	
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
@@ -34,7 +28,7 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z, float angle) 
 			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)
 		));
 	
-	this->body = st->physics->addRigidBody(colShape, 0.0f, motionState, CG_WALL);
+	this->body = st->physics->addRigidBody(wt->col_shape, 0.0f, motionState, CG_WALL);
 	
 	this->body->setUserPointer(this);
 }
