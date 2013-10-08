@@ -46,6 +46,7 @@ class Vehicle : public Entity
 		
 	public:
 		void takeDamage(int damage);
+		void operate(Unit* u, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vertical_angle);
 		float getSpeedKmHr();
 };
 

@@ -142,41 +142,7 @@ void Player::update(int delta)
 
 
 	if (this->drive) {
-		// Drivin my car...
-		VehicleType *vt = this->drive->vt;
-		
-		if (this->key[KEY_UP]) {
-			this->drive->engineForce = MIN(this->drive->engineForce + vt->engine_accel, vt->engine_max);
-			this->drive->brakeForce = 0.0f;
-
-		} else if (this->key[KEY_DOWN]) {
-			if (this->drive->getSpeedKmHr() > 0.0) {
-				this->drive->brakeForce = MIN(this->drive->brakeForce + vt->brake_accel, vt->brake_max);
-				this->drive->engineForce = 0.0f;
-			} else {
-				this->drive->engineForce = MAX(this->drive->engineForce - vt->reverse_accel, 0.0f - vt->reverse_max);
-				this->drive->brakeForce = 0.0f;
-			}
-
-		} else {
-			this->drive->engineForce = MAX(this->drive->engineForce - 20.0f, 0.0f);			// Dampening
-			this->drive->brakeForce = MAX(this->drive->brakeForce - 15.0f, 0.0f);
-		}
-
-		if (this->key[KEY_LEFT]) {
-			this->drive->steering = MIN(this->drive->steering + 0.01f, 0.3f);
-		} else if (this->key[KEY_RIGHT]) {
-			this->drive->steering = MAX(this->drive->steering - 0.01f, -0.3f);
-		} else if (this->drive->steering > 0.0f) {
-			this->drive->steering = MAX(this->drive->steering - 0.01f, 0.0f);
-		} else if  (this->drive->steering < 0.0f) {
-			this->drive->steering = MIN(this->drive->steering + 0.01f, 0.0f);
-		}
-		
-		if (this->drive->vt->move_node != "") {
-			glm::mat4 turret = glm::toMat4(glm::rotate(glm::quat(), this->vertical_angle, this->drive->vt->move_axis));
-			this->drive->getAnimModel()->setMoveTransform(turret);
-		}
+		this->drive->operate(this, this->key[KEY_UP], this->key[KEY_DOWN], this->key[KEY_LEFT], this->key[KEY_RIGHT], this->mouse_angle, this->vertical_angle);
 
 	} else {
 		bool walking = false;

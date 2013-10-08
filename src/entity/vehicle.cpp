@@ -166,6 +166,48 @@ void Vehicle::update(int delta)
 	}
 }
 
+
+/**
+* Called by the unit to update driving status
+**/
+void Vehicle::operate(Unit* u, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vertical_angle)
+{
+	// Accel and brake
+	if (key_up) {
+		this->engineForce = MIN(this->engineForce + this->vt->engine_accel, this->vt->engine_max);
+		this->brakeForce = 0.0f;
+	} else if (key_down) {
+		if (this->getSpeedKmHr() > 0.0) {
+			this->brakeForce = MIN(this->brakeForce + this->vt->brake_accel, this->vt->brake_max);
+			this->engineForce = 0.0f;
+		} else {
+			this->engineForce = MAX(this->engineForce - this->vt->reverse_accel, 0.0f - this->vt->reverse_max);
+			this->brakeForce = 0.0f;
+		}
+	} else {
+		this->engineForce = MAX(this->engineForce - 20.0f, 0.0f);			// Dampening
+		this->brakeForce = MAX(this->brakeForce - 15.0f, 0.0f);
+	}
+
+	// Steering
+	if (key_left) {
+		this->steering = MIN(this->steering + 0.01f, 0.3f);
+	} else if (key_right) {
+		this->steering = MAX(this->steering - 0.01f, -0.3f);
+	} else if (this->steering > 0.0f) {
+		this->steering = MAX(this->steering - 0.01f, 0.0f);
+	} else if  (this->steering < 0.0f) {
+		this->steering = MIN(this->steering + 0.01f, 0.0f);
+	}
+
+	// Turret
+	if (this->vt->move_node != "") {
+		glm::mat4 turret = glm::toMat4(glm::rotate(glm::quat(), vertical_angle, this->vt->move_axis));
+		this->getAnimModel()->setMoveTransform(turret);
+	}
+}
+
+
 AnimPlay* Vehicle::getAnimModel()
 {
 	return this->anim;
