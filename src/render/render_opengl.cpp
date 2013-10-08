@@ -1700,6 +1700,8 @@ void RenderOpenGL::skybox()
 		st->map->skybox_size
 	);
 	
+	modelMatrix = glm::rotate(modelMatrix, 90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;
 	glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
