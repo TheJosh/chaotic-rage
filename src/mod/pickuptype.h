@@ -57,7 +57,8 @@ class PickupType
 		PickupType();
 		~PickupType();
 		PickupTypeAdjust* loadAdjust(cfg_t* cfg);
-
+		void setModel(AssimpModel *model);
+		
 		/**
 		* Called by the unit when it interacts with a pickup
 		**/

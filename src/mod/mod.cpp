@@ -287,32 +287,37 @@ bool Mod::load(UIUpdate* ui)
 
 	// Auto-create pickup types for weapons, ammocrates
 	for (int i = weapontypes->size() - 1; i >= 0; --i) {
-		string tmp = "weapon_" + weapontypes->at(i)->name;
+		string tmp;
+		AssimpModel *model;
+		
+		tmp = "weapon_" + weapontypes->at(i)->name;
+		
+		model = this->getAssimpModel("pickup_" + tmp + ".dae");
+		if (model == NULL) {
+			model = this->getAssimpModel("pickup_weapon_generic.dae");
+		}
 		
 		PickupType* pt = new PickupType();
 		pt->name = tmp;
 		pt->type = PICKUP_TYPE_WEAPON;
 		pt->wt = weapontypes->at(i);
-		
-		pt->model = this->getAssimpModel("pickup_" + tmp + ".dae");
-		if (pt->model == NULL) {
-			pt->model = this->getAssimpModel("pickup_weapon_generic.dae");
-		}
+		pt->setModel(model);
 		
 		pickuptypes->push_back(pt);
 		
 		
 		tmp = "ammo_" + weapontypes->at(i)->name;
 		
+		model = this->getAssimpModel("pickup_" + tmp + ".dae");
+		if (model == NULL) {
+			model = this->getAssimpModel("pickup_ammo_generic.dae");
+		}
+		
 		pt = new PickupType();
 		pt->name = tmp;
 		pt->type = PICKUP_TYPE_AMMO;
 		pt->wt = weapontypes->at(i);
-		
-		pt->model = this->getAssimpModel("pickup_" + tmp + ".dae");
-		if (pt->model == NULL) {
-			pt->model = this->getAssimpModel("pickup_ammo_generic.dae");
-		}
+		pt->setModel(model);
 		
 		pickuptypes->push_back(pt);
 	}

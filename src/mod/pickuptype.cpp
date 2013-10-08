@@ -76,6 +76,20 @@ PickupType::~PickupType()
 
 
 /**
+* Sets the model, creates a box shape too
+**/
+void PickupType::setModel(AssimpModel *model)
+{
+	this->model = model;
+	
+	btVector3 sizeHE = this->model->getBoundingSizeHE();
+	
+	delete(this->col_shape);
+	this->col_shape = new btBoxShape(sizeHE);
+}
+
+
+/**
 * Item loading function handler
 **/
 PickupType* loadItemPickupType(cfg_t* cfg_item, Mod* mod)
