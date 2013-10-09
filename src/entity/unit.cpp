@@ -552,7 +552,7 @@ void Unit::enterVehicle(Vehicle *v)
 	this->drive->steering = 0.0f;
 
 	if (this->drive->vt->move_node != "") {
-		this->drive->getAnimModel()->setMoveNode(v->vt->move_node);
+		this->drive->getAnimModel()->addMoveNode(v->vt->move_node);
 	}
 }
 
@@ -579,7 +579,9 @@ void Unit::leaveVehicle()
 	this->drive->brakeForce = 0.0f;
 	this->drive->steering = 0.0f;
 	
-	this->drive->getAnimModel()->clearMoveNode();
+	if (this->drive->vt->move_node != "") {
+		this->drive->getAnimModel()->resetMoveTransform(this->drive->vt->move_node);
+	}
 	
 	this->render = true;
 	this->drive = NULL;

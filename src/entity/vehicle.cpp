@@ -80,24 +80,20 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 		this->wheel_shape = new btCylinderShapeX(btVector3(wheelWidth,wheelRadius,wheelRadius));
 		
 		btVector3 connectionPointCS0;
-		
 		float connectionHeight = 0.2f;
-		bool isFrontWheel = true;
 		
 		
 		connectionPointCS0 = btVector3(sizeHE.x(), connectionHeight, sizeHE.y());
-		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
+		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, false);
 		
 		connectionPointCS0 = btVector3(-sizeHE.x(), connectionHeight, sizeHE.y());
-		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
-		
-		isFrontWheel = false;
+		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, false);
 		
 		connectionPointCS0 = btVector3(sizeHE.x(), connectionHeight, -sizeHE.y());
-		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
+		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, false);
 		
 		connectionPointCS0 = btVector3(-sizeHE.x(), connectionHeight, -sizeHE.y());
-		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
+		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, false);
 	}
 	
 	// Set some wheel dynamics
@@ -203,7 +199,7 @@ void Vehicle::operate(Unit* u, int key_up, int key_down, int key_left, int key_r
 	// Turret
 	if (this->vt->move_node != "") {
 		glm::mat4 turret = glm::toMat4(glm::rotate(glm::quat(), vertical_angle, this->vt->move_axis));
-		this->getAnimModel()->setMoveTransform(turret);
+		this->getAnimModel()->setMoveTransform(this->vt->move_node, turret);
 	}
 }
 

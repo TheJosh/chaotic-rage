@@ -46,9 +46,8 @@ class AnimPlay
 		void* ended_data;
 		unsigned int pause_time;
 
-		// Current "move node"
-		AssimpNode* move;
-		glm::mat4 move_transform;
+		// Move nodes and their transforms
+		map<AssimpNode*, glm::mat4> move_nodes;
 
 		// These are calculated by calcTransforms()
 		// and then fed into the renderer
@@ -69,12 +68,12 @@ class AnimPlay
 		void setEndedCallback(AnimPlayCallback func);
 		void setEndedCallback(void* data);
 		
-		void setMoveNode(string node);
-		void clearMoveNode();
+		void addMoveNode(string node);
+		void setMoveTransform(string node, glm::mat4 transform);
+		void resetMoveTransform(string node);
 
 		AssimpModel* getModel() { return this->model; }
 
-		void setMoveTransform(glm::mat4 transform);
 		void calcTransformsStatic();
 		void calcTransforms();
 		void calcBoneTransforms();

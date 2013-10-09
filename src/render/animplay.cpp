@@ -29,7 +29,6 @@ AnimPlay::AnimPlay(AssimpModel* model)
 	this->loop = true;
 	this->ended_func = NULL;
 	this->ended_data = NULL;
-	this->move = NULL;
 	this->pause_time = 0;
 	this->calcTransformsStatic();
 }
@@ -120,7 +119,7 @@ void AnimPlay::clearAnimation()
 	this->anim = NULL;
 
 	// If it's static, the calcs are really easy
-	if (this->anim == NULL && this->move == NULL) {
+	if (this->anim == NULL && this->move_nodes.size() == 0) {
 		this->calcTransformsStatic();
 	}
 }
@@ -130,13 +129,24 @@ void AnimPlay::clearAnimation()
 * Sets the "move node", a node which is transformed by some aspect of the game engine
 * e.g. gun turrets
 **/
-void AnimPlay::setMoveNode(string node)
+void AnimPlay::addMoveNode(string node)
 {
-	this->move = this->model->findNode(this->model->rootNode, node);
-	if (this->move == NULL) {
-		this->clearMoveNode();
-	}
-	this->move_transform = glm::mat4();
+	AssimpNode* nd = this->model->findNode(this->model->rootNode, node);
+	if (nd == NULL) return;
+	
+	this->move_nodes[nd] = glm::mat4();
+}
+
+
+/**
+* Set the transform for the move node
+**/
+void AnimPlay::setMoveTransform(string node, glm::mat4 transform)
+{
+	AssimpNode* nd = this->model->findNode(this->model->rootNode, node);
+	if (nd == NULL) return;
+	
+	this->move_nodes[nd] = transform;
 }
 
 
@@ -144,23 +154,17 @@ void AnimPlay::setMoveNode(string node)
 * Clears the "move node", a node which is transformed by some aspect of the game engine.
 * Because this might bring the model back to static, we re-calc the transforms.
 **/
-void AnimPlay::clearMoveNode()
+void AnimPlay::resetMoveTransform(string node)
 {
-	this->move = NULL;
+	AssimpNode* nd = this->model->findNode(this->model->rootNode, node);
+	if (nd == NULL) return;
+	
+	this->move_nodes[nd] = glm::mat4();
 
 	// If it's static, the calcs are really easy
-	if (this->anim == NULL && this->move == NULL) {
+	if (this->anim == NULL && this->move_nodes.size() == 0) {
 		this->calcTransformsStatic();
 	}
-}
-
-
-/**
-* Set the transform for the move node
-**/
-void AnimPlay::setMoveTransform(glm::mat4 transform)
-{
-	this->move_transform = transform;
 }
 
 
@@ -220,7 +224,7 @@ void AnimPlay::calcTransformNodeStatic(AssimpNode* nd, glm::mat4 transform)
 **/
 void AnimPlay::calcTransforms()
 {
-	if (this->anim == NULL && this->move == NULL) return;
+	if (this->anim == NULL && this->move_nodes.size() == 0) return;
 
 	float animTick;
 	float timeSecs;
@@ -283,8 +287,8 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float anim
 {
 	glm::mat4 local;
 
-	if (this->move && this->move == nd) {
-		local = nd->transform * this->move_transform;
+	if (this->move_nodes.find(nd) != this->move_nodes.end()) {
+		local = nd->transform * this->move_nodes[nd];
 
 	} else if (this->anim) {
 		// Find animation channel
@@ -333,7 +337,7 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float anim
 **/
 void AnimPlay::calcBoneTransforms()
 {
-	if (this->anim == NULL && this->move == NULL && bone_transforms.size() != 0) return;
+	if (this->anim == NULL && this->move_nodes.size() == 0 && bone_transforms.size() != 0) return;
 
 	// set all bones to empty transform
 	bone_transforms.clear();
