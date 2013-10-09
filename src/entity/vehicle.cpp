@@ -50,6 +50,14 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	this->anim = new AnimPlay(vt->model);
 	this->health = vt->health;
 
+	if (vt->vert_move_node != "") {
+		this->anim->addMoveNode(vt->vert_move_node);
+	}
+	
+	if (vt->horiz_move_node != "") {
+		this->anim->addMoveNode(vt->horiz_move_node);
+	}
+	
 	this->engineForce = 0.0f;
 	this->brakeForce = 0.0f;
 	this->steering = 0.0f;
@@ -166,7 +174,7 @@ void Vehicle::update(int delta)
 /**
 * Called by the unit to update driving status
 **/
-void Vehicle::operate(Unit* u, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vertical_angle)
+void Vehicle::operate(Unit* u, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle)
 {
 	// Accel and brake
 	if (key_up) {
@@ -196,10 +204,16 @@ void Vehicle::operate(Unit* u, int key_up, int key_down, int key_left, int key_r
 		this->steering = MIN(this->steering + 0.01f, 0.0f);
 	}
 
-	// Turret
-	if (this->vt->move_node != "") {
-		glm::mat4 turret = glm::toMat4(glm::rotate(glm::quat(), vertical_angle, this->vt->move_axis));
-		this->getAnimModel()->setMoveTransform(this->vt->move_node, turret);
+	// Horizontal move node
+	if (this->vt->horiz_move_node != "") {
+		glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), horiz_angle, this->vt->horiz_move_axis));
+		this->getAnimModel()->setMoveTransform(this->vt->horiz_move_node, rotation);
+	}
+	
+	// Vertical move node
+	if (this->vt->vert_move_node != "") {
+		glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), vert_angle, this->vt->vert_move_axis));
+		this->getAnimModel()->setMoveTransform(this->vt->vert_move_node, rotation);
 	}
 }
 

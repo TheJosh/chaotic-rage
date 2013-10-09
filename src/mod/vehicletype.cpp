@@ -43,8 +43,11 @@ cfg_opt_t vehicletype_opts[] =
 	CFG_FLOAT((char*) "reverse-accel", 5.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "reverse-max", 30.0f, CFGF_NONE),
 	
-	CFG_STR((char*) "move-node", (char*)"", CFGF_NONE),
-	CFG_FLOAT_LIST((char*) "move-axis", 0, CFGF_NONE),
+	CFG_STR((char*) "horiz-move-node", (char*)"", CFGF_NONE),
+	CFG_FLOAT_LIST((char*) "horiz-move-axis", 0, CFGF_NONE),
+	
+	CFG_STR((char*) "vert-move-node", (char*)"", CFGF_NONE),
+	CFG_FLOAT_LIST((char*) "vert-move-axis", 0, CFGF_NONE),
 	
 	CFG_STR((char*) "weapon-primary", (char*)"", CFGF_NONE),
 	
@@ -92,10 +95,17 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	wt->col_shape = new btBoxShape(sizeHE);
 	
 	// Load move node, if set
-	tmp = cfg_getstr(cfg_item, "move-node");
+	tmp = cfg_getstr(cfg_item, "horiz-move-node");
 	if (tmp != NULL) {
-		wt->move_node = tmp;
-		wt->move_axis = cfg_getvec3(cfg_item, "move-axis");
+		wt->horiz_move_node = tmp;
+		wt->horiz_move_axis = cfg_getvec3(cfg_item, "horiz-move-axis");
+	}
+	
+	// Load move node, if set
+	tmp = cfg_getstr(cfg_item, "vert-move-node");
+	if (tmp != NULL) {
+		wt->vert_move_node = tmp;
+		wt->vert_move_axis = cfg_getvec3(cfg_item, "vert-move-axis");
 	}
 	
 	// Load primary weapon, if set
@@ -140,7 +150,8 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 VehicleType::VehicleType()
 {
 	this->weapon_primary = NULL;
-	this->move_node = "";
+	this->horiz_move_node = "";
+	this->vert_move_node = "";
 	this->col_shape = NULL;
 }
 

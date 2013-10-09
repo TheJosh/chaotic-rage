@@ -36,8 +36,12 @@ class VehicleType
 		float reverse_accel;
 		float reverse_max;
 		
-		string move_node;
-		glm::vec3 move_axis;
+		string horiz_move_node;
+		glm::vec3 horiz_move_axis;
+		
+		string vert_move_node;
+		glm::vec3 vert_move_axis;
+		
 		WeaponType* weapon_primary;
 		vector <VehicleTypeDamage *> damage_models;
 		
