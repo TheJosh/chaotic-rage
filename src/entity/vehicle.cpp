@@ -82,6 +82,7 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	st->physics->addVehicle(this->vehicle);
 	
 	// Create and attach wheels
+	// TODO: Optimize this for fixed turrets
 	{
 		btScalar suspensionRestLength(sizeHE.y() + 0.1f);
 
@@ -177,31 +178,35 @@ void Vehicle::update(int delta)
 void Vehicle::operate(Unit* u, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle)
 {
 	// Accel and brake
-	if (key_up) {
-		this->engineForce = MIN(this->engineForce + this->vt->engine_accel, this->vt->engine_max);
-		this->brakeForce = 0.0f;
-	} else if (key_down) {
-		if (this->getSpeedKmHr() > 0.0) {
-			this->brakeForce = MIN(this->brakeForce + this->vt->brake_accel, this->vt->brake_max);
-			this->engineForce = 0.0f;
-		} else {
-			this->engineForce = MAX(this->engineForce - this->vt->reverse_accel, 0.0f - this->vt->reverse_max);
+	if (this->vt->engine) {
+		if (key_up) {
+			this->engineForce = MIN(this->engineForce + this->vt->engine_accel, this->vt->engine_max);
 			this->brakeForce = 0.0f;
+		} else if (key_down) {
+			if (this->getSpeedKmHr() > 0.0) {
+				this->brakeForce = MIN(this->brakeForce + this->vt->brake_accel, this->vt->brake_max);
+				this->engineForce = 0.0f;
+			} else {
+				this->engineForce = MAX(this->engineForce - this->vt->reverse_accel, 0.0f - this->vt->reverse_max);
+				this->brakeForce = 0.0f;
+			}
+		} else {
+			this->engineForce = MAX(this->engineForce - 20.0f, 0.0f);			// Dampening
+			this->brakeForce = MAX(this->brakeForce - 15.0f, 0.0f);
 		}
-	} else {
-		this->engineForce = MAX(this->engineForce - 20.0f, 0.0f);			// Dampening
-		this->brakeForce = MAX(this->brakeForce - 15.0f, 0.0f);
 	}
-
+	
 	// Steering
-	if (key_left) {
-		this->steering = MIN(this->steering + 0.01f, 0.3f);
-	} else if (key_right) {
-		this->steering = MAX(this->steering - 0.01f, -0.3f);
-	} else if (this->steering > 0.0f) {
-		this->steering = MAX(this->steering - 0.01f, 0.0f);
-	} else if  (this->steering < 0.0f) {
-		this->steering = MIN(this->steering + 0.01f, 0.0f);
+	if (this->vt->steer) {
+		if (key_left) {
+			this->steering = MIN(this->steering + 0.01f, 0.3f);
+		} else if (key_right) {
+			this->steering = MAX(this->steering - 0.01f, -0.3f);
+		} else if (this->steering > 0.0f) {
+			this->steering = MAX(this->steering - 0.01f, 0.0f);
+		} else if  (this->steering < 0.0f) {
+			this->steering = MIN(this->steering + 0.01f, 0.0f);
+		}
 	}
 
 	// Horizontal move node
@@ -209,7 +214,7 @@ void Vehicle::operate(Unit* u, int key_up, int key_down, int key_left, int key_r
 		glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), horiz_angle, this->vt->horiz_move_axis));
 		this->getAnimModel()->setMoveTransform(this->vt->horiz_move_node, rotation);
 	}
-	
+
 	// Vertical move node
 	if (this->vt->vert_move_node != "") {
 		glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), vert_angle, this->vt->vert_move_axis));

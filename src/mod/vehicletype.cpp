@@ -33,8 +33,11 @@ cfg_opt_t vehicletype_opts[] =
 	CFG_STR((char*) "name", (char*)"", CFGF_NONE),
 	CFG_STR((char*) "model", (char*)"", CFGF_NONE),
 	CFG_INT((char*) "health", 5000, CFGF_NONE),
+	
 	CFG_INT((char*) "land", 1, CFGF_NONE),
 	CFG_INT((char*) "water", 0, CFGF_NONE),
+	CFG_INT((char*) "engine", 1, CFGF_NONE),
+	CFG_INT((char*) "steer", 1, CFGF_NONE),
 	
 	CFG_FLOAT((char*) "engine-accel", 20.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "engine-max", 200.0f, CFGF_NONE),
@@ -72,7 +75,9 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	wt->health = cfg_getint(cfg_item, "health");
 	wt->land = (cfg_getint(cfg_item, "land") == 1);
 	wt->water = (cfg_getint(cfg_item, "water") == 1);
-
+	wt->engine = (cfg_getint(cfg_item, "engine") == 1);
+	wt->steer = (cfg_getint(cfg_item, "steer") == 1);
+	
 	wt->engine_accel = cfg_getfloat(cfg_item, "engine-accel");
 	wt->engine_max = cfg_getfloat(cfg_item, "engine-max");
 	wt->brake_accel = cfg_getfloat(cfg_item, "brake-accel");
@@ -153,6 +158,10 @@ VehicleType::VehicleType()
 	this->horiz_move_node = "";
 	this->vert_move_node = "";
 	this->col_shape = NULL;
+	this->land = false;
+	this->water = false;
+	this->engine = false;
+	this->steer = false;
 }
 
 VehicleType::~VehicleType()

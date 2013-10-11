@@ -26,8 +26,11 @@ class VehicleType
 		AssimpModel * model;
 		btCollisionShape* col_shape;
 		int health;
+		
 		bool land;
 		bool water;
+		bool engine;
+		bool steer;
 		
 		float engine_accel;
 		float engine_max;
