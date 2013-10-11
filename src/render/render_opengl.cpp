@@ -24,6 +24,7 @@
 #include "../util/SDL_rwops_zzip.h"
 #include "../fx/newparticle.h"
 #include "../mod/mod_manager.h"
+#include "../mod/vehicletype.h"
 #include "render_opengl.h"
 #include "render_opengl_settings.h"
 #include "glshader.h"
@@ -1658,6 +1659,11 @@ void RenderOpenGL::mainRot()
 		if (this->render_player->drive) {
 			trans = this->render_player->drive->getTransform();
 			angle = RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 180.0f;
+			
+			if (this->render_player->drive->vt->horiz_move_node != "") {
+				angle += this->render_player->mouse_angle;
+			}
+			
 		} else {
 			trans = this->render_player->getTransform();
 			angle = this->render_player->mouse_angle + 180.0f;
