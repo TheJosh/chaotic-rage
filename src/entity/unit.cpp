@@ -43,7 +43,6 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	
 	this->lift_obj = NULL;
 	this->drive = NULL;
-	this->turret_obj = NULL;
 	this->force = btVector3(0.0f, 0.0f, 0.0f);
 	
 	this->anim = new AnimPlay(this->uc->model);
@@ -397,10 +396,7 @@ void Unit::update(int delta)
 	// Which weapon to use?
 	WeaponType *w = NULL;
 	if (this->firing) {
-		if (this->turret_obj) {
-			w = this->st->mm->getWeaponType("poopgun");
-			
-		} else if (this->drive) {
+		if (this->drive) {
 			w = this->drive->vt->weapon_primary;
 			xform = this->drive->getTransform();
 			
@@ -635,15 +631,6 @@ void Unit::doUse()
 					this->st->addHUDMessage(this->slot, "Picked up some ammo");
 					closest->del = 1;
 				}
-			}
-		}
-	
-		if (ot->turret == 1) {
-			if (this->turret_obj) {
-				this->turret_obj = NULL;
-				this->setWeapon(this->curr_weapon_id);
-			} else {
-				this->turret_obj = (Object*)closest;
 			}
 		}
 	}

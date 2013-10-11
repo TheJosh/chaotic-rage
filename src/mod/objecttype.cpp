@@ -38,8 +38,6 @@ cfg_opt_t objecttype_opts[] =
 	CFG_STR((char*) "show-message", (char*)"", CFGF_NONE),
 	CFG_STR((char*) "pickup-weapon", (char*)"", CFGF_NONE),
 	CFG_STR((char*) "ammo-crate", (char*)"", CFGF_NONE),
-	CFG_INT((char*) "drive", 0, CFGF_NONE),
-	CFG_INT((char*) "turret", 0, CFGF_NONE),
 	CFG_INT((char*) "over", 0, CFGF_NONE),
 	
 	CFG_END()
@@ -65,8 +63,6 @@ ObjectType* loadItemObjectType(cfg_t* cfg_item, Mod* mod)
 	wt->pickup_weapon = cfg_getstr(cfg_item, "pickup-weapon");
 	wt->ammo_crate = cfg_getstr(cfg_item, "ammo-crate");
 	
-	wt->drive = (cfg_getint(cfg_item, "drive") == 1);
-	wt->turret = (cfg_getint(cfg_item, "turret") == 1);
 	wt->over = (cfg_getint(cfg_item, "over") == 1);
 	
 	// Load model

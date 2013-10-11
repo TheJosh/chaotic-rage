@@ -85,7 +85,6 @@ class Unit : public Entity
 		btCRKinematicCharacterController* character;
 
 		Object* lift_obj;
-		Object* turret_obj;
 		btVector3 force;
 
 		UnitWeapon* weapon;
