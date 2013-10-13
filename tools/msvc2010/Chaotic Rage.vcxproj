@@ -137,6 +137,7 @@
     <ClCompile Include="..\..\src\entity\ammo_round.cpp" />
     <ClCompile Include="..\..\src\entity\decaying.cpp" />
     <ClCompile Include="..\..\src\entity\entity.cpp" />
+    <ClCompile Include="..\..\src\entity\helicopter.cpp" />
     <ClCompile Include="..\..\src\entity\npc.cpp" />
     <ClCompile Include="..\..\src\entity\object.cpp" />
     <ClCompile Include="..\..\src\entity\pickup.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="..\..\src\entity\ammo_round.h" />
     <ClInclude Include="..\..\src\entity\decaying.h" />
     <ClInclude Include="..\..\src\entity\entity.h" />
+    <ClInclude Include="..\..\src\entity\helicopter.h" />
     <ClInclude Include="..\..\src\entity\npc.h" />
     <ClInclude Include="..\..\src\entity\object.h" />
     <ClInclude Include="..\..\src\entity\pickup.h" />

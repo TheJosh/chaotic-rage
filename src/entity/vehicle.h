@@ -36,18 +36,16 @@ class Vehicle : public Entity
 	public:
 		Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy);
 		Vehicle(VehicleType *vt, GameState *st, btTransform & loc);
-		void init(VehicleType *vt, GameState *st, btTransform & loc);
+		virtual void init(VehicleType *vt, GameState *st, btTransform & loc);
 		virtual ~Vehicle();
 		
 	public:
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
-		
-	public:
 		void takeDamage(int damage);
-		void operate(Unit* u, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle);
-		float getSpeedKmHr();
+		virtual void operate(Unit* u, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle);
+		virtual float getSpeedKmHr();
 };
 
 

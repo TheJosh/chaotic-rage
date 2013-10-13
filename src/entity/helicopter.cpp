@@ -9,7 +9,7 @@
 #include "../render/animplay.h"
 #include "../mod/vehicletype.h"
 #include "../net/net_server.h"
-#include "vehicle.h"
+#include "helicopter.h"
 
 
 using namespace std;
@@ -27,24 +27,7 @@ static btVector3 wheelAxleCS(-1,0,0);
 
 
 
-Vehicle::Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy) : Entity(st)
-{
-	btVector3 sizeHE = vt->model->getBoundingSizeHE();
-	
-	btTransform trans = btTransform(
-		btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
-		st->physics->spawnLocation(mapx, mapy, sizeHE.z() * 2.0f)
-	);
-	
-	this->init(vt, st, trans);
-}
-
-Vehicle::Vehicle(VehicleType *vt, GameState *st, btTransform &loc) : Entity(st)
-{
-	this->init(vt, st, loc);
-}
-
-void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
+void Helicopter::init(VehicleType *vt, GameState *st, btTransform &loc)
 {
 	this->vt = vt;
 	this->anim = new AnimPlay(vt->model);
@@ -117,14 +100,8 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	}
 }
 
-Vehicle::~Vehicle()
-{
-	delete (this->anim);
-	st->physics->delRigidBody(this->body);
-}
 
-
-float Vehicle::getSpeedKmHr()
+float Helicopter::getSpeedKmHr()
 {
 	return this->vehicle->getCurrentSpeedKmHour();
 }
@@ -133,7 +110,7 @@ float Vehicle::getSpeedKmHr()
 /**
 * Do stuff
 **/
-void Vehicle::update(int delta)
+void Helicopter::update(int delta)
 {
 	int wheelIndex;
 
@@ -175,7 +152,7 @@ void Vehicle::update(int delta)
 /**
 * Called by the unit to update driving status
 **/
-void Vehicle::operate(Unit* u, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle)
+void Helicopter::operate(Unit* u, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle)
 {
 	// Accel and brake
 	if (this->vt->engine) {
@@ -221,72 +198,3 @@ void Vehicle::operate(Unit* u, int key_up, int key_down, int key_left, int key_r
 		this->getAnimModel()->setMoveTransform(this->vt->vert_move_node, rotation);
 	}
 }
-
-
-AnimPlay* Vehicle::getAnimModel()
-{
-	return this->anim;
-}
-
-Sound* Vehicle::getSound()
-{
-	return NULL;
-}
-
-
-/**
-* We have been hit! Take some damage
-**/
-void Vehicle::takeDamage(int damage)
-{
-	this->health -= damage;
-	if (this->health < 0) this->health = 0;
-	
-	for (unsigned int j = 0; j < this->vt->damage_models.size(); j++) {
-		VehicleTypeDamage * dam = this->vt->damage_models.at(j);
-		
-		if (this->health <= dam->health) {
-			delete(this->anim);
-			this->anim = new AnimPlay(dam->model);
-			break;
-		}
-	}
-}
-
-
-/**
-* Handle raycasting for vehicle wheels.
-* We detect both terrain and water, but return a "miss" if it hits water.
-**/
-void* ChaoticRageVehicleRaycaster::castRay(const btVector3& from,const btVector3& to, btVehicleRaycasterResult& result)
-{
-	btCollisionWorld::ClosestRayResultCallback rayCallback(from,to);
-	rayCallback.m_collisionFilterGroup = CG_VEHICLE;
-	rayCallback.m_collisionFilterMask = CG_TERRAIN | CG_WATER;
-
-	m_dynamicsWorld->rayTest(from, to, rayCallback);
-
-	if (rayCallback.hasHit())
-	{
-		if (!this->v->vt->land && rayCallback.m_collisionObject->getBroadphaseHandle()->m_collisionFilterGroup == CG_TERRAIN) {
-			return 0;
-		}
-
-		if (!this->v->vt->water && rayCallback.m_collisionObject->getBroadphaseHandle()->m_collisionFilterGroup == CG_WATER) {
-			return 0;
-		}
-
-		const btRigidBody* body = btRigidBody::upcast(rayCallback.m_collisionObject);
-        if (body && body->hasContactResponse())
-		{
-			result.m_hitPointInWorld = rayCallback.m_hitPointWorld;
-			result.m_hitNormalInWorld = rayCallback.m_hitNormalWorld;
-			result.m_hitNormalInWorld.normalize();
-			result.m_distFraction = rayCallback.m_closestHitFraction;
-			return (void*)body;
-		}
-	}
-
-	return 0;
-}
-
