@@ -18,9 +18,11 @@
 #include "mod/mod.h"
 #include "mod/mod_manager.h"
 #include "mod/mod_proxy.h"
+#include "mod/vehicletype.h"
 #include "gamestate.h"
 #include "entity/object.h"
 #include "entity/vehicle.h"
+#include "entity/helicopter.h"
 #include "entity/wall.h"
 #include "entity/pickup.h"
 #include "util/sdl_util.h"
@@ -419,6 +421,7 @@ void Map::loadDefaultEntities()
 	// Vehicles
 	num_types = cfg_size(cfg, "vehicle");
 	for (j = 0; j < num_types; j++) {
+		Vehicle * v;
 		cfg_sub = cfg_getnsec(cfg, "vehicle", j);
 		
 		string type = cfg_getstr(cfg_sub, "type");
@@ -427,7 +430,11 @@ void Map::loadDefaultEntities()
 		VehicleType *vt = this->st->mm->getVehicleType(type);
 		if (vt == NULL) reportFatalError("Unable to load map; missing or invalid vehicle type '" + type + "'");
 		
-		Vehicle * v = new Vehicle(vt, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"));
+		if (vt->helicopter) {
+			v = new Helicopter(vt, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"));
+		} else {
+			v = new Vehicle(vt, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"));
+		}
 		
 		this->st->addVehicle(v);
 	}

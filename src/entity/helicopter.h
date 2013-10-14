@@ -14,14 +14,16 @@ class VehicleType;
 class Helicopter : public Vehicle
 {
 	private:
-		btRaycastVehicle::btVehicleTuning tuning;
-		btVehicleRaycaster* vehicle_raycaster;
-		btRaycastVehicle* vehicle;
-		btCollisionShape* wheel_shape;
+		float lift;
 	
 	public:
-		virtual void init(VehicleType *vt, GameState *st, btTransform & loc);
+		Helicopter(VehicleType *vt, GameState *st, float mapx, float mapy);
+		Helicopter(VehicleType *vt, GameState *st, btTransform & loc);
+		void init(VehicleType *vt, GameState *st, btTransform & loc);
+		virtual ~Helicopter();
+		
 		virtual void update(int delta);
+		virtual void enter();
 		virtual void operate(Unit* u, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle);
-		virtual float getSpeedKmHr();
+		virtual void exit();
 };

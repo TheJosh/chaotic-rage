@@ -485,9 +485,9 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 	
 	// Update the vehicle
 	v->setTransform(trans);
-	v->engineForce = ef;
-	v->brakeForce = bf;
-	v->steering = s;
+	//v->engineForce = ef;
+	//v->brakeForce = bf;
+	//v->steering = s;
 
 	return 42;
 }

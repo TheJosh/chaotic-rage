@@ -393,7 +393,7 @@ NetMsg * NetServer::addmsgVehicleState(Vehicle *v)
 		v->eid,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z(),
-		v->engineForce, v->brakeForce, v->steering
+		NULL, NULL, NULL  //v->engineForce, v->brakeForce, v->steering
 	);
 	
 	messages.push_back(*msg);

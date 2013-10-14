@@ -27,6 +27,10 @@ static btVector3 wheelAxleCS(-1,0,0);
 
 
 
+Vehicle::Vehicle(GameState *st) : Entity(st)
+{
+}
+
 Vehicle::Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy) : Entity(st)
 {
 	btVector3 sizeHE = vt->model->getBoundingSizeHE();
@@ -124,12 +128,6 @@ Vehicle::~Vehicle()
 }
 
 
-float Vehicle::getSpeedKmHr()
-{
-	return this->vehicle->getCurrentSpeedKmHour();
-}
-
-
 /**
 * Do stuff
 **/
@@ -172,6 +170,22 @@ void Vehicle::update(int delta)
 }
 
 
+void Vehicle::enter()
+{
+	this->engineForce = 0.0f;
+	this->brakeForce = 0.0f;
+	this->steering = 0.0f;
+}
+
+
+void Vehicle::exit()
+{
+	this->engineForce = 0.0f;
+	this->brakeForce = 0.0f;
+	this->steering = 0.0f;
+}
+
+
 /**
 * Called by the unit to update driving status
 **/
@@ -183,7 +197,7 @@ void Vehicle::operate(Unit* u, int key_up, int key_down, int key_left, int key_r
 			this->engineForce = MIN(this->engineForce + this->vt->engine_accel, this->vt->engine_max);
 			this->brakeForce = 0.0f;
 		} else if (key_down) {
-			if (this->getSpeedKmHr() > 0.0) {
+			if (this->vehicle->getCurrentSpeedKmHour() > 0.0) {
 				this->brakeForce = MIN(this->brakeForce + this->vt->brake_accel, this->vt->brake_max);
 				this->engineForce = 0.0f;
 			} else {

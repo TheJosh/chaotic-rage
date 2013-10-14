@@ -29,6 +29,7 @@ class VehicleType
 		
 		bool land;
 		bool water;
+		bool helicopter;
 		bool engine;
 		bool steer;
 		

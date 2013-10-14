@@ -20,23 +20,24 @@ class Vehicle : public Entity
 	public:
 		VehicleType* vt;
 		int health;
-		float engineForce;
-		float brakeForce;
-		float steering;
-
+		
 	protected:
 		AnimPlay * anim;
 		
 	private:
+		float engineForce;
+		float brakeForce;
+		float steering;
 		btRaycastVehicle::btVehicleTuning tuning;
 		btVehicleRaycaster* vehicle_raycaster;
 		btRaycastVehicle* vehicle;
 		btCollisionShape* wheel_shape;
 	
 	public:
+		Vehicle(GameState *st);
 		Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy);
 		Vehicle(VehicleType *vt, GameState *st, btTransform & loc);
-		virtual void init(VehicleType *vt, GameState *st, btTransform & loc);
+		void init(VehicleType *vt, GameState *st, btTransform & loc);
 		virtual ~Vehicle();
 		
 	public:
@@ -44,8 +45,9 @@ class Vehicle : public Entity
 		virtual Sound* getSound();
 		virtual void update(int delta);
 		void takeDamage(int damage);
+		virtual void enter();
 		virtual void operate(Unit* u, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle);
-		virtual float getSpeedKmHr();
+		virtual void exit();
 };
 
 
