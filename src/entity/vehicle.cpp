@@ -189,7 +189,7 @@ void Vehicle::exit()
 /**
 * Called by the unit to update driving status
 **/
-void Vehicle::operate(Unit* u, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle)
+void Vehicle::operate(Unit* u, int delta, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle)
 {
 	// Accel and brake
 	if (this->vt->engine) {

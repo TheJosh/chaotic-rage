@@ -17,7 +17,9 @@ class Helicopter : public Vehicle
 		bool running;
 		float lift;
 		float forward;
-		float steering;
+		float yaw;
+		float pitch;
+		float roll;
 
 	public:
 		Helicopter(VehicleType *vt, GameState *st, float mapx, float mapy);
@@ -27,6 +29,6 @@ class Helicopter : public Vehicle
 		
 		virtual void update(int delta);
 		virtual void enter();
-		virtual void operate(Unit* u, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle);
+		virtual void operate(Unit* u, int delta, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle);
 		virtual void exit();
 };

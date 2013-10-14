@@ -142,7 +142,7 @@ void Player::update(int delta)
 
 
 	if (this->drive) {
-		this->drive->operate(this, this->key[KEY_UP], this->key[KEY_DOWN], this->key[KEY_LEFT], this->key[KEY_RIGHT], this->mouse_angle, this->vertical_angle);
+		this->drive->operate(this, delta, this->key[KEY_UP], this->key[KEY_DOWN], this->key[KEY_LEFT], this->key[KEY_RIGHT], this->mouse_angle, this->vertical_angle);
 
 	} else {
 		bool walking = false;
