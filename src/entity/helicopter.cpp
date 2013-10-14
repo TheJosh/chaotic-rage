@@ -65,26 +65,30 @@ Helicopter::~Helicopter()
 **/
 void Helicopter::update(int delta)
 {
-	btVector3 force, origin;
-	
+	if (! this->running) return;
 	if (this->health == 0) return;
-	if (this->lift < 0.1f) return;
 	
-	// Lift
-	force = btVector3(0.0f, -this->lift, 0.0f);
-	origin = this->body->getWorldTransform().getOrigin();
-	this->body->applyForce(force, origin);
+	cout << "Lift: " << this->lift << "\n";
+	
+	
+	// Apply lift
+	btVector3 force = btVector3(0.0f, this->lift, 0.0f);
+	
+	this->body->activate(true);
+	this->body->applyCentralImpulse(force);
 }
 
 
 void Helicopter::enter()
 {
+	this->running = true;
 	this->lift = 0.0f;
 }
 
 
 void Helicopter::exit()
 {
+	this->running = false;
 	this->lift = 0.0f;
 }
 
@@ -96,8 +100,12 @@ void Helicopter::operate(Unit* u, int key_up, int key_down, int key_left, int ke
 {
 	if (key_up) {
 		this->lift += 0.1f;
+		
 	} else if (key_down) {
 		this->lift -= 0.1f;
+		
+	} else if (this->lift > 0.0f) {
+		this->lift -= 0.05f;
 	}
 }
 

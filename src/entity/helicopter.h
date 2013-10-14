@@ -14,6 +14,7 @@ class VehicleType;
 class Helicopter : public Vehicle
 {
 	private:
+		bool running;
 		float lift;
 	
 	public:
