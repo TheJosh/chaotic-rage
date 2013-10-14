@@ -16,7 +16,9 @@ class Helicopter : public Vehicle
 	private:
 		bool running;
 		float lift;
-	
+		float forward;
+		float steering;
+
 	public:
 		Helicopter(VehicleType *vt, GameState *st, float mapx, float mapy);
 		Helicopter(VehicleType *vt, GameState *st, btTransform & loc);

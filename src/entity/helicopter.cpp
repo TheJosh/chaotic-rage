@@ -48,7 +48,7 @@ void Helicopter::init(VehicleType *vt, GameState *st, btTransform &loc)
 	this->body->setUserPointer(this);
 	this->body->setActivationState(DISABLE_DEACTIVATION);
 	
-	this->lift = 0.0f;
+	this->running = false;
 }
 
 
@@ -68,12 +68,19 @@ void Helicopter::update(int delta)
 	if (! this->running) return;
 	if (this->health == 0) return;
 	
-	cout << "Lift: " << this->lift << "\n";
-	
-	
-	// Apply lift
-	btVector3 force = btVector3(0.0f, this->lift, 0.0f);
-	
+	// Steering
+	btQuaternion rot = btQuaternion(this->steering, 0.0f, 0.0f);
+	btMatrix3x3& matRot = btMatrix3x3(rot);
+	this->body->getWorldTransform().setBasis(matRot);
+
+	// Lift force
+	btVector3 liftForce = btVector3(0.0f, this->lift * delta, 0.0f);
+
+	// Forward force
+	btVector3 relativeForce = btVector3(0.0f, 0.0f, this->forward * delta);
+	btVector3 forwardForce = matRot * relativeForce;
+
+	btVector3 force = liftForce + forwardForce;
 	this->body->activate(true);
 	this->body->applyCentralImpulse(force);
 }
@@ -83,13 +90,13 @@ void Helicopter::enter()
 {
 	this->running = true;
 	this->lift = 0.0f;
+	this->forward = 0.0f;
 }
 
 
 void Helicopter::exit()
 {
 	this->running = false;
-	this->lift = 0.0f;
 }
 
 
@@ -99,14 +106,20 @@ void Helicopter::exit()
 void Helicopter::operate(Unit* u, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle)
 {
 	if (key_up) {
-		this->lift += 0.1f;
-		
-	} else if (key_down) {
-		this->lift -= 0.1f;
-		
-	} else if (this->lift > 0.0f) {
-		this->lift -= 0.05f;
+		this->forward += 0.15f;
+		if (this->forward > 5.0f) this->forward = 5.0f;
+	} else {
+		this->forward = 0.0f;
 	}
+
+	if (key_down) {
+		this->lift += 0.15f;
+		if (this->lift > 5.0f) this->lift = 5.0f;
+	} else {
+		this->lift = 0.0f;
+	}
+
+	this->steering = horiz_angle / 20.0f;
 }
 
 
