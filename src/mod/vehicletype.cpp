@@ -57,8 +57,8 @@ cfg_opt_t vehicletype_opts[] =
 	
 	CFG_SEC((char*) "damage", damage_opts, CFGF_MULTI),
 	
-	CFG_FLOAT_LIST((char*) "joint-a", (char*)"{0.0, 0.0, 0.0}", CFGF_NONE),
-	CFG_FLOAT_LIST((char*) "joint-b", (char*)"{0.0, 0.0, 0.0}", CFGF_NONE),
+	CFG_FLOAT_LIST((char*) "joint-front", (char*)"{0.0, 0.0, 0.0}", CFGF_NONE),
+	CFG_FLOAT_LIST((char*) "joint-back", (char*)"{0.0, 0.0, 0.0}", CFGF_NONE),
 	
 	CFG_END()
 };
@@ -129,8 +129,8 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	}
 	
 	// Load joint locations
-	wt->jointA = cfg_getvec3(cfg_item, "joint-a");
-	wt->jointB = cfg_getvec3(cfg_item, "joint-b");
+	wt->joint_front = cfg_getvec3(cfg_item, "joint-front");
+	wt->joint_back = cfg_getvec3(cfg_item, "joint-back");
 	
 	// Load damage states
 	size = cfg_size(cfg_item, "damage");

@@ -20,7 +20,7 @@ class Vehicle : public Entity
 	public:
 		VehicleType* vt;
 		int health;
-		
+
 	protected:
 		AnimPlay * anim;
 		
@@ -48,6 +48,8 @@ class Vehicle : public Entity
 		virtual void enter();
 		virtual void operate(Unit* u, int delta, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle);
 		virtual void exit();
+
+		void trainAttachToNext(Vehicle *next);
 };
 
 

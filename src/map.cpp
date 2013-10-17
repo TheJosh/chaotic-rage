@@ -3,6 +3,7 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <iostream>
+#include <map>
 #include <math.h>
 #include <btBulletDynamicsCommon.h>
 #include <glm/glm.hpp>
@@ -29,6 +30,18 @@
 
 
 using namespace std;
+
+
+class TrainIds {
+	public:
+		int num;
+		int idx;
+};
+
+inline bool operator< (const TrainIds& lhs, const TrainIds& rhs)
+{
+	return ((lhs.num * 100 + lhs.idx) < (rhs.num * 100 + rhs.idx));
+}
 
 
 /* Config file definition */
@@ -71,6 +84,8 @@ static cfg_opt_t vehicle_opts[] =
 	CFG_INT((char*) "z", 0, CFGF_NONE),
 	CFG_INT((char*) "angle", 0, CFGF_NONE),
 	CFG_STR((char*) "type", ((char*)""), CFGF_NONE),
+	CFG_INT((char*) "train-num", 0, CFGF_NONE),
+	CFG_INT((char*) "train-idx", 0, CFGF_NONE),
 	CFG_END()
 };
 
@@ -153,7 +168,6 @@ static cfg_opt_t opts[] =
 
 	CFG_END()
 };
-
 
 Light::Light(unsigned int type)
 {
@@ -419,9 +433,11 @@ void Map::loadDefaultEntities()
 	}
 	
 	// Vehicles
+	std::map<TrainIds, Vehicle*> train_nums;
 	num_types = cfg_size(cfg, "vehicle");
 	for (j = 0; j < num_types; j++) {
 		Vehicle * v;
+		TrainIds tid;
 		cfg_sub = cfg_getnsec(cfg, "vehicle", j);
 		
 		string type = cfg_getstr(cfg_sub, "type");
@@ -435,10 +451,25 @@ void Map::loadDefaultEntities()
 		} else {
 			v = new Vehicle(vt, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"));
 		}
-		
+
+		tid.num = cfg_getint(cfg_sub, "train-num");
+		tid.idx = cfg_getint(cfg_sub, "train-idx");
+		if (tid.num != 0) {
+			train_nums.insert(make_pair(tid, v));
+		}
+
 		this->st->addVehicle(v);
 	}
 	
+	// Hook up trains
+	for(std::map<TrainIds, Vehicle*>::iterator it = train_nums.begin(); it != train_nums.end(); it++) {
+		TrainIds srch = TrainIds(it->first);
+		srch.idx++;
+		if (train_nums.find(srch) == train_nums.end()) continue;
+		Vehicle* next = train_nums[srch];
+		it->second->trainAttachToNext(next);
+	}
+
 	// Objects
 	num_types = cfg_size(cfg, "object");
 	for (j = 0; j < num_types; j++) {

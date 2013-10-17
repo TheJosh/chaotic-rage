@@ -74,17 +74,6 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	this->body->setUserPointer(this);
 	this->body->setActivationState(DISABLE_DEACTIVATION);
 	
-	// Experimental train linkage bits
-	btTransform joint = btTransform(loc);
-	joint.getOrigin().setX(joint.getOrigin().x() + vt->jointA.x);
-	joint.getOrigin().setX(joint.getOrigin().y() + vt->jointA.y);
-	joint.getOrigin().setX(joint.getOrigin().z() + vt->jointA.z);
-	motionState = new btDefaultMotionState(loc);
-	btRigidBody* box = st->physics->addRigidBody(new btBoxShape(btVector3(0.2f, 0.2f, 0.2f)), 1.0f, motionState, CG_VEHICLE);
-	
-	btPoint2PointConstraint* j = new btPoint2PointConstraint(*this->body, *box, btVector3(vt->jointA.x, vt->jointA.y, vt->jointA.z), btVector3(0.0f, 0.0f, 0.0f));
-	st->physics->getWorld()->addConstraint(j, true);
-	
 	// Create Vehicle
 	this->vehicle_raycaster = new ChaoticRageVehicleRaycaster(st->physics->getWorld(), this);
 	this->vehicle = new btRaycastVehicle(this->tuning, this->body, this->vehicle_raycaster);
@@ -131,6 +120,26 @@ Vehicle::~Vehicle()
 {
 	delete (this->anim);
 	st->physics->delRigidBody(this->body);
+}
+
+
+/**
+* Attach a train vehicle to the next one in the chain
+**/
+void Vehicle::trainAttachToNext(Vehicle *next)
+{
+	btVector3 front, back;
+
+	front.setX(this->getTransform().getOrigin().x() + this->vt->joint_back.x);
+	front.setY(this->getTransform().getOrigin().y() + this->vt->joint_back.y);
+	front.setZ(this->getTransform().getOrigin().z() + this->vt->joint_back.z);
+
+	back.setX(next->getTransform().getOrigin().x() + next->vt->joint_back.x);
+	back.setY(next->getTransform().getOrigin().y() + next->vt->joint_back.y);
+	back.setZ(next->getTransform().getOrigin().z() + next->vt->joint_back.z);
+	
+	btPoint2PointConstraint* j = new btPoint2PointConstraint(*this->body, *next->body, front, back);
+	st->physics->getWorld()->addConstraint(j, true);
 }
 
 
