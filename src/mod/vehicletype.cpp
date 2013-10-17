@@ -57,6 +57,8 @@ cfg_opt_t vehicletype_opts[] =
 	
 	CFG_SEC((char*) "damage", damage_opts, CFGF_MULTI),
 	
+	CFG_FLOAT_LIST((char*) "joint", (char*)"{0.0, 0.0, 0.0}", CFGF_NONE),
+	
 	CFG_END()
 };
 
@@ -124,6 +126,8 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 			return NULL;
 		}
 	}
+	
+	wt->joint = cfg_getvec3(cfg_item, "joint");
 	
 	// Load damage states
 	size = cfg_size(cfg_item, "damage");

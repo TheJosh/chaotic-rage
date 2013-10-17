@@ -79,6 +79,16 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	this->body->setUserPointer(this);
 	this->body->setActivationState(DISABLE_DEACTIVATION);
 	
+	btTransform joint = btTransform(loc);
+	joint.getOrigin().setX(joint.getOrigin().x() + vt->joint.x);
+	joint.getOrigin().setX(joint.getOrigin().y() + vt->joint.y);
+	joint.getOrigin().setX(joint.getOrigin().z() + vt->joint.z);
+	motionState = new btDefaultMotionState(loc);
+	btRigidBody* box = st->physics->addRigidBody(new btBoxShape(btVector3(0.2f, 0.2f, 0.2f)), 1.0f, motionState, CG_VEHICLE);
+	
+	btPoint2PointConstraint* j = new btPoint2PointConstraint(*this->body, *box, btVector3(vt->joint.x, vt->joint.y, vt->joint.z), btVector3(0.0f, 0.0f, 0.0f));
+	st->physics->getWorld()->addConstraint(j, true);
+	
 	// Create Vehicle
 	this->vehicle_raycaster = new ChaoticRageVehicleRaycaster(st->physics->getWorld(), this);
 	this->vehicle = new btRaycastVehicle(this->tuning, this->body, this->vehicle_raycaster);

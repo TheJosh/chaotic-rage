@@ -49,6 +49,8 @@ class VehicleType
 		WeaponType* weapon_primary;
 		vector <VehicleTypeDamage *> damage_models;
 		
+		glm::vec3 joint;
+		
 	public:
 		VehicleType();
 		~VehicleType();
