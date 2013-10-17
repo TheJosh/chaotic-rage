@@ -68,17 +68,13 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 
 	btVector3 sizeHE = vt->model->getBoundingSizeHE();
 	
-	// LocalTrans effectively shifts the center of mass with respect to the chassis
-	//btTransform localTrans;
-	//localTrans.setIdentity();
-	//localTrans.setOrigin(btVector3(0,0,0.5f));
-	//compound->addChildShape(localTrans,vt->col_shape);
-	
+	// Create rigidbody
 	btDefaultMotionState* motionState = new btDefaultMotionState(loc);
 	this->body = st->physics->addRigidBody(vt->col_shape, 120.0f, motionState, CG_VEHICLE);
 	this->body->setUserPointer(this);
 	this->body->setActivationState(DISABLE_DEACTIVATION);
 	
+	// Experimental train linkage bits
 	btTransform joint = btTransform(loc);
 	joint.getOrigin().setX(joint.getOrigin().x() + vt->joint.x);
 	joint.getOrigin().setX(joint.getOrigin().y() + vt->joint.y);
