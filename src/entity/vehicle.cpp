@@ -76,13 +76,13 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	
 	// Experimental train linkage bits
 	btTransform joint = btTransform(loc);
-	joint.getOrigin().setX(joint.getOrigin().x() + vt->joint.x);
-	joint.getOrigin().setX(joint.getOrigin().y() + vt->joint.y);
-	joint.getOrigin().setX(joint.getOrigin().z() + vt->joint.z);
+	joint.getOrigin().setX(joint.getOrigin().x() + vt->jointA.x);
+	joint.getOrigin().setX(joint.getOrigin().y() + vt->jointA.y);
+	joint.getOrigin().setX(joint.getOrigin().z() + vt->jointA.z);
 	motionState = new btDefaultMotionState(loc);
 	btRigidBody* box = st->physics->addRigidBody(new btBoxShape(btVector3(0.2f, 0.2f, 0.2f)), 1.0f, motionState, CG_VEHICLE);
 	
-	btPoint2PointConstraint* j = new btPoint2PointConstraint(*this->body, *box, btVector3(vt->joint.x, vt->joint.y, vt->joint.z), btVector3(0.0f, 0.0f, 0.0f));
+	btPoint2PointConstraint* j = new btPoint2PointConstraint(*this->body, *box, btVector3(vt->jointA.x, vt->jointA.y, vt->jointA.z), btVector3(0.0f, 0.0f, 0.0f));
 	st->physics->getWorld()->addConstraint(j, true);
 	
 	// Create Vehicle
