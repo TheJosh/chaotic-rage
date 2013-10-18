@@ -386,6 +386,11 @@ void Unit::update(int delta)
 		st->server->addmsgUnitState(this);
 	}
 
+	// If in a vehicle, move the ghost to AIs know where the unit is
+	if (this->drive) {
+		this->ghost->setWorldTransform(this->drive->getTransform());
+	}
+
 	// If they have fallen a considerable distance, they die
 	btTransform xform = ghost->getWorldTransform();
 	if (xform.getOrigin().y() <= -100.0) {
@@ -541,8 +546,7 @@ void Unit::enterVehicle(Vehicle *v)
 {
 	this->drive = v;
 	this->render = false;
-	this->ghost->forceActivationState(DISABLE_SIMULATION);
-
+	this->ghost->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE);
 	this->drive->enter();
 }
 
@@ -575,7 +579,7 @@ void Unit::leaveVehicle()
 	
 	// Update unit
 	this->ghost->setWorldTransform(btTransform(btQuaternion(0,0,0,1), spawn));
-	this->ghost->forceActivationState(ACTIVE_TAG);
+	this->ghost->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
 	this->drive->exit();
 	this->render = true;
 	this->drive = NULL;
