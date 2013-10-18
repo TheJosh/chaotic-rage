@@ -370,7 +370,7 @@ void RenderOpenGL::setPhysicsDebug(bool status)
 		this->physicsdebug->setDebugMode(
 			btIDebugDraw::DBG_DrawWireframe | btIDebugDraw::DBG_DrawAabb |
 			btIDebugDraw::DBG_DrawContactPoints | btIDebugDraw::DBG_NoDeactivation |
-			btIDebugDraw::DBG_DrawConstraints
+			btIDebugDraw::DBG_DrawConstraints | btIDebugDraw::DBG_DrawConstraintLimits
 		);
 		this->st->physics->getWorld()->setDebugDrawer(this->physicsdebug);
 	} else {

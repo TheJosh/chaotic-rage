@@ -70,7 +70,7 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	
 	// Create rigidbody
 	btDefaultMotionState* motionState = new btDefaultMotionState(loc);
-	this->body = st->physics->addRigidBody(vt->col_shape, 120.0f, motionState, CG_VEHICLE);
+	this->body = st->physics->addRigidBody(vt->col_shape, 30.0f, motionState, CG_VEHICLE);
 	this->body->setUserPointer(this);
 	this->body->setActivationState(DISABLE_DEACTIVATION);
 	
@@ -130,16 +130,18 @@ void Vehicle::trainAttachToNext(Vehicle *next)
 {
 	btVector3 front, back;
 
-	front.setX(this->getTransform().getOrigin().x() + this->vt->joint_back.x);
-	front.setY(this->getTransform().getOrigin().y() + this->vt->joint_back.y);
-	front.setZ(this->getTransform().getOrigin().z() + this->vt->joint_back.z);
+	front.setX(this->vt->joint_back.x);
+	front.setY(this->vt->joint_back.y);
+	front.setZ(this->vt->joint_back.z);
 
-	back.setX(next->getTransform().getOrigin().x() + next->vt->joint_back.x);
-	back.setY(next->getTransform().getOrigin().y() + next->vt->joint_back.y);
-	back.setZ(next->getTransform().getOrigin().z() + next->vt->joint_back.z);
+	back.setX(next->vt->joint_front.x);
+	back.setY(next->vt->joint_front.y);
+	back.setZ(next->vt->joint_front.z);
 	
-	btPoint2PointConstraint* j = new btPoint2PointConstraint(*this->body, *next->body, front, back);
-	st->physics->getWorld()->addConstraint(j, true);
+	btPoint2PointConstraint* cons = new btPoint2PointConstraint(*this->body, *next->body, front, back);
+	st->physics->getWorld()->addConstraint(cons, true);
+	
+	cons->setDbgDrawSize(btScalar(5.f));
 }
 
 
