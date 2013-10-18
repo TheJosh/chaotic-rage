@@ -541,8 +541,8 @@ void Unit::enterVehicle(Vehicle *v)
 {
 	this->drive = v;
 	this->render = false;
-	//this->body->forceActivationState(DISABLE_SIMULATION);
-	
+	this->ghost->forceActivationState(DISABLE_SIMULATION);
+
 	this->drive->enter();
 }
 
@@ -552,21 +552,31 @@ void Unit::enterVehicle(Vehicle *v)
 **/
 void Unit::leaveVehicle()
 {
-	btTransform trans;
-	
 	if (! this->drive) return;
-	
-	trans = this->drive->getTransform();
-	trans.setRotation(btQuaternion(0,0,0,1));
+	btTransform trans = this->drive->getTransform();
 
-	btVector3 spawn = this->st->physics->spawnLocation(trans.getOrigin().x(), trans.getOrigin().z(), 1.0f);
-	trans.setOrigin(spawn);
+	btVector3 size = this->drive->vt->model->getBoundingSizeHE();
+	size += btVector3(1.5f, 0.0f, 1.5f);
 	
-	this->ghost->setWorldTransform(trans);
+	// Raycast four candidates for spawn
+	btVector3 spawnopts[4];
+	spawnopts[0] = this->st->physics->spawnLocation(trans.getOrigin().x() - size.x(), trans.getOrigin().z() - size.z(), 1.0f);
+	spawnopts[1] = this->st->physics->spawnLocation(trans.getOrigin().x() + size.x(), trans.getOrigin().z() - size.z(), 1.0f);
+	spawnopts[2] = this->st->physics->spawnLocation(trans.getOrigin().x() - size.x(), trans.getOrigin().z() + size.z(), 1.0f);
+	spawnopts[3] = this->st->physics->spawnLocation(trans.getOrigin().x() + size.x(), trans.getOrigin().z() + size.z(), 1.0f);
+
+	// Find the lowest one, it's probably on the ground
+	btVector3 spawn = spawnopts[0];
+	for (int i = 1; i < 4; i++) {
+		if (spawnopts[i].y() < spawn.y()) {
+			spawn = spawnopts[i];
+		}
+	}
+	
+	// Update unit
+	this->ghost->setWorldTransform(btTransform(btQuaternion(0,0,0,1), spawn));
 	this->ghost->forceActivationState(ACTIVE_TAG);
-	
 	this->drive->exit();
-	
 	this->render = true;
 	this->drive = NULL;
 }
