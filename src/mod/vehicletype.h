@@ -26,7 +26,8 @@ class VehicleType
 		AssimpModel * model;
 		btCollisionShape* col_shape;
 		int health;
-		
+		float mass;
+
 		bool land;
 		bool water;
 		bool helicopter;

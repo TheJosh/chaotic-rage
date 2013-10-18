@@ -70,7 +70,7 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	
 	// Create rigidbody
 	btDefaultMotionState* motionState = new btDefaultMotionState(loc);
-	this->body = st->physics->addRigidBody(vt->col_shape, 30.0f, motionState, CG_VEHICLE);
+	this->body = st->physics->addRigidBody(vt->col_shape, vt->mass, motionState, CG_VEHICLE);
 	this->body->setUserPointer(this);
 	this->body->setActivationState(DISABLE_DEACTIVATION);
 	

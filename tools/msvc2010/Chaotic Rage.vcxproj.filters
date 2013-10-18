@@ -375,9 +375,6 @@
     <ClCompile Include="..\..\src\entity\player.cpp">
       <Filter>src\entity</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\entity\unit.cpp">
-      <Filter>src\entity</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\entity\vehicle.cpp">
       <Filter>src\entity</Filter>
     </ClCompile>
@@ -431,6 +428,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\entity\helicopter.cpp">
       <Filter>src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entity\unit.cpp">
+      <Filter>src\mod</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
