@@ -1056,7 +1056,7 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 	if (! success) {
 		GLchar InfoLog[1024];
 		glGetShaderInfoLog(shader, 1024, NULL, InfoLog);
-		cout << "Error compiling shader:\n" << InfoLog << "\n";
+		cerr << "Error compiling shader:\n" << InfoLog << "\n";
 		return 0;
 	}
 	
@@ -1112,7 +1112,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	if (! success) {
 		GLchar InfoLog[1024];
 		glGetProgramInfoLog(program, 1024, NULL, InfoLog);
-		cout << "Error linking program:\n" << InfoLog << "\n";
+		cerr << "Error linking program:\n" << InfoLog << "\n";
 		return NULL;
 	}
 	
@@ -1143,7 +1143,7 @@ GLShader* RenderOpenGL::loadProgram(Mod* mod, string name)
 	if (v == NULL or f == NULL) {
 		free(v);
 		free(f);
-		cout << "Unable to load shader program " << name << endl;
+		cerr << "Unable to load shader program " << name << endl;
 		this->shaders_error = true;
 		return NULL;
 	}
@@ -1158,7 +1158,7 @@ GLShader* RenderOpenGL::loadProgram(Mod* mod, string name)
 	free(f);
 	
 	if (s == NULL) {
-		cout << "Unable to create shader program " << name << endl;
+		cerr << "Unable to create shader program " << name << endl;
 		this->shaders_error = true;
 	}
 	

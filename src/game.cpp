@@ -67,8 +67,6 @@ void gameLoop(GameState *st, Render *render)
 	}
 
 
-	cout << "\n\n\n\n\n";
-	
 	st->running = true;
 	while (st->running) {
 		delta = SDL_GetTicks() - start;
@@ -107,8 +105,6 @@ void gameLoop(GameState *st, Render *render)
 		st->render->render();
 		st->audio->play();
 	}
-	
-	cout << "\n\n\n\n\n";
 	
 	st->postGame();
 	st->render->postGame();

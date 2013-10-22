@@ -136,14 +136,15 @@ void CommandLineArgs::process()
 					"  aud                Audio (Play, Stop)\n"
 					"  coll               Collisions\n"
 					"  data               Data-file loading\n"
+					"  loop               Main game loop\n"
 					"  lua                Lua function calls\n"
+					"  mod                Mod loading\n"
+					"  net                Network (also: net_pack, net_pkt, net_info)\n"
 					"  phy                Physics (RigidBody adding, removing)\n"
+					"  terrain            Terrain/Heightmap physics\n"
 					"  unit               Unit movements\n"
 					"  vid                Video\n"
-					"  loop               Main game loop\n"
-					"  net                Network (also: net_pack, net_pkt, net_info)\n"
 					"  weap               Weapons\n"
-					"  terrain            Terrain/Heightmap physics\n"
 				;
 				exit(0);
 				break;

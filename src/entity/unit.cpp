@@ -704,7 +704,6 @@ void Unit::rollbackPickupAdjust(PickupTypeAdjust* adj)
 void Unit::applyForce(btVector3 &force)
 {
 	this->force += force;
-	cout << "applyForce (this = " << this << ", force = " << force.x() << ";" << force.y() << ";" << force.z() << ")" << endl;
 }
 
 

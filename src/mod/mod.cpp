@@ -14,6 +14,7 @@
 #include "../render/assimpmodel.h"
 #include "../util/SDL_rwops_zzip.h"
 #include "../util/crc32.h"
+#include "../util/debug.h"
 #include "mod.h"
 #include "confuse_types.h"
 #include "aitype.h"
@@ -224,7 +225,7 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 		
 		models->push_back(am);
 		
-		cout << std::hex << am->id << " " << am->name << "\n";
+		DEBUG("mod", "%08x %s", am->id, am->name.c_str());
 		
 		if (ui) ui->updateUI();
 	}
@@ -239,7 +240,7 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 **/
 bool Mod::load(UIUpdate* ui)
 {
-	cout << "Mod: " << this->name << "\n";
+	DEBUG("mod", "Loading mod '%s'", this->name.c_str());
 	
 #ifdef NOGUI
 	sounds = new vector<Sound*>();
@@ -322,8 +323,6 @@ bool Mod::load(UIUpdate* ui)
 		pickuptypes->push_back(pt);
 	}
 
-	cout << "\n";
-	
 	return true;
 }
 
@@ -564,8 +563,6 @@ VehicleType * Mod::getVehicleType(CRC32 id)
 VehicleType * Mod::getVehicleType(string name)
 {
 	if (name.empty()) return NULL;
-	
-	cout << name << "\n";
 	
 	int i;
 	for (i = vehicletypes->size() - 1; i >= 0; --i) {

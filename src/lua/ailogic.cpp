@@ -165,10 +165,7 @@ void AILogic::update(int delta)
 #define LUA_DEFINE_RAISE_INTARG(name) void AILogic::raise_##name(int arg) \
 { \
 	this->ActiveLuaState(); \
-	cout << "raise_" #name "(" << arg << ")\n"; \
-	cout << "num binds: " << this->binds_##name.size() << "\n"; \
 	for (unsigned int id = 0; id < this->binds_##name.size(); id++) { \
-		cout << "bind: " << id << "\n"; \
 		int ref = this->binds_##name.at(id); \
 		lua_rawgeti(L, LUA_REGISTRYINDEX, ref); \
 		lua_pushinteger(L, arg); \
