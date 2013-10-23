@@ -90,7 +90,7 @@ Campaign* loadItemCampaign(cfg_t* cfg_item, Mod* mod)
 			
 			tmp = cfg_getstr(cfg_sub, "gametype");
 			if (tmp == NULL) {
-				cerr << "Invalid campaign stage, no 'gametype' specified." << endl;
+				mod->setLoadErr("Invalid campaign stage, no 'gametype' specified");
 				return NULL;
 			}
 			stage->gametype = std::string(tmp);
@@ -105,7 +105,7 @@ Campaign* loadItemCampaign(cfg_t* cfg_item, Mod* mod)
 
 		// Check is valid
 		if (stage->map == "" && stage->image_filename == "") {
-			cerr << "Invalid campaign stage, no 'map' or 'image' specified." << endl;
+			mod->setLoadErr("Invalid campaign stage, no 'map' or 'image' specified");
 			return NULL;
 		}
 

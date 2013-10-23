@@ -207,6 +207,8 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 		return models;
 	}
 
+	mod->setLoadErr("Unknown error");
+	
 	// Process area type sections
 	int j;
 	char buf[128];
@@ -215,7 +217,7 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 		
 		T am = (*item_f)(cfg_item, mod);
 		if (am == NULL) {
-			cerr << "Bad definition in file " << filename << " at index " << j << "\n";
+			cerr << "Bad definition in file " << filename << " at index " << j << ": " << mod->getLoadErr() << "\n";
 			return NULL;
 		}
 		
@@ -232,6 +234,22 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 	
 	cfg_free(cfg);
 	return models;
+}
+
+
+/**
+* To be called by the subitems of the mod to set an error message
+**/
+void Mod::setLoadErr(const char *message, ...)
+{
+	char buf[255];
+	va_list argptr;
+	
+	va_start(argptr, message);
+	vsnprintf(buf, 255, message, argptr);
+	va_end(argptr);
+	
+	this->load_err = std::string(buf);
 }
 
 
@@ -672,7 +690,6 @@ char * Mod::loadText(string resname)
 	
 	fp = zzip_open_ext_io(filename.c_str(), O_RDONLY|O_BINARY, 0, mod_zzip_ext, 0);
 	if (! fp) {
-		cerr << "Couldn't load resource '" << resname << "'. Unable to locate resource.\n";
 		return NULL;
 	}
 	
@@ -683,7 +700,6 @@ char * Mod::loadText(string resname)
 	
 	buffer = (char*) malloc(len + 1);
 	if (buffer == NULL) {
-		cerr << "Couldn't load resource '" << resname << "'. Unable to allocate memory.\n";
 		return NULL;
 	}
 	buffer[len] = '\0';
@@ -708,7 +724,6 @@ Uint8 * Mod::loadBinary(string resname, int * len)
 	
 	fp = zzip_open_ext_io(filename.c_str(), O_RDONLY|O_BINARY, 0, mod_zzip_ext, 0);
 	if (! fp) {
-		cerr << "Couldn't load resource '" << resname << "'. Unable to locate resource.\n";
 		return NULL;
 	}
 	
@@ -719,7 +734,6 @@ Uint8 * Mod::loadBinary(string resname, int * len)
 	
 	buffer = (Uint8*) malloc(l);
 	if (buffer == NULL) {
-		cerr << "Couldn't load resource '" << resname << "'. Unable to allocate memory.\n";
 		return NULL;
 	}
 	
@@ -744,7 +758,6 @@ SDL_RWops * Mod::loadRWops(string resname)
 	
 	rw = SDL_RWFromZZIP(filename.c_str(), "rb");
 	if (rw == NULL) {
-		fprintf(stderr, "Couldn't load resource '%s'.\n", resname.c_str());
 		return NULL;
 	}
 	

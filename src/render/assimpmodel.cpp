@@ -54,13 +54,13 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 	int len;
 	Uint8 * data = this->mod->loadBinary("models/" + this->name, &len);
 	if (! data) {
-		cerr << "Failed to load " << this->name << "; file read failed\n";
+		this->mod->setLoadErr("Failed to load %s; file read failed", this->name.c_str());
 		return false;
 	}
 	
 	this->sc = importer.ReadFileFromMemory((const void*) data, len, flags, this->name.c_str());
 	if (! this->sc) {
-		cerr << "Failed to load " << this->name << "; " << importer.GetErrorString() << "\n";
+		this->mod->setLoadErr("Failed to load %s; file read failed; %s", this->name.c_str(), importer.GetErrorString());
 		return false;
 	}
 	

@@ -38,6 +38,7 @@ class Mod {
 		vector<MapReg> * maps;
 		bool has_arcade;
 		bool has_campaign;
+		string load_err;
 		
 		// full data
 		vector<AIType*> * ais;
@@ -52,9 +53,8 @@ class Mod {
 		vector<VehicleType*> * vehicletypes;
 		vector<WallType*> * walltypes;
 		vector<WeaponType*> * weapontypes;
-
 		map<string, AssimpModel*> models;
-
+		
 	public:
 		GameState * st;
 		string name;
@@ -72,6 +72,8 @@ class Mod {
 	public:
 		bool loadMetadata();
 		bool load(UIUpdate* ui);
+		void setLoadErr(const char *message, ...);
+		string getLoadErr() { return this->load_err; }
 		bool reloadAttrs();
 		
 		string getName() { return this->name; }

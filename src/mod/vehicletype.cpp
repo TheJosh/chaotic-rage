@@ -97,7 +97,7 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	if (tmp != NULL && strlen(tmp) != 0) {
 		wt->model = mod->getAssimpModel(tmp);
 		if (! wt->model) {
-			cerr << "Invalid model: " << tmp << endl;
+			mod->setLoadErr("Invalid model: %s", tmp);
 			return NULL;
 		}
 	}
@@ -125,7 +125,7 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	if (tmp != NULL && strlen(tmp) != 0) {
 		wt->weapon_primary = mod->getWeaponType(tmp);
 		if (! wt->weapon_primary) {
-			cerr << "Invalid primary weapon: " << tmp << endl;
+			mod->setLoadErr("Invalid primary weapon: %s", tmp);
 			return NULL;
 		}
 	}
