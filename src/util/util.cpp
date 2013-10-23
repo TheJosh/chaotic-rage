@@ -129,45 +129,6 @@ float pointPlusAngleY (float point_y, int angle, float distance)
 }
 
 
-/**
-* Converts a pps distance, and a delta into a fixed pixel distance.
-* INTEGER version of function, for speed, position, etc.
-*
-* pps is 'pixels per second'.
-* deltas are in miliseconds.
-* return value is in pixels.
-**/
-int ppsDeltai(int pps, int delta)
-{
-	float ret = ((float)pps) * ((float)delta) / 1000.0f;
-	if (pps > 0) { return (int) ceil(ret); } else { return (int) floor(ret); }
-}
-
-/**
-* Converts a pps distance, and a delta into a fixed pixel distance.
-* FLOAT version of function, for angles, generators, etc.
-*
-* pps is 'pixels per second'.
-* deltas are in miliseconds.
-* return value is in pixels.
-**/
-float ppsDeltaf(float pps, int delta)
-{
-	return pps * ((float)delta) / 1000.0f;
-}
-
-
-/**
-* Converts a meters/second distance, and a delta into a fixed distance in meters.
-* deltas are in miliseconds.
-*
-* return value is in meters.
-**/
-float mpsDeltaf(float mps, int delta)
-{
-	return mps * ((float)delta) / 1000.0f;
-}
-
 
 void seedRandom()
 {
@@ -186,39 +147,5 @@ float getRandomf(float low, float high)
 	if (high < low) swap(low, high);
 	if (high == low) return low;
 	return ((float)rand()/(float)RAND_MAX) * (high - low) + low;
-}
-
-
-/**
-* Gets the name of the directory to load data from
-* Ends in trailing slash.
-* Datafile should be one of the DF_ constants in util.h
-**/
-string getDataDirectory(int datafile)
-{
-	switch (datafile) {
-		case DF_AREATYPES:
-			return "areatypes/";
-			
-		case DF_UNITCLASS:
-			return "unitclass/";
-		
-		case DF_PARTICLES:
-			return "particletypes/";
-			
-		case DF_WEAPONS:
-			return "weapontypes/";
-	}
-	
-	cerr << "Cannot find data directory for type = " << datafile << "\n";
-	exit(1);
-	
-	return "";
-}
-
-
-void terminal_clear()
-{
-	printf("%c[2J\n", 0x1B);
 }
 
