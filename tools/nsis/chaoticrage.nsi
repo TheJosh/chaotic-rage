@@ -48,9 +48,6 @@ Section "Game (required)"
   ; Put file there
   File /r files\*.*
 
-  AccessControl::GrantOnFile "$INSTDIR\stdout.txt" "(BU)" "FullAccess"
-  AccessControl::GrantOnFile "$INSTDIR\stderr.txt" "(BU)" "FullAccess"
-
   ; Write the installation path into the registry
   WriteRegStr HKLM "SOFTWARE\ChaoticRage" "Install_Dir" "$INSTDIR"
   
