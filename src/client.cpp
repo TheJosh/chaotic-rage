@@ -3,6 +3,7 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <string>
+#include <fstream>
 #include <SDL.h>
 #include "rage.h"
 #include "http/client_stats.h"
@@ -10,6 +11,7 @@
 #include "util/ui_update.h"
 #include "util/cmdline.h"
 #include "util/clientconfig.h"
+#include "util/stream_redirector.h"
 #include "mod/mod_manager.h"
 #include "mod/mod.h"
 #include "map.h"
@@ -24,8 +26,17 @@ using namespace std;
 
 int main (int argc, char ** argv)
 {
-	cout << ".";
-	cerr << ".";
+	// Redirect stdout and stderr to files in the user directory
+	#ifdef _WIN32
+		string datadir = getUserDataDir();
+		string nameOut = datadir + "stdout.txt"; 
+		string nameErr = datadir + "stderr.txt"; 
+		ofstream fileOut(nameOut.c_str());
+		ofstream fileErr(nameErr.c_str());
+		StreamRedirector redirOut(cout, fileOut.rdbuf());
+		StreamRedirector redirErr(cerr, fileErr.rdbuf());
+	#endif
+	
 	
 	chdirToDataDir();
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
@@ -43,7 +54,7 @@ int main (int argc, char ** argv)
 	st->cmdline = new CommandLineArgs(st, argc, argv);
 	
 	#ifdef GETOPT
-	st->cmdline->process();
+		st->cmdline->process();
 	#endif
 	
 	st->cconf = new ClientConfig();
@@ -95,5 +106,4 @@ int main (int argc, char ** argv)
 	
 	exit(0);
 }
-
 
