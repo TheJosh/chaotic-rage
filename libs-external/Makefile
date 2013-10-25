@@ -6,7 +6,8 @@
 # Bullet Physics
 #
 bullet-2.81-rev2613:
-	wget https://bullet.googlecode.com/files/bullet-2.81-rev2613.tgz
+	rm -rf bullet-2.81-rev2613.tgz
+	wget http://chaoticrage.com/dev_libs/bullet-2.81-rev2613.tgz
 	tar -zvxf bullet-2.81-rev2613.tgz
 	rm bullet-2.81-rev2613.tgz
 
@@ -40,7 +41,7 @@ bullet-clean:
 #
 assimp--3.0.1270-source-only:
 	rm -rf assimp--3.0.1270-source-only
-	wget -O assimp--3.0.1270-source-only.zip "http://downloads.sourceforge.net/project/assimp/assimp-3.0/assimp--3.0.1270-source-only.zip?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fassimp%2Ffiles%2Fassimp-3.0%2Fassimp--3.0.1270-source-only.zip%2Fdownload%3Fuse_mirror%3Dinternode&ts=1359513943&use_mirror=internode"
+	wget http://chaoticrage.com/dev_libs/assimp--3.0.1270-source-only.zip
 	unzip assimp--3.0.1270-source-only.zip
 	rm assimp--3.0.1270-source-only.zip
 	
