@@ -716,6 +716,9 @@
     <ClInclude Include="..\..\src\entity\helicopter.h">
       <Filter>src\entity</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\util\stream_redirector.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res\appicon.rc">

@@ -308,6 +308,7 @@
     <ClInclude Include="..\..\src\util\SDL_rwops_zzip.h" />
     <ClInclude Include="..\..\src\util\sdl_util.h" />
     <ClInclude Include="..\..\src\util\serverconfig.h" />
+    <ClInclude Include="..\..\src\util\stream_redirector.h" />
     <ClInclude Include="..\..\src\util\ui_update.h" />
     <ClInclude Include="..\..\src\util\util.h" />
     <ClInclude Include="..\..\src\util\windowicon.h" />
