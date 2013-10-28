@@ -41,6 +41,10 @@ void Helicopter::init(VehicleType *vt, GameState *st, btTransform &loc)
 	this->anim = new AnimPlay(vt->model);
 	this->health = vt->health;
 
+	if (vt->horiz_move_node != "") {
+		this->anim->addMoveNode(vt->horiz_move_node);
+	}
+
 	btVector3 sizeHE = vt->model->getBoundingSizeHE();
 	
 	btDefaultMotionState* motionState = new btDefaultMotionState(loc);
@@ -79,6 +83,13 @@ void Helicopter::update(int delta)
 
 	this->body->activate(true);
 	this->body->applyCentralImpulse(absForce);
+
+	// Blades
+	if (this->vt->horiz_move_node != "") {
+		int frame = this->st->anim_frame % 12;
+		glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), 360/12*frame, this->vt->horiz_move_axis));
+		this->getAnimModel()->setMoveTransform(this->vt->horiz_move_node, rotation);
+	}
 }
 
 
