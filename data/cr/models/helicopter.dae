@@ -5,14 +5,17 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.66.1 r55057</authoring_tool>
     </contributor>
-    <created>2013-10-15T13:18:40</created>
-    <modified>2013-10-15T13:18:40</modified>
+    <created>2013-10-28T13:34:41</created>
+    <modified>2013-10-28T13:34:41</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
   <library_images>
     <image id="helicopter_png" name="helicopter_png">
       <init_from>helicopter.png</init_from>
+    </image>
+    <image id="helicopter_blades_png" name="helicopter_blades_png">
+      <init_from>helicopter_blades.png</init_from>
     </image>
   </library_images>
   <library_effects>
@@ -58,10 +61,55 @@
       </profile_COMMON>
       <extra><technique profile="MAX3D"><double_sided>1</double_sided></technique></extra>
     </effect>
+    <effect id="NOPHYSICS-effect">
+      <profile_COMMON>
+        <newparam sid="helicopter_blades_png-surface">
+          <surface type="2D">
+            <init_from>helicopter_blades_png</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="helicopter_blades_png-sampler">
+          <sampler2D>
+            <source>helicopter_blades_png-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0.006859506 0.006859506 0.006859506 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="helicopter_blades_png-sampler" texcoord="UVMap"/>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.5 0.5 0.5 1</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">50</float>
+            </shininess>
+            <index_of_refraction>
+              <float sid="index_of_refraction">1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+        <extra>
+          <technique profile="GOOGLEEARTH">
+            <double_sided>1</double_sided>
+          </technique>
+        </extra>
+      </profile_COMMON>
+      <extra><technique profile="MAX3D"><double_sided>1</double_sided></technique></extra>
+    </effect>
   </library_effects>
   <library_materials>
     <material id="Material_001-material" name="Material_001">
       <instance_effect url="#Material_001-effect"/>
+    </material>
+    <material id="NOPHYSICS-material" name="NOPHYSICS">
+      <instance_effect url="#NOPHYSICS-effect"/>
     </material>
   </library_materials>
   <library_geometries>
@@ -131,14 +179,24 @@
             </accessor>
           </technique_common>
         </source>
+        <source id="Blades-mesh-map-0">
+          <float_array id="Blades-mesh-map-0-array" count="80">0.3737922 0 0.3741303 0.1102349 0.1241303 0.1110019 0.1237922 7.66936e-4 0.4999999 0.3901073 0.6241546 0.1141782 0.8741546 0.1134113 1 0.3885734 0.6241546 0.1141782 0.6238067 7.66877e-4 0.8738067 0 0.8741546 0.1134113 0.3741303 0.1102349 0.4999999 0.3933368 0 0.3948707 0.1241303 0.1110019 0.4999998 0.8619927 0.04227346 0.6607743 0.223221 0.5597702 0.4520842 0.6603794 0.9577263 0.9702007 0.4999999 0.7689822 0.7285165 0.5597693 0.9573797 0.6603786 0.6255216 0.5597693 0.4999999 0.3901073 1 0.3885734 0.8755216 0.5590025 0.125507 0.5597702 0 0.3948707 0.4999999 0.3933368 0.375507 0.5590032 0.2714833 1.071206 0.04262 0.9705964 0.04227346 0.6607743 0.4999998 0.8619927 0.7767788 1.071205 0.5479156 0.9705956 0.4999999 0.7689822 0.9577263 0.9702007</float_array>
+          <technique_common>
+            <accessor source="#Blades-mesh-map-0-array" count="40" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
         <vertices id="Blades-mesh-vertices">
           <input semantic="POSITION" source="#Blades-mesh-positions"/>
         </vertices>
-        <polylist count="10">
+        <polylist material="NOPHYSICS-material" count="10">
           <input semantic="VERTEX" source="#Blades-mesh-vertices" offset="0"/>
           <input semantic="NORMAL" source="#Blades-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Blades-mesh-map-0" offset="2" set="0"/>
           <vcount>4 4 4 4 4 4 4 4 4 4 </vcount>
-          <p>1 0 0 0 4 0 5 0 8 1 6 1 2 1 9 1 6 2 7 2 3 2 2 2 0 3 11 3 10 3 4 3 11 4 9 4 2 4 3 4 10 5 8 5 5 5 4 5 5 6 8 6 9 6 1 6 7 7 10 7 11 7 3 7 0 8 1 8 9 8 11 8 7 9 6 9 8 9 10 9</p>
+          <p>1 0 0 0 0 1 4 0 2 5 0 3 8 1 4 6 1 5 2 1 6 9 1 7 6 2 8 7 2 9 3 2 10 2 2 11 0 3 12 11 3 13 10 3 14 4 3 15 11 4 16 9 4 17 2 4 18 3 4 19 10 5 20 8 5 21 5 5 22 4 5 23 5 6 24 8 6 25 9 6 26 1 6 27 7 7 28 10 7 29 11 7 30 3 7 31 0 8 32 1 8 33 9 8 34 11 8 35 7 9 36 6 9 37 8 9 38 10 9 39</p>
         </polylist>
       </mesh>
       <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
@@ -161,7 +219,15 @@
       </node>
       <node id="Blades" name="Blades" type="NODE">
         <matrix sid="transform">4.787155 0 0 -0.04670596 0 -0.2100006 0 -0.008776285 0 0 0.04597526 2.219694 0 0 0 1</matrix>
-        <instance_geometry url="#Blades-mesh"/>
+        <instance_geometry url="#Blades-mesh">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="NOPHYSICS-material" target="#NOPHYSICS-material">
+                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
       </node>
     </visual_scene>
   </library_visual_scenes>

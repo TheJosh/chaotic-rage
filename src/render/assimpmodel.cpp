@@ -118,6 +118,15 @@ void AssimpModel::calcBoundingBoxNode(const aiNode* nd, aiVector3D* min, aiVecto
 	for (; n < nd->mNumMeshes; ++n) {
 		const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
 
+		// If the material name contains NOPHYSICS, we don't count the mesh towards the bounding size
+		aiMaterial* material = sc->mMaterials[mesh->mMaterialIndex];
+		if (material) {
+			aiString name;
+			material->Get(AI_MATKEY_NAME, name);
+			if (strstr(name.C_Str(), "NOPHYSICS") != NULL) continue;
+		}
+
+		// Get the min and max vertexes for the mesh
 		for (t = 0; t < mesh->mNumVertices; ++t) {
 			aiVector3D tmp = mesh->mVertices[t];
 			aiTransformVecByMatrix4(&tmp, trafo);
@@ -132,6 +141,7 @@ void AssimpModel::calcBoundingBoxNode(const aiNode* nd, aiVector3D* min, aiVecto
 		}
 	}
 
+	// Calculate for children nodes too
 	for (n = 0; n < nd->mNumChildren; ++n) {
 		this->calcBoundingBoxNode(nd->mChildren[n], min, max, trafo);
 	}
