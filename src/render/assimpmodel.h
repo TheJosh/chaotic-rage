@@ -166,7 +166,7 @@ class AssimpModel
 		void loadMeshdata(bool update);
 		
 		void loadNodes();
-		AssimpNode* loadNode(aiNode* nd);
+		AssimpNode* loadNode(aiNode* nd, unsigned int depth);
 		AssimpNode* findNode(AssimpNode* nd, string name);
 
 		void loadAnimations();
