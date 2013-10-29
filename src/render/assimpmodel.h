@@ -135,6 +135,7 @@ class AssimpModel
 		unsigned int* boneIds;
 		float* boneWeights;
 		btVector3 boundingSize;
+		btCollisionShape *shape;
 		
 	protected:
 		Mod *mod;
@@ -147,11 +148,13 @@ class AssimpModel
 	public:
 		AssimpModel(Mod* mod, string name);
 		bool load(Render3D* render, bool meshdata);
+		~AssimpModel();
 		
 	public:
 		const struct aiScene* getScene() { return this->sc; }		// TODO: remove this too
 		btVector3 getBoundingSize();
 		btVector3 getBoundingSizeHE();
+		btCollisionShape* getCollisionShape();
 		
 	private:
 		void calcBoundingBox();
@@ -177,6 +180,8 @@ class AssimpModel
 		float* getBoneWeights();
 		void freeBones();
 		void setBoneNodes();
+		
+		void createCollisionShape();
 };
 
 

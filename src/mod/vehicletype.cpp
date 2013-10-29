@@ -100,11 +100,8 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 			mod->setLoadErr("Invalid model: %s", tmp);
 			return NULL;
 		}
+		wt->col_shape = wt->model->getCollisionShape();
 	}
-	
-	// Load the collision shape
-	btVector3 sizeHE = wt->model->getBoundingSizeHE();
-	wt->col_shape = new btBoxShape(sizeHE);
 	
 	// Load move node, if set
 	tmp = cfg_getstr(cfg_item, "horiz-move-node");

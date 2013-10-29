@@ -81,11 +81,7 @@ PickupType::~PickupType()
 void PickupType::setModel(AssimpModel *model)
 {
 	this->model = model;
-	
-	btVector3 sizeHE = this->model->getBoundingSizeHE();
-	
-	delete(this->col_shape);
-	this->col_shape = new btBoxShape(sizeHE);
+	this->col_shape = this->model->getCollisionShape();
 }
 
 
@@ -105,11 +101,8 @@ PickupType* loadItemPickupType(cfg_t* cfg_item, Mod* mod)
 	if (tmp != NULL) {
 		pt->model = mod->getAssimpModel(tmp);
 		if (! pt->model) return NULL;
+		pt->col_shape = pt->model->getCollisionShape();
 	}
-	
-	// Load the collision shape
-	btVector3 sizeHE = pt->model->getBoundingSizeHE();
-	pt->col_shape = new btBoxShape(sizeHE);
 	
 	// Powerups have a bunch more fields
 	if (pt->type == PICKUP_TYPE_POWERUP) {

@@ -18,6 +18,7 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <btBulletDynamicsCommon.h>
 #include "../rage.h"
 #include "../mod/mod.h"
 #include "assimpmodel.h"
@@ -34,6 +35,16 @@ AssimpModel::AssimpModel(Mod* mod, string name)
 	this->mod = mod;
 	this->name = name;
 	this->sc = NULL;
+	this->shape = NULL;
+}
+
+
+/**
+* Free loaded data
+**/
+AssimpModel::~AssimpModel()
+{
+	delete(this->shape);
 }
 
 
@@ -79,6 +90,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 	this->loadAnimations();
 	this->calcBoundingBox();
 	this->setBoneNodes();
+	this->createCollisionShape();
 	
 	this->sc = NULL;
 	
@@ -609,4 +621,25 @@ void AssimpModel::setBoneNodes()
 	}
 }
 
-		
+
+
+/**
+* Create a collision shape object
+**/
+void AssimpModel::createCollisionShape()
+{
+	btVector3 sizeHE = this->getBoundingSizeHE();
+	this->shape = new btBoxShape(sizeHE);
+}
+
+
+/**
+* Return a physics representation of this model
+**/
+btCollisionShape* AssimpModel::getCollisionShape()
+{
+	assert(this->shape != NULL);
+	return this->shape;
+}
+
+
