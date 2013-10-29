@@ -111,12 +111,6 @@ void AssimpModel::calcBoundingBox()
 	max.x = max.y = max.z = -1e10f;
 	this->calcBoundingBoxNode(sc->mRootNode, &min, &max, &trafo);
 	boundingSize = btVector3(max.x - min.x, max.y - min.y, max.z - min.z);
-
-	// Update the transforms of all top-level nodes so the center is the same as the bounding box
-	glm::vec3 center = glm::vec3((min.x + max.x) / -2.0f, (min.y + max.y) / -2.0f, (min.z + max.z) / -2.0f);
-	for (unsigned int i = 0; i < this->rootNode->children.size(); i++) {
-		this->rootNode->children[i]->transform = glm::translate(this->rootNode->children[i]->transform, center);
-	}
 }
 
 
@@ -365,7 +359,6 @@ SpritePtr AssimpModel::loadTexture(Render3D* render, aiString path)
 **/
 void AssimpModel::loadNodes()
 {
-	cout << "---" << endl;
 	this->rootNode = this->loadNode(this->sc->mRootNode, 0);
 	assert(this->rootNode != NULL);
 }
@@ -379,9 +372,13 @@ AssimpNode* AssimpModel::loadNode(aiNode* nd, unsigned int depth)
 	unsigned int i;
 	AssimpNode* myNode = new AssimpNode();
 	myNode->name = std::string(nd->mName.C_Str());
-
-	cout << "   " << depth << "  " << myNode->name << "  " << myNode->transform[0][3] << "x" << myNode->transform[1][3] << "x" << myNode->transform[2][3] << endl;
-
+	
+	aiMatrix4x4 m = nd->mTransformation;
+	m.Transpose();
+	myNode->transform = glm::make_mat4((float *) &m);
+	
+	//cout << std::string(depth*4, ' ') << myNode->name << "  " << myNode->transform[3][0] << "x" << myNode->transform[3][1] << "x" << myNode->transform[3][2] << endl;
+	
 	for (i = 0; i < nd->mNumMeshes; i++) {
 		myNode->meshes.push_back(nd->mMeshes[i]);
 		this->meshes[nd->mMeshes[i]]->nd = myNode;
@@ -391,10 +388,6 @@ AssimpNode* AssimpModel::loadNode(aiNode* nd, unsigned int depth)
 		AssimpNode* child = loadNode(nd->mChildren[i], depth + 1);
 		if (child != NULL) myNode->addChild(child);
 	}
-	
-	aiMatrix4x4 m = nd->mTransformation;
-	m.Transpose();
-	myNode->transform = glm::make_mat4((float *) &m);
 	
 	return myNode;
 }
