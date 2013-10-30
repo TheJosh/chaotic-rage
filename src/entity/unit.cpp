@@ -419,22 +419,23 @@ void Unit::update(int delta)
 	
 	// Which weapon to use?
 	WeaponType *w = NULL;
-	btTransform wt;
+	btTransform wxform = btTransform();
 	if (this->firing) {
 		if (this->drive) {
 			w = this->drive->vt->weapon_primary;
-			this->drive->getWeaponTransform(wt);
+			wxform = btTransform();
+			this->drive->getWeaponTransform(wxform);
 			
 		} else if (this->weapon && this->weapon->next_use < st->game_time && this->weapon->magazine > 0) {
 			w = this->weapon->wt;
-			wt = xform;
+			wxform = btTransform(xform);
 			
 		}
 	}
 	
 	// Fire!
 	if (w != NULL) {
-		w->doFire(this, wt);
+		w->doFire(this, wxform);
 		
 		if (w == this->weapon->wt) {
 			this->weapon->next_use = st->game_time + this->weapon->wt->fire_delay;

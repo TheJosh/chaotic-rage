@@ -93,6 +93,18 @@ void Helicopter::update(int delta)
 }
 
 
+/**
+* Return the weapon transform for this vehicle
+**/
+void Helicopter::getWeaponTransform(btTransform &xform)
+{
+	xform = this->getTransform();
+	
+	btMatrix3x3 down = xform.getBasis() * btMatrix3x3(btQuaternion(0.0f, PI / 2.5f, 0.0f));
+	xform.setBasis(down);
+}
+
+
 void Helicopter::enter()
 {
 	this->running = true;

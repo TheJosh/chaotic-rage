@@ -27,12 +27,12 @@ void WeaponRaycast::doFire(Unit *u, btTransform &origin)
 	// Weapon angle ranges
 	int angle = this->angle_range / 2;
 	angle = getRandom(-angle, angle);
-	btQuaternion rot = xform.getRotation() * btQuaternion(btVector3(0.0, 1.0, 0.0), DEG_TO_RAD(angle));
+	btQuaternion rot = xform.getRotation() * btQuaternion(btVector3(0.0f, 1.0f, 0.0f), DEG_TO_RAD(angle));
 	xform.setRotation(rot);
 	
 	// Begin and end vectors
 	btVector3 begin = xform.getOrigin();
-	btVector3 end = begin + xform.getBasis() * btVector3(0, 0, range);
+	btVector3 end = begin + xform.getBasis() * btVector3(0.0f, 0.0f, range);
 	st->addDebugLine(&begin, &end);
 	
 	// Do the rayTest
@@ -75,12 +75,12 @@ void WeaponFlamethrower::doFire(Unit *u, btTransform &origin)
 	// Weapon angle ranges
 	int angle = this->angle_range / 2;
 	angle = getRandom(-angle, angle);
-	btQuaternion rot = xform.getRotation() * btQuaternion(btVector3(0.0, 1.0, 0.0), DEG_TO_RAD(angle));
+	btQuaternion rot = xform.getRotation() * btQuaternion(btVector3(0.0f, 1.0f, 0.0f), DEG_TO_RAD(angle));
 	xform.setRotation(rot);
 	
 	// Begin and end vectors
 	btVector3 begin = xform.getOrigin();
-	btVector3 end = begin + xform.getBasis() * btVector3(0, 0, range);
+	btVector3 end = begin + xform.getBasis() * btVector3(0.0f, 0.0f, range);
 	st->addDebugLine(&begin, &end);
 	
 	// Do the rayTest
