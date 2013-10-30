@@ -78,6 +78,8 @@ class AnimPlay
 		void calcTransforms();
 		void calcBoneTransforms();
 
+		glm::mat4 getNodeTransform(AssimpNode* nd);
+
 		void pause();
 		void resume();
 

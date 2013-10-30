@@ -1361,11 +1361,7 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 **/
 void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, AssimpNode* nd, GLShader* shader, glm::mat4 xform_global)
 {
-	glm::mat4 transform;
-	
-	std::map<AssimpNode*, glm::mat4>::iterator local = ap->transforms.find(nd);
-	assert(local != ap->transforms.end());
-	transform = local->second;
+	glm::mat4 transform = ap->getNodeTransform(nd);
 
 	CHECK_OPENGL_ERROR;
 	

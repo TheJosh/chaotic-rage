@@ -363,6 +363,17 @@ void AnimPlay::calcBoneTransforms()
 
 
 /**
+* Get the transform for a given node
+**/
+glm::mat4 AnimPlay::getNodeTransform(AssimpNode* nd)
+{
+	std::map<AssimpNode*, glm::mat4>::iterator local = this->transforms.find(nd);
+	assert(local != this->transforms.end());
+	return local->second;
+}
+
+
+/**
 * Find a valid key from the list of keys, for a given time value (in ticks)
 **/
 unsigned int AnimPlay::findFrameTime(vector<AssimpAnimKey>* keys, float animTick)

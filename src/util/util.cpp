@@ -7,6 +7,9 @@
 #include <math.h>
 #include <time.h>
 #include <confuse.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <btBulletDynamicsCommon.h>
 #include "../rage.h"
 
 using namespace std;
@@ -147,5 +150,14 @@ float getRandomf(float low, float high)
 	if (high < low) swap(low, high);
 	if (high == low) return low;
 	return ((float)rand()/(float)RAND_MAX) * (high - low) + low;
+}
+
+
+/**
+* Convert GLM to Bullet (matrix)
+**/
+void glmBullet(glm::mat4 in, btMatrix3x3 & out)
+{
+	out.setFromOpenGLSubMatrix(glm::value_ptr(in));
 }
 

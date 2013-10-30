@@ -10,7 +10,8 @@
 #include "../mod/vehicletype.h"
 #include "../net/net_server.h"
 #include "vehicle.h"
-
+#include "../util/util.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 using namespace std;
 
@@ -274,10 +275,16 @@ void Vehicle::getWeaponTransform(btTransform &xform)
 	
 	if (this->vt->horiz_move_node != "") {
 		AssimpNode* nd = this->anim->getModel()->findNode(this->vt->horiz_move_node);
-		btVector3 offset = btVector3(nd->transform[3][0], nd->transform[3][1], nd->transform[3][2]);
+		glm::mat4 transform = this->anim->getNodeTransform(nd);
+
+		btVector3 offset = btVector3(transform[3][0], transform[3][1], transform[3][2]);
 		xform.setOrigin(xform.getOrigin() + offset);
-		
-		// TODO: apply rotation from horiz_angle to the xform
+
+		transform = glm::rotate(transform, 90.0f, glm::vec3(-1.0f, .0f, 0.0f));
+
+		btMatrix3x3 local;
+		glmBullet(transform, local);
+		xform.setBasis(xform.getBasis() * local);
 	}
 }
 
