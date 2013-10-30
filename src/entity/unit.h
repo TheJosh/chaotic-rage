@@ -92,7 +92,6 @@ class Unit : public Entity
 		vector<UnitWeapon*> avail_weapons;
 		unsigned int curr_weapon_id;
 
-		unsigned int melee_time;
 		unsigned int melee_cooldown;
 
 		bool special_firing;

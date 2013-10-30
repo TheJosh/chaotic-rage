@@ -34,7 +34,6 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	
 	this->weapon = NULL;
 	this->firing = false;
-	this->melee_time = 0;
 	this->melee_cooldown = 0;
 	this->weapon_sound = -1;
 	this->special_firing = false;
@@ -169,16 +168,16 @@ bool Unit::onground()
 **/
 void Unit::meleeAttack()
 {
-	if (this->melee_time != 0) return;
-	if (this->melee_cooldown != 0) return;
+	DEBUG("weap", "%p meleeAttack; currtime: %i cooldown: %i", this, st->game_time, this->melee_cooldown);
 	
-	this->melee_time = st->game_time + this->params.melee_delay;
-	this->melee_cooldown = this->melee_time + this->params.melee_cooldown;
+	if (this->melee_cooldown > st->game_time) return;
+	
+	this->melee_cooldown = st->game_time + this->params.melee_delay + this->params.melee_cooldown;
 	
 	Entity *e = this->infront(5.0f);	// TODO: unit settings (melee range)
 	if (e == NULL) return;
 	
-	DEBUG("weap", "Ray hit %p", e);
+	DEBUG("weap", "%p meleeAttack; ray hit %p", this, e);
 	
 	if (e->klass() == UNIT) {
 		((Unit*)e)->takeDamage(this->params.melee_damage);
