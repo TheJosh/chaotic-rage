@@ -123,17 +123,28 @@ void Unit::emptySound()
 }
 
 
-
 /**
 * What is directly in front of a unit, upto range meters ahead
 **/
 Entity * Unit::infront(float range)
 {
 	btTransform xform = this->ghost->getWorldTransform();
+	return this->raytest(xform.getBasis(), range);
+}
+
+
+/**
+* Do a raytest outwards from the center of a unit in a certain direction
+**/
+Entity * Unit::raytest(btMatrix3x3 &direction, float range)
+{
+	btTransform xform = this->ghost->getWorldTransform();
+	
+	btVector3 offGround = btVector3(0.0f, 0.4f, 0.0f);
 	
 	// Begin and end vectors
-	btVector3 begin = xform.getOrigin();
-	btVector3 end = begin + xform.getBasis() * btVector3(0, 0, range);
+	btVector3 begin = xform.getOrigin() + offGround;
+	btVector3 end = begin + offGround + direction * btVector3(0.0f, 0.0f, range);
 	st->addDebugLine(&begin, &end);
 	
 	// Do the rayTest
@@ -144,10 +155,7 @@ Entity * Unit::infront(float range)
 	
 	// Check the raytest result
 	if (cb.hasHit()) {
-		const btRigidBody *body = btRigidBody::upcast(cb.m_collisionObject);
-		if (body) {
-			return static_cast<Entity*>(body->getUserPointer());
-		}
+		return static_cast<Entity*>(cb.m_collisionObject->getUserPointer());
 	}
 	
 	return NULL;
@@ -168,13 +176,25 @@ bool Unit::onground()
 **/
 void Unit::meleeAttack()
 {
+	btTransform xform = this->ghost->getWorldTransform();
+	this->meleeAttack(xform.getBasis());
+}
+
+
+/**
+* Do a melee attack in a specific direction
+**/
+void Unit::meleeAttack(btMatrix3x3 &direction)
+{
 	DEBUG("weap", "%p meleeAttack; currtime: %i cooldown: %i", this, st->game_time, this->melee_cooldown);
 	
 	if (this->melee_cooldown > st->game_time) return;
 	
 	this->melee_cooldown = st->game_time + this->params.melee_delay + this->params.melee_cooldown;
 	
-	Entity *e = this->infront(5.0f);	// TODO: unit settings (melee range)
+	// TODO: should we hack the direction to only allow X degrees of freedom in front of the unit?
+	
+	Entity *e = this->raytest(direction, 5.0f);	// TODO: unit settings (melee range)
 	if (e == NULL) return;
 	
 	DEBUG("weap", "%p meleeAttack; ray hit %p", this, e);

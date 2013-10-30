@@ -356,10 +356,24 @@ LUA_FUNC(move)
 
 /**
 * Does a melee attack
+*
+* @param vector3 direction Direction of attack
 **/
 LUA_FUNC(melee)
 {
-	gl->u->meleeAttack();
+	double * v = get_vector3(L, 1);
+	btVector3 attackDirection = btVector3(v[0], v[1], v[2]);
+	attackDirection.normalize();
+	
+	// Determine direction matrix from direction vector
+	btVector3 fwd = btVector3(0.0, 0.0, 1.0);
+	btVector3 axis = fwd.cross(attackDirection);
+	axis.normalize();
+	float angle = acos(attackDirection.dot(fwd));
+	btQuaternion rot = btQuaternion(axis, angle).normalize();
+	btMatrix3x3 matRot = btMatrix3x3(rot);
+	
+	gl->u->meleeAttack(matRot);
 	
 	return 0;
 }

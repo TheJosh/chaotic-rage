@@ -113,11 +113,13 @@ class Unit : public Entity
 
 	public:
 		Entity * infront(float range);
+		Entity * raytest(btMatrix3x3 &direction, float range);
 		bool onground();
 
 		void beginFiring();
 		void endFiring();
 		void meleeAttack();
+		void meleeAttack(btMatrix3x3 &direction);
 		void specialAttack();
 		void endSpecialAttack();
 

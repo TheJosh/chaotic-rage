@@ -49,7 +49,7 @@ function target()
 	
 	-- do melee attack
 	if (#dir < 5) then
-		melee()
+		melee(dir)
 	end
 end
 
