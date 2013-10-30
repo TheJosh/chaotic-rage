@@ -396,6 +396,15 @@ AssimpNode* AssimpModel::loadNode(aiNode* nd, unsigned int depth)
 /**
 * Find a node by name
 **/
+AssimpNode* AssimpModel::findNode(string name)
+{
+	return this->findNode(this->rootNode, name);
+}
+
+
+/**
+* Find a node by name
+**/
 AssimpNode* AssimpModel::findNode(AssimpNode* nd, string name)
 {
 	if (nd->name == name) return nd;

@@ -266,6 +266,23 @@ Sound* Vehicle::getSound()
 
 
 /**
+* Return the weapon transform for this vehicle
+**/
+void Vehicle::getWeaponTransform(btTransform &xform)
+{
+	xform = this->getTransform();
+	
+	if (this->vt->horiz_move_node != "") {
+		AssimpNode* nd = this->anim->getModel()->findNode(this->vt->horiz_move_node);
+		btVector3 offset = btVector3(nd->transform[3][0], nd->transform[3][1], nd->transform[3][2]);
+		xform.setOrigin(xform.getOrigin() + offset);
+		
+		// TODO: apply rotation from horiz_angle to the xform
+	}
+}
+
+
+/**
 * We have been hit! Take some damage
 **/
 void Vehicle::takeDamage(int damage)

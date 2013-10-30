@@ -155,6 +155,7 @@ class AssimpModel
 		btVector3 getBoundingSize();
 		btVector3 getBoundingSizeHE();
 		btCollisionShape* getCollisionShape();
+		AssimpNode* findNode(string name);
 		
 	private:
 		void calcBoundingBox();
@@ -168,7 +169,7 @@ class AssimpModel
 		void loadNodes();
 		AssimpNode* loadNode(aiNode* nd, unsigned int depth);
 		AssimpNode* findNode(AssimpNode* nd, string name);
-
+		
 		void loadAnimations();
 		AssimpAnimation* loadAnimation(const aiAnimation* anim);
 
