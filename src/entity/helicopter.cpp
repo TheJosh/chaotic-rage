@@ -50,7 +50,6 @@ void Helicopter::init(VehicleType *vt, GameState *st, btTransform &loc)
 	btDefaultMotionState* motionState = new btDefaultMotionState(loc);
 	this->body = st->physics->addRigidBody(vt->col_shape, vt->mass, motionState, CG_VEHICLE);
 	this->body->setUserPointer(this);
-	this->body->setActivationState(DISABLE_DEACTIVATION);
 	
 	this->running = false;
 }
@@ -72,19 +71,19 @@ void Helicopter::update(int delta)
 	if (! this->running) return;
 	if (this->health == 0) return;
 	
+	this->body->activate(true);
+	
 	// Steering + tilt
 	btQuaternion rot = btQuaternion(this->yaw, this->pitch, this->roll);
-	btMatrix3x3 matRot = btMatrix3x3(rot);
-	this->body->getWorldTransform().setBasis(matRot);
-
+	btMatrix3x3 rotMat = btMatrix3x3(rot);
+	this->body->getWorldTransform().setBasis(rotMat);
+	
 	// Forward + lift force
 	btVector3 relativeForce = btVector3(0.0f, this->lift * delta, this->forward * delta);
-	btVector3 absForce = matRot * relativeForce;
-
-	this->body->activate(true);
+	btVector3 absForce = rotMat * relativeForce;
 	this->body->applyCentralImpulse(absForce);
-
-	// Blades
+	
+	// Blades animation
 	if (this->vt->horiz_move_node != "") {
 		int frame = this->st->anim_frame % 12;
 		glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), 360/12*frame, this->vt->horiz_move_axis));
@@ -127,33 +126,37 @@ void Helicopter::exit()
 **/
 void Helicopter::operate(Unit* u, int delta, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle)
 {
-	if (key_up) {
-		this->forward = MIN(this->forward + 0.15f, 5.0f);
-		this->pitch = MIN(this->pitch + 0.002f * delta, PI / 8.0f);
-		
-	} else {
-		this->forward = 0.0f;
-		this->pitch = MAX(this->pitch - 0.01f, 0.0f);
-	}
-
-	if (key_down) {
-		this->lift = MIN(this->lift + 0.15f, 3.0f);
+	float currY = this->getTransform().getOrigin().y();
+	
+	if (currY > 50.0f) {
+		this->lift = -0.01f * delta;
+	} else if (key_down) {
+		this->lift = MIN(this->lift + 0.15f * delta, 2.0f);
 	} else {
 		this->lift = 0.0f;
 	}
-
-	if (key_right) {
-		this->roll = MIN(this->roll + 0.002f * delta, PI / 6.0f);
-	} else if (key_left) {
-		this->roll = MAX(this->roll - 0.002f * delta, PI / -6.0f);
-	} else if (this->roll > 0.0f) {
-		this->roll = MAX(this->roll - 0.002f * delta, 0.0f);
-	} else if (this->roll < 0.0f) {
-		this->roll = MIN(this->roll + 0.002f * delta, 0.0f);
-	}
 	
-	this->yaw = DEG_TO_RAD(horiz_angle);
-	//this->pitch = vert_angle;
+	if (currY > 5.0f) {
+		if (key_up) {
+			this->forward = MIN(this->forward + 0.15f * delta, 3.0f);
+			this->pitch = MIN(this->pitch + 0.002f * delta, PI / 8.0f);
+		} else {
+			this->forward = 0.0f;
+			this->pitch = MAX(this->pitch - 0.01f * delta, 0.0f);
+		}
+		
+		if (key_right) {
+			this->roll = MIN(this->roll + 0.002f * delta, PI / 6.0f);
+		} else if (key_left) {
+			this->roll = MAX(this->roll - 0.002f * delta, PI / -6.0f);
+		} else if (this->roll > 0.0f) {
+			this->roll = MAX(this->roll - 0.002f * delta, 0.0f);
+		} else if (this->roll < 0.0f) {
+			this->roll = MIN(this->roll + 0.002f * delta, 0.0f);
+		}
+		
+		this->yaw = DEG_TO_RAD(horiz_angle);
+	}
 }
 
 
