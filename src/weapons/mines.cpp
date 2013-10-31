@@ -23,7 +23,7 @@ using namespace std;
 void WeaponTimedMine::doFire(Unit *u, btTransform &origin)
 {
 	btTransform xform = origin;	
-	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->model, u);
+	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->model, u, 1.0f);
 	
 	WeaponTimedMineData* data = new WeaponTimedMineData();
 	data->time = this->time;
