@@ -41,8 +41,8 @@ void Helicopter::init(VehicleType *vt, GameState *st, btTransform &loc)
 	this->anim = new AnimPlay(vt->model);
 	this->health = vt->health;
 
-	if (vt->horiz_move_node != "") {
-		this->anim->addMoveNode(vt->horiz_move_node);
+	if (vt->spin_node != "") {
+		this->anim->addMoveNode(vt->spin_node);
 	}
 
 	btVector3 sizeHE = vt->model->getBoundingSizeHE();
@@ -84,10 +84,10 @@ void Helicopter::update(int delta)
 	this->body->applyCentralImpulse(absForce);
 	
 	// Blades animation
-	if (this->vt->horiz_move_node != "") {
+	if (this->vt->spin_node != "") {
 		int frame = this->st->anim_frame % 12;
-		glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), 360/12*frame, this->vt->horiz_move_axis));
-		this->getAnimModel()->setMoveTransform(this->vt->horiz_move_node, rotation);
+		glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), 360/12*frame, this->vt->spin_axis));
+		this->getAnimModel()->setMoveTransform(this->vt->spin_node, rotation);
 	}
 }
 
@@ -136,6 +136,8 @@ void Helicopter::operate(Unit* u, int delta, int key_up, int key_down, int key_l
 		this->lift = 0.0f;
 	}
 	
+	this->yaw = DEG_TO_RAD(horiz_angle);
+	
 	if (currY > 5.0f) {
 		if (key_up) {
 			this->forward = MIN(this->forward + 0.15f * delta, 3.0f);
@@ -154,8 +156,6 @@ void Helicopter::operate(Unit* u, int delta, int key_up, int key_down, int key_l
 		} else if (this->roll < 0.0f) {
 			this->roll = MIN(this->roll + 0.002f * delta, 0.0f);
 		}
-		
-		this->yaw = DEG_TO_RAD(horiz_angle);
 	}
 }
 

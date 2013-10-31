@@ -47,6 +47,9 @@ class VehicleType
 		string vert_move_node;
 		glm::vec3 vert_move_axis;
 		
+		string spin_node;
+		glm::vec3 spin_axis;
+		
 		WeaponType* weapon_primary;
 		vector <VehicleTypeDamage *> damage_models;
 		

@@ -54,6 +54,9 @@ cfg_opt_t vehicletype_opts[] =
 	CFG_STR((char*) "vert-move-node", (char*)"", CFGF_NONE),
 	CFG_FLOAT_LIST((char*) "vert-move-axis", 0, CFGF_NONE),
 	
+	CFG_STR((char*) "spin-node", (char*)"", CFGF_NONE),
+	CFG_FLOAT_LIST((char*) "spin-axis", 0, CFGF_NONE),
+	
 	CFG_STR((char*) "weapon-primary", (char*)"", CFGF_NONE),
 	
 	CFG_SEC((char*) "damage", damage_opts, CFGF_MULTI),
@@ -115,6 +118,13 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	if (tmp != NULL) {
 		wt->vert_move_node = tmp;
 		wt->vert_move_axis = cfg_getvec3(cfg_item, "vert-move-axis");
+	}
+	
+	// Load spin node, if set
+	tmp = cfg_getstr(cfg_item, "spin-node");
+	if (tmp != NULL) {
+		wt->spin_node = tmp;
+		wt->spin_axis = cfg_getvec3(cfg_item, "spin-axis");
 	}
 	
 	// Load primary weapon, if set
