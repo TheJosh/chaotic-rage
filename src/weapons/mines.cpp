@@ -31,6 +31,9 @@ void WeaponTimedMine::doFire(Unit *u, btTransform &origin)
 	ar->data = data;
 	
 	u->getGameState()->addAmmoRound(ar);
+	
+	btVector3 linvel = xform.getBasis() * btVector3(0.0f, 0.0f, 5.0f);
+	ar->body->setLinearVelocity(linvel);
 }
 
 

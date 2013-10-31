@@ -39,7 +39,7 @@ void WeaponRocket::doFire(Unit *u, btTransform &origin)
 	btQuaternion rot = xform.getRotation() * btQuaternion(btVector3(0.0, 1.0, 0.0), DEG_TO_RAD(angle));
 	xform.setRotation(rot);*/
 	
-	btVector3 linvel = xform.getBasis() * btVector3(0, 0, 50.0f);
+	btVector3 linvel = xform.getBasis() * btVector3(0.0f, 0.0f, 50.0f);
 	ar->body->setLinearVelocity(linvel);
 }
 

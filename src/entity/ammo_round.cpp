@@ -30,7 +30,7 @@ AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpMo
 	this->mass = 0.0f;
 
 	if (! AmmoRound::col_shape) {
-		AmmoRound::col_shape = new btBoxShape(btVector3(0.1f, 0.1f, 0.1f));
+		AmmoRound::col_shape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
 	}
 	
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
