@@ -52,7 +52,8 @@ assimp-build: assimp--3.0.1270-source-only
 		-DBUILD_STATIC_LIB=ON \
 		-DBUILD_ASSIMP_TOOLS=ON \
 		-DBUILD_ASSIMP_SAMPLES=ON \
-		-DCMAKE_BUILD_TYPE=RelWithDebInfo
+		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+		-DENABLE_BOOST_WORKAROUND=ON
 	
 	cd assimp-build; make -j4
 
