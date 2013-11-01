@@ -130,7 +130,6 @@ void AILogic::update(int delta)
 	if (this->dir_flag) {
 		this->dir.setY(0.0f);
 
-		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		btTransform xform = u->ghost->getWorldTransform();
 		btScalar walkSpeed = u->params.max_speed * 1.0f/60.0f;		// Physics runs at 60hz
 
