@@ -50,8 +50,8 @@ assimp-build: assimp--3.0.1270-source-only
 	
 	cd assimp-build; cmake ../assimp--3.0.1270-source-only -G "Unix Makefiles" \
 		-DBUILD_STATIC_LIB=ON \
-		-DBUILD_ASSIMP_TOOLS=ON \
-		-DBUILD_ASSIMP_SAMPLES=ON \
+		-DBUILD_ASSIMP_TOOLS=OFF \
+		-DBUILD_ASSIMP_SAMPLES=OFF \
 		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
 		-DENABLE_BOOST_WORKAROUND=ON
 	
