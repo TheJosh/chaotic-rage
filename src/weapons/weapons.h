@@ -178,7 +178,8 @@ class WeaponRocket : public WeaponType
 
 struct WeaponRocketData {
 	int delay;
-	btGhostObject* ghost;
+	btGhostObject* detect_ghost;
+	btGhostObject* explode_ghost;
 };
 
 

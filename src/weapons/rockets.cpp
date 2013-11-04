@@ -27,11 +27,12 @@ void WeaponRocket::doFire(Unit *u, btTransform &origin)
 	
 	WeaponRocketData* data = new WeaponRocketData();
 	data->delay = 250;		// So the user doesn't blow themselves up
-	data->ghost = create_ghost(xform, this->range);
+	data->detect_ghost = create_ghost(xform, 1.0f);
+	data->explode_ghost = NULL;
 	ar->data = data;
 	
 	u->getGameState()->addAmmoRound(ar);
-	st->physics->addCollisionObject(data->ghost, CG_AMMO);
+	st->physics->addCollisionObject(data->detect_ghost, CG_AMMO_TERRAIN);
 	
 	// TODO: Angle range
 	/*int angle = this->angle_range / 2;
@@ -51,7 +52,7 @@ void WeaponRocket::entityUpdate(AmmoRound *e, int delta)
 {
 	WeaponRocketData* data = (WeaponRocketData*)e->data;
 	
-	data->ghost->setWorldTransform(e->getTransform());
+	data->detect_ghost->setWorldTransform(e->getTransform());
 	
 	// Give the user a chance
 	if (data->delay > 0) {
@@ -60,14 +61,22 @@ void WeaponRocket::entityUpdate(AmmoRound *e, int delta)
 	}
 
 	// If there is something within range...
-	if (check_ghost_triggered(data->ghost)) {
-		// ...kaboom
-		apply_ghost_damage(data->ghost, Quadratic(0.0f, 0.0f, this->damage), this->range);
+	if (check_ghost_triggered_any(data->detect_ghost)) {
+		data->explode_ghost = create_ghost(e->getTransform(), this->range);
+		st->physics->addCollisionObject(data->detect_ghost, CG_AMMO);
+		e->getGameState()->physics->delCollisionObject(data->detect_ghost);
+		return;
+	}
+	
+	// ...kaboom
+	if (data->explode_ghost != NULL) {
+		apply_ghost_damage(data->explode_ghost, Quadratic(0.0f, 0.0f, this->damage), this->range);
 		
 		create_particles_explosion(st, e->getTransform().getOrigin(), 100);
 
 		// Remove the rocket
-		e->getGameState()->physics->delCollisionObject(data->ghost);
+		e->getGameState()->physics->delCollisionObject(data->detect_ghost);
+		e->getGameState()->physics->delCollisionObject(data->explode_ghost);
 		delete(data);
 		e->del = true;
 	}

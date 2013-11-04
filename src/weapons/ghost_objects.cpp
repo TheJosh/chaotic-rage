@@ -62,9 +62,10 @@ void apply_ghost_damage(btGhostObject* ghost, Quadratic damage, float radius)
 
 
 /**
-* If there is anything within the ghost radius, apply damage as appropriate
+* If there is any units within the ghost radius?
+* TODO: Friendly fire?
 **/
-bool check_ghost_triggered(btGhostObject* ghost)
+bool check_ghost_triggered_units(btGhostObject* ghost)
 {
 	const btAlignedObjectArray <btCollisionObject*>* pObjsInsideGhostObject;
 	pObjsInsideGhostObject = &ghost->getOverlappingPairs();
@@ -81,6 +82,17 @@ bool check_ghost_triggered(btGhostObject* ghost)
 	}
 
 	return false;
+}
+
+
+/**
+* If there is anything within the ghost radius?
+**/
+bool check_ghost_triggered_any(btGhostObject* ghost)
+{
+	const btAlignedObjectArray <btCollisionObject*>* pObjsInsideGhostObject;
+	pObjsInsideGhostObject = &ghost->getOverlappingPairs();
+	return (pObjsInsideGhostObject->size() > 0);
 }
 
 

@@ -104,7 +104,7 @@ void WeaponProxiMine::entityUpdate(AmmoRound *e, int delta)
 	}
 
 	// If there is something within range...
-	if (check_ghost_triggered(data->ghost)) {
+	if (check_ghost_triggered_units(data->ghost)) {
 		// ...kaboom
 		apply_ghost_damage(data->ghost, Quadratic(0.0f, this->damage, 0.0f), this->range);
 		

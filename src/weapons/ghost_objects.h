@@ -25,6 +25,7 @@ void apply_ghost_damage(btGhostObject* ghost, Quadratic damage, float radius);
 /**
 * Check if a ghost has triggered or not
 **/
-bool check_ghost_triggered(btGhostObject* ghost);
+bool check_ghost_triggered_units(btGhostObject* ghost);
+bool check_ghost_triggered_any(btGhostObject* ghost);
 
 
