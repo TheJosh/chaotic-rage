@@ -69,13 +69,13 @@ bool check_ghost_triggered_units(btGhostObject* ghost)
 {
 	const btAlignedObjectArray <btCollisionObject*>* pObjsInsideGhostObject;
 	pObjsInsideGhostObject = &ghost->getOverlappingPairs();
-		
+	
 	for (int i = 0; i < pObjsInsideGhostObject->size(); ++i) {
 		btCollisionObject* co = pObjsInsideGhostObject->at(i);
-			
+		
 		Entity* e = (Entity*) co->getUserPointer();
 		if (e == NULL) continue;
-			
+		
 		if (e->klass() == UNIT) {
 			return true;
 		}
@@ -92,6 +92,12 @@ bool check_ghost_triggered_any(btGhostObject* ghost)
 {
 	const btAlignedObjectArray <btCollisionObject*>* pObjsInsideGhostObject;
 	pObjsInsideGhostObject = &ghost->getOverlappingPairs();
+	
+	for (int i = 0; i < pObjsInsideGhostObject->size(); ++i) {
+		btCollisionObject* co = pObjsInsideGhostObject->at(i);
+		cout << "hit: " << co << endl;	
+	}
+	
 	return (pObjsInsideGhostObject->size() > 0);
 }
 
