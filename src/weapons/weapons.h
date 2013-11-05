@@ -178,6 +178,8 @@ class WeaponRocket : public WeaponType
 
 struct WeaponRocketData {
 	int delay;
+	bool hit;
+	PhysicsCallback *cbk;
 	btGhostObject* detect_ghost;
 	btGhostObject* explode_ghost;
 };

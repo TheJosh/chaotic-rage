@@ -256,7 +256,7 @@ void PhysicsBullet::addCallback(PhysicsCallback *callback)
 /**
 * Add a callback
 **/
-PhysicsCallback* PhysicsBullet::addCallback(PhysicsTickCallback *func)
+PhysicsCallback* PhysicsBullet::addCallback(PhysicsTickCallback func)
 {
 	return this->addCallback(func, NULL, NULL, NULL);
 }
@@ -265,7 +265,7 @@ PhysicsCallback* PhysicsBullet::addCallback(PhysicsTickCallback *func)
 /**
 * Add a callback
 **/
-PhysicsCallback* PhysicsBullet::addCallback(PhysicsTickCallback *func, Entity *e, void *data1, void *data2)
+PhysicsCallback* PhysicsBullet::addCallback(PhysicsTickCallback func, Entity *e, void *data1, void *data2)
 {
 	PhysicsCallback *callback = new PhysicsCallback();
 	callback->func = func;
@@ -302,8 +302,8 @@ void bulletHandleCallback(btDynamicsWorld *world, btScalar timeStep)
 void PhysicsBullet::handleCallback(float delta)
 {
 	for (std::list<PhysicsCallback*>::iterator it = this->callbacks.begin(); it != this->callbacks.end(); it++) {
-		PhysicsTickCallback *func = (*it)->func;
-		(*func)(delta, (*it)->e, (*it)->data1, (*it)->data2);
+		PhysicsCallback *callback = (*it);
+		(*callback->func)(delta, callback->e, callback->data1, callback->data2);
 	}
 }
 

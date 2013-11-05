@@ -29,7 +29,7 @@ enum CollisionGroup {
 /**
 * Custom tick callbacks - function
 **/
-typedef void (*PhysicsTickCallback)(float delta, Entity* e, void* data1, void* data2);
+typedef void (*PhysicsTickCallback)(float delta, Entity *e, void *data1, void *data2);
 
 
 /**
@@ -38,7 +38,7 @@ typedef void (*PhysicsTickCallback)(float delta, Entity* e, void* data1, void* d
 class PhysicsCallback
 {
 	public:
-		PhysicsTickCallback *func;
+		PhysicsTickCallback func;
 		Entity *e;
 		void *data1;
 		void *data2;
@@ -90,8 +90,8 @@ class PhysicsBullet
 		void delAction(btActionInterface* action);
 		
 		void addCallback(PhysicsCallback *callback);
-		PhysicsCallback* addCallback(PhysicsTickCallback *func);
-		PhysicsCallback* addCallback(PhysicsTickCallback *func, Entity *e, void *data1, void *data2);
+		PhysicsCallback* addCallback(PhysicsTickCallback func);
+		PhysicsCallback* addCallback(PhysicsTickCallback func, Entity *e, void *data1, void *data2);
 		void removeCallback(PhysicsCallback *callback);
 		void handleCallback(float delta);
 

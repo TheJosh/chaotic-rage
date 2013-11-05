@@ -15,6 +15,11 @@
 using namespace std;
 
 
+/**
+* For physics processing
+**/
+static void rocketTickCallback(float delta, Entity* e, void* data1, void* data2);
+
 
 /**
 * Fires a weapon, from a specified Unit
@@ -29,6 +34,7 @@ void WeaponRocket::doFire(Unit *u, btTransform &origin)
 	data->delay = 250;		// So the user doesn't blow themselves up
 	data->detect_ghost = create_ghost(xform, 1.0f);
 	data->explode_ghost = NULL;
+	data->hit = false;
 	ar->data = data;
 	
 	u->getGameState()->addAmmoRound(ar);
@@ -40,6 +46,20 @@ void WeaponRocket::doFire(Unit *u, btTransform &origin)
 	
 	btVector3 linvel = xform.getBasis() * btVector3(0.0f, 0.0f, 50.0f);
 	ar->body->setLinearVelocity(linvel);
+
+	data->cbk = st->physics->addCallback(rocketTickCallback, static_cast<Entity*>(ar), static_cast<void*>(this), static_cast<void*>(data));
+}
+
+
+void rocketTickCallback(float delta, Entity *e, void *data1, void *data2)
+{
+	AmmoRound *ar = static_cast<AmmoRound*>(e);
+	WeaponRocket *rocket = static_cast<WeaponRocket*>(data1);
+	WeaponRocketData *data = static_cast<WeaponRocketData*>(data2);
+
+	if (data->detect_ghost != NULL && check_ghost_triggered_any(data->detect_ghost)) {
+		data->hit = true;
+	}
 }
 
 
@@ -61,7 +81,7 @@ void WeaponRocket::entityUpdate(AmmoRound *e, int delta)
 	}
 
 	// If there is something within range...
-	if (data->detect_ghost != NULL && check_ghost_triggered_any(data->detect_ghost)) {
+	if (data->detect_ghost != NULL && data->hit) {
 		st->physics->delCollisionObject(data->detect_ghost);
 		data->detect_ghost = NULL;
 		
@@ -77,6 +97,7 @@ void WeaponRocket::entityUpdate(AmmoRound *e, int delta)
 		create_particles_explosion(st, e->getTransform().getOrigin(), 100);
 
 		// Remove the rocket
+		st->physics->removeCallback(data->cbk);
 		st->physics->delCollisionObject(data->explode_ghost);
 		delete(data);
 		e->del = true;
