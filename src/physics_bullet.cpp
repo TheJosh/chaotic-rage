@@ -279,10 +279,11 @@ PhysicsCallback* PhysicsBullet::addCallback(PhysicsTickCallback func, Entity *e,
 
 /**
 * Remove a callback
+* Only actually marks for removal, the actual removal is in the handleCallback() method
 **/
 void PhysicsBullet::removeCallback(PhysicsCallback *callback)
 {
-	this->callbacks.remove(callback);
+	callback->func = NULL;
 }
 
 
@@ -297,10 +298,18 @@ void bulletHandleCallback(btDynamicsWorld *world, btScalar timeStep)
 
 
 /**
+* Predicate for remove_if in handleCallback
+**/
+bool is_removed_callback(const PhysicsCallback* value) { return (value->func == NULL); }
+
+
+/**
 * Called by bullet to handle the callbacks
 **/
 void PhysicsBullet::handleCallback(float delta)
 {
+	this->callbacks.remove_if(is_removed_callback);
+	
 	for (std::list<PhysicsCallback*>::iterator it = this->callbacks.begin(); it != this->callbacks.end(); it++) {
 		PhysicsCallback *callback = (*it);
 		(*callback->func)(delta, callback->e, callback->data1, callback->data2);
