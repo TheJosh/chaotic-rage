@@ -13,6 +13,8 @@
 using namespace std;
 
 
+static void bulletHandleCallback(btDynamicsWorld *world, btScalar timeStep);
+
 
 PhysicsBullet::PhysicsBullet(GameState * st)
 {
@@ -61,6 +63,7 @@ void PhysicsBullet::init()
 	);
 	
 	dynamicsWorld->setGravity(btVector3(0,-10,0));
+	dynamicsWorld->setInternalTickCallback(bulletHandleCallback, static_cast<void *>(this));
 }
 
 
@@ -238,6 +241,70 @@ void PhysicsBullet::delAction(btActionInterface* action)
 {
 	dynamicsWorld->removeAction(action);
 	delete action;
+}
+
+
+/**
+* Add a callback
+**/
+void PhysicsBullet::addCallback(PhysicsCallback *callback)
+{
+	this->callbacks.push_back(callback);
+}
+
+
+/**
+* Add a callback
+**/
+PhysicsCallback* PhysicsBullet::addCallback(PhysicsTickCallback *func)
+{
+	return this->addCallback(func, NULL, NULL, NULL);
+}
+
+
+/**
+* Add a callback
+**/
+PhysicsCallback* PhysicsBullet::addCallback(PhysicsTickCallback *func, Entity *e, void *data1, void *data2)
+{
+	PhysicsCallback *callback = new PhysicsCallback();
+	callback->func = func;
+	callback->e = e;
+	callback->data1 = data1;
+	callback->data2 = data2;
+	this->addCallback(callback);
+	return callback;
+}
+
+
+/**
+* Remove a callback
+**/
+void PhysicsBullet::removeCallback(PhysicsCallback *callback)
+{
+	this->callbacks.remove(callback);
+}
+
+
+/**
+* Glue function between bullet and our class
+**/
+void bulletHandleCallback(btDynamicsWorld *world, btScalar timeStep)
+{
+	PhysicsBullet *p = static_cast<PhysicsBullet *>(world->getWorldUserInfo());
+	p->handleCallback(timeStep);
+}
+
+
+/**
+* Called by bullet to handle the callbacks
+**/
+void PhysicsBullet::handleCallback(float delta)
+{
+	for (std::list<PhysicsCallback*>::iterator it = this->callbacks.begin(); it != this->callbacks.end(); it++) {
+		PhysicsTickCallback *func = (*it)->func;
+		(*func)(delta, (*it)->e, (*it)->data1, (*it)->data2);
+	}
 }
 
 

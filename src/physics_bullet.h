@@ -27,6 +27,25 @@ enum CollisionGroup {
 
 
 /**
+* Custom tick callbacks - function
+**/
+typedef void (*PhysicsTickCallback)(float delta, Entity* e, void* data1, void* data2);
+
+
+/**
+* Details about all attached functions
+**/
+class PhysicsCallback
+{
+	public:
+		PhysicsTickCallback *func;
+		Entity *e;
+		void *data1;
+		void *data2;
+};
+
+
+/**
 * Simple wrapper around the "Bullet" physics library
 **/
 class PhysicsBullet
@@ -49,6 +68,8 @@ class PhysicsBullet
 		std::map<int, int> masks;
 		static const int mask_entities = (CG_WALL | CG_OBJECT | CG_UNIT | CG_VEHICLE);
 
+		std::list<PhysicsCallback*> callbacks;
+
 	public:
 		PhysicsBullet(GameState * st);
 		~PhysicsBullet();
@@ -68,6 +89,12 @@ class PhysicsBullet
 		void delCollisionObject(btCollisionObject* body);
 		void delAction(btActionInterface* action);
 		
+		void addCallback(PhysicsCallback *callback);
+		PhysicsCallback* addCallback(PhysicsTickCallback *func);
+		PhysicsCallback* addCallback(PhysicsTickCallback *func, Entity *e, void *data1, void *data2);
+		void removeCallback(PhysicsCallback *callback);
+		void handleCallback(float delta);
+
 		void stepTime(int ms);
 		void doCollisions();
 		
