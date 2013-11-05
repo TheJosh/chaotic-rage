@@ -129,11 +129,11 @@ PickupTypeAdjust* PickupType::loadAdjust(cfg_t* cfg)
 {
 	PickupTypeAdjust* pt = new PickupTypeAdjust();
 
-	pt->health = cfg_getfloat(cfg, "health");
-	pt->max_speed = cfg_getfloat(cfg, "max-speed");
-	pt->melee_damage = cfg_getfloat(cfg, "melee-damage");
-	pt->melee_delay = cfg_getfloat(cfg, "melee-delay");
-	pt->melee_cooldown = cfg_getfloat(cfg, "melee-cooldown");
+	pt->health = (float)cfg_getfloat(cfg, "health");
+	pt->max_speed = (float)cfg_getfloat(cfg, "max-speed");
+	pt->melee_damage = (float)cfg_getfloat(cfg, "melee-damage");
+	pt->melee_delay = (float)cfg_getfloat(cfg, "melee-delay");
+	pt->melee_cooldown = (float)cfg_getfloat(cfg, "melee-cooldown");
 	
 	return pt;
 }

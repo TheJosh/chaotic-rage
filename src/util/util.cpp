@@ -135,7 +135,7 @@ float pointPlusAngleY (float point_y, int angle, float distance)
 
 void seedRandom()
 {
-	srand(time(NULL));
+	srand((unsigned int) time(NULL));
 }
 
 int getRandom(int low, int high)

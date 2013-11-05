@@ -193,7 +193,7 @@ class WeaponAttractor : public WeaponType
 
 	public:
 		float range;
-		float time;
+		int time;
 		AssimpModel* model;
 		Quadratic force;
 		bool inwards;

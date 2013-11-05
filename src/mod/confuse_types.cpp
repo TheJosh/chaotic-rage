@@ -41,9 +41,9 @@ Quadratic cfg_getquadratic(cfg_t* cfg, const char* name)
 {
 	if (cfg_size(cfg, name) == 3) {
 		return Quadratic(
-			cfg_getnfloat(cfg, name, 0),
-			cfg_getnfloat(cfg, name, 1),
-			cfg_getnfloat(cfg, name, 2)
+			(float)cfg_getnfloat(cfg, name, 0),
+			(float)cfg_getnfloat(cfg, name, 1),
+			(float)cfg_getnfloat(cfg, name, 2)
 		);
 	} else {
 		return Quadratic();

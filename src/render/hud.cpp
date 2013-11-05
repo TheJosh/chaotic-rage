@@ -44,7 +44,7 @@ void HUD::addMessage(string text1, string text2)
 HUDLabel * HUD::addLabel(float x, float y, string data)
 {
 	HUDLabel * l = new HUDLabel(x, y, data);
-	l->width = ((Render3D*)this->ps->st->render)->virt_width;
+	l->width = (float) ((Render3D*)this->ps->st->render)->virt_width;
 
 	this->labels.push_back(l);
 	return l;
@@ -136,7 +136,7 @@ void HUD::render(Render3D * render)
 				render->renderText(buf, 150, 50);
 			}
 			
-			val = this->ps->p->getHealth();
+			val = (int)floor(this->ps->p->getHealth());
 			if (val >= 0) {
 				char buf[50];
 				sprintf(buf, "%i", val);
