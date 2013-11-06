@@ -9,4 +9,4 @@ install:
   - cd ..
 script:
   - make
-  - AUDIODEV=null ./chaoticrage  --mod test --campaign pound --no-mouse-grab
+  - AUDIODEV=null SDL_VIDEODRIVER=dummy ./chaoticrage  --mod test --campaign pound --no-mouse-grab
