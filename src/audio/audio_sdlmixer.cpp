@@ -26,6 +26,8 @@ using namespace std;
 **/
 AudioSDLMixer::AudioSDLMixer(GameState * st) : Audio(st)
 {
+	SDL_InitSubSystem(SDL_INIT_AUDIO);
+	
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
 	Mix_AllocateChannels(100);
 

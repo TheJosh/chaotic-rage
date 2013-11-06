@@ -7,7 +7,6 @@
 #include <SDL.h>
 #include "rage.h"
 #include "http/client_stats.h"
-#include "util/windowicon.h"
 #include "util/ui_update.h"
 #include "util/cmdline.h"
 #include "util/clientconfig.h"
@@ -39,26 +38,17 @@ int main (int argc, char ** argv)
 	
 	
 	chdirToDataDir();
-	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+	SDL_Init(0);
 	seedRandom();
 	
-	// Load icon
-	SDL_RWops *rw = SDL_RWFromConstMem(windowicon_bmp, sizeof(windowicon_bmp));
-	SDL_Surface *icon = SDL_LoadBMP_RW(rw, 1);
-	SDL_SetColorKey(icon, SDL_SRCCOLORKEY, SDL_MapRGBA(icon->format, 255, 0, 255, 0));
-	SDL_WM_SetIcon(icon, NULL);
-	SDL_FreeSurface(icon);
-	
 	GameState *st = new GameState();
-	
 	st->cmdline = new CommandLineArgs(st, argc, argv);
+	st->cconf = new ClientConfig();
 	
 	#ifdef GETOPT
 		st->cmdline->process();
 	#endif
 	
-	st->cconf = new ClientConfig();
-
 	// Load render, audio, etc according to config
 	st->cconf->initRender(st);
 	st->cconf->initAudio(st);
@@ -74,35 +64,34 @@ int main (int argc, char ** argv)
 	Intro *i = new Intro(st);
 	i->load();
 	i->doit();
-
-	// Load the mods, with threads if possible
+	
+	// Load the mods. Uses threads if possible
 	if (! loadMods(st, i)) {
 		exit(0);
 	}
 
 	Menu *m = new Menu(st);
 	
-	// If a campaign or arcade game has been specified on the cmd line, run it
-	if (st->cmdline != NULL) {
-		if (st->cmdline->campaign != "") {
-			m->loadModBits();
-			Campaign *c = st->mm->getSupplOrBase()->getCampaign(st->cmdline->campaign);
-			m->startCampaign(c, "robot", 0, 1);
-			exit(0);
-			
-		} else if (st->cmdline->map != "" && st->cmdline->gametype != "" && st->cmdline->unittype != "") {
-			m->loadModBits();
-			m->startGame(m->mapreg->get(st->cmdline->map), st->cmdline->gametype, st->cmdline->unittype, 0, 1, st->cmdline->host);
-			exit(0);
-			
-		} else if (st->cmdline->join != "") {
-			m->loadModBits();
-			m->networkJoin(st->cmdline->join);
-			exit(0);
-		}
+	// Campaign
+	if (st->cmdline->campaign != "") {
+		m->loadModBits();
+		Campaign *c = st->mm->getSupplOrBase()->getCampaign(st->cmdline->campaign);
+		m->startCampaign(c, "robot", 0, 1);
+		
+	// Arcade game
+	} else if (st->cmdline->map != "" && st->cmdline->gametype != "" && st->cmdline->unittype != "") {
+		m->loadModBits();
+		m->startGame(m->mapreg->get(st->cmdline->map), st->cmdline->gametype, st->cmdline->unittype, 0, 1, st->cmdline->host);
+		
+	// Network join
+	} else if (st->cmdline->join != "") {
+		m->loadModBits();
+		m->networkJoin(st->cmdline->join);
+		
+	// Regular menu
+	} else {
+		m->doit(i);
 	}
-	
-	m->doit(i);
 	
 	exit(0);
 }

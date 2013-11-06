@@ -15,6 +15,8 @@ using namespace std;
 
 RenderDebug::RenderDebug(GameState * st) : Render(st)
 {
+	SDL_InitSubSystem(SDL_INIT_VIDEO);
+	
 	this->sprite_wall = SDL_LoadBMP("data/debug/wall.bmp");
 	this->sprite_vehicle = SDL_LoadBMP("data/debug/vehicle.bmp");
 	this->sprite_object = SDL_LoadBMP("data/debug/object.bmp");

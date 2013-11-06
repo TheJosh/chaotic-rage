@@ -14,6 +14,7 @@ using namespace std;
 
 RenderNull::RenderNull(GameState * st) : Render(st)
 {
+	// Do we need 'SDL_InitSubSystem(SDL_INIT_VIDEO);' ??
 }
 
 RenderNull::~RenderNull()

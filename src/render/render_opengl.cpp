@@ -22,6 +22,7 @@
 #include "../util/obj.h"
 #include "../util/sdl_util.h"
 #include "../util/SDL_rwops_zzip.h"
+#include "../util/windowicon.h"
 #include "../fx/newparticle.h"
 #include "../mod/mod_manager.h"
 #include "../mod/vehicletype.h"
@@ -93,6 +94,15 @@ static inline int next_pot (int a)
 **/
 RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Render3D(st)
 {
+	SDL_InitSubSystem(SDL_INIT_VIDEO);
+	
+	// Load icon
+	SDL_RWops *rw = SDL_RWFromConstMem(windowicon_bmp, sizeof(windowicon_bmp));
+	SDL_Surface *icon = SDL_LoadBMP_RW(rw, 1);
+	SDL_SetColorKey(icon, SDL_SRCCOLORKEY, SDL_MapRGBA(icon->format, 255, 0, 255, 0));
+	SDL_WM_SetIcon(icon, NULL);
+	SDL_FreeSurface(icon);
+	
 	this->screen = NULL;
 	this->physicsdebug = NULL;
 	this->speeddebug = false;

@@ -32,6 +32,10 @@ void CommandLineArgs::process()
 		
 		{"mod",				1, 0, 'm'},
 		{"mod-list",		0, 0, 'l'},
+		
+		{"render",			1, 0, 'r'},
+		{"audio",			1, 0, 'u'},
+		
 		{"help",			0, 0, 'h'},
 		{"version",			0, 0, 'v'},
 		
@@ -61,6 +65,10 @@ void CommandLineArgs::process()
 					"\n"
 					" -m\t--mod NAME              Load a mod at startup\n"
 					"   \t--mod-list              List all available mods, and exit\n"
+					"\n"
+					" -r\t--render SYSTEM         Set the render system. Options: 'opengl', 'debug', 'null'\n"
+					" -u\t--audio SYSTEM          Set the audio system. Options: 'sdl', 'null'\n"
+					"\n"
 					" -h\t--help                  Show this help\n"
 					" -v\t--version               Show version, and exit\n"
 					
@@ -120,6 +128,27 @@ void CommandLineArgs::process()
 					delete(modnames);
 					exit(0);
 				}
+				break;
+				
+				
+			// Renderer
+			case 'r':
+				if (strcmp(optarg, "opengl") != 0 && strcmp(optarg, "debug") != 0 && strcmp(optarg, "null") != 0) {
+					cout << "Invalid render system." << endl;
+					cout << "Options: 'opengl', 'debug', 'null'." << endl;
+					exit(1);
+				}
+				this->render = optarg;
+				break;
+				
+			// Audio
+			case 'u':
+				if (strcmp(optarg, "sdl") != 0 && strcmp(optarg, "null") != 0) {
+					cout << "Invalid audio system." << endl;
+					cout << "Options: 'sdl', 'null'." << endl;
+					exit(1);
+				}
+				this->audio = optarg;
 				break;
 				
 				

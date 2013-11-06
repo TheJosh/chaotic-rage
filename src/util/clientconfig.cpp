@@ -3,16 +3,19 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <string>
-#include <SDL.h>
 #include <confuse.h>
 #include "../rage.h"
 #include "../gamestate.h"
 #include "../render/render_opengl.h"
 #include "../render/render_opengl_settings.h"
+#include "../render/render_debug.h"
+#include "../render/render_null.h"
 #include "../audio/audio_sdlmixer.h"
+#include "../audio/audio_null.h"
 #include "../mod/mod_manager.h"
 #include "../physics_bullet.h"
 #include "clientconfig.h"
+#include "cmdline.h"
 
 
 using namespace std;
@@ -23,7 +26,6 @@ static cfg_opt_t config_opts[] =
 	CFG_INT((char*) "gl-msaa", 1, CFGF_NONE),
 	CFG_INT((char*) "gl-tex-filter", 4, CFGF_NONE),
 	
-
 	// Deprecated; only in place to not break existing confings
 	CFG_INT((char*) "render", 0, CFGF_NONE),
 
@@ -90,8 +92,16 @@ void ClientConfig::save()
 **/
 void ClientConfig::initRender(GameState *st)
 {
-	new RenderOpenGL(st, this->gl);
-
+	if (st->cmdline->render == "debug") {
+		new RenderDebug(st);
+		
+	} else if (st->cmdline->render == "null") {
+		new RenderNull(st);
+		
+	} else {
+		new RenderOpenGL(st, this->gl);
+	}
+	
 	st->render->setScreenSize(1000, 700, false);
 }
 
@@ -101,7 +111,12 @@ void ClientConfig::initRender(GameState *st)
 **/
 void ClientConfig::initAudio(GameState *st)
 {
-	new AudioSDLMixer(st);
+	if (st->cmdline->audio == "null") {
+		new AudioNull(st);
+		
+	} else {
+		new AudioSDLMixer(st);
+	}
 }
 
 
