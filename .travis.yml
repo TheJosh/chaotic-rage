@@ -7,4 +7,6 @@ install:
   - make bullet-install
   - make assimp-install
   - cd ..
-script: make
+script:
+  - make
+  - AUDIODEV=null ./chaoticrage  --mod test --campaign pound --no-mouse-grab
