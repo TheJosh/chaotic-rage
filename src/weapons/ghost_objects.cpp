@@ -85,20 +85,3 @@ bool check_ghost_triggered_units(btGhostObject* ghost)
 }
 
 
-/**
-* If there is anything within the ghost radius?
-**/
-bool check_ghost_triggered_any(btGhostObject* ghost)
-{
-	const btAlignedObjectArray <btCollisionObject*>* pObjsInsideGhostObject;
-	pObjsInsideGhostObject = &ghost->getOverlappingPairs();
-	
-	for (int i = 0; i < pObjsInsideGhostObject->size(); ++i) {
-		btCollisionObject* co = pObjsInsideGhostObject->at(i);
-		cout << "hit: " << co << endl;	
-	}
-	
-	return (pObjsInsideGhostObject->size() > 0);
-}
-
-

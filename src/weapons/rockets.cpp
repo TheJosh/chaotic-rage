@@ -27,25 +27,28 @@ static void rocketTickCallback(float delta, Entity* e, void* data1, void* data2)
 void WeaponRocket::doFire(Unit *u, btTransform &origin)
 {
 	btTransform xform = origin;
-	
-	// Aim up a little
-	btQuaternion rot = xform.getRotation() * btQuaternion(btVector3(1.0f, 0.0f, 0.0f), DEG_TO_RAD(-10.0f));
-	xform.setRotation(rot);
-	
-	// Move forwards a little
-	xform.setOrigin(xform.getOrigin() + xform.getBasis() * btVector3(0.0f, 0.0f, 10.0f));
+	xform.setOrigin(
+		xform.getOrigin() + xform.getBasis() * btVector3(0.0f, 0.5f, 2.0f)
+	);
 	
 	// Create ammo obj
 	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->model, u, 1.0f);
 	
+	// Create ghost for detection
+	btPairCachingGhostObject* ghost = new btPairCachingGhostObject();
+	btSphereShape* shape = new btSphereShape(1.0f);
+	ghost->setWorldTransform(xform);
+	ghost->setCollisionShape(shape);
+	
 	// Forwards motion
-	btVector3 linvel = xform.getBasis() * btVector3(0.0f, 0.0f, 50.0f);
-	ar->body->setLinearVelocity(linvel);
+	ar->body->setLinearVelocity(
+		xform.getBasis() * btVector3(0.0f, 0.0f, 50.0f)
+	);
 	
 	// Create and attach data
 	WeaponRocketData* data = new WeaponRocketData();
 	data->state = 0;
-	data->ghost = create_ghost(xform, 1.0f);
+	data->ghost = ghost;
 	ar->data = data;
 	
 	// Insert into physics world
@@ -65,14 +68,46 @@ void rocketTickCallback(float delta, Entity *e, void *data1, void *data2)
 	
 	switch (rocket->state) {
 		case 0:
-			// Flying through the air - check for collision
-			if (check_ghost_triggered_any(rocket->ghost)) {
-				rocket->state = 1;
+			{
+				btManifoldArray manifoldArray;
+				btBroadphasePairArray& pairArray = static_cast<btPairCachingGhostObject*>(rocket->ghost)->getOverlappingPairCache()->getOverlappingPairArray();
+				int numPairs = pairArray.size();
 				
-				wt->st->physics->delCollisionObject(rocket->ghost);
+				bool hit = false;
+				for (int i=0;i<numPairs;i++) {
+					const btBroadphasePair& pair = pairArray[i];
+
+					//unless we manually perform collision detection on this pair, the contacts are in the dynamics world paircache:
+					btBroadphasePair* collisionPair = wt->st->physics->getWorld()->getPairCache()->findPair(pair.m_pProxy0, pair.m_pProxy1);
+					if (!collisionPair) continue;
+
+					manifoldArray.clear();
+					if (collisionPair->m_algorithm) {
+						collisionPair->m_algorithm->getAllContactManifolds(manifoldArray);
+					}
 				
-				rocket->ghost = create_ghost(ar->getTransform(), wt->range);
-				wt->st->physics->addCollisionObject(rocket->ghost, CG_AMMO);
+					for (int j=0;j<manifoldArray.size();j++) {
+						btPersistentManifold* manifold = manifoldArray[j];
+						for (int p=0;p<manifold->getNumContacts();p++) {
+							const btManifoldPoint&pt = manifold->getContactPoint(p);
+						
+							if (pt.getDistance() < 0.f) {
+								hit = true;
+								break;
+							}
+						}
+					}
+				}
+				
+				// hit - explode
+				if (hit) {
+					rocket->state = 1;
+				
+					wt->st->physics->delCollisionObject(rocket->ghost);
+				
+					rocket->ghost = create_ghost(ar->getTransform(), wt->range);
+					wt->st->physics->addCollisionObject(rocket->ghost, CG_AMMO);
+				}
 			}
 			break;
 			
