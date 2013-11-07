@@ -5,6 +5,7 @@
 #pragma once
 #include <btBulletDynamicsCommon.h>
 #include "entity.h"
+#include "../mod/vehicletype.h"
 
 
 class AnimPlay;
@@ -51,6 +52,7 @@ class Vehicle : public Entity
 		virtual void getWeaponTransform(btTransform &xform);
 		
 		void trainAttachToNext(Vehicle *next);
+		void setNodeAngle(VehicleNodeType type, float angle);
 };
 
 

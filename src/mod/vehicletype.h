@@ -10,13 +10,42 @@ using namespace std;
 
 
 class btCollisionShape;
+class AssimpModel;
+class AssimpNode;
 
+
+/**
+* Models to show at various damage levels
+**/
 class VehicleTypeDamage {
 	public:
 		int health;
 		AssimpModel * model;
 };
 
+/**
+* Types of nodes
+**/
+enum VehicleNodeType {
+	VEHICLE_NODE_HORIZ = 1,
+	VEHICLE_NODE_VERT = 2,
+	VEHICLE_NODE_SPIN = 3,
+};
+
+/**
+* Move nodes, spin nodes, wheel nodes
+**/
+class VehicleTypeNode {
+	public:
+		AssimpNode * node;
+		glm::vec3 axis;
+		VehicleNodeType type;
+};
+
+
+/**
+* The vehicle type itself
+**/
 class VehicleType
 {
 	public:
@@ -41,24 +70,20 @@ class VehicleType
 		float reverse_accel;
 		float reverse_max;
 		
-		string horiz_move_node;
-		glm::vec3 horiz_move_axis;
-		
-		string vert_move_node;
-		glm::vec3 vert_move_axis;
-		
-		string spin_node;
-		glm::vec3 spin_axis;
-		
 		WeaponType* weapon_primary;
 		vector <VehicleTypeDamage *> damage_models;
-		
+		vector <VehicleTypeNode> nodes;
+
 		glm::vec3 joint_front;
 		glm::vec3 joint_back;
 		
 	public:
 		VehicleType();
 		~VehicleType();
+		
+	public:
+		bool hasNode(VehicleNodeType type);
+		VehicleTypeNode* getNode(VehicleNodeType type);
 };
 
 

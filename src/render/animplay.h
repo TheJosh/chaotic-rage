@@ -69,7 +69,9 @@ class AnimPlay
 		void setEndedCallback(void* data);
 		
 		void addMoveNode(string node);
+		void addMoveNode(AssimpNode *nd);
 		void setMoveTransform(string node, glm::mat4 transform);
+		void setMoveTransform(AssimpNode *nd, glm::mat4 transform);
 		void resetMoveTransform(string node);
 
 		AssimpModel* getModel() { return this->model; }

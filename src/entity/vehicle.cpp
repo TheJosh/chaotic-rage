@@ -55,12 +55,9 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	this->anim = new AnimPlay(vt->model);
 	this->health = vt->health;
 
-	if (vt->vert_move_node != "") {
-		this->anim->addMoveNode(vt->vert_move_node);
-	}
-	
-	if (vt->horiz_move_node != "") {
-		this->anim->addMoveNode(vt->horiz_move_node);
+	vector <VehicleTypeNode>::iterator it;
+	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); it++) {
+		this->anim->addMoveNode((*it).node);
 	}
 	
 	this->engineForce = 0.0f;
@@ -241,17 +238,9 @@ void Vehicle::operate(Unit* u, int delta, int key_up, int key_down, int key_left
 		}
 	}
 
-	// Horizontal move node
-	if (this->vt->horiz_move_node != "") {
-		glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), horiz_angle, this->vt->horiz_move_axis));
-		this->getAnimModel()->setMoveTransform(this->vt->horiz_move_node, rotation);
-	}
-
-	// Vertical move node
-	if (this->vt->vert_move_node != "") {
-		glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), vert_angle, this->vt->vert_move_axis));
-		this->getAnimModel()->setMoveTransform(this->vt->vert_move_node, rotation);
-	}
+	// Move nodes
+	this->setNodeAngle(VEHICLE_NODE_HORIZ, horiz_angle);
+	this->setNodeAngle(VEHICLE_NODE_VERT, vert_angle);
 }
 
 
@@ -273,9 +262,9 @@ void Vehicle::getWeaponTransform(btTransform &xform)
 {
 	xform = this->getTransform();
 	
-	if (this->vt->horiz_move_node != "") {
-		AssimpNode* nd = this->anim->getModel()->findNode(this->vt->horiz_move_node);
-		glm::mat4 transform = this->anim->getNodeTransform(nd);
+	VehicleTypeNode *horizNode = this->vt->getNode(VEHICLE_NODE_HORIZ);
+	if (horizNode != NULL) {
+		glm::mat4 transform = this->anim->getNodeTransform(horizNode->node);
 
 		btVector3 offset = btVector3(transform[3][0], transform[3][1], transform[3][2]);
 		xform.setOrigin(xform.getOrigin() + offset);
@@ -343,5 +332,21 @@ void* ChaoticRageVehicleRaycaster::castRay(const btVector3& from,const btVector3
 	}
 
 	return 0;
+}
+
+
+/**
+* Set the angle for all nodes of a given type
+**/
+void Vehicle::setNodeAngle(VehicleNodeType type, float angle)
+{
+	vector <VehicleTypeNode>::iterator it;
+
+	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); it++) {
+		if ((*it).type == type) {
+			glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), angle, (*it).axis));
+			this->getAnimModel()->setMoveTransform((*it).node, rotation);
+		}
+	}
 }
 

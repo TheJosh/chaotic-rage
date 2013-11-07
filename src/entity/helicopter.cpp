@@ -41,8 +41,9 @@ void Helicopter::init(VehicleType *vt, GameState *st, btTransform &loc)
 	this->anim = new AnimPlay(vt->model);
 	this->health = vt->health;
 
-	if (vt->spin_node != "") {
-		this->anim->addMoveNode(vt->spin_node);
+	vector <VehicleTypeNode>::iterator it;
+	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); it++) {
+		this->anim->addMoveNode((*it).node);
 	}
 
 	btDefaultMotionState* motionState = new btDefaultMotionState(loc);
@@ -82,11 +83,8 @@ void Helicopter::update(int delta)
 	this->body->applyCentralImpulse(absForce);
 	
 	// Blades animation
-	if (this->vt->spin_node != "") {
-		int frame = this->st->anim_frame % 12;
-		glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), 360/12*frame, this->vt->spin_axis));
-		this->getAnimModel()->setMoveTransform(this->vt->spin_node, rotation);
-	}
+	int frame = this->st->anim_frame % 12;
+	this->setNodeAngle(VEHICLE_NODE_SPIN, 360/12*frame);
 }
 
 

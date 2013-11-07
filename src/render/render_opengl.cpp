@@ -1668,7 +1668,7 @@ void RenderOpenGL::mainRot()
 			trans = this->render_player->drive->getTransform();
 			angle = RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 180.0f;
 			
-			if (this->render_player->drive->vt->horiz_move_node != "") {
+			if (this->render_player->drive->vt->hasNode(VEHICLE_NODE_HORIZ)) {
 				angle += this->render_player->mouse_angle;
 			}
 			

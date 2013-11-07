@@ -77,7 +77,8 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	string filename;
 	int size;
 	char* tmp;
-	
+	VehicleTypeNode node;
+
 	wt = new VehicleType();
 	wt->name = cfg_getstr(cfg_item, "name");
 	wt->health = cfg_getint(cfg_item, "health");
@@ -108,23 +109,35 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	
 	// Load move node, if set
 	tmp = cfg_getstr(cfg_item, "horiz-move-node");
-	if (tmp != NULL) {
-		wt->horiz_move_node = tmp;
-		wt->horiz_move_axis = cfg_getvec3(cfg_item, "horiz-move-axis");
+	if (tmp != NULL && tmp != "") {
+		node.node = wt->model->findNode(tmp);
+		if (node.node) {
+			node.axis = cfg_getvec3(cfg_item, "horiz-move-axis");
+			node.type = VEHICLE_NODE_HORIZ;
+			wt->nodes.push_back(node);
+		}
 	}
 	
 	// Load move node, if set
 	tmp = cfg_getstr(cfg_item, "vert-move-node");
-	if (tmp != NULL) {
-		wt->vert_move_node = tmp;
-		wt->vert_move_axis = cfg_getvec3(cfg_item, "vert-move-axis");
+	if (tmp != NULL && tmp != "") {
+		node.node = wt->model->findNode(tmp);
+		if (node.node) {
+			node.axis = cfg_getvec3(cfg_item, "vert-move-axis");
+			node.type = VEHICLE_NODE_VERT;
+			wt->nodes.push_back(node);
+		}
 	}
 	
 	// Load spin node, if set
 	tmp = cfg_getstr(cfg_item, "spin-node");
-	if (tmp != NULL) {
-		wt->spin_node = tmp;
-		wt->spin_axis = cfg_getvec3(cfg_item, "spin-axis");
+	if (tmp != NULL && tmp != "") {
+		node.node = wt->model->findNode(tmp);
+		if (node.node) {
+			node.axis = cfg_getvec3(cfg_item, "spin-axis");
+			node.type = VEHICLE_NODE_SPIN;
+			wt->nodes.push_back(node);
+		}
 	}
 	
 	// Load primary weapon, if set
@@ -173,8 +186,6 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 VehicleType::VehicleType()
 {
 	this->weapon_primary = NULL;
-	this->horiz_move_node = "";
-	this->vert_move_node = "";
 	this->col_shape = NULL;
 	this->land = false;
 	this->water = false;
@@ -187,4 +198,29 @@ VehicleType::~VehicleType()
 	delete(this->col_shape);
 }
 
+
+/**
+* Return true if the vehicle type has at least one node registered of that type
+**/
+bool VehicleType::hasNode(VehicleNodeType type)
+{
+	vector <VehicleTypeNode>::iterator it;
+	for (it = this->nodes.begin(); it != this->nodes.end(); it++) {
+		if ((*it).type == type) return true;
+	}
+	return false;
+}
+
+
+/**
+* Return true if the vehicle type has at least one node registered of that type
+**/
+VehicleTypeNode* VehicleType::getNode(VehicleNodeType type)
+{
+	vector <VehicleTypeNode>::iterator it;
+	for (it = this->nodes.begin(); it != this->nodes.end(); it++) {
+		if ((*it).type == type) return &(*it);
+	}
+	return NULL;
+}
 

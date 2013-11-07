@@ -139,13 +139,32 @@ void AnimPlay::addMoveNode(string node)
 
 
 /**
-* Set the transform for the move node
+* Sets the "move node", a node which is transformed by some aspect of the game engine
+* e.g. gun turrets
+**/
+void AnimPlay::addMoveNode(AssimpNode *nd)
+{
+	this->move_nodes[nd] = glm::mat4();
+}
+
+
+/**
+* Set the transform for a move node
 **/
 void AnimPlay::setMoveTransform(string node, glm::mat4 transform)
 {
 	AssimpNode* nd = this->model->findNode(this->model->rootNode, node);
 	if (nd == NULL) return;
 	
+	this->move_nodes[nd] = transform;
+}
+
+
+/**
+* Set the transform for a move node
+**/
+void AnimPlay::setMoveTransform(AssimpNode *nd, glm::mat4 transform)
+{
 	this->move_nodes[nd] = transform;
 }
 
