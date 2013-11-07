@@ -12,6 +12,7 @@
 #include "vehicle.h"
 #include "../util/util.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace std;
 
@@ -152,29 +153,36 @@ void Vehicle::update(int delta)
 
 	if (this->health == 0) return;
 	
-	
-	// Front
+	// Front left
 	wheelIndex = 0;
 	this->vehicle->setSteeringValue(this->steering,wheelIndex);
 	this->vehicle->setBrake(this->brakeForce,wheelIndex);
 	
+	// Front right
 	wheelIndex = 1;
 	this->vehicle->setSteeringValue(this->steering,wheelIndex);
 	this->vehicle->setBrake(this->brakeForce,wheelIndex);
 	
-	
-	// Rear
+	// Rear left
 	wheelIndex = 2;
 	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
 	this->vehicle->setBrake(this->brakeForce,wheelIndex);
 	
+	// Rear right
 	wheelIndex = 3;
 	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
 	this->vehicle->setBrake(this->brakeForce,wheelIndex);
 	
-	
+	// Update wheels
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
 		this->vehicle->updateWheelTransform(i, true);
+		
+		btTransform newTransform = this->vehicle->getWheelInfo(i).m_worldTransform;
+		newTransform.setOrigin(newTransform.getOrigin() - this->vehicle->getChassisWorldTransform().getOrigin());
+		
+		btScalar m[16];
+		newTransform.getOpenGLMatrix(m);
+		this->setNodeTransform(VEHICLE_NODE_WHEEL0 + i, glm::make_mat4(m));
 	}
 
 	// Send state over network
@@ -349,4 +357,21 @@ void Vehicle::setNodeAngle(VehicleNodeType type, float angle)
 		}
 	}
 }
+
+
+/**
+* Set the transform for all nodes of a given type. Ignores the 'axis' parameter of the node.
+**/
+void Vehicle::setNodeTransform(VehicleNodeType type, glm::mat4 transform)
+{
+	vector <VehicleTypeNode>::iterator it;
+
+	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); it++) {
+		if ((*it).type == type) {
+			this->getAnimModel()->setMoveTransform((*it).node, transform);
+		}
+	}
+}
+
+
 

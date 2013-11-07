@@ -31,7 +31,7 @@ static cfg_opt_t damage_opts[] =
 static cfg_opt_t node_opts[] =
 {
 	CFG_STR((char*) "name", (char*)"", CFGF_NONE),
-	CFG_FLOAT_LIST((char*) "axis", 0, CFGF_NONE),
+	CFG_FLOAT_LIST((char*) "axis", (char*)"{0.0, 0.0, 0.0}", CFGF_NONE),
 	CFG_INT((char*) "type", 0, CFGF_NONE),
 	CFG_END()
 };

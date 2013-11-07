@@ -23,17 +23,25 @@ class VehicleTypeDamage {
 		AssimpModel * model;
 };
 
+
 /**
 * Types of nodes
 **/
-enum VehicleNodeType {
-	VEHICLE_NODE_HORIZ = 1,
-	VEHICLE_NODE_VERT = 2,
-	VEHICLE_NODE_SPIN = 3,
-};
+#define VEHICLE_NODE_HORIZ 1
+#define VEHICLE_NODE_VERT 2
+#define VEHICLE_NODE_SPIN 3
+
+// Wheel0 = 10, Wheel1 = 11, Wheel2 = 12, etc.
+// Wheel0 = Front Left, Wheel1 = Front Right, Wheel2 = Rear Left, Wheel3 = Rear Right
+#define VEHICLE_NODE_WHEEL0 10
 
 /**
-* Move nodes, spin nodes, wheel nodes
+* Node type is just an int
+**/
+typedef unsigned int VehicleNodeType;
+
+/**
+* Move nodes - mouse move nodes, spin nodes, wheel nodes
 **/
 class VehicleTypeNode {
 	public:

@@ -53,6 +53,7 @@ class Vehicle : public Entity
 		
 		void trainAttachToNext(Vehicle *next);
 		void setNodeAngle(VehicleNodeType type, float angle);
+		void setNodeTransform(VehicleNodeType type, glm::mat4 transform);
 };
 
 
