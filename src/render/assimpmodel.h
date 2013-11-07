@@ -161,7 +161,7 @@ class AssimpModel
 		void calcBoundingBox();
 		void calcBoundingBoxNode(const aiNode* nd, aiVector3D* min, aiVector3D* max, aiMatrix4x4* trafo);
 
-		void loadMeshes();
+		void loadMeshes(bool opengl);
 		void loadMaterials(Render3D* render);
 		SpritePtr loadTexture(Render3D* render, aiString path);
 		void loadMeshdata(bool update);

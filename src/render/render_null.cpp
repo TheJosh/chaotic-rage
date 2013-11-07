@@ -5,6 +5,7 @@
 #include <iostream>
 #include "../rage.h"
 #include "../gamestate.h"
+#include "../map.h"
 #include "render_null.h"
 #include <SDL.h>
 #include <SDL_image.h>
@@ -14,7 +15,6 @@ using namespace std;
 
 RenderNull::RenderNull(GameState * st) : Render(st)
 {
-	// Do we need 'SDL_InitSubSystem(SDL_INIT_VIDEO);' ??
 }
 
 RenderNull::~RenderNull()
@@ -77,7 +77,11 @@ void RenderNull::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 **/
 void RenderNull::preGame()
 {
-	cout << "The game has just started.\n";
+	this->last_render = st->game_time;
+	
+	cout << "======================================================" << endl;
+	cout << "NEW GAME    map: " << st->map->getName() << endl;
+	cout << "======================================================" << endl;
 }
 
 
@@ -86,8 +90,6 @@ void RenderNull::preGame()
 **/
 void RenderNull::postGame()
 {
-	cout << "======================================================\n";
-	cout << "The game has just ended.\n";
 }
 
 
@@ -132,27 +134,10 @@ int RenderNull::getSpriteHeight(SpritePtr sprite)
 **/
 void RenderNull::render()
 {
-	static int last_render = st->game_time;
+	if (st->game_time - this->last_render < 5000) return;
+	this->last_render = st->game_time;
 	
-	if (st->game_time - last_render < 5000) return;
-	last_render = st->game_time;
-	
-	int c_unit = 0, c_wall = 0, c_object = 0;
-	
-	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
-		Entity *e = (*it);
-		
-		if (e->klass() == UNIT) c_unit++;
-		if (e->klass() == WALL) c_wall++;
-		if (e->klass() == OBJECT) c_object++;
-	}
-	
-	cout << "======================================================\n";
-	cout << "  Current time: " << st->game_time << "\n";
-	cout << "  Total num entities: " << st->entities.size() << "\n";
-	cout << "  Units: " << c_unit << "\n";
-	cout << "  Walls: " << c_wall << "\n";
-	cout << "  Objects: " << c_object << "\n";
+	cout << "  [" << st->game_time << "]  Num entities: " << st->entities.size() << endl;
 }
 
 

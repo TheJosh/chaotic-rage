@@ -77,9 +77,11 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 	
 	free(data);
 	
-	if (render != NULL) {
-		this->loadMeshes();
+	if (render != NULL and render->is3D()) {
+		this->loadMeshes(true);
 		this->loadMaterials(render);
+	} else {
+		this->loadMeshes(false);
 	}
 	
 	if (meshdata) {
@@ -163,7 +165,7 @@ void AssimpModel::calcBoundingBoxNode(const aiNode* nd, aiVector3D* min, aiVecto
 /**
 * Load a model into a VAO, VBOs etc.
 **/
-void AssimpModel::loadMeshes()
+void AssimpModel::loadMeshes(bool opengl)
 {
 	unsigned int n = 0;
 	GLuint buffer;
@@ -174,6 +176,9 @@ void AssimpModel::loadMeshes()
 		
 		myMesh->numFaces = mesh->mNumFaces;
 		myMesh->materialIndex = mesh->mMaterialIndex;
+		this->meshes.push_back(myMesh);
+		
+		if (! opengl) continue;
 		
 		// VAO
 		glGenVertexArrays(1,&(myMesh->vao));
@@ -255,8 +260,6 @@ void AssimpModel::loadMeshes()
 		}
 		
 		glBindVertexArray(0);
-		
-		this->meshes.push_back(myMesh);
 	}
 }
 

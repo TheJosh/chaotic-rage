@@ -409,11 +409,9 @@ AssimpModel * Mod::getAssimpModel(string name)
 	
 	AssimpModel* am = new AssimpModel(this, name);
 	
-	if (st->render->is3D()) {
-		if (! am->load((Render3D*) st->render, false)) {
-			delete(am);
-			return NULL;
-		}
+	if (! am->load((Render3D*) st->render, false)) {
+		delete(am);
+		return NULL;
 	}
 	
 	this->models.insert(std::pair<string, AssimpModel*>(name, am));

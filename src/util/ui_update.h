@@ -22,3 +22,12 @@ class UIUpdate
 		virtual void updateUI() = 0;
 };
 
+
+class UIUpdateNull : public UIUpdate
+{
+	public:
+		virtual void updateUI() { /* do nothing */ }
+};
+
+
+

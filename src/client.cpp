@@ -25,6 +25,11 @@ using namespace std;
 
 int main (int argc, char ** argv)
 {
+	GameState *st;
+	UIUpdate *ui;
+	Intro *i;
+	Menu *m;
+	
 	// Redirect stdout and stderr to files in the user directory
 	#ifdef _WIN32
 		string datadir = getUserDataDir();
@@ -41,7 +46,7 @@ int main (int argc, char ** argv)
 	SDL_Init(0);
 	seedRandom();
 	
-	GameState *st = new GameState();
+	st = new GameState();
 	st->cmdline = new CommandLineArgs(st, argc, argv);
 	st->cconf = new ClientConfig();
 	
@@ -61,16 +66,20 @@ int main (int argc, char ** argv)
 	#endif
 	
 	// Intro
-	Intro *i = new Intro(st);
-	i->load();
-	i->doit();
+	if (st->render->is3D()) {
+		ui = i = new Intro(st);
+		i->load();
+		i->doit();
+	} else {
+		ui = new UIUpdateNull();
+	}
 	
 	// Load the mods. Uses threads if possible
-	if (! loadMods(st, i)) {
+	if (! loadMods(st, ui)) {
 		exit(0);
 	}
 
-	Menu *m = new Menu(st);
+	m = new Menu(st);
 	
 	// Campaign
 	if (st->cmdline->campaign != "") {
@@ -89,8 +98,11 @@ int main (int argc, char ** argv)
 		m->networkJoin(st->cmdline->join);
 		
 	// Regular menu
-	} else {
+	} else if (st->render->is3D()) {
 		m->doit(i);
+		
+	} else {
+		cout << "Non-interactive usage requires --campaign, --arcade or --join to be specified." << endl;
 	}
 	
 	exit(0);

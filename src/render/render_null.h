@@ -10,6 +10,9 @@
 
 class RenderNull : public Render
 {
+	private:
+		int last_render;
+		
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
 		
