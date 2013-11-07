@@ -16,7 +16,8 @@ class RenderDebug : public Render
 {
 	private:
 		SDL_Surface * screen;
-
+		int last_render;
+		
 		SDL_Surface * sprite_wall;
 		SDL_Surface * sprite_vehicle;
 		SDL_Surface * sprite_object;

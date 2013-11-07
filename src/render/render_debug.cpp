@@ -17,6 +17,8 @@ RenderDebug::RenderDebug(GameState * st) : Render(st)
 {
 	SDL_InitSubSystem(SDL_INIT_VIDEO);
 	
+	this->screen = NULL;
+	
 	this->sprite_wall = SDL_LoadBMP("data/debug/wall.bmp");
 	this->sprite_vehicle = SDL_LoadBMP("data/debug/vehicle.bmp");
 	this->sprite_object = SDL_LoadBMP("data/debug/object.bmp");
@@ -31,6 +33,7 @@ RenderDebug::~RenderDebug()
 	SDL_FreeSurface(this->sprite_vehicle);
 	SDL_FreeSurface(this->sprite_object);
 	SDL_FreeSurface(this->sprite_player);
+	
 	SDL_FreeSurface(this->screen);
 }
 
@@ -42,6 +45,10 @@ void RenderDebug::setScreenSize(int width, int height, bool fullscreen)
 {
 	this->width = width;
 	this->height = height;
+	
+	if (this->screen) {
+		SDL_FreeSurface(this->screen);
+	}
 	
 	this->screen = SDL_SetVideoMode(width, height, 32, 0);
 	if (screen == NULL) {
@@ -100,6 +107,7 @@ void RenderDebug::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 **/
 void RenderDebug::preGame()
 {
+	last_render = st->game_time;
 }
 
 
@@ -150,8 +158,6 @@ int RenderDebug::getSpriteHeight(SpritePtr sprite)
 **/
 void RenderDebug::render()
 {
-	static int last_render = st->game_time;
-	
 	if (st->game_time - last_render < 500) return;
 	last_render = st->game_time;
 	
