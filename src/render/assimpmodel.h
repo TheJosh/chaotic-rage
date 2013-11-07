@@ -156,7 +156,8 @@ class AssimpModel
 		btVector3 getBoundingSizeHE();
 		btCollisionShape* getCollisionShape();
 		AssimpNode* findNode(string name);
-		
+		string getName() { return this->name; }
+
 	private:
 		void calcBoundingBox();
 		void calcBoundingBoxNode(const aiNode* nd, aiVector3D* min, aiVector3D* max, aiMatrix4x4* trafo);

@@ -27,6 +27,15 @@ static cfg_opt_t damage_opts[] =
 	CFG_END()
 };
 
+// move nodes
+static cfg_opt_t node_opts[] =
+{
+	CFG_STR((char*) "name", (char*)"", CFGF_NONE),
+	CFG_FLOAT_LIST((char*) "axis", 0, CFGF_NONE),
+	CFG_INT((char*) "type", 0, CFGF_NONE),
+	CFG_END()
+};
+
 // Walltype section
 cfg_opt_t vehicletype_opts[] =
 {
@@ -48,19 +57,11 @@ cfg_opt_t vehicletype_opts[] =
 	CFG_FLOAT((char*) "reverse-accel", 5.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "reverse-max", 30.0f, CFGF_NONE),
 	
-	CFG_STR((char*) "horiz-move-node", (char*)"", CFGF_NONE),
-	CFG_FLOAT_LIST((char*) "horiz-move-axis", 0, CFGF_NONE),
-	
-	CFG_STR((char*) "vert-move-node", (char*)"", CFGF_NONE),
-	CFG_FLOAT_LIST((char*) "vert-move-axis", 0, CFGF_NONE),
-	
-	CFG_STR((char*) "spin-node", (char*)"", CFGF_NONE),
-	CFG_FLOAT_LIST((char*) "spin-axis", 0, CFGF_NONE),
-	
 	CFG_STR((char*) "weapon-primary", (char*)"", CFGF_NONE),
 	
 	CFG_SEC((char*) "damage", damage_opts, CFGF_MULTI),
-	
+	CFG_SEC((char*) "node", node_opts, CFGF_MULTI),
+
 	CFG_FLOAT_LIST((char*) "joint-front", (char*)"{0.0, 0.0, 0.0}", CFGF_NONE),
 	CFG_FLOAT_LIST((char*) "joint-back", (char*)"{0.0, 0.0, 0.0}", CFGF_NONE),
 	
@@ -108,36 +109,23 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	}
 	
 	// Load move node, if set
-	tmp = cfg_getstr(cfg_item, "horiz-move-node");
-	if (tmp != NULL && tmp != "") {
+	size = cfg_size(cfg_item, "node");
+	for (int j = 0; j < size; j++) {
+		cfg_t *cfg_node = cfg_getnsec(cfg_item, "node", j);
+		
+		tmp = cfg_getstr(cfg_node, "name");
+		if (tmp[0] == '\0') continue;
+		
 		node.node = wt->model->findNode(tmp);
-		if (node.node) {
-			node.axis = cfg_getvec3(cfg_item, "horiz-move-axis");
-			node.type = VEHICLE_NODE_HORIZ;
-			wt->nodes.push_back(node);
+		if (node.node == NULL) {
+			mod->setLoadErr("Node '%s' not found in model '%s'", tmp, wt->model->getName().c_str());
+			return NULL;
 		}
-	}
-	
-	// Load move node, if set
-	tmp = cfg_getstr(cfg_item, "vert-move-node");
-	if (tmp != NULL && tmp != "") {
-		node.node = wt->model->findNode(tmp);
-		if (node.node) {
-			node.axis = cfg_getvec3(cfg_item, "vert-move-axis");
-			node.type = VEHICLE_NODE_VERT;
-			wt->nodes.push_back(node);
-		}
-	}
-	
-	// Load spin node, if set
-	tmp = cfg_getstr(cfg_item, "spin-node");
-	if (tmp != NULL && tmp != "") {
-		node.node = wt->model->findNode(tmp);
-		if (node.node) {
-			node.axis = cfg_getvec3(cfg_item, "spin-axis");
-			node.type = VEHICLE_NODE_SPIN;
-			wt->nodes.push_back(node);
-		}
+
+		node.type = (VehicleNodeType) cfg_getint(cfg_node, "type");
+		node.axis = cfg_getvec3(cfg_node, "axis");
+		
+		wt->nodes.push_back(node);
 	}
 	
 	// Load primary weapon, if set
