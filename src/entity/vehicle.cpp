@@ -182,7 +182,7 @@ void Vehicle::update(int delta)
 		
 		btScalar m[16];
 		newTransform.getOpenGLMatrix(m);
-		this->setNodeTransform(VEHICLE_NODE_WHEEL0 + i, glm::make_mat4(m));
+		this->setNodeTransformRelative(VEHICLE_NODE_WHEEL0 + i, glm::make_mat4(m));
 	}
 
 	// Send state over network
@@ -362,13 +362,13 @@ void Vehicle::setNodeAngle(VehicleNodeType type, float angle)
 /**
 * Set the transform for all nodes of a given type. Ignores the 'axis' parameter of the node.
 **/
-void Vehicle::setNodeTransform(VehicleNodeType type, glm::mat4 transform)
+void Vehicle::setNodeTransformRelative(VehicleNodeType type, glm::mat4 transform)
 {
 	vector <VehicleTypeNode>::iterator it;
 
 	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); it++) {
 		if ((*it).type == type) {
-			this->getAnimModel()->setMoveTransform((*it).node, transform);
+			this->getAnimModel()->setMoveTransform((*it).node, (*it).node->transform * transform);
 		}
 	}
 }
