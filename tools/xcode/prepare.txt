@@ -1,6 +1,0 @@
-http://www.noquarterarcade.com/xcode-sdl-development-setup
-
-
-wget http://www.libsdl.org/release/SDL-1.2.14.dmg
-wget http://www.libsdl.org/release/SDL-devel-1.2.14-extras.dmg
-
