@@ -7,13 +7,15 @@ if [ ! -d "SDL2-2.0.1" ]; then
 	if [ ! -f "SDL2-2.0.1.tar.gz" ]; then
 		wget http://www.libsdl.org/release/SDL2-2.0.1.tar.gz
 	fi
-	tar -xzf SDL2-2.0.1.tar.gz
+	tar -xzf SDL2-2.0.1.tar.gz || exit 1
 fi
 
 cd SDL2-2.0.1
 
-./configure --prefix=`pwd`/../../environment
+./configure	|| exit 1
 
-make
+make || exit 1
 
-make install
+sudo make install || exit 1
+
+sudo ldconfig || exit 1
