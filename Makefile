@@ -1,5 +1,5 @@
 CXX=g++
-CFLAGS=`sdl-config --cflags` `pkg-config zziplib libconfuse gl glu lua5.1 bullet assimp --cflags` `freetype-config --cflags` -DGETOPT -Werror -Wall -ggdb -Itools/glm
+CFLAGS=`sdl-config --cflags` `pkg-config zziplib libconfuse gl glu lua5.1 bullet assimp --cflags` `freetype-config --cflags` -DGETOPT -Werror -Wall -ggdb -Itools/include
 LIBS=`sdl-config --libs` `pkg-config zziplib libconfuse lua5.1 bullet assimp --libs` `freetype-config --libs` -lGL -lGLU -lGLEW -lSDL_mixer -lSDL_image -lSDL_net -lguichan_sdl -lguichan_opengl -lguichan -L/usr/X11R6/lib -lX11
 
 VERSION := $(shell grep -E --only-matching 'VERSION ".+"' src/rage.h | sed -n 1p | sed "s/VERSION //" | sed 's/"//g')
@@ -60,7 +60,8 @@ dist: src data maps
 	cp -r maps chaotic-rage-$(VERSION)
 	
 	mkdir -p chaotic-rage-$(VERSION)/tools
-	cp -r tools/glm chaotic-rage-$(VERSION)/tools
+	cp -r tools/include chaotic-rage-$(VERSION)/tools
+	cp -r tools/linux chaotic-rage-$(VERSION)/linux
 	
 	tar -cvjf chaotic-rage-$(VERSION).tar.bz2 chaotic-rage-$(VERSION)
 	rm -rf chaotic-rage-$(VERSION)
