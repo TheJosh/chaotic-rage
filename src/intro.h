@@ -10,7 +10,7 @@
 using namespace std;
 
 class GameState;
-class Render;
+class RenderOpenGL;
 class Song;
 
 
@@ -18,7 +18,7 @@ class Intro : public UIUpdate
 {
 	private:
 		GameState *st;
-		Render *render;
+		RenderOpenGL *render;
 		
 		Song* sg;
 		SpritePtr img1;

@@ -40,7 +40,7 @@ void handleEvents(GameState *st)
 					}
 					break;
 
-				case SDLK_PRINT:
+				case SDLK_PRINTSCREEN:
 					{
 						screenshot_num++;
 						char buf[50];
@@ -94,26 +94,26 @@ void handleEvents(GameState *st)
 		// One player, player one
 		if (st->num_local == 1 && st->local_players[0]->p != NULL) {
 			if (event.type == SDL_KEYDOWN) {
-				switch (event.key.keysym.sym) {
-					case SDLK_w: st->local_players[0]->p->keyPress(Player::KEY_UP); break;
-					case SDLK_a: st->local_players[0]->p->keyPress(Player::KEY_LEFT); break;
-					case SDLK_s: st->local_players[0]->p->keyPress(Player::KEY_DOWN); break;
-					case SDLK_d: st->local_players[0]->p->keyPress(Player::KEY_RIGHT); break;
-					case SDLK_e: st->local_players[0]->p->keyPress(Player::KEY_USE); break;
-					case SDLK_q: st->local_players[0]->p->keyPress(Player::KEY_LIFT); break;
-					case SDLK_t: st->local_players[0]->p->keyPress(Player::KEY_SPECIAL); break;
+				switch (event.key.keysym.scancode) {
+					case SDL_SCANCODE_W: st->local_players[0]->p->keyPress(Player::KEY_UP); break;
+					case SDL_SCANCODE_A: st->local_players[0]->p->keyPress(Player::KEY_LEFT); break;
+					case SDL_SCANCODE_S: st->local_players[0]->p->keyPress(Player::KEY_DOWN); break;
+					case SDL_SCANCODE_D: st->local_players[0]->p->keyPress(Player::KEY_RIGHT); break;
+					case SDL_SCANCODE_E: st->local_players[0]->p->keyPress(Player::KEY_USE); break;
+					case SDL_SCANCODE_Q: st->local_players[0]->p->keyPress(Player::KEY_LIFT); break;
+					case SDL_SCANCODE_T: st->local_players[0]->p->keyPress(Player::KEY_SPECIAL); break;
 					default: break;
 				}
 			
 			} else if (event.type == SDL_KEYUP) {
-				switch (event.key.keysym.sym) {
-					case SDLK_w: st->local_players[0]->p->keyRelease(Player::KEY_UP); break;
-					case SDLK_a: st->local_players[0]->p->keyRelease(Player::KEY_LEFT); break;
-					case SDLK_s: st->local_players[0]->p->keyRelease(Player::KEY_DOWN); break;
-					case SDLK_d: st->local_players[0]->p->keyRelease(Player::KEY_RIGHT); break;
-					case SDLK_e: st->local_players[0]->p->keyRelease(Player::KEY_USE); break;
-					case SDLK_q: st->local_players[0]->p->keyRelease(Player::KEY_LIFT); break;
-					case SDLK_t: st->local_players[0]->p->keyRelease(Player::KEY_SPECIAL); break;
+				switch (event.key.keysym.scancode) {
+					case SDL_SCANCODE_W: st->local_players[0]->p->keyRelease(Player::KEY_UP); break;
+					case SDL_SCANCODE_A: st->local_players[0]->p->keyRelease(Player::KEY_LEFT); break;
+					case SDL_SCANCODE_S: st->local_players[0]->p->keyRelease(Player::KEY_DOWN); break;
+					case SDL_SCANCODE_D: st->local_players[0]->p->keyRelease(Player::KEY_RIGHT); break;
+					case SDL_SCANCODE_E: st->local_players[0]->p->keyRelease(Player::KEY_USE); break;
+					case SDL_SCANCODE_Q: st->local_players[0]->p->keyRelease(Player::KEY_LIFT); break;
+					case SDL_SCANCODE_T: st->local_players[0]->p->keyRelease(Player::KEY_SPECIAL); break;
 					default: break;
 				}
 			
@@ -136,10 +136,10 @@ void handleEvents(GameState *st)
 			} else if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_RIGHT) {
 				st->local_players[0]->p->keyRelease(Player::KEY_MELEE);
 
-			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_WHEELUP) {
+			} else if (event.type == SDL_MOUSEWHEEL && event.wheel.y > 0) {
 				st->local_players[0]->hud->eventUp();
 			
-			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_WHEELDOWN) {
+			} else if (event.type == SDL_MOUSEWHEEL && event.wheel.y < 0) {
 				st->local_players[0]->hud->eventDown();
 
 			}
@@ -150,40 +150,40 @@ void handleEvents(GameState *st)
 		// Two players, player one
 		if (st->num_local == 2 && st->local_players[0]->p != NULL) {
 			if (event.type == SDL_KEYDOWN) {
-				switch (event.key.keysym.sym) {
-					case SDLK_w: st->local_players[0]->p->keyPress(Player::KEY_UP); break;
-					case SDLK_a: st->local_players[0]->p->keyPress(Player::KEY_LEFT); break;
-					case SDLK_s: st->local_players[0]->p->keyPress(Player::KEY_DOWN); break;
-					case SDLK_d: st->local_players[0]->p->keyPress(Player::KEY_RIGHT); break;
-					case SDLK_e: st->local_players[0]->p->keyPress(Player::KEY_USE); break;
-					case SDLK_q: st->local_players[0]->p->keyPress(Player::KEY_LIFT); break;
-					case SDLK_t: st->local_players[0]->p->keyPress(Player::KEY_SPECIAL); break;
-					case SDLK_k: mk_down_x[0] = -10; break;
-					case SDLK_p: mk_down_x[0] = 10; break;
-					case SDLK_9: mk_down_y[0] = -10; break;
-					case SDLK_l: mk_down_y[0] = 10; break;
-					case SDLK_o: st->local_players[0]->hud->eventClick(); st->local_players[0]->p->keyPress(Player::KEY_FIRE); break;
-					case SDLK_i: st->local_players[0]->p->keyPress(Player::KEY_MELEE); break;
-					case SDLK_j: st->local_players[0]->hud->eventUp(); break;
-					case SDLK_m: st->local_players[0]->hud->eventDown(); break;
+				switch (event.key.keysym.scancode) {
+					case SDL_SCANCODE_W: st->local_players[0]->p->keyPress(Player::KEY_UP); break;
+					case SDL_SCANCODE_A: st->local_players[0]->p->keyPress(Player::KEY_LEFT); break;
+					case SDL_SCANCODE_S: st->local_players[0]->p->keyPress(Player::KEY_DOWN); break;
+					case SDL_SCANCODE_D: st->local_players[0]->p->keyPress(Player::KEY_RIGHT); break;
+					case SDL_SCANCODE_E: st->local_players[0]->p->keyPress(Player::KEY_USE); break;
+					case SDL_SCANCODE_Q: st->local_players[0]->p->keyPress(Player::KEY_LIFT); break;
+					case SDL_SCANCODE_T: st->local_players[0]->p->keyPress(Player::KEY_SPECIAL); break;
+					case SDL_SCANCODE_K: mk_down_x[0] = -10; break;
+					case SDL_SCANCODE_P: mk_down_x[0] = 10; break;
+					case SDL_SCANCODE_9: mk_down_y[0] = -10; break;
+					case SDL_SCANCODE_L: mk_down_y[0] = 10; break;
+					case SDL_SCANCODE_O: st->local_players[0]->hud->eventClick(); st->local_players[0]->p->keyPress(Player::KEY_FIRE); break;
+					case SDL_SCANCODE_I: st->local_players[0]->p->keyPress(Player::KEY_MELEE); break;
+					case SDL_SCANCODE_J: st->local_players[0]->hud->eventUp(); break;
+					case SDL_SCANCODE_M: st->local_players[0]->hud->eventDown(); break;
 					default: break;
 				}
 			
 			} else if (event.type == SDL_KEYUP) {
-				switch (event.key.keysym.sym) {
-					case SDLK_w: st->local_players[0]->p->keyRelease(Player::KEY_UP); break;
-					case SDLK_a: st->local_players[0]->p->keyRelease(Player::KEY_LEFT); break;
-					case SDLK_s: st->local_players[0]->p->keyRelease(Player::KEY_DOWN); break;
-					case SDLK_d: st->local_players[0]->p->keyRelease(Player::KEY_RIGHT); break;
-					case SDLK_e: st->local_players[0]->p->keyRelease(Player::KEY_USE); break;
-					case SDLK_q: st->local_players[0]->p->keyRelease(Player::KEY_LIFT); break;
-					case SDLK_t: st->local_players[0]->p->keyRelease(Player::KEY_SPECIAL); break;
-					case SDLK_k: mk_down_x[0] = 0; break;
-					case SDLK_p: mk_down_x[0] = 0; break;
-					case SDLK_9: mk_down_y[0] = 0; break;
-					case SDLK_l: mk_down_y[0] = 0; break;
-					case SDLK_o: st->local_players[0]->p->keyRelease(Player::KEY_FIRE); break;
-					case SDLK_i: st->local_players[0]->p->keyRelease(Player::KEY_MELEE); break;
+				switch (event.key.keysym.scancode) {
+					case SDL_SCANCODE_W: st->local_players[0]->p->keyRelease(Player::KEY_UP); break;
+					case SDL_SCANCODE_A: st->local_players[0]->p->keyRelease(Player::KEY_LEFT); break;
+					case SDL_SCANCODE_S: st->local_players[0]->p->keyRelease(Player::KEY_DOWN); break;
+					case SDL_SCANCODE_D: st->local_players[0]->p->keyRelease(Player::KEY_RIGHT); break;
+					case SDL_SCANCODE_E: st->local_players[0]->p->keyRelease(Player::KEY_USE); break;
+					case SDL_SCANCODE_Q: st->local_players[0]->p->keyRelease(Player::KEY_LIFT); break;
+					case SDL_SCANCODE_T: st->local_players[0]->p->keyRelease(Player::KEY_SPECIAL); break;
+					case SDL_SCANCODE_K: mk_down_x[0] = 0; break;
+					case SDL_SCANCODE_P: mk_down_x[0] = 0; break;
+					case SDL_SCANCODE_9: mk_down_y[0] = 0; break;
+					case SDL_SCANCODE_L: mk_down_y[0] = 0; break;
+					case SDL_SCANCODE_O: st->local_players[0]->p->keyRelease(Player::KEY_FIRE); break;
+					case SDL_SCANCODE_I: st->local_players[0]->p->keyRelease(Player::KEY_MELEE); break;
 					default: break;
 				}
 			}
@@ -195,26 +195,26 @@ void handleEvents(GameState *st)
 		// Keypad: Move = 8, 4, 5, 6; Action = 9; Lift = 7
 		if (st->num_local == 2 && st->local_players[1]->p != NULL) {
 			if (event.type == SDL_KEYDOWN) {
-				switch (event.key.keysym.sym) {
-					case SDLK_KP8: st->local_players[1]->p->keyPress(Player::KEY_UP); break;
-					case SDLK_KP4: st->local_players[1]->p->keyPress(Player::KEY_LEFT); break;
-					case SDLK_KP5: st->local_players[1]->p->keyPress(Player::KEY_DOWN); break;
-					case SDLK_KP6: st->local_players[1]->p->keyPress(Player::KEY_RIGHT); break;
-					case SDLK_KP9: st->local_players[1]->p->keyPress(Player::KEY_USE); break;
-					case SDLK_KP7: st->local_players[1]->p->keyPress(Player::KEY_LIFT); break;
-					case SDLK_KP1: st->local_players[1]->p->keyPress(Player::KEY_SPECIAL); break;
+				switch (event.key.keysym.scancode) {
+					case SDL_SCANCODE_KP_8: st->local_players[1]->p->keyPress(Player::KEY_UP); break;
+					case SDL_SCANCODE_KP_4: st->local_players[1]->p->keyPress(Player::KEY_LEFT); break;
+					case SDL_SCANCODE_KP_5: st->local_players[1]->p->keyPress(Player::KEY_DOWN); break;
+					case SDL_SCANCODE_KP_6: st->local_players[1]->p->keyPress(Player::KEY_RIGHT); break;
+					case SDL_SCANCODE_KP_9: st->local_players[1]->p->keyPress(Player::KEY_USE); break;
+					case SDL_SCANCODE_KP_7: st->local_players[1]->p->keyPress(Player::KEY_LIFT); break;
+					case SDL_SCANCODE_KP_1: st->local_players[1]->p->keyPress(Player::KEY_SPECIAL); break;
 					default: break;
 				}
 			
 			} else if (event.type == SDL_KEYUP) {
-				switch (event.key.keysym.sym) {
-					case SDLK_KP8: st->local_players[1]->p->keyRelease(Player::KEY_UP); break;
-					case SDLK_KP4: st->local_players[1]->p->keyRelease(Player::KEY_LEFT); break;
-					case SDLK_KP5: st->local_players[1]->p->keyRelease(Player::KEY_DOWN); break;
-					case SDLK_KP6: st->local_players[1]->p->keyRelease(Player::KEY_RIGHT); break;
-					case SDLK_KP9: st->local_players[1]->p->keyRelease(Player::KEY_USE); break;
-					case SDLK_KP7: st->local_players[1]->p->keyRelease(Player::KEY_LIFT); break;
-					case SDLK_KP1: st->local_players[1]->p->keyRelease(Player::KEY_SPECIAL); break;
+				switch (event.key.keysym.scancode) {
+					case SDL_SCANCODE_KP_8: st->local_players[1]->p->keyRelease(Player::KEY_UP); break;
+					case SDL_SCANCODE_KP_4: st->local_players[1]->p->keyRelease(Player::KEY_LEFT); break;
+					case SDL_SCANCODE_KP_5: st->local_players[1]->p->keyRelease(Player::KEY_DOWN); break;
+					case SDL_SCANCODE_KP_6: st->local_players[1]->p->keyRelease(Player::KEY_RIGHT); break;
+					case SDL_SCANCODE_KP_9: st->local_players[1]->p->keyRelease(Player::KEY_USE); break;
+					case SDL_SCANCODE_KP_7: st->local_players[1]->p->keyRelease(Player::KEY_LIFT); break;
+					case SDL_SCANCODE_KP_1: st->local_players[1]->p->keyRelease(Player::KEY_SPECIAL); break;
 					default: break;
 				}
 			
@@ -237,10 +237,10 @@ void handleEvents(GameState *st)
 			} else if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_RIGHT) {
 				st->local_players[1]->p->keyRelease(Player::KEY_MELEE);
 
-			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_WHEELUP) {
+			} else if (event.type == SDL_MOUSEWHEEL && event.wheel.y > 0) {
 				st->local_players[1]->hud->eventUp();
 			
-			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_WHEELDOWN) {
+			} else if (event.type == SDL_MOUSEWHEEL && event.wheel.y < 0) {
 				st->local_players[1]->hud->eventDown();
 
 			}

@@ -54,37 +54,6 @@ SDL_Surface* flipVert(SDL_Surface* sfc)
 	return result;
 }
 
-/**
-* Apply the colourkey mask from one surface onto another
-**/
-void cross_mask (SDL_Surface * dest, SDL_Surface * mask)
-{
-	SDL_LockSurface(dest);
-	SDL_LockSurface(mask);
-	
-	if (mask->format->BytesPerPixel != dest->format->BytesPerPixel) return;
-	
-	int bpp = mask->format->BytesPerPixel;
-	
-	for (int x = 0; x < mask->w; x++) {
-		for (int y = 0; y < mask->h; y++) {
-			
-			Uint8 *pm = (Uint8 *)mask->pixels + y * mask->pitch + x * bpp;
-			Uint8 *pd = (Uint8 *)dest->pixels + y * dest->pitch + x * bpp;
-			
-			if (*(Uint32 *)pm == mask->format->colorkey) {
-				*(Uint32 *)pd = *(Uint32 *)pm;
-			}
-			
-		}
-	}
-	
-	SDL_UnlockSurface(dest);
-	SDL_UnlockSurface(mask);
-	
-	SDL_SetColorKey(dest, SDL_SRCCOLORKEY, mask->format->colorkey);
-}
-
 
 /**
 * Gets the value of a pixel

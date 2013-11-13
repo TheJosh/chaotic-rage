@@ -96,14 +96,14 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 {
 	SDL_InitSubSystem(SDL_INIT_VIDEO);
 	
-	// Load icon
-	SDL_RWops *rw = SDL_RWFromConstMem(windowicon_bmp, sizeof(windowicon_bmp));
+	// TODO: Window icon for SDL2
+	/*SDL_RWops *rw = SDL_RWFromConstMem(windowicon_bmp, sizeof(windowicon_bmp));
 	SDL_Surface *icon = SDL_LoadBMP_RW(rw, 1);
 	SDL_SetColorKey(icon, SDL_SRCCOLORKEY, SDL_MapRGBA(icon->format, 255, 0, 255, 0));
 	SDL_WM_SetIcon(icon, NULL);
-	SDL_FreeSurface(icon);
+	SDL_FreeSurface(icon);*/
 	
-	this->screen = NULL;
+	this->window = NULL;
 	this->physicsdebug = NULL;
 	this->speeddebug = false;
 	this->viewmode = 0;
@@ -111,9 +111,10 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->particle_vao = 0;
 	this->font_vbo = 0;
 	
-	const SDL_VideoInfo* mode = SDL_GetVideoInfo();
+	// TODO: Do we need this? SDL2
+	/*const SDL_VideoInfo* mode = SDL_GetVideoInfo();
 	this->desktop_width = mode->current_w;
-	this->desktop_height = mode->current_h;
+	this->desktop_height = mode->current_h;*/
 	
 	for (unsigned int i = 0; i < NUM_CHAR_TEX; i++) {
 		this->char_tex[i].tex = 0;
@@ -132,6 +133,8 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 RenderOpenGL::~RenderOpenGL()
 {
 	delete(this->settings);
+	
+	SDL_GL_DeleteContext(this->glcontext); 
 	
 	// TODO: Delete all buffers, tex, etc.
 }
@@ -208,21 +211,21 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
 	}
 
-	flags = SDL_OPENGL;
-	if (fullscreen) flags |= SDL_FULLSCREEN;
+	flags = SDL_WINDOW_OPENGL;
+	if (fullscreen) flags |= SDL_WINDOW_FULLSCREEN;
 	
-	this->screen = SDL_SetVideoMode(width, height, 32, flags);
-	if (screen == NULL) {
+	char title[100];
+	sprintf(title, "Chaotic Rage %s", VERSION);
+	
+	this->window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
+	if (this->window == NULL) {
 		char buffer[200];
 		sprintf(buffer, "Unable to set %ix%i video: %s\n", width, height, SDL_GetError());
 		reportFatalError(buffer);
 	}
 	
-	// Window title
-	char buff[100];
-	sprintf(buff, "Chaotic Rage %s", VERSION);
-	SDL_WM_SetCaption(buff, buff);
-
+	this->glcontext = SDL_GL_CreateContext(this->window);
+	
 	// SDL_Image
 	flags = IMG_INIT_PNG;
 	int initted = IMG_Init(flags);
@@ -279,8 +282,6 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glFlush();
-	SDL_GL_SwapBuffers();
 }
 
 
@@ -1587,7 +1588,7 @@ void RenderOpenGL::render()
 
 	CHECK_OPENGL_ERROR;
 
-	SDL_GL_SwapBuffers();
+	SDL_GL_SwapWindow(this->window);
 }
 
 

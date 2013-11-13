@@ -4,7 +4,7 @@
 
 #include "intro.h"
 #include "rage.h"
-#include "render/render.h"
+#include "render/render_opengl.h"
 #include "mod/mod.h"
 #include "mod/song.h"
 #include "audio/audio.h"
@@ -18,7 +18,7 @@ using namespace std;
 Intro::Intro(GameState *st)
 {
 	this->st = st;
-	this->render = st->render;
+	this->render = (RenderOpenGL*) st->render;
 }
 
 Intro::~Intro()
@@ -52,7 +52,7 @@ void Intro::load()
 	sg = new Song();
 	sg->name = "intro";
 	SDL_RWops * rwops = mod->loadRWops("intro.ogg");
-	sg->music = Mix_LoadMUS_RW(rwops);
+	sg->music = Mix_LoadMUS_RW(rwops, 0);			// is this right?
 }
 
 
@@ -121,7 +121,7 @@ void Intro::updateUI()
 		this->render->renderSprite(text, x, y);
 	}
 
-	SDL_GL_SwapBuffers();
+	SDL_GL_SwapWindow(this->render->window);
 }
 
 

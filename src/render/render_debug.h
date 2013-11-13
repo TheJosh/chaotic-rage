@@ -15,14 +15,15 @@
 class RenderDebug : public Render
 {
 	private:
-		SDL_Surface * screen;
+		SDL_Window *window;
+		SDL_Renderer *renderer;
 		int last_render;
 		
-		SDL_Surface * sprite_wall;
-		SDL_Surface * sprite_vehicle;
-		SDL_Surface * sprite_object;
-		SDL_Surface * sprite_unit;
-		SDL_Surface * sprite_player;
+		SDL_Texture *sprite_wall;
+		SDL_Texture *sprite_vehicle;
+		SDL_Texture *sprite_object;
+		SDL_Texture *sprite_unit;
+		SDL_Texture *sprite_player;
 		
 		int width;
 		int height;
@@ -45,5 +46,9 @@ class RenderDebug : public Render
 	public:
 		RenderDebug(GameState * st);
 		virtual ~RenderDebug();
+		
+	private:
+		SDL_Texture *loadTexture(const char* filename);
+		void cleanup();
 };
 

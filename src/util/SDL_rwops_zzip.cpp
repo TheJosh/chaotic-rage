@@ -25,17 +25,17 @@ static zzip_strings_t mod_zzip_ext[] = { ".crk", ".CRK", 0 };
 			 ((_context)->hidden.unknown.data1)
 
 
-static int sdl_rwops_zzip_seek(SDL_RWops *context, int offset, int whence)
+static Sint64 sdl_rwops_zzip_seek(SDL_RWops *context, Sint64 offset, int whence)
 {
 	return zzip_seek(SDL_RWOPS_ZZIP_FILE(context), offset, whence);
 }
 
-static int sdl_rwops_zzip_read(SDL_RWops *context, void *ptr, int size, int maxnum)
+static size_t sdl_rwops_zzip_read(SDL_RWops *context, void *ptr, size_t size, size_t maxnum)
 {
 	return zzip_read(SDL_RWOPS_ZZIP_FILE(context), ptr, size*maxnum) / size;
 }
 
-static int sdl_rwops_zzip_write(SDL_RWops *context, const void *ptr, int size, int num)
+static size_t sdl_rwops_zzip_write(SDL_RWops *context, const void *ptr, size_t size, size_t num)
 {
 	return 0; /* ignored */
 }

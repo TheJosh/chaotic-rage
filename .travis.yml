@@ -6,6 +6,10 @@ install:
   - cd tools/linux
   - ./assimp.sh
   - ./bullet.sh
+  - ./sdl2.sh
+  - ./sdl2_image.sh
+  - ./sdl2_mixer.sh
+  - ./sdl2_net.sh
   - cd ../..
 script:
   - make

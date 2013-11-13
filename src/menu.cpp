@@ -292,7 +292,7 @@ void Menu::updateUI()
 					}
 					break;
 
-				case SDLK_PRINT:
+				case SDLK_PRINTSCREEN:
 					{
 						string filename = getUserDataDir();
 						filename.append("menu_screenshot.bmp");
@@ -383,7 +383,7 @@ void Menu::updateUI()
 	}
 
 
-	SDL_GL_SwapBuffers();
+	SDL_GL_SwapWindow(((RenderOpenGL*)render)->window);
 }
 
 
@@ -606,7 +606,7 @@ void Menu::startCampaign(Campaign* c, string unittype, int viewmode, unsigned in
 						}
 					}
 
-					SDL_GL_SwapBuffers();
+					SDL_GL_SwapWindow(((RenderOpenGL*)render)->window);
 				}
 
 				this->render->freeSprite(img);

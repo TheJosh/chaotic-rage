@@ -66,7 +66,8 @@ class RenderOpenGL : public Render3D
 	friend class GameState;
 	
 	private:
-		SDL_Surface * screen;
+		SDL_Window *window;
+		SDL_GLContext glcontext;
 		
 		// The current player being rendered (split screen)
 		Player* render_player;

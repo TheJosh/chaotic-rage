@@ -17,24 +17,26 @@ RenderDebug::RenderDebug(GameState * st) : Render(st)
 {
 	SDL_InitSubSystem(SDL_INIT_VIDEO);
 	
-	this->screen = NULL;
-	
-	this->sprite_wall = SDL_LoadBMP("data/debug/wall.bmp");
-	this->sprite_vehicle = SDL_LoadBMP("data/debug/vehicle.bmp");
-	this->sprite_object = SDL_LoadBMP("data/debug/object.bmp");
-	this->sprite_unit = SDL_LoadBMP("data/debug/unit.bmp");
-	this->sprite_player = SDL_LoadBMP("data/debug/player.bmp");
+	this->window = NULL;
+	this->renderer = NULL;
 }
 
 RenderDebug::~RenderDebug()
 {
-	SDL_FreeSurface(this->sprite_wall);
-	SDL_FreeSurface(this->sprite_unit);
-	SDL_FreeSurface(this->sprite_vehicle);
-	SDL_FreeSurface(this->sprite_object);
-	SDL_FreeSurface(this->sprite_player);
-	
-	SDL_FreeSurface(this->screen);
+	this->cleanup();
+}
+
+
+/**
+* Load a texture bitmap from file
+* Basically just wraps SDL_LoadBMP
+**/
+SDL_Texture *RenderDebug::loadTexture(const char* filename)
+{
+	SDL_Surface *surf = SDL_LoadBMP(filename);
+	SDL_Texture *tex = SDL_CreateTextureFromSurface(this->renderer, surf);
+	SDL_FreeSurface(surf);
+	return tex;
 }
 
 
@@ -46,17 +48,45 @@ void RenderDebug::setScreenSize(int width, int height, bool fullscreen)
 	this->width = width;
 	this->height = height;
 	
-	if (this->screen) {
-		SDL_FreeSurface(this->screen);
+	if (this->window) {
+		this->cleanup();
 	}
 	
-	this->screen = SDL_SetVideoMode(width, height, 32, 0);
-	if (screen == NULL) {
+	// Create window
+	this->window = SDL_CreateWindow("Chaotic Rage (debug)", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, 0);
+	if (this->window == NULL) {
 		fprintf(stderr, "Unable to set %ix%i video: %s\n", width, height, SDL_GetError());
 		exit(1);
 	}
 	
-	SDL_WM_SetCaption("Chaotic Rage (debug)", "Chaotic Rage (debug)");
+	// Create renderer
+	this->renderer = SDL_CreateRenderer(this->window, -1, 0);
+	if (this->renderer == NULL) {
+		fprintf(stderr, "Unable to set %ix%i video: %s\n", width, height, SDL_GetError());
+		exit(1);
+	}
+	
+	// Load assets
+	this->sprite_wall = this->loadTexture("data/debug/wall.bmp");
+	this->sprite_vehicle = this->loadTexture("data/debug/vehicle.bmp");
+	this->sprite_object = this->loadTexture("data/debug/object.bmp");
+	this->sprite_unit = this->loadTexture("data/debug/unit.bmp");
+	this->sprite_player = this->loadTexture("data/debug/player.bmp");
+}
+
+
+/**
+* Free textures and window
+**/
+void RenderDebug::cleanup()
+{
+	SDL_DestroyTexture(this->sprite_wall);
+	SDL_DestroyTexture(this->sprite_unit);
+	SDL_DestroyTexture(this->sprite_vehicle);
+	SDL_DestroyTexture(this->sprite_object);
+	SDL_DestroyTexture(this->sprite_player);
+	SDL_DestroyRenderer(this->renderer);
+	SDL_DestroyWindow(this->window);
 }
 
 
@@ -174,7 +204,7 @@ void RenderDebug::render()
 	dest.w = 16;
 	dest.h = 16;
 
-	SDL_FillRect(screen, NULL, 0);
+	SDL_RenderClear(this->renderer);
 	
 	// Entities
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
@@ -186,24 +216,24 @@ void RenderDebug::render()
 		dest.y = (int)round(trans.getOrigin().getZ() / scaley) - 8;
 		
 		if (e->klass() == WALL) {
-			SDL_BlitSurface(this->sprite_wall, &src, screen, &dest);
+			SDL_RenderCopy(this->renderer, this->sprite_wall, &src, &dest);
 			
 		} else if (e->klass() == VEHICLE) {
-			SDL_BlitSurface(this->sprite_vehicle, &src, screen, &dest);
+			SDL_RenderCopy(this->renderer, this->sprite_vehicle, &src, &dest);
 			
 		} else if (e->klass() == OBJECT) {
-			SDL_BlitSurface(this->sprite_object, &src, screen, &dest);
+			SDL_RenderCopy(this->renderer, this->sprite_object, &src, &dest);
 			
 		} else if (e->klass() == UNIT) {
 			if (((Unit*)e)->slot == 0) {
-				SDL_BlitSurface(this->sprite_unit, &src, screen, &dest);
+				SDL_RenderCopy(this->renderer, this->sprite_unit, &src, &dest);
 			} else {
-				SDL_BlitSurface(this->sprite_player, &src, screen, &dest);
+				SDL_RenderCopy(this->renderer, this->sprite_player, &src, &dest);
 			}
 		}
 	}
 	
-	SDL_Flip(screen);
+	SDL_RenderPresent(this->renderer);
 	
 	st->reset_mouse = false;
 }

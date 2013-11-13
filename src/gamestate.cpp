@@ -530,9 +530,11 @@ void GameState::setMouseGrab(bool reset)
 	
 	this->reset_mouse = reset;
 	
-	SDL_ShowCursor(!this->reset_mouse);
-	SDL_EnableUNICODE(!this->reset_mouse);
-	SDL_WM_GrabInput(this->reset_mouse == 1 ? SDL_GRAB_ON : SDL_GRAB_OFF);
+	SDL_SetRelativeMouseMode(reset ? SDL_TRUE : SDL_FALSE);
+	
+	//SDL_ShowCursor(!this->reset_mouse);
+	//SDL_EnableUNICODE(!this->reset_mouse);
+	//SDL_WM_GrabInput(this->reset_mouse == 1 ? SDL_GRAB_ON : SDL_GRAB_OFF);
 }
 
 /**

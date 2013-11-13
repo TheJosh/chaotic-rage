@@ -61,12 +61,7 @@ void gameLoop(GameState *st, Render *render)
 			st->logic->raise_playerjoin(st->local_players[i]->slot);
 		}
 	}
-
-	if (st->getMouseGrab()) {
-		SDL_WarpMouse(400, 300);
-	}
-
-
+	
 	st->running = true;
 	while (st->running) {
 		delta = SDL_GetTicks() - start;
@@ -81,8 +76,6 @@ void gameLoop(GameState *st, Render *render)
 			if (st->local_players[1]->p) st->local_players[1]->p->angleFromMouse(game_x[1], game_y[1], delta);
 			game_x[0] = game_y[0] = 0;
 			game_x[1] = game_y[1] = 0;
-			
-			SDL_WarpMouse(400, 300);
 		}
 		
 		net_time += delta;
