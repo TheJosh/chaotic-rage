@@ -20,9 +20,15 @@ language Lua, which provides logic for AIs, as well as managed game types.
 
 You can read the official modding documentation at: http://chaoticrage.com/modding_docs
 
-You can read the technical documentation (programming) at: http://chaoticrage.com/dev_docs
 
-If you've got ideas, code or content, email me at help@chaoticrage.com.
+Contributing
+------------
+
+All contributions (even documentation) are welcome :) Open a pull request and I would be happy to merge them.
+
+If you've got ideas, code or content, but don't know where to start, email me at help@chaoticrage.com.
+
+You can read the technical documentation at: http://chaoticrage.com/dev_docs
 
 
 Build Status
