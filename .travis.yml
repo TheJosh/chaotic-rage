@@ -10,6 +10,7 @@ install:
   - ./sdl2_image.sh
   - ./sdl2_mixer.sh
   - ./sdl2_net.sh
+  - ./guichan.sh
   - cd ../..
 script:
   - make
