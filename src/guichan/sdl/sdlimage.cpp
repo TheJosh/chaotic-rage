@@ -166,14 +166,14 @@ namespace gcn
             throw GCN_EXCEPTION("Unable to convert image to display format.");
         }
 
-        if (hasPink)
+        // Removed, SDL2
+        /*if (hasPink)
         {
             SDL_SetColorKey(tmp, SDL_SRCCOLORKEY,
                             SDL_MapRGB(tmp->format,255,0,255));
         }
         
-        // Removed, SDL2
-        /*if (hasAlpha)
+        if (hasAlpha)
         {
             SDL_SetAlpha(tmp, SDL_SRCALPHA, 255);
         }*/

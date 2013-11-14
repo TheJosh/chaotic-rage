@@ -64,7 +64,7 @@
       <IgnoreSpecificDefaultLibraries>MSVCRTD.LIB;MSVCRT100D.LIB</IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(ProjectDir)..\lib\windows\*.dll" "$(OutputPath)"</Command>
+      <Command>copy "$(ProjectDir)..\windows\lib\*.dll" "$(OutputPath)"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy DLLs</Message>
