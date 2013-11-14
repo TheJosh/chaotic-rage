@@ -59,6 +59,18 @@
     <Filter Include="src\fx">
       <UniqueIdentifier>{64b84db7-3509-4ce4-8797-94f526553a16}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\guichan">
+      <UniqueIdentifier>{d21fd7a8-5f7b-4f51-aeb0-ee86ec001a7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\guichan\opengl">
+      <UniqueIdentifier>{88e5f532-5cde-4284-b1ca-ae243cd32e7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\guichan\sdl">
+      <UniqueIdentifier>{a4d4f71e-c82b-4cba-afd0-ab022abc464e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\guichan\widgets">
+      <UniqueIdentifier>{73b6e994-f9d3-4b26-a65c-551a8a8877e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\data\cr\animmodels.conf">
@@ -432,6 +444,150 @@
     <ClCompile Include="..\..\src\entity\unit.cpp">
       <Filter>src\mod</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\guichan\actionevent.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\basiccontainer.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\cliprectangle.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\color.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\defaultfont.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\event.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\exception.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\focushandler.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\font.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\genericinput.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\graphics.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\gui.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\guichan.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\image.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\imagefont.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\inputevent.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\key.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\keyevent.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\keyinput.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\mouseevent.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\mouseinput.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\rectangle.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\selectionevent.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widget.cpp">
+      <Filter>src\guichan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widgets\button.cpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widgets\checkbox.cpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widgets\container.cpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widgets\dropdown.cpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widgets\icon.cpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widgets\imagebutton.cpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widgets\label.cpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widgets\listbox.cpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widgets\radiobutton.cpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widgets\scrollarea.cpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widgets\slider.cpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widgets\tab.cpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widgets\tabbedarea.cpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widgets\textbox.cpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widgets\textfield.cpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\widgets\window.cpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\sdl\sdl.cpp">
+      <Filter>src\guichan\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\sdl\sdlgraphics.cpp">
+      <Filter>src\guichan\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\sdl\sdlimage.cpp">
+      <Filter>src\guichan\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\sdl\sdlimageloader.cpp">
+      <Filter>src\guichan\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\sdl\sdlinput.cpp">
+      <Filter>src\guichan\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\opengl\opengl.cpp">
+      <Filter>src\guichan\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\opengl\openglgraphics.cpp">
+      <Filter>src\guichan\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guichan\opengl\openglimage.cpp">
+      <Filter>src\guichan\opengl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">
@@ -718,6 +874,204 @@
     </ClInclude>
     <ClInclude Include="..\..\src\util\stream_redirector.h">
       <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\actionevent.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\actionlistener.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\allegro.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\basiccontainer.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\cliprectangle.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\color.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\deathlistener.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\defaultfont.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\event.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\exception.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\focushandler.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\focuslistener.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\font.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\genericinput.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\glut.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\graphics.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\gui.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\guichan.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\hge.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\image.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\imagefont.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\imageloader.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\input.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\inputevent.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\key.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\keyevent.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\keyinput.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\keylistener.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\listmodel.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\mouseevent.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\mouseinput.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\mouselistener.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\opengl.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\openlayer.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\platform.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\rectangle.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\sdl.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\selectionevent.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\selectionlistener.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widget.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgetlistener.hpp">
+      <Filter>src\guichan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgets\button.hpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgets\checkbox.hpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgets\container.hpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgets\dropdown.hpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgets\icon.hpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgets\imagebutton.hpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgets\label.hpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgets\listbox.hpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgets\radiobutton.hpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgets\scrollarea.hpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgets\slider.hpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgets\tab.hpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgets\tabbedarea.hpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgets\textbox.hpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgets\textfield.hpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\widgets\window.hpp">
+      <Filter>src\guichan\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\sdl\sdlgraphics.hpp">
+      <Filter>src\guichan\sdl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\sdl\sdlimage.hpp">
+      <Filter>src\guichan\sdl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\sdl\sdlimageloader.hpp">
+      <Filter>src\guichan\sdl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\sdl\sdlinput.hpp">
+      <Filter>src\guichan\sdl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\sdl\sdlpixel.hpp">
+      <Filter>src\guichan\sdl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\opengl\openglallegroimageloader.hpp">
+      <Filter>src\guichan\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\opengl\openglgraphics.hpp">
+      <Filter>src\guichan\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\opengl\openglimage.hpp">
+      <Filter>src\guichan\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guichan\opengl\openglsdlimageloader.hpp">
+      <Filter>src\guichan\opengl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

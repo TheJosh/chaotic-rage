@@ -48,7 +48,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../windows/include;../windows/include/bullet;../glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../windows/include;../windows/include/bullet;../glm;../../src/guichan</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
@@ -59,7 +59,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../windows/lib;../windows/lib-bullet</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_net.lib;opengl32.lib;glu32.lib;glew32.lib;zziplib.lib;libConfuse.lib;zdll.lib;lua5.1.lib;freetype.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;guichan.lib;assimp.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_net.lib;opengl32.lib;glu32.lib;glew32.lib;zziplib.lib;libConfuse.lib;zdll.lib;lua5.1.lib;freetype.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;assimp.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <IgnoreSpecificDefaultLibraries>MSVCRTD.LIB;MSVCRT100D.LIB</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -149,6 +149,54 @@
     <ClCompile Include="..\..\src\fx\newparticle.cpp" />
     <ClCompile Include="..\..\src\game.cpp" />
     <ClCompile Include="..\..\src\gamestate.cpp" />
+    <ClCompile Include="..\..\src\guichan\actionevent.cpp" />
+    <ClCompile Include="..\..\src\guichan\basiccontainer.cpp" />
+    <ClCompile Include="..\..\src\guichan\cliprectangle.cpp" />
+    <ClCompile Include="..\..\src\guichan\color.cpp" />
+    <ClCompile Include="..\..\src\guichan\defaultfont.cpp" />
+    <ClCompile Include="..\..\src\guichan\event.cpp" />
+    <ClCompile Include="..\..\src\guichan\exception.cpp" />
+    <ClCompile Include="..\..\src\guichan\focushandler.cpp" />
+    <ClCompile Include="..\..\src\guichan\font.cpp" />
+    <ClCompile Include="..\..\src\guichan\genericinput.cpp" />
+    <ClCompile Include="..\..\src\guichan\graphics.cpp" />
+    <ClCompile Include="..\..\src\guichan\gui.cpp" />
+    <ClCompile Include="..\..\src\guichan\guichan.cpp" />
+    <ClCompile Include="..\..\src\guichan\image.cpp" />
+    <ClCompile Include="..\..\src\guichan\imagefont.cpp" />
+    <ClCompile Include="..\..\src\guichan\inputevent.cpp" />
+    <ClCompile Include="..\..\src\guichan\key.cpp" />
+    <ClCompile Include="..\..\src\guichan\keyevent.cpp" />
+    <ClCompile Include="..\..\src\guichan\keyinput.cpp" />
+    <ClCompile Include="..\..\src\guichan\mouseevent.cpp" />
+    <ClCompile Include="..\..\src\guichan\mouseinput.cpp" />
+    <ClCompile Include="..\..\src\guichan\opengl\opengl.cpp" />
+    <ClCompile Include="..\..\src\guichan\opengl\openglgraphics.cpp" />
+    <ClCompile Include="..\..\src\guichan\opengl\openglimage.cpp" />
+    <ClCompile Include="..\..\src\guichan\rectangle.cpp" />
+    <ClCompile Include="..\..\src\guichan\sdl\sdl.cpp" />
+    <ClCompile Include="..\..\src\guichan\sdl\sdlgraphics.cpp" />
+    <ClCompile Include="..\..\src\guichan\sdl\sdlimage.cpp" />
+    <ClCompile Include="..\..\src\guichan\sdl\sdlimageloader.cpp" />
+    <ClCompile Include="..\..\src\guichan\sdl\sdlinput.cpp" />
+    <ClCompile Include="..\..\src\guichan\selectionevent.cpp" />
+    <ClCompile Include="..\..\src\guichan\widget.cpp" />
+    <ClCompile Include="..\..\src\guichan\widgets\button.cpp" />
+    <ClCompile Include="..\..\src\guichan\widgets\checkbox.cpp" />
+    <ClCompile Include="..\..\src\guichan\widgets\container.cpp" />
+    <ClCompile Include="..\..\src\guichan\widgets\dropdown.cpp" />
+    <ClCompile Include="..\..\src\guichan\widgets\icon.cpp" />
+    <ClCompile Include="..\..\src\guichan\widgets\imagebutton.cpp" />
+    <ClCompile Include="..\..\src\guichan\widgets\label.cpp" />
+    <ClCompile Include="..\..\src\guichan\widgets\listbox.cpp" />
+    <ClCompile Include="..\..\src\guichan\widgets\radiobutton.cpp" />
+    <ClCompile Include="..\..\src\guichan\widgets\scrollarea.cpp" />
+    <ClCompile Include="..\..\src\guichan\widgets\slider.cpp" />
+    <ClCompile Include="..\..\src\guichan\widgets\tab.cpp" />
+    <ClCompile Include="..\..\src\guichan\widgets\tabbedarea.cpp" />
+    <ClCompile Include="..\..\src\guichan\widgets\textbox.cpp" />
+    <ClCompile Include="..\..\src\guichan\widgets\textfield.cpp" />
+    <ClCompile Include="..\..\src\guichan\widgets\window.cpp" />
     <ClCompile Include="..\..\src\gui\client_settings.cpp" />
     <ClCompile Include="..\..\src\gui\controls.cpp" />
     <ClCompile Include="..\..\src\gui\dialog.cpp" />
@@ -241,6 +289,72 @@
     <ClInclude Include="..\..\src\fx\_fx.h" />
     <ClInclude Include="..\..\src\game.h" />
     <ClInclude Include="..\..\src\gamestate.h" />
+    <ClInclude Include="..\..\src\guichan\actionevent.hpp" />
+    <ClInclude Include="..\..\src\guichan\actionlistener.hpp" />
+    <ClInclude Include="..\..\src\guichan\allegro.hpp" />
+    <ClInclude Include="..\..\src\guichan\basiccontainer.hpp" />
+    <ClInclude Include="..\..\src\guichan\cliprectangle.hpp" />
+    <ClInclude Include="..\..\src\guichan\color.hpp" />
+    <ClInclude Include="..\..\src\guichan\deathlistener.hpp" />
+    <ClInclude Include="..\..\src\guichan\defaultfont.hpp" />
+    <ClInclude Include="..\..\src\guichan\event.hpp" />
+    <ClInclude Include="..\..\src\guichan\exception.hpp" />
+    <ClInclude Include="..\..\src\guichan\focushandler.hpp" />
+    <ClInclude Include="..\..\src\guichan\focuslistener.hpp" />
+    <ClInclude Include="..\..\src\guichan\font.hpp" />
+    <ClInclude Include="..\..\src\guichan\genericinput.hpp" />
+    <ClInclude Include="..\..\src\guichan\glut.hpp" />
+    <ClInclude Include="..\..\src\guichan\graphics.hpp" />
+    <ClInclude Include="..\..\src\guichan\gui.hpp" />
+    <ClInclude Include="..\..\src\guichan\guichan.hpp" />
+    <ClInclude Include="..\..\src\guichan\hge.hpp" />
+    <ClInclude Include="..\..\src\guichan\image.hpp" />
+    <ClInclude Include="..\..\src\guichan\imagefont.hpp" />
+    <ClInclude Include="..\..\src\guichan\imageloader.hpp" />
+    <ClInclude Include="..\..\src\guichan\input.hpp" />
+    <ClInclude Include="..\..\src\guichan\inputevent.hpp" />
+    <ClInclude Include="..\..\src\guichan\key.hpp" />
+    <ClInclude Include="..\..\src\guichan\keyevent.hpp" />
+    <ClInclude Include="..\..\src\guichan\keyinput.hpp" />
+    <ClInclude Include="..\..\src\guichan\keylistener.hpp" />
+    <ClInclude Include="..\..\src\guichan\listmodel.hpp" />
+    <ClInclude Include="..\..\src\guichan\mouseevent.hpp" />
+    <ClInclude Include="..\..\src\guichan\mouseinput.hpp" />
+    <ClInclude Include="..\..\src\guichan\mouselistener.hpp" />
+    <ClInclude Include="..\..\src\guichan\opengl.hpp" />
+    <ClInclude Include="..\..\src\guichan\opengl\openglallegroimageloader.hpp" />
+    <ClInclude Include="..\..\src\guichan\opengl\openglgraphics.hpp" />
+    <ClInclude Include="..\..\src\guichan\opengl\openglimage.hpp" />
+    <ClInclude Include="..\..\src\guichan\opengl\openglsdlimageloader.hpp" />
+    <ClInclude Include="..\..\src\guichan\openlayer.hpp" />
+    <ClInclude Include="..\..\src\guichan\platform.hpp" />
+    <ClInclude Include="..\..\src\guichan\rectangle.hpp" />
+    <ClInclude Include="..\..\src\guichan\sdl.hpp" />
+    <ClInclude Include="..\..\src\guichan\sdl\sdlgraphics.hpp" />
+    <ClInclude Include="..\..\src\guichan\sdl\sdlimage.hpp" />
+    <ClInclude Include="..\..\src\guichan\sdl\sdlimageloader.hpp" />
+    <ClInclude Include="..\..\src\guichan\sdl\sdlinput.hpp" />
+    <ClInclude Include="..\..\src\guichan\sdl\sdlpixel.hpp" />
+    <ClInclude Include="..\..\src\guichan\selectionevent.hpp" />
+    <ClInclude Include="..\..\src\guichan\selectionlistener.hpp" />
+    <ClInclude Include="..\..\src\guichan\widget.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgetlistener.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgets\button.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgets\checkbox.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgets\container.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgets\dropdown.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgets\icon.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgets\imagebutton.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgets\label.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgets\listbox.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgets\radiobutton.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgets\scrollarea.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgets\slider.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgets\tab.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgets\tabbedarea.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgets\textbox.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgets\textfield.hpp" />
+    <ClInclude Include="..\..\src\guichan\widgets\window.hpp" />
     <ClInclude Include="..\..\src\gui\client_settings.h" />
     <ClInclude Include="..\..\src\gui\controls.h" />
     <ClInclude Include="..\..\src\gui\dialog.h" />
