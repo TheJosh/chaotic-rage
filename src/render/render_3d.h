@@ -7,10 +7,10 @@
 #include "../rage.h"
 #include "render.h"
 
-#include <guichan.hpp>
-#include <guichan/sdl.hpp>
-#include <guichan/opengl.hpp>
-#include <guichan/opengl/openglsdlimageloader.hpp>
+#include "../guichan/guichan.hpp"
+#include "../guichan/sdl.hpp"
+#include "../guichan/opengl.hpp"
+#include "../guichan/opengl/openglsdlimageloader.hpp"
 
 
 

@@ -10,10 +10,10 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-#include <guichan.hpp>
-#include <guichan/sdl.hpp>
-#include <guichan/opengl.hpp>
-#include <guichan/opengl/openglsdlimageloader.hpp>
+#include "guichan/guichan.hpp"
+#include "guichan/sdl.hpp"
+#include "guichan/opengl.hpp"
+#include "guichan/opengl/openglsdlimageloader.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

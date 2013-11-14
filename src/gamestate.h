@@ -7,9 +7,9 @@
 #include "rage.h"
 #include "entity/entity.h"
 #include <btBulletDynamicsCommon.h>
-#include <guichan.hpp>
-#include <guichan/sdl.hpp>
 
+#include "guichan/guichan.hpp"
+#include "guichan/sdl.hpp"
 #include "entity/unit.h"
 #include "entity/wall.h"
 #include "entity/vehicle.h"
