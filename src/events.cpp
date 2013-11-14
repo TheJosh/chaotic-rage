@@ -118,10 +118,10 @@ void handleEvents(GameState *st)
 				}
 			
 			} else if (event.type == SDL_MOUSEMOTION) {
-				game_x[0] += event.motion.x - 400;
-				net_x[0] += event.motion.x - 400;
-				game_y[0] += event.motion.y - 300;
-				net_y[0] += event.motion.y - 300;
+				game_x[0] += event.motion.xrel;
+				net_x[0] += event.motion.xrel;
+				game_y[0] += event.motion.yrel;
+				net_y[0] += event.motion.yrel;
 			
 			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
 				st->local_players[0]->hud->eventClick();
@@ -219,10 +219,10 @@ void handleEvents(GameState *st)
 				}
 			
 			} else if (event.type == SDL_MOUSEMOTION) {
-				game_x[1] += event.motion.x - 400;
-				net_x[1] += event.motion.x - 400;
-				game_y[1] += event.motion.y - 300;
-				net_y[1] += event.motion.y - 300;
+				game_x[1] += event.motion.xrel;
+				net_x[1] += event.motion.xrel;
+				game_y[1] += event.motion.yrel;
+				net_y[1] += event.motion.yrel;
 			
 			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
 				st->local_players[1]->hud->eventClick();
