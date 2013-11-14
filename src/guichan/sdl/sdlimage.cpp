@@ -113,72 +113,7 @@ namespace gcn
 
     void SDLImage::convertToDisplayFormat()
     {
-        if (mSurface == NULL)
-        {
-            throw GCN_EXCEPTION("Trying to convert a non loaded image to display format.");
-        }
-
-        int i;
-        bool hasPink = false;
-        bool hasAlpha = false;
-
-        for (i = 0; i < mSurface->w * mSurface->h; ++i)
-        {
-            if (((unsigned int*)mSurface->pixels)[i] == SDL_MapRGB(mSurface->format,255,0,255))
-            {
-                hasPink = true;
-                break;
-            }
-        }
-
-        for (i = 0; i < mSurface->w * mSurface->h; ++i)
-        {
-            Uint8 r, g, b, a;
-
-            SDL_GetRGBA(((unsigned int*)mSurface->pixels)[i], mSurface->format,
-                        &r, &g, &b, &a);
-
-            if (a != 255)
-            {
-                hasAlpha = true;
-                break;
-            }
-        }
-
-        SDL_Surface *tmp;
-
-        // Removed, SDL2
-        /*if (hasAlpha)
-        {
-            tmp = SDL_DisplayFormatAlpha(mSurface);
-            SDL_FreeSurface(mSurface);
-            mSurface = NULL;
-        }
-        else
-        {
-            tmp = SDL_DisplayFormat(mSurface);
-            SDL_FreeSurface(mSurface);
-            mSurface = NULL;
-        }*/
-
-        if (tmp == NULL)
-        {
-            throw GCN_EXCEPTION("Unable to convert image to display format.");
-        }
-
-        // Removed, SDL2
-        /*if (hasPink)
-        {
-            SDL_SetColorKey(tmp, SDL_SRCCOLORKEY,
-                            SDL_MapRGB(tmp->format,255,0,255));
-        }
-        
-        if (hasAlpha)
-        {
-            SDL_SetAlpha(tmp, SDL_SRCALPHA, 255);
-        }*/
-
-        mSurface = tmp;
+        throw GCN_EXCEPTION("Method removed.");
     }
 
     void SDLImage::free()
