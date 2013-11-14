@@ -4,8 +4,6 @@
 
 #pragma once
 #include "../rage.h"
-#include <glm/glm.hpp>
-#include <btBulletDynamicsCommon.h>
 
 using namespace std;
 
@@ -33,6 +31,3 @@ int angleFromDesired(int current, int desired, int turn_speed);
 void seedRandom();
 int getRandom(int low, int high);
 float getRandomf(float low, float high);
-
-// conversion
-void glmBullet(glm::mat4 in, btMatrix3x3 & out);

@@ -11,6 +11,7 @@
 #include "../net/net_server.h"
 #include "vehicle.h"
 #include "../util/util.h"
+#include "../util/convert.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 

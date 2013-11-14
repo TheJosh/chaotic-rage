@@ -152,12 +152,3 @@ float getRandomf(float low, float high)
 	return ((float)rand()/(float)RAND_MAX) * (high - low) + low;
 }
 
-
-/**
-* Convert GLM to Bullet (matrix)
-**/
-void glmBullet(glm::mat4 in, btMatrix3x3 & out)
-{
-	out.setFromOpenGLSubMatrix(glm::value_ptr(in));
-}
-

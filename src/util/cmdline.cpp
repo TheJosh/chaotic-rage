@@ -4,7 +4,7 @@
 
 #include <string>
 #include <sstream>
-#include <SDL.h>
+#include <iostream>
 #include <getopt.h>
 #include "../rage.h"
 #include "../gamestate.h"

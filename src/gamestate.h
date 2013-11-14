@@ -6,10 +6,6 @@
 
 #include "rage.h"
 #include "entity/entity.h"
-#include <btBulletDynamicsCommon.h>
-
-#include "guichan/guichan.hpp"
-#include "guichan/sdl.hpp"
 #include "entity/unit.h"
 #include "entity/wall.h"
 #include "entity/vehicle.h"
@@ -27,6 +23,14 @@ using namespace std;
 /* The "slot" for representing all players. */
 #define ALL_SLOTS 0
 
+
+class btVector3;
+
+namespace gcn {
+	class Gui;
+	class SDLInput;
+	class Container;
+}
 
 /**
 * Information about a unit. Exposed to lua as Unitinfo
