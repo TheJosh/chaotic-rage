@@ -1,6 +1,6 @@
 CXX := g++
-CFLAGS := `sdl2-config --cflags` `pkg-config libconfuse gl glu lua5.1 bullet assimp --cflags` `freetype-config --cflags` -DGETOPT -Werror -Wall -ggdb -Itools/include -Isrc/guichan
-LIBS := `sdl2-config --libs` `pkg-config libconfuse lua5.1 bullet assimp --libs` `freetype-config --libs` -lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11
+CFLAGS := `sdl2-config --cflags` `pkg-config gl glu lua5.1 bullet assimp --cflags` `freetype-config --cflags` -DGETOPT -Werror -Wall -ggdb -Itools/include -Isrc/guichan
+LIBS := `sdl2-config --libs` `pkg-config lua5.1 bullet assimp --libs` `freetype-config --libs` -lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11
 
 VERSION := $(shell grep -E --only-matching 'VERSION ".+"' src/rage.h | sed -n 1p | sed "s/VERSION //" | sed 's/"//g')
 
@@ -22,6 +22,7 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/http/*.cpp \
 	$(SRCPATH)/weapons/*.cpp \
 	$(SRCPATH)/guichan/*.cpp \
+	$(SRCPATH)/confuse/*.c \
 	$(SRCPATH)/guichan/opengl/*.cpp \
 	$(SRCPATH)/guichan/sdl/*.cpp \
 	$(SRCPATH)/guichan/widgets/*.cpp \
