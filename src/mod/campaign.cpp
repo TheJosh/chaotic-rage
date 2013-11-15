@@ -5,7 +5,6 @@
 #include <iostream>
 #include <list>
 #include <confuse.h>
-#include <zzip/zzip.h>
 #include "campaign.h"
 #include "../rage.h"
 #include "mod.h"

@@ -6,7 +6,6 @@
 #include <string>
 #include <algorithm>
 #include <confuse.h>
-#include <zzip/zzip.h>
 #include "../rage.h"
 #include "../gamestate.h"
 #include "../util/ui_update.h"

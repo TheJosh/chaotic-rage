@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <confuse.h>
-#include <zzip/zzip.h>
 #include <btBulletDynamicsCommon.h>
 #include "../rage.h"
 #include "../render/assimpmodel.h"

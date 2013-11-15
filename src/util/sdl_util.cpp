@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <SDL.h>
-#include <zzip/zzip.h>
 #include "../rage.h"
 
 using namespace std;

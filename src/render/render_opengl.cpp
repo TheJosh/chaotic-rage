@@ -21,7 +21,6 @@
 #include "../entity/player.h"
 #include "../util/obj.h"
 #include "../util/sdl_util.h"
-#include "../util/SDL_rwops_zzip.h"
 #include "../util/windowicon.h"
 #include "../fx/newparticle.h"
 #include "../mod/mod_manager.h"

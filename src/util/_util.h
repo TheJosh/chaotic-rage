@@ -11,7 +11,6 @@
 
 #include "obj.h"
 #include "sdl_util.h"
-#include "SDL_rwops_zzip.h"
 #include "util.h"
 #include "debug.h"
 #include "cmdline.h"

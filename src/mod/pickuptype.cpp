@@ -5,7 +5,6 @@
 #include <iostream>
 #include <list>
 #include <confuse.h>
-#include <zzip/zzip.h>
 #include <btBulletDynamicsCommon.h>
 #include "pickuptype.h"
 #include "../rage.h"

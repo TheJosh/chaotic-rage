@@ -7,12 +7,10 @@
 #include <map>
 #include <SDL.h>
 #include <confuse.h>
-#include <zzip/zzip.h>
 #include "../rage.h"
 #include "../gamestate.h"
 #include "../util/ui_update.h"
 #include "../render/assimpmodel.h"
-#include "../util/SDL_rwops_zzip.h"
 #include "../util/crc32.h"
 #include "../util/debug.h"
 #include "mod.h"
@@ -32,10 +30,6 @@
 #include "gametype.h"
 
 using namespace std;
-
-
-// Allowed 'zip' extentions
-static zzip_strings_t mod_zzip_ext[] = { ".crk", ".CRK", 0 };
 
 
 static cfg_opt_t mod_map_opts[] =
@@ -680,30 +674,31 @@ WeaponType * Mod::getWeaponType(string name)
 **/
 char * Mod::loadText(string resname)
 {
-	ZZIP_FILE *fp;
 	char *buffer;
 	
 	string filename = directory;
 	filename.append(resname);
 	
-	fp = zzip_open_ext_io(filename.c_str(), O_RDONLY|O_BINARY, 0, mod_zzip_ext, 0);
+	FILE * fp = fopen(filename.c_str(), "rb");
 	if (! fp) {
 		return NULL;
 	}
 	
-	// Read the contents of the file into a buffer
-	zzip_seek (fp, 0, SEEK_END);
-	int len = zzip_tell (fp);
-	zzip_seek (fp, 0, SEEK_SET);
+	// Determine the size buffer needed
+	fseek (fp, 0, SEEK_END);
+	int len = ftell (fp);
+	fseek (fp, 0, SEEK_SET);
 	
+	// Read the contents of the file into a buffer
 	buffer = (char*) malloc(len + 1);
 	if (buffer == NULL) {
+		fclose(fp);
 		return NULL;
 	}
 	buffer[len] = '\0';
 	
-	zzip_read(fp, buffer, len);
-	zzip_close(fp);
+	fread(buffer, 1, len, fp);
+	fclose(fp);
 	
 	return buffer;
 }
@@ -714,29 +709,30 @@ char * Mod::loadText(string resname)
 **/
 Uint8 * Mod::loadBinary(string resname, int * len)
 {
-	ZZIP_FILE *fp;
 	Uint8 *buffer;
 	
 	string filename = directory;
 	filename.append(resname);
 	
-	fp = zzip_open_ext_io(filename.c_str(), O_RDONLY|O_BINARY, 0, mod_zzip_ext, 0);
+	FILE * fp = fopen(filename.c_str(), "rb");
 	if (! fp) {
 		return NULL;
 	}
 	
-	// Read the contents of the file into a buffer
-	zzip_seek (fp, 0, SEEK_END);
-	int l = zzip_tell (fp);
-	zzip_seek (fp, 0, SEEK_SET);
+	// Determine the size buffer needed
+	fseek (fp, 0, SEEK_END);
+	int l = ftell (fp);
+	fseek (fp, 0, SEEK_SET);
 	
+	// Read the contents of the file into a buffer
 	buffer = (Uint8*) malloc(l);
 	if (buffer == NULL) {
+		fclose(fp);
 		return NULL;
 	}
 	
-	zzip_read(fp, buffer, l);
-	zzip_close(fp);
+	fread(buffer, 1, l, fp);
+	fclose(fp);
 	
 	*len = l;
 	return buffer;
@@ -749,17 +745,10 @@ Uint8 * Mod::loadBinary(string resname, int * len)
 **/
 SDL_RWops * Mod::loadRWops(string resname)
 {
-	SDL_RWops *rw;
-	
 	string filename = directory;
 	filename.append(resname);
 	
-	rw = SDL_RWFromZZIP(filename.c_str(), "rb");
-	if (rw == NULL) {
-		return NULL;
-	}
-	
-	return rw;
+	return SDL_RWFromFile(filename.c_str(), "rb");
 }
 
 

@@ -59,7 +59,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../windows/lib;../windows/lib-bullet</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_net.lib;opengl32.lib;glu32.lib;glew32.lib;zziplib.lib;libConfuse.lib;zdll.lib;lua5.1.lib;freetype.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;assimp.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_net.lib;opengl32.lib;glu32.lib;glew32.lib;libConfuse.lib;zdll.lib;lua5.1.lib;freetype.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;assimp.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <IgnoreSpecificDefaultLibraries>MSVCRTD.LIB;MSVCRT100D.LIB</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -252,10 +252,10 @@
     <ClCompile Include="..\..\src\util\btCRKinematicCharacterController.cpp" />
     <ClCompile Include="..\..\src\util\btStrideHeightfieldTerrainShape.cpp" />
     <ClCompile Include="..\..\src\util\clientconfig.cpp" />
+    <ClCompile Include="..\..\src\util\convert.cpp" />
     <ClCompile Include="..\..\src\util\crc32.cpp" />
     <ClCompile Include="..\..\src\util\debug.cpp" />
     <ClCompile Include="..\..\src\util\obj.cpp" />
-    <ClCompile Include="..\..\src\util\SDL_rwops_zzip.cpp" />
     <ClCompile Include="..\..\src\util\sdl_util.cpp" />
     <ClCompile Include="..\..\src\util\serverconfig.cpp" />
     <ClCompile Include="..\..\src\util\util.cpp" />
@@ -416,10 +416,10 @@
     <ClInclude Include="..\..\src\util\btStrideHeightfieldTerrainShape.h" />
     <ClInclude Include="..\..\src\util\clientconfig.h" />
     <ClInclude Include="..\..\src\util\cmdline.h" />
+    <ClInclude Include="..\..\src\util\convert.h" />
     <ClInclude Include="..\..\src\util\crc32.h" />
     <ClInclude Include="..\..\src\util\debug.h" />
     <ClInclude Include="..\..\src\util\obj.h" />
-    <ClInclude Include="..\..\src\util\SDL_rwops_zzip.h" />
     <ClInclude Include="..\..\src\util\sdl_util.h" />
     <ClInclude Include="..\..\src\util\serverconfig.h" />
     <ClInclude Include="..\..\src\util\stream_redirector.h" />

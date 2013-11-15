@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <confuse.h>
-#include <zzip/zzip.h>
 #include <string>
 #include <btBulletDynamicsCommon.h>
 #include "../rage.h"
