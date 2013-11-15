@@ -1,9 +1,9 @@
 You will need at least these:
- - A compiler. The makefiles are written for GCC
- - SDL 1.2
- - SDL_Mixer 1.2
- - SDL_Image 1.2
- - SDL_Net 1.2
+ - A compiler. GCC has been tested. clang should work but hasn't been tested
+ - SDL 2.0.1
+ - SDL_Mixer 2.0
+ - SDL_Image 2.0
+ - SDL_Net 2.0
  - zziplib
  - libconfuse
  - gl
@@ -11,9 +11,11 @@ You will need at least these:
  - glew
  - Lua
  - Freetype2
- - Bullet Physics (and cmake if building yourself)
- - Guichan
+ - Bullet Physics
  - Assimp
+
+Scripts for downloading and building Bullet, Assimp and SDL2 are available in the
+tools/linux directory if your distribution does not support them.
 
 
 Compiling on Ubuntu 10.04:
@@ -22,10 +24,6 @@ Compiling on Ubuntu 10.04:
      - make
      - cmake
      - flex
-     - libsdl1.2-dev
-     - libsdl-image1.2-dev
-     - libsdl-mixer1.2-dev
-     - libsdl-net1.2-dev
      - libzzip-dev
      - libconfuse-dev
      - libgl1-mesa-dev
@@ -33,26 +31,21 @@ Compiling on Ubuntu 10.04:
      - libglew-dev
      - liblua5.1-0-dev
      - libfreetype6-dev
-     - libguichan-dev
     You can also use this command:
-     sudo apt-get install g++ make cmake flex libsdl1.2-dev libsdl-image1.2-dev libsdl-mixer1.2-dev \
-     libsdl-net1.2-dev libzzip-dev libconfuse-dev libgl1-mesa-dev libglu1-mesa-dev libglew-dev \
-     liblua5.1-0-dev libfreetype6-dev libguichan-dev
+     sudo apt-get install g++ make cmake flex libzzip-dev libconfuse-dev libgl1-mesa-dev \
+     libglu1-mesa-dev libglew-dev liblua5.1-0-dev libfreetype6-dev libguichan-dev
 
- 2. Compile bullet from lib-external
-    This will install bullet also
-
- 3. Compile assimp from lib-external
-    This will install assimp also
-
- 4. Compile using make
+ 2. Compile libs in tools/linux
+    The compile will do an install using sudo, you'll need your password
+    
+ 3. Compile using make
 
 
 Compiling on Windows:
  1. Download and install MSVC 2010 Express Edition.
     I haven't tested full edition.
 
- 2. Open the solution in the extra/msvc2010 directory
+ 2. Open the solution in the tools/msvc2010 directory
  
  3. It should compile out-of-the-box, no further setup
     should be nessasary.
