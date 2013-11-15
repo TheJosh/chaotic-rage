@@ -71,6 +71,9 @@
     <Filter Include="src\guichan\widgets">
       <UniqueIdentifier>{73b6e994-f9d3-4b26-a65c-551a8a8877e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\confuse">
+      <UniqueIdentifier>{e338f825-a8f0-4cc6-8902-0d81b030920d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\data\cr\animmodels.conf">
@@ -588,6 +591,12 @@
     <ClCompile Include="..\..\src\util\convert.cpp">
       <Filter>src\util</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\confuse\confuse.c">
+      <Filter>src\confuse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\confuse\lexer.c">
+      <Filter>src\confuse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">
@@ -1072,6 +1081,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\util\convert.h">
       <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\confuse\config.h">
+      <Filter>src\confuse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\confuse\confuse.h">
+      <Filter>src\confuse</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

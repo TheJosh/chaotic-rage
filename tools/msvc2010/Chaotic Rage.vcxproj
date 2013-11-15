@@ -59,7 +59,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../windows/lib;../windows/lib-bullet</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_net.lib;opengl32.lib;glu32.lib;glew32.lib;libConfuse.lib;zdll.lib;lua5.1.lib;freetype.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;assimp.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_net.lib;opengl32.lib;glu32.lib;glew32.lib;zdll.lib;lua5.1.lib;freetype.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;assimp.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <IgnoreSpecificDefaultLibraries>MSVCRTD.LIB;MSVCRT100D.LIB</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -134,6 +134,8 @@
     <ClCompile Include="..\..\src\audio\audio_null.cpp" />
     <ClCompile Include="..\..\src\audio\audio_sdlmixer.cpp" />
     <ClCompile Include="..\..\src\client.cpp" />
+    <ClCompile Include="..\..\src\confuse\confuse.c" />
+    <ClCompile Include="..\..\src\confuse\lexer.c" />
     <ClCompile Include="..\..\src\entity\ammo_round.cpp" />
     <ClCompile Include="..\..\src\entity\decaying.cpp" />
     <ClCompile Include="..\..\src\entity\entity.cpp" />
@@ -273,6 +275,8 @@
     <ClInclude Include="..\..\src\audio\audio_null.h" />
     <ClInclude Include="..\..\src\audio\audio_sdlmixer.h" />
     <ClInclude Include="..\..\src\audio\_audio.h" />
+    <ClInclude Include="..\..\src\confuse\config.h" />
+    <ClInclude Include="..\..\src\confuse\confuse.h" />
     <ClInclude Include="..\..\src\entity\ammo_round.h" />
     <ClInclude Include="..\..\src\entity\decaying.h" />
     <ClInclude Include="..\..\src\entity\entity.h" />
