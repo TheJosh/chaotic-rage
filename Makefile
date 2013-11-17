@@ -22,7 +22,7 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/http/*.cpp \
 	$(SRCPATH)/weapons/*.cpp \
 	$(SRCPATH)/guichan/*.cpp \
-	$(SRCPATH)/confuse/*.c \
+	$(SRCPATH)/confuse/*.cpp \
 	$(SRCPATH)/guichan/opengl/*.cpp \
 	$(SRCPATH)/guichan/sdl/*.cpp \
 	$(SRCPATH)/guichan/widgets/*.cpp \
