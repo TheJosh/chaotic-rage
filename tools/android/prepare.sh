@@ -81,11 +81,11 @@ fi
 # lua
 if [ ! -d "jni/lua" ]; then
 	cd working/
-	if [ ! -f "lua-5.2.2.tar.gz" ]; then
-		wget http://www.lua.org/ftp/lua-5.2.2.tar.gz
+	if [ ! -f "lua-5.1.5.tar.gz" ]; then
+		wget http://www.lua.org/ftp/lua-5.1.5.tar.gz
 	fi
-	tar -xzf lua-5.2.2.tar.gz || exit 1
-	mv lua-5.2.2 ../jni/lua
+	tar -xzf lua-5.1.5.tar.gz || exit 1
+	mv lua-5.1.5 ../jni/lua
 	cd ..
 fi
 
