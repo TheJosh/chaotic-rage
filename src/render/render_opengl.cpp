@@ -20,6 +20,7 @@
 #include "../mod/vehicletype.h"
 #include "render_opengl.h"
 #include "render_opengl_settings.h"
+#include "sprite.h"
 #include "glshader.h"
 #include "assimpmodel.h"
 #include "animplay.h"
@@ -444,7 +445,7 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 	}
 
 	// Create the sprite object
-	SpritePtr sprite = new struct sprite();
+	SpritePtr sprite = new Sprite();
 	sprite->w = surf->w;
 	sprite->h = surf->h;
 	sprite->orig = surf;
@@ -509,7 +510,7 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 	
 	DEBUG("vid", "Loading cubemap '%s'", filename_base.c_str());
 	
-	cubemap = new struct sprite();
+	cubemap = new Sprite();
 	
 	glGenTextures(1, &cubemap->pixels);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap->pixels);

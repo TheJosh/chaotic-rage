@@ -11,7 +11,7 @@
 using namespace std;
 
 
-class sprite {
+class Sprite {
 	public:
 		int w;
 		int h;
@@ -19,4 +19,4 @@ class sprite {
 		SDL_Surface *orig;		// TODO: remove dependency on this...perhaps
 };
 
-typedef sprite* SpritePtr;
+typedef Sprite* SpritePtr;

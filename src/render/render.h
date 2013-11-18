@@ -4,21 +4,9 @@
 
 #pragma once
 #include "../rage.h"
-#include "gl.h"
-#include <SDL.h>
 
 
 using namespace std;
-
-
-struct sprite {
-	int w;
-	int h;
-	GLuint pixels;
-	SDL_Surface *orig;		// TODO: remove dependency on this...perhaps
-};
-typedef sprite* SpritePtr;
-
 
 class GameState;
 

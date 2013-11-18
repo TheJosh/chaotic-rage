@@ -20,6 +20,7 @@
 #include "rage.h"
 #include "menu.h"
 #include "render/render_opengl.h"
+#include "render/sprite.h"
 #include "audio/audio.h"
 #include "gamestate.h"
 #include "gui/client_settings.h"

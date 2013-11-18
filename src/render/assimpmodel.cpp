@@ -21,6 +21,7 @@
 #include "../mod/mod.h"
 #include "assimpmodel.h"
 #include "render_opengl.h"
+#include "sprite.h"
 
 using namespace std;
 
@@ -179,9 +180,11 @@ void AssimpModel::loadMeshes(bool opengl)
 		if (! opengl) continue;
 		
 		// VAO
-		glGenVertexArrays(1,&(myMesh->vao));
-		glBindVertexArray(myMesh->vao);
-		
+		GLuint vao;
+		glGenVertexArrays(1,&vao);
+		glBindVertexArray(vao);
+		myMesh->vao = vao;
+
 		// Prep face array for VBO
 		unsigned int *faceArray;
 		faceArray = (unsigned int *)malloc(sizeof(unsigned int) * mesh->mNumFaces * 3);

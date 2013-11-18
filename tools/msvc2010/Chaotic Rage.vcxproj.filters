@@ -1088,6 +1088,9 @@
     <ClInclude Include="..\..\src\confuse\confuse.h">
       <Filter>src\confuse</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\render\sprite.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res\appicon.rc">

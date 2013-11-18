@@ -5,6 +5,7 @@
 #include "intro.h"
 #include "rage.h"
 #include "render/render_opengl.h"
+#include "render/sprite.h"
 #include "mod/mod.h"
 #include "mod/song.h"
 #include "audio/audio.h"

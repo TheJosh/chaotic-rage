@@ -9,6 +9,7 @@
 #include "animplay.h"
 #include "assimpmodel.h"
 #include "render.h"
+#include "sprite.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>

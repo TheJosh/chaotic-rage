@@ -34,6 +34,13 @@ typedef uint32_t    Uint32;
 typedef uint32_t    CRC32;
 
 
+// Saves loading sprite.h and it's dependencies - SDL and OpenGL
+class Sprite;
+typedef Sprite* SpritePtr;
+
+// Saves loading SDL
+struct SDL_RWops;
+
 // Some values for things are a randomly chosen between a min and a max
 typedef struct range {
 	int min;

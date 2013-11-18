@@ -7,6 +7,7 @@
 #include "../gamestate.h"
 #include "../map.h"
 #include "render_debug.h"
+#include "sprite.h"
 #include <SDL_image.h>
 
 
@@ -105,7 +106,7 @@ SpritePtr RenderDebug::int_loadSprite(SDL_RWops *rw, string filename)
 	}
 
 	// Create the sprite object
-	SpritePtr sprite = new struct sprite();
+	SpritePtr sprite = new Sprite();
 	sprite->w = surf->w;
 	sprite->h = surf->h;
 	sprite->orig = surf;

@@ -53,7 +53,7 @@ class AssimpFace
 class AssimpMesh
 {
 	public:
-		GLuint vao;
+		Uint32 vao;
 		int numFaces;
 		int materialIndex;
 		vector<AssimpBone*> bones;

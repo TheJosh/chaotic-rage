@@ -15,6 +15,7 @@
 #include "map.h"
 #include "zone.h"
 #include "render/animplay.h"
+#include "render/sprite.h"
 #include "render/render_3d.h"
 #include "mod/mod.h"
 #include "mod/mod_manager.h"

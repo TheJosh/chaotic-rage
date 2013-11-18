@@ -48,7 +48,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../windows/include;../windows/include/bullet;../include;../../src/;../../src/guichan/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../windows/include;../windows/include/bullet;../include;../../src/;../../src/guichan;../../src/confuse</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
@@ -415,6 +415,7 @@
     <ClInclude Include="..\..\src\render\render_debug.h" />
     <ClInclude Include="..\..\src\render\render_null.h" />
     <ClInclude Include="..\..\src\render\render_opengl.h" />
+    <ClInclude Include="..\..\src\render\sprite.h" />
     <ClInclude Include="..\..\src\render\_render.h" />
     <ClInclude Include="..\..\src\util\btCRKinematicCharacterController.h" />
     <ClInclude Include="..\..\src\util\btStrideHeightfieldTerrainShape.h" />

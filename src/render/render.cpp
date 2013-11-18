@@ -9,6 +9,7 @@
 #include "../gamestate.h"
 #include "../mod/mod.h"
 #include "render.h"
+#include "sprite.h"
 
 using namespace std;
 
