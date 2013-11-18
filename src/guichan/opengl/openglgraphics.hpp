@@ -47,9 +47,12 @@
 #include "guichan/color.hpp"
 #include "guichan/graphics.hpp"
 #include "guichan/platform.hpp"
+#include <glm/glm.hpp>
 
 namespace gcn
 {
+    class OpenGLGraphics_Impl;
+    
     /**
      * OpenGL implementation of the Graphics.
      */
@@ -126,6 +129,7 @@ namespace gcn
         int mWidth, mHeight;
 		bool mAlpha;
         Color mColor;
+        OpenGLGraphics_Impl *pimpl_;
     };
 }
 

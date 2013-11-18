@@ -269,14 +269,6 @@ namespace gcn
                   errmsg = "GL_INVALID_OPERATION";
                   break;
 
-              case GL_STACK_OVERFLOW:
-                  errmsg = "GL_STACK_OVERFLOW";
-                  break;
-
-              case GL_STACK_UNDERFLOW:
-                  errmsg = "GL_STACK_UNDERFLOW";
-                  break;
-
               case GL_OUT_OF_MEMORY:
                   errmsg = "GL_OUT_OF_MEMORY";
                   break;
