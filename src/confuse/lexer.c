@@ -2317,7 +2317,8 @@ int cfg_lexer_include(cfg_t *cfg, const char *filename)
     cfg_include_stack[cfg_include_stack_ptr].line = cfg->line;
     cfg_include_stack_ptr++;
 
-    xfilename = cfg_tilde_expand(filename);
+    xfilename = (char*) malloc(sizeof(char) * strlen(filename) + 1);
+    strcpy(xfilename, filename);
 
     cfg_yyin = fopen(xfilename, "r");
 

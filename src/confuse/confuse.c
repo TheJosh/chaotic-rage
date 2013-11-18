@@ -1056,7 +1056,7 @@ DLLIMPORT int cfg_parse(cfg_t *cfg, const char *filename)
     assert(cfg && filename);
 
     free(cfg->filename);
-    cfg->filename = cfg_tilde_expand(filename);
+    cfg->filename = filename;
     fp = fopen(cfg->filename, "r");
     if(fp == 0)
         return CFG_FILE_ERROR;
@@ -1108,51 +1108,6 @@ DLLIMPORT cfg_t *cfg_init(cfg_opt_t *opts, cfg_flag_t flags)
 #endif
 
     return cfg;
-}
-
-DLLIMPORT char *cfg_tilde_expand(const char *filename)
-{
-    char *expanded = 0;
-
-#ifndef _WIN32
-    /* do tilde expansion
-     */
-    if(filename[0] == '~')
-    {
-        struct passwd *passwd = 0;
-        const char *file = 0;
-
-        if(filename[1] == '/' || filename[1] == 0)
-        {
-            /* ~ or ~/path */
-            passwd = getpwuid(geteuid());
-            file = filename + 1;
-        }
-        else
-        {
-            /* ~user or ~user/path */
-            char *user;
-
-            file = strchr(filename, '/');
-            if(file == 0)
-                file = filename + strlen(filename);
-            user = malloc(file - filename);
-            strncpy(user, filename + 1, file - filename - 1);
-            passwd = getpwnam(user);
-            free(user);
-        }
-
-        if(passwd)
-        {
-            expanded = malloc(strlen(passwd->pw_dir) + strlen(file) + 1);
-            strcpy(expanded, passwd->pw_dir);
-            strcat(expanded, file);
-        }
-    }
-#endif
-    if(!expanded)
-        expanded = strdup(filename);
-    return expanded;
 }
 
 DLLIMPORT void cfg_free_value(cfg_opt_t *opt)

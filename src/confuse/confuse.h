@@ -818,14 +818,6 @@ DLLIMPORT const char * __export cfg_opt_name(cfg_opt_t *opt);
 DLLIMPORT int __export cfg_include(cfg_t *cfg, cfg_opt_t *opt, int argc,
                                    const char **argv);
 
-/** Does tilde expansion (~ -> $HOME) on the filename.
- * @return The expanded filename is returned. If a ~user was not
- * found, the original filename is returned. In any case, a
- * dynamically allocated string is returned, which should be free()'d
- * by the caller.
- */
-DLLIMPORT char * __export cfg_tilde_expand(const char *filename);
-
 /** Parse a boolean option string. Accepted "true" values are "true",
  * "on" and "yes", and accepted "false" values are "false", "off" and
  * "no".
