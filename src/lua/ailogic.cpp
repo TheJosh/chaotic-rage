@@ -51,7 +51,7 @@ AILogic::AILogic(Unit *u)
 {
 	this->u = u;
 	this->st = u->getGameState();
-	this->lua = lua_open();
+	this->lua = luaL_newstate();
 	
 	this->ActiveLuaState();
 	register_lua_functions();

@@ -48,6 +48,11 @@
 	#define strcasecmp stricmp
 #endif
 
+#ifdef __linux__
+	#include <sys/select.h>
+	#include <unistd.h>
+#endif
+
 #include <cstdio>
 #include <cstring>
 #include <cstdarg>

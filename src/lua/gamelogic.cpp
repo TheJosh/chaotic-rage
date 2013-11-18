@@ -53,7 +53,7 @@ GameLogic::GameLogic(GameState *st)
 	this->st = st;
 	this->map = st->map;
 	
-	L = lua_open();
+	L = luaL_newstate();
 	register_lua_functions();
 
 	this->selected_unittype = NULL;
