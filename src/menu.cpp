@@ -5,15 +5,7 @@
 #include <iostream>
 #include <SDL.h>
 #include <math.h>
-
-#ifdef __ANDROID__
-	#include <GLES2/gl2.h>
-	#include <GLES2/gl2ext.h>
-#else
-	#include <GL/glew.h>
-	#include <GL/gl.h>
-	#include <GL/glu.h>
-#endif
+#include "render/gl.h"
 
 #include "guichan/guichan.hpp"
 #include "guichan/sdl.hpp"

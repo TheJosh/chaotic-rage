@@ -7,13 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-
-#include <GL/glew.h>
-#include <GL/gl.h>
-#if defined(__WIN32__)
-	#include <GL/glext.h>
-#endif
-
+#include "../render/gl.h"
 #include "../rage.h"
 #include "happyhttp.h"
 #include "url.h"

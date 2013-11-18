@@ -6,9 +6,12 @@
 #include <list>
 #include <confuse.h>
 #include "../rage.h"
-#include "mod.h"
+
 
 using namespace std;
+
+
+class Mod;
 
 
 // A stage of the campaign

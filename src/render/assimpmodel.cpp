@@ -9,14 +9,7 @@
 #include <assimp/cimport.h>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <GL/glew.h>
-#ifdef __ANDROID__
-	#include <GLES2/gl2.h>
-	#include <GLES2/gl2ext.h>
-#else
-	#include <GL/gl.h>
-#endif
-#include <GL/glu.h>
+#include "gl.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>

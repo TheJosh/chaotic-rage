@@ -7,7 +7,6 @@
 #include "guichan/sdl.hpp"
 
 #include "rage.h"
-#include "render/render.h"
 #include "util/ui_update.h"
 
 
