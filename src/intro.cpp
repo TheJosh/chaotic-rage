@@ -65,7 +65,8 @@ void Intro::doit()
 		st->audio->playSong(sg);
 	}
 
-	glDisable(GL_LIGHTING);
+	// TODO: Replace with non-deprecated OpenGL code
+	/*glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 	
 	glMatrixMode(GL_PROJECTION);
@@ -73,7 +74,7 @@ void Intro::doit()
 	glOrtho(0.0f, this->render->getWidth(), this->render->getHeight(), 0.0f, 0.0f, 10.0f);
 	
 	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	glLoadIdentity();*/
 	
 	start = SDL_GetTicks();
 	lasttime = 0;

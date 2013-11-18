@@ -6,9 +6,14 @@
 #include <SDL.h>
 #include <math.h>
 
-#include <GL/glew.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
+#ifdef __ANDROID__
+	#include <GLES2/gl2.h>
+	#include <GLES2/gl2ext.h>
+#else
+	#include <GL/glew.h>
+	#include <GL/gl.h>
+	#include <GL/glu.h>
+#endif
 
 #include "guichan/guichan.hpp"
 #include "guichan/sdl.hpp"
@@ -247,14 +252,14 @@ void Menu::setupGLstate()
 	
 	glEnable(GL_TEXTURE_2D);
 	
-	glDisable(GL_LIGHTING);
+	// TODO GLES: glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_FOG);
-	glDisable(GL_MULTISAMPLE);
+	// TODO GLES: glDisable(GL_FOG);
+	// TODO GLES: glDisable(GL_MULTISAMPLE);
 	glDisable(GL_CULL_FACE);
 	
 	for (unsigned int i = 0; i < 8; i++) {
-		glDisable(GL_LIGHT0 + i);
+		// TODO GLES: glDisable(GL_LIGHT0 + i);
 	}
 	
 	this->st->setMouseGrab(false);
@@ -338,9 +343,11 @@ void Menu::updateUI()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Perspective mode for the background
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+	// TODO GLES: glMatrixMode(GL_PROJECTION);
+	// TODO GLES: glLoadIdentity();
 	
+	// TODO GLES: 
+	/*
 	gluPerspective(30.0f, render->virt_width / render->virt_height, 1.0f, 2500.f);
 	glScalef (1.0f, -1.0f, 1.0f);
 	glTranslatef(0 - (render->virt_width / 2), 0 - (render->virt_height / 2), -1250.0f);
@@ -353,6 +360,7 @@ void Menu::updateUI()
 	glRotatef(bg_rot2_pos, 1, 0, 0);
 	glScalef(650, 50, 650);
 	glBindTexture(GL_TEXTURE_2D, bg->pixels);
+	
 	render->preVBOrender();
 	render->renderObj(bgmesh);
 	render->postVBOrender();
@@ -371,7 +379,7 @@ void Menu::updateUI()
 	glEnable(GL_BLEND);
 	render->renderSprite(logo, 40, 40);
 	glDisable(GL_BLEND);
-
+*/
 	this->menuHover(mousex, mousey);
 	this->menuRender();
 
@@ -566,8 +574,8 @@ void Menu::startCampaign(Campaign* c, string unittype, int viewmode, unsigned in
 			if (img) {
 				// We don't want the image to wrap
 				glBindTexture(GL_TEXTURE_2D, img->pixels);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+				// TODO GLES: glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+				// TODO GLES: glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
 				((RenderOpenGL*)render)->ortho = glm::ortho<float>(0.0f, render->real_width, render->real_height, 0.0f, 0.0f, 10.0f);
 

@@ -9,7 +9,7 @@
 #define VERSION "2.5"
 
 // Linux
-#ifdef __gnu_linux__
+#ifdef __linux__
 	#define HAVE_DCGETTEXT 1
 	#define HAVE_DLFCN_H 1
 	#define HAVE_GETTEXT 1

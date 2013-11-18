@@ -7,7 +7,12 @@
 #include <map>
 
 #include <GL/glew.h>
-#include <GL/gl.h>
+#ifdef __ANDROID__
+	#include <GLES2/gl2.h>
+	#include <GLES2/gl2ext.h>
+#else
+	#include <GL/gl.h>
+#endif
 #if defined(__WIN32__)
 	#include <GL/glext.h>
 #endif

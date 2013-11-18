@@ -4,7 +4,14 @@
 
 #pragma once
 #include "../rage.h"
-#include <GL/gl.h>
+
+#ifdef __ANDROID__
+	#include <GLES2/gl2.h>
+	#include <GLES2/gl2ext.h>
+#else
+	#include <GL/gl.h>
+#endif
+
 #include <SDL.h>
 
 

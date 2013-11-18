@@ -57,6 +57,8 @@
 #define glVertex3i glVertex3f
 #elif defined(__APPLE__)
 #include <OpenGL/gl.h>
+#elif defined (__ANDROID__)
+#include <GLES2/gl2.h>
 #else
 #include <GL/gl.h>
 #endif
