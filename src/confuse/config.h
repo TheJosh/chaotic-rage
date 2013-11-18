@@ -10,7 +10,6 @@
 
 // Linux
 #ifdef __gnu_linux__
-	#define ENABLE_NLS 1
 	#define HAVE_DCGETTEXT 1
 	#define HAVE_DLFCN_H 1
 	#define HAVE_GETTEXT 1

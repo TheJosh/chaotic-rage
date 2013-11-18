@@ -1,4 +1,5 @@
 CXX := g++
+CC := gcc
 CFLAGS := `sdl2-config --cflags` `pkg-config gl glu lua5.1 bullet assimp --cflags` `freetype-config --cflags` -DGETOPT -Werror -Wall -ggdb -Itools/include -Isrc -Isrc/guichan
 LIBS := `sdl2-config --libs` `pkg-config lua5.1 bullet assimp --libs` `freetype-config --libs` -lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11
 
@@ -22,7 +23,6 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/http/*.cpp \
 	$(SRCPATH)/weapons/*.cpp \
 	$(SRCPATH)/guichan/*.cpp \
-	$(SRCPATH)/confuse/*.cpp \
 	$(SRCPATH)/guichan/opengl/*.cpp \
 	$(SRCPATH)/guichan/sdl/*.cpp \
 	$(SRCPATH)/guichan/widgets/*.cpp \
@@ -31,7 +31,7 @@ CPPFILES=$(wildcard \
 OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES))
 OBJMAINS=build/client.o build/server.o
 
-OBJFILES_CLIENT=build/client.o build/linux.o $(filter-out $(OBJMAINS), $(OBJFILES))
+OBJFILES_CLIENT=build/client.o build/linux.o build/confuse/confuse.o build/confuse/lexer.o $(filter-out $(OBJMAINS), $(OBJFILES))
 
 
 default: chaoticrage
@@ -85,6 +85,10 @@ $(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h Makefile
 $(OBJPATH)/happyhttp.o: $(SRCPATH)/http/happyhttp.cpp $(SRCPATH)/http/happyhttp.h Makefile
 	@echo [CC] $<
 	@$(CXX) $(CFLAGS) -Wno-error -o $@ -c $< 
+	
+$(OBJPATH)/confuse/%.o: $(SRCPATH)/confuse/%.c $(SRCPATH)/confuse/confuse.h Makefile
+	@echo [CC] $<
+	@$(CC) $(CFLAGS) -Wno-error -o $@ -c $< 
 	
 $(OBJPATH)/linux.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h Makefile
 	@echo [CC] $<
