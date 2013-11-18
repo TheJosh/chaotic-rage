@@ -239,7 +239,7 @@ void AssimpModel::loadMeshes(bool opengl)
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned int)*4*mesh->mNumVertices, this->boneIds, GL_STATIC_DRAW);
 			glEnableVertexAttribArray(ATTRIB_BONEID);
-			glVertexAttribIPointer(ATTRIB_BONEID, 4, GL_INT, 0, 0);
+			glVertexAttribPointer(ATTRIB_BONEID, 4, GL_INT, 0, 0, 0);
 			
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);

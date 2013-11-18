@@ -232,11 +232,13 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	}
 	
 	// Glew
-	GLenum err = glewInit();
-	if (GLEW_OK != err) {
-		fprintf(stderr, "Glew Error: %s\n", glewGetErrorString(err));
-		reportFatalError("Unable to init the library GLEW.");
-	}
+	#ifdef OpenGL
+		GLenum err = glewInit();
+		if (GLEW_OK != err) {
+			fprintf(stderr, "Glew Error: %s\n", glewGetErrorString(err));
+			reportFatalError("Unable to init the library GLEW.");
+		}
+	#endif
 	
 	// GL_ARB_framebuffer_object -> glGenerateMipmap
 	if (! GL_ARB_framebuffer_object) {
