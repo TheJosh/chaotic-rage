@@ -1056,7 +1056,7 @@ DLLIMPORT int cfg_parse(cfg_t *cfg, const char *filename)
     assert(cfg && filename);
 
     free(cfg->filename);
-    cfg->filename = filename;
+    cfg->filename = strdup(filename);
     fp = fopen(cfg->filename, "r");
     if(fp == 0)
         return CFG_FILE_ERROR;
