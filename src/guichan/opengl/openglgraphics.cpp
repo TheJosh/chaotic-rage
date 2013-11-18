@@ -52,16 +52,7 @@
 #include <windows.h>
 #endif
 
-#if defined (__amigaos4__)
-#include <mgl/gl.h>
-#define glVertex3i glVertex3f
-#elif defined(__APPLE__)
-#include <OpenGL/gl.h>
-#elif defined (__ANDROID__)
-#include <GLES2/gl2.h>
-#else
-#include <GL/gl.h>
-#endif
+#include "../render/gl.h"
 
 #include "guichan/exception.hpp"
 #include "guichan/image.hpp"
