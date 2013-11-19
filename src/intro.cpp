@@ -11,7 +11,9 @@
 #include "audio/audio.h"
 #include "util/ui_update.h"
 #include "gamestate.h"
-
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace std;
 
@@ -65,20 +67,14 @@ void Intro::doit()
 	if (sg->music != NULL) {
 		st->audio->playSong(sg);
 	}
-
-	// TODO: Replace with non-deprecated OpenGL code
-	/*glDisable(GL_LIGHTING);
-	glDisable(GL_DEPTH_TEST);
-	
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0f, this->render->getWidth(), this->render->getHeight(), 0.0f, 0.0f, 10.0f);
-	
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();*/
 	
 	start = SDL_GetTicks();
 	lasttime = 0;
+
+	GLShader *shader = render->shaders["basic"];
+	glUseProgram(shader->p());
+	glm::mat4 projection = glm::ortho<float>(0.0f, this->render->getWidth(), this->render->getHeight(), 0.0f, -1.0f, 1.0f);
+	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, &projection[0][0]);
 
 	this->updateUI();
 }

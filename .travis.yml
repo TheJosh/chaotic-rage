@@ -13,4 +13,3 @@ install:
   - cd ../..
 script:
   - make
-  - ./chaoticrage --mod test --campaign pound --no-mouse-grab --audio=null --render=null

@@ -826,13 +826,12 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 {
 	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
 	
-	
 	// Draw a textured quad -- the image
 	GLfloat box[4][5] = {
-		{x, y + h, 0.0f, 0.0f, 1.0f},
-		{x + w, y + h, 0.0f, 1.0f, 1.0f},
-		{x + w, y, 0.0f, 1.0f, 0.0f},
-		{x, y, 0.0f, 0.0f, 0.0f},
+		{x, y + h, 0.0f,      0.0f, 1.0f},
+		{x + w, y + h, 0.0f,  1.0f, 1.0f},
+		{x, y, 0.0f,          0.0f, 0.0f},
+		{x + w, y, 0.0f,      1.0f, 0.0f},
 	};
 	
 	if (! sprite_vbo) {
@@ -841,6 +840,12 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 	
 	glBindBuffer(GL_ARRAY_BUFFER, sprite_vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
+
+	glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 20, BUFFER_OFFSET(0));
+	glVertexAttribPointer(ATTRIB_TEXUV, 2, GL_FLOAT, GL_FALSE, 20, BUFFER_OFFSET(12));
+	glEnableVertexAttribArray(ATTRIB_POSITION);
+	glEnableVertexAttribArray(ATTRIB_TEXUV);
+
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
@@ -964,13 +969,13 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 * Just textures, no lighting
 **/
 static const char* pVS = "                                                    \n\
-#version 120                                                                  \n\
-attribute  vec3 vPosition;                                                    \n\
-attribute  vec3 vNormal;                                                      \n\
-attribute  vec2 vTexUV;                                                       \n\
-varying vec2 fTexUV;                                                          \n\
+#version 140                                                                  \n\
+in vec3 vPosition;                                                    \n\
+in vec2 vTexUV;                                                       \n\
+out vec2 fTexUV;                                                          \n\
+uniform mat4 uMVP;                                                        \n\
 void main() {                                                                 \n\
-    gl_Position = gl_ModelViewProjectionMatrix * vec4(vPosition, 1.0f); fTexUV = vTexUV; \n\
+    gl_Position = uMVP * vec4(vPosition, 1.0f); fTexUV = vTexUV; \n\
 }";
 
 /**
@@ -978,8 +983,8 @@ void main() {                                                                 \n
 * Just textures, no lighting
 **/
 static const char* pFS = "                                                    \n\
-#version 120                                                                  \n\
-varying vec2 fTexUV;                                                          \n\
+#version 140                                                                  \n\
+in vec2 fTexUV;                                                          \n\
 uniform sampler2D uTex;                                                       \n\
 void main() {                                                                 \n\
     gl_FragColor = texture2D(uTex, fTexUV);                                   \n\
@@ -1003,6 +1008,7 @@ void RenderOpenGL::loadShaders()
 	// It's are hardcoded (see above)
 	if (! this->shaders.count("basic")) {
 		this->shaders["basic"] = createProgram(pVS, pFS, "basic");
+		assert(this->shaders["basic"] != NULL);
 	}
 	
 	// No mod loaded yet, can't load the shaders
