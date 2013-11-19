@@ -57,7 +57,7 @@ DONT_COMPILE_FILES := render/gl_debug_drawer.cpp
 
 LOCAL_SRC_FILES := $(filter-out $(DONT_COMPILE_FILES),$(LOCAL_SRC_FILES))
 
-LOCAL_SHARED_LIBRARIES := SDL2 SDL2_image SDL2_mixer SDL2_net bullet freetype assimp lua
+LOCAL_SHARED_LIBRARIES := SDL2 SDL2_image SDL2_mixer SDL2_net bullet libft2 assimp lua
 
 LOCAL_LDLIBS := -lGLESv1_CM -llog
 

@@ -58,12 +58,9 @@ fi
 
 # freetype
 if [ ! -d "jni/freetype" ]; then
-	cd working/
-	if [ ! -f "freetype-2.4.0.tar.gz" ]; then
-		wget http://download.savannah.gnu.org/releases/freetype/freetype-2.4.0.tar.gz
-	fi
-	tar -xzf freetype-2.4.0.tar.gz || exit 1
-	mv freetype-2.4.0 ../jni/freetype
+	cd jni/
+	git clone https://github.com/android/platform_external_freetype.git freetype
+	rm -rf freetype/.git
 	cd ..
 fi
 
