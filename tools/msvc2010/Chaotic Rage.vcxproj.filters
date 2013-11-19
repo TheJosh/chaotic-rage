@@ -597,6 +597,9 @@
     <ClCompile Include="..\..\src\confuse\lexer.c">
       <Filter>src\confuse</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\render\gl_debug_drawer.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">
@@ -1089,6 +1092,12 @@
       <Filter>src\confuse</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\render\sprite.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render\gl_debug_drawer.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render\gl.h">
       <Filter>src\render</Filter>
     </ClInclude>
   </ItemGroup>

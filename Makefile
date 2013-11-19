@@ -88,6 +88,7 @@ $(OBJPATH)/happyhttp.o: $(SRCPATH)/http/happyhttp.cpp $(SRCPATH)/http/happyhttp.
 	
 $(OBJPATH)/confuse/%.o: $(SRCPATH)/confuse/%.c $(SRCPATH)/confuse/confuse.h Makefile
 	@echo [CC] $<
+	@mkdir -p $(OBJPATH)/confuse
 	@$(CC) $(CFLAGS) -Wno-error -o $@ -c $< 
 	
 $(OBJPATH)/linux.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h Makefile
