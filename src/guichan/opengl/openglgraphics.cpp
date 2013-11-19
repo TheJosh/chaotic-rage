@@ -79,6 +79,7 @@ namespace gcn
     OpenGLGraphics::OpenGLGraphics(int width, int height)
     {
         setTargetPlane(width, height);
+		pimpl_ = new OpenGLGraphics_Impl();
     }
 
     OpenGLGraphics::~OpenGLGraphics()

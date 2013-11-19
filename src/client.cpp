@@ -81,6 +81,13 @@ int main (int argc, char ** argv)
 
 	m = new Menu(st);
 	
+	// For now, Android doesn't have a menu
+	#if defined(__ANDROID__)
+		m->loadModBits();
+		m->startGame(m->mapreg->get("therlor_valley"), "free_for_all", "robot", 0, 1, false);
+		exit(0);
+	#endif
+
 	// Campaign
 	if (st->cmdline->campaign != "") {
 		m->loadModBits();
