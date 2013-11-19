@@ -296,9 +296,15 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 **/
 void RenderOpenGL::loadFont(string name, Mod * mod)
 {
-	int error, len;
-	Uint8 * buf = mod->loadBinary(name, &len);
-
+	int error;
+	Sint64 len;
+	
+	Uint8 *buf = mod->loadBinary(name, &len);
+	if (buf == NULL) {
+		fprintf(stderr, "Freetype: Unable to load data\n");
+		exit(1);
+	}
+	
 	error = FT_New_Memory_Face(this->ft, (const FT_Byte *) buf, len, 0, &this->face);
 	if (error == FT_Err_Unknown_File_Format) {
 		fprintf(stderr, "Freetype: Unsupported font format\n");
@@ -308,6 +314,8 @@ void RenderOpenGL::loadFont(string name, Mod * mod)
 		fprintf(stderr, "Freetype: Unable to load font\n");
 		exit(1);
 	}
+	
+	free(buf);
 	
 	error = FT_Set_Char_Size(this->face, 0, 20*64, 72, 72);
 	if (error) {

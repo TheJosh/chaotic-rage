@@ -25,7 +25,7 @@ char* ModProxy::loadText(string resname)
 /**
 * Loads binary data from the mod.
 **/
-Uint8 * ModProxy::loadBinary(string resname, int * len)
+Uint8 * ModProxy::loadBinary(string resname, Sint64 *len)
 {
 	return this->master->loadBinary(this->directory + resname, len);
 }

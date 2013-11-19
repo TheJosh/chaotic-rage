@@ -674,31 +674,32 @@ WeaponType * Mod::getWeaponType(string name)
 **/
 char * Mod::loadText(string resname)
 {
+	SDL_RWops *rw;
 	char *buffer;
 	
-	string filename = directory;
-	filename.append(resname);
+	rw = this->loadRWops(resname);
+	if (rw == NULL) return NULL;
 	
-	FILE * fp = fopen(filename.c_str(), "rb");
-	if (! fp) {
+	Sint64 length = SDL_RWseek(rw, 0, SEEK_END);
+	if (length == -1) {
+		SDL_RWclose(rw);
 		return NULL;
 	}
 	
-	// Determine the size buffer needed
-	fseek (fp, 0, SEEK_END);
-	int len = ftell (fp);
-	fseek (fp, 0, SEEK_SET);
-	
-	// Read the contents of the file into a buffer
-	buffer = (char*) malloc(len + 1);
+	buffer = (char*) malloc(length + 1);
 	if (buffer == NULL) {
-		fclose(fp);
+		SDL_RWclose(rw);
 		return NULL;
 	}
-	buffer[len] = '\0';
+	buffer[length] = '\0';
 	
-	fread(buffer, 1, len, fp);
-	fclose(fp);
+	SDL_RWseek(rw, 0, SEEK_SET);
+	if (SDL_RWread(rw, buffer, sizeof (buffer), 1) == 0) {
+		SDL_RWclose(rw);
+		return NULL;
+	}
+	
+	SDL_RWclose(rw);
 	
 	return buffer;
 }
@@ -707,34 +708,35 @@ char * Mod::loadText(string resname)
 /**
 * Loads binary data from the mod.
 **/
-Uint8 * Mod::loadBinary(string resname, int * len)
+Uint8 * Mod::loadBinary(string resname, Sint64 *len)
 {
+	SDL_RWops *rw;
 	Uint8 *buffer;
 	
-	string filename = directory;
-	filename.append(resname);
+	rw = this->loadRWops(resname);
+	if (rw == NULL) return NULL;
 	
-	FILE * fp = fopen(filename.c_str(), "rb");
-	if (! fp) {
+	Sint64 length = SDL_RWseek(rw, 0, SEEK_END);
+	if (length == -1) {
+		SDL_RWclose(rw);
 		return NULL;
 	}
 	
-	// Determine the size buffer needed
-	fseek (fp, 0, SEEK_END);
-	int l = ftell (fp);
-	fseek (fp, 0, SEEK_SET);
-	
-	// Read the contents of the file into a buffer
-	buffer = (Uint8*) malloc(l);
+	buffer = (Uint8*) malloc(length);
 	if (buffer == NULL) {
-		fclose(fp);
+		SDL_RWclose(rw);
 		return NULL;
 	}
 	
-	fread(buffer, 1, l, fp);
-	fclose(fp);
+	SDL_RWseek(rw, 0, SEEK_SET);
+	if (SDL_RWread(rw, buffer, sizeof (buffer), 1) == 0) {
+		SDL_RWclose(rw);
+		return NULL;
+	}
 	
-	*len = l;
+	SDL_RWclose(rw);
+	
+	*len = length;
 	return buffer;
 }
 

@@ -93,3 +93,7 @@ rm jni/README.txt
 # Link up src directory
 rm -f jni/src
 ln -s ../../../src jni/src
+
+# Link up assets
+ln -s ../../data assets
+

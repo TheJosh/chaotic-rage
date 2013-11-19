@@ -62,7 +62,7 @@ class Mod {
 		
 	public:
 		virtual char* loadText(string filename);
-		virtual Uint8* loadBinary(string resname, int * len);
+		virtual Uint8* loadBinary(string resname, Sint64 *len);
 		virtual SDL_RWops* loadRWops(string filename);
 		
 	public:

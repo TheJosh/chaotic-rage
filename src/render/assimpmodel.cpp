@@ -61,7 +61,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 		| aiProcess_SortByPType
 		| aiProcess_FlipUVs;
 	
-	int len;
+	Sint64 len;
 	Uint8 * data = this->mod->loadBinary("models/" + this->name, &len);
 	if (! data) {
 		this->mod->setLoadErr("Failed to load %s; file read failed", this->name.c_str());
