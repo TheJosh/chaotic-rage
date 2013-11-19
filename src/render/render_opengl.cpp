@@ -20,6 +20,7 @@
 #include "../mod/vehicletype.h"
 #include "render_opengl.h"
 #include "render_opengl_settings.h"
+#include "gl_debug_drawer.h"
 #include "sprite.h"
 #include "glshader.h"
 #include "assimpmodel.h"
@@ -49,10 +50,20 @@ using namespace std;
 
 
 /**
-* For reporting errors - but only in debug mode
+* For reporting errors, except production and gles
 **/
-#ifdef RELEASE
+#if defined(RELEASE)
 	#define CHECK_OPENGL_ERROR
+	
+#elif defined(GLES)
+	#define CHECK_OPENGL_ERROR \
+	{	GLenum error; \
+		error = glGetError(); \
+		if (error != GL_NO_ERROR) { \
+			reportFatalError("OpenGL ES error"); \
+		} \
+	}
+	
 #else
 	#define CHECK_OPENGL_ERROR \
 	{	GLenum error; \
@@ -64,7 +75,7 @@ using namespace std;
 				error = glGetError(); \
 			} \
 			cerr << "Location: " << __FILE__ << ":" << __LINE__ << "\n"; \
-			reportFatalError("OpenGL error!"); \
+			reportFatalError("OpenGL error"); \
 		} \
 	}
 #endif
@@ -238,12 +249,12 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 			fprintf(stderr, "Glew Error: %s\n", glewGetErrorString(err));
 			reportFatalError("Unable to init the library GLEW.");
 		}
+		
+		// GL_ARB_framebuffer_object -> glGenerateMipmap
+		if (! GL_ARB_framebuffer_object) {
+			reportFatalError("OpenGL 3.0 or the extension 'GL_ARB_framebuffer_object' not available.");
+		}
 	#endif
-	
-	// GL_ARB_framebuffer_object -> glGenerateMipmap
-	if (! GL_ARB_framebuffer_object) {
-		reportFatalError("OpenGL 3.0 or the extension 'GL_ARB_framebuffer_object' not available.");
-	}
 	
 	// Freetype
 	int error;
@@ -367,10 +378,11 @@ void RenderOpenGL::mainViewport(int s, int of)
 
 
 /**
-* Enable physics debug drawing
+* Enable physics debug drawing. OpenGL only, not supported on GLES.
 **/
 void RenderOpenGL::setPhysicsDebug(bool status)
 {
+#ifdef OPENGL
 	if (status) {
 		this->physicsdebug = new GLDebugDrawer();
 		this->physicsdebug->setDebugMode(
@@ -384,6 +396,7 @@ void RenderOpenGL::setPhysicsDebug(bool status)
 		delete this->physicsdebug;
 		this->physicsdebug = NULL;
 	}
+#endif
 }
 
 
@@ -474,15 +487,15 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 		if (sprite->orig->format->Rmask == 0x000000ff) {
 			texture_format = GL_RGBA;
 		} else {
-			texture_format = GL_BGRA;
+			assert(1); // TODO GLES removed: texture_format = GL_BGRA;
 		}
 		
 	} else if (num_colors == 3) {
 		if (sprite->orig->format->Rmask == 0x000000ff) {
 			texture_format = GL_RGB;
 		} else {
-			texture_format = GL_BGR;
-		}	
+			assert(1); // TODO GLES removed: texture_format = GL_BGR;
+		}
 	}
 
 	// Open texture handle
@@ -521,7 +534,11 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, this->mag_filter);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	
+	// TODO: Look at this for GLES
+	#ifdef OPENGL
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	#endif
 	
 	const char* faces[6] = { "posx", "negx", "posy", "negy", "posz", "negz" };
 	
@@ -547,14 +564,14 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 			if (surf->format->Rmask == 0x000000ff) {
 				texture_format = GL_RGBA;
 			} else {
-				texture_format = GL_BGRA;
+				assert(1); // TODO GLES removed: texture_format = GL_BGRA;
 			}
 		
 		} else if (surf->format->BytesPerPixel == 3) {
 			if (surf->format->Rmask == 0x000000ff) {
 				texture_format = GL_RGB;
 			} else {
-				texture_format = GL_BGR;
+				assert(1); // TODO GLES removed: texture_format = GL_BGR;
 			}
 		
 		} else {
@@ -690,7 +707,6 @@ void RenderOpenGL::loadHeightmap()
 	glEnableVertexAttribArray(ATTRIB_POSITION);
 	glEnableVertexAttribArray(ATTRIB_NORMAL);
 	glEnableVertexAttribArray(ATTRIB_TEXUV);
-	glClientActiveTexture(GL_TEXTURE0);
 	
 	glBindVertexArray(0);
 	
@@ -809,24 +825,23 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y)
 void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 {
 	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
- 	
-	glBegin(GL_QUADS);
-		// Bottom-left vertex (corner)
-		glTexCoord2i( 0, 1 );
-		glVertex2i( x, y + h );
-		
-		// Bottom-right vertex (corner)
-		glTexCoord2i( 1, 1 );
-		glVertex2i( x + w, y + h );
-		
-		// Top-right vertex (corner)
-		glTexCoord2i( 1, 0 );
-		glVertex2i( x + w, y );
-		
-		// Top-left vertex (corner)
-		glTexCoord2i( 0, 0 );
-		glVertex2i( x, y );
-	glEnd();
+	
+	
+	// Draw a textured quad -- the image
+	GLfloat box[4][5] = {
+		{x, y + h, 0.0f, 0.0f, 1.0f},
+		{x + w, y + h, 0.0f, 1.0f, 1.0f},
+		{x + w, y, 0.0f, 1.0f, 0.0f},
+		{x, y, 0.0f, 0.0f, 0.0f},
+	};
+	
+	if (! sprite_vbo) {
+		glGenBuffers(1, &sprite_vbo);
+	}
+	
+	glBindBuffer(GL_ARRAY_BUFFER, sprite_vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 
@@ -837,21 +852,20 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 void RenderOpenGL::preGame()
 {
 	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	glEnable(GL_NORMALIZE);
 	
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	
-	glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	
-	if (this->settings->msaa >= 2) {
-		glEnable(GL_MULTISAMPLE);
-	} else {
-		glDisable(GL_MULTISAMPLE);
-	}
+	#ifdef OPENGL
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
+		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+		
+		if (this->settings->msaa >= 2) {
+			glEnable(GL_MULTISAMPLE);
+		} else {
+			glDisable(GL_MULTISAMPLE);
+		}
+	#endif
 	
 	// This will load the shaders (from the base mod) if they aren't loaded.
 	this->loadShaders();
@@ -870,9 +884,6 @@ void RenderOpenGL::preGame()
 	if (this->st->num_local == 1) {
 		this->mainViewport(1, 1);
 	}
-	
-	// For the HUD etc
-	glMatrixMode(GL_PROJECTION);
 }
 
 
@@ -1251,8 +1262,6 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 	glEnableVertexAttribArray(ATTRIB_POSITION);
 	glEnableVertexAttribArray(ATTRIB_NORMAL);
 	glEnableVertexAttribArray(ATTRIB_TEXUV);
-
-	glClientActiveTexture(GL_TEXTURE0);
 	
 	glBindVertexArray(0);
 	
@@ -1483,8 +1492,10 @@ void RenderOpenGL::renderCharacter(char character, float &x, float &y)
 		glBindTexture(GL_TEXTURE_2D, c->tex);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+		#ifdef OPENGL
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+		#endif
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, gl_data);
 		
 		delete [] gl_data;
@@ -1592,9 +1603,9 @@ void RenderOpenGL::render()
 **/
 void RenderOpenGL::physics()
 {
+#ifdef OPENGL
 	CHECK_OPENGL_ERROR;
 	
-	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_TEXTURE_2D);
 	
@@ -1613,11 +1624,11 @@ void RenderOpenGL::physics()
 		glEnd();
 	}
 
-	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 	
 	CHECK_OPENGL_ERROR;
+#endif
 }
 
 
@@ -1632,9 +1643,7 @@ void RenderOpenGL::mainRot()
 	float tilt, angle, dist, lift;		// Up/down; left/right; distance of camera, dist off ground
 	static float deadang = 22.0f;
 
-	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
-	glLoadIdentity();
 	
 	if (this->render_player == NULL) {
 		trans = btTransform(btQuaternion(0,0,0,0),btVector3(st->map->width/2.0f, 0.0f, st->map->height/2.0f));
@@ -1916,10 +1925,8 @@ void RenderOpenGL::guichan()
 
 	CHECK_OPENGL_ERROR;
 	
-	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 	
-	glLoadIdentity();
 	this->st->gui->draw();
 	
 	CHECK_OPENGL_ERROR;
@@ -1933,11 +1940,8 @@ void RenderOpenGL::hud(HUD * hud)
 {
 	CHECK_OPENGL_ERROR;
 	
-	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 	
-	glLoadIdentity();
-	glOrtho(0.0, this->virt_width, this->virt_height, 0.0, -1.0, 1.0);
 	hud->render(this);
 	
 	CHECK_OPENGL_ERROR;
@@ -1959,128 +1963,4 @@ void RenderOpenGL::fps()
 	this->renderText(buf, 550.0f, 50.0f);
 }
 
-
-
-
-
-
-
-
-
-
-//////////////////////////////////////////////
-///
-///   OpenGL debug drawing class.
-///   Originally from bullet/demos/opengl.
-///
-//////////////////////////////////////////////
-
-
-GLDebugDrawer::GLDebugDrawer():m_debugMode(0)
-{
-}
-
-void GLDebugDrawer::drawLine(const btVector3& from,const btVector3& to,const btVector3& fromColor, const btVector3& toColor)
-{
-	glBegin(GL_LINES);
-		glColor3f(fromColor.getX(), fromColor.getY(), fromColor.getZ());
-		glVertex3d(from.getX(), from.getY(), from.getZ());
-		glColor3f(toColor.getX(), toColor.getY(), toColor.getZ());
-		glVertex3d(to.getX(), to.getY(), to.getZ());
-	glEnd();
-}
-
-void GLDebugDrawer::drawLine(const btVector3& from,const btVector3& to,const btVector3& color)
-{
-	drawLine(from,to,color,color);
-}
-
-void GLDebugDrawer::drawSphere (const btVector3& p, btScalar radius, const btVector3& color)
-{
-	glColor4f (color.getX(), color.getY(), color.getZ(), btScalar(1.0f));
-	glPushMatrix ();
-	glTranslatef (p.getX(), p.getY(), p.getZ());
-
-	int lats = 5;
-	int longs = 5;
-
-	int i, j;
-	for(i = 0; i <= lats; i++) {
-		btScalar lat0 = SIMD_PI * (-btScalar(0.5) + (btScalar) (i - 1) / lats);
-		btScalar z0  = radius*sin(lat0);
-		btScalar zr0 =  radius*cos(lat0);
-
-		btScalar lat1 = SIMD_PI * (-btScalar(0.5) + (btScalar) i / lats);
-		btScalar z1 = radius*sin(lat1);
-		btScalar zr1 = radius*cos(lat1);
-
-		glBegin(GL_QUAD_STRIP);
-		for(j = 0; j <= longs; j++) {
-			btScalar lng = 2 * SIMD_PI * (btScalar) (j - 1) / longs;
-			btScalar x = cos(lng);
-			btScalar y = sin(lng);
-
-			glNormal3f(x * zr0, y * zr0, z0);
-			glVertex3f(x * zr0, y * zr0, z0);
-			glNormal3f(x * zr1, y * zr1, z1);
-			glVertex3f(x * zr1, y * zr1, z1);
-		}
-		glEnd();
-	}
-
-	glPopMatrix();
-}
-
-void GLDebugDrawer::drawBox (const btVector3& boxMin, const btVector3& boxMax, const btVector3& color, btScalar alpha)
-{
-	btVector3 halfExtent = (boxMax - boxMin) * btScalar(0.5f);
-	btVector3 center = (boxMax + boxMin) * btScalar(0.5f);
-	glColor4f (color.getX(), color.getY(), color.getZ(), alpha);
-	glPushMatrix ();
-	glTranslatef (center.getX(), center.getY(), center.getZ());
-	glScaled(2*halfExtent[0], 2*halfExtent[1], 2*halfExtent[2]);
-	glPopMatrix ();
-}
-
-void GLDebugDrawer::drawTriangle(const btVector3& a,const btVector3& b,const btVector3& c,const btVector3& color,btScalar alpha)
-{
-	const btVector3	n=btCross(b-a,c-a).normalized();
-	
-	glBegin(GL_TRIANGLES);
-	glColor4f(color.getX(), color.getY(), color.getZ(),alpha);
-	glNormal3d(n.getX(),n.getY(),n.getZ());
-	glVertex3d(a.getX(),a.getY(),a.getZ());
-	glVertex3d(b.getX(),b.getY(),b.getZ());
-	glVertex3d(c.getX(),c.getY(),c.getZ());
-	glEnd();
-}
-
-void GLDebugDrawer::setDebugMode(int debugMode)
-{
-	m_debugMode = debugMode;
-}
-
-void GLDebugDrawer::draw3dText(const btVector3& location,const char* textString)
-{
-	glRasterPos3f(location.x(),  location.y(),  location.z());
-}
-
-void GLDebugDrawer::reportErrorWarning(const char* warningString)
-{
-	DEBUG("phy", "%s\n", warningString);
-}
-
-void GLDebugDrawer::drawContactPoint(const btVector3& pointOnB,const btVector3& normalOnB,btScalar distance,int lifeTime,const btVector3& color)
-{
-	btVector3 to = pointOnB + normalOnB * 1;//distance;
-	
-	const btVector3&from = pointOnB;
-	
-	glColor4f(color.getX(), color.getY(), color.getZ(),1.f);
-	
-	glBegin(GL_LINES);
-	glVertex3d(from.getX(), from.getY(), from.getZ());
-	glVertex3d(to.getX(), to.getY(), to.getZ());
-	glEnd();
-}
 

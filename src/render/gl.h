@@ -17,6 +17,7 @@
 	#define glBindVertexArray glBindVertexArrayOES;
 	#define glDeleteVertexArrays glDeleteVertexArraysOES;
 	#define glGenVertexArrays glDeleteVertexArraysOES;
+	#define glClientActiveTexture glClientActiveTextureOES;
 	
 #else
 	#define OpenGL
