@@ -17,6 +17,7 @@ class MenuDialog;
 class DialogNewGame;
 class VectorListModel;
 class Render3D;
+class RenderOpenGL;
 class GameState;
 
 
@@ -46,7 +47,7 @@ class Menu : public UIUpdate
 {
 	private:
 		GameState *st;
-		Render3D *render;
+		RenderOpenGL *render;
 		int running;
 		vector<MenuItem*> menuitems;
 		gcn::SDLInput* input;

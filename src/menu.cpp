@@ -47,7 +47,7 @@ Menu::Menu(GameState *st)
 {
 	this->st = st;
 	this->mm = st->mm;
-	this->render = (Render3D*) st->render;
+	this->render = (RenderOpenGL*) st->render;
 	this->dialog = NULL;
 	this->mapreg = NULL;
 	this->logo = NULL;
@@ -239,22 +239,19 @@ void Menu::doit(UIUpdate* ui)
 **/
 void Menu::setupGLstate()
 {
-	((RenderOpenGL*)this->render)->mainViewport(0, 0);
+	this->render->mainViewport(0, 0);
 	
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	
 	glEnable(GL_TEXTURE_2D);
 	
-	// TODO GLES: glDisable(GL_LIGHTING);
-	glDisable(GL_DEPTH_TEST);
-	// TODO GLES: glDisable(GL_FOG);
-	// TODO GLES: glDisable(GL_MULTISAMPLE);
-	glDisable(GL_CULL_FACE);
+	GLShader *shader = render->shaders["basic"];
+	glUseProgram(shader->p());
+	glm::mat4 projection = glm::ortho<float>(0.0f, this->render->getWidth(), this->render->getHeight(), 0.0f, -1.0f, 1.0f);
+	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, &projection[0][0]);
 	
-	for (unsigned int i = 0; i < 8; i++) {
-		// TODO GLES: glDisable(GL_LIGHT0 + i);
-	}
-	
+	render->ortho = projection;
+
 	this->st->setMouseGrab(false);
 }
 
@@ -335,16 +332,7 @@ void Menu::updateUI()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Perspective mode for the background
-	// TODO GLES: glMatrixMode(GL_PROJECTION);
-	// TODO GLES: glLoadIdentity();
-	
-	// TODO GLES: 
 	/*
-	gluPerspective(30.0f, render->virt_width / render->virt_height, 1.0f, 2500.f);
-	glScalef (1.0f, -1.0f, 1.0f);
-	glTranslatef(0 - (render->virt_width / 2), 0 - (render->virt_height / 2), -1250.0f);
-	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glTranslatef((render->virt_width / 2), (render->virt_height / 2), 0);
@@ -357,22 +345,13 @@ void Menu::updateUI()
 	render->preVBOrender();
 	render->renderObj(bgmesh);
 	render->postVBOrender();
+	*/
 
 	
-	// Ortho mode for the logo and main menu
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0f, render->real_width, render->real_height, 0.0f, 0.0f, 10.0f);
-	
-	((RenderOpenGL*)render)->ortho = glm::ortho<float>(0.0f, render->real_width, render->real_height, 0.0f, 0.0f, 10.0f);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	
-	glEnable(GL_BLEND);
+	glUseProgram(render->shaders["basic"]->p());
 	render->renderSprite(logo, 40, 40);
-	glDisable(GL_BLEND);
-*/
+	
+
 	this->menuHover(mousex, mousey);
 	this->menuRender();
 
