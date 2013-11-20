@@ -23,7 +23,6 @@
 #define ANIMATION_FPS	12.0
 
 
-
 #include <stdint.h>
 typedef int8_t      Sint8;
 typedef uint8_t     Uint8;

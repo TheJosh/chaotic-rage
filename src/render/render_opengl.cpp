@@ -841,7 +841,7 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 		{x + w, y, 0.0f,      1.0f, 0.0f},
 	};
 	
-	if (! sprite_vbo) {
+	if (! sprite_vbo) {	
 		glGenBuffers(1, &sprite_vbo);
 	}
 	
@@ -975,27 +975,25 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 * Basic vertex shader for use before the base mod has been loaded
 * Just textures, no lighting
 **/
-static const char* pVS = "                                                    \n\
-#version 140                                                                  \n\
-in vec3 vPosition;                                                    \n\
-in vec2 vTexUV;                                                       \n\
-out vec2 fTexUV;                                                          \n\
-uniform mat4 uMVP;                                                        \n\
-void main() {                                                                 \n\
-    gl_Position = uMVP * vec4(vPosition, 1.0f); fTexUV = vTexUV; \n\
-}";
+static const char* pVS = "\
+	attribute vec3 vPosition;   \n\
+	attribute vec2 vTexUV;      \n\
+	varying vec2 fTexUV;        \n\
+	uniform mat4 uMVP;          \n\
+	void main() {               \n\
+		gl_Position = uMVP * vec4(vPosition, 1.0f); fTexUV = vTexUV;   \n\
+	}";
 
 /**
 * Basic fragment shader for use before the base mod has been loaded
 * Just textures, no lighting
 **/
-static const char* pFS = "                                                    \n\
-#version 140                                                                  \n\
-in vec2 fTexUV;                                                          \n\
-uniform sampler2D uTex;                                                       \n\
-void main() {                                                                 \n\
-    gl_FragColor = texture2D(uTex, fTexUV);                                   \n\
-}";
+static const char* pFS = "\
+	varying vec2 fTexUV;       \n\
+	uniform sampler2D uTex;    \n\
+	void main() {              \n\
+		gl_FragColor = texture2D(uTex, fTexUV);    \n\
+	}";
 
 
 /**
