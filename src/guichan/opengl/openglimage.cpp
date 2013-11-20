@@ -237,7 +237,7 @@ namespace gcn
 
         glTexImage2D(GL_TEXTURE_2D,
                      0,
-                     4,
+                     GL_RGBA,
                      mTextureWidth,
                      mTextureHeight,
                      0,

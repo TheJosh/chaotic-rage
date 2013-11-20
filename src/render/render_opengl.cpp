@@ -20,6 +20,7 @@
 #include "../mod/vehicletype.h"
 #include "render_opengl.h"
 #include "render_opengl_settings.h"
+#include "gl_debug.h"
 #include "gl_debug_drawer.h"
 #include "sprite.h"
 #include "glshader.h"
@@ -47,45 +48,6 @@ using namespace std;
 * For VBO pointer offsets
 **/
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
-
-
-/**
-* For reporting errors, except production and gles
-**/
-#if defined(RELEASE)
-	#define CHECK_OPENGL_ERROR
-	
-#elif defined(GLES)
-	#define CHECK_OPENGL_ERROR \
-	{	GLenum error; \
-		error = glGetError(); \
-		if (error != GL_NO_ERROR) { \
-			switch (error) { \
-				case GL_INVALID_ENUM: reportFatalError("OpenGL ES error: GL_INVALID_ENUM"); \
-				case GL_INVALID_VALUE: reportFatalError("OpenGL ES error: GL_INVALID_VALUE"); \
-				case GL_INVALID_OPERATION: reportFatalError("OpenGL ES error: GL_INVALID_OPERATION"); \
-				case GL_INVALID_FRAMEBUFFER_OPERATION: reportFatalError("OpenGL ES error: GL_INVALID_FRAMEBUFFER_OPERATION"); \
-				case GL_OUT_OF_MEMORY: reportFatalError("OpenGL ES error: GL_OUT_OF_MEMORY"); \
-				default: reportFatalError("OpenGL ES error: ???"); \
-			} \
-		} \
-	}
-	
-#else
-	#define CHECK_OPENGL_ERROR \
-	{	GLenum error; \
-		error = glGetError(); \
-		if (error != GL_NO_ERROR) { \
-			cerr << "OpenGL Error:\n"; \
-			while (error) { \
-				cerr << " - " << gluErrorString(error) << "\n"; \
-				error = glGetError(); \
-			} \
-			cerr << "Location: " << __FILE__ << ":" << __LINE__ << "\n"; \
-			reportFatalError("OpenGL error"); \
-		} \
-	}
-#endif
 
 
 /**
@@ -301,7 +263,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	glDepthFunc(GL_LEQUAL);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	CHECK_OPENGL_ERROR
 }
 
 
@@ -501,13 +464,17 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 {
 	GLenum texture_format;
+	GLenum target_format;
 	GLint num_colors;
 
+	CHECK_OPENGL_ERROR
+	
 	// Determine OpenGL import type
 	num_colors = sprite->orig->format->BytesPerPixel;
 	if (num_colors == 4) {
 		if (sprite->orig->format->Rmask == 0x000000ff) {
 			texture_format = GL_RGBA;
+			target_format = GL_RGBA;
 		} else {
 			assert(1); // TODO GLES removed: texture_format = GL_BGRA;
 		}
@@ -515,23 +482,29 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 	} else if (num_colors == 3) {
 		if (sprite->orig->format->Rmask == 0x000000ff) {
 			texture_format = GL_RGB;
+			target_format = GL_RGB;
 		} else {
 			assert(1); // TODO GLES removed: texture_format = GL_BGR;
 		}
 	}
 
-	// Open texture handle
-	glEnable(GL_TEXTURE_2D);
+	#ifdef GLES
+		target_format = texture_format;
+	#endif
+	
+	// Create and bind texture handle
 	glGenTextures(1, &sprite->pixels);
 	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
 	
 	// Set stretching properties
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this->min_filter);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, this->mag_filter);
-
-	// Load it
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sprite->orig->w, sprite->orig->h, 0, texture_format, GL_UNSIGNED_BYTE, sprite->orig->pixels);
+	
+	// Load and create mipmaps
+	glTexImage2D(GL_TEXTURE_2D, 0, target_format, sprite->orig->w, sprite->orig->h, 0, texture_format, GL_UNSIGNED_BYTE, sprite->orig->pixels);
 	glGenerateMipmap(GL_TEXTURE_2D);
+	
+	CHECK_OPENGL_ERROR
 }
 
 
@@ -871,6 +844,8 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 	glEnableVertexAttribArray(ATTRIB_TEXUV);
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	
+	CHECK_OPENGL_ERROR;
 }
 
 
@@ -1167,6 +1142,8 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	if (! success) {
 		return NULL;
 	}
+	
+	CHECK_OPENGL_ERROR;
 	
 	return new GLShader(program);
 }
