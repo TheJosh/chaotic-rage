@@ -60,7 +60,14 @@ using namespace std;
 	{	GLenum error; \
 		error = glGetError(); \
 		if (error != GL_NO_ERROR) { \
-			reportFatalError("OpenGL ES error"); \
+			switch (error) { \
+				case GL_INVALID_ENUM: reportFatalError("OpenGL ES error: GL_INVALID_ENUM"); \
+				case GL_INVALID_VALUE: reportFatalError("OpenGL ES error: GL_INVALID_VALUE"); \
+				case GL_INVALID_OPERATION: reportFatalError("OpenGL ES error: GL_INVALID_OPERATION"); \
+				case GL_INVALID_FRAMEBUFFER_OPERATION: reportFatalError("OpenGL ES error: GL_INVALID_FRAMEBUFFER_OPERATION"); \
+				case GL_OUT_OF_MEMORY: reportFatalError("OpenGL ES error: GL_OUT_OF_MEMORY"); \
+				default: reportFatalError("OpenGL ES error: ???"); \
+			} \
 		} \
 	}
 	
@@ -79,7 +86,6 @@ using namespace std;
 		} \
 	}
 #endif
-
 
 
 /**
@@ -205,16 +211,6 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	
 	// SDL
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-	if (this->settings->msaa >= 2) {
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, this->settings->msaa);
-	} else {
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
-	}
-
 	flags = SDL_WINDOW_OPENGL;
 	if (fullscreen) flags |= SDL_WINDOW_FULLSCREEN;
 	
@@ -228,7 +224,26 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		reportFatalError(buffer);
 	}
 	
+	// GL context settings
+	#if defined(GLES)
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2); 
+		
+	#elif defined(OpenGL)
+		if (this->settings->msaa >= 2) {
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, this->settings->msaa);
+		} else {
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
+		}
+	#endif
+	
+	// GL context creation
 	this->glcontext = SDL_GL_CreateContext(this->window);
+	if (this->glcontext == NULL) {
+		reportFatalError("Unable to create GL context");
+	}
 	
 	// SDL_Image
 	flags = IMG_INIT_PNG;
@@ -831,6 +846,8 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y)
 **/
 void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 {
+	CHECK_OPENGL_ERROR;
+	
 	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
 	
 	// Draw a textured quad -- the image
