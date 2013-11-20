@@ -1,6 +1,6 @@
 CXX := g++
 CC := gcc
-CFLAGS := `sdl2-config --cflags` `pkg-config gl glu lua5.1 bullet assimp --cflags` `freetype-config --cflags` -DGETOPT -Werror -Wall -ggdb -Itools/include -Isrc -Isrc/guichan
+CFLAGS := `sdl2-config --cflags` `pkg-config gl glu lua5.1 bullet assimp --cflags` `freetype-config --cflags` -DGETOPT -Werror -Wall -ggdb -Itools/include -Isrc -Isrc/guichan -Isrc/confuse
 LIBS := `sdl2-config --libs` `pkg-config lua5.1 bullet assimp --libs` `freetype-config --libs` -lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11
 
 VERSION := $(shell grep -E --only-matching 'VERSION ".+"' src/rage.h | sed -n 1p | sed "s/VERSION //" | sed 's/"//g')

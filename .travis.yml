@@ -10,4 +10,4 @@ install:
   - if [ "$PLATFORM" == "android" ]; then cd tools/android; wget http://dl.google.com/android/ndk/android-ndk-r9b-linux-x86_64.tar.bz2; tar -xjf android-ndk-r9b-linux-x86_64.tar.bz2; cd ../..; fi
 script:
   - if [ "$PLATFORM" == "linux" ]; then make; fi
-  - if [ "$PLATFORM" == "android" ]; then cd tools/android; ./prepare.sh; android-ndk-r9b-linux-x86_64/ndk-build; fi
+  - if [ "$PLATFORM" == "android" ]; then cd tools/android; ./prepare.sh; android-ndk-r9b/ndk-build; cd ../..; fi
