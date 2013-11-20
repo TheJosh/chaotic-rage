@@ -102,7 +102,11 @@ void ClientConfig::initRender(GameState *st)
 		new RenderOpenGL(st, this->gl);
 	}
 	
-	st->render->setScreenSize(1000, 700, false);
+	#ifdef __ANDROID__
+		st->render->setScreenSize(0, 0, true);
+	#else
+		st->render->setScreenSize(1000, 700, false);
+	#endif
 }
 
 

@@ -76,7 +76,7 @@ int main (int argc, char ** argv)
 	
 	// Load the mods. Uses threads if possible
 	if (! loadMods(st, ui)) {
-		exit(0);
+		reportFatalError("Module loading failed");
 	}
 
 	m = new Menu(st);

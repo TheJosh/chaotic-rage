@@ -6,8 +6,11 @@
 #include <iostream>
 #include <errno.h>
 #include "platform.h"
+#include <android/log.h>
 
 using namespace std;
+
+#define APPNAME "ChaoticRage"
 
 
 /**
@@ -37,9 +40,7 @@ string getUserDataDir()
 **/
 void reportFatalError(string msg)
 {
-	string m = "FATAL ERROR: ";
-	m.append(msg);
-	displayMessageBox(m);
+	__android_log_print(ANDROID_LOG_ERROR, APPNAME, "Fatal: %s", msg.c_str());
 	exit(1);
 }
 
@@ -49,7 +50,7 @@ void reportFatalError(string msg)
 **/
 void displayMessageBox(string msg)
 {
-	cout << msg << "\n";
+	__android_log_print(ANDROID_LOG_WARN, APPNAME, "Warn: %s", msg.c_str());
 }
 
 

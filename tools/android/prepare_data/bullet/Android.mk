@@ -19,4 +19,4 @@ LOCAL_SRC_FILES := $(subst $(LOCAL_PATH)/,, \
 	$(wildcard $(LOCAL_PATH)/src/LinearMath/*.cpp) \
 	)
 	
-include $(BUILD_STATIC_LIBRARY)
+include $(BUILD_SHARED_LIBRARY)

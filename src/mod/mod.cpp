@@ -266,7 +266,6 @@ bool Mod::load(UIUpdate* ui)
 	if (songs == NULL) return false;
 #endif
 	
-	
 	areatypes = loadModFile<FloorType*>(this, ui, "floortypes.conf", "floortype", floortype_opts, &loadItemFloorType);
 	if (areatypes == NULL) return false;
 	
@@ -296,7 +295,6 @@ bool Mod::load(UIUpdate* ui)
 	
 	pickuptypes = loadModFile<PickupType*>(this, ui, "pickuptypes.conf", "pickuptype", pickuptype_opts, &loadItemPickupType);
 	if (pickuptypes == NULL) return false;
-
 
 	// Auto-create pickup types for weapons, ammocrates
 	for (int i = weapontypes->size() - 1; i >= 0; --i) {
@@ -694,7 +692,7 @@ char * Mod::loadText(string resname)
 	buffer[length] = '\0';
 	
 	SDL_RWseek(rw, 0, SEEK_SET);
-	if (SDL_RWread(rw, buffer, sizeof (buffer), 1) == 0) {
+	if (SDL_RWread(rw, buffer, length, 1) == 0) {
 		SDL_RWclose(rw);
 		return NULL;
 	}
@@ -729,7 +727,7 @@ Uint8 * Mod::loadBinary(string resname, Sint64 *len)
 	}
 	
 	SDL_RWseek(rw, 0, SEEK_SET);
-	if (SDL_RWread(rw, buffer, sizeof (buffer), 1) == 0) {
+	if (SDL_RWread(rw, buffer, length, 1) == 0) {
 		SDL_RWclose(rw);
 		return NULL;
 	}

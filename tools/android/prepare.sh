@@ -95,5 +95,10 @@ rm -f jni/src
 ln -s ../../../src jni/src
 
 # Link up assets
-ln -s ../../data assets
+rm -rf assets
+mkdir assets
+mkdir assets/data
+ln -s ../../../../data/cr assets/data/
+ln -s ../../../../data/intro assets/data/
+ln -s ../../../maps assets/
 
