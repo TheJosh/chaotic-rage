@@ -968,24 +968,26 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 * Just textures, no lighting
 **/
 static const char* pVS = "\
-	attribute vec3 vPosition;   \n\
-	attribute vec2 vTexUV;      \n\
-	varying vec2 fTexUV;        \n\
-	uniform mat4 uMVP;          \n\
-	void main() {               \n\
-		gl_Position = uMVP * vec4(vPosition, 1.0f); fTexUV = vTexUV;   \n\
-	}";
+precision mediump float;    \n\
+attribute vec3 vPosition;   \n\
+attribute vec2 vTexUV;      \n\
+varying vec2 fTexUV;        \n\
+uniform mat4 uMVP;          \n\
+void main() {               \n\
+	gl_Position = uMVP * vec4(vPosition, 1.0); fTexUV = vTexUV;   \n\
+}";
 
 /**
 * Basic fragment shader for use before the base mod has been loaded
 * Just textures, no lighting
 **/
 static const char* pFS = "\
-	varying vec2 fTexUV;       \n\
-	uniform sampler2D uTex;    \n\
-	void main() {              \n\
-		gl_FragColor = texture2D(uTex, fTexUV);    \n\
-	}";
+precision mediump float;   \n\
+varying vec2 fTexUV;       \n\
+uniform sampler2D uTex;    \n\
+void main() {              \n\
+	gl_FragColor = texture2D(uTex, fTexUV);    \n\
+}";
 
 
 /**
@@ -1004,8 +1006,11 @@ void RenderOpenGL::loadShaders()
 	// Before the mod is loaded, we only need the basic shader
 	// It's are hardcoded (see above)
 	if (! this->shaders.count("basic")) {
-		this->shaders["basic"] = createProgram(pVS, pFS, "basic");
-		assert(this->shaders["basic"] != NULL);
+		GLShader *shader = createProgram(pVS, pFS, "basic");
+		if (shader == NULL) {
+			reportFatalError("Error loading default OpenGL shader");
+		}
+		this->shaders["basic"] = shader;
 	}
 	
 	// No mod loaded yet, can't load the shaders
@@ -1077,6 +1082,7 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 		GLchar InfoLog[1024];
 		glGetShaderInfoLog(shader, 1024, NULL, InfoLog);
 		cerr << "Error compiling shader:\n" << InfoLog << "\n";
+		displayMessageBox(std::string(InfoLog));
 		return 0;
 	}
 	
@@ -1093,24 +1099,35 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	GLint success;
 	GLuint sVertex, sFragment;
 	
+	CHECK_OPENGL_ERROR;
+	
 	GLuint program = glCreateProgram();
 	if (program == 0) {
+		displayMessageBox("a");
 		return NULL;
 	}
+	
+	CHECK_OPENGL_ERROR;
 	
 	// Create and attach vertex shader
 	sVertex = this->createShader(vertex, GL_VERTEX_SHADER);
 	if (sVertex == 0) {
+		displayMessageBox("b");
 		return NULL;
 	}
 	glAttachShader(program, sVertex);
 	
+	CHECK_OPENGL_ERROR;
+	
 	// Same with frag shader
 	sFragment = this->createShader(fragment, GL_FRAGMENT_SHADER);
 	if (sFragment == 0) {
+		displayMessageBox("c");
 		return NULL;
 	}
 	glAttachShader(program, sFragment);
+	
+	CHECK_OPENGL_ERROR;
 	
 	// Bind attribs
 	glBindAttribLocation(program, ATTRIB_POSITION, "vPosition");
@@ -1122,24 +1139,32 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	glBindAttribLocation(program, ATTRIB_COLOR, "vColor");
 	glBindAttribLocation(program, ATTRIB_TANGENT, "vTangent");
 	
+	CHECK_OPENGL_ERROR;
+	
 	// Link
 	glLinkProgram(program);
 	glDeleteShader(sVertex);
 	glDeleteShader(sFragment);
 	
+	CHECK_OPENGL_ERROR;
+	
 	// Check link worked
 	glGetProgramiv(program, GL_LINK_STATUS, &success);
 	if (! success) {
-		GLchar InfoLog[1024];
-		glGetProgramInfoLog(program, 1024, NULL, InfoLog);
-		cerr << "Error linking program:\n" << InfoLog << "\n";
+		GLchar infolog[1024];
+		glGetProgramInfoLog(program, 1024, NULL, infolog);
+		cerr << "Error linking program:\n" << infolog << "\n";
+		displayMessageBox("d");
 		return NULL;
 	}
+	
+	CHECK_OPENGL_ERROR;
 	
 	// Validate
 	glValidateProgram(program);
 	glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
 	if (! success) {
+		displayMessageBox("e");
 		return NULL;
 	}
 	
