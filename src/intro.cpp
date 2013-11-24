@@ -54,8 +54,10 @@ void Intro::load()
 
 	sg = new Song();
 	sg->name = "intro";
-	SDL_RWops * rwops = mod->loadRWops("intro.ogg");
-	sg->music = Mix_LoadMUS_RW(rwops, 0);			// is this right?
+
+	SDL_RWops * rw = mod->loadRWops("intro.ogg");
+	sg->music = Mix_LoadMUS_RW(rw, 0);			// is this right?
+	SDL_RWclose(rw);
 }
 
 

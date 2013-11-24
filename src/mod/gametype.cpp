@@ -39,8 +39,10 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 	filename.append(cfg_getstr(cfg_item, "script"));
 	filename.append(".lua");
 	
-	gt->script = mod->loadText(filename);
-	
+	char * tmp = mod->loadText(filename);
+	gt->script = std::string(tmp);
+	free(tmp);
+
 	return gt;
 }
 

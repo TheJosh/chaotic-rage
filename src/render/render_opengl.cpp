@@ -305,6 +305,8 @@ void RenderOpenGL::loadFont(string name, Mod * mod)
 	}
 	
 	error = FT_New_Memory_Face(this->ft, (const FT_Byte *) buf, len, 0, &this->face);
+	free(buf);
+
 	if (error == FT_Err_Unknown_File_Format) {
 		fprintf(stderr, "Freetype: Unsupported font format\n");
 		exit(1);
@@ -313,8 +315,6 @@ void RenderOpenGL::loadFont(string name, Mod * mod)
 		fprintf(stderr, "Freetype: Unable to load font\n");
 		exit(1);
 	}
-	
-	free(buf);
 	
 	error = FT_Set_Char_Size(this->face, 0, 20*64, 72, 72);
 	if (error) {
@@ -1168,7 +1168,7 @@ GLShader* RenderOpenGL::loadProgram(Mod* mod, string name)
 	char* f = mod->loadText("shaders/" + name + ".glslf");
 	GLShader* s;
 	
-	if (v == NULL or f == NULL) {
+	if (v == NULL || f == NULL) {
 		free(v);
 		free(f);
 		cerr << "Unable to load shader program " << name << endl;

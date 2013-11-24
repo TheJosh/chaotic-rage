@@ -29,6 +29,7 @@ Image* ChaoticRageOpenGLSDLImageLoader::load(const std::string& filename, bool c
 	}
 	
 	SDL_Surface *loadedSurface = IMG_Load_RW(rw, 0);
+	SDL_RWclose(rw);
 	if (loadedSurface == NULL) {
 		throw GCN_EXCEPTION(
 				std::string("Unable to load image file: ") + filename);
