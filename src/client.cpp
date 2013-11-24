@@ -74,6 +74,12 @@ int main (int argc, char ** argv)
 		ui = new UIUpdateNull();
 	}
 	
+	for (int i = 0; i < 10; i++) {
+		ui->updateUI();
+		SDL_Delay(100);
+	}
+	exit(0);
+	
 	// Load the mods. Uses threads if possible
 	if (! loadMods(st, ui)) {
 		reportFatalError("Module loading failed");

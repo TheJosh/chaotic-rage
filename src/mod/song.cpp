@@ -38,7 +38,6 @@ Song* loadItemSong(cfg_t* cfg_item, Mod* mod)
 	filename.append(cfg_getstr(cfg_item, "file"));
 	SDL_RWops * rw = mod->loadRWops(filename);
 	sg->music = Mix_LoadMUS_RW(rw, 0);		// todo: change?
-	SDL_RWclose(rw);
 	if (sg->music == NULL) return NULL;
 	
 	return sg;

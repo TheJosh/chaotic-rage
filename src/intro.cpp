@@ -58,7 +58,6 @@ void Intro::load()
 
 	SDL_RWops * rw = mod->loadRWops("intro.ogg");
 	sg->music = Mix_LoadMUS_RW(rw, 0);			// is this right?
-	SDL_RWclose(rw);
 }
 
 
@@ -67,6 +66,8 @@ void Intro::load()
 **/
 void Intro::doit()
 {
+	GLShader *shader;
+	
 	if (sg->music != NULL) {
 		st->audio->playSong(sg);
 	}
@@ -76,8 +77,15 @@ void Intro::doit()
 
 	CHECK_OPENGL_ERROR
 	
-	GLShader *shader = render->shaders["basic"];
-	assert(shader);
+	// Find 'basic' shader
+	map<string, GLShader*>::const_iterator pos = render->shaders.find("basic");
+	if (pos == render->shaders.end()) {
+		assert(false);
+	} else {
+		shader = pos->second;
+	}
+	
+	// Set shader and uniforms
 	glUseProgram(shader->p());
 	glm::mat4 projection = glm::ortho<float>(0.0f, this->render->getWidth(), this->render->getHeight(), 0.0f, -1.0f, 1.0f);
 	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, &projection[0][0]);
