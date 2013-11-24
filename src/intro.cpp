@@ -14,6 +14,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "render/gl_debug.h"
 
 using namespace std;
 
@@ -73,11 +74,16 @@ void Intro::doit()
 	start = SDL_GetTicks();
 	lasttime = 0;
 
+	CHECK_OPENGL_ERROR
+	
 	GLShader *shader = render->shaders["basic"];
+	assert(shader);
 	glUseProgram(shader->p());
 	glm::mat4 projection = glm::ortho<float>(0.0f, this->render->getWidth(), this->render->getHeight(), 0.0f, -1.0f, 1.0f);
 	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, &projection[0][0]);
 
+	CHECK_OPENGL_ERROR
+	
 	this->updateUI();
 }
 
@@ -106,6 +112,8 @@ void Intro::updateUI()
 		img = this->img1;
 	}
 	
+	CHECK_OPENGL_ERROR
+	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Render img
@@ -122,6 +130,8 @@ void Intro::updateUI()
 	}
 
 	SDL_GL_SwapWindow(this->render->window);
+	
+	CHECK_OPENGL_ERROR
 }
 
 

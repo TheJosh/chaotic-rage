@@ -20,6 +20,7 @@
 #include "../mod/vehicletype.h"
 #include "render_opengl.h"
 #include "render_opengl_settings.h"
+#include "gl_debug.h"
 #include "gl_debug_drawer.h"
 #include "sprite.h"
 #include "glshader.h"
@@ -47,39 +48,6 @@ using namespace std;
 * For VBO pointer offsets
 **/
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
-
-
-/**
-* For reporting errors, except production and gles
-**/
-#if defined(RELEASE)
-	#define CHECK_OPENGL_ERROR
-	
-#elif defined(GLES)
-	#define CHECK_OPENGL_ERROR \
-	{	GLenum error; \
-		error = glGetError(); \
-		if (error != GL_NO_ERROR) { \
-			reportFatalError("OpenGL ES error"); \
-		} \
-	}
-	
-#else
-	#define CHECK_OPENGL_ERROR \
-	{	GLenum error; \
-		error = glGetError(); \
-		if (error != GL_NO_ERROR) { \
-			cerr << "OpenGL Error:\n"; \
-			while (error) { \
-				cerr << " - " << gluErrorString(error) << "\n"; \
-				error = glGetError(); \
-			} \
-			cerr << "Location: " << __FILE__ << ":" << __LINE__ << "\n"; \
-			reportFatalError("OpenGL error"); \
-		} \
-	}
-#endif
-
 
 
 /**
@@ -205,16 +173,6 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	
 	// SDL
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-	if (this->settings->msaa >= 2) {
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, this->settings->msaa);
-	} else {
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
-	}
-
 	flags = SDL_WINDOW_OPENGL;
 	if (fullscreen) flags |= SDL_WINDOW_FULLSCREEN;
 	
@@ -228,7 +186,26 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		reportFatalError(buffer);
 	}
 	
+	// GL context settings
+	#if defined(GLES)
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2); 
+		
+	#elif defined(OpenGL)
+		if (this->settings->msaa >= 2) {
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, this->settings->msaa);
+		} else {
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
+		}
+	#endif
+	
+	// GL context creation
 	this->glcontext = SDL_GL_CreateContext(this->window);
+	if (this->glcontext == NULL) {
+		reportFatalError("Unable to create GL context");
+	}
 	
 	// SDL_Image
 	flags = IMG_INIT_PNG;
@@ -289,7 +266,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	glDepthFunc(GL_LEQUAL);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	CHECK_OPENGL_ERROR
 }
 
 
@@ -495,13 +473,17 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 {
 	GLenum texture_format;
+	GLenum target_format;
 	GLint num_colors;
 
+	CHECK_OPENGL_ERROR
+	
 	// Determine OpenGL import type
 	num_colors = sprite->orig->format->BytesPerPixel;
 	if (num_colors == 4) {
 		if (sprite->orig->format->Rmask == 0x000000ff) {
 			texture_format = GL_RGBA;
+			target_format = GL_RGBA;
 		} else {
 			assert(1); // TODO GLES removed: texture_format = GL_BGRA;
 		}
@@ -509,23 +491,29 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 	} else if (num_colors == 3) {
 		if (sprite->orig->format->Rmask == 0x000000ff) {
 			texture_format = GL_RGB;
+			target_format = GL_RGB;
 		} else {
 			assert(1); // TODO GLES removed: texture_format = GL_BGR;
 		}
 	}
 
-	// Open texture handle
-	glEnable(GL_TEXTURE_2D);
+	#ifdef GLES
+		target_format = texture_format;
+	#endif
+	
+	// Create and bind texture handle
 	glGenTextures(1, &sprite->pixels);
 	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
 	
 	// Set stretching properties
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this->min_filter);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, this->mag_filter);
-
-	// Load it
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sprite->orig->w, sprite->orig->h, 0, texture_format, GL_UNSIGNED_BYTE, sprite->orig->pixels);
+	
+	// Load and create mipmaps
+	glTexImage2D(GL_TEXTURE_2D, 0, target_format, sprite->orig->w, sprite->orig->h, 0, texture_format, GL_UNSIGNED_BYTE, sprite->orig->pixels);
 	glGenerateMipmap(GL_TEXTURE_2D);
+	
+	CHECK_OPENGL_ERROR
 }
 
 
@@ -840,6 +828,8 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y)
 **/
 void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 {
+	CHECK_OPENGL_ERROR;
+	
 	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
 	
 	// Draw a textured quad -- the image
@@ -863,6 +853,8 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 	glEnableVertexAttribArray(ATTRIB_TEXUV);
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	
+	CHECK_OPENGL_ERROR;
 }
 
 
@@ -985,24 +977,26 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 * Just textures, no lighting
 **/
 static const char* pVS = "\
-	attribute vec3 vPosition;   \n\
-	attribute vec2 vTexUV;      \n\
-	varying vec2 fTexUV;        \n\
-	uniform mat4 uMVP;          \n\
-	void main() {               \n\
-		gl_Position = uMVP * vec4(vPosition, 1.0f); fTexUV = vTexUV;   \n\
-	}";
+precision mediump float;    \n\
+attribute vec3 vPosition;   \n\
+attribute vec2 vTexUV;      \n\
+varying vec2 fTexUV;        \n\
+uniform mat4 uMVP;          \n\
+void main() {               \n\
+	gl_Position = uMVP * vec4(vPosition, 1.0); fTexUV = vTexUV;   \n\
+}";
 
 /**
 * Basic fragment shader for use before the base mod has been loaded
 * Just textures, no lighting
 **/
 static const char* pFS = "\
-	varying vec2 fTexUV;       \n\
-	uniform sampler2D uTex;    \n\
-	void main() {              \n\
-		gl_FragColor = texture2D(uTex, fTexUV);    \n\
-	}";
+precision mediump float;   \n\
+varying vec2 fTexUV;       \n\
+uniform sampler2D uTex;    \n\
+void main() {              \n\
+	gl_FragColor = texture2D(uTex, fTexUV);    \n\
+}";
 
 
 /**
@@ -1021,8 +1015,11 @@ void RenderOpenGL::loadShaders()
 	// Before the mod is loaded, we only need the basic shader
 	// It's are hardcoded (see above)
 	if (! this->shaders.count("basic")) {
-		this->shaders["basic"] = createProgram(pVS, pFS, "basic");
-		assert(this->shaders["basic"] != NULL);
+		GLShader *shader = createProgram(pVS, pFS, "basic");
+		if (shader == NULL) {
+			reportFatalError("Error loading default OpenGL shader");
+		}
+		this->shaders["basic"] = shader;
 	}
 	
 	// No mod loaded yet, can't load the shaders
@@ -1094,6 +1091,7 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 		GLchar InfoLog[1024];
 		glGetShaderInfoLog(shader, 1024, NULL, InfoLog);
 		cerr << "Error compiling shader:\n" << InfoLog << "\n";
+		displayMessageBox(std::string(InfoLog));
 		return 0;
 	}
 	
@@ -1110,24 +1108,35 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	GLint success;
 	GLuint sVertex, sFragment;
 	
+	CHECK_OPENGL_ERROR;
+	
 	GLuint program = glCreateProgram();
 	if (program == 0) {
+		displayMessageBox("a");
 		return NULL;
 	}
+	
+	CHECK_OPENGL_ERROR;
 	
 	// Create and attach vertex shader
 	sVertex = this->createShader(vertex, GL_VERTEX_SHADER);
 	if (sVertex == 0) {
+		displayMessageBox("b");
 		return NULL;
 	}
 	glAttachShader(program, sVertex);
 	
+	CHECK_OPENGL_ERROR;
+	
 	// Same with frag shader
 	sFragment = this->createShader(fragment, GL_FRAGMENT_SHADER);
 	if (sFragment == 0) {
+		displayMessageBox("c");
 		return NULL;
 	}
 	glAttachShader(program, sFragment);
+	
+	CHECK_OPENGL_ERROR;
 	
 	// Bind attribs
 	glBindAttribLocation(program, ATTRIB_POSITION, "vPosition");
@@ -1139,26 +1148,36 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	glBindAttribLocation(program, ATTRIB_COLOR, "vColor");
 	glBindAttribLocation(program, ATTRIB_TANGENT, "vTangent");
 	
+	CHECK_OPENGL_ERROR;
+	
 	// Link
 	glLinkProgram(program);
 	glDeleteShader(sVertex);
 	glDeleteShader(sFragment);
 	
+	CHECK_OPENGL_ERROR;
+	
 	// Check link worked
 	glGetProgramiv(program, GL_LINK_STATUS, &success);
 	if (! success) {
-		GLchar InfoLog[1024];
-		glGetProgramInfoLog(program, 1024, NULL, InfoLog);
-		cerr << "Error linking program:\n" << InfoLog << "\n";
+		GLchar infolog[1024];
+		glGetProgramInfoLog(program, 1024, NULL, infolog);
+		cerr << "Error linking program:\n" << infolog << "\n";
+		displayMessageBox("d");
 		return NULL;
 	}
+	
+	CHECK_OPENGL_ERROR;
 	
 	// Validate
 	glValidateProgram(program);
 	glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
 	if (! success) {
+		displayMessageBox("e");
 		return NULL;
 	}
+	
+	CHECK_OPENGL_ERROR;
 	
 	return new GLShader(program);
 }
