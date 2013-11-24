@@ -262,13 +262,16 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		reportFatalError("Freetype: Unable to init library.");
 	}
 	
-	// Re-load textures
-	if (loaded.size() > 0) {
-		for (unsigned int i = 0; i != loaded.size(); i++) {
-			this->surfaceToOpenGL(loaded.at(i));
+	// Windows only: Re-load textures.
+	// All other platforms don't destory the context if the window size changes
+	#ifdef _WIN32
+		if (loaded.size() > 0) {
+			for (unsigned int i = 0; i != loaded.size(); i++) {
+				this->surfaceToOpenGL(loaded.at(i));
+			}
 		}
-	}
-	
+	#endif
+
 	// Re-load FreeType character textures
 	for (unsigned int i = 0; i < NUM_CHAR_TEX; i++) {
 		if (this->char_tex[i].tex) {
@@ -389,7 +392,7 @@ void RenderOpenGL::mainViewport(int s, int of)
 **/
 void RenderOpenGL::setPhysicsDebug(bool status)
 {
-#ifdef OPENGL
+#ifdef OpenGL
 	if (status) {
 		this->physicsdebug = new GLDebugDrawer();
 		this->physicsdebug->setDebugMode(
@@ -474,6 +477,12 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 	
 	this->surfaceToOpenGL(sprite);
 	
+	// Windows Only: Keep original in RAM for re-loading if the context is destroyed
+	#ifndef _WIN32
+		SDL_FreeSurface(sprite->orig);
+		sprite->orig = NULL;
+	#endif
+
 	loaded.push_back(sprite);
 
 	return sprite;
