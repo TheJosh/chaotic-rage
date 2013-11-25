@@ -8,6 +8,7 @@
 #include <glm/gtx/quaternion.hpp>
 #include "../rage.h"
 #include "render.h"
+#include "glvao.h"
 
 using namespace std;
 
@@ -53,7 +54,7 @@ class AssimpFace
 class AssimpMesh
 {
 	public:
-		Uint32 vao;
+		GLVAO *vao;
 		int numFaces;
 		int materialIndex;
 		vector<AssimpBone*> bones;

@@ -1440,7 +1440,7 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 			glBindTexture(GL_TEXTURE_2D, am->materials[mesh->materialIndex]->diffuse->pixels);
 		}
 		
-		glBindVertexArray(mesh->vao);
+		mesh->vao->bind();
 		glDrawElements(GL_TRIANGLES, mesh->numFaces*3, GL_UNSIGNED_INT, 0);
 	}
 	

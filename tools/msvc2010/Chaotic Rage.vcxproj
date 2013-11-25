@@ -244,6 +244,7 @@
     <ClCompile Include="..\..\src\render\animplay.cpp" />
     <ClCompile Include="..\..\src\render\assimpmodel.cpp" />
     <ClCompile Include="..\..\src\render\glshader.cpp" />
+    <ClCompile Include="..\..\src\render\glvao.cpp" />
     <ClCompile Include="..\..\src\render\gl_debug_drawer.cpp" />
     <ClCompile Include="..\..\src\render\guichan_imageloader.cpp" />
     <ClCompile Include="..\..\src\render\hud.cpp" />
@@ -409,6 +410,7 @@
     <ClInclude Include="..\..\src\render\assimpmodel.h" />
     <ClInclude Include="..\..\src\render\gl.h" />
     <ClInclude Include="..\..\src\render\glshader.h" />
+    <ClInclude Include="..\..\src\render\glvao.h" />
     <ClInclude Include="..\..\src\render\gl_debug_drawer.h" />
     <ClInclude Include="..\..\src\render\hud.h" />
     <ClInclude Include="..\..\src\render\hud_label.h" />

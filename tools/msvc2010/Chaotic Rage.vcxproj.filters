@@ -600,6 +600,9 @@
     <ClCompile Include="..\..\src\render\gl_debug_drawer.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\render\glvao.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">
@@ -1098,6 +1101,9 @@
       <Filter>src\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\render\gl.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render\glvao.h">
       <Filter>src\render</Filter>
     </ClInclude>
   </ItemGroup>

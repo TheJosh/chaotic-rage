@@ -181,10 +181,7 @@ void AssimpModel::loadMeshes(bool opengl)
 		if (! opengl) continue;
 		
 		// VAO
-		GLuint vao;
-		glGenVertexArrays(1,&vao);
-		glBindVertexArray(vao);
-		myMesh->vao = vao;
+		myMesh->vao = new GLVAO();
 
 		// Prep face array for VBO
 		unsigned int *faceArray;
@@ -204,14 +201,14 @@ void AssimpModel::loadMeshes(bool opengl)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mesh->mNumFaces * 3, faceArray, GL_STATIC_DRAW);
 		free(faceArray);
-		
+		myMesh->vao->setIndex(buffer);
+
 		// Positions
 		if (mesh->HasPositions()) {
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mVertices, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(ATTRIB_POSITION);
-			glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, 0, 0, 0);
+			myMesh->vao->setPosition(buffer);
 		}
 		
 		// Normals
@@ -219,8 +216,7 @@ void AssimpModel::loadMeshes(bool opengl)
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mNormals, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(ATTRIB_NORMAL);
-			glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, 0, 0, 0);
+			myMesh->vao->setNormal(buffer);
 		}
 		
 		// UVs
@@ -228,8 +224,7 @@ void AssimpModel::loadMeshes(bool opengl)
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mTextureCoords[0], GL_STATIC_DRAW);
-			glEnableVertexAttribArray(ATTRIB_TEXUV);
-			glVertexAttribPointer(ATTRIB_TEXUV, 3, GL_FLOAT, 0, 0, 0);
+			myMesh->vao->setTexUV(buffer);
 		}
 		
 		// Bone IDs and Weights
@@ -239,14 +234,12 @@ void AssimpModel::loadMeshes(bool opengl)
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned int)*4*mesh->mNumVertices, this->boneIds, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(ATTRIB_BONEID);
-			glVertexAttribPointer(ATTRIB_BONEID, 4, GL_INT, 0, 0, 0);
-			
+			myMesh->vao->setBoneId(buffer);
+
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*4*mesh->mNumVertices, this->boneWeights, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(ATTRIB_BONEWEIGHT);
-			glVertexAttribPointer(ATTRIB_BONEWEIGHT, 4, GL_FLOAT, 0, 0, 0);
+			myMesh->vao->setBoneWeight(buffer);
 
 			this->freeBones();
 		}
@@ -257,11 +250,8 @@ void AssimpModel::loadMeshes(bool opengl)
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mTangents, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(ATTRIB_TANGENT);
-			glVertexAttribPointer(ATTRIB_TANGENT, 3, GL_FLOAT, 0, 0, 0);
+			myMesh->vao->setTangent(buffer);
 		}
-		
-		glBindVertexArray(0);
 		
 		CHECK_OPENGL_ERROR;
 	}
