@@ -8,6 +8,7 @@
 #include <btBulletDynamicsCommon.h>
 #include <glm/glm.hpp>
 #include <SDL.h>
+#include <SDL_image.h>
 
 #include "util/btStrideHeightfieldTerrainShape.h"
 #include "rage.h"
@@ -629,26 +630,36 @@ void Map::createHeightmapRaw()
 {
 	int nX, nZ;
 	Uint8 r,g,b;
+	SDL_RWops *rw;
+	SDL_Surface *surf;
 	
-	SpritePtr sprite = this->render->loadSprite("heightmap.png", this->mod);
-	if (sprite == NULL) return;
+	rw = mod->loadRWops("heightmap.png");
+	if (rw == NULL) {
+		return;
+	}
 	
-	this->heightmap = new float[sprite->w * sprite->h];
-	this->heightmap_sx = sprite->w;
-	this->heightmap_sz = sprite->h;
+	surf = IMG_Load_RW(rw, 0);
+	SDL_RWclose(rw);
+	if (surf == NULL) {
+		return;
+	}
+	
+	this->heightmap = new float[surf->w * surf->h];
+	this->heightmap_sx = surf->w;
+	this->heightmap_sz = surf->h;
 	
 	for (nZ = 0; nZ < heightmap_sz; nZ++) {
 		for (nX = 0; nX < heightmap_sx; nX++) {
 			
-			Uint32 pixel = getPixel(sprite->orig, nX, nZ);
-			SDL_GetRGB(pixel, sprite->orig->format, &r, &g, &b);
+			Uint32 pixel = getPixel(surf, nX, nZ);
+			SDL_GetRGB(pixel, surf->format, &r, &g, &b);
 			
 			heightmap[nZ * heightmap_sx + nX] = r / 255.0f * this->heightmap_y;
 			
 		}
 	}
 	
-	this->render->freeSprite(sprite);
+	SDL_FreeSurface(surf);
 }
 
 
