@@ -173,7 +173,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	
 	
 	// SDL
-	flags = SDL_WINDOW_OPENGL;
+	flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 	if (fullscreen) flags |= SDL_WINDOW_FULLSCREEN;
 	
 	char title[100];
@@ -189,7 +189,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	// GL context settings
 	#if defined(GLES)
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2); 
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 		
 	#elif defined(OpenGL)
 		if (this->settings->msaa >= 2) {
@@ -265,7 +266,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	// OpenGL env
 	glDepthFunc(GL_LEQUAL);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	
 	CHECK_OPENGL_ERROR
 }
@@ -995,7 +996,7 @@ precision mediump float;   \n\
 varying vec2 fTexUV;       \n\
 uniform sampler2D uTex;    \n\
 void main() {              \n\
-	gl_FragColor = texture2D(uTex, fTexUV);    \n\
+	gl_FragColor = texture2D(uTex, fTexUV);     \n\
 }";
 
 

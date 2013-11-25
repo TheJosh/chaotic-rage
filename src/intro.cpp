@@ -56,8 +56,8 @@ void Intro::load()
 	sg = new Song();
 	sg->name = "intro";
 
-	SDL_RWops * rw = mod->loadRWops("intro.ogg");
-	sg->music = Mix_LoadMUS_RW(rw, 0);			// is this right?
+	//SDL_RWops * rw = mod->loadRWops("intro.ogg");
+	//sg->music = Mix_LoadMUS_RW(rw, 0);			// is this right?
 }
 
 
@@ -69,7 +69,7 @@ void Intro::doit()
 	GLShader *shader;
 	
 	if (sg->music != NULL) {
-		st->audio->playSong(sg);
+	//	st->audio->playSong(sg);
 	}
 	
 	start = SDL_GetTicks();
@@ -87,9 +87,10 @@ void Intro::doit()
 	
 	// Set shader and uniforms
 	glUseProgram(shader->p());
-	glm::mat4 projection = glm::ortho<float>(0.0f, this->render->getWidth(), this->render->getHeight(), 0.0f, -1.0f, 1.0f);
+	glm::mat4 projection = glm::ortho<float>(0.0f, this->render->getWidth(), this->render->getHeight(), 0.0f, 1.0f, -1.0f);
 	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, &projection[0][0]);
-
+	glUniform1i(shader->uniform("uTex"), 0);
+	
 	CHECK_OPENGL_ERROR
 	
 	this->updateUI();
@@ -123,7 +124,7 @@ void Intro::updateUI()
 	CHECK_OPENGL_ERROR
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	
 	// Render img
 	int x = (this->render->getWidth() - img->w) / 2;
 	int y = (this->render->getHeight() - img->h) / 2;
