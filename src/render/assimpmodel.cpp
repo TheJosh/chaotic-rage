@@ -10,6 +10,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "gl.h"
+#include "gl_debug.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
@@ -261,6 +262,8 @@ void AssimpModel::loadMeshes(bool opengl)
 		}
 		
 		glBindVertexArray(0);
+		
+		CHECK_OPENGL_ERROR;
 	}
 }
 
