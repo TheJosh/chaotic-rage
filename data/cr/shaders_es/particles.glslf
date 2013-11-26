@@ -1,6 +1,6 @@
-#version 140
+precision mediump float;
 
-in vec3 fColor;
+varying vec3 fColor;
 
 
 void main()

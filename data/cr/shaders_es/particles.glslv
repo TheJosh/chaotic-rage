@@ -1,9 +1,9 @@
-#version 140
+precision mediump float;
 
-in vec3 vPosition;
-in vec3 vColor;
+attribute vec3 vPosition;
+attribute vec3 vColor;
 
-out vec3 fColor;
+varying vec3 fColor;
 
 uniform mat4 uMVP;
 

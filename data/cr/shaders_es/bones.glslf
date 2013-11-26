@@ -1,6 +1,6 @@
-#version 140
+precision mediump float;
 
-in vec2 fTexUV;
+varying vec2 fTexUV;
 uniform sampler2D uTex;
 
 void main()

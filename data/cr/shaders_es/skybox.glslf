@@ -1,6 +1,6 @@
-#version 140
+precision mediump float;
 
-in vec3 fTexUV;
+varying vec3 fTexUV;
 uniform samplerCube uTex;
 
 

@@ -1,15 +1,15 @@
-#version 140
+precision mediump float;
 
 const int MAX_BONES = 32;
 
 
-in vec3 vPosition;
-in vec3 vNormal;
-in vec2 vTexUV;
-in ivec4 vBoneIDs;
-in vec4 vBoneWeights;
+attribute vec3 vPosition;
+attribute vec3 vNormal;
+attribute vec2 vTexUV;
+attribute ivec4 vBoneIDs;
+attribute vec4 vBoneWeights;
 
-out vec2 fTexUV;
+varying vec2 fTexUV;
 
 uniform mat4 uMVP;
 uniform mat4 uBones[MAX_BONES];

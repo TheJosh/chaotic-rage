@@ -1,7 +1,7 @@
-#version 140
+precision mediump float;
 
-in vec3 vPosition;
-out vec3 fTexUV;
+attribute vec3 vPosition;
+varying vec3 fTexUV;
 uniform mat4 uMVP;
 
 
