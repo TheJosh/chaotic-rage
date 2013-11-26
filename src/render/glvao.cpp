@@ -101,7 +101,7 @@ void GLVAO::setTexUV(GLuint vbo)
 void GLVAO::setBoneId(GLuint vbo)
 {
 	glEnableVertexAttribArray(ATTRIB_BONEID);
-	glVertexAttribPointer(ATTRIB_BONEID, 4, GL_INT, 0, 0, 0);
+	glVertexAttribPointer(ATTRIB_BONEID, 4, GL_SHORT, 0, 0, 0);
 	this->boneid = vbo;
 }
 

@@ -264,6 +264,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		}
 	}
 	
+	// (re-)load shaders
+	// If the base mod isn't yet loaded, will only load the "basic" shader.
 	this->loadShaders();
 	if (this->shaders_error) {
 		reportFatalError("Error loading OpenGL shaders");
@@ -310,6 +312,8 @@ void RenderOpenGL::loadFont(string name, Mod * mod)
 		exit(1);
 	}
 
+	// I don't quite know ahy this is here...
+	// TODO: Move or remove
 	this->loadShaders();
 	if (this->shaders_error) {
 		reportFatalError("Error loading OpenGL shaders");
@@ -856,11 +860,10 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 **/
 void RenderOpenGL::preGame()
 {
-	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	
-	#ifdef OPENGL
+	#ifdef OpenGL
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 		glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
 		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
@@ -871,6 +874,8 @@ void RenderOpenGL::preGame()
 			glDisable(GL_MULTISAMPLE);
 		}
 	#endif
+	
+	CHECK_OPENGL_ERROR;
 	
 	// This will load the shaders (from the base mod) if they aren't loaded.
 	this->loadShaders();
@@ -927,6 +932,8 @@ void RenderOpenGL::setupShaders()
 	glUniform3fv(this->shaders["phong_bump"]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
 	glUniform4fv(this->shaders["phong_bump"]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
 	glUniform4fv(this->shaders["phong_bump"]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
+	
+	CHECK_OPENGL_ERROR;
 }
 
 
