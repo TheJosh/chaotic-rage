@@ -1191,9 +1191,17 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 **/
 GLShader* RenderOpenGL::loadProgram(Mod* mod, string name)
 {
-	char* v = mod->loadText("shaders/" + name + ".glslv");
-	char* f = mod->loadText("shaders/" + name + ".glslf");
+	char* v;
+	char* f;
 	GLShader* s;
+	
+	#if defined(OpenGL)
+		v = mod->loadText("shaders_gl/" + name + ".glslv");
+		f = mod->loadText("shaders_gl/" + name + ".glslf");
+	#elif defined(GLES)
+		v = mod->loadText("shaders_es/" + name + ".glslv");
+		f = mod->loadText("shaders_es/" + name + ".glslf");
+	#endif
 	
 	if (v == NULL || f == NULL) {
 		free(v);
