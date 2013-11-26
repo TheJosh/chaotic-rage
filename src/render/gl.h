@@ -14,11 +14,6 @@
 	#include <GLES2/gl2.h>
 	#include <GLES2/gl2ext.h>
 	
-	#define glBindVertexArray glBindVertexArrayOES;
-	#define glDeleteVertexArrays glDeleteVertexArraysOES;
-	#define glGenVertexArrays glDeleteVertexArraysOES;
-	#define glClientActiveTexture glClientActiveTextureOES;
-	
 #else
 	#define OpenGL
 	

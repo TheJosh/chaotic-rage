@@ -56,5 +56,9 @@ class GLVAO
 		// Bind the VAO
 		void bind();
 		void unbind();
+		
+	private:
+		void bindBuffers();
+		void unbindBuffers();
 };
 
