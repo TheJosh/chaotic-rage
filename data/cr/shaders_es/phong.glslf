@@ -37,7 +37,7 @@ void main()
 		vec3 vReflection = normalize(reflect(-normalize(fLightDir[i]),normalize(fNormal)));
 		float spec = max(0.0, dot(normalize(fNormal), vReflection));
 		float fSpec = pow(spec, 64.0);
-		light += vec4(fSpec, fSpec, fSpec, 0.0f);
+		light += vec4(fSpec, fSpec, fSpec, 0.0);
 	}
 	
 	gl_FragColor = texture2D(uTex, fTexUV) * light;

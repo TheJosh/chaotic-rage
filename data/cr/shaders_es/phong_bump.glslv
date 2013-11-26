@@ -20,7 +20,7 @@ void main()
 	vec3 t = normalize(uN * vTangent);
 	vec3 b = cross(n, t);
 	
-	vec4 vertexPos = uMV * vec4(vPosition, 1.0f);
+	vec4 vertexPos = uMV * vec4(vPosition, 1.0);
 	
 	
 	for (int i = 0; i < 2; i++) {
@@ -35,5 +35,5 @@ void main()
 	}
 	
 	fTexUV = vTexUV;
-	gl_Position = uMVP * vec4(vPosition, 1.0f);
+	gl_Position = uMVP * vec4(vPosition, 1.0);
 }

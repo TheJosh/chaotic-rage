@@ -6,5 +6,5 @@ uniform samplerCube uTex;
 
 void main()
 {
-	gl_FragColor = texture(uTex, fTexUV);
+	gl_FragColor = textureCube(uTex, fTexUV);
 }

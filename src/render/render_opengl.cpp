@@ -1111,7 +1111,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	
 	GLuint program = glCreateProgram();
 	if (program == 0) {
-		displayMessageBox("a");
+		displayMessageBox("Unable to create program");
 		return NULL;
 	}
 	
@@ -1120,7 +1120,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	// Create and attach vertex shader
 	sVertex = this->createShader(vertex, GL_VERTEX_SHADER);
 	if (sVertex == 0) {
-		displayMessageBox("b");
+		displayMessageBox("Invalid vertex shader: " + name);
 		return NULL;
 	}
 	glAttachShader(program, sVertex);
@@ -1130,7 +1130,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	// Same with frag shader
 	sFragment = this->createShader(fragment, GL_FRAGMENT_SHADER);
 	if (sFragment == 0) {
-		displayMessageBox("c");
+		displayMessageBox("Invalid fragment shader: " + name);
 		return NULL;
 	}
 	glAttachShader(program, sFragment);
@@ -1172,7 +1172,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	glValidateProgram(program);
 	glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
 	if (! success) {
-		displayMessageBox("e");
+		displayMessageBox("Program didn't validate");
 		return NULL;
 	}
 	
@@ -1430,7 +1430,7 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 		}
 		
 		mesh->vao->bind();
-		glDrawElements(GL_TRIANGLES, mesh->numFaces*3, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, mesh->numFaces*3, GL_UNSIGNED_SHORT, 0);
 	}
 	
 	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {

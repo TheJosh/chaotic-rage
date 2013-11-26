@@ -12,22 +12,22 @@ uniform vec4 uLightColor[2];
 uniform vec4 uAmbient;
 
 // Light params; these could become uniforms
-const float constantAttenuation = 0.3f;
-const float linearAttenuation = 0.1f;
-const float quadraticAttenuation = 0.01f;
+const float constantAttenuation = 0.3;
+const float linearAttenuation = 0.1;
+const float quadraticAttenuation = 0.01;
 
 
 void main()
 {
 	vec4 light = uAmbient;
 	
-	vec3 normal = normalize(2.0f * texture2D(uNormals, fTexUV).rgb - 1.0);
+	vec3 normal = normalize(2.0 * texture2D(uNormals, fTexUV).rgb - 1.0);
 	
 	for (int i = 0; i < 2; i++) {
 		float NdotL, dist, att;
 		
 		// Dot product affects strength of light
-		NdotL = max(0.0f, dot(fLightDir[i], normal));
+		NdotL = max(0.0, dot(fLightDir[i], normal));
 	
 		// Calculate attenuation
 		//dist = length(fLightDir[i]) * uLightColor[i].a;
