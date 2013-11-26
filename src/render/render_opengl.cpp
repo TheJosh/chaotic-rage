@@ -229,7 +229,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		
 		GLenum err = glewInit();
 		if (GLEW_OK != err) {
-			fprintf(stderr, "Glew Error: %s\n", glewGetErrorString(err));
+			GL_LOG("Glew Error: %s", glewGetErrorString(err));
 			reportFatalError("Unable to init the library GLEW.");
 		}
 		
@@ -290,26 +290,21 @@ void RenderOpenGL::loadFont(string name, Mod * mod)
 	
 	Uint8 *buf = mod->loadBinary(name, &len);
 	if (buf == NULL) {
-		fprintf(stderr, "Freetype: Unable to load data\n");
-		exit(1);
+		reportFatalError("Freetype: Unable to load data");
 	}
 	
 	error = FT_New_Memory_Face(this->ft, (const FT_Byte *) buf, len, 0, &this->face);
 	free(buf);
 
 	if (error == FT_Err_Unknown_File_Format) {
-		fprintf(stderr, "Freetype: Unsupported font format\n");
-		exit(1);
-		
+		reportFatalError("Freetype: Unsupported font format");
 	} else if (error) {
-		fprintf(stderr, "Freetype: Unable to load font\n");
-		exit(1);
+		reportFatalError("Freetype: Unable to load font");
 	}
 	
 	error = FT_Set_Char_Size(this->face, 0, 20*64, 72, 72);
 	if (error) {
-		fprintf(stderr, "Freetype: Unable to load font size\n");
-		exit(1);
+		reportFatalError("Freetype: Unable to load font size");
 	}
 
 	// I don't quite know ahy this is here...
@@ -438,22 +433,26 @@ SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
 	
 	surf = IMG_Load_RW(rw, 0);
 	if (surf == NULL) {
-		fprintf(stderr, "Couldn't load sprite '%s'\n", filename.c_str());
+		GL_LOG("Couldn't load texture '%s'", filename.c_str());
 		load_err = true;
 		return NULL;
 	}
 	
 	// Checks
 	if ((surf->w & (surf->w - 1)) != 0) {
-		DEBUG("vid", "Bitmap '%s' width is not a power of 2", filename.c_str());
+		GL_LOG("Texture '%s' width is not a power of 2", filename.c_str());
+		load_err = true;
+		return NULL;
 	}
 	
 	if ((surf->h & (surf->h - 1)) != 0) {
-		DEBUG("vid", "Bitmap '%s' height is not a power of 2", filename.c_str());
+		GL_LOG("Texture '%s' height is not a power of 2", filename.c_str());
+		load_err = true;
+		return NULL;
 	}
 	
 	if (surf->format->BytesPerPixel != 4 && surf->format->BytesPerPixel != 3) {
-		fprintf(stderr, "Bitmap '%s' not in 32-bit or 24-bit colour; unable to load into OpenGL\n", filename.c_str());
+		GL_LOG("Texture '%s' not in 32-bit or 24-bit colour; unable to load into OpenGL", filename.c_str());
 		load_err = true;
 		return NULL;
 	}
@@ -1089,8 +1088,7 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 	if (! success) {
 		GLchar InfoLog[1024];
 		glGetShaderInfoLog(shader, 1024, NULL, InfoLog);
-		cerr << "Error compiling shader:\n" << InfoLog << "\n";
-		displayMessageBox(std::string(InfoLog));
+		GL_LOG("Error compiling shader:\n%s", InfoLog);
 		return 0;
 	}
 	
@@ -1107,35 +1105,27 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	GLint success;
 	GLuint sVertex, sFragment;
 	
-	CHECK_OPENGL_ERROR;
-	
+	// Create program object
 	GLuint program = glCreateProgram();
 	if (program == 0) {
-		displayMessageBox("Unable to create program");
 		return NULL;
 	}
-	
-	CHECK_OPENGL_ERROR;
 	
 	// Create and attach vertex shader
 	sVertex = this->createShader(vertex, GL_VERTEX_SHADER);
 	if (sVertex == 0) {
-		displayMessageBox("Invalid vertex shader: " + name);
+		GL_LOG("Invalid vertex shader: %s", name.c_str());
 		return NULL;
 	}
 	glAttachShader(program, sVertex);
 	
-	CHECK_OPENGL_ERROR;
-	
 	// Same with frag shader
 	sFragment = this->createShader(fragment, GL_FRAGMENT_SHADER);
 	if (sFragment == 0) {
-		displayMessageBox("Invalid fragment shader: " + name);
+		GL_LOG("Invalid fragment shader: %s", name.c_str());
 		return NULL;
 	}
 	glAttachShader(program, sFragment);
-	
-	CHECK_OPENGL_ERROR;
 	
 	// Bind attribs
 	glBindAttribLocation(program, ATTRIB_POSITION, "vPosition");
@@ -1147,32 +1137,25 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	glBindAttribLocation(program, ATTRIB_COLOR, "vColor");
 	glBindAttribLocation(program, ATTRIB_TANGENT, "vTangent");
 	
-	CHECK_OPENGL_ERROR;
-	
 	// Link
 	glLinkProgram(program);
 	glDeleteShader(sVertex);
 	glDeleteShader(sFragment);
-	
-	CHECK_OPENGL_ERROR;
 	
 	// Check link worked
 	glGetProgramiv(program, GL_LINK_STATUS, &success);
 	if (! success) {
 		GLchar infolog[1024];
 		glGetProgramInfoLog(program, 1024, NULL, infolog);
-		cerr << "Error linking program:\n" << infolog << "\n";
-		displayMessageBox("d");
+		GL_LOG("Error linking program:\n%s", infolog);
 		return NULL;
 	}
-	
-	CHECK_OPENGL_ERROR;
 	
 	// Validate
 	glValidateProgram(program);
 	glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
 	if (! success) {
-		displayMessageBox("Program didn't validate");
+		GL_LOG("Program didn't validate: %s", name.c_str());
 		return NULL;
 	}
 	
@@ -1206,7 +1189,7 @@ GLShader* RenderOpenGL::loadProgram(Mod* mod, string name)
 	if (v == NULL || f == NULL) {
 		free(v);
 		free(f);
-		cerr << "Unable to load shader program " << name << endl;
+		GL_LOG("Unable to load shader program %s", name.c_str());
 		this->shaders_error = true;
 		return NULL;
 	}
@@ -1221,7 +1204,7 @@ GLShader* RenderOpenGL::loadProgram(Mod* mod, string name)
 	free(f);
 	
 	if (s == NULL) {
-		cerr << "Unable to create shader program " << name << endl;
+		GL_LOG("Unable to create shader program %s", name.c_str());
 		this->shaders_error = true;
 	}
 	

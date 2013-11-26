@@ -7,7 +7,7 @@
 
 
 /**
-* For reporting errors
+* Check OpenGL errors
 **/
 #if defined(RELEASE)
 	#define CHECK_OPENGL_ERROR
@@ -46,3 +46,15 @@
 	}
 	
 #endif
+
+
+/**
+* For GL logging and errors
+**/
+#if defined(__ANDROID__)
+	#include <android/log.h>
+	#define GL_LOG(msg, ...) __android_log_print(ANDROID_LOG_ERROR, APPNAME, "GL Log: " msg, __VA_ARGS__)
+#else
+	#define GL_LOG(msg, ...) fprintf(stderr, "GL Log: " msg "\n", __VA_ARGS__)
+#endif
+
