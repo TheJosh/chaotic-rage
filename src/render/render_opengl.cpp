@@ -22,6 +22,7 @@
 #include "render_opengl_settings.h"
 #include "gl_debug.h"
 #include "gl_debug_drawer.h"
+#include "glvao.h"
 #include "sprite.h"
 #include "glshader.h"
 #include "assimpmodel.h"
@@ -80,8 +81,13 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->speeddebug = false;
 	this->viewmode = 0;
 	this->face = NULL;
-	this->particle_vao = 0;
+	
 	this->font_vbo = 0;
+	this->sprite_vbo = 0;
+	
+	this->ter_vao = NULL;
+	this->skybox_vao = NULL;
+	this->particle_vao = NULL;
 	
 	// TODO: Do we need this? SDL2
 	/*const SDL_VideoInfo* mode = SDL_GetVideoInfo();
@@ -614,6 +620,7 @@ void RenderOpenGL::loadHeightmap()
 {
 	unsigned int nX, nZ, j;
 	float flX, flZ;
+	GLuint buffer;
 	
 	if (st->map->heightmap == NULL) st->map->createHeightmapRaw();
 	if (st->map->heightmap == NULL) return;
@@ -694,26 +701,13 @@ void RenderOpenGL::loadHeightmap()
 	assert(j == this->ter_size);
 
 	// Create VAO
-	glGenVertexArrays(1, &this->ter_vaoid);
-	glBindVertexArray(this->ter_vaoid);
+	ter_vao = new GLVAO();
 	
 	// Create interleaved VBO
-	glGenBuffers(1, &this->ter_vboid);
-	glBindBuffer(GL_ARRAY_BUFFER, this->ter_vboid);
-	
-	// Set data
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * this->ter_size, vertexes, GL_STATIC_DRAW);
-	
-	// and attributes
-	glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(0));	// Position
-	glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(12));	// Normals
-	glVertexAttribPointer(ATTRIB_TEXUV, 2, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(24));	// TexUVs
-
-	glEnableVertexAttribArray(ATTRIB_POSITION);
-	glEnableVertexAttribArray(ATTRIB_NORMAL);
-	glEnableVertexAttribArray(ATTRIB_TEXUV);
-	
-	glBindVertexArray(0);
+	ter_vao->setInterleavedPNT(buffer);
 	
 	delete [] vertexes;
 }
@@ -724,7 +718,7 @@ void RenderOpenGL::loadHeightmap()
 **/
 void RenderOpenGL::freeHeightmap()
 {
-	glDeleteBuffers(1, &this->ter_vboid);
+	delete ter_vao;
 }
 
 
@@ -795,22 +789,19 @@ void RenderOpenGL::createSkybox()
 	unsigned int indexData[] = {0, 1, 2, 3, 7, 1, 5, 4, 7, 6, 2, 4, 0, 1};
 	
 	// Create VAO
-	glGenVertexArrays(1, &this->skybox_vaoid);
-	glBindVertexArray(this->skybox_vaoid);
-	
-	// Position
-	glGenBuffers(1, &vertex);
-	glBindBuffer(GL_ARRAY_BUFFER, vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(ATTRIB_POSITION);
-	glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	skybox_vao = new GLVAO();
 	
 	// Index
 	glGenBuffers(1, &index);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexData), indexData, GL_STATIC_DRAW);
+	skybox_vao->setIndex(index);
 	
-	glBindVertexArray(0);
+	// Position
+	glGenBuffers(1, &vertex);
+	glBindBuffer(GL_ARRAY_BUFFER, vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
+	skybox_vao->setPosition(vertex);
 }
 
 
@@ -841,7 +832,7 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 		{x + w, y, 0.0f,      1.0f, 0.0f},
 	};
 	
-	if (! sprite_vbo) {	
+	if (sprite_vbo == 0) {
 		glGenBuffers(1, &sprite_vbo);
 	}
 	
@@ -1239,19 +1230,15 @@ void RenderOpenGL::deleteProgram(GLShader* shader)
 **/
 void RenderOpenGL::createVBO (WavefrontObj * obj)
 {
+	GLuint buffer;
+	
 	CHECK_OPENGL_ERROR;
 	
 	// Create VAO
-	GLuint vaoid;
-	glGenVertexArrays(1, &vaoid);
-	glBindVertexArray(vaoid);
-
-	// Create VBO; we interleave the attributess
-	GLuint vboid;
-	glGenBuffers(1, &vboid);
-	glBindBuffer(GL_ARRAY_BUFFER, vboid);
+	obj->vao = new GLVAO();
+	obj->count = obj->faces.size() * 3;
 	
-	// Build the data array
+	// Build the data array of interleaved data
 	VBOvertex* vertexes = new VBOvertex[obj->faces.size() * 3];
 	int j = 0;
 	for (unsigned int i = 0; i < obj->faces.size(); i++) {
@@ -1292,23 +1279,11 @@ void RenderOpenGL::createVBO (WavefrontObj * obj)
 		
 	}
 	
-	// Set data
+	// Create VBO
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * obj->faces.size() * 3, vertexes, GL_STATIC_DRAW);
-	
-	glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(0));	// Position
-	glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(12));	// Normals
-	glVertexAttribPointer(ATTRIB_TEXUV, 2, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(24));	// TexUVs
-
-	glEnableVertexAttribArray(ATTRIB_POSITION);
-	glEnableVertexAttribArray(ATTRIB_NORMAL);
-	glEnableVertexAttribArray(ATTRIB_TEXUV);
-	
-	glBindVertexArray(0);
-	
-	// Save if of VAO, VBO, etc.
-	obj->vao = vaoid;
-	obj->vbo = vboid;
-	obj->ibo_count = obj->faces.size() * 3;
+	obj->vao->setInterleavedPNT(buffer);
 	
 	CHECK_OPENGL_ERROR;
 	
@@ -1342,17 +1317,16 @@ void RenderOpenGL::postVBOrender()
 **/
 void RenderOpenGL::renderObj (WavefrontObj * obj)
 {
-	if (obj->ibo_count == 0) this->createVBO(obj);
+	if (obj->count == 0) this->createVBO(obj);
 	
 	CHECK_OPENGL_ERROR;
 	
-	glBindVertexArray(obj->vao);
+	obj->vao->bind();
 	glUseProgram(this->shaders["basic"]->p());
 
-	glDrawArrays(GL_TRIANGLES, 0, obj->ibo_count);
+	glDrawArrays(GL_TRIANGLES, 0, obj->count);
 	
 	glUseProgram(0);
-	glBindVertexArray(0);
 	
 	CHECK_OPENGL_ERROR;
 }
@@ -1449,8 +1423,6 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 	}
 	
 	CHECK_OPENGL_ERROR;
-
-	glBindVertexArray(0);
 }
 
 
@@ -1464,8 +1436,11 @@ void RenderOpenGL::renderText(string text, float x, float y, float r, float g, f
 	CHECK_OPENGL_ERROR;
 	
 	if (face == NULL) return;
-	if (font_vbo == 0) glGenBuffers(1, &font_vbo);
-
+	
+	if (font_vbo == 0) {
+		glGenBuffers(1, &font_vbo);
+	}
+	
 	glEnable(GL_BLEND);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, font_vbo);
@@ -1764,7 +1739,7 @@ void RenderOpenGL::skybox()
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;
 	glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	
-	glBindVertexArray(skybox_vaoid);
+	skybox_vao->bind();
 	glDrawElements(GL_TRIANGLE_STRIP, 14, GL_UNSIGNED_INT, 0);
 	
 	glCullFace(GL_BACK);
@@ -1800,7 +1775,7 @@ void RenderOpenGL::terrain()
 	glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
 	glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
 	
-	glBindVertexArray(this->ter_vaoid);
+	this->ter_vao->bind();
 
 	int numPerStrip = 2 + ((st->map->heightmap_sx-1) * 2);
 	for (int z = 0; z < st->map->heightmap_sz - 1; z++) {
@@ -1819,7 +1794,6 @@ void RenderOpenGL::terrain()
 		recursiveRenderAssimpModel(mm->play, mm->model, mm->model->rootNode, s, modelMatrix);
 	}
 
-	glBindVertexArray(0);
 	glUseProgram(0);
 	
 	CHECK_OPENGL_ERROR;
@@ -1840,7 +1814,7 @@ void RenderOpenGL::water()
 	glBindTexture(GL_TEXTURE_2D, this->st->map->water->pixels);
 	glUseProgram(this->shaders["water"]->p());
 		
-	if (this->waterobj->ibo_count == 0) this->createVBO(this->waterobj);
+	if (this->waterobj->count == 0) this->createVBO(this->waterobj);
 	
 	glm::mat4 modelMatrix = glm::scale(
 		glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, this->st->map->water_level, 0.0f)),
@@ -1849,11 +1823,10 @@ void RenderOpenGL::water()
 
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;
 	glUniformMatrix4fv(this->shaders["water"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-		
-	glBindVertexArray(this->waterobj->vao);
-	glDrawArrays(GL_TRIANGLES, 0, this->waterobj->ibo_count);
+	
+	this->waterobj->vao->bind();
+	glDrawArrays(GL_TRIANGLES, 0, this->waterobj->count);
 
-	glBindVertexArray(0);
 	glUseProgram(0);
 
 	glDisable(GL_BLEND);
@@ -1901,19 +1874,13 @@ void RenderOpenGL::particles()
 	CHECK_OPENGL_ERROR;
 
 	// First time set up
-	if (!this->particle_vao) {
-		glGenVertexArrays(1,&(this->particle_vao));
-		glBindVertexArray(this->particle_vao);
-
-		glGenBuffers(1, &(this->particle_vbo));
-		glBindBuffer(GL_ARRAY_BUFFER, this->particle_vbo);
-		glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(0));		// Position
-		glVertexAttribPointer(ATTRIB_COLOR, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(12));		// Colour
+	if (particle_vao == NULL) {
+		particle_vao = new GLVAO();
 		
-		glEnableVertexAttribArray(ATTRIB_POSITION);
-		glEnableVertexAttribArray(ATTRIB_COLOR);
-
-		glBindVertexArray(0);
+		GLuint buffer;
+		glGenBuffers(1, &buffer);
+		glBindBuffer(GL_ARRAY_BUFFER, buffer);
+		particle_vao->setInterleavedPC(buffer);
 	}
 
 	// This is a pretty horrible way to do this, because we malloc() and free() once per frame
@@ -1930,27 +1897,24 @@ void RenderOpenGL::particles()
 		data[i+5] = (*it)->b;
 		i += 6;
 	}
-	glBindBuffer(GL_ARRAY_BUFFER, this->particle_vbo);
+
+	// Update the buffer data (interleaved positions and colours)
+	glBindBuffer(GL_ARRAY_BUFFER, this->particle_vao->getInterleavedPC());
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * size, data, GL_DYNAMIC_DRAW);
 	free(data);
 
-
-	// Now we can draw
-	glBindVertexArray(this->particle_vao);
+	// Bind the VAO
+	this->particle_vao->bind();
 
 	// Bind shader
 	glUseProgram(this->shaders["particles"]->p());
-	
+
 	// Uniforms
 	glm::mat4 MVP = this->projection * this->view;
 	glUniformMatrix4fv(this->shaders["particles"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-	
+
 	// Draw
 	glDrawArrays(GL_POINTS, 0, size);
-	
-	glUseProgram(0);
-	glBindVertexArray(0);
-	
 
 	CHECK_OPENGL_ERROR;
 }

@@ -253,6 +253,8 @@ void AssimpModel::loadMeshes(bool opengl)
 			myMesh->vao->setTangent(buffer);
 		}
 		
+		myMesh->vao->unbind();
+		
 		CHECK_OPENGL_ERROR;
 	}
 }

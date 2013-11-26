@@ -6,6 +6,8 @@
 using namespace std;
 
 
+class GLVAO;
+
 class Vertex {
 	public:
 		float x, y, z;
@@ -31,9 +33,8 @@ class WavefrontObj {
 		vector<string> materials;
 		vector<Face> faces;
 		
-		unsigned int vao;		// Vertex Array Object (all the bindings etc)
-		unsigned int vbo;		// Vertex Buffer Object (actual vertex data)
-		unsigned int ibo_count;	// size of vbo array
+		GLVAO* vao;
+		unsigned int count;
 		
 		Vertex size;
 		

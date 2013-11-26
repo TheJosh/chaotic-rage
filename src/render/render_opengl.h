@@ -54,6 +54,7 @@ struct FreetypeChar
 };
 
 
+class GLVAO;
 class RenderOpenGLSettings;
 class btIDebugDraw;
 
@@ -77,24 +78,21 @@ class RenderOpenGL : public Render3D
 		FT_Face face;
 		vector<SpritePtr> loaded;
 		FreetypeChar char_tex[NUM_CHAR_TEX];
+		
+		// VBOs
 		GLuint font_vbo;
-
+		GLuint sprite_vbo;
+		
+		// VAOs
+		GLVAO* ter_vao;
+		GLVAO* skybox_vao;
+		GLVAO* particle_vao;
+		
 		// Heightmap
 		unsigned int ter_size;
-		GLuint ter_vboid;
-		GLuint ter_vaoid;
 		
 		// Water
 		WavefrontObj *waterobj;
-		
-		// skybox
-		GLuint skybox_vaoid;
-		
-		// Particles
-		GLuint particle_vao;
-		GLuint particle_vbo;
-
-		GLuint sprite_vbo;
 		
 		// Debugging
 		btIDebugDraw *physicsdebug;
