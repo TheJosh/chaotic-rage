@@ -241,17 +241,19 @@ void Menu::setupGLstate()
 {
 	this->render->mainViewport(0, 0);
 	
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_MULTISAMPLE);
+	glDisable(GL_CULL_FACE);
+	
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	
-	glEnable(GL_TEXTURE_2D);
+	// Ortho for menu stuff
+	render->ortho = glm::ortho<float>(0.0f, (float)render->real_width, (float)render->real_height, 0.0f, 0.0f, 10.0f);
 	
 	GLShader *shader = render->shaders["basic"];
 	glUseProgram(shader->p());
-	glm::mat4 projection = glm::ortho<float>(0.0f, this->render->getWidth(), this->render->getHeight(), 0.0f, -1.0f, 1.0f);
-	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, &projection[0][0]);
+	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
 	
-	render->ortho = projection;
-
 	this->st->setMouseGrab(false);
 }
 
@@ -548,8 +550,6 @@ void Menu::startCampaign(Campaign* c, string unittype, int viewmode, unsigned in
 				glBindTexture(GL_TEXTURE_2D, img->pixels);
 				// TODO GLES: glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 				// TODO GLES: glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-
-				((RenderOpenGL*)render)->ortho = glm::ortho<float>(0.0f, render->real_width, render->real_height, 0.0f, 0.0f, 10.0f);
 
 				// Determine position...
 				float width = render->getSpriteWidth(img), height = render->getSpriteHeight(img);

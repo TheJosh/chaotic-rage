@@ -367,6 +367,7 @@ void RenderOpenGL::mainViewport(int s, int of)
 	
 	this->projection = glm::perspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 150.0f);
 
+	// Ortho for gameplay HUD etc
 	this->ortho = glm::ortho<float>(0.0f, (float)this->virt_width, (float)this->virt_height, 0.0f, -1.0f, 1.0f);
 }
 
@@ -550,7 +551,7 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	
 	// TODO: Look at this for GLES
-	#ifdef OPENGL
+	#ifdef OpenGL
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	#endif
 	
@@ -1439,16 +1440,15 @@ void RenderOpenGL::renderText(string text, float x, float y, float r, float g, f
 		glGenBuffers(1, &font_vbo);
 	}
 	
+	#ifdef OpenGL
+		glBindVertexArray(0);
+	#endif
+	
 	glEnable(GL_BLEND);
 	
-	glBindBuffer(GL_ARRAY_BUFFER, font_vbo);
-	glEnableVertexAttribArray(ATTRIB_TEXTCOORD);
-	glVertexAttribPointer(ATTRIB_TEXTCOORD, 4, GL_FLOAT, GL_FALSE, 0, 0);
-
 	GLShader* shader = this->shaders["text"];
 	
 	glUseProgram(shader->p());
-
 	glUniform1i(shader->uniform("uTex"), 0);
 	glUniform4f(shader->uniform("uColor"), r, g, b, a);
 	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(this->ortho));
@@ -1505,7 +1505,7 @@ void RenderOpenGL::renderCharacter(char character, float &x, float &y)
 		glBindTexture(GL_TEXTURE_2D, c->tex);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		#ifdef OPENGL
+		#ifdef OpenGL
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 		#endif
@@ -1616,7 +1616,7 @@ void RenderOpenGL::render()
 **/
 void RenderOpenGL::physics()
 {
-#ifdef OPENGL
+#ifdef OpenGL
 	CHECK_OPENGL_ERROR;
 	
 	glDisable(GL_DEPTH_TEST);
