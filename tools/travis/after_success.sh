@@ -1,16 +1,29 @@
 #!/bin/bash
 
 
+# If the branch looks like a release, we feed into the release/ directory
+# Otherwise it goes into nightly with the commit number too
+if [ `cat "$TRAVIS_BRANCH" | grep "1\.[0-9]+"` ]; then
+	DEST_NAME="$TRAVIS_BRANCH"
+	DEST_DIR="release"
+else
+	DEST_NAME="$TRAVIS_BRANCH-$TRAVIS_COMMIT"
+	DEST_DIR="nightly"
+fi
+
+
 if [ "$PLATFORM" == "linux" ]; then
+	# Linux
 	sudo apt-get install -qq lftp
 	make dist VERSION=travis
-	echo lftp -c "open 'ftp://$FTP_USER:$FTP_PASS@chaoticrage.com'; cd nightly; put chaotic-rage-travis.tar.bz2 -o 'chaotic-rage-linux-$TRAVIS_BRANCH.tar.bz2'"
+	echo lftp -c "open 'ftp://$FTP_USER:$FTP_PASS@chaoticrage.com'; cd '$DEST_DIR'; put chaotic-rage-travis.tar.bz2 -o 'chaotic-rage-linux-$DEST_NAME.tar.bz2'"
 	
 	
 elif [ "$PLATFORM" == "android" ]; then
-	# android deploy coming soon :)
-	# ant debug
-	#echo lftp -c "open 'ftp://$FTP_USER:$FTP_PASS@chaoticrage.com'; cd nightly; lcd tools/android/bin/; put chaotic-rage-debug.apk -o 'chaotic-rage-android-$TRAVIS_BRANCH.apk'"
+	# Android
+	echo 'android deploy coming soon :)'
+	#ant debug
+	#echo lftp -c "open 'ftp://$FTP_USER:$FTP_PASS@chaoticrage.com'; cd $DEST_DIR'; lcd tools/android/bin/; put chaotic-rage-debug.apk -o 'chaotic-rage-android-$DEST_NAME.apk'"
 	
 	
 else
