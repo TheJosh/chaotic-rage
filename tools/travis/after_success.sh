@@ -21,9 +21,30 @@ if [ "$PLATFORM" == "linux" ]; then
 	
 elif [ "$PLATFORM" == "android" ]; then
 	# Android
-	echo 'android deploy coming soon :)'
-	#ant debug
-	#echo lftp -c "open 'ftp://$FTP_USER:$FTP_PASS@chaoticrage.com'; cd $DEST_DIR'; lcd tools/android/bin/; put chaotic-rage-debug.apk -o 'chaotic-rage-android-$DEST_NAME.apk'"
+	cd tools/android
+	
+	# Need this for x64 machines
+	if [ `uname -m` = x86_64 ]; then
+		sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch;
+	fi
+	
+	# Download and extract SDK
+	wget http://dl.google.com/android/android-sdk_r22.3-linux.tgz
+	tar -zxf android-sdk_r22.3-linux.tgz
+	export ANDROID_HOME=`pwd`/android-sdk-linux
+	export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+	
+	# Install required Android components
+	echo 'y' | android update sdk -a --filter platform-tools,android-10,build-tools-19.0.0 --no-ui --force
+	
+	# for ant
+	echo "sdk.dir={$ANDROID_HOME}" > local.properties
+	
+	# do build
+	ant debug
+	
+	# transfer file
+	lftp -c "open -u $FTP_USER,$FTP_PASS chaoticrage.com; cd '$DEST_DIR'; put bin/SDLActivity-debug.apk -o 'chaotic-rage-android-$DEST_NAME.apk'"
 	
 	
 else
