@@ -66,7 +66,11 @@ dist: src data maps
 	
 	mkdir -p chaotic-rage-$(VERSION)/tools
 	cp -r tools/include chaotic-rage-$(VERSION)/tools
-	cp -r tools/linux chaotic-rage-$(VERSION)/linux
+	
+	mkdir -p chaotic-rage-$(VERSION)/tools/linux
+	mkdir -p chaotic-rage-$(VERSION)/tools/linux/working
+	cp tools/linux/*.sh chaotic-rage-$(VERSION)/tools/linux/
+	chmod 755 tools/linux/*.sh
 	
 	tar -cvjf chaotic-rage-$(VERSION).tar.bz2 chaotic-rage-$(VERSION)
 	rm -rf chaotic-rage-$(VERSION)
