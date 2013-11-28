@@ -12,12 +12,12 @@ else
 fi
 
 
+# Do deploys
 if [ "$PLATFORM" == "linux" ]; then
 	# Linux
 	sudo apt-get install -qq lftp
 	make dist VERSION=travis
 	lftp -c "open -u $FTP_USER,$FTP_PASS chaoticrage.com; cd '$DEST_DIR'; put chaotic-rage-travis.tar.bz2 -o 'chaotic-rage-linux-$DEST_NAME.tar.bz2'"
-	
 	
 elif [ "$PLATFORM" == "android" ]; then
 	# Android
@@ -28,4 +28,13 @@ elif [ "$PLATFORM" == "android" ]; then
 	
 else
 	echo 'Unknown $PLATFORM variable'
+fi
+
+
+# Delete all but the 8 newest files
+lftp -c "open -u $FTP_USER,$FTP_PASS chaoticrage.com; cd '$DEST_DIR'; cls -1 --sort=date" >list
+head -n $(( $(wc -l list) - 8 )) list >rmlist
+if [ -s rmlist ]; then
+	$FILES=`cat rmlist | xargs`
+	lftp -c "open -u $FTP_USER,$FTP_PASS chaoticrage.com; cd '$DEST_DIR'; rm $FILES" >list
 fi
