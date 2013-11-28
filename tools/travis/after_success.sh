@@ -38,7 +38,7 @@ elif [ "$PLATFORM" == "android" ]; then
 	echo 'y' | android update sdk -a --filter platform-tools,android-10,build-tools-19.0.0 --no-ui --force
 	
 	# for ant
-	echo "sdk.dir={$ANDROID_HOME}" > local.properties
+	echo "sdk.dir=${ANDROID_HOME}" > local.properties
 	
 	# do build
 	ant debug
