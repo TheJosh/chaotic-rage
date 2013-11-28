@@ -3,7 +3,7 @@
 
 # If the branch looks like a release, we feed into the release/ directory
 # Otherwise it goes into nightly with the commit number too
-if [ `cat "$TRAVIS_BRANCH" | grep "1\.[0-9]+"` ]; then
+if [ `echo "$TRAVIS_BRANCH" | grep "^1\.[0-9]"` ]; then
 	DEST_NAME="$TRAVIS_BRANCH"
 	DEST_DIR="release"
 else
