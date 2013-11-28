@@ -3,7 +3,7 @@ compiler: gcc
 env:
   global:
     - FTP_USER=travis.chaoticrage
-    - secure: "coQ3W32pN/4J3DErk6o/WxUrCrLf5/TrqJDmOVK3tUJs865ysDru5KdAlJL9iGKVO/tSy0ItTnZop0Cx7IjqK9/1/D700hQcEiSt+6ydzlJi/FX99bWG+Dbl3kYpnnfTUtmCizdQVe1Bd8ZY/p/CAqtvyE5fs1zhSeLg7tzVrbI="
+    - secure: "RW1X2nAGyflz07euvPSkxp5iXHyauBSshuuAX69shMohIE1edxXJDIge584HvQvANDae+mEkclGITXLXt85SwbOXoQq1BYW/BkIu0/A6CvV7ZbugSpxLJmkHydSfyl01J1TYz8O4Dd4nPUKKGe15NIaSrtqcbbbcAmvyKLFjC5c="
   matrix:
     - PLATFORM=linux
     - PLATFORM=android

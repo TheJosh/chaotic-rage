@@ -16,7 +16,7 @@ if [ "$PLATFORM" == "linux" ]; then
 	# Linux
 	sudo apt-get install -qq lftp
 	make dist VERSION=travis
-	lftp -c "open 'ftp://$FTP_USER:$FTP_PASS@chaoticrage.com'; cd '$DEST_DIR'; put chaotic-rage-travis.tar.bz2 -o 'chaotic-rage-linux-$DEST_NAME.tar.bz2'"
+	lftp -c "open -u $FTP_USER,$FTP_PASS chaoticrage.com; cd '$DEST_DIR'; put chaotic-rage-travis.tar.bz2 -o 'chaotic-rage-linux-$DEST_NAME.tar.bz2'"
 	
 	
 elif [ "$PLATFORM" == "android" ]; then
