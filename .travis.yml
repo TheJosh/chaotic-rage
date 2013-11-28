@@ -4,8 +4,8 @@ env:
   - PLATFORM=linux
   - PLATFORM=android
 install:
-  - chmod 0755 tools/trvis/install.sh
+  - chmod 0755 tools/travis/install.sh
   - tools/travis/install.sh
 script:
-  - chmod 0755 tools/trvis/script.sh
+  - chmod 0755 tools/travis/script.sh
   - tools/travis/script.sh
