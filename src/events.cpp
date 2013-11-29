@@ -35,6 +35,8 @@ void handleEvents(GameState *st)
 		} else if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.sym) {
 				case SDLK_ESCAPE:
+				case SDLK_AC_BACK:
+				case SDLK_MENU:
 					if (! st->hasDialog("quit")) {
 						st->addDialog(new DialogQuit(st));
 					}
