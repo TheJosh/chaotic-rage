@@ -242,7 +242,6 @@ void Menu::setupGLstate()
 	this->render->mainViewport(0, 0);
 	
 	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_MULTISAMPLE);
 	glDisable(GL_CULL_FACE);
 	
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);

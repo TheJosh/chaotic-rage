@@ -5,7 +5,6 @@
 #pragma once
 
 
-
 /**
 * Check OpenGL errors
 **/
@@ -53,7 +52,7 @@
 **/
 #if defined(__ANDROID__)
 	#include <android/log.h>
-	#define GL_LOG(msg, ...) __android_log_print(ANDROID_LOG_ERROR, APPNAME, "GL Log: " msg, __VA_ARGS__)
+	#define GL_LOG(msg, ...) __android_log_print(ANDROID_LOG_ERROR, "ChaoticRage", "GL Log: " msg, __VA_ARGS__)
 #else
 	#define GL_LOG(msg, ...) fprintf(stderr, "GL Log: " msg "\n", __VA_ARGS__)
 #endif
