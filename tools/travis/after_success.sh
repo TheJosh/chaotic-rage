@@ -16,7 +16,7 @@ fi
 if [ "$PLATFORM" == "linux" ]; then
 	# Linux
 	sudo apt-get install -qq lftp
-	make dist VERSION=travis
+	make dist VERSION=travis || exit 1
 	lftp -c "open -u $FTP_USER,$FTP_PASS chaoticrage.com; cd '$DEST_DIR'; put chaotic-rage-travis.tar.bz2 -o 'chaotic-rage-linux-$DEST_NAME.tar.bz2'"
 	
 elif [ "$PLATFORM" == "android" ]; then
@@ -25,12 +25,12 @@ elif [ "$PLATFORM" == "android" ]; then
 	
 	# Need this for x64 machines
 	if [ `uname -m` = x86_64 ]; then
-		sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch;
+		sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch || exit 1;
 	fi
 	
 	# Download and extract SDK
-	wget http://dl.google.com/android/android-sdk_r22.3-linux.tgz
-	tar -zxf android-sdk_r22.3-linux.tgz
+	wget http://dl.google.com/android/android-sdk_r22.3-linux.tgz || exit 1
+	tar -zxf android-sdk_r22.3-linux.tgz || exit 1
 	export ANDROID_HOME=`pwd`/android-sdk-linux
 	export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 	
@@ -41,14 +41,15 @@ elif [ "$PLATFORM" == "android" ]; then
 	echo "sdk.dir=${ANDROID_HOME}" > local.properties
 	
 	# do build
-	ant debug
+	ant debug || exit 1
 	
 	# transfer file
-	lftp -c "open -u $FTP_USER,$FTP_PASS chaoticrage.com; cd '$DEST_DIR'; put bin/SDLActivity-debug.apk -o 'chaotic-rage-android-$DEST_NAME.apk'"
+	lftp -c "open -u $FTP_USER,$FTP_PASS chaoticrage.com; cd '$DEST_DIR'; put bin/ChaoticRage-debug.apk -o 'chaotic-rage-android-$DEST_NAME.apk'"
 	
 	
 else
 	echo 'Unknown $PLATFORM variable'
+	exit 1
 fi
 
 
