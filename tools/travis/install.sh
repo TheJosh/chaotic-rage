@@ -16,13 +16,30 @@ if [ "$PLATFORM" == "linux" ]; then
 	
 	
 elif [ "$PLATFORM" == "android" ]; then
-	sudo apt-get update -qq || exit 1
-	sudo apt-get install -qq libpng12-dev || exit 1
-	
 	cd tools/android;
+	
+	# Need this for x64 machines
+	if [ `uname -m` = x86_64 ]; then
+		sudo apt-get install -qq --force-yes ia32-libs ia32-libs-multiarch || exit 1;
+	fi
+	
+	# Download and extract SDK
+	wget http://dl.google.com/android/android-sdk_r22.3-linux.tgz || exit 1
+	tar -zxf android-sdk_r22.3-linux.tgz || exit 1
+	export ANDROID_HOME=`pwd`/android-sdk-linux
+	export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+	echo "sdk.dir=${ANDROID_HOME}" > local.properties
+	
+	# Install required Android components
+	echo 'y' | android update sdk -a --filter platform-tools,android-10,build-tools-19.0.0 --no-ui --force || exit 1
+	
+	# Download and extract NDK
 	wget http://dl.google.com/android/ndk/android-ndk-r9b-linux-x86_64.tar.bz2 || exit 1;
 	tar -xjf android-ndk-r9b-linux-x86_64.tar.bz2 || exit 1;
+	
+	# Install and prepare all the libs we need for android builds
 	./prepare.sh || exit 1
+	
 	cd ../..;
 	
 	

@@ -8,6 +8,7 @@ if [ "$PLATFORM" == "linux" ]; then
 elif [ "$PLATFORM" == "android" ]; then
 	cd tools/android
 	android-ndk-r9b/ndk-build || exit 1
+	ant debug || exit 1
 	cd ../..
 	
 	

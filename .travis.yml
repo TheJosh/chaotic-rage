@@ -13,6 +13,3 @@ install:
 script:
   - chmod 0755 tools/travis/script.sh
   - tools/travis/script.sh
-after_success:
-  - chmod 0755 tools/travis/after_success.sh
-  - tools/travis/after_success.sh
