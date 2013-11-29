@@ -20,6 +20,7 @@ elif [ "$PLATFORM" == "android" ]; then
 	
 	# Need this for x64 machines
 	if [ `uname -m` = x86_64 ]; then
+		sudo apt-get update -qq || exit 1
 		sudo apt-get install -qq --force-yes ia32-libs ia32-libs-multiarch || exit 1;
 	fi
 	
