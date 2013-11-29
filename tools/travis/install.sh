@@ -1,10 +1,11 @@
 #!/bin/bash
 
 
+sudo apt-get update -qq || exit 1
+sudo apt-get install -qq libgl1-mesa-dev libglu1-mesa-dev libglew-dev liblua5.1-0-dev libfreetype6-dev zlib-bin freeglut3-dev || exit 1
+
+
 if [ "$PLATFORM" == "linux" ]; then
-	sudo apt-get update -qq || exit 1
-	sudo apt-get install -qq libgl1-mesa-dev libglu1-mesa-dev libglew-dev liblua5.1-0-dev libfreetype6-dev zlib-bin freeglut3-dev || exit 1
-	
 	cd tools/linux;
 	./assimp.sh || exit 1;
 	./bullet.sh || exit 1;
