@@ -1,12 +1,8 @@
 language: cpp
 compiler: gcc
 env:
-  global:
-    - FTP_USER=travis.chaoticrage
-    - secure: "RW1X2nAGyflz07euvPSkxp5iXHyauBSshuuAX69shMohIE1edxXJDIge584HvQvANDae+mEkclGITXLXt85SwbOXoQq1BYW/BkIu0/A6CvV7ZbugSpxLJmkHydSfyl01J1TYz8O4Dd4nPUKKGe15NIaSrtqcbbbcAmvyKLFjC5c="
-  matrix:
-    - PLATFORM=linux
-    - PLATFORM=android
+  - PLATFORM=linux
+  - PLATFORM=android
 install:
   - chmod 0755 tools/travis/install.sh
   - tools/travis/install.sh
