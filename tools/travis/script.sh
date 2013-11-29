@@ -2,7 +2,7 @@
 
 
 if [ "$PLATFORM" == "linux" ]; then
-	make || exit 1
+	make -j2 || exit 1
 	
 	
 elif [ "$PLATFORM" == "android" ]; then

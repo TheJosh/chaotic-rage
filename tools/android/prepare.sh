@@ -60,7 +60,9 @@ fi
 if [ ! -d "jni/freetype" ]; then
 	cd jni/
 	git clone https://github.com/android/platform_external_freetype.git freetype
-	rm -rf freetype/.git
+	cd freetype
+	git checkout 8afe960626dbf326354b836fd4d63e05b6974195
+	rm -rf .git
 	cd ..
 fi
 
