@@ -264,11 +264,13 @@ void Menu::updateUI()
 {
 	int mousex, mousey;
 	SDL_Event event;
+	
+	// Menu hover
 	SDL_GetMouseState(&mousex, &mousey);
+	this->menuHover(mousex, mousey);
 	
+	// Events
 	MenuCommand cmd = MC_NOTHING;
-	
-	
 	while (SDL_PollEvent(&event)) {
 
 		if (event.type == SDL_QUIT) {
@@ -304,8 +306,6 @@ void Menu::updateUI()
 		input->pushInput(event);
 	}
 	
-	this->menuHover(mousex, mousey);
-	
 	// Handle main menu commands
 	switch (cmd) {
 		case MC_CAMPAIGN: this->doCampaign(); break;
@@ -319,55 +319,29 @@ void Menu::updateUI()
 		default: break;
 	}
 	
-
-	// Background animation
-	bg_rot1_pos += bg_rot1_dir;
-	if (bg_rot1_pos >= 10.0f or bg_rot1_pos <= -10.0f) {
-		bg_rot1_dir = 0.0f - bg_rot1_dir;
-	}
+	// Begin render
+	glClear(GL_COLOR_BUFFER_BIT);
 	
-	bg_rot2_pos += bg_rot2_dir;
-	if (bg_rot2_pos >= 3.0f or bg_rot2_pos <= -3.0f) {
-		bg_rot2_dir = 0.0f - bg_rot2_dir;
-	}
-
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	/*
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glTranslatef((render->virt_width / 2), (render->virt_height / 2), 0);
-	glRotatef(90, 1, 0, 0);
-	glRotatef(bg_rot1_pos, 0, 0, 1);
-	glRotatef(bg_rot2_pos, 1, 0, 0);
-	glScalef(650, 50, 650);
-	glBindTexture(GL_TEXTURE_2D, bg->pixels);
+	// Menu items
+	this->menuRender();
 	
-	render->preVBOrender();
-	render->renderObj(bgmesh);
-	render->postVBOrender();
-	*/
-
-	
+	// Logo in top-left
 	glUseProgram(render->shaders["basic"]->p());
 	render->renderSprite(logo, 40, 40);
 	
-	
-	this->menuRender();
-
-
 	// If a guichan dialog is set, render it and process events
 	if (this->dialog != NULL) {
 		gui->logic();
 		gui->draw();
 	}
-
-
+	
 	SDL_GL_SwapWindow(render->window);
 }
 
 
+/**
+* Clear all of the current menu items
+**/
 void Menu::menuClear()
 {
 	for (vector<MenuItem*>::iterator it = this->menuitems.begin(); it != this->menuitems.end(); it++) {
