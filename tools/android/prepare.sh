@@ -96,11 +96,9 @@ rm jni/README.txt
 rm -f jni/src
 ln -s ../../../src jni/src
 
-# Link up assets
-rm -rf assets
-mkdir assets
-mkdir assets/data
-ln -s ../../../../data/cr assets/data/
-ln -s ../../../../data/intro assets/data/
-ln -s ../../../maps assets/
+# Copy assets
+if [ ! -d "assets" ]; then
+	./assets.sh
+fi
+
 
