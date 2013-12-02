@@ -304,6 +304,7 @@ void Menu::updateUI()
 		input->pushInput(event);
 	}
 	
+	this->menuHover(mousex, mousey);
 	
 	// Handle main menu commands
 	switch (cmd) {
@@ -352,8 +353,7 @@ void Menu::updateUI()
 	glUseProgram(render->shaders["basic"]->p());
 	render->renderSprite(logo, 40, 40);
 	
-
-	this->menuHover(mousex, mousey);
+	
 	this->menuRender();
 
 
@@ -364,7 +364,7 @@ void Menu::updateUI()
 	}
 
 
-	SDL_GL_SwapWindow(((RenderOpenGL*)render)->window);
+	SDL_GL_SwapWindow(render->window);
 }
 
 

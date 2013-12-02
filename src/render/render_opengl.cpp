@@ -293,8 +293,10 @@ void RenderOpenGL::loadFont(string name, Mod * mod)
 		reportFatalError("Freetype: Unable to load data");
 	}
 	
+	// TODO: You've got to free buf at some point, but only after all the character bitmaps have been loaded
+	// perhaps re-think this all a bit.
+	
 	error = FT_New_Memory_Face(this->ft, (const FT_Byte *) buf, len, 0, &this->face);
-	free(buf);
 
 	if (error == FT_Err_Unknown_File_Format) {
 		reportFatalError("Freetype: Unsupported font format");
@@ -1456,7 +1458,7 @@ void RenderOpenGL::renderText(string text, float x, float y, float r, float g, f
 	for (unsigned int n = 0; n < text.length(); n++ ) {
 		this->renderCharacter(text[n], x, y);
 	}
-	
+
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glUseProgram(0);
 	glDisable(GL_BLEND);
@@ -1535,9 +1537,9 @@ void RenderOpenGL::renderCharacter(char character, float &x, float &y)
 	glBindBuffer(GL_ARRAY_BUFFER, font_vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
 
-	glEnableVertexAttribArray(ATTRIB_TEXTCOORD);
 	glVertexAttribPointer(ATTRIB_TEXTCOORD, 4, GL_FLOAT, GL_FALSE, 0, 0);
-
+	glEnableVertexAttribArray(ATTRIB_TEXTCOORD);
+	
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	
 	x += c->advance >> 6;
