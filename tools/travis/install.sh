@@ -18,9 +18,12 @@ if [ "$PLATFORM" == "linux" ]; then
 elif [ "$PLATFORM" == "android" ]; then
 	cd tools/android;
 	
+	# Needed for image resizing
+	sudo apt-get update -qq || exit 1
+	sudo apt-get install -qq --force-yes imagemagick >/dev/null || exit 1;
+	
 	# Need this for x64 machines
 	if [ `uname -m` = x86_64 ]; then
-		sudo apt-get update -qq || exit 1
 		sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch >/dev/null || exit 1;
 	fi
 	
@@ -42,6 +45,9 @@ elif [ "$PLATFORM" == "android" ]; then
 	
 	# Install and prepare all the libs we need for android builds
 	./prepare.sh || exit 1
+	
+	# Copy and shrink assets
+	./assets.sh || exit 1
 	
 	cd ../..;
 	
