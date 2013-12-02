@@ -3,7 +3,7 @@
 
 if [ "$PLATFORM" == "linux" ]; then
 	sudo apt-get update -qq || exit 1
-	sudo apt-get install -qq libgl1-mesa-dev libglu1-mesa-dev libglew-dev liblua5.1-0-dev libfreetype6-dev zlib-bin freeglut3-dev || exit 1
+	sudo apt-get install -qq libgl1-mesa-dev libglu1-mesa-dev libglew-dev liblua5.1-0-dev libfreetype6-dev zlib-bin freeglut3-dev >/dev/null || exit 1
 	
 	cd tools/linux;
 	./assimp.sh || exit 1;
@@ -21,7 +21,7 @@ elif [ "$PLATFORM" == "android" ]; then
 	# Need this for x64 machines
 	if [ `uname -m` = x86_64 ]; then
 		sudo apt-get update -qq || exit 1
-		sudo apt-get install -qq --force-yes ia32-libs ia32-libs-multiarch || exit 1;
+		sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch >/dev/null || exit 1;
 	fi
 	
 	# Download and extract SDK
@@ -32,7 +32,9 @@ elif [ "$PLATFORM" == "android" ]; then
 	echo "sdk.dir=${ANDROID_HOME}" > local.properties
 	
 	# Install required Android components
-	echo 'y' | android update sdk -a --filter platform-tools,android-10,build-tools-19.0.0 --no-ui --force || exit 1
+	echo 'y' | android update sdk -a --filter platform-tools --no-ui --force >/dev/null || exit 1
+	echo 'y' | android update sdk -a --filter build-tools-19.0.0 --no-ui --force >/dev/null || exit 1
+	echo 'y' | android update sdk -a --filter android-10 --no-ui --force >/dev/null || exit 1
 	
 	# Download and extract NDK
 	wget http://dl.google.com/android/ndk/android-ndk-r9b-linux-x86_64.tar.bz2 || exit 1;
