@@ -180,29 +180,31 @@ void AssimpModel::loadMeshes(bool opengl)
 		
 		if (! opengl) continue;
 		
+		assert(mesh->mNumFaces * 3 < 65535);
+		
 		// VAO
 		myMesh->vao = new GLVAO();
 
 		// Prep face array for VBO
-		unsigned int *faceArray;
-		faceArray = (unsigned int *)malloc(sizeof(unsigned int) * mesh->mNumFaces * 3);
-		unsigned int faceIndex = 0;
+		Uint16 *faceArray;
+		faceArray = (Uint16 *)malloc(sizeof(Uint16) * mesh->mNumFaces * 3);
 		
 		// Copy face data
+		unsigned int faceIndex = 0;
 		for (unsigned int t = 0; t < mesh->mNumFaces; ++t) {
 			const struct aiFace* face = &mesh->mFaces[t];
-			
-			memcpy(&faceArray[faceIndex], face->mIndices, 3 * sizeof(int));
-			faceIndex += 3;
+			faceArray[faceIndex++] = face->mIndices[0];
+			faceArray[faceIndex++] = face->mIndices[1];
+			faceArray[faceIndex++] = face->mIndices[2];
 		}
 		
 		// Faces
 		glGenBuffers(1, &buffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mesh->mNumFaces * 3, faceArray, GL_STATIC_DRAW);
-		free(faceArray);
 		myMesh->vao->setIndex(buffer);
-
+		free(faceArray);
+		
 		// Positions
 		if (mesh->HasPositions()) {
 			glGenBuffers(1, &buffer);

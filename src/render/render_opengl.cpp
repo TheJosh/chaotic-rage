@@ -1433,7 +1433,7 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 		}
 		
 		mesh->vao->bind();
-		glDrawElements(GL_TRIANGLES, mesh->numFaces*3, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, mesh->numFaces*3, GL_UNSIGNED_SHORT, 0);
 	}
 	
 	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {
