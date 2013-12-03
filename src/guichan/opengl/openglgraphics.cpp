@@ -68,6 +68,8 @@ namespace gcn
             unsigned int vbo;
             GLuint shader_image;
             GLuint shader_lines;
+
+			GLuint createShaderProgram(const char *vs, const char *fs);
     };
     
     
@@ -96,13 +98,74 @@ namespace gcn
         delete(pimpl_);
     }
 
+	GLuint OpenGLGraphics_Impl::createShaderProgram(const char *vs, const char *fs)
+	{
+		GLuint program, sVS, sFS;
+		GLint len;
+
+		// Create stuff
+		program = glCreateProgram();
+		sVS = glCreateShader(GL_VERTEX_SHADER);
+		sFS = glCreateShader(GL_FRAGMENT_SHADER);
+
+		// Compile vertex shader
+		len = strlen(vs);
+		glShaderSource(sVS, 1, &vs, &len);
+		glCompileShader(sVS);
+		glAttachShader(program, sVS);
+
+		// Compile fragment shader
+		len = strlen(fs);
+		glShaderSource(sFS, 1, &fs, &len);
+		glCompileShader(sFS);
+		glAttachShader(program, sFS);
+
+		glBindAttribLocation(program, 0, "vPosition");
+		glBindAttribLocation(program, 1, "vTexUV");
+
+		// Link
+		glLinkProgram(program);
+		glDeleteShader(sVS);
+		glDeleteShader(sFS);
+
+		return program;
+	}
+
     void OpenGLGraphics::createShaders()
     {
-        pimpl_->shader_image = 0;
-        pimpl_->shader_lines = 0;
-        
-        // TODO: Create some shaders
-        
+		// Images
+		pimpl_->shader_image = pimpl_->createShaderProgram(
+			"precision mediump float;"
+			"attribute vec3 vPosition;"
+			"attribute vec2 vTexUV;"
+			"varying vec2 fTexUV;"
+			"uniform mat4 uMVP;"
+			"void main() {"
+				"gl_Position = uMVP * vec4(vPosition, 1.0); fTexUV = vTexUV;"
+			"}",
+
+			"precision mediump float;"
+			"varying vec2 fTexUV;"
+			"uniform sampler2D uTex;"
+			"void main() {"
+				"gl_FragColor = texture2D(uTex, fTexUV);"
+			"}"
+		);
+
+		// Lines
+        pimpl_->shader_lines = pimpl_->createShaderProgram(
+			"precision mediump float;"
+			"attribute vec3 vPosition;"
+			"uniform mat4 uMVP;"
+			"void main() {"
+				"gl_Position = uMVP * vec4(vPosition, 1.0);"
+			"}",
+
+			"precision mediump float;"
+			"void main() {"
+				"gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0)"
+			"}"
+		);
     }
     
     void OpenGLGraphics::_beginDraw()
@@ -224,9 +287,9 @@ namespace gcn
         glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
 
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 5, 0);   // Position
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 5, ((char*)NULL + 12));     // TexUVs
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 5, ((char*)NULL + 12));     // TexUVs
         glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(2);
+        glEnableVertexAttribArray(1);
 
         glUseProgram(pimpl_->shader_image);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -251,6 +314,9 @@ namespace gcn
         y += top.yOffset;
 
         GLfloat point[3] = { x, y, 0.0f };
+
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(0);
 
         glUseProgram(pimpl_->shader_lines);
         glBufferData(GL_ARRAY_BUFFER, sizeof point, point, GL_DYNAMIC_DRAW);
@@ -297,6 +363,9 @@ namespace gcn
             {rectangle.x + top.xOffset, rectangle.y + rectangle.height + top.yOffset, 0.0f},
         };
 
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(0);
+
         glUseProgram(pimpl_->shader_lines);
         glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
         glDrawArrays(GL_LINE_LOOP, 0, 4);
@@ -317,6 +386,9 @@ namespace gcn
             {rectangle.x + rectangle.width + top.xOffset - 1.0f, rectangle.y + rectangle.height + top.yOffset, 0.0f},
             {rectangle.x + top.xOffset, rectangle.y + rectangle.height + top.yOffset, 0.0f},
         };
+
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(0);
 
         glUseProgram(pimpl_->shader_lines);
         glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
