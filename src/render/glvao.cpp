@@ -68,7 +68,7 @@ void GLVAO::setIndex(GLuint vbo)
 void GLVAO::setPosition(GLuint vbo)
 {
 	glEnableVertexAttribArray(ATTRIB_POSITION);
-	glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, 0, 0, 0);
+	glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	this->position = vbo;
 }
 
@@ -79,7 +79,7 @@ void GLVAO::setPosition(GLuint vbo)
 void GLVAO::setNormal(GLuint vbo)
 {
 	glEnableVertexAttribArray(ATTRIB_NORMAL);
-	glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, 0, 0, 0);
+	glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	this->normal = vbo;
 }
 
@@ -90,7 +90,7 @@ void GLVAO::setNormal(GLuint vbo)
 void GLVAO::setTexUV(GLuint vbo)
 {
 	glEnableVertexAttribArray(ATTRIB_TEXUV);
-	glVertexAttribPointer(ATTRIB_TEXUV, 3, GL_FLOAT, 0, 0, 0);
+	glVertexAttribPointer(ATTRIB_TEXUV, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	this->texuv = vbo;
 }
 
@@ -101,7 +101,7 @@ void GLVAO::setTexUV(GLuint vbo)
 void GLVAO::setBoneId(GLuint vbo)
 {
 	glEnableVertexAttribArray(ATTRIB_BONEID);
-	glVertexAttribPointer(ATTRIB_BONEID, 4, GL_SHORT, 0, 0, 0);
+	glVertexAttribPointer(ATTRIB_BONEID, 4, GL_UNSIGNED_BYTE, GL_FALSE, 0, 0);
 	this->boneid = vbo;
 }
 
@@ -112,7 +112,7 @@ void GLVAO::setBoneId(GLuint vbo)
 void GLVAO::setBoneWeight(GLuint vbo)
 {
 	glEnableVertexAttribArray(ATTRIB_BONEWEIGHT);
-	glVertexAttribPointer(ATTRIB_BONEWEIGHT, 4, GL_FLOAT, 0, 0, 0);
+	glVertexAttribPointer(ATTRIB_BONEWEIGHT, 4, GL_FLOAT, GL_FALSE, 0, 0);
 	this->boneweight = vbo;
 }
 
@@ -123,7 +123,7 @@ void GLVAO::setBoneWeight(GLuint vbo)
 void GLVAO::setTangent(GLuint vbo)
 {
 	glEnableVertexAttribArray(ATTRIB_TANGENT);
-	glVertexAttribPointer(ATTRIB_TANGENT, 3, GL_FLOAT, 0, 0, 0);
+	glVertexAttribPointer(ATTRIB_TANGENT, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	this->tangent = vbo;
 }
 

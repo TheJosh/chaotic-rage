@@ -133,7 +133,7 @@ class AssimpModel
 
 	private:
 		const struct aiScene* sc;			// TODO: remove this, pass it as a func. arg everywhere instead.
-		unsigned int* boneIds;
+		Uint8* boneIds;
 		float* boneWeights;
 		btVector3 boundingSize;
 		btCollisionShape *shape;
@@ -179,7 +179,7 @@ class AssimpModel
 		glm::quat convQuaternion(aiQuaternion in);
 
 		void loadBones(const aiMesh* mesh, AssimpMesh* myMesh);
-		unsigned int* getBoneIds();
+		Uint8* getBoneIds();
 		float* getBoneWeights();
 		void freeBones();
 		void setBoneNodes();

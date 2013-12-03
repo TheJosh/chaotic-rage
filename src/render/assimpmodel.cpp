@@ -233,7 +233,7 @@ void AssimpModel::loadMeshes(bool opengl)
 
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned int)*4*mesh->mNumVertices, this->boneIds, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(Uint8)*4*mesh->mNumVertices, this->boneIds, GL_STATIC_DRAW);
 			myMesh->vao->setBoneId(buffer);
 
 			glGenBuffers(1, &buffer);
@@ -531,22 +531,23 @@ glm::quat AssimpModel::convQuaternion(aiQuaternion in)
 **/
 void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 {
-	unsigned int n, m;
-	unsigned int *idx;
-
+	unsigned int m;
+	Uint8 n;
+	Uint8 *idx;
+	
 	// Allocate space for the IDs and weights
-	this->boneIds = (unsigned int*) malloc(sizeof(unsigned int) * 4 * mesh->mNumVertices);
+	this->boneIds = (Uint8*) malloc(sizeof(Uint8) * 4 * mesh->mNumVertices);
 	this->boneWeights = (float*) malloc(sizeof(float) * 4 * mesh->mNumVertices);
 
 	// Set to nothing
-	for (unsigned int i = 0; i < (4 * mesh->mNumVertices); i++) {
-		this->boneIds[i] = 0;
-		this->boneWeights[i] = 0.0f;
+	for (m = 0; m < (4 * mesh->mNumVertices); m++) {
+		this->boneIds[m] = 0;
+		this->boneWeights[m] = 0.0f;
 	}
 
 	// Keeps track of which index a given vertex is up to
-	idx = (unsigned int*) malloc(sizeof(unsigned int) * mesh->mNumVertices);
-	memset(idx, 0, sizeof(unsigned int) * mesh->mNumVertices);
+	idx = (Uint8*) malloc(sizeof(Uint8) * mesh->mNumVertices);
+	memset(idx, 0, sizeof(Uint8) * mesh->mNumVertices);
 
 	// Loop through the weights of all the bones
 	// Save the id and the weight in the arrays as required
@@ -586,7 +587,7 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 * ints (which get mapped to a glm::ivec4) of bone ids
 * The index is the vertex index
 **/
-unsigned int* AssimpModel::getBoneIds()
+Uint8* AssimpModel::getBoneIds()
 {
 	return this->boneIds;
 }
@@ -604,7 +605,7 @@ float* AssimpModel::getBoneWeights()
 
 
 /**
-* Free the bone data loaded in loadBones(
+* Free the bone data
 **/
 void AssimpModel::freeBones()
 {
