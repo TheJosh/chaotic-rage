@@ -6,7 +6,7 @@ const int MAX_BONES = 32;
 in vec3 vPosition;
 in vec3 vNormal;
 in vec2 vTexUV;
-in uvec4 vBoneIDs;
+in vec4 vBoneIDs;
 in vec4 vBoneWeights;
 
 out vec2 fTexUV;
