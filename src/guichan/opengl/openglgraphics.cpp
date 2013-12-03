@@ -188,8 +188,9 @@ namespace gcn
             "}",
 
             "precision mediump float;"
+            "uniform vec4 uColor;"
             "void main() {"
-                "gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);"
+                "gl_FragColor = uColor;"
             "}"
         );
         
@@ -209,6 +210,7 @@ namespace gcn
 
              glUseProgram(pimpl_->shader_lines);
              glUniformMatrix4fv(glGetUniformLocation(pimpl_->shader_lines, "uMVP"), 1, GL_FALSE, glm::value_ptr(pimpl_->projection));
+             glUniform4f(glGetUniformLocation(pimpl_->shader_lines, "uColor"), 0.0f, 0.0f, 0.0f, 0.0f);
 
              CHECK_OPENGL_ERROR;
         }
@@ -323,8 +325,8 @@ namespace gcn
 
         // Draw a textured quad -- the image
         GLfloat box[4][5] = {
-            {dstX, dstY, 0.0f, texX1, texY1},
             {dstX, dstY + height, 0.0f, texX1, texY2},
+            {dstX, dstY, 0.0f, texX1, texY1},
             {dstX + width, dstY + height, 0.0f, texX2, texY2},
             {dstX + width, dstY, 0.0f, texX2, texY1},
         };
@@ -438,8 +440,8 @@ namespace gcn
         GLfloat box[4][3] = {
             {rectangle.x + top.xOffset, rectangle.y + top.yOffset, 0.0f},
             {rectangle.x + rectangle.width + top.xOffset - 1.0f, rectangle.y + top.yOffset + 0.375f, 0.0f},
-            {rectangle.x + rectangle.width + top.xOffset - 1.0f, rectangle.y + rectangle.height + top.yOffset, 0.0f},
             {rectangle.x + top.xOffset, rectangle.y + rectangle.height + top.yOffset, 0.0f},
+            {rectangle.x + rectangle.width + top.xOffset - 1.0f, rectangle.y + rectangle.height + top.yOffset, 0.0f},
         };
 
         glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
@@ -455,10 +457,12 @@ namespace gcn
     void OpenGLGraphics::setColor(const Color& color)
     {
         mColor = color;
-        /*glColor4ub((GLubyte) color.r,
-                   (GLubyte) color.g,
-                   (GLubyte) color.b,
-                   (GLubyte) color.a);*/
+
+        glUseProgram(pimpl_->shader_lines);
+        glUniform4f(
+            glGetUniformLocation(pimpl_->shader_lines, "uColor"),
+            color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f
+        );
 
         mAlpha = color.a != 255;
 
