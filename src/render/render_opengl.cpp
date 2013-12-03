@@ -174,17 +174,34 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 {
 	int flags;
 	
+	// On mobile devices, we force fullscreen and a given window size
+	#if defined(__ANDROID__)
+		SDL_DisplayMode mode;
+		
+		int result = SDL_GetDesktopDisplayMode(0, &mode);
+		if (result != 0) {
+			reportFatalError("Unable to determine current display mode");
+		}
+		
+		width = mode.w;
+		height = mode.h;
+		fullscreen = true;
+	#endif
+	
 	this->real_width = width;
 	this->real_height = height;
 	
-	
-	// SDL
+	// SDL flags
 	flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-	if (fullscreen) flags |= SDL_WINDOW_FULLSCREEN;
+	if (fullscreen) {
+		flags |= SDL_WINDOW_FULLSCREEN;
+	}
 	
+	// Window title
 	char title[100];
 	sprintf(title, "Chaotic Rage %s", VERSION);
 	
+	// Create window
 	this->window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
 	if (this->window == NULL) {
 		char buffer[200];

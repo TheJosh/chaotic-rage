@@ -102,11 +102,8 @@ void ClientConfig::initRender(GameState *st)
 		new RenderOpenGL(st, this->gl);
 	}
 	
-	#ifdef __ANDROID__
-		st->render->setScreenSize(800, 480, true);		// TODO: this should be detected from the device. currently SGS2 native
-	#else
-		st->render->setScreenSize(1000, 700, false);
-	#endif
+	// TODO: Load these settings from a config file
+	st->render->setScreenSize(1000, 700, false);
 }
 
 
