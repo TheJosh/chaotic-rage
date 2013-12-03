@@ -30,17 +30,14 @@
 	}
 	
 #elif defined(OpenGL)
+	#include "../platform/platform.h"
 	#define CHECK_OPENGL_ERROR \
 	{	GLenum error; \
 		error = glGetError(); \
 		if (error != GL_NO_ERROR) { \
-			cerr << "OpenGL Error:\n"; \
-			while (error) { \
-				cerr << " - " << gluErrorString(error) << "\n"; \
-				error = glGetError(); \
-			} \
-			cerr << "Location: " << __FILE__ << ":" << __LINE__ << "\n"; \
-			reportFatalError("OpenGL error"); \
+			char buf[255]; \
+			sprintf(buf, "OpenGL error: %s at line %i of %s", (const char*) gluErrorString(error), __LINE__, __FILE__); \
+			reportFatalError(std::string(buf)); \
 		} \
 	}
 	

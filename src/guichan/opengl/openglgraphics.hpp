@@ -85,11 +85,6 @@ namespace gcn
         virtual ~OpenGLGraphics();
 
         /**
-         * Create shaders needed for rendering
-         */
-        void createShaders();
-
-        /**
          * Sets the target plane on where to draw.
 		 *
 		 * @param width the width of the logical drawing surface. Should be the
