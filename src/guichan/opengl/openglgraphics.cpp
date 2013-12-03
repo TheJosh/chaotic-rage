@@ -66,6 +66,8 @@ namespace gcn
         public:
             glm::mat4 projection;
             unsigned int vbo;
+            GLuint shader_image;
+            GLuint shader_lines;
     };
     
     
@@ -74,12 +76,14 @@ namespace gcn
         setTargetPlane(640, 480);
         mAlpha = false;
         pimpl_ = new OpenGLGraphics_Impl();
+        createShaders();
     }
 
     OpenGLGraphics::OpenGLGraphics(int width, int height)
     {
         setTargetPlane(width, height);
-		pimpl_ = new OpenGLGraphics_Impl();
+        pimpl_ = new OpenGLGraphics_Impl();
+        createShaders();
     }
 
     OpenGLGraphics::~OpenGLGraphics()
@@ -92,6 +96,15 @@ namespace gcn
         delete(pimpl_);
     }
 
+    void OpenGLGraphics::createShaders()
+    {
+        pimpl_->shader_image = 0;
+        pimpl_->shader_lines = 0;
+        
+        // TODO: Create some shaders
+        
+    }
+    
     void OpenGLGraphics::_beginDraw()
     {
         pimpl_->projection = glm::ortho<float>(0.0f, mWidth, mHeight, 0.0f, -1.0f, 1.0f);
@@ -109,8 +122,6 @@ namespace gcn
 
         glLineWidth(1.0);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        // TODO: Create some shaders
 
         glEnable(GL_SCISSOR_TEST);
         pushClipArea(Rectangle(0, 0, mWidth, mHeight));
@@ -211,6 +222,13 @@ namespace gcn
         };
 
         glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 5, 0);   // Position
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 5, ((char*)NULL + 12));     // TexUVs
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(2);
+
+        glUseProgram(pimpl_->shader_image);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
         // Don't disable blending if the color has alpha
@@ -234,6 +252,7 @@ namespace gcn
 
         GLfloat point[3] = { x, y, 0.0f };
 
+        glUseProgram(pimpl_->shader_lines);
         glBufferData(GL_ARRAY_BUFFER, sizeof point, point, GL_DYNAMIC_DRAW);
         glDrawArrays(GL_POINTS, 0, 1);
     }
@@ -252,11 +271,12 @@ namespace gcn
         x2 += top.xOffset;
         y2 += top.yOffset;
 
-        GLfloat line[6] = {
-            x1 + 0.375f, y1 + 0.375f, 0.0f,
-            x2 + 1.0f - 0.375f, y2 + 1.0f - 0.375f, 0.0f
+        GLfloat line[4][3] = {
+            {x1 + 0.375f, y1 + 0.375f, 0.0f},
+            {x2 + 1.0f - 0.375f, y2 + 1.0f - 0.375f, 0.0f}
         };
 
+        glUseProgram(pimpl_->shader_lines);
         glBufferData(GL_ARRAY_BUFFER, sizeof line, line, GL_DYNAMIC_DRAW);
         glDrawArrays(GL_LINES, 0, 1);
     }
@@ -277,6 +297,7 @@ namespace gcn
             {rectangle.x + top.xOffset, rectangle.y + rectangle.height + top.yOffset, 0.0f},
         };
 
+        glUseProgram(pimpl_->shader_lines);
         glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
         glDrawArrays(GL_LINE_LOOP, 0, 4);
     }
@@ -297,6 +318,7 @@ namespace gcn
             {rectangle.x + top.xOffset, rectangle.y + rectangle.height + top.yOffset, 0.0f},
         };
 
+        glUseProgram(pimpl_->shader_lines);
         glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
