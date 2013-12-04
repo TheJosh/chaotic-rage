@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "../platform/platform.h"
+
 
 /**
 * Check OpenGL errors
@@ -30,7 +32,6 @@
 	}
 	
 #elif defined(OpenGL)
-	#include "../platform/platform.h"
 	#define CHECK_OPENGL_ERROR \
 	{	GLenum error; \
 		error = glGetError(); \

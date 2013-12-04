@@ -6,12 +6,12 @@ if [ "$PLATFORM" == "linux" ]; then
 	sudo apt-get install -qq libgl1-mesa-dev libglu1-mesa-dev libglew-dev liblua5.1-0-dev libfreetype6-dev zlib-bin freeglut3-dev >/dev/null || exit 1
 	
 	cd tools/linux;
-	./assimp.sh || exit 1;
-	./bullet.sh || exit 1;
-	./sdl2.sh || exit 1;
-	./sdl2_image.sh || exit 1;
-	./sdl2_mixer.sh || exit 1;
-	./sdl2_net.sh || exit 1h;
+	./assimp.sh >/dev/null || exit 1;
+	./bullet.sh >/dev/null || exit 1;
+	./sdl2.sh >/dev/null || exit 1;
+	./sdl2_image.sh >/dev/null || exit 1;
+	./sdl2_mixer.sh >/dev/null || exit 1;
+	./sdl2_net.sh >/dev/null || exit 1h;
 	cd ../..;
 	
 	
