@@ -49,10 +49,7 @@ int main (int argc, char ** argv)
 	st = new GameState();
 	st->cmdline = new CommandLineArgs(st, argc, argv);
 	st->cconf = new ClientConfig();
-	
-	#ifdef GETOPT
-		st->cmdline->process();
-	#endif
+	st->cmdline->process();
 	
 	// Load render, audio, etc according to config
 	st->cconf->initRender(st);

@@ -21,9 +21,6 @@ using namespace std;
 **/
 void CommandLineArgs::process()
 {
-	#ifdef GETOPT
-	
-	
 	static struct option long_options[] = {
 		{"arcade",		    1, 0, 'a'},
 		{"host",		    0, 0, 'n'},
@@ -196,9 +193,6 @@ void CommandLineArgs::process()
 			default: break;
 		}
 	}
-	
-	
-	#endif
 }
 
 

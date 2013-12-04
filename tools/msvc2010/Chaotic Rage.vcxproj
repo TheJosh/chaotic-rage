@@ -48,7 +48,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../windows/include;../windows/include/bullet;../include;../../src/;../../src/guichan;../../src/confuse</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../windows/include;../windows/include/bullet;../windows/getopt_long;../include;../../src/;../../src/guichan;../../src/confuse</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
@@ -255,6 +255,7 @@
     <ClCompile Include="..\..\src\util\btCRKinematicCharacterController.cpp" />
     <ClCompile Include="..\..\src\util\btStrideHeightfieldTerrainShape.cpp" />
     <ClCompile Include="..\..\src\util\clientconfig.cpp" />
+    <ClCompile Include="..\..\src\util\cmdline.cpp" />
     <ClCompile Include="..\..\src\util\convert.cpp" />
     <ClCompile Include="..\..\src\util\crc32.cpp" />
     <ClCompile Include="..\..\src\util\debug.cpp" />
@@ -270,6 +271,7 @@
     <ClCompile Include="..\..\src\weapons\rockets.cpp" />
     <ClCompile Include="..\..\src\weapons\weapons.cpp" />
     <ClCompile Include="..\..\src\zone.cpp" />
+    <ClCompile Include="..\windows\getopt_long\getopt_long.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio\audio.h" />
@@ -439,6 +441,7 @@
     <ClInclude Include="..\..\src\weapons\ghost_objects.h" />
     <ClInclude Include="..\..\src\weapons\weapons.h" />
     <ClInclude Include="..\..\src\zone.h" />
+    <ClInclude Include="..\windows\getopt_long\getopt.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res\appicon.rc" />

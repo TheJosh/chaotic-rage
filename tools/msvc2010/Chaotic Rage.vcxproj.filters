@@ -74,6 +74,12 @@
     <Filter Include="src\confuse">
       <UniqueIdentifier>{e338f825-a8f0-4cc6-8902-0d81b030920d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="contrib">
+      <UniqueIdentifier>{139d4f1d-89b8-4c33-97b5-69ebb712ce7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="contrib\getopt_long">
+      <UniqueIdentifier>{62eb57bb-01cb-477e-bc9f-92edc45ed94e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\data\cr\animmodels.conf">
@@ -603,6 +609,12 @@
     <ClCompile Include="..\..\src\render\glvao.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
+    <ClCompile Include="..\windows\getopt_long\getopt_long.c">
+      <Filter>contrib\getopt_long</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\util\cmdline.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">
@@ -1105,6 +1117,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\render\glvao.h">
       <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\windows\getopt_long\getopt.h">
+      <Filter>contrib\getopt_long</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
