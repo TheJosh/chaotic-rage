@@ -11,7 +11,7 @@ if [ "$PLATFORM" == "linux" ]; then
 	./sdl2.sh >/dev/null || exit 1;
 	./sdl2_image.sh >/dev/null || exit 1;
 	./sdl2_mixer.sh >/dev/null || exit 1;
-	./sdl2_net.sh >/dev/null || exit 1h;
+	./sdl2_net.sh >/dev/null || exit 1;
 	cd ../..;
 	
 	
