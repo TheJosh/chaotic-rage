@@ -387,7 +387,7 @@ namespace gcn
         x2 += top.xOffset;
         y2 += top.yOffset;
 
-        GLfloat line[4][3] = {
+        GLfloat line[2][3] = {
             {x1 + 0.375f, y1 + 0.375f, 0.0f},
             {x2 + 1.0f - 0.375f, y2 + 1.0f - 0.375f, 0.0f}
         };
@@ -397,7 +397,7 @@ namespace gcn
         glEnableVertexAttribArray(0);
 
         glUseProgram(pimpl_->shader_lines);
-        glDrawArrays(GL_LINES, 0, 1);
+        glDrawArrays(GL_LINES, 0, 2);
         
         CHECK_OPENGL_ERROR;
     }
