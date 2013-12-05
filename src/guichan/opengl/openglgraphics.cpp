@@ -439,9 +439,9 @@ namespace gcn
 
         GLfloat box[4][3] = {
             {rectangle.x + top.xOffset, rectangle.y + top.yOffset, 0.0f},
-            {rectangle.x + rectangle.width + top.xOffset - 1.0f, rectangle.y + top.yOffset + 0.375f, 0.0f},
+            {rectangle.x + rectangle.width + top.xOffset, rectangle.y + top.yOffset, 0.0f},
             {rectangle.x + top.xOffset, rectangle.y + rectangle.height + top.yOffset, 0.0f},
-            {rectangle.x + rectangle.width + top.xOffset - 1.0f, rectangle.y + rectangle.height + top.yOffset, 0.0f},
+            {rectangle.x + rectangle.width + top.xOffset, rectangle.y + rectangle.height + top.yOffset, 0.0f},
         };
 
         glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
