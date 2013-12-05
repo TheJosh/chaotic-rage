@@ -255,10 +255,10 @@
     <ClCompile Include="..\..\src\mod\aitype.cpp">
       <Filter>src\mod</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\render\animplay.cpp">
+    <ClCompile Include="..\..\src\render_opengl\animplay.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\render\assimpmodel.cpp">
+    <ClCompile Include="..\..\src\render_opengl\assimpmodel.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\util\btStrideHeightfieldTerrainShape.cpp">
@@ -288,7 +288,7 @@
     <ClCompile Include="..\..\src\render\render_null.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\render\render_opengl.cpp">
+    <ClCompile Include="..\..\src\render_opengl\render_opengl.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\render\render.cpp">
@@ -369,10 +369,10 @@
     <ClCompile Include="..\..\src\mod\gametype.cpp">
       <Filter>src\mod</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\render\glshader.cpp">
+    <ClCompile Include="..\..\src\render_opengl\glshader.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\render\hud.cpp">
+    <ClCompile Include="..\..\src\render_opengl\hud.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\entity\ammo_round.cpp">
@@ -429,7 +429,7 @@
     <ClCompile Include="..\..\src\util\btCRKinematicCharacterController.cpp">
       <Filter>src\util</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\render\guichan_imageloader.cpp">
+    <ClCompile Include="..\..\src\render_opengl\guichan_imageloader.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\net\net_browse.cpp">
@@ -444,6 +444,7 @@
     <ClCompile Include="..\..\src\weapons\raycast.cpp">
       <Filter>src\weapons</Filter>
     </ClCompile>
+
     <ClCompile Include="..\..\src\entity\helicopter.cpp">
       <Filter>src\entity</Filter>
     </ClCompile>
@@ -603,10 +604,10 @@
     <ClCompile Include="..\..\src\confuse\lexer.c">
       <Filter>src\confuse</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\render\gl_debug_drawer.cpp">
+    <ClCompile Include="..\..\src\render_opengl\gl_debug_drawer.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\render\glvao.cpp">
+    <ClCompile Include="..\..\src\render_opengl\glvao.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\windows\getopt_long\getopt_long.c">
@@ -683,10 +684,10 @@
     <ClInclude Include="..\..\src\mod\aitype.h">
       <Filter>src\mod</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\render\animplay.h">
+    <ClInclude Include="..\..\src\render_opengl\animplay.h">
       <Filter>src\render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\render\assimpmodel.h">
+    <ClInclude Include="..\..\src\render_opengl\assimpmodel.h">
       <Filter>src\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\util\btStrideHeightfieldTerrainShape.h">
@@ -731,7 +732,7 @@
     <ClInclude Include="..\..\src\render\render_null.h">
       <Filter>src\render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\render\render_opengl.h">
+    <ClInclude Include="..\..\src\render_opengl\render_opengl.h">
       <Filter>src\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\platform\platform.h">
@@ -797,13 +798,13 @@
     <ClInclude Include="..\..\src\mod\gametype.h">
       <Filter>src\mod</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\render\glshader.h">
+    <ClInclude Include="..\..\src\render_opengl\glshader.h">
       <Filter>src\render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\render\hud.h">
+    <ClInclude Include="..\..\src\render_opengl\hud.h">
       <Filter>src\render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\render\hud_label.h">
+    <ClInclude Include="..\..\src\render_opengl\hud_label.h">
       <Filter>src\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lua\luatimer.h">
@@ -859,9 +860,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\net\_net.h">
       <Filter>src\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render\_render.h">
-      <Filter>src\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\util\_util.h">
       <Filter>src\util</Filter>
@@ -1109,13 +1107,13 @@
     <ClInclude Include="..\..\src\render\sprite.h">
       <Filter>src\render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\render\gl_debug_drawer.h">
+    <ClInclude Include="..\..\src\render_opengl\gl_debug_drawer.h">
       <Filter>src\render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\render\gl.h">
+    <ClInclude Include="..\..\src\render_opengl\gl.h">
       <Filter>src\render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\render\glvao.h">
+    <ClInclude Include="..\..\src\render_opengl\glvao.h">
       <Filter>src\render</Filter>
     </ClInclude>
     <ClInclude Include="..\windows\getopt_long\getopt.h">

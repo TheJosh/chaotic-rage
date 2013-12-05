@@ -9,6 +9,9 @@
 using namespace std;
 
 
+class RenderOpenGL;
+
+
 class HUDMessage
 {
 	friend class HUD;
@@ -31,7 +34,7 @@ class HUD {
 		HUD(PlayerState *ps);
 	
 	public:
-		void render(Render3D * render);
+		void render(RenderOpenGL * render);
 
 		void eventClick();
 		void eventUp();

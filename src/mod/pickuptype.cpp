@@ -8,7 +8,7 @@
 #include <btBulletDynamicsCommon.h>
 #include "pickuptype.h"
 #include "../rage.h"
-#include "../render/assimpmodel.h"
+#include "../render_opengl/assimpmodel.h"
 #include "../gamestate.h"
 #include "mod.h"
 #include "weapontype.h"

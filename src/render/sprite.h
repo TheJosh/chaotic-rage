@@ -4,7 +4,7 @@
 
 #pragma once
 #include "../rage.h"
-#include "gl.h"
+#include "../render_opengl/gl.h"
 #include <SDL.h>
 
 

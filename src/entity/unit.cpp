@@ -15,7 +15,7 @@
 #include "../mod/objecttype.h"
 #include "../mod/vehicletype.h"
 #include "../mod/weapontype.h"
-#include "../render/animplay.h"
+#include "../render_opengl/animplay.h"
 #include "../net/net_server.h"
 #include "../fx/newparticle.h"
 #include "unit.h"

@@ -10,7 +10,7 @@
 #include "../gamestate.h"
 #include "../util/ui_update.h"
 #include "../util/cmdline.h"
-#include "../render/assimpmodel.h"
+#include "../render_opengl/assimpmodel.h"
 #include "mod.h"
 #include "mod_manager.h"
 #include "confuse_types.h"

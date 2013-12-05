@@ -9,8 +9,8 @@
 #include "game.h"
 #include "gamestate.h"
 #include "entity/player.h"
-#include "render/hud.h"
-#include "render/render_opengl.h"
+#include "render_opengl/hud.h"
+#include "render_opengl/render_opengl.h"
 #include "gui/dialog.h"
 
 using namespace std;

@@ -22,7 +22,7 @@
 #include "../mod/mod.h"
 #include "assimpmodel.h"
 #include "render_opengl.h"
-#include "sprite.h"
+#include "../render/sprite.h"
 
 using namespace std;
 

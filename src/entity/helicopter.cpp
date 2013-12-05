@@ -6,7 +6,7 @@
 #include <math.h>
 #include "../rage.h"
 #include "../gamestate.h"
-#include "../render/animplay.h"
+#include "../render_opengl/animplay.h"
 #include "../mod/vehicletype.h"
 #include "../net/net_server.h"
 #include "helicopter.h"

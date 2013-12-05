@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "../render/gl.h"
+#include "../render_opengl/gl.h"
 #include "../rage.h"
 #include "happyhttp.h"
 #include "url.h"

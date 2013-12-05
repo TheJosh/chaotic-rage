@@ -10,7 +10,7 @@
 #include "../rage.h"
 #include "../gamestate.h"
 #include "../util/ui_update.h"
-#include "../render/assimpmodel.h"
+#include "../render_opengl/assimpmodel.h"
 #include "../util/crc32.h"
 #include "../util/debug.h"
 #include "mod.h"

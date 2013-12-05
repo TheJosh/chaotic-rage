@@ -6,7 +6,7 @@
 #include <confuse.h>
 #include <btBulletDynamicsCommon.h>
 #include "../rage.h"
-#include "../render/assimpmodel.h"
+#include "../render_opengl/assimpmodel.h"
 #include "mod.h"
 #include "objecttype.h"
 

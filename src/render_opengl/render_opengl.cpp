@@ -23,7 +23,7 @@
 #include "gl_debug.h"
 #include "gl_debug_drawer.h"
 #include "glvao.h"
-#include "sprite.h"
+#include "../render/sprite.h"
 #include "glshader.h"
 #include "assimpmodel.h"
 #include "animplay.h"

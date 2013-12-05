@@ -5,7 +5,7 @@
 #include <iostream>
 #include <SDL.h>
 #include <math.h>
-#include "render/gl.h"
+#include "render_opengl/gl.h"
 
 #include "guichan/guichan.hpp"
 #include "guichan/sdl.hpp"
@@ -19,7 +19,7 @@
 
 #include "rage.h"
 #include "menu.h"
-#include "render/render_opengl.h"
+#include "render_opengl/render_opengl.h"
 #include "render/sprite.h"
 #include "audio/audio.h"
 #include "gamestate.h"

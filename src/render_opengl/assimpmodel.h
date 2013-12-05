@@ -7,7 +7,6 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include "../rage.h"
-#include "render.h"
 #include "glvao.h"
 
 using namespace std;
@@ -33,6 +32,7 @@ class AssimpModel;
 class AssimpNode;
 class AssimpNodeAnim;
 class Mod;
+class Render3D;
 
 
 class AssimpBone

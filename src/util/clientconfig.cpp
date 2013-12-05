@@ -6,8 +6,8 @@
 #include <confuse.h>
 #include "../rage.h"
 #include "../gamestate.h"
-#include "../render/render_opengl.h"
-#include "../render/render_opengl_settings.h"
+#include "../render_opengl/render_opengl.h"
+#include "../render_opengl/render_opengl_settings.h"
 #include "../render/render_debug.h"
 #include "../render/render_null.h"
 #include "../audio/audio_sdlmixer.h"

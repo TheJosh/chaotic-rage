@@ -54,8 +54,8 @@
 
 #include <string.h>
 
-#include "../render/gl.h"
-#include "../render/gl_debug.h"
+#include "../render_opengl/gl.h"
+#include "../render_opengl/gl_debug.h"
 
 #include "guichan/exception.hpp"
 #include "guichan/image.hpp"

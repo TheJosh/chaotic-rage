@@ -8,7 +8,7 @@
 
 #include "../rage.h"
 #include "../http/serverlist.h"
-#include "../render/guichan_imageloader.h"
+#include "../render_opengl/guichan_imageloader.h"
 #include "../mod/mod.h"
 #include "../mod/mod_manager.h"
 #include "../menu.h"

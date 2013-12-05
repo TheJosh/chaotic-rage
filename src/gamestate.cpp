@@ -17,7 +17,7 @@
 #include "gamestate.h"
 #include "map.h"
 #include "mod/mod_manager.h"
-#include "render/hud.h"
+#include "render_opengl/hud.h"
 #include "entity/decaying.h"
 #include "render/render_3d.h"
 #include "net/net_server.h"

@@ -15,6 +15,7 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/mod/*.cpp \
 	$(SRCPATH)/net/*.cpp \
 	$(SRCPATH)/render/*.cpp \
+	$(SRCPATH)/render_opengl/*.cpp \
 	$(SRCPATH)/entity/*.cpp \
 	$(SRCPATH)/fx/*.cpp \
 	$(SRCPATH)/util/*.cpp \

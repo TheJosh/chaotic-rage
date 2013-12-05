@@ -7,7 +7,7 @@
 #include "../rage.h"
 #include "../gamestate.h"
 #include "../physics_bullet.h"
-#include "../render/animplay.h"
+#include "../render_opengl/animplay.h"
 #include "decaying.h"
 
 using namespace std;

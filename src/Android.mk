@@ -49,6 +49,7 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 		$(wildcard $(LOCAL_PATH)/mod/*.cpp) \
 		$(wildcard $(LOCAL_PATH)/net/*.cpp) \
 		$(wildcard $(LOCAL_PATH)/render/*.cpp) \
+		$(wildcard $(LOCAL_PATH)/render_opengl/*.cpp) \
 		$(wildcard $(LOCAL_PATH)/util/*.cpp) \
 		$(wildcard $(LOCAL_PATH)/weapons/*.cpp) \
 	)
