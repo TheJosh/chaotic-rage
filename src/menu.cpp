@@ -249,10 +249,6 @@ void Menu::setupGLstate()
 	// Ortho for menu stuff
 	render->ortho = glm::ortho<float>(0.0f, (float)render->real_width, (float)render->real_height, 0.0f, 0.0f, 10.0f);
 	
-	GLShader *shader = render->shaders["basic"];
-	glUseProgram(shader->p());
-	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
-	
 	this->st->setMouseGrab(false);
 }
 
@@ -319,14 +315,42 @@ void Menu::updateUI()
 		default: break;
 	}
 	
+	// Background animation
+	bg_rot1_pos += bg_rot1_dir;
+	if (bg_rot1_pos >= 10.0f or bg_rot1_pos <= -10.0f) {
+		bg_rot1_dir = 0.0f - bg_rot1_dir;
+	}
+	
+	bg_rot2_pos += bg_rot2_dir;
+	if (bg_rot2_pos >= 3.0f or bg_rot2_pos <= -3.0f) {
+		bg_rot2_dir = 0.0f - bg_rot2_dir;
+	}
+	
+	glm::mat4 proj = glm::perspective(30.0f, (float)(render->virt_width / render->virt_height), 1.0f, 2500.f);
+	proj = glm::scale(proj, glm::vec3(1.0f, -1.0f, 1.0f));
+	
+	glm::mat4 bgMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1250.0f));
+	bgMatrix = glm::rotate(bgMatrix, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	bgMatrix = glm::rotate(bgMatrix, bg_rot1_pos, glm::vec3(0.0f, 0.0f, 1.0f));
+	bgMatrix = glm::rotate(bgMatrix, bg_rot2_pos, glm::vec3(1.0f, 0.0f, 0.0f));
+	bgMatrix = glm::scale(bgMatrix, glm::vec3(650.0f, 50.0f, 650.0f));
+	
+	
 	// Begin render
+	glEnable(GL_BLEND);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT);
+	
+	glBindTexture(GL_TEXTURE_2D, bg->pixels);
+	render->renderObj(bgmesh, proj * bgMatrix);
 	
 	// Menu items
 	this->menuRender();
 	
 	// Logo in top-left
 	glUseProgram(render->shaders["basic"]->p());
+	glUniformMatrix4fv(render->shaders["basic"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
 	render->renderSprite(logo, 40, 40);
 	
 	// If a guichan dialog is set, render it and process events

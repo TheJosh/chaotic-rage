@@ -146,7 +146,7 @@ class RenderOpenGL : public Render3D
 		virtual void initGuichan(gcn::Gui * gui, Mod * mod);
 		virtual void preVBOrender();
 		virtual void postVBOrender();
-		virtual void renderObj (WavefrontObj * obj);
+		virtual void renderObj (WavefrontObj * obj, glm::mat4 mvp);
 		virtual void loadFont(string name, Mod * mod);
 		virtual void renderText(string text, float x = 0.0f, float y = 0.0f, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
 		virtual unsigned int widthText(string text);

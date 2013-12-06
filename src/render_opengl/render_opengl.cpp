@@ -1333,18 +1333,18 @@ void RenderOpenGL::postVBOrender()
 * Other parts of this class just do these bits themselves, but slightly differently each time.
 * Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender() afterwards.
 **/
-void RenderOpenGL::renderObj (WavefrontObj * obj)
+void RenderOpenGL::renderObj(WavefrontObj * obj, glm::mat4 mvp)
 {
+	GLShader *shader;
 	if (obj->count == 0) this->createVBO(obj);
 	
-	CHECK_OPENGL_ERROR;
+	shader = this->shaders["basic"];
+	glUseProgram(shader->p());
+	
+	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(mvp));
 	
 	obj->vao->bind();
-	glUseProgram(this->shaders["basic"]->p());
-
 	glDrawArrays(GL_TRIANGLES, 0, obj->count);
-	
-	glUseProgram(0);
 	
 	CHECK_OPENGL_ERROR;
 }

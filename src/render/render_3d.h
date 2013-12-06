@@ -12,6 +12,8 @@
 #include "../guichan/opengl.hpp"
 #include "../guichan/opengl/openglsdlimageloader.hpp"
 
+#include <glm/glm.hpp>
+
 
 
 class Render3D : public Render
@@ -124,7 +126,7 @@ class Render3D : public Render
 		/**
 		* Render a object (i.e. a mesh + tex)
 		**/
-		virtual void renderObj (WavefrontObj * obj) = 0;
+		virtual void renderObj (WavefrontObj * obj, glm::mat4 mvp) = 0;
 		
 		/**
 		* Load the given ttf font
