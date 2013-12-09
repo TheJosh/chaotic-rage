@@ -11,6 +11,7 @@
 
 #include "../rage.h"
 #include "../menu.h"
+#include "../game_manager.h"
 #include "../http/serverlist.h"
 #include "../mod/campaign.h"
 #include "dialog.h"
@@ -79,7 +80,7 @@ gcn::Container * DialogNewCampaign::setup()
 	label = new gcn::Label("Unit type");
 	c->add(label, 10, 30);
 	
-	this->unittype = new gcn::DropDown(new VectorListModel(&this->m->unittypes));
+	this->unittype = new gcn::DropDown(new VectorListModel(this->gm->getUnitTypes()));
 	this->unittype->setPosition(80, 30);
 	this->unittype->setWidth(160);
 	c->add(this->unittype);
@@ -88,7 +89,7 @@ gcn::Container * DialogNewCampaign::setup()
 	label = new gcn::Label("View mode");
 	c->add(label, 10, 50);
 	
-	this->viewmode = new gcn::DropDown(new VectorListModel(&this->m->viewmodes));
+	this->viewmode = new gcn::DropDown(new VectorListModel(this->gm->getViewModes()));
 	this->viewmode->setPosition(80, 50);
 	this->viewmode->setWidth(160);
 	c->add(this->viewmode);
@@ -109,7 +110,7 @@ void DialogNewCampaign::action(const gcn::ActionEvent& actionEvent)
 {
 	this->m->startCampaign(
 		this->mod->getCampaigns()->at(this->campaign->getSelected()),
-		this->m->unittypes[this->unittype->getSelected()],
+		this->gm->getUnitTypes()->at(this->unittype->getSelected()),
 		this->viewmode->getSelected(),
 		this->num_local
 	);

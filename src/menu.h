@@ -19,6 +19,7 @@ class VectorListModel;
 class Render3D;
 class RenderOpenGL;
 class GameState;
+class GameManager;
 
 
 enum MenuCommand {
@@ -47,6 +48,7 @@ class Menu : public UIUpdate
 {
 	private:
 		GameState *st;
+		GameManager *gm;
 		RenderOpenGL *render;
 		int running;
 		vector<MenuItem*> menuitems;
@@ -62,10 +64,6 @@ class Menu : public UIUpdate
 		
 	public:
 		// Data for the dialogs
-		MapRegistry * mapreg;
-		vector<string> gametypes;
-		vector<string> viewmodes;
-		vector<string> unittypes;
 		ModManager *mm;
 		SpritePtr logo;
 		SpritePtr bg;
@@ -73,7 +71,7 @@ class Menu : public UIUpdate
 
 	public:
 		// Init etc
-		Menu(GameState *st);
+		Menu(GameState *st, GameManager *gm);
 		GameState *getGameState() { return this->st; }
 		
 		void loadModBits(UIUpdate* ui = NULL);

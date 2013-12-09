@@ -17,6 +17,7 @@ using namespace std;
 class MapRegistry;
 class GameType;
 class Mod;
+class GameManager;
 class GameType;
 
 
@@ -126,6 +127,7 @@ class Dialog {
 	protected:
 		gcn::Container * c;
 		Menu * m;
+		GameManager * gm;
 		
 	public:
 		virtual gcn::Container * setup() = 0;

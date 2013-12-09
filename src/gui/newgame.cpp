@@ -8,6 +8,7 @@
 
 #include "../rage.h"
 #include "../menu.h"
+#include "../game_manager.h"
 #include "../http/serverlist.h"
 #include "../mod/mod_manager.h"
 #include "dialog.h"
@@ -62,7 +63,7 @@ gcn::Container * DialogNewGame::setup()
 	label = new gcn::Label("Map");
 	c->add(label, 10, 30);
 	
-	this->map = new gcn::DropDown(new MapRegistryListModel(this->m->mapreg));
+	this->map = new gcn::DropDown(new MapRegistryListModel(this->gm->getMapRegistry()));
 	this->map->setPosition(80, 30);
 	this->map->setWidth(160);
 	c->add(this->map);
@@ -71,7 +72,7 @@ gcn::Container * DialogNewGame::setup()
 	label = new gcn::Label("Unit type");
 	c->add(label, 10, 50);
 	
-	this->unittype = new gcn::DropDown(new VectorListModel(&this->m->unittypes));
+	this->unittype = new gcn::DropDown(new VectorListModel(this->gm->getUnitTypes()));
 	this->unittype->setPosition(80, 50);
 	this->unittype->setWidth(160);
 	c->add(this->unittype);
@@ -80,7 +81,7 @@ gcn::Container * DialogNewGame::setup()
 	label = new gcn::Label("View mode");
 	c->add(label, 10, 70);
 	
-	this->viewmode = new gcn::DropDown(new VectorListModel(&this->m->viewmodes));
+	this->viewmode = new gcn::DropDown(new VectorListModel(this->gm->getViewModes()));
 	this->viewmode->setPosition(80, 70);
 	this->viewmode->setWidth(160);
 	c->add(this->viewmode);
@@ -106,9 +107,9 @@ gcn::Container * DialogNewGame::setup()
 void DialogNewGame::action(const gcn::ActionEvent& actionEvent)
 {
 	this->m->startGame(
-		this->m->mapreg->at(this->map->getSelected()),
-		this->m->gametypes[this->gametype->getSelected()],
-		this->m->unittypes[this->unittype->getSelected()],
+		this->gm->getMapRegistry()->at(this->map->getSelected()),
+		this->gm->getGameTypes()->at(this->gametype->getSelected()),
+		this->gm->getUnitTypes()->at(this->unittype->getSelected()),
 		this->viewmode->getSelected(),
 		this->num_local,
 		this->host->isSelected()

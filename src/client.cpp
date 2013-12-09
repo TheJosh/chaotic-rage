@@ -16,6 +16,7 @@
 #include "map.h"
 #include "gamestate.h"
 #include "menu.h"
+#include "game_manager.h"
 #include "intro.h"
 
 
@@ -27,8 +28,8 @@ int main (int argc, char ** argv)
 {
 	GameState *st;
 	UIUpdate *ui;
-	Intro *i;
-	Menu *m;
+	GameManager* gm;
+	
 	
 	// Redirect stdout and stderr to files in the user directory
 	#ifdef _WIN32
@@ -64,48 +65,48 @@ int main (int argc, char ** argv)
 	
 	// Intro
 	if (st->render->is3D()) {
-		ui = i = new Intro(st);
+		Intro *i = new Intro(st);
 		i->load();
 		i->doit();
+		ui = i;
 	} else {
 		ui = new UIUpdateNull();
 	}
-	
-
 	
 	// Load the mods. Uses threads if possible
 	if (! loadMods(st, ui)) {
 		reportFatalError("Module loading failed");
 	}
 
-	m = new Menu(st);
+	gm = new GameManager(st);
 	
 	// For now, Android doesn't have a menu
 	#if defined(__ANDROID__)
-		m->loadModBits();
-		m->startGame(m->mapreg->get("therlor_valley"), "free_for_all", "robot", 0, 1, false);
+		gm->loadModBits(NULL);
+		gm->startGame(gm->getMapRegistry()->get("therlor_valley"), "zombies", "robot", 0, 1, false);
 		exit(0);
 	#endif
 
 	// Campaign
 	if (st->cmdline->campaign != "") {
-		m->loadModBits();
+		gm->loadModBits(NULL);
 		Campaign *c = st->mm->getSupplOrBase()->getCampaign(st->cmdline->campaign);
-		m->startCampaign(c, "robot", 0, 1);
+		gm->startCampaign(c, "robot", 0, 1);
 		
 	// Arcade game
 	} else if (st->cmdline->map != "" && st->cmdline->gametype != "" && st->cmdline->unittype != "") {
-		m->loadModBits();
-		m->startGame(m->mapreg->get(st->cmdline->map), st->cmdline->gametype, st->cmdline->unittype, 0, 1, st->cmdline->host);
+		gm->loadModBits(NULL);
+		gm->startGame(gm->getMapRegistry()->get(st->cmdline->map), st->cmdline->gametype, st->cmdline->unittype, 0, 1, st->cmdline->host);
 		
 	// Network join
 	} else if (st->cmdline->join != "") {
-		m->loadModBits();
-		m->networkJoin(st->cmdline->join);
+		gm->loadModBits(NULL);
+		gm->networkJoin(st->cmdline->join, NULL);
 		
 	// Regular menu
 	} else if (st->render->is3D()) {
-		m->doit(i);
+		Menu *m = new Menu(st, gm);
+		m->doit(NULL);
 		
 	} else {
 		cout << "Non-interactive usage requires --campaign, --arcade or --join to be specified." << endl;
