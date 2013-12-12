@@ -438,6 +438,8 @@ unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 	// If don't exist, create
 	if (o == NULL) {
 		ObjectType *ot = st->mm->getObjectType("machinegun_pickup");		// TODO: support this
+		if (ot == NULL) return 30;
+		
 		o = new Object(ot, st, bx, bz, by, 0);
 		
 		st->addObject(o);
