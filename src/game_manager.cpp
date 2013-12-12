@@ -248,6 +248,10 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 **/
 void GameManager::networkJoin(string host, UIUpdate *ui)
 {
+	NetGameinfo *gameinfo;
+	MapReg *map;
+	Map *m;
+	
 	if (st->client) delete (st->client);
 	new NetClient(st);
 
@@ -258,20 +262,21 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	st->local_players[0] = new PlayerState(st);
 	
 	// Try to join the server
-	NetGameinfo *gameinfo = st->client->attemptJoinGame(host, 17778, ui);
+	gameinfo = st->client->attemptJoinGame(host, 17778, ui);
 	if (gameinfo == NULL) {
-		delete (st->client);
-		st->client = NULL;
 		displayMessageBox("Unable to connect to server " + host);
-		return;
+		goto cleanup;
 	}
 
 	// Try to find the map
-	MapReg *map = this->mapreg->get(gameinfo->map);
-	if (! map) displayMessageBox("Map not found: " + map->getName());
+	map = this->mapreg->get(gameinfo->map);
+	if (! map) {
+		displayMessageBox("Map not found: " + gameinfo->map);
+		goto cleanup;
+	}
 
 	// Load map
-	Map *m = new Map(st);
+	m = new Map(st);
 	m->load(map->getName(), st->render, map->getMod());
 	st->map = m;
 	
@@ -283,20 +288,17 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	
 	// Download the gamestate
 	// When this is done, a final message is sent to tell the server we are done.
-	bool gotstate = st->client->downloadGameState();
-	if (! gotstate) {
+	if (! st->client->downloadGameState()) {
+		displayMessageBox("Unable to download intial game state from server " + host);
 		st->audio->postGame();
 		st->postGame();
-		delete (st->client);
-		st->client = NULL;
-		displayMessageBox("Unable to download intial game state from server " + host);
-		return;
+		goto cleanup;
 	}
 
 	// Begin!
 	gameLoop(st, st->render);
 	
-	// Quit
+cleanup:
 	delete (st->client);
 	st->client = NULL;
 }
