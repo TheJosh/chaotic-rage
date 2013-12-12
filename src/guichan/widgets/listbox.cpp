@@ -103,10 +103,11 @@ namespace gcn
 		// The addition of two makes covers a partial visible row at the top
 		// and a partial visible row at the bottom.
 		int numberOfRows = currentClipArea.height / rowHeight + 2;
-
-        if (numberOfRows > mListModel->getNumberOfElements())
+		int size = mListModel->getNumberOfElements();
+		
+        if (numberOfRows > size)
         {
-            numberOfRows = mListModel->getNumberOfElements();
+            numberOfRows = size;
         }
 
 		// Calculate which row to start drawing. If the list box 
@@ -137,6 +138,11 @@ namespace gcn
                 graphics->fillRectangle(Rectangle(0, y, getWidth(), rowHeight));
                 graphics->setColor(getForegroundColor());
             }
+			
+			if (i >= size)
+			{
+				break;
+			}
 			
 			// If the row height is greater than the font height we
 			// draw the text with a center vertical alignment.
