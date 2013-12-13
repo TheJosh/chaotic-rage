@@ -53,7 +53,7 @@ NetClient::~NetClient()
 **/
 void NetClient::update()
 {
-	UDPpacket *pkt = SDLNet_AllocPacket(1000);
+	UDPpacket *pkt = SDLNet_AllocPacket(1024);
 	
 	
 	// Check the server is still chatting to us
@@ -113,6 +113,8 @@ void NetClient::update()
 		
 		memcpy(ptr, (*it).data, (*it).size);
 		ptr += (*it).size; pkt->len += (*it).size;
+		
+		assert(pkt->len < 1024);
 	}
 	
 	if (pkt->len > 0) {
@@ -359,6 +361,8 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 		cout << "       eid: " << eid << "   slot: " << slot << "   our slot: " << st->local_players[0]->slot << "\n";
 		
 		UnitType *ut = st->mm->getUnitType(type);
+		if (! ut) return 40;	// Is this correct?
+		
 		u = new Player(ut, st, bx, bz, by);
 		u->slot = slot;
 		
@@ -402,7 +406,9 @@ unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 
 	// If don't exist, create
 	if (w == NULL) {
-		WallType *wt = st->mm->getWallType("brick");
+		WallType *wt = st->mm->getWallType("brick");		// TODO: support this
+		if (! wt) return 30;	// Is this correct?
+		
 		w = new Wall(wt, st, bx, bz, by, 0);
 		
 		st->addWall(w);
@@ -438,7 +444,7 @@ unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 	// If don't exist, create
 	if (o == NULL) {
 		ObjectType *ot = st->mm->getObjectType("machinegun_pickup");		// TODO: support this
-		if (ot == NULL) return 30;
+		if (ot == NULL) return 30;		// Is this correct?
 		
 		o = new Object(ot, st, bx, bz, by, 0);
 		
@@ -478,7 +484,8 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 	// If don't exist, create
 	if (v == NULL) {
 		VehicleType *vt = st->mm->getVehicleType("tank");		// TODO: support this
-
+		if (vt == NULL) return 42;		// Is this correct?
+		
 		v = new Vehicle(vt, st, trans);
 		
 		st->addVehicle(v);
@@ -556,6 +563,8 @@ unsigned int NetClient::handlePickupState(Uint8 *data, unsigned int size)
 	// If don't exist, create
 	if (p == NULL) {
 		PickupType *pt = st->mm->getPickupType("ammo_current");		// TODO: support this
+		if (pt == NULL) return 30;		// Is this correct?
+		
 		p = new Pickup(pt, st, bx, bz, by);
 		
 		st->addPickup(p);

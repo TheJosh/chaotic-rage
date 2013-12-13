@@ -169,12 +169,14 @@ void NetServer::update()
 			for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
 				if ((*cli)->seq > (*it).seq) continue;
 				if ((*it).dest != NULL && (*it).dest != (*cli)) continue;
-			
+				
 				*ptr = (*it).type;
 				ptr++; pkt->len++;
-			
+				
 				memcpy(ptr, (*it).data, (*it).size);
 				ptr += (*it).size; pkt->len += (*it).size;
+				
+				assert(pkt->len < 1024);
 			}
 		
 			if (pkt->len > 0) {
@@ -191,7 +193,7 @@ void NetServer::update()
 	
 	this->messages.remove_if(*this->seq_pred);
 	
-	SDLNet_FreePacket(pkt);
+	//SDLNet_FreePacket(pkt);
 }
 
 
