@@ -55,6 +55,13 @@ enum NetMsgType {
 
 
 /**
+* The maximum size of packets
+* This might become dynamic and per-client later on
+**/
+#define MAX_PKT_SIZE 1492
+
+
+/**
 * Handle a msg recv (client).
 *
 * @param data A pointer to the data of the message

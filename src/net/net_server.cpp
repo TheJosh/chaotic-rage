@@ -52,7 +52,7 @@ static bool ClientEraser(NetServerClientInfo* c)
 **/
 void NetServer::update()
 {
-	UDPpacket *pkt = SDLNet_AllocPacket(1024);
+	UDPpacket *pkt = SDLNet_AllocPacket(MAX_PKT_SIZE);
 	
 	
 	// Only update seq if we have clients
@@ -119,10 +119,9 @@ void NetServer::update()
 		}
 	}
 	
-	
-	// Check the seq of all clients
-	// If they are too old, assume lost network connection
 	if (this->clients.size() > 0) {
+		// Check the seq of all clients
+		// If they are too old, assume lost network connection
 		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
 			if ((*cli)->inlist && (*cli)->ingame && (this->seq - (*cli)->seq) > MAX_SEQ_LAG) {
 				this->dropClient(*cli);
@@ -150,6 +149,7 @@ void NetServer::update()
 		}
 		
 		// Send messages
+		// TODO: Think up a way to handle packets larger than internet MTU
 		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
 			if ((*cli) == NULL) continue;
 		
@@ -176,7 +176,7 @@ void NetServer::update()
 				memcpy(ptr, (*it).data, (*it).size);
 				ptr += (*it).size; pkt->len += (*it).size;
 				
-				assert(pkt->len < 1024);
+				assert(pkt->len <= MAX_PKT_SIZE);
 			}
 		
 			if (pkt->len > 0) {
@@ -509,13 +509,13 @@ unsigned int NetServer::handleJoinAck(NetServerClientInfo *client, Uint8 *data, 
 	NetMsg* msg;
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
 		Entity *e = (*it);
-		
+
 		switch (e->klass()) {
 			case UNIT:
 				msg = this->addmsgUnitState((Unit*)e);
 				msg->dest = client;
 				break;
-				
+
 			case WALL:
 				msg = this->addmsgWallState((Wall*)e);
 				msg->dest = client;
@@ -535,7 +535,7 @@ unsigned int NetServer::handleJoinAck(NetServerClientInfo *client, Uint8 *data, 
 				break;
 		}
 	}
-	
+
 	this->addmsgDataCompl();
 
 	return 0;

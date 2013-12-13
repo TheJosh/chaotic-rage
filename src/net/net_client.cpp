@@ -53,7 +53,7 @@ NetClient::~NetClient()
 **/
 void NetClient::update()
 {
-	UDPpacket *pkt = SDLNet_AllocPacket(1024);
+	UDPpacket *pkt = SDLNet_AllocPacket(MAX_PKT_SIZE);
 	
 	
 	// Check the server is still chatting to us
@@ -114,7 +114,7 @@ void NetClient::update()
 		memcpy(ptr, (*it).data, (*it).size);
 		ptr += (*it).size; pkt->len += (*it).size;
 		
-		assert(pkt->len < 1024);
+		assert(pkt->len <= MAX_PKT_SIZE);
 	}
 	
 	if (pkt->len > 0) {
