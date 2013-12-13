@@ -30,6 +30,7 @@
 #include "gui/mods.h"
 #include "gui/controls.h"
 #include "mod/campaign.h"
+#include "mod/mod.h"
 #include "util/obj.h"
 #include "util/serverconfig.h"
 #include "mod/mod_manager.h"

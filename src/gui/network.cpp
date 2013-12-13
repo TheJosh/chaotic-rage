@@ -12,6 +12,7 @@
 #include "../http/serverlist.h"
 #include "../net/net_browse.h"
 #include "dialog.h"
+#include "list_models.h"
 #include "network.h"
 
 

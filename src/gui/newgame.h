@@ -9,6 +9,9 @@
 using namespace std;
 
 
+class GametypeListModel;
+
+
 /**
 * Dialog for starting a new game - called by the menu
 **/

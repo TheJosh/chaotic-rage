@@ -15,6 +15,7 @@
 #include "../http/serverlist.h"
 #include "../mod/campaign.h"
 #include "dialog.h"
+#include "list_models.h"
 #include "newcampaign.h"
 
 

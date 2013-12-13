@@ -13,6 +13,7 @@
 #include "../mod/mod_manager.h"
 #include "../menu.h"
 #include "dialog.h"
+#include "list_models.h"
 #include "mods.h"
 
 

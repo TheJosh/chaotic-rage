@@ -12,6 +12,7 @@
 #include "../http/serverlist.h"
 #include "../mod/mod_manager.h"
 #include "dialog.h"
+#include "list_models.h"
 #include "newgame.h"
 
 

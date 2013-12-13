@@ -9,6 +9,11 @@
 using namespace std;
 
 
+class ModListModel;
+class GameState;
+class ModManager;
+
+
 /**
 * Show mod selection
 **/

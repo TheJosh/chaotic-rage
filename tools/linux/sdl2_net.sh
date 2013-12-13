@@ -12,7 +12,7 @@ fi
 
 cd SDL2_net-2.0.0
 
-./configure	|| exit 1
+./configure	--disable-gui || exit 1
 
 make || exit 1
 
