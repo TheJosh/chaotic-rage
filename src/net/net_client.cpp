@@ -392,11 +392,12 @@ unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 	cout << "       handleWallState()\n";
 
 
-	short eid = 0;
+	Uint16 eid;
+	CRC32 type;
 	float qx, qy, qz, qw, bx, by, bz;
 	
-	unpack(data, "h ffff fff",
-		&eid,
+	unpack(data, "hl ffff fff",
+		&eid, &type,
 		&qx, &qy, &qz, &qw,
 		&bx, &by, &bz
 	);
@@ -406,8 +407,8 @@ unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 
 	// If don't exist, create
 	if (w == NULL) {
-		WallType *wt = st->mm->getWallType("brick");		// TODO: support this
-		if (! wt) return 30;	// Is this correct?
+		WallType *wt = st->mm->getWallType(type);
+		if (! wt) return 34;		// TODO: Should we err instead?
 		
 		w = new Wall(wt, st, bx, bz, by, 0);
 		
@@ -422,18 +423,19 @@ unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 	);
 	w->setTransform(xform);
 	
-	return 30;
+	return 34;
 }
 
 unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 {
 	cout << "       handleObjectState()\n";
 
-	short eid = 0;
+	Uint16 eid;
+	CRC32 type;
 	float qx, qy, qz, qw, bx, by, bz;
 	
-	unpack(data, "h ffff fff",
-		&eid,
+	unpack(data, "hl ffff fff",
+		&eid, &type,
 		&qx, &qy, &qz, &qw,
 		&bx, &by, &bz
 	);
@@ -443,8 +445,8 @@ unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 
 	// If don't exist, create
 	if (o == NULL) {
-		ObjectType *ot = st->mm->getObjectType("machinegun_pickup");		// TODO: support this
-		if (ot == NULL) return 30;		// Is this correct?
+		ObjectType *ot = st->mm->getObjectType(type);
+		if (ot == NULL) return 34;		// TODO: Should we err instead?
 		
 		o = new Object(ot, st, bx, bz, by, 0);
 		
@@ -459,21 +461,21 @@ unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 	);
 	o->setTransform(xform);
 	
-	return 30;
+	return 34;
 }
 
 unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 {
 	cout << "       handleVehicleState()\n";
 
-	short eid = 0;
-	float qx, qy, qz, qw, bx, by, bz, ef, bf, s;
+	Uint16 eid;
+	CRC32 type;
+	float qx, qy, qz, qw, bx, by, bz;
 	
-	unpack(data, "h ffff fff fff",
-		&eid,
+	unpack(data, "hl ffff fff",
+		&eid, &type,
 		&qx, &qy, &qz, &qw,
-		&bx, &by, &bz,
-		&ef, &bf, &s
+		&bx, &by, &bz
 	);
 	
 	Entity* e = st->getEntity(eid);
@@ -483,8 +485,8 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 
 	// If don't exist, create
 	if (v == NULL) {
-		VehicleType *vt = st->mm->getVehicleType("tank");		// TODO: support this
-		if (vt == NULL) return 42;		// Is this correct?
+		VehicleType *vt = st->mm->getVehicleType(type);
+		if (vt == NULL) return 34;		// TODO: Should we err instead?
 		
 		v = new Vehicle(vt, st, trans);
 		
@@ -494,11 +496,8 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 	
 	// Update the vehicle
 	v->setTransform(trans);
-	//v->engineForce = ef;
-	//v->brakeForce = bf;
-	//v->steering = s;
 
-	return 42;
+	return 34;
 }
 
 unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
@@ -548,11 +547,12 @@ unsigned int NetClient::handlePickupState(Uint8 *data, unsigned int size)
 {
 	cout << "       handlePickupState()\n";
 
-	short eid = 0;
+	Uint16 eid;
+	CRC32 type;
 	float qx, qy, qz, qw, bx, by, bz;
 	
-	unpack(data, "h ffff fff",
-		&eid,
+	unpack(data, "hl ffff fff",
+		&eid, &type,
 		&qx, &qy, &qz, &qw,
 		&bx, &by, &bz
 	);
@@ -562,8 +562,8 @@ unsigned int NetClient::handlePickupState(Uint8 *data, unsigned int size)
 
 	// If don't exist, create
 	if (p == NULL) {
-		PickupType *pt = st->mm->getPickupType("ammo_current");		// TODO: support this
-		if (pt == NULL) return 30;		// Is this correct?
+		PickupType *pt = st->mm->getPickupType(type);
+		if (pt == NULL) return 34;		// TODO: Should we err instead?
 		
 		p = new Pickup(pt, st, bx, bz, by);
 		
@@ -578,7 +578,7 @@ unsigned int NetClient::handlePickupState(Uint8 *data, unsigned int size)
 	);
 	p->setTransform(xform);
 	
-	return 30;
+	return 34;
 }
 
 unsigned int NetClient::handleEntityRem(Uint8 *data, unsigned int size)

@@ -6,13 +6,17 @@
 #include <math.h>
 #include <algorithm>
 #include <SDL_net.h>
+#include "net.h"
+#include "net_server.h"
 #include "../rage.h"
 #include "../gamestate.h"
 #include "../map.h"
 #include "../lua/gamelogic.h"
 #include "../entity/player.h"
-#include "net.h"
-#include "net_server.h"
+#include "../mod/unittype.h"
+#include "../mod/walltype.h"
+#include "../mod/objecttype.h"
+#include "../mod/pickuptype.h"
 
 using namespace std;
 
@@ -331,7 +335,7 @@ NetMsg * NetServer::addmsgWallState(Wall *w)
 {
 	messages.remove_if(IsTypeUniqPred(WALL_STATE, w->eid));
 	
-	NetMsg * msg = new NetMsg(WALL_STATE, 30);
+	NetMsg * msg = new NetMsg(WALL_STATE, 34);
 	msg->seq = this->seq;
 	msg->uniq = w->eid;
 	
@@ -339,8 +343,8 @@ NetMsg * NetServer::addmsgWallState(Wall *w)
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 	
-	pack(msg->data, "h ffff fff",
-		w->eid,
+	pack(msg->data, "hl ffff fff",
+		w->eid, w->wt->id,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z()
 	);
@@ -357,7 +361,7 @@ NetMsg * NetServer::addmsgObjectState(Object *o)
 {
 	messages.remove_if(IsTypeUniqPred(OBJECT_STATE, o->eid));
 	
-	NetMsg * msg = new NetMsg(OBJECT_STATE, 30);
+	NetMsg * msg = new NetMsg(OBJECT_STATE, 34);
 	msg->seq = this->seq;
 	msg->uniq = o->eid;
 	
@@ -365,8 +369,8 @@ NetMsg * NetServer::addmsgObjectState(Object *o)
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 	
-	pack(msg->data, "h ffff fff",
-		o->eid,
+	pack(msg->data, "hl ffff fff",
+		o->eid, o->ot->id,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z()
 	);
@@ -383,7 +387,7 @@ NetMsg * NetServer::addmsgVehicleState(Vehicle *v)
 {
 	messages.remove_if(IsTypeUniqPred(VEHICLE_STATE, v->eid));
 	
-	NetMsg * msg = new NetMsg(VEHICLE_STATE, 42);
+	NetMsg * msg = new NetMsg(VEHICLE_STATE, 34);
 	msg->seq = this->seq;
 	msg->uniq = v->eid;
 	
@@ -391,11 +395,10 @@ NetMsg * NetServer::addmsgVehicleState(Vehicle *v)
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 	
-	pack(msg->data, "h ffff fff fff",
-		v->eid,
+	pack(msg->data, "hl ffff fff",
+		v->eid, v->vt->id,
 		q.x(), q.y(), q.z(), q.w(),
-		b.x(), b.y(), b.z(),
-		NULL, NULL, NULL  //v->engineForce, v->brakeForce, v->steering
+		b.x(), b.y(), b.z()
 	);
 	
 	messages.push_back(*msg);
@@ -439,7 +442,7 @@ NetMsg * NetServer::addmsgPickupState(Pickup *p)
 {
 	messages.remove_if(IsTypeUniqPred(PICKUP_STATE, p->eid));
 	
-	NetMsg * msg = new NetMsg(PICKUP_STATE, 30);
+	NetMsg * msg = new NetMsg(PICKUP_STATE, 34);
 	msg->seq = this->seq;
 	msg->uniq = p->eid;
 	
@@ -447,8 +450,8 @@ NetMsg * NetServer::addmsgPickupState(Pickup *p)
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 	
-	pack(msg->data, "h ffff fff",
-		p->eid,
+	pack(msg->data, "hl ffff fff",
+		p->eid, p->getPickupType()->id,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z()
 	);
