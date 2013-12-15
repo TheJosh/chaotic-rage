@@ -504,11 +504,12 @@ unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
 {
 	cout << "       handleAmmoroundState()\n";
 
-	short eid = 0, unit_eid = 0;
+	Uint16 eid, unit_eid;
+	CRC32 type;
 	float qx, qy, qz, qw, bx, by, bz, mass;
 	
-	unpack(data, "hh ffff fff f",
-		&eid, &unit_eid,
+	unpack(data, "hhl ffff fff f",
+		&eid, &unit_eid, &type,
 		&qx, &qy, &qz, &qw,
 		&bx, &by, &bz,
 		&mass
@@ -517,12 +518,12 @@ unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
 	// Find existing entity, unit, and weapon
 	AmmoRound* ar = (AmmoRound*) st->getEntity(eid);
 	Unit* u = (Unit*) st->getEntity(unit_eid);
-	WeaponType* wt = st->mm->getWeaponType("remote_mine");		// TODO: support this
+	WeaponType* wt = st->mm->getWeaponType(type);
 	
 	// Check valid
-	if (u == NULL) return 36;
-	if (wt == NULL) return 36;
-	if (wt->model == NULL) return 36;
+	if (u == NULL) return 40;
+	if (wt == NULL) return 40;
+	if (wt->model == NULL) return 40;
 	
 	// Construct transform obj
 	btTransform xform = btTransform(
@@ -540,7 +541,7 @@ unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
 		ar->setTransform(xform);
 	}
 	
-	return 36;
+	return 40;
 }
 
 unsigned int NetClient::handlePickupState(Uint8 *data, unsigned int size)

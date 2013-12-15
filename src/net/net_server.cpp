@@ -17,6 +17,7 @@
 #include "../mod/walltype.h"
 #include "../mod/objecttype.h"
 #include "../mod/pickuptype.h"
+#include "../mod/weapontype.h"
 
 using namespace std;
 
@@ -415,7 +416,7 @@ NetMsg * NetServer::addmsgAmmoRoundState(AmmoRound *ar)
 	
 	cout << "       addmsgAmmoRoundState()\n";
 	
-	NetMsg * msg = new NetMsg(AMMOROUND_STATE, 36);
+	NetMsg * msg = new NetMsg(AMMOROUND_STATE, 40);
 	msg->seq = this->seq;
 	msg->uniq = ar->eid;
 	
@@ -423,8 +424,8 @@ NetMsg * NetServer::addmsgAmmoRoundState(AmmoRound *ar)
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 	
-	pack(msg->data, "hh ffff fff f",
-		ar->eid, ar->owner->eid,
+	pack(msg->data, "hhl ffff fff f",
+		ar->eid, ar->owner->eid, ar->wt->id,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z(),
 		ar->mass
