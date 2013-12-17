@@ -119,11 +119,48 @@ void handleEvents(GameState *st)
 					default: break;
 				}
 			
-			} else if (event.type == SDL_FINGERMOTION) {
-				char buf[100];
-				sprintf(buf, "TOUCH  %lli  at %f %f   diff %f %f   pressure %f", event.tfinger.fingerId, event.tfinger.x, event.tfinger.y, event.tfinger.dx, event.tfinger.dy, event.tfinger.pressure);
-				displayMessageBox(std::string(buf));
+			
+			#if defined(__ANDROID__)
+			} else if (event.type == SDL_FINGERDOWN || event.type == SDL_FINGERMOTION) {
+				float x,y;
+				int type = 0;
 				
+				// Determine type (1 = left thumb, 2 = right thumb)
+				if (event.tfinger.y > 0.9f) {
+					y = (event.tfinger.y - 0.9f) * 10.0f;
+					
+					if (event.tfinger.x < 0.1f) {
+						x = event.tfinger.x * 10.0f;
+						type = 1;
+					} else if (event.tfinger.x > 0.9f) {
+						x = (event.tfinger.x - 0.9f) * 10.0f;
+						type = 2;
+					}
+				}
+				
+				if (type == 1) {
+					// Left thumb (type 1) = move
+					if (x < 0.3) {
+						st->local_players[0]->p->keyPress(Player::KEY_LEFT);
+					} else if (x > 0.7) {
+						st->local_players[0]->p->keyPress(Player::KEY_RIGHT);
+					}
+					
+					if (y < 0.3) {
+						st->local_players[0]->p->keyPress(Player::KEY_UP);
+					} else if (y > 0.7) {
+						st->local_players[0]->p->keyPress(Player::KEY_DOWN);
+					}
+					
+				} else if (type == 2) {
+					// Left thumb (type 1) = aim
+					game_x[0] += event.tfinger.dx * 20.0f;
+					net_x[0] += event.tfinger.dx * 20.0f;
+					game_y[0] += event.tfinger.dy * 20.0f;
+					net_y[0] += event.tfinger.dy * 20.0f;
+				}
+				
+			#else
 			} else if (event.type == SDL_MOUSEMOTION) {
 				game_x[0] += event.motion.xrel;
 				net_x[0] += event.motion.xrel;
@@ -148,8 +185,10 @@ void handleEvents(GameState *st)
 			
 			} else if (event.type == SDL_MOUSEWHEEL && event.wheel.y < 0) {
 				st->local_players[0]->hud->eventDown();
-
+			#endif
+			
 			}
+			
 
 		} // end one player, one
 
