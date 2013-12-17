@@ -119,6 +119,11 @@ void handleEvents(GameState *st)
 					default: break;
 				}
 			
+			} else if (event.type == SDL_FINGERMOTION) {
+				char buf[100];
+				sprintf(buf, "TOUCH  %lli  at %f %f   diff %f %f   pressure %f", event.tfinger.fingerId, event.tfinger.x, event.tfinger.y, event.tfinger.dx, event.tfinger.dy, event.tfinger.pressure);
+				displayMessageBox(std::string(buf));
+				
 			} else if (event.type == SDL_MOUSEMOTION) {
 				game_x[0] += event.motion.xrel;
 				net_x[0] += event.motion.xrel;
