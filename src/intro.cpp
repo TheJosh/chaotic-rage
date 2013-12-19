@@ -108,7 +108,7 @@ void Intro::updateUI()
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
 		if (event.type == SDL_QUIT) {
-			// TODO: Think up a way to inform the loader to abort
+			exit(0);
 		}
 	}
 
