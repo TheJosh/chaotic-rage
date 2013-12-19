@@ -4,6 +4,7 @@ CFLAGS := `sdl2-config --cflags` `pkg-config gl glu lua5.1 bullet assimp --cflag
 LIBS := `sdl2-config --libs` `pkg-config lua5.1 bullet assimp --libs` `freetype-config --libs` -lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11
 
 VERSION := $(shell grep -E --only-matching 'VERSION ".+"' src/rage.h | sed -n 1p | sed "s/VERSION //" | sed 's/"//g')
+DISTTMP := chaoticrage-$(VERSION)
 
 
 OBJPATH=build
@@ -55,27 +56,40 @@ install: chaoticrage
 
 
 dist: src data maps
-	mkdir -p chaotic-rage-$(VERSION)
+	mkdir -p $(DISTTMP)
 	
-	cp -r Makefile chaotic-rage-$(VERSION)
-	cp -r LICENSE chaotic-rage-$(VERSION)
-	cp -r README.md chaotic-rage-$(VERSION)
+	cp -r Makefile $(DISTTMP)
+	cp -r LICENSE $(DISTTMP)
+	cp -r README.md $(DISTTMP)
+	cp -r src $(DISTTMP)
+	cp -r data $(DISTTMP)
+	cp -r maps $(DISTTMP)
 	
-	cp -r src chaotic-rage-$(VERSION)
-	cp -r data chaotic-rage-$(VERSION)
-	cp -r maps chaotic-rage-$(VERSION)
+	mkdir -p $(DISTTMP)/tools
+	mkdir -p $(DISTTMP)/tools/linux
+	mkdir -p $(DISTTMP)/tools/linux/working
 	
-	mkdir -p chaotic-rage-$(VERSION)/tools
-	cp -r tools/include chaotic-rage-$(VERSION)/tools
+	cp -r tools/include $(DISTTMP)/tools
+	cp tools/linux/*.sh $(DISTTMP)/tools/linux/
+	chmod 755 $(DISTTMP)/tools/linux/*.sh
 	
-	mkdir -p chaotic-rage-$(VERSION)/tools/linux
-	mkdir -p chaotic-rage-$(VERSION)/tools/linux/working
-	cp tools/linux/*.sh chaotic-rage-$(VERSION)/tools/linux/
-	chmod 755 tools/linux/*.sh
+	tar -cvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
+	rm -rf $(DISTTMP)
+
+
+dist-bin: chaoticrage data maps
+	mkdir -p $(DISTTMP)
 	
-	tar -cvjf chaotic-rage-$(VERSION).tar.bz2 chaotic-rage-$(VERSION)
-	rm -rf chaotic-rage-$(VERSION)
+	cp -r LICENSE $(DISTTMP)
+	cp -r README.md $(DISTTMP)
+	cp -r chaoticrage $(DISTTMP)
+	cp -r data $(DISTTMP)
+	cp -r maps $(DISTTMP)
 	
+	tar -cvjf chaoticrage-linuxbin-$(VERSION).tar.bz2 $(DISTTMP)
+	rm -rf $(DISTTMP)
+
+
 clean:
 	rm -f chaoticrage
 	rm -f $(OBJFILES)
