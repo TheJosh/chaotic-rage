@@ -4,8 +4,6 @@ You will need at least these:
  - SDL_Mixer 2.0
  - SDL_Image 2.0
  - SDL_Net 2.0
- - zziplib
- - libconfuse
  - gl
  - glu
  - glew
@@ -23,17 +21,14 @@ Compiling on Ubuntu 10.04:
      - g++
      - make
      - cmake
-     - flex
-     - libzzip-dev
-     - libconfuse-dev
      - libgl1-mesa-dev
      - libglu1-mesa-dev
      - libglew-dev
      - liblua5.1-0-dev
      - libfreetype6-dev
+  
     You can also use this command:
-     sudo apt-get install g++ make cmake flex libzzip-dev libconfuse-dev libgl1-mesa-dev \
-     libglu1-mesa-dev libglew-dev liblua5.1-0-dev libfreetype6-dev libguichan-dev
+    sudo apt-get install g++ make cmake libgl1-mesa-dev libglu1-mesa-dev libglew-dev liblua5.1-0-dev libfreetype6-dev
 
  2. Compile libs in tools/linux
     The compile will do an install using sudo, you'll need your password
@@ -51,3 +46,10 @@ Compiling on Windows:
     should be nessasary.
 
 
+Compiling on Android:
+ 1. Run tools/android/prepare.sh
+ 
+ 2. Run ndk-build
+ 
+ 3. Run ant debug
+ 
