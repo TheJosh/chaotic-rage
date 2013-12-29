@@ -995,7 +995,6 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 * Just textures, no lighting
 **/
 static const char* pVS = "\
-precision mediump float;    \n\
 attribute vec3 vPosition;   \n\
 attribute vec2 vTexUV;      \n\
 varying vec2 fTexUV;        \n\
@@ -1009,7 +1008,6 @@ void main() {               \n\
 * Just textures, no lighting
 **/
 static const char* pFS = "\
-precision mediump float;   \n\
 varying vec2 fTexUV;       \n\
 uniform sampler2D uTex;    \n\
 void main() {              \n\
@@ -1101,8 +1099,21 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 		return 0;
 	}
 	
-	GLint len = strlen(code);
-	glShaderSource(shader, 1, &code, &len);
+	#ifdef GLES
+		char *extra = "precision mediump float;";
+		char *srcmod = (char*) malloc(strlen(code) + strlen(extra) + 1);
+		srcmod[0] = '\0';
+		strcat(srcmod, extra);
+		strcat(srcmod, code);
+		GLint len = strlen(srcmod);
+		glShaderSource(shader, 1, &srcmod, &len);
+		free(srcmod);
+
+	#else
+		GLint len = strlen(code);
+		glShaderSource(shader, 1, &code, &len);
+	#endif
+
 	glCompileShader(shader);
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 	if (! success) {
@@ -1124,7 +1135,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 {
 	GLint success;
 	GLuint sVertex, sFragment;
-	
+
 	// Create program object
 	GLuint program = glCreateProgram();
 	if (program == 0) {

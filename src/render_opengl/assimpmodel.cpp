@@ -188,7 +188,8 @@ void AssimpModel::loadMeshes(bool opengl)
 		// Prep face array for VBO
 		Uint16 *faceArray;
 		faceArray = (Uint16 *)malloc(sizeof(Uint16) * mesh->mNumFaces * 3);
-		
+		assert(faceArray);
+
 		// Copy face data
 		unsigned int faceIndex = 0;
 		for (unsigned int t = 0; t < mesh->mNumFaces; ++t) {
@@ -201,7 +202,7 @@ void AssimpModel::loadMeshes(bool opengl)
 		// Faces
 		glGenBuffers(1, &buffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mesh->mNumFaces * 3, faceArray, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Uint16) * mesh->mNumFaces * 3, faceArray, GL_STATIC_DRAW);
 		myMesh->vao->setIndex(buffer);
 		free(faceArray);
 		

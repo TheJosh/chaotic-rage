@@ -129,6 +129,15 @@ namespace gcn
         glCompileShader(sVS);
         glAttachShader(program, sVS);
 
+		// Check status
+		glGetShaderiv(sVS, GL_COMPILE_STATUS, &success);
+        if (! success) {
+            GLchar infolog[1024];
+            glGetShaderInfoLog(sVS, 1024, NULL, infolog);
+            GL_LOG("Error compiling vertex shader:\n%s", infolog);
+            assert(0);
+        }
+
         // Compile fragment shader
         sFS = glCreateShader(GL_FRAGMENT_SHADER);
         assert(sFS);
@@ -136,6 +145,15 @@ namespace gcn
         glShaderSource(sFS, 1, &fs, &len);
         glCompileShader(sFS);
         glAttachShader(program, sFS);
+
+		// Check status
+		glGetShaderiv(sFS, GL_COMPILE_STATUS, &success);
+        if (! success) {
+            GLchar infolog[1024];
+            glGetShaderInfoLog(sFS, 1024, NULL, infolog);
+            GL_LOG("Error compiling fragment shader:\n%s", infolog);
+            assert(0);
+        }
 
         glBindAttribLocation(program, 0, "vPosition");
         glBindAttribLocation(program, 1, "vTexUV");
@@ -161,7 +179,6 @@ namespace gcn
     {
         // Images
         shader_image = createShaderProgram(
-            "precision mediump float;"
             "attribute vec3 vPosition;"
             "attribute vec2 vTexUV;"
             "varying vec2 fTexUV;"
@@ -170,7 +187,6 @@ namespace gcn
                 "gl_Position = uMVP * vec4(vPosition, 1.0); fTexUV = vTexUV;"
             "}",
 
-            "precision mediump float;"
             "varying vec2 fTexUV;"
             "uniform sampler2D uTex;"
             "void main() {"
@@ -180,14 +196,12 @@ namespace gcn
  
         // Lines
         shader_lines = createShaderProgram(
-            "precision mediump float;"
             "attribute vec3 vPosition;"
             "uniform mat4 uMVP;"
             "void main() {"
                 "gl_Position = uMVP * vec4(vPosition, 1.0);"
             "}",
 
-            "precision mediump float;"
             "uniform vec4 uColor;"
             "void main() {"
                 "gl_FragColor = uColor;"
