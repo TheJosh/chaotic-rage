@@ -15,7 +15,7 @@ xcopy /E /I ..\..\data files\data
 xcopy /E /I ..\..\maps files\maps
 
 copy /-Y ..\..\*.bmp files
-copy /-Y ..\lib\*.dll files
+copy /-Y ..\windows\lib\*.dll files
 copy /-Y ..\redist-msvc\*.dll files
 copy /-Y ..\redist-msvc\*.manifest files
 

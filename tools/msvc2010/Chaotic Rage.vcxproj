@@ -150,6 +150,7 @@
     <ClCompile Include="..\..\src\fx\newparticle.cpp" />
     <ClCompile Include="..\..\src\game.cpp" />
     <ClCompile Include="..\..\src\gamestate.cpp" />
+    <ClCompile Include="..\..\src\game_manager.cpp" />
     <ClCompile Include="..\..\src\guichan\actionevent.cpp" />
     <ClCompile Include="..\..\src\guichan\basiccontainer.cpp" />
     <ClCompile Include="..\..\src\guichan\cliprectangle.cpp" />
@@ -296,6 +297,7 @@
     <ClInclude Include="..\..\src\fx\_fx.h" />
     <ClInclude Include="..\..\src\game.h" />
     <ClInclude Include="..\..\src\gamestate.h" />
+    <ClInclude Include="..\..\src\game_manager.h" />
     <ClInclude Include="..\..\src\guichan\actionevent.hpp" />
     <ClInclude Include="..\..\src\guichan\actionlistener.hpp" />
     <ClInclude Include="..\..\src\guichan\allegro.hpp" />
@@ -413,6 +415,7 @@
     <ClInclude Include="..\..\src\render_opengl\gl.h" />
     <ClInclude Include="..\..\src\render_opengl\glshader.h" />
     <ClInclude Include="..\..\src\render_opengl\glvao.h" />
+    <ClInclude Include="..\..\src\render_opengl\gl_debug.h" />
     <ClInclude Include="..\..\src\render_opengl\gl_debug_drawer.h" />
     <ClInclude Include="..\..\src\render_opengl\hud.h" />
     <ClInclude Include="..\..\src\render_opengl\hud_label.h" />
