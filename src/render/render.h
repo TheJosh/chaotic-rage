@@ -29,6 +29,11 @@ class Render
 		virtual void setScreenSize(int width, int height, bool fullscreen) = 0;
 		
 		/**
+		* Set the mouse grab mode; default method does nothing
+		**/
+		virtual void setMouseGrab(bool newval) {}
+		
+		/**
 		* Renders the provided game state
 		**/
 		virtual void render() = 0;

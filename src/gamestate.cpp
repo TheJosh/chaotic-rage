@@ -524,17 +524,12 @@ list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 * Sets the status of the mouse grab
 * This method is ignored if the debugging option "no-mouse-grab" is set
 **/
-void GameState::setMouseGrab(bool reset)
+void GameState::setMouseGrab(bool newval)
 {
 	if (this->cmdline->mouseGrab == false) return;
 	
-	this->reset_mouse = reset;
-	
-	SDL_SetRelativeMouseMode(reset ? SDL_TRUE : SDL_FALSE);
-	
-	//SDL_ShowCursor(!this->reset_mouse);
-	//SDL_EnableUNICODE(!this->reset_mouse);
-	//SDL_WM_GrabInput(this->reset_mouse == 1 ? SDL_GRAB_ON : SDL_GRAB_OFF);
+	this->reset_mouse = newval;
+	this->render->setMouseGrab(newval);
 }
 
 /**

@@ -298,6 +298,20 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 
 
 /**
+* Set the mouse grab status
+**/
+void RenderOpenGL::setMouseGrab(bool newval)
+{
+	SDL_SetRelativeMouseMode(newval ? SDL_TRUE : SDL_FALSE);
+	SDL_SetWindowGrab(this->window, newval ? SDL_TRUE : SDL_FALSE);
+	
+	//SDL_ShowCursor(!this->reset_mouse);
+	//SDL_EnableUNICODE(!this->reset_mouse);
+	//SDL_WM_GrabInput(this->reset_mouse == 1 ? SDL_GRAB_ON : SDL_GRAB_OFF);
+}
+
+
+/**
 * Load a font using freetype
 **/
 void RenderOpenGL::loadFont(string name, Mod * mod)
