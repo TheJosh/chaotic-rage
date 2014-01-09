@@ -1,0 +1,26 @@
+sudo apt-get install libgl1-mesa-swx11 libglu1-mesa libglew1.5
+
+LD_LIBRARY_PATH=./lib ./chaoticrage
+
+libassimp.so
+libassimp.so.3 -> libassimp.so
+libBulletCollision.so
+libBulletCollision.so.2.81 -> libBulletCollision.so
+libBulletDynamics.so
+libBulletDynamics.so.2.81 -> libBulletDynamics.so
+libBulletSoftBody.so
+libBulletSoftBody.so.2.81 -> libBulletSoftBody.so
+libLinearMath.so
+libLinearMath.so.2.81 -> libLinearMath.so
+libSDL2-2.0.so.0 -> libSDL2.so
+libSDL2_image-2.0.so.0 -> libSDL2_image.so
+libSDL2_image.so
+libSDL2_mixer-2.0.so.0 -> libSDL2_mixer.so
+libSDL2_mixer.so
+libSDL2_net-2.0.so.0 -> libSDL2_net.so
+libSDL2_net.so
+libSDL2.so
+
+sudo apt-get install libvorbisfile3 libmad0
+
+
