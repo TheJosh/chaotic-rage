@@ -1110,13 +1110,13 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 	}
 	
 	#ifdef GLES
-		char *extra = "precision mediump float;";
+		char const *extra = "precision mediump float;";
 		char *srcmod = (char*) malloc(strlen(code) + strlen(extra) + 1);
 		srcmod[0] = '\0';
 		strcat(srcmod, extra);
 		strcat(srcmod, code);
 		GLint len = strlen(srcmod);
-		glShaderSource(shader, 1, &srcmod, &len);
+		glShaderSource(shader, 1, (const GLchar**) &srcmod, &len);
 		free(srcmod);
 
 	#else
