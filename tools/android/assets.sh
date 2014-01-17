@@ -20,7 +20,6 @@ echo "Compressing assets..."
 
 # PNGs
 mogrify -resize 256x256 -quality 99 assets/data/cr/campaigns/*.png || exit 1
-mogrify -resize 256x256 -quality 99 assets/data/cr/floortypes/*.png || exit 1
 mogrify -resize 256x256 -quality 99 assets/data/cr/models/*.png || exit 1
 
 # JPGs
