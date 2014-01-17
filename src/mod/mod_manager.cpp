@@ -16,9 +16,7 @@
 #include "confuse_types.h"
 #include "aitype.h"
 #include "campaign.h"
-#include "floortype.h"
 #include "objecttype.h"
-#include "pickuptype.h"
 #include "unittype.h"
 #include "song.h"
 #include "sound.h"
@@ -319,7 +317,7 @@ AIType * ModManager::getAIType(string name)
 
 
 /**
-* Gets an floor type by name
+* Gets an vehicle type by name
 **/
 VehicleType * ModManager::getVehicleType(string name)
 {

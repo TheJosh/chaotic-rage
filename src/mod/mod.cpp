@@ -17,7 +17,6 @@
 #include "confuse_types.h"
 #include "aitype.h"
 #include "campaign.h"
-#include "floortype.h"
 #include "objecttype.h"
 #include "pickuptype.h"
 #include "unittype.h"
@@ -69,7 +68,6 @@ Mod::Mod(GameState * st, string directory)
 	this->has_campaign = false;
 	
 	this->ais = NULL;
-	this->areatypes = NULL;
 	this->gametypes = NULL;
 	this->objecttypes = NULL;
 	this->pickuptypes = NULL;
@@ -85,7 +83,6 @@ Mod::Mod(GameState * st, string directory)
 Mod::~Mod()
 {
 	delete(this->ais);
-	delete(this->areatypes);
 	delete(this->gametypes);
 	delete(this->objecttypes);
 	delete(this->pickuptypes);
@@ -265,9 +262,6 @@ bool Mod::load(UIUpdate* ui)
 	songs = loadModFile<Song*>(this, ui, "songs.conf", "song", song_opts, &loadItemSong);
 	if (songs == NULL) return false;
 #endif
-	
-	areatypes = loadModFile<FloorType*>(this, ui, "floortypes.conf", "floortype", floortype_opts, &loadItemFloorType);
-	if (areatypes == NULL) return false;
 	
 	objecttypes = loadModFile<ObjectType*>(this, ui, "objecttypes.conf", "objecttype", objecttype_opts, &loadItemObjectType);
 	if (objecttypes == NULL) return false;

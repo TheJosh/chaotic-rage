@@ -77,7 +77,6 @@ class DialogNewGame;
 class DialogNull;
 class DialogControls;
 class Entity;
-class FloorType;
 class GameLogic;
 class GameState;
 class GameType;

@@ -18,7 +18,6 @@ using namespace std;
 
 class AIType;
 class Campaign;
-class FloorType;
 class GameType;
 class ObjectType;
 class PickupType;
@@ -43,7 +42,6 @@ class Mod {
 		// full data
 		vector<AIType*> * ais;
 		vector<Campaign*> * campaigns;
-		vector<FloorType*> * areatypes;
 		vector<GameType*> * gametypes;
 		vector<ObjectType*> * objecttypes;
 		vector<PickupType*> * pickuptypes;

@@ -12,7 +12,6 @@ class Mod;
 class GameState;
 class AIType;
 class Campaign;
-class FloorType;
 class GameType;
 class ObjectType;
 class PickupType;
