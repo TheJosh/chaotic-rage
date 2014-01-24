@@ -8,6 +8,7 @@
 #include <glob.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <SDL.h>
 
 #include "../gamestate.h"
 
@@ -68,9 +69,8 @@ string getUserDataDir()
 **/
 void reportFatalError(string msg)
 {
-	string m = "FATAL ERROR: ";
-	m.append(msg);
-	displayMessageBox(m);
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Chaotic Rage " VERSION, msg.c_str(), NULL);
+	cout << "FATAL ERROR: " << msg << "\n";
 	exit(1);
 }
 
@@ -80,6 +80,7 @@ void reportFatalError(string msg)
 **/
 void displayMessageBox(string msg)
 {
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "Chaotic Rage " VERSION, msg.c_str(), NULL);
 	cout << msg << "\n";
 }
 
