@@ -8,6 +8,46 @@ Choose from multiple characters with unique skills and abilities.
 See also: http://chaoticrage.com
 
 
+Compiling on Linux
+------------------
+
+Compiling on Linux should be a simple `make`.
+
+You'll need the following dependencies:
+* SDL 2.0.1
+* SDL_Mixer 2.0
+* SDL_Image 2.0
+* SDL_Net 2.0
+* gl
+* glu
+* glew
+* Lua
+* Freetype2
+* Bullet Physics
+* Assimp
+
+Some of these (SDL, Bullet, Assimp) have scripts in the tools/linux directory
+for downloading, compiling and installing these libraries. Both Bullet and Assimp
+use cmake, so you'll need that as well.
+
+Compiling on Windows
+--------------------
+
+There is a project in the tools/msvc2010 directory for MSVC++ 2010 Express Edition.
+I haven't tested any other version of MSVC.
+You should still be able to download that older version.
+
+
+Compiling on Android on Linux
+-----------------------------
+
+This is a little incomplete/fussy at the moment
+
+There is a script in tools/android called prepare.sh which will try to set everything up for you.
+
+You should then be able to run ndk-build and ant debug to create the .apk
+ 
+
 Making Modifications
 --------------------
 
