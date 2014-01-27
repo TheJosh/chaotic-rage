@@ -363,9 +363,6 @@
     <ClCompile Include="..\..\src\mod\campaign.cpp">
       <Filter>src\mod</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\mod\floortype.cpp">
-      <Filter>src\mod</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\mod\gametype.cpp">
       <Filter>src\mod</Filter>
     </ClCompile>
@@ -794,9 +791,6 @@
     <ClInclude Include="..\..\src\mod\campaign.h">
       <Filter>src\mod</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\mod\floortype.h">
-      <Filter>src\mod</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\mod\gametype.h">
       <Filter>src\mod</Filter>
     </ClInclude>
@@ -841,30 +835,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\fx\newparticle.h">
       <Filter>src\fx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\audio\_audio.h">
-      <Filter>src\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\entity\_entity.h">
-      <Filter>src\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\fx\_fx.h">
-      <Filter>src\fx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\gui\_gui.h">
-      <Filter>src\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\http\_http.h">
-      <Filter>src\http</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mod\_mod.h">
-      <Filter>src\mod</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\net\_net.h">
-      <Filter>src\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\util\_util.h">
-      <Filter>src\util</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\mod\confuse_types.h">
       <Filter>src\mod</Filter>

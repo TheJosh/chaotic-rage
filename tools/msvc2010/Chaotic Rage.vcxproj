@@ -222,7 +222,6 @@
     <ClCompile Include="..\..\src\mod\aitype.cpp" />
     <ClCompile Include="..\..\src\mod\campaign.cpp" />
     <ClCompile Include="..\..\src\mod\confuse_types.cpp" />
-    <ClCompile Include="..\..\src\mod\floortype.cpp" />
     <ClCompile Include="..\..\src\mod\gametype.cpp" />
     <ClCompile Include="..\..\src\mod\mod.cpp" />
     <ClCompile Include="..\..\src\mod\mod_manager.cpp" />
@@ -278,7 +277,6 @@
     <ClInclude Include="..\..\src\audio\audio.h" />
     <ClInclude Include="..\..\src\audio\audio_null.h" />
     <ClInclude Include="..\..\src\audio\audio_sdlmixer.h" />
-    <ClInclude Include="..\..\src\audio\_audio.h" />
     <ClInclude Include="..\..\src\confuse\config.h" />
     <ClInclude Include="..\..\src\confuse\confuse.h" />
     <ClInclude Include="..\..\src\entity\ammo_round.h" />
@@ -292,9 +290,7 @@
     <ClInclude Include="..\..\src\entity\unit.h" />
     <ClInclude Include="..\..\src\entity\vehicle.h" />
     <ClInclude Include="..\..\src\entity\wall.h" />
-    <ClInclude Include="..\..\src\entity\_entity.h" />
     <ClInclude Include="..\..\src\fx\newparticle.h" />
-    <ClInclude Include="..\..\src\fx\_fx.h" />
     <ClInclude Include="..\..\src\game.h" />
     <ClInclude Include="..\..\src\gamestate.h" />
     <ClInclude Include="..\..\src\game_manager.h" />
@@ -371,12 +367,10 @@
     <ClInclude Include="..\..\src\gui\network.h" />
     <ClInclude Include="..\..\src\gui\newcampaign.h" />
     <ClInclude Include="..\..\src\gui\newgame.h" />
-    <ClInclude Include="..\..\src\gui\_gui.h" />
     <ClInclude Include="..\..\src\http\client_stats.h" />
     <ClInclude Include="..\..\src\http\happyhttp.h" />
     <ClInclude Include="..\..\src\http\serverlist.h" />
     <ClInclude Include="..\..\src\http\url.h" />
-    <ClInclude Include="..\..\src\http\_http.h" />
     <ClInclude Include="..\..\src\intro.h" />
     <ClInclude Include="..\..\src\lua\ailogic.h" />
     <ClInclude Include="..\..\src\lua\gamelogic.h" />
@@ -387,7 +381,6 @@
     <ClInclude Include="..\..\src\mod\aitype.h" />
     <ClInclude Include="..\..\src\mod\campaign.h" />
     <ClInclude Include="..\..\src\mod\confuse_types.h" />
-    <ClInclude Include="..\..\src\mod\floortype.h" />
     <ClInclude Include="..\..\src\mod\gametype.h" />
     <ClInclude Include="..\..\src\mod\mod.h" />
     <ClInclude Include="..\..\src\mod\mod_manager.h" />
@@ -400,13 +393,11 @@
     <ClInclude Include="..\..\src\mod\vehicletype.h" />
     <ClInclude Include="..\..\src\mod\walltype.h" />
     <ClInclude Include="..\..\src\mod\weapontype.h" />
-    <ClInclude Include="..\..\src\mod\_mod.h" />
     <ClInclude Include="..\..\src\net\net.h" />
     <ClInclude Include="..\..\src\net\net_browse.h" />
     <ClInclude Include="..\..\src\net\net_client.h" />
     <ClInclude Include="..\..\src\net\net_gameinfo.h" />
     <ClInclude Include="..\..\src\net\net_server.h" />
-    <ClInclude Include="..\..\src\net\_net.h" />
     <ClInclude Include="..\..\src\physics_bullet.h" />
     <ClInclude Include="..\..\src\platform\platform.h" />
     <ClInclude Include="..\..\src\rage.h" />
@@ -439,7 +430,6 @@
     <ClInclude Include="..\..\src\util\ui_update.h" />
     <ClInclude Include="..\..\src\util\util.h" />
     <ClInclude Include="..\..\src\util\windowicon.h" />
-    <ClInclude Include="..\..\src\util\_util.h" />
     <ClInclude Include="..\..\src\weapons\ghost_objects.h" />
     <ClInclude Include="..\..\src\weapons\weapons.h" />
     <ClInclude Include="..\..\src\zone.h" />
