@@ -3,14 +3,10 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <SDL.h>
 #include "../rage.h"
 #include "render.h"
 
 #include "../guichan/guichan.hpp"
-#include "../guichan/sdl.hpp"
-#include "../guichan/opengl.hpp"
-#include "../guichan/opengl/openglsdlimageloader.hpp"
 
 #include <glm/glm.hpp>
 
