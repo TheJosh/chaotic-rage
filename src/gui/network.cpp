@@ -8,7 +8,7 @@
 #include <guichan/sdl.hpp>
 
 #include "../rage.h"
-#include "../menu.h"
+#include "../render_opengl/menu.h"
 #include "../http/serverlist.h"
 #include "../net/net_browse.h"
 #include "dialog.h"

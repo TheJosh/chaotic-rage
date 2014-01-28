@@ -8,7 +8,7 @@
 
 #include "../rage.h"
 #include "../gamestate.h"
-#include "../menu.h"
+#include "../render_opengl/menu.h"
 #include "../render_opengl/render_opengl.h"
 #include "../render_opengl/render_opengl_settings.h"
 #include "../render_opengl/guichan_imageloader.h"

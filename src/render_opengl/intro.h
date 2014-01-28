@@ -3,9 +3,9 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include "rage.h"
-#include "render/render.h"
-#include "util/ui_update.h"
+#include "../rage.h"
+#include "../render/render.h"
+#include "../util/ui_update.h"
 
 using namespace std;
 

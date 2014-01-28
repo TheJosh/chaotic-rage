@@ -5,37 +5,38 @@
 #include <iostream>
 #include <SDL.h>
 #include <math.h>
-#include "render_opengl/gl.h"
 
-#include "guichan/guichan.hpp"
-#include "guichan/sdl.hpp"
-#include "guichan/opengl.hpp"
-#include "guichan/opengl/openglsdlimageloader.hpp"
+#include "gl.h"
+#include "menu.h"
+#include "render_opengl.h"
+
+#include "../guichan/guichan.hpp"
+#include "../guichan/sdl.hpp"
+#include "../guichan/opengl.hpp"
+#include "../guichan/opengl/openglsdlimageloader.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "rage.h"
-#include "menu.h"
-#include "render_opengl/render_opengl.h"
-#include "render/sprite.h"
-#include "audio/audio.h"
-#include "gamestate.h"
-#include "gui/client_settings.h"
-#include "gui/newcampaign.h"
-#include "gui/newgame.h"
-#include "gui/network.h"
-#include "gui/mods.h"
-#include "gui/controls.h"
-#include "mod/campaign.h"
-#include "mod/mod.h"
-#include "util/obj.h"
-#include "util/serverconfig.h"
-#include "mod/mod_manager.h"
-#include "map.h"
-#include "game_manager.h"
+#include "../rage.h"
+#include "../render/sprite.h"
+#include "../audio/audio.h"
+#include "../gamestate.h"
+#include "../gui/client_settings.h"
+#include "../gui/newcampaign.h"
+#include "../gui/newgame.h"
+#include "../gui/network.h"
+#include "../gui/mods.h"
+#include "../gui/controls.h"
+#include "../mod/campaign.h"
+#include "../mod/mod.h"
+#include "../util/obj.h"
+#include "../util/serverconfig.h"
+#include "../mod/mod_manager.h"
+#include "../map.h"
+#include "../game_manager.h"
 
 using namespace std;
 

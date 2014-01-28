@@ -3,18 +3,19 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include "intro.h"
-#include "rage.h"
-#include "render_opengl/render_opengl.h"
-#include "render/sprite.h"
-#include "mod/mod.h"
-#include "mod/song.h"
-#include "audio/audio.h"
-#include "util/ui_update.h"
-#include "gamestate.h"
+#include "render_opengl.h"
+#include "gl_debug.h"
+#include "../rage.h"
+#include "../gamestate.h"
+#include "../render/sprite.h"
+#include "../mod/mod.h"
+#include "../mod/song.h"
+#include "../audio/audio.h"
+#include "../util/ui_update.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "render_opengl/gl_debug.h"
+
 
 using namespace std;
 

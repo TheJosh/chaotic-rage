@@ -10,7 +10,7 @@
 #include <guichan/opengl/openglsdlimageloader.hpp>
 
 #include "../rage.h"
-#include "../menu.h"
+#include "../render_opengl/menu.h"
 #include "../game_manager.h"
 #include "../http/serverlist.h"
 #include "../mod/campaign.h"

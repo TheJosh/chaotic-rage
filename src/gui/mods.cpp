@@ -11,7 +11,7 @@
 #include "../render_opengl/guichan_imageloader.h"
 #include "../mod/mod.h"
 #include "../mod/mod_manager.h"
-#include "../menu.h"
+#include "../render_opengl/menu.h"
 #include "dialog.h"
 #include "list_models.h"
 #include "mods.h"

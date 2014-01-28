@@ -15,9 +15,9 @@
 #include "mod/mod.h"
 #include "map.h"
 #include "gamestate.h"
-#include "menu.h"
 #include "game_manager.h"
-#include "intro.h"
+#include "render_opengl/menu.h"
+#include "render_opengl/intro.h"
 
 
 
