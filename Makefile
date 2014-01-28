@@ -31,7 +31,7 @@ CPPFILES=$(wildcard \
 )
 
 OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES))
-OBJMAINS=build/client.o build/server.o
+OBJMAINS=build/client.o
 
 OBJFILES_CLIENT=build/client.o build/linux.o build/confuse/confuse.o build/confuse/lexer.o $(filter-out $(OBJMAINS), $(OBJFILES))
 
