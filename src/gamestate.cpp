@@ -9,7 +9,6 @@
 #include <vector>
 #include <list>
 
-#include <SDL.h>
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
 #include <math.h>

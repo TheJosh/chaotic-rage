@@ -625,6 +625,8 @@ float Map::getRandomY()
 
 /**
 * Take the heightmap image and turn it into a data array
+*
+* TODO: Rejig this so we don't use SDL (e.g. prebuild byte array)
 **/
 void Map::createHeightmapRaw()
 {
