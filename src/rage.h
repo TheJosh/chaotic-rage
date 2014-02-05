@@ -121,11 +121,6 @@ class WeaponFlamethrower;
 class WavefrontObj;
 class Zone;
 
-
 #include "util/util.h"
 #include "util/debug.h"
-
-
-
-
 

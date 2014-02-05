@@ -394,18 +394,22 @@ void GameState::update(int delta)
 	this->entities_add.clear();
 	
 	// Update entities
+	PROFILE_START(entities);
 	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); it++) {
 		Entity *e = (*it);
 		if (! e->del) {
 			e->update(delta);
 		}
 	}
+	PROFILE_END(entities);
 	
 	// Remove stuff
 	this->entities.remove_if(EntityEraserDead);
 	
 	// Update physics
+	PROFILE_START(physics);
 	this->physics->stepTime(delta);
+	PROFILE_END(physics);
 	
 	// Particles
 	this->update_particles(delta);

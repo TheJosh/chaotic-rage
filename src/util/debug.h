@@ -18,7 +18,6 @@ using namespace std;
 	#define DEBUG(_sect, _fmt, ...) /* nothing! */
 #endif
 
-
 void write_debug(const char * sect, const char * file, int line, const char * fmt, ...);
 
 void debug_enable(const char * sect);
@@ -30,3 +29,20 @@ void debug_lineno(bool enabled);
 void debug_tofile(const char * filename);
 
 void debug_save();
+
+
+// Profiling
+#ifdef DEBUG_OPTIONS
+	#define PROFILE_START(sect) int _p_##sect = SDL_GetTicks();
+	#define PROFILE_END(sect) profile_write(#sect, _p_##sect, SDL_GetTicks());
+#else
+	#define PROFILE_START(sect) /* nothing! */
+	#define PROFILE_END(sect) /* nothing! */
+#endif
+
+void profile_enable(const char * filename);
+
+void profile_write(const char * sect, int start, int end);
+
+void profile_save();
+

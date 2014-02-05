@@ -15,6 +15,7 @@ using namespace std;
 static list<string> enabled_sects;
 static bool lineno;
 static FILE* out = stdout;
+static FILE* profile = NULL;
 
 
 void write_debug(const char * sect, const char * file, int line, const char * fmt, ...)
@@ -62,5 +63,24 @@ void debug_tofile(const char * filename)
 void debug_save()
 {
 	fclose(out);
+}
+
+void profile_enable(const char * filename)
+{
+	profile = fopen(filename, "w");
+	atexit(profile_save);
+	fprintf(profile, "Event\tStartTime\tEndTime\tElapsed\n");
+}
+
+void profile_write(const char * sect, int start, int end)
+{
+	if (profile != NULL) {
+		fprintf(profile, "%s\t%i\t%i\t%i\n", sect, start, end, end-start);
+	}
+}
+
+void profile_save()
+{
+	fclose(profile);
 }
 

@@ -42,6 +42,7 @@ void CommandLineArgs::process()
 		{"debug-lineno",	0, 0, '3'},
 		{"debug-file",		1, 0, '4'},
 		{"no-mouse-grab",	0, 0, '5'},
+		{"profile",         1, 0, '6'},
 		#endif
 		{NULL, 0, NULL, 0}
 	};
@@ -74,8 +75,9 @@ void CommandLineArgs::process()
 					"   \t--debug SECTION         Enable debug mode for a given section\n"
 					"   \t--debug-list            Show a list of available debug sections\n"
 					"   \t--debug-lineno          Show file and line no in debugging output\n"
-					"   \t--debug-file            Save debug logs in a file instead of stdout\n"
+					"   \t--debug-file FILE       Save debug logs in a file instead of stdout\n"
 					"   \t--no-mouse-grab         Disable mouse grab\n"
+					"   \t--profile FILE          Save profile log\n"
 					#endif
 				;
 				exit(0);
@@ -187,6 +189,11 @@ void CommandLineArgs::process()
 				
 			case '5':
 				this->mouseGrab = false;
+				break;
+				
+			case '6':
+				profile_enable(optarg);
+				cout << "Saving profile log to file '" << optarg << "'.\n";
 				break;
 			#endif
 			

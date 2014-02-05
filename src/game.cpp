@@ -95,7 +95,10 @@ void gameLoop(GameState *st, Render *render)
 			}
 		}
 		
+		PROFILE_START(render);
 		st->render->render();
+		PROFILE_END(render);
+		
 		st->audio->play();
 	}
 	
