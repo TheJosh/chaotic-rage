@@ -8,7 +8,7 @@ debug_framerate(true)
 bind_gamestart(function()
 	-- Make some crates!
 	for i = 0, 50, 1 do
-		ammo_drop()
+		add_npc("zomb", "zombie", factions.team2);
 	end
 	
 	-- The game doesn't last long
