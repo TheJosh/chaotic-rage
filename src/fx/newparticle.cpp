@@ -5,7 +5,7 @@
 #include <iostream>
 #include <math.h>
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "newparticle.h"
 
 using namespace std;

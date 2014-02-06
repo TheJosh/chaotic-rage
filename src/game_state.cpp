@@ -13,7 +13,7 @@
 #include <guichan/sdl.hpp>
 #include <math.h>
 
-#include "gamestate.h"
+#include "game_state.h"
 #include "map.h"
 #include "mod/mod_manager.h"
 #include "render_opengl/hud.h"

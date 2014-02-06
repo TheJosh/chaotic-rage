@@ -8,7 +8,7 @@
 #include <btBulletDynamicsCommon.h>
 #include "rage.h"
 #include "physics_bullet.h"
-#include "gamestate.h"
+#include "game_state.h"
 
 using namespace std;
 

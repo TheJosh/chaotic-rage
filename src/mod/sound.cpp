@@ -6,7 +6,7 @@
 #include <confuse.h>
 #include "../rage.h"
 #include "../audio/audio.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "mod.h"
 #include "sound.h"
 

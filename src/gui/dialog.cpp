@@ -7,7 +7,7 @@
 #include <guichan.hpp>
 
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "dialog.h"
 
 

@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../entity/player.h"
 #include "../mod/weapontype.h"
 #include "hud.h"

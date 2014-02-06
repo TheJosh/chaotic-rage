@@ -9,7 +9,7 @@
 #include "pickuptype.h"
 #include "../rage.h"
 #include "../render_opengl/assimpmodel.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "mod.h"
 #include "weapontype.h"
 

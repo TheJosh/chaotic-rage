@@ -5,7 +5,7 @@
 #include <iostream>
 #include <math.h>
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../lua/gamelogic.h"
 #include "../render_opengl/animplay.h"
 #include "../mod/unittype.h"

@@ -7,7 +7,7 @@
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../util/quadratic.h"
 #include "../entity/ammo_round.h"
 #include "../entity/unit.h"

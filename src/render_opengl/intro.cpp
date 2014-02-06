@@ -6,7 +6,7 @@
 #include "render_opengl.h"
 #include "gl_debug.h"
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../render/sprite.h"
 #include "../mod/mod.h"
 #include "../mod/song.h"

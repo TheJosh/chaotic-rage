@@ -22,7 +22,7 @@
 #include "mod/mod_manager.h"
 #include "mod/mod_proxy.h"
 #include "mod/vehicletype.h"
-#include "gamestate.h"
+#include "game_state.h"
 #include "entity/object.h"
 #include "entity/vehicle.h"
 #include "entity/helicopter.h"

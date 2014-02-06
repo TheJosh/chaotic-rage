@@ -10,7 +10,7 @@
 #include <math.h>
 
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../entity/player.h"
 #include "../util/obj.h"
 #include "../util/sdl_util.h"

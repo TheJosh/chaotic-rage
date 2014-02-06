@@ -7,7 +7,7 @@
 #include <math.h>
 #include "rage.h"
 #include "game.h"
-#include "gamestate.h"
+#include "game_state.h"
 #include "entity/player.h"
 #include "render_opengl/hud.h"
 #include "render_opengl/render_opengl.h"

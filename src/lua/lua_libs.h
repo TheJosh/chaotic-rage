@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 
 extern "C" {
 	#include <lua.h>

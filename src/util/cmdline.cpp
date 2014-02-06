@@ -7,7 +7,7 @@
 #include <iostream>
 #include <getopt.h>
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../mod/mod_manager.h"
 #include "cmdline.h"
 

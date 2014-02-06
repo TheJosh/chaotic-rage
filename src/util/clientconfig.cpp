@@ -5,7 +5,7 @@
 #include <string>
 #include <confuse.h>
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../render_opengl/render_opengl.h"
 #include "../render_opengl/render_opengl_settings.h"
 #include "../render/render_debug.h"

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <math.h>
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../physics_bullet.h"
 #include "../render_opengl/animplay.h"
 #include "decaying.h"

@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <confuse.h>
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../util/ui_update.h"
 #include "../util/cmdline.h"
 #include "../render_opengl/assimpmodel.h"

@@ -23,7 +23,7 @@
 #include "../rage.h"
 #include "../render/sprite.h"
 #include "../audio/audio.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../gui/client_settings.h"
 #include "../gui/newcampaign.h"
 #include "../gui/newgame.h"

@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "game_manager.h"
-#include "gamestate.h"
+#include "game_state.h"
 #include "map.h"
 #include "mod/campaign.h"
 #include "net/net.h"

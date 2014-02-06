@@ -10,7 +10,7 @@
 #include <sys/stat.h>
 #include <SDL.h>
 
-#include "../gamestate.h"
+#include "../game_state.h"
 
 using namespace std;
 

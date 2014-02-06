@@ -8,7 +8,7 @@
 
 #include "../util/quadratic.h"
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../physics_bullet.h"
 #include "ghost_objects.h"
 

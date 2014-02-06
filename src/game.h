@@ -3,7 +3,7 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include "gamestate.h"
+#include "game_state.h"
 
 
 // Mouse movement, including keyboard simulation

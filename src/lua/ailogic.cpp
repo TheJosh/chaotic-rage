@@ -13,7 +13,7 @@ extern "C" {
 }
 
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../mod/unittype.h"
 #include "../entity/npc.h"
 #include "../entity/unit.h"

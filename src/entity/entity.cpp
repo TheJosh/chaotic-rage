@@ -5,7 +5,7 @@
 #include <iostream>
 #include <btBulletDynamicsCommon.h>
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "entity.h"
 
 

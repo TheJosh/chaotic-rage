@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../mod/mod.h"
 #include "animplay.h"
 #include "assimpmodel.h"

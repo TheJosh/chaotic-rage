@@ -7,7 +7,7 @@
 #include <SDL.h>
 #include "../rage.h"
 #include "audio.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 
 
 using namespace std;

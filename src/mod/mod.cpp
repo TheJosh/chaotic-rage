@@ -8,7 +8,7 @@
 #include <SDL.h>
 #include <confuse.h>
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../util/ui_update.h"
 #include "../render_opengl/assimpmodel.h"
 #include "../util/crc32.h"

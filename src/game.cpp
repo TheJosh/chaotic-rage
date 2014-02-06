@@ -6,7 +6,7 @@
 #include <SDL.h>
 #include <math.h>
 #include "rage.h"
-#include "gamestate.h"
+#include "game_state.h"
 #include "map.h"
 #include "render/render.h"
 #include "audio/audio.h"

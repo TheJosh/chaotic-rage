@@ -7,7 +7,7 @@
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../fx/newparticle.h"
 #include "ghost_objects.h"
 #include "weapons.h"

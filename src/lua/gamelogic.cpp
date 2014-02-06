@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <SDL.h>
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../zone.h"
 #include "../map.h"
 #include "../entity/player.h"

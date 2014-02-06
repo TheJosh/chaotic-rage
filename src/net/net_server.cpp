@@ -9,7 +9,7 @@
 #include "net.h"
 #include "net_server.h"
 #include "../rage.h"
-#include "../gamestate.h"
+#include "../game_state.h"
 #include "../map.h"
 #include "../lua/gamelogic.h"
 #include "../entity/player.h"
