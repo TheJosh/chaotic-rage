@@ -1,6 +1,6 @@
 <?php
 /**
-* Should probably be a more CLI-style language like Python or Perl, but I digress
+* Should probably be a more CLI-style language like Python or Perl, but I can smash out PHP faster :)
 **/
 
 $file = @file_get_contents($argv[1]);
@@ -26,9 +26,9 @@ foreach ($data as $event => $d) {
 	$mean = round($d['total'] / $d['count'], 4);
 	
 	echo "{$event}\n";
-	echo "   Total:  {$d['total']}\n";
-	echo "   Min:    {$d['min']}\n";
-	echo "   Max:    {$d['max']}\n";
+	echo "   Total:  {$d['total']}ms\n";
+	echo "   Min:    {$d['min']}ms\n";
+	echo "   Max:    {$d['max']}ms\n";
 	echo "   Count:  {$d['count']}\n";
-	echo "   Mean:   {$mean}\n";
+	echo "   Mean:   {$mean}ms\n";
 }
