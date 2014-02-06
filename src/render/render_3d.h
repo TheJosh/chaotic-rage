@@ -5,11 +5,12 @@
 #pragma once
 #include "../rage.h"
 #include "render.h"
-
-#include "../guichan/guichan.hpp"
-
 #include <glm/glm.hpp>
 
+
+namespace gcn {
+	class Gui;
+}
 
 
 class Render3D : public Render
