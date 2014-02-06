@@ -30,9 +30,7 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 	game.cpp \
 	gamestate.cpp \
 	game_manager.cpp \
-	intro.cpp \
 	map.cpp \
-	menu.cpp \
 	physics_bullet.cpp \
 	zone.cpp \
 	$(subst $(LOCAL_PATH)/,, \
