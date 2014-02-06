@@ -221,6 +221,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 	// Load gametype
 	new GameLogic(st);
 	GameType *gt = st->mm->getGameType(gametype);
+	assert(gt);
 	st->logic->selected_unittype = st->mm->getUnitType(unittype);
 	st->logic->execScript(gt->script);
 	

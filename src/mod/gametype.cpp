@@ -40,6 +40,11 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 	filename.append(".lua");
 	
 	char * tmp = mod->loadText(filename);
+	if (tmp == NULL) {
+		mod->setLoadErr("Invalid gametype stage, no 'script' specified");
+		return NULL;
+	}
+	
 	gt->script = std::string(tmp);
 	free(tmp);
 
