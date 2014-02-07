@@ -1695,7 +1695,6 @@ void RenderOpenGL::mainRot()
 	
 	btTransform trans;
 	float tilt, angle, dist, lift;		// Up/down; left/right; distance of camera, dist off ground
-	static float deadang = 22.0f;
 
 	glEnable(GL_DEPTH_TEST);
 	
@@ -1704,8 +1703,7 @@ void RenderOpenGL::mainRot()
 		tilt = 22.0f;
 		dist = 80.0f;
 		lift = 0.0f;
-		angle = deadang;
-		deadang += 0.05f;
+		angle = st->game_time / 100.0;
 
 	} else {
 		if (this->viewmode == 0) {
