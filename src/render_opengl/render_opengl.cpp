@@ -1737,8 +1737,10 @@ void RenderOpenGL::mainRot()
 			//tilt += this->render_player->vertical_angle;
 		}
 	}
-
-	angle = clampAnglef(angle);
+	
+	// Clamp angle
+	while (angle < 0.0f) angle += 360.0f;
+	while (angle > 360.0f) angle -= 360.0f;
 	
 	// Camera angle calculations
 	float camerax = dist * sin(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().x();

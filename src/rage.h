@@ -22,6 +22,18 @@
 // Specified as a float to help out some arithmetic
 #define ANIMATION_FPS	12.0
 
+// The ratio of a circle's circumference to its diameter
+// Might be useful for something
+#define PI 3.1415f
+
+// I'll give you one guess
+#define MAX(a,b) ((a) >= (b) ? (a) : (b))
+#define MIN(a,b) ((a) <= (b) ? (a) : (b))
+
+// Degrees <-> Radians
+#define DEG_TO_RAD(x) ((x) * (PI / 180.0f))
+#define RAD_TO_DEG(x) ((x) * (180.0f / PI))
+
 // These are defined by SDL, but we redefine them to save loading SDL
 #include <stdint.h>
 typedef int8_t      Sint8;
