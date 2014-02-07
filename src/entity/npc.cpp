@@ -5,6 +5,7 @@
 #include <iostream>
 #include <math.h>
 #include "../rage.h"
+#include "../physics_bullet.h"
 #include "../game_state.h"
 #include "../render_opengl/animplay.h"
 #include "../mod/unittype.h"
@@ -12,7 +13,7 @@
 #include "../lua/ailogic.h"
 #include "../audio/audio.h"
 #include "../mod/mod_manager.h"
-#include  "../lua/gamelogic.h"
+#include "../lua/gamelogic.h"
 #include "npc.h"
 
 

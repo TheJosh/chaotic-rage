@@ -21,6 +21,7 @@ class Mod;
 class Light;
 class MapMesh;
 class RangeF;
+class btTriangleMesh;
 
 
 class Light {

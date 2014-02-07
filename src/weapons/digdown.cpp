@@ -13,6 +13,7 @@
 #include "../fx/newparticle.h"
 #include "../entity/unit.h"
 #include "../render/render.h"
+#include "../physics_bullet.h"
 #include "weapons.h"
 
 using namespace std;

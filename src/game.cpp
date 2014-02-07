@@ -8,6 +8,7 @@
 #include "rage.h"
 #include "game_state.h"
 #include "map.h"
+#include "physics_bullet.h"
 #include "render/render.h"
 #include "audio/audio.h"
 #include "lua/gamelogic.h"

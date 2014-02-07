@@ -11,6 +11,7 @@
 #include "../util/quadratic.h"
 #include "../map.h"
 #include "../fx/newparticle.h"
+#include "../physics_bullet.h"
 #include "weapons.h"
 
 using namespace std;

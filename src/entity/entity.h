@@ -3,9 +3,7 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <btBulletDynamicsCommon.h>
 #include <stdint.h>
-#include "../physics_bullet.h"
 
 
 using namespace std;
@@ -22,15 +20,12 @@ enum EntityClass {
 };
 
 
-/**
-* Type for EIDs - unique entity identifiers, for network play
-**/
-typedef uint16_t EID;
-
-
 class GameState;
 class AnimPlay;
 class Sound;
+class btTransform;
+class btRigidBody;
+
 
 class Entity
 {
@@ -67,23 +62,23 @@ class Entity
 		/**
 		* Return the world transform for this entity
 		**/
-		virtual btTransform &getTransform() { return body->getWorldTransform(); }
+		virtual btTransform &getTransform();
 
 		/**
 		* Set the world transform for this entity
 		**/
-		virtual void setTransform(btTransform &t) { body->setWorldTransform(t); }
+		virtual void setTransform(btTransform &t);
 
 		/**
 		* Update the entity. Time is provided in milliseconds (ms)
 		**/
 		virtual void update(int delta) = 0;
-
-
-	public:
+		
+		/**
+		* Return the game state for this entity
+		**/
 		GameState * getGameState();
 		
-	protected:
 		/**
 		* Called by entity code to indicate the death of itself
 		**/

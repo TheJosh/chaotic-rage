@@ -3,11 +3,13 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <btBulletDynamicsCommon.h>
 #include "../rage.h"
 
 using namespace std;
 
+
+class btTransform;
+class btCollisionShape;
 
 class Decaying : public Entity
 {

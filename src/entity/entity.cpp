@@ -43,3 +43,20 @@ void Entity::hasDied()
 }
 
 
+/**
+* Return the world transform for this entity
+**/
+btTransform &Entity::getTransform()
+{
+	return body->getWorldTransform();
+}
+
+
+/**
+* Set the world transform for this entity
+**/
+void Entity::setTransform(btTransform &t)
+{
+	body->setWorldTransform(t);
+}
+

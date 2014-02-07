@@ -15,6 +15,7 @@
 #include "mod/confuse_types.h"
 #include "map.h"
 #include "zone.h"
+#include "physics_bullet.h"
 #include "render_opengl/animplay.h"
 #include "render/sprite.h"
 #include "render/render_3d.h"

@@ -5,11 +5,13 @@
 #include <iostream>
 #include <math.h>
 #include "../rage.h"
+#include "../physics_bullet.h"
 #include "../game_state.h"
 #include "../lua/gamelogic.h"
 #include "../render_opengl/animplay.h"
 #include "../mod/unittype.h"
 #include "../mod/vehicletype.h"
+#include "../util/btCRKinematicCharacterController.h"
 #include "player.h"
 
 

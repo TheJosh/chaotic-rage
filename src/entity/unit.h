@@ -4,8 +4,6 @@
 
 #pragma once
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
-#include "../util/btCRKinematicCharacterController.h"
-
 #include "entity.h"
 #include "../mod/unittype.h"
 
@@ -22,6 +20,7 @@ class PickupType;
 class Vehicle;
 class Object;
 class UnitType;
+class btCRKinematicCharacterController;
 
 
 enum Faction {

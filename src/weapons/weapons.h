@@ -31,6 +31,9 @@ extern cfg_opt_t weapconf_rocket [];
 extern cfg_opt_t weapconf_attractor [];
 
 
+class PhysicsCallback;
+
+
 /**
 * Weapons which fire by doing a raycast
 * This is most common weapons (e.g. machineguns, pistols, etc)

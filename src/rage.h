@@ -22,7 +22,7 @@
 // Specified as a float to help out some arithmetic
 #define ANIMATION_FPS	12.0
 
-
+// These are defined by SDL, but we redefine them to save loading SDL
 #include <stdint.h>
 typedef int8_t      Sint8;
 typedef uint8_t     Uint8;
@@ -32,8 +32,12 @@ typedef int32_t     Sint32;
 typedef uint32_t    Uint32;
 typedef int64_t     Sint64;
 typedef uint64_t    Uint64;
+
+// CRC32s are used for unique IDs for entity types
 typedef uint32_t    CRC32;
 
+// Unique IDs for network play
+typedef uint16_t    EID;
 
 // Saves loading sprite.h and it's dependencies - SDL and OpenGL
 class Sprite;
@@ -42,12 +46,13 @@ typedef Sprite* SpritePtr;
 // Saves loading SDL
 struct SDL_RWops;
 
-// Some values for things are a randomly chosen between a min and a max
+// Some values for things are a randomly chosen between a min and a max (ints)
 typedef struct range {
 	int min;
 	int max;
 } Range;
 
+// Some values for things are a randomly chosen between a min and a max (floats)
 class RangeF {
 	public:
 		float min;
@@ -55,7 +60,7 @@ class RangeF {
 		RangeF() { min = 0.0f, max = 0.0f; }
 };
 
-
+// A buttload of class definitions for forward-decls.
 class AIType;
 class AILogic;
 class AnimPlay;

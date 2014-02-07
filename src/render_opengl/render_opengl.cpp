@@ -10,6 +10,7 @@
 #include <math.h>
 
 #include "../rage.h"
+#include "../physics_bullet.h"
 #include "../game_state.h"
 #include "../entity/player.h"
 #include "../util/obj.h"

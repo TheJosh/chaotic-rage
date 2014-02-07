@@ -15,6 +15,7 @@
 
 #include "game_state.h"
 #include "map.h"
+#include "physics_bullet.h"
 #include "mod/mod_manager.h"
 #include "render_opengl/hud.h"
 #include "entity/decaying.h"

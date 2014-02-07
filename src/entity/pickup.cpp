@@ -5,6 +5,7 @@
 #include <iostream>
 #include <math.h>
 #include "../rage.h"
+#include "../physics_bullet.h"
 #include "../game_state.h"
 #include "../render_opengl/animplay.h"
 #include "../mod/pickuptype.h"

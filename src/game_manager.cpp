@@ -6,6 +6,7 @@
 #include "game_manager.h"
 #include "game_state.h"
 #include "map.h"
+#include "physics_bullet.h"
 #include "mod/campaign.h"
 #include "net/net.h"
 #include "net/net_client.h"

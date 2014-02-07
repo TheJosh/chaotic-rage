@@ -9,6 +9,7 @@
 #include "../rage.h"
 #include "../game_state.h"
 #include "../fx/newparticle.h"
+#include "../physics_bullet.h"
 #include "ghost_objects.h"
 #include "weapons.h"
 
