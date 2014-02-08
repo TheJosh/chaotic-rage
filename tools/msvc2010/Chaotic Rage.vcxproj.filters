@@ -192,16 +192,7 @@
     <ClCompile Include="..\..\src\game.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\gamestate.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\intro.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\map.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\menu.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\physics_bullet.cpp">
@@ -615,6 +606,15 @@
     <ClCompile Include="..\..\src\game_manager.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\menu.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\intro.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game_state.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">
@@ -626,13 +626,7 @@
     <ClInclude Include="..\..\src\gamestate.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\intro.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\map.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\menu.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\physics_bullet.h">
@@ -1095,6 +1089,12 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\render_opengl\gl_debug.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\menu.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\intro.h">
       <Filter>src\render</Filter>
     </ClInclude>
   </ItemGroup>
