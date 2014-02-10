@@ -28,7 +28,7 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 	client.cpp \
 	events.cpp \
 	game.cpp \
-	gamestate.cpp \
+	game_state.cpp \
 	game_manager.cpp \
 	map.cpp \
 	physics_bullet.cpp \
