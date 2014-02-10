@@ -149,7 +149,7 @@
     <ClCompile Include="..\..\src\events.cpp" />
     <ClCompile Include="..\..\src\fx\newparticle.cpp" />
     <ClCompile Include="..\..\src\game.cpp" />
-    <ClCompile Include="..\..\src\gamestate.cpp" />
+    <ClCompile Include="..\..\src\game_state.cpp" />
     <ClCompile Include="..\..\src\game_manager.cpp" />
     <ClCompile Include="..\..\src\guichan\actionevent.cpp" />
     <ClCompile Include="..\..\src\guichan\basiccontainer.cpp" />
@@ -210,7 +210,7 @@
     <ClCompile Include="..\..\src\http\happyhttp.cpp" />
     <ClCompile Include="..\..\src\http\serverlist.cpp" />
     <ClCompile Include="..\..\src\http\url.cpp" />
-    <ClCompile Include="..\..\src\intro.cpp" />
+    <ClCompile Include="..\..\src\render_opengl\intro.cpp" />
     <ClCompile Include="..\..\src\lua\ailogic.cpp" />
     <ClCompile Include="..\..\src\lua\gamelogic.cpp" />
     <ClCompile Include="..\..\src\lua\lua_hudlabel_lib.cpp" />
@@ -218,7 +218,7 @@
     <ClCompile Include="..\..\src\lua\lua_unitinfo_lib.cpp" />
     <ClCompile Include="..\..\src\lua\lua_vector3_lib.cpp" />
     <ClCompile Include="..\..\src\map.cpp" />
-    <ClCompile Include="..\..\src\menu.cpp" />
+    <ClCompile Include="..\..\src\render_opengl\menu.cpp" />
     <ClCompile Include="..\..\src\mod\aitype.cpp" />
     <ClCompile Include="..\..\src\mod\campaign.cpp" />
     <ClCompile Include="..\..\src\mod\confuse_types.cpp" />
@@ -371,13 +371,13 @@
     <ClInclude Include="..\..\src\http\happyhttp.h" />
     <ClInclude Include="..\..\src\http\serverlist.h" />
     <ClInclude Include="..\..\src\http\url.h" />
-    <ClInclude Include="..\..\src\intro.h" />
+    <ClInclude Include="..\..\src\render_opengl\intro.h" />
     <ClInclude Include="..\..\src\lua\ailogic.h" />
     <ClInclude Include="..\..\src\lua\gamelogic.h" />
     <ClInclude Include="..\..\src\lua\luatimer.h" />
     <ClInclude Include="..\..\src\lua\lua_libs.h" />
     <ClInclude Include="..\..\src\map.h" />
-    <ClInclude Include="..\..\src\menu.h" />
+    <ClInclude Include="..\..\src\render_opengl\menu.h" />
     <ClInclude Include="..\..\src\mod\aitype.h" />
     <ClInclude Include="..\..\src\mod\campaign.h" />
     <ClInclude Include="..\..\src\mod\confuse_types.h" />
