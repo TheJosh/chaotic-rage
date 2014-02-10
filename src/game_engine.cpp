@@ -34,7 +34,7 @@ using namespace std;
 GameEngine::GameEngine()
 {
 	this->running = false;
-	this->reset_mouse = false;
+	this->mouse_grabbed = false;
 	
 	this->render = NULL;
 	this->audio = NULL;
@@ -79,7 +79,7 @@ void GameEngine::setMouseGrab(bool newval)
 {
 	if (this->cmdline->mouseGrab == false) return;
 	
-	this->reset_mouse = newval;
+	this->mouse_grabbed = newval;
 	this->render->setMouseGrab(newval);
 }
 
@@ -89,7 +89,7 @@ void GameEngine::setMouseGrab(bool newval)
 **/
 bool GameEngine::getMouseGrab()
 {
-	return this->reset_mouse;
+	return this->mouse_grabbed;
 }
 
 

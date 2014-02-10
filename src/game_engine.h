@@ -31,13 +31,19 @@ namespace gcn {
 class GameEngine
 {
 	protected:
+		// FPS ringbuffer + average
 		int ticksum;
 		int tickindex;
 		int ticklist[FPS_SAMPLES];
 
+		// Is the mouse currently "grabbed"?
+		bool mouse_grabbed;
+
 	public:
+		// Is the game running?
 		bool running;
 
+		// Pointers to all of the subsystems
 		Render* render;
 		Audio* audio;
 		GameLogic* logic;
@@ -49,8 +55,7 @@ class GameEngine
 		ServerConfig* sconf;
 		ModManager* mm;
 
-		bool reset_mouse;
-
+		// Dialogs and guichan
 		list<Dialog*> dialogs;
 		gcn::Gui* gui;
 		gcn::SDLInput* guiinput;
@@ -60,19 +65,26 @@ class GameEngine
 		GameEngine();
 		~GameEngine();
 		
+	private:
+		// Disable copy-constructor and copy-assignment
+		GameEngine(const GameEngine& that);
+		GameEngine& operator= (GameEngine that);
+		
 	public:
-		// Mouse reset
+		// Mouse grab
 		void setMouseGrab(bool reset);
 		bool getMouseGrab();
 
-		// GUI
+		// Init guichan
 		void initGuichan();
+		
+		// Dialog management
 		bool hasDialog(string name);
 		void addDialog(Dialog * dialog);
 		void remDialog(Dialog * dialog);
 		bool hasDialogs();
 
-		// Frames-per-second
+		// Frames-per-second calcs
 		void calcAverageTick(int newtick);
 		float getAveTick();
 };
