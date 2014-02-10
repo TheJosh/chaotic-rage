@@ -75,7 +75,11 @@ class DebugLine
 
 
 /**
-* Main game state storage. Contains pointers to everything.
+* Contains all of the state variables for the game
+*
+* How to decide if it belongs here or in the GameEngine class:
+*  - If it should be network-replicated, it belongs here
+*  - If it is local to this instance, it belongs over there
 **/
 class GameState
 {

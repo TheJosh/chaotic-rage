@@ -150,6 +150,7 @@
     <ClCompile Include="..\..\src\fx\newparticle.cpp" />
     <ClCompile Include="..\..\src\game.cpp" />
     <ClCompile Include="..\..\src\game_state.cpp" />
+    <ClCompile Include="..\..\src\game_engine.cpp" />
     <ClCompile Include="..\..\src\game_manager.cpp" />
     <ClCompile Include="..\..\src\guichan\actionevent.cpp" />
     <ClCompile Include="..\..\src\guichan\basiccontainer.cpp" />
@@ -292,7 +293,8 @@
     <ClInclude Include="..\..\src\entity\wall.h" />
     <ClInclude Include="..\..\src\fx\newparticle.h" />
     <ClInclude Include="..\..\src\game.h" />
-    <ClInclude Include="..\..\src\gamestate.h" />
+    <ClInclude Include="..\..\src\game_state.h" />
+    <ClInclude Include="..\..\src\game_engine.h" />
     <ClInclude Include="..\..\src\game_manager.h" />
     <ClInclude Include="..\..\src\guichan\actionevent.hpp" />
     <ClInclude Include="..\..\src\guichan\actionlistener.hpp" />

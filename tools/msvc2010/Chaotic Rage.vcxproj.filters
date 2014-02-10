@@ -615,6 +615,9 @@
     <ClCompile Include="..\..\src\game_state.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\game_engine.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">
@@ -623,7 +626,10 @@
     <ClInclude Include="..\..\src\game.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\gamestate.h">
+    <ClInclude Include="..\..\src\game_state.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game_engine.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\map.h">
