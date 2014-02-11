@@ -15,6 +15,7 @@
 #include "mod/mod.h"
 #include "map.h"
 #include "game_state.h"
+#include "game_engine.h"
 #include "game_manager.h"
 #include "render_opengl/menu.h"
 #include "render_opengl/intro.h"
@@ -46,12 +47,17 @@ int main (int argc, char ** argv)
 	chdirToDataDir();
 	SDL_Init(0);
 	seedRandom();
-	
+
 	st = new GameState();
 	st->cmdline = new CommandLineArgs(st, argc, argv);
 	st->cconf = new ClientConfig();
 	st->cmdline->process();
 	
+	new GameEngine();
+	GEng()->cmdline = new CommandLineArgs(st, argc, argv);
+	GEng()->cconf = new ClientConfig();
+	GEng()->cmdline->process();
+
 	// Load render, audio, etc according to config
 	st->cconf->initRender(st);
 	st->cconf->initAudio(st);

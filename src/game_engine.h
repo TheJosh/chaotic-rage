@@ -89,3 +89,8 @@ class GameEngine
 		float getAveTick();
 };
 
+
+/**
+* Returns a pointer to the global GameEngine object
+**/
+GameEngine* GEng();

@@ -27,6 +27,20 @@
 using namespace std;
 
 
+/**
+* The global GameEngine object
+**/
+static GameEngine* g_geng;
+
+
+/**
+* Returns the global GameEngine object
+**/
+GameEngine* GEng()
+{
+	return g_geng;
+}
+
 
 /**
 * This is a singleton
@@ -50,6 +64,8 @@ GameEngine::GameEngine()
 	this->ticksum = 0;
 	this->tickindex = 0;
 	memset(&this->ticklist, 0, sizeof(this->ticklist));
+
+	g_geng = this;
 }
 
 
