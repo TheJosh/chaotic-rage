@@ -14,12 +14,12 @@ using namespace std;
 class CommandLineArgs
 {
 	private:
-		GameState *st;
 		int argc;
 		char ** argv;
 		
 	public:
 		string mod;
+		bool modlist;
 		string campaign;
 		string map;
 		string gametype;
@@ -31,8 +31,8 @@ class CommandLineArgs
 		bool mouseGrab;
 		
 	public:
-		CommandLineArgs(GameState *st, int argc, char ** argv)
-			: st(st), argc(argc), argv(argv), host(false), mouseGrab(true)
+		CommandLineArgs(int argc, char ** argv)
+			: argc(argc), argv(argv), modlist(false), host(false), mouseGrab(true)
 			{}
 			
 		void process();

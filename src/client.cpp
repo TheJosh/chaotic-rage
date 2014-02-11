@@ -51,7 +51,7 @@ int main (int argc, char ** argv)
 	st = new GameState();
 	
 	new GameEngine();
-	GEng()->cmdline = new CommandLineArgs(st, argc, argv);
+	GEng()->cmdline = new CommandLineArgs(argc, argv);
 	GEng()->cconf = new ClientConfig();
 	GEng()->cmdline->process();
 
@@ -90,8 +90,17 @@ int main (int argc, char ** argv)
 		exit(0);
 	#endif
 
+	// List of mods
+	if (GEng()->cmdline->modlist) {
+		cout << "Available mods:\n";
+		vector<string>* modnames = st->mm->getAvailMods();
+		for (vector<string>::iterator it = modnames->begin(); it != modnames->end(); it++) {
+			cout << "    " << (*it) << "\n";
+		}
+		delete(modnames);
+	
 	// Campaign
-	if (GEng()->cmdline->campaign != "") {
+	} else if (GEng()->cmdline->campaign != "") {
 		gm->loadModBits(NULL);
 		Campaign *c = st->mm->getSupplOrBase()->getCampaign(GEng()->cmdline->campaign);
 		gm->startCampaign(c, "robot", 0, 1);

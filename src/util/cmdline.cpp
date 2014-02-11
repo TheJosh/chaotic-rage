@@ -7,8 +7,6 @@
 #include <iostream>
 #include <getopt.h>
 #include "../rage.h"
-#include "../game_state.h"
-#include "../mod/mod_manager.h"
 #include "cmdline.h"
 
 
@@ -118,15 +116,7 @@ void CommandLineArgs::process()
 				break;
 				
 			case 'l':
-				{
-					cout << "Available mods:\n";
-					vector<string>* modnames = st->mm->getAvailMods();
-					for (vector<string>::iterator it = modnames->begin(); it != modnames->end(); it++) {
-						cout << "    " << (*it) << "\n";
-					}
-					delete(modnames);
-					exit(0);
-				}
+				this->modlist = true;
 				break;
 				
 				
