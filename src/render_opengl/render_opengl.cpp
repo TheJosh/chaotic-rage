@@ -526,6 +526,7 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 			texture_format = GL_RGBA;
 			target_format = GL_RGBA;
 		} else {
+			texture_format = target_format = 0;
 			assert(1); // TODO GLES removed: texture_format = GL_BGRA;
 		}
 		
@@ -534,8 +535,13 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 			texture_format = GL_RGB;
 			target_format = GL_RGB;
 		} else {
+			texture_format = target_format = 0;
 			assert(1); // TODO GLES removed: texture_format = GL_BGR;
 		}
+		
+	} else {
+		texture_format = target_format = 0;
+		assert(1);
 	}
 
 	#ifdef GLES
@@ -609,6 +615,7 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 			if (surf->format->Rmask == 0x000000ff) {
 				texture_format = GL_RGBA;
 			} else {
+				texture_format = 0;
 				assert(1); // TODO GLES removed: texture_format = GL_BGRA;
 			}
 		
@@ -616,6 +623,7 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 			if (surf->format->Rmask == 0x000000ff) {
 				texture_format = GL_RGB;
 			} else {
+				texture_format = 0;
 				assert(1); // TODO GLES removed: texture_format = GL_BGR;
 			}
 		
@@ -1706,11 +1714,7 @@ void RenderOpenGL::mainRot()
 		angle = st->game_time / 100.0;
 
 	} else {
-		if (this->viewmode == 0) {
-			tilt = 17.0f;
-			dist = 25.0f;
-			lift = 0.0f;
-		} else if (this->viewmode == 1) {
+		if (this->viewmode == 1) {
 			tilt = 70.0f;
 			dist = 50.0f;
 			lift = 0.0f;
@@ -1718,6 +1722,10 @@ void RenderOpenGL::mainRot()
 			tilt = 10.0f;
 			dist = 0.0f;
 			lift = 1.72f;
+		} else {
+			tilt = 17.0f;
+			dist = 25.0f;
+			lift = 0.0f;
 		}
 		
 		// Load the character details into the variables

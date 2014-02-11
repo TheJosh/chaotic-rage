@@ -27,11 +27,15 @@ void chdirToDataDir()
 		return;
 	}
 	
-	// Look in /usr/share
+	// Look in /usr/share/chaoticrage
 	if (stat("/usr/share/chaoticrage/data", &sb) == 0) {
-		chdir("/usr/share/chaoticrage");
-		return;
+		if (chdir("/usr/share/chaoticrage") == 0) {
+			return;
+		}
 	}
+	
+	cerr << "Could not find data directory\n";
+	exit(0);
 }
 
 
