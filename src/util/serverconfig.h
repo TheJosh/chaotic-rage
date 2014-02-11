@@ -13,8 +13,6 @@ using namespace std;
 class ServerConfig
 {
 	public:
-		string map;
-		string gametype;
 		unsigned int port;
 
 	public:

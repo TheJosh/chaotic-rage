@@ -114,9 +114,6 @@ GameState::GameState()
 	this->client = NULL;
 	this->server = NULL;
 	this->physics = NULL;
-	this->cmdline = NULL;
-	this->cconf = NULL;
-	this->sconf = NULL;
 	this->mm = NULL;
 
 	this->ticksum = 0;

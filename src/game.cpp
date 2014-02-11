@@ -15,7 +15,6 @@
 #include "net/net_client.h"
 #include "net/net_server.h"
 #include "entity/player.h"
-#include "util/serverconfig.h"
 #include "game.h"
 
 
@@ -47,7 +46,7 @@ void gameLoop(GameState *st, Render *render)
 	st->render->loadHeightmap();
 
 	if (st->server != NULL) {
-		st->server->listen(st->sconf->port);
+		st->server->listen();
 	}
 
 	if (st->client == NULL) {

@@ -14,8 +14,6 @@ using namespace std;
 
 static cfg_opt_t config_opts[] =
 {
-	CFG_STR((char*) "map", (char*)"nettest", CFGF_NONE),
-	CFG_STR((char*) "gametype", (char*)"test", CFGF_NONE),
 	CFG_INT((char*) "port", 17778, CFGF_NONE),
 	CFG_END()
 };
@@ -48,8 +46,6 @@ void ServerConfig::load()
 		this->savedefault();
 	}
 
-	this->map = cfg_getstr(cfg, "map");
-	this->gametype = cfg_getstr(cfg, "gametype");
 	this->port = cfg_getint(cfg, "port");
 
 	cfg_free(cfg);
@@ -70,8 +66,6 @@ void ServerConfig::save()
 	cfg_parse(cfg, filename.c_str());
 
 	// Fill from variables
-	cfg_setstr(cfg, "map", this->map.c_str());
-	cfg_setstr(cfg, "gametype", this->gametype.c_str());
 	cfg_setint(cfg, "port", this->port);
 
 	// Write to file
@@ -91,15 +85,8 @@ void ServerConfig::savedefault()
 
 	char * def = (char*)
 		"#\n"
-		"# This is the configuration file for the Chaotic Rage dedicated server.\n"
+		"# This is the configuration file for Chaotic Rage server settings.\n"
 		"#\n"
-		"\n"
-		"# The map to play on\n"
-		"map = nettest\n"
-		"\n"
-		"# The gametype to play\n"
-		"gametype = test\n"
-		"\n"
 		"# The server will listen on all interfaces on this UDP port.\n"
 		"# The default port is 17778; this is for historical reasons\n"
 		"# because Chaotic Rage classic uses 17777.\n"

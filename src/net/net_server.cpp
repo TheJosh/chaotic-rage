@@ -8,6 +8,7 @@
 #include <SDL_net.h>
 #include "net.h"
 #include "net_server.h"
+#include "../util/serverconfig.h"
 #include "../rage.h"
 #include "../game_state.h"
 #include "../map.h"
@@ -22,10 +23,12 @@
 using namespace std;
 
 
-NetServer::NetServer(GameState * st)
+NetServer::NetServer(GameState * st, ServerConfig * conf)
 {
 	this->st = st;
 	st->server = this;
+	
+	this->conf = conf;
 	
 	this->seq = 1;
 	this->seq_pred = new NetServerSeqPred(this);
@@ -205,11 +208,11 @@ void NetServer::update()
 /**
 * Set the port for listening for connections
 **/
-void NetServer::listen(int port)
+void NetServer::listen()
 {
-	SDLNet_ResolveHost(&this->ipaddress, NULL, port);
+	SDLNet_ResolveHost(&this->ipaddress, NULL, this->conf->port);
 
-	this->sock = SDLNet_UDP_Open(port);
+	this->sock = SDLNet_UDP_Open(this->conf->port);
 	if (this->sock == NULL) {
 		reportFatalError(SDLNet_GetError());
 	}

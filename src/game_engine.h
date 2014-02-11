@@ -52,7 +52,6 @@ class GameEngine
 		PhysicsBullet* physics;
 		CommandLineArgs* cmdline;
 		ClientConfig* cconf;
-		ServerConfig* sconf;
 		ModManager* mm;
 
 		// Dialogs and guichan

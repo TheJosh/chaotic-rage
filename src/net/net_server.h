@@ -14,12 +14,15 @@ using namespace std;
 // How far behind a client can be before being dropped
 #define MAX_SEQ_LAG 20
 
+class ServerConfig;
+
 
 class NetServer {
 	friend class NetServerSeqPred;
 	
 	private:
 		GameState * st;
+		ServerConfig * conf;
 		IPaddress ipaddress;
 		UDPsocket sock;
 		list<NetMsg> messages;
@@ -29,12 +32,12 @@ class NetServer {
 		NetServerSeqPred * seq_pred;
 		
 	public:
-		NetServer(GameState * st);
+		NetServer(GameState * st, ServerConfig * conf);
 		~NetServer();
 		
 	public:
 		void update();
-		void listen(int port);
+		void listen();
 		void dropClient(NetServerClientInfo *client);
 		
 	public:

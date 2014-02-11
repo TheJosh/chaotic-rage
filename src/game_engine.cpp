@@ -58,7 +58,6 @@ GameEngine::GameEngine()
 	this->physics = NULL;
 	this->cmdline = NULL;
 	this->cconf = NULL;
-	this->sconf = NULL;
 	this->mm = NULL;
 
 	this->ticksum = 0;
@@ -82,7 +81,6 @@ GameEngine::~GameEngine()
 	delete(this->physics);
 	delete(this->cmdline);
 	delete(this->cconf);
-	delete(this->sconf);
 	delete(this->mm);
 }
 

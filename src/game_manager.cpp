@@ -204,14 +204,13 @@ void GameManager::startCampaign(Campaign* c, string unittype, int viewmode, unsi
 **/
 void GameManager::startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local, bool host)
 {
+	ServerConfig* sconf;
+	
 	st->physics->init();
 	
 	if (host) {
-		if (st->sconf == NULL) {
-			st->sconf = new ServerConfig();
-		}
-		
-		new NetServer(st);
+		sconf = new ServerConfig();
+		new NetServer(st, sconf);
 	}
 	
 	// Load map
@@ -241,7 +240,10 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 	// Begin!
 	gameLoop(st, st->render);
 	
-	if (host) delete(st->server);
+	if (host) {
+		delete(st->server);
+		delete(sconf);
+	}
 }
 
 	
