@@ -8,6 +8,7 @@
 
 #include "../rage.h"
 #include "../game_state.h"
+#include "../game_engine.h"
 #include "../render_opengl/menu.h"
 #include "../render_opengl/render_opengl.h"
 #include "../render_opengl/render_opengl_settings.h"
@@ -106,8 +107,8 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 	((RenderOpenGL*)st->render)->setSettings(nu);
 	
 	// Save
-	this->st->cconf->gl = nu;
-	this->st->cconf->save();
+	GEng()->cconf->gl = nu;
+	GEng()->cconf->save();
 
 	// If we need a restart, tell the user
 	if (restart) {

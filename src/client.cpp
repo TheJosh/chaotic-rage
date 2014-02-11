@@ -49,9 +49,6 @@ int main (int argc, char ** argv)
 	seedRandom();
 
 	st = new GameState();
-	st->cmdline = new CommandLineArgs(st, argc, argv);
-	st->cconf = new ClientConfig();
-	st->cmdline->process();
 	
 	new GameEngine();
 	GEng()->cmdline = new CommandLineArgs(st, argc, argv);
@@ -59,10 +56,10 @@ int main (int argc, char ** argv)
 	GEng()->cmdline->process();
 
 	// Load render, audio, etc according to config
-	st->cconf->initRender(st);
-	st->cconf->initAudio(st);
-	st->cconf->initPhysics(st);
-	st->cconf->initMods(st);
+	GEng()->cconf->initRender(st);
+	GEng()->cconf->initAudio(st);
+	GEng()->cconf->initPhysics(st);
+	GEng()->cconf->initMods(st);
 	
 	#ifdef RELEASE
 		// This has to be after the OpenGL init
@@ -94,20 +91,20 @@ int main (int argc, char ** argv)
 	#endif
 
 	// Campaign
-	if (st->cmdline->campaign != "") {
+	if (GEng()->cmdline->campaign != "") {
 		gm->loadModBits(NULL);
-		Campaign *c = st->mm->getSupplOrBase()->getCampaign(st->cmdline->campaign);
+		Campaign *c = st->mm->getSupplOrBase()->getCampaign(GEng()->cmdline->campaign);
 		gm->startCampaign(c, "robot", 0, 1);
 		
 	// Arcade game
-	} else if (st->cmdline->map != "" && st->cmdline->gametype != "" && st->cmdline->unittype != "") {
+	} else if (GEng()->cmdline->map != "" && GEng()->cmdline->gametype != "" && GEng()->cmdline->unittype != "") {
 		gm->loadModBits(NULL);
-		gm->startGame(gm->getMapRegistry()->get(st->cmdline->map), st->cmdline->gametype, st->cmdline->unittype, 0, 1, st->cmdline->host);
+		gm->startGame(gm->getMapRegistry()->get(GEng()->cmdline->map), GEng()->cmdline->gametype, GEng()->cmdline->unittype, 0, 1, GEng()->cmdline->host);
 		
 	// Network join
-	} else if (st->cmdline->join != "") {
+	} else if (GEng()->cmdline->join != "") {
 		gm->loadModBits(NULL);
-		gm->networkJoin(st->cmdline->join, NULL);
+		gm->networkJoin(GEng()->cmdline->join, NULL);
 		
 	// Regular menu
 	} else if (st->render->is3D()) {

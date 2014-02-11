@@ -14,6 +14,7 @@
 #include <math.h>
 
 #include "game_state.h"
+#include "game_engine.h"
 #include "map.h"
 #include "physics_bullet.h"
 #include "mod/mod_manager.h"
@@ -530,7 +531,7 @@ list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 **/
 void GameState::setMouseGrab(bool newval)
 {
-	if (this->cmdline->mouseGrab == false) return;
+	if (GEng()->cmdline->mouseGrab == false) return;
 	
 	this->reset_mouse = newval;
 	this->render->setMouseGrab(newval);

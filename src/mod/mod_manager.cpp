@@ -8,6 +8,7 @@
 #include <confuse.h>
 #include "../rage.h"
 #include "../game_state.h"
+#include "../game_engine.h"
 #include "../util/ui_update.h"
 #include "../util/cmdline.h"
 #include "../render_opengl/assimpmodel.h"
@@ -50,10 +51,10 @@ bool loadMods(GameState *st, UIUpdate* ui)
 	if (ui) ui->updateUI();
 	
 	// If a suppl mod has been specified on the cmdline, try to load it
-	if (st->cmdline && st->cmdline->mod != "" && st->cmdline->mod != mod->name) {
-		Mod* newsuppl = new Mod(st, "data/" + st->cmdline->mod);
+	if (GEng()->cmdline->mod != "" && GEng()->cmdline->mod != mod->name) {
+		Mod* newsuppl = new Mod(st, "data/" + GEng()->cmdline->mod);
 		if (! newsuppl->load(ui)) {
-			reportFatalError("Unable to load mod '" + st->cmdline->mod + "'.");
+			reportFatalError("Unable to load mod '" + GEng()->cmdline->mod + "'.");
 		}
 		st->mm->addMod(newsuppl);
 		st->mm->setSuppl(newsuppl);

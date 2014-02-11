@@ -6,6 +6,7 @@
 #include <confuse.h>
 #include "../rage.h"
 #include "../game_state.h"
+#include "../game_engine.h"
 #include "../render_opengl/render_opengl.h"
 #include "../render_opengl/render_opengl_settings.h"
 #include "../render/render_debug.h"
@@ -92,10 +93,10 @@ void ClientConfig::save()
 **/
 void ClientConfig::initRender(GameState *st)
 {
-	if (st->cmdline->render == "debug") {
+	if (GEng()->cmdline->render == "debug") {
 		new RenderDebug(st);
 		
-	} else if (st->cmdline->render == "null") {
+	} else if (GEng()->cmdline->render == "null") {
 		new RenderNull(st);
 		
 	} else {
@@ -112,7 +113,7 @@ void ClientConfig::initRender(GameState *st)
 **/
 void ClientConfig::initAudio(GameState *st)
 {
-	if (st->cmdline->audio == "null") {
+	if (GEng()->cmdline->audio == "null") {
 		new AudioNull(st);
 		
 	} else {
