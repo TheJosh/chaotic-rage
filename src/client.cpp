@@ -48,14 +48,15 @@ int main (int argc, char ** argv)
 	SDL_Init(0);
 	seedRandom();
 
-	st = new GameState();
-	
 	new GameEngine();
+	st = new GameState();
+
+	// Parse command line args
 	GEng()->cmdline = new CommandLineArgs(argc, argv);
-	GEng()->cconf = new ClientConfig();
 	GEng()->cmdline->process();
 
 	// Load render, audio, etc according to config
+	GEng()->cconf = new ClientConfig();
 	GEng()->cconf->initRender(st);
 	GEng()->cconf->initAudio(st);
 	GEng()->cconf->initPhysics(st);
