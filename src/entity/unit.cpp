@@ -17,6 +17,7 @@
 #include "../mod/vehicletype.h"
 #include "../mod/weapontype.h"
 #include "../render_opengl/animplay.h"
+#include "../game_engine.h"
 #include "../net/net_server.h"
 #include "../fx/newparticle.h"
 #include "unit.h"
@@ -402,8 +403,8 @@ void Unit::update(int delta)
 		return;
 	}
 	
-	if (st->server) {
-		st->server->addmsgUnitState(this);
+	if (GEng()->server != NULL) {
+		GEng()->server->addmsgUnitState(this);
 	}
 
 	// If in a vehicle, move the ghost to AIs know where the unit is

@@ -7,6 +7,7 @@
 #include <math.h>
 #include "rage.h"
 #include "game_state.h"
+#include "game_engine.h"
 #include "map.h"
 #include "physics_bullet.h"
 #include "render/render.h"
@@ -45,8 +46,8 @@ void gameLoop(GameState *st, Render *render)
 	st->render->preGame();
 	st->render->loadHeightmap();
 
-	if (st->server != NULL) {
-		st->server->listen();
+	if (GEng()->server != NULL) {
+		GEng()->server->listen();
 	}
 
 	if (st->client == NULL) {
@@ -90,8 +91,8 @@ void gameLoop(GameState *st, Render *render)
 				st->client->update();
 			}
 			
-			if (st->server) {
-				st->server->update();
+			if (GEng()->server != NULL) {
+				GEng()->server->update();
 			}
 		}
 		

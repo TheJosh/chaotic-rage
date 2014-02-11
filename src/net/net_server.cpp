@@ -26,8 +26,6 @@ using namespace std;
 NetServer::NetServer(GameState * st, ServerConfig * conf)
 {
 	this->st = st;
-	st->server = this;
-	
 	this->conf = conf;
 	
 	this->seq = 1;

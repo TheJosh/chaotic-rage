@@ -40,7 +40,7 @@ static GameState *g_st;
 static bool EntityEraserDead(Entity* e)
 {
 	if (e->del == false) return false;
-	if (g_st->server != NULL) g_st->server->addmsgEntityRem(e);
+	if (GEng()->server != NULL) GEng()->server->addmsgEntityRem(e);
 	delete e;
 	return true;
 }
@@ -112,7 +112,6 @@ GameState::GameState()
 	this->audio = NULL;
 	this->logic = NULL;
 	this->client = NULL;
-	this->server = NULL;
 	this->physics = NULL;
 	this->mm = NULL;
 
@@ -218,8 +217,8 @@ void GameState::addPickup(Pickup* pickup)
 	
 	this->entities_add.push_back(pickup);
 	
-	if (this->server) {
-		this->server->addmsgPickupState(pickup);
+	if (GEng()->server != NULL) {
+		GEng()->server->addmsgPickupState(pickup);
 	}
 }
 
@@ -238,8 +237,8 @@ void GameState::addAmmoRound(AmmoRound* ar)
 {
 	this->entities_add.push_back(ar);
 	
-	if (this->server) {
-		this->server->addmsgAmmoRoundState(ar);
+	if (GEng()->server != NULL) {
+		GEng()->server->addmsgAmmoRoundState(ar);
 	}
 }
 

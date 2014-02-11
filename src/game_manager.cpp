@@ -5,6 +5,7 @@
 #include <iostream>
 #include "game_manager.h"
 #include "game_state.h"
+#include "game_engine.h"
 #include "map.h"
 #include "physics_bullet.h"
 #include "mod/campaign.h"
@@ -204,13 +205,15 @@ void GameManager::startCampaign(Campaign* c, string unittype, int viewmode, unsi
 **/
 void GameManager::startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local, bool host)
 {
-	ServerConfig* sconf;
+	ServerConfig* sconf = NULL;
+	NetServer* server = NULL;
 	
 	st->physics->init();
 	
 	if (host) {
 		sconf = new ServerConfig();
-		new NetServer(st, sconf);
+		server = new NetServer(st, sconf);
+		GEng()->server = server;
 	}
 	
 	// Load map
@@ -240,8 +243,10 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 	// Begin!
 	gameLoop(st, st->render);
 	
+	// Cleanup
 	if (host) {
-		delete(st->server);
+		GEng()->server = NULL;
+		delete(server);
 		delete(sconf);
 	}
 }

@@ -124,7 +124,6 @@ class GameState
 		Audio* audio;
 		GameLogic* logic;
 		NetClient* client;
-		NetServer* server;
 		PhysicsBullet* physics;
 		ModManager* mm;
 

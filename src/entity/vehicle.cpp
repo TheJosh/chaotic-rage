@@ -9,6 +9,7 @@
 #include "../game_state.h"
 #include "../render_opengl/animplay.h"
 #include "../mod/vehicletype.h"
+#include "../game_engine.h"
 #include "../net/net_server.h"
 #include "vehicle.h"
 #include "../util/util.h"
@@ -189,8 +190,8 @@ void Vehicle::update(int delta)
 
 	// Send state over network
 	// TODO: only when moving
-	if (st->server != NULL) {
-		st->server->addmsgVehicleState(this);
+	if (GEng()->server != NULL) {
+		GEng()->server->addmsgVehicleState(this);
 	}
 }
 
