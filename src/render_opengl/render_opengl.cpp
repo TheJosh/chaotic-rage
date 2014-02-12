@@ -12,6 +12,7 @@
 #include "../rage.h"
 #include "../physics_bullet.h"
 #include "../game_state.h"
+#include "../game_engine.h"
 #include "../entity/player.h"
 #include "../util/obj.h"
 #include "../util/sdl_util.h"
@@ -1058,9 +1059,9 @@ void RenderOpenGL::loadShaders()
 	}
 	
 	// No mod loaded yet, can't load the shaders
-	if (! this->st->mm) return;
+	if (GEng()->mm == NULL) return;
 	
-	base = this->st->mm->getBase();
+	base = GEng()->mm->getBase();
 	
 	this->shaders["entities"] = loadProgram(base, "entities");
 	this->shaders["bones"] = loadProgram(base, "bones");

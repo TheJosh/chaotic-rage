@@ -73,7 +73,7 @@ vector<string>* GameManager::getUnitTypes()
 **/
 void GameManager::loadModBits(UIUpdate* ui)
 {
-	Mod* mod = st->mm->getSupplOrBase();
+	Mod* mod = GEng()->mm->getSupplOrBase();
 
 	// Load maps
 	delete(this->mapreg);
@@ -86,7 +86,7 @@ void GameManager::loadModBits(UIUpdate* ui)
 	// Gametypes
 	this->gametypes.clear();
 	{
-		vector<GameType*> * ut = st->mm->getAllGameTypes();
+		vector<GameType*> * ut = GEng()->mm->getAllGameTypes();
 		for (vector<GameType*>::iterator it = ut->begin(); it != ut->end(); it++) {
 			this->gametypes.push_back((*it)->name);
 		}
@@ -102,7 +102,7 @@ void GameManager::loadModBits(UIUpdate* ui)
 	// Unittypes
 	this->unittypes.clear();
 	{
-		vector<UnitType*> * ut = st->mm->getAllUnitTypes();
+		vector<UnitType*> * ut = GEng()->mm->getAllUnitTypes();
 		for (vector<UnitType*>::iterator it = ut->begin(); it != ut->end(); it++) {
 			if ((*it)->playable) this->unittypes.push_back((*it)->name);
 		}
@@ -223,9 +223,9 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 	
 	// Load gametype
 	new GameLogic(st);
-	GameType *gt = st->mm->getGameType(gametype);
+	GameType *gt = GEng()->mm->getGameType(gametype);
 	assert(gt);
-	st->logic->selected_unittype = st->mm->getUnitType(unittype);
+	st->logic->selected_unittype = GEng()->mm->getUnitType(unittype);
 	st->logic->execScript(gt->script);
 	
 	// Create players in GameState.
@@ -288,7 +288,7 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	
 	// Load gametype
 	new GameLogic(st);
-	st->logic->selected_unittype = st->mm->getUnitType("robot");
+	st->logic->selected_unittype = GEng()->mm->getUnitType("robot");
 
 	st->render->viewmode = 0;
 	

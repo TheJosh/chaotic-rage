@@ -7,6 +7,7 @@
 #include <SDL.h>
 #include "../rage.h"
 #include "../game_state.h"
+#include "../game_engine.h"
 #include "../zone.h"
 #include "../map.h"
 #include "../entity/player.h"
@@ -391,13 +392,13 @@ LUA_FUNC(add_npc)
 {
 	NPC *p;
 	
-	UnitType *uc = gl->st->mm->getUnitType(*(new string(lua_tostring(L, 1))));
+	UnitType *uc = GEng()->mm->getUnitType(*(new string(lua_tostring(L, 1))));
 	if (uc == NULL) {
 		lua_pushstring(L, "Arg #1 is not an available unittype");
 		lua_error(L);
 	}
 	
-	AIType *ai = gl->st->mm->getAIType(*(new string(lua_tostring(L, 2))));
+	AIType *ai = GEng()->mm->getAIType(*(new string(lua_tostring(L, 2))));
 	if (uc == NULL) {
 		lua_pushstring(L, "Arg #2 is not an available aitype");
 		lua_error(L);
@@ -438,7 +439,7 @@ LUA_FUNC(add_player)
 	Player *p;
 	
 	const char* name = lua_tostring(L, 1);
-	UnitType *uc = gl->st->mm->getUnitType(*(new string(name)));
+	UnitType *uc = GEng()->mm->getUnitType(*(new string(name)));
 	if (uc == NULL) {
 		lua_pushstring(L, "Arg #1 is not an available unittype");
 		lua_error(L);
@@ -509,7 +510,7 @@ LUA_FUNC(ammo_drop)
 	
 	// special ammocrate for current weapon
 	pu = new Pickup(
-		gl->st->mm->getPickupType("ammo_current"),
+		GEng()->mm->getPickupType("ammo_current"),
 		gl->st,
 		gl->st->map->getRandomX(),
 		gl->st->map->getRandomY(),

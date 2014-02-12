@@ -11,6 +11,7 @@
 #include "../render_opengl/guichan_imageloader.h"
 #include "../mod/mod.h"
 #include "../mod/mod_manager.h"
+#include "../game_engine.h"
 #include "../render_opengl/menu.h"
 #include "dialog.h"
 #include "list_models.h"
@@ -24,12 +25,11 @@ using namespace std;
 /**
 * Dialog for mod selection
 **/
-DialogMods::DialogMods(GameState* st, ModManager* mm)
+DialogMods::DialogMods(GameState* st)
 {
 	this->st = st;
-	this->mm = mm;
 	
-	vector<string>* modnames = mm->getAvailMods();
+	vector<string>* modnames = GEng()->mm->getAvailMods();
 	vector<Mod*>* modlist = new vector<Mod*>();
 	for (vector<string>::iterator it = modnames->begin(); it != modnames->end(); it++) {
 		Mod* m = new Mod(st, "data/" + *it);
@@ -73,7 +73,7 @@ gcn::Container * DialogMods::setup()
 	this->modlist = new gcn::DropDown(this->mods);
 	this->modlist->setPosition(p, p);
 	this->modlist->setWidth(w - p - p);
-	this->modlist->setSelected(this->mods->findMod(this->mm->getSupplOrBase()));
+	this->modlist->setSelected(this->mods->findMod(GEng()->mm->getSupplOrBase()));
 	this->modlist->addSelectionListener(this);
 	c->add(this->modlist);
 	
@@ -107,12 +107,12 @@ void DialogMods::action(const gcn::ActionEvent& actionEvent)
 	}
 
 	// If there was a suppl, remove it
-	this->mm->remMod(this->mm->getSuppl());
+	GEng()->mm->remMod(GEng()->mm->getSuppl());
 	
 	// If there is a new suppl, add it
 	if (newsuppl) {
-		this->mm->addMod(newsuppl);
-		this->mm->setSuppl(newsuppl);
+		GEng()->mm->addMod(newsuppl);
+		GEng()->mm->setSuppl(newsuppl);
 	}
 	
 	this->m->loadModBits();

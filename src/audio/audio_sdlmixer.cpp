@@ -9,6 +9,7 @@
 #include <math.h>
 #include "../rage.h"
 #include "../game_state.h"
+#include "../game_engine.h"
 #include "audio_sdlmixer.h"
 #include "../mod/mod.h"
 #include "../mod/mod_manager.h"
@@ -67,7 +68,7 @@ AudioPtr AudioSDLMixer::loadSound(string filename, Mod * mod)
 void AudioSDLMixer::play()
 {
 	if (Mix_PlayingMusic() == 0) {
-		Song *sg = this->st->mm->getRandomSong();
+		Song *sg = GEng()->mm->getRandomSong();
 		if (sg != NULL && sg != this->lastsong) {
 			this->playSong(sg);
 			this->st->addHUDMessage(ALL_SLOTS, "Now playing ", sg->name);

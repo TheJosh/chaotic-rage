@@ -64,7 +64,6 @@ class Menu : public UIUpdate
 		
 	public:
 		// Data for the dialogs
-		ModManager *mm;
 		SpritePtr logo;
 		SpritePtr bg;
 		bool has_campaigns;

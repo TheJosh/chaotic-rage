@@ -29,10 +29,9 @@ class ModManager {
 		vector<Mod*> * mods;
 		Mod* base;
 		Mod* suppl;
-		GameState * st;
 		
 	public:
-		ModManager(GameState * st);
+		ModManager();
 		
 	public:	
 		void addMod(Mod *mod);

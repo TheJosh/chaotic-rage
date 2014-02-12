@@ -111,7 +111,6 @@ GameState::GameState()
 	this->audio = NULL;
 	this->logic = NULL;
 	this->physics = NULL;
-	this->mm = NULL;
 
 	this->ticksum = 0;
 	this->tickindex = 0;
@@ -553,7 +552,7 @@ void GameState::initGuichan()
 		this->guiinput = new gcn::SDLInput();
 		gui->setInput(guiinput);
 		
-		((Render3D*)this->render)->initGuichan(gui, this->mm->getDefaultMod());
+		((Render3D*)this->render)->initGuichan(gui, GEng()->mm->getDefaultMod());
 		
 		this->guitop = new gcn::Container();
 		this->guitop->setPosition(0,0);

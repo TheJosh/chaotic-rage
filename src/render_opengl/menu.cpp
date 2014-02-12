@@ -37,6 +37,7 @@
 #include "../mod/mod_manager.h"
 #include "../map.h"
 #include "../game_manager.h"
+#include "../game_engine.h"
 
 using namespace std;
 
@@ -45,7 +46,6 @@ Menu::Menu(GameState *st, GameManager *gm)
 {
 	this->st = st;
 	this->gm = gm;
-	this->mm = st->mm;
 	this->render = (RenderOpenGL*) st->render;
 	this->dialog = NULL;
 	this->logo = NULL;
@@ -59,7 +59,7 @@ Menu::Menu(GameState *st, GameManager *gm)
 **/
 void Menu::loadModBits(UIUpdate* ui)
 {
-	Mod* mod = st->mm->getSupplOrBase();
+	Mod* mod = GEng()->mm->getSupplOrBase();
 
 	this->gm->loadModBits(ui);
 
@@ -69,7 +69,7 @@ void Menu::loadModBits(UIUpdate* ui)
 	delete(this->logo);
 	this->logo = this->render->loadSprite("menu/logo.png", mod);
 	if (!logo) {
-		this->logo = this->render->loadSprite("menu/logo.png", st->mm->getBase());
+		this->logo = this->render->loadSprite("menu/logo.png", GEng()->mm->getBase());
 	}
 
 	if (ui) ui->updateUI();
@@ -78,7 +78,7 @@ void Menu::loadModBits(UIUpdate* ui)
 	delete(this->bg);
 	this->bg = this->render->loadSprite("menu/bg.jpg", mod);
 	if (!bg) {
-		this->bg = this->render->loadSprite("menu/bg.jpg", st->mm->getBase());
+		this->bg = this->render->loadSprite("menu/bg.jpg", GEng()->mm->getBase());
 	}
 
 	if (ui) ui->updateUI();
@@ -168,7 +168,7 @@ void Menu::createBGmesh()
 **/
 void Menu::doit(UIUpdate* ui)
 {
-	Mod *mod = st->mm->getBase();
+	Mod *mod = GEng()->mm->getBase();
 	
 	
 	// A few bits always load off base
@@ -441,17 +441,17 @@ void Menu::setDialog(Dialog * dialog)
 
 void Menu::doCampaign()
 {
-	this->setDialog(new DialogNewCampaign(1, this->mm->getSupplOrBase()));
+	this->setDialog(new DialogNewCampaign(1, GEng()->mm->getSupplOrBase()));
 }
 
 void Menu::doSingleplayer()
 {
-	this->setDialog(new DialogNewGame(1, this->st->mm));
+	this->setDialog(new DialogNewGame(1, GEng()->mm));
 }
 
 void Menu::doSplitscreen()
 {
-	this->setDialog(new DialogNewGame(2, this->st->mm));
+	this->setDialog(new DialogNewGame(2, GEng()->mm));
 }
 
 void Menu::doNetwork()
@@ -466,7 +466,7 @@ void Menu::doSettings()
 
 void Menu::doMods()
 {
-	this->setDialog(new DialogMods(this->st, this->st->mm));
+	this->setDialog(new DialogMods(this->st));
 }
 
 void Menu::doHelp()

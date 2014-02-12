@@ -45,8 +45,8 @@ bool loadMods(GameState *st, UIUpdate* ui)
 	if (! mod->load(ui)) {
 		reportFatalError("Unable to load mod 'cr'.");
 	}
-	st->mm->addMod(mod);
-	st->mm->setBase(mod);
+	GEng()->mm->addMod(mod);
+	GEng()->mm->setBase(mod);
 	
 	if (ui) ui->updateUI();
 	
@@ -56,8 +56,8 @@ bool loadMods(GameState *st, UIUpdate* ui)
 		if (! newsuppl->load(ui)) {
 			reportFatalError("Unable to load mod '" + GEng()->cmdline->mod + "'.");
 		}
-		st->mm->addMod(newsuppl);
-		st->mm->setSuppl(newsuppl);
+		GEng()->mm->addMod(newsuppl);
+		GEng()->mm->setSuppl(newsuppl);
 	}
 	
 	if (ui) ui->updateUI();
@@ -69,7 +69,7 @@ bool loadMods(GameState *st, UIUpdate* ui)
 		if (! mod->load(ui)) {
 			reportFatalError("Unable to load user mod '" + userfiles->at(i) + "'.");
 		}
-		st->mm->addMod(mod);
+		GEng()->mm->addMod(mod);
 	}
 	
 	if (ui) ui->updateUI();
@@ -82,11 +82,8 @@ bool loadMods(GameState *st, UIUpdate* ui)
 /**
 * Inits the mod-manager.
 **/
-ModManager::ModManager(GameState * st)
+ModManager::ModManager()
 {
-	this->st = st;
-	st->mm = this;
-
 	this->mods = new vector<Mod*>();
 	this->base = NULL;
 	this->suppl = NULL;

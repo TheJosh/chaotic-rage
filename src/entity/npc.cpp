@@ -52,14 +52,7 @@ void NPC::update(int delta)
 	Unit::update(delta);
 	
 	if (this->idle_sound_time < st->game_time) {
-		int s = getRandom(1, 3);
-		if (s == 1) {
-			this->st->audio->playSound(this->st->mm->getSound("zombie_2"), false, this);
-		} else if (s == 2) {
-			this->st->audio->playSound(this->st->mm->getSound("zombie_3"), false, this);
-		} else if (s == 3) {
-			this->st->audio->playSound(this->st->mm->getSound("zombie_4"), false, this);
-		}
+		// TODO: play idle sound
 		this->idle_sound_time = st->game_time + 15000;
 	}
 }
@@ -71,15 +64,7 @@ int NPC::takeDamage(float damage)
 	if (result == 1) {
 		this->st->logic->raise_npcdied();
 		
-		// Play a sound
-		int s = getRandom(1, 3);
-		if (s == 1) {
-			this->st->audio->playSound(this->st->mm->getSound("zombie_death1"), false, this);
-		} else if (s == 2) {
-			this->st->audio->playSound(this->st->mm->getSound("zombie_death2"), false, this);
-		} else if (s == 3) {
-			this->st->audio->playSound(this->st->mm->getSound("zombie_death3"), false, this);
-		}
+		// TODO: play death sound
 		
 		this->st->deadButNotBuried(this);
 	}

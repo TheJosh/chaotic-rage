@@ -21,14 +21,13 @@ class DialogMods : public Dialog, public gcn::ActionListener, public gcn::Select
 	private:
 		ModListModel* mods;
 		GameState* st;
-		ModManager* mm;
 		gcn::DropDown* modlist;
 		gcn::Icon* icon;
 		gcn::Image* img;
 		gcn::Button* button;
 
 	public:
-		DialogMods(GameState* st, ModManager* mm);
+		DialogMods(GameState* st);
 		~DialogMods();
 		
 		virtual gcn::Container * setup();

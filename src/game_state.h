@@ -124,7 +124,6 @@ class GameState
 		Audio* audio;
 		GameLogic* logic;
 		PhysicsBullet* physics;
-		ModManager* mm;
 
 		gcn::Gui* gui;
 		gcn::SDLInput* guiinput;

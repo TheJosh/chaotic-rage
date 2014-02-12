@@ -639,12 +639,12 @@ void Unit::doUse()
 		}
 	
 		if (ot->add_object.length() != 0) {
-			Object *nu = new Object(this->st->mm->getObjectType(ot->add_object), this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ(), trans.getRotation().getZ());
+			Object *nu = new Object(GEng()->mm->getObjectType(ot->add_object), this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ(), trans.getRotation().getZ());
 			this->st->addObject(nu);
 		}
 	
 		if (ot->pickup_weapon.length() != 0) {
-			WeaponType *wt = this->st->mm->getWeaponType(ot->pickup_weapon);
+			WeaponType *wt = GEng()->mm->getWeaponType(ot->pickup_weapon);
 			if (wt) {
 				this->st->addHUDMessage(this->slot, "Picked up a ", wt->title);
 				this->pickupWeapon(wt);
@@ -660,7 +660,7 @@ void Unit::doUse()
 				}
 			
 			} else {
-				WeaponType *wt = this->st->mm->getWeaponType(ot->ammo_crate);
+				WeaponType *wt = GEng()->mm->getWeaponType(ot->ammo_crate);
 				if (wt && this->pickupAmmo(wt)) {
 					this->st->addHUDMessage(this->slot, "Picked up some ammo");
 					closest->del = 1;

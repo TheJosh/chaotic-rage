@@ -136,5 +136,5 @@ void ClientConfig::initPhysics(GameState *st)
 **/
 void ClientConfig::initMods(GameState *st)
 {
-	new ModManager(st);
+	GEng()->mm = new ModManager();
 }

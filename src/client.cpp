@@ -94,7 +94,7 @@ int main (int argc, char ** argv)
 	// List of mods
 	if (GEng()->cmdline->modlist) {
 		cout << "Available mods:\n";
-		vector<string>* modnames = st->mm->getAvailMods();
+		vector<string>* modnames = GEng()->mm->getAvailMods();
 		for (vector<string>::iterator it = modnames->begin(); it != modnames->end(); it++) {
 			cout << "    " << (*it) << "\n";
 		}
@@ -103,7 +103,7 @@ int main (int argc, char ** argv)
 	// Campaign
 	} else if (GEng()->cmdline->campaign != "") {
 		gm->loadModBits(NULL);
-		Campaign *c = st->mm->getSupplOrBase()->getCampaign(GEng()->cmdline->campaign);
+		Campaign *c = GEng()->mm->getSupplOrBase()->getCampaign(GEng()->cmdline->campaign);
 		gm->startCampaign(c, "robot", 0, 1);
 		
 	// Arcade game

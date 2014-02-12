@@ -24,6 +24,7 @@
 #include "mod/mod_proxy.h"
 #include "mod/vehicletype.h"
 #include "game_state.h"
+#include "game_engine.h"
 #include "entity/object.h"
 #include "entity/vehicle.h"
 #include "entity/helicopter.h"
@@ -420,7 +421,7 @@ void Map::loadDefaultEntities()
 		string type = cfg_getstr(cfg_sub, "type");
 		if (type.empty()) continue;
 		
-		WallType *wt = this->st->mm->getWallType(type);
+		WallType *wt = GEng()->mm->getWallType(type);
 		if (wt == NULL) reportFatalError("Unable to load map; missing or invalid wall type '" + type + "'");
 
 		Wall * wa = new Wall(
@@ -446,7 +447,7 @@ void Map::loadDefaultEntities()
 		string type = cfg_getstr(cfg_sub, "type");
 		if (type.empty()) continue;
 		
-		VehicleType *vt = this->st->mm->getVehicleType(type);
+		VehicleType *vt = GEng()->mm->getVehicleType(type);
 		if (vt == NULL) reportFatalError("Unable to load map; missing or invalid vehicle type '" + type + "'");
 		
 		if (vt->helicopter) {
@@ -481,7 +482,7 @@ void Map::loadDefaultEntities()
 		string type = cfg_getstr(cfg_sub, "type");
 		if (type.empty()) continue;
 		
-		ObjectType *ot = this->st->mm->getObjectType(type);
+		ObjectType *ot = GEng()->mm->getObjectType(type);
 		if (ot == NULL) reportFatalError("Unable to load map; missing or invalid object type '" + type + "'");
 		
 		Object * ob = new Object(ot, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), 1, cfg_getint(cfg_sub, "angle"));
@@ -497,7 +498,7 @@ void Map::loadDefaultEntities()
 		string type = cfg_getstr(cfg_sub, "type");
 		if (type.empty()) continue;
 		
-		PickupType *pt = this->st->mm->getPickupType(type);
+		PickupType *pt = GEng()->mm->getPickupType(type);
 		if (pt == NULL) reportFatalError("Unable to load map; missing or invalid pickup type '" + type + "'");
 		
 		Pickup * pu = new Pickup(pt, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), 1);

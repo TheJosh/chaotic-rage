@@ -7,6 +7,7 @@
 #include <SDL_net.h>
 #include "../rage.h"
 #include "../game_state.h"
+#include "../game_engine.h"
 #include "../entity/player.h"
 #include "../entity/ammo_round.h"
 #include "../mod/weapontype.h"
@@ -359,7 +360,7 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 		cout << "       CREATE:\n";
 		cout << "       eid: " << eid << "   slot: " << slot << "   our slot: " << st->local_players[0]->slot << "\n";
 		
-		UnitType *ut = st->mm->getUnitType(type);
+		UnitType *ut = GEng()->mm->getUnitType(type);
 		if (! ut) return 40;	// Is this correct?
 		
 		u = new Player(ut, st, bx, bz, by);
@@ -406,7 +407,7 @@ unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 
 	// If don't exist, create
 	if (w == NULL) {
-		WallType *wt = st->mm->getWallType(type);
+		WallType *wt = GEng()->mm->getWallType(type);
 		if (! wt) return 34;		// TODO: Should we err instead?
 		
 		w = new Wall(wt, st, bx, bz, by, 0);
@@ -444,7 +445,7 @@ unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 
 	// If don't exist, create
 	if (o == NULL) {
-		ObjectType *ot = st->mm->getObjectType(type);
+		ObjectType *ot = GEng()->mm->getObjectType(type);
 		if (ot == NULL) return 34;		// TODO: Should we err instead?
 		
 		o = new Object(ot, st, bx, bz, by, 0);
@@ -484,7 +485,7 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 
 	// If don't exist, create
 	if (v == NULL) {
-		VehicleType *vt = st->mm->getVehicleType(type);
+		VehicleType *vt = GEng()->mm->getVehicleType(type);
 		if (vt == NULL) return 34;		// TODO: Should we err instead?
 		
 		v = new Vehicle(vt, st, trans);
@@ -517,7 +518,7 @@ unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
 	// Find existing entity, unit, and weapon
 	AmmoRound* ar = (AmmoRound*) st->getEntity(eid);
 	Unit* u = (Unit*) st->getEntity(unit_eid);
-	WeaponType* wt = st->mm->getWeaponType(type);
+	WeaponType* wt = GEng()->mm->getWeaponType(type);
 	
 	// Check valid
 	if (u == NULL) return 40;
@@ -562,7 +563,7 @@ unsigned int NetClient::handlePickupState(Uint8 *data, unsigned int size)
 
 	// If don't exist, create
 	if (p == NULL) {
-		PickupType *pt = st->mm->getPickupType(type);
+		PickupType *pt = GEng()->mm->getPickupType(type);
 		if (pt == NULL) return 34;		// TODO: Should we err instead?
 		
 		p = new Pickup(pt, st, bx, bz, by);
