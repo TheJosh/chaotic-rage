@@ -22,7 +22,6 @@
 #include "entity/decaying.h"
 #include "render/render_3d.h"
 #include "net/net_server.h"
-#include "net/net_client.h"
 #include "fx/newparticle.h"
 #include "gui/dialog.h"
 #include "util/cmdline.h"
@@ -111,7 +110,6 @@ GameState::GameState()
 	this->render = NULL;
 	this->audio = NULL;
 	this->logic = NULL;
-	this->client = NULL;
 	this->physics = NULL;
 	this->mm = NULL;
 
@@ -348,11 +346,6 @@ void GameState::preGame()
 	
 	this->initGuichan();
 	this->setMouseGrab(true);
-	
-	// The client needs to do a couple things pre game
-	if (this->client) {
-		this->client->preGame();
-	}
 }
 
 

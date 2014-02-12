@@ -88,7 +88,7 @@ class GameState
 	friend class RenderDebug;
 	friend class AudioSDLMixer;
 	friend class NetServer;
-	friend void gameLoop(GameState *st, Render *render);
+	friend void gameLoop(GameState *st, Render *render, NetClient* client);
 
 	protected:
 		list<Entity*> entities;
@@ -123,7 +123,6 @@ class GameState
 		Render* render;
 		Audio* audio;
 		GameLogic* logic;
-		NetClient* client;
 		PhysicsBullet* physics;
 		ModManager* mm;
 

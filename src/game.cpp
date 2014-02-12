@@ -31,7 +31,7 @@ int mk_down_x[MAX_LOCAL], mk_down_y[MAX_LOCAL];
 /**
 * The main game loop
 **/
-void gameLoop(GameState *st, Render *render)
+void gameLoop(GameState* st, Render* render, NetClient* client)
 {
 	int start = 0, delta = 0, net_time = 0, net_timestep = 50;
 	
@@ -50,14 +50,16 @@ void gameLoop(GameState *st, Render *render)
 		GEng()->server->listen();
 	}
 
-	if (st->client == NULL) {
+	if (client == NULL) {
 		st->map->loadDefaultEntities();
+	} else {
+		client->preGame();
 	}
 
 	st->preGame();
 	st->logic->raise_gamestart();
 	
-	if (st->client == NULL) {
+	if (client == NULL) {
 		for (unsigned int i = 0; i < st->num_local; i++) {
 			st->logic->raise_playerjoin(st->local_players[i]->slot);
 		}
@@ -83,12 +85,12 @@ void gameLoop(GameState *st, Render *render)
 		if (net_time > net_timestep) {
 			net_time -= net_timestep;
 			
-			if (st->client) {
+			if (client != NULL) {
 				if (st->local_players[0]->p) {
-					st->client->addmsgKeyMouseStatus(net_x[0], net_y[0], net_timestep, st->local_players[0]->p->packKeys());
+					client->addmsgKeyMouseStatus(net_x[0], net_y[0], net_timestep, st->local_players[0]->p->packKeys());
 					net_x[0] = net_y[0] = 0;
 				}
-				st->client->update();
+				client->update();
 			}
 			
 			if (GEng()->server != NULL) {

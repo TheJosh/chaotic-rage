@@ -47,7 +47,6 @@ class GameEngine
 		Render* render;
 		Audio* audio;
 		GameLogic* logic;
-		NetClient* client;
 		NetServer* server;
 		PhysicsBullet* physics;
 		CommandLineArgs* cmdline;

@@ -228,11 +228,8 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 	st->logic->selected_unittype = st->mm->getUnitType(unittype);
 	st->logic->execScript(gt->script);
 	
-	// Reset client variables
-	st->client = NULL;
-	st->num_local = num_local;
-	
 	// Create players in GameState.
+	st->num_local = num_local;
 	for (unsigned int i = 0; i < num_local; i++) {
 		st->local_players[i] = new PlayerState(st);
 		st->local_players[i]->slot = i + 1;
@@ -241,7 +238,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 	st->render->viewmode = viewmode;
 
 	// Begin!
-	gameLoop(st, st->render);
+	gameLoop(st, st->render, NULL);
 	
 	// Cleanup
 	if (host) {
@@ -260,9 +257,9 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	NetGameinfo *gameinfo;
 	MapReg *map;
 	Map *m;
+	NetClient *client;
 	
-	if (st->client) delete (st->client);
-	new NetClient(st);
+	client = new NetClient(st);
 
 	st->physics->init();
 
@@ -271,7 +268,7 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	st->local_players[0] = new PlayerState(st);
 	
 	// Try to join the server
-	gameinfo = st->client->attemptJoinGame(host, 17778, ui);
+	gameinfo = client->attemptJoinGame(host, 17778, ui);
 	if (gameinfo == NULL) {
 		displayMessageBox("Unable to connect to server " + host);
 		goto cleanup;
@@ -297,7 +294,7 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	
 	// Download the gamestate
 	// When this is done, a final message is sent to tell the server we are done.
-	if (! st->client->downloadGameState()) {
+	if (! client->downloadGameState()) {
 		displayMessageBox("Unable to download intial game state from server " + host);
 		st->audio->postGame();
 		st->postGame();
@@ -305,9 +302,8 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	}
 
 	// Begin!
-	gameLoop(st, st->render);
+	gameLoop(st, st->render, client);
 	
 cleanup:
-	delete (st->client);
-	st->client = NULL;
+	delete (client);
 }

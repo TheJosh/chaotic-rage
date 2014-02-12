@@ -22,7 +22,6 @@ using namespace std;
 NetClient::NetClient(GameState * st)
 {
 	this->st = st;
-	st->client = this;
 	this->sock = NULL;
 	this->gameinfo = NULL;
 	this->ingame = false;

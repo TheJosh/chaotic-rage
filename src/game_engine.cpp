@@ -15,7 +15,6 @@
 #include "render/render_3d.h"
 #include "audio/audio.h"
 #include "lua/gamelogic.h"
-#include "net/net_client.h"
 #include "net/net_server.h"
 #include "physics_bullet.h"
 #include "util/cmdline.h"
@@ -53,7 +52,6 @@ GameEngine::GameEngine()
 	this->render = NULL;
 	this->audio = NULL;
 	this->logic = NULL;
-	this->client = NULL;
 	this->server = NULL;
 	this->physics = NULL;
 	this->cmdline = NULL;
@@ -76,7 +74,6 @@ GameEngine::~GameEngine()
 	delete(this->render);
 	delete(this->audio);
 	delete(this->logic);
-	delete(this->client);
 	delete(this->server);
 	delete(this->physics);
 	delete(this->cmdline);
