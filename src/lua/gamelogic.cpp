@@ -180,7 +180,7 @@ LUA_FUNC(debug)
 **/
 LUA_FUNC(debug_physics)
 {
-	gl->st->render->setPhysicsDebug(lua_toboolean(L, 1));
+	GEng()->render->setPhysicsDebug(lua_toboolean(L, 1));
 	return 0;
 }
 
@@ -190,7 +190,7 @@ LUA_FUNC(debug_physics)
 **/
 LUA_FUNC(debug_framerate)
 {
-	gl->st->render->setSpeedDebug(lua_toboolean(L, 1));
+	GEng()->render->setSpeedDebug(lua_toboolean(L, 1));
 	return 0;
 }
 
@@ -579,7 +579,7 @@ LUA_FUNC(get_selected_unittype)
 **/
 LUA_FUNC(get_viewmode)
 {
-	lua_pushinteger(L, gl->st->render->viewmode);
+	lua_pushinteger(L, GEng()->render->viewmode);
 	return 1;
 }
 
@@ -589,7 +589,7 @@ LUA_FUNC(get_viewmode)
 **/
 LUA_FUNC(set_viewmode)
 {
-	gl->st->render->viewmode = lua_tointeger(L, 1);
+	GEng()->render->viewmode = lua_tointeger(L, 1);
 	return 0;
 }
 

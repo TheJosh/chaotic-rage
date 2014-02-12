@@ -8,6 +8,7 @@
 #include "rage.h"
 #include "game.h"
 #include "game_state.h"
+#include "game_engine.h"
 #include "entity/player.h"
 #include "render_opengl/hud.h"
 #include "render_opengl/render_opengl.h"
@@ -52,7 +53,7 @@ void handleEvents(GameState *st)
 						filename.append("screenshot");
 						filename.append(buf);
 						filename.append(".bmp");
-						((Render3D*) st->render)->saveScreenshot(filename);
+						((Render3D*) GEng()->render)->saveScreenshot(filename);
 						
 						filename = "screenshot";
 						filename.append(buf);
@@ -62,7 +63,7 @@ void handleEvents(GameState *st)
 					break;
 					
 				case SDLK_F5:
-					st->addHUDMessage(ALL_SLOTS, "Shaders reload: ", ((RenderOpenGL*)st->render)->reloadShaders() ? "success" : "failure");
+					st->addHUDMessage(ALL_SLOTS, "Shaders reload: ", ((RenderOpenGL*)GEng()->render)->reloadShaders() ? "success" : "failure");
 					break;
 					
 				case SDLK_F6:
@@ -71,13 +72,13 @@ void handleEvents(GameState *st)
 					break;
 					
 				case SDLK_F7:
-					st->render->setPhysicsDebug(! st->render->getPhysicsDebug());
-					st->addHUDMessage(ALL_SLOTS, "Physics debug ", st->render->getPhysicsDebug() ? "on" : "off");
+					GEng()->render->setPhysicsDebug(! GEng()->render->getPhysicsDebug());
+					st->addHUDMessage(ALL_SLOTS, "Physics debug ", GEng()->render->getPhysicsDebug() ? "on" : "off");
 					break;
 					
 				case SDLK_F8:
-					st->render->setSpeedDebug(! st->render->getSpeedDebug());
-					st->addHUDMessage(ALL_SLOTS, "Speed debug ", st->render->getSpeedDebug() ? "on" : "off");
+					GEng()->render->setSpeedDebug(! GEng()->render->getSpeedDebug());
+					st->addHUDMessage(ALL_SLOTS, "Speed debug ", GEng()->render->getSpeedDebug() ? "on" : "off");
 					break;
 					
 				default: break;

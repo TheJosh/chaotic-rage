@@ -43,8 +43,8 @@ void gameLoop(GameState* st, Render* render, NetClient* client)
 
 	st->physics->preGame();
 	st->map->preGame();
-	st->render->preGame();
-	st->render->loadHeightmap();
+	render->preGame();
+	render->loadHeightmap();
 
 	if (GEng()->server != NULL) {
 		GEng()->server->listen();
@@ -99,15 +99,15 @@ void gameLoop(GameState* st, Render* render, NetClient* client)
 		}
 		
 		PROFILE_START(render);
-		st->render->render();
+		render->render();
 		PROFILE_END(render);
 		
 		st->audio->play();
 	}
 	
 	st->postGame();
-	st->render->postGame();
-	st->render->freeHeightmap();
+	render->postGame();
+	render->freeHeightmap();
 	st->audio->postGame();
 	st->map->postGame();
 	st->physics->postGame();

@@ -107,7 +107,6 @@ GameState::GameState()
 		this->local_players[i] = new PlayerState(this);
 	}
 	
-	this->render = NULL;
 	this->audio = NULL;
 	this->logic = NULL;
 	this->physics = NULL;
@@ -128,7 +127,7 @@ PlayerState::PlayerState(GameState *st)
 {
 	this->st = st;
 	this->p = NULL;
-	this->hud = new HUD(this);
+	this->hud = new HUD(this, (RenderOpenGL*)GEng()->render);
 	this->slot = 0;
 }
 
@@ -522,7 +521,7 @@ void GameState::setMouseGrab(bool newval)
 	if (GEng()->cmdline->mouseGrab == false) return;
 	
 	this->reset_mouse = newval;
-	this->render->setMouseGrab(newval);
+	GEng()->render->setMouseGrab(newval);
 }
 
 /**
@@ -542,7 +541,7 @@ void GameState::initGuichan()
 #ifdef NOGUI
 	this->gui = NULL;
 #else
-	if (! this->render->is3D()) {
+	if (! GEng()->render->is3D()) {
 		this->gui = NULL;
 		return;
 	}
@@ -552,11 +551,11 @@ void GameState::initGuichan()
 		this->guiinput = new gcn::SDLInput();
 		gui->setInput(guiinput);
 		
-		((Render3D*)this->render)->initGuichan(gui, GEng()->mm->getDefaultMod());
+		((Render3D*)GEng()->render)->initGuichan(gui, GEng()->mm->getDefaultMod());
 		
 		this->guitop = new gcn::Container();
 		this->guitop->setPosition(0,0);
-		this->guitop->setSize(this->render->getWidth(), this->render->getHeight());
+		this->guitop->setSize(GEng()->render->getWidth(), GEng()->render->getHeight());
 		this->guitop->setBaseColor(gcn::Color(0, 0, 0, 0));
 		gui->setTop(this->guitop);
 		
@@ -585,7 +584,7 @@ void GameState::addDialog(Dialog * dialog)
 	if (this->gui == NULL) return;
 	
 	gcn::Container * c = dialog->setup();
-	c->setPosition((this->render->getWidth() - c->getWidth()) / 2, (this->render->getHeight() - c->getHeight()) / 2);
+	c->setPosition((GEng()->render->getWidth() - c->getWidth()) / 2, (GEng()->render->getHeight() - c->getHeight()) / 2);
 	c->setBaseColor(gcn::Color(150, 150, 150, 200));
 	this->guitop->add(c);
 	

@@ -1645,7 +1645,8 @@ void RenderOpenGL::render()
 		particles();
 		water();
 		if (physicsdebug != NULL) physics();
-		hud(this->st->local_players[i]->hud);
+		
+		this->st->local_players[i]->hud->draw();
 	}
 
 	if (this->st->num_local != 1) {
@@ -1980,21 +1981,6 @@ void RenderOpenGL::guichan()
 	glDisable(GL_DEPTH_TEST);
 	
 	this->st->gui->draw();
-	
-	CHECK_OPENGL_ERROR;
-}
-
-
-/**
-* Heads-up display (ammo, health, etc)
-**/
-void RenderOpenGL::hud(HUD * hud)
-{
-	CHECK_OPENGL_ERROR;
-	
-	glDisable(GL_DEPTH_TEST);
-	
-	hud->render(this);
 	
 	CHECK_OPENGL_ERROR;
 }

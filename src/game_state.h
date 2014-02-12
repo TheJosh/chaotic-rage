@@ -120,7 +120,6 @@ class GameState
 		unsigned int anim_frame;
 		unsigned int game_time;
 		
-		Render* render;
 		Audio* audio;
 		GameLogic* logic;
 		PhysicsBullet* physics;

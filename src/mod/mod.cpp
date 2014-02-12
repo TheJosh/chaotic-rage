@@ -9,6 +9,7 @@
 #include <confuse.h>
 #include "../rage.h"
 #include "../game_state.h"
+#include "../game_engine.h"
 #include "../util/ui_update.h"
 #include "../render_opengl/assimpmodel.h"
 #include "../util/crc32.h"
@@ -395,7 +396,7 @@ AssimpModel * Mod::getAssimpModel(string name)
 	
 	AssimpModel* am = new AssimpModel(this, name);
 	
-	if (! am->load((Render3D*) st->render, false)) {
+	if (! am->load((Render3D*) GEng()->render, false)) {
 		delete(am);
 		return NULL;
 	}

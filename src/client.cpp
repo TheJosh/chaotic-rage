@@ -68,7 +68,7 @@ int main (int argc, char ** argv)
 	#endif
 	
 	// Intro
-	if (st->render->is3D()) {
+	if (GEng()->render->is3D()) {
 		Intro *i = new Intro(st);
 		i->load();
 		i->doit();
@@ -117,7 +117,7 @@ int main (int argc, char ** argv)
 		gm->networkJoin(GEng()->cmdline->join, NULL);
 		
 	// Regular menu
-	} else if (st->render->is3D()) {
+	} else if (GEng()->render->is3D()) {
 		Menu *m = new Menu(st, gm);
 		m->doit(NULL);
 		

@@ -57,7 +57,7 @@ gcn::Container * DialogClientSettings::setup()
 	c = new gcn::Window("Client Settings");
 	c->setDimension(gcn::Rectangle(0, 0, w, h + 15));
 	
-	RenderOpenGLSettings* gl = ((RenderOpenGL*)st->render)->getSettings();
+	RenderOpenGLSettings* gl = ((RenderOpenGL*)GEng()->render)->getSettings();
 	
 	label = new gcn::Label("MSAA");
 	c->add(label, 10, 10);
@@ -92,7 +92,7 @@ gcn::Container * DialogClientSettings::setup()
 **/
 void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 {
-	RenderOpenGLSettings* current = ((RenderOpenGL*)st->render)->getSettings();
+	RenderOpenGLSettings* current = ((RenderOpenGL*)GEng()->render)->getSettings();
 	RenderOpenGLSettings* nu = new RenderOpenGLSettings();
 	
 	// Do we need a restart?
@@ -104,7 +104,7 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 	nu->tex_filter = atoi(this->gl_tex_filter->getText().c_str());
 	
 	// Set
-	((RenderOpenGL*)st->render)->setSettings(nu);
+	((RenderOpenGL*)GEng()->render)->setSettings(nu);
 	
 	// Save
 	GEng()->cconf->gl = nu;

@@ -14,9 +14,10 @@ using namespace std;
 
 
 
-HUD::HUD(PlayerState *ps)
+HUD::HUD(PlayerState *ps, RenderOpenGL *render)
 {
 	this->ps = ps;
+	this->render = render;
 	this->weapon_menu = false;
 }
 
@@ -44,7 +45,7 @@ void HUD::addMessage(string text1, string text2)
 HUDLabel * HUD::addLabel(float x, float y, string data)
 {
 	HUDLabel * l = new HUDLabel(x, y, data);
-	l->width = (float) ((RenderOpenGL*)this->ps->st->render)->virt_width;
+	l->width = (float) (this->render)->virt_width;
 
 	this->labels.push_back(l);
 	return l;
@@ -63,7 +64,7 @@ HUDLabel * HUD::addLabel(float x, float y, string data)
 /**
 * Render the heads up display
 **/
-void HUD::render(RenderOpenGL * render)
+void HUD::draw()
 {
 	if (this->weapon_menu && this->ps->p) {
 		// Weapon menu
@@ -73,10 +74,10 @@ void HUD::render(RenderOpenGL * render)
 		for (i = 0; i < num; i++) {
 			WeaponType *wt = this->ps->p->getWeaponTypeAt(i);
 			
-			render->renderText(wt->title, r.x, r.y);
+			this->render->renderText(wt->title, r.x, r.y);
 
 			if (i == this->ps->p->getCurrentWeaponID()) {
-				render->renderText(">", r.x - 25.0f, r.y);
+				this->render->renderText(">", r.x - 25.0f, r.y);
 			}
 			
 			r.y += 30;
@@ -95,7 +96,7 @@ void HUD::render(RenderOpenGL * render)
 			}
 			
 			y -= 20.0f;
-			render->renderText(msg->text, 20.0f, y);
+			this->render->renderText(msg->text, 20.0f, y);
 		}
 		
 		// Labels
@@ -104,15 +105,15 @@ void HUD::render(RenderOpenGL * render)
 			if (! l->visible) continue;
 			
 			if (l->align == ALIGN_LEFT) {
-				render->renderText(l->data, l->x, l->y, l->r, l->g, l->b, l->a);
+				this->render->renderText(l->data, l->x, l->y, l->r, l->g, l->b, l->a);
 
 			} else if (l->align == ALIGN_CENTER) {
 				int w = render->widthText(l->data);
-				render->renderText(l->data, l->x + (l->width - w) / 2, l->y, l->r, l->g, l->b, l->a);
+				this->render->renderText(l->data, l->x + (l->width - w) / 2, l->y, l->r, l->g, l->b, l->a);
 				
 			} else if (l->align == ALIGN_RIGHT) {
 				int w = render->widthText(l->data);
-				render->renderText(l->data, l->x + (l->width - w), l->y, l->r, l->g, l->b, l->a);
+				this->render->renderText(l->data, l->x + (l->width - w), l->y, l->r, l->g, l->b, l->a);
 			}
 		}
 		
@@ -124,23 +125,23 @@ void HUD::render(RenderOpenGL * render)
 			if (val >= 0) {
 				char buf[50];
 				sprintf(buf, "%i", val);
-				render->renderText(buf, 50, 50);
+				this->render->renderText(buf, 50, 50);
 			} else if (val == -2) {
-				render->renderText("relodn!", 50, 50);
+				this->render->renderText("relodn!", 50, 50);
 			}
 			
 			val = this->ps->p->getBelt();
 			if (val >= 0) {
 				char buf[50];
 				sprintf(buf, "%i", val);
-				render->renderText(buf, 150, 50);
+				this->render->renderText(buf, 150, 50);
 			}
 			
 			val = (int)floor(this->ps->p->getHealth());
 			if (val >= 0) {
 				char buf[50];
 				sprintf(buf, "%i", val);
-				render->renderText(buf, 50, 80);
+				this->render->renderText(buf, 50, 80);
 			}
 		}
 	}

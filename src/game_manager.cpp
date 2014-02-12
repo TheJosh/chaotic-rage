@@ -218,7 +218,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 	
 	// Load map
 	Map *m = new Map(st);
-	m->load(map->getName(), st->render, map->getMod());
+	m->load(map->getName(), GEng()->render, map->getMod());
 	st->map = m;
 	
 	// Load gametype
@@ -235,10 +235,10 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 		st->local_players[i]->slot = i + 1;
 	}
 
-	st->render->viewmode = viewmode;
+	GEng()->render->viewmode = viewmode;
 
 	// Begin!
-	gameLoop(st, st->render, NULL);
+	gameLoop(st, GEng()->render, NULL);
 	
 	// Cleanup
 	if (host) {
@@ -283,14 +283,14 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 
 	// Load map
 	m = new Map(st);
-	m->load(map->getName(), st->render, map->getMod());
+	m->load(map->getName(), GEng()->render, map->getMod());
 	st->map = m;
 	
 	// Load gametype
 	new GameLogic(st);
 	st->logic->selected_unittype = GEng()->mm->getUnitType("robot");
 
-	st->render->viewmode = 0;
+	GEng()->render->viewmode = 0;
 	
 	// Download the gamestate
 	// When this is done, a final message is sent to tell the server we are done.
@@ -302,7 +302,7 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	}
 
 	// Begin!
-	gameLoop(st, st->render, client);
+	gameLoop(st, GEng()->render, client);
 	
 cleanup:
 	delete (client);

@@ -7,6 +7,7 @@
 #include "gl_debug.h"
 #include "../rage.h"
 #include "../game_state.h"
+#include "../game_engine.h"
 #include "../render/sprite.h"
 #include "../mod/mod.h"
 #include "../mod/song.h"
@@ -23,7 +24,7 @@ using namespace std;
 Intro::Intro(GameState *st)
 {
 	this->st = st;
-	this->render = (RenderOpenGL*) st->render;
+	this->render = (RenderOpenGL*) GEng()->render;
 }
 
 Intro::~Intro()

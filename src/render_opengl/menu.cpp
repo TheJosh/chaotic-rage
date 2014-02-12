@@ -46,7 +46,7 @@ Menu::Menu(GameState *st, GameManager *gm)
 {
 	this->st = st;
 	this->gm = gm;
-	this->render = (RenderOpenGL*) st->render;
+	this->render = (RenderOpenGL*) GEng()->render;
 	this->dialog = NULL;
 	this->logo = NULL;
 	this->bg = NULL;
@@ -311,7 +311,7 @@ void Menu::updateUI()
 	glClear(GL_COLOR_BUFFER_BIT);
 	
 	glBindTexture(GL_TEXTURE_2D, bg->pixels);
-	render->renderObj(bgmesh, proj * bgMatrix);
+	this->render->renderObj(bgmesh, proj * bgMatrix);
 	
 	// Menu items
 	this->menuRender();
@@ -319,7 +319,7 @@ void Menu::updateUI()
 	// Logo in top-left
 	glUseProgram(render->shaders["basic"]->p());
 	glUniformMatrix4fv(render->shaders["basic"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
-	render->renderSprite(logo, 40, 40);
+	this->render->renderSprite(logo, 40, 40);
 	
 	// If a guichan dialog is set, render it and process events
 	if (this->dialog != NULL) {
@@ -372,12 +372,12 @@ void Menu::menuRender()
 	for (unsigned int i = 0; i < this->menuitems.size(); i++) {
 		MenuItem * m = this->menuitems.at(i);
 		
-		render->renderText(m->name, m->x1 + 1, m->y1 + 20 + 1, 0.1f, 0.1f, 0.1f);
+		this->render->renderText(m->name, m->x1 + 1, m->y1 + 20 + 1, 0.1f, 0.1f, 0.1f);
 		
 		if (m->hover) {
-			render->renderText(m->name, m->x1, m->y1 + 20, 161.0f/255.0f, 0.0f, 0.0f);
+			this->render->renderText(m->name, m->x1, m->y1 + 20, 161.0f/255.0f, 0.0f, 0.0f);
 		} else {
-			render->renderText(m->name, m->x1, m->y1 + 20, 1.0f, 1.0f, 1.0f);
+			this->render->renderText(m->name, m->x1, m->y1 + 20, 1.0f, 1.0f, 1.0f);
 		}
 	}
 }

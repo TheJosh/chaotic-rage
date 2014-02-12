@@ -14,6 +14,7 @@
 #include "../entity/unit.h"
 #include "../render/render.h"
 #include "../physics_bullet.h"
+#include "../game_engine.h"
 #include "weapons.h"
 
 using namespace std;
@@ -52,8 +53,8 @@ void WeaponDigdown::doFire(Unit *u, btTransform &origin)
 
 			heightmapCircle(map, mapX, mapY, this->radius, this->depth);
 
-			u->getGameState()->render->freeHeightmap();
-			u->getGameState()->render->loadHeightmap();
+			GEng()->render->freeHeightmap();
+			GEng()->render->loadHeightmap();
 		}
 	}
 }

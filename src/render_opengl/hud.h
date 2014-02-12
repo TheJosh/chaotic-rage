@@ -24,6 +24,7 @@ class HUDMessage
 class HUD {
 	public:
 		PlayerState *ps;
+		RenderOpenGL *render;
 		
 	private:
 		bool weapon_menu;
@@ -31,10 +32,10 @@ class HUD {
 		list<HUDLabel*> labels;
 		
 	public:
-		HUD(PlayerState *ps);
+		HUD(PlayerState *ps, RenderOpenGL *render);
 	
 	public:
-		void render(RenderOpenGL * render);
+		void draw();
 
 		void eventClick();
 		void eventUp();

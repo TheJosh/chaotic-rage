@@ -94,17 +94,17 @@ void ClientConfig::save()
 void ClientConfig::initRender(GameState *st)
 {
 	if (GEng()->cmdline->render_class == "debug") {
-		new RenderDebug(st);
+		GEng()->render = new RenderDebug(st);
 		
 	} else if (GEng()->cmdline->render_class == "null") {
-		new RenderNull(st);
+		GEng()->render = new RenderNull(st);
 		
 	} else {
-		new RenderOpenGL(st, this->gl);
+		GEng()->render = new RenderOpenGL(st, this->gl);
 	}
 	
 	// TODO: Load these settings from a config file
-	st->render->setScreenSize(1000, 700, false);
+	GEng()->render->setScreenSize(1000, 700, false);
 }
 
 

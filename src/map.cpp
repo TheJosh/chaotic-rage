@@ -266,7 +266,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 	if (cfg_sub) {
 		this->heightmap_y = cfg_getfloat(cfg_sub, "scale-z");
 	
-		this->terrain = render->loadSprite("terrain.png", this->mod);
+		this->terrain = this->render->loadSprite("terrain.png", this->mod);
 		if (! this->terrain) return 0;
 	}
 	
@@ -292,8 +292,8 @@ int Map::load(string name, Render *render, Mod* insideof)
 	
 	// Skybox
 	cfg_sub = cfg_getnsec(cfg, "skybox", 0);
-	if (cfg_sub and render->is3D()) {
-		Render3D* render3d = (Render3D*)render;
+	if (cfg_sub and this->render->is3D()) {
+		Render3D* render3d = (Render3D*)this->render;
 		this->skybox = render3d->loadCubemap("skybox_", ".jpg", this->mod);
 		this->skybox_size = cfg_getvec3(cfg_sub, "size");
 	}
