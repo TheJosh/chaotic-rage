@@ -93,10 +93,10 @@ void ClientConfig::save()
 **/
 void ClientConfig::initRender(GameState *st)
 {
-	if (GEng()->cmdline->render == "debug") {
+	if (GEng()->cmdline->render_class == "debug") {
 		new RenderDebug(st);
 		
-	} else if (GEng()->cmdline->render == "null") {
+	} else if (GEng()->cmdline->render_class == "null") {
 		new RenderNull(st);
 		
 	} else {
@@ -113,7 +113,7 @@ void ClientConfig::initRender(GameState *st)
 **/
 void ClientConfig::initAudio(GameState *st)
 {
-	if (GEng()->cmdline->audio == "null") {
+	if (GEng()->cmdline->audio_class == "null") {
 		new AudioNull(st);
 		
 	} else {

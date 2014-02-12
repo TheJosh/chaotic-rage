@@ -25,8 +25,8 @@ class CommandLineArgs
 		string gametype;
 		string unittype;
 		string join;
-		string render;
-		string audio;
+		string render_class;
+		string audio_class;
 		bool host;
 		bool mouseGrab;
 		

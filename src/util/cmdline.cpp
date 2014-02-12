@@ -127,7 +127,7 @@ void CommandLineArgs::process()
 					cout << "Options: 'opengl', 'debug', 'null'." << endl;
 					exit(1);
 				}
-				this->render = optarg;
+				this->render_class = optarg;
 				break;
 				
 			// Audio
@@ -137,7 +137,7 @@ void CommandLineArgs::process()
 					cout << "Options: 'sdl', 'null'." << endl;
 					exit(1);
 				}
-				this->audio = optarg;
+				this->audio_class = optarg;
 				break;
 				
 				
