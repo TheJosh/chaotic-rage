@@ -1896,7 +1896,7 @@ void RenderOpenGL::entities()
 		Entity *e = (*it);
 		
 		if (this->viewmode == 2 && e == this->render_player) continue;
-		if (e->render == false) continue;
+		if (e->visible == false) continue;
 
 		AnimPlay *play = e->getAnimModel();
 		if (play == NULL) continue;

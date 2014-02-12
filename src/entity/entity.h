@@ -34,7 +34,7 @@ class Entity
 		
 	public:
 		bool del;
-		bool render;
+		bool visible;
 		EID eid;
 		btRigidBody* body;
 		

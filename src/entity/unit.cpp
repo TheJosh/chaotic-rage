@@ -569,7 +569,7 @@ int Unit::takeDamage(float damage)
 void Unit::enterVehicle(Vehicle *v)
 {
 	this->drive = v;
-	this->render = false;
+	this->visible = false;
 	this->ghost->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE);
 	this->drive->enter();
 }
@@ -605,7 +605,7 @@ void Unit::leaveVehicle()
 	this->ghost->setWorldTransform(btTransform(btQuaternion(0,0,0,1), spawn));
 	this->ghost->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
 	this->drive->exit();
-	this->render = true;
+	this->visible = true;
 	this->drive = NULL;
 }
 
