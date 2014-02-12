@@ -18,7 +18,7 @@ class Entity;
 class Song;
 
 
-class AudioSDLMixer : Audio
+class AudioSDLMixer : public Audio
 {
 	private:
 		bool audio_start;

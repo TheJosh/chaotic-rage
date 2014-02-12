@@ -114,10 +114,10 @@ void ClientConfig::initRender(GameState *st)
 void ClientConfig::initAudio(GameState *st)
 {
 	if (GEng()->cmdline->audio_class == "null") {
-		new AudioNull(st);
+		GEng()->audio = new AudioNull(st);
 		
 	} else {
-		new AudioSDLMixer(st);
+		GEng()->audio = new AudioSDLMixer(st);
 	}
 }
 

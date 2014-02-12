@@ -7,6 +7,7 @@
 #include "../rage.h"
 #include "../audio/audio.h"
 #include "../game_state.h"
+#include "../game_engine.h"
 #include "mod.h"
 #include "sound.h"
 
@@ -37,7 +38,7 @@ Sound* loadItemSound(cfg_t* cfg_item, Mod* mod)
 	
 	filename = "sounds/";
 	filename.append(cfg_getstr(cfg_item, "file"));
-	snd->sound = mod->st->audio->loadSound(filename, mod);
+	snd->sound = GEng()->audio->loadSound(filename, mod);
 	if (snd->sound == NULL) return NULL;
 	
 	return snd;

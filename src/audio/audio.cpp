@@ -16,5 +16,4 @@ using namespace std;
 Audio::Audio(GameState * st)
 {
 	this->st = st;
-	st->audio = this;
 }

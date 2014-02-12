@@ -16,7 +16,7 @@ extern int mk_down_x[MAX_LOCAL], mk_down_y[MAX_LOCAL];
 * The main game loop
 * Located in game.cpp
 **/
-void gameLoop(GameState *st, Render *render, NetClient* client);
+void gameLoop(GameState* st, Render* render, Audio* audio, NetClient* client);
 
 /**
 * Handles local events (keyboard, mouse)

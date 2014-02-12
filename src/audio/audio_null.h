@@ -9,7 +9,7 @@
 using namespace std;
 
 
-class AudioNull : Audio
+class AudioNull : public Audio
 {
 	public:
 		/**

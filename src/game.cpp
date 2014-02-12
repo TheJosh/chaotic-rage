@@ -31,7 +31,7 @@ int mk_down_x[MAX_LOCAL], mk_down_y[MAX_LOCAL];
 /**
 * The main game loop
 **/
-void gameLoop(GameState* st, Render* render, NetClient* client)
+void gameLoop(GameState* st, Render* render, Audio* audio, NetClient* client)
 {
 	int start = 0, delta = 0, net_time = 0, net_timestep = 50;
 	
@@ -102,13 +102,13 @@ void gameLoop(GameState* st, Render* render, NetClient* client)
 		render->render();
 		PROFILE_END(render);
 		
-		st->audio->play();
+		audio->play();
 	}
 	
 	st->postGame();
 	render->postGame();
 	render->freeHeightmap();
-	st->audio->postGame();
+	audio->postGame();
 	st->map->postGame();
 	st->physics->postGame();
 }

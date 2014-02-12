@@ -238,7 +238,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 	GEng()->render->viewmode = viewmode;
 
 	// Begin!
-	gameLoop(st, GEng()->render, NULL);
+	gameLoop(st, GEng()->render, GEng()->audio, NULL);
 	
 	// Cleanup
 	if (host) {
@@ -296,13 +296,12 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	// When this is done, a final message is sent to tell the server we are done.
 	if (! client->downloadGameState()) {
 		displayMessageBox("Unable to download intial game state from server " + host);
-		st->audio->postGame();
 		st->postGame();
 		goto cleanup;
 	}
 
 	// Begin!
-	gameLoop(st, GEng()->render, client);
+	gameLoop(st, GEng()->render, GEng()->audio, client);
 	
 cleanup:
 	delete (client);

@@ -107,7 +107,6 @@ GameState::GameState()
 		this->local_players[i] = new PlayerState(this);
 	}
 	
-	this->audio = NULL;
 	this->logic = NULL;
 	this->physics = NULL;
 

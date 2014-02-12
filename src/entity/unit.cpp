@@ -98,7 +98,7 @@ void Unit::beginFiring()
 	this->firing = true;
 	
 	Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_BEGIN);
-	weapon_sound = this->st->audio->playSound(snd, true, this);
+	weapon_sound = GEng()->audio->playSound(snd, true, this);
 }
 
 void Unit::endFiring()
@@ -107,21 +107,21 @@ void Unit::endFiring()
 	
 	this->firing = false;
 	
-	this->st->audio->stopSound(this->weapon_sound);
+	GEng()->audio->stopSound(this->weapon_sound);
 
 	Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_END);
-	this->st->audio->playSound(snd, false, this);
+	GEng()->audio->playSound(snd, false, this);
 }
 
 void Unit::emptySound()
 {
 	if (this->weapon == NULL) return;
 	
-	this->st->audio->stopSound(this->weapon_sound);
+	GEng()->audio->stopSound(this->weapon_sound);
 
 	// TODO: Fix this
 	//Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_EMPTY);
-	//this->st->audio->playSound(snd, true, this);
+	//GEng()->audio->playSound(snd, true, this);
 }
 
 

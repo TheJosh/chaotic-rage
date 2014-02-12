@@ -88,7 +88,7 @@ class GameState
 	friend class RenderDebug;
 	friend class AudioSDLMixer;
 	friend class NetServer;
-	friend void gameLoop(GameState *st, Render *render, NetClient* client);
+	friend void gameLoop(GameState *st, Render *render, Audio* audio, NetClient* client);
 
 	protected:
 		list<Entity*> entities;
@@ -120,7 +120,6 @@ class GameState
 		unsigned int anim_frame;
 		unsigned int game_time;
 		
-		Audio* audio;
 		GameLogic* logic;
 		PhysicsBullet* physics;
 
