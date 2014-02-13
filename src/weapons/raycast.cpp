@@ -12,6 +12,8 @@
 #include "../map.h"
 #include "../fx/newparticle.h"
 #include "../physics_bullet.h"
+#include "../entity/unit.h"
+#include "../entity/wall.h"
 #include "weapons.h"
 
 using namespace std;

@@ -5,13 +5,6 @@
 #pragma once
 
 #include "rage.h"
-#include "entity/entity.h"
-#include "entity/unit.h"
-#include "entity/wall.h"
-#include "entity/vehicle.h"
-#include "entity/object.h"
-#include "entity/pickup.h"
-#include "entity/ammo_round.h"
 
 
 using namespace std;
@@ -25,6 +18,12 @@ using namespace std;
 
 
 class btVector3;
+class Entity;
+class Unit;
+class Wall;
+class Vehicle;
+class Pickup;
+class AmmoRound;
 
 namespace gcn {
 	class Gui;

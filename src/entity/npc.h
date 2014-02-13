@@ -4,6 +4,7 @@
 
 #pragma once
 #include "../rage.h"
+#include "unit.h"
 
 using namespace std;
 

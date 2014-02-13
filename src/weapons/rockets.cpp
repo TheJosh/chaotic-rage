@@ -10,6 +10,9 @@
 #include "../game_state.h"
 #include "../fx/newparticle.h"
 #include "../physics_bullet.h"
+#include "../entity/unit.h"
+#include "../entity/wall.h"
+#include "../entity/ammo_round.h"
 #include "ghost_objects.h"
 #include "weapons.h"
 

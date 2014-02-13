@@ -12,8 +12,9 @@
 #include "../mod/unittype.h"
 #include "../mod/vehicletype.h"
 #include "../util/btCRKinematicCharacterController.h"
+#include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include "player.h"
-
+#include "vehicle.h"
 
 using namespace std;
 

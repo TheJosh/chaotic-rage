@@ -17,7 +17,9 @@ extern "C" {
 #include "../mod/unittype.h"
 #include "../entity/npc.h"
 #include "../entity/unit.h"
+#include "../entity/pickup.h"
 #include "../util/btCRKinematicCharacterController.h"
+#include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include "luatimer.h"
 #include "lua_libs.h"
 #include "ailogic.h"

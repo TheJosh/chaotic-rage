@@ -3,7 +3,6 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include "entity.h"
 #include "../mod/unittype.h"
 
@@ -20,6 +19,7 @@ class PickupType;
 class Vehicle;
 class Object;
 class UnitType;
+class btPairCachingGhostObject;
 class btCRKinematicCharacterController;
 
 
@@ -107,8 +107,8 @@ class Unit : public Entity
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
-		virtual btTransform &getTransform() { return ghost->getWorldTransform(); }
-		virtual void setTransform(btTransform &t) { ghost->setWorldTransform(t); }
+		virtual btTransform &getTransform();
+		virtual void setTransform(btTransform &t);
 
 	public:
 		Entity * infront(float range);

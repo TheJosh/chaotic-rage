@@ -12,6 +12,7 @@
 #include "../map.h"
 #include "../entity/player.h"
 #include "../entity/npc.h"
+#include "../entity/pickup.h"
 #include "../render/render.h"
 #include "../mod/mod_manager.h"
 #include "lua_libs.h"

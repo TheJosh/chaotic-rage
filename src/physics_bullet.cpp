@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <map>
 #include <btBulletDynamicsCommon.h>
+#include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include "rage.h"
 #include "physics_bullet.h"
 #include "game_state.h"

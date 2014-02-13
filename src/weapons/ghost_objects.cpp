@@ -9,6 +9,8 @@
 #include "../util/quadratic.h"
 #include "../rage.h"
 #include "../game_state.h"
+#include "../entity/entity.h"
+#include "../entity/unit.h"
 #include "../physics_bullet.h"
 #include "ghost_objects.h"
 

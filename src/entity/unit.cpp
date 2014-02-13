@@ -21,6 +21,9 @@
 #include "../net/net_server.h"
 #include "../fx/newparticle.h"
 #include "unit.h"
+#include "vehicle.h"
+#include "object.h"
+#include "pickup.h"
 
 using namespace std;
 
@@ -390,6 +393,17 @@ bool remove_finished_pickup(const UnitPickup& up)
 	up.pt->finished(up.u);
 	
 	return true;
+}
+
+
+btTransform &Unit::getTransform()
+{
+	return ghost->getWorldTransform();
+}
+
+
+void Unit::setTransform(btTransform &t) {
+	ghost->setWorldTransform(t);
 }
 
 

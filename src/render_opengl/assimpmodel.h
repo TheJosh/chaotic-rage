@@ -33,6 +33,7 @@ class AssimpNode;
 class AssimpNodeAnim;
 class Mod;
 class Render3D;
+class btCollisionShape;
 
 
 class AssimpBone

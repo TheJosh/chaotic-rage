@@ -9,6 +9,11 @@
 #include <list>
 #include <string>
 
+// Bullet math library
+#include <LinearMath/btQuaternion.h>
+#include <LinearMath/btTransform.h>
+#include <LinearMath/btVector3.h>
+
 
 // Engine features to optionally compile into the game
 #ifdef RELEASE
@@ -55,8 +60,12 @@ typedef uint16_t    EID;
 class Sprite;
 typedef Sprite* SpritePtr;
 
-// Saves loading SDL
+// Saves including SDL in headers
 struct SDL_RWops;
+
+// Saves including libConfuse in headers
+struct cfg_opt_t;
+struct cfg_t;
 
 // Some values for things are a randomly chosen between a min and a max (ints)
 typedef struct range {
