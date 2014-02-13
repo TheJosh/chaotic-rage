@@ -51,9 +51,7 @@ GameEngine::GameEngine()
 	
 	this->render = NULL;
 	this->audio = NULL;
-	this->logic = NULL;
 	this->server = NULL;
-	this->physics = NULL;
 	this->cmdline = NULL;
 	this->cconf = NULL;
 	this->mm = NULL;
@@ -73,9 +71,7 @@ GameEngine::~GameEngine()
 {
 	delete(this->render);
 	delete(this->audio);
-	delete(this->logic);
 	delete(this->server);
-	delete(this->physics);
 	delete(this->cmdline);
 	delete(this->cconf);
 	delete(this->mm);

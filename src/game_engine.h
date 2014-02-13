@@ -46,9 +46,7 @@ class GameEngine
 		// Pointers to all of the subsystems
 		Render* render;
 		Audio* audio;
-		GameLogic* logic;
 		NetServer* server;
-		PhysicsBullet* physics;
 		CommandLineArgs* cmdline;
 		ClientConfig* cconf;
 		ModManager* mm;
