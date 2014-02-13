@@ -100,7 +100,6 @@ GameState::GameState()
 	this->anim_frame = 0;
 	this->game_time = 0;
 	this->num_local = 0;
-	this->reset_mouse = false;
 	this->eid_next = 1;
 	
 	for (unsigned int i = 0; i < MAX_LOCAL; i++) {
@@ -110,10 +109,6 @@ GameState::GameState()
 	this->logic = NULL;
 	this->physics = NULL;
 
-	this->ticksum = 0;
-	this->tickindex = 0;
-	memset(&this->ticklist, 0, sizeof(this->ticklist));
-	
 	g_st = this;
 }
 
@@ -341,8 +336,8 @@ void GameState::preGame()
 	this->game_time = 1;
 	this->anim_frame = 1;
 	
-	this->initGuichan();
-	this->setMouseGrab(true);
+	GEng()->initGuichan();
+	GEng()->setMouseGrab(true);
 }
 
 
@@ -361,7 +356,7 @@ void GameState::postGame()
 	
 	this->eid_next = 1;
 	
-	this->setMouseGrab(false);
+	GEng()->setMouseGrab(false);
 }
 
 
@@ -412,12 +407,14 @@ void GameState::update(int delta)
 	}
 	
 	// Handle guichan logic
-	if (this->hasDialogs()) {
-		this->gui->logic();
+	if (GEng()->hasDialogs()) {
+		GEng()->gui->logic();
 	}
 
+	// Update FPS stats
+	GEng()->calcAverageTick(delta);
+	
 	// Update time
-	this->calcAverageTick(delta);
 	this->game_time += delta;
 	this->anim_frame = (int) floor(this->game_time * ANIMATION_FPS / 1000.0);
 }
@@ -512,112 +509,6 @@ list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 
 
 /**
-* Sets the status of the mouse grab
-* This method is ignored if the debugging option "no-mouse-grab" is set
-**/
-void GameState::setMouseGrab(bool newval)
-{
-	if (GEng()->cmdline->mouseGrab == false) return;
-	
-	this->reset_mouse = newval;
-	GEng()->render->setMouseGrab(newval);
-}
-
-/**
-* Sets the status of the mouse grab
-**/
-bool GameState::getMouseGrab()
-{
-	return this->reset_mouse;
-}
-
-
-/**
-* Init guichan
-**/
-void GameState::initGuichan()
-{
-#ifdef NOGUI
-	this->gui = NULL;
-#else
-	if (! GEng()->render->is3D()) {
-		this->gui = NULL;
-		return;
-	}
-	
-	try {
-		this->gui = new gcn::Gui();
-		this->guiinput = new gcn::SDLInput();
-		gui->setInput(guiinput);
-		
-		((Render3D*)GEng()->render)->initGuichan(gui, GEng()->mm->getDefaultMod());
-		
-		this->guitop = new gcn::Container();
-		this->guitop->setPosition(0,0);
-		this->guitop->setSize(GEng()->render->getWidth(), GEng()->render->getHeight());
-		this->guitop->setBaseColor(gcn::Color(0, 0, 0, 0));
-		gui->setTop(this->guitop);
-		
-	} catch (gcn::Exception ex) {
-		this->gui = NULL;
-	}
-#endif
-}
-
-
-bool GameState::hasDialog(string name)
-{
-	for (list<Dialog*>::iterator it = this->dialogs.begin(); it != this->dialogs.end(); it++) {
-		if ((*it)->getName().compare(name) == 0) return true;
-	}
-	return false;
-}
-
-
-/**
-* Add a dialog to the game world.
-* Inits the dialog too.
-**/
-void GameState::addDialog(Dialog * dialog)
-{
-	if (this->gui == NULL) return;
-	
-	gcn::Container * c = dialog->setup();
-	c->setPosition((GEng()->render->getWidth() - c->getWidth()) / 2, (GEng()->render->getHeight() - c->getHeight()) / 2);
-	c->setBaseColor(gcn::Color(150, 150, 150, 200));
-	this->guitop->add(c);
-	
-	this->dialogs.push_back(dialog);
-	
-	this->setMouseGrab(false);
-}
-
-
-/**
-* Remove a dialog from the game world.
-**/
-void GameState::remDialog(Dialog * dialog)
-{
-	this->dialogs.remove(dialog);
-	this->guitop->remove(dialog->getContainer());
-	
-	if (this->dialogs.size() == 0) {
-		this->setMouseGrab(true);
-	}
-
-	delete(dialog);
-}
-
-/**
-* Are there dialogs currently visible?
-**/
-bool GameState::hasDialogs()
-{
-	return (this->dialogs.size() != 0);
-}
-
-
-/**
 * Send a message to a given slot. Use ALL_SLOTS to send to all slots
 **/
 void GameState::addHUDMessage(unsigned int slot, string text)
@@ -691,25 +582,4 @@ void GameState::addDebugPoint(float x, float y, float z, float len)
 	dl->b = new btVector3(x, y, z + len);
 	lines.push_back(dl);
 }
-
-/**
-* Add a new tick to the ringbuffer, for FPS calcs.
-* Borrowed from http://stackoverflow.com/questions/87304/calculating-frames-per-second-in-a-game
-**/
-void GameState::calcAverageTick(int newtick)
-{
-	this->ticksum -= ticklist[tickindex];
-	this->ticksum += newtick;
-	this->ticklist[tickindex] = newtick;
-	
-	if(++tickindex == FPS_SAMPLES) {
-		this->tickindex = 0;
-	}
-}
-
-float GameState::getAveTick()
-{
-	return ((float)this->ticksum/FPS_SAMPLES);
-}
-
 

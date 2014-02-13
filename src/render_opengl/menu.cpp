@@ -217,7 +217,7 @@ void Menu::setupGLstate()
 	// Ortho for menu stuff
 	render->ortho = glm::ortho<float>(0.0f, (float)render->real_width, (float)render->real_height, 0.0f, 0.0f, 10.0f);
 	
-	this->st->setMouseGrab(false);
+	GEng()->setMouseGrab(false);
 }
 
 

@@ -38,8 +38,8 @@ void handleEvents(GameState *st)
 				case SDLK_ESCAPE:
 				case SDLK_AC_BACK:
 				case SDLK_MENU:
-					if (! st->hasDialog("quit")) {
-						st->addDialog(new DialogQuit(st));
+					if (! GEng()->hasDialog("quit")) {
+						GEng()->addDialog(new DialogQuit(st));
 					}
 					break;
 
@@ -67,8 +67,8 @@ void handleEvents(GameState *st)
 					break;
 					
 				case SDLK_F6:
-					st->setMouseGrab(! st->getMouseGrab());
-					st->addHUDMessage(ALL_SLOTS, "Reset-mouse ", st->getMouseGrab() ? "on" : "off");
+					GEng()->setMouseGrab(! GEng()->getMouseGrab());
+					st->addHUDMessage(ALL_SLOTS, "Reset-mouse ", GEng()->getMouseGrab() ? "on" : "off");
 					break;
 					
 				case SDLK_F7:
@@ -86,8 +86,8 @@ void handleEvents(GameState *st)
 		}
 
 
-		if (st->hasDialogs()) {
-			st->guiinput->pushInput(event);
+		if (GEng()->hasDialogs()) {
+			GEng()->guiinput->pushInput(event);
 			continue;
 		}
 

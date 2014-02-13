@@ -1974,13 +1974,13 @@ void RenderOpenGL::particles()
 **/
 void RenderOpenGL::guichan()
 {
-	if (! st->hasDialogs()) return;
+	if (! GEng()->hasDialogs()) return;
 
 	CHECK_OPENGL_ERROR;
 	
 	glDisable(GL_DEPTH_TEST);
 	
-	this->st->gui->draw();
+	GEng()->gui->draw();
 	
 	CHECK_OPENGL_ERROR;
 }
@@ -1992,7 +1992,7 @@ void RenderOpenGL::guichan()
 void RenderOpenGL::fps()
 {
 	char buf[50];
-	float tick = this->st->getAveTick();
+	float tick = GEng()->getAveTick();
 	
 	sprintf(buf, "%.2f ms", tick);
 	this->renderText(buf, 400.0f, 50.0f);

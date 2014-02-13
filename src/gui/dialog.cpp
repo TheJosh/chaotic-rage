@@ -8,6 +8,7 @@
 
 #include "../rage.h"
 #include "../game_state.h"
+#include "../game_engine.h"
 #include "dialog.h"
 
 
@@ -68,6 +69,7 @@ gcn::Container * DialogQuit::setup()
 	return c;
 }
 
+
 /**
 * Handle a button click
 **/
@@ -76,7 +78,8 @@ void DialogQuit::action(const gcn::ActionEvent& actionEvent)
 	if (actionEvent.getSource()->getId() == "Y") {
 		this->st->gameOver();
 	}
-	this->st->remDialog(this);
+	
+	GEng()->remDialog(this);
 }
 
 

@@ -235,8 +235,6 @@ void RenderDebug::render()
 	}
 	
 	SDL_RenderPresent(this->renderer);
-	
-	st->reset_mouse = false;
 }
 
 

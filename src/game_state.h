@@ -94,19 +94,14 @@ class GameState
 		list<Entity*> entities;
 		list<Entity*> entities_add;
 		list<NewParticle*> particles;
-		list<Dialog*> dialogs;
 		
 		vector<Unit*> units;		// leaks: items are not removed
 		vector<Wall*> walls;		// leaks: items are not removed
 		
 		bool running;
-		bool reset_mouse;
 		unsigned int entropy;		// TODO: gamestate -> localplayers
 
 		list<DebugLine*>lines;
-		int ticksum;
-		int tickindex;
-		int ticklist[FPS_SAMPLES];
 
 		EID eid_next;
 
@@ -123,10 +118,6 @@ class GameState
 		GameLogic* logic;
 		PhysicsBullet* physics;
 
-		gcn::Gui* gui;
-		gcn::SDLInput* guiinput;
-		gcn::Container * guitop;
-		
 	public:
 		GameState();
 		~GameState();
@@ -169,17 +160,6 @@ class GameState
 		unsigned int getEntropy(unsigned int slot);
 		void increaseEntropy(unsigned int slot);
 		
-		// Mouse reset
-		void setMouseGrab(bool reset);
-		bool getMouseGrab();
-
-		// GUI
-		void initGuichan();
-		bool hasDialog(string name);
-		void addDialog(Dialog * dialog);
-		void remDialog(Dialog * dialog);
-		bool hasDialogs();
-		
 		// HUD
 		void addHUDMessage(unsigned int slot, string text);
 		void addHUDMessage(unsigned int slot, string text, string text2);
@@ -189,8 +169,6 @@ class GameState
 		void addDebugLine(btVector3 * a, btVector3 * b);
 		void addDebugPoint(float x, float y, float z);
 		void addDebugPoint(float x, float y, float z, float len);
-		void calcAverageTick(int newtick);
-		float getAveTick();
 };
 
 

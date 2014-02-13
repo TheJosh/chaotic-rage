@@ -74,7 +74,7 @@ void gameLoop(GameState* st, Render* render, Audio* audio, NetClient* client)
 		st->update(delta);
 		handleEvents(st);
 		
-		if (st->getMouseGrab()) {
+		if (GEng()->getMouseGrab()) {
 			if (st->local_players[0]->p) st->local_players[0]->p->angleFromMouse(game_x[0], game_y[0], delta);
 			if (st->local_players[1]->p) st->local_players[1]->p->angleFromMouse(game_x[1], game_y[1], delta);
 			game_x[0] = game_y[0] = 0;
