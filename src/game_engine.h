@@ -39,6 +39,9 @@ class GameEngine
 		// Is the mouse currently "grabbed"?
 		bool mouse_grabbed;
 
+		// Guichan dialogs
+		list<Dialog*> dialogs;
+
 	public:
 		// Is the game running?
 		bool running;
@@ -51,21 +54,20 @@ class GameEngine
 		ClientConfig* cconf;
 		ModManager* mm;
 
-		// Dialogs and guichan
-		list<Dialog*> dialogs;
+		// Guichan
 		gcn::Gui* gui;
 		gcn::SDLInput* guiinput;
 		gcn::Container* guitop;
-		
+
 	public:
 		GameEngine();
 		~GameEngine();
-		
+
 	private:
 		// Disable copy-constructor and copy-assignment
 		GameEngine(const GameEngine& that);
 		GameEngine& operator= (GameEngine that);
-		
+
 	public:
 		// Mouse grab
 		void setMouseGrab(bool reset);
@@ -73,7 +75,7 @@ class GameEngine
 
 		// Init guichan
 		void initGuichan();
-		
+
 		// Dialog management
 		bool hasDialog(string name);
 		void addDialog(Dialog * dialog);
