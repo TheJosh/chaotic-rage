@@ -22,18 +22,16 @@ end;
 -- Spwans zombies
 --
 spawn_func = function()
-	t = random(1, 5);
+	t = random(1, 4);
 	
 	if (t == 1) then
 		add_npc("zomb", "zombie", factions.team2);
 	elseif (t == 2) then
 		add_npc("zomb_fast", "zombie", factions.team2);
 	elseif (t == 3) then
-		add_npc("zomb_baby", "zombie", factions.team2);
+		add_npc("zomb_health", "zombie", factions.team2);
 	elseif (t == 4) then
-		add_npc("zomb_facebook", "zombie", factions.team2);
-	elseif (t == 5) then
-		add_npc("zomb_robot", "zombie", factions.team2);
+		add_npc("zomb_strong", "zombie", factions.team2);
 	end;
 	
 	num_zombies = num_zombies + 1;
@@ -48,7 +46,9 @@ end;
 --
 start_round = function()
 	num_zombies = 0;
-	num_wanted = num_wanted + 10;
+	if num_wanted < 50 then
+		num_wanted = num_wanted + 5;
+	end;
 	num_dead = 0;
 	round = round + 1;
 	
