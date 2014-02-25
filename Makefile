@@ -1,8 +1,30 @@
-CXX := g++
-CC := gcc
-CFLAGS := `sdl2-config --cflags` `pkg-config gl glu lua5.1 bullet assimp --cflags` `freetype-config --cflags` -DGETOPT -Werror -Wall -ggdb -Itools/include -Isrc -Isrc/guichan -Isrc/confuse
-LIBS := `sdl2-config --libs` `pkg-config lua5.1 bullet assimp --libs` `freetype-config --libs` -lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11
+# Makefile for Chaotic Rage
 
+
+# If MXE is use, set cross compiler vars and PATH
+# Use it like this:
+#    make MXE=/path/to/mxe
+ifdef MXE
+	CROSS := i686-pc-mingw32-
+	PATH := $(MXE)/usr/bin:$(PATH)
+else
+	CROSS :=
+endif
+
+
+# Set executables, with support for cross-compilers
+CXX := $(CROSS)g++
+CC := $(CROSS)gcc
+PKG_CONFIG := $(CROSS)pkg-config
+SDL2_CONFIG := $(CROSS)sdl2-config
+FREETYPE_CONFIG := $(CROSS)freetype-config
+
+# Cflags and Libs
+CFLAGS := `$(SDL2_CONFIG) --cflags` `$(PKG_CONFIG) gl glu lua5.1 bullet assimp --cflags` `$(FREETYPE_CONFIG) --cflags` -DGETOPT -Werror -Wall -ggdb -Itools/include -Isrc -Isrc/guichan -Isrc/confuse
+LIBS := `$(SDL2_CONFIG) --libs` `$(PKG_CONFIG) lua5.1 bullet assimp --libs` `$(FREETYPE_CONFIG) --libs` -lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11
+
+# Extract the version from rage.h
+# Only used for releases
 VERSION := $(shell grep -E --only-matching 'VERSION ".+"' src/rage.h | sed -n 1p | sed "s/VERSION //" | sed 's/"//g')
 DISTTMP := chaoticrage-$(VERSION)
 

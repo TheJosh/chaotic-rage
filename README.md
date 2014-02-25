@@ -49,6 +49,19 @@ There is a script in `tools/android` called `prepare.sh` which will try to set e
 You should then be able to run `ndk-build` to compile and `ant debug` to create the .apk
  
 
+Cross-compiling for Windows using MXE
+-------------------------------------
+
+Check out the latest master version of MXE from GitHub
+git clone https://github.com/mxe/mxe.git
+
+Then build all the dependencies
+make sdl2 sdl2_mixer sdl2_image sdl2_net lua freetype bullet assimp
+
+You should then be able to build the game using make with an additional option specified
+make MXE=/path/to/mxe
+
+
 Making Modifications
 --------------------
 
