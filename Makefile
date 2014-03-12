@@ -20,7 +20,7 @@ SDL2_CONFIG := $(CROSS)sdl2-config
 FREETYPE_CONFIG := $(CROSS)freetype-config
 
 # Cflags and Libs
-CFLAGS := `$(SDL2_CONFIG) --cflags` `$(PKG_CONFIG) gl glu lua5.1 bullet assimp --cflags` `$(FREETYPE_CONFIG) --cflags` -DGETOPT -Werror -Wall -ggdb -Itools/include -Isrc -Isrc/guichan -Isrc/confuse
+CFLAGS := `$(SDL2_CONFIG) --cflags` `$(PKG_CONFIG) gl glu lua5.1 bullet assimp --cflags` `$(FREETYPE_CONFIG) --cflags` -DGETOPT -Werror -Wall -ggdb -Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark/include
 LIBS := `$(SDL2_CONFIG) --libs` `$(PKG_CONFIG) lua5.1 bullet assimp --libs` `$(FREETYPE_CONFIG) --libs` -lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11
 
 # Extract the version from rage.h
@@ -50,6 +50,7 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/guichan/opengl/*.cpp \
 	$(SRCPATH)/guichan/sdl/*.cpp \
 	$(SRCPATH)/guichan/widgets/*.cpp \
+	$(SRCPATH)/spark/src/*.cpp \
 )
 
 OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES))
