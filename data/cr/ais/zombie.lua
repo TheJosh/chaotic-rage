@@ -27,8 +27,10 @@ function target()
 	
 	me = get_info()
 
+	-- filters out units in the same faction
+	-- TODO: this should be in a function (i.e. is_foe(unit) or is_friend(unit))
 	units = table.filter(units, function(a)
-		return (a.faction ~= me.faction)			-- filters out units in the same faction
+		return (a.faction ~= me.faction)
 	end);
 
 	if (#units == 0) then return end

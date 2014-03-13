@@ -23,36 +23,35 @@ end
 --
 function target() 
 	units = visible_units()
-	if (#units == 0) then return end
+	if (#units == 0) then
+		dir = vector3(random(-1.0,1.0), random(-1.0,1.0), random(-1.0,1.0))
+		move(dir)
+		return
+	end
 	
 	me = get_info()
 
-	units = table.filter(units, function(a)
-		return (a.faction ~= me.faction)			-- filters out units in the same faction
-	end);
-
-	if (#units == 0) then return end
-
+	-- sorts by distance
 	table.sort(units, function(a,b)
-		return a.dist < b.dist				-- sorts by distance
+		return a.dist < b.dist
 	end);
 	
 	-- direction of player
 	dir = units[1].location - me.location
 	
-	-- move, or if too far away, stop
+	-- move, or if too far away, run randomly
 	if (#dir > 100) then
-		stop()
+		dir = vector3(random(-1.0,1.0), random(-1.0,1.0), random(-1.0,1.0))
 	else 
 		move(dir)
 	end
 	
 	-- do melee attack
-	if (#dir < 5) then
+	if (#dir < 10) then
 		melee(dir)
 	end
 end
 
 
-add_interval(3 * 1000, target)
+add_interval(2 * 1000, target)
 target()
