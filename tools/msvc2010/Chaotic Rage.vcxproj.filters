@@ -618,6 +618,12 @@
     <ClCompile Include="..\..\src\game_engine.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\spark\src\SPK_All.cpp">
+      <Filter>src\spark</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\src\SPK_GL_All.cpp">
+      <Filter>src\spark</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">
@@ -1102,6 +1108,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\render_opengl\intro.h">
       <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\include\SPK.h">
+      <Filter>src\spark</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\include\SPK_GL.h">
+      <Filter>src\spark</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

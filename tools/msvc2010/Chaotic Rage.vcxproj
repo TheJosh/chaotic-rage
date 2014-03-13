@@ -48,7 +48,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../windows/include;../windows/include/bullet;../windows/getopt_long;../include;../../src/;../../src/guichan;../../src/confuse</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../windows/include;../windows/include/bullet;../windows/getopt_long;../include;../../src/;../../src/guichan;../../src/confuse;../../src/spark/include</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
@@ -272,6 +272,8 @@
     <ClCompile Include="..\..\src\weapons\rockets.cpp" />
     <ClCompile Include="..\..\src\weapons\weapons.cpp" />
     <ClCompile Include="..\..\src\zone.cpp" />
+    <ClCompile Include="..\..\src\spark\src\SPK_All.cpp" />
+    <ClCompile Include="..\..\src\spark\src\SPK_GL_All.cpp" />
     <ClCompile Include="..\windows\getopt_long\getopt_long.c" />
   </ItemGroup>
   <ItemGroup>
@@ -435,6 +437,8 @@
     <ClInclude Include="..\..\src\weapons\ghost_objects.h" />
     <ClInclude Include="..\..\src\weapons\weapons.h" />
     <ClInclude Include="..\..\src\zone.h" />
+    <ClInclude Include="..\..\src\spark\include\SPK.h" />
+    <ClInclude Include="..\..\src\spark\include\SPK_GL.h" />
     <ClInclude Include="..\windows\getopt_long\getopt.h" />
   </ItemGroup>
   <ItemGroup>
