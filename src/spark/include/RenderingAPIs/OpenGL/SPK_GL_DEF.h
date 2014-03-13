@@ -44,10 +44,12 @@
 #include "../render_opengl/gl.h"
 #include "../render_opengl/gl_debug.h"
 
-// Needed for ext handling
-#if defined(linux) || defined(__linux)
-#define GLX_GLXEXT_PROTOTYPES
-#include <GL/glx.h>
+// Needed for ext handling - OpenGL on Linux only
+#ifdef OpenGL
+	#if defined(linux) || defined(__linux)
+	#define GLX_GLXEXT_PROTOTYPES
+	#include <GL/glx.h>
+	#endif
 #endif
 
 // Defines the APIENTRY if not already done

@@ -20,6 +20,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include \
 	$(LOCAL_PATH)/$(JNI_PATH)/lua/src \
 	$(LOCAL_PATH)/confuse \
 	$(LOCAL_PATH)/guichan \
+	$(LOCAL_PATH)/spark/include \
 	$(LOCAL_PATH)/../tools/include
 
 # Add your application source files here...
@@ -52,6 +53,7 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 		$(wildcard $(LOCAL_PATH)/render_opengl/*.cpp) \
 		$(wildcard $(LOCAL_PATH)/util/*.cpp) \
 		$(wildcard $(LOCAL_PATH)/weapons/*.cpp) \
+		$(wildcard $(LOCAL_PATH)/spark/src/*.cpp) \
 	)
 
 DONT_COMPILE_FILES := render_opengl/gl_debug_drawer.cpp
