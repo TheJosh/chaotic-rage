@@ -5,7 +5,8 @@ Chaotic Rage is a crazy top-view shooter.
 You can destroy everything with the many weapons, turrets and vehicles.
 Choose from multiple characters with unique skills and abilities.
 
-See also: http://chaoticrage.com
+See also:
+* http://chaoticrage.com
 
 
 Compiling on Linux
@@ -42,24 +43,30 @@ You should still be able to download that older version.
 Compiling for Android on Linux
 -----------------------------
 
-This is a little incomplete and fussy at the moment
+This is a little incomplete and fussy at the moment.
 
 There is a script in `tools/android` called `prepare.sh` which will try to set everything up for you.
 
-You should then be able to run `ndk-build` to compile and `ant debug` to create the .apk
+You should then be able to run `ndk-build` to compile and `ant debug` to create the .apk.
  
 
 Cross-compiling for Windows using MXE
 -------------------------------------
 
 Check out the latest master version of MXE from GitHub
+```
 git clone https://github.com/mxe/mxe.git
+```
 
 Then build all the dependencies
+```
 make sdl2 sdl2_mixer sdl2_image sdl2_net lua freetype bullet assimp
+```
 
-You should then be able to build the game using make with an additional option specified
+You should then be able to build the game using `make` with an additional option specified
+```
 make MXE=/path/to/mxe
+```
 
 
 Making Modifications
