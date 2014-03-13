@@ -595,22 +595,6 @@ LUA_FUNC(set_viewmode)
 }
 
 
-/**
-* 
-*
-* @return String: The currently selected unit type
-**/
-LUA_FUNC(random)
-{
-	int min = lua_tointeger(L, 1);
-	int max = lua_tointeger(L, 2);
-	
-	lua_pushinteger(L, getRandom(min,max));
-	
-	return 1;
-}
-
-
 
 /**
 * For function binding
@@ -633,7 +617,6 @@ void register_lua_functions()
 	LUA_REG(add_interval);
 	LUA_REG(add_timer);
 	LUA_REG(remove_timer);
-	LUA_REG(random);
 
 	LUA_REG(add_npc);				// TODO: Think up improved
 	LUA_REG(add_player);			// entity handling
@@ -665,6 +648,7 @@ void register_lua_functions()
 	lua_setglobal(L, "factions");
 
 	load_hudlabel_lib(L);
+	load_random_lib(L);
 }
 
 

@@ -406,6 +406,7 @@ void register_lua_functions()
 	lua_standard_libs(L);
 	load_vector3_lib(L);
 	load_unitinfo_lib(L);
+	load_random_lib(L);
 	
 	LUA_REG(add_interval);
 	LUA_REG(add_timer);

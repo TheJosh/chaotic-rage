@@ -40,3 +40,11 @@ UnitQueryResult * get_unitinfo(lua_State *L, int i);
 **/
 void load_hudlabel_lib(lua_State *L);
 void new_hudlabel(lua_State *L, HUDLabel* src);
+
+
+/**
+* Random numbers
+**/
+void load_random_lib(lua_State *L);
+
+
