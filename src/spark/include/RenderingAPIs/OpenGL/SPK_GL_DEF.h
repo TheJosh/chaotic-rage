@@ -40,25 +40,14 @@
 #define SPK_GL_PREFIX
 #endif
 
-#ifndef SPK_NO_GL_INC
+// Bring in OpenGL in the same way as we do everywhere else
+#include "../render_opengl/gl.h"
+#include "../render_opengl/gl_debug.h"
 
-#if defined(WIN32) || defined(_WIN32)
-#include <windows.h>
-#endif
-
-#if defined(__APPLE__)
-#include <OpenGL/gl.h>
-#elif defined(macintosh)
-#include <gl.h>
-#else
-#include <GL/gl.h>
-#endif
-
+// Needed for ext handling
 #if defined(linux) || defined(__linux)
 #define GLX_GLXEXT_PROTOTYPES
 #include <GL/glx.h>
-#endif
-
 #endif
 
 // Defines the APIENTRY if not already done
