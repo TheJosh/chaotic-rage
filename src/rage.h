@@ -23,6 +23,13 @@
 	#define VERSION "Git Master"
 #endif
 
+// For now we aren't going to support Spark particles on mobile devices
+#if defined(__ANDROID__)
+	#define USE_SPARK 0
+#else
+	#define USE_SPARK 1
+#endif
+
 // Frames-per-second to run all in-game animations at.
 // Specified as a float to help out some arithmetic
 #define ANIMATION_FPS	12.0
