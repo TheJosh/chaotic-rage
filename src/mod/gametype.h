@@ -19,6 +19,12 @@ class GameType
 		
 	public:
 		GameType();
+		
+	public:
+		bool operator < (const GameType& other) const
+		{
+			return (title < other.title);
+		}
 };
 
 

@@ -349,6 +349,15 @@ GameType * ModManager::getGameType(string name)
 
 
 /**
+* Used for sorting
+**/
+struct GameTypesPointerCompare {
+	bool operator()(const GameType* l, const GameType* r) {
+		return *l < *r;
+	}
+};
+
+/**
 * Returns a start and end iterator for getting all gametypes
 **/
 vector<GameType*> * ModManager::getAllGameTypes()
@@ -363,6 +372,8 @@ vector<GameType*> * ModManager::getAllGameTypes()
 		mod->getAllGameTypes(&start, &end);
 		gt->insert(gt->end(), start, end);
 	}
+	
+	std::sort(gt->begin(), gt->end(), PointerCompare());
 	
 	return gt;
 }
