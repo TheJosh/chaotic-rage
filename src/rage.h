@@ -88,6 +88,21 @@ class RangeF {
 		RangeF() { min = 0.0f, max = 0.0f; }
 };
 
+// Factions that units can be in
+// A unit can only be in one faction at any given time
+enum Faction {
+	FACTION_INDIVIDUAL = 0,
+	FACTION_TEAM1 = 1,
+	FACTION_TEAM2 = 2,
+	FACTION_TEAM3 = 3,
+	FACTION_TEAM4 = 4,
+	FACTION_TEAM5 = 5,
+	FACTION_TEAM6 = 6,
+	FACTION_TEAM7 = 7,
+	FACTION_TEAM8 = 8,
+	FACTION_COMMON = 9,
+};
+
 // A buttload of class definitions for forward-decls.
 class AIType;
 class AILogic;

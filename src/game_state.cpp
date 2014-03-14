@@ -28,6 +28,7 @@
 #include "fx/newparticle.h"
 #include "gui/dialog.h"
 #include "mod/mod_manager.h"
+#include "mod/gametype.h"
 #include "net/net_server.h"
 #include "render_opengl/hud.h"
 #include "render/render_3d.h"
@@ -511,6 +512,28 @@ list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 		ret->push_back(uqr);
 	}
 	
+	return ret;
+}
+
+
+/**
+* Returns a set of weapons to give to new units.
+**/
+vector<WeaponType*>* GameState::getSpawnWeapons(UnitType* ut, Faction fac)
+{
+	vector<WeaponType*>* ret = new vector<WeaponType*>();
+
+	// Eight weapons ought to be enough for anyone...
+	ret->reserve(8);
+
+	// UnitType weapons
+	ret->insert(ret->end(), ut->spawn_weapons.begin(), ut->spawn_weapons.end());
+
+	// GameType weapons
+	if (gt->spawn_weapons.count(fac) == 1) {
+		ret->insert(ret->end(), gt->spawn_weapons.at(fac).begin(), gt->spawn_weapons.at(fac).end());
+	}
+
 	return ret;
 }
 

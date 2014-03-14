@@ -30,7 +30,7 @@ class Player : public Unit
 		bool walking;
 
 	public:
-		Player(UnitType *uc, GameState *st, float x, float y, float z);
+		Player(UnitType *uc, GameState *st, float x, float y, float z, Faction fac, int slot);
 		virtual ~Player();
 		
 	public:

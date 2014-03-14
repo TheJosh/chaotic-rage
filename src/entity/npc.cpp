@@ -20,7 +20,7 @@
 using namespace std;
 
 
-NPC::NPC(UnitType *uc, GameState *st, float x, float y, float z, AIType *ai) : Unit(uc, st, x, y, z)
+NPC::NPC(UnitType *uc, GameState *st, float x, float y, float z, AIType *ai, Faction fac) : Unit(uc, st, x, y, z, fac)
 {
 	vals[0] = vals[1] = vals[2] = vals[3] = 0;
 	

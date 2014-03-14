@@ -106,7 +106,8 @@ class GameState
 
 	public:
 		Map* map;
-		
+		GameType* gt;
+
 		PlayerState * local_players[MAX_LOCAL];
 		unsigned int num_local;
 		int last_game_result;
@@ -154,6 +155,9 @@ class GameState
 		void gameOver();
 		void gameOver(int result);
 		int getLastGameResult();
+
+		// Weapon fun
+		vector<WeaponType*>* getSpawnWeapons(UnitType* ut, Faction fac);
 
 		// Entropy
 		unsigned int getEntropy(unsigned int slot);

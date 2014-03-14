@@ -413,9 +413,7 @@ LUA_FUNC(add_npc)
 		reportFatalError("Map does not have any spawnpoints");
 	}
 	
-	p = new NPC(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 2, ai);
-	
-	p->fac = fac;
+	p = new NPC(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 2, ai, fac);
 	
 	for (unsigned int i = 0; i < uc->spawn_weapons.size(); i++) {
 		p->pickupWeapon(uc->spawn_weapons.at(i));
@@ -456,9 +454,7 @@ LUA_FUNC(add_player)
 		reportFatalError("Map does not have any spawnpoints");
 	}
 	
-	p = new Player(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 0);
-	p->fac = fac;
-	p->slot = slot;
+	p = new Player(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 0, fac, slot);
 	
 	// Is it a local player?
 	PlayerState *ps = gl->st->localPlayerFromSlot(slot);

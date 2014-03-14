@@ -7,6 +7,8 @@
 #include "../rage.h"
 #include "mod.h"
 #include "gametype.h"
+#include "game_engine.h"
+#include "mod_manager.h"
 
 using namespace std;
 
@@ -47,6 +49,19 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 	
 	gt->script = std::string(tmp);
 	free(tmp);
+
+
+	vector<WeaponType*> weaps;
+	WeaponType* wt;
+
+	wt = mod->getWeaponType("flamethrower");
+	if (wt == NULL) {
+		mod->setLoadErr("Invalid spawn weapon %s for action %i", "flamethrower", FACTION_INDIVIDUAL);
+		return NULL;
+	}
+	weaps.push_back(wt);
+	gt->spawn_weapons.insert( std::make_pair(FACTION_INDIVIDUAL, weaps) );
+
 
 	return gt;
 }

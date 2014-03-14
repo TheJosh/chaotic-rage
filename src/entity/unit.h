@@ -23,19 +23,6 @@ class btPairCachingGhostObject;
 class btCRKinematicCharacterController;
 
 
-enum Faction {
-	FACTION_INDIVIDUAL = 0,
-	FACTION_TEAM1 = 1,
-	FACTION_TEAM2 = 2,
-	FACTION_TEAM3 = 3,
-	FACTION_TEAM4 = 4,
-	FACTION_TEAM5 = 5,
-	FACTION_TEAM6 = 6,
-	FACTION_TEAM7 = 7,
-	FACTION_TEAM8 = 8,
-	FACTION_COMMON = 9,
-};
-
 class UnitWeapon {
 	friend class Unit;
 	private:
@@ -100,7 +87,7 @@ class Unit : public Entity
 		list<UnitPickup> pickups;
 
 	public:
-		Unit(UnitType *uc, GameState *st, float x, float y, float z);
+		Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac);
 		virtual ~Unit();
 		
 	public:

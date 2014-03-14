@@ -456,9 +456,6 @@
     <ClCompile Include="..\..\src\entity\helicopter.cpp">
       <Filter>src\entity</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\entity\unit.cpp">
-      <Filter>src\mod</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\guichan\actionevent.cpp">
       <Filter>src\guichan</Filter>
     </ClCompile>
@@ -647,6 +644,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\lua\lua_random_lib.cpp">
       <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entity\unit.cpp">
+      <Filter>src\entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

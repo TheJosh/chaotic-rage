@@ -13,9 +13,10 @@ class GameType
 	public:
 		string name;
 		CRC32 id;
-		
-		string script;
 		string title;
+
+		string script;
+		map<Faction, vector<WeaponType*>> spawn_weapons;
 		
 	public:
 		GameType();

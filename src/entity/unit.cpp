@@ -28,12 +28,13 @@
 using namespace std;
 
 
-Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
+Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) : Entity(st)
 {
 	this->uc = uc;
 	this->params = uc->params;
 	this->slot = 0;
-	
+	this->fac = fac;
+
 	this->health = uc->begin_health;
 	this->remove_at = 0;
 	
@@ -79,10 +80,12 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z) : Entity(st)
 	st->physics->addAction(character);
 	
 	// Give them some weapons
-	for (unsigned int i = 0; i < uc->spawn_weapons.size(); i++) {
-		this->pickupWeapon(uc->spawn_weapons.at(i));
+	vector<WeaponType*>* spawn = st->getSpawnWeapons(this->uc, this->fac);
+	for (unsigned int i = 0; i < spawn->size(); i++) {
+		this->pickupWeapon(spawn->at(i));
 	}
-	
+	delete(spawn);
+
 	this->body = NULL;
 }
 

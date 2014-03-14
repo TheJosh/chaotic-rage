@@ -222,9 +222,12 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 	st->map = m;
 	
 	// Load gametype
-	new GameLogic(st);
 	GameType *gt = GEng()->mm->getGameType(gametype);
 	assert(gt);
+	st->gt = gt;
+
+	// Execute lua script
+	new GameLogic(st);
 	st->logic->selected_unittype = GEng()->mm->getUnitType(unittype);
 	st->logic->execScript(gt->script);
 	
@@ -266,7 +269,7 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	// Create local player
 	st->num_local = 1;
 	st->local_players[0] = new PlayerState(st);
-	
+
 	// Try to join the server
 	gameinfo = client->attemptJoinGame(host, 17778, ui);
 	if (gameinfo == NULL) {
@@ -286,7 +289,10 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	m->load(map->getName(), GEng()->render, map->getMod());
 	st->map = m;
 	
-	// Load gametype
+	// TODO: Do we need to init the gametype? I think we might
+	st->gt = NULL;
+
+	// Init GameLogic - is this needed?
 	new GameLogic(st);
 	st->logic->selected_unittype = GEng()->mm->getUnitType("robot");
 
