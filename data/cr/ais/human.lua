@@ -48,7 +48,9 @@ function target()
 	
 	-- do melee attack
 	if (#dir < 10) then
-		melee(dir)
+		begin_firing()
+	else
+		end_firing()
 	end
 end
 

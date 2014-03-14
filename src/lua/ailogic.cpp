@@ -62,6 +62,7 @@ AILogic::AILogic(Unit *u)
 	this->dir = btVector3(0,0,0);
 	this->dir_flag = true;
 	this->speed = 0;
+	this->needEndFiring = false;
 }
 
 AILogic::~AILogic()
@@ -109,7 +110,6 @@ void AILogic::update(int delta)
 {
 	this->ActiveLuaState();
 	
-	
 	// Fire timers
 	for (unsigned int id = 0; id < this->timers.size(); id++) {
 		LuaTimer* t = this->timers.at(id);
@@ -128,8 +128,7 @@ void AILogic::update(int delta)
 		}
 	}
 	
-	
-	// NEW (kinematic controller)
+	// Handle movement
 	if (this->dir_flag) {
 		this->dir.setY(0.0f);
 
@@ -148,6 +147,12 @@ void AILogic::update(int delta)
 		u->character->setWalkDirection(this->dir * walkSpeed);
 
 		this->dir_flag = false;
+	}
+	
+	// If we should end firing, then end firing
+	if (this->needEndFiring) {
+		this->u->endFiring();
+		this->needEndFiring = false;
 	}
 }
 
@@ -382,6 +387,40 @@ LUA_FUNC(melee)
 
 
 /**
+* Begin firing the gun
+**/
+LUA_FUNC(begin_firing)
+{
+	gl->u->beginFiring();
+	return 0;
+}
+
+
+/**
+* End firing the gun
+**/
+LUA_FUNC(end_firing)
+{
+	gl->u->endFiring();
+	return 0;
+}
+
+
+/**
+* Sets firing going and sets a flag to end firing the next tick
+*
+* For a non-continous gun this will fire a single shot
+* For a continous gun you might get a few shots
+**/
+LUA_FUNC(fire)
+{
+	gl->u->beginFiring();
+	gl->needEndFiring = true;
+	return 0;
+}
+
+
+/**
 * Makes the AI stop movement.
 **/
 LUA_FUNC(stop)
@@ -415,6 +454,9 @@ void register_lua_functions()
 	LUA_REG(get_info);
 	LUA_REG(move);
 	LUA_REG(melee);
+	LUA_REG(begin_firing);
+	LUA_REG(end_firing);
+	LUA_REG(fire);
 	LUA_REG(stop);
 }
 

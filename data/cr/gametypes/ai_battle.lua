@@ -17,24 +17,28 @@ end;
 -- Game start
 --
 bind_gamestart(function()
-	add_timer(1500, spawn_ais)
-	
 	-- Show msg
-	lab = add_label(0, 350, "3");
-	lab.align = 2;
-	lab.r = 0.9; lab.g = 0.1; lab.b = 0.1
+	lab = add_label(0, 350, "Three")
+	lab.align = 2
+	lab.r = 0.7
+	lab.g = 0.1
+	lab.b = 0.1
 	
 	-- Animation
-	add_timer(500, function()
-		lab.data = "2"
-	end);
 	add_timer(1000, function()
-		lab.data = "1"
-	end);
-	add_timer(1500, function()
-		lab.data = "Fight"
+		lab.data = "Two"
+		lab.r = 0.8
 	end);
 	add_timer(2000, function()
-		lab.a = 0
+		lab.data = "One"
+		lab.r = 0.9
+	end);
+	add_timer(3000, function()
+		lab.data = "Fight!"
+		lab.r = 1.0
+		spawn_ais()			-- bring in the AIs
+	end);
+	add_timer(4000, function()
+		lab.visible = false
 	end);
 end);

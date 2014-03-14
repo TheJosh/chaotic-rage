@@ -30,6 +30,7 @@ class AILogic
 		btVector3 dir;              // Direction of movement
 		bool dir_flag;              // Set when direction has changed
 		float speed;
+		bool needEndFiring;
 		
 	public:
 		AILogic(Unit *u);
