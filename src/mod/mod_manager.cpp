@@ -373,7 +373,7 @@ vector<GameType*> * ModManager::getAllGameTypes()
 		gt->insert(gt->end(), start, end);
 	}
 	
-	std::sort(gt->begin(), gt->end(), PointerCompare());
+	std::sort(gt->begin(), gt->end(), GameTypesPointerCompare());
 	
 	return gt;
 }

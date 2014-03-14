@@ -93,14 +93,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\..\data\cr\ai.lua" />
+    <None Include="..\..\data\cr\ais\dumbo.lua" />
+    <None Include="..\..\data\cr\ais\human.lua" />
+    <None Include="..\..\data\cr\ais\zombie.lua" />
     <None Include="..\..\data\cr\animmodels.conf" />
     <None Include="..\..\data\cr\floortypes.conf" />
     <None Include="..\..\data\cr\gametypes.conf" />
+    <None Include="..\..\data\cr\gametypes\ai_battle.lua" />
     <None Include="..\..\data\cr\gametypes\boredem.lua" />
     <None Include="..\..\data\cr\gametypes\free_for_all.lua" />
+    <None Include="..\..\data\cr\gametypes\humans.lua" />
     <None Include="..\..\data\cr\gametypes\test.lua" />
     <None Include="..\..\data\cr\gametypes\zombies.lua" />
+    <None Include="..\..\data\cr\gametypes\zombies2.lua" />
+    <None Include="..\..\data\cr\gametypes\zombie_betrayal.lua" />
     <None Include="..\..\data\cr\objecttypes.conf" />
     <None Include="..\..\data\cr\particlegenerators.conf" />
     <None Include="..\..\data\cr\particletypes.conf" />
@@ -211,6 +217,7 @@
     <ClCompile Include="..\..\src\http\happyhttp.cpp" />
     <ClCompile Include="..\..\src\http\serverlist.cpp" />
     <ClCompile Include="..\..\src\http\url.cpp" />
+    <ClCompile Include="..\..\src\lua\lua_random_lib.cpp" />
     <ClCompile Include="..\..\src\render_opengl\intro.cpp" />
     <ClCompile Include="..\..\src\lua\ailogic.cpp" />
     <ClCompile Include="..\..\src\lua\gamelogic.cpp" />
