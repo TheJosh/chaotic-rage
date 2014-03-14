@@ -75,13 +75,15 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 		
 		// Check faction id is okay
 		int faction_id = cfg_getint(cfg_faction, "id");
-		if (faction_id < 0 || faction_id > 9) {
+		if (faction_id < 0 || faction_id >= NUM_FACTIONS) {
 			mod->setLoadErr("Invalid faction id %i", faction_id);
 			return NULL;
 		}
 
-		// Build weapons array
-		weaps = vector<WeaponType*>();
+		// Load faction settings
+		gt->factions[faction_id].title = cfg_getstr(cfg_faction, "title");
+
+		// Load spawn weapons
 		int num_weapons = cfg_size(cfg_faction, "spawn_weapons");
 		for (k = 0; j < num_weapons; j++) {
 			WeaponType * wt = mod->getWeaponType(cfg_getnstr(cfg_faction, "spawn_weapons", j));
@@ -89,11 +91,9 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 				mod->setLoadErr("Invalid spawn weapon %s for action %i", cfg_getnstr(cfg_faction, "spawn_weapons", j), faction_id);
 				return NULL;
 			}
-			weaps.push_back(wt);
-		}
 
-		// Insert weapons vector into the std::map
-		gt->spawn_weapons.insert( std::make_pair((Faction)faction_id, weaps) );
+			gt->factions[faction_id].spawn_weapons.push_back(wt);
+		}
 	}
 
 

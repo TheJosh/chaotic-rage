@@ -8,6 +8,20 @@
 using namespace std;
 
 
+/**
+* Per-faction settings for a gametype
+**/
+class GameTypeFaction
+{
+	public:
+		string title;
+		vector<WeaponType*> spawn_weapons;
+};
+
+
+/**
+* A gametype, including script and game settings
+**/
 class GameType
 {
 	public:
@@ -16,7 +30,7 @@ class GameType
 		string title;
 
 		string script;
-		map<Faction, vector<WeaponType*>> spawn_weapons;
+		GameTypeFaction factions[NUM_FACTIONS];
 		
 	public:
 		GameType();

@@ -530,8 +530,8 @@ vector<WeaponType*>* GameState::getSpawnWeapons(UnitType* ut, Faction fac)
 	ret->insert(ret->end(), ut->spawn_weapons.begin(), ut->spawn_weapons.end());
 
 	// GameType weapons
-	if (gt->spawn_weapons.count(fac) == 1) {
-		ret->insert(ret->end(), gt->spawn_weapons.at(fac).begin(), gt->spawn_weapons.at(fac).end());
+	if (gt->factions[fac].spawn_weapons.size()) {
+		ret->insert(ret->end(), gt->factions[fac].spawn_weapons.begin(), gt->factions[fac].spawn_weapons.end());
 	}
 
 	return ret;

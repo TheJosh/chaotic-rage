@@ -101,6 +101,7 @@ enum Faction {
 	FACTION_TEAM7 = 7,
 	FACTION_TEAM8 = 8,
 	FACTION_COMMON = 9,
+	NUM_FACTIONS,
 };
 
 // A buttload of class definitions for forward-decls.
