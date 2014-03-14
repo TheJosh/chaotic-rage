@@ -14,6 +14,18 @@ using namespace std;
 
 
 /**
+* Faction settings
+**/
+cfg_opt_t gametype_faction_opts[] =
+{
+	CFG_INT((char*) "id", 0, CFGF_NONE),
+	CFG_STR((char*) "title", 0, CFGF_NONE),
+	CFG_STR_LIST((char*) "spawn_weapons", 0, CFGF_NONE),
+	CFG_END()
+};
+
+
+/**
 * Config file opts
 **/
 cfg_opt_t gametype_opts[] =
@@ -21,6 +33,7 @@ cfg_opt_t gametype_opts[] =
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_STR((char*) "title", 0, CFGF_NONE),
 	CFG_STR((char*) "script", 0, CFGF_NONE),
+	CFG_SEC((char*) "faction", gametype_faction_opts, CFGF_MULTI),
 	CFG_END()
 };
 
@@ -32,7 +45,10 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 {
 	GameType* gt;
 	string filename;
-	
+	cfg_t* cfg_faction;
+	int j, k;
+
+
 	gt = new GameType();
 	gt->name = cfg_getstr(cfg_item, "name");
 	gt->title = cfg_getstr(cfg_item, "title");
@@ -51,16 +67,34 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 	free(tmp);
 
 
+	// Factions
 	vector<WeaponType*> weaps;
-	WeaponType* wt;
+	int num_factions = cfg_size(cfg_item, "faction");
+	for (j = 0; j < num_factions; j++) {
+		cfg_faction = cfg_getnsec(cfg_item, "faction", j);
+		
+		// Check faction id is okay
+		int faction_id = cfg_getint(cfg_faction, "id");
+		if (faction_id < 0 || faction_id > 9) {
+			mod->setLoadErr("Invalid faction id %i", faction_id);
+			return NULL;
+		}
 
-	wt = mod->getWeaponType("flamethrower");
-	if (wt == NULL) {
-		mod->setLoadErr("Invalid spawn weapon %s for action %i", "flamethrower", FACTION_INDIVIDUAL);
-		return NULL;
+		// Build weapons array
+		weaps = vector<WeaponType*>();
+		int num_weapons = cfg_size(cfg_faction, "spawn_weapons");
+		for (k = 0; j < num_weapons; j++) {
+			WeaponType * wt = mod->getWeaponType(cfg_getnstr(cfg_faction, "spawn_weapons", j));
+			if (wt == NULL) {
+				mod->setLoadErr("Invalid spawn weapon %s for action %i", cfg_getnstr(cfg_faction, "spawn_weapons", j), faction_id);
+				return NULL;
+			}
+			weaps.push_back(wt);
+		}
+
+		// Insert weapons vector into the std::map
+		gt->spawn_weapons.insert( std::make_pair((Faction)faction_id, weaps) );
 	}
-	weaps.push_back(wt);
-	gt->spawn_weapons.insert( std::make_pair(FACTION_INDIVIDUAL, weaps) );
 
 
 	return gt;
