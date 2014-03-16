@@ -31,6 +31,7 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 	game_state.cpp \
 	game_engine.cpp \
 	game_manager.cpp \
+	game_settings.cpp \
 	map.cpp \
 	physics_bullet.cpp \
 	zone.cpp \
