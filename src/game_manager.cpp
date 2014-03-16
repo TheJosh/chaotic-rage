@@ -6,6 +6,7 @@
 #include "game_manager.h"
 #include "game_state.h"
 #include "game_engine.h"
+#include "game_settings.h"
 #include "map.h"
 #include "physics_bullet.h"
 #include "mod/campaign.h"
@@ -226,6 +227,13 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 	assert(gt);
 	st->gt = gt;
 
+	// Load game settings
+	// TODO: I'm guessing this obj may need to exist earlier
+	//       so the menu can change it's values
+	GameSettings *gs = new GameSettings();
+	assert(gs);
+	st->gs = gs;
+
 	// Execute lua script
 	new GameLogic(st);
 	st->logic->selected_unittype = GEng()->mm->getUnitType(unittype);
@@ -291,6 +299,9 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	
 	// TODO: Do we need to init the gametype? I think we might
 	st->gt = NULL;
+
+	// TODO: Do we need to init the gamesettings? I think we might
+	st->gs = NULL;
 
 	// Init GameLogic - is this needed?
 	new GameLogic(st);

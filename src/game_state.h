@@ -24,6 +24,7 @@ class Wall;
 class Vehicle;
 class Pickup;
 class AmmoRound;
+class GameSettings;
 
 namespace gcn {
 	class Gui;
@@ -107,6 +108,7 @@ class GameState
 	public:
 		Map* map;
 		GameType* gt;
+		GameSettings* gs;
 
 		PlayerState * local_players[MAX_LOCAL];
 		unsigned int num_local;

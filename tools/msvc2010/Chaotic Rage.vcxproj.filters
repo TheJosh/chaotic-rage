@@ -648,6 +648,9 @@
     <ClCompile Include="..\..\src\entity\unit.cpp">
       <Filter>src\entity</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\game_settings.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">
@@ -1138,6 +1141,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\spark\include\SPK_GL.h">
       <Filter>src\spark</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game_settings.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

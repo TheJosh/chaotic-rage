@@ -15,6 +15,7 @@
 
 #include "game_state.h"
 #include "game_engine.h"
+#include "game_settings.h"
 #include "map.h"
 #include "physics_bullet.h"
 #include "entity/ammo_round.h"
@@ -116,6 +117,8 @@ GameState::GameState()
 	
 	this->logic = NULL;
 	this->physics = NULL;
+	this->gt = NULL;
+	this->gs = NULL;
 
 	g_st = this;
 }
@@ -527,11 +530,20 @@ vector<WeaponType*>* GameState::getSpawnWeapons(UnitType* ut, Faction fac)
 	ret->reserve(8);
 
 	// UnitType weapons
-	ret->insert(ret->end(), ut->spawn_weapons.begin(), ut->spawn_weapons.end());
+	if (gs->factions[fac].spawn_weapons_unit) {
+		ret->insert(ret->end(), ut->spawn_weapons.begin(), ut->spawn_weapons.end());
+	}
 
 	// GameType weapons
-	if (gt->factions[fac].spawn_weapons.size()) {
-		ret->insert(ret->end(), gt->factions[fac].spawn_weapons.begin(), gt->factions[fac].spawn_weapons.end());
+	if (gs->factions[fac].spawn_weapons_gametype) {
+		if (gt->factions[fac].spawn_weapons.size()) {
+			ret->insert(ret->end(), gt->factions[fac].spawn_weapons.begin(), gt->factions[fac].spawn_weapons.end());
+		}
+	}
+
+	// GameSettings weapons
+	if (gs->factions[fac].spawn_weapons_extra.size()) {
+		ret->insert(ret->end(), gs->factions[fac].spawn_weapons_extra.begin(), gs->factions[fac].spawn_weapons_extra.end());
 	}
 
 	return ret;

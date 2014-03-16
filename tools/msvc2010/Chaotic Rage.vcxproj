@@ -155,6 +155,7 @@
     <ClCompile Include="..\..\src\events.cpp" />
     <ClCompile Include="..\..\src\fx\newparticle.cpp" />
     <ClCompile Include="..\..\src\game.cpp" />
+    <ClCompile Include="..\..\src\game_settings.cpp" />
     <ClCompile Include="..\..\src\game_state.cpp" />
     <ClCompile Include="..\..\src\game_engine.cpp" />
     <ClCompile Include="..\..\src\game_manager.cpp" />
@@ -302,6 +303,7 @@
     <ClInclude Include="..\..\src\entity\wall.h" />
     <ClInclude Include="..\..\src\fx\newparticle.h" />
     <ClInclude Include="..\..\src\game.h" />
+    <ClInclude Include="..\..\src\game_settings.h" />
     <ClInclude Include="..\..\src\game_state.h" />
     <ClInclude Include="..\..\src\game_engine.h" />
     <ClInclude Include="..\..\src\game_manager.h" />
