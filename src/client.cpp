@@ -17,6 +17,7 @@
 #include "game_state.h"
 #include "game_engine.h"
 #include "game_manager.h"
+#include "game_settings.h"
 #include "render_opengl/menu.h"
 #include "render_opengl/intro.h"
 
@@ -109,7 +110,9 @@ int main (int argc, char ** argv)
 	// Arcade game
 	} else if (GEng()->cmdline->map != "" && GEng()->cmdline->gametype != "" && GEng()->cmdline->unittype != "") {
 		gm->loadModBits(NULL);
-		gm->startGame(gm->getMapRegistry()->get(GEng()->cmdline->map), GEng()->cmdline->gametype, GEng()->cmdline->unittype, 0, 1, GEng()->cmdline->host);
+		GameSettings *gs = new GameSettings();
+		gm->startGame(gm->getMapRegistry()->get(GEng()->cmdline->map), GEng()->cmdline->gametype, GEng()->cmdline->unittype, 0, 1, GEng()->cmdline->host, gs);
+		delete(gs);
 		
 	// Network join
 	} else if (GEng()->cmdline->join != "") {

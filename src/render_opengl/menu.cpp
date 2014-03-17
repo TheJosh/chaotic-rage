@@ -498,9 +498,9 @@ void Menu::startCampaign(Campaign* c, string unittype, int viewmode, unsigned in
 * @param int num_local The number of local players; 1 for single, 2+ for splitscreen
 * @param int host Set to 1 to host a network game, 0 for a local-only game
 **/
-void Menu::startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local, bool host)
+void Menu::startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local, bool host, GameSettings* gs)
 {
-	gm->startGame(map, gametype, unittype, viewmode, num_local, host);
+	gm->startGame(map, gametype, unittype, viewmode, num_local, host, gs);
 	this->setupGLstate();
 }
 

@@ -13,6 +13,7 @@ class Campaign;
 class MapReg;
 class MapRegistry;
 class UIUpdate;
+class GameSettings;
 
 
 class GameManager
@@ -50,7 +51,7 @@ class GameManager
 		/**
 		* Run an arcade game
 		**/
-		void startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local, bool host);
+		void startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local, bool host, GameSettings *gs);
 		
 		/**
 		* Attempt to join a network game

@@ -9,6 +9,7 @@
 #include "../rage.h"
 #include "../render_opengl/menu.h"
 #include "../game_manager.h"
+#include "../game_settings.h"
 #include "../http/serverlist.h"
 #include "../mod/mod_manager.h"
 #include "dialog.h"
@@ -27,11 +28,14 @@ DialogNewGame::DialogNewGame(int num_local, ModManager *mm)
 	this->num_local = num_local;
 	
 	this->gametypes = new GametypeListModel(mm->getAllGameTypes());
+	
+	this->gs = new GameSettings();
 }
 
 DialogNewGame::~DialogNewGame()
 {
 	delete(this->gametypes);
+	delete(this->gs);
 }
 
 
@@ -113,7 +117,8 @@ void DialogNewGame::action(const gcn::ActionEvent& actionEvent)
 		this->gm->getUnitTypes()->at(this->unittype->getSelected()),
 		this->viewmode->getSelected(),
 		this->num_local,
-		this->host->isSelected()
+		this->host->isSelected(),
+		this->gs
 	);
 }
 

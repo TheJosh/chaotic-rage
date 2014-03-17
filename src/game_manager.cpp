@@ -125,7 +125,10 @@ void GameManager::startCampaign(Campaign* c, string unittype, int viewmode, unsi
 			MapReg* m = mapreg->get(stage->map);
 			if (m == NULL) return;
 
-			this->startGame(m, stage->gametype, unittype, 0, 1, false);
+			// Run game
+			GameSettings* gs = new GameSettings();
+			this->startGame(m, stage->gametype, unittype, 0, 1, false, gs);
+			delete(gs);
 
 			// A result of 1 is success, 0 is failure, -1 is an error.
 			int result = st->getLastGameResult();
@@ -204,7 +207,7 @@ void GameManager::startCampaign(Campaign* c, string unittype, int viewmode, unsi
 * @param int num_local The number of local players; 1 for single, 2+ for splitscreen
 * @param int host Set to 1 to host a network game, 0 for a local-only game
 **/
-void GameManager::startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local, bool host)
+void GameManager::startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local, bool host, GameSettings *gs)
 {
 	ServerConfig* sconf = NULL;
 	NetServer* server = NULL;
@@ -227,10 +230,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 	assert(gt);
 	st->gt = gt;
 
-	// Load game settings
-	// TODO: I'm guessing this obj may need to exist earlier
-	//       so the menu can change it's values
-	GameSettings *gs = new GameSettings();
+	// Set game settings
 	assert(gs);
 	st->gs = gs;
 
