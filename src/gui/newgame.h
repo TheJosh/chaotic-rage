@@ -10,6 +10,8 @@ using namespace std;
 
 
 class GametypeListModel;
+class MapRegistryListModel;
+class VectorListModel;
 class GameSettings;
 
 
@@ -21,14 +23,18 @@ class DialogNewGame : public Dialog, public gcn::ActionListener {
 		DialogNewGame(int num_local, ModManager *mm);
 		~DialogNewGame();
 		
-	private:
+	protected:
 		int num_local;
-		
 		GameSettings* gs;
 		
-		gcn::DropDown *map;
+	private:
+		GametypeListModel *gametype_model;
+		MapRegistryListModel *map_model;
+		VectorListModel *unittype_model; 
+		VectorListModel *viewmode_model;
+		
 		gcn::DropDown *gametype;
-		GametypeListModel *gametypes;
+		gcn::DropDown *map;
 		gcn::DropDown *unittype;
 		gcn::DropDown *viewmode;
 		gcn::CheckBox *host;
