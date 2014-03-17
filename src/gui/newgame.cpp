@@ -42,6 +42,14 @@ DialogNewGame::~DialogNewGame()
 }
 
 
+#define COLLEFT     10
+#define COLRIGHT    110
+#define COLRIGHTW   195
+#define ROWHEIGHT   27
+#define SMLHEIGHT   23
+#define BTNHEIGHT   37
+
+
 /**
 * Setup routine for the "New Game" dialog
 **/
@@ -49,8 +57,9 @@ gcn::Container * DialogNewGame::setup()
 {
 	gcn::Button* button;
 	gcn::Label* label;
+	int y = 10;
 	
-	
+	// This is a bit crap. We can't use ->gm until after the dialog is created
 	this->map_model = new MapRegistryListModel(this->gm->getMapRegistry());
 	this->unittype_model = new VectorListModel(this->gm->getUnitTypes());
 	this->viewmode_model = new VectorListModel(this->gm->getViewModes());
@@ -62,53 +71,64 @@ gcn::Container * DialogNewGame::setup()
 		c = new gcn::Window("Split Screen");
 	}
 	
-	c->setDimension(gcn::Rectangle(0, 0, 255, 200));
+	c->setDimension(gcn::Rectangle(0, 0, 320, 250));
 	
 	
 	label = new gcn::Label("Game type");
-	c->add(label, 10, 10);
+	c->add(label, COLLEFT, y);
 	
 	this->gametype = new gcn::DropDown(this->gametype_model);
-	this->gametype->setPosition(80, 10);
-	this->gametype->setWidth(160);
+	this->gametype->setPosition(COLRIGHT, y);
+	this->gametype->setWidth(COLRIGHTW);
 	c->add(this->gametype);
 	
+	y += SMLHEIGHT;
+	
+	button = new gcn::Button("Weapons");
+	button->setPosition(COLRIGHT, y);
+	c->add(button);
+	
+	y += BTNHEIGHT;
 	
 	label = new gcn::Label("Map");
-	c->add(label, 10, 30);
+	c->add(label, COLLEFT, y);
 	
 	this->map = new gcn::DropDown(this->map_model);
-	this->map->setPosition(80, 30);
-	this->map->setWidth(160);
+	this->map->setPosition(COLRIGHT, y);
+	this->map->setWidth(COLRIGHTW);
 	c->add(this->map);
 	
+	y += ROWHEIGHT;
 	
 	label = new gcn::Label("Unit type");
-	c->add(label, 10, 50);
+	c->add(label, COLLEFT, y);
 	
 	this->unittype = new gcn::DropDown(this->unittype_model);
-	this->unittype->setPosition(80, 50);
-	this->unittype->setWidth(160);
+	this->unittype->setPosition(COLRIGHT, y);
+	this->unittype->setWidth(COLRIGHTW);
 	c->add(this->unittype);
 	
+	y += ROWHEIGHT;
 	
 	label = new gcn::Label("View mode");
-	c->add(label, 10, 70);
+	c->add(label, COLLEFT, y);
 	
 	this->viewmode = new gcn::DropDown(this->viewmode_model);
-	this->viewmode->setPosition(80, 70);
-	this->viewmode->setWidth(160);
+	this->viewmode->setPosition(COLRIGHT, y);
+	this->viewmode->setWidth(COLRIGHTW);
 	c->add(this->viewmode);
 	
+	y += ROWHEIGHT;
 	
 	this->host = new gcn::CheckBox("Host network game");
-	this->host->setPosition(80, 100);
-	this->host->setWidth(160);
+	this->host->setPosition(COLRIGHT, y);
+	this->host->setWidth(COLRIGHTW);
 	c->add(this->host);
 	
+	y += ROWHEIGHT;
 	
-	button = new gcn::Button("Start Game");
-	button->setPosition((255 - button->getWidth()) / 2, 150);
+	button = new gcn::Button(this->num_local == 1 ? "Start Single Player Game" : "Start Split Screen Game");
+	button->setPosition((320 - button->getWidth()) / 2, 200);
 	button->addActionListener(this);
 	c->add(button);
 	
