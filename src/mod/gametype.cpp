@@ -85,10 +85,10 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 
 		// Load spawn weapons
 		int num_weapons = cfg_size(cfg_faction, "spawn_weapons");
-		for (k = 0; j < num_weapons; j++) {
-			WeaponType * wt = mod->getWeaponType(cfg_getnstr(cfg_faction, "spawn_weapons", j));
+		for (k = 0; k < num_weapons; k++) {
+			WeaponType * wt = mod->getWeaponType(cfg_getnstr(cfg_faction, "spawn_weapons", k));
 			if (wt == NULL) {
-				mod->setLoadErr("Invalid spawn weapon %s for action %i", cfg_getnstr(cfg_faction, "spawn_weapons", j), faction_id);
+				mod->setLoadErr("Invalid spawn weapon %s for action %i", cfg_getnstr(cfg_faction, "spawn_weapons", k), faction_id);
 				return NULL;
 			}
 
