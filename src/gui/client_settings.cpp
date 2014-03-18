@@ -115,6 +115,6 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 		displayMessageBox("One or more of your changes will require a game restart to become effective");
 	}
 	
-	this->m->setDialog(NULL);
+	this->m->remDialog(this);
 }
 

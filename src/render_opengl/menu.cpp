@@ -47,7 +47,6 @@ Menu::Menu(GameState *st, GameManager *gm)
 	this->st = st;
 	this->gm = gm;
 	this->render = (RenderOpenGL*) GEng()->render;
-	this->dialog = NULL;
 	this->logo = NULL;
 	this->bg = NULL;
 	this->bgmesh = NULL;
@@ -180,6 +179,10 @@ void Menu::doit(UIUpdate* ui)
 	this->gui = new gcn::Gui();
 	this->gui->setInput(input);
 	this->render->initGuichan(gui, mod);
+	this->gui_container = new gcn::Container();
+	this->gui_container->setDimension(gcn::Rectangle(0, 0, render->real_width, render->real_height));
+	this->gui_container->setOpaque(false);
+	this->gui->setTop(this->gui_container);
 	
 	if (ui) ui->updateUI();
 
@@ -247,11 +250,7 @@ void Menu::updateUI()
 			// Key press
 			switch (event.key.keysym.sym) {
 				case SDLK_ESCAPE:
-					if (this->dialog != NULL) {
-						this->setDialog(NULL);
-					} else {
-						cmd = MC_QUIT;
-					}
+					this->remAllDialogs();
 					break;
 
 				case SDLK_PRINTSCREEN:
@@ -322,10 +321,10 @@ void Menu::updateUI()
 	this->render->renderSprite(logo, 40, 40);
 	
 	// If a guichan dialog is set, render it and process events
-	if (this->dialog != NULL) {
+	//if (this->dialog != NULL) {
 		gui->logic();
 		gui->draw();
-	}
+	//}
 	
 	SDL_GL_SwapWindow(render->window);
 }
@@ -418,60 +417,77 @@ MenuCommand Menu::menuClick(int x, int y)
 
 
 
-/**
-* Sets the current menu dialog, or NULL to hide the dialog
-**/
-void Menu::setDialog(Dialog * dialog)
+
+void Menu::addDialog(Dialog* dialog)
 {
-	this->dialog = NULL;
-	if (dialog == NULL) return;
-	
 	dialog->m = this;
 	dialog->gm = this->gm;
-	gcn::Container * c = dialog->setup();
+	dialog->setup();
+	
+	gcn::Container* c = dialog->getContainer();
 	
 	c->setPosition((this->render->real_width - c->getWidth()) / 2, (this->render->real_height - c->getHeight()) / 2);
-	c->setBaseColor(gcn::Color(150, 150, 150, 200));
+	c->setBaseColor(gcn::Color(150, 150, 150, 225));
 	
-	gui->setTop(c);
-	this->dialog = dialog;
+	this->gui_container->add(c);
+}
+
+
+void Menu::remDialog(Dialog* dialog)
+{
+	this->gui_container->remove(dialog->getContainer());
+	delete(dialog);
+}
+
+
+void Menu::remAllDialogs()
+{
+	// TODO: delete dialogs
+	this->gui_container->clear();
 }
 
 
 
 void Menu::doCampaign()
 {
-	this->setDialog(new DialogNewCampaign(1, GEng()->mm->getSupplOrBase()));
+	this->remAllDialogs();
+	this->addDialog(new DialogNewCampaign(1, GEng()->mm->getSupplOrBase()));
 }
 
 void Menu::doSingleplayer()
 {
-	this->setDialog(new DialogNewGame(1, GEng()->mm));
+	this->remAllDialogs();
+	this->addDialog(new DialogNewGame(1, GEng()->mm));
 }
 
 void Menu::doSplitscreen()
 {
-	this->setDialog(new DialogNewGame(2, GEng()->mm));
+	this->remAllDialogs();
+	this->addDialog(new DialogNewGame(2, GEng()->mm));
 }
 
 void Menu::doNetwork()
 {
-	this->setDialog(new DialogNetJoin());
+	this->remAllDialogs();
+	this->addDialog(new DialogNetJoin());
 }
 
 void Menu::doSettings()
 {
-	this->setDialog(new DialogClientSettings(this->st));
+	this->remAllDialogs();
+	this->addDialog(new DialogClientSettings(this->st));
 }
 
 void Menu::doMods()
 {
-	this->setDialog(new DialogMods(this->st));
+	this->remAllDialogs();
+	this->addDialog(new DialogMods(this->st));
 }
 
 void Menu::doHelp()
 {
-	this->setDialog(new DialogControls());
+	this->remAllDialogs();
+	this->addDialog(new DialogControls());
 }
 
 void Menu::doQuit()

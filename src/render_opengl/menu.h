@@ -53,9 +53,10 @@ class Menu : public UIUpdate
 		RenderOpenGL *render;
 		int running;
 		vector<MenuItem*> menuitems;
+		
 		gcn::SDLInput* input;
 		gcn::Gui* gui;
-		Dialog *dialog;
+		gcn::Container* gui_container;
 		
 		WavefrontObj * bgmesh;
 		float bg_rot1_pos;
@@ -99,7 +100,12 @@ class Menu : public UIUpdate
 		void doQuit();
 		
 		// Game dialogs
-		void setDialog(Dialog * dialog);
+		void addDialog(Dialog * dialog);
+		void remDialog(Dialog * dialog);
+		void remAllDialogs();
+		
+		// Start game stuff
+		// TODO: Remove this and go direct to GameManager
 		void startCampaign(Campaign* c, string unittype, int viewmode, unsigned int num_local);
 		void startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local, bool host, GameSettings* gs);
 		void networkJoin(string host);

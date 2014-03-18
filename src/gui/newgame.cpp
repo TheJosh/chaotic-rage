@@ -162,7 +162,7 @@ void DialogNewGame::action(const gcn::ActionEvent& actionEvent)
 **/
 void DialogNewGame_Action_Weapons::action(const gcn::ActionEvent& actionEvent)
 {
-	this->parent->m->setDialog(new DialogNewGameWeapons(this->parent, this->parent->gs));
+	this->parent->m->addDialog(new DialogNewGameWeapons(this->parent, this->parent->gs));
 }
 
 

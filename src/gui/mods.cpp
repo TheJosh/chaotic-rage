@@ -116,7 +116,7 @@ void DialogMods::action(const gcn::ActionEvent& actionEvent)
 	}
 	
 	this->m->loadModBits();
-	this->m->setDialog(NULL);
+	this->m->remDialog(this);
 }
 
 
@@ -132,3 +132,4 @@ void DialogMods::valueChanged(const gcn::SelectionEvent& selectionEvent)
 	this->icon->setImage(this->img);
 	gcn::Image::setImageLoader(oldloader);
 }
+

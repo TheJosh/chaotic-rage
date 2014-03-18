@@ -57,6 +57,6 @@ gcn::Container * DialogNewGameWeapons::setup()
 **/
 void DialogNewGameWeapons::action(const gcn::ActionEvent& actionEvent)
 {
-	this->m->setDialog((Dialog*)this->parent);
+	this->m->remDialog(this);
 }
 
