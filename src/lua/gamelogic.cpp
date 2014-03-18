@@ -640,7 +640,6 @@ void register_lua_functions()
 	lua_pushnumber(L, FACTION_TEAM7); lua_setfield(L, -2, "team7");
 	lua_pushnumber(L, FACTION_TEAM8); lua_setfield(L, -2, "team8");
 	lua_pushnumber(L, FACTION_INDIVIDUAL); lua_setfield(L, -2, "individual");
-	lua_pushnumber(L, FACTION_COMMON); lua_setfield(L, -2, "common");
 	lua_setglobal(L, "factions");
 
 	load_hudlabel_lib(L);

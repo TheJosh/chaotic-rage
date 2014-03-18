@@ -316,7 +316,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 		int num_spawn = cfg_size(cfg_sub, "spawn");
 		for (k = 0; k < num_spawn; k++) {
 			int f = cfg_getnint(cfg_sub, "spawn", k);
-			if (f < FACTION_INDIVIDUAL || f > FACTION_COMMON) continue;
+			if (f < FACTION_INDIVIDUAL || f >= NUM_FACTIONS) continue;
 			z->spawn[f] = 1;
 		}
 		
