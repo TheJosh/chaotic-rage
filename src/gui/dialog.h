@@ -26,6 +26,8 @@ class Dialog {
 		GameManager * gm;
 		
 	public:
+		Dialog() : c(NULL), m(NULL), gm(NULL) {}
+		
 		virtual gcn::Container * setup() = 0;
 		virtual string getName() { return "?"; }
 		gcn::Container * getContainer() { return this->c; };

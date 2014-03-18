@@ -23,7 +23,7 @@ using namespace std;
 /**
 * Constructor for join network game dialog
 **/
-DialogNetJoin::DialogNetJoin()
+DialogNetJoin::DialogNetJoin() : Dialog()
 {
 	this->local_hosts = NULL;
 	this->local_model = NULL;

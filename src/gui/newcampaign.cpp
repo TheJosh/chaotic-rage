@@ -44,7 +44,7 @@ int CampaignListModel::getNumberOfElements()
 /**
 * Constructor for "New Campaign" dialog
 **/
-DialogNewCampaign::DialogNewCampaign(int num_local, Mod *mod)
+DialogNewCampaign::DialogNewCampaign(int num_local, Mod *mod) : Dialog()
 {
 	this->num_local = num_local;
 	this->mod = mod;

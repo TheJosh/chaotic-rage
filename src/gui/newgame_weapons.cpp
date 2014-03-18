@@ -22,7 +22,7 @@ using namespace std;
 /**
 * Sub-dialog from the new game dialog for mucking about with weapons
 **/
-DialogNewGameWeapons::DialogNewGameWeapons(DialogNewGame *parent, GameSettings *gs)
+DialogNewGameWeapons::DialogNewGameWeapons(DialogNewGame *parent, GameSettings *gs) : Dialog()
 {
 	this->parent = parent;
 	this->gs = gs;

@@ -26,7 +26,7 @@ using namespace std;
 /**
 * Dialog for client settings
 **/
-DialogClientSettings::DialogClientSettings(GameState* st)
+DialogClientSettings::DialogClientSettings(GameState* st) : Dialog()
 {
 	this->st = st;
 }

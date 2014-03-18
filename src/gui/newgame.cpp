@@ -24,7 +24,7 @@ using namespace std;
 /**
 * Constructor for "new game" dialog
 **/
-DialogNewGame::DialogNewGame(int num_local, ModManager *mm)
+DialogNewGame::DialogNewGame(int num_local, ModManager *mm) : Dialog()
 {
 	this->num_local = num_local;
 	

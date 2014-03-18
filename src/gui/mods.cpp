@@ -25,7 +25,7 @@ using namespace std;
 /**
 * Dialog for mod selection
 **/
-DialogMods::DialogMods(GameState* st)
+DialogMods::DialogMods(GameState* st) : Dialog()
 {
 	this->st = st;
 	
