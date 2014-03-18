@@ -15,6 +15,7 @@
 #include "dialog.h"
 #include "list_models.h"
 #include "newgame.h"
+#include "newgame_weapons.h"
 
 
 using namespace std;
@@ -29,6 +30,8 @@ DialogNewGame::DialogNewGame(int num_local, ModManager *mm)
 	
 	this->gametype_model = new GametypeListModel(mm->getAllGameTypes());
 	
+	this->action_weapons = new DialogNewGame_Action_Weapons(this);
+	
 	this->gs = new GameSettings();
 }
 
@@ -38,6 +41,7 @@ DialogNewGame::~DialogNewGame()
 	delete(this->map_model);
 	delete(this->unittype_model);
 	delete(this->viewmode_model);
+	delete(this->action_weapons);
 	delete(this->gs);
 }
 
@@ -86,6 +90,7 @@ gcn::Container * DialogNewGame::setup()
 	
 	button = new gcn::Button("Weapons");
 	button->setPosition(COLRIGHT, y);
+	button->addActionListener(this->action_weapons);
 	c->add(button);
 	
 	y += BTNHEIGHT;
@@ -150,4 +155,14 @@ void DialogNewGame::action(const gcn::ActionEvent& actionEvent)
 		this->gs
 	);
 }
+
+
+/**
+* Button click processing for the "New Game" dialog
+**/
+void DialogNewGame_Action_Weapons::action(const gcn::ActionEvent& actionEvent)
+{
+	this->parent->m->setDialog(new DialogNewGameWeapons(this->parent, this->parent->gs));
+}
+
 

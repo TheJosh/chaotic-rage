@@ -13,12 +13,15 @@ class GametypeListModel;
 class MapRegistryListModel;
 class VectorListModel;
 class GameSettings;
+class DialogNewGame_Action_Weapons;
 
 
 /**
 * Dialog for starting a new game - called by the menu
 **/
 class DialogNewGame : public Dialog, public gcn::ActionListener {
+	friend class DialogNewGame_Action_Weapons;
+	
 	public:
 		DialogNewGame(int num_local, ModManager *mm);
 		~DialogNewGame();
@@ -39,8 +42,22 @@ class DialogNewGame : public Dialog, public gcn::ActionListener {
 		gcn::DropDown *viewmode;
 		gcn::CheckBox *host;
 		
+		DialogNewGame_Action_Weapons *action_weapons;
+		
 	public:
 		virtual gcn::Container * setup();
+		virtual void action(const gcn::ActionEvent& actionEvent);
+};
+
+
+/**
+* Weapons action
+**/
+class DialogNewGame_Action_Weapons : public gcn::ActionListener {
+	private:
+		DialogNewGame *parent;
+	public:
+		DialogNewGame_Action_Weapons(DialogNewGame *parent): parent(parent) {}
 		virtual void action(const gcn::ActionEvent& actionEvent);
 };
 
