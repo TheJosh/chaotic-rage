@@ -65,8 +65,15 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 	
 	gt->script = std::string(tmp);
 	free(tmp);
-
-
+	
+	// Default faction titles
+	gt->factions[0].title = "Individuals";
+	for (int i = 1; i < NUM_FACTIONS; i++) {
+		char str[50];
+		sprintf(str, "Faction %i", i);
+		gt->factions[i].title = std::string(str);
+	}
+	
 	// Factions
 	vector<WeaponType*> weaps;
 	int num_factions = cfg_size(cfg_item, "faction");
@@ -80,9 +87,12 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 			return NULL;
 		}
 
-		// Load faction settings
-		gt->factions[faction_id].title = cfg_getstr(cfg_faction, "title");
-
+		// Faction title
+		char * tmp = cfg_getstr(cfg_faction, "title");
+		if (tmp) {
+			gt->factions[faction_id].title = std::string(tmp);
+		}
+		
 		// Load spawn weapons
 		int num_weapons = cfg_size(cfg_faction, "spawn_weapons");
 		for (k = 0; k < num_weapons; k++) {
@@ -104,3 +114,4 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 GameType::GameType()
 {
 }
+

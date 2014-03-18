@@ -17,12 +17,13 @@ class DialogNewGame;
 **/
 class DialogNewGameWeapons : public Dialog, public gcn::ActionListener {
 	public:
-		DialogNewGameWeapons(DialogNewGame* parent, GameSettings* gs);
+		DialogNewGameWeapons(DialogNewGame* parent, GameSettings* gs, GameType* gt);
 		~DialogNewGameWeapons();
 		
 	protected:
 		DialogNewGame* parent;
 		GameSettings* gs;
+		GametypeFactionsListModel* factions_list;
 		
 	public:
 		virtual gcn::Container * setup();

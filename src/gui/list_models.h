@@ -83,6 +83,27 @@ class GametypeListModel: public gcn::ListModel
 };
 
 
+class GametypeFactionsListModel: public gcn::ListModel
+{
+	private:
+		GameType* gt;
+		
+	public:
+		GametypeFactionsListModel(GameType* gt) : gt(gt) {}
+		~GametypeFactionsListModel() {}
+		
+		std::string getElementAt(int i)
+		{
+			return gt->factions[i].title;
+		}
+		
+		int getNumberOfElements()
+		{
+			return NUM_FACTIONS;
+		}
+};
+
+
 class ModListModel: public gcn::ListModel
 {
 	private:

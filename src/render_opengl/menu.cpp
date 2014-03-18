@@ -416,8 +416,9 @@ MenuCommand Menu::menuClick(int x, int y)
 }
 
 
-
-
+/**
+* Add a dialog to the list, making it visible in the UI
+**/
 void Menu::addDialog(Dialog* dialog)
 {
 	dialog->m = this;
@@ -433,6 +434,9 @@ void Menu::addDialog(Dialog* dialog)
 }
 
 
+/**
+* Remove a dialog to the list, removing it from the UI
+**/
 void Menu::remDialog(Dialog* dialog)
 {
 	this->gui_container->remove(dialog->getContainer());
@@ -440,6 +444,9 @@ void Menu::remDialog(Dialog* dialog)
 }
 
 
+/**
+* Remove all dialogs from the menu UI
+**/
 void Menu::remAllDialogs()
 {
 	// TODO: delete dialogs
@@ -457,13 +464,13 @@ void Menu::doCampaign()
 void Menu::doSingleplayer()
 {
 	this->remAllDialogs();
-	this->addDialog(new DialogNewGame(1, GEng()->mm));
+	this->addDialog(new DialogNewGame(1));
 }
 
 void Menu::doSplitscreen()
 {
 	this->remAllDialogs();
-	this->addDialog(new DialogNewGame(2, GEng()->mm));
+	this->addDialog(new DialogNewGame(2));
 }
 
 void Menu::doNetwork()

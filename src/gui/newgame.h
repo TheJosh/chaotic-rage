@@ -23,7 +23,7 @@ class DialogNewGame : public Dialog, public gcn::ActionListener {
 	friend class DialogNewGame_Action_Weapons;
 	
 	public:
-		DialogNewGame(int num_local, ModManager *mm);
+		DialogNewGame(int num_local);
 		~DialogNewGame();
 		
 	protected:

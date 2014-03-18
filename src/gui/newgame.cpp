@@ -10,6 +10,7 @@
 #include "../render_opengl/menu.h"
 #include "../game_manager.h"
 #include "../game_settings.h"
+#include "../game_engine.h"
 #include "../http/serverlist.h"
 #include "../mod/mod_manager.h"
 #include "dialog.h"
@@ -24,11 +25,11 @@ using namespace std;
 /**
 * Constructor for "new game" dialog
 **/
-DialogNewGame::DialogNewGame(int num_local, ModManager *mm) : Dialog()
+DialogNewGame::DialogNewGame(int num_local) : Dialog()
 {
 	this->num_local = num_local;
 	
-	this->gametype_model = new GametypeListModel(mm->getAllGameTypes());
+	this->gametype_model = new GametypeListModel(GEng()->mm->getAllGameTypes());
 	
 	this->action_weapons = new DialogNewGame_Action_Weapons(this);
 	
@@ -162,7 +163,12 @@ void DialogNewGame::action(const gcn::ActionEvent& actionEvent)
 **/
 void DialogNewGame_Action_Weapons::action(const gcn::ActionEvent& actionEvent)
 {
-	this->parent->m->addDialog(new DialogNewGameWeapons(this->parent, this->parent->gs));
+	string gametype = this->parent->gm->getGameTypes()->at(this->parent->gametype->getSelected());
+	
+	GameType* gt = GEng()->mm->getGameType(gametype);
+	assert(gt);
+	
+	this->parent->m->addDialog(new DialogNewGameWeapons(this->parent, this->parent->gs, gt));
 }
 
 
