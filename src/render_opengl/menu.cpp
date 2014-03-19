@@ -440,7 +440,8 @@ void Menu::addDialog(Dialog* dialog)
 void Menu::remDialog(Dialog* dialog)
 {
 	this->gui_container->remove(dialog->getContainer());
-	delete(dialog);
+	delete dialog->getContainer();
+	delete dialog;
 }
 
 
