@@ -88,7 +88,8 @@ int main (int argc, char ** argv)
 	// For now, Android doesn't have a menu
 	#if defined(__ANDROID__)
 		gm->loadModBits(NULL);
-		gm->startGame(gm->getMapRegistry()->get("therlor_valley"), "zombies", "robot", 0, 1, false);
+		
+		gm->startGame(gm->getMapRegistry()->get("therlor_valley"), "zombies", "robot", 0, 1, false, new GameSettings());
 		exit(0);
 	#endif
 
