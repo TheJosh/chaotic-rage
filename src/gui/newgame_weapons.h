@@ -15,7 +15,7 @@ class DialogNewGame;
 /**
 * Sub-dialog from the new game dialog for mucking about with weapons
 **/
-class DialogNewGameWeapons : public Dialog, public gcn::ActionListener {
+class DialogNewGameWeapons : public Dialog, public gcn::ActionListener, public gcn::SelectionListener {
 	public:
 		DialogNewGameWeapons(DialogNewGame* parent, GameSettings* gs, GameType* gt);
 		~DialogNewGameWeapons();
@@ -23,10 +23,17 @@ class DialogNewGameWeapons : public Dialog, public gcn::ActionListener {
 	protected:
 		DialogNewGame* parent;
 		GameSettings* gs;
+		
 		GametypeFactionsListModel* factions_list;
+		int faction;
+		
+		gcn::DropDown* dd_faction;
+		gcn::CheckBox* chk_unit;
+		gcn::CheckBox* chk_gametype;
 		
 	public:
 		virtual gcn::Container * setup();
 		virtual void action(const gcn::ActionEvent& actionEvent);
+		virtual void valueChanged(const gcn::SelectionEvent& selectionEvent);
 };
 
