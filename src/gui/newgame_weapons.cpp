@@ -10,8 +10,10 @@
 #include "../render_opengl/menu.h"
 #include "../game_manager.h"
 #include "../game_settings.h"
+#include "../game_engine.h"
 #include "../http/serverlist.h"
 #include "../mod/mod_manager.h"
+#include "../mod/weapontype.h"
 #include "dialog.h"
 #include "list_models.h"
 #include "newgame_weapons.h"
@@ -27,18 +29,31 @@ DialogNewGameWeapons::DialogNewGameWeapons(DialogNewGame *parent, GameSettings *
 	this->parent = parent;
 	this->gs = gs;
 	this->factions_list = new GametypeFactionsListModel(gt);
-	this->faction = -1;
+	this->faction = 0;
+	this->wts = GEng()->mm->getAllWeaponTypes();
+	this->dd_faction = NULL;
+	this->chk_gametype = NULL;
+	this->chk_unit = NULL;
 }
 
 DialogNewGameWeapons::~DialogNewGameWeapons()
 {
 	delete(this->factions_list);
+	delete(this->wts);
+	
+	delete(this->dd_faction);
+	delete(this->chk_gametype);
+	delete(this->chk_unit);
+	
+	for (unsigned int i = 0; i < this->chk_custom.size(); i++) {
+		delete(this->chk_custom[i]);
+	}
 }
 
 
 #define LEFT        10
 #define WIDTH       340
-#define ROWHEIGHT   27
+#define ROWHEIGHT   21
 
 
 /**
@@ -52,34 +67,51 @@ gcn::Container * DialogNewGameWeapons::setup()
 	c = new gcn::Window("Weapon Settings");
 	c->setDimension(gcn::Rectangle(0, 0, 360, 300));
 	
+	// Dropdown for choosing which faction you are editing
 	dd_faction = new gcn::DropDown(this->factions_list);
 	dd_faction->setPosition(LEFT, y);
 	dd_faction->setWidth(WIDTH);
 	dd_faction->addSelectionListener(this);
 	c->add(dd_faction);
+	y += ROWHEIGHT + 5;
 	
-	y += ROWHEIGHT;
-	
+	// Per-unit weapons
 	chk_unit = new gcn::CheckBox("Standard unit weapons");
 	chk_unit->setPosition(LEFT, y);
 	chk_unit->setWidth(WIDTH);
 	c->add(chk_unit);
-	
 	y += ROWHEIGHT;
 	
-	chk_gametype = new gcn::CheckBox("Stadard game type weapons");
+	// Per-gametype weapons
+	chk_gametype = new gcn::CheckBox("Standard game type weapons");
 	chk_gametype->setPosition(LEFT, y);
 	chk_gametype->setWidth(WIDTH);
 	c->add(chk_gametype);
-	
 	y += ROWHEIGHT;
 	
+	// Create one checkbox for each weapon type
+	for (vector<WeaponType*>::iterator it = this->wts->begin(); it != this->wts->end(); it++) {
+		gcn::CheckBox* checkbox = new gcn::CheckBox((*it)->title);
+		checkbox->setPosition(LEFT, y);
+		checkbox->setWidth(WIDTH);
+		c->add(checkbox);
+		chk_custom.push_back(checkbox);
+		y += ROWHEIGHT;
+	}
+	
+	// Save btn
+	y += 5;
 	button = new gcn::Button("Save Weapon Settings");
-	button->setPosition((360 - button->getWidth()) / 2, 250);
+	button->setPosition((360 - button->getWidth()) / 2, y);
 	button->addActionListener(this);
 	c->add(button);
+	y += ROWHEIGHT;
 	
-	this->valueChanged(NULL);
+	// Make window big enough
+	c->setDimension(gcn::Rectangle(0, 0, 360, y + 30));
+	
+	// Set the checkboxes to match the GameSettings object
+	this->loadWeapons();
 	
 	return c;
 }
@@ -91,6 +123,7 @@ gcn::Container * DialogNewGameWeapons::setup()
 void DialogNewGameWeapons::action(const gcn::ActionEvent& actionEvent)
 {
 	this->m->remDialog(this);
+	this->saveWeapons();
 }
 
 
@@ -99,21 +132,68 @@ void DialogNewGameWeapons::action(const gcn::ActionEvent& actionEvent)
 **/
 void DialogNewGameWeapons::valueChanged(const gcn::SelectionEvent& selectionEvent)
 {
-	int new_faction;
+	this->saveWeapons();
+	faction = this->dd_faction->getSelected();
+	this->loadWeapons();
+}
+
+
+/**
+* Save settings from the checkboxes into the GameSettings object for the currently selected faction
+**/
+void DialogNewGameWeapons::saveWeapons()
+{
+	unsigned int i;
 	
-	// Save old
-	if (faction != -1) {
-		gs->factions[faction].spawn_weapons_unit = chk_unit->isSelected();
-		gs->factions[faction].spawn_weapons_gametype = chk_gametype->isSelected();
+	gs->factions[faction].spawn_weapons_unit = chk_unit->isSelected();
+	gs->factions[faction].spawn_weapons_gametype = chk_gametype->isSelected();
+	
+	// Save custom weapons
+	gs->factions[faction].spawn_weapons_extra.clear();
+	for (i = 0; i < this->chk_custom.size(); i++) {
+		if (this->chk_custom[i]->isSelected()) {
+			gs->factions[faction].spawn_weapons_extra.push_back(this->wts->at(i));
+		}
+	}
+}
+
+
+/**
+* Load weapons into the checkboxes for the currently selected faction from the GameSettings object
+**/
+void DialogNewGameWeapons::loadWeapons()
+{
+	unsigned int i;
+	
+	chk_unit->setSelected(gs->factions[faction].spawn_weapons_unit);
+	chk_gametype->setSelected(gs->factions[faction].spawn_weapons_gametype);
+	
+	// Un-check all custom weapons
+	for (i = 0; i < this->chk_custom.size(); i++) {
+		this->chk_custom[i]->setSelected(false);
 	}
 	
-	// Load new
-	new_faction = this->dd_faction->getSelected();
-	chk_unit->setSelected(gs->factions[new_faction].spawn_weapons_unit);
-	chk_gametype->setSelected(gs->factions[new_faction].spawn_weapons_gametype);
-	
-	// Update internal variable
-	faction = new_faction;
+	// Re-check the ones in the GameSettingsFaction array
+	for (i = 0; i < gs->factions[faction].spawn_weapons_extra.size(); i++) {
+		int chkIdx = this->findWeaponType(gs->factions[faction].spawn_weapons_extra[i]);
+		this->chk_custom[chkIdx]->setSelected(true);
+	}
 }
+
+
+/**
+* Return the index of a given weapon in the weapons array
+**/
+unsigned int DialogNewGameWeapons::findWeaponType(WeaponType* wt)
+{
+	for (unsigned int i = 0; i < this->wts->size(); i++) {
+		if (this->wts->at(i) == wt) {
+			return i;
+		}
+	}
+	
+	return std::numeric_limits<unsigned int>::max();
+}
+
 
 

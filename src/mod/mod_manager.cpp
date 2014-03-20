@@ -359,6 +359,7 @@ struct GameTypesPointerCompare {
 
 /**
 * Returns a start and end iterator for getting all gametypes
+* Don't forget to `delete` when you are done.
 **/
 vector<GameType*> * ModManager::getAllGameTypes()
 {
@@ -431,6 +432,7 @@ UnitType * ModManager::getUnitType(string name)
 
 /**
 * Returns a start and end iterator for getting all unit types
+* Don't forget to `delete` when you are done.
 **/
 vector<UnitType*> * ModManager::getAllUnitTypes()
 {
@@ -528,7 +530,8 @@ WeaponType * ModManager::getWeaponType(string name)
 
 
 /**
-* Returns a start and end iterator for getting all unit types
+* Returns a start and end iterator for getting all weapon types
+* Don't forget to `delete` when you are done.
 **/
 vector<WeaponType*> * ModManager::getAllWeaponTypes()
 {
