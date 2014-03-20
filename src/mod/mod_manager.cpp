@@ -527,4 +527,23 @@ WeaponType * ModManager::getWeaponType(string name)
 }
 
 
+/**
+* Returns a start and end iterator for getting all unit types
+**/
+vector<WeaponType*> * ModManager::getAllWeaponTypes()
+{
+	vector<WeaponType*>::iterator start, end;
+	vector<WeaponType*> * wts;
+	
+	wts = new vector<WeaponType*>();
+	
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		mod->getAllWeaponTypes(&start, &end);
+		wts->insert(wts->end(), start, end);
+	}
+	
+	return wts;
+}
+
 

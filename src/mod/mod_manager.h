@@ -71,6 +71,7 @@ class ModManager {
 		
 		vector<GameType*> * getAllGameTypes();
 		vector<UnitType*> * getAllUnitTypes();
+		vector<WeaponType*> * getAllWeaponTypes();
 };
 
 

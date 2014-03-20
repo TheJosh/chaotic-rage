@@ -110,4 +110,5 @@ class Mod {
 
 		void getAllGameTypes(vector<GameType*>::iterator * start, vector<GameType*>::iterator * end);
 		void getAllUnitTypes(vector<UnitType*>::iterator * start, vector<UnitType*>::iterator * end);
+		void getAllWeaponTypes(vector<WeaponType*>::iterator * start, vector<WeaponType*>::iterator * end);
 };

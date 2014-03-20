@@ -638,7 +638,7 @@ WallType * Mod::getWallType(string name)
 
 
 /**
-* Gets a weapon type by ID
+* Gets a weapon type by CRC32 ID
 **/
 WeaponType * Mod::getWeaponType(CRC32 id)
 {
@@ -648,6 +648,9 @@ WeaponType * Mod::getWeaponType(CRC32 id)
 	return NULL;
 }
 
+/**
+* Gets a weapon type by name
+**/
 WeaponType * Mod::getWeaponType(string name)
 {
 	if (name.empty()) return NULL;
@@ -659,6 +662,14 @@ WeaponType * Mod::getWeaponType(string name)
 	return NULL;
 }
 
+/**
+* Returns two iterators for getting all weapon types
+**/
+void Mod::getAllWeaponTypes(vector<WeaponType*>::iterator * start, vector<WeaponType*>::iterator * end)
+{
+	*start = weapontypes->begin();
+	*end = weapontypes->end();
+}
 
 
 /**
