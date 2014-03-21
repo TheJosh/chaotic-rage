@@ -31,6 +31,7 @@ class GameType
 
 		string script;
 		GameTypeFaction factions[NUM_FACTIONS];
+		unsigned num_factions;
 		
 	public:
 		GameType();

@@ -99,7 +99,7 @@ class GametypeFactionsListModel: public gcn::ListModel
 		
 		int getNumberOfElements()
 		{
-			return NUM_FACTIONS;
+			return gt->num_factions;
 		}
 };
 

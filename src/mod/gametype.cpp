@@ -75,25 +75,32 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 			sprintf(str, "Faction %i", i);
 			gt->factions[i].title = std::string(str);
 		}
+		gt->num_factions = NUM_FACTIONS;
 		
 	} else {
 		// All names should be explictly provided, any which are not are assumed to not be used.
 		for (int i = 0; i < NUM_FACTIONS; i++) {
 			gt->factions[i].title = "unused";
 		}
-	
+		gt->num_factions = 0;
+		
 		// Load faction details
 		for (j = 0; j < num_factions; j++) {
 			cfg_faction = cfg_getnsec(cfg_item, "faction", j);
 			vector<WeaponType*> weaps;
-		
+			
 			// Check faction id is okay
 			int faction_id = cfg_getint(cfg_faction, "id");
 			if (faction_id < 0 || faction_id >= NUM_FACTIONS) {
 				mod->setLoadErr("Invalid faction id %i", faction_id);
 				return NULL;
 			}
-
+			
+			// The highest-numbered faction determines how many we iterate in UI etc
+			if (gt->num_factions <= (unsigned int)faction_id) {
+				gt->num_factions = faction_id + 1;
+			}
+			
 			// Faction title
 			char * tmp = cfg_getstr(cfg_faction, "title");
 			if (tmp) {
