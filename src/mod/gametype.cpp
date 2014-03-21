@@ -66,46 +66,54 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 	gt->script = std::string(tmp);
 	free(tmp);
 	
-	// Default faction titles
-	gt->factions[0].title = "Individuals";
-	for (int i = 1; i < NUM_FACTIONS; i++) {
-		char str[50];
-		sprintf(str, "Faction %i", i);
-		gt->factions[i].title = std::string(str);
-	}
-	
-	// Factions
-	vector<WeaponType*> weaps;
 	int num_factions = cfg_size(cfg_item, "faction");
-	for (j = 0; j < num_factions; j++) {
-		cfg_faction = cfg_getnsec(cfg_item, "faction", j);
-		
-		// Check faction id is okay
-		int faction_id = cfg_getint(cfg_faction, "id");
-		if (faction_id < 0 || faction_id >= NUM_FACTIONS) {
-			mod->setLoadErr("Invalid faction id %i", faction_id);
-			return NULL;
-		}
-
-		// Faction title
-		char * tmp = cfg_getstr(cfg_faction, "title");
-		if (tmp) {
-			gt->factions[faction_id].title = std::string(tmp);
+	if (num_factions == 0) {
+		// Default faction titles - only if no faction names provided
+		gt->factions[0].title = "Individuals";
+		for (int i = 1; i < NUM_FACTIONS; i++) {
+			char str[50];
+			sprintf(str, "Faction %i", i);
+			gt->factions[i].title = std::string(str);
 		}
 		
-		// Load spawn weapons
-		int num_weapons = cfg_size(cfg_faction, "spawn_weapons");
-		for (k = 0; k < num_weapons; k++) {
-			WeaponType * wt = mod->getWeaponType(cfg_getnstr(cfg_faction, "spawn_weapons", k));
-			if (wt == NULL) {
-				mod->setLoadErr("Invalid spawn weapon %s for action %i", cfg_getnstr(cfg_faction, "spawn_weapons", k), faction_id);
+	} else {
+		// All names should be explictly provided, any which are not are assumed to not be used.
+		for (int i = 0; i < NUM_FACTIONS; i++) {
+			gt->factions[i].title = "unused";
+		}
+	
+		// Load faction details
+		for (j = 0; j < num_factions; j++) {
+			cfg_faction = cfg_getnsec(cfg_item, "faction", j);
+			vector<WeaponType*> weaps;
+		
+			// Check faction id is okay
+			int faction_id = cfg_getint(cfg_faction, "id");
+			if (faction_id < 0 || faction_id >= NUM_FACTIONS) {
+				mod->setLoadErr("Invalid faction id %i", faction_id);
 				return NULL;
 			}
 
-			gt->factions[faction_id].spawn_weapons.push_back(wt);
+			// Faction title
+			char * tmp = cfg_getstr(cfg_faction, "title");
+			if (tmp) {
+				gt->factions[faction_id].title = std::string(tmp);
+			}
+		
+			// Load spawn weapons
+			int num_weapons = cfg_size(cfg_faction, "spawn_weapons");
+			for (k = 0; k < num_weapons; k++) {
+				WeaponType * wt = mod->getWeaponType(cfg_getnstr(cfg_faction, "spawn_weapons", k));
+				if (wt == NULL) {
+					mod->setLoadErr("Invalid spawn weapon %s for action %i", cfg_getnstr(cfg_faction, "spawn_weapons", k), faction_id);
+					return NULL;
+				}
+
+				gt->factions[faction_id].spawn_weapons.push_back(wt);
+			}
 		}
 	}
-
+	
 
 	return gt;
 }
