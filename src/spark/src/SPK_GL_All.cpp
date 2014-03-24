@@ -40,3 +40,5 @@
 #include "RenderingAPIs/OpenGL/SPK_GLPointRenderer.cpp"
 #include "RenderingAPIs/OpenGL/SPK_GLQuadRenderer.cpp"
 #include "RenderingAPIs/OpenGL/SPK_GLLineTrailRenderer.cpp" // 1.03
+
+#include "RenderingAPIs/OpenGL/SPK_GL2PointRenderer.cpp"
