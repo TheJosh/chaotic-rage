@@ -41,8 +41,10 @@
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#ifdef USE_SPARK
 #include "../spark/include/SPK.h"
 #include "../spark/include/SPK_GL.h"
+#endif
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -88,7 +90,7 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->face = NULL;
 
 	#ifdef USE_SPARK
-	this->particle_renderer = new SPK::GL::GLPointRenderer();
+	this->particle_renderer = new SPK::GL::GL2PointRenderer();
 	this->st->particle_renderer = this->particle_renderer;
 	#endif
 
@@ -120,8 +122,11 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 RenderOpenGL::~RenderOpenGL()
 {
 	delete(this->settings);
-	delete(this->particle_renderer);
-
+	
+	#ifdef USE_SPARK
+		delete(this->particle_renderer);
+	#endif
+	
 	SDL_GL_DeleteContext(this->glcontext);
 
 	// TODO: Delete all buffers, tex, etc.

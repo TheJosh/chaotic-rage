@@ -23,9 +23,9 @@
 	#define VERSION "Git Master"
 #endif
 
-// For now we aren't going to support Spark particles on mobile devices
+// For now we aren't going to support Spark particles on GLES devices
 #if defined(__ANDROID__)
-	#define USE_SPARK 0
+	#undef USE_SPARK
 #else
 	#define USE_SPARK 1
 #endif

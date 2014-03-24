@@ -7,12 +7,13 @@
 #include "../rage.h"
 #include "../game_state.h"
 #include "newparticle.h"
-#include "../spark/include/SPK.h"
 
 using namespace std;
 
 
 #ifdef USE_SPARK
+
+#include "../spark/include/SPK.h"
 
 // Gravity, the same for all particles
 SPK::Vector3D gravity(0.0f,-0.9f,0.0f);

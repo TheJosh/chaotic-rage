@@ -38,4 +38,7 @@
 #include "RenderingAPIs/OpenGL/SPK_GLQuadRenderer.h"
 #include "RenderingAPIs/OpenGL/SPK_GLLineTrailRenderer.h" // 1.03
 
+// New OpenGL 2+ only renderers
+#include "RenderingAPIs/OpenGL/SPK_GL2PointRenderer.h"
+
 #endif

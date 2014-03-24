@@ -13,6 +13,7 @@
 #include <guichan/sdl.hpp>
 #include <math.h>
 
+#include "rage.h"
 #include "game_state.h"
 #include "game_engine.h"
 #include "game_settings.h"
@@ -33,7 +34,10 @@
 #include "render_opengl/hud.h"
 #include "render/render_3d.h"
 #include "util/cmdline.h"
+
+#ifdef USE_SPARK
 #include "spark/include/SPK.h"
+#endif
 
 using namespace std;
 

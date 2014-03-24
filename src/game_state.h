@@ -32,10 +32,6 @@ namespace gcn {
 	class Container;
 }
 
-namespace SPK {
-	class System;
-}
-
 /**
 * Information about a unit. Exposed to lua as Unitinfo
 * This class must remain a POD or you will break the lua binding
