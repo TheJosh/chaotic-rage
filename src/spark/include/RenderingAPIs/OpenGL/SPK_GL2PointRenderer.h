@@ -54,8 +54,7 @@ namespace GL
 	* </ul>
 	*/
 	class SPK_GL_PREFIX GL2PointRenderer :	public GLRenderer,
-											public PointRendererInterface,
-											public GLExtHandler
+											public PointRendererInterface
 	{
 		
 		SPK_IMPLEMENT_REGISTERABLE(GL2PointRenderer)
@@ -84,42 +83,27 @@ namespace GL
 		// Setters //
 		/////////////
 
-		virtual bool setType(PointType type);
-
 		/**
-		* @brief Sets the texture of this GL2PointRenderer
+		* @brief Sets the texture of this GLPointRenderer
 		*
 		* Note that the texture is only used if point sprites are used (type is set to SPK::POINT_SPRITE)
 		*
-		* @param textureIndex : the index of the openGL texture of this GL2PointRenderer
+		* @param textureIndex : the index of the openGL texture of this GLPointRenderer
 		*/
 		void setTexture(GLuint textureIndex);
-
-		/**
-		* @brief Sets the way size of points is computed in this GL2PointRenderer
-		*
-		* if universe size is used (true), the extension is checked.<br>
-		* if universe size is not supported by the hardware, false is returned and nothing happens.<br>
-		* <br>
-		* If world size is enabled, the static method setPixelPetUnit(float,int) must be called to set the conversion between pixels and world units.
-		*
-		* @param worldSizeEnabled : true to enable universe size, false to use screen size
-		* @return true the type of size can be set, false otherwise
-		*/
-		bool enableWorldSize(bool worldSizeEnabled);
 
 		/////////////
 		// Getters //
 		/////////////
 
 		/**
-		* @brief Gets the texture of this GL2PointRenderer
-		* @return the texture of this GL2PointRenderer
+		* @brief Gets the texture of this GLPointRenderer
+		* @return the texture of this GLPointRenderer
 		*/
 		GLuint getTexture() const;
 
 		/**
-		* @brief Tells whether world size is enabled or not in this GL2PointRenderer
+		* @brief Tells whether world size is enabled or not in this GLPointRenderer
 		* @return true if world size is enabled, false if not
 		*/
 		bool isWorldSizeEnabled() const;
@@ -129,6 +113,16 @@ namespace GL
 		///////////////
 
 		virtual void render(const Group& group);
+
+		/**
+		* Call this after OpenGL init so all the buffers are created
+		**/
+		virtual void initGLbuffers();
+
+		/**
+		* Call before after OpenGL destruction so all the buffers are destroyed
+		**/
+		virtual void destroyGLbuffers();
 
 	private :
 

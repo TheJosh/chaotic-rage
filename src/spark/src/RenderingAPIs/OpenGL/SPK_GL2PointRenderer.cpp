@@ -31,24 +31,18 @@ namespace GL
 	GL2PointRenderer::GL2PointRenderer(float size) :
 		GLRenderer(),
 		PointRendererInterface(POINT_SQUARE,size),
-		GLExtHandler(),
 		textureIndex(0),
 		worldSize(false)
 	{}
 
-	bool GL2PointRenderer::setType(PointType type)
+	void GL2PointRenderer::initGLbuffers()
 	{
-		if ((type == POINT_SPRITE)&&(!loadGLExtPointSprite()))
-			return false;
-
-		this->type = type;
-		return true;
+		// TODO: create them
 	}
 
-	bool GL2PointRenderer::enableWorldSize(bool worldSizeEnabled)
+	void GL2PointRenderer::destroyGLbuffers()
 	{
-		worldSize = ((worldSizeEnabled)&&(loadGLExtPointParameter()));
-		return worldSize;
+		// TODO: destroy them
 	}
 
 	void GL2PointRenderer::render(const Group& group)
@@ -56,39 +50,9 @@ namespace GL
 		initBlending();
 		initRenderingHints();
 
-		switch(type)
-		{
-		case POINT_SQUARE :
-			glDisable(GL_TEXTURE_2D);
-			glDisable(GL_POINT_SMOOTH);
-			if (getPointSpriteGLExt() == SUPPORTED)
-				disablePointSpriteGLExt();
-			break;
-
-		case POINT_SPRITE :
-			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D,textureIndex);
-			glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,getTextureBlending());
-			enablePointSpriteGLExt();
-			break;
-
-		case POINT_CIRCLE :
-			glDisable(GL_TEXTURE_2D);
-			glEnable(GL_POINT_SMOOTH);
-			if (getPointSpriteGLExt() == SUPPORTED)
-				disablePointSpriteGLExt();
-			break;
-		}
-
-		if (worldSize)
-			enablePointParameterGLExt(size,true);
-		else
-		{
-			glPointSize(size);
-
-			if (getPointParameterGLExt() == SUPPORTED)
-				disablePointParameterGLExt();
-		}
+		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_POINT_SMOOTH);
+		glPointSize(size);
 
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_COLOR_ARRAY);

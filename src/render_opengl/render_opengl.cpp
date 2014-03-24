@@ -278,6 +278,10 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		reportFatalError("Freetype: Unable to init library.");
 	}
 	
+	#ifdef USE_SPARK
+		this->particle_renderer->initGLbuffers();
+	#endif
+	
 	// Windows only: Re-load textures.
 	// All other platforms don't destory the context if the window size changes
 	#ifdef _WIN32

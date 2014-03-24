@@ -132,6 +132,20 @@ namespace GL
 		*/
 		static void restoreGLStates();
 
+		/**
+		* @brief Creates any required buffers in OpenGL
+		*
+		* Call this after OpenGL init so all the buffers are created
+		**/
+		virtual void initGLbuffers() {}
+
+		/**
+		* @brief Destroys any required buffers in OpenGL
+		*
+		* Call before after OpenGL destruction so all the buffers are destroyed
+		**/
+		virtual void destroyGLbuffers() {}
+
 	protected :
 
 		/** @brief Inits the blending of this GLRenderer */
