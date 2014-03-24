@@ -22,11 +22,12 @@
 
 #include "Extensions/Emitters/SPK_SphericEmitter.h"
 #include "Core/SPK_Particle.h"
+#include <algorithm>
+
+#define PI 3.1415926535897932384626433832795f
 
 namespace SPK
 {
-	const float SphericEmitter::PI = 3.1415926535897932384626433832795f;
-
 	SphericEmitter::SphericEmitter(const Vector3D& direction,float angleA,float angleB) :
 		Emitter()
 	{
@@ -100,9 +101,9 @@ namespace SPK
 
 	void SphericEmitter::generateVelocity(Particle& particle,float speed) const
 	{
-		float a = random(cosAngleMax,cosAngleMin);
+		float a = random<float>(cosAngleMax,cosAngleMin);
 		float theta = std::acos(a);
-		float phi = random(0.0f,2.0f * PI);
+		float phi = random<float>(0.0f,2.0f * PI);
 
 		float sinTheta = std::sin(theta);
 		float x = sinTheta * std::cos(phi);

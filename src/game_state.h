@@ -32,6 +32,10 @@ namespace gcn {
 	class Container;
 }
 
+namespace SPK {
+	class System;
+}
+
 /**
 * Information about a unit. Exposed to lua as Unitinfo
 * This class must remain a POD or you will break the lua binding
@@ -93,7 +97,6 @@ class GameState
 	protected:
 		list<Entity*> entities;
 		list<Entity*> entities_add;
-		list<NewParticle*> particles;
 		
 		vector<Unit*> units;		// leaks: items are not removed
 		vector<Wall*> walls;		// leaks: items are not removed
@@ -120,6 +123,9 @@ class GameState
 		GameLogic* logic;
 		PhysicsBullet* physics;
 
+		SPK::System* particle_system;
+		SPK::Renderer* particle_renderer;
+
 	public:
 		GameState();
 		~GameState();
@@ -131,9 +137,9 @@ class GameState
 		void addVehicle(Vehicle* vehicle);
 		void addObject(Object* object);
 		void addPickup(Pickup* pickup);
-		void addNewParticle(NewParticle* particle);
 		void addAmmoRound(AmmoRound* e);
-		
+		void addParticleGroup(SPK::Group* group);
+
 		// Removing
 		Entity* deadButNotBuried(Entity* e);
 		
@@ -150,7 +156,6 @@ class GameState
 		// Start and run
 		void preGame();
 		void update(int delta);
-		void update_particles(int delta);
 		void postGame();
 		
 		// Called by Lua, etc

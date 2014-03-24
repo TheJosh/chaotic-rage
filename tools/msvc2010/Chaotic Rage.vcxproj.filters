@@ -651,6 +651,9 @@
     <ClCompile Include="..\..\src\game_settings.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\gui\newgame_weapons.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">
@@ -1144,6 +1147,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\game_settings.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\gui\newgame_weapons.h">
+      <Filter>src\gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

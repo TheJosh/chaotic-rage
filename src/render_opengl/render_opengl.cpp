@@ -18,7 +18,6 @@
 #include "../util/obj.h"
 #include "../util/sdl_util.h"
 #include "../util/windowicon.h"
-#include "../fx/newparticle.h"
 #include "../mod/mod_manager.h"
 #include "../mod/vehicletype.h"
 #include "render_opengl.h"
@@ -41,6 +40,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include "../spark/include/SPK.h"
+#include "../spark/include/SPK_GL.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -84,13 +86,17 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->speeddebug = false;
 	this->viewmode = 0;
 	this->face = NULL;
-	
+
+	#ifdef USE_SPARK
+	this->particle_renderer = new SPK::GL::GLPointRenderer();
+	this->st->particle_renderer = this->particle_renderer;
+	#endif
+
 	this->font_vbo = 0;
 	this->sprite_vbo = 0;
 	
 	this->ter_vao = NULL;
 	this->skybox_vao = NULL;
-	this->particle_vao = NULL;
 	
 	// TODO: Do we need this? SDL2
 	/*const SDL_VideoInfo* mode = SDL_GetVideoInfo();
@@ -114,9 +120,10 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 RenderOpenGL::~RenderOpenGL()
 {
 	delete(this->settings);
-	
-	SDL_GL_DeleteContext(this->glcontext); 
-	
+	delete(this->particle_renderer);
+
+	SDL_GL_DeleteContext(this->glcontext);
+
 	// TODO: Delete all buffers, tex, etc.
 }
 
@@ -1069,7 +1076,6 @@ void RenderOpenGL::loadShaders()
 	this->shaders["phong"] = loadProgram(base, "phong");
 	this->shaders["phong_bump"] = loadProgram(base, "phong_bump");
 	this->shaders["water"] = loadProgram(base, "water");
-	this->shaders["particles"] = loadProgram(base, "particles");
 	this->shaders["dissolve"] = loadProgram(base, "dissolve");
 	this->shaders["text"] = loadProgram(base, "text");
 	this->shaders["skybox"] = loadProgram(base, "skybox");
@@ -1918,55 +1924,9 @@ void RenderOpenGL::entities()
 **/
 void RenderOpenGL::particles()
 {
-	unsigned int size = this->st->particles.size();
-	if (size == 0) return;
-
-	CHECK_OPENGL_ERROR;
-
-	// First time set up
-	if (particle_vao == NULL) {
-		particle_vao = new GLVAO();
-		
-		GLuint buffer;
-		glGenBuffers(1, &buffer);
-		glBindBuffer(GL_ARRAY_BUFFER, buffer);
-		particle_vao->setInterleavedPC(buffer);
-	}
-
-	// This is a pretty horrible way to do this, because we malloc() and free() once per frame
-	// but it's still better than glBegin/glEnd.
-	// TODO: Save our particles in a simple ready-to-go struct, so we can skip all this
-	float* data = (float*) malloc(sizeof(float) * 6 * size);
-	int i = 0;
-	for (list<NewParticle*>::iterator it = this->st->particles.begin(); it != this->st->particles.end(); it++) {
-		data[i] = (*it)->pos.x();
-		data[i+1] = (*it)->pos.y();
-		data[i+2] = (*it)->pos.z();
-		data[i+3] = (*it)->r;
-		data[i+4] = (*it)->g;
-		data[i+5] = (*it)->b;
-		i += 6;
-	}
-
-	// Update the buffer data (interleaved positions and colours)
-	glBindBuffer(GL_ARRAY_BUFFER, this->particle_vao->getInterleavedPC());
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * size, data, GL_DYNAMIC_DRAW);
-	free(data);
-
-	// Bind the VAO
-	this->particle_vao->bind();
-
-	// Bind shader
-	glUseProgram(this->shaders["particles"]->p());
-
-	// Uniforms
-	glm::mat4 MVP = this->projection * this->view;
-	glUniformMatrix4fv(this->shaders["particles"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-
-	// Draw
-	glDrawArrays(GL_POINTS, 0, size);
-
-	CHECK_OPENGL_ERROR;
+	#ifdef USE_SPARK
+		this->st->particle_system->render();
+	#endif
 }
 
 

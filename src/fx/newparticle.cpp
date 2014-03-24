@@ -7,9 +7,12 @@
 #include "../rage.h"
 #include "../game_state.h"
 #include "newparticle.h"
+#include "../spark/include/SPK.h"
 
 using namespace std;
 
+
+#ifdef USE_SPARK
 
 /**
 * Creates particles for a weapon.
@@ -38,7 +41,7 @@ void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end)
 	p->r = p->g = p->b = 0.3f;
 	p->time_death = time_death;
 	
-	st->addNewParticle(p);
+	//st->addNewParticle(p);
 }
 
 
@@ -70,7 +73,7 @@ void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 
 	p->b = getRandomf(0.0f, 0.1f);
 	p->time_death = time_death;
 	
-	st->addNewParticle(p);
+	//st->addNewParticle(p);
 }
 
 
@@ -93,7 +96,7 @@ void create_particles_blood_spray(GameState * st, btVector3 * location, float da
 		p->b = getRandomf(0.0f, 0.2f);
 		p->time_death = st->game_time + 375;
 		
-		st->addNewParticle(p);
+		//st->addNewParticle(p);
 	}
 }
 
@@ -117,7 +120,15 @@ void create_particles_explosion(GameState * st, btVector3 & location, float dama
 		p->b = getRandomf(0.0f, 0.2f);
 		p->time_death = st->game_time + 375;
 		
-		st->addNewParticle(p);
+		//st->addNewParticle(p);
 	}
 }
 
+
+#else
+// No SPARK particles - these become a no-op
+void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end) {}
+void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 * end) {}
+void create_particles_blood_spray(GameState * st, btVector3 * location, float damage) {}
+void create_particles_explosion(GameState * st, btVector3 & location, float damage) {}
+#endif

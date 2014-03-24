@@ -88,6 +88,17 @@ class RangeF {
 		RangeF() { min = 0.0f, max = 0.0f; }
 };
 
+// Forward decls - SPARK particles
+namespace SPK {
+	class System;
+	class Group;
+	class Renderer;
+
+	namespace GL {
+		class GLRenderer;
+	}
+}
+
 // Factions that units can be in
 // A unit can only be in one faction at any given time
 enum Faction {

@@ -214,6 +214,7 @@
     <ClCompile Include="..\..\src\gui\network.cpp" />
     <ClCompile Include="..\..\src\gui\newcampaign.cpp" />
     <ClCompile Include="..\..\src\gui\newgame.cpp" />
+    <ClCompile Include="..\..\src\gui\newgame_weapons.cpp" />
     <ClCompile Include="..\..\src\http\client_stats.cpp" />
     <ClCompile Include="..\..\src\http\happyhttp.cpp" />
     <ClCompile Include="..\..\src\http\serverlist.cpp" />
@@ -380,6 +381,7 @@
     <ClInclude Include="..\..\src\gui\network.h" />
     <ClInclude Include="..\..\src\gui\newcampaign.h" />
     <ClInclude Include="..\..\src\gui\newgame.h" />
+    <ClInclude Include="..\..\src\gui\newgame_weapons.h" />
     <ClInclude Include="..\..\src\http\client_stats.h" />
     <ClInclude Include="..\..\src\http\happyhttp.h" />
     <ClInclude Include="..\..\src\http\serverlist.h" />

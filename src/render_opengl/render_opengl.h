@@ -86,7 +86,6 @@ class RenderOpenGL : public Render3D
 		// VAOs
 		GLVAO* ter_vao;
 		GLVAO* skybox_vao;
-		GLVAO* particle_vao;
 		
 		// Heightmap
 		unsigned int ter_size;
@@ -111,6 +110,8 @@ class RenderOpenGL : public Render3D
 		int min_filter;
 		int mag_filter;
 		
+		SPK::GL::GLRenderer* particle_renderer;
+
 	public:
 		RenderOpenGL(GameState * st, RenderOpenGLSettings* settings);
 		virtual ~RenderOpenGL();

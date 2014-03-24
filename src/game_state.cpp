@@ -26,7 +26,6 @@
 #include "entity/unit.h"
 #include "entity/vehicle.h"
 #include "entity/wall.h"
-#include "fx/newparticle.h"
 #include "gui/dialog.h"
 #include "mod/mod_manager.h"
 #include "mod/gametype.h"
@@ -34,6 +33,7 @@
 #include "render_opengl/hud.h"
 #include "render/render_3d.h"
 #include "util/cmdline.h"
+#include "spark/include/SPK.h"
 
 using namespace std;
 
@@ -55,17 +55,6 @@ static bool EntityEraserDead(Entity* e)
 
 
 /**
-* Called by remove_if to kill off particles which are too old
-**/
-static bool ParticleEraserTooOld(NewParticle* p)
-{
-	if (p->time_death > g_st->game_time) return false;
-	delete p;
-	return true;
-}
-
-
-/**
 * Called by remove_if to kill off ALL entities.
 * Should only be called at end-of-game
 **/
@@ -74,18 +63,6 @@ static bool EntityEraserAll(Entity* e)
 	delete e;
 	return true;
 }
-
-
-/**
-* Called by remove_if to kill off ALL particles.
-* Should only be called at end-of-game
-**/
-static bool ParticleEraserAll(NewParticle* p)
-{
-	delete p;
-	return true;
-}
-
 
 
 
@@ -119,6 +96,8 @@ GameState::GameState()
 	this->physics = NULL;
 	this->gt = NULL;
 	this->gs = NULL;
+	this->particle_system = NULL;
+	this->particle_renderer = NULL;
 
 	g_st = this;
 }
@@ -223,13 +202,6 @@ void GameState::addPickup(Pickup* pickup)
 	}
 }
 
-/**
-* Add a particle
-**/
-void GameState::addNewParticle(NewParticle* particle)
-{
-	this->particles.push_back(particle);
-}
 
 /**
 * Add an AmmoRound
@@ -334,7 +306,18 @@ void GameState::increaseEntropy(unsigned int slot)
 }
 
 
-
+/**
+* Add a particle group
+* Is a no-op if we don't have the particle system compiled in
+**/
+void GameState::addParticleGroup(SPK::Group* group)
+{
+	#ifdef USE_SPARK
+		if (this->particle_renderer == NULL) return;
+		group->setRenderer(this->particle_renderer);
+		this->particle_system->addGroup(group);
+	#endif
+}
 
 
 
@@ -349,6 +332,10 @@ void GameState::preGame()
 	
 	GEng()->initGuichan();
 	GEng()->setMouseGrab(true);
+
+	#ifdef USE_SPARK
+		this->particle_system = new SPK::System();
+	#endif
 }
 
 
@@ -359,8 +346,11 @@ void GameState::postGame()
 {
 	this->entities.remove_if(EntityEraserAll);
 	this->entities_add.remove_if(EntityEraserAll);
-	this->particles.remove_if(ParticleEraserAll);
 	
+	#ifdef USE_SPARK
+		delete this->particle_system;
+	#endif
+
 	// TODO: Are these needed?
 	this->units.clear();
 	this->walls.clear();
@@ -406,8 +396,9 @@ void GameState::update(int delta)
 	PROFILE_END(physics);
 	
 	// Particles
-	this->update_particles(delta);
-	this->particles.remove_if(ParticleEraserTooOld);
+	#ifdef USE_SPARK
+		this->particle_system->update(delta);
+	#endif
 
 	// Map animationss
 	this->map->update(delta);
@@ -428,17 +419,6 @@ void GameState::update(int delta)
 	// Update time
 	this->game_time += delta;
 	this->anim_frame = (int) floor(this->game_time * ANIMATION_FPS / 1000.0);
-}
-
-
-/**
-* Moves particles
-**/
-void GameState::update_particles(int delta)
-{
-	for (list<NewParticle*>::iterator it = this->particles.begin(); it != this->particles.end(); it++) {
-		(*it)->pos += (*it)->vel * btScalar(delta);
-	}
 }
 
 

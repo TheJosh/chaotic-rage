@@ -133,8 +133,6 @@ namespace SPK
 
 	private :
 
-		static const float PI;
-
 		Vector3D direction;
 		Vector3D tDirection; // transformed direction
 
