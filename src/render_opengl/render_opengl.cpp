@@ -1919,13 +1919,13 @@ void RenderOpenGL::entities()
 
 
 /**
-* Particle effects
-* This is a bit incomplete and sloppy at the moment
+* Particle effects using SPARK
 **/
 void RenderOpenGL::particles()
 {
 	#ifdef USE_SPARK
 		this->st->particle_system->render();
+		CHECK_OPENGL_ERROR;
 	#endif
 }
 

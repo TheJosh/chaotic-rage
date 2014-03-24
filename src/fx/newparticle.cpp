@@ -14,6 +14,9 @@ using namespace std;
 
 #ifdef USE_SPARK
 
+// Gravity, the same for all particles
+SPK::Vector3D gravity(0.0f,-0.9f,0.0f);
+
 /**
 * Creates particles for a weapon.
 * Angles and speeds are randomised. Lifetime is calculated based on the end vector and a constant speed.
@@ -27,21 +30,26 @@ using namespace std;
 **/
 void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end)
 {
-	NewParticle * p;
-	
-	btVector3 velW = *end - *begin;
-	velW /= btScalar(375.f);
-	velW *= 5.0f;
-	
-	int time_death = st->game_time + 375;
-	
-	p = new NewParticle();
-	p->pos = *begin;
-	p->vel = velW;
-	p->r = p->g = p->b = 0.3f;
-	p->time_death = time_death;
-	
-	//st->addNewParticle(p);
+	SPK::Model* model = SPK::Model::create(SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA | SPK::FLAG_SIZE, 
+		                               SPK::FLAG_ALPHA, 
+									   SPK::FLAG_RED | SPK::FLAG_SIZE);
+
+	model->setParam(SPK::PARAM_ALPHA, 1.0f, 0.2f); 
+	model->setParam(SPK::PARAM_RED, 0.0f, 1.0f); 
+	model->setParam(SPK::PARAM_SIZE,  0.15f, 0.15f); 
+	model->setLifeTime(7.0f,8.0f);
+
+	// Emitter
+	SPK::SphericEmitter* emitter = SPK::SphericEmitter::create(SPK::Vector3D(0.0f,1.0f,0.0f), 0.1f * 3.141592f, 0.1f * 3.141592f);
+	emitter->setZone(SPK::Point::create(SPK::Vector3D(begin->x(), begin->y(), begin->z())));
+	emitter->setFlow(20000);
+	emitter->setForce(1.5f,1.5f);
+
+	SPK::Group* group = SPK::Group::create(model, 20000);
+	group->addEmitter(emitter);
+	group->setGravity(gravity);
+
+	st->addParticleGroup(group);
 }
 
 
