@@ -523,6 +523,8 @@
     <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLQuadRenderer.h" />
     <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLRenderer.h" />
     <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL_DEF.h" />
+    <ClInclude Include="..\..\src\spark\SPK.h" />
+    <ClInclude Include="..\..\src\spark\SPK_GL.h" />
     <ClInclude Include="..\..\src\util\btCRKinematicCharacterController.h" />
     <ClInclude Include="..\..\src\util\btStrideHeightfieldTerrainShape.h" />
     <ClInclude Include="..\..\src\util\clientconfig.h" />

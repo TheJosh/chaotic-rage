@@ -1430,6 +1430,12 @@
     <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL_DEF.h">
       <Filter>src\spark\opengl</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\spark\SPK.h">
+      <Filter>src\spark</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\SPK_GL.h">
+      <Filter>src\spark</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res\appicon.rc">
