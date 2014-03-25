@@ -27,6 +27,9 @@
 #include "RenderingAPIs/OpenGL/SPK_GLExtHandler.h"
 #include "Extensions/Renderers/SPK_PointRendererInterface.h"
 
+class GLVAO;
+
+
 namespace SPK
 {
 namespace GL
@@ -128,6 +131,8 @@ namespace GL
 
 		GLuint textureIndex;
 		bool worldSize;
+		GLuint vaoIndex;
+
 	};
 
 

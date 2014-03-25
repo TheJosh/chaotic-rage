@@ -37,18 +37,20 @@ namespace GL
 
 	void GL2PointRenderer::initGLbuffers()
 	{
-		// TODO: create them
+		glGenBuffers(1, &vaoIndex);
 	}
 
 	void GL2PointRenderer::destroyGLbuffers()
 	{
-		// TODO: destroy them
+		glDeleteBuffers(1, &vaoIndex);
 	}
 
 	void GL2PointRenderer::render(const Group& group)
 	{
 		initBlending();
 		initRenderingHints();
+
+		glBindBuffer(GL_ARRAY_BUFFER, vaoIndex);
 
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_POINT_SMOOTH);
@@ -64,5 +66,7 @@ namespace GL
 
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_COLOR_ARRAY);
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 }}

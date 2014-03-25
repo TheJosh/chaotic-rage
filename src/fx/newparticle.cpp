@@ -38,7 +38,7 @@ void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end)
 	model->setParam(SPK::PARAM_ALPHA, 1.0f, 0.2f); 
 	model->setParam(SPK::PARAM_RED, 0.0f, 1.0f); 
 	model->setParam(SPK::PARAM_SIZE,  0.15f, 0.15f); 
-	model->setLifeTime(7.0f,8.0f);
+	model->setLifeTime(5.0f,5.0f);
 
 	// Emitter
 	SPK::SphericEmitter* emitter = SPK::SphericEmitter::create(SPK::Vector3D(0.0f,1.0f,0.0f), 0.1f * 3.141592f, 0.1f * 3.141592f);
