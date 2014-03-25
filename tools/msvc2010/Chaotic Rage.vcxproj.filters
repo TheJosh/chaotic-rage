@@ -83,6 +83,15 @@
     <Filter Include="src\guichan\widgets">
       <UniqueIdentifier>{73b6e994-f9d3-4b26-a65c-551a8a8877e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\spark\core">
+      <UniqueIdentifier>{9f62f047-0f74-443d-a6e1-5dc31b306a8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\spark\ext">
+      <UniqueIdentifier>{bcaf8f63-1a01-46da-a98a-e442dba18e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\spark\opengl">
+      <UniqueIdentifier>{0c1fcabe-1e98-4d8a-8e3a-01a68d3878bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\data\cr\animmodels.conf">
@@ -636,12 +645,6 @@
     <ClCompile Include="..\..\src\game_engine.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\spark\src\SPK_All.cpp">
-      <Filter>src\spark</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\spark\src\SPK_GL_All.cpp">
-      <Filter>src\spark</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\lua\lua_random_lib.cpp">
       <Filter>src\lua</Filter>
     </ClCompile>
@@ -653,6 +656,132 @@
     </ClCompile>
     <ClCompile Include="..\..\src\gui\newgame_weapons.cpp">
       <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Core\SPK_BufferHandler.cpp">
+      <Filter>src\spark\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Core\SPK_DEF.cpp">
+      <Filter>src\spark\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Core\SPK_Emitter.cpp">
+      <Filter>src\spark\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Core\SPK_Factory.cpp">
+      <Filter>src\spark\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Core\SPK_Group.cpp">
+      <Filter>src\spark\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Core\SPK_Interpolator.cpp">
+      <Filter>src\spark\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Core\SPK_Model.cpp">
+      <Filter>src\spark\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Core\SPK_Modifier.cpp">
+      <Filter>src\spark\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Core\SPK_Particle.cpp">
+      <Filter>src\spark\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Core\SPK_Registerable.cpp">
+      <Filter>src\spark\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Core\SPK_Renderer.cpp">
+      <Filter>src\spark\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Core\SPK_System.cpp">
+      <Filter>src\spark\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Core\SPK_Transformable.cpp">
+      <Filter>src\spark\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Core\SPK_Vector3D.cpp">
+      <Filter>src\spark\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Core\SPK_Zone.cpp">
+      <Filter>src\spark\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Emitters\SPK_NormalEmitter.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Emitters\SPK_RandomEmitter.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Emitters\SPK_SphericEmitter.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Emitters\SPK_StraightEmitter.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Modifiers\SPK_Destroyer.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Modifiers\SPK_LinearForce.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Modifiers\SPK_ModifierGroup.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Modifiers\SPK_Obstacle.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Modifiers\SPK_PointMass.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Modifiers\SPK_Vortex.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Modifiers\SPK_Collision.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Renderers\SPK_Oriented3DRendererInterface.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Renderers\SPK_QuadRendererInterface.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Zones\SPK_Line.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Zones\SPK_Plane.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Zones\SPK_Point.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Zones\SPK_Ring.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Zones\SPK_Sphere.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Zones\SPK_AABox.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\Extensions\Zones\SPK_Cylinder.cpp">
+      <Filter>src\spark\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL2PointRenderer.cpp">
+      <Filter>src\spark\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLExtHandler.cpp">
+      <Filter>src\spark\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLLineRenderer.cpp">
+      <Filter>src\spark\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLLineTrailRenderer.cpp">
+      <Filter>src\spark\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLPointRenderer.cpp">
+      <Filter>src\spark\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLQuadRenderer.cpp">
+      <Filter>src\spark\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLRenderer.cpp">
+      <Filter>src\spark\opengl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1139,17 +1268,167 @@
     <ClInclude Include="..\..\src\render_opengl\intro.h">
       <Filter>src\render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\spark\include\SPK.h">
-      <Filter>src\spark</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\spark\include\SPK_GL.h">
-      <Filter>src\spark</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\game_settings.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\gui\newgame_weapons.h">
       <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_BufferHandler.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_DEF.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_Emitter.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_Factory.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_Group.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_Interpolator.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_Model.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_Modifier.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_Particle.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_Pool.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_Registerable.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_RegWrapper.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_Renderer.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_System.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_Transformable.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_Vector3D.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_Zone.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_ArrayBuffer.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Core\SPK_Buffer.h">
+      <Filter>src\spark\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Emitters\SPK_NormalEmitter.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Emitters\SPK_RandomEmitter.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Emitters\SPK_SphericEmitter.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Emitters\SPK_StaticEmitter.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Emitters\SPK_StraightEmitter.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Modifiers\SPK_Collision.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Modifiers\SPK_Destroyer.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Modifiers\SPK_LinearForce.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Modifiers\SPK_ModifierGroup.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Modifiers\SPK_Obstacle.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Modifiers\SPK_PointMass.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Modifiers\SPK_Rotator.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Modifiers\SPK_Vortex.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Renderers\SPK_Oriented3DRendererInterface.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Renderers\SPK_PointRendererInterface.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Renderers\SPK_QuadRendererInterface.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Renderers\SPK_LineRendererInterface.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Renderers\SPK_Oriented2DRendererInterface.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Zones\SPK_Cylinder.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Zones\SPK_Line.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Zones\SPK_Plane.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Zones\SPK_Point.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Zones\SPK_Ring.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Zones\SPK_Sphere.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\Extensions\Zones\SPK_AABox.h">
+      <Filter>src\spark\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL2PointRenderer.h">
+      <Filter>src\spark\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLExtHandler.h">
+      <Filter>src\spark\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLLineRenderer.h">
+      <Filter>src\spark\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLLineTrailRenderer.h">
+      <Filter>src\spark\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLPointRenderer.h">
+      <Filter>src\spark\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLQuadRenderer.h">
+      <Filter>src\spark\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLRenderer.h">
+      <Filter>src\spark\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL_DEF.h">
+      <Filter>src\spark\opengl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,7 @@ using namespace std;
 
 #ifdef USE_SPARK
 
-#include "../spark/include/SPK.h"
+#include "../spark/SPK.h"
 
 // Gravity, the same for all particles
 SPK::Vector3D gravity(0.0f,-0.9f,0.0f);

@@ -36,7 +36,7 @@
 #include "util/cmdline.h"
 
 #ifdef USE_SPARK
-#include "spark/include/SPK.h"
+#include "spark/SPK.h"
 #endif
 
 using namespace std;

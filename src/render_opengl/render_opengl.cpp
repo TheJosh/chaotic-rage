@@ -42,8 +42,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #ifdef USE_SPARK
-#include "../spark/include/SPK.h"
-#include "../spark/include/SPK_GL.h"
+#include "../spark/SPK.h"
+#include "../spark/SPK_GL.h"
 #endif
 
 #include <ft2build.h>
