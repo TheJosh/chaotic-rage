@@ -13,6 +13,16 @@
 using namespace std;
 
 
+#ifdef WIN32
+	void output_message(const char* msg) {
+		cout << msg;MessageBox(HWND_DESKTOP, msg, "Chaotic Rage", MB_OK);
+	}
+#else
+	void output_message(const char* msg) {
+		cout << msg;
+	}
+#endif
+
 
 /**
 * Parses the command line arguments using GetOpt
@@ -50,7 +60,7 @@ void CommandLineArgs::process()
 	while ((c = getopt_long(argc, argv, "h", long_options, &option_index)) != -1) {
 		switch (c) {
 			case 'h':
-				cout <<
+				output_message(
 					"Chaotic Rage " VERSION "\n"
 					
 					"\nOptions:\n"
@@ -77,7 +87,7 @@ void CommandLineArgs::process()
 					"   \t--no-mouse-grab         Disable mouse grab\n"
 					"   \t--profile FILE          Save profile log\n"
 					#endif
-				;
+				);
 				exit(0);
 				break;
 			
