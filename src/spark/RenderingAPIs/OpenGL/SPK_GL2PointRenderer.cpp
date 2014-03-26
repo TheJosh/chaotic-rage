@@ -24,6 +24,9 @@
 #include "Core/SPK_Particle.h"
 #include "Core/SPK_Group.h"
 
+#define ATTRIB_POSITION 1
+#define ATTRIB_COLOR 2
+
 namespace SPK
 {
 namespace GL
@@ -32,41 +35,175 @@ namespace GL
 		GLRenderer(),
 		PointRendererInterface(POINT_SQUARE,size),
 		textureIndex(0),
-		worldSize(false)
+		worldSize(false),
+		vaoIndex(0),
+		vboPositionIndex(0),
+		vboColorIndex(0)
 	{}
 
 	void GL2PointRenderer::initGLbuffers()
 	{
-		glGenBuffers(1, &vaoIndex);
+		// Set up VAO
+		glGenVertexArrays(1, &vaoIndex);
+		glBindVertexArray(vaoIndex);
+
+		// Set up position buffer
+		glGenBuffers(1, &vboPositionIndex);
+		glBindBuffer(GL_ARRAY_BUFFER, vboPositionIndex);
+		glEnableVertexAttribArray(ATTRIB_POSITION);
+		glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+		// Set up colors buffer
+		glGenBuffers(1, &vboColorIndex);
+		glBindBuffer(GL_ARRAY_BUFFER, vboColorIndex);
+		glEnableVertexAttribArray(ATTRIB_COLOR);
+		glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, 0);
+
+		glBindVertexArray(0);
+
+		// Create shader
+		shaderIndex = createShaderProgram(
+            "#version 140"
+            "in vec3 vPosition;"
+            "in vec4 vColor;"
+            "out vec4 fColor;"
+			"uniform mat4 uMVP;"
+            "void main() {"
+                "gl_Position = uMVP * vec4(vPosition, 1.0f);"
+				"fColor = vColor;"
+            "}",
+
+            "#version 140"
+            "in vec4 fColor;"
+            "void main() {"
+                "gl_FragColor = fColor;"
+            "}"
+        );
 	}
+
+	// TODO: This is cloned from Guichan; we should probably have a common func!
+	GLuint GL2PointRenderer::createShaderProgram(const char *vs, const char *fs)
+    {
+        GLuint program, sVS, sFS;
+        GLint len, success;
+
+        // Create stuff
+        program = glCreateProgram();
+
+        // Compile vertex shader
+        sVS = glCreateShader(GL_VERTEX_SHADER);
+        len = strlen(vs);
+        glShaderSource(sVS, 1, &vs, &len);
+        glCompileShader(sVS);
+        glAttachShader(program, sVS);
+
+		// Check status
+		glGetShaderiv(sVS, GL_COMPILE_STATUS, &success);
+        if (! success) {
+            GLchar infolog[1024];
+            glGetShaderInfoLog(sVS, 1024, NULL, infolog);
+            GL_LOG("Error compiling vertex shader:\n%s", infolog);
+        }
+
+        // Compile fragment shader
+        sFS = glCreateShader(GL_FRAGMENT_SHADER);
+        len = strlen(fs);
+        glShaderSource(sFS, 1, &fs, &len);
+        glCompileShader(sFS);
+        glAttachShader(program, sFS);
+
+		// Check status
+		glGetShaderiv(sFS, GL_COMPILE_STATUS, &success);
+        if (! success) {
+            GLchar infolog[1024];
+            glGetShaderInfoLog(sFS, 1024, NULL, infolog);
+            GL_LOG("Error compiling fragment shader:\n%s", infolog);
+        }
+
+        glBindAttribLocation(program, ATTRIB_POSITION, "vPosition");
+        glBindAttribLocation(program, ATTRIB_COLOR, "vColor");
+
+        // Link
+        glLinkProgram(program);
+        glDeleteShader(sVS);
+        glDeleteShader(sFS);
+
+        // Check for link errors
+        glGetProgramiv(program, GL_LINK_STATUS, &success);
+        if (! success) {
+            GLchar infolog[1024];
+            glGetProgramInfoLog(program, 1024, NULL, infolog);
+            GL_LOG("Error linking program:\n%s", infolog);
+        }
+
+		CHECK_OPENGL_ERROR;
+
+        return program;
+    }
 
 	void GL2PointRenderer::destroyGLbuffers()
 	{
-		glDeleteBuffers(1, &vaoIndex);
+		glDeleteVertexArrays(1, &vaoIndex);
+		glDeleteBuffers(1, &vboPositionIndex);
+		glDeleteBuffers(1, &vboColorIndex);
+		glDeleteProgram(shaderIndex);
+
+		vaoIndex = 0;
+		vboPositionIndex = 0;
+		vboColorIndex = 0;
+		shaderIndex = 0;
 	}
 
 	void GL2PointRenderer::render(const Group& group)
 	{
+		int i;
+
 		initBlending();
 		initRenderingHints();
-
-		glBindBuffer(GL_ARRAY_BUFFER, vaoIndex);
 
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_POINT_SMOOTH);
 		glPointSize(size);
 
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_COLOR_ARRAY);
+		// This is a pretty horrible way to do this, because we malloc() and free() once per frame
+		// TODO: Rewrite spark internals so we can use positions directly
+		float* data = (float*) malloc(sizeof(float) * 3 * group.getNbParticles());
+		float* addr = (float*) group.getPositionAddress();
+		for (i = group.getNbParticles(); i != 0; i--) {
+			*data++ = *addr++;
+			*data++ = *addr++;
+			*data++ = *addr++;
+			addr += (group.getPositionStride() - 3);
+		}
 
-		glColorPointer(group.getModel()->isEnabled(PARAM_ALPHA) ? 4 : 3,GL_FLOAT,group.getParamStride(),group.getParamAddress(PARAM_RED));
-		glVertexPointer(3,GL_FLOAT,group.getPositionStride(),group.getPositionAddress());
+		// Set position data
+		glBindBuffer(GL_ARRAY_BUFFER, vboPositionIndex);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * group.getNbParticles(), data, GL_DYNAMIC_DRAW);
+		free(data);
 
-		glDrawArrays(GL_POINTS,0,group.getNbParticles());
+		// Set color data
+		glBindBuffer(GL_ARRAY_BUFFER, vboColorIndex);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * group.getNbParticles(), group.getParamAddress(PARAM_RED), GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_COLOR_ARRAY);
+		// Bind our VAO
+		glBindVertexArray(vaoIndex);
 
+		// The stride may vary between groups so we need to re-set it each time
+		glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, group.getParamStride(), 0);
+
+		// Bind shader
+		glUseProgram(shaderIndex);
+
+		// Uniforms
+		//glm::mat4 MVP = this->projection * this->view;
+		//glUniformMatrix4fv(this->shaders["particles"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+
+		// Draw
+		glDrawArrays(GL_POINTS, 0, group.getNbParticles());
+
+		// Clean up
+		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 }}

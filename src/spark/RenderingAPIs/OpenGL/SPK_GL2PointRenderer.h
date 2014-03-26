@@ -127,11 +127,19 @@ namespace GL
 		**/
 		virtual void destroyGLbuffers();
 
+	protected :
+		GLuint GL2PointRenderer::createShaderProgram(const char *vs, const char *fs);
+
 	private :
 
 		GLuint textureIndex;
 		bool worldSize;
+
 		GLuint vaoIndex;
+		GLuint vboPositionIndex;
+		GLuint vboColorIndex;
+		GLuint shaderIndex;
+
 
 	};
 
