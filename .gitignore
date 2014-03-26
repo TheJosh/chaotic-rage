@@ -1,6 +1,6 @@
-chaoticrage
-
-build
+/chaoticrage
+/core
+/build
 
 *.mtl
 *.blend1
