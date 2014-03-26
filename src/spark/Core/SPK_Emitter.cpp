@@ -31,12 +31,12 @@ namespace SPK
 		Transformable(),
 		zone(&getDefaultZone()),
 		full(true),
+		active(true),
 		tank(-1),
 		flow(0.0f),
 		forceMin(0.0f),
 		forceMax(0.0f),
-		fraction(random(0.0f,1.0f)),
-		active(true)
+		fraction(random(0.0f,1.0f))
 	{}
 
 	void Emitter::registerChildren(bool registerAll)

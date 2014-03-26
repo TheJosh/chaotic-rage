@@ -37,6 +37,9 @@ namespace SPK
 		Transformable(),
 		model(m != NULL ? m : &getDefaultModel()),
 		renderer(NULL),
+		emitters(),
+		modifiers(),
+		activeModifiers(),
 		friction(0.0f),
 		gravity(Vector3D()),
 		pool(Pool<Particle>(capacity)),
@@ -51,9 +54,6 @@ namespace SPK
 		fbirth(NULL),
 		fdeath(NULL),
 		boundingBoxEnabled(false),
-		emitters(),
-		modifiers(),
-		activeModifiers(),
 		additionalBuffers(),
 		swappableBuffers()
 	{}
@@ -63,6 +63,9 @@ namespace SPK
 		Transformable(group),
 		model(group.model),
 		renderer(group.renderer),
+		emitters(group.emitters),
+		modifiers(group.modifiers),
+		activeModifiers(group.activeModifiers.capacity()),
 		friction(group.friction),
 		gravity(group.gravity),
 		pool(group.pool),
@@ -74,9 +77,6 @@ namespace SPK
 		fbirth(group.fbirth),
 		fdeath(group.fdeath),
 		boundingBoxEnabled(group.boundingBoxEnabled),
-		emitters(group.emitters),
-		modifiers(group.modifiers),
-		activeModifiers(group.activeModifiers.capacity()),
 		additionalBuffers(),
 		swappableBuffers()
 	{

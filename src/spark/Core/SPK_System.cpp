@@ -42,11 +42,11 @@ namespace SPK
 		Registerable(),
 		Transformable(),
 		groups(),
+		deltaStep(0.0f),
 		nbParticles(0),
 		boundingBoxEnabled(false),
 		AABBMin(),
-		AABBMax(),
-		deltaStep(0.0f)
+		AABBMax()
 	{}
 
 	void System::registerChildren(bool registerAll)

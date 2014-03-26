@@ -43,14 +43,14 @@ namespace SPK
 
 	Model::Model(int enableFlag,int mutableFlag,int randomFlag,int interpolatedFlag) :
 		Registerable(),
-		lifeTimeMin(1.0f),
-		lifeTimeMax(1.0f),
-		immortal(false),
 		paramsSize(0),
 		nbEnableParams(0),
 		nbMutableParams(0),
+		nbInterpolatedParams(0),
 		nbRandomParams(0),
-		nbInterpolatedParams(0)
+		lifeTimeMin(1.0f),
+		lifeTimeMax(1.0f),
+		immortal(false)
 	{
 		enableFlag |= FLAG_RED | FLAG_GREEN | FLAG_BLUE; // Adds the color parameters to the enable flag
 		this->enableFlag = enableFlag & ((1 << (NB_PARAMS + 1)) - 1); // masks the enable flag with the existing parameters
@@ -157,22 +157,22 @@ namespace SPK
 
 	Model::Model(const Model& model) :
 		Registerable(model),
-		lifeTimeMin(model.lifeTimeMin),
-		lifeTimeMax(model.lifeTimeMax),
-		immortal(model.immortal),
+		params(NULL),
 		paramsSize(model.paramsSize),
 		nbEnableParams(model.nbEnableParams),
+		enableParams(NULL),
 		nbMutableParams(model.nbMutableParams),
-		nbRandomParams(model.nbRandomParams),
+		mutableParams(NULL),
 		nbInterpolatedParams(model.nbInterpolatedParams),
+		interpolatedParams(NULL),
+		nbRandomParams(model.nbRandomParams),
 		enableFlag(model.enableFlag),
 		mutableFlag(model.mutableFlag),
 		randomFlag(model.randomFlag),
 		interpolatedFlag(model.interpolatedFlag),
-		params(NULL),
-		enableParams(NULL),
-		mutableParams(NULL),
-		interpolatedParams(NULL)
+		lifeTimeMin(model.lifeTimeMin),
+		lifeTimeMax(model.lifeTimeMax),
+		immortal(model.immortal)
 	{
 		if (paramsSize > 0)
 		{

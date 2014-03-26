@@ -37,8 +37,8 @@ namespace SPK
 		currentUpdate(0),
 		lastUpdate(0),
 		lastParentUpdate(0),
-		parent(NULL),
-		localIdentity(true)
+		localIdentity(true),
+		parent(NULL)
 	{
 		std::memcpy(local,IDENTITY,sizeof(float) * TRANSFORM_LENGTH);
 		std::memcpy(world,IDENTITY,sizeof(float) * TRANSFORM_LENGTH);
@@ -48,8 +48,8 @@ namespace SPK
 		currentUpdate(0),
 		lastUpdate(0),
 		lastParentUpdate(0),
-		parent(NULL),
-		localIdentity(transformable.localIdentity)
+		localIdentity(transformable.localIdentity),
+		parent(NULL)
 	{
 		std::memcpy(local,transformable.local,sizeof(float) * TRANSFORM_LENGTH);
 		std::memcpy(world,transformable.world,sizeof(float) * TRANSFORM_LENGTH);

@@ -39,9 +39,9 @@ namespace SPK
 		graph(),
 		type(INTERPOLATOR_LIFETIME),
 		param(PARAM_SIZE),
+		loopingEnabled(false),
 		scaleXVariation(0.0f),
-		offsetXVariation(0.0f),
-		loopingEnabled(false)
+		offsetXVariation(0.0f)
 	{}
 
 	float Interpolator::computeXLifeTime(const Particle& particle) const

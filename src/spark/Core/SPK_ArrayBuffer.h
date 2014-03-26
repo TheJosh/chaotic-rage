@@ -106,8 +106,8 @@ namespace SPK
 	template<class T>
 	ArrayBuffer<T>::ArrayBuffer(size_t nbParticles,size_t particleSize) :
 		Buffer(),
-		dataSize(nbParticles * particleSize),
-		particleSize(particleSize)
+		particleSize(particleSize),
+		dataSize(nbParticles * particleSize)
 	{
 		data = new T[dataSize];
 	}
@@ -115,8 +115,8 @@ namespace SPK
 	template<class T>
 	ArrayBuffer<T>::ArrayBuffer(const ArrayBuffer<T>& buffer) :
 		Buffer(buffer),
-		dataSize(buffer.dataSize),
-		particleSize(buffer.particleSize)
+		particleSize(buffer.particleSize),
+		dataSize(buffer.dataSize)
 	{
 		data = new T[dataSize];
 		std::memcpy(data,buffer.data,dataSize * sizeof(T));

@@ -31,17 +31,17 @@ namespace SPK
 	Registerable::Registerable() :
 		ID(NO_ID),
 		nbReferences(0),
+		name(NO_NAME),
 		shared(false),
-		destroyable(true),
-		name(NO_NAME)
+		destroyable(true)
 	{}
 
 	Registerable::Registerable(const Registerable& registerable) :
 		ID(NO_ID),
 		nbReferences(0),
+		name(registerable.name),
 		shared(registerable.shared),
-		destroyable(registerable.destroyable),
-		name(registerable.name)
+		destroyable(registerable.destroyable)
 	{}
 
 	Registerable::~Registerable(){}

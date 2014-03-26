@@ -622,9 +622,9 @@ namespace SPK
 
 	template<class T>
 	Pool<T>::Pool(const Pool<T>& pool) :
+		container(),
 		nbActive(pool.nbActive),
-		maxTotal(0),
-		container()
+		maxTotal(0)
 	{
 		// the copy constructor of vector does not copy the capacity !
 		container.reserve(pool.container.capacity());
