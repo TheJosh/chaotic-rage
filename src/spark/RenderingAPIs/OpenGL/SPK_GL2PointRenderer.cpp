@@ -23,6 +23,8 @@
 #include "RenderingAPIs/OpenGL/SPK_GL2PointRenderer.h"
 #include "Core/SPK_Particle.h"
 #include "Core/SPK_Group.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 // Used for the OpenGL debug fun
 #include <stdio.h>
@@ -70,9 +72,9 @@ namespace GL
 			"in vec3 vPosition;\n"
 			"in vec4 vColor;\n"
 			"out vec4 fColor;\n"
-			"uniform mat4 uMVP;\n"
+			"uniform mat4 uVP;\n"
 			"void main() {\n"
-				"gl_Position = uMVP * vec4(vPosition, 1.0f);\n"
+				"gl_Position = uVP * vec4(vPosition, 1.0f);\n"
 				"fColor = vColor;\n"
 			"}\n",
 
@@ -82,6 +84,13 @@ namespace GL
 				"gl_FragColor = fColor;\n"
 			"}\n"
 		);
+
+		shaderVPIndex = glGetUniformLocation(shaderIndex, "uVP");
+	}
+
+	void GL2PointRenderer::setVP(glm::mat4 vp)
+	{
+		vp_matrix = vp;
 	}
 
 	// TODO: This is cloned from Guichan; we should probably have a common function for this!
@@ -155,56 +164,55 @@ namespace GL
 		vboPositionIndex = 0;
 		vboColorIndex = 0;
 		shaderIndex = 0;
+		shaderVPIndex = 0;
 	}
 
 	void GL2PointRenderer::render(const Group& group)
 	{
 		int i;
 
-		initBlending();
-		initRenderingHints();
+		//initBlending();
+		//initRenderingHints();
 
-		glDisable(GL_TEXTURE_2D);
-		glDisable(GL_POINT_SMOOTH);
+		//glDisable(GL_TEXTURE_2D);
+		//glDisable(GL_POINT_SMOOTH);
 		glPointSize(size);
 
-		// This is a pretty horrible way to do this, because we malloc() and free() once per frame
-		// TODO: Rewrite spark internals so we can use positions directly
-		float* data = (float*) malloc(sizeof(float) * 3 * group.getNbParticles());
-		Vector3D* position = (Vector3D*) group.getPositionAddress();
+		// Copy data into buffer with the correct layout
+		// TODO: Reuse the buffer instead of malloc/free every frame
+		size_t num = group.getNbParticles();
+		float* data = (float*) malloc(sizeof(float) * 3 * num);
 		float* ptr = data;
-		for (i = group.getNbParticles(); i != 0; --i) {
-			*ptr++ = position->x;
-			*ptr++ = position->y;
-			*ptr++ = position->z;
-			position += group.getPositionStride();
+		for (size_t i = 0; i < num; ++i)
+		{
+			const Particle& particle = group.getParticle(i);
+
+			*ptr++ = particle.position().x;
+			*ptr++ = particle.position().y;
+			*ptr++ = particle.position().z;
 		}
 
-		// Maybe I need something like this...?
-		// for (size_t i = 0; i < group.getNbParticles(); ++i)
-		//		(this->*renderParticle)(group.getParticle(i));
-		
 		// Bind our VAO
 		glBindVertexArray(vaoIndex);
+
 		// Set position data
 		glBindBuffer(GL_ARRAY_BUFFER, vboPositionIndex);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * group.getNbParticles(), data, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * num, data, GL_DYNAMIC_DRAW);
 		free(data);
 
 		// Set color data
 		glBindBuffer(GL_ARRAY_BUFFER, vboColorIndex);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * group.getNbParticles(), group.getParamAddress(PARAM_RED), GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * num, group.getParamAddress(PARAM_RED), GL_DYNAMIC_DRAW);
 		glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, group.getParamStride(), 0);
 
 		// Bind shader
 		glUseProgram(shaderIndex);
 
 		// Uniforms
-		//glm::mat4 MVP = this->projection * this->view;
-		//glUniformMatrix4fv(this->shaders["particles"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+		glUniformMatrix4fv(shaderVPIndex, 1, GL_FALSE, glm::value_ptr(vp_matrix));
 
 		// Draw
-		glDrawArrays(GL_POINTS, 0, group.getNbParticles());
+		glDrawArrays(GL_POINTS, 0, num);
 
 		// Clean up
 		glBindVertexArray(0);

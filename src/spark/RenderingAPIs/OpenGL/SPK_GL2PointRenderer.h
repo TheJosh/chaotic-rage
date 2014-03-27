@@ -26,6 +26,7 @@
 #include "RenderingAPIs/OpenGL/SPK_GLRenderer.h"
 #include "RenderingAPIs/OpenGL/SPK_GLExtHandler.h"
 #include "Extensions/Renderers/SPK_PointRendererInterface.h"
+#include <glm/glm.hpp>
 
 class GLVAO;
 
@@ -127,6 +128,11 @@ namespace GL
 		**/
 		virtual void destroyGLbuffers();
 
+		/**
+		* Set the current View/Projection matrix
+		**/
+		virtual void setVP(glm::mat4 vp);
+
 	protected :
 		GLuint createShaderProgram(const char *vs, const char *fs);
 
@@ -135,11 +141,13 @@ namespace GL
 		GLuint textureIndex;
 		bool worldSize;
 
+		glm::mat4 vp_matrix;
+
 		GLuint vaoIndex;
 		GLuint vboPositionIndex;
 		GLuint vboColorIndex;
 		GLuint shaderIndex;
-
+		GLuint shaderVPIndex;
 
 	};
 

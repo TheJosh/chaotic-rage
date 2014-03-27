@@ -31,25 +31,30 @@ SPK::Vector3D gravity(0.0f,-0.9f,0.0f);
 **/
 void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end)
 {
-	SPK::Model* model = SPK::Model::create(SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA | SPK::FLAG_SIZE, 
-		                               SPK::FLAG_ALPHA, 
-									   SPK::FLAG_RED | SPK::FLAG_SIZE);
+	btVector3 dir = *end - *begin;
+	dir.normalize();
 
-	model->setParam(SPK::PARAM_ALPHA, 1.0f, 0.2f); 
+	SPK::Model* model = SPK::Model::create(SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA, 
+		                               SPK::FLAG_ALPHA,
+									   SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE);
+
+	model->setParam(SPK::PARAM_ALPHA, 1.0f, 0.0f); 
 	model->setParam(SPK::PARAM_RED, 0.0f, 1.0f); 
-	model->setParam(SPK::PARAM_SIZE,  0.15f, 0.15f); 
-	model->setLifeTime(5.0f,5.0f);
+	model->setParam(SPK::PARAM_GREEN, 0.0f, 1.0f);
+	model->setParam(SPK::PARAM_BLUE, 0.0f, 1.0f);
+	model->setLifeTime(3.0f, 5.0f);
 
 	// Emitter
-	SPK::SphericEmitter* emitter = SPK::SphericEmitter::create(SPK::Vector3D(0.0f,1.0f,0.0f), 0.1f * 3.141592f, 0.1f * 3.141592f);
+	SPK::SphericEmitter* emitter = SPK::SphericEmitter::create(SPK::Vector3D(dir.x(), 0.0f, dir.z()), 0.1f * 3.141592f, 0.1f * 3.141592f);
 	emitter->setZone(SPK::Point::create(SPK::Vector3D(begin->x(), begin->y(), begin->z())));
-	emitter->setFlow(20000);
-	emitter->setForce(1.5f,1.5f);
+	emitter->setFlow(250);
+	emitter->setTank(250);
+	emitter->setForce(1.0f, 5.0f);
 
-	SPK::Group* group = SPK::Group::create(model, 20000);
+	SPK::Group* group = SPK::Group::create(model, 1000);
 	group->addEmitter(emitter);
 	group->setGravity(gravity);
-
+	
 	st->addParticleGroup(group);
 }
 

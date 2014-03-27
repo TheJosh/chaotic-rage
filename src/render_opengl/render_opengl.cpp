@@ -90,7 +90,7 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->face = NULL;
 
 	#ifdef USE_SPARK
-	this->particle_renderer = new SPK::GL::GL2PointRenderer();
+	this->particle_renderer = new SPK::GL::GL2PointRenderer(1.0f);
 	this->st->particle_renderer = this->particle_renderer;
 	#endif
 
@@ -1933,6 +1933,8 @@ void RenderOpenGL::entities()
 void RenderOpenGL::particles()
 {
 	#ifdef USE_SPARK
+		glm::mat4 vp = this->projection * this->view;
+		this->particle_renderer->setVP(vp);
 		this->st->particle_system->render();
 		CHECK_OPENGL_ERROR;
 	#endif

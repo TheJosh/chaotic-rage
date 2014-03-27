@@ -401,7 +401,7 @@ void GameState::update(int delta)
 	
 	// Particles
 	#ifdef USE_SPARK
-		this->particle_system->update(delta);
+		this->particle_system->update(delta / 1000.0f);
 	#endif
 
 	// Map animationss

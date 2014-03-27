@@ -25,6 +25,7 @@
 
 #include "RenderingAPIs/OpenGL/SPK_GL_DEF.h"
 #include "Core/SPK_Renderer.h"
+#include <glm/glm.hpp>
 
 namespace SPK
 {
@@ -145,6 +146,11 @@ namespace GL
 		* Call before after OpenGL destruction so all the buffers are destroyed
 		**/
 		virtual void destroyGLbuffers() {}
+
+		/**
+		* Set the current View/Projection matrix
+		**/
+		virtual void setVP(glm::mat4 vp) {}
 
 	protected :
 
