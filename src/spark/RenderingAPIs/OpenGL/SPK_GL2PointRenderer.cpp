@@ -169,8 +169,6 @@ namespace GL
 
 	void GL2PointRenderer::render(const Group& group)
 	{
-		int i;
-
 		//initBlending();
 		//initRenderingHints();
 
