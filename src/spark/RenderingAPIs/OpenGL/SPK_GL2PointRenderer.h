@@ -128,7 +128,7 @@ namespace GL
 		virtual void destroyGLbuffers();
 
 	protected :
-		GLuint GL2PointRenderer::createShaderProgram(const char *vs, const char *fs);
+		GLuint createShaderProgram(const char *vs, const char *fs);
 
 	private :
 
