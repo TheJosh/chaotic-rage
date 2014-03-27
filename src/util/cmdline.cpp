@@ -15,7 +15,7 @@ using namespace std;
 
 #ifdef WIN32
 	void output_message(const char* msg) {
-		cout << msg;MessageBox(HWND_DESKTOP, msg, "Chaotic Rage", MB_OK);
+		MessageBox(HWND_DESKTOP, msg, "Chaotic Rage", MB_OK);
 	}
 #else
 	void output_message(const char* msg) {
