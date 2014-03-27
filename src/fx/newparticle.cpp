@@ -120,22 +120,30 @@ void create_particles_blood_spray(GameState * st, btVector3 * location, float da
 **/
 void create_particles_explosion(GameState * st, btVector3 & location, float damage)
 {
-	NewParticle * p;
+	SPK::Model* model = SPK::Model::create(
+			SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
+			SPK::FLAG_ALPHA,
+			SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
+	);
+
+	model->setParam(SPK::PARAM_ALPHA, 1.0f, 0.0f);
+	model->setParam(SPK::PARAM_RED, 0.8f, 1.0f);
+	model->setParam(SPK::PARAM_GREEN, 0.0f, 0.5f);
+	model->setParam(SPK::PARAM_BLUE, 0.0f, 0.1f);
+	model->setLifeTime(0.2f, 0.3f);
+
+	// Emitter
+	SPK::RandomEmitter* emitter = SPK::RandomEmitter::create();
+	emitter->setZone(SPK::Point::create(SPK::Vector3D(location.x(), location.y(), location.z())));
+	emitter->setFlow(-1);
+	emitter->setTank(1000);
+	emitter->setForce(20.0f, 40.0f);
+
+	SPK::Group* group = SPK::Group::create(model, 1000);
+	group->addEmitter(emitter);
+	group->setGravity(gravity);
 	
-	int num = (int)(damage * 10.0f);
-	
-	for (int i = 0; i <= num; i++) {
-		p = new NewParticle();
-		
-		p->pos = location + btVector3(getRandomf(-1.0f, 1.0f), getRandomf(-1.0f, 1.0f), getRandomf(-1.0f, 1.0f));
-		p->vel = btVector3(getRandomf(-0.022f, 0.022f), getRandomf(-0.022f, 0.022f), getRandomf(-0.022f, 0.022f));
-		p->r = getRandomf(0.5f, 1.0f);
-		p->g = getRandomf(0.7f, 1.0f);
-		p->b = getRandomf(0.0f, 0.2f);
-		p->time_death = st->game_time + 375;
-		
-		//st->addNewParticle(p);
-	}
+	st->addParticleGroup(group);
 }
 
 
