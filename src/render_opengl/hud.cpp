@@ -153,6 +153,7 @@ void HUD::draw()
 **/
 void HUD::eventUp()
 {
+	if (!this->ps->p->getNumWeapons()) return;
 	this->weapon_menu = true;
 	this->ps->p->setWeapon(this->ps->p->getPrevWeaponID());
 }
@@ -163,6 +164,7 @@ void HUD::eventUp()
 **/
 void HUD::eventDown()
 {
+	if (!this->ps->p->getNumWeapons()) return;
 	this->weapon_menu = true;
 	this->ps->p->setWeapon(this->ps->p->getNextWeaponID());
 }
