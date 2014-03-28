@@ -45,16 +45,14 @@ void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end)
 	model->setLifeTime(3.0f, 5.0f);
 
 	// Emitter
-	SPK::SphericEmitter* emitter = SPK::SphericEmitter::create(SPK::Vector3D(dir.x(), 0.0f, dir.z()), 0.1f * 3.141592f, 0.1f * 3.141592f);
+	SPK::Emitter* emitter = SPK::StraightEmitter::create(SPK::Vector3D(dir.x(), 0.0f, dir.z()));
 	emitter->setZone(SPK::Point::create(SPK::Vector3D(begin->x(), begin->y(), begin->z())));
-	emitter->setFlow(250);
-	emitter->setTank(250);
-	emitter->setForce(1.0f, 5.0f);
+	emitter->setFlow(-1);
+	emitter->setTank(25);
+	emitter->setForce(40.0f, 50.0f);
 
-	SPK::Group* group = SPK::Group::create(model, 1000);
+	SPK::Group* group = SPK::Group::create(model, 25);
 	group->addEmitter(emitter);
-	group->setGravity(gravity);
-	
 	st->addParticleGroup(group);
 }
 
