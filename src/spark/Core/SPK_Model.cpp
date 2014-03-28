@@ -52,7 +52,7 @@ namespace SPK
 		lifeTimeMax(1.0f),
 		immortal(false)
 	{
-		enableFlag |= FLAG_RED | FLAG_GREEN | FLAG_BLUE; // Adds the color parameters to the enable flag
+		enableFlag |= FLAG_RED | FLAG_GREEN | FLAG_BLUE | FLAG_ALPHA; // Adds the color parameters to the enable flag
 		this->enableFlag = enableFlag & ((1 << (NB_PARAMS + 1)) - 1); // masks the enable flag with the existing parameters
 		this->interpolatedFlag = interpolatedFlag & this->enableFlag; // masks the interpolated flag with the enable flag
 		this->mutableFlag = mutableFlag & this->enableFlag; // masks the mutable flag with the enable flag
