@@ -1933,9 +1933,13 @@ void RenderOpenGL::entities()
 void RenderOpenGL::particles()
 {
 	#ifdef USE_SPARK
+		glEnable(GL_BLEND);
+		
 		glm::mat4 vp = this->projection * this->view;
 		this->particle_renderer->setVP(vp);
+		
 		this->st->particle_system->render();
+		
 		CHECK_OPENGL_ERROR;
 	#endif
 }
