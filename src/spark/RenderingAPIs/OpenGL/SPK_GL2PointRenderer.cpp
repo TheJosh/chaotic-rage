@@ -169,12 +169,8 @@ namespace GL
 
 	void GL2PointRenderer::render(const Group& group)
 	{
-		//initBlending();
-		//initRenderingHints();
-
-		//glDisable(GL_TEXTURE_2D);
-		//glDisable(GL_POINT_SMOOTH);
-		glPointSize(size);
+		glEnable(GL_POINT_SMOOTH);
+		glPointSize(2.0f);
 
 		// Copy data into buffer with the correct layout
 		// TODO: Reuse the buffer instead of malloc/free every frame
