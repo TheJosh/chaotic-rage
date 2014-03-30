@@ -34,15 +34,17 @@ void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end)
 	btVector3 dir = *end - *begin;
 	dir.normalize();
 
-	SPK::Model* model = SPK::Model::create(SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA, 
-		                               SPK::FLAG_ALPHA,
-									   SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE);
+	SPK::Model* model = SPK::Model::create(
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA, 
+		SPK::FLAG_ALPHA,
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
+	);
 
 	model->setParam(SPK::PARAM_ALPHA, 1.0f, 0.0f); 
 	model->setParam(SPK::PARAM_RED, 0.0f, 1.0f); 
 	model->setParam(SPK::PARAM_GREEN, 0.0f, 1.0f);
 	model->setParam(SPK::PARAM_BLUE, 0.0f, 1.0f);
-	model->setLifeTime(3.0f, 5.0f);
+	model->setLifeTime(0.5f, 0.7f);
 
 	// Emitter
 	SPK::Emitter* emitter = SPK::StraightEmitter::create(SPK::Vector3D(dir.x(), 0.0f, dir.z()));
@@ -70,22 +72,31 @@ void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end)
 **/
 void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 * end)
 {
-	NewParticle * p;
-	
-	btVector3 velW = *end - *begin;
-	velW /= btScalar(375.f);
-	
-	int time_death = st->game_time + 375;
-	
-	p = new NewParticle();
-	p->pos = *begin;
-	p->vel = velW;
-	p->r = getRandomf(0.8f, 1.0f);
-	p->g = getRandomf(0.2f, 0.4f);
-	p->b = getRandomf(0.0f, 0.1f);
-	p->time_death = time_death;
-	
-	//st->addNewParticle(p);
+	btVector3 dir = *end - *begin;
+	dir.normalize();
+
+	SPK::Model* model = SPK::Model::create(
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA, 
+		SPK::FLAG_ALPHA,
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
+	);
+
+	model->setParam(SPK::PARAM_ALPHA, 1.0f, 0.0f);
+	model->setParam(SPK::PARAM_RED, 0.5f, 1.0f);
+	model->setParam(SPK::PARAM_GREEN, 0.0f, 0.4f);
+	model->setParam(SPK::PARAM_BLUE, 0.0f, 0.1f);
+	model->setLifeTime(0.5f, 0.7f);
+
+	SPK::Group* group = SPK::Group::create(model, 25);
+
+	SPK::Emitter* emitter = SPK::SphericEmitter::create(SPK::Vector3D(dir.x(), 0.0f, dir.z()), 0.02f * PI, 0.06f * PI);
+	emitter->setZone(SPK::Point::create(SPK::Vector3D(begin->x(), begin->y(), begin->z())));
+	emitter->setFlow(-1);
+	emitter->setTank(25);
+	emitter->setForce(40.0f, 50.0f);
+	group->addEmitter(emitter);
+
+	st->addParticleGroup(group);
 }
 
 
@@ -124,9 +135,9 @@ void create_particles_explosion(GameState * st, btVector3 & location, float dama
 	
 	/* Yellow and red fireball */
 	model = SPK::Model::create(
-			SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
-			SPK::FLAG_ALPHA,
-			SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
+		SPK::FLAG_ALPHA,
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
 	);
 	model->setParam(SPK::PARAM_ALPHA, 0.8f, 1.0f);
 	model->setParam(SPK::PARAM_RED, 0.8f, 1.0f);
