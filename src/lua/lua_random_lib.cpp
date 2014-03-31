@@ -45,6 +45,19 @@ LUA_FUNC(random_float)
 }
 
 
+/**
+* Randomly choose one of the arguments specified
+**/
+LUA_FUNC(random_arg)
+{
+	int num = lua_gettop(L);
+	if (num == 0) return 0;
+	
+	lua_pushvalue(L, getRandom(1, num));
+	
+	return 1;
+}
+
 
 /**
 * Loads the library into a lua state
@@ -53,5 +66,6 @@ void load_random_lib(lua_State *L)
 {
 	LUA_REG(random);
 	LUA_REG(random_float);
+	LUA_REG(random_arg);
 }
 

@@ -22,22 +22,14 @@ end;
 -- Spwans zombies
 --
 spawn_func = function()
-	t = random(1, 4);
+	t = random_arg("zomb", "zomb_fast", "zomb_health", "zomb_strong")
 	
-	if (t == 1) then
-		add_npc("zomb", "zombie", factions.team2);
-	elseif (t == 2) then
-		add_npc("zomb_fast", "zombie", factions.team2);
-	elseif (t == 3) then
-		add_npc("zomb_health", "zombie", factions.team2);
-	elseif (t == 4) then
-		add_npc("zomb_strong", "zombie", factions.team2);
-	end;
+	add_npc(t, "zombie", factions.team2)
 	
-	num_zombies = num_zombies + 1;
-	if num_zombies >= num_wanted then remove_timer(timer) end;
+	num_zombies = num_zombies + 1
+	if num_zombies >= num_wanted then remove_timer(timer) end
 	
-	do_score();
+	do_score()
 end;
 
 
