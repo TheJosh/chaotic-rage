@@ -18,11 +18,23 @@ extern "C" {
 
 
 /**
-* Return a random number between min and max
-*
-* @return String: The currently selected unit type
+* Return a random integer between min and max
 **/
 LUA_FUNC(random)
+{
+	float min = lua_tointeger(L, 1);
+	float max = lua_tointeger(L, 2);
+	
+	lua_pushinteger(L, getRandom(min,max));
+	
+	return 1;
+}
+
+
+/**
+* Return a random floating-point number between min and max
+**/
+LUA_FUNC(random_float)
 {
 	float min = lua_tonumber(L, 1);
 	float max = lua_tonumber(L, 2);
@@ -33,11 +45,13 @@ LUA_FUNC(random)
 }
 
 
+
 /**
 * Loads the library into a lua state
 **/
 void load_random_lib(lua_State *L)
 {
 	LUA_REG(random);
+	LUA_REG(random_float);
 }
 

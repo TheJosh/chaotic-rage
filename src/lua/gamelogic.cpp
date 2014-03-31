@@ -642,6 +642,7 @@ void register_lua_functions()
 	lua_pushnumber(L, FACTION_INDIVIDUAL); lua_setfield(L, -2, "individual");
 	lua_setglobal(L, "factions");
 
+	lua_standard_libs(L);
 	load_hudlabel_lib(L);
 	load_random_lib(L);
 }
