@@ -174,6 +174,10 @@ $(OBJPATH)/linux.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h
 	@echo [CC] $<
 	@$(CXX) $(CFLAGS) -o $@ -c $<
 
+$(OBJPATH)/emscripten.o: $(SRCPATH)/platform/emscripten.cpp $(SRCPATH)/platform/platform.h Makefile
+	@echo [CC] $<
+	@$(CXX) $(CFLAGS) -o $@ -c $<
+
 
 
 ifeq ($(wildcard $(OBJPATH)/),)
