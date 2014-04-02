@@ -12,26 +12,38 @@ else
 endif
 
 
-# Set executables, with support for cross-compilers
-CXX := $(CROSS)g++
-CC := $(CROSS)gcc
+# Default compiler is GCC
+CXX ?= $(CROSS)g++
+CC ?= $(CROSS)gcc
+
+# Set other executables, with support for cross-compilers
 PKG_CONFIG := $(CROSS)pkg-config
 SDL2_CONFIG := $(CROSS)sdl2-config
 FREETYPE_CONFIG := $(CROSS)freetype-config
 
-# Cflags and Libs
-CFLAGS := `$(SDL2_CONFIG) --cflags` `$(PKG_CONFIG) gl glu lua5.1 bullet assimp --cflags` `$(FREETYPE_CONFIG) --cflags` -DGETOPT -Werror -Wall -ggdb -Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark
-LIBS := `$(SDL2_CONFIG) --libs` `$(PKG_CONFIG) lua5.1 bullet assimp --libs` `$(FREETYPE_CONFIG) --libs` -lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11
+# cflags
+CFLAGS := $(shell $(SDL2_CONFIG) --cflags) \
+	$(shell $(PKG_CONFIG) gl glu lua5.1 bullet assimp --cflags) \
+	$(shell $(FREETYPE_CONFIG) --cflags) \
+	-DGETOPT -Werror -Wall -ggdb \
+	-Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark
+
+# libs
+LIBS := $(shell $(SDL2_CONFIG) --libs) \
+	$(shell $(PKG_CONFIG) lua5.1 bullet assimp --libs) \
+	$(shell $(FREETYPE_CONFIG) --libs) \
+	-lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11
 
 # Extract the version from rage.h
 # Only used for releases
 VERSION := $(shell grep -E --only-matching 'VERSION ".+"' src/rage.h | sed -n 1p | sed "s/VERSION //" | sed 's/"//g')
 DISTTMP := chaoticrage-$(VERSION)
 
-
+# Build dir and sources dir
 OBJPATH=build
 SRCPATH=src
 
+# Complete list of source files
 CPPFILES=$(wildcard \
 	$(SRCPATH)/*.cpp \
 	$(SRCPATH)/audio/*.cpp \
@@ -58,9 +70,13 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/spark/RenderingAPIs/OpenGL/*.cpp \
 )
 
+# The list of source files gets transformed into a list of obj files
 OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES))
+
+# Files which define main() methods
 OBJMAINS=build/client.o
 
+# Client = everything but the main() method files + some other bits
 OBJFILES_CLIENT=build/client.o build/linux.o build/confuse/confuse.o build/confuse/lexer.o $(filter-out $(OBJMAINS), $(OBJFILES))
 
 
