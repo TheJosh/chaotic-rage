@@ -17,6 +17,7 @@ endif
 ifdef EMSCRIPTEN
 	CXX := em++
 	CC := emcc
+	PLATFORM := build/emscripten.o
 endif
 
 # Default compiler is GCC
@@ -26,7 +27,8 @@ CC ?= $(CROSS)gcc
 # If it's gcc we can enable debugging
 ifndef MXE
 	ifndef EMSCRIPTEN
-		CFLAGS := -ggdb
+		CFLAGS := -DGETOPT -Werror -Wall -ggdb
+		PLATFORM := build/linux.o
 	endif
 endif
 
@@ -40,7 +42,6 @@ CFLAGS := $(shell $(SDL2_CONFIG) --cflags) \
 	$(shell $(PKG_CONFIG) gl glu lua5.1 bullet assimp --cflags) \
 	$(shell $(FREETYPE_CONFIG) --cflags) \
 	$(CFLAGS) \
-	-DGETOPT -Werror -Wall \
 	-Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark
 
 # libs
@@ -92,7 +93,7 @@ OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES))
 OBJMAINS=build/client.o
 
 # Client = everything but the main() method files + some other bits
-OBJFILES_CLIENT=build/client.o build/linux.o build/confuse/confuse.o build/confuse/lexer.o $(filter-out $(OBJMAINS), $(OBJFILES))
+OBJFILES_CLIENT=build/client.o $(PLATFORM) build/confuse/confuse.o build/confuse/lexer.o $(filter-out $(OBJMAINS), $(OBJFILES))
 
 
 default: chaoticrage
