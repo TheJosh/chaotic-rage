@@ -11,10 +11,24 @@ else
 	CROSS :=
 endif
 
+# If emscripten is use, set CC and CXX
+# Use it like this:
+#    make EMSCRIPTEN=1
+ifdef EMSCRIPTEN
+	CXX := em++
+	CC := emcc
+endif
 
 # Default compiler is GCC
 CXX ?= $(CROSS)g++
 CC ?= $(CROSS)gcc
+
+# If it's gcc we can enable debugging
+ifndef MXE
+	ifndef EMSCRIPTEN
+		CFLAGS := -ggdb
+	endif
+endif
 
 # Set other executables, with support for cross-compilers
 PKG_CONFIG := $(CROSS)pkg-config
@@ -25,7 +39,8 @@ FREETYPE_CONFIG := $(CROSS)freetype-config
 CFLAGS := $(shell $(SDL2_CONFIG) --cflags) \
 	$(shell $(PKG_CONFIG) gl glu lua5.1 bullet assimp --cflags) \
 	$(shell $(FREETYPE_CONFIG) --cflags) \
-	-DGETOPT -Werror -Wall -ggdb \
+	$(CFLAGS) \
+	-DGETOPT -Werror -Wall \
 	-Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark
 
 # libs

@@ -1,0 +1,9 @@
+These are my rough notes for setting up emscripten builds on Debian Jessie
+
+# apt-get install \
+	emscripten make cmake \
+	libgl1-mesa-dev libglu1-mesa-dev libglew-dev \
+	liblua5.1-0-dev libfreetype6-dev libbullet-dev libassimp-dev \
+	libsdl2-dev libsdl2-net-dev libsdl2-image-dev libsdl2-mixer-dev
+
+
