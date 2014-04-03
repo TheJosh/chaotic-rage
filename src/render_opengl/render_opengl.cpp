@@ -1837,8 +1837,12 @@ void RenderOpenGL::entitiesShadowBuf()
 	this->depthmvp = depthProjectionMatrix * depthViewMatrix;
 	
 	// "Draw" entities to our FBO
-	this->view = this->depthmvp;
+	glm::mat4 stdProjection = this->projection;
+	this->projection = depthProjectionMatrix;
+	this->view = depthViewMatrix;
 	entities();
+
+	this->projection = stdProjection;
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glDrawBuffer(GL_BACK);
