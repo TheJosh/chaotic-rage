@@ -48,5 +48,7 @@ void main()
 		visibility = 0.5;
 	}
 
-	gl_FragColor = visibility * texture2D(uTex, fTexUV) * light;
+	gl_FragColor = texture2D(uShadowDepth, fTexUV);
+	
+	//gl_FragColor = visibility * texture2D(uTex, fTexUV) * light;
 }

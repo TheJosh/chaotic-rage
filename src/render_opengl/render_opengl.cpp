@@ -1825,10 +1825,12 @@ void RenderOpenGL::entitiesShadowBuf()
 {
 	glEnable(GL_DEPTH_TEST);
 
+	// Bind and clear framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, shadow_framebuffer);
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
-
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
 	glm::vec3 lightInvDir = glm::vec3(0.5f, 2.0f, 2.0f);
 
 	// Compute the MVP matrix from the light's point of view
@@ -1836,14 +1838,16 @@ void RenderOpenGL::entitiesShadowBuf()
 	glm::mat4 depthViewMatrix = glm::lookAt(lightInvDir, glm::vec3(0,0,0), glm::vec3(0,1,0));
 	this->depthmvp = depthProjectionMatrix * depthViewMatrix;
 	
-	// "Draw" entities to our FBO
+	// Set the projection and view to that of the light
 	glm::mat4 stdProjection = this->projection;
 	this->projection = depthProjectionMatrix;
 	this->view = depthViewMatrix;
+	
+	// "Draw" entities to our FBO
 	entities();
 
+	// Reset everything for regular rendering
 	this->projection = stdProjection;
-
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glDrawBuffer(GL_BACK);
 	glReadBuffer(GL_BACK);
