@@ -87,6 +87,10 @@ class RenderOpenGL : public Render3D
 		GLVAO* ter_vao;
 		GLVAO* skybox_vao;
 		
+		// Shadowing
+		GLuint shadow_framebuffer;
+		GLuint shadow_depth_tex;
+
 		// Heightmap
 		unsigned int ter_size;
 		
@@ -105,7 +109,8 @@ class RenderOpenGL : public Render3D
 		glm::mat4 projection;	// perspective
 		glm::mat4 ortho;		// ortho
 		glm::mat4 view;			// camera
-		
+		glm::mat4 depthmvp;		// light
+
 		RenderOpenGLSettings* settings;
 		int min_filter;
 		int mag_filter;
@@ -162,6 +167,8 @@ class RenderOpenGL : public Render3D
 	private:
 		void createWater();
 		void createSkybox();
+		void createShadowBuffers();
+
 		void renderAnimPlay(AnimPlay * play, Entity * e);
 		void renderCharacter(char c, float &x, float &y);
 		void createVBO (WavefrontObj * obj);
@@ -172,6 +179,7 @@ class RenderOpenGL : public Render3D
 		void mainRot();
 		void skybox();
 		void terrain();
+		void entitiesShadowBuf();
 		void entities();
 		void physics();
 		void water();

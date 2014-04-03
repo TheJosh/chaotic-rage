@@ -265,7 +265,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 			reportFatalError("Unable to init the library GLEW.");
 		}
 		
-		// GL_ARB_framebuffer_object -> glGenerateMipmap
+		// GL_ARB_framebuffer_object -> shadows and glGenerateMipmap
 		if (! GL_ARB_framebuffer_object) {
 			reportFatalError("OpenGL 3.0 or the extension 'GL_ARB_framebuffer_object' not available.");
 		}
@@ -866,6 +866,42 @@ void RenderOpenGL::createSkybox()
 
 
 /**
+* Set up the shadow depth texture and the shadow framebuffer
+**/
+void RenderOpenGL::createShadowBuffers()
+{
+	// Create a texture and framebuffer
+	glGenTextures(1, &this->shadow_depth_tex);
+	glGenFramebuffers(1, &this->shadow_framebuffer);
+
+	// Set up the texture
+	glBindTexture(GL_TEXTURE_2D, this->shadow_depth_tex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// Set up the framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, this->shadow_framebuffer);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, this->shadow_depth_tex, 0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+
+	// Check it
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) !=  GL_FRAMEBUFFER_COMPLETE) {
+		reportFatalError("Error creating shadow framebuffer");
+	}
+
+	// Done; return to default framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glDrawBuffer(GL_BACK);
+	glReadBuffer(GL_BACK);
+}
+
+
+/**
 * Renders a sprite.
 * Should only be used if the the caller was called by this classes 'Render' function.
 **/
@@ -945,7 +981,8 @@ void RenderOpenGL::preGame()
 	// Create some VBOs
 	this->createWater();
 	this->createSkybox();
-	
+	this->createShadowBuffers();
+
 	// Init the viewport for single screen only once
 	if (this->st->num_local == 1) {
 		this->mainViewport(1, 1);
@@ -988,7 +1025,7 @@ void RenderOpenGL::setupShaders()
 	glUniform3fv(this->shaders["phong_bump"]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
 	glUniform4fv(this->shaders["phong_bump"]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
 	glUniform4fv(this->shaders["phong_bump"]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
-	
+
 	CHECK_OPENGL_ERROR;
 }
 
@@ -1085,6 +1122,7 @@ void RenderOpenGL::loadShaders()
 	this->shaders["phong"] = loadProgram(base, "phong");
 	this->shaders["phong_bump"] = loadProgram(base, "phong_bump");
 	this->shaders["water"] = loadProgram(base, "water");
+	this->shaders["terrain"] = loadProgram(base, "terrain");
 	this->shaders["dissolve"] = loadProgram(base, "dissolve");
 	this->shaders["text"] = loadProgram(base, "text");
 	this->shaders["skybox"] = loadProgram(base, "skybox");
@@ -1654,12 +1692,14 @@ void RenderOpenGL::render()
 			this->mainViewport(i, this->st->num_local);
 		}
 		
+		entitiesShadowBuf();
 		mainRot();
 		terrain();
 		entities();
 		skybox();
 		particles();
 		water();
+
 		if (physicsdebug != NULL) physics();
 		
 		this->st->local_players[i]->hud->draw();
@@ -1781,6 +1821,31 @@ void RenderOpenGL::mainRot()
 }
 
 
+void RenderOpenGL::entitiesShadowBuf()
+{
+	glEnable(GL_DEPTH_TEST);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, shadow_framebuffer);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+
+	glm::vec3 lightInvDir = glm::vec3(0.5f, 2.0f, 2.0f);
+
+	// Compute the MVP matrix from the light's point of view
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-100.0f, 100.0f,  -100.0f, 100.0f,  -100.0f, 100.0f);
+	glm::mat4 depthViewMatrix = glm::lookAt(lightInvDir, glm::vec3(0,0,0), glm::vec3(0,1,0));
+	this->depthmvp = depthProjectionMatrix * depthViewMatrix;
+	
+	// "Draw" entities to our FBO
+	this->view = this->depthmvp;
+	entities();
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glDrawBuffer(GL_BACK);
+	glReadBuffer(GL_BACK);
+}
+
+
 /**
 * Render the skybox
 **/
@@ -1819,9 +1884,11 @@ void RenderOpenGL::terrain()
 {
 	CHECK_OPENGL_ERROR;
 	
-	GLShader* s = this->shaders["phong"];
+	GLShader* s = this->shaders["terrain"];
 
-
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, this->shadow_depth_tex);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, st->map->terrain->pixels);
 	
 	glUseProgram(s->p());
@@ -1840,6 +1907,17 @@ void RenderOpenGL::terrain()
 	glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
 	glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
 	
+	glm::mat4 biasMatrix(
+		0.5, 0.0, 0.0, 0.0,
+		0.0, 0.5, 0.0, 0.0,
+		0.0, 0.0, 0.5, 0.0,
+		0.5, 0.5, 0.5, 1.0
+	);
+	glm::mat4 depthBiasMVP = biasMatrix*this->depthmvp;
+	glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
+
+	glUniform1i(s->uniform("uShadowDepth"), 1);
+
 	this->ter_vao->bind();
 
 	int numPerStrip = 2 + ((st->map->heightmap_sx-1) * 2);
