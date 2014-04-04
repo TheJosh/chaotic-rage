@@ -9,7 +9,7 @@ uniform mat4 uMVP;
 uniform mat4 uMV;
 uniform mat3 uN;
 uniform sampler2D uTex;
-uniform sampler2D uShadowDepth;
+uniform sampler2D uShadowMap;
 uniform vec3 uLightPos[2];
 uniform vec4 uLightColor[2];
 uniform vec4 uAmbient;
@@ -43,12 +43,14 @@ void main()
 	}
 	
 	// Shadow
-	float visibility = 1.0;
-	if (texture2D(uShadowDepth, fShadowCoord.xy).z < fShadowCoord.z) {
-		visibility = 0.5;
-	}
+	//float visibility = 1.0;
+	//if (texture2D(uShadowMap, fShadowCoord.xy).z < fShadowCoord.z) {
+	//	visibility = 0.5;
+	//}
 
-	gl_FragColor = texture2D(uShadowDepth, fTexUV);
+	//float visibility = texture( uShadowMap, vec3(fShadowCoord.xy, (fShadowCoord.z)/fShadowCoord.w) );
 	
-	//gl_FragColor = visibility * texture2D(uTex, fTexUV) * light;
+	gl_FragColor = texture2D(uShadowMap, fTexUV);
+	
+	//gl_FragColor = visibility * texture2D(uTex, fTexUV);// * light;
 }

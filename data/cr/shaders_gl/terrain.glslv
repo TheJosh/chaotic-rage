@@ -29,5 +29,5 @@ void main()
 		fLightDir[i] = normalize(uN * uLightPos[i] - pos3);
 	}
 
-	fShadowCoord = uDepthBiasMVP * vec4(vPosition, 1.0);
+	fShadowCoord = uDepthBiasMVP * vec4(vPosition, 1.0f);
 }

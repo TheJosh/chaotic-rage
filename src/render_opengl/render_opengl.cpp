@@ -881,6 +881,8 @@ void RenderOpenGL::createShadowBuffers()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	// Set up the framebuffer
@@ -1832,22 +1834,41 @@ void RenderOpenGL::entitiesShadowBuf()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	glm::vec3 lightInvDir = glm::vec3(0.5f, 2.0f, 2.0f);
-
-	// Compute the MVP matrix from the light's point of view
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-100.0f, 100.0f,  -100.0f, 100.0f,  -100.0f, 100.0f);
-	glm::mat4 depthViewMatrix = glm::lookAt(lightInvDir, glm::vec3(0,0,0), glm::vec3(0,1,0));
-	this->depthmvp = depthProjectionMatrix * depthViewMatrix;
 	
-	// Set the projection and view to that of the light
-	glm::mat4 stdProjection = this->projection;
+	// Prep the view matrix
+	btTransform trans;
+	float tilt, angle, dist, lift;
+	trans = btTransform(btQuaternion(0,0,0,0),btVector3(st->map->width/2.0f, 0.0f, st->map->height/2.0f));
+	tilt = 22.0f;
+	dist = 20.0f;
+	lift = 0.0f;
+	angle = 54.0f;
+	
+	// Camera angle calculations
+	float camerax = dist * sin(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().x();
+	float cameray = dist * sin(DEG_TO_RAD(tilt)) + trans.getOrigin().y() + lift;
+	float cameraz = dist * cos(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().z();
+	
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-100,100,-100,100,-100,200);
+	
+	// View
+	glm::mat4 depthView = glm::mat4(1.0f);
+	depthView = glm::rotate(depthView, tilt, glm::vec3(1.0f, 0.0f, 0.0f));
+	depthView = glm::rotate(depthView, 360.0f - angle, glm::vec3(0.0f, 1.0f, 0.0f));
+	depthView = glm::translate(depthView, glm::vec3(-camerax, -cameray, -cameraz));
+	
+	glm::mat4 oldProj = this->projection;
+	
+	// Compute the MVP matrix from the light's point of view
+	this->depthmvp = depthProjectionMatrix * depthView;
 	this->projection = depthProjectionMatrix;
-	this->view = depthViewMatrix;
+	this->view = depthView;
 	
 	// "Draw" entities to our FBO
 	entities();
 
 	// Reset everything for regular rendering
-	this->projection = stdProjection;
+	this->projection = oldProj;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glDrawBuffer(GL_BACK);
 	glReadBuffer(GL_BACK);
@@ -1924,7 +1945,7 @@ void RenderOpenGL::terrain()
 	glm::mat4 depthBiasMVP = biasMatrix*this->depthmvp;
 	glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
 
-	glUniform1i(s->uniform("uShadowDepth"), 1);
+	glUniform1i(s->uniform("uShadowMap"), 1);
 
 	this->ter_vao->bind();
 
