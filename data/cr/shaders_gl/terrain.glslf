@@ -44,9 +44,9 @@ void main()
 	
 	// Shadow
 	float visibility = 1.0;
-	if (texture(uShadowMap, fShadowCoord.xy).z < fShadowCoord.z) {
-		visibility = 0.2;
+	if (texture(uShadowMap, fShadowCoord.xy).z < fShadowCoord.z-0.005) {
+		visibility = 0.5;
 	}
 
-	gl_FragColor = texture2D(uTex, fTexUV) * light *  visibility;
+	gl_FragColor = texture2D(uTex, fTexUV) * light * visibility;
 }

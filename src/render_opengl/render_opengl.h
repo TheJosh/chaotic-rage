@@ -117,6 +117,9 @@ class RenderOpenGL : public Render3D
 		
 		SPK::GL::GLRenderer* particle_renderer;
 
+		static const int SHADOW_MAP_WIDTH = 2048;
+		static const int SHADOW_MAP_HEIGHT = 2048;
+	
 	public:
 		RenderOpenGL(GameState * st, RenderOpenGLSettings* settings);
 		virtual ~RenderOpenGL();
