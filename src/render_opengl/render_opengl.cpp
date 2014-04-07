@@ -876,7 +876,7 @@ void RenderOpenGL::createShadowBuffers()
 
 	// Set up the texture
 	glBindTexture(GL_TEXTURE_2D, this->shadow_depth_tex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -1027,6 +1027,12 @@ void RenderOpenGL::setupShaders()
 	glUniform3fv(this->shaders["phong_bump"]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
 	glUniform4fv(this->shaders["phong_bump"]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
 	glUniform4fv(this->shaders["phong_bump"]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
+
+	// And terrain
+	glUseProgram(this->shaders["terrain"]->p());
+	glUniform3fv(this->shaders["terrain"]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
+	glUniform4fv(this->shaders["terrain"]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
+	glUniform4fv(this->shaders["terrain"]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
 
 	CHECK_OPENGL_ERROR;
 }
@@ -1687,14 +1693,13 @@ void RenderOpenGL::render()
 
 	CHECK_OPENGL_ERROR;
 
+	entitiesShadowBuf();
+
 	for (unsigned int i = 0; i < this->st->num_local; i++) {
 		this->render_player = this->st->local_players[i]->p;
 		
-		if (this->st->num_local != 1) {
-			this->mainViewport(i, this->st->num_local);
-		}
+		this->mainViewport(i, this->st->num_local);
 		
-		entitiesShadowBuf();
 		mainRot();
 		terrain();
 		entities();
@@ -1826,7 +1831,8 @@ void RenderOpenGL::mainRot()
 void RenderOpenGL::entitiesShadowBuf()
 {
 	glEnable(GL_DEPTH_TEST);
-
+	glViewport(0, 0, 1024, 1024);
+	
 	// Bind and clear framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, shadow_framebuffer);
 	glDrawBuffer(GL_NONE);
@@ -1857,8 +1863,6 @@ void RenderOpenGL::entitiesShadowBuf()
 	depthView = glm::rotate(depthView, 360.0f - angle, glm::vec3(0.0f, 1.0f, 0.0f));
 	depthView = glm::translate(depthView, glm::vec3(-camerax, -cameray, -cameraz));
 	
-	glm::mat4 oldProj = this->projection;
-	
 	// Compute the MVP matrix from the light's point of view
 	this->depthmvp = depthProjectionMatrix * depthView;
 	this->projection = depthProjectionMatrix;
@@ -1868,7 +1872,6 @@ void RenderOpenGL::entitiesShadowBuf()
 	entities();
 
 	// Reset everything for regular rendering
-	this->projection = oldProj;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glDrawBuffer(GL_BACK);
 	glReadBuffer(GL_BACK);
