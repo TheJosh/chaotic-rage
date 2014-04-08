@@ -9,7 +9,7 @@ uniform mat4 uMVP;
 uniform mat4 uMV;
 uniform mat3 uN;
 uniform sampler2D uTex;
-uniform sampler2D uShadowMap;
+uniform sampler2DShadow uShadowMap;
 uniform vec3 uLightPos[2];
 uniform vec4 uLightColor[2];
 uniform vec4 uAmbient;
@@ -43,10 +43,7 @@ void main()
 	}
 	
 	// Shadow
-	float visibility = 1.0;
-	if (texture(uShadowMap, fShadowCoord.xy).z < fShadowCoord.z-0.005) {
-		visibility = 0.5;
-	}
+	float visibility = texture(uShadowMap, fShadowCoord.xyz);
 
-	gl_FragColor = texture2D(uTex, fTexUV) * light * visibility;
+	gl_FragColor = texture(uTex, fTexUV) * light * visibility;
 }
