@@ -43,7 +43,7 @@ void main()
 	}
 	
 	// Shadow
-	float visibility = texture(uShadowMap, fShadowCoord.xyz);
+	float visibility = texture(uShadowMap, fShadowCoord.xyz) + 0.5;
 
 	gl_FragColor = texture(uTex, fTexUV) * light * visibility;
 }

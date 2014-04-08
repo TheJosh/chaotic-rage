@@ -1861,7 +1861,7 @@ void RenderOpenGL::entitiesShadowMap()
 	float cameray = dist * sin(DEG_TO_RAD(tilt)) + trans.getOrigin().y() + lift;
 	float cameraz = dist * cos(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().z();
 	
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-100,100,-100,100,-100,200);
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-200.0f,200.0f, -200.0f,200.0f, -200.0f,300.0f);
 	
 	// View
 	glm::mat4 depthView = glm::mat4(1.0f);
