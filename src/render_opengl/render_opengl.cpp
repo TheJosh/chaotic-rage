@@ -1845,8 +1845,6 @@ void RenderOpenGL::entitiesShadowMap()
 	glReadBuffer(GL_NONE);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	glm::vec3 lightInvDir = glm::vec3(0.5f, 2.0f, 2.0f);
-	
 	// Prep the view matrix
 	btTransform trans;
 	float tilt, angle, dist, lift;
