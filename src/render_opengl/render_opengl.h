@@ -170,8 +170,13 @@ class RenderOpenGL : public Render3D
 	private:
 		void createWater();
 		void createSkybox();
+		
+		// Buffers needed for shadowing
 		void createShadowBuffers();
-
+		
+		// Render to those buffers so it all works
+		void entitiesShadowMap();
+		
 		void renderAnimPlay(AnimPlay * play, Entity * e);
 		void renderCharacter(char c, float &x, float &y);
 		void createVBO (WavefrontObj * obj);
@@ -182,7 +187,6 @@ class RenderOpenGL : public Render3D
 		void mainRot();
 		void skybox();
 		void terrain();
-		void entitiesShadowBuf();
 		void entities();
 		void physics();
 		void water();

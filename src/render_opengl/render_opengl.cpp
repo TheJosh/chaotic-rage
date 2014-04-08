@@ -1693,7 +1693,7 @@ void RenderOpenGL::render()
 
 	CHECK_OPENGL_ERROR;
 
-	entitiesShadowBuf();
+	entitiesShadowMap();
 
 	for (unsigned int i = 0; i < this->st->num_local; i++) {
 		this->render_player = this->st->local_players[i]->p;
@@ -1828,7 +1828,12 @@ void RenderOpenGL::mainRot()
 }
 
 
-void RenderOpenGL::entitiesShadowBuf()
+/**
+* Render the scene to the shadow map
+*
+* It's done from the perspective of the light source, and only depth is written
+**/
+void RenderOpenGL::entitiesShadowMap()
 {
 	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, RenderOpenGL::SHADOW_MAP_WIDTH, RenderOpenGL::SHADOW_MAP_HEIGHT);
