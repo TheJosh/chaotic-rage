@@ -888,9 +888,13 @@ void RenderOpenGL::createShadowBuffers()
 	// Set up the framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, this->shadow_framebuffer);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, this->shadow_depth_tex, 0);
+	
+	// We don't draw to the framebuffer
+	#ifdef OpenGL
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
-
+	#endif
+	
 	// Check it
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) !=  GL_FRAMEBUFFER_COMPLETE) {
 		reportFatalError("Error creating shadow framebuffer");
@@ -898,8 +902,12 @@ void RenderOpenGL::createShadowBuffers()
 
 	// Done; return to default framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	
+	// But we *do* draw to the default one!
+	#ifdef OpenGL
 	glDrawBuffer(GL_BACK);
 	glReadBuffer(GL_BACK);
+	#endif
 }
 
 
@@ -1841,8 +1849,10 @@ void RenderOpenGL::entitiesShadowMap()
 	
 	// Bind and clear framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, shadow_framebuffer);
+	#ifdef OpenGL
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
+	#endif
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	// Prep the view matrix
@@ -1877,8 +1887,10 @@ void RenderOpenGL::entitiesShadowMap()
 
 	// Reset everything for regular rendering
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	#ifdef OpenGL
 	glDrawBuffer(GL_BACK);
 	glReadBuffer(GL_BACK);
+	#endif
 	glCullFace(GL_BACK);
 }
 
