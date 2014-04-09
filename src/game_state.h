@@ -86,6 +86,7 @@ class GameState
 	friend class RenderOpenGL;
 	friend class RenderNull;
 	friend class RenderDebug;
+	friend class RenderAscii;
 	friend class AudioSDLMixer;
 	friend class NetServer;
 	friend void gameLoop(GameState *st, Render *render, Audio* audio, NetClient* client);

@@ -11,6 +11,7 @@
 #include "../render_opengl/render_opengl_settings.h"
 #include "../render/render_debug.h"
 #include "../render/render_null.h"
+#include "../render/render_ascii.h"
 #include "../audio/audio_sdlmixer.h"
 #include "../audio/audio_null.h"
 #include "../mod/mod_manager.h"
@@ -98,6 +99,9 @@ void ClientConfig::initRender(GameState *st)
 		
 	} else if (GEng()->cmdline->render_class == "null") {
 		GEng()->render = new RenderNull(st);
+		
+	} else if (GEng()->cmdline->render_class == "ascii") {
+		GEng()->render = new RenderAscii(st);
 		
 	} else {
 		GEng()->render = new RenderOpenGL(st, this->gl);

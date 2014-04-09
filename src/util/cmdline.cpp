@@ -132,9 +132,9 @@ void CommandLineArgs::process()
 				
 			// Renderer
 			case 'r':
-				if (strcmp(optarg, "opengl") != 0 && strcmp(optarg, "debug") != 0 && strcmp(optarg, "null") != 0) {
+				if (strcmp(optarg, "opengl") != 0 && strcmp(optarg, "debug") != 0 && strcmp(optarg, "null") != 0 && strcmp(optarg, "ascii") != 0) {
 					cout << "Invalid render system." << endl;
-					cout << "Options: 'opengl', 'debug', 'null'." << endl;
+					cout << "Options: 'opengl', 'debug', 'ascii', 'null'." << endl;
 					exit(1);
 				}
 				this->render_class = optarg;
