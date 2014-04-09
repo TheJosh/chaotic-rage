@@ -22,6 +22,9 @@ RenderAscii::RenderAscii(GameState * st) : Render(st)
 RenderAscii::~RenderAscii()
 {
 	free(this->buffer);
+	
+	printf("\033[0m");
+	printf("\033[2J");
 }
 
 
@@ -33,8 +36,11 @@ void RenderAscii::setScreenSize(int width, int height, bool fullscreen)
 	free(this->buffer);
 	
 	this->width = 40;
-	this->height = 40;
+	this->height = 20;
 	this->buffer = (char*)malloc(this->width * this->height);
+	
+	printf("\033[0m");
+	printf("\033[2J");
 }
 
 
@@ -172,7 +178,7 @@ void RenderAscii::render()
 		}
 	}
 	
-	printf("\033[2J\033[1;1H");
+	printf("\033[2J\033[1;1H\033[40;1m");
 	
 	char* ptr = this->buffer;
 	for (int y = 0; y < this->height; y++) {
@@ -183,4 +189,5 @@ void RenderAscii::render()
 		putchar('\n');
 	}
 	
+	printf("\033[0m");
 }
