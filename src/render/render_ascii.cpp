@@ -49,11 +49,16 @@ void RenderAscii::setScreenSize(int width, int height, bool fullscreen)
 	#ifdef __linux__
 		struct winsize w;
 		ioctl(0, TIOCGWINSZ, &w);
-		w.ws_row--;
+		w.ws_row -= 2;
 		
-		if (w.ws_col*2 < w.ws_row) {
-			this->width = w.ws_col*2;
-			this->height = w.ws_col;
+		if (w.ws_row <= 2 or w.ws_col <= 2) {
+			printf("Terminal too small");
+			exit(1);
+		}
+		
+		if ((w.ws_col/2) < w.ws_row) {
+			this->width = w.ws_col;
+			this->height = w.ws_col/2;
 		} else {
 			this->width = w.ws_row*2;
 			this->height = w.ws_row;
@@ -189,19 +194,19 @@ void RenderAscii::render()
 		if (y < 0 or y > this->height) continue;
 		
 		if (e->klass() == WALL) {
-			this->buffer[y * this->height + x] = 'w';
+			this->buffer[y * this->width + x] = 'w';
 			
 		} else if (e->klass() == VEHICLE) {
-			this->buffer[y * this->height + x] = 'v';
+			this->buffer[y * this->width + x] = 'v';
 			
 		} else if (e->klass() == OBJECT) {
-			this->buffer[y * this->height + x] = 'o';
+			this->buffer[y * this->width + x] = 'o';
 			
 		} else if (e->klass() == UNIT) {
 			if (((Unit*)e)->slot == 0) {
-				this->buffer[y * this->height + x] = 'n';
+				this->buffer[y * this->width + x] = 'n';
 			} else {
-				this->buffer[y * this->height + x] = 'P';
+				this->buffer[y * this->width + x] = 'P';
 			}
 		}
 	}
