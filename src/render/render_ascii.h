@@ -15,6 +15,7 @@ class RenderAscii : public Render
 		int width;
 		int height;
 		char *buffer;
+		Uint8 *color;
 		
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);

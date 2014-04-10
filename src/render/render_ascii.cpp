@@ -27,6 +27,7 @@ using namespace std;
 RenderAscii::RenderAscii(GameState * st) : Render(st)
 {
 	this->buffer = NULL;
+	this->color = NULL;
 }
 
 
@@ -36,6 +37,7 @@ RenderAscii::RenderAscii(GameState * st) : Render(st)
 RenderAscii::~RenderAscii()
 {
 	free(this->buffer);
+	free(this->color);
 }
 
 
@@ -45,6 +47,7 @@ RenderAscii::~RenderAscii()
 void RenderAscii::setScreenSize(int width, int height, bool fullscreen)
 {
 	free(this->buffer);
+	free(this->color);
 	
 	#ifdef __linux__
 		struct winsize w;
@@ -69,6 +72,7 @@ void RenderAscii::setScreenSize(int width, int height, bool fullscreen)
 	#endif
 	
 	this->buffer = (char*)malloc(this->width * this->height);
+	this->color = (Uint8*)malloc(this->width * this->height);
 	
 	printf("\033[0m\033[2J");
 }
@@ -181,6 +185,7 @@ void RenderAscii::render()
 	float scaley = ((float)st->map->height) / ((float)this->height);
 	
 	memset(this->buffer, (int)' ', this->width * this->height);
+	memset(this->color, 7, this->width * this->height);				// white
 	
 	// Entities
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
@@ -194,19 +199,24 @@ void RenderAscii::render()
 		if (y < 0 or y > this->height) continue;
 		
 		if (e->klass() == WALL) {
-			this->buffer[y * this->width + x] = 'w';
+			this->buffer[y * this->width + x] = '#';
 			
 		} else if (e->klass() == VEHICLE) {
-			this->buffer[y * this->width + x] = 'v';
+			this->buffer[y * this->width + x] = '%';
 			
 		} else if (e->klass() == OBJECT) {
 			this->buffer[y * this->width + x] = 'o';
 			
+		} else if (e->klass() == PICKUP) {
+			this->buffer[y * this->width + x] = '@';
+			
 		} else if (e->klass() == UNIT) {
 			if (((Unit*)e)->slot == 0) {
-				this->buffer[y * this->width + x] = 'n';
+				this->buffer[y * this->width + x] = 'N';
+				this->color[y * this->width + x] = (int)((Unit*)e)->fac + 1;
 			} else {
 				this->buffer[y * this->width + x] = 'P';
+				this->color[y * this->width + x] = (int)((Unit*)e)->fac + 1;
 			}
 		}
 	}
@@ -214,10 +224,17 @@ void RenderAscii::render()
 	printf("\033[2J\033[1;1H\033[40;1m");
 	
 	char* ptr = this->buffer;
+	Uint8* col = this->color;
 	for (int y = this->height; y != 0; --y) {
 		for (int x = this->width; x != 0; --x) {
-			putchar(*ptr);
-			ptr++;
+			if (*ptr == ' ') {
+				putchar(*ptr);
+			} else if (*col > 7) {
+				printf("\033[%i;1m%c", 30 + *col, *ptr);
+			} else {
+				printf("\033[%im%c", 30 + *col, *ptr);
+			}
+			ptr++; col++;
 		}
 		if (y != 1) putchar('\n');
 	}
