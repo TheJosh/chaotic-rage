@@ -11,36 +11,61 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+#ifdef __linux__
+	#include <sys/ioctl.h>
+	#include <stdio.h>
+	#include <unistd.h>
+#endif
+
 using namespace std;
 
 
+
+/**
+* Basic setup. We create the buffer in the setScreenSize call
+**/
 RenderAscii::RenderAscii(GameState * st) : Render(st)
 {
 	this->buffer = NULL;
 }
 
+
+/**
+* Free the backbuffer
+**/
 RenderAscii::~RenderAscii()
 {
 	free(this->buffer);
-	
-	printf("\033[0m");
-	printf("\033[2J");
 }
 
 
 /**
-* Sets the screen size
+* Sets the screen size, creates the backbuffer, and does a terminal clear and reset
 **/
 void RenderAscii::setScreenSize(int width, int height, bool fullscreen)
 {
 	free(this->buffer);
 	
-	this->width = 40;
-	this->height = 20;
+	#ifdef __linux__
+		struct winsize w;
+		ioctl(0, TIOCGWINSZ, &w);
+		w.ws_row--;
+		
+		if (w.ws_col*2 < w.ws_row) {
+			this->width = w.ws_col*2;
+			this->height = w.ws_col;
+		} else {
+			this->width = w.ws_row*2;
+			this->height = w.ws_row;
+		}
+	#else
+		this->width = 60;
+		this->height = 30;
+	#endif
+	
 	this->buffer = (char*)malloc(this->width * this->height);
 	
-	printf("\033[0m");
-	printf("\033[2J");
+	printf("\033[0m\033[2J");
 }
 
 
@@ -160,6 +185,9 @@ void RenderAscii::render()
 		int x = (int)round(trans.getOrigin().getX() / scalex);
 		int y = (int)round(trans.getOrigin().getZ() / scaley);
 		
+		if (x < 0 or x > this->width) continue;
+		if (y < 0 or y > this->height) continue;
+		
 		if (e->klass() == WALL) {
 			this->buffer[y * this->height + x] = 'w';
 			
@@ -181,13 +209,13 @@ void RenderAscii::render()
 	printf("\033[2J\033[1;1H\033[40;1m");
 	
 	char* ptr = this->buffer;
-	for (int y = 0; y < this->height; y++) {
-		for (int x = 0; x < this->width; x++) {
+	for (int y = this->height; y != 0; --y) {
+		for (int x = this->width; x != 0; --x) {
 			putchar(*ptr);
 			ptr++;
 		}
-		putchar('\n');
+		if (y != 1) putchar('\n');
 	}
 	
-	printf("\033[0m");
+	printf("\033[0m\n");
 }
