@@ -220,6 +220,7 @@
     <ClCompile Include="..\..\src\http\serverlist.cpp" />
     <ClCompile Include="..\..\src\http\url.cpp" />
     <ClCompile Include="..\..\src\lua\lua_random_lib.cpp" />
+    <ClCompile Include="..\..\src\render\render_ascii.cpp" />
     <ClCompile Include="..\..\src\render_opengl\intro.cpp" />
     <ClCompile Include="..\..\src\lua\ailogic.cpp" />
     <ClCompile Include="..\..\src\lua\gamelogic.cpp" />
@@ -426,6 +427,7 @@
     <ClInclude Include="..\..\src\http\happyhttp.h" />
     <ClInclude Include="..\..\src\http\serverlist.h" />
     <ClInclude Include="..\..\src\http\url.h" />
+    <ClInclude Include="..\..\src\render\render_ascii.h" />
     <ClInclude Include="..\..\src\render_opengl\intro.h" />
     <ClInclude Include="..\..\src\lua\ailogic.h" />
     <ClInclude Include="..\..\src\lua\gamelogic.h" />

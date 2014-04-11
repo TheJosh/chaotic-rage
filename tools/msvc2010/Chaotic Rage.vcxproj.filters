@@ -783,6 +783,9 @@
     <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLRenderer.cpp">
       <Filter>src\spark\opengl</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\render\render_ascii.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\zone.h">
@@ -1435,6 +1438,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\spark\SPK_GL.h">
       <Filter>src\spark</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render\render_ascii.h">
+      <Filter>src\render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

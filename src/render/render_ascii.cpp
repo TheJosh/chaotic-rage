@@ -49,7 +49,7 @@ void RenderAscii::setScreenSize(int width, int height, bool fullscreen)
 	free(this->buffer);
 	free(this->color);
 	
-	#ifdef __linux__
+	#ifdef __gnu_linux__
 		struct winsize w;
 		ioctl(0, TIOCGWINSZ, &w);
 		w.ws_row -= 2;
