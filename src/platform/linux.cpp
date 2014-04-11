@@ -8,9 +8,12 @@
 #include <glob.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <SDL.h>
 
+#include <SDL.h>
+#include "../game_engine.h"
 #include "../game_state.h"
+#include "../render/render.h"
+
 
 using namespace std;
 
@@ -73,7 +76,9 @@ string getUserDataDir()
 **/
 void reportFatalError(string msg)
 {
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Chaotic Rage " VERSION, msg.c_str(), NULL);
+	if (GEng()->render->is3D()) {
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Chaotic Rage " VERSION, msg.c_str(), NULL);
+	}
 	cout << "FATAL ERROR: " << msg << "\n";
 	exit(1);
 }
@@ -84,7 +89,9 @@ void reportFatalError(string msg)
 **/
 void displayMessageBox(string msg)
 {
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "Chaotic Rage " VERSION, msg.c_str(), NULL);
+	if (GEng()->render->is3D()) {
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "Chaotic Rage " VERSION, msg.c_str(), NULL);
+	}
 	cout << msg << "\n";
 }
 
