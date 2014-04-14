@@ -23,7 +23,9 @@ Player::Player(UnitType *uc, GameState *st, float x, float y, float z, Faction f
 {
 	for (int i = 0; i < 16; i++) {
 		this->key[i] = 0;
+		this->lkey[i] = 0;
 	}
+	
 	this->mouse_angle = 0.0f;
 	this->vertical_angle = 0.0f;
 

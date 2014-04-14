@@ -340,6 +340,8 @@ void GameState::preGame()
 	#ifdef USE_SPARK
 		this->particle_system = new SPK::System();
 	#endif
+	
+	this->entropy = 0;
 }
 
 
