@@ -17,12 +17,12 @@ ulimit -c unlimited
 
 # The log file name includes the PID so you can run multiple
 # multipound tests at once. Like some sort of multimultipound.
-LOGFILE="log$$"
+LOGFILE="multipound$$.log"
 
 
 while [ 1 ]; do
 	if [ -f core ]; then rm core; fi
-	if [ -f $LOGFILE ]; then rm log; fi
+	if [ -f $LOGFILE ]; then rm $LOGFILE; fi
 	
 	# Run the test.
 	./chaoticrage --no-mouse-grab --campaign=pound --mod=test $@ 2>&1 | tee $LOGFILE
@@ -43,4 +43,6 @@ while [ 1 ]; do
 	echo "Test finished. Waiting 5 secs. Press CTRL+C to exit."
 	sleep 5
 done
+
+if [ -f $LOGFILE ]; then rm $LOGFILE; fi
 
