@@ -77,7 +77,7 @@ bool GameLogic::execScript(string code)
 	int res = luaL_dostring(L, code.c_str());
 	
 	if (res != 0) {
-		string msg = "Lua fault: ";
+		string msg = "[GAME] Lua fault: ";
 		msg.append(lua_tostring(L, -1));
 		reportFatalError(msg);
 	}
