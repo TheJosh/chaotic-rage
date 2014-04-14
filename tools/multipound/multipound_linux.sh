@@ -12,23 +12,31 @@ if [ ! -f chaoticrage ]; then
 	exit
 fi
 
-# Remove coredump if there is one.
-if [ -f core ]; then
-	rm core
-fi
-
 # We need coredumps to be generated.
 ulimit -c unlimited
 
+# The log file name includes the PID so you can run multiple
+# multipound tests at once. Like some sort of multimultipound.
+LOGFILE="log$$"
+
 
 while [ 1 ]; do
+	if [ -f core ]; then rm core; fi
+	if [ -f $LOGFILE ]; then rm log; fi
+	
 	# Run the test.
-	./chaoticrage --no-mouse-grab --campaign=pound --mod=test $@
+	./chaoticrage --no-mouse-grab --campaign=pound --mod=test $@ 2>&1 | tee $LOGFILE
 	
 	# If it coredumped, save the file somewhere useful
 	if [ -f core ]; then
 		mkdir -p tools/multipound/coredumps
 		mv core tools/multipound/coredumps/core_`date +"%Y-%m-%d_%H-%M-%s"`
+	fi
+	
+	# If it coredumped, save the file somewhere useful
+	if [ -f $LOGFILE ]; then
+		mkdir -p tools/multipound/logs
+		mv $LOGFILE tools/multipound/logs/log_`date +"%Y-%m-%d_%H-%M-%s"`
 	fi
 	
 	# Wait a moment to give the user a chance to quit.
