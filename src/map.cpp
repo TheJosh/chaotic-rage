@@ -712,6 +712,8 @@ float Map::heightmapScaleZ()
 
 bool Map::preGame()
 {
+	this->heightmap = NULL;
+	
 	btRigidBody *ground = this->createGroundBody();
 	if (ground == NULL) return false;
 	
