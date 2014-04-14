@@ -210,6 +210,8 @@ Map::Map(GameState * st)
 	this->water = NULL;
 
 	this->ambient[0] = this->ambient[1] = this->ambient[2] = 0.3f;
+	this->water_speed = 0.0f;
+	this->water_level = 0.0f;
 }
 
 Map::~Map()
