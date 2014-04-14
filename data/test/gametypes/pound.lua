@@ -43,10 +43,10 @@ bind_gamestart(function()
 	end)
 end)
 
--- The game only lasts for 60 seconds
+-- The game only lasts for 15 seconds
 -- then we move on to the next stage of the campaign
 bind_gamestart(function()
-	add_interval(1000 * 60, function()
+	add_interval(1000 * 15, function()
 		game_over(1)
 	end)
 end)
@@ -54,19 +54,20 @@ end)
 -- bring in some npcs
 bind_gamestart(function()
 	add_interval(2000, function()
-		t = random(1, 5)
-		show_alert_message("Adding a zombie, type " .. t)
+		t = random(1, 3)
+		show_alert_message("Adding an AI, type " .. t)
 		
 		if (t == 1) then
-			add_npc("zomb", "zombie", factions.team2);
+			add_npc("robot", "zombie", factions.team2);
+			
 		elseif (t == 2) then
-			add_npc("zomb_fast", "zombie", factions.team2);
+			t = random_arg("zomb", "zomb_fast", "zomb_health", "zomb_strong")
+			add_npc(t, "zombie", factions.team1);
+			
 		elseif (t == 3) then
-			add_npc("zomb_baby", "zombie", factions.team2);
-		elseif (t == 4) then
-			add_npc("zomb_facebook", "zombie", factions.team2);
-		elseif (t == 5) then
-			add_npc("zomb_robot", "zombie", factions.team2);
+			t = random_arg("zomb", "zomb_fast", "robot")
+			add_npc(t, "human", factions.team2);
+			
 		end
 	end)
 end)
