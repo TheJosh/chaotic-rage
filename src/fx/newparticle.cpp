@@ -105,6 +105,8 @@ void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 
 **/
 void create_particles_blood_spray(GameState * st, btVector3 * location, float damage)
 {
+	return;
+	
 	NewParticle * p;
 	
 	int num = (int)(damage * 0.2f);
