@@ -120,7 +120,10 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 
 Vehicle::~Vehicle()
 {
-	delete (this->anim);
+	delete this->vehicle_raycaster;
+	delete this->vehicle;
+	delete this->anim;
+	
 	st->physics->delRigidBody(this->body);
 }
 
