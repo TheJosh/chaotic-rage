@@ -810,7 +810,7 @@ void Map::fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *ap, AssimpModel *am
 
 void Map::postGame()
 {
-	delete(this->heightmap);
+	delete [] this->heightmap;
 	this->heightmap = NULL;
 }
 
