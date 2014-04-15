@@ -267,9 +267,15 @@ int Map::load(string name, Render *render, Mod* insideof)
 	cfg_sub = cfg_getnsec(cfg, "heightmap", 0);
 	if (cfg_sub) {
 		this->heightmap_y = cfg_getfloat(cfg_sub, "scale-z");
-	
+		
 		this->terrain = this->render->loadSprite("terrain.png", this->mod);
-		if (! this->terrain) return 0;
+		if (! this->terrain) {
+			cerr << "No terrain image found for map.\n";
+			return 0;
+		}
+	} else {
+		cerr << "Heightmaps are currently required.\n";
+		return 0;
 	}
 	
 	// Water

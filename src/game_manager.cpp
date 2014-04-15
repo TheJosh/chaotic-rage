@@ -211,6 +211,8 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 {
 	ServerConfig* sconf = NULL;
 	NetServer* server = NULL;
+	GameType *gt = NULL;
+	Map *m = NULL;
 	
 	st->physics->init();
 	
@@ -221,12 +223,15 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 	}
 	
 	// Load map
-	Map *m = new Map(st);
-	m->load(map->getName(), GEng()->render, map->getMod());
+	m = new Map(st);
+	if (! m->load(map->getName(), GEng()->render, map->getMod())) {
+		displayMessageBox("Failed to load map");
+		goto cleanup;
+	}
 	st->map = m;
 	
 	// Load gametype
-	GameType *gt = GEng()->mm->getGameType(gametype);
+	gt = GEng()->mm->getGameType(gametype);
 	assert(gt);
 	st->gt = gt;
 
@@ -252,6 +257,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 	gameLoop(st, GEng()->render, GEng()->audio, NULL);
 	
 	// Cleanup
+cleanup:
 	if (host) {
 		GEng()->server = NULL;
 		delete(server);
