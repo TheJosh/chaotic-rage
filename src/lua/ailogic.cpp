@@ -94,9 +94,10 @@ bool AILogic::execScript(string code)
 	int res = luaL_dostring(L, code.c_str());
 	
 	if (res != 0) {
-		string msg = "[AI] Lua fault: ";
+		string msg = "Failed to execute AI script: ";
 		msg.append(lua_tostring(L, -1));
-		reportFatalError(msg);
+		displayMessageBox(msg);
+		this->u->takeDamage(this->u->health);
 	}
 	
 	return true;

@@ -77,9 +77,10 @@ bool GameLogic::execScript(string code)
 	int res = luaL_dostring(L, code.c_str());
 	
 	if (res != 0) {
-		string msg = "[GAME] Lua fault: ";
+		string msg = "Failed to execute GameType script: ";
 		msg.append(lua_tostring(L, -1));
-		reportFatalError(msg);
+		displayMessageBox(msg);
+		this->st->gameOver();
 	}
 	
 	return true;
@@ -395,14 +396,12 @@ LUA_FUNC(add_npc)
 	
 	UnitType *uc = GEng()->mm->getUnitType(*(new string(lua_tostring(L, 1))));
 	if (uc == NULL) {
-		lua_pushstring(L, "Arg #1 is not an available unittype");
-		lua_error(L);
+		return luaL_error(L, "Arg #1 is not an available unittype");
 	}
 	
 	AIType *ai = GEng()->mm->getAIType(*(new string(lua_tostring(L, 2))));
 	if (uc == NULL) {
-		lua_pushstring(L, "Arg #2 is not an available aitype");
-		lua_error(L);
+		return luaL_error(L, "Arg #2 is not an available aitype");
 	}
 	
 	Faction fac = (Faction) lua_tointeger(L, 3);
@@ -410,7 +409,7 @@ LUA_FUNC(add_npc)
 	
 	Zone *zn = gl->map->getSpawnZone(fac);
 	if (zn == NULL) {
-		reportFatalError("Map does not have any spawnpoints");
+		return luaL_error(L, "Map does not have any spawnpoints");
 	}
 	
 	p = new NPC(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 2, ai, fac);
@@ -440,8 +439,7 @@ LUA_FUNC(add_player)
 	const char* name = lua_tostring(L, 1);
 	UnitType *uc = GEng()->mm->getUnitType(*(new string(name)));
 	if (uc == NULL) {
-		lua_pushstring(L, "Arg #1 is not an available unittype");
-		lua_error(L);
+		return luaL_error(L, "Arg #1 is not an available unittype");
 	}
 	
 	Faction fac = (Faction) lua_tointeger(L, 2);
@@ -451,7 +449,7 @@ LUA_FUNC(add_player)
 	
 	Zone *zn = gl->map->getSpawnZone(fac);
 	if (zn == NULL) {
-		reportFatalError("Map does not have any spawnpoints");
+		return luaL_error(L, "Map does not have any spawnpoints");
 	}
 	
 	p = new Player(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 0, fac, slot);
