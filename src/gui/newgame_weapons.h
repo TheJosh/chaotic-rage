@@ -18,7 +18,7 @@ class DialogNewGame;
 class DialogNewGameWeapons : public Dialog, public gcn::ActionListener, public gcn::SelectionListener {
 	public:
 		DialogNewGameWeapons(DialogNewGame* parent, GameSettings* gs, GameType* gt);
-		~DialogNewGameWeapons();
+		virtual ~DialogNewGameWeapons();
 		
 	protected:
 		DialogNewGame* parent;

@@ -27,6 +27,7 @@ class Dialog {
 		
 	public:
 		Dialog() : c(NULL), m(NULL), gm(NULL) {}
+		virtual ~Dialog() {}
 		
 		virtual gcn::Container * setup() = 0;
 		virtual string getName() { return "?"; }
@@ -40,6 +41,7 @@ class Dialog {
 class DialogNull : public Dialog {
 	public:
 		virtual gcn::Container * setup();
+		virtual ~DialogNull() {}
 };
 
 
@@ -52,6 +54,8 @@ class DialogQuit : public Dialog, public gcn::ActionListener {
 		
 	public:
 		DialogQuit(GameState * st);
+		virtual ~DialogQuit() {}
+		
 		virtual gcn::Container * setup();
 		virtual string getName() { return "quit"; }
 		virtual void action(const gcn::ActionEvent& actionEvent);

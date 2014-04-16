@@ -24,7 +24,7 @@ class DialogNewGame : public Dialog, public gcn::ActionListener {
 	
 	public:
 		DialogNewGame(int num_local);
-		~DialogNewGame();
+		virtual ~DialogNewGame();
 		
 	protected:
 		int num_local;

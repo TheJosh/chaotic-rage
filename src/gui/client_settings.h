@@ -25,7 +25,7 @@ class DialogClientSettings : public Dialog, public gcn::ActionListener {
 		
 	public:
 		DialogClientSettings(GameState* st);
-		~DialogClientSettings();
+		virtual ~DialogClientSettings();
 		
 		virtual gcn::Container * setup();
 		virtual string getName() { return "cl-set"; }

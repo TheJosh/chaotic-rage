@@ -24,7 +24,7 @@ class DialogNetJoin : public Dialog, public gcn::ActionListener
 	
 	public:
 		DialogNetJoin();
-		~DialogNetJoin();
+		virtual ~DialogNetJoin();
 		
 	private:
 		gcn::TabbedArea * tabs;

@@ -28,7 +28,7 @@ class DialogMods : public Dialog, public gcn::ActionListener, public gcn::Select
 
 	public:
 		DialogMods(GameState* st);
-		~DialogMods();
+		virtual ~DialogMods();
 		
 		virtual gcn::Container * setup();
 		virtual string getName() { return "mods"; }

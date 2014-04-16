@@ -15,4 +15,5 @@ using namespace std;
 class DialogControls : public Dialog {
 	public:
 		virtual gcn::Container * setup();
+		virtual ~DialogControls() {}
 };

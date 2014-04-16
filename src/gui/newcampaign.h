@@ -30,7 +30,7 @@ class CampaignListModel: public gcn::ListModel
 class DialogNewCampaign : public Dialog, public gcn::ActionListener {
 	public:
 		DialogNewCampaign(int num_local, Mod *mod);
-		~DialogNewCampaign();
+		virtual ~DialogNewCampaign();
 		
 	private:
 		int num_local;
