@@ -49,20 +49,22 @@ void PhysicsBullet::init()
 	collisionConfiguration = new btDefaultCollisionConfiguration();
 	dispatcher = new btCollisionDispatcher(collisionConfiguration);
 
+	ghostPairCallback = new btGhostPairCallback();
+
 	btVector3 worldMin(-1000,-1000,-1000);
 	btVector3 worldMax(1000,1000,1000);
 	overlappingPairCache = new btAxisSweep3(worldMin,worldMax);
-	overlappingPairCache->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
-	
+	overlappingPairCache->getOverlappingPairCache()->setInternalGhostPairCallback(ghostPairCallback);
+
 	solver = new btSequentialImpulseConstraintSolver();
-	
+
 	dynamicsWorld = new btDiscreteDynamicsWorld(
 		dispatcher,
 		overlappingPairCache,
 		solver,
 		collisionConfiguration
 	);
-	
+
 	dynamicsWorld->setGravity(btVector3(0,-10,0));
 	dynamicsWorld->setInternalTickCallback(bulletHandleCallback, static_cast<void *>(this));
 }
@@ -85,11 +87,20 @@ void PhysicsBullet::postGame()
 	// TODO: Free other stuff properly, see HelloWorld demo
 	
 	delete collisionShapes;
+	delete ghostPairCallback;
 	delete dynamicsWorld;
 	delete solver;
 	delete overlappingPairCache;
 	delete dispatcher;
 	delete collisionConfiguration;
+	
+	collisionShapes = NULL;
+	ghostPairCallback = NULL;
+	dynamicsWorld = NULL;
+	solver = NULL;
+	overlappingPairCache = NULL;
+	dispatcher = NULL;
+	collisionConfiguration = NULL;
 }
 
 

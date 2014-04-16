@@ -262,6 +262,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 	
 	// Cleanup
 cleanup:
+	st->physics->postGame();
 	if (host) {
 		GEng()->server = NULL;
 		delete(server);

@@ -26,6 +26,9 @@ enum CollisionGroup {
 };
 
 
+class btGhostPairCallback;
+
+
 /**
 * Custom tick callbacks - function
 **/
@@ -59,6 +62,7 @@ class PhysicsBullet
 		btSequentialImpulseConstraintSolver* solver;
 		btDiscreteDynamicsWorld* dynamicsWorld;
 		btAlignedObjectArray<btCollisionShape*>* collisionShapes;
+		btGhostPairCallback *ghostPairCallback;
 		
 		btRigidBody* groundRigidBody;
 		
