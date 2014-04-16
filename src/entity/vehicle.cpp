@@ -34,6 +34,9 @@ static btVector3 wheelAxleCS(-1,0,0);
 
 Vehicle::Vehicle(GameState *st) : Entity(st)
 {
+	this->vehicle_raycaster = NULL;
+	this->vehicle = NULL;
+	this->anim = NULL;
 }
 
 Vehicle::Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy) : Entity(st)
