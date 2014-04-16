@@ -27,4 +27,5 @@ class ModProxy : public Mod {
 		
 	public:
 		ModProxy(Mod* master, string directory) : Mod(master->st, master->directory), master(master), directory(directory) {}
+		virtual ~ModProxy() {}
 };

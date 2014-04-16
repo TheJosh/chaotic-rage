@@ -65,7 +65,7 @@ class Mod {
 		
 	public:
 		Mod(GameState * st, string directory);
-		~Mod();
+		virtual ~Mod();
 
 	public:
 		bool loadMetadata();
