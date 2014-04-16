@@ -217,6 +217,8 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 	NetServer* server = NULL;
 	GameType *gt = NULL;
 	Map *m = NULL;
+	st->logic = NULL;
+	st->map = NULL;
 	
 	st->physics->init();
 	
@@ -262,6 +264,8 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, int v
 	
 	// Cleanup
 cleanup:
+	delete st->logic;
+	delete st->map;
 	st->physics->postGame();
 	if (host) {
 		GEng()->server = NULL;
@@ -280,6 +284,8 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	MapReg *map;
 	Map *m;
 	NetClient *client;
+	st->logic = NULL;
+	st->map = NULL;
 	
 	client = new NetClient(st);
 
@@ -332,5 +338,8 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	gameLoop(st, GEng()->render, GEng()->audio, client);
 	
 cleanup:
-	delete (client);
+	delete st->logic;
+	delete st->map;
+	st->physics->postGame();
+	delete client;
 }
