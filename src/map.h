@@ -77,6 +77,7 @@ class Map {
 		int heightmap_sx;
 		int heightmap_sz;
 		float heightmap_y;
+		btRigidBody *ground;
 
 		float water_level;
 		SpritePtr water;

@@ -205,6 +205,7 @@ Map::Map(GameState * st)
 {
 	this->st = st;
 	this->heightmap = NULL;
+	this->ground = NULL;
 	this->skybox = NULL;
 	this->terrain = NULL;
 	this->water = NULL;
@@ -244,24 +245,32 @@ int Map::load(string name, Render *render, Mod* insideof)
 	cfg_t *cfg, *cfg_sub;
 	int num_types, j, k;
 	
+	// Read buffer
 	char *buffer = this->mod->loadText("map.conf");
 	if (buffer == NULL) {
 		reportFatalError("Unable to load map; no configuration file");
 	}
 	
+	// Parse buffer
 	cfg = cfg_init(opts, CFGF_NONE);
 	int result = cfg_parse_buf(cfg, buffer);
 	free(buffer);
 	
+	// Did it work?
 	if (result != CFG_SUCCESS) {
-		reportFatalError("Unable to load map; configuration file syntax error");
+		cerr << "Unable to load map; configuration file syntax error\n";
+		cfg_free(cfg);
+		return 0;
 	}
 	
-	
+	// Get width and height
 	this->width = cfg_getint(cfg, "width");
 	this->height = cfg_getint(cfg, "height");
-	if (this->width == 0 or this->height == 0) return 0;
-	
+	if (this->width == 0 or this->height == 0) {
+		cerr << "No width or height set for map.\n";
+		cfg_free(cfg);
+		return 0;
+	}
 	
 	// Heightmap
 	cfg_sub = cfg_getnsec(cfg, "heightmap", 0);
@@ -271,10 +280,12 @@ int Map::load(string name, Render *render, Mod* insideof)
 		this->terrain = this->render->loadSprite("terrain.png", this->mod);
 		if (! this->terrain) {
 			cerr << "No terrain image found for map.\n";
+			cfg_free(cfg);
 			return 0;
 		}
 	} else {
 		cerr << "Heightmaps are currently required.\n";
+		cfg_free(cfg);
 		return 0;
 	}
 	
@@ -720,10 +731,12 @@ float Map::heightmapScaleZ()
 
 bool Map::preGame()
 {
-	this->heightmap = NULL;
+	heightmap = NULL;
 	
-	btRigidBody *ground = this->createGroundBody();
-	if (ground == NULL) return false;
+	ground = this->createGroundBody();
+	if (ground == NULL) {
+		return false;
+	}
 	
 	ground->setRestitution(0.f);
 	ground->setFriction(10.f);
@@ -818,6 +831,19 @@ void Map::postGame()
 {
 	delete [] this->heightmap;
 	this->heightmap = NULL;
+	
+	delete this->ground;
+	this->ground = NULL;
+	
+	if (this->terrain != NULL) {
+		this->render->freeSprite(this->terrain);
+		this->terrain = NULL;
+	}
+	
+	if (this->skybox != NULL) {
+		this->render->freeSprite(this->skybox);
+		this->skybox = NULL;
+	}
 }
 
 
