@@ -71,6 +71,7 @@ bool loadMods(GameState *st, UIUpdate* ui)
 		}
 		GEng()->mm->addMod(mod);
 	}
+	delete(userfiles);
 	
 	if (ui) ui->updateUI();
 	

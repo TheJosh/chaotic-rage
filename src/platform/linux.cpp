@@ -105,7 +105,7 @@ void displayMessageBox(string msg)
 *    debug
 *    >
 *
-* Please free the result when you are done.
+* Please delete() the result when you are done.
 **/
 list<string> * getSystemModNames()
 {
@@ -128,7 +128,7 @@ list<string> * getSystemModNames()
 *    /home/josh/.chaoticrage/mods/whoo.crk
 *    >
 *
-* Please free the result when you are done.
+* Please delete() the result when you are done.
 **/
 vector<string> * getUserModFilenames()
 {
