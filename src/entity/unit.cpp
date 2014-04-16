@@ -543,7 +543,7 @@ void Unit::update(int delta)
 
 	// Create blood if health is low
 	if (health < (this->uc->begin_health / 2)) {
-		create_particles_blood_spray(this->st, new btVector3(xform.getOrigin()), 1);
+		create_particles_blood_spray(this->st, xform.getOrigin(), 1);
 	}
 	
 	// Remove (and rollback) old pickups
@@ -559,7 +559,7 @@ int Unit::takeDamage(float damage)
 	this->health -= damage;
 	
 	btTransform xform = this->ghost->getWorldTransform();
-	create_particles_blood_spray(this->st, new btVector3(xform.getOrigin()), damage);
+	create_particles_blood_spray(this->st, xform.getOrigin(), damage);
 	
 	this->st->increaseEntropy(1);
 	

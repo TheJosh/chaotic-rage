@@ -103,26 +103,9 @@ void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 
 /**
 * Spray blood in all directions
 **/
-void create_particles_blood_spray(GameState * st, btVector3 * location, float damage)
+void create_particles_blood_spray(GameState * st, btVector3 & location, float damage)
 {
-	return;
 	
-	NewParticle * p;
-	
-	int num = (int)(damage * 0.2f);
-	
-	for (int i = 0; i <= num; i++) {
-		p = new NewParticle();
-		
-		p->pos = *location + btVector3(0.0f, getRandomf(0.3f, 2.0f), 0.0f);
-		p->vel = btVector3(getRandomf(-0.01f, 0.01f), getRandomf(-0.01f, -0.02f), getRandomf(-0.01f, 0.01f));
-		p->r = getRandomf(0.7f, 1.0f);
-		p->g = getRandomf(0.0f, 0.2f);
-		p->b = getRandomf(0.0f, 0.2f);
-		p->time_death = st->game_time + 375;
-		
-		//st->addNewParticle(p);
-	}
 }
 
 
@@ -192,6 +175,6 @@ void create_particles_explosion(GameState * st, btVector3 & location, float dama
 // No SPARK particles - these become a no-op
 void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end) {}
 void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 * end) {}
-void create_particles_blood_spray(GameState * st, btVector3 * location, float damage) {}
+void create_particles_blood_spray(GameState * st, btVector3 & location, float damage) {}
 void create_particles_explosion(GameState * st, btVector3 & location, float damage) {}
 #endif

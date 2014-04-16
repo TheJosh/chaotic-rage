@@ -21,5 +21,5 @@ class NewParticle {
 
 void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end);
 void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 * end);
-void create_particles_blood_spray(GameState * st, btVector3 * location, float damage);
+void create_particles_blood_spray(GameState * st, btVector3 & location, float damage);
 void create_particles_explosion(GameState * st, btVector3 & location, float damage);
