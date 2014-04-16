@@ -32,6 +32,11 @@ ifndef MXE
 	endif
 endif
 
+# Both Bullet and GLM generate tons on warnings (errors) on clang
+ifeq ($(CXX),clang)
+	CFLAGS := $(CFLAGS) -Wno-unknown-warning-option -Wno-overloaded-virtual -Wno-shift-op-parentheses
+endif
+
 # Set other executables, with support for cross-compilers
 PKG_CONFIG := $(CROSS)pkg-config
 SDL2_CONFIG := $(CROSS)sdl2-config
