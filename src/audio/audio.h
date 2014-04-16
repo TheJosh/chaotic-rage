@@ -55,4 +55,5 @@ class Audio
 
 	public:
 		Audio(GameState * st);
+		virtual ~Audio() {}
 };

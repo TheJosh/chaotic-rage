@@ -58,4 +58,5 @@ class AudioSDLMixer : public Audio
 
 	public:
 		AudioSDLMixer(GameState * st);
+		virtual ~AudioSDLMixer() {}
 };

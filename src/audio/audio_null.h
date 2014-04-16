@@ -44,4 +44,5 @@ class AudioNull : public Audio
 
 	public:
 		AudioNull(GameState * st);
+		virtual ~AudioNull() {}
 };
