@@ -31,6 +31,7 @@ class Render3D : public Render
 		
 	public:
 		Render3D(GameState *st) : Render(st) {}
+		virtual ~Render3D() {}
 		
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename) = 0;

@@ -137,6 +137,7 @@ class Render
 		
 	public:
 		Render(GameState * st);
+		virtual ~Render() {}
 		
 		bool togglePhysicsDebug();
 };
