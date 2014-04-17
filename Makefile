@@ -53,7 +53,7 @@ CFLAGS := $(shell $(SDL2_CONFIG) --cflags) \
 LIBS := $(shell $(SDL2_CONFIG) --libs) \
 	$(shell $(PKG_CONFIG) lua5.1 bullet assimp --libs) \
 	$(shell $(FREETYPE_CONFIG) --libs) \
-	-lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11 -lm
+	-lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11 -lm -lstdc++
 
 # Extract the version from rage.h
 # Only used for releases
