@@ -78,7 +78,6 @@ class UnitType
 	private:
 		vector<UnitTypeSound*> sounds;
 		vector<UnitTypeAnimation*> animations;
-		unsigned int max_frames;
 		Mod * mod;
 		
 	public:
