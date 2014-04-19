@@ -486,7 +486,7 @@ btScalar timeInterval
 
 
 
-void btCRKinematicCharacterController::reset ()
+void btCRKinematicCharacterController::reset ( btCollisionWorld* collisionWorld )
 {
 }
 
@@ -656,5 +656,9 @@ btVector3* btCRKinematicCharacterController::getUpAxisDirections()
 }
 
 void btCRKinematicCharacterController::debugDraw(btIDebugDraw* debugDrawer)
+{
+}
+
+void btCRKinematicCharacterController::setUpInterpolate (bool value)
 {
 }

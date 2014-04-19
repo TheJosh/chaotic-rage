@@ -3,14 +3,14 @@
 
 cd working
 
-if [ ! -d "bullet-2.81-rev2613" ]; then
-	if [ ! -f "bullet-2.81-rev2613.tgz" ]; then
-		wget http://chaoticrage.com/dev_libs/bullet-2.81-rev2613.tgz
+if [ ! -d "bullet-2.82-r2704" ]; then
+	if [ ! -f "bullet-2.82-r2704.tgz" ]; then
+		wget http://bullet.googlecode.com/files/bullet-2.82-r2704.tgz
 	fi
-	tar -xzf bullet-2.81-rev2613.tgz || exit 1
+	tar -xzf bullet-2.82-r2704.tgz || exit 1
 fi
 
-cd bullet-2.81-rev2613
+cd bullet-2.82-r2704
 
 cmake -G "Unix Makefiles" \
 	-DCMAKE_BUILD_TYPE=Release \
