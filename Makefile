@@ -57,7 +57,7 @@ LIBS := $(shell $(SDL2_CONFIG) --libs) \
 
 # Extract the version from rage.h
 # Only used for releases
-VERSION := $(shell grep -E --only-matching 'VERSION ".+"' src/rage.h | sed -n 1p | sed "s/VERSION //" | sed 's/"//g')
+VERSION := $(shell grep -E -o 'VERSION ".+"' src/rage.h | sed -n 1p | sed "s/VERSION //" | sed 's/"//g')
 DISTTMP := chaoticrage-$(VERSION)
 
 # Build dir and sources dir
