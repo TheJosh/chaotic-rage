@@ -16,6 +16,7 @@ subject to the following restrictions:
 #include "btStrideHeightfieldTerrainShape.h"
 
 #include "LinearMath/btTransformUtil.h"
+#include "../rage.h"
 
 
 btFasterHeightfieldTerrainShape::btFasterHeightfieldTerrainShape

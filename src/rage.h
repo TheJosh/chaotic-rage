@@ -13,6 +13,7 @@
 #include <LinearMath/btQuaternion.h>
 #include <LinearMath/btTransform.h>
 #include <LinearMath/btVector3.h>
+#include <LinearMath/btScalar.h>
 
 
 // Engine features to optionally compile into the game
@@ -98,6 +99,11 @@ namespace SPK {
 		class GLRenderer;
 	}
 }
+
+// Suppress stupid compiler warning in Bullet 2.82
+#if (BT_BULLET_VERSION == 282)
+inline int btGetInfinityMask() { return btInfinityMask; }
+#endif
 
 // Factions that units can be in
 // A unit can only be in one faction at any given time

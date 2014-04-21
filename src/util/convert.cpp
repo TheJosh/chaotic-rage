@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <btBulletDynamicsCommon.h>
+#include "../rage.h"
 
 using namespace std;
 

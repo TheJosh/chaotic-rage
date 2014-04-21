@@ -22,6 +22,7 @@ subject to the following restrictions:
 #include <BulletCollision/CollisionDispatch/btCollisionWorld.h>
 #include <LinearMath/btDefaultMotionState.h>
 #include "btCRKinematicCharacterController.h"
+#include "../rage.h"
 
 
 // static helper method

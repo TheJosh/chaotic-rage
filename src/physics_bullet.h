@@ -26,6 +26,14 @@ enum CollisionGroup {
 };
 
 
+#if (BT_BULLET_VERSION == 282)
+inline int bullet_btInfinityMask()
+{
+	return btInfinityMask;
+}
+#endif
+
+
 class btGhostPairCallback;
 
 
