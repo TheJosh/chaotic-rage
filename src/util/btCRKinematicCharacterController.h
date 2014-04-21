@@ -131,7 +131,7 @@ public:
 	virtual void setVelocityForTimeInterval(const btVector3& velocity,
 				btScalar timeInterval);
 
-	void reset ();
+	void reset ( btCollisionWorld* collisionWorld );
 	void warp (const btVector3& origin);
 
 	void preStep (  btCollisionWorld* collisionWorld);
@@ -159,6 +159,7 @@ public:
 	}
 
 	bool onGround () const;
+	void setUpInterpolate (bool value);
 };
 
 #endif // BT_KINEMATIC_CHARACTER_CONTROLLER_H
