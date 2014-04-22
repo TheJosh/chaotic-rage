@@ -48,11 +48,11 @@ fi
 # bullet physics
 if [ ! -d "jni/bullet" ]; then
 	cd working/
-	if [ ! -f "bullet-2.81-rev2613.tgz" ]; then
-		wget http://chaoticrage.com/dev_libs/bullet-2.81-rev2613.tgz
+	if [ ! -f "bullet-2.82-r2704.tgz" ]; then
+		wget http://bullet.googlecode.com/files/bullet-2.82-r2704.tgz
 	fi
-	tar -xzf bullet-2.81-rev2613.tgz || exit 1
-	mv bullet-2.81-rev2613 ../jni/bullet
+	tar -xzf bullet-2.82-r2704.tgz || exit 1
+	mv bullet-2.82-r2704 ../jni/bullet
 	cd ..
 fi
 
