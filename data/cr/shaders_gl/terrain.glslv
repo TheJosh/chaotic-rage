@@ -8,6 +8,7 @@ out vec2 fTexUV;
 out vec3 fNormal;
 out vec3 fLightDir[2];
 out vec4 fShadowCoord;
+out float fDepth;
 
 uniform mat4 uMVP;
 uniform mat4 uMV;
@@ -30,4 +31,5 @@ void main()
 	}
 
 	fShadowCoord = uDepthBiasMVP * vec4(vPosition, 1.0f);
+	fDepth = gl_Position.z / 350f;	// TODO: Dont hard-code with far plane distance, use a uniform!
 }

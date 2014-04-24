@@ -214,6 +214,12 @@
     <None Include="..\..\data\cr\ais\dumbo.lua">
       <Filter>AIs</Filter>
     </None>
+    <None Include="..\..\data\cr\shaders_gl\terrain.glslv">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\terrain.glslf">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\client.cpp">

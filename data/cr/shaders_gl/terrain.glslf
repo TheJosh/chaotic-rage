@@ -4,6 +4,7 @@ in vec2 fTexUV;
 in vec3 fNormal;
 in vec3 fLightDir[2];
 in vec4 fShadowCoord;
+in float fDepth;
 
 uniform mat4 uMVP;
 uniform mat4 uMV;
@@ -18,6 +19,8 @@ uniform vec4 uAmbient;
 const float constantAttenuation = 0.3;
 const float linearAttenuation = 0.1;
 const float quadraticAttenuation = 0.01;
+
+const float LOG2 = 1.442695;
 
 void main()
 {
@@ -45,5 +48,11 @@ void main()
 	// Shadow
 	float visibility = texture(uShadowMap, fShadowCoord.xyz) + 0.5;
 
-	gl_FragColor = texture(uTex, fTexUV) * light * visibility;
+	// Fog
+	float fogDensity = 1.5f;
+	float fogFactor = exp2(-fogDensity * fogDensity * fDepth * fDepth * LOG2);
+	fogFactor = clamp(fogFactor, 0.0, 1.0);
+	vec4 fogColor = vec4(0.5, 0.5, 0.6, 1.0);
+
+	gl_FragColor = mix(fogColor, texture(uTex, fTexUV) * light * visibility, fogFactor);
 }
