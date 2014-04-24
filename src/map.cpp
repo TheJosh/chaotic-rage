@@ -644,6 +644,11 @@ float Map::getRandomY()
 }
 
 
+static bool isPowerOfTwo (unsigned int x)
+{
+	return ((x != 0) && ((x & (~x + 1)) == x));
+}
+
 /**
 * Take the heightmap image and turn it into a data array
 *
@@ -662,11 +667,18 @@ void Map::createHeightmapRaw()
 	}
 	
 	surf = IMG_Load_RW(rw, 0);
-	SDL_RWclose(rw);
 	if (surf == NULL) {
+		SDL_RWclose(rw);
 		return;
 	}
 	
+	// Heightmaps need to be powerOfTwo + 1
+	if (!isPowerOfTwo(surf->w - 1) || !isPowerOfTwo(surf->h - 1)) {
+		SDL_RWclose(rw);
+		SDL_FreeSurface(surf);
+		return;
+	}
+
 	this->heightmap = new float[surf->w * surf->h];
 	this->heightmap_sx = surf->w;
 	this->heightmap_sz = surf->h;
@@ -682,6 +694,7 @@ void Map::createHeightmapRaw()
 		}
 	}
 	
+	SDL_RWclose(rw);
 	SDL_FreeSurface(surf);
 }
 
