@@ -134,6 +134,7 @@ class RenderOpenGL : public Render3D
 		virtual void render();
 		virtual void renderSprite(SpritePtr sprite, int x, int y);
 		virtual void renderSprite(SpritePtr sprite, int x, int y, int w, int h);
+		void renderSprite(GLuint texture, int x, int y, int w, int h);
 		virtual void preGame();
 		virtual void postGame();
 		virtual void clearPixel(int x, int y);

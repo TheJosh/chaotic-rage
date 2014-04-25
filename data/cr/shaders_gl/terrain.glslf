@@ -46,7 +46,7 @@ void main()
 	}
 	
 	// Shadow
-	float visibility = texture(uShadowMap, fShadowCoord.xyz) + 0.5;
+	float visibility = texture(uShadowMap, fShadowCoord.xyz);
 
 	// Fog
 	float fogDensity = 1.5f;

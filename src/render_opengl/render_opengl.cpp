@@ -928,9 +928,19 @@ void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y)
 **/
 void RenderOpenGL::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 {
+	this->renderSprite(sprite->pixels, x, y, w, h);
+}
+
+
+/**
+* Renders a sprite.
+* Should only be used if the the caller was called by this classes 'Render' function.
+**/
+void RenderOpenGL::renderSprite(GLuint texture, int x, int y, int w, int h)
+{
 	CHECK_OPENGL_ERROR;
 	
-	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
+	glBindTexture(GL_TEXTURE_2D, texture);
 	
 	// Draw a textured quad -- the image
 	GLfloat box[4][5] = {
@@ -1726,6 +1736,10 @@ void RenderOpenGL::render()
 		this->mainViewport(0, 1);
 	}
 	
+	glUseProgram(this->shaders["basic"]->p());
+	glUniformMatrix4fv(this->shaders["basic"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(this->ortho));
+	renderSprite(this->shadow_depth_tex, 100, 100, 300, 300);
+
 	guichan();
 	if (this->speeddebug) fps();
 
@@ -1860,9 +1874,9 @@ void RenderOpenGL::entitiesShadowMap()
 	// Prep the view matrix
 	btTransform trans;
 	float tilt, angle, dist, lift;
-	trans = btTransform(btQuaternion(0,0,0,0),btVector3(st->map->width/2.0f, 0.0f, st->map->height/2.0f));
-	tilt = 22.0f;
-	dist = 20.0f;
+	trans = btTransform(btQuaternion(0,0,0,0),btVector3(st->map->width/2.0f, 20.0f, st->map->height/2.0f));
+	tilt = 20.0f;
+	dist = 10.0f;
 	lift = 0.0f;
 	angle = 54.0f;
 	
@@ -1871,7 +1885,7 @@ void RenderOpenGL::entitiesShadowMap()
 	float cameray = dist * sin(DEG_TO_RAD(tilt)) + trans.getOrigin().y() + lift;
 	float cameraz = dist * cos(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().z();
 	
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-200.0f,200.0f, -200.0f,200.0f, -200.0f,300.0f);
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-100.0f,100.0f, -100.0f,100.0f, -50.0f,200.0f);//glm::perspective<float>(45.0f, 1.0f, 1.0f, 350.0f);
 	
 	// View
 	glm::mat4 depthView = glm::mat4(1.0f);
@@ -1885,6 +1899,7 @@ void RenderOpenGL::entitiesShadowMap()
 	this->view = depthView;
 	
 	// "Draw" entities to our FBO
+	terrain();
 	entities();
 
 	// Reset everything for regular rendering
