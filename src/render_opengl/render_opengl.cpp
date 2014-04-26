@@ -872,7 +872,6 @@ void RenderOpenGL::createShadowBuffers()
 {
 	// Create a texture and framebuffer
 	glGenTextures(1, &this->shadow_depth_tex);
-	//glGenTextures(1, &this->shadow_color_tex);
 	glGenFramebuffers(1, &this->shadow_framebuffer);
 
 	// Set up the texture
@@ -888,20 +887,10 @@ void RenderOpenGL::createShadowBuffers()
 	#endif
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	// Set up the texture
-	/*glBindTexture(GL_TEXTURE_2D, this->shadow_color_tex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, RenderOpenGL::SHADOW_MAP_WIDTH, RenderOpenGL::SHADOW_MAP_HEIGHT, 0, GL_RGBA, GL_FLOAT, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glBindTexture(GL_TEXTURE_2D, 0);*/
-
 	// Set up the framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, this->shadow_framebuffer);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, this->shadow_depth_tex, 0);
-	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->shadow_color_tex, 0);
-
+	
 	// We don't draw to the framebuffer
 	#ifdef OpenGL
 	glDrawBuffer(GL_NONE);
@@ -1885,7 +1874,7 @@ void RenderOpenGL::entitiesShadowMap()
 	tilt = 22.0f;
 	dist = 40.0f;
 	lift = 0.0f;
-	angle = st->game_time / 1000.0f;
+	angle = 34.0f;
 	
 	// Camera angle calculations
 	float camerax = dist * sin(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().x();
@@ -1894,8 +1883,8 @@ void RenderOpenGL::entitiesShadowMap()
 	
 	// Projection
 	glm::mat4 depthProjectionMatrix = glm::ortho<float>(
-		-100.0f, 100.0f,    // left <-> right
-		-100.0f, 100.0f,    // bottom <-> top
+		-150.0f, 150.0f,    // left <-> right
+		-150.0f, 150.0f,    // bottom <-> top
 		-10.0f, 150.0f      // near <-> far
 	);
 	
