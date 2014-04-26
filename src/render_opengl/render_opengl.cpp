@@ -416,7 +416,7 @@ void RenderOpenGL::mainViewport(int s, int of)
 	this->projection = glm::perspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 350.0f);
 
 	// Ortho for gameplay HUD etc
-	this->ortho = glm::ortho<float>(0.0f, (float)this->virt_width, (float)this->virt_height, 0.0f, -1.0f, 1.0f);
+	this->ortho = glm::ortho<float>(0.0f, (float)this->virt_width, 0.0f, (float)this->virt_height, -1.0f, 1.0f);
 }
 
 
@@ -872,6 +872,7 @@ void RenderOpenGL::createShadowBuffers()
 {
 	// Create a texture and framebuffer
 	glGenTextures(1, &this->shadow_depth_tex);
+	glGenTextures(1, &this->shadow_color_tex);
 	glGenFramebuffers(1, &this->shadow_framebuffer);
 
 	// Set up the texture
@@ -882,19 +883,29 @@ void RenderOpenGL::createShadowBuffers()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	#ifdef OpenGL
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
 	#endif
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// Set up the texture
+	glBindTexture(GL_TEXTURE_2D, this->shadow_color_tex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, RenderOpenGL::SHADOW_MAP_WIDTH, RenderOpenGL::SHADOW_MAP_HEIGHT, 0, GL_RGBA, GL_FLOAT, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	// Set up the framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, this->shadow_framebuffer);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, this->shadow_depth_tex, 0);
-	
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->shadow_color_tex, 0);
+
 	// We don't draw to the framebuffer
 	#ifdef OpenGL
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
+	//glDrawBuffer(GL_NONE);
+	//glReadBuffer(GL_NONE);
 	#endif
 	
 	// Check it
@@ -907,8 +918,8 @@ void RenderOpenGL::createShadowBuffers()
 	
 	// But we *do* draw to the default one!
 	#ifdef OpenGL
-	glDrawBuffer(GL_BACK);
-	glReadBuffer(GL_BACK);
+	//glDrawBuffer(GL_BACK);
+	//glReadBuffer(GL_BACK);
 	#endif
 }
 
@@ -1736,9 +1747,11 @@ void RenderOpenGL::render()
 		this->mainViewport(0, 1);
 	}
 	
+	glDisable(GL_CULL_FACE);
 	glUseProgram(this->shaders["basic"]->p());
 	glUniformMatrix4fv(this->shaders["basic"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(this->ortho));
-	renderSprite(this->shadow_depth_tex, 100, 100, 300, 300);
+	renderSprite(this->shadow_color_tex, 10, 10, 400, 400);
+	renderSprite(this->shadow_depth_tex, 420, 10, 400, 400);
 
 	guichan();
 	if (this->speeddebug) fps();
@@ -1861,32 +1874,34 @@ void RenderOpenGL::entitiesShadowMap()
 {
 	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, RenderOpenGL::SHADOW_MAP_WIDTH, RenderOpenGL::SHADOW_MAP_HEIGHT);
-	glCullFace(GL_FRONT);
+	//glCullFace(GL_FRONT);
 	
 	// Bind and clear framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, shadow_framebuffer);
 	#ifdef OpenGL
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
+	//glDrawBuffer(GL_NONE);
+	//glReadBuffer(GL_NONE);
 	#endif
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	// Prep the view matrix
 	btTransform trans;
 	float tilt, angle, dist, lift;
-	trans = btTransform(btQuaternion(0,0,0,0),btVector3(st->map->width/2.0f, 20.0f, st->map->height/2.0f));
-	tilt = 20.0f;
-	dist = 10.0f;
+	trans = btTransform(btQuaternion(0,0,0,0),btVector3(st->map->width/2.0f, 0.0f, st->map->height/2.0f));
+	tilt = 22.0f;
+	dist = 40.0f;
 	lift = 0.0f;
-	angle = 54.0f;
+	angle = st->game_time / 1000.0f;
 	
 	// Camera angle calculations
 	float camerax = dist * sin(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().x();
 	float cameray = dist * sin(DEG_TO_RAD(tilt)) + trans.getOrigin().y() + lift;
 	float cameraz = dist * cos(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().z();
 	
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-100.0f,100.0f, -100.0f,100.0f, -50.0f,200.0f);//glm::perspective<float>(45.0f, 1.0f, 1.0f, 350.0f);
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10.0f,10.0f, 10.0f,-10.0f, -10.0f,20.0f);//glm::perspective<float>(45.0f, 1.0f, 1.0f, 350.0f);
 	
+	depthProjectionMatrix = glm::perspective(45.0f, 1.0f, 1.0f, 100.0f);
+
 	// View
 	glm::mat4 depthView = glm::mat4(1.0f);
 	depthView = glm::rotate(depthView, tilt, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -1953,7 +1968,7 @@ void RenderOpenGL::terrain()
 	GLShader* s = this->shaders["terrain"];
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, this->shadow_depth_tex);
+	glBindTexture(GL_TEXTURE_2D, 0);//this->shadow_depth_tex);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, st->map->terrain->pixels);
 	

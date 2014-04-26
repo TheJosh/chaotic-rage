@@ -90,6 +90,7 @@ class RenderOpenGL : public Render3D
 		// Shadowing
 		GLuint shadow_framebuffer;
 		GLuint shadow_depth_tex;
+		GLuint shadow_color_tex;
 
 		// Heightmap
 		unsigned int ter_size;
