@@ -95,14 +95,14 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 	RenderOpenGLSettings* current = ((RenderOpenGL*)GEng()->render)->getSettings();
 	RenderOpenGLSettings* nu = new RenderOpenGLSettings();
 	
-	// Do we need a restart?
-	bool restart = false;
-	if (current->msaa != nu->msaa) restart = true;
-	
 	// Populate the class
 	nu->msaa = atoi(this->gl_msaa->getText().c_str());
 	nu->tex_filter = atoi(this->gl_tex_filter->getText().c_str());
 	
+	// Do we need a restart?
+	bool restart = false;
+	if (current->msaa != nu->msaa) restart = true;
+
 	// Set
 	((RenderOpenGL*)GEng()->render)->setSettings(nu);
 	
