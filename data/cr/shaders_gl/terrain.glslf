@@ -10,7 +10,7 @@ uniform mat4 uMVP;
 uniform mat4 uMV;
 uniform mat3 uN;
 uniform sampler2D uTex;
-uniform sampler2DShadow uShadowMap;
+uniform sampler2D uShadowMap;
 uniform vec3 uLightPos[2];
 uniform vec4 uLightColor[2];
 uniform vec4 uAmbient;
@@ -46,7 +46,11 @@ void main()
 	}
 	
 	// Shadow
-	float visibility = 1.0f;//texture(uShadowMap, fShadowCoord.xyz);
+	float shadowBias = 0.0005;
+	float visibility = 1.0;
+	if (texture(uShadowMap, fShadowCoord.xy).r < fShadowCoord.z - shadowBias) {
+		visibility = 0.5;
+	}
 
 	// Fog
 	float fogDensity = 1.5f;

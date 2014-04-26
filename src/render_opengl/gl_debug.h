@@ -51,7 +51,17 @@
 #if defined(__ANDROID__)
 	#include <android/log.h>
 	#define GL_LOG(msg, ...) __android_log_print(ANDROID_LOG_ERROR, "ChaoticRage", "GL Log: " msg, __VA_ARGS__)
+
+#elif defined(__WIN32__)
+	#define GL_LOG(msg, ...) \
+	{ \
+		char buf[2048]; \
+		sprintf(buf, "GL Log: " msg "\n", __VA_ARGS__); \
+		displayMessageBox(std::string(buf)); \
+	}
+
 #else
 	#define GL_LOG(msg, ...) fprintf(stderr, "GL Log: " msg "\n", __VA_ARGS__)
+
 #endif
 

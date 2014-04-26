@@ -872,7 +872,7 @@ void RenderOpenGL::createShadowBuffers()
 {
 	// Create a texture and framebuffer
 	glGenTextures(1, &this->shadow_depth_tex);
-	glGenTextures(1, &this->shadow_color_tex);
+	//glGenTextures(1, &this->shadow_color_tex);
 	glGenFramebuffers(1, &this->shadow_framebuffer);
 
 	// Set up the texture
@@ -883,29 +883,29 @@ void RenderOpenGL::createShadowBuffers()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	#ifdef OpenGL
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
 	#endif
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	// Set up the texture
-	glBindTexture(GL_TEXTURE_2D, this->shadow_color_tex);
+	/*glBindTexture(GL_TEXTURE_2D, this->shadow_color_tex);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, RenderOpenGL::SHADOW_MAP_WIDTH, RenderOpenGL::SHADOW_MAP_HEIGHT, 0, GL_RGBA, GL_FLOAT, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);*/
 
 	// Set up the framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, this->shadow_framebuffer);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, this->shadow_depth_tex, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->shadow_color_tex, 0);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->shadow_color_tex, 0);
 
 	// We don't draw to the framebuffer
 	#ifdef OpenGL
-	//glDrawBuffer(GL_NONE);
-	//glReadBuffer(GL_NONE);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
 	#endif
 	
 	// Check it
@@ -918,8 +918,8 @@ void RenderOpenGL::createShadowBuffers()
 	
 	// But we *do* draw to the default one!
 	#ifdef OpenGL
-	//glDrawBuffer(GL_BACK);
-	//glReadBuffer(GL_BACK);
+	glDrawBuffer(GL_BACK);
+	glReadBuffer(GL_BACK);
 	#endif
 }
 
@@ -1746,12 +1746,6 @@ void RenderOpenGL::render()
 	if (this->st->num_local != 1) {
 		this->mainViewport(0, 1);
 	}
-	
-	glDisable(GL_CULL_FACE);
-	glUseProgram(this->shaders["basic"]->p());
-	glUniformMatrix4fv(this->shaders["basic"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(this->ortho));
-	renderSprite(this->shadow_color_tex, 10, 10, 400, 400);
-	renderSprite(this->shadow_depth_tex, 420, 10, 400, 400);
 
 	guichan();
 	if (this->speeddebug) fps();
@@ -1874,13 +1868,13 @@ void RenderOpenGL::entitiesShadowMap()
 {
 	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, RenderOpenGL::SHADOW_MAP_WIDTH, RenderOpenGL::SHADOW_MAP_HEIGHT);
-	//glCullFace(GL_FRONT);
+	glCullFace(GL_FRONT);
 	
 	// Bind and clear framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, shadow_framebuffer);
 	#ifdef OpenGL
-	//glDrawBuffer(GL_NONE);
-	//glReadBuffer(GL_NONE);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
 	#endif
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
@@ -1898,10 +1892,13 @@ void RenderOpenGL::entitiesShadowMap()
 	float cameray = dist * sin(DEG_TO_RAD(tilt)) + trans.getOrigin().y() + lift;
 	float cameraz = dist * cos(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().z();
 	
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10.0f,10.0f, 10.0f,-10.0f, -10.0f,20.0f);//glm::perspective<float>(45.0f, 1.0f, 1.0f, 350.0f);
+	// Projection
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(
+		-100.0f, 100.0f,    // left <-> right
+		-100.0f, 100.0f,    // bottom <-> top
+		-10.0f, 150.0f      // near <-> far
+	);
 	
-	depthProjectionMatrix = glm::perspective(45.0f, 1.0f, 1.0f, 100.0f);
-
 	// View
 	glm::mat4 depthView = glm::mat4(1.0f);
 	depthView = glm::rotate(depthView, tilt, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -1914,7 +1911,6 @@ void RenderOpenGL::entitiesShadowMap()
 	this->view = depthView;
 	
 	// "Draw" entities to our FBO
-	terrain();
 	entities();
 
 	// Reset everything for regular rendering
@@ -1968,7 +1964,7 @@ void RenderOpenGL::terrain()
 	GLShader* s = this->shaders["terrain"];
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, 0);//this->shadow_depth_tex);
+	glBindTexture(GL_TEXTURE_2D, this->shadow_depth_tex);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, st->map->terrain->pixels);
 	
@@ -1994,7 +1990,8 @@ void RenderOpenGL::terrain()
 		0.0, 0.0, 0.5, 0.0,
 		0.5, 0.5, 0.5, 1.0
 	);
-	glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp;
+
+	glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
 	glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
 
 	glUniform1i(s->uniform("uShadowMap"), 1);
