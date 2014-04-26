@@ -87,10 +87,11 @@ void PhysicsBullet::postGame()
 	// TODO: Free other stuff properly, see HelloWorld demo
 	
 	delete collisionShapes;
-	delete ghostPairCallback;
-	delete dynamicsWorld;
+	
+	//delete dynamicsWorld;
 	delete solver;
 	delete overlappingPairCache;
+	delete ghostPairCallback;
 	delete dispatcher;
 	delete collisionConfiguration;
 	
