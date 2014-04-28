@@ -1925,11 +1925,9 @@ void RenderOpenGL::skybox()
 	glUseProgram(s->p());
 	glCullFace(GL_FRONT);
 	
-	glm::mat4 modelMatrix = glm::scale(
-		glm::translate(glm::mat4(1.0f), glm::vec3(st->map->skybox_size.x*0.25f, st->map->skybox_size.y*0.5f, st->map->skybox_size.z*0.25f)),
-		st->map->skybox_size
-	);
-	
+	glm::mat4 modelMatrix = glm::mat4(1.0f);
+	modelMatrix = glm::translate(modelMatrix, glm::vec3(st->map->skybox_size.x*0.5f, st->map->skybox_size.y*0.5f, st->map->skybox_size.z*0.5f)),
+	modelMatrix = glm::scale(modelMatrix, st->map->skybox_size);
 	modelMatrix = glm::rotate(modelMatrix, 90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;
