@@ -800,6 +800,12 @@ bool Map::preGame()
 		this->st->physics->addRigidBody(meshBody, CG_TERRAIN);
 	}
 	
+	// Add boundry planes which surround the map
+	this->st->physics->addRigidBody(this->createBoundaryPlane(btVector3(1.0f, 0.0f, 0.0f), btVector3(0.0f, 0.0f, 0.0f)), CG_TERRAIN);
+	this->st->physics->addRigidBody(this->createBoundaryPlane(btVector3(0.0f, 0.0f, 1.0f), btVector3(0.0f, 0.0f, 0.0f)), CG_TERRAIN);
+	this->st->physics->addRigidBody(this->createBoundaryPlane(btVector3(-1.0f, 0.0f, 0.0f), btVector3(this->width, 0.0f, this->height)), CG_TERRAIN);
+	this->st->physics->addRigidBody(this->createBoundaryPlane(btVector3(0.0f, 0.0f, -1.0f), btVector3(this->width, 0.0f, this->height)), CG_TERRAIN);
+	
 	return true;
 }
 
@@ -909,6 +915,19 @@ btRigidBody * Map::createGroundBody()
 	}
 	
 	return terrain;
+}
+
+
+/**
+* Create a boundary plane (invisible wall)
+* There is normally four of these around the edges of the map.
+**/
+btRigidBody* Map::createBoundaryPlane(const btVector3 &axis, const btVector3 &loc)
+{
+	btCollisionShape* shape = new btStaticPlaneShape(axis, 0);
+	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), loc));
+	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(0, motionState, shape, btVector3(0,0,0));
+	return new btRigidBody(rigidBodyCI);
 }
 
 
