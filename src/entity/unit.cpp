@@ -541,11 +541,6 @@ void Unit::update(int delta)
 		}
 	}
 
-	// Create blood if health is low
-	if (health < (this->uc->begin_health / 2)) {
-		create_particles_blood_spray(this->st, xform.getOrigin(), 1);
-	}
-	
 	// Remove (and rollback) old pickups
 	pickups.remove_if(remove_finished_pickup);
 }
