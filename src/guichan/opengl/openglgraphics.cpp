@@ -339,10 +339,10 @@ namespace gcn
 
         // Draw a textured quad -- the image
         GLfloat box[4][5] = {
-            {dstX, dstY + height, 0.0f, texX1, texY2},
-            {dstX, dstY, 0.0f, texX1, texY1},
-            {dstX + width, dstY + height, 0.0f, texX2, texY2},
-            {dstX + width, dstY, 0.0f, texX2, texY1},
+            {static_cast<float>(dstX), static_cast<float>(dstY + height), 0.0f, static_cast<float>(texX1), static_cast<float>(texY2)},
+            {static_cast<float>(dstX), static_cast<float>(dstY), 0.0f, static_cast<float>(texX1), static_cast<float>(texY1)},
+            {static_cast<float>(dstX + width), static_cast<float>(dstY + height), 0.0f, static_cast<float>(texX2), static_cast<float>(texY2)},
+            {static_cast<float>(dstX + width), static_cast<float>(dstY), 0.0f, static_cast<float>(texX2), static_cast<float>(texY1)},
         };
 
         glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
@@ -375,7 +375,7 @@ namespace gcn
         x += top.xOffset;
         y += top.yOffset;
 
-        GLfloat point[3] = { x, y, 0.0f };
+        GLfloat point[3] = { static_cast<float>(x), static_cast<float>(y), 0.0f };
 
         glBufferData(GL_ARRAY_BUFFER, sizeof point, point, GL_DYNAMIC_DRAW);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -426,10 +426,10 @@ namespace gcn
         const ClipRectangle& top = mClipStack.top();
 
         GLfloat box[4][3] = {
-            {rectangle.x + top.xOffset, rectangle.y + top.yOffset, 0.0f},
-            {rectangle.x + rectangle.width + top.xOffset - 1.0f, rectangle.y + top.yOffset + 0.375f, 0.0f},
-            {rectangle.x + rectangle.width + top.xOffset - 1.0f, rectangle.y + rectangle.height + top.yOffset, 0.0f},
-            {rectangle.x + top.xOffset, rectangle.y + rectangle.height + top.yOffset, 0.0f},
+            {static_cast<float>(rectangle.x + top.xOffset), static_cast<float>(rectangle.y + top.yOffset), 0.0f},
+            {static_cast<float>(rectangle.x + rectangle.width + top.xOffset) - 1.0f, static_cast<float>(rectangle.y + top.yOffset) + 0.375f, 0.0f},
+            {static_cast<float>(rectangle.x + rectangle.width + top.xOffset) - 1.0f, static_cast<float>(rectangle.y + rectangle.height + top.yOffset), 0.0f},
+            {static_cast<float>(rectangle.x + top.xOffset), static_cast<float>(rectangle.y + rectangle.height + top.yOffset), 0.0f},
         };
 
         glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
@@ -452,10 +452,10 @@ namespace gcn
         const ClipRectangle& top = mClipStack.top();
 
         GLfloat box[4][3] = {
-            {rectangle.x + top.xOffset, rectangle.y + top.yOffset, 0.0f},
-            {rectangle.x + rectangle.width + top.xOffset, rectangle.y + top.yOffset, 0.0f},
-            {rectangle.x + top.xOffset, rectangle.y + rectangle.height + top.yOffset, 0.0f},
-            {rectangle.x + rectangle.width + top.xOffset, rectangle.y + rectangle.height + top.yOffset, 0.0f},
+            {static_cast<float>(rectangle.x + top.xOffset), static_cast<float>(rectangle.y + top.yOffset), 0.0f},
+            {static_cast<float>(rectangle.x + rectangle.width + top.xOffset), static_cast<float>(rectangle.y + top.yOffset), 0.0f},
+            {static_cast<float>(rectangle.x + top.xOffset), static_cast<float>(rectangle.y + rectangle.height + top.yOffset), 0.0f},
+            {static_cast<float>(rectangle.x + rectangle.width + top.xOffset), static_cast<float>(rectangle.y + rectangle.height + top.yOffset), 0.0f},
         };
 
         glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);

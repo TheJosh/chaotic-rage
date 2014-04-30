@@ -131,7 +131,7 @@ public:
 	virtual void setVelocityForTimeInterval(const btVector3& velocity,
 				btScalar timeInterval);
 
-	void reset ( btCollisionWorld* collisionWorld );
+	void reset ();
 	void warp (const btVector3& origin);
 
 	void preStep (  btCollisionWorld* collisionWorld);
