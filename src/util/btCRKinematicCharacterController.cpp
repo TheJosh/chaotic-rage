@@ -486,8 +486,11 @@ btScalar timeInterval
 }
 
 
+void btCRKinematicCharacterController::reset ()
+{
+}
 
-void btCRKinematicCharacterController::reset ( btCollisionWorld* collisionWorld )
+void btCRKinematicCharacterController::reset (btCollisionWorld* collisionWorld)
 {
 }
 

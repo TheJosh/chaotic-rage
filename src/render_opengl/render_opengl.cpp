@@ -944,10 +944,10 @@ void RenderOpenGL::renderSprite(GLuint texture, int x, int y, int w, int h)
 	
 	// Draw a textured quad -- the image
 	GLfloat box[4][5] = {
-		{x, y + h, 0.0f,      0.0f, 1.0f},
-		{x + w, y + h, 0.0f,  1.0f, 1.0f},
-		{x, y, 0.0f,          0.0f, 0.0f},
-		{x + w, y, 0.0f,      1.0f, 0.0f},
+		{static_cast<float>(x), static_cast<float>(y) + h, 0.0f,      0.0f, 1.0f},
+		{static_cast<float>(x + w), static_cast<float>(y) + h, 0.0f,  1.0f, 1.0f},
+		{static_cast<float>(x), static_cast<float>(y), 0.0f,          0.0f, 0.0f},
+		{static_cast<float>(x + w), static_cast<float>(y), 0.0f,      1.0f, 0.0f},
 	};
 	
 	if (sprite_vbo == 0) {
