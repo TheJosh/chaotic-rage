@@ -19,6 +19,7 @@
 // 3. This notice may not be removed or altered from any source distribution.	//
 //////////////////////////////////////////////////////////////////////////////////
 
+// This file has been slightly altered to follow the C++11 standard.
 
 #include "Core/SPK_Group.h"
 #include "Core/SPK_Emitter.h"
@@ -294,7 +295,7 @@ namespace SPK
 				int nb = (*it)->updateNumber(deltaTime);
 				if (nb > 0)
 				{
-					EmitterData data = {*it,nb};
+					EmitterData data = {*it,static_cast<unsigned int>(nb)};
 					activeEmitters.push_back(data);
 					nbAutoBorn += nb;
 				}
