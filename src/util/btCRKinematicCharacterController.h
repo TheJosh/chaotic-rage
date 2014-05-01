@@ -131,7 +131,10 @@ public:
 	virtual void setVelocityForTimeInterval(const btVector3& velocity,
 				btScalar timeInterval);
 
+	// I need both of these, one for Bullet 2.81 and one for Bullet 2.82
 	void reset ();
+	void reset (btCollisionWorld* collisionWorld);
+	
 	void warp (const btVector3& origin);
 
 	void preStep (  btCollisionWorld* collisionWorld);
