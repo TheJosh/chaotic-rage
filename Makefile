@@ -114,7 +114,7 @@ chaoticrage: $(OBJFILES_CLIENT)
 install: chaoticrage
 	mkdir -p $(DESTPATH)/usr/bin
 	install chaoticrage $(DESTPATH)/usr/bin
-	
+
 	mkdir -p $(DESTPATH)/usr/share/chaoticrage
 	cp -r --no-preserve=ownership data $(DESTPATH)/usr/share/chaoticrage
 	cp -r --no-preserve=ownership maps $(DESTPATH)/usr/share/chaoticrage
@@ -122,35 +122,35 @@ install: chaoticrage
 
 dist: src data maps
 	mkdir -p $(DISTTMP)
-	
+
 	cp -r Makefile $(DISTTMP)
 	cp -r LICENSE $(DISTTMP)
 	cp -r README.md $(DISTTMP)
 	cp -r src $(DISTTMP)
 	cp -r data $(DISTTMP)
 	cp -r maps $(DISTTMP)
-	
+
 	mkdir -p $(DISTTMP)/tools
 	mkdir -p $(DISTTMP)/tools/linux
 	mkdir -p $(DISTTMP)/tools/linux/working
-	
+
 	cp -r tools/include $(DISTTMP)/tools
 	cp tools/linux/*.sh $(DISTTMP)/tools/linux/
 	chmod 755 $(DISTTMP)/tools/linux/*.sh
-	
+
 	tar -cvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
 	rm -rf $(DISTTMP)
 
 
 dist-bin: chaoticrage data maps
 	mkdir -p $(DISTTMP)
-	
+
 	cp -r LICENSE $(DISTTMP)
 	cp -r README.md $(DISTTMP)
 	cp -r chaoticrage $(DISTTMP)
 	cp -r data $(DISTTMP)
 	cp -r maps $(DISTTMP)
-	
+
 	tar -cvjf chaoticrage-linuxbin-$(VERSION).tar.bz2 $(DISTTMP)
 	rm -rf $(DISTTMP)
 
@@ -165,16 +165,16 @@ $(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h Makefile
 	@echo [CC] $<
 	@mkdir -p `dirname $< | sed "s/src/build/"`
 	@$(CXX) $(CFLAGS) -o $@ -c $<
-	
+
 $(OBJPATH)/happyhttp.o: $(SRCPATH)/http/happyhttp.cpp $(SRCPATH)/http/happyhttp.h Makefile
 	@echo [CC] $<
-	@$(CXX) $(CFLAGS) -Wno-error -o $@ -c $< 
-	
+	@$(CXX) $(CFLAGS) -Wno-error -o $@ -c $<
+
 $(OBJPATH)/confuse/%.o: $(SRCPATH)/confuse/%.c $(SRCPATH)/confuse/confuse.h Makefile
 	@echo [CC] $<
 	@mkdir -p $(OBJPATH)/confuse
-	@$(CC) $(CFLAGS) -Wno-error -o $@ -c $< 
-	
+	@$(CC) $(CFLAGS) -Wno-error -o $@ -c $<
+
 $(OBJPATH)/linux.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h Makefile
 	@echo [CC] $<
 	@$(CXX) $(CFLAGS) -o $@ -c $<
@@ -186,5 +186,5 @@ $(OBJPATH)/emscripten.o: $(SRCPATH)/platform/emscripten.cpp $(SRCPATH)/platform/
 
 
 ifeq ($(wildcard $(OBJPATH)/),)
-$(shell mkdir -p $(OBJPATH))
+	$(shell mkdir -p $(OBJPATH))
 endif

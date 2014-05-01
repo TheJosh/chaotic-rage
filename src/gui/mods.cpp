@@ -48,7 +48,7 @@ DialogMods::DialogMods(GameState* st) : Dialog()
 **/
 DialogMods::~DialogMods()
 {
-	for (int i = this->mods->getNumberOfElements(); i != 0; i++) {
+	for (int i = this->mods->getNumberOfElements() - 1; i >= 0; i--) {
 		delete(this->mods->getModAt(i));
 	}
 	delete(this->mods);
