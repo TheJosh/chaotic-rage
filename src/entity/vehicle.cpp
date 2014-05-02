@@ -125,9 +125,12 @@ Vehicle::~Vehicle()
 {
 	delete this->vehicle_raycaster;
 	delete this->vehicle;
+
 	delete this->anim;
-	
+	this->anim = NULL;
+
 	st->physics->delRigidBody(this->body);
+	this->body = NULL;
 }
 
 

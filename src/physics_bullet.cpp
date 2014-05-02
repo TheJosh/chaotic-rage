@@ -227,7 +227,9 @@ void PhysicsBullet::remRigidBody(btCollisionObject* body)
 **/
 void PhysicsBullet::delRigidBody(btRigidBody* body)
 {
-	if (body && body->getMotionState()) {
+	if (!body) return;
+	
+	if (body->getMotionState()) {
 		delete body->getMotionState();
 	}
 	

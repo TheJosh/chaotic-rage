@@ -60,6 +60,11 @@ void Helicopter::init(VehicleType *vt, GameState *st, btTransform &loc)
 **/
 Helicopter::~Helicopter()
 {
+	delete(this->anim);
+	this->anim = NULL;
+
+	st->physics->delRigidBody(this->body);
+	this->body = NULL;
 }
 
 
