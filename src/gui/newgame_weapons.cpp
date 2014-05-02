@@ -175,8 +175,10 @@ void DialogNewGameWeapons::loadWeapons()
 	
 	// Re-check the ones in the GameSettingsFaction array
 	for (i = 0; i < gs->factions[faction].spawn_weapons_extra.size(); i++) {
-		int chkIdx = this->findWeaponType(gs->factions[faction].spawn_weapons_extra[i]);
-		this->chk_custom[chkIdx]->setSelected(true);
+		unsigned int chkIdx = this->findWeaponType(gs->factions[faction].spawn_weapons_extra[i]);
+		if (chkIdx < this->chk_custom.size()) {
+			this->chk_custom[chkIdx]->setSelected(true);
+		}
 	}
 }
 
