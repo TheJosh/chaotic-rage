@@ -122,8 +122,8 @@ gcn::Container * DialogNewGameWeapons::setup()
 **/
 void DialogNewGameWeapons::action(const gcn::ActionEvent& actionEvent)
 {
-	this->m->remDialog(this);
 	this->saveWeapons();
+	this->m->remDialog(this);
 }
 
 
@@ -134,6 +134,7 @@ void DialogNewGameWeapons::valueChanged(const gcn::SelectionEvent& selectionEven
 {
 	this->saveWeapons();
 	faction = this->dd_faction->getSelected();
+	assert(faction < NUM_FACTIONS);
 	this->loadWeapons();
 }
 
@@ -144,6 +145,7 @@ void DialogNewGameWeapons::valueChanged(const gcn::SelectionEvent& selectionEven
 void DialogNewGameWeapons::saveWeapons()
 {
 	unsigned int i;
+	assert(this->wts != NULL);
 	
 	gs->factions[faction].spawn_weapons_unit = chk_unit->isSelected();
 	gs->factions[faction].spawn_weapons_gametype = chk_gametype->isSelected();
