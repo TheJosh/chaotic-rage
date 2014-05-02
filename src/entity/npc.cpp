@@ -32,9 +32,8 @@ NPC::NPC(UnitType *uc, GameState *st, float x, float y, float z, AIType *ai, Fac
 
 NPC::~NPC()
 {
-	if (this->logic) {
-		delete(this->logic);
-	}
+	delete(this->logic);
+	this->logic = NULL;
 }
 
 

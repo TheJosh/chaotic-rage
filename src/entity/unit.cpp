@@ -92,8 +92,13 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 Unit::~Unit()
 {
 	delete(this->anim);
+	this->anim = NULL;
+
 	st->physics->delAction(this->character);
+	this->character = NULL;
+
 	st->physics->delCollisionObject(this->ghost);
+	this->ghost = NULL;
 }
 
 
