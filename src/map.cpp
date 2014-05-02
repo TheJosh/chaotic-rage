@@ -674,9 +674,11 @@ void Map::createHeightmapRaw()
 	
 	// Heightmaps need to be powerOfTwo + 1
 	if (!isPowerOfTwo(surf->w - 1) || !isPowerOfTwo(surf->h - 1)) {
-		SDL_RWclose(rw);
-		SDL_FreeSurface(surf);
-		return;
+		/* Hack to allow illegal resolutions of heightmap images.
+		 * TODO: fix the heightmaps images. */
+		//SDL_RWclose(rw);
+		//SDL_FreeSurface(surf);
+		//return;
 	}
 
 	this->heightmap = new float[surf->w * surf->h];
@@ -966,5 +968,3 @@ MapReg * MapRegistry::get(string name)
 	}
 	return NULL;
 }
-
-
