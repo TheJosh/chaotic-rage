@@ -23,6 +23,9 @@ class btPairCachingGhostObject;
 class btCRKinematicCharacterController;
 
 
+/**
+* The currently available weapons
+**/
 class UnitWeapon {
 	friend class Unit;
 	private:
@@ -33,6 +36,10 @@ class UnitWeapon {
 		bool reloading;
 };
 
+
+/**
+* The currently active pickups
+**/
 class UnitPickup {
 	public:
 		Unit* u;
@@ -41,6 +48,9 @@ class UnitPickup {
 };
 
 
+/**
+* Base class for all units - Players and NPCs
+**/
 class Unit : public Entity
 {
 	friend class NetClient;

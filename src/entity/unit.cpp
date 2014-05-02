@@ -28,6 +28,7 @@
 using namespace std;
 
 
+
 Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) : Entity(st)
 {
 	this->uc = uc;
@@ -102,6 +103,9 @@ Unit::~Unit()
 }
 
 
+/**
+* Set the firing flag and start playing sfx
+**/
 void Unit::beginFiring()
 {
 	if (this->weapon == NULL) return;
@@ -112,6 +116,10 @@ void Unit::beginFiring()
 	weapon_sound = GEng()->audio->playSound(snd, true, this);
 }
 
+
+/**
+* Unset the firing flag and stop sfx
+**/
 void Unit::endFiring()
 {
 	if (this->weapon == NULL) return;
@@ -124,6 +132,11 @@ void Unit::endFiring()
 	GEng()->audio->playSound(snd, false, this);
 }
 
+
+/**
+* Play the sound of an empty weapn trying to fire
+* TODO: Fix this and get it working
+**/
 void Unit::emptySound()
 {
 	if (this->weapon == NULL) return;
@@ -185,7 +198,7 @@ bool Unit::onground()
 
 
 /**
-* Do a melee attack
+* Do a melee attack directly forwards
 **/
 void Unit::meleeAttack()
 {
@@ -270,6 +283,7 @@ bool Unit::pickupWeapon(WeaponType* wt)
 	return true;
 }
 
+
 /**
 * Pick up ammo
 **/
@@ -288,21 +302,37 @@ bool Unit::pickupAmmo(WeaponType* wt)
 	return false;
 }
 
+
+/**
+* Return the unber of weapons currently in posession
+**/
 unsigned int Unit::getNumWeapons()
 {
 	return this->avail_weapons.size();
 }
 
+
+/**
+* Return the weapon type at a given index
+**/
 WeaponType * Unit::getWeaponTypeAt(unsigned int id)
 {
 	return this->avail_weapons[id]->wt;
 }
 
+
+/**
+* Return the type of the currently selected weapon
+**/
 WeaponType * Unit::getWeaponTypeCurr()
 {
 	return this->weapon->wt;
 }
 
+
+/**
+* Return the weapon details at a given index
+**/
 UnitWeapon * Unit::getWeaponAt(unsigned int id)
 {
 	return this->avail_weapons[id];
@@ -323,11 +353,19 @@ void Unit::setWeapon(int id)
 	curr_weapon_id = id;
 }
 
+
+/**
+* Get the ID of the currently selected weapon
+**/
 unsigned int Unit::getCurrentWeaponID()
 {
 	return this->curr_weapon_id;
 }
 
+
+/**
+* Get the ID of the previous weapon in the list
+**/
 unsigned int Unit::getPrevWeaponID()
 {
 	int ret = this->curr_weapon_id - 1;
@@ -335,12 +373,17 @@ unsigned int Unit::getPrevWeaponID()
 	return ret;
 }
 
+
+/**
+* Get the ID of the next weapon in the list
+**/
 unsigned int Unit::getNextWeaponID()
 {
 	unsigned int ret = this->curr_weapon_id + 1;
 	if (ret > this->avail_weapons.size() - 1) ret = 0;
 	return ret;
 }
+
 
 /**
 * The amount of ammo in the belt, or -1 if no current weapon
@@ -350,6 +393,7 @@ int Unit::getBelt()
 	if (this->weapon == NULL) return -1;
 	return this->weapon->belt;
 }
+
 
 /**
 * The amount of ammo in the magazine, or -1 no current weapon, or -2 if reloading
@@ -361,6 +405,7 @@ int Unit::getMagazine()
 	return this->weapon->magazine;
 }
 
+
 /**
 * Gets the unit health
 **/
@@ -368,6 +413,7 @@ float Unit::getHealth()
 {
 	return this->health;
 }
+
 
 /**
 * Gets the unit health, as a percent of starting health
@@ -378,12 +424,19 @@ float Unit::getHealthPercent()
 }
 
 
-
+/**
+* Get the current animation play object
+**/
 AnimPlay* Unit::getAnimModel()
 {
 	return this->anim;
 }
 
+
+/**
+* Get the curret sound
+* TODO: Remove - not in use...?
+**/
 Sound* Unit::getSound()
 {
 	return NULL;
@@ -404,19 +457,25 @@ bool remove_finished_pickup(const UnitPickup& up)
 }
 
 
+/**
+* Return the current transform
+**/
 btTransform &Unit::getTransform()
 {
 	return ghost->getWorldTransform();
 }
 
 
+/**
+* Set the current transform
+**/
 void Unit::setTransform(btTransform &t) {
 	ghost->setWorldTransform(t);
 }
 
 
 /**
-* Moves units around
+* Called once per tick to do all of the logic and stuff
 **/
 void Unit::update(int delta)
 {
@@ -687,6 +746,7 @@ void Unit::doUse()
 	}
 }
 
+
 /**
 * Lift an object
 **/
@@ -700,6 +760,7 @@ void Unit::doLift()
 	}
 }
 
+
 /**
 * Drop an object. Is this the same as throw?
 **/
@@ -710,7 +771,7 @@ void Unit::doDrop()
 
 
 /**
-* Apply an adjustment to a unit
+* Apply a pickup adjustment to a unit
 **/
 void Unit::applyPickupAdjust(PickupTypeAdjust* adj)
 {
@@ -725,7 +786,7 @@ void Unit::applyPickupAdjust(PickupTypeAdjust* adj)
 
 
 /**
-* Rollback an applied adjustment
+* Rollback a pickup adjustment
 **/
 void Unit::rollbackPickupAdjust(PickupTypeAdjust* adj)
 {
@@ -746,5 +807,3 @@ void Unit::applyForce(btVector3 &force)
 {
 	this->force += force;
 }
-
-
