@@ -83,7 +83,7 @@ void WeaponFlamethrower::doFire(Unit *u, btTransform &origin)
 	
 	// Begin and end vectors
 	btVector3 begin = xform.getOrigin();
-	btVector3 end = begin + xform.getBasis() * btVector3(0.0f, 0.0f, range);
+	btVector3 end = begin + xform.getBasis() * btVector3(0.0f, 1.0f, range);
 	st->addDebugLine(&begin, &end);
 	
 	// Do the rayTest

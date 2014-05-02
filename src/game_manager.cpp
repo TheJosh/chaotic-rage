@@ -125,7 +125,7 @@ void GameManager::startCampaign(Campaign* c, string unittype, int viewmode, unsi
 			MapReg* m = mapreg->get(stage->map);
 			if (m == NULL) {
 				it++;
-				displayMessageBox("Map not found");
+				displayMessageBox("Map not found: " + stage->map);
 				continue;
 			}
 

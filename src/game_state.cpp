@@ -108,6 +108,9 @@ GameState::GameState()
 
 GameState::~GameState()
 {
+	for (unsigned int i = 0; i < MAX_LOCAL; i++) {
+		delete(this->local_players[i]);
+	}
 }
 
 
@@ -291,8 +294,6 @@ PlayerState * GameState::localPlayerFromSlot(unsigned int slot)
 }
 
 
-
-
 /**
 * Gets the entropy for a given player
 **/
@@ -322,7 +323,6 @@ void GameState::addParticleGroup(SPK::Group* group)
 		this->particle_system->addGroup(group);
 	#endif
 }
-
 
 
 /**

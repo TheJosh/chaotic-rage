@@ -94,19 +94,19 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 		
 		btVector3 connectionPointCS0;
 		float connectionHeight = 0.2f;
-		
+		bool isFrontWheel = true;
 		
 		connectionPointCS0 = btVector3(sizeHE.x(), connectionHeight, sizeHE.y());
-		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, false);
+		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
 		
 		connectionPointCS0 = btVector3(-sizeHE.x(), connectionHeight, sizeHE.y());
-		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, false);
+		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
 		
 		connectionPointCS0 = btVector3(sizeHE.x(), connectionHeight, -sizeHE.y());
-		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, false);
+		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, !isFrontWheel);
 		
 		connectionPointCS0 = btVector3(-sizeHE.x(), connectionHeight, -sizeHE.y());
-		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, false);
+		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, !isFrontWheel);
 	}
 	
 	// Set some wheel dynamics
@@ -341,7 +341,7 @@ void* ChaoticRageVehicleRaycaster::castRay(const btVector3& from,const btVector3
 		}
 
 		const btRigidBody* body = btRigidBody::upcast(rayCallback.m_collisionObject);
-        if (body && body->hasContactResponse())
+		if (body && body->hasContactResponse())
 		{
 			result.m_hitPointInWorld = rayCallback.m_hitPointWorld;
 			result.m_hitNormalInWorld = rayCallback.m_hitNormalWorld;
@@ -384,6 +384,3 @@ void Vehicle::setNodeTransformRelative(VehicleNodeType type, glm::mat4 transform
 		}
 	}
 }
-
-
-

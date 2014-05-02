@@ -185,14 +185,10 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 		return models;
 	}
 	
-	if (ui) ui->updateUI();
-
 	cfg = cfg_init(opts, CFGF_NONE);
 	cfg_parse_buf(cfg, buffer);
 	free(buffer);
 	
-	if (ui) ui->updateUI();
-
 	int num_types = cfg_size(cfg, section);
 	if (num_types == 0) {
 		cerr << "Error loading file " << filename << ". File does not contain any '" << section << "' sections.\n";
@@ -220,10 +216,10 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 		models->push_back(am);
 		
 		DEBUG("mod", "%08x %s", am->id, am->name.c_str());
-		
-		if (ui) ui->updateUI();
 	}
-	
+
+	if (ui) ui->updateUI();
+
 	cfg_free(cfg);
 	return models;
 }
