@@ -48,8 +48,8 @@ void WeaponDigdown::doFire(Unit *u, btTransform &origin)
 		if (body && !body->getUserPointer()) {
 			// Hit the ground, lets dig a hole
 			Map* map = u->getGameState()->map;
-			int mapX = ((int)begin.x()) / map->width * map->heightmap_sx;
-			int mapY = ((int)begin.z()) / map->height * map->heightmap_sz;
+			int mapX = ((int)begin.x()) / map->width * map->heightmap->sx;
+			int mapY = ((int)begin.z()) / map->height * map->heightmap->sz;
 
 			heightmapCircle(map, mapX, mapY, this->radius, this->depth);
 

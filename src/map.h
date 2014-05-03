@@ -24,6 +24,7 @@ class RangeF;
 class btTriangleMesh;
 
 
+// TODO: Cleanup, improve and move to own file.
 class Light {
 	public:
 		unsigned int type;		// 1, 2 or 3
@@ -41,7 +42,25 @@ class Light {
 		void setSpecular(short r, short g, short b, short a);
 };
 
+// TODO: Cleanup, improve and move to own file.
+class Heightmap {
+	public:
+		int sx;
+		int sz;
+		float scale;
+		float* data;
+		btRigidBody* ground;
 
+	public:
+		Heightmap() : data(NULL), ground(NULL) {};
+		~Heightmap();
+
+	public:
+		bool loadIMG(Mod* mod, string filename);
+		bool createRigidBody(float mapSX, float mapSZ);
+};
+
+// TODO: Cleanup, improve and move to own file.
 class MapMesh {
 	public:
 		btTransform xform;
@@ -73,11 +92,7 @@ class Map {
 		SpritePtr skybox;
 		glm::vec3 skybox_size;
 		
-		float * heightmap;
-		int heightmap_sx;
-		int heightmap_sz;
-		float heightmap_y;
-		btRigidBody *ground;
+		Heightmap* heightmap;		// TODO: Support multiple
 
 		float water_level;
 		SpritePtr water;
