@@ -611,24 +611,39 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 	
 	const char* faces[6] = { "posx", "negx", "posy", "negy", "posz", "negz" };
 	
+	int currWidth = 0;
+	int currHeight = 0;
+
 	for (unsigned int i = 0; i < 6; i++) {
 		string filename = filename_base + faces[i] + filename_ext;
 		
+		// Open rwops
 		rw = mod->loadRWops(filename);
 		if (rw == NULL) {
 			glDeleteTextures(1, &cubemap->pixels);
 			return NULL;
 		}
-	
+		
+		// Read file
 		surf = IMG_Load_RW(rw, 0);
 		if (surf == NULL) {
 			glDeleteTextures(1, &cubemap->pixels);
 			SDL_RWclose(rw);
 			return NULL;
 		}
-	
-		SDL_RWclose(rw);
-	
+		
+		// All images need to be the same size
+		if (currWidth == 0) {
+			currWidth = surf->w;
+			currHeight = surf->h;
+		} else {
+			if (currWidth != surf->w || currHeight != surf->h) {
+				glDeleteTextures(1, &cubemap->pixels);
+				SDL_RWclose(rw);
+				return NULL;
+			}
+		}
+
 		if (surf->format->BytesPerPixel == 4) {
 			if (surf->format->Rmask == 0x000000ff) {
 				texture_format = GL_RGBA;
@@ -648,15 +663,22 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 		} else {
 			glDeleteTextures(1, &cubemap->pixels);
 			SDL_FreeSurface(surf);
+			SDL_RWclose(rw);
 			return NULL;
 		}
-	
+		
+		// Load image into] cubemap
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, surf->w, surf->h, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
+
+		// Free img
 		SDL_FreeSurface(surf);
+		SDL_RWclose(rw);
 	}
 	
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 	
+	CHECK_OPENGL_ERROR;
+
 	return cubemap;
 }
 
