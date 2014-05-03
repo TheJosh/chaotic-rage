@@ -275,12 +275,17 @@ int Map::load(string name, Render *render, Mod* insideof)
 	cfg_sub = cfg_getnsec(cfg, "heightmap", 0);
 	if (cfg_sub) {
 		this->heightmap = new Heightmap();
-
 		this->heightmap->scale = cfg_getfloat(cfg_sub, "scale-z");
 		
+		if (! this->heightmap->loadIMG(this->mod, "heightmap.png")) {
+			cerr << "Failed to load heightmap img\n";
+			cfg_free(cfg);
+			return 0;
+		}
+
 		this->terrain = this->render->loadSprite("terrain.png", this->mod);
 		if (! this->terrain) {
-			cerr << "No terrain image found for map.\n";
+			cerr << "No terrain image found for map\n";
 			cfg_free(cfg);
 			return 0;
 		}
@@ -677,11 +682,9 @@ bool Heightmap::loadIMG(Mod* mod, string filename)
 	
 	// Heightmaps need to be powerOfTwo + 1
 	if (!isPowerOfTwo(surf->w - 1) || !isPowerOfTwo(surf->h - 1)) {
-		/* Hack to allow illegal resolutions of heightmap images.
-		 * TODO: fix the heightmaps images. */
-		//SDL_RWclose(rw);
-		//SDL_FreeSurface(surf);
-		//return;
+		SDL_RWclose(rw);
+		SDL_FreeSurface(surf);
+		return false;
 	}
 
 	this->data = new float[surf->w * surf->h];
@@ -813,10 +816,10 @@ float Map::heightmapScaleZ()
 **/
 bool Map::preGame()
 {
-	// Load heightmap
-	// TODO: Should the load be at map load time?
-	if (! heightmap->loadIMG(this->mod, "heightmap.png")) return false;
-	if (! heightmap->createRigidBody(this->width, this->height)) return false;
+	// Create heightmap rigid body
+	if (! heightmap->createRigidBody(this->width, this->height)) {
+		return false;
+	}
 
 	// Add to physics
 	this->st->physics->addRigidBody(heightmap->ground, CG_TERRAIN);
