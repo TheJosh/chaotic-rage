@@ -248,9 +248,7 @@ Entity* GameState::deadButNotBuried(Entity* e)
 **/
 Unit* GameState::findUnitSlot(unsigned int slot)
 {
-	if (slot <= 0) return NULL;
-	
-	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); it++) {
+	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); ++it) {
 		if ((*it)->klass() != UNIT) continue;
 		Unit* u = (Unit*)*it;
 		if (u->slot == slot) return u;

@@ -267,12 +267,7 @@ bool Unit::pickupWeapon(WeaponType* wt)
 {
 	if (this->pickupAmmo(wt)) return true;
 	
-	UnitWeapon *uw = new UnitWeapon();
-	uw->wt = wt;
-	uw->magazine = wt->magazine_limit;
-	uw->belt = wt->belt_limit;
-	uw->next_use = st->game_time;
-	uw->reloading = false;
+	UnitWeapon *uw = new UnitWeapon(wt, wt->magazine_limit, wt->belt_limit, st->game_time, false);
 	
 	this->avail_weapons.push_back(uw);
 	

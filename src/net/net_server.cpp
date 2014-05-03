@@ -31,6 +31,19 @@
 using namespace std;
 
 
+/**
+* Copy constructor
+**/
+NetServer::NetServer(const NetServer & obj)
+{
+	this->st = obj.st;
+	this->conf = obj.conf;
+	
+	this->seq = obj.seq;
+	this->seq_pred = new NetServerSeqPred(*obj.seq_pred);
+}
+
+
 NetServer::NetServer(GameState * st, ServerConfig * conf)
 {
 	this->st = st;
@@ -44,9 +57,11 @@ NetServer::NetServer(GameState * st, ServerConfig * conf)
 	}
 }
 
+
 NetServer::~NetServer()
 {
 	if (this->sock != NULL) SDLNet_UDP_Close(this->sock);
+	delete(this->seq_pred);
 }
 
 
@@ -99,7 +114,7 @@ void NetServer::update()
 
 		// Find the appropriate client
 		NetServerClientInfo *client = NULL;
-		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
+		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); ++cli) {
 			if ((*cli) != NULL && (*cli)->ipaddress.host == pkt->address.host && (*cli)->code == code) {
 				client = (*cli);
 				break;
@@ -136,7 +151,7 @@ void NetServer::update()
 	if (this->clients.size() > 0) {
 		// Check the seq of all clients
 		// If they are too old, assume lost network connection
-		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
+		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); ++cli) {
 			if ((*cli)->inlist && (*cli)->ingame && (this->seq - (*cli)->seq) > MAX_SEQ_LAG) {
 				this->dropClient(*cli);
 			}
@@ -151,20 +166,20 @@ void NetServer::update()
 		// Dump debug info
 		if (debug_enabled("net_info")) {
 			cout << setw (6) << setfill(' ') << st->game_time << " MSG-QUEUE\n";
-			for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
+			for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); ++it) {
 				cout << "       " << setw (6) << setfill(' ') << ((*it).seq) << " " << ((*it).type);
 				dumpPacket((*it).data, (*it).size);
 			}
 			
 			cout << setw (6) << setfill(' ') << st->game_time << " CLIENT-INFO\n";
-			for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
+			for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); ++cli) {
 				cout << "       " << setw (6) << setfill(' ') << ((*cli)->seq) << " " << ((*cli)->slot) << "\n";
 			}
 		}
 		
 		// Send messages
 		// TODO: Think up a way to handle packets larger than internet MTU
-		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); cli++) {
+		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); ++cli) {
 			if ((*cli) == NULL) continue;
 		
 			pkt->address.host = (*cli)->ipaddress.host;
@@ -180,7 +195,7 @@ void NetServer::update()
 			SDLNet_Write16(0, ptr);		// pad
 			ptr += 2; pkt->len += 2;
 		
-			for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
+			for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); ++it) {
 				if ((*cli)->seq > (*it).seq) continue;
 				if ((*it).dest != NULL && (*it).dest != (*cli)) continue;
 				
@@ -519,33 +534,38 @@ unsigned int NetServer::handleJoinAck(NetServerClientInfo *client, Uint8 *data, 
 {
 	cout << "       handleJoinAck() from slot " << client->slot << "\n";
 
-	NetMsg* msg;
-	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
+	NetMsg* msg = NULL;
+	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {
 		Entity *e = (*it);
 
 		switch (e->klass()) {
 			case UNIT:
-				msg = this->addmsgUnitState((Unit*)e);
+				msg = this->addmsgUnitState(static_cast<Unit*>(e));
 				msg->dest = client;
 				break;
 
 			case WALL:
-				msg = this->addmsgWallState((Wall*)e);
+				msg = this->addmsgWallState(static_cast<Wall*>(e));
 				msg->dest = client;
 				break;
 
 			case OBJECT:
-				msg = this->addmsgObjectState((Object*)e);
+				msg = this->addmsgObjectState(static_cast<Object*>(e));
 				msg->dest = client;
 				break;
 
 			case VEHICLE:
-				msg = this->addmsgVehicleState((Vehicle*)e);
+				msg = this->addmsgVehicleState(static_cast<Vehicle*>(e));
 				msg->dest = client;
 				break;
 
 			default:
 				break;
+		}
+
+		if (msg != NULL) {
+			delete(msg);
+			msg = NULL;
 		}
 	}
 
@@ -581,7 +601,7 @@ unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 
 	);
 	
 	// Find the unit for this slot
-	Player *p = (Player*) st->findUnitSlot(client->slot);
+	Player *p = static_cast<Player*>(st->findUnitSlot(client->slot));
 	if (p == NULL) return 7;
 	
 	// Update the unit details

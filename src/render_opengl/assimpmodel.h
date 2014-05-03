@@ -66,7 +66,9 @@ class AssimpMesh
 		vector<glm::vec4>* verticies;
 		
 	public:
-		AssimpMesh() : nd(NULL), faces(NULL), verticies(NULL) {}
+		AssimpMesh() :
+			vao(NULL), numFaces(0), materialIndex(0), nd(NULL), faces(NULL), verticies(NULL)
+			{}
 };
 
 class AssimpMaterial

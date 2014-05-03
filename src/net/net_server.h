@@ -32,6 +32,7 @@ class NetServer {
 		NetServerSeqPred * seq_pred;
 		
 	public:
+		NetServer(const NetServer & obj);
 		NetServer(GameState * st, ServerConfig * conf);
 		~NetServer();
 		
@@ -102,7 +103,7 @@ class NetServerSeqPred
 		// Remove any messages with a seq lower than the lowest client
 		bool operator() (const NetMsg& value) {
 			SeqNum lowest = server->seq;
-			for (vector<NetServerClientInfo*>::iterator cli = server->clients.begin(); cli != server->clients.end(); cli++) {
+			for (vector<NetServerClientInfo*>::iterator cli = server->clients.begin(); cli != server->clients.end(); ++cli) {
 				if ((*cli) == NULL) continue;
 				if ((*cli)->seq < lowest) lowest = (*cli)->seq;
 			}

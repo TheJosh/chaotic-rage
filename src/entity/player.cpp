@@ -43,7 +43,7 @@ Player::~Player()
 /**
 * Sets a key press
 **/
-void Player::keyPress(int idx)
+void Player::keyPress(Key idx)
 {
 	this->key[idx] = 1;
 }
@@ -52,7 +52,7 @@ void Player::keyPress(int idx)
 /**
 * Sets a key release
 **/
-void Player::keyRelease(int idx)
+void Player::keyRelease(Key idx)
 {
 	this->key[idx] = 0;
 }

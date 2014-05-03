@@ -12,15 +12,17 @@ class UnitType;
 class Player : public Unit
 {
 	public:
-		static const int KEY_UP = 0;
-		static const int KEY_LEFT = 1;
-		static const int KEY_DOWN = 2;
-		static const int KEY_RIGHT = 3;
-		static const int KEY_FIRE = 4;
-		static const int KEY_USE = 5;
-		static const int KEY_LIFT = 6;
-		static const int KEY_MELEE = 7;
-		static const int KEY_SPECIAL = 8;
+		enum Key {
+			KEY_UP,
+			KEY_LEFT,
+			KEY_DOWN,
+			KEY_RIGHT,
+			KEY_FIRE,
+			KEY_USE,
+			KEY_LIFT,
+			KEY_MELEE,
+			KEY_SPECIAL,
+		};
 		
 	public:
 		bool key[16];
@@ -34,8 +36,8 @@ class Player : public Unit
 		virtual ~Player();
 		
 	public:
-		void keyPress(int idx);
-		void keyRelease(int idx);
+		void keyPress(Key idx);
+		void keyRelease(Key idx);
 		void handleKeyChange();
 		void angleFromMouse(int x, int y, int delta);
 		void setKeys(Uint8 bitfield);		// TODO: Use 16-bits
