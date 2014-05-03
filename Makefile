@@ -27,7 +27,7 @@ CC ?= $(CROSS)gcc
 # If it's gcc we can enable debugging
 ifndef MXE
 	ifndef EMSCRIPTEN
-		CFLAGS := -DGETOPT -Werror -Wall -ggdb
+		CFLAGS := -DGETOPT -Werror -Wall -ggdb -MMD
 		PLATFORM := build/linux.o
 	endif
 endif
@@ -100,11 +100,16 @@ OBJMAINS=build/client.o
 # Client = everything but the main() method files + some other bits
 OBJFILES_CLIENT=build/client.o $(PLATFORM) build/confuse/confuse.o build/confuse/lexer.o $(filter-out $(OBJMAINS), $(OBJFILES))
 
+# Dependencies of the source files
+DEPENDENCIES := $(OBJFILES:.o=.d)
+
 
 default: chaoticrage
 .PHONY: all chaoticrage clean
 all: chaoticrage
 
+# Include directive for dependencies of the source files
+-include $(DEPENDENCIES)
 
 chaoticrage: $(OBJFILES_CLIENT)
 	@echo [LINK] $@
