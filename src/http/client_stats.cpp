@@ -54,7 +54,7 @@ void sendClientStats()
 		while (conn.outstanding()) {
 			conn.pump();
 		}
-	} catch (happyhttp::Wobbly w) {}
+	} catch (const happyhttp::Wobbly & w) {}
 	
 	free(version);
 	free(gl_vendor);

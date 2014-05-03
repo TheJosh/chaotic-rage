@@ -371,16 +371,17 @@ void RenderOpenGL::initGuichan(gcn::Gui * gui, Mod * mod)
 {
 	gcn::OpenGLGraphics* graphics;
 	gcn::ChaoticRageOpenGLSDLImageLoader* imageLoader;
-	gcn::ImageFont* font;
 	
 	imageLoader = new gcn::ChaoticRageOpenGLSDLImageLoader(mod);
 	gcn::Image::setImageLoader(imageLoader);
 	
 	try {
 		// If you update the font, you gotta do in both cr and menu mods
-		font = new gcn::ImageFont("fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?!.,\"'_");
+		gcn::ImageFont* font = new gcn::ImageFont(
+			"fixedfont.bmp",
+			" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?!.,\"'_");
 		gcn::Widget::setGlobalFont(font);
-	} catch (gcn::Exception ex) {
+	} catch (const gcn::Exception & ex) {
 		reportFatalError(ex.getMessage());
 	}
 	
@@ -588,7 +589,6 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, Mod * mod)
 {
 	SpritePtr cubemap;
-	SDL_RWops* rw;
 	SDL_Surface* surf;
 	GLenum texture_format;
 	
@@ -618,7 +618,7 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 		string filename = filename_base + faces[i] + filename_ext;
 		
 		// Open rwops
-		rw = mod->loadRWops(filename);
+		SDL_RWops* rw = mod->loadRWops(filename);
 		if (rw == NULL) {
 			glDeleteTextures(1, &cubemap->pixels);
 			return NULL;
@@ -1549,7 +1549,7 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 	glm::mat4 MVPstatic = this->projection * this->view * xform_global * transform;
 	glm::mat4 MVPbones = this->projection * this->view * xform_global;
 	
-	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); it++) {
+	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
 		AssimpMesh* mesh = am->meshes[(*it)];
 		
 		if (mesh->bones.size() == 0) {
@@ -1570,7 +1570,7 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 		glDrawElements(GL_TRIANGLES, mesh->numFaces*3, GL_UNSIGNED_SHORT, 0);
 	}
 	
-	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {
+	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); ++it) {
 		recursiveRenderAssimpModel(ap, am, (*it), shader, xform_global);
 	}
 	
@@ -1783,7 +1783,7 @@ void RenderOpenGL::physics()
 	
 	st->physics->getWorld()->debugDrawWorld();
 
-	for (list<DebugLine*>::iterator it = st->lines.begin(); it != st->lines.end(); it++) {
+	for (list<DebugLine*>::iterator it = st->lines.begin(); it != st->lines.end(); ++it) {
 		glBegin(GL_LINES);
 			glColor3f(1.f, 0.5f, 0.f);
 			glVertex3d((*it)->a->getX(), (*it)->a->getY(), (*it)->a->getZ());
@@ -2013,7 +2013,7 @@ void RenderOpenGL::terrain()
 
 	
 	// Static geometry meshes
-	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); it++) {
+	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); ++it) {
 		MapMesh* mm = (*it);
 
 		float m[16];
@@ -2073,7 +2073,7 @@ void RenderOpenGL::entities()
 
 	glEnable(GL_BLEND);
 
-	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
+	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {
 		Entity *e = (*it);
 		
 		if (this->viewmode == 2 && e == this->render_player) continue;

@@ -20,12 +20,12 @@
 		if (error != GL_NO_ERROR) { \
 			char buf[255]; \
 			switch (error) { \
-				case GL_INVALID_ENUM: sprintf(buf, "OpenGL ES error: GL_INVALID_ENUM at line %i of %s", __LINE__, __FILE__); \
-				case GL_INVALID_VALUE: sprintf(buf, "OpenGL ES error: GL_INVALID_VALUE at line %i of %s", __LINE__, __FILE__); \
-				case GL_INVALID_OPERATION: sprintf(buf, "OpenGL ES error: GL_INVALID_OPERATION at line %i of %s", __LINE__, __FILE__); \
-				case GL_INVALID_FRAMEBUFFER_OPERATION: sprintf(buf, "OpenGL ES error: GL_INVALID_FRAMEBUFFER_OPERATION at line %i of %s", __LINE__, __FILE__); \
-				case GL_OUT_OF_MEMORY: sprintf(buf, "OpenGL ES error: GL_OUT_OF_MEMORY at line %i of %s", __LINE__, __FILE__); \
-				default: sprintf(buf, "Unknown OpenGL ES (%x) error at line %i of %s", error, __LINE__, __FILE__); \
+				case GL_INVALID_ENUM: sprintf(buf, "OpenGL ES error: GL_INVALID_ENUM at line %i of %s", __LINE__, __FILE__); break; \
+				case GL_INVALID_VALUE: sprintf(buf, "OpenGL ES error: GL_INVALID_VALUE at line %i of %s", __LINE__, __FILE__); break; \
+				case GL_INVALID_OPERATION: sprintf(buf, "OpenGL ES error: GL_INVALID_OPERATION at line %i of %s", __LINE__, __FILE__); break; \
+				case GL_INVALID_FRAMEBUFFER_OPERATION: sprintf(buf, "OpenGL ES error: GL_INVALID_FRAMEBUFFER_OPERATION at line %i of %s", __LINE__, __FILE__); break; \
+				case GL_OUT_OF_MEMORY: sprintf(buf, "OpenGL ES error: GL_OUT_OF_MEMORY at line %i of %s", __LINE__, __FILE__); break; \
+				default: sprintf(buf, "Unknown OpenGL ES (%x) error at line %i of %s", error, __LINE__, __FILE__); break; \
 			} \
 			reportFatalError(std::string(buf)); \
 		} \

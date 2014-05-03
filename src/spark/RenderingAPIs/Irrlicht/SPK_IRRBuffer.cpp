@@ -21,6 +21,8 @@
 // 3. This notice may not be removed or altered from any source distribution.	//
 //////////////////////////////////////////////////////////////////////////////////
 
+// Source file is altered
+
 #include "RenderingAPIs/Irrlicht/SPK_IRRBuffer.h"
 
 namespace SPK
@@ -93,8 +95,6 @@ namespace IRR
 
 	IRRBuffer* IRRBufferCreator::createBuffer(size_t nbParticles, const Group& group) const
 	{
-		IRRBuffer* buffer = NULL;
-
 		switch(indexType)
 		{
 			case EII_32BITS :

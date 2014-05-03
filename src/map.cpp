@@ -333,7 +333,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 	// Skybox
 	cfg_sub = cfg_getnsec(cfg, "skybox", 0);
 	if (cfg_sub and this->render->is3D()) {
-		Render3D* render3d = (Render3D*)this->render;
+		Render3D* render3d = static_cast<Render3D*>(this->render);
 		this->skybox = render3d->loadCubemap("skybox_", ".jpg", this->mod);
 		this->skybox_size = cfg_getvec3(cfg_sub, "size");
 	}
@@ -380,7 +380,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 		m->model = new AssimpModel(this->mod, std::string(tmp));
 
 		// TODO: Fix for dedicated server (no Render3D)
-		if (! m->model->load((Render3D*)this->render, true)) {
+		if (! m->model->load(static_cast<Render3D*>(this->render), true)) {
 			cerr << "Map model " << tmp << " failed to load.\n";
 			continue;
 		}
@@ -506,7 +506,7 @@ void Map::loadDefaultEntities()
 	}
 	
 	// Hook up trains
-	for(std::map<TrainIds, Vehicle*>::iterator it = train_nums.begin(); it != train_nums.end(); it++) {
+	for(std::map<TrainIds, Vehicle*>::iterator it = train_nums.begin(); it != train_nums.end(); ++it) {
 		TrainIds srch = TrainIds(it->first);
 		srch.idx++;
 		if (train_nums.find(srch) == train_nums.end()) continue;
@@ -860,7 +860,7 @@ bool Map::preGame()
 	}
 
 	// Load the assimp models into the physics engine
-	for (vector<MapMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); it++) {
+	for (vector<MapMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); ++it) {
 		MapMesh *mm = (*it);
 
 		// Fill the triangle mesh
@@ -909,7 +909,7 @@ void Map::fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *ap, AssimpModel *am
 	transform = local->second;
 
 	// Iterate the meshes and add triangles
-	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); it++) {
+	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
 		mesh = am->meshes[(*it)];
 		
 		for (vector<AssimpFace>::iterator itt = mesh->faces->begin(); itt != mesh->faces->end(); itt++) {
@@ -922,7 +922,7 @@ void Map::fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *ap, AssimpModel *am
 	}
 	
 	// Iterate children nodes
-	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {
+	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); ++it) {
 		fillTriangeMesh(trimesh, ap, am, (*it));
 	}
 }
@@ -980,7 +980,7 @@ void MapRegistry::find(Mod* mod)
 	mod->loadMetadata();
 	vector<MapReg>* maps = mod->getMaps();
 	
-	for (vector<MapReg>::iterator it = maps->begin(); it != maps->end(); it++) {
+	for (vector<MapReg>::iterator it = maps->begin(); it != maps->end(); ++it) {
 		this->maps.push_back(*it);
 	}
 }
@@ -991,7 +991,7 @@ void MapRegistry::find(Mod* mod)
 **/
 MapReg * MapRegistry::get(string name) 
 {
-	for (vector<MapReg>::iterator it = maps.begin(); it != maps.end(); it++) {
+	for (vector<MapReg>::iterator it = maps.begin(); it != maps.end(); ++it) {
 		if (it->getName() == name) return &(*it);
 	}
 	return NULL;

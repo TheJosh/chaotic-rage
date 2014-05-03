@@ -63,12 +63,7 @@ Campaign::~Campaign()
 **/
 Campaign* loadItemCampaign(cfg_t* cfg_item, Mod* mod)
 {
-	Campaign* c;
-	CampaignStage stage;
-	cfg_t* cfg_sub;
-	int j;
-
-	c = new Campaign();
+	Campaign* c = new Campaign();
 	c->name = cfg_getstr(cfg_item, "name");
 	c->title = cfg_getstr(cfg_item, "title");
 	c->st = mod->st;
@@ -76,8 +71,8 @@ Campaign* loadItemCampaign(cfg_t* cfg_item, Mod* mod)
 
 	// Load stages
 	int num_stages = cfg_size(cfg_item, "stage");
-	for (j = 0; j < num_stages; j++) {
-		cfg_sub = cfg_getnsec(cfg_item, "stage", j);
+	for (int j = 0; j < num_stages; j++) {
+		cfg_t* cfg_sub = cfg_getnsec(cfg_item, "stage", j);
 
 		CampaignStage *stage = new CampaignStage();
 		char* tmp;
