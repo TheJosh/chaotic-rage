@@ -205,7 +205,6 @@ Map::Map(GameState * st)
 {
 	this->st = st;
 	this->heightmap = NULL;
-	this->ground = NULL;
 	this->skybox = NULL;
 	this->terrain = NULL;
 	this->water = NULL;
@@ -275,7 +274,9 @@ int Map::load(string name, Render *render, Mod* insideof)
 	// Heightmap
 	cfg_sub = cfg_getnsec(cfg, "heightmap", 0);
 	if (cfg_sub) {
-		this->heightmap_y = cfg_getfloat(cfg_sub, "scale-z");
+		this->heightmap = new Heightmap();
+
+		this->heightmap->scale = cfg_getfloat(cfg_sub, "scale-z");
 		
 		this->terrain = this->render->loadSprite("terrain.png", this->mod);
 		if (! this->terrain) {
@@ -654,22 +655,24 @@ static bool isPowerOfTwo (unsigned int x)
 *
 * TODO: Rejig this so we don't use SDL (e.g. prebuild byte array)
 **/
-void Map::createHeightmapRaw()
+bool Heightmap::loadIMG(Mod* mod, string filename)
 {
 	int nX, nZ;
 	Uint8 r,g,b;
 	SDL_RWops *rw;
 	SDL_Surface *surf;
-	
-	rw = mod->loadRWops("heightmap.png");
+
+	// Create rwops
+	rw = mod->loadRWops(filename);
 	if (rw == NULL) {
-		return;
+		return false;
 	}
 	
+	// Load image file
 	surf = IMG_Load_RW(rw, 0);
 	if (surf == NULL) {
 		SDL_RWclose(rw);
-		return;
+		return false;
 	}
 	
 	// Heightmaps need to be powerOfTwo + 1
@@ -681,83 +684,142 @@ void Map::createHeightmapRaw()
 		//return;
 	}
 
-	this->heightmap = new float[surf->w * surf->h];
-	this->heightmap_sx = surf->w;
-	this->heightmap_sz = surf->h;
+	this->data = new float[surf->w * surf->h];
+	this->sx = surf->w;
+	this->sz = surf->h;
 	
-	for (nZ = 0; nZ < heightmap_sz; nZ++) {
-		for (nX = 0; nX < heightmap_sx; nX++) {
+	for (nZ = 0; nZ < this->sz; nZ++) {
+		for (nX = 0; nX < this->sx; nX++) {
 			
 			Uint32 pixel = getPixel(surf, nX, nZ);
 			SDL_GetRGB(pixel, surf->format, &r, &g, &b);
 			
-			heightmap[nZ * heightmap_sx + nX] = r / 255.0f * this->heightmap_y;
+			this->data[nZ * this->sx + nX] = r / 255.0f * this->scale;
 			
 		}
 	}
 	
 	SDL_RWclose(rw);
 	SDL_FreeSurface(surf);
+	return true;
+}
+
+
+/**
+* Create the "ground" for the map
+**/
+bool Heightmap::createRigidBody(float mapSX, float mapSZ)
+{
+	if (this->data == NULL) return false;
+
+	bool flipQuadEdges = false;
+
+	btFasterHeightfieldTerrainShape * groundShape = new btFasterHeightfieldTerrainShape(
+		this->sx, this->sz, this->data,
+		0,
+		0.0f, this->scale,
+		1, PHY_FLOAT, flipQuadEdges
+	);
+
+	groundShape->setLocalScaling(btVector3(
+		mapSX / ((float)this->sx - 1.0f),
+		1.0f,
+		mapSZ / ((float)this->sz - 1.0f)
+	));
+
+	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(
+		btQuaternion(0, 0, 0, 1),
+		btVector3(mapSX/2.0f, this->scale/2.0f, mapSZ/2.0f)
+	));
+
+	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
+		0,
+		groundMotionState,
+		groundShape,
+		btVector3(0,0,0)
+	);
+
+	this->ground = new btRigidBody(groundRigidBodyCI);
+	this->ground->setRestitution(0.f);
+	this->ground->setFriction(10.f);
+
+	// Debugging for the terrain without needing to recompile
+	if (!debug_enabled("terrain")) {
+		//this->ground->setCollisionFlags(this->ground->getCollisionFlags()|btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);
+	}
+
+	return true;
+}
+
+
+/**
+* Cleanup
+**/
+Heightmap::~Heightmap()
+{
+	delete [] data;
+	delete ground;
 }
 
 
 /**
 * Get a map cell.
+* TODO: Remove and support multiple heightmaps
 **/
 float Map::heightmapGet(int X, int Z)
 {
-	return heightmap[Z * heightmap_sx + X];
+	return heightmap->data[Z * heightmap->sx + X];
 }
 
 
 /**
 * Set a map cell. Returns the new value.
+* TODO: Remove and support multiple heightmaps
 **/
 float Map::heightmapSet(int X, int Z, float val)
 {
-	return heightmap[Z * heightmap_sx + X] = val;
+	return heightmap->data[Z * heightmap->sx + X] = val;
 }
 
 
 /**
 * Increase (use neg nums to decrease) a map cell. Returns the new value.
+* TODO: Remove and support multiple heightmaps
 **/
 float Map::heightmapAdd(int X, int Z, float amt)
 {
-	return heightmap[Z * heightmap_sx + X] += amt;
+	return heightmap->data[Z * heightmap->sx + X] += amt;
 }
 
 
 float Map::heightmapScaleX()
 {
-	return (float)width / (float)(heightmap_sx-1);
+	return (float)width / (float)(heightmap->sx-1);
 }
 
 float Map::heightmapScaleY()
 {
-	return this->heightmap_y;
+	return this->heightmap->scale;
 }
 
 float Map::heightmapScaleZ()
 {
-	return (float)height / (float)(heightmap_sz-1);
+	return (float)height / (float)(heightmap->sz-1);
 }
 
 
+/**
+* Pre-game map stuff
+**/
 bool Map::preGame()
 {
-	heightmap = NULL;
-	
-	ground = this->createGroundBody();
-	if (ground == NULL) {
-		return false;
-	}
-	
-	ground->setRestitution(0.f);
-	ground->setFriction(10.f);
-	
-	this->st->physics->addRigidBody(ground, CG_TERRAIN);
-	
+	// Load heightmap
+	// TODO: Should the load be at map load time?
+	if (! heightmap->loadIMG(this->mod, "heightmap.png")) return false;
+	if (! heightmap->createRigidBody(this->width, this->height)) return false;
+
+	// Add to physics
+	this->st->physics->addRigidBody(heightmap->ground, CG_TERRAIN);
 	
 	// If there is water in the world, we create a water surface
 	// It doesn't collide with stuff, it's just so we can detect with a raycast
@@ -848,13 +910,13 @@ void Map::fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *ap, AssimpModel *am
 }
 
 
+/**
+* Cleanup after a game
+**/
 void Map::postGame()
 {
-	delete [] this->heightmap;
+	delete this->heightmap;
 	this->heightmap = NULL;
-	
-	delete this->ground;
-	this->ground = NULL;
 	
 	if (this->terrain != NULL) {
 		this->render->freeSprite(this->terrain);
@@ -865,58 +927,6 @@ void Map::postGame()
 		this->render->freeSprite(this->skybox);
 		this->skybox = NULL;
 	}
-}
-
-
-/*
-* Create the "ground" for the map
-**/
-btRigidBody * Map::createGroundBody()
-{
-	if (heightmap == NULL) createHeightmapRaw();
-	if (heightmap == NULL) return NULL;
-	
-	bool flipQuadEdges = false;
-	
-	btFasterHeightfieldTerrainShape * groundShape = new btFasterHeightfieldTerrainShape(
-		heightmap_sx, heightmap_sz, heightmap,
-		0,
-		0.0f, this->heightmap_y,
-		1, PHY_FLOAT, flipQuadEdges
-	);
-	
-	groundShape->setLocalScaling(btVector3(
-		heightmapScaleX(),
-		1.0f,
-		heightmapScaleZ()
-	));
-	
-	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(
-		btQuaternion(0, 0, 0, 1),
-		btVector3(this->width/2.0f, this->heightmap_y/2.0f, this->height/2.0f)
-	));
-	
-	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
-		0,
-		groundMotionState,
-		groundShape,
-		btVector3(0,0,0)
-	);
-
-	btRigidBody * terrain = new btRigidBody(groundRigidBodyCI);
-
-	// Debugging for the terrain without needing to recompile
-	if (debug_enabled("terrain")) {
-		st->addDebugPoint(0.0f, 0.0f, 0.0f, 100.0f);
-		st->addDebugPoint(this->width, 0.0f, 0.0f, 50.0f);
-		st->addDebugPoint(0.0f, 0.0f, this->height, 50.0f);
-		st->addDebugPoint(this->width, 0.0f, this->height, 50.0f);
-	} else {
-		// Disable debug drawing
-		terrain->setCollisionFlags(terrain->getCollisionFlags()|btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);
-	}
-	
-	return terrain;
 }
 
 
