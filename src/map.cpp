@@ -220,9 +220,10 @@ Map::~Map()
 
 
 /**
-* Load a file (simulated)
+* Load a file
 *
-* @todo rehash for epicenter positioning
+* TODO: Rehash for epicenter positioning
+* TODO: The error reporting in this method is a mess
 **/
 int Map::load(string name, Render *render, Mod* insideof)
 {
@@ -277,13 +278,27 @@ int Map::load(string name, Render *render, Mod* insideof)
 		this->heightmap = new Heightmap();
 		this->heightmap->scale = cfg_getfloat(cfg_sub, "scale-z");
 		
-		if (! this->heightmap->loadIMG(this->mod, "heightmap.png")) {
+		char* tmp = cfg_getstr(cfg_sub, "data");
+		if (tmp == NULL) {
+			cerr << "Heightmap config does not have 'data' field set\n";
+			cfg_free(cfg);
+			return 0;
+		}
+
+		if (! this->heightmap->loadIMG(this->mod, std::string(tmp))) {
 			cerr << "Failed to load heightmap img\n";
 			cfg_free(cfg);
 			return 0;
 		}
 
-		this->terrain = this->render->loadSprite("terrain.png", this->mod);
+		tmp = cfg_getstr(cfg_sub, "texture");
+		if (tmp == NULL) {
+			cerr << "Heightmap config does not have 'texture' field set\n";
+			cfg_free(cfg);
+			return 0;
+		}
+
+		this->terrain = this->render->loadSprite(std::string(tmp), this->mod);
 		if (! this->terrain) {
 			cerr << "No terrain image found for map\n";
 			cfg_free(cfg);
