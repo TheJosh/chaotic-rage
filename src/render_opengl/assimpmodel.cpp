@@ -71,7 +71,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 	}
 	
 	// Check we aren't larger than size_t
-	if (static_cast<size_t>(len) > std::numeric_limits<size_t>::max()) {
+	if (static_cast<size_t>(len) > numeric_limits<size_t>::max()) {
 		this->mod->setLoadErr("Failed to load %s; file too large", this->name.c_str());
 		return false;
 	}
@@ -354,7 +354,7 @@ void AssimpModel::loadMaterials(Render3D* render)
 **/
 SpritePtr AssimpModel::loadTexture(Render3D* render, aiString path)
 {
-	std::string p(path.data);
+	string p(path.data);
 	
 	if (p.substr(0, 2) == ".\\") p = p.substr(2, p.size() - 2);
 	if (p.substr(0, 2) == "./") p = p.substr(2, p.size() - 2);
@@ -381,13 +381,13 @@ AssimpNode* AssimpModel::loadNode(aiNode* nd, unsigned int depth)
 {
 	unsigned int i;
 	AssimpNode* myNode = new AssimpNode();
-	myNode->name = std::string(nd->mName.C_Str());
+	myNode->name = string(nd->mName.C_Str());
 	
 	aiMatrix4x4 m = nd->mTransformation;
 	m.Transpose();
 	myNode->transform = glm::make_mat4((float *) &m);
 	
-	//cout << std::string(depth*4, ' ') << myNode->name << "  " << myNode->transform[3][0] << "x" << myNode->transform[3][1] << "x" << myNode->transform[3][2] << endl;
+	//cout << string(depth*4, ' ') << myNode->name << "  " << myNode->transform[3][0] << "x" << myNode->transform[3][1] << "x" << myNode->transform[3][2] << endl;
 	
 	for (i = 0; i < nd->mNumMeshes; i++) {
 		myNode->meshes.push_back(nd->mMeshes[i]);
@@ -456,7 +456,7 @@ AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
 	AssimpAnimation *out;
 
 	out = new AssimpAnimation();
-	out->name = std::string(anim->mName.C_Str());
+	out->name = string(anim->mName.C_Str());
 	out->ticsPerSec = (float)anim->mTicksPerSecond;
 	out->duration = (float)anim->mDuration;
 
@@ -466,7 +466,7 @@ AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
 		const aiNodeAnim* pNodeAnim = anim->mChannels[n];
 
 		AssimpNodeAnim* na = new AssimpNodeAnim();
-		na->name = std::string(pNodeAnim->mNodeName.C_Str());
+		na->name = string(pNodeAnim->mNodeName.C_Str());
 
 		// Positions
 		na->position.reserve(pNodeAnim->mNumPositionKeys);
@@ -579,7 +579,7 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 
 		// We also have to save the bone data in our structure
 		AssimpBone* bn = new AssimpBone();
-		bn->name = std::string(bone->mName.C_Str());
+		bn->name = string(bone->mName.C_Str());
 		bn->offset = glm::make_mat4((float *) &(bone->mOffsetMatrix));
 		
 		aiMatrix4x4 m = bone->mOffsetMatrix;
