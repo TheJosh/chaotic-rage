@@ -264,8 +264,8 @@ int Map::load(string name, Render *render, Mod* insideof)
 	}
 	
 	// Get width and height
-	this->width = (float)cfg_getint(cfg, "width");
-	this->height = (float)cfg_getint(cfg, "height");
+	this->width = (float)cfg_getfloat(cfg, "width");
+	this->height = (float)cfg_getfloat(cfg, "height");
 
 	if (this->width <= 0.0f or this->height <= 0.0f) {
 		cerr << "No width or height set for map.\n";
