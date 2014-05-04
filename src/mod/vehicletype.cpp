@@ -74,7 +74,6 @@ cfg_opt_t vehicletype_opts[] =
 VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 {
 	VehicleType* wt;
-	string filename;
 	int size;
 	char* tmp;
 	VehicleTypeNode node;
@@ -192,7 +191,7 @@ VehicleType::~VehicleType()
 bool VehicleType::hasNode(VehicleNodeType type)
 {
 	vector <VehicleTypeNode>::iterator it;
-	for (it = this->nodes.begin(); it != this->nodes.end(); it++) {
+	for (it = this->nodes.begin(); it != this->nodes.end(); ++it) {
 		if ((*it).type == type) return true;
 	}
 	return false;
@@ -205,7 +204,7 @@ bool VehicleType::hasNode(VehicleNodeType type)
 VehicleTypeNode* VehicleType::getNode(VehicleNodeType type)
 {
 	vector <VehicleTypeNode>::iterator it;
-	for (it = this->nodes.begin(); it != this->nodes.end(); it++) {
+	for (it = this->nodes.begin(); it != this->nodes.end(); ++it) {
 		if ((*it).type == type) return &(*it);
 	}
 	return NULL;

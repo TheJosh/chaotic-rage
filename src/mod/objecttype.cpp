@@ -49,7 +49,6 @@ cfg_opt_t objecttype_opts[] =
 ObjectType* loadItemObjectType(cfg_t* cfg_item, Mod* mod)
 {
 	ObjectType* wt;
-	string filename;
 	int size;
 	
 	wt = new ObjectType();

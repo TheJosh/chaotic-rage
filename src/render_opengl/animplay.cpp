@@ -118,7 +118,7 @@ void AnimPlay::clearAnimation()
 	this->anim = NULL;
 
 	// If it's static, the calcs are really easy
-	if (this->anim == NULL && this->move_nodes.size() == 0) {
+	if (this->move_nodes.size() == 0) {
 		this->calcTransformsStatic();
 	}
 }
@@ -227,7 +227,7 @@ void AnimPlay::calcTransformNodeStatic(AssimpNode* nd, glm::mat4 transform)
 
 	this->transforms[nd] = transform;
 	
-	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {
+	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); ++it) {
 		calcTransformNodeStatic((*it), transform);
 	}
 }
@@ -245,9 +245,10 @@ void AnimPlay::calcTransforms()
 	if (this->anim == NULL && this->move_nodes.size() == 0) return;
 
 	float animTick;
-	float timeSecs;
 
 	if (this->anim) {
+		float timeSecs;
+
 		if (this->pause_time == 0) {
 			timeSecs = (st->game_time - this->start_time) / 1000.0f;
 		} else {
@@ -311,7 +312,7 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float anim
 	} else if (this->anim) {
 		// Find animation channel
 		AssimpNodeAnim* animNode = NULL;
-		for (vector<AssimpNodeAnim*>::iterator it = this->anim->anims.begin(); it != this->anim->anims.end(); it++) {
+		for (vector<AssimpNodeAnim*>::iterator it = this->anim->anims.begin(); it != this->anim->anims.end(); ++it) {
 			if ((*it)->name == nd->name) {
 				animNode = (*it);
 				break;
@@ -344,7 +345,7 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float anim
 	transform *= local;
 	this->transforms[nd] = transform;
 
-	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {
+	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); ++it) {
 		calcTransformNode((*it), transform, animTick);
 	}
 }

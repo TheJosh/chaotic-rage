@@ -56,8 +56,7 @@ cfg_opt_t weapontype_opts[] =
 WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 {
 	WeaponType* wt;
-	cfg_t *cfg_sound, *cfg_sec;
-	string filename;
+	cfg_t* cfg_sec;
 	int j, type;
 	
 	type = cfg_getint(cfg_item, "type");
@@ -192,13 +191,16 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	// Load sounds
 	int num_sounds = cfg_size(cfg_item, "sound");
 	for (j = 0; j < num_sounds; j++) {
-		cfg_sound = cfg_getnsec(cfg_item, "sound", j);
+		cfg_t* cfg_sound = cfg_getnsec(cfg_item, "sound", j);
 		
 		WeaponTypeSound* wts = new WeaponTypeSound();
 		wts->type = cfg_getint(cfg_sound, "type");
 		
 		char * tmp = cfg_getstr(cfg_sound, "sound");
-		if (tmp == NULL) return NULL;
+		if (tmp == NULL) {
+			delete(wts);
+			return NULL;
+		}
 		wts->snd = mod->getSound(tmp);
 		
 		wt->sounds.push_back(wts);

@@ -45,9 +45,6 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 {
 	GameType* gt;
 	string filename;
-	cfg_t* cfg_faction;
-	int j, k;
-
 
 	gt = new GameType();
 	gt->name = cfg_getstr(cfg_item, "name");
@@ -85,9 +82,8 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 		gt->num_factions = 0;
 		
 		// Load faction details
-		for (j = 0; j < num_factions; j++) {
-			cfg_faction = cfg_getnsec(cfg_item, "faction", j);
-			vector<WeaponType*> weaps;
+		for (int j = 0; j < num_factions; j++) {
+			cfg_t* cfg_faction = cfg_getnsec(cfg_item, "faction", j);
 			
 			// Check faction id is okay
 			int faction_id = cfg_getint(cfg_faction, "id");
@@ -109,7 +105,7 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 		
 			// Load spawn weapons
 			int num_weapons = cfg_size(cfg_faction, "spawn_weapons");
-			for (k = 0; k < num_weapons; k++) {
+			for (int k = 0; k < num_weapons; k++) {
 				WeaponType * wt = mod->getWeaponType(cfg_getnstr(cfg_faction, "spawn_weapons", k));
 				if (wt == NULL) {
 					mod->setLoadErr("Invalid spawn weapon %s for action %i", cfg_getnstr(cfg_faction, "spawn_weapons", k), faction_id);

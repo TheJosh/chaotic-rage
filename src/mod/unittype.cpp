@@ -65,7 +65,6 @@ cfg_opt_t unittype_opts[] =
 UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 {
 	UnitType* uc;
-	cfg_t *cfg_sound, *cfg_anim;
 	int j;
 
 	// Basics
@@ -95,7 +94,7 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	// Animations
 	int num_animations = cfg_size(cfg_item, "animation");
 	for (j = 0; j < num_animations; j++) {
-		cfg_anim = cfg_getnsec(cfg_item, "animation", j);
+		cfg_t* cfg_anim = cfg_getnsec(cfg_item, "animation", j);
 		
 		UnitTypeAnimation* uta = new UnitTypeAnimation();
 		
@@ -111,14 +110,17 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	// Sounds
 	int num_sounds = cfg_size(cfg_item, "sound");
 	for (j = 0; j < num_sounds; j++) {
-		cfg_sound = cfg_getnsec(cfg_item, "sound", j);
+		cfg_t* cfg_sound = cfg_getnsec(cfg_item, "sound", j);
 		
 		UnitTypeSound* uts = new UnitTypeSound();
 		
 		uts->type = cfg_getint(cfg_sound, "type");
 		
 		char * tmp = cfg_getstr(cfg_sound, "sound");
-		if (tmp == NULL) return NULL;
+		if (tmp == NULL) {
+			delete(uts);
+			return NULL;
+		}
 		uts->snd = mod->getSound(tmp);
 		
 		uc->sounds.push_back(uts);

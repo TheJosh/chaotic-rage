@@ -26,8 +26,21 @@ class btCRKinematicCharacterController;
 /**
 * The currently available weapons
 **/
-class UnitWeapon {
+class UnitWeapon
+{
 	friend class Unit;
+
+
+	public:
+		UnitWeapon(WeaponType* wt, int magazine, int belt, unsigned int next_use, bool reloading) {
+			this->wt = wt;
+			this->magazine = magazine;
+			this->belt = belt;
+			this->next_use = next_use;
+			this->reloading = reloading;
+		}
+		~UnitWeapon();
+
 	private:
 		WeaponType* wt;
 		int magazine;
@@ -40,7 +53,8 @@ class UnitWeapon {
 /**
 * The currently active pickups
 **/
-class UnitPickup {
+class UnitPickup
+{
 	public:
 		Unit* u;
 		PickupType* pt;

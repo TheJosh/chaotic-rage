@@ -52,7 +52,7 @@ class Heightmap {
 		btRigidBody* ground;
 
 	public:
-		Heightmap() : data(NULL), ground(NULL) {};
+		Heightmap() : sx(0), sz(0), scale(0.0f), data(NULL), ground(NULL) {};
 		~Heightmap();
 
 	public:

@@ -226,7 +226,7 @@ void Unit::meleeAttack(btMatrix3x3 &direction)
 	DEBUG("weap", "%p meleeAttack; ray hit %p", this, e);
 	
 	if (e->klass() == UNIT) {
-		((Unit*)e)->takeDamage(this->params.melee_damage);
+		(static_cast<Unit*>(e))->takeDamage(this->params.melee_damage);
 	}
 }
 
@@ -267,12 +267,7 @@ bool Unit::pickupWeapon(WeaponType* wt)
 {
 	if (this->pickupAmmo(wt)) return true;
 	
-	UnitWeapon *uw = new UnitWeapon();
-	uw->wt = wt;
-	uw->magazine = wt->magazine_limit;
-	uw->belt = wt->belt_limit;
-	uw->next_use = st->game_time;
-	uw->reloading = false;
+	UnitWeapon *uw = new UnitWeapon(wt, wt->magazine_limit, wt->belt_limit, st->game_time, false);
 	
 	this->avail_weapons.push_back(uw);
 	
@@ -591,7 +586,7 @@ void Unit::update(int delta)
 				const btCollisionObject* other = obA == ghost ? obB : obA;
 
 				if (other->getBroadphaseHandle()->m_collisionFilterGroup == CG_PICKUP) {
-					Pickup* p = (Pickup*) other->getUserPointer();
+					Pickup* p = static_cast<Pickup*>(other->getUserPointer());
 
 					UnitPickup up;
 					up.pt = p->getPickupType();
@@ -703,12 +698,12 @@ void Unit::doUse()
 
 	if (closest->klass() == VEHICLE) {
 		// If a vehicle, enter it
-		this->enterVehicle((Vehicle*)closest);
+		this->enterVehicle(static_cast<Vehicle*>(closest));
 
 	} else if (closest->klass() == OBJECT) {
 		// If an object, use it
 		btTransform trans = this->getTransform();
-		ObjectType *ot = ((Object*)closest)->ot;
+		ObjectType *ot = (static_cast<Object*>(closest))->ot;
 	
 		if (ot->show_message.length() != 0) {
 			this->st->addHUDMessage(this->slot, ot->show_message);
@@ -756,7 +751,7 @@ void Unit::doLift()
 	if (! closest) return;
 
 	if (closest->klass() == OBJECT) {
-		this->lift_obj = (Object*) closest;
+		this->lift_obj = static_cast<Object*>(closest);
 	}
 }
 

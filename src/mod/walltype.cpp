@@ -41,7 +41,6 @@ cfg_opt_t walltype_opts[] =
 WallType* loadItemWallType(cfg_t* cfg_item, Mod* mod)
 {
 	WallType* wt;
-	string filename;
 	int size;
 	
 	wt = new WallType();

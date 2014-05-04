@@ -50,7 +50,7 @@ vector<string> * getServerList(UIUpdate * ui)
 			conn.pump();
 		}
 		
-	} catch (happyhttp::Wobbly w) {
+	} catch (const happyhttp::Wobbly & w) {
 		return NULL;
 	}
 	
