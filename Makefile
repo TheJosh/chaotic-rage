@@ -69,6 +69,7 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/*.cpp \
 	$(SRCPATH)/audio/*.cpp \
 	$(SRCPATH)/mod/*.cpp \
+	$(SRCPATH)/map/*.cpp \
 	$(SRCPATH)/net/*.cpp \
 	$(SRCPATH)/render/*.cpp \
 	$(SRCPATH)/render_opengl/*.cpp \
@@ -163,6 +164,7 @@ dist-bin: chaoticrage data maps
 clean:
 	rm -f chaoticrage
 	rm -f $(OBJFILES)
+	rm -f $(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.d,$(CPPFILES))
 	rm -f $(OBJPATH)/linux.o
 
 

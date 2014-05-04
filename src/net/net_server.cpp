@@ -11,7 +11,7 @@
 #include "../util/serverconfig.h"
 #include "../rage.h"
 #include "../game_state.h"
-#include "../map.h"
+#include "../map/map.h"
 #include "../lua/gamelogic.h"
 #include "../entity/ammo_round.h"
 #include "../entity/decaying.h"

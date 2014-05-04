@@ -10,7 +10,6 @@
 #include "../rage.h"
 #include "../game_state.h"
 #include "../util/quadratic.h"
-#include "../map.h"
 #include "../fx/newparticle.h"
 #include "weapons.h"
 
