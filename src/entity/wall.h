@@ -18,7 +18,7 @@ class Wall : public Entity
 		
 	public:
 		WallType* wt;
-		int health;
+		float health;
 		
 	protected:
 		AnimPlay * anim;

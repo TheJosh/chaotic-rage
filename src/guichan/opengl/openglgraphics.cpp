@@ -217,7 +217,7 @@ namespace gcn
         {
              pimpl_->createShaders();
 
-             pimpl_->projection = glm::ortho<float>(0.0f, mWidth, mHeight, 0.0f, -1.0f, 1.0f);
+             pimpl_->projection = glm::ortho<float>(0.0f, static_cast<float>(mWidth), static_cast<float>(mHeight), 0.0f, -1.0f, 1.0f);
 
              glUseProgram(pimpl_->shader_image);
              glUniformMatrix4fv(glGetUniformLocation(pimpl_->shader_image, "uMVP"), 1, GL_FALSE, glm::value_ptr(pimpl_->projection));

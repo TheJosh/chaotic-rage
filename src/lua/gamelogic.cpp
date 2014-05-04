@@ -182,7 +182,7 @@ LUA_FUNC(debug)
 **/
 LUA_FUNC(debug_physics)
 {
-	GEng()->render->setPhysicsDebug(lua_toboolean(L, 1));
+	GEng()->render->setPhysicsDebug(lua_toboolean(L, 1) == 1);
 	return 0;
 }
 
@@ -192,7 +192,7 @@ LUA_FUNC(debug_physics)
 **/
 LUA_FUNC(debug_framerate)
 {
-	GEng()->render->setSpeedDebug(lua_toboolean(L, 1));
+	GEng()->render->setSpeedDebug(lua_toboolean(L, 1) == 1);
 	return 0;
 }
 

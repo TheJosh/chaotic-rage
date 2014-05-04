@@ -35,7 +35,7 @@ class WallType
 		btCollisionShape* col_shape;
 		
 		int check_radius;
-		int health;
+		float health;
 
 		SpritePtr surf;
 		

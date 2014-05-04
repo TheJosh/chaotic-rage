@@ -351,7 +351,7 @@ LUA_FUNC(move)
 	gl->dir = walkDirection;
 	gl->dir_flag = true;
 
-	float speed = lua_tonumber(L, 2);
+	float speed = (float)lua_tonumber(L, 2);
 	if (speed != 0.0f) {
 		gl->speed = MAX(speed, gl->u->getParams()->max_speed);
 	} else {

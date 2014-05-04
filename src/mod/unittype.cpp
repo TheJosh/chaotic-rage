@@ -53,7 +53,7 @@ cfg_opt_t unittype_opts[] =
 	CFG_STR((char*) "special_weapon", 0, CFGF_NONE),
 
 	CFG_INT((char*) "playable", 1, CFGF_NONE),
-	CFG_INT((char*) "health", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "health", 0, CFGF_NONE),
 
 	CFG_END()
 };
@@ -71,7 +71,7 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	uc = new UnitType();
 	uc->mod = mod;
 	uc->name = cfg_getstr(cfg_item, "name");
-	uc->begin_health = cfg_getint(cfg_item, "health");
+	uc->begin_health = (float)\cfg_getfloat(cfg_item, "health");
 	uc->playable = cfg_getint(cfg_item, "playable");
 
 	// 3D model
@@ -84,7 +84,7 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	uc->col_shape = new btCapsuleShape(0.3f, 0.9f);
 	
 	// Params
-	uc->params.max_speed = cfg_getfloat(cfg_item, "max_speed");
+	uc->params.max_speed = (float)cfg_getfloat(cfg_item, "max_speed");
 	uc->params.melee_damage = cfg_getint(cfg_item, "melee_damage");
 	uc->params.melee_delay = cfg_getint(cfg_item, "melee_delay");
 	uc->params.melee_cooldown = cfg_getint(cfg_item, "melee_cooldown");

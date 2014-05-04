@@ -12,10 +12,10 @@ using namespace std;
 class Zone
 {
 	private:
-		int x1;
-		int y1;
-		int x2;
-		int y2;
+		float x1;
+		float y1;
+		float x2;
+		float y2;
 		
 	public:
 		// Flags for the various jobs a zone may do
@@ -33,11 +33,11 @@ class Zone
 		bool nearbase[NUM_FACTIONS];   // somewhere near the team base - for generic use
 	
 	public:
-		Zone(int x, int y, int width, int height);
+		Zone(float x, float y, float width, float height);
 		~Zone();
 		
 	public:
-		int getRandomX();
-		int getRandomY();
+		float getRandomX();
+		float getRandomY();
 };
 

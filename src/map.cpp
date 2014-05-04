@@ -276,7 +276,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 	cfg_sub = cfg_getnsec(cfg, "heightmap", 0);
 	if (cfg_sub) {
 		this->heightmap = new Heightmap();
-		this->heightmap->scale = cfg_getfloat(cfg_sub, "scale-z");
+		this->heightmap->scale = (float)cfg_getfloat(cfg_sub, "scale-z");
 		
 		char* tmp = cfg_getstr(cfg_sub, "data");
 		if (tmp == NULL) {
@@ -316,15 +316,15 @@ int Map::load(string name, Render *render, Mod* insideof)
 		this->water = this->render->loadSprite("water.png", this->mod);
 		
 		if (this->water) {
-			this->water_level = cfg_getfloat(cfg_sub, "level");
+			this->water_level = (float)cfg_getfloat(cfg_sub, "level");
 		}
 		
-		float move = cfg_getfloat(cfg_sub, "movement");
+		float move = (float)cfg_getfloat(cfg_sub, "movement");
 		if (move) {
 			move /= 2.0f;
 			this->water_range.min = this->water_level - move;
 			this->water_range.max = this->water_level + move;
-			this->water_speed = cfg_getfloat(cfg_sub, "speed") / 1000.0f;		// per sec -> per ms
+			this->water_speed = (float)cfg_getfloat(cfg_sub, "speed") / 1000.0f;		// per sec -> per ms
 		} else {
 			this->water_speed = 0.0f;
 		}
@@ -341,9 +341,9 @@ int Map::load(string name, Render *render, Mod* insideof)
 	// Ambient lighting
 	int num = cfg_size(cfg, "ambient");
 	if (num == 3) {
-		this->ambient[0] = cfg_getnint(cfg, "ambient", 0) / 255.0;
-		this->ambient[1] = cfg_getnint(cfg, "ambient", 1) / 255.0;
-		this->ambient[2] = cfg_getnint(cfg, "ambient", 2) / 255.0;
+		this->ambient[0] = (float)cfg_getnint(cfg, "ambient", 0) / 255.0;
+		this->ambient[1] = (float)cfg_getnint(cfg, "ambient", 1) / 255.0;
+		this->ambient[2] = (float)cfg_getnint(cfg, "ambient", 2) / 255.0;
 	}
 
 	// Zones
@@ -371,7 +371,11 @@ int Map::load(string name, Render *render, Mod* insideof)
 		MapMesh * m = new MapMesh();
 		m->xform = btTransform(
 			btQuaternion(0.0f, 0.0f, 0.0f),
-			btVector3(cfg_getnfloat(cfg_sub, "pos", 0), cfg_getnfloat(cfg_sub, "pos", 1), cfg_getnfloat(cfg_sub, "pos", 2))
+			btVector3(
+				(float)cfg_getnfloat(cfg_sub, "pos", 0),
+				(float)cfg_getnfloat(cfg_sub, "pos", 1),
+				(float)cfg_getnfloat(cfg_sub, "pos", 2)
+			)
 		);
 
 		char* tmp = cfg_getstr(cfg_sub, "model");

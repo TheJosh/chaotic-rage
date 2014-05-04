@@ -38,8 +38,8 @@ enum MenuCommand {
 class MenuItem {
 	public:
 		string name;
-		int x1, x2;
-		int y1, y2;
+		float x1, x2;
+		float y1, y2;
 		MenuCommand cmd;
 		bool hover;
 };

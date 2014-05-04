@@ -69,7 +69,7 @@ class UnitType
 		
 		AssimpModel * model;
 		btConvexShape* col_shape;
-		int begin_health;
+		float begin_health;
 		vector<WeaponType*> spawn_weapons;
 		WeaponType* special_weapon;
 		int playable;

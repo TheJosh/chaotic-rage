@@ -22,8 +22,8 @@ extern "C" {
 **/
 LUA_FUNC(random)
 {
-	float min = lua_tointeger(L, 1);
-	float max = lua_tointeger(L, 2);
+	int min = lua_tointeger(L, 1);
+	int max = lua_tointeger(L, 2);
 	
 	lua_pushinteger(L, getRandom(min,max));
 	
@@ -36,8 +36,8 @@ LUA_FUNC(random)
 **/
 LUA_FUNC(random_float)
 {
-	float min = lua_tonumber(L, 1);
-	float max = lua_tonumber(L, 2);
+	float min = static_cast<float>(lua_tonumber(L, 1));
+	float max = static_cast<float>(lua_tonumber(L, 2));
 	
 	lua_pushnumber(L, getRandomf(min,max));
 	

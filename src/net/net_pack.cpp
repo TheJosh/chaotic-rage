@@ -48,8 +48,10 @@ void packi16(unsigned char *buf, unsigned int i)
 */ 
 void packi32(unsigned char *buf, unsigned long i)
 {
-    *buf++ = i>>24; *buf++ = i>>16;
-    *buf++ = i>>8;  *buf++ = i;
+    *buf++ = static_cast<unsigned char>(i>>24);
+	*buf++ = static_cast<unsigned char>(i>>16);
+    *buf++ = static_cast<unsigned char>(i>>8);
+	*buf++ = static_cast<unsigned char>(i);
 }
 
 /**

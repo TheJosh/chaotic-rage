@@ -62,6 +62,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 		| aiProcess_SortByPType
 		| aiProcess_FlipUVs;
 	
+	// Read the file from the mod
 	Sint64 len;
 	Uint8 * data = this->mod->loadBinary("models/" + this->name, &len);
 	if (! data) {
@@ -69,7 +70,14 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 		return false;
 	}
 	
-	this->sc = importer.ReadFileFromMemory((const void*) data, len, flags, this->name.c_str());
+	// Check we aren't larger than size_t
+	if (len > (size_t)(-1)) {
+		this->mod->setLoadErr("Failed to load %s; file too large", this->name.c_str());
+		return false;
+	}
+
+	// Do the import
+	this->sc = importer.ReadFileFromMemory((const void*) data, (size_t)len, flags, this->name.c_str());
 	if (! this->sc) {
 		this->mod->setLoadErr("Failed to load %s; file read failed; %s", this->name.c_str(), importer.GetErrorString());
 		return false;

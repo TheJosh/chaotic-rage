@@ -99,28 +99,28 @@ LUA_FUNC(set)
 		lab->data.assign(lua_tostring(L, 3));
 
 	} else if (strcmp(i, "x") == 0) {
-		lab->x = lua_tonumber(L, 3);
+		lab->x = static_cast<float>(lua_tonumber(L, 3));
 		
 	} else if (strcmp(i, "y") == 0) {
-		lab->y = lua_tonumber(L, 3);
+		lab->y = static_cast<float>(lua_tonumber(L, 3));
 
 	} else if (strcmp(i, "visible") == 0) {
-		lab->visible = lua_toboolean(L, 3);
+		lab->visible = (lua_toboolean(L, 3) == 1);
 
 	} else if (strcmp(i, "align") == 0) {
 		lab->align = (HUDLabelAlign) lua_tointeger(L, 3);
 
 	} else if (strcmp(i, "r") == 0) {
-		lab->r = lua_tonumber(L, 3);
+		lab->r = static_cast<float>(lua_tonumber(L, 3));
 
 	} else if (strcmp(i, "g") == 0) {
-		lab->g = lua_tonumber(L, 3);
+		lab->g = static_cast<float>(lua_tonumber(L, 3));
 
 	} else if (strcmp(i, "b") == 0) {
-		lab->b = lua_tonumber(L, 3);
+		lab->b = static_cast<float>(lua_tonumber(L, 3));
 
 	} else if (strcmp(i, "a") == 0) {
-		lab->a = lua_tonumber(L, 3);
+		lab->a = static_cast<float>(lua_tonumber(L, 3));
 
 	} else {
 		lua_pushstring(L, "Invalid property for object " MYTYPE);

@@ -81,19 +81,19 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	wt = new VehicleType();
 	wt->name = cfg_getstr(cfg_item, "name");
 	wt->health = cfg_getint(cfg_item, "health");
-	wt->mass = cfg_getfloat(cfg_item, "mass");
+	wt->mass = (float)cfg_getfloat(cfg_item, "mass");
 	wt->land = (cfg_getint(cfg_item, "land") == 1);
 	wt->water = (cfg_getint(cfg_item, "water") == 1);
 	wt->helicopter = (cfg_getint(cfg_item, "helicopter") == 1);
 	wt->engine = (cfg_getint(cfg_item, "engine") == 1);
 	wt->steer = (cfg_getint(cfg_item, "steer") == 1);
 	
-	wt->engine_accel = cfg_getfloat(cfg_item, "engine-accel");
-	wt->engine_max = cfg_getfloat(cfg_item, "engine-max");
-	wt->brake_accel = cfg_getfloat(cfg_item, "brake-accel");
-	wt->brake_max = cfg_getfloat(cfg_item, "brake-max");
-	wt->reverse_accel = cfg_getfloat(cfg_item, "reverse-accel");
-	wt->reverse_max = cfg_getfloat(cfg_item, "reverse-max");
+	wt->engine_accel = (float)cfg_getfloat(cfg_item, "engine-accel");
+	wt->engine_max = (float)cfg_getfloat(cfg_item, "engine-max");
+	wt->brake_accel = (float)cfg_getfloat(cfg_item, "brake-accel");
+	wt->brake_max = (float)cfg_getfloat(cfg_item, "brake-max");
+	wt->reverse_accel = (float)cfg_getfloat(cfg_item, "reverse-accel");
+	wt->reverse_max = (float)cfg_getfloat(cfg_item, "reverse-max");
 	
 	// Load model
 	tmp = cfg_getstr(cfg_item, "model");

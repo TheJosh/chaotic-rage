@@ -89,7 +89,11 @@ void Intro::doit()
 	
 	// Set shader and uniforms
 	glUseProgram(shader->p());
-	glm::mat4 projection = glm::ortho<float>(0.0f, this->render->getWidth(), this->render->getHeight(), 0.0f, 1.0f, -1.0f);
+	glm::mat4 projection = glm::ortho<float>(
+		0.0f, static_cast<float>(this->render->getWidth()),
+		static_cast<float>(this->render->getHeight()), 0.0f,
+		1.0f, -1.0f
+	);
 	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, &projection[0][0]);
 	glUniform1i(shader->uniform("uTex"), 0);
 	

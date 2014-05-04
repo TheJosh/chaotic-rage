@@ -373,9 +373,9 @@ void PhysicsBullet::QuaternionToEulerXYZ(const btQuaternion &quat, btVector3 &eu
 	float w=quat.getW(); float x=quat.getX(); float y=quat.getY(); float z=quat.getZ();
 	double sqw = w*w; double sqx = x*x; double sqy = y*y; double sqz = z*z;
 	
-	euler.setZ((atan2(2.0 * (x*y + z*w),(sqx - sqy - sqz + sqw))));
-	euler.setX((atan2(2.0 * (y*z + x*w),(-sqx - sqy + sqz + sqw))));
-	euler.setY((asin(-2.0 * (x*z - y*w))));
+	euler.setZ(static_cast<float>(atan2(2.0 * (x*y + z*w),(sqx - sqy - sqz + sqw))));
+	euler.setX(static_cast<float>(atan2(2.0 * (y*z + x*w),(-sqx - sqy + sqz + sqw))));
+	euler.setY(static_cast<float>(asin(-2.0 * (x*z - y*w))));
 }
 
 
@@ -384,9 +384,9 @@ void PhysicsBullet::QuaternionToEulerXYZ(const btQuaternion &quat, btVector3 &eu
 **/
 float PhysicsBullet::QuaternionToYaw(const btQuaternion &quat)
 {
-	float fTx  = 2.0*quat.x();
-	float fTy  = 2.0*quat.y();
-	float fTz  = 2.0*quat.z();
+	float fTx  = 2.0f*quat.x();
+	float fTy  = 2.0f*quat.y();
+	float fTz  = 2.0f*quat.z();
 	float fTwy = fTy*quat.w();
 	float fTxx = fTx*quat.x();
 	float fTxz = fTz*quat.x();

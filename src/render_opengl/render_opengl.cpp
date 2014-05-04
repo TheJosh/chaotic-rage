@@ -342,7 +342,7 @@ void RenderOpenGL::loadFont(string name, Mod * mod)
 	// TODO: You've got to free buf at some point, but only after all the character bitmaps have been loaded
 	// perhaps re-think this all a bit.
 	
-	error = FT_New_Memory_Face(this->ft, (const FT_Byte *) buf, len, 0, &this->face);
+	error = FT_New_Memory_Face(this->ft, (const FT_Byte *) buf, (FT_Long)len, 0, &this->face);
 
 	if (error == FT_Err_Unknown_File_Format) {
 		reportFatalError("Freetype: Unsupported font format");
@@ -717,8 +717,12 @@ void RenderOpenGL::loadHeightmap()
 		for(nX = 0; nX < maxX; nX++) {
 			
 			// u = p2 - p1; v = p3 - p1
-			btVector3 u = btVector3(nX + 1.0f, st->map->heightmapGet(nX + 1, nZ + 1), nZ + 1.0f) - btVector3(nX, st->map->heightmapGet(nX, nZ), nZ);
-			btVector3 v = btVector3(nX + 1.0f, st->map->heightmapGet(nX + 1, nZ), nZ) - btVector3(nX, st->map->heightmapGet(nX, nZ), nZ);
+			btVector3 u =
+				btVector3(static_cast<float>(nX) + 1.0f, st->map->heightmapGet(nX + 1, nZ + 1), static_cast<float>(nZ) + 1.0f) -
+				btVector3(static_cast<float>(nX), st->map->heightmapGet(nX, nZ), static_cast<float>(nZ));
+			btVector3 v =
+				btVector3(static_cast<float>(nX) + 1.0f, st->map->heightmapGet(nX + 1, nZ), static_cast<float>(nZ)) -
+				btVector3(static_cast<float>(nX), st->map->heightmapGet(nX, nZ), static_cast<float>(nZ));
 			
 			// calc vector
 			btVector3 normal = btVector3(
@@ -730,9 +734,10 @@ void RenderOpenGL::loadHeightmap()
 			
 			// First cell on the row has two extra verticies
 			if (nX == 0) {
-				flX = nX; flZ = nZ;
+				flX = static_cast<float>(nX);
+				flZ = static_cast<float>(nZ);
 				vertexes[j].x = flX;
-				vertexes[j].y = st->map->heightmapGet(flX, flZ);
+				vertexes[j].y = st->map->heightmapGet(nX, nZ);
 				vertexes[j].z = flZ;
 				vertexes[j].nx = normal.x();
 				vertexes[j].ny = normal.y();
@@ -741,9 +746,10 @@ void RenderOpenGL::loadHeightmap()
 				vertexes[j].ty = flZ / st->map->heightmap->sz;
 				j++;
 				
-				flX = nX; flZ = nZ + 1;
+				flX = static_cast<float>(nX);
+				flZ = static_cast<float>(nZ) + 1.0f;
 				vertexes[j].x = flX;
-				vertexes[j].y = st->map->heightmapGet(flX, flZ);
+				vertexes[j].y = st->map->heightmapGet(nX, nZ + 1);
 				vertexes[j].z = flZ;
 				vertexes[j].nx = normal.x();
 				vertexes[j].ny = normal.y();
@@ -754,9 +760,10 @@ void RenderOpenGL::loadHeightmap()
 			}
 			
 			// Top
-			flX = nX + 1; flZ = nZ;
+			flX = static_cast<float>(nX) + 1.0f;
+			flZ = static_cast<float>(nZ);
 			vertexes[j].x = flX;
-			vertexes[j].y = st->map->heightmapGet(flX, flZ);
+			vertexes[j].y = st->map->heightmapGet(nX + 1, nZ);
 			vertexes[j].z = flZ;
 			vertexes[j].nx = normal.x();
 			vertexes[j].ny = normal.y();
@@ -766,9 +773,10 @@ void RenderOpenGL::loadHeightmap()
 			j++;
 			
 			// Bottom
-			flX = nX + 1; flZ = nZ + 1;
+			flX = static_cast<float>(nX) + 1.0f;
+			flZ = static_cast<float>(nZ) + 1.0f;
 			vertexes[j].x = flX;
-			vertexes[j].y = st->map->heightmapGet(flX, flZ);
+			vertexes[j].y = st->map->heightmapGet(nX + 1, nZ + 1);
 			vertexes[j].z = flZ;
 			vertexes[j].nx = normal.x();
 			vertexes[j].ny = normal.y();
@@ -1817,7 +1825,7 @@ void RenderOpenGL::mainRot()
 		tilt = 22.0f;
 		dist = 80.0f;
 		lift = 0.0f;
-		angle = st->game_time / 100.0;
+		angle = st->game_time / 100.0f;
 
 	} else {
 		if (this->viewmode == 1) {

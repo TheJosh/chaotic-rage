@@ -10,18 +10,20 @@ using namespace std;
 
 
 
-Zone::Zone(int x, int y, int width, int height)
+Zone::Zone(float x, float y, float width, float height)
 {
-	this->x1 = x - width / 2;
-	this->y1 = y - height / 2;
-	this->x2 = x + width / 2;
-	this->y2 = y + height / 2;
+	this->x1 = x - width / 2.0f;
+	this->y1 = y - height / 2.0f;
+	this->x2 = x + width / 2.0f;
+	this->y2 = y + height / 2.0f;
 	
-	for (int i = 0; i < NUM_FACTIONS; i++) this->spawn[i] = 0;
-	for (int i = 0; i < NUM_FACTIONS; i++) this->prison[i] = 0;
-	for (int i = 0; i < NUM_FACTIONS; i++) this->collect[i] = 0;
-	for (int i = 0; i < NUM_FACTIONS; i++) this->dest[i] = 0;
-	for (int i = 0; i < NUM_FACTIONS; i++) this->nearbase[i] = 0;
+	for (int i = 0; i < NUM_FACTIONS; i++) {
+		this->spawn[i] = 0;
+		this->prison[i] = 0;
+		this->collect[i] = 0;
+		this->dest[i] = 0;
+		this->nearbase[i] = 0;
+	}
 }
 
 Zone::~Zone()
@@ -29,12 +31,12 @@ Zone::~Zone()
 }
 
 
-int Zone::getRandomX()
+float Zone::getRandomX()
 {
-	return getRandom(this->x1, this->x2);
+	return getRandomf(this->x1, this->x2);
 }
 
-int Zone::getRandomY()
+float Zone::getRandomY()
 {
-	return getRandom(this->y1, this->y2);
+	return getRandomf(this->y1, this->y2);
 }

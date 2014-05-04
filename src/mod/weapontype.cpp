@@ -70,8 +70,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				wt = w;
 
 				w->angle_range = cfg_getint(cfg_sec, "angle_range");
-				w->range = cfg_getfloat(cfg_sec, "range");
-				w->damage = cfg_getfloat(cfg_sec, "damage");
+				w->range = (float)cfg_getfloat(cfg_sec, "range");
+				w->damage = (float)cfg_getfloat(cfg_sec, "damage");
 			}
 			break;
 
@@ -82,7 +82,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				wt = w;
 
 				w->radius = cfg_getint(cfg_sec, "radius");
-				w->depth = cfg_getfloat(cfg_sec, "depth");
+				w->depth = (float)cfg_getfloat(cfg_sec, "depth");
 			}
 			break;
 
@@ -93,8 +93,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				wt = w;
 
 				w->angle_range = cfg_getint(cfg_sec, "angle_range");
-				w->range = cfg_getfloat(cfg_sec, "range");
-				w->damage = cfg_getfloat(cfg_sec, "damage");
+				w->range = (float)cfg_getfloat(cfg_sec, "range");
+				w->damage = (float)cfg_getfloat(cfg_sec, "damage");
 			}
 			break;
 
@@ -107,8 +107,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				w->time = cfg_getint(cfg_sec, "time");
 				char* tmp = cfg_getstr(cfg_sec, "model");
 				if (tmp) w->model = mod->getAssimpModel(tmp);
-				w->range = cfg_getfloat(cfg_sec, "range");
-				w->damage = cfg_getfloat(cfg_sec, "damage");
+				w->range = (float)cfg_getfloat(cfg_sec, "range");
+				w->damage = (float)cfg_getfloat(cfg_sec, "damage");
 			}
 			break;
 
@@ -120,8 +120,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 
 				char* tmp = cfg_getstr(cfg_sec, "model");
 				if (tmp) w->model = mod->getAssimpModel(tmp);
-				w->range = cfg_getfloat(cfg_sec, "range");
-				w->damage = cfg_getfloat(cfg_sec, "damage");
+				w->range = (float)cfg_getfloat(cfg_sec, "range");
+				w->damage = (float)cfg_getfloat(cfg_sec, "damage");
 			}
 			break;
 
@@ -133,8 +133,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 
 				char* tmp = cfg_getstr(cfg_sec, "model");
 				if (tmp) w->model = mod->getAssimpModel(tmp);
-				w->range = cfg_getfloat(cfg_sec, "range");
-				w->damage = cfg_getfloat(cfg_sec, "damage");
+				w->range = (float)cfg_getfloat(cfg_sec, "range");
+				w->damage = (float)cfg_getfloat(cfg_sec, "damage");
 			}
 			break;
 
@@ -150,8 +150,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 
 				char* tmp = cfg_getstr(cfg_sec, "model");
 				if (tmp) w->model = mod->getAssimpModel(tmp);
-				w->range = cfg_getfloat(cfg_sec, "range");		// TODO: blast radius vs detection radius?
-				w->damage = cfg_getfloat(cfg_sec, "damage");
+				w->range = (float)cfg_getfloat(cfg_sec, "range");		// TODO: blast radius vs detection radius?
+				w->damage = (float)cfg_getfloat(cfg_sec, "damage");
 			}
 			break;
 
@@ -163,7 +163,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 
 				char* tmp = cfg_getstr(cfg_sec, "model");
 				if (tmp) w->model = mod->getAssimpModel(tmp);
-				w->range = cfg_getfloat(cfg_sec, "range");
+				w->range = (float)cfg_getfloat(cfg_sec, "range");
 				w->time = cfg_getint(cfg_sec, "time");
 				w->force = Quadratic(3.0f, 3.0f, 3.0f);		// TODO configuration
 				w->inwards = (cfg_getint(cfg_sec, "inwards") == 1);

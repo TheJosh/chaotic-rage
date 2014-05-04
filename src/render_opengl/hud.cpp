@@ -68,19 +68,21 @@ void HUD::draw()
 {
 	if (this->weapon_menu && this->ps->p) {
 		// Weapon menu
-		SDL_Rect r = {100, 100, 125, 125};
-		unsigned int i, num = this->ps->p->getNumWeapons();
+		float x = 100;
+		float y = 100;
+		unsigned int i;
+		unsigned int num = this->ps->p->getNumWeapons();
 		
 		for (i = 0; i < num; i++) {
 			WeaponType *wt = this->ps->p->getWeaponTypeAt(i);
 			
-			this->render->renderText(wt->title, r.x, r.y);
+			this->render->renderText(wt->title, x, y);
 
 			if (i == this->ps->p->getCurrentWeaponID()) {
-				this->render->renderText(">", r.x - 25.0f, r.y);
+				this->render->renderText(">", x - 25.0f, y);
 			}
 			
-			r.y += 30;
+			y += 30.0f;
 		}
 		
 		

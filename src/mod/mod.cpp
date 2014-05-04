@@ -685,16 +685,24 @@ char * Mod::loadText(string resname)
 		SDL_RWclose(rw);
 		return NULL;
 	}
-	
-	buffer = (char*) malloc(length + 1);
+
+	// Check length
+	if (length > (size_t)(-1)) {
+		SDL_RWclose(rw);
+		return NULL;
+	}
+
+	// Allocate buffer
+	buffer = (char*) malloc(static_cast<size_t>(length) + 1);
 	if (buffer == NULL) {
 		SDL_RWclose(rw);
 		return NULL;
 	}
 	buffer[length] = '\0';
 	
+	// Read data
 	SDL_RWseek(rw, 0, SEEK_SET);
-	if (SDL_RWread(rw, buffer, length, 1) == 0) {
+	if (SDL_RWread(rw, buffer, static_cast<size_t>(length), 1) == 0) {
 		SDL_RWclose(rw);
 		return NULL;
 	}
@@ -721,15 +729,23 @@ Uint8 * Mod::loadBinary(string resname, Sint64 *len)
 		SDL_RWclose(rw);
 		return NULL;
 	}
-	
-	buffer = (Uint8*) malloc(length);
+
+	// Check length
+	if (length > (size_t)(-1)) {
+		SDL_RWclose(rw);
+		return NULL;
+	}
+
+	// Allocate a buffer
+	buffer = (Uint8*) malloc(static_cast<size_t>(length));
 	if (buffer == NULL) {
 		SDL_RWclose(rw);
 		return NULL;
 	}
 	
+	// Read
 	SDL_RWseek(rw, 0, SEEK_SET);
-	if (SDL_RWread(rw, buffer, length, 1) == 0) {
+	if (SDL_RWread(rw, buffer, static_cast<size_t>(length), 1) == 0) {
 		SDL_RWclose(rw);
 		return NULL;
 	}

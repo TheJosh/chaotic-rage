@@ -103,7 +103,7 @@ typedef Uint16 SeqNum;
 class NetMsg {
 	public:
 		Uint8 type;
-		Uint8 uniq;
+		int uniq;
 		Uint8 *data;
 		unsigned int size;
 		SeqNum seq;
@@ -122,10 +122,17 @@ class IsTypeUniqPred
 {
 	public:
 		Uint8 type;
-		Uint8 uniq;
+		int uniq;
 		
-		bool operator() (const NetMsg& value) { return (value.type == this->type && value.uniq == this->uniq); }
-		IsTypeUniqPred(Uint8 type, Uint8 uniq) { this->type = type; this->uniq = uniq; }
+		bool operator() (const NetMsg& value)
+		{
+			return (value.type == this->type && value.uniq == this->uniq);
+		}
+
+		IsTypeUniqPred(Uint8 type, int uniq) {
+			this->type = type;
+			this->uniq = uniq;
+		}
 };
 
 
