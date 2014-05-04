@@ -676,18 +676,13 @@ char * Mod::loadText(string resname)
 {
 	SDL_RWops *rw;
 	char *buffer;
-	
+
 	rw = this->loadRWops(resname);
 	if (rw == NULL) return NULL;
-	
-	Sint64 length = SDL_RWseek(rw, 0, SEEK_END);
-	if (length == -1) {
-		SDL_RWclose(rw);
-		return NULL;
-	}
 
-	// Check length
-	if (length > MAX_FILE_SIZE) {
+	// Get and check length
+	Sint64 length = SDL_RWseek(rw, 0, SEEK_END);
+	if (length <= 0 || length > MAX_FILE_SIZE) {
 		SDL_RWclose(rw);
 		return NULL;
 	}
@@ -699,16 +694,16 @@ char * Mod::loadText(string resname)
 		return NULL;
 	}
 	buffer[length] = '\0';
-	
+
 	// Read data
 	SDL_RWseek(rw, 0, SEEK_SET);
 	if (SDL_RWread(rw, buffer, static_cast<size_t>(length), 1) == 0) {
 		SDL_RWclose(rw);
 		return NULL;
 	}
-	
+
 	SDL_RWclose(rw);
-	
+
 	return buffer;
 }
 
@@ -720,18 +715,13 @@ Uint8 * Mod::loadBinary(string resname, Sint64 *len)
 {
 	SDL_RWops *rw;
 	Uint8 *buffer;
-	
+
 	rw = this->loadRWops(resname);
 	if (rw == NULL) return NULL;
-	
-	Sint64 length = SDL_RWseek(rw, 0, SEEK_END);
-	if (length == -1) {
-		SDL_RWclose(rw);
-		return NULL;
-	}
 
-	// Check length
-	if (length > MAX_FILE_SIZE) {
+	// Get and check length
+	Sint64 length = SDL_RWseek(rw, 0, SEEK_END);
+	if (length <= 0 || length > MAX_FILE_SIZE) {
 		SDL_RWclose(rw);
 		return NULL;
 	}
@@ -742,16 +732,16 @@ Uint8 * Mod::loadBinary(string resname, Sint64 *len)
 		SDL_RWclose(rw);
 		return NULL;
 	}
-	
+
 	// Read
 	SDL_RWseek(rw, 0, SEEK_SET);
 	if (SDL_RWread(rw, buffer, static_cast<size_t>(length), 1) == 0) {
 		SDL_RWclose(rw);
 		return NULL;
 	}
-	
+
 	SDL_RWclose(rw);
-	
+
 	*len = length;
 	return buffer;
 }
