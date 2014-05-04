@@ -686,6 +686,12 @@ char * Mod::loadText(string resname)
 		return NULL;
 	}
 
+	// Check we aren't larger than size_t
+	if (static_cast<size_t>(length) > std::numeric_limits<size_t>::max()) {
+		SDL_RWclose(rw);
+		return NULL;
+	}
+
 	// Allocate buffer
 	buffer = (char*) malloc(static_cast<size_t>(length) + 1);
 	if (buffer == NULL) {
@@ -719,13 +725,13 @@ Uint8 * Mod::loadBinary(string resname, Sint64 *len)
 	if (rw == NULL) return NULL;
 	
 	Sint64 length = SDL_RWseek(rw, 0, SEEK_END);
-	if (length == -1) {
+	if (length < 0) {
 		SDL_RWclose(rw);
 		return NULL;
 	}
 
-	// Check length
-	if (length > -1) {
+	// Check we aren't larger than size_t
+	if (static_cast<size_t>(length) > std::numeric_limits<size_t>::max()) {
 		SDL_RWclose(rw);
 		return NULL;
 	}
