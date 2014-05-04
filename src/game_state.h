@@ -170,7 +170,7 @@ class GameState
 		// HUD
 		void addHUDMessage(unsigned int slot, string text);
 		void addHUDMessage(unsigned int slot, string text, string text2);
-		HUDLabel* addHUDLabel(unsigned int slot, int x, int y, string data);
+		HUDLabel* addHUDLabel(unsigned int slot, float x, float y, string data);
 
 		// Debugging
 		void addDebugLine(btVector3 * a, btVector3 * b);

@@ -52,9 +52,9 @@ inline bool operator< (const TrainIds& lhs, const TrainIds& rhs)
 // Wall
 static cfg_opt_t wall_opts[] =
 {
-	CFG_INT((char*) "x", 0, CFGF_NONE),
-	CFG_INT((char*) "y", 0, CFGF_NONE),
-	CFG_INT((char*) "angle", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "x", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "y", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "angle", 0, CFGF_NONE),
 	CFG_STR((char*) "type", ((char*)""), CFGF_NONE),
 	CFG_END()
 };
@@ -62,10 +62,10 @@ static cfg_opt_t wall_opts[] =
 // Object
 static cfg_opt_t object_opts[] =
 {
-	CFG_INT((char*) "x", 0, CFGF_NONE),
-	CFG_INT((char*) "y", 0, CFGF_NONE),
-	CFG_INT((char*) "z", 0, CFGF_NONE),
-	CFG_INT((char*) "angle", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "x", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "y", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "z", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "angle", 0, CFGF_NONE),
 	CFG_STR((char*) "type", ((char*)""), CFGF_NONE),
 	CFG_END()
 };
@@ -73,9 +73,9 @@ static cfg_opt_t object_opts[] =
 // Pickup
 static cfg_opt_t pickup_opts[] =
 {
-	CFG_INT((char*) "x", 0, CFGF_NONE),
-	CFG_INT((char*) "y", 0, CFGF_NONE),
-	CFG_INT((char*) "z", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "x", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "y", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "z", 0, CFGF_NONE),
 	CFG_STR((char*) "type", ((char*)""), CFGF_NONE),
 	CFG_END()
 };
@@ -83,10 +83,10 @@ static cfg_opt_t pickup_opts[] =
 // Vehicle
 static cfg_opt_t vehicle_opts[] =
 {
-	CFG_INT((char*) "x", 0, CFGF_NONE),
-	CFG_INT((char*) "y", 0, CFGF_NONE),
-	CFG_INT((char*) "z", 0, CFGF_NONE),
-	CFG_INT((char*) "angle", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "x", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "y", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "z", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "angle", 0, CFGF_NONE),
 	CFG_STR((char*) "type", ((char*)""), CFGF_NONE),
 	CFG_INT((char*) "train-num", 0, CFGF_NONE),
 	CFG_INT((char*) "train-idx", 0, CFGF_NONE),
@@ -95,11 +95,11 @@ static cfg_opt_t vehicle_opts[] =
 
 static cfg_opt_t zone_opts[] =
 {
-	CFG_INT((char*) "x", 0, CFGF_NONE),
-	CFG_INT((char*) "y", 0, CFGF_NONE),
-	CFG_INT((char*) "angle", 0, CFGF_NONE),
-	CFG_INT((char*) "width", 0, CFGF_NONE),
-	CFG_INT((char*) "height", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "x", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "y", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "angle", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "width", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "height", 0, CFGF_NONE),
 	CFG_INT_LIST((char*) "spawn", 0, CFGF_NONE),
 	CFG_END()
 };
@@ -108,9 +108,9 @@ static cfg_opt_t light_opts[] =
 {
 	CFG_INT((char*) "type", 0, CFGF_NONE),			// 1 = point, 2 = torch
 	
-	CFG_INT((char*) "x", 0, CFGF_NONE),
-	CFG_INT((char*) "y", 0, CFGF_NONE),
-	CFG_INT((char*) "z", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "x", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "y", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "z", 0, CFGF_NONE),
 	
 	CFG_INT_LIST((char*) "diffuse", 0, CFGF_NONE),
 	CFG_INT_LIST((char*) "specular", 0, CFGF_NONE),
@@ -153,8 +153,8 @@ static cfg_opt_t skybox_opts[] =
 // Main config
 static cfg_opt_t opts[] =
 {
-	CFG_INT((char*) "width", 0, CFGF_NONE),
-	CFG_INT((char*) "height", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "width", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "height", 0, CFGF_NONE),
 	
 	CFG_SEC((char*) "wall", wall_opts, CFGF_MULTI),
 	CFG_SEC((char*) "vehicle", vehicle_opts, CFGF_MULTI),
@@ -264,9 +264,10 @@ int Map::load(string name, Render *render, Mod* insideof)
 	}
 	
 	// Get width and height
-	this->width = cfg_getint(cfg, "width");
-	this->height = cfg_getint(cfg, "height");
-	if (this->width == 0 or this->height == 0) {
+	this->width = (float)cfg_getint(cfg, "width");
+	this->height = (float)cfg_getint(cfg, "height");
+
+	if (this->width <= 0.0f or this->height <= 0.0f) {
 		cerr << "No width or height set for map.\n";
 		cfg_free(cfg);
 		return 0;
@@ -341,9 +342,9 @@ int Map::load(string name, Render *render, Mod* insideof)
 	// Ambient lighting
 	int num = cfg_size(cfg, "ambient");
 	if (num == 3) {
-		this->ambient[0] = (float)cfg_getnint(cfg, "ambient", 0) / 255.0;
-		this->ambient[1] = (float)cfg_getnint(cfg, "ambient", 1) / 255.0;
-		this->ambient[2] = (float)cfg_getnint(cfg, "ambient", 2) / 255.0;
+		this->ambient[0] = (float)(cfg_getnint(cfg, "ambient", 0) / 255.0f);
+		this->ambient[1] = (float)(cfg_getnint(cfg, "ambient", 1) / 255.0f);
+		this->ambient[2] = (float)(cfg_getnint(cfg, "ambient", 2) / 255.0f);
 	}
 
 	// Zones
@@ -351,7 +352,12 @@ int Map::load(string name, Render *render, Mod* insideof)
 	for (j = 0; j < num_types; j++) {
 		cfg_sub = cfg_getnsec(cfg, "zone", j);
 		
-		Zone * z = new Zone(cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), cfg_getint(cfg_sub, "width"), cfg_getint(cfg_sub, "height"));
+		Zone * z = new Zone(
+			(float)cfg_getfloat(cfg_sub, "x"),
+			(float)cfg_getfloat(cfg_sub, "y"),
+			(float)cfg_getfloat(cfg_sub, "width"),
+			(float)cfg_getfloat(cfg_sub, "height")
+		);
 		
 		int num_spawn = cfg_size(cfg_sub, "spawn");
 		for (k = 0; k < num_spawn; k++) {
@@ -403,27 +409,27 @@ int Map::load(string name, Render *render, Mod* insideof)
 		
 		Light * l = new Light(cfg_getint(cfg_sub, "type"));
 		
-		l->x = cfg_getint(cfg_sub, "x");
-		l->y = cfg_getint(cfg_sub, "y");
-		l->z = cfg_getint(cfg_sub, "z");
+		l->x = (float)cfg_getfloat(cfg_sub, "x");
+		l->y = (float)cfg_getfloat(cfg_sub, "y");
+		l->z = (float)cfg_getfloat(cfg_sub, "z");
 		
 		num = cfg_size(cfg_sub, "diffuse");
 		if (num == 4) {
 			l->setDiffuse(
-				cfg_getnint(cfg_sub, "diffuse", 0),
-				cfg_getnint(cfg_sub, "diffuse", 1),
-				cfg_getnint(cfg_sub, "diffuse", 2),
-				cfg_getnint(cfg_sub, "diffuse", 3)
+				(short)cfg_getnint(cfg_sub, "diffuse", 0),
+				(short)cfg_getnint(cfg_sub, "diffuse", 1),
+				(short)cfg_getnint(cfg_sub, "diffuse", 2),
+				(short)cfg_getnint(cfg_sub, "diffuse", 3)
 			);
 		}
 		
 		num = cfg_size(cfg_sub, "specular");
 		if (num == 4) {
 			l->setSpecular(
-				cfg_getnint(cfg_sub, "specular", 0),
-				cfg_getnint(cfg_sub, "specular", 1),
-				cfg_getnint(cfg_sub, "specular", 2),
-				cfg_getnint(cfg_sub, "specular", 3)
+				(short)cfg_getnint(cfg_sub, "specular", 0),
+				(short)cfg_getnint(cfg_sub, "specular", 1),
+				(short)cfg_getnint(cfg_sub, "specular", 2),
+				(short)cfg_getnint(cfg_sub, "specular", 3)
 			);
 		}
 		
@@ -471,10 +477,10 @@ void Map::loadDefaultEntities()
 		Wall * wa = new Wall(
 			wt,
 			this->st,
-			cfg_getint(cfg_sub, "x"),
-			cfg_getint(cfg_sub, "y"),
-			1,
-			cfg_getint(cfg_sub, "angle")
+			(float)cfg_getfloat(cfg_sub, "x"),
+			(float)cfg_getfloat(cfg_sub, "y"),
+			1.0f,
+			(float)cfg_getfloat(cfg_sub, "angle")
 		);
 		
 		this->st->addWall(wa);
@@ -495,9 +501,9 @@ void Map::loadDefaultEntities()
 		if (vt == NULL) reportFatalError("Unable to load map; missing or invalid vehicle type '" + type + "'");
 		
 		if (vt->helicopter) {
-			v = new Helicopter(vt, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"));
+			v = new Helicopter(vt, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"));
 		} else {
-			v = new Vehicle(vt, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"));
+			v = new Vehicle(vt, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"));
 		}
 
 		tid.num = cfg_getint(cfg_sub, "train-num");
@@ -529,7 +535,7 @@ void Map::loadDefaultEntities()
 		ObjectType *ot = GEng()->mm->getObjectType(type);
 		if (ot == NULL) reportFatalError("Unable to load map; missing or invalid object type '" + type + "'");
 		
-		Object * ob = new Object(ot, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), 1, cfg_getint(cfg_sub, "angle"));
+		Object * ob = new Object(ot, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"), 1.0f, (float)cfg_getfloat(cfg_sub, "angle"));
 		
 		this->st->addObject(ob);
 	}
@@ -545,7 +551,7 @@ void Map::loadDefaultEntities()
 		PickupType *pt = GEng()->mm->getPickupType(type);
 		if (pt == NULL) reportFatalError("Unable to load map; missing or invalid pickup type '" + type + "'");
 		
-		Pickup * pu = new Pickup(pt, this->st, cfg_getint(cfg_sub, "x"), cfg_getint(cfg_sub, "y"), 1);
+		Pickup * pu = new Pickup(pt, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"), 1.0f);
 		
 		this->st->addPickup(pu);
 	}

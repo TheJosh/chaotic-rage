@@ -98,15 +98,15 @@ int AudioSDLMixer::playSound(Sound * snd, bool loop, Entity *e)
 	if (st->local_players[0]->p == NULL) return -1;
 	
 	btTransform trans = e->getTransform();
-	int x1 = trans.getOrigin().getX();
-	int y1 = trans.getOrigin().getY();
+	float x1 = trans.getOrigin().getX();
+	float y1 = trans.getOrigin().getY();
 	
 	trans = st->local_players[0]->p->getTransform();
-	int x2 = trans.getOrigin().getX();
-	int y2 = trans.getOrigin().getY();
+	float x2 = trans.getOrigin().getX();
+	float y2 = trans.getOrigin().getY();
 	
 	float vol = ((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2));
-	if (vol > 25.0 * 25.0) return -1;
+	if (vol > 25.0f * 25.0f) return -1;
 	
 	return Mix_PlayChannel(-1, snd->sound, loop ? -1 : 0);
 }

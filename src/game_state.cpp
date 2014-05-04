@@ -563,7 +563,7 @@ void GameState::addHUDMessage(unsigned int slot, string text, string text2)
 /**
 * Add a label to a given slot. Use ALL_SLOTS to add to all slots
 **/
-HUDLabel* GameState::addHUDLabel(unsigned int slot, int x, int y, string data)
+HUDLabel* GameState::addHUDLabel(unsigned int slot, float x, float y, string data)
 {
 
 	// This doesn't actually work properly

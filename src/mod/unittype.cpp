@@ -41,7 +41,7 @@ cfg_opt_t unittype_opts[] =
 	CFG_STR((char*) "model", 0, CFGF_NONE),
 	
 	CFG_FLOAT((char*) "max_speed", 0.0f, CFGF_NONE),
-	CFG_INT((char*) "melee_damage", 1000, CFGF_NONE),
+	CFG_FLOAT((char*) "melee_damage", 1000, CFGF_NONE),
 	CFG_INT((char*) "melee_delay", 500, CFGF_NONE),
 	CFG_INT((char*) "melee_cooldown", 1000, CFGF_NONE),
 	CFG_INT((char*) "special_delay", 500, CFGF_NONE),
@@ -71,7 +71,7 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	uc = new UnitType();
 	uc->mod = mod;
 	uc->name = cfg_getstr(cfg_item, "name");
-	uc->begin_health = (float)\cfg_getfloat(cfg_item, "health");
+	uc->begin_health = (float)cfg_getfloat(cfg_item, "health");
 	uc->playable = cfg_getint(cfg_item, "playable");
 
 	// 3D model
@@ -85,7 +85,7 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	
 	// Params
 	uc->params.max_speed = (float)cfg_getfloat(cfg_item, "max_speed");
-	uc->params.melee_damage = cfg_getint(cfg_item, "melee_damage");
+	uc->params.melee_damage = (float)cfg_getfloat(cfg_item, "melee_damage");
 	uc->params.melee_delay = cfg_getint(cfg_item, "melee_delay");
 	uc->params.melee_cooldown = cfg_getint(cfg_item, "melee_cooldown");
 	uc->params.special_delay = cfg_getint(cfg_item, "special_delay");

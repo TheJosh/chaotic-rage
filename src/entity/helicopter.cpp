@@ -90,7 +90,7 @@ void Helicopter::update(int delta)
 	
 	// Blades animation
 	int frame = this->st->anim_frame % 12;
-	this->setNodeAngle(VEHICLE_NODE_SPIN, 360/12*frame);
+	this->setNodeAngle(VEHICLE_NODE_SPIN, 360.0f / 12.0f * frame);
 }
 
 

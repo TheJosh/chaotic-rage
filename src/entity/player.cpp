@@ -78,7 +78,7 @@ Uint8 Player::packKeys()
 void Player::setKeys(Uint8 bitfield)
 {
 	for (int i = 0; i < 8; i++) {
-		this->key[i] = bitfield & (1 << i);
+		this->key[i] = (bitfield & (1 << i)) != 0;
 	}
 }
 

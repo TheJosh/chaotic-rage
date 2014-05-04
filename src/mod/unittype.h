@@ -52,7 +52,7 @@ class UnitParams
 {
 	public:
 		float max_speed;        // meters/second
-		int melee_damage;       // hit points
+		float melee_damage;     // hit points
 		int melee_delay;        // milliseconds
 		int melee_cooldown;     // milliseconds
 		int special_delay;      // milliseconds

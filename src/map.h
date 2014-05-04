@@ -84,15 +84,13 @@ class Map {
 		string name;
 		
 	public:
-		int width;
-		int height;
-		
+		float width;
+		float height;
+		Heightmap* heightmap;		// TODO: Support multiple
 		SpritePtr terrain;
 		
 		SpritePtr skybox;
 		glm::vec3 skybox_size;
-		
-		Heightmap* heightmap;		// TODO: Support multiple
 
 		float water_level;
 		SpritePtr water;

@@ -345,7 +345,7 @@ LUA_FUNC(get_info)
 LUA_FUNC(move)
 {
 	double * v = get_vector3(L, 1);
-	btVector3 walkDirection = btVector3(v[0], v[1], v[2]);
+	btVector3 walkDirection = btVector3((float)v[0], (float)v[1], (float)v[2]);
 	walkDirection.normalize();
 
 	gl->dir = walkDirection;
@@ -370,7 +370,7 @@ LUA_FUNC(move)
 LUA_FUNC(melee)
 {
 	double * v = get_vector3(L, 1);
-	btVector3 attackDirection = btVector3(v[0], v[1], v[2]);
+	btVector3 attackDirection = btVector3((float)v[0], (float)v[1], (float)v[2]);
 	attackDirection.normalize();
 	
 	// Determine direction matrix from direction vector
