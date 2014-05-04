@@ -71,7 +71,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 	}
 	
 	// Check we aren't larger than size_t
-	if (len > (size_t)(-1)) {
+	if (len > -1) {
 		this->mod->setLoadErr("Failed to load %s; file too large", this->name.c_str());
 		return false;
 	}
