@@ -5,7 +5,7 @@
 #pragma once
 #include <vector>
 #include <guichan.hpp>
-#include "../map.h"
+#include "../map/map.h"
 #include "../mod/mod.h"
 #include "../mod/gametype.h"
 

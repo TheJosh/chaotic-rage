@@ -5,8 +5,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <string>
-#include "rage.h"
-#include "entity/unit.h"
+#include "../rage.h"
 
 using namespace std;
 
@@ -22,6 +21,7 @@ class Light;
 class MapMesh;
 class RangeF;
 class btTriangleMesh;
+class btRigidBody;
 
 
 // TODO: Cleanup, improve and move to own file.

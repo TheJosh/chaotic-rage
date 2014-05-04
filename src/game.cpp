@@ -8,7 +8,7 @@
 #include "rage.h"
 #include "game_state.h"
 #include "game_engine.h"
-#include "map.h"
+#include "map/map.h"
 #include "physics_bullet.h"
 #include "render/render.h"
 #include "audio/audio.h"

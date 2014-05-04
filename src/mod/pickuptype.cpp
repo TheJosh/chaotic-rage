@@ -10,6 +10,7 @@
 #include "../rage.h"
 #include "../render_opengl/assimpmodel.h"
 #include "../game_state.h"
+#include "../entity/unit.h"
 #include "mod.h"
 #include "weapontype.h"
 

@@ -5,7 +5,9 @@
 #include <iostream>
 #include "../rage.h"
 #include "../game_state.h"
-#include "../map.h"
+#include "../map/map.h"
+#include "../entity/entity.h"
+#include "../entity/unit.h"
 #include "render_debug.h"
 #include "sprite.h"
 #include <SDL_image.h>

@@ -35,7 +35,7 @@
 #include "../util/obj.h"
 #include "../util/serverconfig.h"
 #include "../mod/mod_manager.h"
-#include "../map.h"
+#include "../map/map.h"
 #include "../game_manager.h"
 #include "../game_engine.h"
 

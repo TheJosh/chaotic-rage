@@ -5,7 +5,7 @@
 #include <iostream>
 #include "../rage.h"
 #include "../game_state.h"
-#include "../map.h"
+#include "../map/map.h"
 #include "render_null.h"
 #include "sprite.h"
 #include <SDL.h>

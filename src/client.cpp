@@ -13,7 +13,7 @@
 #include "util/stream_redirector.h"
 #include "mod/mod_manager.h"
 #include "mod/mod.h"
-#include "map.h"
+#include "map/map.h"
 #include "game_state.h"
 #include "game_engine.h"
 #include "game_manager.h"

@@ -17,7 +17,7 @@
 #include "game_state.h"
 #include "game_engine.h"
 #include "game_settings.h"
-#include "map.h"
+#include "map/map.h"
 #include "physics_bullet.h"
 #include "entity/ammo_round.h"
 #include "entity/decaying.h"
