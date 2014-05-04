@@ -13,6 +13,12 @@
 #endif
 
 
+// We define the maximum size for an individual file
+// in a mod as being no larger than this
+// It's a protection against very badly compressed assets
+#define MAX_FILE_SIZE (32 * 1024 * 1024)
+
+
 using namespace std;
 
 

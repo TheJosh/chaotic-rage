@@ -687,7 +687,7 @@ char * Mod::loadText(string resname)
 	}
 
 	// Check length
-	if (length > (size_t)(-1)) {
+	if (length > MAX_FILE_SIZE) {
 		SDL_RWclose(rw);
 		return NULL;
 	}
@@ -731,7 +731,7 @@ Uint8 * Mod::loadBinary(string resname, Sint64 *len)
 	}
 
 	// Check length
-	if (length > (size_t)(-1)) {
+	if (length > MAX_FILE_SIZE) {
 		SDL_RWclose(rw);
 		return NULL;
 	}
