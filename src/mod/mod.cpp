@@ -237,7 +237,7 @@ void Mod::setLoadErr(const char *message, ...)
 	vsnprintf(buf, 255, message, argptr);
 	va_end(argptr);
 	
-	this->load_err = std::string(buf);
+	this->load_err = string(buf);
 }
 
 
@@ -397,7 +397,7 @@ AssimpModel * Mod::getAssimpModel(string name)
 		return NULL;
 	}
 	
-	this->models.insert(std::pair<string, AssimpModel*>(name, am));
+	this->models.insert(pair<string, AssimpModel*>(name, am));
 
 	return am;
 }

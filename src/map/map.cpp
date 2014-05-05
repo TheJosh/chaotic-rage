@@ -265,8 +265,8 @@ int Map::load(string name, Render *render, Mod* insideof)
 	}
 	
 	// Get width and height
-	this->width = (float)cfg_getfloat(cfg, "width");
-	this->height = (float)cfg_getfloat(cfg, "height");
+	this->width = cfg_getfloat(cfg, "width");
+	this->height = cfg_getfloat(cfg, "height");
 
 	if (this->width <= 0.0f or this->height <= 0.0f) {
 		cerr << "No width or height set for map.\n";
@@ -923,7 +923,7 @@ void Map::fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *ap, AssimpModel *am
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
 		mesh = am->meshes[(*it)];
 		
-		for (vector<AssimpFace>::iterator itt = mesh->faces->begin(); itt != mesh->faces->end(); itt++) {
+		for (vector<AssimpFace>::iterator itt = mesh->faces->begin(); itt != mesh->faces->end(); ++itt) {
 			a = transform * mesh->verticies->at((*itt).a);
 			b = transform * mesh->verticies->at((*itt).b);
 			c = transform * mesh->verticies->at((*itt).c);
