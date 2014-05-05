@@ -419,7 +419,7 @@ AssimpNode* AssimpModel::findNode(AssimpNode* nd, string name)
 {
 	if (nd->name == name) return nd;
 
-	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); it++) {
+	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); ++it) {
 		AssimpNode* maybe = this->findNode((*it), name);
 		if (maybe) return maybe;
 	}
@@ -631,7 +631,7 @@ void AssimpModel::freeBones()
 **/
 void AssimpModel::setBoneNodes()
 {
-	for (vector<AssimpMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); it++) {
+	for (vector<AssimpMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); ++it) {
 		AssimpMesh* mesh = (*it);
 		
 		for (unsigned int i = 0; i < mesh->bones.size(); i++) {

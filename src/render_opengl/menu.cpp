@@ -335,7 +335,7 @@ void Menu::updateUI()
 **/
 void Menu::menuClear()
 {
-	for (vector<MenuItem*>::iterator it = this->menuitems.begin(); it != this->menuitems.end(); it++) {
+	for (vector<MenuItem*>::iterator it = this->menuitems.begin(); it != this->menuitems.end(); ++it) {
 		delete(*it);
 	}
 	this->menuitems.clear();

@@ -89,7 +89,7 @@ void HUD::draw()
 	} else {
 		// Messages
 		float y = 1000.0f;
-		for (list<HUDMessage*>::iterator it = this->msgs.begin(); it != this->msgs.end(); it++) {
+		for (list<HUDMessage*>::iterator it = this->msgs.begin(); it != this->msgs.end(); ++it) {
 			HUDMessage *msg = (*it);
 			
 			if (msg->remove_time < ps->st->game_time) {
@@ -102,7 +102,7 @@ void HUD::draw()
 		}
 		
 		// Labels
-		for (list<HUDLabel*>::iterator it = this->labels.begin(); it != this->labels.end(); it++) {
+		for (list<HUDLabel*>::iterator it = this->labels.begin(); it != this->labels.end(); ++it) {
 			HUDLabel *l = (*it);
 			if (! l->visible) continue;
 			

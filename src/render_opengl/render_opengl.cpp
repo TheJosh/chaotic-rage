@@ -162,7 +162,7 @@ void RenderOpenGL::setSettings(RenderOpenGLSettings* settings)
 	}
 	
 	// Update tex with new filtering modes
-	if (loaded.size() > 0) {
+	if (!loaded.empty()) {
 		for (unsigned int i = 0; i != loaded.size(); i++) {
 			glBindTexture(GL_TEXTURE_2D, loaded[i]->pixels);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this->min_filter);
@@ -285,7 +285,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	// Windows only: Re-load textures.
 	// All other platforms don't destory the context if the window size changes
 	#ifdef _WIN32
-		if (loaded.size() > 0) {
+		if (!loaded.empty()) {
 			for (unsigned int i = 0; i != loaded.size(); i++) {
 				this->surfaceToOpenGL(loaded.at(i));
 			}
@@ -1518,7 +1518,7 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 	play->calcTransforms();
 
 	// Bones? Calculate and send through bone transforms
-	if (am->meshes[0]->bones.size() > 0) {
+	if (!am->meshes[0]->bones.empty()) {
 		shader = this->shaders["bones"];
 		glUseProgram(shader->p());
 		
@@ -1560,7 +1560,7 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
 		AssimpMesh* mesh = am->meshes[(*it)];
 		
-		if (mesh->bones.size() == 0) {
+		if (mesh->bones.empty()) {
 			glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPstatic));
 		} else {
 			glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPbones));
