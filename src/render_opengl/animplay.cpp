@@ -356,7 +356,7 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float anim
 **/
 void AnimPlay::calcBoneTransforms()
 {
-	if (this->anim == NULL && this->move_nodes.size() == 0 && bone_transforms.size() != 0) return;
+	if (this->anim == NULL && this->move_nodes.empty() && !bone_transforms.empty()) return;
 
 	// set all bones to empty transform
 	bone_transforms.clear();

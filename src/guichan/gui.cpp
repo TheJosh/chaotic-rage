@@ -367,7 +367,7 @@ namespace gcn
             std::deque<Widget*>::iterator iter;
             for (iter = mWidgetWithMouseQueue.begin();
                  iter != mWidgetWithMouseQueue.end();
-                 iter++)
+                 ++iter)
             {
                 Widget* widget = *iter;
                             
@@ -446,7 +446,7 @@ namespace gcn
             std::deque<Widget*>::iterator iter;
             for (iter = mWidgetWithMouseQueue.begin();
                  iter != mWidgetWithMouseQueue.end();
-                 iter++)
+                 ++iter)
             {
                 if (*iter == widget)
                 {
@@ -963,7 +963,7 @@ namespace gcn
             std::deque<Widget*>::iterator iter;
             for (iter = mWidgetWithMouseQueue.begin();
                  iter != mWidgetWithMouseQueue.end();
-                 iter++)
+                 ++iter)
             {
                 if (*iter == widget)
                 {
