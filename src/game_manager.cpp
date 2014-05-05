@@ -116,7 +116,7 @@ void GameManager::loadModBits(UIUpdate* ui)
 /**
 * Plays through each game of a campaign
 **/
-void GameManager::startCampaign(Campaign* c, string unittype, int viewmode, unsigned int num_local)
+void GameManager::startCampaign(Campaign* c, string unittype, GameSettings::ViewMode viewmode, unsigned int num_local)
 {
 	for (vector<CampaignStage*>::iterator it = c->stages->begin(); it != c->stages->end();) {
 		CampaignStage* stage = *it;
@@ -132,7 +132,7 @@ void GameManager::startCampaign(Campaign* c, string unittype, int viewmode, unsi
 
 			// Run game
 			GameSettings* gs = new GameSettings();
-			this->startGame(m, stage->gametype, unittype, 0, 1, false, gs);
+			this->startGame(m, stage->gametype, unittype, GameSettings::behindPlayer, 1, false, gs);
 			delete(gs);
 
 			// A result of 1 is success, 0 is failure, -1 is an error.
@@ -208,11 +208,11 @@ void GameManager::startCampaign(Campaign* c, string unittype, int viewmode, unsi
 /**
 * Starts a game with the specified settings
 *
-* @param int viewmode The camera view mode for the local player(s)
+* @param GameSettings::ViewMode viewmode The camera view mode for the local player(s)
 * @param int num_local The number of local players; 1 for single, 2+ for splitscreen
 * @param int host Set to 1 to host a network game, 0 for a local-only game
 **/
-void GameManager::startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local, bool host, GameSettings *gs)
+void GameManager::startGame(MapReg *map, string gametype, string unittype, GameSettings::ViewMode viewmode, unsigned int num_local, bool host, GameSettings *gs)
 {
 	ServerConfig* sconf = NULL;
 	NetServer* server = NULL;
@@ -325,7 +325,7 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	new GameLogic(st);
 	st->logic->selected_unittype = GEng()->mm->getUnitType("robot");
 
-	GEng()->render->viewmode = 0;
+	GEng()->render->viewmode = GameSettings::behindPlayer;
 	
 	// Download the gamestate
 	// When this is done, a final message is sent to tell the server we are done.

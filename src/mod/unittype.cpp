@@ -210,8 +210,19 @@ UnitTypeAnimation* UnitType::getAnimation(int type)
 
 UnitType::UnitType()
 {
+	this->model = NULL;
+	this->begin_health = 0.0f;
+	this->playable = 0;
+	this->mod = NULL;
 	this->special_weapon = NULL;
 	this->col_shape = NULL;
+
+	this->params.max_speed = 0.0f;
+	this->params.melee_damage = 0.0f;
+	this->params.melee_delay = 0;
+	this->params.melee_cooldown = 0;
+	this->params.special_delay = 0;
+	this->params.special_cooldown = 0;
 }
 
 UnitType::~UnitType()

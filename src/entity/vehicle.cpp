@@ -37,6 +37,12 @@ Vehicle::Vehicle(GameState *st) : Entity(st)
 	this->vehicle_raycaster = NULL;
 	this->vehicle = NULL;
 	this->anim = NULL;
+	this->engineForce = 0.0f;
+	this->brakeForce = 0.0f;
+	this->steering = 0.0f;
+	this->vt = NULL;
+	this->health = 0;
+	this->wheel_shape = NULL;
 }
 
 Vehicle::Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy) : Entity(st)

@@ -105,6 +105,7 @@ void handleEvents(GameState *st)
 					case SDL_SCANCODE_E: st->local_players[0]->p->keyPress(Player::KEY_USE); break;
 					case SDL_SCANCODE_Q: st->local_players[0]->p->keyPress(Player::KEY_LIFT); break;
 					case SDL_SCANCODE_T: st->local_players[0]->p->keyPress(Player::KEY_SPECIAL); break;
+					case SDL_SCANCODE_C: st->gs->switchViewMode(); break;
 					default: break;
 				}
 			
@@ -205,6 +206,7 @@ void handleEvents(GameState *st)
 					case SDL_SCANCODE_E: st->local_players[0]->p->keyPress(Player::KEY_USE); break;
 					case SDL_SCANCODE_Q: st->local_players[0]->p->keyPress(Player::KEY_LIFT); break;
 					case SDL_SCANCODE_T: st->local_players[0]->p->keyPress(Player::KEY_SPECIAL); break;
+					case SDL_SCANCODE_C: st->gs->switchViewMode(); break;
 					case SDL_SCANCODE_K: mk_down_x[0] = -10; break;
 					case SDL_SCANCODE_P: mk_down_x[0] = 10; break;
 					case SDL_SCANCODE_9: mk_down_y[0] = -10; break;

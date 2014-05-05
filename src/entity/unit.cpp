@@ -321,6 +321,7 @@ WeaponType * Unit::getWeaponTypeAt(unsigned int id)
 **/
 WeaponType * Unit::getWeaponTypeCurr()
 {
+	assert(this->weapon != NULL);
 	return this->weapon->wt;
 }
 

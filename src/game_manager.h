@@ -4,6 +4,7 @@
 
 #pragma once
 #include <vector>
+#include "game_settings.h"
 
 using namespace std;
 
@@ -46,12 +47,12 @@ class GameManager
 		/**
 		* Run a campaign
 		**/
-		void startCampaign(Campaign* c, string unittype, int viewmode, unsigned int num_local);
+		void startCampaign(Campaign* c, string unittype, GameSettings::ViewMode viewmode, unsigned int num_local);
 		
 		/**
 		* Run an arcade game
 		**/
-		void startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local, bool host, GameSettings *gs);
+		void startGame(MapReg *map, string gametype, string unittype, GameSettings::ViewMode viewmode, unsigned int num_local, bool host, GameSettings *gs);
 		
 		/**
 		* Attempt to join a network game

@@ -150,7 +150,7 @@ void DialogNewGame::action(const gcn::ActionEvent& actionEvent)
 		this->gm->getMapRegistry()->at(this->map->getSelected()),
 		this->gm->getGameTypes()->at(this->gametype->getSelected()),
 		this->gm->getUnitTypes()->at(this->unittype->getSelected()),
-		this->viewmode->getSelected(),
+		static_cast<GameSettings::ViewMode>(this->viewmode->getSelected()),
 		this->num_local,
 		this->host->isSelected(),
 		this->gs

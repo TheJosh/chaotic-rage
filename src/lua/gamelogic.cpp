@@ -580,7 +580,7 @@ LUA_FUNC(get_viewmode)
 
 
 /**
-* Set tie view mode
+* Set the view mode
 **/
 LUA_FUNC(set_viewmode)
 {
