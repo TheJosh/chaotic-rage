@@ -325,7 +325,7 @@ void PhysicsBullet::handleCallback(float delta)
 {
 	this->callbacks.remove_if(is_removed_callback);
 	
-	for (std::list<PhysicsCallback*>::iterator it = this->callbacks.begin(); it != this->callbacks.end(); it++) {
+	for (std::list<PhysicsCallback*>::iterator it = this->callbacks.begin(); it != this->callbacks.end(); ++it) {
 		PhysicsCallback *callback = (*it);
 		(*callback->func)(delta, callback->e, callback->data1, callback->data2);
 	}

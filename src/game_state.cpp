@@ -143,10 +143,10 @@ EID GameState::getNextEID()
 **/
 Entity * GameState::getEntity(EID eid)
 {
-	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); it++) {
+	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); ++it) {
 		if ((*it)->eid == eid) return (*it);
 	}
-	for (list<Entity*>::iterator it = this->entities_add.begin(); it != this->entities_add.end(); it++) {
+	for (list<Entity*>::iterator it = this->entities_add.begin(); it != this->entities_add.end(); ++it) {
 		if ((*it)->eid == eid) return (*it);
 	}
 	return NULL;
@@ -268,7 +268,7 @@ list<AmmoRound*>* GameState::findAmmoRoundsUnit(Unit* u)
 {
 	list<AmmoRound*>* out = new list<AmmoRound*>();
 
-	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); it++) {
+	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); ++it) {
 		if ((*it)->klass() != AMMOROUND) continue;
 		if (((AmmoRound*)*it)->owner == u) {
 			out->push_back((AmmoRound*)*it);
@@ -383,7 +383,7 @@ void GameState::update(int delta)
 	
 	// Update entities
 	PROFILE_START(entities);
-	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); it++) {
+	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); ++it) {
 		Entity *e = (*it);
 		if (! e->del) {
 			e->update(delta);
@@ -481,7 +481,7 @@ list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 	
 	vecO = trans.getOrigin();
 	
-	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); it++) {
+	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); ++it) {
 		if ((*it)->klass() != UNIT) continue;
 		u = (Unit*)(*it);
 		if (u == origin) continue;

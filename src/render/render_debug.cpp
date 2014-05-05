@@ -210,7 +210,7 @@ void RenderDebug::render()
 	SDL_RenderClear(this->renderer);
 	
 	// Entities
-	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
+	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {
 		Entity *e = (*it);
 		
 		btTransform trans = e->getTransform();

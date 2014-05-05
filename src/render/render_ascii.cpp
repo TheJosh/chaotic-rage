@@ -190,7 +190,7 @@ void RenderAscii::render()
 	memset(this->color, 7, this->width * this->height);				// white
 	
 	// Entities
-	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); it++) {
+	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {
 		Entity *e = (*it);
 		btTransform trans = e->getTransform();
 		

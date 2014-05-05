@@ -590,8 +590,9 @@ Song * Mod::getSong(string name)
 **/
 Song * Mod::getRandomSong()
 {
-	if (songs == NULL or songs->size() == 0) return NULL;
-	return songs->at(getRandom(0, songs->size() - 1));
+	unsigned int sz = songs->size();
+	if (songs == NULL || sz == 0) return NULL;
+	return songs->at(getRandom(0, sz - 1));
 }
 
 

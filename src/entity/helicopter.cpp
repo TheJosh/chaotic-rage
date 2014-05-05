@@ -43,7 +43,7 @@ void Helicopter::init(VehicleType *vt, GameState *st, btTransform &loc)
 	this->health = vt->health;
 
 	vector <VehicleTypeNode>::iterator it;
-	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); it++) {
+	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); ++it) {
 		this->anim->addMoveNode((*it).node);
 	}
 

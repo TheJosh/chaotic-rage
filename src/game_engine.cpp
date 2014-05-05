@@ -138,7 +138,7 @@ void GameEngine::initGuichan()
 **/
 bool GameEngine::hasDialog(string name)
 {
-	for (list<Dialog*>::iterator it = this->dialogs.begin(); it != this->dialogs.end(); it++) {
+	for (list<Dialog*>::iterator it = this->dialogs.begin(); it != this->dialogs.end(); ++it) {
 		if ((*it)->getName().compare(name) == 0) return true;
 	}
 	return false;

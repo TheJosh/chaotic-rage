@@ -114,7 +114,7 @@ void NetClient::update()
 	SDLNet_Write16(this->code, ptr);
 	ptr += 2; pkt->len += 2;
 	
-	for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); it++) {
+	for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); ++it) {
 		*ptr = (*it).type;
 		ptr++; pkt->len++;
 		

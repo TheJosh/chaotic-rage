@@ -301,7 +301,7 @@ LUA_FUNC(visible_units)
 	lua_newtable(L);
 	
 	int i = 0;
-	for (list<UnitQueryResult>::iterator it = uqr->begin(); it != uqr->end(); it++) {
+	for (list<UnitQueryResult>::iterator it = uqr->begin(); it != uqr->end(); ++it) {
 		i++;
 		//lua_pushnumber(L, (*it).dist);
 		new_unitinfo(L, &(*it));

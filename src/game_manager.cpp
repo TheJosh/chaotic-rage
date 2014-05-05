@@ -89,7 +89,7 @@ void GameManager::loadModBits(UIUpdate* ui)
 	this->gametypes.clear();
 	{
 		vector<GameType*> * ut = GEng()->mm->getAllGameTypes();
-		for (vector<GameType*>::iterator it = ut->begin(); it != ut->end(); it++) {
+		for (vector<GameType*>::iterator it = ut->begin(); it != ut->end(); ++it) {
 			this->gametypes.push_back((*it)->name);
 		}
 		delete(ut);
@@ -105,7 +105,7 @@ void GameManager::loadModBits(UIUpdate* ui)
 	this->unittypes.clear();
 	{
 		vector<UnitType*> * ut = GEng()->mm->getAllUnitTypes();
-		for (vector<UnitType*>::iterator it = ut->begin(); it != ut->end(); it++) {
+		for (vector<UnitType*>::iterator it = ut->begin(); it != ut->end(); ++it) {
 			if ((*it)->playable) this->unittypes.push_back((*it)->name);
 		}
 		delete(ut);
@@ -125,7 +125,7 @@ void GameManager::startCampaign(Campaign* c, string unittype, int viewmode, unsi
 			///-- Game stage --
 			MapReg* m = mapreg->get(stage->map);
 			if (m == NULL) {
-				it++;
+				++it;
 				displayMessageBox("Map not found: " + stage->map);
 				continue;
 			}
@@ -138,7 +138,7 @@ void GameManager::startCampaign(Campaign* c, string unittype, int viewmode, unsi
 			// A result of 1 is success, 0 is failure, -1 is an error.
 			int result = st->getLastGameResult();
 			if (result == 1) {
-				it++;
+				++it;
 			} else if (result == -1) {
 				return;			// error
 			}
@@ -196,7 +196,7 @@ void GameManager::startCampaign(Campaign* c, string unittype, int viewmode, unsi
 				this->render->freeSprite(img);
 			}
 			*/
-			it++;
+			++it;
 			
 		} else {
 			assert(0);

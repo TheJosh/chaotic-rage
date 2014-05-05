@@ -90,7 +90,7 @@ gcn::Container * DialogNewGameWeapons::setup()
 	y += ROWHEIGHT;
 	
 	// Create one checkbox for each weapon type
-	for (vector<WeaponType*>::iterator it = this->wts->begin(); it != this->wts->end(); it++) {
+	for (vector<WeaponType*>::iterator it = this->wts->begin(); it != this->wts->end(); ++it) {
 		gcn::CheckBox* checkbox = new gcn::CheckBox((*it)->title);
 		checkbox->setPosition(LEFT, y);
 		checkbox->setWidth(WIDTH);

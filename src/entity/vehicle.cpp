@@ -63,7 +63,7 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	this->health = vt->health;
 
 	vector <VehicleTypeNode>::iterator it;
-	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); it++) {
+	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); ++it) {
 		this->anim->addMoveNode((*it).node);
 	}
 	
@@ -362,7 +362,7 @@ void Vehicle::setNodeAngle(VehicleNodeType type, float angle)
 {
 	vector <VehicleTypeNode>::iterator it;
 
-	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); it++) {
+	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); ++it) {
 		if ((*it).type == type) {
 			glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), angle, (*it).axis));
 			this->getAnimModel()->setMoveTransform((*it).node, rotation);
@@ -378,9 +378,10 @@ void Vehicle::setNodeTransformRelative(VehicleNodeType type, glm::mat4 transform
 {
 	vector <VehicleTypeNode>::iterator it;
 
-	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); it++) {
+	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); ++it) {
 		if ((*it).type == type) {
 			this->getAnimModel()->setMoveTransform((*it).node, (*it).node->transform * transform);
 		}
 	}
 }
+

@@ -97,7 +97,7 @@ int main (int argc, char ** argv)
 	if (GEng()->cmdline->modlist) {
 		cout << "Available mods:\n";
 		vector<string>* modnames = GEng()->mm->getAvailMods();
-		for (vector<string>::iterator it = modnames->begin(); it != modnames->end(); it++) {
+		for (vector<string>::iterator it = modnames->begin(); it != modnames->end(); ++it) {
 			cout << "    " << (*it) << "\n";
 		}
 		delete(modnames);

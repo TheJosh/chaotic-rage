@@ -31,7 +31,7 @@ DialogMods::DialogMods(GameState* st) : Dialog()
 	
 	vector<string>* modnames = GEng()->mm->getAvailMods();
 	vector<Mod*>* modlist = new vector<Mod*>();
-	for (vector<string>::iterator it = modnames->begin(); it != modnames->end(); it++) {
+	for (vector<string>::iterator it = modnames->begin(); it != modnames->end(); ++it) {
 		Mod* m = new Mod(st, "data/" + *it);
 		m->loadMetadata();
 		modlist->push_back(m);

@@ -177,7 +177,7 @@ void WeaponRemoteTrigger::doFire(Unit *u, btTransform &origin)
 {
 	list<AmmoRound*>* rounds = u->getGameState()->findAmmoRoundsUnit(u);
 
-	for (list<AmmoRound*>::iterator it = rounds->begin(); it != rounds->end(); it++) {
+	for (list<AmmoRound*>::iterator it = rounds->begin(); it != rounds->end(); ++it) {
 		AmmoRound* ar = (*it);
 		if (ar->wt->type == WEAPON_TYPE_REMOTE_MINE) {
 			((WeaponRemoteMine*)ar->wt)->trigger(ar);
