@@ -89,7 +89,7 @@ int main (int argc, char ** argv)
 	#if defined(__ANDROID__)
 		gm->loadModBits(NULL);
 		
-		gm->startGame(gm->getMapRegistry()->get("therlor_valley"), "zombies", "robot", 0, 1, false, new GameSettings());
+		gm->startGame(gm->getMapRegistry()->get("therlor_valley"), "zombies", "robot", GameSettings::behindPlayer, 1, false, new GameSettings());
 		exit(0);
 	#endif
 
@@ -106,13 +106,13 @@ int main (int argc, char ** argv)
 	} else if (GEng()->cmdline->campaign != "") {
 		gm->loadModBits(NULL);
 		Campaign *c = GEng()->mm->getSupplOrBase()->getCampaign(GEng()->cmdline->campaign);
-		gm->startCampaign(c, "robot", 0, 1);
+		gm->startCampaign(c, "robot", GameSettings::behindPlayer, 1);
 		
 	// Arcade game
 	} else if (GEng()->cmdline->map != "" && GEng()->cmdline->gametype != "" && GEng()->cmdline->unittype != "") {
 		gm->loadModBits(NULL);
 		GameSettings *gs = new GameSettings();
-		gm->startGame(gm->getMapRegistry()->get(GEng()->cmdline->map), GEng()->cmdline->gametype, GEng()->cmdline->unittype, 0, 1, GEng()->cmdline->host, gs);
+		gm->startGame(gm->getMapRegistry()->get(GEng()->cmdline->map), GEng()->cmdline->gametype, GEng()->cmdline->unittype, GameSettings::behindPlayer, 1, GEng()->cmdline->host, gs);
 		delete(gs);
 		
 	// Network join

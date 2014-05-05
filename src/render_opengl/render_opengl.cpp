@@ -86,7 +86,7 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->window = NULL;
 	this->physicsdebug = NULL;
 	this->speeddebug = false;
-	this->viewmode = 0;
+	this->viewmode = GameSettings::behindPlayer;
 	this->face = NULL;
 
 	#ifdef USE_SPARK
@@ -1826,20 +1826,34 @@ void RenderOpenGL::mainRot()
 		dist = 80.0f;
 		lift = 0.0f;
 		angle = st->game_time / 100.0f;
-
 	} else {
-		if (this->viewmode == 1) {
-			tilt = 70.0f;
-			dist = 50.0f;
-			lift = 0.0f;
-		} else if (this->viewmode == 2) {
-			tilt = 10.0f;
-			dist = 0.0f;
-			lift = 1.72f;
-		} else {
-			tilt = 17.0f;
-			dist = 25.0f;
-			lift = 0.0f;
+		switch (this->viewmode) {
+			case GameSettings::behindPlayer:
+				tilt = 17.0f;
+				dist = 25.0f;
+				lift = 0.0f;
+				break;
+
+			case GameSettings::abovePlayer:
+				tilt = 70.0f;
+				dist = 50.0f;
+				lift = 0.0f;
+				break;
+
+			case GameSettings::firstPerson:
+				tilt = 10.0f;
+				dist = 0.0f;
+				lift = 1.72f;
+				break;
+
+			default:
+				cerr << "ERROR: Wrong viewmode: " << this->viewmode << endl;
+				// Try to fix it
+				this->viewmode = GameSettings::behindPlayer;
+				tilt = 17.0f;
+				dist = 25.0f;
+				lift = 0.0f;
+				break;
 		}
 		
 		// Load the character details into the variables
@@ -2084,7 +2098,7 @@ void RenderOpenGL::entities()
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {
 		Entity *e = (*it);
 		
-		if (this->viewmode == 2 && e == this->render_player) continue;
+		if (this->viewmode == GameSettings::firstPerson && e == this->render_player) continue;
 		if (e->visible == false) continue;
 
 		AnimPlay *play = e->getAnimModel();
@@ -2148,5 +2162,3 @@ void RenderOpenGL::fps()
 	sprintf(buf, "%.1f fps", 1000.0f/tick);
 	this->renderText(buf, 550.0f, 50.0f);
 }
-
-

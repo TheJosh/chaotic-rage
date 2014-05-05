@@ -5,6 +5,7 @@
 #pragma once
 
 #include "rage.h"
+#include "game_settings.h"
 
 
 using namespace std;

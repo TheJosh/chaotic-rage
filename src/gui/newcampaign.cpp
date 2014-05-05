@@ -112,7 +112,7 @@ void DialogNewCampaign::action(const gcn::ActionEvent& actionEvent)
 	this->m->startCampaign(
 		this->mod->getCampaigns()->at(this->campaign->getSelected()),
 		this->gm->getUnitTypes()->at(this->unittype->getSelected()),
-		this->viewmode->getSelected(),
+		static_cast<GameSettings::ViewMode>(this->viewmode->getSelected()),
 		this->num_local
 	);
 }

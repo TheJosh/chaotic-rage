@@ -31,7 +31,17 @@ class GameSettings
 {
 	public:
 		GameSettingsFaction factions[NUM_FACTIONS];
+		enum ViewMode {
+			behindPlayer,
+			abovePlayer,
+			firstPerson,
+			nrOfViewModes,
+		};
+			
 
 	public:
 		GameSettings();
+
+	public:
+		void switchViewMode();
 };

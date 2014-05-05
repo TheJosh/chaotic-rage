@@ -30,6 +30,7 @@ gcn::Container * DialogControls::setup()
 		"Use", "E",
 		"Lift", "Q",
 		"Special", "T",
+		"Change Camera", "C",
 		""
 	};
 	
@@ -42,6 +43,7 @@ gcn::Container * DialogControls::setup()
 		"Use", "E",
 		"Lift", "Q",
 		"Special", "T",
+		"Change Camera", "C",
 		""
 	};
 	
@@ -50,10 +52,11 @@ gcn::Container * DialogControls::setup()
 		"Aim", "Mouse",
 		"Fire", "Left Click",
 		"Melee", "Right Click",
-		"Change Weapon", " ",
+		"Change Weapon", "Scroll",
 		"Use", "Numpad 9",
 		"Lift", "Numpad 7",
 		"Special", "Numpad 1",
+		"Change Camera", "C",
 		""
 	};
 	

@@ -199,7 +199,7 @@ void GameEngine::calcAverageTick(int newtick)
 	this->ticksum += newtick;
 	this->ticklist[tickindex] = newtick;
 	
-	if(++tickindex == FPS_SAMPLES) {
+	if (++tickindex == FPS_SAMPLES) {
 		this->tickindex = 0;
 	}
 }
@@ -212,5 +212,3 @@ float GameEngine::getAveTick()
 {
   return ((float)this->ticksum/(float)FPS_SAMPLES);
 }
-
-

@@ -508,7 +508,7 @@ void Menu::doQuit()
 /**
 * Plays through each game of a campaign
 **/
-void Menu::startCampaign(Campaign* c, string unittype, int viewmode, unsigned int num_local)
+void Menu::startCampaign(Campaign* c, string unittype, GameSettings::ViewMode viewmode, unsigned int num_local)
 {
 	gm->startCampaign(c, unittype, viewmode, num_local);
 	this->setupGLstate();
@@ -518,11 +518,11 @@ void Menu::startCampaign(Campaign* c, string unittype, int viewmode, unsigned in
 /**
 * Starts a game with the specified settings
 *
-* @param int viewmode The camera view mode for the local player(s)
+* @param GameSettings::ViewMode viewmode The camera view mode for the local player(s)
 * @param int num_local The number of local players; 1 for single, 2+ for splitscreen
 * @param int host Set to 1 to host a network game, 0 for a local-only game
 **/
-void Menu::startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local, bool host, GameSettings* gs)
+void Menu::startGame(MapReg *map, string gametype, string unittype, GameSettings::ViewMode viewmode, unsigned int num_local, bool host, GameSettings* gs)
 {
 	gm->startGame(map, gametype, unittype, viewmode, num_local, host, gs);
 	this->setupGLstate();

@@ -8,6 +8,7 @@
 
 #include "../rage.h"
 #include "../util/ui_update.h"
+#include "../game_settings.h"
 
 
 using namespace std;
@@ -106,8 +107,8 @@ class Menu : public UIUpdate
 		
 		// Start game stuff
 		// TODO: Remove this and go direct to GameManager
-		void startCampaign(Campaign* c, string unittype, int viewmode, unsigned int num_local);
-		void startGame(MapReg *map, string gametype, string unittype, int viewmode, unsigned int num_local, bool host, GameSettings* gs);
+		void startCampaign(Campaign* c, string unittype, GameSettings::ViewMode viewmode, unsigned int num_local);
+		void startGame(MapReg *map, string gametype, string unittype, GameSettings::ViewMode viewmode, unsigned int num_local, bool host, GameSettings* gs);
 		void networkJoin(string host);
 };
 
