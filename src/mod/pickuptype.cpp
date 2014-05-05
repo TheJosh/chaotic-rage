@@ -154,13 +154,21 @@ void PickupType::doUse(Unit *u)
 			break;
 
 		case PICKUP_TYPE_AMMO:
-			if (this->wt == NULL) {
-				u->pickupAmmo(u->getWeaponTypeCurr());
-			} else {
-				u->pickupAmmo(this->wt);
+			{
+				bool success = false;
+				if (this->wt == NULL) {
+					WeaponType *wt = u->getWeaponTypeCurr();
+					if (wt) {
+						success = u->pickupAmmo(wt);
+					}
+				} else {
+					success = u->pickupAmmo(this->wt);
+				}
+				
+				if (success) {
+					st->addHUDMessage(u->slot, "Picked up some ammo");
+				}
 			}
-
-			st->addHUDMessage(u->slot, "Picked up some ammo");
 			break;
 
 		case PICKUP_TYPE_POWERUP:

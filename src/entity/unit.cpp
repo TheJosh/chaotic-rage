@@ -284,6 +284,8 @@ bool Unit::pickupWeapon(WeaponType* wt)
 **/
 bool Unit::pickupAmmo(WeaponType* wt)
 {
+	if (wt == NULL) return false;
+	
 	for (unsigned int i = 0; i < this->avail_weapons.size(); i++) {
 		if (this->avail_weapons[i]->wt == wt) {
 			this->avail_weapons[i]->belt += wt->belt_limit;
@@ -321,7 +323,7 @@ WeaponType * Unit::getWeaponTypeAt(unsigned int id)
 **/
 WeaponType * Unit::getWeaponTypeCurr()
 {
-	assert(this->weapon != NULL);
+	if (this->weapon == NULL) return NULL;
 	return this->weapon->wt;
 }
 
