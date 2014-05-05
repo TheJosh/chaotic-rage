@@ -781,9 +781,7 @@ static int input (void );
 #endif
 
 /* Report a fatal error. */
-#ifndef YY_FATAL_ERROR
 #define YY_FATAL_ERROR(msg) yy_fatal_error( msg )
-#endif
 
 /* end tables serialization structures and prototypes */
 
@@ -2342,8 +2340,12 @@ static void qputc(char ch)
 {
     if(qstring_index >= qstring_len) {
         qstring_len += CFG_QSTRING_BUFSIZ;
-        cfg_qstring = (char *)realloc(cfg_qstring, qstring_len);
-        assert(cfg_qstring);
+        char *tmp = (char *)realloc(cfg_qstring, qstring_len);
+        if (tmp == NULL) {
+            free(cfg_qstring);
+            assert(tmp);
+        }
+        cfg_qstring = tmp;
         memset(cfg_qstring + qstring_index, 0, CFG_QSTRING_BUFSIZ);
     }
     cfg_qstring[qstring_index++] = ch;
