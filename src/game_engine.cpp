@@ -126,7 +126,7 @@ void GameEngine::initGuichan()
 		this->guitop->setBaseColor(gcn::Color(0, 0, 0, 0));
 		gui->setTop(this->guitop);
 		
-	} catch (gcn::Exception ex) {
+	} catch (const gcn::Exception & ex) {
 		this->gui = NULL;
 	}
 #endif
@@ -172,7 +172,7 @@ void GameEngine::remDialog(Dialog * dialog)
 	this->dialogs.remove(dialog);
 	this->guitop->remove(dialog->getContainer());
 	
-	if (this->dialogs.size() == 0) {
+	if (this->dialogs.empty()) {
 		this->setMouseGrab(true);
 	}
 
@@ -185,7 +185,7 @@ void GameEngine::remDialog(Dialog * dialog)
 **/
 bool GameEngine::hasDialogs()
 {
-	return (this->dialogs.size() != 0);
+	return (!this->dialogs.empty());
 }
 
 
@@ -210,7 +210,7 @@ void GameEngine::calcAverageTick(int newtick)
 **/
 float GameEngine::getAveTick()
 {
-	return ((float)this->ticksum/FPS_SAMPLES);
+  return ((float)this->ticksum/(float)FPS_SAMPLES);
 }
 
 

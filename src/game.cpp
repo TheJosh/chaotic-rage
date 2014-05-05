@@ -33,7 +33,7 @@ int mk_down_x[MAX_LOCAL], mk_down_y[MAX_LOCAL];
 **/
 void gameLoop(GameState* st, Render* render, Audio* audio, NetClient* client)
 {
-	int start = 0, delta = 0, net_time = 0, net_timestep = 50;
+	int start = 0, net_time = 0, net_timestep = 50;
 	
 	for (int i = 0; i < MAX_LOCAL; i++) {
 		game_x[i] = game_y[i] = net_x[i] = net_y[i] = mk_down_x[i] = mk_down_y[i] = 0;
@@ -67,7 +67,7 @@ void gameLoop(GameState* st, Render* render, Audio* audio, NetClient* client)
 	
 	st->running = true;
 	while (st->running) {
-		delta = SDL_GetTicks() - start;
+		int delta = SDL_GetTicks() - start;
 		start = SDL_GetTicks();
 		
 		st->logic->update(delta);
