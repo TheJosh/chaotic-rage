@@ -590,14 +590,13 @@ void Unit::update(int delta)
 
 				if (other->getBroadphaseHandle()->m_collisionFilterGroup == CG_PICKUP) {
 					Pickup* p = static_cast<Pickup*>(other->getUserPointer());
-
-					UnitPickup up;
-					up.pt = p->getPickupType();
-					up.u = this;
-					up.end_time = st->game_time + up.pt->getDelay();
-					pickups.push_back(up);
-
-					p->doUse(this);
+					if (p->doUse(this)) {
+						UnitPickup up;
+						up.pt = p->getPickupType();
+						up.u = this;
+						up.end_time = st->game_time + up.pt->getDelay();
+						pickups.push_back(up);
+					}
 				}
 			}
 		}

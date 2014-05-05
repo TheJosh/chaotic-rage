@@ -62,7 +62,7 @@ class PickupType
 		/**
 		* Called by the unit when it interacts with a pickup
 		**/
-		void doUse(Unit *u);
+		bool doUse(Unit *u);
 		
 		/**
 		* Called by the unit when the powerup is finished

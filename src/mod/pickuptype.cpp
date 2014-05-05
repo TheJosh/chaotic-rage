@@ -140,9 +140,11 @@ PickupTypeAdjust* PickupType::loadAdjust(cfg_t* cfg)
 
 
 /**
-* Handle a pickup by a unit
+* Handle a pickup by a unit.
+*
+* @return True on success, false on failure (e.g. wrong weapon for ammo box)
 **/
-void PickupType::doUse(Unit *u)
+bool PickupType::doUse(Unit *u)
 {
 	GameState *st = u->getGameState();
 
@@ -158,16 +160,15 @@ void PickupType::doUse(Unit *u)
 				bool success = false;
 				if (this->wt == NULL) {
 					WeaponType *wt = u->getWeaponTypeCurr();
-					if (wt) {
-						success = u->pickupAmmo(wt);
-					}
+					if (wt == NULL) return false;
+					success = u->pickupAmmo(wt);
 				} else {
 					success = u->pickupAmmo(this->wt);
 				}
 				
-				if (success) {
-					st->addHUDMessage(u->slot, "Picked up some ammo");
-				}
+				if (! success) return false;
+				
+				st->addHUDMessage(u->slot, "Picked up some ammo");
 			}
 			break;
 
@@ -180,6 +181,8 @@ void PickupType::doUse(Unit *u)
 		default:
 			assert(0);
 	}
+	
+	return true;
 }
 
 

@@ -73,9 +73,17 @@ Sound* Pickup::getSound()
 
 /**
 * Handle interaction by the user
+*
+* @return True on success, false on failure (e.g. wrong weapon for ammo box)
 **/
-void Pickup::doUse(Unit *u)
+bool Pickup::doUse(Unit *u)
 {
-	this->pt->doUse(u);
-	this->del = true;
+	if (this->pt->doUse(u)) {
+		this->del = true;
+		return true;
+	} else {
+		return false;
+	}
 }
+
+
