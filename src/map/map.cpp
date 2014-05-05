@@ -774,7 +774,7 @@ bool Heightmap::createRigidBody(float mapSX, float mapSZ)
 
 	// Debugging for the terrain without needing to recompile
 	if (!debug_enabled("terrain")) {
-		//this->ground->setCollisionFlags(this->ground->getCollisionFlags()|btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);
+		this->ground->setCollisionFlags(this->ground->getCollisionFlags()|btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);
 	}
 
 	return true;
