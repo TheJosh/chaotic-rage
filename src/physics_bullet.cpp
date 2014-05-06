@@ -21,6 +21,14 @@ PhysicsBullet::PhysicsBullet(GameState * st)
 {
 	this->st = st;
 	st->physics = this;
+	this->collisionConfiguration = NULL;
+	this->dispatcher = NULL;
+	this->overlappingPairCache = NULL;
+	this->solver = NULL;
+	this->dynamicsWorld = NULL;
+	this->collisionShapes = NULL;
+	this->ghostPairCallback = NULL;
+	this->groundRigidBody = NULL;
 
 	int moststuff = CG_TERRAIN | CG_AMMO | CG_WALL | CG_OBJECT | CG_UNIT | CG_VEHICLE | CG_PICKUP;
 
