@@ -6,9 +6,11 @@
 #include <math.h>
 #include "../rage.h"
 #include "../physics_bullet.h"
+#include "../game_engine.h"
 #include "../game_state.h"
 #include "../lua/gamelogic.h"
 #include "../render_opengl/animplay.h"
+#include "../render_opengl/render_opengl.h"
 #include "../mod/unittype.h"
 #include "../mod/vehicletype.h"
 #include "../util/btCRKinematicCharacterController.h"
@@ -33,6 +35,7 @@ Player::Player(UnitType *uc, GameState *st, float x, float y, float z, Faction f
 	this->anim->pause();
 
 	this->slot = slot;
+	this->drive_old = NULL;
 }
 
 Player::~Player()
@@ -126,17 +129,37 @@ void Player::handleKeyChange()
 **/
 void Player::angleFromMouse(int x, int y, int delta)
 {
-	float sensitivity = 5.0f;	// 1 = slow, 10 = nuts
+	float sensitivity = 0.2f;	// 0.1 = slow, 1.0 = nuts
 	float change_dist;
 	
-	change_dist = x / (10.0f / sensitivity);
-	this->mouse_angle = this->mouse_angle - change_dist;
-	
-	sensitivity *= 0.5f;
-	change_dist = y / (10.0f / sensitivity);
-	this->vertical_angle = this->vertical_angle - change_dist;
-	if (this->vertical_angle > 10.0f) this->vertical_angle = 10.0f;
-	if (this->vertical_angle < -10.0f) this->vertical_angle = -10.0f;
+	change_dist = static_cast<float>(x) * sensitivity;
+	this->mouse_angle -= change_dist;
+
+	if (this->drive != this->drive_old) {
+		// Player has entered or left a vehicle, reset the vertical angle
+		this->vertical_angle = 0.0f;
+	}
+
+	if (this->drive || GEng()->render->viewmode == GameSettings::firstPerson) {
+		float max_angle;
+
+		if (this->drive) {
+			max_angle = 10.0f;
+		} else {
+			max_angle = 70.0f;
+		}
+
+		sensitivity *= 0.5f;
+		change_dist = static_cast<float>(y) * sensitivity;
+		this->vertical_angle -= change_dist;
+		if (this->vertical_angle > max_angle) this->vertical_angle = max_angle;
+		if (this->vertical_angle < -max_angle) this->vertical_angle = -max_angle;
+	} else {
+		// Not in first person view, reset the vertical angle
+		this->vertical_angle = 0.0f;
+	}
+
+	this->drive_old = this->drive;
 }
 
 
