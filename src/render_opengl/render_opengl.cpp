@@ -1868,7 +1868,9 @@ void RenderOpenGL::mainRot()
 		} else {
 			trans = this->render_player->getTransform();
 			angle = this->render_player->mouse_angle + 180.0f;
-			//tilt += this->render_player->vertical_angle;
+			if (this->viewmode == GameSettings::firstPerson) {
+				tilt -= this->render_player->vertical_angle;
+			}
 		}
 	}
 	
