@@ -15,10 +15,20 @@ class GameManager;
 
 /**
 * Handler base class for text input events
+*
+* This should be passed as an argument when creating the `DialogTextPrompt`.
+* Your instance will be delete()ed in the text prompt destructor.
 **/
 class DialogTextPromptHandler {
 	public:
-		virtual void handleText(string text);
+		DialogTextPromptHandler() {}
+		virtual ~DialogTextPromptHandler() {}
+		
+	public:
+		/**
+		* This will be called with the string which was entered
+		**/
+		virtual void handleText(string text) = 0;
 };
 
 

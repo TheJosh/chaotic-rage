@@ -46,13 +46,14 @@ gcn::Container* DialogTextPrompt::setup()
 	this->label->setWidth(300);
 	c->add(this->label);
 	
-	this->text = new gcn::TextField(this->message);
+	this->text = new gcn::TextField("");
 	this->text->setPosition(20, 50);
 	this->text->setWidth(300);
 	c->add(this->text);
 	
 	this->button = new gcn::Button("OK");
 	this->button->setPosition(150, 90);
+	this->button->setWidth(50);
 	this->button->addActionListener(this);
 	c->add(this->button);
 	
@@ -65,9 +66,13 @@ gcn::Container* DialogTextPrompt::setup()
 **/
 DialogTextPrompt::~DialogTextPrompt()
 {
-	delete button;
-	delete text;
-	delete label;
+	// TODO: Bring these back. It was crashing on the ->remDialog(this); below
+	// We probably need delayed remove like we have with entities
+	//delete button;
+	//delete text;
+	//delete label;
+	
+	delete ev;
 }
 
 
@@ -76,7 +81,10 @@ DialogTextPrompt::~DialogTextPrompt()
 **/
 void DialogTextPrompt::action(const gcn::ActionEvent& actionEvent)
 {
-	ev->handleText(this->text->getText());
+	if (this->ev != NULL) {
+		this->ev->handleText(this->text->getText());
+	}
+	
 	GEng()->remDialog(this);
 }
 

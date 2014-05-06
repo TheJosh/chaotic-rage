@@ -643,6 +643,7 @@ void register_lua_functions()
 	lua_standard_libs(L);
 	load_hudlabel_lib(L);
 	load_random_lib(L);
+	load_dialog_lib(L);
 }
 
 
