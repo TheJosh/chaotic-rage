@@ -35,6 +35,7 @@ Player::Player(UnitType *uc, GameState *st, float x, float y, float z, Faction f
 	this->anim->pause();
 
 	this->slot = slot;
+	this->drive_old = NULL;
 }
 
 Player::~Player()
@@ -130,12 +131,11 @@ void Player::angleFromMouse(int x, int y, int delta)
 {
 	float sensitivity = 0.2f;	// 0.1 = slow, 1.0 = nuts
 	float change_dist;
-	static Vehicle* drive_old = NULL;
 	
 	change_dist = static_cast<float>(x) * sensitivity;
 	this->mouse_angle -= change_dist;
 
-	if (this->drive != drive_old) {
+	if (this->drive != this->drive_old) {
 		// Player has entered or left a vehicle, reset the vertical angle
 		this->vertical_angle = 0.0f;
 	}
@@ -159,7 +159,7 @@ void Player::angleFromMouse(int x, int y, int delta)
 		this->vertical_angle = 0.0f;
 	}
 
-	drive_old = this->drive;
+	this->drive_old = this->drive;
 }
 
 

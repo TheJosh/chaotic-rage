@@ -30,6 +30,7 @@ class Player : public Unit
 		float mouse_angle;
 		float vertical_angle;
 		bool walking;
+		Vehicle* drive_old;
 
 	public:
 		Player(UnitType *uc, GameState *st, float x, float y, float z, Faction fac, int slot);
