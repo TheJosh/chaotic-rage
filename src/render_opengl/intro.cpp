@@ -25,6 +25,14 @@ Intro::Intro(GameState *st)
 {
 	this->st = st;
 	this->render = (RenderOpenGL*) GEng()->render;
+
+	this->sg = NULL;
+	this->img1 = NULL;
+	this->img2 = NULL;
+	this->img3 = NULL;
+	this->text = NULL;
+	this->start = 0;
+	this->lasttime = 0;
 }
 
 Intro::~Intro()

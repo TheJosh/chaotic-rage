@@ -177,6 +177,7 @@ static cfg_opt_t opts[] =
 Light::Light(unsigned int type)
 {
 	this->type = type;
+	this->x = this->y = this->z = 0.0f;
 	this->diffuse[0] = this->diffuse[1] = this->diffuse[2] = this->diffuse[3] = 0.0;
 	this->specular[0] = this->specular[1] = this->specular[2] = this->specular[3] = 0.0;
 }
@@ -204,7 +205,11 @@ void Light::setSpecular(short r, short g, short b, short a)
 
 Map::Map(GameState * st)
 {
+	this->render = NULL;
 	this->st = st;
+	this->mod = NULL;
+	this->width = 0.0f;
+	this->height = 0.0f;
 	this->heightmap = NULL;
 	this->skybox = NULL;
 	this->terrain = NULL;
@@ -288,7 +293,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 		}
 
 		if (! this->heightmap->loadIMG(this->mod, std::string(tmp))) {
-			cerr << "Failed to load heightmap img\n";
+			cerr << "Failed to load heightmap img " << std::string(tmp) << endl;
 			cfg_free(cfg);
 			return 0;
 		}

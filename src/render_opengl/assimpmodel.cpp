@@ -66,8 +66,12 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 	Sint64 len;
 	Uint8 * data = this->mod->loadBinary("models/" + this->name, &len);
 	if (! data) {
-		this->mod->setLoadErr("Failed to load %s; file read failed", this->name.c_str());
-		return false;
+		// Test also the model path that the 'Australia day' mod uses
+		data = this->mod->loadBinary("animmodels/" + this->name, &len);
+		if (! data) {
+			this->mod->setLoadErr("Failed to load %s; file read failed", this->name.c_str());
+			return false;
+		}
 	}
 	
 	// Check we aren't larger than size_t
