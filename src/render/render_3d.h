@@ -140,6 +140,12 @@ class Render3D : public Render
 		* Render some text
 		**/
 		virtual unsigned int widthText(string text) = 0;
+
+		/**
+		* Calculate the raycast start and end vectors in world space for mouse picking
+		**/
+		virtual void mouseRaycast(int x, int y, btVector3& start, btVector3& end) = 0;
+
 };
 
 

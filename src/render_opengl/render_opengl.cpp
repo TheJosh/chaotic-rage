@@ -422,6 +422,44 @@ void RenderOpenGL::mainViewport(int s, int of)
 
 
 /**
+* Calculate the raycast start and end vectors in world space for mouse picking
+*
+* It starts with coords in Normalized Device Coordinates, then multiplies
+* by the invers of the projectionview matrix to give the world coordinates
+**/
+void RenderOpenGL::mouseRaycast(int x, int y, btVector3& start, btVector3& end)
+{
+	glm::mat4 M = glm::inverse(this->projection * this->view);
+
+	// Start coordinate, at z = -1.0
+	glm::vec4 lRayStart_NDC(
+		((float)x / (float)this->virt_width - 0.5f) * 2.0f,
+		((float)y / (float)this->virt_height - 0.5f) * 2.0f,
+		-1.0f,
+		1.0f
+	);
+
+	// Convert to world coords
+	glm::vec4 lRayStart_world = M * lRayStart_NDC;
+	lRayStart_world /= lRayStart_world.w;
+	start = btVector3(lRayStart_world.x, lRayStart_world.y, lRayStart_world.z);
+
+	// End coordinate, at z = 0.0
+	glm::vec4 lRayEnd_NDC(
+		((float)x / (float)this->virt_width - 0.5f) * 2.0f,
+		((float)y / (float)this->virt_height - 0.5f) * 2.0f,
+		0.0f,
+		1.0f
+	);
+
+	// Convert this one too
+	glm::vec4 lRayEnd_world = M * lRayEnd_NDC;
+	lRayEnd_world /= lRayEnd_world.w;
+	end = btVector3(lRayEnd_world.x, lRayEnd_world.y, lRayEnd_world.z);
+}
+
+
+/**
 * Enable physics debug drawing. OpenGL only, not supported on GLES.
 **/
 void RenderOpenGL::setPhysicsDebug(bool status)
