@@ -101,6 +101,7 @@
     <None Include="..\..\data\cr\gametypes.conf" />
     <None Include="..\..\data\cr\gametypes\ai_battle.lua" />
     <None Include="..\..\data\cr\gametypes\boredem.lua" />
+    <None Include="..\..\data\cr\gametypes\forgery.lua" />
     <None Include="..\..\data\cr\gametypes\free_for_all.lua" />
     <None Include="..\..\data\cr\gametypes\humans.lua" />
     <None Include="..\..\data\cr\gametypes\test.lua" />
@@ -142,7 +143,9 @@
     <ClCompile Include="..\..\src\audio\audio_sdlmixer.cpp" />
     <ClCompile Include="..\..\src\client.cpp" />
     <ClCompile Include="..\..\src\confuse\confuse.c" />
-    <ClCompile Include="..\..\src\confuse\lexer.c" />
+    <ClCompile Include="..\..\src\confuse\lexer.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Default</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\..\src\entity\ammo_round.cpp" />
     <ClCompile Include="..\..\src\entity\decaying.cpp" />
     <ClCompile Include="..\..\src\entity\entity.cpp" />
@@ -217,11 +220,15 @@
     <ClCompile Include="..\..\src\gui\newcampaign.cpp" />
     <ClCompile Include="..\..\src\gui\newgame.cpp" />
     <ClCompile Include="..\..\src\gui\newgame_weapons.cpp" />
+    <ClCompile Include="..\..\src\gui\textprompt.cpp" />
     <ClCompile Include="..\..\src\http\client_stats.cpp" />
     <ClCompile Include="..\..\src\http\happyhttp.cpp" />
     <ClCompile Include="..\..\src\http\serverlist.cpp" />
     <ClCompile Include="..\..\src\http\url.cpp" />
+    <ClCompile Include="..\..\src\lua\lua_dialog_lib.cpp" />
     <ClCompile Include="..\..\src\lua\lua_random_lib.cpp" />
+    <ClCompile Include="..\..\src\map\map.cpp" />
+    <ClCompile Include="..\..\src\map\zone.cpp" />
     <ClCompile Include="..\..\src\render\render_ascii.cpp" />
     <ClCompile Include="..\..\src\render_opengl\intro.cpp" />
     <ClCompile Include="..\..\src\lua\ailogic.cpp" />
@@ -230,7 +237,6 @@
     <ClCompile Include="..\..\src\lua\lua_standard.cpp" />
     <ClCompile Include="..\..\src\lua\lua_unitinfo_lib.cpp" />
     <ClCompile Include="..\..\src\lua\lua_vector3_lib.cpp" />
-    <ClCompile Include="..\..\src\map.cpp" />
     <ClCompile Include="..\..\src\render_opengl\menu.cpp" />
     <ClCompile Include="..\..\src\mod\aitype.cpp" />
     <ClCompile Include="..\..\src\mod\campaign.cpp" />
@@ -325,7 +331,6 @@
     <ClCompile Include="..\..\src\weapons\raycast.cpp" />
     <ClCompile Include="..\..\src\weapons\rockets.cpp" />
     <ClCompile Include="..\..\src\weapons\weapons.cpp" />
-    <ClCompile Include="..\..\src\zone.cpp" />
     <ClCompile Include="..\windows\getopt_long\getopt_long.c" />
   </ItemGroup>
   <ItemGroup>
@@ -425,17 +430,19 @@
     <ClInclude Include="..\..\src\gui\newcampaign.h" />
     <ClInclude Include="..\..\src\gui\newgame.h" />
     <ClInclude Include="..\..\src\gui\newgame_weapons.h" />
+    <ClInclude Include="..\..\src\gui\textprompt.h" />
     <ClInclude Include="..\..\src\http\client_stats.h" />
     <ClInclude Include="..\..\src\http\happyhttp.h" />
     <ClInclude Include="..\..\src\http\serverlist.h" />
     <ClInclude Include="..\..\src\http\url.h" />
+    <ClInclude Include="..\..\src\map\map.h" />
+    <ClInclude Include="..\..\src\map\zone.h" />
     <ClInclude Include="..\..\src\render\render_ascii.h" />
     <ClInclude Include="..\..\src\render_opengl\intro.h" />
     <ClInclude Include="..\..\src\lua\ailogic.h" />
     <ClInclude Include="..\..\src\lua\gamelogic.h" />
     <ClInclude Include="..\..\src\lua\luatimer.h" />
     <ClInclude Include="..\..\src\lua\lua_libs.h" />
-    <ClInclude Include="..\..\src\map.h" />
     <ClInclude Include="..\..\src\render_opengl\menu.h" />
     <ClInclude Include="..\..\src\mod\aitype.h" />
     <ClInclude Include="..\..\src\mod\campaign.h" />
@@ -545,7 +552,6 @@
     <ClInclude Include="..\..\src\util\windowicon.h" />
     <ClInclude Include="..\..\src\weapons\ghost_objects.h" />
     <ClInclude Include="..\..\src\weapons\weapons.h" />
-    <ClInclude Include="..\..\src\zone.h" />
     <ClInclude Include="..\windows\getopt_long\getopt.h" />
   </ItemGroup>
   <ItemGroup>
