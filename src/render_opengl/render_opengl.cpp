@@ -417,7 +417,7 @@ void RenderOpenGL::mainViewport(int s, int of)
 	this->projection = glm::perspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 350.0f);
 
 	// Ortho for gameplay HUD etc
-	this->ortho = glm::ortho<float>(0.0f, (float)this->virt_width, 0.0f, (float)this->virt_height, -1.0f, 1.0f);
+	this->ortho = glm::ortho<float>(0.0f, (float)this->virt_width, (float)this->virt_height, 0.0f, -1.0f, 1.0f);
 }
 
 
