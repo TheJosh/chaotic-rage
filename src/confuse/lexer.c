@@ -2338,9 +2338,11 @@ int cfg_lexer_include(cfg_t *cfg, const char *filename)
  */
 static void qputc(char ch)
 {
+	char* tmp;
+
     if(qstring_index >= qstring_len) {
         qstring_len += CFG_QSTRING_BUFSIZ;
-        char *tmp = (char *)realloc(cfg_qstring, qstring_len);
+        tmp = (char *)realloc(cfg_qstring, qstring_len);
         if (tmp == NULL) {
             free(cfg_qstring);
             assert(tmp);

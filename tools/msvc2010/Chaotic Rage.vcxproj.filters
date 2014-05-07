@@ -92,6 +92,9 @@
     <Filter Include="src\spark\opengl">
       <UniqueIdentifier>{0c1fcabe-1e98-4d8a-8e3a-01a68d3878bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\map">
+      <UniqueIdentifier>{7f1cca99-d3bf-4339-9845-24b720f6de87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\data\cr\animmodels.conf">
@@ -228,13 +231,7 @@
     <ClCompile Include="..\..\src\game.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\map.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\physics_bullet.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\zone.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\events.cpp">
@@ -792,11 +789,20 @@
     <ClCompile Include="..\..\src\render\render_ascii.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lua\lua_dialog_lib.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\map\map.cpp">
+      <Filter>src\map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\map\zone.cpp">
+      <Filter>src\map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gui\textprompt.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\zone.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\game.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -804,9 +810,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game_engine.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\map.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\physics_bullet.h">
@@ -1447,6 +1450,15 @@
     </ClInclude>
     <ClInclude Include="..\..\src\render\render_ascii.h">
       <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\map\map.h">
+      <Filter>src\map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\map\zone.h">
+      <Filter>src\map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\gui\textprompt.h">
+      <Filter>src\gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
