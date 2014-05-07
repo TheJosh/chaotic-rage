@@ -1879,7 +1879,7 @@ void RenderOpenGL::mainRot()
 				break;
 
 			case GameSettings::firstPerson:
-				tilt = 10.0f;
+				tilt = 0.0f;
 				dist = 0.0f;
 				lift = 1.72f;
 				break;
@@ -2138,7 +2138,6 @@ void RenderOpenGL::entities()
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {
 		Entity *e = (*it);
 		
-		if (this->viewmode == GameSettings::firstPerson && e == this->render_player) continue;
 		if (e->visible == false) continue;
 
 		AnimPlay *play = e->getAnimModel();

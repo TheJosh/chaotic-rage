@@ -593,7 +593,7 @@ class MousePickHandler : public MouseEventHandler {
 			}
 
 			// Cleanup
-			delete this;
+			//delete this;  //  error: deleting object of polymorphic class type ‘MousePickHandler’ which has non-virtual destructor might cause undefined behaviour [-Werror=delete-non-virtual-dtor]
 		}
 };
 

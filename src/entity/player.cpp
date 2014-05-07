@@ -240,6 +240,7 @@ int Player::takeDamage(float damage)
 		for (unsigned int i = 0; i < this->st->num_local; i++) {
 			if (this == this->st->local_players[i]->p) {
 				this->st->local_players[i]->p = NULL;
+				break;
 			}
 		}
 	}
