@@ -444,7 +444,7 @@ void RenderOpenGL::mouseRaycast(int x, int y, btVector3& start, btVector3& end)
 	lRayStart_world /= lRayStart_world.w;
 	start = btVector3(lRayStart_world.x, lRayStart_world.y, lRayStart_world.z);
 
-	// End coordinate, at z = 0.0
+	// End coordinate, at z = 500.0
 	glm::vec4 lRayEnd_NDC(
 		((float)x / (float)this->virt_width - 0.5f) * 2.0f,
 		((float)y / (float)this->virt_height - 0.5f) * 2.0f,

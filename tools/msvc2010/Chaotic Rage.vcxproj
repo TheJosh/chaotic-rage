@@ -101,6 +101,7 @@
     <None Include="..\..\data\cr\gametypes.conf" />
     <None Include="..\..\data\cr\gametypes\ai_battle.lua" />
     <None Include="..\..\data\cr\gametypes\boredem.lua" />
+    <None Include="..\..\data\cr\gametypes\forgery.lua" />
     <None Include="..\..\data\cr\gametypes\free_for_all.lua" />
     <None Include="..\..\data\cr\gametypes\humans.lua" />
     <None Include="..\..\data\cr\gametypes\test.lua" />

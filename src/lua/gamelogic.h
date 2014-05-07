@@ -16,6 +16,16 @@ using namespace std;
 
 
 /**
+* Allows GameLogic code to handle mouse events
+**/
+class MouseEventHandler {
+	public:
+		virtual void onMouseDown(Uint8 button, Uint16 x, Uint16 y) {}
+		virtual void onMouseUp(Uint8 button, Uint16 x, Uint16 y) {}
+};
+
+
+/**
 * Logic for the game - like spawning units, etc
 **/
 class GameLogic
@@ -24,7 +34,8 @@ class GameLogic
 		GameState *st;
 		Map *map;
 		vector<LuaTimer*> timers;
-		
+		MouseEventHandler* mouse_events;
+
 	public:
 		UnitType * selected_unittype;
 
@@ -35,7 +46,30 @@ class GameLogic
 	public:
 		void update(int delta);
 		
-	public:
+		/**
+		* Does the game logic want to receive mouse events?
+		**/
+		bool mouseCaptured()
+		{
+			return (this->mouse_events != NULL);
+		}
+
+		/**
+		* Handle a mouse-down event
+		**/
+		void onMouseDown(Uint8 button, Uint16 x, Uint16 y)
+		{
+			this->mouse_events->onMouseDown(button, x, y);
+		}
+
+		/**
+		* Handle a mouse-up event
+		**/
+		void onMouseUp(Uint8 button, Uint16 x, Uint16 y)
+		{
+			this->mouse_events->onMouseUp(button, x, y);
+		}
+
 		/**
 		* Executes a script.
 		* The script execution basically binds functions to events.

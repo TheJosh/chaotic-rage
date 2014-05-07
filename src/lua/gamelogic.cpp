@@ -54,7 +54,8 @@ GameLogic::GameLogic(GameState *st)
 
 	this->st = st;
 	this->map = st->map;
-	
+	this->mouse_events = NULL;
+
 	L = luaL_newstate();
 	register_lua_functions();
 
@@ -558,6 +559,68 @@ LUA_FUNC(add_label)
 
 
 /**
+* Handler for mouse clicks.
+* Set up by the mouse_pick function.
+**/
+class MousePickHandler : public MouseEventHandler {
+	private:
+		lua_State *L;
+		int func;
+		
+	public:
+		MousePickHandler(lua_State *L, int func)
+		{
+			this->L = L;
+			this->func = func;
+		}
+		
+		virtual void onMouseUp(Uint8 button, Uint16 x, Uint16 y)
+		{
+			btVector3 hitLocation(0.0f, 0.0f, 0.0f);
+			Entity* hitEntity = NULL;
+			bool result;
+
+			// Disable mouse pick
+			GEng()->setMouseGrab(true);
+			gl->mouse_events = NULL;
+
+			// Return result back to Lua code
+			result = gl->st->mousePick(hitLocation, &hitEntity);
+			if (result) {
+				lua_rawgeti(this->L, LUA_REGISTRYINDEX, this->func);
+				new_vector3(L, hitLocation.x(), hitLocation.y(), hitLocation.z());
+				lua_pcall(this->L, 1, 0, 0);
+			}
+
+			// Cleanup
+			delete this;
+		}
+};
+
+
+/**
+* Allow the user to pick an object on screen
+**/
+LUA_FUNC(mouse_pick)
+{
+	if (! lua_isfunction(L, 1)) {
+		lua_pushstring(L, "Arg #1 is not a function");
+		lua_error(L);
+	}
+
+	// Grab function pointer
+	lua_pushvalue(L, -1);
+	int func = luaL_ref(L, LUA_REGISTRYINDEX);
+
+	// Set mouse pick
+	GEng()->setMouseGrab(false);
+	gl->mouse_events = new MousePickHandler(L, func);
+
+	return 0;
+}
+
+
+/**
 * 
 *
 * @return String: The currently selected unit type
@@ -626,6 +689,8 @@ void register_lua_functions()
 	LUA_REG(get_viewmode);			// TODO: Add a 'camera' object
 	LUA_REG(set_viewmode);			// dynamic position, animation, etc.
 	
+	LUA_REG(mouse_pick);
+
 	
 	// Factions constants table
 	lua_createtable(L,0,0);
@@ -642,6 +707,7 @@ void register_lua_functions()
 
 	lua_standard_libs(L);
 	load_hudlabel_lib(L);
+	load_vector3_lib(L);
 	load_random_lib(L);
 	load_dialog_lib(L);
 }

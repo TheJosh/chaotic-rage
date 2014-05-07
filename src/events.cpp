@@ -13,6 +13,7 @@
 #include "render_opengl/hud.h"
 #include "render_opengl/render_opengl.h"
 #include "gui/dialog.h"
+#include "lua/gamelogic.h"
 
 using namespace std;
 
@@ -85,14 +86,25 @@ void handleEvents(GameState *st)
 			}
 		}
 
-
+		// Handle dialogs
 		if (GEng()->hasDialogs()) {
 			GEng()->guiinput->pushInput(event);
 			continue;
 		}
 
+		// Handle gamelogic mouse capture
+		if (st->logic->mouseCaptured()) {
+			if (event.type == SDL_MOUSEBUTTONDOWN) {
+				st->logic->onMouseDown(event.button.button, event.button.x, event.button.y);
+				continue;
+			} else if (event.type == SDL_MOUSEBUTTONUP) {
+				st->logic->onMouseUp(event.button.button, event.button.x, event.button.y);
+				continue;
+			}
+		}
 
-		// TODO: More dynamic
+
+		// TODO: Dynamic keybindings
 		
 		// One player, player one
 		if (st->num_local == 1 && st->local_players[0]->p != NULL) {

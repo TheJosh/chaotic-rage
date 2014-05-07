@@ -583,7 +583,7 @@ HUDLabel* GameState::addHUDLabel(unsigned int slot, float x, float y, string dat
 *
 * Returns true on hit and false on miss
 **/
-bool GameState::mousePick(btVector3& hitLocation, Entity* hitEntity)
+bool GameState::mousePick(btVector3& hitLocation, Entity** hitEntity)
 {
 	if (!GEng()->render->is3D()) return false;
 
@@ -596,17 +596,26 @@ bool GameState::mousePick(btVector3& hitLocation, Entity* hitEntity)
 	btVector3 start, end;
 	((Render3D*)GEng()->render)->mouseRaycast(x, y, start, end);
 
+	// Extend length of ray
+	btVector3 dir = end - start;
+	dir.normalize();
+	dir *= 500.0f;
+	end = start + dir;
+
 	// Do raycast
 	btCollisionWorld::ClosestRayResultCallback cb(start, end);
+	cb.m_collisionFilterGroup = CG_UNIT;
+	cb.m_collisionFilterMask = this->physics->masks[CG_UNIT];
 	this->physics->getWorld()->rayTest(start, end, cb);
 
 	// Hit?
 	if (cb.hasHit()) {
 		hitLocation = cb.m_hitPointWorld;
 		if (cb.m_collisionObject->getUserPointer()) {
-			hitEntity = static_cast<Entity*>(cb.m_collisionObject->getUserPointer());
+			*hitEntity = static_cast<Entity*>(cb.m_collisionObject->getUserPointer());
+		} else {
+			*hitEntity = NULL;
 		}
-
 		return true;
 	}
 	
