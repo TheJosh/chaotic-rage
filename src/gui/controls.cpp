@@ -28,7 +28,7 @@ gcn::Container * DialogControls::setup()
 		"Melee", "Right Click",
 		"Change Weapon", "Scroll",
 		"Use", "E",
-		"Lift", "Q",
+		"Lift or Drop", "Q",
 		"Special", "T",
 		"Change Camera", "C",
 		""
@@ -41,7 +41,7 @@ gcn::Container * DialogControls::setup()
 		"Melee", "I",
 		"Change Weapon", "J M",
 		"Use", "E",
-		"Lift", "Q",
+		"Lift or Drop", "Q",
 		"Special", "T",
 		"Change Camera", "C",
 		""
@@ -54,7 +54,7 @@ gcn::Container * DialogControls::setup()
 		"Melee", "Right Click",
 		"Change Weapon", "Scroll",
 		"Use", "Numpad 9",
-		"Lift", "Numpad 7",
+		"Lift or Drop", "Numpad 7",
 		"Special", "Numpad 1",
 		"Change Camera", "C",
 		""

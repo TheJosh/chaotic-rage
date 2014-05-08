@@ -92,29 +92,29 @@ void Player::setKeys(Uint8 bitfield)
 **/
 void Player::handleKeyChange()
 {
-	if (this->key[KEY_FIRE] && !this->lkey[KEY_FIRE]) {
-		if (this->lift_obj) {
-			this->doDrop();
-		} else {
-			this->beginFiring();
-		}
+	if (this->key[KEY_FIRE] && !this->lkey[KEY_FIRE] && !this->lift_obj) {
+		this->beginFiring();
 	} else if (!this->key[KEY_FIRE] && this->lkey[KEY_FIRE]) {
 		this->endFiring();
 	}
 
-	if (this->key[KEY_USE] && !this->lkey[KEY_USE]) {
+	if (this->key[KEY_USE] && !this->lkey[KEY_USE] && !this->lift_obj) {
 		this->doUse();
 	}
 
 	if (this->key[KEY_LIFT] && !this->lkey[KEY_LIFT]) {
-		this->doLift();
+		if (this->lift_obj) {
+			this->doDrop();
+		} else {
+			this->doLift();
+		}
 	}
 	
-	if (this->key[KEY_MELEE] && !this->lkey[KEY_MELEE]) {
+	if (this->key[KEY_MELEE] && !this->lkey[KEY_MELEE] && !this->lift_obj) {
 		this->meleeAttack();
 	}
 
-	if (this->key[KEY_SPECIAL] && !this->lkey[KEY_SPECIAL]) {
+	if (this->key[KEY_SPECIAL] && !this->lkey[KEY_SPECIAL] && !this->lift_obj) {
 		this->specialAttack();
 	} else if (!this->key[KEY_SPECIAL] && this->lkey[KEY_SPECIAL]) {
 		this->endSpecialAttack();
