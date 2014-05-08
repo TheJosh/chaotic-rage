@@ -22,6 +22,7 @@ class MouseEventHandler {
 	public:
 		MouseEventHandler() {}
 		virtual ~MouseEventHandler() {}
+		virtual void onMouseMove(Uint16 x, Uint16 y) {}
 		virtual void onMouseDown(Uint8 button, Uint16 x, Uint16 y) {}
 		virtual void onMouseUp(Uint8 button, Uint16 x, Uint16 y) {}
 };
@@ -55,7 +56,15 @@ class GameLogic
 		{
 			return (this->mouse_events != NULL);
 		}
-
+		
+		/**
+		* Handle a mouse-move event
+		**/
+		void onMouseMove(Uint16 x, Uint16 y)
+		{
+			this->mouse_events->onMouseMove(x, y);
+		}
+		
 		/**
 		* Handle a mouse-down event
 		**/

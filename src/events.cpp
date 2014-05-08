@@ -94,7 +94,11 @@ void handleEvents(GameState *st)
 
 		// Handle gamelogic mouse capture
 		if (st->logic->mouseCaptured()) {
-			if (event.type == SDL_MOUSEBUTTONDOWN) {
+			if (event.type == SDL_MOUSEMOTION) {
+				st->logic->onMouseMove(event.motion.x, event.motion.y);
+				continue;
+			
+			} else if (event.type == SDL_MOUSEBUTTONDOWN) {
 				st->logic->onMouseDown(event.button.button, event.button.x, event.button.y);
 				continue;
 			} else if (event.type == SDL_MOUSEBUTTONUP) {
