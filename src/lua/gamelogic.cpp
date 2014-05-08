@@ -390,6 +390,8 @@ LUA_FUNC(remove_timer)
 
 /**
 * Spawn a new NPC unit
+*
+* TODO: Need a new method for "add at specific location" vs "spawn in based on game rules"
 **/
 LUA_FUNC(add_npc)
 {
@@ -432,6 +434,8 @@ LUA_FUNC(add_npc)
 * @param String Unit type.
 * @param int Faction-ID. Use the 'factions' enumeration.
 * @param int Player slot, between 1 and N, where N is the number of players in the game, including network.
+*
+* TODO: Need a new method for "add at specific location" vs "spawn in based on game rules"
 **/
 LUA_FUNC(add_player)
 {
@@ -469,6 +473,8 @@ LUA_FUNC(add_player)
 
 /**
 * Kills off the player with a given slot #
+*
+* TODO: Need a new method for "remove given entity" vs "kill off based on game rules"
 **/
 LUA_FUNC(kill_player)
 {
@@ -710,6 +716,7 @@ void register_lua_functions()
 	load_vector3_lib(L);
 	load_random_lib(L);
 	load_dialog_lib(L);
+	load_entity_lib(L);
 }
 
 

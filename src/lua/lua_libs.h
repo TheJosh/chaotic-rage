@@ -43,13 +43,10 @@ void new_hudlabel(lua_State *L, HUDLabel* src);
 
 
 /**
-* Random numbers
+* Various function-only libraries
 **/
 void load_random_lib(lua_State *L);
-
-
-/**
-* Dialogs
-**/
 void load_dialog_lib(lua_State *L);
+void load_entity_lib(lua_State *L);
+
 

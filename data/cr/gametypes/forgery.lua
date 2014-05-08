@@ -16,6 +16,7 @@ end);
 --
 bind_gamestart(function()
 	mouse_pick(function(coord)
-		prompt_text("Picked at " .. coord.x .. " " .. coord.y .. " " .. coord.z, function() end);
+		add_vehicle("tank", coord);
+		--prompt_text("Picked at " .. coord.x .. " " .. coord.y .. " " .. coord.z, function() end);
 	end);
 end);
