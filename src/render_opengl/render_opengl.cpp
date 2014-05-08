@@ -425,37 +425,29 @@ void RenderOpenGL::mainViewport(int s, int of)
 * Calculate the raycast start and end vectors in world space for mouse picking
 *
 * It starts with coords in Normalized Device Coordinates, then multiplies
-* by the invers of the projectionview matrix to give the world coordinates
+* by the inverse of the projectionview matrix to give the world coordinates
+*
+* TODO: test on split screen
 **/
 void RenderOpenGL::mouseRaycast(int x, int y, btVector3& start, btVector3& end)
 {
-	glm::mat4 M = glm::inverse(this->projection * this->view);
-
-	// Start coordinate, at z = -1.0
-	glm::vec4 lRayStart_NDC(
-		((float)x / (float)this->virt_width - 0.5f) * 2.0f,
-		((float)y / (float)this->virt_height - 0.5f) * 2.0f,
-		-1.0f,
+	glm::vec4 ray_nds(
+		((2.0f * x) / this->real_width) - 1.0f,
+		1.0f - ((2.0f * y) / this->real_height),
+		1.0f,
 		1.0f
 	);
 
-	// Convert to world coords
-	glm::vec4 lRayStart_world = M * lRayStart_NDC;
-	lRayStart_world /= lRayStart_world.w;
-	start = btVector3(lRayStart_world.x, lRayStart_world.y, lRayStart_world.z);
+	glm::vec4 ray_world = glm::inverse(this->projection * this->view) * ray_nds;
+	
+	ray_world = glm::normalize(ray_world);
+	ray_world *= 100.0f;
 
-	// End coordinate, at z = 500.0
-	glm::vec4 lRayEnd_NDC(
-		((float)x / (float)this->virt_width - 0.5f) * 2.0f,
-		((float)y / (float)this->virt_height - 0.5f) * 2.0f,
-		0.0f,
-		1.0f
-	);
+	// Start is camera position
+	start = btVector3(this->camera.x, this->camera.y, this->camera.z);
 
-	// Convert this one too
-	glm::vec4 lRayEnd_world = M * lRayEnd_NDC;
-	lRayEnd_world /= lRayEnd_world.w;
-	end = btVector3(lRayEnd_world.x, lRayEnd_world.y, lRayEnd_world.z);
+	// End is start + direction
+	end = start + btVector3(ray_world.x, ray_world.y, ray_world.z);
 }
 
 
@@ -1921,12 +1913,13 @@ void RenderOpenGL::mainRot()
 	float camerax = dist * sin(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().x();
 	float cameray = dist * sin(DEG_TO_RAD(tilt)) + trans.getOrigin().y() + lift;
 	float cameraz = dist * cos(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().z();
-	
+	this->camera = glm::vec3(camerax, cameray, cameraz);
+
 	// Prep the view matrix
 	this->view = glm::mat4(1.0f);
 	this->view = glm::rotate(this->view, tilt, glm::vec3(1.0f, 0.0f, 0.0f));
 	this->view = glm::rotate(this->view, 360.0f - angle, glm::vec3(0.0f, 1.0f, 0.0f));
-	this->view = glm::translate(this->view, glm::vec3(-camerax, -cameray, -cameraz));
+	this->view = glm::translate(this->view, -this->camera);
 
 	CHECK_OPENGL_ERROR;
 }

@@ -592,12 +592,8 @@ bool GameState::mousePick(unsigned int x, unsigned int y, btVector3& hitLocation
 	btVector3 start, end;
 	((Render3D*)GEng()->render)->mouseRaycast(x, y, start, end);
 
-	// Extend length of ray
-	btVector3 dir = end - start;
-	dir.normalize();
-	dir *= 500.0f;
-	end = start + dir;
-
+	this->addDebugLine(&start, &end);
+	
 	// Do raycast
 	btCollisionWorld::ClosestRayResultCallback cb(start, end);
 	cb.m_collisionFilterGroup = CG_UNIT;

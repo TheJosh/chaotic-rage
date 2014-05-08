@@ -592,8 +592,8 @@ class MousePickHandler : public MouseEventHandler {
 			result = gl->st->mousePick(x, y, hitLocation, &hitEntity);
 
 			// Disable mouse pick
-			GEng()->setMouseGrab(true);
-			gl->mouse_events = NULL;
+			//GEng()->setMouseGrab(true);
+			//gl->mouse_events = NULL;
 
 			// Return result back to Lua code
 			if (result) {

@@ -39,9 +39,9 @@ LUA_FUNC(add_vehicle)
 	double * pos = get_vector3(L, 2);
 	
 	if (vt->helicopter) {
-		v = new Helicopter(vt, getGameState(), pos[0], pos[1]);
+		v = new Helicopter(vt, getGameState(), pos[0], pos[2]);
 	} else {
-		v = new Vehicle(vt, getGameState(), pos[0], pos[1]);
+		v = new Vehicle(vt, getGameState(), pos[0], pos[2]);
 	}
 	
 	getGameState()->addVehicle(v);

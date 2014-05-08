@@ -110,6 +110,7 @@ class RenderOpenGL : public Render3D
 		glm::mat4 ortho;		// ortho
 		glm::mat4 view;			// camera
 		glm::mat4 depthmvp;		// light
+		glm::vec3 camera;
 
 		RenderOpenGLSettings* settings;
 		int min_filter;

@@ -21,6 +21,7 @@ end);
 
 function doPick()
 	mouse_pick(function(coord)
+		show_alert_message("pick " .. coord.x .. " " .. coord.y .. " " .. coord.z)
 		add_vehicle("tank", coord)
 	end)
 end

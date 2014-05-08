@@ -226,6 +226,7 @@
     <ClCompile Include="..\..\src\http\serverlist.cpp" />
     <ClCompile Include="..\..\src\http\url.cpp" />
     <ClCompile Include="..\..\src\lua\lua_dialog_lib.cpp" />
+    <ClCompile Include="..\..\src\lua\lua_entity_lib.cpp" />
     <ClCompile Include="..\..\src\lua\lua_random_lib.cpp" />
     <ClCompile Include="..\..\src\map\map.cpp" />
     <ClCompile Include="..\..\src\map\zone.cpp" />
