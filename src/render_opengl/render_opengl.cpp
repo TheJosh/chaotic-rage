@@ -355,7 +355,7 @@ void RenderOpenGL::loadFont(string name, Mod * mod)
 		reportFatalError("Freetype: Unable to load font size");
 	}
 
-	// I don't quite know ahy this is here...
+	// I don't quite know why this is here...
 	// TODO: Move or remove
 	this->loadShaders();
 	if (this->shaders_error) {
@@ -894,8 +894,8 @@ void RenderOpenGL::createWater()
 
 
 /**
-* Create the "water" mesh
-* We save it in a WavefrontObj.
+* Create the "skybox" mesh
+* We save it in a GLVAO.
 **/
 void RenderOpenGL::createSkybox()
 {
@@ -1426,7 +1426,7 @@ void RenderOpenGL::deleteProgram(GLShader* shader)
 /**
 * Builds a VBO for this object
 **/
-void RenderOpenGL::createVBO (WavefrontObj * obj)
+void RenderOpenGL::createVBO(WavefrontObj * obj)
 {
 	GLuint buffer;
 	
@@ -1776,6 +1776,7 @@ unsigned int RenderOpenGL::widthText(string text)
 **/
 void RenderOpenGL::render()
 {
+	glDisable(GL_CULL_FACE);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	CHECK_OPENGL_ERROR;

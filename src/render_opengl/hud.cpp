@@ -151,7 +151,7 @@ void HUD::draw()
 
 
 /**
-* Up scroll or equivelent
+* Up scroll or equivalent
 **/
 void HUD::eventUp()
 {
@@ -162,7 +162,7 @@ void HUD::eventUp()
 
 
 /**
-* Down scroll or equivelent
+* Down scroll or equivalent
 **/
 void HUD::eventDown()
 {
