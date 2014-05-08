@@ -20,6 +20,8 @@ using namespace std;
 **/
 class MouseEventHandler {
 	public:
+		MouseEventHandler() {}
+		virtual ~MouseEventHandler() {}
 		virtual void onMouseDown(Uint8 button, Uint16 x, Uint16 y) {}
 		virtual void onMouseUp(Uint8 button, Uint16 x, Uint16 y) {}
 };

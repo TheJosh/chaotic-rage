@@ -580,18 +580,22 @@ class MousePickHandler : public MouseEventHandler {
 			this->func = func;
 		}
 		
+		virtual ~MousePickHandler() {}
+		
 		virtual void onMouseUp(Uint8 button, Uint16 x, Uint16 y)
 		{
 			btVector3 hitLocation(0.0f, 0.0f, 0.0f);
 			Entity* hitEntity = NULL;
 			bool result;
 
+			// Do mouse pick
+			result = gl->st->mousePick(x, y, hitLocation, &hitEntity);
+
 			// Disable mouse pick
 			GEng()->setMouseGrab(true);
 			gl->mouse_events = NULL;
 
 			// Return result back to Lua code
-			result = gl->st->mousePick(hitLocation, &hitEntity);
 			if (result) {
 				lua_rawgeti(this->L, LUA_REGISTRYINDEX, this->func);
 				new_vector3(L, hitLocation.x(), hitLocation.y(), hitLocation.z());

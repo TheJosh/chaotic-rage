@@ -580,17 +580,13 @@ HUDLabel* GameState::addHUDLabel(unsigned int slot, float x, float y, string dat
 
 /**
 * Pick for an object using the mouse
+* Returns true on hit and false on miss. Sets `hitLocation` and `hitEntity` on success. 
 *
-* Returns true on hit and false on miss
+* TODO: Does this belong here or in the PhysicsBullet class?
 **/
-bool GameState::mousePick(btVector3& hitLocation, Entity** hitEntity)
+bool GameState::mousePick(unsigned int x, unsigned int y, btVector3& hitLocation, Entity** hitEntity)
 {
 	if (!GEng()->render->is3D()) return false;
-
-	// Get mouse coords
-	// TODO: Will this work for split screen? Probably should use the cached values too
-	int x, y;
-	SDL_GetMouseState(&x, &y);
 
 	// Get ray coords in world space
 	btVector3 start, end;
