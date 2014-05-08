@@ -21,8 +21,8 @@ end);
 
 function doPick()
 	mouse_pick(function(coord)
-		show_alert_message("pick " .. coord.x .. " " .. coord.y .. " " .. coord.z)
-		add_vehicle("tank", coord)
+		local t = random_arg("crate_wood", "crate_steel", "crate_sealed")
+		add_object(t, coord)
 	end)
 end
 

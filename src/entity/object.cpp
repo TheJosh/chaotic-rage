@@ -31,7 +31,7 @@ Object::Object(ObjectType *ot, GameState *st, float x, float y, float z, float a
 			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)
 		));
 	
-	this->body = st->physics->addRigidBody(ot->col_shape, 0.0f, motionState, CG_OBJECT);
+	this->body = st->physics->addRigidBody(ot->col_shape, 1.0f, motionState, CG_OBJECT);
 	
 	this->body->setUserPointer(this);
 }
