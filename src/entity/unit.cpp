@@ -544,7 +544,7 @@ void Unit::update(int delta)
 
 	// Move any object which is being "lifted".
 	if (this->lift_obj) {
-		btVector3 pos = xform.getOrigin() + xform.getBasis() * btVector3(0.0f, 0.0f, 1.0f);
+		btVector3 pos = xform.getOrigin() + xform.getBasis() * btVector3(0.0f, 0.0f, 1.2f);
 		btTransform lift(xform.getBasis(), pos);
 		this->lift_obj->setTransform(lift);
 	}
@@ -752,18 +752,26 @@ void Unit::doLift()
 	Entity *closest = this->infront(2.0f);
 	if (! closest) return;
 
-	if (closest->klass() == OBJECT) {
+	int klass = closest->klass();
+	if (klass == OBJECT || klass == UNIT) {
 		this->lift_obj = static_cast<Object*>(closest);
 	}
 }
 
 
 /**
-* Drop an object. Is this the same as throw?
+* Drop an object.
+* TODO: add doThrow()
 **/
 void Unit::doDrop()
 {
-	this->lift_obj = NULL;
+	if (this->lift_obj) {
+		btTransform xform = ghost->getWorldTransform();
+		btVector3 pos = xform.getOrigin();
+		btTransform drop(xform.getBasis(), pos);
+		this->lift_obj->setTransform(drop);
+		this->lift_obj = NULL;
+	}
 }
 
 
