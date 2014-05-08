@@ -84,4 +84,8 @@ class Entity
 		**/
 		void hasDied();
 		
+		/**
+		* Disable collision for this entity
+		**/
+		void disableCollision();
 };

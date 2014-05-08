@@ -60,3 +60,12 @@ void Entity::setTransform(btTransform &t)
 	body->setWorldTransform(t);
 }
 
+
+/**
+* Disable collision for this entity
+**/
+void Entity::disableCollision()
+{
+	body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
+}
+

@@ -15,7 +15,7 @@ end);
 -- Game start
 --
 bind_gamestart(function()
-	add_interval(5000, doPick);
+	add_timer(5000, doPick);
 end);
 
 
