@@ -1768,7 +1768,6 @@ unsigned int RenderOpenGL::widthText(string text)
 **/
 void RenderOpenGL::render()
 {
-	glDisable(GL_CULL_FACE);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	CHECK_OPENGL_ERROR;
