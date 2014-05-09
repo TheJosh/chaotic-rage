@@ -590,14 +590,13 @@ class MousePickHandler : public MouseEventHandler {
 		{
 			btVector3 hitLocation(0.0f, 0.0f, 0.0f);
 			Entity* hitEntity = NULL;
-			bool result;
 
 			// Move cursor somewhere else
 			btTransform xform1(btQuaternion(0.0f, 0.0f, 0.0f), btVector3(0.0f, 0.0f, 0.0f));
 			cursor->setTransform(xform1);
 
 			// Do mouse pick
-			result = gl->st->mousePick(x, y, hitLocation, &hitEntity);
+			this->cursor->visible = gl->st->mousePick(x, y, hitLocation, &hitEntity);
 
 			// Move cursor to location
 			btTransform xform2(btQuaternion(0.0f, 0.0f, 0.0f), hitLocation);
