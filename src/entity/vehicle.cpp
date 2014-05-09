@@ -20,12 +20,17 @@
 using namespace std;
 
 
+/* Defining suspension and wheel parameters */ 
 static float	wheelRadius = 0.3f;
 static float	wheelWidth = 0.3f;
-static float	wheelFriction = 1000.0f;
-static float	suspensionStiffness = 20.0f;
-static float	suspensionDamping = 10.0f;
-static float	suspensionCompression = 10.0f;
+static float	frictionSlip = 1.0f; // 0.8 - Realistic car, 10000 - Kart racer
+static float	suspensionStiffness = 20.0f; // 10.0 - Offroad buggy, 50.0 - Sports car, 200.0 - F1 Car
+// k * 2.0 * btSqrt(suspensionStiffness)
+// k = 0.0 undamped & bouncy, k = 1.0 critical damping, k = 0.1 to 0.3 are good values
+static float	wheelsDampingCompression = 0.2f * 2.0 * btSqrt(suspensionStiffness);
+// k * 2.0 * btSqrt(suspensionStiffness), slightly larger than wheelsDampingCompression, k = 0.2 to 0.5
+static float	wheelsDampingRelaxation = 0.3f * 2.0 * btSqrt(suspensionStiffness);
+// Reduces the rolling torque. 0.0 = no roll, 1.0 = physical behaviour
 static float	rollInfluence = 0.1f;
 static btVector3 wheelDirectionCS0(0,-1,0);
 static btVector3 wheelAxleCS(-1,0,0);
@@ -119,9 +124,9 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 		btWheelInfo& wheel = this->vehicle->getWheelInfo(i);
 		
 		wheel.m_suspensionStiffness = suspensionStiffness;
-		wheel.m_wheelsDampingRelaxation = suspensionDamping;
-		wheel.m_wheelsDampingCompression = suspensionCompression;
-		wheel.m_frictionSlip = wheelFriction;
+		wheel.m_wheelsDampingRelaxation = wheelsDampingCompression;
+		wheel.m_wheelsDampingCompression = wheelsDampingCompression;
+		wheel.m_frictionSlip = frictionSlip;
 		wheel.m_rollInfluence = rollInfluence;
 	}
 }
