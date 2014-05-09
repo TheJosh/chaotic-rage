@@ -20,12 +20,12 @@
 using namespace std;
 
 
-static float	wheelRadius = 0.5f;
-static float	wheelWidth = 0.4f;
-static float	wheelFriction = 1000;
-static float	suspensionStiffness = 20.f;
-static float	suspensionDamping = 2.3f;
-static float	suspensionCompression = 4.4f;
+static float	wheelRadius = 0.3f;
+static float	wheelWidth = 0.3f;
+static float	wheelFriction = 1000.0f;
+static float	suspensionStiffness = 20.0f;
+static float	suspensionDamping = 10.0f;
+static float	suspensionCompression = 10.0f;
 static float	rollInfluence = 0.1f;
 static btVector3 wheelDirectionCS0(0,-1,0);
 static btVector3 wheelAxleCS(-1,0,0);
@@ -77,8 +77,6 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	this->brakeForce = 0.0f;
 	this->steering = 0.0f;
 
-	btVector3 sizeHE = vt->model->getBoundingSizeHE();
-	
 	// Create rigidbody
 	btDefaultMotionState* motionState = new btDefaultMotionState(loc);
 	this->body = st->physics->addRigidBody(vt->col_shape, vt->mass, motionState, CG_VEHICLE);
@@ -94,12 +92,13 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	// Create and attach wheels
 	// TODO: Optimize this for fixed turrets
 	{
+		btVector3 sizeHE = vt->model->getBoundingSizeHE();
 		btScalar suspensionRestLength(sizeHE.y() + 0.1f);
 
 		this->wheel_shape = new btCylinderShapeX(btVector3(wheelWidth,wheelRadius,wheelRadius));
 		
 		btVector3 connectionPointCS0;
-		float connectionHeight = 0.2f;
+		float connectionHeight = 0.0f;
 		bool isFrontWheel = true;
 		
 		connectionPointCS0 = btVector3(sizeHE.x(), connectionHeight, sizeHE.y());
@@ -200,7 +199,7 @@ void Vehicle::update(int delta)
 		
 		btScalar m[16];
 		newTransform.getOpenGLMatrix(m);
-		this->setNodeTransformRelative(VEHICLE_NODE_WHEEL0 + i, glm::make_mat4(m));
+		//this->setNodeTransformRelative(VEHICLE_NODE_WHEEL0 + i, glm::make_mat4(m));
 	}
 
 	// Send state over network
