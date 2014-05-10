@@ -9,7 +9,8 @@
 #include "mod.h"
 #include "weapontype.h"
 #include "../weapons/weapons.h"
-
+#include "../game_engine.h"
+#include "../render/render.h"
 
 using namespace std;
 
@@ -35,7 +36,10 @@ cfg_opt_t weapontype_opts[] =
 	CFG_INT((char*) "continuous", 0, CFGF_NONE),
 	CFG_INT((char*) "magazine_limit", 100, CFGF_NONE),
 	CFG_INT((char*) "belt_limit", 1000, CFGF_NONE),
-	
+	CFG_STR((char*) "crosshair", 0, CFGF_NONE),
+	CFG_INT((char*) "crosshair_min", 10, CFGF_NONE),
+	CFG_INT((char*) "crosshair_max", 20, CFGF_NONE),
+
 	// Sounds
 	CFG_SEC((char*) "sound", weaponsound_opts, CFGF_MULTI),
 	
@@ -181,13 +185,23 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	wt->st = mod->st;
 	wt->type = type;
 
+	// Common weapon settings
 	wt->fire_delay = cfg_getint(cfg_item, "fire_delay");
 	wt->reload_delay = cfg_getint(cfg_item, "reload_delay");
 	wt->continuous = (cfg_getint(cfg_item, "continuous") == 1);
 	wt->magazine_limit = cfg_getint(cfg_item, "magazine_limit");
 	wt->belt_limit = cfg_getint(cfg_item, "belt_limit");
 	
-	
+	// Crosshair image and sizes
+	char* tmp = cfg_getstr(cfg_item, "crosshair");
+	if (tmp) {
+		string name = "crosshairs/";
+		name.append(tmp);
+		wt->crosshair = GEng()->render->loadSprite(name, mod);
+		wt->crosshair_min = cfg_getint(cfg_item, "crosshair_min");
+		wt->crosshair_max = cfg_getint(cfg_item, "crosshair_max");
+	}
+
 	// Load sounds
 	int num_sounds = cfg_size(cfg_item, "sound");
 	for (j = 0; j < num_sounds; j++) {
@@ -242,5 +256,6 @@ Sound* WeaponType::getSound(int type)
 WeaponType::WeaponType()
 {
 	this->model = NULL;
+	this->crosshair = NULL;
 }
 

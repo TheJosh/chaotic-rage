@@ -46,6 +46,11 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 		vector<WeaponTypeSound*> sounds;
 		AssimpModel* model;
 
+		// Crosshair image and min/max size
+		SpritePtr crosshair;
+		int crosshair_min;
+		int crosshair_max;
+
 	public:
 		WeaponType();
 		Sound* getSound(int type);

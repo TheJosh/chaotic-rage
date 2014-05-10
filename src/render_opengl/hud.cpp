@@ -10,6 +10,9 @@
 #include "hud.h"
 #include "render_opengl.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 using namespace std;
 
 
@@ -66,6 +69,8 @@ HUDLabel * HUD::addLabel(float x, float y, string data)
 **/
 void HUD::draw()
 {
+	glDisable(GL_CULL_FACE);
+
 	if (this->weapon_menu && this->ps->p) {
 		// Weapon menu
 		float x = 100;
@@ -145,6 +150,22 @@ void HUD::draw()
 				sprintf(buf, "%i", val);
 				this->render->renderText(buf, 50, 80);
 			}
+		}
+	}
+
+	// Crosshair
+	if (this->render->viewmode == GameSettings::firstPerson && this->ps->p != NULL) {
+		WeaponType* wt = this->ps->p->getWeaponTypeCurr();
+		if (wt->crosshair) {
+			int size = wt->crosshair_min;		// TODO: Make dynamic based on accuracy
+
+			int x = (int)round(((float)this->render->virt_width - (float)size) / 2.0f);
+			int y = (int)round(((float)this->render->virt_height - (float)size) / 2.0f);
+
+			glEnable(GL_BLEND);
+			glUseProgram(render->shaders["basic"]->p());
+			glUniformMatrix4fv(render->shaders["basic"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
+			this->render->renderSprite(wt->crosshair, x, y, size, size);
 		}
 	}
 }
