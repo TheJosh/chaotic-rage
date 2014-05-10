@@ -20,10 +20,13 @@
 using namespace std;
 
 
-/* Defining suspension and wheel parameters */ 
+/**
+* Defining suspension and wheel parameters
+* More info: https://code.google.com/p/jbullet-jme/wiki/PhysicsVehicleNode
+**/ 
 static float	wheelRadius = 0.3f;
 static float	wheelWidth = 0.3f;
-static float	frictionSlip = 1.0f; // 0.8 - Realistic car, 10000 - Kart racer
+static float	frictionSlip = 10.0f; // 0.8 - Realistic car, 10000 - Kart racer
 static float	suspensionStiffness = 20.0f; // 10.0 - Offroad buggy, 50.0 - Sports car, 200.0 - F1 Car
 // k * 2.0 * btSqrt(suspensionStiffness)
 // k = 0.0 undamped & bouncy, k = 1.0 critical damping, k = 0.1 to 0.3 are good values
@@ -112,11 +115,14 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 		connectionPointCS0 = btVector3(-sizeHE.x(), connectionHeight, sizeHE.y());
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
 		
+		if (vt->name.compare("tank") != 0) {
+			isFrontWheel = false;
+		}
 		connectionPointCS0 = btVector3(sizeHE.x(), connectionHeight, -sizeHE.y());
-		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, !isFrontWheel);
+		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
 		
 		connectionPointCS0 = btVector3(-sizeHE.x(), connectionHeight, -sizeHE.y());
-		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, !isFrontWheel);
+		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
 	}
 	
 	// Set some wheel dynamics
@@ -124,7 +130,7 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 		btWheelInfo& wheel = this->vehicle->getWheelInfo(i);
 		
 		wheel.m_suspensionStiffness = suspensionStiffness;
-		wheel.m_wheelsDampingRelaxation = wheelsDampingCompression;
+		wheel.m_wheelsDampingRelaxation = wheelsDampingRelaxation;
 		wheel.m_wheelsDampingCompression = wheelsDampingCompression;
 		wheel.m_frictionSlip = frictionSlip;
 		wheel.m_rollInfluence = rollInfluence;
@@ -178,12 +184,12 @@ void Vehicle::update(int delta)
 	// Front left
 	wheelIndex = 0;
 	this->vehicle->setSteeringValue(this->steering,wheelIndex);
-	this->vehicle->setBrake(this->brakeForce,wheelIndex);
+	//this->vehicle->setBrake(this->brakeForce,wheelIndex);
 	
 	// Front right
 	wheelIndex = 1;
 	this->vehicle->setSteeringValue(this->steering,wheelIndex);
-	this->vehicle->setBrake(this->brakeForce,wheelIndex);
+	//this->vehicle->setBrake(this->brakeForce,wheelIndex);
 	
 	// Rear left
 	wheelIndex = 2;
@@ -391,6 +397,7 @@ void Vehicle::setNodeTransformRelative(VehicleNodeType type, glm::mat4 transform
 	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); ++it) {
 		if ((*it).type == type) {
 			this->getAnimModel()->setMoveTransform((*it).node, (*it).node->transform * transform);
+			break;
 		}
 	}
 }
