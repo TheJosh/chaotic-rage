@@ -81,18 +81,18 @@ void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
 	);
 
-	model->setParam(SPK::PARAM_ALPHA, 1.0f, 0.0f);
-	model->setParam(SPK::PARAM_RED, 0.5f, 1.0f);
-	model->setParam(SPK::PARAM_GREEN, 0.0f, 0.4f);
-	model->setParam(SPK::PARAM_BLUE, 0.0f, 0.1f);
+	model->setParam(SPK::PARAM_ALPHA, 0.5f, 0.5f);
+	model->setParam(SPK::PARAM_RED, 0.9f, 0.5f);
+	model->setParam(SPK::PARAM_GREEN, 0.3f, 0.2f);
+	model->setParam(SPK::PARAM_BLUE, 0.1f, 0.0f);
 	model->setLifeTime(0.5f, 0.7f);
 
-	SPK::Group* group = SPK::Group::create(model, 25);
+	SPK::Group* group = SPK::Group::create(model, 100);
 
 	SPK::Emitter* emitter = SPK::SphericEmitter::create(SPK::Vector3D(dir.x(), 0.0f, dir.z()), 0.02f * PI, 0.06f * PI);
 	emitter->setZone(SPK::Point::create(SPK::Vector3D(begin->x(), begin->y(), begin->z())));
 	emitter->setFlow(-1);
-	emitter->setTank(25);
+	emitter->setTank(100);
 	emitter->setForce(40.0f, 50.0f);
 	group->addEmitter(emitter);
 
@@ -106,7 +106,7 @@ void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 
 void create_particles_blood_spray(GameState * st, btVector3 & location, float damage)
 {
 	SPK::Model* model;
-	SPK::Emitter* emitter;
+	SPK::RandomEmitter* emitter;
 	SPK::Group* group;
 	
 	/* Yellow and red fireball */
@@ -122,21 +122,21 @@ void create_particles_blood_spray(GameState * st, btVector3 & location, float da
 	model->setLifeTime(0.4f, 0.7f);
 
 	// Falling
-	emitter = SPK::SphericEmitter::create(SPK::Vector3D(0.0f, 1.0f, 0.0f), 0.25f * PI, 0.25f * PI);
+	emitter = SPK::RandomEmitter::create();
 	emitter->setZone(SPK::Point::create(SPK::Vector3D(location.x(), location.y() - 0.5f, location.z())));
 	emitter->setFlow(-1);
-	emitter->setTank(50);
+	emitter->setTank(damage / 2);
 	emitter->setForce(10.0f, 15.0f);
 	
 	// Splatting
 	emitter = SPK::RandomEmitter::create();
 	emitter->setZone(SPK::Point::create(SPK::Vector3D(location.x(), location.y() - 0.5f, location.z())));
 	emitter->setFlow(-1);
-	emitter->setTank(50);
+	emitter->setTank(damage / 2);
 	emitter->setForce(10.0f, 15.0f);
 
 	// Create group
-	group = SPK::Group::create(model, 100);
+	group = SPK::Group::create(model, damage);
 	group->addEmitter(emitter);
 	group->setGravity(gravity);
 	st->addParticleGroup(group);

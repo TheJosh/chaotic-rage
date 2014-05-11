@@ -205,11 +205,12 @@ void Vehicle::update(int delta)
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
 		this->vehicle->updateWheelTransform(i, true);
 		
-		btTransform newTransform = this->vehicle->getWheelInfo(i).m_worldTransform;
-		newTransform.setOrigin(newTransform.getOrigin() - this->vehicle->getChassisWorldTransform().getOrigin());
+		// TODO: fix the transforms for turning and rotating of the wheels
+		//btTransform newTransform = this->vehicle->getWheelInfo(i).m_worldTransform;
+		//newTransform.setOrigin(newTransform.getOrigin() - this->vehicle->getChassisWorldTransform().getOrigin());
 		
-		btScalar m[16];
-		newTransform.getOpenGLMatrix(m);
+		//btScalar m[16];
+		//newTransform.getOpenGLMatrix(m);
 		//this->setNodeTransformRelative(VEHICLE_NODE_WHEEL0 + i, glm::make_mat4(m));
 	}
 
@@ -305,7 +306,7 @@ void Vehicle::getWeaponTransform(btTransform &xform)
 		btVector3 offset = btVector3(transform[3][0], transform[3][1], transform[3][2]);
 		xform.setOrigin(xform.getOrigin() + offset);
 
-		transform = glm::rotate(transform, 90.0f, glm::vec3(-1.0f, .0f, 0.0f));
+		transform = glm::rotate(transform, 90.0f, glm::vec3(-1.0f, 0.0f, 0.0f));
 
 		btMatrix3x3 local;
 		glmBullet(transform, local);

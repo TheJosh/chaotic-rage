@@ -89,8 +89,8 @@ void Helicopter::update(int delta)
 	this->body->applyCentralImpulse(absForce);
 	
 	// Blades animation
-	int frame = this->st->anim_frame % 12;
-	this->setNodeAngle(VEHICLE_NODE_SPIN, 360.0f / 12.0f * frame);
+	int angle = (this->st->anim_frame * 75) % 360;
+	this->setNodeAngle(VEHICLE_NODE_SPIN, static_cast<float>(angle));
 }
 
 
