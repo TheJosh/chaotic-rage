@@ -22,7 +22,12 @@ end);
 function doPick()
 	mouse_pick(function(coord)
 		local t = random_arg("crate_wood", "crate_steel", "crate_sealed")
-		add_object(t, coord)
+
+		local obj = world.addObject(t, coord.x, coord.z)
+
+		add_interval(500, function()
+			obj.visible = not obj.visible
+		end)
 	end)
 end
 

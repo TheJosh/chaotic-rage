@@ -21,56 +21,51 @@ extern "C" {
 	#include <lauxlib.h>
 }
 
+#include "LuaBridge/LuaBridge.h"
+
 
 #define LUA_FUNC(name) static int name(lua_State *L)
 #define LUA_REG(name) lua_register(L, #name, name)
 
 
-/**
-* Add a vehicle at the given coordinate
-**/
-LUA_FUNC(add_vehicle)
+Vehicle* addVehicle(string type, float x, float z)
 {
 	Vehicle *v;
 	
-	VehicleType *vt = GEng()->mm->getVehicleType(*(new string(lua_tostring(L, 1))));
+	VehicleType *vt = GEng()->mm->getVehicleType(type);
 	if (vt == NULL) {
-		return luaL_error(L, "Arg #1 is not an available vehicle type");
+		return NULL;
 	}
-	
-	double * pos = get_vector3(L, 2);
-	
+
 	if (vt->helicopter) {
-		v = new Helicopter(vt, getGameState(), pos[0], pos[2]);
+		v = new Helicopter(vt, getGameState(), x, z);
 	} else {
-		v = new Vehicle(vt, getGameState(), pos[0], pos[2]);
+		v = new Vehicle(vt, getGameState(), x, z);
 	}
 	
 	getGameState()->addVehicle(v);
 	
-	return 0;
+	return v;
 }
 
 
 /**
 * Add a vehicle at the given coordinate
 **/
-LUA_FUNC(add_object)
+Object* addObject(string type, float x, float z)
 {
 	Object *o;
 	
-	ObjectType *ot = GEng()->mm->getObjectType(*(new string(lua_tostring(L, 1))));
+	ObjectType *ot = GEng()->mm->getObjectType(type);
 	if (ot == NULL) {
-		return luaL_error(L, "Arg #1 is not an available Object type");
+		return NULL;
 	}
 	
-	double * pos = get_vector3(L, 2);
-	
-	o = new Object(ot, getGameState(), pos[0], pos[1], pos[2], 0.0f);
+	o = new Object(ot, getGameState(), x, z, 1.0f, 0.0f);
 	
 	getGameState()->addObject(o);
 	
-	return 0;
+	return o;
 }
 
 
@@ -79,7 +74,21 @@ LUA_FUNC(add_object)
 **/
 void load_entity_lib(lua_State *L)
 {
-	LUA_REG(add_vehicle);
-	LUA_REG(add_object);
+	luabridge::getGlobalNamespace(L)
+		.beginNamespace("world")
+			.addFunction("addVehicle", &addVehicle)
+			.addFunction("addObject", &addObject)
+		.endNamespace()
+		.beginNamespace("entity")
+			.beginClass<Vehicle>("Vehicle")
+				.addData("visible", &Vehicle::visible)
+				.addFunction("destroy", &Vehicle::hasDied)
+			.endClass()
+			.beginClass<Object>("Object")
+				.addData("visible", &Object::visible)
+				.addFunction("destroy", &Object::hasDied)
+				.addFunction("damage", &Object::takeDamage)
+			.endClass()
+		.endNamespace();
 }
 

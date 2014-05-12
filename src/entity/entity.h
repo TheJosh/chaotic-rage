@@ -74,6 +74,7 @@ class Entity
 		**/
 		virtual void update(int delta) = 0;
 		
+	public:
 		/**
 		* Return the game state for this entity
 		**/
@@ -88,4 +89,14 @@ class Entity
 		* Disable collision for this entity
 		**/
 		void disableCollision();
+
+		/**
+		* Get position. Convinience method for transforms
+		**/
+		btVector3 &getPosition();
+		
+		/**
+		* Set position. Convinience method for transforms
+		**/
+		void setPosition(const btVector3 &p);
 };

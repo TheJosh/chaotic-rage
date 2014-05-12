@@ -61,6 +61,17 @@ void Entity::setTransform(btTransform &t)
 }
 
 
+btVector3 &Entity::getPosition()
+{
+	return this->getTransform().getOrigin();
+}
+
+void Entity::setPosition(const btVector3 &p)
+{
+	this->getTransform().setOrigin(p);
+}
+
+
 /**
 * Disable collision for this entity
 **/
