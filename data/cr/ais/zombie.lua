@@ -19,7 +19,7 @@ end
 
 
 --
--- Main function for doing stuff, gets run every 2 seconds
+-- Main function for doing stuff, gets run every 500ms
 --
 function target() 
 	units = visible_units()
@@ -56,5 +56,6 @@ function target()
 end
 
 
-add_interval(3 * 1000, target)
+add_interval(500, target)
 target()
+
