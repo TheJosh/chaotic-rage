@@ -1,4 +1,4 @@
-#version 140
+#version 130
 
 in vec3 vPosition;
 in vec3 vNormal;
@@ -10,14 +10,14 @@ out vec3 fLightDir[2];
 
 uniform mat4 uMVP;
 uniform mat4 uMV;
-uniform mat3 uN;
+uniform mat3 uN3;
 uniform vec3 uLightPos[2];
 
 
 void main()
 {
-	vec3 n = normalize(uN * vNormal);
-	vec3 t = normalize(uN * vTangent);
+	vec3 n = normalize(uN3 * vNormal);
+	vec3 t = normalize(uN3 * vTangent);
 	vec3 b = cross(n, t);
 	
 	vec4 vertexPos = uMV * vec4(vPosition, 1.0f);

@@ -68,7 +68,7 @@ namespace GL
 
 		// Create shader
 		shaderIndex = createShaderProgram(
-			"#version 140\n"
+			"#version 130\n"
 			"in vec3 vPosition;\n"
 			"in vec4 vColor;\n"
 			"out vec4 fColor;\n"
@@ -78,7 +78,7 @@ namespace GL
 				"fColor = vColor;\n"
 			"}\n",
 
-			"#version 140\n"
+			"#version 130\n"
 			"in vec4 fColor;\n"
 			"void main() {\n"
 				"gl_FragColor = fColor;\n"

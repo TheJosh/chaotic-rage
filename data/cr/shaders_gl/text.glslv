@@ -1,4 +1,4 @@
-#version 140
+#version 130
 
 in vec4 vCoord;
 out vec2 fTexUV;
