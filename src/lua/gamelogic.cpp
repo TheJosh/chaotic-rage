@@ -746,11 +746,15 @@ void register_lua_functions()
 	lua_setglobal(L, "factions");
 
 	lua_standard_libs(L);
+	
+	// These use LuaBridge
+	load_entity_lib(L);
+	load_world_lib(L);
+	
+	// These do not, but should
 	load_hudlabel_lib(L);
 	load_vector3_lib(L);
 	load_random_lib(L);
 	load_dialog_lib(L);
-	load_entity_lib(L);
 }
-
 

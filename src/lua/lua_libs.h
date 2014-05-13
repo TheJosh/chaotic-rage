@@ -48,5 +48,5 @@ void new_hudlabel(lua_State *L, HUDLabel* src);
 void load_random_lib(lua_State *L);
 void load_dialog_lib(lua_State *L);
 void load_entity_lib(lua_State *L);
-
+void load_world_lib(lua_State *L);
 
