@@ -15,6 +15,9 @@
 #include "../entity/vehicle.h"
 #include "../entity/helicopter.h"
 #include "../entity/object.h"
+#include "../entity/unit.h"
+#include "../entity/player.h"
+#include "../entity/npc.h"
 
 extern "C" {
 	#include <lua.h>
@@ -71,6 +74,8 @@ Object* addObject(string type, float x, float z)
 
 /**
 * Loads the library into a lua state
+*
+* TODO: This is quite incomplete at the moment
 **/
 void load_entity_lib(lua_State *L)
 {
@@ -80,15 +85,39 @@ void load_entity_lib(lua_State *L)
 			.addFunction("addObject", &addObject)
 		.endNamespace()
 		.beginNamespace("entity")
+			
+			// Entity
 			.beginClass<Entity>("Entity")
 				.addData("visible", &Entity::visible)
-				.addFunction("destroy", &Entity::hasDied)
+				.addFunction("delete", &Entity::hasDied)
 			.endClass()
+			
+			// Entity : Vehicle
 			.deriveClass<Vehicle, Entity>("Vehicle")
 			.endClass()
-			.deriveClass<Object, Entity>("Object")
-				.addFunction("damage", &Object::takeDamage)
+			
+			// Entity : Pickup
+			.deriveClass<Pickup, Entity>("Pickup")
 			.endClass()
+			
+			// Entity : Object
+			.deriveClass<Object, Entity>("Object")
+			.endClass()
+			
+			// Entity : Unit
+			.beginClass<Unit>("Unit")
+				.addData("faction", &Unit::fac)
+				.addData("slot", &Unit::slot)
+			.endClass()
+			
+			// Entity : Unit : Player
+			.deriveClass<Player, Unit>("Player")
+			.endClass()
+			
+			// Entity : Unit : NPC
+			.deriveClass<NPC, Unit>("NPC")
+			.endClass()
+			
 		.endNamespace();
 }
 
