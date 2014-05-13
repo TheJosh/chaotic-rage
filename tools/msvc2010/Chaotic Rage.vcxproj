@@ -227,7 +227,9 @@
     <ClCompile Include="..\..\src\http\url.cpp" />
     <ClCompile Include="..\..\src\lua\lua_dialog_lib.cpp" />
     <ClCompile Include="..\..\src\lua\lua_entity_lib.cpp" />
+    <ClCompile Include="..\..\src\lua\lua_physics_lib.cpp" />
     <ClCompile Include="..\..\src\lua\lua_random_lib.cpp" />
+    <ClCompile Include="..\..\src\lua\lua_world_lib.cpp" />
     <ClCompile Include="..\..\src\map\map.cpp" />
     <ClCompile Include="..\..\src\map\zone.cpp" />
     <ClCompile Include="..\..\src\render\render_ascii.cpp" />

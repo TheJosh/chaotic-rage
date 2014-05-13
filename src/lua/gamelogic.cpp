@@ -748,6 +748,7 @@ void register_lua_functions()
 	lua_standard_libs(L);
 	
 	// These use LuaBridge
+	load_physics_lib(L);
 	load_entity_lib(L);
 	load_world_lib(L);
 	
