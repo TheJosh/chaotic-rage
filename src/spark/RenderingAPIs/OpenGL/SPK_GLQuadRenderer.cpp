@@ -19,6 +19,7 @@
 // 3. This notice may not be removed or altered from any source distribution.	//
 //////////////////////////////////////////////////////////////////////////////////
 
+// Altered source - not the original software
 
 #include "RenderingAPIs/OpenGL/SPK_GLQuadRenderer.h"
 #include "Core/SPK_Particle.h"
@@ -61,7 +62,10 @@ namespace GL
 			if ((fTextureBuffer = dynamic_cast<FloatBuffer*>(group.getBuffer(TEXTURE_BUFFER_NAME,texturingMode))) == NULL)
 				textureBuffer = createTextureBuffer(group);
 
-			textureIterator = textureBuffer = fTextureBuffer->getData();
+			if (fTextureBuffer != NULL)
+			{
+				textureIterator = textureBuffer = fTextureBuffer->getData();
+			}
 		}
 
 		gpuIterator = gpuBuffer = fGpuBuffer->getData();
@@ -108,7 +112,7 @@ namespace GL
 			break;
 			
 		default:
-			break;
+			return NULL;
 		}
 
 		return fbuffer->getData();

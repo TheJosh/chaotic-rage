@@ -86,7 +86,6 @@ namespace gcn
         if (x_ < 0)
         {
             width_ += x_;
-            x_ = 0;
         }
         else if (x_ + width_ > rectangle.width)
         {
@@ -96,7 +95,6 @@ namespace gcn
         if (y_ < 0)
         {
             height_ += y_;
-            y_ = 0;
         }
         else if (y_ + height_ > rectangle.height)
         {

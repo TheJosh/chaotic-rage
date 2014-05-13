@@ -111,6 +111,7 @@ namespace gcn
         if (image == NULL)
         {
                 GCN_EXCEPTION("Font image is NULL");
+                return;
         }
         mImage = image;
 

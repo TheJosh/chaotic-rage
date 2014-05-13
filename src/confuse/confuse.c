@@ -749,6 +749,12 @@ static int call_function(cfg_t *cfg, cfg_opt_t *opt, cfg_opt_t *funcopt)
     const char **argv;
     unsigned int i;
 
+    if(funcopt->nvalues == 0)
+    {
+        /* Undefined allocation of 0 bytes */
+        return -1;
+    }
+
     /* create a regular argv string vector and call
      * the registered function
      */

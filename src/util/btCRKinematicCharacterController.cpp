@@ -328,7 +328,7 @@ void btCRKinematicCharacterController::stepForwardAndStrafe ( btCollisionWorld* 
 	end.setIdentity ();
 	
 	btScalar fraction = 1.0;
-	btScalar distance2 = (m_currentPosition-m_targetPosition).length2();
+//	btScalar distance2 = (m_currentPosition-m_targetPosition).length2();
 //	printf("distance2=%f\n",distance2);
 
 	if (m_touchingContact)
@@ -375,7 +375,7 @@ void btCRKinematicCharacterController::stepForwardAndStrafe ( btCollisionWorld* 
 
 			updateTargetPositionBasedOnCollision (callback.m_hitNormalWorld);
 			btVector3 currentDir = m_targetPosition - m_currentPosition;
-			distance2 = currentDir.length2();
+			btScalar distance2 = currentDir.length2();
 			if (distance2 > SIMD_EPSILON)
 			{
 				currentDir.normalize();

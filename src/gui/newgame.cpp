@@ -131,8 +131,6 @@ gcn::Container * DialogNewGame::setup()
 	this->host->setWidth(COLRIGHTW);
 	c->add(this->host);
 	
-	y += ROWHEIGHT;
-	
 	button = new gcn::Button(this->num_local == 1 ? "Start Single Player Game" : "Start Split Screen Game");
 	button->setPosition((320 - button->getWidth()) / 2, 200);
 	button->addActionListener(this);
