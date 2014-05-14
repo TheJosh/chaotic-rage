@@ -22,7 +22,7 @@ using namespace std;
 /**
 * Create a chost object for collision detection
 **/
-btGhostObject* create_ghost(btTransform& xform, float radius)
+btGhostObject* create_ghost(const btTransform& xform, float radius)
 {
 	btGhostObject* ghost = new btGhostObject();
 

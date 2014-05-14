@@ -118,7 +118,7 @@ class Unit : public Entity
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
-		virtual btTransform &getTransform();
+		virtual const btTransform &getTransform() const;
 		virtual void setTransform(btTransform &t);
 
 	public:

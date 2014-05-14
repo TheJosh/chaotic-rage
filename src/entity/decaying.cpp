@@ -16,7 +16,7 @@ using namespace std;
 btCollisionShape* Decaying::col_shape;
 
 
-Decaying::Decaying(GameState *st, btTransform &xform, AnimPlay *play) : Entity(st)
+Decaying::Decaying(GameState *st, const btTransform &xform, AnimPlay *play) : Entity(st)
 {
 	this->anim = new AnimPlay(*play);
 

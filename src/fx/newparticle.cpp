@@ -103,7 +103,7 @@ void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 
 /**
 * Spray blood in all directions
 **/
-void create_particles_blood_spray(GameState * st, btVector3 & location, float damage)
+void create_particles_blood_spray(GameState * st, const btVector3& location, float damage)
 {
 	SPK::Model* model;
 	SPK::RandomEmitter* emitter;
@@ -146,7 +146,7 @@ void create_particles_blood_spray(GameState * st, btVector3 & location, float da
 /**
 * It's an EXPLOSION!
 **/
-void create_particles_explosion(GameState * st, btVector3 & location, float damage)
+void create_particles_explosion(GameState * st, const btVector3& location, float damage)
 {
 	SPK::Model* model;
 	SPK::Emitter* emitter;
@@ -209,6 +209,6 @@ void create_particles_explosion(GameState * st, btVector3 & location, float dama
 // No SPARK particles - these become a no-op
 void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end) {}
 void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 * end) {}
-void create_particles_blood_spray(GameState * st, btVector3 & location, float damage) {}
-void create_particles_explosion(GameState * st, btVector3 & location, float damage) {}
+void create_particles_blood_spray(GameState * st, const btVector3& location, float damage) {}
+void create_particles_explosion(GameState * st, const btVector3& location, float damage) {}
 #endif

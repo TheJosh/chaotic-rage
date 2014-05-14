@@ -24,7 +24,7 @@ class Decaying : public Entity
 		static btCollisionShape* col_shape;
 		
 	public:
-		Decaying(GameState *st, btTransform &xform, AnimPlay *model);
+		Decaying(GameState *st, const btTransform &xform, AnimPlay *model);
 		virtual ~Decaying();
 		
 		virtual AnimPlay* getAnimModel();

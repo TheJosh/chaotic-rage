@@ -118,7 +118,7 @@ void rocketTickCallback(float delta, Entity *e, void *data1, void *data2)
 		case 1:
 			// We've hit something - kaboom
 			apply_ghost_damage(rocket->ghost, Quadratic(0.0f, 0.0f, wt->damage), wt->range);
-			create_particles_explosion(wt->st, ar->getTransform().getOrigin(), 100);
+			create_particles_explosion(wt->st, ar->getPosition(), 100);
 			
 			// Remove the rocket
 			wt->st->physics->removeCallback(rocket->cbk);

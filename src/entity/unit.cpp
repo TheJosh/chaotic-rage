@@ -458,7 +458,7 @@ bool remove_finished_pickup(const UnitPickup& up)
 /**
 * Return the current transform
 **/
-btTransform &Unit::getTransform()
+btTransform const &Unit::getTransform() const
 {
 	return ghost->getWorldTransform();
 }

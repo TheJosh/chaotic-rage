@@ -62,7 +62,7 @@ class Entity
 		/**
 		* Return the world transform for this entity
 		**/
-		virtual btTransform &getTransform();
+		virtual const btTransform &getTransform() const;
 
 		/**
 		* Set the world transform for this entity
@@ -93,7 +93,7 @@ class Entity
 		/**
 		* Get position. Convinience method for transforms
 		**/
-		btVector3 &getPosition();
+		const btVector3& getPosition() const;
 		
 		/**
 		* Set position. Convinience method for transforms

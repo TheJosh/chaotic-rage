@@ -46,7 +46,7 @@ void Entity::hasDied()
 /**
 * Return the world transform for this entity
 **/
-btTransform &Entity::getTransform()
+const btTransform &Entity::getTransform() const
 {
 	return body->getWorldTransform();
 }
@@ -61,14 +61,23 @@ void Entity::setTransform(btTransform &t)
 }
 
 
-btVector3 &Entity::getPosition()
+/**
+* Get the current position from the transformation
+**/
+const btVector3& Entity::getPosition() const
 {
 	return this->getTransform().getOrigin();
 }
 
+
+/**
+* Set the position
+**/
 void Entity::setPosition(const btVector3 &p)
 {
-	this->getTransform().setOrigin(p);
+	btTransform xform = this->getTransform();
+	xform.setOrigin(p);
+	this->setTransform(xform);
 }
 
 
