@@ -6,6 +6,7 @@ testid = 0
 numsuccess = 0
 numfailure = 0
 asserts = 0
+box = nil
 
 
 function test(name, func)
@@ -15,29 +16,32 @@ function test(name, func)
 	func()
 	
 	if asserts == 0 then
-		show_alert_message("Test " .. testid .. " " .. name .. " - success")
+		box:append("Test " .. testid .. " " .. name .. " success")
 		numsuccess = numsuccess + 1
 	else
-		show_alert_message("Test " .. testid .. " " .. name .. " - failure")
+		box:append("Test " .. testid .. " " .. name .. " failure")
 		numfailure = numfailure + 1
 	end
 end
 
 function throwAssert(msg)
-	show_alert_message(msg)
+	box:append("Assert: " .. msg)
 	asserts = asserts + 1
 end
 
 function assertEquals(expect, actual) 
 	if expect ~= actual then
-		throwAssert(actual .. " does not match expected " .. expect)
+		box:append(actual .. " does not match expected " .. expect)
 	end
 end
 
 
 
 bind_gamestart(function(slot)
-	
+	box = ui.addDialogTextBox("Unit test results")
+	box.text = "Running tests"
+	box:append("")
+
 	test("vec create", function()
 		local vec = physics.Vector(10.0, 15.0, 20.0)
 		assertEquals(10.0, vec.x)
@@ -71,7 +75,8 @@ bind_gamestart(function(slot)
 		assertEquals(19.5, vec.z)
 	end)
 	
-	
-	show_alert_message("Success: " .. numsuccess)
-	show_alert_message("Failure: " .. numfailure)
+	box:append("")
+	box:append("Completed " .. testid .. " tests")
+	box:append("Success " .. numsuccess)
+	box:append("Failure " .. numfailure)
 end);

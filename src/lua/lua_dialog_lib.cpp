@@ -7,6 +7,7 @@
 #include <math.h>
 #include "../rage.h"
 #include "../gui/textprompt.h"
+#include "../gui/textbox.h"
 #include "../game_state.h"
 #include "../game_engine.h"
 
@@ -15,9 +16,16 @@ extern "C" {
 	#include <lauxlib.h>
 }
 
+#include "LuaBridge/LuaBridge.h"
+
 
 #define LUA_FUNC(name) static int name(lua_State *L)
 #define LUA_REG(name) lua_register(L, #name, name)
+
+
+/**
+* TODO: Port everything not on LuaBridge
+**/
 
 
 
@@ -81,10 +89,35 @@ LUA_FUNC(prompt_text)
 
 
 /**
+* Add a new TextBox dialog
+**/
+DialogTextBox* addDialogTextBox(string title)
+{
+	GameState* st = getGameState();
+	DialogTextBox* dialog = new DialogTextBox(st, title);
+	GEng()->addDialog(dialog);
+
+	return dialog;
+}
+
+
+/**
 * Loads the library into a lua state
 **/
 void load_dialog_lib(lua_State *L)
 {
 	LUA_REG(prompt_text);
+
+
+	luabridge::getGlobalNamespace(L)
+	.beginNamespace("ui")
+		.beginClass<Dialog>("Dialog")
+		.endClass()
+		.deriveClass<DialogTextBox, Dialog>("DialogTextBox")
+			.addProperty("text", &DialogTextBox::getText, &DialogTextBox::setText)
+			.addFunction("append", &DialogTextBox::appendLine)
+		.endClass()
+		.addFunction("addDialogTextBox", &addDialogTextBox)
+	.endNamespace();
 }
 
