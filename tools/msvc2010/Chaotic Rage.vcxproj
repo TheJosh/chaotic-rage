@@ -54,6 +54,7 @@
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <MinimalRebuild>true</MinimalRebuild>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS=1</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)/fake/dir/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -220,6 +221,7 @@
     <ClCompile Include="..\..\src\gui\newcampaign.cpp" />
     <ClCompile Include="..\..\src\gui\newgame.cpp" />
     <ClCompile Include="..\..\src\gui\newgame_weapons.cpp" />
+    <ClCompile Include="..\..\src\gui\textbox.cpp" />
     <ClCompile Include="..\..\src\gui\textprompt.cpp" />
     <ClCompile Include="..\..\src\http\client_stats.cpp" />
     <ClCompile Include="..\..\src\http\happyhttp.cpp" />
@@ -433,6 +435,7 @@
     <ClInclude Include="..\..\src\gui\newcampaign.h" />
     <ClInclude Include="..\..\src\gui\newgame.h" />
     <ClInclude Include="..\..\src\gui\newgame_weapons.h" />
+    <ClInclude Include="..\..\src\gui\textbox.h" />
     <ClInclude Include="..\..\src\gui\textprompt.h" />
     <ClInclude Include="..\..\src\http\client_stats.h" />
     <ClInclude Include="..\..\src\http\happyhttp.h" />
