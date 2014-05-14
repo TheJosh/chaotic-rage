@@ -23,6 +23,8 @@ void load_physics_lib(lua_State *L)
 	.beginNamespace("physics")
 
 		.beginClass<btVector3>("Vector")
+			.addFunction("__add", &btVector3::operator+=)
+			.addFunction("__sub", &btVector3::operator-=)
 			.addProperty("x", &btVector3::x, &btVector3::setX)
 			.addProperty("y", &btVector3::y, &btVector3::setY)
 			.addProperty("z", &btVector3::z, &btVector3::setZ)
@@ -41,6 +43,7 @@ void load_physics_lib(lua_State *L)
 		.endClass()
 
 		.deriveClass<btQuaternion, btQuadWord>("Quaternion")
+			.addConstructor<void (*) (float, float, float)>()
 		.endClass()
 
 	.endNamespace();
