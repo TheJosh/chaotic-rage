@@ -16,6 +16,15 @@ using namespace std;
 
 
 /**
+* Return the base container for a dialog
+**/
+gcn::Container* Dialog::getContainer()
+{
+	return this->c;
+}
+
+
+/**
 * Close a dialog
 **/
 void Dialog::close()

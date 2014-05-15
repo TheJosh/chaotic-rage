@@ -169,6 +169,8 @@ void GameEngine::addDialog(Dialog * dialog)
 **/
 void GameEngine::remDialog(Dialog * dialog)
 {
+	dialog->tearDown();
+
 	this->dialogs.remove(dialog);
 	this->guitop->remove(dialog->getContainer());
 	

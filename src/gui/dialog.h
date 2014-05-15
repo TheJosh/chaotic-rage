@@ -4,14 +4,13 @@
 
 #pragma once
 #include <vector>
-#include <guichan.hpp>
+#include "../rage.h"
 
 
 using namespace std;
 
-
 class GameManager;
-
+class Menu;
 
 
 /**
@@ -21,19 +20,44 @@ class Dialog {
 	friend class Menu;
 	
 	protected:
-		gcn::Container * c;
-		Menu * m;
-		GameManager * gm;
+		gcn::Container* c;
+		Menu* m;
+		GameManager* gm;
 		
 	public:
 		Dialog() : c(NULL), m(NULL), gm(NULL) {}
 		virtual ~Dialog() {}
 		
-		virtual gcn::Container * setup() = 0;
-		virtual string getName() { return "?"; }
-		gcn::Container * getContainer() { return this->c; };
+		/**
+		* Set up the container, creating all child widgets
+		**/
+		virtual gcn::Container* setup() = 0;
 
+		/**
+		* Destroy child widgets created in the setup() method.
+		* Called before the container is removed from the top-level guichan container.
+		* Don't remove the actual container though!
+		**/
+		virtual void tearDown() {}
+
+		/**
+		* Return the internal 'name' of the dialog
+		**/
+		virtual const string getName() const
+		{
+			return "?";
+		}
+
+		/**
+		* Return the pointer to the Guichan container object
+		**/
+		gcn::Container* getContainer();
+
+		/**
+		* If this dialog is a currently shown, close it
+		**/
 		void close();
+
 };
 
 

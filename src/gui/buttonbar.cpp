@@ -61,16 +61,24 @@ gcn::Container* DialogButtonBar::setup()
 
 
 /**
+* Destroy child widgets created in the setup() method.
+* Called before the container is removed from the top-level guichan container.
+* Don't remove the actual container though!
+**/
+void DialogButtonBar::tearDown()
+{
+	for (vector<gcn::Button*>::iterator it = buttons.begin(); it != buttons.end(); ++it) {
+		c->remove(*it);
+		delete *it;
+	}
+}
+
+
+/**
 * Cleanup the text prompt dialog
 **/
 DialogButtonBar::~DialogButtonBar()
 {
-	// TODO: Bring these back. It was crashing on the ->remDialog(this); below
-	// We probably need delayed remove like we have with entities
-	//delete button;
-	//delete text;
-	//delete label;
-	
 	delete ev;
 }
 
