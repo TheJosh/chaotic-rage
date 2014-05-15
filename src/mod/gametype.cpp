@@ -49,19 +49,12 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 	gt = new GameType();
 	gt->name = cfg_getstr(cfg_item, "name");
 	gt->title = cfg_getstr(cfg_item, "title");
+	gt->mod = mod;
 	
 	filename = "gametypes/";
 	filename.append(cfg_getstr(cfg_item, "script"));
 	filename.append(".lua");
-	
-	char * tmp = mod->loadText(filename);
-	if (tmp == NULL) {
-		mod->setLoadErr("Invalid gametype stage, no 'script' specified");
-		return NULL;
-	}
-	
-	gt->script = std::string(tmp);
-	free(tmp);
+	gt->script_filename = filename;
 	
 	int num_factions = cfg_size(cfg_item, "faction");
 	if (num_factions == 0) {
@@ -124,5 +117,15 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 
 GameType::GameType()
 {
+}
+
+
+/**
+* Return the lua script code
+* Please free() this when you are done
+**/
+char* GameType::getLuaScript() const
+{
+	return mod->loadText(script_filename);
 }
 

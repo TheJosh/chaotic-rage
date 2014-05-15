@@ -29,7 +29,9 @@ class GameType
 		CRC32 id;
 		string title;
 
-		string script;
+		Mod* mod;
+		string script_filename;
+		
 		GameTypeFaction factions[NUM_FACTIONS];
 		unsigned num_factions;
 		
@@ -41,6 +43,12 @@ class GameType
 		{
 			return (title < other.title);
 		}
+		
+		/**
+		* Return the lua script code
+		* Please free() this when you are done
+		**/
+		char* getLuaScript() const;
 };
 
 

@@ -220,6 +220,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, GameS
 	Map *m = NULL;
 	st->logic = NULL;
 	st->map = NULL;
+	char* script = NULL;
 	
 	st->physics->init();
 	
@@ -246,10 +247,16 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, GameS
 	assert(gs);
 	st->gs = gs;
 
-	// Execute lua script
+	// Load and execute lua script
 	new GameLogic(st);
 	st->logic->selected_unittype = GEng()->mm->getUnitType(unittype);
-	st->logic->execScript(gt->script);
+	script = gt->getLuaScript();
+	if (!script) {
+		displayMessageBox("Failed to load game script");
+		goto cleanup;
+	}
+	st->logic->execScript(script);
+	free(script);
 	
 	// Create players in GameState.
 	st->num_local = num_local;
