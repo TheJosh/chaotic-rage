@@ -60,7 +60,7 @@ DialogTextBox::~DialogTextBox()
 /**
 * Get the text of this box
 **/
-const string &DialogTextBox::getText() const
+string DialogTextBox::getText() const
 {
 	return this->text->getText();
 }
@@ -69,7 +69,7 @@ const string &DialogTextBox::getText() const
 /**
 * Set the text of this box
 **/
-void DialogTextBox::setText(const string &text)
+void DialogTextBox::setText(string text)
 {
 	this->text->setText(text);
 }

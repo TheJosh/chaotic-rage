@@ -35,12 +35,12 @@ class DialogTextBox : public Dialog {
 		/**
 		* Get the text of this box
 		**/
-		const string &getText() const;
+		string getText() const;
 
 		/**
 		* Set the text of this box
 		**/
-		void setText(const string &text);
+		void setText(string text);
 
 		/**
 		* Append a line of text to this box
