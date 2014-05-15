@@ -213,6 +213,7 @@
     <ClCompile Include="..\..\src\guichan\widgets\textbox.cpp" />
     <ClCompile Include="..\..\src\guichan\widgets\textfield.cpp" />
     <ClCompile Include="..\..\src\guichan\widgets\window.cpp" />
+    <ClCompile Include="..\..\src\gui\buttonbar.cpp" />
     <ClCompile Include="..\..\src\gui\client_settings.cpp" />
     <ClCompile Include="..\..\src\gui\controls.cpp" />
     <ClCompile Include="..\..\src\gui\dialog.cpp" />
@@ -427,6 +428,7 @@
     <ClInclude Include="..\..\src\guichan\widgets\textbox.hpp" />
     <ClInclude Include="..\..\src\guichan\widgets\textfield.hpp" />
     <ClInclude Include="..\..\src\guichan\widgets\window.hpp" />
+    <ClInclude Include="..\..\src\gui\buttonbar.h" />
     <ClInclude Include="..\..\src\gui\client_settings.h" />
     <ClInclude Include="..\..\src\gui\controls.h" />
     <ClInclude Include="..\..\src\gui\dialog.h" />

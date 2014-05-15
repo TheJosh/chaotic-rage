@@ -15,6 +15,14 @@
 using namespace std;
 
 
+/**
+* Close a dialog
+**/
+void Dialog::close()
+{
+	GEng()->remDialog(this);
+}
+
 
 /**
 * Setup routine for the NULL dialog

@@ -816,6 +816,9 @@
     <ClCompile Include="..\..\src\gui\textbox.cpp">
       <Filter>src\gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\gui\buttonbar.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\game.h">
@@ -1476,6 +1479,9 @@
       <Filter>src\gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\gui\textbox.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\gui\buttonbar.h">
       <Filter>src\gui</Filter>
     </ClInclude>
   </ItemGroup>
