@@ -36,10 +36,11 @@ DialogButtonBar::DialogButtonBar(string title, vector<string>& labels, DialogBut
 gcn::Container* DialogButtonBar::setup()
 {
 	int y = 10;
+	int width = 150;
 
 	c = new gcn::Window(this->title);
-	c->setDimension(gcn::Rectangle(0, 0, 220, this->buttons.size() * 40 + 10));
-	
+	c->setDimension(gcn::Rectangle(0, 0, width, this->buttons.size() * 40 + 30));
+
 	// Add each button
 	int idx = 0;
 	char buf[5];
@@ -47,15 +48,16 @@ gcn::Container* DialogButtonBar::setup()
 		sprintf(buf, "%i", idx);
 
 		gcn::Button* btn = *it;
-		btn->setSize(200, 30);
+		btn->setSize(width - 20, 30);
 		btn->setPosition(10, y);
 		btn->setId(buf);
+		btn->addActionListener(this);
 		c->add(btn);
 
 		++idx;
 		y += 40;
 	}
-	
+
 	return c;
 }
 

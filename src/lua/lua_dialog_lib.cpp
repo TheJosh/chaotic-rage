@@ -8,6 +8,7 @@
 #include "../rage.h"
 #include "../gui/textprompt.h"
 #include "../gui/textbox.h"
+#include "../gui/buttonbar.h"
 #include "../game_state.h"
 #include "../game_engine.h"
 
@@ -102,6 +103,53 @@ DialogTextBox* addDialogTextBox(string title)
 
 
 /**
+* Receives button bar click events
+**/
+class LuaButtonBarHandler : public DialogButtonBarHandler {
+	private:
+		luabridge::LuaRef func;
+
+	public:
+		LuaButtonBarHandler(luabridge::LuaRef func) : func(func) {}
+		virtual ~LuaButtonBarHandler() {}
+
+	public:
+		/**
+		* This will be called with the index of the button which was pressed
+		**/
+		virtual void handleButton(int index)
+		{
+			func(index);
+		}
+};
+
+/**
+* Add a new ButtonBar dialog
+**/
+DialogButtonBar* addDialogButtonBar(string title, lua_State* L)
+{
+	luabridge::LuaRef argLabels = luabridge::LuaRef::fromStack(L, 2);
+	if (! argLabels.isTable()) return NULL;
+	
+	luabridge::LuaRef argFunc = luabridge::LuaRef::fromStack(L, 3);
+	if (! argFunc.isFunction()) return NULL;
+	
+	// Load labels into vector
+	vector<string> labels;
+	int len = argLabels.length();
+	for (int i = 1; i <= len; i++) {
+		labels.push_back(argLabels[i]);
+	}
+	
+	// Create dialog
+	DialogButtonBar* dialog = new DialogButtonBar(title, labels, new LuaButtonBarHandler(argFunc));
+	GEng()->addDialog(dialog);
+	
+	return dialog;
+}
+
+
+/**
 * Loads the library into a lua state
 **/
 void load_dialog_lib(lua_State *L)
@@ -112,12 +160,16 @@ void load_dialog_lib(lua_State *L)
 	luabridge::getGlobalNamespace(L)
 	.beginNamespace("ui")
 		.beginClass<Dialog>("Dialog")
+			.addFunction("close", &Dialog::close)
 		.endClass()
 		.deriveClass<DialogTextBox, Dialog>("DialogTextBox")
 			.addProperty("text", &DialogTextBox::getText, &DialogTextBox::setText)
 			.addFunction("append", &DialogTextBox::appendLine)
 		.endClass()
+		.deriveClass<DialogButtonBar, Dialog>("DialogButtonBar")
+		.endClass()
 		.addFunction("addDialogTextBox", &addDialogTextBox)
+		.addFunction("addDialogButtonBar", &addDialogButtonBar)
 	.endNamespace();
 }
 
