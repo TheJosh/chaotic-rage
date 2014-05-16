@@ -92,20 +92,25 @@ void handleEvents(GameState *st)
 			continue;
 		}
 
-		// Handle gamelogic mouse capture
+		// Handle gamelogic mouse events
 		if (st->logic->mouseCaptured()) {
 			if (event.type == SDL_MOUSEMOTION) {
-				st->logic->onMouseMove(event.motion.x, event.motion.y);
-				continue;
+				if (st->logic->onMouseMove(event.motion.x, event.motion.y)) continue;
 			} else if (event.type == SDL_MOUSEBUTTONDOWN) {
-				st->logic->onMouseDown(event.button.button, event.button.x, event.button.y);
-				continue;
+				if (st->logic->onMouseDown(event.button.button, event.button.x, event.button.y)) continue;
 			} else if (event.type == SDL_MOUSEBUTTONUP) {
-				st->logic->onMouseUp(event.button.button, event.button.x, event.button.y);
-				continue;
+				if (st->logic->onMouseUp(event.button.button, event.button.x, event.button.y)) continue;
 			}
 		}
 
+		// Handle gamelogic keyboard events
+		if (st->logic->keyboardCaptured()) {
+			if (event.type == SDL_KEYDOWN) {
+				if (st->logic->onKeyDown(event.key.keysym.scancode)) continue;
+			} else if (event.type = SDL_KEYUP) {
+				if (st->logic->onKeyUp(event.key.keysym.scancode)) continue;
+			}
+		}
 
 		// TODO: Dynamic keybindings
 		

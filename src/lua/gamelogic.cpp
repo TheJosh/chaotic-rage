@@ -586,7 +586,7 @@ class MousePickHandler : public MouseEventHandler {
 		
 		virtual ~MousePickHandler() {}
 		
-		virtual void onMouseMove(Uint16 x, Uint16 y)
+		virtual bool onMouseMove(Uint16 x, Uint16 y)
 		{
 			btVector3 hitLocation(0.0f, 0.0f, 0.0f);
 			Entity* hitEntity = NULL;
@@ -601,9 +601,11 @@ class MousePickHandler : public MouseEventHandler {
 			// Move cursor to location
 			btTransform xform2(btQuaternion(0.0f, 0.0f, 0.0f), hitLocation);
 			cursor->setTransform(xform2);
+
+			return true;
 		}
 		
-		virtual void onMouseUp(Uint8 button, Uint16 x, Uint16 y)
+		virtual bool onMouseUp(Uint8 button, Uint16 x, Uint16 y)
 		{
 			btVector3 hitLocation(0.0f, 0.0f, 0.0f);
 			Entity* hitEntity = NULL;
@@ -626,6 +628,8 @@ class MousePickHandler : public MouseEventHandler {
 			// Cleanup
 			cursor->del = true;
 			//delete this;  //  error: deleting object of polymorphic class type ‘MousePickHandler’ which has non-virtual destructor might cause undefined behaviour [-Werror=delete-non-virtual-dtor]
+
+			return true;
 		}
 };
 

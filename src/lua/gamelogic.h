@@ -17,14 +17,28 @@ using namespace std;
 
 /**
 * Allows GameLogic code to handle mouse events
+* Handlers return TRUE if they handled the event and FALSE if they didn't
 **/
 class MouseEventHandler {
 	public:
 		MouseEventHandler() {}
 		virtual ~MouseEventHandler() {}
-		virtual void onMouseMove(Uint16 x, Uint16 y) {}
-		virtual void onMouseDown(Uint8 button, Uint16 x, Uint16 y) {}
-		virtual void onMouseUp(Uint8 button, Uint16 x, Uint16 y) {}
+		virtual bool onMouseMove(Uint16 x, Uint16 y) { return false; }
+		virtual bool onMouseDown(Uint8 button, Uint16 x, Uint16 y) { return false; }
+		virtual bool onMouseUp(Uint8 button, Uint16 x, Uint16 y) { return false; }
+};
+
+
+/**
+* Allows GameLogic code to handle keyboard events
+* Handlers return TRUE if they handled the event and FALSE if they didn't
+**/
+class KeyboardEventHandler {
+	public:
+		KeyboardEventHandler() {}
+		virtual ~KeyboardEventHandler() {}
+		virtual bool onKeyDown(Uint16 scancode) { return false; }
+		virtual bool onKeyUp(Uint16 scancode) { return false; }
 };
 
 
@@ -38,6 +52,7 @@ class GameLogic
 		Map *map;
 		vector<LuaTimer*> timers;
 		MouseEventHandler* mouse_events;
+		KeyboardEventHandler* keyboard_events;
 
 	public:
 		UnitType * selected_unittype;
@@ -60,26 +75,52 @@ class GameLogic
 		/**
 		* Handle a mouse-move event
 		**/
-		void onMouseMove(Uint16 x, Uint16 y)
+		bool onMouseMove(Uint16 x, Uint16 y)
 		{
-			this->mouse_events->onMouseMove(x, y);
+			return this->mouse_events->onMouseMove(x, y);
 		}
 		
 		/**
 		* Handle a mouse-down event
 		**/
-		void onMouseDown(Uint8 button, Uint16 x, Uint16 y)
+		bool onMouseDown(Uint8 button, Uint16 x, Uint16 y)
 		{
-			this->mouse_events->onMouseDown(button, x, y);
+			return this->mouse_events->onMouseDown(button, x, y);
 		}
 
 		/**
 		* Handle a mouse-up event
 		**/
-		void onMouseUp(Uint8 button, Uint16 x, Uint16 y)
+		bool onMouseUp(Uint8 button, Uint16 x, Uint16 y)
 		{
-			this->mouse_events->onMouseUp(button, x, y);
+			return this->mouse_events->onMouseUp(button, x, y);
 		}
+
+
+		/**
+		* Does the game logic want to receive mouse events?
+		**/
+		bool keyboardCaptured()
+		{
+			return (this->keyboard_events != NULL);
+		}
+		
+		/**
+		* Handle a key-down event
+		**/
+		bool onKeyDown(Uint16 scancode)
+		{
+			return this->keyboard_events->onKeyDown(scancode);
+		}
+		
+		/**
+		* Handle a key-up event
+		**/
+		bool onKeyUp(Uint16 scancode)
+		{
+			return this->keyboard_events->onKeyUp(scancode);
+		}
+
 
 		/**
 		* Executes a script.
