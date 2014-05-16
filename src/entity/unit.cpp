@@ -61,7 +61,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 	
 	// Ghost position
 	btTransform xform = btTransform(
-		btQuaternion(btVector3(0,0,1),0),
+		btQuaternion(btVector3(0,0,1), 0),
 		st->physics->spawnLocation(x, y, 0.9f)
 	);
 	
@@ -74,7 +74,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 
 	// Create Kinematic Character Controller
 	btScalar stepHeight = btScalar(0.75);
-	character = new btCRKinematicCharacterController(this->ghost, uc->col_shape, stepHeight);
+	this->character = new btCRKinematicCharacterController(this->ghost, uc->col_shape, stepHeight);
 
 	// Add character and ghost to the world
 	st->physics->addCollisionObject(this->ghost, CG_UNIT);
@@ -190,6 +190,7 @@ Entity * Unit::raytest(btMatrix3x3 &direction, float range)
 
 /**
 * Are we on the ground?
+* TODO: Fix this, the unit could be falling
 **/
 bool Unit::onground()
 {
@@ -268,7 +269,6 @@ bool Unit::pickupWeapon(WeaponType* wt)
 	if (this->pickupAmmo(wt)) return true;
 	
 	UnitWeapon *uw = new UnitWeapon(wt, wt->magazine_limit, wt->belt_limit, st->game_time, false);
-	
 	this->avail_weapons.push_back(uw);
 	
 	if (this->avail_weapons.size() == 1) {
@@ -432,7 +432,7 @@ AnimPlay* Unit::getAnimModel()
 
 
 /**
-* Get the curret sound
+* Get the current sound
 * TODO: Remove - not in use...?
 **/
 Sound* Unit::getSound()
@@ -500,17 +500,15 @@ void Unit::update(int delta)
 	
 	// Which weapon to use?
 	WeaponType *w = NULL;
-	btTransform wxform = btTransform();
+	btTransform wxform;
 	if (this->firing) {
 		if (this->drive) {
 			w = this->drive->vt->weapon_primary;
 			wxform = btTransform();
 			this->drive->getWeaponTransform(wxform);
-			
 		} else if (this->weapon && this->weapon->next_use < st->game_time && this->weapon->magazine > 0) {
 			w = this->weapon->wt;
 			wxform = btTransform(xform);
-			
 		}
 	}
 	
@@ -654,8 +652,8 @@ void Unit::enterVehicle(Vehicle *v)
 void Unit::leaveVehicle()
 {
 	if (! this->drive) return;
-	btTransform trans = this->drive->getTransform();
 
+	btTransform trans = this->drive->getTransform();
 	btVector3 size = this->drive->vt->model->getBoundingSizeHE();
 	size += btVector3(1.5f, 0.0f, 1.5f);
 	
@@ -745,7 +743,7 @@ void Unit::doUse()
 
 
 /**
-* Lift an object
+* Lift an object or an other unit
 **/
 void Unit::doLift()
 {

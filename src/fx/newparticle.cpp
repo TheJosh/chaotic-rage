@@ -47,7 +47,7 @@ void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end)
 	model->setLifeTime(0.5f, 0.7f);
 
 	// Emitter
-	SPK::Emitter* emitter = SPK::StraightEmitter::create(SPK::Vector3D(dir.x(), 0.0f, dir.z()));
+	SPK::Emitter* emitter = SPK::StraightEmitter::create(SPK::Vector3D(dir.x(), dir.y(), dir.z()));
 	emitter->setZone(SPK::Point::create(SPK::Vector3D(begin->x(), begin->y(), begin->z())));
 	emitter->setFlow(-1);
 	emitter->setTank(25);

@@ -185,6 +185,10 @@ void Player::update(int delta)
 		// Mouse rotation
 		btQuaternion rot = btQuaternion(btVector3(0.0f, 1.0f, 0.0f), DEG_TO_RAD(this->mouse_angle));
 		ghost->getWorldTransform().setBasis(btMatrix3x3(rot));
+		if (GEng()->render->viewmode == GameSettings::firstPerson) {
+			rot *= btQuaternion(btVector3(-1.0f, 0.0f, 0.0f), DEG_TO_RAD(this->vertical_angle));
+			ghost->getWorldTransform().setRotation(rot);
+		}
 
 		// Forward/backward
 		btVector3 forwardDir = xform.getBasis() * btVector3(0.0f, 0.0f, walkSpeed);
