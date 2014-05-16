@@ -1,4 +1,4 @@
-#version 140
+#version 130
 
 const int MAX_BONES = 32;
 
