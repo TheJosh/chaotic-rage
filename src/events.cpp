@@ -106,9 +106,9 @@ void handleEvents(GameState *st)
 		// Handle gamelogic keyboard events
 		if (st->logic->keyboardCaptured()) {
 			if (event.type == SDL_KEYDOWN) {
-				if (st->logic->onKeyDown(event.key.keysym.scancode)) continue;
+				if (st->logic->onKeyDown(event.key.keysym.sym)) continue;
 			} else if (event.type = SDL_KEYUP) {
-				if (st->logic->onKeyUp(event.key.keysym.scancode)) continue;
+				if (st->logic->onKeyUp(event.key.keysym.sym)) continue;
 			}
 		}
 

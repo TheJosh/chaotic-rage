@@ -5,6 +5,8 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <SDL.h>
+#include "gamelogic.h"
 #include "../rage.h"
 #include "../gui/textprompt.h"
 #include "../gui/textbox.h"
@@ -150,6 +152,50 @@ DialogButtonBar* addDialogButtonBar(string title, lua_State* L)
 
 
 /**
+* Basic key handler which can only handle one key binding
+* Calls a Lua function on key up
+**/
+class BasicKeyHandler : public KeyboardEventHandler {
+	private:
+		Uint16 keycode;
+		luabridge::LuaRef func;
+
+	public:
+		BasicKeyHandler(Uint16 keycode, luabridge::LuaRef func)
+			:keycode(keycode), func(func)
+			{}
+
+		virtual ~BasicKeyHandler() {}
+
+		/**
+		* Handle key press
+		**/
+		virtual bool onKeyUp(Uint16 keycode)
+		{
+			if (keycode == this->keycode) {
+				func();
+				return true;
+			} else {
+				return false;
+			}
+		}
+};
+
+/**
+* Basic (and leaky) key binding system
+**/
+void basicKeyPress(const char* key, lua_State* L)
+{
+	luabridge::LuaRef argFunc = luabridge::LuaRef::fromStack(L, 2);
+	if (! argFunc.isFunction()) return;
+	
+	SDL_Keycode keycode = SDL_GetKeyFromName(key);
+
+	getGameState()->logic->keyboard_events = new BasicKeyHandler(keycode, argFunc);
+}
+
+
+/**
 * Loads the library into a lua state
 **/
 void load_dialog_lib(lua_State *L)
@@ -170,6 +216,7 @@ void load_dialog_lib(lua_State *L)
 		.endClass()
 		.addFunction("addDialogTextBox", &addDialogTextBox)
 		.addFunction("addDialogButtonBar", &addDialogButtonBar)
+		.addFunction("basicKeyPress", &basicKeyPress)
 	.endNamespace();
 }
 

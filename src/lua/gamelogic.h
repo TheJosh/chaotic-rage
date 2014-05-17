@@ -37,8 +37,8 @@ class KeyboardEventHandler {
 	public:
 		KeyboardEventHandler() {}
 		virtual ~KeyboardEventHandler() {}
-		virtual bool onKeyDown(Uint16 scancode) { return false; }
-		virtual bool onKeyUp(Uint16 scancode) { return false; }
+		virtual bool onKeyDown(Uint16 keycode) { return false; }
+		virtual bool onKeyUp(Uint16 keycode) { return false; }
 };
 
 
@@ -108,17 +108,17 @@ class GameLogic
 		/**
 		* Handle a key-down event
 		**/
-		bool onKeyDown(Uint16 scancode)
+		bool onKeyDown(Uint16 keycode)
 		{
-			return this->keyboard_events->onKeyDown(scancode);
+			return this->keyboard_events->onKeyDown(keycode);
 		}
 		
 		/**
 		* Handle a key-up event
 		**/
-		bool onKeyUp(Uint16 scancode)
+		bool onKeyUp(Uint16 keycode)
 		{
-			return this->keyboard_events->onKeyUp(scancode);
+			return this->keyboard_events->onKeyUp(keycode);
 		}
 
 
