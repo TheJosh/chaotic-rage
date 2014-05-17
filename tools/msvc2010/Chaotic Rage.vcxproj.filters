@@ -136,9 +136,6 @@
     <None Include="..\..\data\cr\gametypes\boredem.lua">
       <Filter>Gametypes</Filter>
     </None>
-    <None Include="..\..\data\cr\gametypes\test.lua">
-      <Filter>Gametypes</Filter>
-    </None>
     <None Include="..\..\data\cr\gametypes\free_for_all.lua">
       <Filter>Gametypes</Filter>
     </None>
@@ -224,6 +221,9 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\..\data\cr\gametypes\forgery.lua">
+      <Filter>Gametypes</Filter>
+    </None>
+    <None Include="..\..\data\cr\gametypes\map_builder.lua">
       <Filter>Gametypes</Filter>
     </None>
   </ItemGroup>

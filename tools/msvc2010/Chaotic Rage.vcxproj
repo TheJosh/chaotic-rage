@@ -105,7 +105,7 @@
     <None Include="..\..\data\cr\gametypes\forgery.lua" />
     <None Include="..\..\data\cr\gametypes\free_for_all.lua" />
     <None Include="..\..\data\cr\gametypes\humans.lua" />
-    <None Include="..\..\data\cr\gametypes\test.lua" />
+    <None Include="..\..\data\cr\gametypes\map_builder.lua" />
     <None Include="..\..\data\cr\gametypes\zombies.lua" />
     <None Include="..\..\data\cr\gametypes\zombies2.lua" />
     <None Include="..\..\data\cr\gametypes\zombie_betrayal.lua" />
