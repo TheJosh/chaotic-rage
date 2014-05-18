@@ -89,7 +89,7 @@ void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 
 
 	SPK::Group* group = SPK::Group::create(model, 100);
 
-	SPK::Emitter* emitter = SPK::SphericEmitter::create(SPK::Vector3D(dir.x(), 0.0f, dir.z()), 0.02f * PI, 0.06f * PI);
+	SPK::Emitter* emitter = SPK::SphericEmitter::create(SPK::Vector3D(dir.x(), dir.y(), dir.z()), 0.02f * PI, 0.06f * PI);
 	emitter->setZone(SPK::Point::create(SPK::Vector3D(begin->x(), begin->y(), begin->z())));
 	emitter->setFlow(-1);
 	emitter->setTank(100);

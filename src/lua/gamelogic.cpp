@@ -55,6 +55,7 @@ GameLogic::GameLogic(GameState *st)
 	this->st = st;
 	this->map = st->map;
 	this->mouse_events = NULL;
+	this->keyboard_events = NULL;
 
 	L = luaL_newstate();
 	register_lua_functions();
@@ -165,7 +166,7 @@ LUA_FUNC(debug)
 			printf("  %s", "nil");
 			
 		} else if (lua_isboolean(L,i)) {
-			printf("  %s", lua_toboolean(L, i) ? "true" : "faglse");
+			printf("  %s", lua_toboolean(L, i) ? "true" : "false");
 			
 		} else {
 			printf("  %s:%p", luaL_typename(L, i), lua_topointer(L, i));
@@ -762,4 +763,3 @@ void register_lua_functions()
 	load_random_lib(L);
 	load_dialog_lib(L);
 }
-
