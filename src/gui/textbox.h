@@ -17,12 +17,15 @@ class GameState;
 /**
 * Allows the user to enter some text
 **/
-class DialogTextBox : public Dialog {
+class DialogTextBox : public Dialog, public gcn::ActionListener {
 	private:
 		GameState * st;
 		string title;
 		gcn::TextBox* text;
 		gcn::ScrollArea* scroller;
+		gcn::Button* btnCopy;
+		gcn::Button* btnPaste;
+		gcn::Button* btnClose;
 
 	public:
 		DialogTextBox(GameState* st, string title);
@@ -30,6 +33,8 @@ class DialogTextBox : public Dialog {
 
 		virtual gcn::Container* setup();
 		virtual string getName() { return "textbox"; }
+
+		virtual void action(const gcn::ActionEvent& actionEvent);
 
 	public:
 		/**
