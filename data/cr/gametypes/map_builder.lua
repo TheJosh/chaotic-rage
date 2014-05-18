@@ -9,14 +9,24 @@ map_config = ""
 function pickVehicle(coord)
 	prompt_text("Vehicle type", function(type)
 		world.addVehicle(type, coord.x, coord.z)
-		map_config = map_config .. "vehicle { type = \"" .. type .. "\" x = " .. coord.x .. " y = " .. coord.z .. " }\n"
+		map_config = map_config .. string.format("vehicle {  type = %q  x = %.2f  y = %.2f  }\n", type, coord.x, coord.z)
 	end)
 end
 
--- Add a toolbar; bound to "h" key
+-- Mouse pick handler for adding objects
+function pickObject(coord)
+	prompt_text("Object type", function(type)
+		world.addObject(type, coord.x, coord.z)
+		map_config = map_config .. string.format("object {  type = %q  x = %.2f  y = %.2f  }\n", type, coord.x, coord.z)
+	end)
+end
+
+
+-- Add a toolbar; bound to "m" key
 function createToolbar()
 	toolbar = ui.addDialogButtonBar("Toolbar", {
 		"Add vehicle",
+		"Add object",
 		"Show config",
 		"Close toolbar"
 	}, function(btn)
@@ -27,11 +37,14 @@ function createToolbar()
 		if btn == 0 then
 			mouse_pick(pickVehicle)
 		elseif btn == 1 then
+			mouse_pick(pickObject)
+		elseif btn == 2 then
 			local dialog = ui.addDialogTextBox("Map Config")
 			dialog.text = map_config
 		end
 	end)
 end
+
 
 -- Add a player
 bind_playerjoin(function(slot)
