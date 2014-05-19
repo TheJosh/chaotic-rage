@@ -6,17 +6,15 @@
 #include "game_state.h"
 
 
+/**
+* TODO: Rename this file to events.h or maybe rejig the events system
+**/
+
+
 // Mouse movement, including keyboard simulation
 extern int game_x[MAX_LOCAL], game_y[MAX_LOCAL];
 extern int net_x[MAX_LOCAL], net_y[MAX_LOCAL];
 extern int mk_down_x[MAX_LOCAL], mk_down_y[MAX_LOCAL];
-
-
-/**
-* The main game loop
-* Located in game.cpp
-**/
-void gameLoop(GameState* st, Render* render, Audio* audio, NetClient* client);
 
 /**
 * Handles local events (keyboard, mouse)

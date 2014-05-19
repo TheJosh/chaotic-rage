@@ -268,7 +268,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, GameS
 	GEng()->render->viewmode = viewmode;
 
 	// Begin!
-	gameLoop(st, GEng()->render, GEng()->audio, NULL);
+	st->gameLoop(st, GEng()->render, GEng()->audio, NULL);
 	
 	// Cleanup
 cleanup:
@@ -343,7 +343,7 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	}
 
 	// Begin!
-	gameLoop(st, GEng()->render, GEng()->audio, client);
+	st->gameLoop(st, GEng()->render, GEng()->audio, client);
 	
 cleanup:
 	delete st->logic;

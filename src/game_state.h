@@ -156,6 +156,11 @@ class GameState
 		void update(int delta);
 		void postGame();
 		
+		/**
+		* The main game loop
+		**/
+		void gameLoop(GameState* st, Render* render, Audio* audio, NetClient* client);
+
 		// Called by Lua, etc
 		void gameOver();
 		void gameOver(int result);

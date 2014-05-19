@@ -231,9 +231,6 @@
     <ClCompile Include="..\..\src\client.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\game.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\physics_bullet.cpp">
       <Filter>src</Filter>
     </ClCompile>
