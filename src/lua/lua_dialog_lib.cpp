@@ -14,6 +14,9 @@
 #include "../mod/gametype.h"
 #include "../game_state.h"
 #include "../game_engine.h"
+#include "../entity/entity.h"
+#include "../entity/pickup.h"
+#include "../mod/mod_manager.h"
 
 extern "C" {
 	#include <lua.h>
@@ -22,7 +25,8 @@ extern "C" {
 
 #include "LuaBridge/LuaBridge.h"
 
-
+// This can be removed when we move to LuaBridge
+#include "lua_libs.h"
 #define LUA_FUNC(name) static int name(lua_State *L)
 #define LUA_REG(name) lua_register(L, #name, name)
 
@@ -88,6 +92,116 @@ LUA_FUNC(prompt_text)
 	DialogTextPrompt* dialog = new DialogTextPrompt(st, st->gt->title, message, handler);
 	GEng()->addDialog(dialog);
 	
+	return 0;
+}
+
+
+/**
+* Handler for mouse clicks.
+* Set up by the mouse_pick function.
+**/
+class MousePickHandler : public MouseEventHandler {
+	private:
+		lua_State *L;
+		int func;
+		Entity* cursor;
+		
+	public:
+		MousePickHandler(lua_State *L, int func, Entity* cursor)
+		{
+			this->L = L;
+			this->func = func;
+			this->cursor = cursor;
+		}
+
+		virtual ~MousePickHandler() {}
+
+		/**
+		* On move - update cursor location
+		**/
+		virtual bool onMouseMove(Uint16 x, Uint16 y)
+		{
+			btVector3 hitLocation(0.0f, 0.0f, 0.0f);
+			Entity* hitEntity = NULL;
+
+			// Move cursor somewhere else
+			btTransform xform1(btQuaternion(0.0f, 0.0f, 0.0f), btVector3(0.0f, 0.0f, 0.0f));
+			cursor->setTransform(xform1);
+
+			// Do mouse pick
+			this->cursor->visible = getGameState()->mousePick(x, y, hitLocation, &hitEntity);
+
+			// Move cursor to location
+			btTransform xform2(btQuaternion(0.0f, 0.0f, 0.0f), hitLocation);
+			cursor->setTransform(xform2);
+
+			return true;
+		}
+
+		/**
+		* On down - nothing to events don't propagate back to the game
+		**/
+		virtual bool onMouseDown(Uint8 button, Uint16 x, Uint16 y)
+		{
+			return true;
+		}
+
+		/**
+		* On up - call lua code and then destroy
+		**/
+		virtual bool onMouseUp(Uint8 button, Uint16 x, Uint16 y)
+		{
+			btVector3 hitLocation(0.0f, 0.0f, 0.0f);
+			Entity* hitEntity = NULL;
+			bool result;
+
+			// Do mouse pick
+			result = getGameState()->mousePick(x, y, hitLocation, &hitEntity);
+
+			// Disable mouse pick
+			GEng()->setMouseGrab(true);
+			getGameState()->logic->mouse_events = NULL;
+
+			// Return result back to Lua code
+			if (result) {
+				lua_rawgeti(this->L, LUA_REGISTRYINDEX, this->func);
+				new_vector3(L, hitLocation.x(), hitLocation.y(), hitLocation.z());
+				lua_pcall(this->L, 1, 0, 0);
+			}
+
+			// Cleanup
+			cursor->del = true;
+			delete this;
+
+			return true;
+		}
+};
+
+
+/**
+* Allow the user to pick an object on screen
+**/
+LUA_FUNC(mouse_pick)
+{
+	if (! lua_isfunction(L, 1)) {
+		lua_pushstring(L, "Arg #1 is not a function");
+		lua_error(L);
+	}
+
+	// Grab function pointer
+	lua_pushvalue(L, -1);
+	int func = luaL_ref(L, LUA_REGISTRYINDEX);
+
+	// TODO: Get a better cursor
+	PickupType *ot = GEng()->mm->getPickupType("cursor");
+	Pickup *cursor = new Pickup(ot, getGameState(), 0.0f, 0.0f, 0.0f);
+	cursor->disableCollision();
+	getGameState()->addPickup(cursor);
+
+	// Set mouse pick
+	GEng()->setMouseGrab(false);
+	getGameState()->logic->mouse_events = new MousePickHandler(L, func, cursor);
+
 	return 0;
 }
 
@@ -202,6 +316,7 @@ void basicKeyPress(const char* key, lua_State* L)
 void load_dialog_lib(lua_State *L)
 {
 	LUA_REG(prompt_text);
+	LUA_REG(mouse_pick);
 
 
 	luabridge::getGlobalNamespace(L)

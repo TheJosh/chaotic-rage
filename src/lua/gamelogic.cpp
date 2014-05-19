@@ -565,120 +565,6 @@ LUA_FUNC(add_label)
 }
 
 
-/************************   TODO move this to own file   *****************************/
-
-/**
-* Handler for mouse clicks.
-* Set up by the mouse_pick function.
-**/
-class MousePickHandler : public MouseEventHandler {
-	private:
-		lua_State *L;
-		int func;
-		Entity* cursor;
-		
-	public:
-		MousePickHandler(lua_State *L, int func, Entity* cursor)
-		{
-			this->L = L;
-			this->func = func;
-			this->cursor = cursor;
-		}
-
-		virtual ~MousePickHandler() {}
-
-		/**
-		* On move - update cursor location
-		**/
-		virtual bool onMouseMove(Uint16 x, Uint16 y)
-		{
-			btVector3 hitLocation(0.0f, 0.0f, 0.0f);
-			Entity* hitEntity = NULL;
-
-			// Move cursor somewhere else
-			btTransform xform1(btQuaternion(0.0f, 0.0f, 0.0f), btVector3(0.0f, 0.0f, 0.0f));
-			cursor->setTransform(xform1);
-
-			// Do mouse pick
-			this->cursor->visible = gl->st->mousePick(x, y, hitLocation, &hitEntity);
-
-			// Move cursor to location
-			btTransform xform2(btQuaternion(0.0f, 0.0f, 0.0f), hitLocation);
-			cursor->setTransform(xform2);
-
-			return true;
-		}
-
-		/**
-		* On down - nothing to events don't propagate back to the game
-		**/
-		virtual bool onMouseDown(Uint8 button, Uint16 x, Uint16 y)
-		{
-			return true;
-		}
-
-		/**
-		* On up - call lua code and then destroy
-		**/
-		virtual bool onMouseUp(Uint8 button, Uint16 x, Uint16 y)
-		{
-			btVector3 hitLocation(0.0f, 0.0f, 0.0f);
-			Entity* hitEntity = NULL;
-			bool result;
-
-			// Do mouse pick
-			result = gl->st->mousePick(x, y, hitLocation, &hitEntity);
-
-			// Disable mouse pick
-			GEng()->setMouseGrab(true);
-			gl->mouse_events = NULL;
-
-			// Return result back to Lua code
-			if (result) {
-				lua_rawgeti(this->L, LUA_REGISTRYINDEX, this->func);
-				new_vector3(L, hitLocation.x(), hitLocation.y(), hitLocation.z());
-				lua_pcall(this->L, 1, 0, 0);
-			}
-
-			// Cleanup
-			cursor->del = true;
-			delete this;
-
-			return true;
-		}
-};
-
-
-/**
-* Allow the user to pick an object on screen
-**/
-LUA_FUNC(mouse_pick)
-{
-	if (! lua_isfunction(L, 1)) {
-		lua_pushstring(L, "Arg #1 is not a function");
-		lua_error(L);
-	}
-
-	// Grab function pointer
-	lua_pushvalue(L, -1);
-	int func = luaL_ref(L, LUA_REGISTRYINDEX);
-
-	// TODO: Get a better cursor
-	PickupType *ot = GEng()->mm->getPickupType("cursor");
-	Pickup *cursor = new Pickup(ot, gl->st, 0.0f, 0.0f, 0.0f);
-	cursor->disableCollision();
-	gl->st->addPickup(cursor);
-
-	// Set mouse pick
-	GEng()->setMouseGrab(false);
-	gl->mouse_events = new MousePickHandler(L, func, cursor);
-
-	return 0;
-}
-
-/**************************************************************************************************/
-
-
 /**
 * 
 *
@@ -747,8 +633,6 @@ void register_lua_functions()
 
 	LUA_REG(get_viewmode);			// TODO: Add a 'camera' object
 	LUA_REG(set_viewmode);			// dynamic position, animation, etc.
-	
-	LUA_REG(mouse_pick);
 
 	
 	// Factions constants table
