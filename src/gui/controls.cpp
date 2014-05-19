@@ -31,6 +31,7 @@ gcn::Container * DialogControls::setup()
 		"Lift or Drop", "Q",
 		"Special", "T",
 		"Change Camera", "C",
+		"Play or Pause Music", "F2",
 		""
 	};
 	
@@ -44,6 +45,7 @@ gcn::Container * DialogControls::setup()
 		"Lift or Drop", "Q",
 		"Special", "T",
 		"Change Camera", "C",
+		"Play or Pause Music", "F2",
 		""
 	};
 	
@@ -57,6 +59,7 @@ gcn::Container * DialogControls::setup()
 		"Lift or Drop", "Numpad 7",
 		"Special", "Numpad 1",
 		"Change Camera", "C",
+		"Play or Pause Music", "F2",
 		""
 	};
 	
@@ -120,4 +123,3 @@ gcn::Container * DialogControls::setup()
 	
 	return c;
 }
-

@@ -5,6 +5,7 @@
 #pragma once
 #include <SDL_mixer.h>
 #include "../rage.h"
+#include "../game_state.h"
 
 using namespace std;
 
@@ -15,9 +16,9 @@ class Song
 		// from data file
 		string name;
 		CRC32 id;
-		
+
 		Mix_Music * music;
-		
+
 	public:
 		Song();
 };
@@ -28,3 +29,6 @@ extern cfg_opt_t song_opts [];
 
 // Item loading function handler
 Song* loadItemSong(cfg_t* cfg_item, Mod* mod);
+
+// Pause/Resume the music stream
+void toggleMusicPlay(GameState* st);

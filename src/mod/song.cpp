@@ -30,20 +30,36 @@ Song* loadItemSong(cfg_t* cfg_item, Mod* mod)
 {
 	Song* sg;
 	string filename;
-	
+
 	sg = new Song();
 	sg->name = cfg_getstr(cfg_item, "name");
-	
+
 	filename = "songs/";
 	filename.append(cfg_getstr(cfg_item, "file"));
 	SDL_RWops * rw = mod->loadRWops(filename);
 	sg->music = Mix_LoadMUS_RW(rw, 0);		// todo: change?
 	if (sg->music == NULL) return NULL;
-	
+
 	return sg;
 }
 
 
 Song::Song()
 {
+	this->music = NULL;
+}
+
+
+/**
+* Pause/Resume the music stream
+**/
+void toggleMusicPlay(GameState* st)
+{
+	if (Mix_PausedMusic() != 0) {
+		Mix_ResumeMusic();
+		st->addHUDMessage(ALL_SLOTS, "Music resumed");
+	} else {
+		Mix_PauseMusic();
+		st->addHUDMessage(ALL_SLOTS, "Music paused");
+	}
 }

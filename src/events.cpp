@@ -14,6 +14,7 @@
 #include "render_opengl/render_opengl.h"
 #include "gui/dialog.h"
 #include "lua/gamelogic.h"
+#include "mod/song.h"
 
 using namespace std;
 
@@ -54,7 +55,7 @@ void handleEvents(GameState *st)
 						filename.append("screenshot");
 						filename.append(buf);
 						filename.append(".bmp");
-						((Render3D*) GEng()->render)->saveScreenshot(filename);
+						dynamic_cast<Render3D*>(GEng()->render)->saveScreenshot(filename);
 						
 						filename = "screenshot";
 						filename.append(buf);
@@ -62,9 +63,13 @@ void handleEvents(GameState *st)
 						st->addHUDMessage(ALL_SLOTS, "Saved ", filename);
 					}
 					break;
-					
+
+				case SDLK_F2:
+					toggleMusicPlay(st);
+					break;
+
 				case SDLK_F5:
-					st->addHUDMessage(ALL_SLOTS, "Shaders reload: ", ((RenderOpenGL*)GEng()->render)->reloadShaders() ? "success" : "failure");
+					st->addHUDMessage(ALL_SLOTS, "Shaders reload: ", dynamic_cast<RenderOpenGL*>(GEng()->render)->reloadShaders() ? "success" : "failure");
 					break;
 					
 				case SDLK_F6:
