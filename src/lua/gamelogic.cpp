@@ -583,9 +583,12 @@ class MousePickHandler : public MouseEventHandler {
 			this->func = func;
 			this->cursor = cursor;
 		}
-		
+
 		virtual ~MousePickHandler() {}
-		
+
+		/**
+		* On move - update cursor location
+		**/
 		virtual bool onMouseMove(Uint16 x, Uint16 y)
 		{
 			btVector3 hitLocation(0.0f, 0.0f, 0.0f);
@@ -604,7 +607,18 @@ class MousePickHandler : public MouseEventHandler {
 
 			return true;
 		}
-		
+
+		/**
+		* On down - nothing to events don't propagate back to the game
+		**/
+		virtual bool onMouseDown(Uint8 button, Uint16 x, Uint16 y)
+		{
+			return true;
+		}
+
+		/**
+		* On up - call lua code and then destroy
+		**/
 		virtual bool onMouseUp(Uint8 button, Uint16 x, Uint16 y)
 		{
 			btVector3 hitLocation(0.0f, 0.0f, 0.0f);
@@ -627,7 +641,7 @@ class MousePickHandler : public MouseEventHandler {
 
 			// Cleanup
 			cursor->del = true;
-			//delete this;  //  error: deleting object of polymorphic class type ‘MousePickHandler’ which has non-virtual destructor might cause undefined behaviour [-Werror=delete-non-virtual-dtor]
+			delete this;
 
 			return true;
 		}
@@ -649,7 +663,7 @@ LUA_FUNC(mouse_pick)
 	int func = luaL_ref(L, LUA_REGISTRYINDEX);
 
 	// TODO: Get a better cursor
-	PickupType *ot = GEng()->mm->getPickupType("ammo_current");
+	PickupType *ot = GEng()->mm->getPickupType("cursor");
 	Pickup *cursor = new Pickup(ot, gl->st, 0.0f, 0.0f, 0.0f);
 	cursor->disableCollision();
 	gl->st->addPickup(cursor);

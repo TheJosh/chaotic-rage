@@ -12,6 +12,7 @@ using namespace std;
 #define PICKUP_TYPE_WEAPON 1
 #define PICKUP_TYPE_AMMO 2
 #define PICKUP_TYPE_POWERUP 3
+#define PICKUP_TYPE_CURSOR 4
 
 
 class btCollisionShape;

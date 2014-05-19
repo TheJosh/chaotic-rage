@@ -178,6 +178,10 @@ bool PickupType::doUse(Unit *u)
 			st->addHUDMessage(u->slot, "Picked up a ", this->title);
 			break;
 
+		case PICKUP_TYPE_CURSOR:
+			return false;
+			break;
+
 		default:
 			assert(0);
 	}

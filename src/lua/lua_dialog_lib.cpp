@@ -11,6 +11,7 @@
 #include "../gui/textprompt.h"
 #include "../gui/textbox.h"
 #include "../gui/buttonbar.h"
+#include "../mod/gametype.h"
 #include "../game_state.h"
 #include "../game_engine.h"
 
@@ -84,7 +85,7 @@ LUA_FUNC(prompt_text)
 	PromptTextHandler* handler = new PromptTextHandler(L, func);
 	
 	GameState* st = getGameState();
-	DialogTextPrompt* dialog = new DialogTextPrompt(st, "AAA", message, handler);
+	DialogTextPrompt* dialog = new DialogTextPrompt(st, st->gt->title, message, handler);
 	GEng()->addDialog(dialog);
 	
 	return 0;
