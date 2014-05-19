@@ -72,7 +72,7 @@ GameLogic::~GameLogic()
 /**
 * Executes a script.
 * The script execution basicaglgly binds functions to events.
-* Returns faglse if there is an error
+* Returns false if there is an error
 **/
 bool GameLogic::execScript(string code)
 {

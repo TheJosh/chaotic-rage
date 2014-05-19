@@ -85,7 +85,7 @@ void AILogic::ActiveLuaState()
 /**
 * Executes a script.
 * The script execution basicaglgly binds functions to events.
-* Returns faglse if there is an error
+* Returns false if there is an error
 **/
 bool AILogic::execScript(string code)
 {
@@ -133,7 +133,6 @@ void AILogic::update(int delta)
 	if (this->dir_flag) {
 		this->dir.setY(0.0f);
 
-		btTransform xform = u->ghost->getWorldTransform();
 		btScalar walkSpeed = u->params.max_speed * 1.0f/60.0f;		// Physics runs at 60hz
 
 		// Rotation update
@@ -142,7 +141,7 @@ void AILogic::update(int delta)
 		axis.normalize();
 		float angle = acos(this->dir.dot(fwd));
 		btQuaternion rot = btQuaternion(axis, angle).normalize();
-		xform.setBasis(btMatrix3x3(rot));
+		u->ghost->getWorldTransform().setBasis(btMatrix3x3(rot));
 
 		// Position update
 		u->character->setWalkDirection(this->dir * walkSpeed);
