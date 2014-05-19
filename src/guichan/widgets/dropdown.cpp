@@ -72,6 +72,7 @@ namespace gcn
         if (mInternalScrollArea)
         {
             mScrollArea = new ScrollArea();
+            mScrollArea->setBackgroundColor(gcn::Color(240, 240, 240, 255));
         }
         else
         {
@@ -81,6 +82,7 @@ namespace gcn
         if (mInternalListBox)
         {
             mListBox = new ListBox();
+            mListBox->setBackgroundColor(gcn::Color(240, 240, 240, 255));
         }
         else
         {
@@ -195,13 +197,14 @@ namespace gcn
 
          if (mDroppedDown)
          {
+             drawChildren(graphics);
+             
              // Draw a border around the children.
              graphics->setColor(shadowColor);
-             graphics->drawRectangle(Rectangle(0,
-                                               mFoldedUpHeight,
-                                               getWidth(),
+             graphics->drawRectangle(Rectangle(1,
+                                               mFoldedUpHeight - 1,
+                                               getWidth() - 1,
                                                getHeight() - mFoldedUpHeight));
-             drawChildren(graphics);
          }
     }
 
