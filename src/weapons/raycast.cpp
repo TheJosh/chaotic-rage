@@ -20,51 +20,62 @@ using namespace std;
 
 
 /**
-* Fires a weapon, from a specified Unit
+* Transforms of the raycast weapons
 **/
-void WeaponRaycast::doFire(Unit *u, btTransform &origin)
+template <class T>
+void raycastDoFire(T &weapon, Unit *u, btTransform &origin, btVector3 &begin, btVector3 &end)
 {
 	btTransform xform = origin;
-	
+
 	// Weapon angle ranges
-	int angle = this->angle_range / 2;
+	int angle = weapon->angle_range / 2;
 	angle = getRandom(-angle, angle);
 	btQuaternion rot = xform.getRotation() * btQuaternion(btVector3(0.0f, 1.0f, 0.0f), DEG_TO_RAD(angle));
 	xform.setRotation(rot);
-	
+
 	// Begin and end vectors
-	btVector3 begin = xform.getOrigin();
-	btVector3 end = begin + xform.getBasis() * btVector3(0.0f, 0.0f, this->range);
-	st->addDebugLine(&begin, &end);
-	
+	begin = xform.getOrigin();
+	end = begin + xform.getBasis() * btVector3(0.0f, 0.0f, weapon->range);
+	weapon->st->addDebugLine(&begin, &end);
+
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
 	cb.m_collisionFilterGroup = CG_UNIT;
 	cb.m_collisionFilterMask = PhysicsBullet::mask_entities;
-	this->st->physics->getWorld()->rayTest(begin, end, cb);
-	
+	weapon->st->physics->getWorld()->rayTest(begin, end, cb);
+
 	if (cb.hasHit()) {
 		if (cb.m_collisionObject->getUserPointer()) {
 			Entity* entA = static_cast<Entity*>(cb.m_collisionObject->getUserPointer());
 			DEBUG("weap", "Ray hit %p", entA);
 			if (entA) {
 				if (entA->klass() == UNIT) {
-					((Unit*)entA)->takeDamage(this->damage);
+					((Unit*)entA)->takeDamage(weapon->damage);
 				} else if (entA->klass() == WALL) {
-					((Wall*)entA)->takeDamage(this->damage);
+					((Wall*)entA)->takeDamage(weapon->damage);
 				}
 			}
 		}
-		
+
 	} else {
 		DEBUG("weap", "%p Shot; miss", u);
 	}
-	
-	
+}
+
+
+/**
+* Fires a weapon, from a specified Unit
+**/
+void WeaponRaycast::doFire(Unit *u, btTransform &origin)
+{
+	btVector3 begin;
+	btVector3 end;
+
+	raycastDoFire(this, u, origin, begin, end);
+
 	// Show the weapon bullets
 	create_particles_weapon(u->getGameState(), &begin, &end);
 }
-
 
 
 /**
@@ -72,45 +83,11 @@ void WeaponRaycast::doFire(Unit *u, btTransform &origin)
 **/
 void WeaponFlamethrower::doFire(Unit *u, btTransform &origin)
 {
-	btTransform xform = origin;
-	
-	// Weapon angle ranges
-	int angle = this->angle_range / 2;
-	angle = getRandom(-angle, angle);
-	btQuaternion rot = xform.getRotation() * btQuaternion(btVector3(0.0f, 1.0f, 0.0f), DEG_TO_RAD(angle));
-	xform.setRotation(rot);
-	
-	// Begin and end vectors
-	btVector3 begin = xform.getOrigin();
-	btVector3 end = begin + xform.getBasis() * btVector3(0.0f, 1.0f, range);
-	st->addDebugLine(&begin, &end);
-	
-	// Do the rayTest
-	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
-	cb.m_collisionFilterGroup = CG_UNIT;
-	cb.m_collisionFilterMask = PhysicsBullet::mask_entities;
-	this->st->physics->getWorld()->rayTest(begin, end, cb);
-	
-	if (cb.hasHit()) {
-		if (cb.m_collisionObject->getUserPointer()) {
-			Entity* entA = static_cast<Entity*>(cb.m_collisionObject->getUserPointer());
-			DEBUG("weap", "Ray hit %p", entA);
-			if (entA) {
-				if (entA->klass() == UNIT) {
-					((Unit*)entA)->takeDamage(this->damage);
-				} else if (entA->klass() == WALL) {
-					((Wall*)entA)->takeDamage(this->damage);
-				}
-			}
-		}
-		
-	} else {
-		DEBUG("weap", "%p Shot; miss", u);
-	}
-	
+	btVector3 begin;
+	btVector3 end;
+
+	raycastDoFire(this, u, origin, begin, end);
+
 	// Show the weapon fire
 	create_particles_flamethrower(u->getGameState(), &begin, &end);
 }
-
-
-
