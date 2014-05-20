@@ -35,13 +35,13 @@ void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end)
 	dir.normalize();
 
 	SPK::Model* model = SPK::Model::create(
-		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA, 
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
 		SPK::FLAG_ALPHA,
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
 	);
 
-	model->setParam(SPK::PARAM_ALPHA, 1.0f, 0.0f); 
-	model->setParam(SPK::PARAM_RED, 0.0f, 1.0f); 
+	model->setParam(SPK::PARAM_ALPHA, 1.0f, 0.0f);
+	model->setParam(SPK::PARAM_RED, 0.0f, 1.0f);
 	model->setParam(SPK::PARAM_GREEN, 0.0f, 1.0f);
 	model->setParam(SPK::PARAM_BLUE, 0.0f, 1.0f);
 	model->setLifeTime(0.5f, 0.7f);
@@ -76,7 +76,7 @@ void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 
 	dir.normalize();
 
 	SPK::Model* model = SPK::Model::create(
-		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA, 
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
 		SPK::FLAG_ALPHA,
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
 	);
@@ -108,7 +108,7 @@ void create_particles_blood_spray(GameState * st, const btVector3& location, flo
 	SPK::Model* model;
 	SPK::RandomEmitter* emitter;
 	SPK::Group* group;
-	
+
 	/* Yellow and red fireball */
 	model = SPK::Model::create(
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
@@ -127,7 +127,7 @@ void create_particles_blood_spray(GameState * st, const btVector3& location, flo
 	emitter->setFlow(-1);
 	emitter->setTank(damage / 2);
 	emitter->setForce(10.0f, 15.0f);
-	
+
 	// Splatting
 	emitter = SPK::RandomEmitter::create();
 	emitter->setZone(SPK::Point::create(SPK::Vector3D(location.x(), location.y() - 0.5f, location.z())));
@@ -151,7 +151,7 @@ void create_particles_explosion(GameState * st, const btVector3& location, float
 	SPK::Model* model;
 	SPK::Emitter* emitter;
 	SPK::Group* group;
-	
+
 	/* Yellow and red fireball */
 	model = SPK::Model::create(
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
@@ -176,7 +176,7 @@ void create_particles_explosion(GameState * st, const btVector3& location, float
 	group->addEmitter(emitter);
 	group->setGravity(gravity);
 	st->addParticleGroup(group);
-	
+
 	/* Dustsplosion */
 	model = SPK::Model::create(
 			SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,

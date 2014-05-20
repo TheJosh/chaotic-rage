@@ -18,16 +18,16 @@ class Menu;
 **/
 class Dialog {
 	friend class Menu;
-	
+
 	protected:
 		gcn::Container* c;
 		Menu* m;
 		GameManager* gm;
-		
+
 	public:
 		Dialog() : c(NULL), m(NULL), gm(NULL) {}
 		virtual ~Dialog() {}
-		
+
 		/**
 		* Set up the container, creating all child widgets
 		**/
@@ -77,11 +77,11 @@ class DialogNull : public Dialog {
 class DialogQuit : public Dialog, public gcn::ActionListener {
 	private:
 		GameState * st;
-		
+
 	public:
 		DialogQuit(GameState * st);
 		virtual ~DialogQuit() {}
-		
+
 		virtual gcn::Container * setup();
 		virtual string getName() { return "quit"; }
 		virtual void action(const gcn::ActionEvent& actionEvent);

@@ -28,11 +28,11 @@ using namespace std;
 DialogNewGame::DialogNewGame(int num_local) : Dialog()
 {
 	this->num_local = num_local;
-	
+
 	this->gametype_model = new GametypeListModel(GEng()->mm->getAllGameTypes());
-	
+
 	this->action_weapons = new DialogNewGame_Action_Weapons(this);
-	
+
 	this->gs = new GameSettings();
 }
 
@@ -63,79 +63,79 @@ gcn::Container * DialogNewGame::setup()
 	gcn::Button* button;
 	gcn::Label* label;
 	int y = 10;
-	
+
 	// This is a bit crap. We can't use ->gm until after the dialog is created
 	this->map_model = new MapRegistryListModel(this->gm->getMapRegistry());
 	this->unittype_model = new VectorListModel(this->gm->getUnitTypes());
 	this->viewmode_model = new VectorListModel(this->gm->getViewModes());
-	
-	
+
+
 	if (this->num_local == 1) {
 		c = new gcn::Window("Single Player");
 	} else if (this->num_local > 1) {
 		c = new gcn::Window("Split Screen");
 	}
-	
+
 	c->setDimension(gcn::Rectangle(0, 0, 320, 250));
-	
-	
+
+
 	label = new gcn::Label("Game type");
 	c->add(label, COLLEFT, y);
-	
+
 	this->gametype = new gcn::DropDown(this->gametype_model);
 	this->gametype->setPosition(COLRIGHT, y);
 	this->gametype->setWidth(COLRIGHTW);
 	c->add(this->gametype);
-	
+
 	y += SMLHEIGHT;
-	
+
 	button = new gcn::Button("Weapons");
 	button->setPosition(COLRIGHT, y);
 	button->addActionListener(this->action_weapons);
 	c->add(button);
-	
+
 	y += BTNHEIGHT;
-	
+
 	label = new gcn::Label("Map");
 	c->add(label, COLLEFT, y);
-	
+
 	this->map = new gcn::DropDown(this->map_model);
 	this->map->setPosition(COLRIGHT, y);
 	this->map->setWidth(COLRIGHTW);
 	c->add(this->map);
-	
+
 	y += ROWHEIGHT;
-	
+
 	label = new gcn::Label("Unit type");
 	c->add(label, COLLEFT, y);
-	
+
 	this->unittype = new gcn::DropDown(this->unittype_model);
 	this->unittype->setPosition(COLRIGHT, y);
 	this->unittype->setWidth(COLRIGHTW);
 	c->add(this->unittype);
-	
+
 	y += ROWHEIGHT;
-	
+
 	label = new gcn::Label("View mode");
 	c->add(label, COLLEFT, y);
-	
+
 	this->viewmode = new gcn::DropDown(this->viewmode_model);
 	this->viewmode->setPosition(COLRIGHT, y);
 	this->viewmode->setWidth(COLRIGHTW);
 	c->add(this->viewmode);
-	
+
 	y += ROWHEIGHT;
-	
+
 	this->host = new gcn::CheckBox("Host network game");
 	this->host->setPosition(COLRIGHT, y);
 	this->host->setWidth(COLRIGHTW);
 	c->add(this->host);
-	
+
 	button = new gcn::Button(this->num_local == 1 ? "Start Single Player Game" : "Start Split Screen Game");
 	button->setPosition((320 - button->getWidth()) / 2, 200);
 	button->addActionListener(this);
 	c->add(button);
-	
+
 	return c;
 }
 
@@ -162,10 +162,10 @@ void DialogNewGame::action(const gcn::ActionEvent& actionEvent)
 void DialogNewGame_Action_Weapons::action(const gcn::ActionEvent& actionEvent)
 {
 	string gametype = this->parent->gm->getGameTypes()->at(this->parent->gametype->getSelected());
-	
+
 	GameType* gt = GEng()->mm->getGameType(gametype);
 	assert(gt);
-	
+
 	this->parent->m->addDialog(new DialogNewGameWeapons(this->parent, this->parent->gs, gt));
 }
 

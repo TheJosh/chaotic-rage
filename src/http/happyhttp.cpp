@@ -1,13 +1,13 @@
 /*
  * HappyHTTP - a simple HTTP library
  * Version 0.1
- * 
+ *
  * Copyright (c) 2006 Ben Campbell
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
- * 
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
@@ -19,7 +19,7 @@
  *
  * 2. Altered source versions must be plainly marked as such, and must not
  * be misrepresented as being the original software.
- * 
+ *
  * 3. This notice may not be removed or altered from any source distribution.
  *
  */
@@ -187,7 +187,7 @@ struct in_addr *atoaddr( const char* address)
 {
 	struct addrinfo *result;
 	struct addrinfo hints;
-	
+
 	memset(&hints, 0, sizeof(struct addrinfo));
 	hints.ai_family = AF_INET;
 
@@ -195,7 +195,7 @@ struct in_addr *atoaddr( const char* address)
     if ( ret != 0 ) return 0;
 
 	struct sockaddr_in* addr = (struct sockaddr_in*)result->ai_addr;
-	
+
 	return &addr->sin_addr;
 }
 
@@ -426,7 +426,7 @@ void Connection::endheaders()
 void Connection::send( const unsigned char* buf, int numbytes )
 {
 //	fwrite( buf, 1,numbytes, stdout );
-	
+
 	if( m_Sock < 0 )
 		connect();
 
@@ -651,7 +651,7 @@ void Response::ProcessChunkLenLine( std::string const& line )
 {
 	// chunklen in hex at beginning of line
 	m_ChunkLeft = strtol( line.c_str(), NULL, 16 );
-	
+
 	if( m_ChunkLeft == 0 )
 	{
 		// got the whole body, now check for trailing headers
@@ -771,7 +771,7 @@ void Response::ProcessStatusLine( std::string const& line )
 		throw Wobbly( "UnknownProtocol (%s)", m_VersionString.c_str() );
 	// TODO: support for HTTP/0.9
 
-	
+
 	// OK, now we expect headers!
 	m_State = HEADERS;
 	m_HeaderAccum.clear();
@@ -802,7 +802,7 @@ void Response::FlushHeader()
 	value = p; // rest of line is value
 
 	m_Headers[ header ] = value;
-//	printf("header: ['%s': '%s']\n", header.c_str(), value.c_str() );	
+//	printf("header: ['%s': '%s']\n", header.c_str(), value.c_str() );
 
 	m_HeaderAccum.clear();
 }
@@ -934,7 +934,7 @@ bool Response::CheckClose()
 	}
 
 	// Older HTTP
-	// keep-alive header indicates persistant connection 
+	// keep-alive header indicates persistant connection
 	if( getheader( "keep-alive" ) )
 		return false;
 

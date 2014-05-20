@@ -23,10 +23,10 @@ using namespace std;
 NPC::NPC(UnitType *uc, GameState *st, float x, float y, float z, AIType *ai, Faction fac) : Unit(uc, st, x, y, z, fac)
 {
 	vals[0] = vals[1] = vals[2] = vals[3] = 0;
-	
+
 	this->logic = new AILogic(this);
 	this->logic->execScript(ai->script);
-	
+
 	this->idle_sound_time = st->game_time + 15000;
 }
 
@@ -49,7 +49,7 @@ void NPC::update(int delta)
 
 	logic->update(delta);
 	Unit::update(delta);
-	
+
 	if (this->idle_sound_time < st->game_time) {
 		// TODO: play idle sound
 		this->idle_sound_time = st->game_time + 15000;
@@ -59,14 +59,14 @@ void NPC::update(int delta)
 int NPC::takeDamage(float damage)
 {
 	int result = Unit::takeDamage(damage);
-	
+
 	if (result == 1) {
 		this->st->logic->raise_npcdied();
-		
+
 		// TODO: play death sound
-		
+
 		this->st->deadButNotBuried(this);
 	}
-	
+
 	return result;
 }

@@ -17,14 +17,14 @@ class Vehicle : public Entity
 {
 	public:
 		virtual EntityClass klass() const { return VEHICLE; }
-		
+
 	public:
 		VehicleType* vt;
 		int health;
 
 	protected:
 		AnimPlay * anim;
-		
+
 	private:
 		float engineForce;
 		float brakeForce;
@@ -33,14 +33,14 @@ class Vehicle : public Entity
 		btVehicleRaycaster* vehicle_raycaster;
 		btRaycastVehicle* vehicle;
 		btCollisionShape* wheel_shape;
-	
+
 	public:
 		Vehicle(GameState *st);
 		Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy);
 		Vehicle(VehicleType *vt, GameState *st, btTransform & loc);
 		void init(VehicleType *vt, GameState *st, btTransform & loc);
 		virtual ~Vehicle();
-		
+
 	public:
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
@@ -50,7 +50,7 @@ class Vehicle : public Entity
 		virtual void operate(Unit* u, int delta, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle);
 		virtual void exit();
 		virtual void getWeaponTransform(btTransform &xform);
-		
+
 		void trainAttachToNext(Vehicle *next);
 		void setNodeAngle(VehicleNodeType type, float angle);
 		void setNodeTransformRelative(VehicleNodeType type, glm::mat4 transform);

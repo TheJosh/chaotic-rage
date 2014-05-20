@@ -23,7 +23,7 @@ using namespace std;
 /**
 * Defining suspension and wheel parameters
 * More info: https://code.google.com/p/jbullet-jme/wiki/PhysicsVehicleNode
-**/ 
+**/
 static float	wheelRadius = 0.3f;
 static float	wheelWidth = 0.3f;
 static float	frictionSlip = 10.0f; // 0.8 - Realistic car, 10000 - Kart racer
@@ -56,12 +56,12 @@ Vehicle::Vehicle(GameState *st) : Entity(st)
 Vehicle::Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy) : Entity(st)
 {
 	btVector3 sizeHE = vt->model->getBoundingSizeHE();
-	
+
 	btTransform trans = btTransform(
 		btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
 		st->physics->spawnLocation(mapx, mapy, sizeHE.z() * 2.0f)
 	);
-	
+
 	this->init(vt, st, trans);
 }
 
@@ -80,7 +80,7 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); ++it) {
 		this->anim->addMoveNode((*it).node);
 	}
-	
+
 	this->engineForce = 0.0f;
 	this->brakeForce = 0.0f;
 	this->steering = 0.0f;
@@ -90,13 +90,13 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	this->body = st->physics->addRigidBody(vt->col_shape, vt->mass, motionState, CG_VEHICLE);
 	this->body->setUserPointer(this);
 	this->body->setActivationState(DISABLE_DEACTIVATION);
-	
+
 	// Create Vehicle
 	this->vehicle_raycaster = new ChaoticRageVehicleRaycaster(st->physics->getWorld(), this);
 	this->vehicle = new btRaycastVehicle(this->tuning, this->body, this->vehicle_raycaster);
 	this->vehicle->setCoordinateSystem(0, 1, 2);
 	st->physics->addVehicle(this->vehicle);
-	
+
 	// Create and attach wheels
 	// TODO: Optimize this for fixed turrets
 	{
@@ -104,31 +104,31 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 		btScalar suspensionRestLength(sizeHE.y() + 0.1f);
 
 		this->wheel_shape = new btCylinderShapeX(btVector3(wheelWidth,wheelRadius,wheelRadius));
-		
+
 		btVector3 connectionPointCS0;
 		float connectionHeight = 0.0f;
 		bool isFrontWheel = true;
-		
+
 		connectionPointCS0 = btVector3(sizeHE.x(), connectionHeight, sizeHE.y());
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
-		
+
 		connectionPointCS0 = btVector3(-sizeHE.x(), connectionHeight, sizeHE.y());
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
-		
+
 		if (vt->name.compare("tank") != 0) {
 			isFrontWheel = false;
 		}
 		connectionPointCS0 = btVector3(sizeHE.x(), connectionHeight, -sizeHE.y());
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
-		
+
 		connectionPointCS0 = btVector3(-sizeHE.x(), connectionHeight, -sizeHE.y());
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
 	}
-	
+
 	// Set some wheel dynamics
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
 		btWheelInfo& wheel = this->vehicle->getWheelInfo(i);
-		
+
 		wheel.m_suspensionStiffness = suspensionStiffness;
 		wheel.m_wheelsDampingRelaxation = wheelsDampingRelaxation;
 		wheel.m_wheelsDampingCompression = wheelsDampingCompression;
@@ -164,10 +164,10 @@ void Vehicle::trainAttachToNext(Vehicle *next)
 	back.setX(next->vt->joint_front.x);
 	back.setY(next->vt->joint_front.y);
 	back.setZ(next->vt->joint_front.z);
-	
+
 	btPoint2PointConstraint* cons = new btPoint2PointConstraint(*this->body, *next->body, front, back);
 	st->physics->getWorld()->addConstraint(cons, true);
-	
+
 	cons->setDbgDrawSize(btScalar(5.f));
 }
 
@@ -180,35 +180,35 @@ void Vehicle::update(int delta)
 	int wheelIndex;
 
 	if (this->health == 0) return;
-	
+
 	// Front left
 	wheelIndex = 0;
 	this->vehicle->setSteeringValue(this->steering,wheelIndex);
 	//this->vehicle->setBrake(this->brakeForce,wheelIndex);
-	
+
 	// Front right
 	wheelIndex = 1;
 	this->vehicle->setSteeringValue(this->steering,wheelIndex);
 	//this->vehicle->setBrake(this->brakeForce,wheelIndex);
-	
+
 	// Rear left
 	wheelIndex = 2;
 	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
 	this->vehicle->setBrake(this->brakeForce,wheelIndex);
-	
+
 	// Rear right
 	wheelIndex = 3;
 	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
 	this->vehicle->setBrake(this->brakeForce,wheelIndex);
-	
+
 	// Update wheels
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
 		this->vehicle->updateWheelTransform(i, true);
-		
+
 		// TODO: fix the transforms for turning and rotating of the wheels
 		//btTransform newTransform = this->vehicle->getWheelInfo(i).m_worldTransform;
 		//newTransform.setOrigin(newTransform.getOrigin() - this->vehicle->getChassisWorldTransform().getOrigin());
-		
+
 		//btScalar m[16];
 		//newTransform.getOpenGLMatrix(m);
 		//this->setNodeTransformRelative(VEHICLE_NODE_WHEEL0 + i, glm::make_mat4(m));
@@ -261,7 +261,7 @@ void Vehicle::operate(Unit* u, int delta, int key_up, int key_down, int key_left
 			this->brakeForce = MAX(this->brakeForce - 15.0f, 0.0f);
 		}
 	}
-	
+
 	// Steering
 	if (this->vt->steer) {
 		if (key_left) {
@@ -298,7 +298,7 @@ Sound* Vehicle::getSound()
 void Vehicle::getWeaponTransform(btTransform &xform)
 {
 	xform = this->getTransform();
-	
+
 	VehicleTypeNode *horizNode = this->vt->getNode(VEHICLE_NODE_HORIZ);
 	if (horizNode != NULL) {
 		glm::mat4 transform = this->anim->getNodeTransform(horizNode->node);
@@ -322,10 +322,10 @@ void Vehicle::takeDamage(int damage)
 {
 	this->health -= damage;
 	if (this->health < 0) this->health = 0;
-	
+
 	for (unsigned int j = 0; j < this->vt->damage_models.size(); j++) {
 		VehicleTypeDamage * dam = this->vt->damage_models.at(j);
-		
+
 		if (this->health <= dam->health) {
 			delete(this->anim);
 			this->anim = new AnimPlay(dam->model);

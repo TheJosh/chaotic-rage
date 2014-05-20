@@ -37,25 +37,25 @@ void OnData( const happyhttp::Response* r, void* userdata, const unsigned char* 
 vector<string> * getServerList(UIUpdate * ui)
 {
 	if (ui) ui->updateUI();
-	
+
 	// Grab the server list
 	try {
 		happyhttp::Connection conn("servers.chaoticrage.com", 80);
 		conn.setcallbacks(OnBegin, OnData, 0, 0);
-		
+
 		conn.request("GET", "/list");
-		
+
 		while (conn.outstanding()) {
 			if (ui) ui->updateUI();
 			conn.pump();
 		}
-		
+
 	} catch (const happyhttp::Wobbly & w) {
 		return NULL;
 	}
-	
+
 	if (ui) ui->updateUI();
-	
+
 	// Split on newline
 	vector<string> * elems = new vector<string>();
 	stringstream ss(resp);
@@ -63,6 +63,6 @@ vector<string> * getServerList(UIUpdate * ui)
 	while(std::getline(ss, item, '\n')) {
 		elems->push_back(item);
 	}
-	
+
 	return elems;
 }

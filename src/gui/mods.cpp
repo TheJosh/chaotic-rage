@@ -28,7 +28,7 @@ using namespace std;
 DialogMods::DialogMods(GameState* st) : Dialog()
 {
 	this->st = st;
-	
+
 	vector<string>* modnames = GEng()->mm->getAvailMods();
 	vector<Mod*>* modlist = new vector<Mod*>();
 	for (vector<string>::iterator it = modnames->begin(); it != modnames->end(); ++it) {
@@ -37,7 +37,7 @@ DialogMods::DialogMods(GameState* st) : Dialog()
 		modlist->push_back(m);
 	}
 	delete(modnames);
-	
+
 	this->mods = new ModListModel(modlist);
 
 	this->img = NULL;
@@ -69,14 +69,14 @@ gcn::Container * DialogMods::setup()
 
 	c = new gcn::Window("Choose current mod");
 	c->setDimension(gcn::Rectangle(0, 0, w, h + 15));
-	
+
 	this->modlist = new gcn::DropDown(this->mods);
 	this->modlist->setPosition(p, p);
 	this->modlist->setWidth(w - p - p);
 	this->modlist->setSelected(this->mods->findMod(GEng()->mm->getSupplOrBase()));
 	this->modlist->addSelectionListener(this);
 	c->add(this->modlist);
-	
+
 	this->icon = new gcn::Icon();
 	this->icon->setPosition(p, p + 20);
 	this->icon->setSize(512, 256);
@@ -88,7 +88,7 @@ gcn::Container * DialogMods::setup()
 	this->button->setSize(bw, bh);
 	this->button->addActionListener(this);
 	c->add(this->button);
-	
+
 	return c;
 }
 
@@ -108,13 +108,13 @@ void DialogMods::action(const gcn::ActionEvent& actionEvent)
 
 	// If there was a suppl, remove it
 	GEng()->mm->remMod(GEng()->mm->getSuppl());
-	
+
 	// If there is a new suppl, add it
 	if (newsuppl) {
 		GEng()->mm->addMod(newsuppl);
 		GEng()->mm->setSuppl(newsuppl);
 	}
-	
+
 	this->m->loadModBits();
 	this->m->remDialog(this);
 }

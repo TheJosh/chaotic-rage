@@ -19,26 +19,26 @@ class DialogNewGameWeapons : public Dialog, public gcn::ActionListener, public g
 	public:
 		DialogNewGameWeapons(DialogNewGame* parent, GameSettings* gs, GameType* gt);
 		virtual ~DialogNewGameWeapons();
-		
+
 	protected:
 		DialogNewGame* parent;
 		GameSettings* gs;
-		
+
 		GametypeFactionsListModel* factions_list;
 		int faction;
-		
+
 		vector<WeaponType*> *wts;
-		
+
 		gcn::DropDown* dd_faction;
 		gcn::CheckBox* chk_unit;
 		gcn::CheckBox* chk_gametype;
 		vector<gcn::CheckBox*> chk_custom;
-		
+
 	public:
 		virtual gcn::Container * setup();
 		virtual void action(const gcn::ActionEvent& actionEvent);
 		virtual void valueChanged(const gcn::SelectionEvent& selectionEvent);
-		
+
 	private:
 		void saveWeapons();
 		void loadWeapons();

@@ -38,7 +38,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 
 	this->health = uc->begin_health;
 	this->remove_at = 0;
-	
+
 	this->weapon = NULL;
 	this->firing = false;
 	this->melee_cooldown = 0;
@@ -46,25 +46,25 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 	this->special_firing = false;
 	this->special_time = 0;
 	this->special_cooldown = 0;
-	
+
 	this->lift_obj = NULL;
 	this->drive = NULL;
 	this->force = btVector3(0.0f, 0.0f, 0.0f);
-	
+
 	this->anim = new AnimPlay(this->uc->model);
-	
+
 	// Set animation
 	UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_STATIC);
 	if (uta) {
 		this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
 	}
-	
+
 	// Ghost position
 	btTransform xform = btTransform(
 		btQuaternion(btVector3(0,0,1), 0),
 		st->physics->spawnLocation(x, y, 0.9f)
 	);
-	
+
 	// Create ghost
 	this->ghost = new btPairCachingGhostObject();
 	this->ghost->setWorldTransform(xform);
@@ -79,7 +79,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 	// Add character and ghost to the world
 	st->physics->addCollisionObject(this->ghost, CG_UNIT);
 	st->physics->addAction(character);
-	
+
 	// Give them some weapons
 	vector<WeaponType*>* spawn = st->getSpawnWeapons(this->uc, this->fac);
 	for (unsigned int i = 0; i < spawn->size(); i++) {
@@ -109,9 +109,9 @@ Unit::~Unit()
 void Unit::beginFiring()
 {
 	if (this->weapon == NULL) return;
-	
+
 	this->firing = true;
-	
+
 	Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_BEGIN);
 	weapon_sound = GEng()->audio->playSound(snd, true, this);
 }
@@ -123,9 +123,9 @@ void Unit::beginFiring()
 void Unit::endFiring()
 {
 	if (this->weapon == NULL) return;
-	
+
 	this->firing = false;
-	
+
 	GEng()->audio->stopSound(this->weapon_sound);
 
 	Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_END);
@@ -140,7 +140,7 @@ void Unit::endFiring()
 void Unit::emptySound()
 {
 	if (this->weapon == NULL) return;
-	
+
 	GEng()->audio->stopSound(this->weapon_sound);
 
 	// TODO: Fix this
@@ -165,25 +165,25 @@ Entity * Unit::infront(float range)
 Entity * Unit::raytest(btMatrix3x3 &direction, float range)
 {
 	btTransform xform = this->ghost->getWorldTransform();
-	
+
 	btVector3 offGround = btVector3(0.0f, 0.4f, 0.0f);
-	
+
 	// Begin and end vectors
 	btVector3 begin = xform.getOrigin() + offGround;
 	btVector3 end = begin + offGround + direction * btVector3(0.0f, 0.0f, range);
 	st->addDebugLine(&begin, &end);
-	
+
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
 	cb.m_collisionFilterGroup = CG_UNIT;
 	cb.m_collisionFilterMask = PhysicsBullet::mask_entities;
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
-	
+
 	// Check the raytest result
 	if (cb.hasHit()) {
 		return static_cast<Entity*>(cb.m_collisionObject->getUserPointer());
 	}
-	
+
 	return NULL;
 }
 
@@ -214,18 +214,18 @@ void Unit::meleeAttack()
 void Unit::meleeAttack(btMatrix3x3 &direction)
 {
 	DEBUG("weap", "%p meleeAttack; currtime: %i cooldown: %i", this, st->game_time, this->melee_cooldown);
-	
+
 	if (this->melee_cooldown > st->game_time) return;
-	
+
 	this->melee_cooldown = st->game_time + this->params.melee_delay + this->params.melee_cooldown;
-	
+
 	// TODO: should we hack the direction to only allow X degrees of freedom in front of the unit?
-	
+
 	Entity *e = this->raytest(direction, 5.0f);	// TODO: unit settings (melee range)
 	if (e == NULL) return;
-	
+
 	DEBUG("weap", "%p meleeAttack; ray hit %p", this, e);
-	
+
 	if (e->klass() == UNIT) {
 		(static_cast<Unit*>(e))->takeDamage(this->params.melee_damage);
 	}
@@ -241,7 +241,7 @@ void Unit::specialAttack()
 	if (this->uc->special_weapon == NULL) return;
 	if (this->special_time != 0) return;
 	if (this->special_cooldown > st->game_time) return;
-	
+
 	this->special_firing = true;
 	this->special_time = st->game_time + this->params.special_delay;
 }
@@ -254,7 +254,7 @@ void Unit::endSpecialAttack()
 {
 	if (this->uc->special_weapon == NULL) return;
 	if (this->special_cooldown > st->game_time) return;
-	
+
 	this->special_time = 0;
 	this->special_cooldown = st->game_time + this->params.special_cooldown;
 	this->special_firing = false;
@@ -267,14 +267,14 @@ void Unit::endSpecialAttack()
 bool Unit::pickupWeapon(WeaponType* wt)
 {
 	if (this->pickupAmmo(wt)) return true;
-	
+
 	UnitWeapon *uw = new UnitWeapon(wt, wt->magazine_limit, wt->belt_limit, st->game_time, false);
 	this->avail_weapons.push_back(uw);
-	
+
 	if (this->avail_weapons.size() == 1) {
 		this->setWeapon(0);
 	}
-	
+
 	return true;
 }
 
@@ -285,7 +285,7 @@ bool Unit::pickupWeapon(WeaponType* wt)
 bool Unit::pickupAmmo(WeaponType* wt)
 {
 	if (wt == NULL) return false;
-	
+
 	for (unsigned int i = 0; i < this->avail_weapons.size(); i++) {
 		if (this->avail_weapons[i]->wt == wt) {
 			this->avail_weapons[i]->belt += wt->belt_limit;
@@ -295,7 +295,7 @@ bool Unit::pickupAmmo(WeaponType* wt)
 			return true;
 		}
 	}
-	
+
 	return false;
 }
 
@@ -344,10 +344,10 @@ UnitWeapon * Unit::getWeaponAt(unsigned int id)
 void Unit::setWeapon(int id)
 {
 	UnitWeapon *uw = this->avail_weapons.at(id);
-	
+
 	this->weapon = uw;
 	this->firing = false;
-	
+
 	curr_weapon_id = id;
 }
 
@@ -448,9 +448,9 @@ Sound* Unit::getSound()
 bool remove_finished_pickup(const UnitPickup& up)
 {
 	if (up.end_time > up.u->getGameState()->game_time) return false;
-	
+
 	up.pt->finished(up.u);
-	
+
 	return true;
 }
 
@@ -481,7 +481,7 @@ void Unit::update(int delta)
 		if (remove_at <= st->game_time) this->del = 1;
 		return;
 	}
-	
+
 	if (GEng()->server != NULL) {
 		GEng()->server->addmsgUnitState(this);
 	}
@@ -497,7 +497,7 @@ void Unit::update(int delta)
 		this->takeDamage(this->health);
 	}
 
-	
+
 	// Which weapon to use?
 	WeaponType *w = NULL;
 	btTransform wxform;
@@ -511,14 +511,14 @@ void Unit::update(int delta)
 			wxform = btTransform(xform);
 		}
 	}
-	
+
 	// Fire!
 	if (w != NULL) {
 		w->doFire(this, wxform);
-		
+
 		if (w == this->weapon->wt) {
 			this->weapon->next_use = st->game_time + this->weapon->wt->fire_delay;
-			
+
 			this->weapon->magazine--;
 			if (this->weapon->magazine == 0 && this->weapon->belt > 0) {
 				int load = this->weapon->wt->magazine_limit;
@@ -531,10 +531,10 @@ void Unit::update(int delta)
 				this->emptySound();
 			}
 		}
-		
+
 		if (! w->continuous) this->endFiring();
 	}
-	
+
 	// Reset the 'reloading' flag if enough time has passed
 	if (this->weapon && this->weapon->next_use < st->game_time) {
 		this->weapon->reloading = false;
@@ -546,19 +546,19 @@ void Unit::update(int delta)
 		btTransform lift(xform.getBasis(), pos);
 		this->lift_obj->setTransform(lift);
 	}
-	
+
 	// Do the special attack
 	// If it's single-shot or run for too long, we stop it
 	if (special_firing) {
 		w = this->uc->special_weapon;
-		
+
 		w->doFire(this, xform);
-		
+
 		if (!w->continuous || st->game_time > this->special_time) {
 			this->endSpecialAttack();
 		}
 	}
-	
+
 	// Iterate through the physics pairs to see if there are any Pickups to pick up.
 	{
 		btManifoldArray   manifoldArray;
@@ -577,7 +577,7 @@ void Unit::update(int delta)
 			if (collisionPair->m_algorithm) {
 				collisionPair->m_algorithm->getAllContactManifolds(manifoldArray);
 			}
-			
+
 			for (int j=0;j<manifoldArray.size();j++) {
 				btPersistentManifold* manifold = manifoldArray[j];
 
@@ -611,16 +611,16 @@ void Unit::update(int delta)
 int Unit::takeDamage(float damage)
 {
 	this->health -= damage;
-	
+
 	btTransform xform = this->ghost->getWorldTransform();
 	create_particles_blood_spray(this->st, xform.getOrigin(), damage);
-	
+
 	this->st->increaseEntropy(1);
-	
+
 	if (this->health <= 0 && remove_at == 0) {
 		this->endFiring();
 		this->leaveVehicle();
-		
+
 		UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_DEATH);
 		if (uta) {
 			this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
@@ -629,7 +629,7 @@ int Unit::takeDamage(float damage)
 		this->st->deadButNotBuried(this);
 		return 1;
 	}
-	
+
 	return 0;
 }
 
@@ -656,7 +656,7 @@ void Unit::leaveVehicle()
 	btTransform trans = this->drive->getTransform();
 	btVector3 size = this->drive->vt->model->getBoundingSizeHE();
 	size += btVector3(1.5f, 0.0f, 1.5f);
-	
+
 	// Raycast four candidates for spawn
 	btVector3 spawnopts[4];
 	spawnopts[0] = this->st->physics->spawnLocation(trans.getOrigin().x() - size.x(), trans.getOrigin().z() - size.z(), 1.0f);
@@ -671,7 +671,7 @@ void Unit::leaveVehicle()
 			spawn = spawnopts[i];
 		}
 	}
-	
+
 	// Update unit
 	this->ghost->setWorldTransform(btTransform(btQuaternion(0,0,0,1), spawn));
 	this->ghost->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
@@ -704,16 +704,16 @@ void Unit::doUse()
 		// If an object, use it
 		btTransform trans = this->getTransform();
 		ObjectType *ot = (static_cast<Object*>(closest))->ot;
-	
+
 		if (ot->show_message.length() != 0) {
 			this->st->addHUDMessage(this->slot, ot->show_message);
 		}
-	
+
 		if (ot->add_object.length() != 0) {
 			Object *nu = new Object(GEng()->mm->getObjectType(ot->add_object), this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ(), trans.getRotation().getZ());
 			this->st->addObject(nu);
 		}
-	
+
 		if (ot->pickup_weapon.length() != 0) {
 			WeaponType *wt = GEng()->mm->getWeaponType(ot->pickup_weapon);
 			if (wt) {
@@ -722,14 +722,14 @@ void Unit::doUse()
 				closest->del = 1;
 			}
 		}
-	
+
 		if (ot->ammo_crate.length() != 0) {
 			if (ot->ammo_crate.compare("current") == 0) {
 				if (this->pickupAmmo(weapon->wt)) {
 					this->st->addHUDMessage(this->slot, "Picked up some ammo");
 					closest->del = 1;
 				}
-			
+
 			} else {
 				WeaponType *wt = GEng()->mm->getWeaponType(ot->ammo_crate);
 				if (wt && this->pickupAmmo(wt)) {
@@ -780,7 +780,7 @@ void Unit::applyPickupAdjust(PickupTypeAdjust* adj)
 {
 	this->health *= adj->health;
 	this->takeDamage(0);		// check the player isn't dead.
-	
+
 	this->params.max_speed *= adj->max_speed;
 	this->params.melee_damage *= adj->melee_damage;
 	this->params.melee_delay *= adj->melee_delay;
@@ -795,7 +795,7 @@ void Unit::rollbackPickupAdjust(PickupTypeAdjust* adj)
 {
 	this->health /= adj->health;
 	this->takeDamage(0);		// check the player isn't dead.
-	
+
 	this->params.max_speed /= adj->max_speed;
 	this->params.melee_damage /= adj->melee_damage;
 	this->params.melee_delay /= adj->melee_delay;

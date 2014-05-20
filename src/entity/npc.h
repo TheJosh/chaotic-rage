@@ -13,15 +13,15 @@ class NPC : public Unit
 {
 	private:
 		AILogic *logic;
-		
+
 	public:
 		NPC(UnitType *uc, GameState *st, float x, float y, float z, AIType *ai, Faction fac);
 		virtual ~NPC();
-		
+
 	private:
 		int vals[4];
 		unsigned int idle_sound_time;
-		
+
 	public:
 		virtual void update(int delta);
 		virtual int takeDamage(float damage);

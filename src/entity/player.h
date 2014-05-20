@@ -23,7 +23,7 @@ class Player : public Unit
 			KEY_MELEE,
 			KEY_SPECIAL,
 		};
-		
+
 	public:
 		bool key[16];
 		bool lkey[16];
@@ -35,14 +35,14 @@ class Player : public Unit
 	public:
 		Player(UnitType *uc, GameState *st, float x, float y, float z, Faction fac, int slot);
 		virtual ~Player();
-		
+
 	public:
 		void keyPress(Key idx);
 		void keyRelease(Key idx);
 		void handleKeyChange();
 		void angleFromMouse(int x, int y, int delta);
 		void setKeys(Uint8 bitfield);		// TODO: Use 16-bits
-		Uint8 packKeys();					// TODO: Use 16-bits	
+		Uint8 packKeys();					// TODO: Use 16-bits
 
 	public:
 		virtual void update(int delta);

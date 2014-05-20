@@ -24,17 +24,17 @@ class VectorListModel: public gcn::ListModel
 {
 	private:
 		vector<string> * v;
-		
+
 	public:
 		VectorListModel(vector<string> * vec) {
 			this->v = vec;
 		}
-		
+
 		std::string getElementAt(int i)
 		{
 			return v->at(i);
 		}
-		
+
 		int getNumberOfElements()
 		{
 			return v->size();
@@ -46,15 +46,15 @@ class MapRegistryListModel: public gcn::ListModel
 {
 	private:
 		MapRegistry * mapreg;
-		
+
 	public:
 		MapRegistryListModel(MapRegistry * mapreg) : mapreg(mapreg) {}
-		
+
 		std::string getElementAt(int i)
 		{
 			return mapreg->titleAt(i);
 		}
-		
+
 		int getNumberOfElements()
 		{
 			return mapreg->size();
@@ -66,16 +66,16 @@ class GametypeListModel: public gcn::ListModel
 {
 	private:
 		vector<GameType*> * gametypes;
-		
+
 	public:
 		GametypeListModel(vector<GameType*> * gametypes) : gametypes(gametypes) {}
 		~GametypeListModel() { delete(gametypes); }
-		
+
 		std::string getElementAt(int i)
 		{
 			return gametypes->at(i)->title;
 		}
-		
+
 		int getNumberOfElements()
 		{
 			return gametypes->size();
@@ -87,16 +87,16 @@ class GametypeFactionsListModel: public gcn::ListModel
 {
 	private:
 		GameType* gt;
-		
+
 	public:
 		GametypeFactionsListModel(GameType* gt) : gt(gt) {}
 		~GametypeFactionsListModel() {}
-		
+
 		std::string getElementAt(int i)
 		{
 			return gt->factions[i].title;
 		}
-		
+
 		int getNumberOfElements()
 		{
 			return gt->num_factions;
@@ -108,21 +108,21 @@ class ModListModel: public gcn::ListModel
 {
 	private:
 		vector<Mod*> * mods;
-		
+
 	public:
 		ModListModel(vector<Mod*> * mods) : mods(mods) {}
 		~ModListModel() { delete(mods); }
-		
+
 		std::string getElementAt(int i)
 		{
 			return mods->at(i)->getTitle();
 		}
-		
+
 		Mod* getModAt(int i)
 		{
 			return mods->at(i);
 		}
-		
+
 		int getNumberOfElements()
 		{
 			return mods->size();

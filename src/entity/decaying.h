@@ -16,17 +16,17 @@ class Decaying : public Entity
 {
 	public:
 		virtual EntityClass klass() const { return NONE; }
-		
+
 	public:
 		AnimPlay *anim;
-		
+
 	private:
 		static btCollisionShape* col_shape;
-		
+
 	public:
 		Decaying(GameState *st, const btTransform &xform, AnimPlay *model);
 		virtual ~Decaying();
-		
+
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);

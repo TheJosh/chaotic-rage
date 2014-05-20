@@ -23,9 +23,9 @@ Decaying::Decaying(GameState *st, const btTransform &xform, AnimPlay *play) : En
 	if (! Decaying::col_shape) {
 		Decaying::col_shape = new btBoxShape(btVector3(0.1f, 0.1f, 0.1f));
 	}
-	
+
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
-	
+
 	this->body = st->physics->addRigidBody(Decaying::col_shape, 0.0f, motionState, CG_DEBRIS);
 }
 

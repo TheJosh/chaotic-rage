@@ -31,34 +31,34 @@ class Entity
 {
 	public:
 		virtual EntityClass klass() const { return NONE; };
-		
+
 	public:
 		bool del;
 		bool visible;
 		EID eid;
 		btRigidBody* body;
-		
+
 	protected:
 		GameState* st;
 
 	protected:
 		Entity(GameState *st);
-		
+
 	public:
 		virtual ~Entity();
-		
+
 	public:
 		/**
 		* Return an AnimModel to render this entity as
 		**/
 		virtual AnimPlay* getAnimModel() = 0;
-		
+
 		/**
 		* Return Sounds for this entity
 		* This is going to change some time soon!
 		**/
 		virtual Sound* getSound() = 0;
-		
+
 		/**
 		* Return the world transform for this entity
 		**/
@@ -73,18 +73,18 @@ class Entity
 		* Update the entity. Time is provided in milliseconds (ms)
 		**/
 		virtual void update(int delta) = 0;
-		
+
 	public:
 		/**
 		* Return the game state for this entity
 		**/
 		GameState * getGameState();
-		
+
 		/**
 		* Called by entity code to indicate the death of itself
 		**/
 		void hasDied();
-		
+
 		/**
 		* Disable collision for this entity
 		**/
@@ -94,7 +94,7 @@ class Entity
 		* Get position. Convinience method for transforms
 		**/
 		const btVector3& getPosition() const;
-		
+
 		/**
 		* Set position. Convinience method for transforms
 		**/

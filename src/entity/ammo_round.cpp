@@ -32,9 +32,9 @@ AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpMo
 	if (! AmmoRound::col_shape) {
 		AmmoRound::col_shape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
 	}
-	
+
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
-	
+
 	this->body = st->physics->addRigidBody(AmmoRound::col_shape, 0.0f, motionState, CG_DEBRIS);
 }
 
@@ -53,9 +53,9 @@ AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpMo
 	if (! AmmoRound::col_shape) {
 		AmmoRound::col_shape = new btBoxShape(btVector3(0.1f, 0.1f, 0.1f));
 	}
-	
+
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
-	
+
 	this->body = st->physics->addRigidBody(AmmoRound::col_shape, mass, motionState, CG_DEBRIS);
 }
 

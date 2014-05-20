@@ -21,7 +21,7 @@ class DialogButtonBarHandler {
 	public:
 		DialogButtonBarHandler() {}
 		virtual ~DialogButtonBarHandler() {}
-		
+
 	public:
 		/**
 		* This will be called with the index of the button which was pressed
@@ -38,7 +38,7 @@ class DialogButtonBar : public Dialog, public gcn::ActionListener {
 		string title;
 		DialogButtonBarHandler *ev;
 		vector<gcn::Button*> buttons;
-		
+
 	public:
 		DialogButtonBar(string title, vector<string>& labels, DialogButtonBarHandler* ev);
 		virtual ~DialogButtonBar();

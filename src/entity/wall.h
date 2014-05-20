@@ -15,23 +15,23 @@ class Wall : public Entity
 {
 	public:
 		virtual EntityClass klass() const { return WALL; }
-		
+
 	public:
 		WallType* wt;
 		float health;
-		
+
 	protected:
 		AnimPlay * anim;
-		
+
 	public:
 		Wall(WallType *pt, GameState *st, float x, float y, float z, float angle);
 		virtual ~Wall();
-		
+
 	public:
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
-		
+
 	public:
 		void takeDamage(float damage);
 };

@@ -21,27 +21,27 @@ class DialogNetJoin : public Dialog, public gcn::ActionListener
 {
 	friend class LocalRefreshAction;
 	friend class InternetRefreshAction;
-	
+
 	public:
 		DialogNetJoin();
 		virtual ~DialogNetJoin();
-		
+
 	private:
 		gcn::TabbedArea * tabs;
 		gcn::TextField * host;
-		
+
 		gcn::ListBox * local_list;
 		gcn::Button * local_button;
 		vector<string> * local_hosts;
 		VectorListModel * local_model;
 		LocalRefreshAction * local_refresh_action;
-		
+
 		gcn::ListBox * internet_list;
 		gcn::Button * internet_button;
 		vector<string> * internet_hosts;
 		VectorListModel * internet_model;
 		InternetRefreshAction * internet_refresh_action;
-		
+
 	public:
 		virtual gcn::Container * setup();
 		virtual void action(const gcn::ActionEvent& actionEvent);
@@ -55,10 +55,10 @@ class LocalRefreshAction : public gcn::ActionListener
 {
 	private:
 		DialogNetJoin* owner;
-		
+
 	public:
 		LocalRefreshAction(DialogNetJoin* owner) : owner(owner) {};
-		
+
 	public:
 		virtual void action(const gcn::ActionEvent& actionEvent);
 };
@@ -71,10 +71,10 @@ class InternetRefreshAction : public gcn::ActionListener
 {
 	private:
 		DialogNetJoin* owner;
-		
+
 	public:
 		InternetRefreshAction(DialogNetJoin* owner) : owner(owner) {};
-		
+
 	public:
 		virtual void action(const gcn::ActionEvent& actionEvent);
 };

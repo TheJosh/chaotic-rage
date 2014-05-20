@@ -27,7 +27,7 @@ void sendClientStats()
 	char * gl_vendor = url_encode((char*)glGetString(GL_VENDOR));
 	char * gl_renderer = url_encode((char*)glGetString(GL_RENDERER));
 	char * gl_version = url_encode((char*)glGetString(GL_VERSION));
-	
+
 	char * params = (char*)malloc(50 + strlen(version) + strlen(gl_vendor) + strlen(gl_renderer) + strlen(gl_version));
 	sprintf(params,
 		"version=%s&glvendor=%s&glrenderer=%s&glversion=%s",
@@ -37,12 +37,12 @@ void sendClientStats()
 		gl_version
 	);
 	int l = strlen(params);
-	
-	
+
+
 	try {
 		happyhttp::Connection conn("api.chaoticrage.com", 80);
 		conn.setcallbacks(0, 0, 0, 0);
-	
+
 		conn.putrequest("POST", "/client_stats");
 		conn.putheader("Connection", "close");
 		conn.putheader("Content-Length", l);
@@ -50,12 +50,12 @@ void sendClientStats()
 		conn.putheader("Accept", "text/plain");
 		conn.endheaders();
 		conn.send((const unsigned char*)params, l);
-	
+
 		while (conn.outstanding()) {
 			conn.pump();
 		}
 	} catch (const happyhttp::Wobbly & w) {}
-	
+
 	free(version);
 	free(gl_vendor);
 	free(gl_renderer);

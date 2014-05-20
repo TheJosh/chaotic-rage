@@ -74,7 +74,7 @@ class Unit : public Entity
 
 	public:
 		virtual EntityClass klass() const { return UNIT; }
-		
+
 	public:
 		string name;
 		Faction fac;
@@ -113,7 +113,7 @@ class Unit : public Entity
 	public:
 		Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac);
 		virtual ~Unit();
-		
+
 	public:
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
@@ -150,14 +150,14 @@ class Unit : public Entity
 		float getHealth();
 		float getHealthPercent();
 		virtual int takeDamage(float damage);
-		
+
 		void applyPickupAdjust(PickupTypeAdjust* adj);
 		void rollbackPickupAdjust(PickupTypeAdjust* adj);
 		void applyForce(btVector3 &force);
-		
+
 		UnitType* getUnitType() { return this->uc; }
 		UnitParams* getParams() { return &this->params; }
-		
+
 	protected:
 		void setState(int new_type);
 		void doUse();

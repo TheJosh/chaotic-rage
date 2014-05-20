@@ -15,23 +15,23 @@ class Object : public Entity
 {
 	public:
 		virtual EntityClass klass() const { return OBJECT; }
-		
+
 	public:
 		ObjectType* ot;
 		int health;
-		
+
 	protected:
 		AnimPlay * anim;
-		
+
 	public:
 		Object(ObjectType *pt, GameState *st, float x, float y, float z, float angle);
 		virtual ~Object();
-		
+
 	public:
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
-		
+
 	public:
 		void takeDamage(int damage);
 };

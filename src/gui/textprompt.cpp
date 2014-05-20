@@ -40,23 +40,23 @@ gcn::Container* DialogTextPrompt::setup()
 {
 	c = new gcn::Window(this->title);
 	c->setDimension(gcn::Rectangle(0, 0, 340, 150));
-	
+
 	this->label = new gcn::Label(this->message);
 	this->label->setPosition(20, 20);
 	this->label->setWidth(300);
 	c->add(this->label);
-	
+
 	this->text = new gcn::TextField("");
 	this->text->setPosition(20, 50);
 	this->text->setWidth(300);
 	c->add(this->text);
-	
+
 	this->button = new gcn::Button("OK");
 	this->button->setPosition(150, 90);
 	this->button->setWidth(50);
 	this->button->addActionListener(this);
 	c->add(this->button);
-	
+
 	return c;
 }
 
@@ -71,7 +71,7 @@ DialogTextPrompt::~DialogTextPrompt()
 	//delete button;
 	//delete text;
 	//delete label;
-	
+
 	delete ev;
 }
 
@@ -84,7 +84,7 @@ void DialogTextPrompt::action(const gcn::ActionEvent& actionEvent)
 	if (this->ev != NULL) {
 		this->ev->handleText(this->text->getText());
 	}
-	
+
 	GEng()->remDialog(this);
 }
 

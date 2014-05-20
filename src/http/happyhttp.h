@@ -1,13 +1,13 @@
 /*
  * HappyHTTP - a simple HTTP library
  * Version 0.1
- * 
+ *
  * Copyright (c) 2006 Ben Campbell
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
- * 
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
@@ -19,7 +19,7 @@
  *
  * 2. Altered source versions must be plainly marked as such, and must not
  * be misrepresented as being the original software.
- * 
+ *
  * 3. This notice may not be removed or altered from any source distribution.
  *
  */
@@ -82,7 +82,7 @@ enum {
 	NOT_MODIFIED = 304,
 	USE_PROXY = 305,
 	TEMPORARY_REDIRECT = 307,
-	
+
 	// 4xx client error
 	BAD_REQUEST = 400,
 	UNAUTHORIZED = 401,
@@ -182,7 +182,7 @@ public:
 	// ---------------------------
 	// high-level request interface
 	// ---------------------------
-	
+
 	// method is "GET", "POST" etc...
 	// url is only path part: eg  "/index.html"
 	// headers is array of name/value pairs, terminated by a null-ptr

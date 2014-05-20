@@ -16,11 +16,11 @@ class Pickup : public Entity
 {
 	public:
 		virtual EntityClass klass() const { return PICKUP; }
-		
+
 	protected:
 		PickupType* pt;
 		AnimPlay * anim;
-		
+
 	public:
 		Pickup(PickupType *pt, GameState *st, float x, float y, float z);
 		virtual ~Pickup();
@@ -30,13 +30,13 @@ class Pickup : public Entity
 		* Return true on success and false on failure (e.g. wrong weapon for ammo box)
 		**/
 		bool doUse(Unit *u);
-		
+
 		/**
 		* Get the pickup type
 		**/
 		PickupType* getPickupType() { return this->pt; }
-		
-		
+
+
 	public:
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();

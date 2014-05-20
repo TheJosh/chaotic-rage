@@ -21,29 +21,29 @@ class DialogNewGame_Action_Weapons;
 **/
 class DialogNewGame : public Dialog, public gcn::ActionListener {
 	friend class DialogNewGame_Action_Weapons;
-	
+
 	public:
 		DialogNewGame(int num_local);
 		virtual ~DialogNewGame();
-		
+
 	protected:
 		int num_local;
 		GameSettings* gs;
-		
+
 	private:
 		GametypeListModel *gametype_model;
 		MapRegistryListModel *map_model;
-		VectorListModel *unittype_model; 
+		VectorListModel *unittype_model;
 		VectorListModel *viewmode_model;
-		
+
 		gcn::DropDown *gametype;
 		gcn::DropDown *map;
 		gcn::DropDown *unittype;
 		gcn::DropDown *viewmode;
 		gcn::CheckBox *host;
-		
+
 		DialogNewGame_Action_Weapons *action_weapons;
-		
+
 	public:
 		virtual gcn::Container * setup();
 		virtual void action(const gcn::ActionEvent& actionEvent);

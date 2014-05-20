@@ -42,10 +42,10 @@ gcn::Container * DialogNull::setup()
 
 	c = new gcn::Window("Argh");
 	c->setDimension(gcn::Rectangle(0, 0, 300, 100));
-	
+
 	label = new gcn::Label("This action is not available at this time");
 	c->add(label, 22, 20);
-	
+
 	return c;
 }
 
@@ -65,24 +65,24 @@ DialogQuit::DialogQuit(GameState *st)
 gcn::Container * DialogQuit::setup()
 {
 	gcn::Button* button;
-	
+
 	c = new gcn::Window("Quit? Really?");
 	c->setDimension(gcn::Rectangle(0, 0, 300, 100));
-	
+
 	button = new gcn::Button("Yes");
 	button->setPosition(150 - 5 - 60, 30);
 	button->setWidth(60);
 	button->setId("Y");
 	button->addActionListener(this);
 	c->add(button);
-	
+
 	button = new gcn::Button("No");
 	button->setPosition(150 + 5, 30);
 	button->setWidth(60);
 	button->setId("N");
 	button->addActionListener(this);
 	c->add(button);
-	
+
 	return c;
 }
 
@@ -95,7 +95,7 @@ void DialogQuit::action(const gcn::ActionEvent& actionEvent)
 	if (actionEvent.getSource()->getId() == "Y") {
 		this->st->gameOver();
 	}
-	
+
 	GEng()->remDialog(this);
 }
 

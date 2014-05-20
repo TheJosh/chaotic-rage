@@ -64,43 +64,43 @@ gcn::Container * DialogNewCampaign::setup()
 {
 	gcn::Button* button;
 	gcn::Label* label;
-	
+
 	c = new gcn::Window("Campaign");
 	c->setDimension(gcn::Rectangle(0, 0, 255, 200));
-	
-	
+
+
 	label = new gcn::Label("Campaign");
 	c->add(label, 10, 10);
-	
+
 	this->campaign = new gcn::DropDown(this->campaigns);
 	this->campaign->setPosition(80, 10);
 	this->campaign->setWidth(160);
 	c->add(this->campaign);
-	
-	
+
+
 	label = new gcn::Label("Unit type");
 	c->add(label, 10, 30);
-	
+
 	this->unittype = new gcn::DropDown(new VectorListModel(this->gm->getUnitTypes()));
 	this->unittype->setPosition(80, 30);
 	this->unittype->setWidth(160);
 	c->add(this->unittype);
-	
-	
+
+
 	label = new gcn::Label("View mode");
 	c->add(label, 10, 50);
-	
+
 	this->viewmode = new gcn::DropDown(new VectorListModel(this->gm->getViewModes()));
 	this->viewmode->setPosition(80, 50);
 	this->viewmode->setWidth(160);
 	c->add(this->viewmode);
-	
-	
+
+
 	button = new gcn::Button("Start Game");
 	button->setPosition(120, 150);
 	button->addActionListener(this);
 	c->add(button);
-	
+
 	return c;
 }
 

@@ -19,14 +19,14 @@ class DialogClientSettings : public Dialog, public gcn::ActionListener {
 	private:
 		GameState* st;
 		gcn::Button* button;
-		
+
 		gcn::TextField* gl_msaa;
 		gcn::TextField* gl_tex_filter;
-		
+
 	public:
 		DialogClientSettings(GameState* st);
 		virtual ~DialogClientSettings();
-		
+
 		virtual gcn::Container * setup();
 		virtual string getName() { return "cl-set"; }
 		virtual void action(const gcn::ActionEvent& actionEvent);

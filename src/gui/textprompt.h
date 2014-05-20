@@ -23,7 +23,7 @@ class DialogTextPromptHandler {
 	public:
 		DialogTextPromptHandler() {}
 		virtual ~DialogTextPromptHandler() {}
-		
+
 	public:
 		/**
 		* This will be called with the string which was entered

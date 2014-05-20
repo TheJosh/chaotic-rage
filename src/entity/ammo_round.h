@@ -23,7 +23,7 @@ class AmmoRound : public Entity
 {
 	public:
 		virtual EntityClass klass() const { return AMMOROUND; }
-		
+
 	public:
 		WeaponType *wt;
 		AnimPlay *anim;
@@ -33,12 +33,12 @@ class AmmoRound : public Entity
 
 	private:
 		static btCollisionShape* col_shape;
-		
+
 	public:
 		AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model, Unit* owner);
 		AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model, Unit* owner, float mass);
 		virtual ~AmmoRound();
-		
+
 		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);

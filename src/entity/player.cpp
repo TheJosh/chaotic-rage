@@ -27,7 +27,7 @@ Player::Player(UnitType *uc, GameState *st, float x, float y, float z, Faction f
 		this->key[i] = 0;
 		this->lkey[i] = 0;
 	}
-	
+
 	this->mouse_angle = 0.0f;
 	this->vertical_angle = 0.0f;
 
@@ -109,7 +109,7 @@ void Player::handleKeyChange()
 			this->doLift();
 		}
 	}
-	
+
 	if (this->key[KEY_MELEE] && !this->lkey[KEY_MELEE] && !this->lift_obj) {
 		this->meleeAttack();
 	}
@@ -131,7 +131,7 @@ void Player::angleFromMouse(int x, int y, int delta)
 {
 	float sensitivity = 0.2f;	// 0.1 = slow, 1.0 = nuts
 	float change_dist;
-	
+
 	change_dist = static_cast<float>(x) * sensitivity;
 	this->mouse_angle -= change_dist;
 
@@ -223,10 +223,10 @@ void Player::update(int delta)
 		}
 		this->walking = walking;
 	}
-	
-	
+
+
 	this->force = btVector3(0.0f, 0.0f, 0.0f);
-	
+
 	Unit::update(delta);
 }
 
@@ -237,10 +237,10 @@ void Player::update(int delta)
 int Player::takeDamage(float damage)
 {
 	int result = Unit::takeDamage(damage);
-	
+
 	if (result == 1) {
 		this->st->logic->raise_playerdied(this->slot);
-		
+
 		for (unsigned int i = 0; i < this->st->num_local; i++) {
 			if (this == this->st->local_players[i]->p) {
 				this->st->local_players[i]->p = NULL;
@@ -248,7 +248,7 @@ int Player::takeDamage(float damage)
 			}
 		}
 	}
-	
+
 	return result;
 }
 

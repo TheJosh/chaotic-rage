@@ -31,18 +31,18 @@ class DialogNewCampaign : public Dialog, public gcn::ActionListener {
 	public:
 		DialogNewCampaign(int num_local, Mod *mod);
 		virtual ~DialogNewCampaign();
-		
+
 	private:
 		int num_local;
 		Mod* mod;
 
 		gcn::DropDown *campaign;
 		CampaignListModel *campaigns;
-		
+
 		gcn::DropDown *unittype;
-		
+
 		gcn::DropDown *viewmode;
-		
+
 	public:
 		virtual gcn::Container * setup();
 		virtual void action(const gcn::ActionEvent& actionEvent);
