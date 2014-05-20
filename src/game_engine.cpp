@@ -22,6 +22,7 @@
 #include "util/serverconfig.h"
 #include "mod/mod_manager.h"
 #include "gui/dialog.h"
+#include "game.h"
 
 using namespace std;
 
@@ -88,6 +89,15 @@ void GameEngine::setMouseGrab(bool newval)
 
 	this->mouse_grabbed = newval;
 	this->render->setMouseGrab(newval);
+
+	// The transition from absolute -> relative causes bad events to come back from SDL.
+	// Set a flag to ignore the events.
+	// The flag gets reset after the first mouse move event is received.
+	if (newval) {
+		for (int i = 0; i < MAX_LOCAL; i++) {
+			ignore_relative_mouse[i] = true;
+		}
+	}
 }
 
 

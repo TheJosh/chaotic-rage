@@ -12,6 +12,7 @@
 
 
 // Mouse movement, including keyboard simulation
+extern bool ignore_relative_mouse[MAX_LOCAL];
 extern int game_x[MAX_LOCAL], game_y[MAX_LOCAL];
 extern int net_x[MAX_LOCAL], net_y[MAX_LOCAL];
 extern int mk_down_x[MAX_LOCAL], mk_down_y[MAX_LOCAL];

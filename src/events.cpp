@@ -190,11 +190,14 @@ void handleEvents(GameState *st)
 
 			#else
 			} else if (event.type == SDL_MOUSEMOTION) {
-				game_x[0] += event.motion.xrel;
-				net_x[0] += event.motion.xrel;
-				game_y[0] += event.motion.yrel;
-				net_y[0] += event.motion.yrel;
-
+				if (ignore_relative_mouse[0]) {
+					ignore_relative_mouse[0] = false;
+				} else {
+					game_x[0] += event.motion.xrel;
+					net_x[0] += event.motion.xrel;
+					game_y[0] += event.motion.yrel;
+					net_y[0] += event.motion.yrel;
+				}
 			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
 				st->local_players[0]->hud->eventClick();
 				st->local_players[0]->p->keyPress(Player::KEY_FIRE);
@@ -294,11 +297,14 @@ void handleEvents(GameState *st)
 				}
 
 			} else if (event.type == SDL_MOUSEMOTION) {
-				game_x[1] += event.motion.xrel;
-				net_x[1] += event.motion.xrel;
-				game_y[1] += event.motion.yrel;
-				net_y[1] += event.motion.yrel;
-
+				if (ignore_relative_mouse[1]) {
+					ignore_relative_mouse[1] = false;
+				} else {
+					game_x[1] += event.motion.xrel;
+					net_x[1] += event.motion.xrel;
+					game_y[1] += event.motion.yrel;
+					net_y[1] += event.motion.yrel;
+				}
 			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
 				st->local_players[1]->hud->eventClick();
 				st->local_players[1]->p->keyPress(Player::KEY_FIRE);

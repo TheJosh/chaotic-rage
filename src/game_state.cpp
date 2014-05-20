@@ -373,6 +373,7 @@ void GameState::postGame()
 
 // Mouse movement, including keyboard simulation
 // TODO: Move these to the PlayerState class
+bool ignore_relative_mouse[MAX_LOCAL];
 int game_x[MAX_LOCAL], game_y[MAX_LOCAL];
 int net_x[MAX_LOCAL], net_y[MAX_LOCAL];
 int mk_down_x[MAX_LOCAL], mk_down_y[MAX_LOCAL];
@@ -387,6 +388,7 @@ void GameState::gameLoop(GameState* st, Render* render, Audio* audio, NetClient*
 
 	for (int i = 0; i < MAX_LOCAL; i++) {
 		game_x[i] = game_y[i] = net_x[i] = net_y[i] = mk_down_x[i] = mk_down_y[i] = 0;
+		ignore_relative_mouse[i] = false;
 	}
 
 	start = SDL_GetTicks();
