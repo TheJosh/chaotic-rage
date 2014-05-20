@@ -77,14 +77,14 @@ GameLogic::~GameLogic()
 bool GameLogic::execScript(string code)
 {
 	int res = luaL_dostring(L, code.c_str());
-	
+
 	if (res != 0) {
 		string msg = "Failed to execute GameType script: ";
 		msg.append(lua_tostring(L, -1));
 		displayMessageBox(msg);
 		this->st->gameOver();
 	}
-	
+
 	return true;
 }
 
@@ -97,11 +97,11 @@ void GameLogic::update(int delta)
 	for (unsigned int id = 0; id < this->timers.size(); id++) {
 		LuaTimer* t = this->timers.at(id);
 		if (t == NULL) continue;
-		
+
 		if (gl->st->game_time >= t->due) {
 			lua_rawgeti(L, LUA_REGISTRYINDEX, t->lua_func);
 			lua_pcall(L, 0, 0, 0);
-			
+
 			if (t->interval) {
 				t->due += t->interval;
 			} else {
@@ -155,26 +155,26 @@ LUA_FUNC(debug)
 {
 	int n = lua_gettop(L);
 	int i;
-	
+
 	printf("Lua debug:");
-	
+
 	for (i = 1; i <= n; i++) {
 		if (lua_isstring(L, i)) {
 			printf("  %s", lua_tostring(L, i));
-			
+
 		} else if (lua_isnil(L, i)) {
 			printf("  %s", "nil");
-			
+
 		} else if (lua_isboolean(L,i)) {
 			printf("  %s", lua_toboolean(L, i) ? "true" : "false");
-			
+
 		} else {
 			printf("  %s:%p", luaL_typename(L, i), lua_topointer(L, i));
-		}   
+		}
 	}
-	
+
 	printf("\n");
-	
+
 	return 0;
 }
 
@@ -209,9 +209,9 @@ LUA_FUNC(bind_gamestart)
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);
 	}
-	
+
 	lua_pushvalue(L, -1);
-	
+
 	int r = luaL_ref(L, LUA_REGISTRYINDEX);
 	gl->binds_gamestart.push_back(r);
 	return 0;
@@ -228,9 +228,9 @@ LUA_FUNC(bind_playerjoin)
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);
 	}
-	
+
 	lua_pushvalue(L, -1);
-	
+
 	int r = luaL_ref(L, LUA_REGISTRYINDEX);
 	gl->binds_playerjoin.push_back(r);
 	return 0;
@@ -247,9 +247,9 @@ LUA_FUNC(bind_playerleave)
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);
 	}
-	
+
 	lua_pushvalue(L, -1);
-	
+
 	int r = luaL_ref(L, LUA_REGISTRYINDEX);
 	gl->binds_playerleave.push_back(r);
 	return 0;
@@ -266,9 +266,9 @@ LUA_FUNC(bind_playerdied)
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);
 	}
-	
+
 	lua_pushvalue(L, -1);
-	
+
 	int r = luaL_ref(L, LUA_REGISTRYINDEX);
 	gl->binds_playerdied.push_back(r);
 	return 0;
@@ -285,9 +285,9 @@ LUA_FUNC(bind_npcdied)
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);
 	}
-	
+
 	lua_pushvalue(L, -1);
-	
+
 	int r = luaL_ref(L, LUA_REGISTRYINDEX);
 	gl->binds_npcdied.push_back(r);
 	return 0;
@@ -309,24 +309,24 @@ LUA_FUNC(add_interval)
 		lua_pushstring(L, "Arg #1 is not an integer");
 		lua_error(L);
 	}
-	
+
 	if (! lua_isfunction(L, 2)) {
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);
 	}
-	
+
 	int time = lua_tointeger(L, 1);
-	
+
 	lua_pushvalue(L, -1);
 	int func = luaL_ref(L, LUA_REGISTRYINDEX);
-	
+
 	LuaTimer* t = new LuaTimer();
 	gl->timers.push_back(t);
-	
+
 	t->due = gl->st->game_time + time;
 	t->lua_func = func;
 	t->interval = time;
-	
+
 	lua_pushnumber(L, gl->timers.size() - 1);
 	return 1;
 }
@@ -346,24 +346,24 @@ LUA_FUNC(add_timer)
 		lua_pushstring(L, "Arg #1 is not an integer");
 		lua_error(L);
 	}
-	
+
 	if (! lua_isfunction(L, 2)) {
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);
 	}
-	
+
 	int time = lua_tointeger(L, 1);
-	
+
 	lua_pushvalue(L, -1);
 	int func = luaL_ref(L, LUA_REGISTRYINDEX);
-	
+
 	LuaTimer* t = new LuaTimer();
 	gl->timers.push_back(t);
-	
+
 	t->due = gl->st->game_time + time;
 	t->lua_func = func;
 	t->interval = 0;
-	
+
 	lua_pushnumber(L, gl->timers.size() - 1);
 	return 1;
 }
@@ -380,9 +380,9 @@ LUA_FUNC(remove_timer)
 		lua_pushstring(L, "Arg #1 is not an integer");
 		lua_error(L);
 	}
-	
+
 	int id = lua_tointeger(L, 1);
-	
+
 	gl->timers[id] = NULL;
 
 	return 0;
@@ -397,34 +397,34 @@ LUA_FUNC(remove_timer)
 LUA_FUNC(add_npc)
 {
 	NPC *p;
-	
+
 	UnitType *uc = GEng()->mm->getUnitType(*(new string(lua_tostring(L, 1))));
 	if (uc == NULL) {
 		return luaL_error(L, "Arg #1 is not an available unittype");
 	}
-	
+
 	AIType *ai = GEng()->mm->getAIType(*(new string(lua_tostring(L, 2))));
 	if (uc == NULL) {
 		return luaL_error(L, "Arg #2 is not an available aitype");
 	}
-	
+
 	Faction fac = (Faction) lua_tointeger(L, 3);
-	
-	
+
+
 	Zone *zn = gl->map->getSpawnZone(fac);
 	if (zn == NULL) {
 		return luaL_error(L, "Map does not have any spawnpoints");
 	}
-	
+
 	p = new NPC(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 2, ai, fac);
-	
+
 	for (unsigned int i = 0; i < uc->spawn_weapons.size(); i++) {
 		p->pickupWeapon(uc->spawn_weapons.at(i));
 	}
-	
+
 	gl->st->addUnit(p);
-	
-	
+
+
 	return 0;
 }
 
@@ -441,33 +441,33 @@ LUA_FUNC(add_npc)
 LUA_FUNC(add_player)
 {
 	Player *p;
-	
+
 	const char* name = lua_tostring(L, 1);
 	UnitType *uc = GEng()->mm->getUnitType(*(new string(name)));
 	if (uc == NULL) {
 		return luaL_error(L, "Arg #1 is not an available unittype");
 	}
-	
+
 	Faction fac = (Faction) lua_tointeger(L, 2);
-	
+
 	int slot = lua_tointeger(L, 3);
-	
-	
+
+
 	Zone *zn = gl->map->getSpawnZone(fac);
 	if (zn == NULL) {
 		return luaL_error(L, "Map does not have any spawnpoints");
 	}
-	
+
 	p = new Player(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 0, fac, slot);
-	
+
 	// Is it a local player?
 	PlayerState *ps = gl->st->localPlayerFromSlot(slot);
 	if (ps) {
 		ps->p = p;
 	}
-	
+
 	gl->st->addUnit(p);
-	
+
 	return 0;
 }
 
@@ -510,7 +510,7 @@ LUA_FUNC(game_over)
 LUA_FUNC(ammo_drop)
 {
 	Pickup *pu;
-	
+
 	// special ammocrate for current weapon
 	pu = new Pickup(
 		GEng()->mm->getPickupType("ammo_current"),
@@ -520,7 +520,7 @@ LUA_FUNC(ammo_drop)
 		15
 	);
 	gl->st->addPickup(pu);
-	
+
 	return 0;
 }
 
@@ -536,9 +536,9 @@ LUA_FUNC(show_alert_message)
 		lua_pushstring(L, "Arg #1 is not a string");
 		lua_error(L);
 	}
-	
+
 	gl->st->addHUDMessage(ALL_SLOTS, text);
-	
+
 	return 0;
 }
 
@@ -559,14 +559,14 @@ LUA_FUNC(add_label)
 		new_hudlabel(L, lab);
 		return 1;
 	}
-	
+
 	lua_pushnil(L);
 	return 1;
 }
 
 
 /**
-* 
+*
 *
 * @return String: The currently selected unit type
 **/
@@ -634,7 +634,7 @@ void register_lua_functions()
 	LUA_REG(get_viewmode);			// TODO: Add a 'camera' object
 	LUA_REG(set_viewmode);			// dynamic position, animation, etc.
 
-	
+
 	// Factions constants table
 	lua_createtable(L,0,0);
 	lua_pushnumber(L, FACTION_TEAM1); lua_setfield(L, -2, "team1");
@@ -649,12 +649,12 @@ void register_lua_functions()
 	lua_setglobal(L, "factions");
 
 	lua_standard_libs(L);
-	
+
 	// These use LuaBridge
 	load_physics_lib(L);
 	load_entity_lib(L);
 	load_world_lib(L);
-	
+
 	// These do not, but should
 	load_hudlabel_lib(L);
 	load_vector3_lib(L);

@@ -58,15 +58,15 @@ Quadratic cfg_getquadratic(cfg_t* cfg, const char* name)
 Range cfg_getrange(cfg_t *cfg, const char * name)
 {
 	Range res;
-	
+
 	if (cfg_size(cfg, name) == 1) {
 		res.min = cfg_getnint(cfg, name, 0);
 		res.max = res.min;
-		
+
 	} else {
 		res.min = cfg_getnint(cfg, name, 0);
 		res.max = cfg_getnint(cfg, name, 1);
 	}
-	
+
 	return res;
 }

@@ -16,7 +16,7 @@ class GameState;
 #ifdef _WIN32
 	#include <windows.h>
 	#include <math.h>
-	
+
 	#define or ||
 	#define and &&
 

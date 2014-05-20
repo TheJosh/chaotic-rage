@@ -16,7 +16,7 @@ class Zone
 		float y1;
 		float x2;
 		float y2;
-		
+
 	public:
 		// Flags for the various jobs a zone may do
 		// A zone may do multiple jobs at once
@@ -31,11 +31,11 @@ class Zone
 		bool collect[NUM_FACTIONS];    // team collectables - flags, suitcases, balls, etc.
 		bool dest[NUM_FACTIONS];       // where collectables are to be taken
 		bool nearbase[NUM_FACTIONS];   // somewhere near the team base - for generic use
-	
+
 	public:
 		Zone(float x, float y, float width, float height);
 		~Zone();
-		
+
 	public:
 		float getRandomX();
 		float getRandomY();

@@ -16,7 +16,7 @@ class Quadratic
 		float exp;
 		float lin;
 		float con;
-		
+
 	public:
 		/**
 		* Construct with a given exponential, linear and constant term
@@ -27,7 +27,7 @@ class Quadratic
 			this->lin = linear;
 			this->con = constant;
 		}
-		
+
 		/**
 		* A blank Quadratic, which will always solve to zero
 		**/
@@ -37,7 +37,7 @@ class Quadratic
 			this->lin = 0.0f;
 			this->con = 0.0f;
 		}
-		
+
 		/**
 		* Solves the quadratic equation for a given value of X
 		**/

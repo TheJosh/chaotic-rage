@@ -54,17 +54,17 @@ class Menu : public UIUpdate
 		RenderOpenGL *render;
 		int running;
 		vector<MenuItem*> menuitems;
-		
+
 		gcn::SDLInput* input;
 		gcn::Gui* gui;
 		gcn::Container* gui_container;
-		
+
 		WavefrontObj * bgmesh;
 		float bg_rot1_pos;
 		float bg_rot1_dir;
 		float bg_rot2_pos;
 		float bg_rot2_dir;
-		
+
 	public:
 		// Data for the dialogs
 		SpritePtr logo;
@@ -75,13 +75,13 @@ class Menu : public UIUpdate
 		// Init etc
 		Menu(GameState *st, GameManager *gm);
 		GameState *getGameState() { return this->st; }
-		
+
 		void loadModBits(UIUpdate* ui = NULL);
 		void createBGmesh();
 		void doit(UIUpdate* ui);
 		void setupGLstate();
 		virtual void updateUI();
-		
+
 	public:
 		// Main menu
 		void menuClear();
@@ -89,7 +89,7 @@ class Menu : public UIUpdate
 		void menuRender();
 		void menuHover(int x, int y);
 		MenuCommand menuClick(int x, int y);
-		
+
 		// Main menu actions
 		void doCampaign();
 		void doSingleplayer();
@@ -99,12 +99,12 @@ class Menu : public UIUpdate
 		void doMods();
 		void doHelp();
 		void doQuit();
-		
+
 		// Game dialogs
 		void addDialog(Dialog * dialog);
 		void remDialog(Dialog * dialog);
 		void remAllDialogs();
-		
+
 		// Start game stuff
 		// TODO: Remove this and go direct to GameManager
 		void startCampaign(Campaign* c, string unittype, GameSettings::ViewMode viewmode, unsigned int num_local);

@@ -108,14 +108,14 @@ static cfg_opt_t zone_opts[] =
 static cfg_opt_t light_opts[] =
 {
 	CFG_INT((char*) "type", 0, CFGF_NONE),			// 1 = point, 2 = torch
-	
+
 	CFG_FLOAT((char*) "x", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "y", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "z", 0, CFGF_NONE),
-	
+
 	CFG_INT_LIST((char*) "diffuse", 0, CFGF_NONE),
 	CFG_INT_LIST((char*) "specular", 0, CFGF_NONE),
-	
+
 	CFG_END()
 };
 
@@ -156,19 +156,19 @@ static cfg_opt_t opts[] =
 {
 	CFG_FLOAT((char*) "width", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "height", 0, CFGF_NONE),
-	
+
 	CFG_SEC((char*) "wall", wall_opts, CFGF_MULTI),
 	CFG_SEC((char*) "vehicle", vehicle_opts, CFGF_MULTI),
 	CFG_SEC((char*) "object", object_opts, CFGF_MULTI),
 	CFG_SEC((char*) "pickup", pickup_opts, CFGF_MULTI),
-	
+
 	CFG_SEC((char*) "zone", zone_opts, CFGF_MULTI),
 	CFG_SEC((char*) "light", light_opts, CFGF_MULTI),
 	CFG_SEC((char*) "mesh", mesh_opts, CFGF_MULTI),
 	CFG_SEC((char*) "heightmap", heightmap_opts, CFGF_MULTI),
 	CFG_SEC((char*) "water", water_opts, CFGF_MULTI),
 	CFG_SEC((char*) "skybox", skybox_opts, CFGF_MULTI),
-	
+
 	CFG_INT_LIST((char*) "ambient", 0, CFGF_NONE),
 
 	CFG_END()
@@ -237,8 +237,8 @@ int Map::load(string name, Render *render, Mod* insideof)
 	this->width = 100;
 	this->height = 100;
 	this->name = name;
-	
-	
+
+
 	if (insideof) {
 		this->mod = new ModProxy(insideof, "maps/" + name + '/');
 	} else {
@@ -246,29 +246,29 @@ int Map::load(string name, Render *render, Mod* insideof)
 		filename.append(name);
 		this->mod = new Mod(st, filename);
 	}
-	
-	
+
+
 	cfg_t *cfg, *cfg_sub;
 	int num_types, j, k;
-	
+
 	// Read buffer
 	char *buffer = this->mod->loadText("map.conf");
 	if (buffer == NULL) {
 		reportFatalError("Unable to load map; no configuration file");
 	}
-	
+
 	// Parse buffer
 	cfg = cfg_init(opts, CFGF_NONE);
 	int result = cfg_parse_buf(cfg, buffer);
 	free(buffer);
-	
+
 	// Did it work?
 	if (result != CFG_SUCCESS) {
 		cerr << "Unable to load map; configuration file syntax error\n";
 		cfg_free(cfg);
 		return 0;
 	}
-	
+
 	// Get width and height
 	this->width = cfg_getfloat(cfg, "width");
 	this->height = cfg_getfloat(cfg, "height");
@@ -278,13 +278,13 @@ int Map::load(string name, Render *render, Mod* insideof)
 		cfg_free(cfg);
 		return 0;
 	}
-	
+
 	// Heightmap
 	cfg_sub = cfg_getnsec(cfg, "heightmap", 0);
 	if (cfg_sub) {
 		this->heightmap = new Heightmap();
 		this->heightmap->scale = (float)cfg_getfloat(cfg_sub, "scale-z");
-		
+
 		char* tmp = cfg_getstr(cfg_sub, "data");
 		if (tmp == NULL) {
 			cerr << "Heightmap config does not have 'data' field set\n";
@@ -316,16 +316,16 @@ int Map::load(string name, Render *render, Mod* insideof)
 		cfg_free(cfg);
 		return 0;
 	}
-	
+
 	// Water
 	cfg_sub = cfg_getnsec(cfg, "water", 0);
 	if (cfg_sub) {
 		this->water = this->render->loadSprite("water.png", this->mod);
-		
+
 		if (this->water) {
 			this->water_level = (float)cfg_getfloat(cfg_sub, "level");
 		}
-		
+
 		float move = (float)cfg_getfloat(cfg_sub, "movement");
 		if (move) {
 			move /= 2.0f;
@@ -336,7 +336,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 			this->water_speed = 0.0f;
 		}
 	}
-	
+
 	// Skybox
 	cfg_sub = cfg_getnsec(cfg, "skybox", 0);
 	if (cfg_sub and this->render->is3D()) {
@@ -344,7 +344,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 		this->skybox = render3d->loadCubemap("skybox_", ".jpg", this->mod);
 		this->skybox_size = cfg_getvec3(cfg_sub, "size");
 	}
-	
+
 	// Ambient lighting
 	int num = cfg_size(cfg, "ambient");
 	if (num == 3) {
@@ -357,29 +357,29 @@ int Map::load(string name, Render *render, Mod* insideof)
 	num_types = cfg_size(cfg, "zone");
 	for (j = 0; j < num_types; j++) {
 		cfg_sub = cfg_getnsec(cfg, "zone", j);
-		
+
 		Zone * z = new Zone(
 			(float)cfg_getfloat(cfg_sub, "x"),
 			(float)cfg_getfloat(cfg_sub, "y"),
 			(float)cfg_getfloat(cfg_sub, "width"),
 			(float)cfg_getfloat(cfg_sub, "height")
 		);
-		
+
 		int num_spawn = cfg_size(cfg_sub, "spawn");
 		for (k = 0; k < num_spawn; k++) {
 			int f = cfg_getnint(cfg_sub, "spawn", k);
 			if (f < FACTION_INDIVIDUAL || f >= NUM_FACTIONS) continue;
 			z->spawn[f] = 1;
 		}
-		
+
 		this->zones.push_back(z);
 	}
-	
+
 	// Meshes
 	num_types = cfg_size(cfg, "mesh");
 	for (j = 0; j < num_types; j++) {
 		cfg_sub = cfg_getnsec(cfg, "mesh", j);
-		
+
 		MapMesh * m = new MapMesh();
 		m->xform = btTransform(
 			btQuaternion(0.0f, 0.0f, 0.0f),
@@ -410,15 +410,15 @@ int Map::load(string name, Render *render, Mod* insideof)
 	num_types = cfg_size(cfg, "light");
 	for (j = 0; j < num_types; j++) {
 		int num;
-		
+
 		cfg_sub = cfg_getnsec(cfg, "light", j);
-		
+
 		Light * l = new Light(cfg_getint(cfg_sub, "type"));
-		
+
 		l->x = (float)cfg_getfloat(cfg_sub, "x");
 		l->y = (float)cfg_getfloat(cfg_sub, "y");
 		l->z = (float)cfg_getfloat(cfg_sub, "z");
-		
+
 		num = cfg_size(cfg_sub, "diffuse");
 		if (num == 4) {
 			l->setDiffuse(
@@ -428,7 +428,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 				(short)cfg_getnint(cfg_sub, "diffuse", 3)
 			);
 		}
-		
+
 		num = cfg_size(cfg_sub, "specular");
 		if (num == 4) {
 			l->setSpecular(
@@ -438,11 +438,11 @@ int Map::load(string name, Render *render, Mod* insideof)
 				(short)cfg_getnint(cfg_sub, "specular", 3)
 			);
 		}
-		
+
 		this->lights.push_back(l);
 	}
-	
-	
+
+
 	cfg_free(cfg);
 	return 1;
 }
@@ -456,27 +456,27 @@ void Map::loadDefaultEntities()
 {
 	cfg_t *cfg, *cfg_sub;
 	int num_types, j;
-	
-	
+
+
 	char *buffer = this->mod->loadText("map.conf");
 	if (buffer == NULL) {
 		return;
 	}
-	
+
 	cfg = cfg_init(opts, CFGF_NONE);
 	cfg_parse_buf(cfg, buffer);
-	
+
 	free(buffer);
-	
-	
+
+
 	// Walls
 	num_types = cfg_size(cfg, "wall");
 	for (j = 0; j < num_types; j++) {
 		cfg_sub = cfg_getnsec(cfg, "wall", j);
-		
+
 		string type = cfg_getstr(cfg_sub, "type");
 		if (type.empty()) continue;
-		
+
 		WallType *wt = GEng()->mm->getWallType(type);
 		if (wt == NULL) reportFatalError("Unable to load map; missing or invalid wall type '" + type + "'");
 
@@ -488,10 +488,10 @@ void Map::loadDefaultEntities()
 			1.0f,
 			(float)cfg_getfloat(cfg_sub, "angle")
 		);
-		
+
 		this->st->addWall(wa);
 	}
-	
+
 	// Vehicles
 	std::map<TrainIds, Vehicle*> train_nums;
 	num_types = cfg_size(cfg, "vehicle");
@@ -499,13 +499,13 @@ void Map::loadDefaultEntities()
 		Vehicle * v;
 		TrainIds tid;
 		cfg_sub = cfg_getnsec(cfg, "vehicle", j);
-		
+
 		string type = cfg_getstr(cfg_sub, "type");
 		if (type.empty()) continue;
-		
+
 		VehicleType *vt = GEng()->mm->getVehicleType(type);
 		if (vt == NULL) reportFatalError("Unable to load map; missing or invalid vehicle type '" + type + "'");
-		
+
 		if (vt->helicopter) {
 			v = new Helicopter(vt, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"));
 		} else {
@@ -520,7 +520,7 @@ void Map::loadDefaultEntities()
 
 		this->st->addVehicle(v);
 	}
-	
+
 	// Hook up trains
 	for(std::map<TrainIds, Vehicle*>::iterator it = train_nums.begin(); it != train_nums.end(); ++it) {
 		TrainIds srch = TrainIds(it->first);
@@ -534,34 +534,34 @@ void Map::loadDefaultEntities()
 	num_types = cfg_size(cfg, "object");
 	for (j = 0; j < num_types; j++) {
 		cfg_sub = cfg_getnsec(cfg, "object", j);
-		
+
 		string type = cfg_getstr(cfg_sub, "type");
 		if (type.empty()) continue;
-		
+
 		ObjectType *ot = GEng()->mm->getObjectType(type);
 		if (ot == NULL) reportFatalError("Unable to load map; missing or invalid object type '" + type + "'");
-		
+
 		Object * ob = new Object(ot, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"), 1.0f, (float)cfg_getfloat(cfg_sub, "angle"));
-		
+
 		this->st->addObject(ob);
 	}
-	
+
 	// Pickups
 	num_types = cfg_size(cfg, "pickup");
 	for (j = 0; j < num_types; j++) {
 		cfg_sub = cfg_getnsec(cfg, "pickup", j);
-		
+
 		string type = cfg_getstr(cfg_sub, "type");
 		if (type.empty()) continue;
-		
+
 		PickupType *pt = GEng()->mm->getPickupType(type);
 		if (pt == NULL) reportFatalError("Unable to load map; missing or invalid pickup type '" + type + "'");
-		
+
 		Pickup * pu = new Pickup(pt, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"), 1.0f);
-		
+
 		this->st->addPickup(pu);
 	}
-	
+
 	cfg_free(cfg);
 }
 
@@ -591,18 +591,18 @@ Zone * Map::getSpawnZone(Faction f)
 {
 	int num = 0;
 	Zone * candidates[20];
-	
+
 	for (unsigned int i = 0; i < this->zones.size(); i++) {
 		if (this->zones[i]->spawn[f] == 1) {
 			candidates[num++] = this->zones[i];
 			if (num == 20) break;
 		}
 	}
-	
+
 	if (num == 0) return NULL;
-	
+
 	num = getRandom(0, num - 1);
-	
+
 	return candidates[num];
 }
 
@@ -616,7 +616,7 @@ Zone * Map::getPrisonZone(Faction f)
 	for (unsigned int i = 0; i < this->zones.size(); i++) {
 		if (this->zones[i]->prison[f] == 1) return this->zones[i];
 	}
-	
+
 	return NULL;
 }
 
@@ -630,7 +630,7 @@ Zone * Map::getCollectZone(Faction f)
 	for (unsigned int i = 0; i < this->zones.size(); i++) {
 		if (this->zones[i]->collect[f] == 1) return this->zones[i];
 	}
-	
+
 	return NULL;
 }
 
@@ -644,7 +644,7 @@ Zone * Map::getDestZone(Faction f)
 	for (unsigned int i = 0; i < this->zones.size(); i++) {
 		if (this->zones[i]->dest[f] == 1) return this->zones[i];
 	}
-	
+
 	return NULL;
 }
 
@@ -658,7 +658,7 @@ Zone * Map::getNearbaseZone(Faction f)
 	for (unsigned int i = 0; i < this->zones.size(); i++) {
 		if (this->zones[i]->nearbase[f] == 1) return this->zones[i];
 	}
-	
+
 	return NULL;
 }
 
@@ -703,14 +703,14 @@ bool Heightmap::loadIMG(Mod* mod, string filename)
 	if (rw == NULL) {
 		return false;
 	}
-	
+
 	// Load image file
 	surf = IMG_Load_RW(rw, 0);
 	if (surf == NULL) {
 		SDL_RWclose(rw);
 		return false;
 	}
-	
+
 	// Heightmaps need to be powerOfTwo + 1
 	if (!isPowerOfTwo(surf->w - 1) || !isPowerOfTwo(surf->h - 1)) {
 		SDL_RWclose(rw);
@@ -721,18 +721,18 @@ bool Heightmap::loadIMG(Mod* mod, string filename)
 	this->data = new float[surf->w * surf->h];
 	this->sx = surf->w;
 	this->sz = surf->h;
-	
+
 	for (nZ = 0; nZ < this->sz; nZ++) {
 		for (nX = 0; nX < this->sx; nX++) {
-			
+
 			Uint32 pixel = getPixel(surf, nX, nZ);
 			SDL_GetRGB(pixel, surf->format, &r, &g, &b);
-			
+
 			this->data[nZ * this->sx + nX] = r / 255.0f * this->scale;
-			
+
 		}
 	}
-	
+
 	SDL_RWclose(rw);
 	SDL_FreeSurface(surf);
 	return true;
@@ -854,12 +854,12 @@ bool Map::preGame()
 
 	// Add to physics
 	this->st->physics->addRigidBody(heightmap->ground, CG_TERRAIN);
-	
+
 	// If there is water in the world, we create a water surface
 	// It doesn't collide with stuff, it's just so we can detect with a raycast
 	if (this->water) {
 		btCollisionShape* groundShape = new btBoxShape(btVector3(this->width/2.0f, 10.0f, this->height/2.0f));
-		
+
 		btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(this->width/2.0f, -10.0f + this->water_level, this->height/2.0f)));
 		btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
 			0,
@@ -867,7 +867,7 @@ bool Map::preGame()
 			groundShape,
 			btVector3(0,0,0)
 		);
-		
+
 		btRigidBody *water = new btRigidBody(groundRigidBodyCI);
 
 		water->setRestitution(0.f);
@@ -897,13 +897,13 @@ bool Map::preGame()
 		meshBody->setFriction(10.f);
 		this->st->physics->addRigidBody(meshBody, CG_TERRAIN);
 	}
-	
+
 	// Add boundry planes which surround the map
 	this->st->physics->addRigidBody(this->createBoundaryPlane(btVector3(1.0f, 0.0f, 0.0f), btVector3(0.0f, 0.0f, 0.0f)), CG_TERRAIN);
 	this->st->physics->addRigidBody(this->createBoundaryPlane(btVector3(0.0f, 0.0f, 1.0f), btVector3(0.0f, 0.0f, 0.0f)), CG_TERRAIN);
 	this->st->physics->addRigidBody(this->createBoundaryPlane(btVector3(-1.0f, 0.0f, 0.0f), btVector3(this->width, 0.0f, this->height)), CG_TERRAIN);
 	this->st->physics->addRigidBody(this->createBoundaryPlane(btVector3(0.0f, 0.0f, -1.0f), btVector3(this->width, 0.0f, this->height)), CG_TERRAIN);
-	
+
 	return true;
 }
 
@@ -918,7 +918,7 @@ void Map::fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *ap, AssimpModel *am
 	glm::mat4 transform;
 	glm::vec4 a, b, c;
 	AssimpMesh* mesh;
-	
+
 	// Grab the transform for this node
 	std::map<AssimpNode*, glm::mat4>::iterator local = ap->transforms.find(nd);
 	assert(local != ap->transforms.end());
@@ -927,16 +927,16 @@ void Map::fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *ap, AssimpModel *am
 	// Iterate the meshes and add triangles
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
 		mesh = am->meshes[(*it)];
-		
+
 		for (vector<AssimpFace>::iterator itt = mesh->faces->begin(); itt != mesh->faces->end(); ++itt) {
 			a = transform * mesh->verticies->at((*itt).a);
 			b = transform * mesh->verticies->at((*itt).b);
 			c = transform * mesh->verticies->at((*itt).c);
-			
+
 			trimesh->addTriangle(btVector3(a.x, a.y, a.z), btVector3(b.x, b.y, b.z), btVector3(c.x, c.y, c.z));
 		}
 	}
-	
+
 	// Iterate children nodes
 	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); ++it) {
 		fillTriangeMesh(trimesh, ap, am, (*it));
@@ -951,12 +951,12 @@ void Map::postGame()
 {
 	delete this->heightmap;
 	this->heightmap = NULL;
-	
+
 	if (this->terrain != NULL) {
 		this->render->freeSprite(this->terrain);
 		this->terrain = NULL;
 	}
-	
+
 	if (this->skybox != NULL) {
 		this->render->freeSprite(this->skybox);
 		this->skybox = NULL;
@@ -995,7 +995,7 @@ void MapRegistry::find(Mod* mod)
 {
 	mod->loadMetadata();
 	vector<MapReg>* maps = mod->getMaps();
-	
+
 	for (vector<MapReg>::iterator it = maps->begin(); it != maps->end(); ++it) {
 		this->maps.push_back(*it);
 	}
@@ -1005,7 +1005,7 @@ void MapRegistry::find(Mod* mod)
 /**
 * Find a map, by name
 **/
-MapReg * MapRegistry::get(string name) 
+MapReg * MapRegistry::get(string name)
 {
 	for (vector<MapReg>::iterator it = maps.begin(); it != maps.end(); ++it) {
 		if (it->getName() == name) return &(*it);

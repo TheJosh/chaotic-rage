@@ -19,12 +19,12 @@ class ModProxy : public Mod {
 	public:
 		Mod* master;
 		string directory;
-		
+
 	public:
 		virtual char* loadText(string filename);
 		virtual Uint8* loadBinary(string resname, Sint64 *len);
 		virtual SDL_RWops* loadRWops(string filename);
-		
+
 	public:
 		ModProxy(Mod* master, string directory) : Mod(master->st, master->directory), master(master), directory(directory) {}
 		virtual ~ModProxy() {}

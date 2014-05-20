@@ -34,7 +34,7 @@ extern "C" {
 Vehicle* addVehicle(string type, float x, float z)
 {
 	Vehicle *v;
-	
+
 	VehicleType *vt = GEng()->mm->getVehicleType(type);
 	if (vt == NULL) {
 		return NULL;
@@ -45,9 +45,9 @@ Vehicle* addVehicle(string type, float x, float z)
 	} else {
 		v = new Vehicle(vt, getGameState(), x, z);
 	}
-	
+
 	getGameState()->addVehicle(v);
-	
+
 	return v;
 }
 
@@ -58,16 +58,16 @@ Vehicle* addVehicle(string type, float x, float z)
 Object* addObject(string type, float x, float z)
 {
 	Object *o;
-	
+
 	ObjectType *ot = GEng()->mm->getObjectType(type);
 	if (ot == NULL) {
 		return NULL;
 	}
-	
+
 	o = new Object(ot, getGameState(), x, z, 1.0f, 0.0f);
-	
+
 	getGameState()->addObject(o);
-	
+
 	return o;
 }
 

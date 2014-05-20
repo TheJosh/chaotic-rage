@@ -27,7 +27,7 @@ static cfg_opt_t config_opts[] =
 {
 	CFG_INT((char*) "gl-msaa", 1, CFGF_NONE),
 	CFG_INT((char*) "gl-tex-filter", 4, CFGF_NONE),
-	
+
 	// Deprecated; only in place to not break existing confings
 	CFG_INT((char*) "render", 0, CFGF_NONE),
 
@@ -57,11 +57,11 @@ void ClientConfig::load()
 	// Load config
 	cfg = cfg_init(config_opts, CFGF_NONE);
 	cfg_parse(cfg, filename.c_str());
-	
+
 	this->gl = new RenderOpenGLSettings();
 	this->gl->msaa = cfg_getint(cfg, "gl-msaa");
 	this->gl->tex_filter = cfg_getint(cfg, "gl-tex-filter");
-	
+
 	cfg_free(cfg);
 }
 
@@ -96,17 +96,17 @@ void ClientConfig::initRender(GameState *st)
 {
 	if (GEng()->cmdline->render_class == "debug") {
 		GEng()->render = new RenderDebug(st);
-		
+
 	} else if (GEng()->cmdline->render_class == "null") {
 		GEng()->render = new RenderNull(st);
-		
+
 	} else if (GEng()->cmdline->render_class == "ascii") {
 		GEng()->render = new RenderAscii(st);
-		
+
 	} else {
 		GEng()->render = new RenderOpenGL(st, this->gl);
 	}
-	
+
 	// TODO: Load these settings from a config file
 	GEng()->render->setScreenSize(1000, 700, false);
 }
@@ -119,7 +119,7 @@ void ClientConfig::initAudio(GameState *st)
 {
 	if (GEng()->cmdline->audio_class == "null") {
 		GEng()->audio = new AudioNull(st);
-		
+
 	} else {
 		GEng()->audio = new AudioSDLMixer(st);
 	}

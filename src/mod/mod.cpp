@@ -58,16 +58,16 @@ static cfg_opt_t mod_opts[] =
 Mod::Mod(GameState * st, string directory)
 {
 	this->st = st;
-	
+
 	int bp = directory.rfind('/');
 	this->name = directory.substr(bp + 1, 100);
-	
+
 	directory.append("/");
 	this->directory = directory;
-	
+
 	this->has_arcade = false;
 	this->has_campaign = false;
-	
+
 	this->ais = NULL;
 	this->gametypes = NULL;
 	this->objecttypes = NULL;
@@ -124,11 +124,11 @@ bool Mod::loadMetadata()
 	// Maps
 	delete(this->maps);
 	this->maps = new vector<MapReg>();
-	
+
 	num_types = cfg_size(cfg, "map");
 	for (j = 0; j < num_types; j++) {
 		cfg_sub = cfg_getnsec(cfg, "map", j);
-		
+
 		this->maps->push_back(MapReg(
 			cfg_getstr(cfg_sub, "name"),
 			cfg_getstr(cfg_sub, "title"),
@@ -168,27 +168,27 @@ template <class T>
 vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char* section, cfg_opt_t* item_opts, T (*item_f)(cfg_t*, Mod*))
 {
 	vector<T> * models = new vector<T>();
-	
+
 	char *buffer;
 	cfg_t *cfg, *cfg_item;
-	
+
 	cfg_opt_t opts[] =
 	{
 		CFG_SEC((char*) section, item_opts, CFGF_MULTI),
 		CFG_END()
 	};
-	
+
 	// Load + parse the config file
 	buffer = mod->loadText(filename);
 	if (buffer == NULL) {
 		cerr << "Error loading file " << filename << ". File is empty or missing.\n";
 		return models;
 	}
-	
+
 	cfg = cfg_init(opts, CFGF_NONE);
 	cfg_parse_buf(cfg, buffer);
 	free(buffer);
-	
+
 	int num_types = cfg_size(cfg, section);
 	if (num_types == 0) {
 		cerr << "Error loading file " << filename << ". File does not contain any '" << section << "' sections.\n";
@@ -196,25 +196,25 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 	}
 
 	mod->setLoadErr("Unknown error");
-	
+
 	// Process area type sections
 	int j;
 	char buf[128];
 	for (j = 0; j < num_types; j++) {
 		cfg_item = cfg_getnsec(cfg, section, j);
-		
+
 		T am = (*item_f)(cfg_item, mod);
 		if (am == NULL) {
 			cerr << "Bad definition in file " << filename << " at index " << j << ": " << mod->getLoadErr() << "\n";
 			return NULL;
 		}
-		
+
 		strncpy(buf, mod->name.c_str(), 64);
 		strncpy(buf + 64, am->name.c_str(), 64);
 		am->id = crc32(0, buf, 128);
-		
+
 		models->push_back(am);
-		
+
 		DEBUG("mod", "%08x %s", am->id, am->name.c_str());
 	}
 
@@ -232,11 +232,11 @@ void Mod::setLoadErr(const char *message, ...)
 {
 	char buf[255];
 	va_list argptr;
-	
+
 	va_start(argptr, message);
 	vsnprintf(buf, 255, message, argptr);
 	va_end(argptr);
-	
+
 	this->load_err = string(buf);
 }
 
@@ -247,43 +247,43 @@ void Mod::setLoadErr(const char *message, ...)
 bool Mod::load(UIUpdate* ui)
 {
 	DEBUG("mod", "Loading mod '%s'", this->name.c_str());
-	
+
 #ifdef NOGUI
 	sounds = new vector<Sound*>();
 	songs = new vector<Song*>();
-	
+
 #else
 	sounds = loadModFile<Sound*>(this, ui, "sounds.conf", "sound", sound_opts, &loadItemSound);
 	if (sounds == NULL) return false;
-	
+
 	songs = loadModFile<Song*>(this, ui, "songs.conf", "song", song_opts, &loadItemSong);
 	if (songs == NULL) return false;
 #endif
-	
+
 	objecttypes = loadModFile<ObjectType*>(this, ui, "objecttypes.conf", "objecttype", objecttype_opts, &loadItemObjectType);
 	if (objecttypes == NULL) return false;
-	
+
 	walltypes = loadModFile<WallType*>(this, ui, "walltypes.conf", "walltype", walltype_opts, &loadItemWallType);
 	if (walltypes == NULL) return false;
-	
+
 	weapontypes = loadModFile<WeaponType*>(this, ui, "weapontypes.conf", "weapon", weapontype_opts, &loadItemWeaponType);
 	if (weapontypes == NULL) return false;
-	
+
 	vehicletypes = loadModFile<VehicleType*>(this, ui, "vehicletypes.conf", "vehicletype", vehicletype_opts, &loadItemVehicleType);
 	if (vehicletypes == NULL) return false;
-	
+
 	unitclasses = loadModFile<UnitType*>(this, ui, "unittypes.conf", "unittype", unittype_opts, &loadItemUnitType);
 	if (unitclasses == NULL) return false;
-	
+
 	ais = loadModFile<AIType*>(this, ui, "ais.conf", "ai", ai_opts, &loadItemAIType);
 	if (ais == NULL) return false;
-	
+
 	gametypes = loadModFile<GameType*>(this, ui, "gametypes.conf", "gametype", gametype_opts, &loadItemGameType);
 	if (gametypes == NULL) return false;
-	
+
 	campaigns = loadModFile<Campaign*>(this, ui, "campaigns.conf", "campaign", campaign_opts, &loadItemCampaign);
 	if (campaigns == NULL) return false;
-	
+
 	pickuptypes = loadModFile<PickupType*>(this, ui, "pickuptypes.conf", "pickuptype", pickuptype_opts, &loadItemPickupType);
 	if (pickuptypes == NULL) return false;
 
@@ -291,36 +291,36 @@ bool Mod::load(UIUpdate* ui)
 	for (int i = weapontypes->size() - 1; i >= 0; --i) {
 		string tmp;
 		AssimpModel *model;
-		
+
 		tmp = "weapon_" + weapontypes->at(i)->name;
-		
+
 		model = this->getAssimpModel("pickup_" + tmp + ".dae");
 		if (model == NULL) {
 			model = this->getAssimpModel("pickup_weapon_generic.dae");
 		}
-		
+
 		PickupType* pt = new PickupType();
 		pt->name = tmp;
 		pt->type = PICKUP_TYPE_WEAPON;
 		pt->wt = weapontypes->at(i);
 		pt->setModel(model);
-		
+
 		pickuptypes->push_back(pt);
-		
-		
+
+
 		tmp = "ammo_" + weapontypes->at(i)->name;
-		
+
 		model = this->getAssimpModel("pickup_" + tmp + ".dae");
 		if (model == NULL) {
 			model = this->getAssimpModel("pickup_ammo_generic.dae");
 		}
-		
+
 		pt = new PickupType();
 		pt->name = tmp;
 		pt->type = PICKUP_TYPE_AMMO;
 		pt->wt = weapontypes->at(i);
 		pt->setModel(model);
-		
+
 		pickuptypes->push_back(pt);
 	}
 
@@ -334,16 +334,16 @@ bool Mod::load(UIUpdate* ui)
 bool Mod::reloadAttrs()
 {
 	int i;
-	
+
 	// Weapons
 	vector<WeaponType*> * n_weapontypes = loadModFile<WeaponType*>(this, NULL, "weapontypes.conf", "weapon", weapontype_opts, &loadItemWeaponType);
 	if (n_weapontypes == NULL) return false;
-	
+
 	for (i = n_weapontypes->size() - 1; i >= 0; --i) {
 		WeaponType *nu = n_weapontypes->at(i);
 		WeaponType *old = this->getWeaponType(nu->name);
 		if (! old) continue;
-		
+
 		old->title = nu->title;
 		old->fire_delay = nu->fire_delay;
 		old->reload_delay = nu->reload_delay;
@@ -351,7 +351,7 @@ bool Mod::reloadAttrs()
 		old->magazine_limit = nu->magazine_limit;
 		old->belt_limit = nu->belt_limit;
 	}
-	
+
 	return true;
 }
 
@@ -371,11 +371,11 @@ AIType * Mod::getAIType(CRC32 id)
 AIType * Mod::getAIType(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	for (int i = ais->size() - 1; i >= 0; --i) {
 		if (ais->at(i)->name.compare(name) == 0) return ais->at(i);
 	}
-	
+
 	return NULL;
 }
 
@@ -389,14 +389,14 @@ AssimpModel * Mod::getAssimpModel(string name)
 	if (it != this->models.end()) {
 		return it->second;
 	}
-	
+
 	AssimpModel* am = new AssimpModel(this, name);
-	
+
 	if (! am->load((Render3D*) GEng()->render, false)) {
 		delete(am);
 		return NULL;
 	}
-	
+
 	this->models.insert(pair<string, AssimpModel*>(name, am));
 
 	return am;
@@ -410,7 +410,7 @@ AssimpModel * Mod::getAssimpModel(string name)
 Campaign * Mod::getCampaign(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	int i;
 	for (i = campaigns->size() - 1; i >= 0; --i) {
 		if (campaigns->at(i)->name.compare(name) == 0) return campaigns->at(i);
@@ -434,7 +434,7 @@ vector<Campaign*> * Mod::getCampaigns()
 GameType * Mod::getGameType(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	int i;
 	for (i = gametypes->size() - 1; i >= 0; --i) {
 		if (gametypes->at(i)->name.compare(name) == 0) return gametypes->at(i);
@@ -470,7 +470,7 @@ ObjectType * Mod::getObjectType(CRC32 id)
 ObjectType * Mod::getObjectType(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	int i;
 	for (i = objecttypes->size() - 1; i >= 0; --i) {
 		if (objecttypes->at(i)->name.compare(name) == 0) return objecttypes->at(i);
@@ -501,7 +501,7 @@ PickupType * Mod::getPickupType(CRC32 id)
 PickupType * Mod::getPickupType(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	int i;
 	for (i = pickuptypes->size() - 1; i >= 0; --i) {
 		if (pickuptypes->at(i)->name.compare(name) == 0) return pickuptypes->at(i);
@@ -527,7 +527,7 @@ UnitType * Mod::getUnitType(CRC32 id)
 UnitType * Mod::getUnitType(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	int i;
 	for (i = unitclasses->size() - 1; i >= 0; --i) {
 		if (unitclasses->at(i)->name.compare(name) == 0) return unitclasses->at(i);
@@ -562,7 +562,7 @@ VehicleType * Mod::getVehicleType(CRC32 id)
 VehicleType * Mod::getVehicleType(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	int i;
 	for (i = vehicletypes->size() - 1; i >= 0; --i) {
 		if (vehicletypes->at(i)->name.compare(name) == 0) return vehicletypes->at(i);
@@ -577,7 +577,7 @@ VehicleType * Mod::getVehicleType(string name)
 Song * Mod::getSong(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	int i;
 	for (i = songs->size() - 1; i >= 0; --i) {
 		if (songs->at(i)->name.compare(name) == 0) return songs->at(i);
@@ -602,7 +602,7 @@ Song * Mod::getRandomSong()
 Sound * Mod::getSound(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	int i;
 	for (i = sounds->size() - 1; i >= 0; --i) {
 		if (sounds->at(i)->name.compare(name) == 0) return sounds->at(i);
@@ -625,7 +625,7 @@ WallType * Mod::getWallType(CRC32 id)
 WallType * Mod::getWallType(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	int i;
 	for (i = walltypes->size() - 1; i >= 0; --i) {
 		if (walltypes->at(i)->name.compare(name) == 0) return walltypes->at(i);
@@ -651,7 +651,7 @@ WeaponType * Mod::getWeaponType(CRC32 id)
 WeaponType * Mod::getWeaponType(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	int i;
 	for (i = weapontypes->size() - 1; i >= 0; --i) {
 		if (weapontypes->at(i)->name.compare(name) == 0) return weapontypes->at(i);
@@ -756,7 +756,7 @@ SDL_RWops * Mod::loadRWops(string resname)
 {
 	string filename = directory;
 	filename.append(resname);
-	
+
 	return SDL_RWFromFile(filename.c_str(), "rb");
 }
 

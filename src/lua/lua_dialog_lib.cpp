@@ -44,16 +44,16 @@ class PromptTextHandler : public DialogTextPromptHandler {
 	private:
 		lua_State *L;
 		int func;
-		
+
 	public:
 		PromptTextHandler(lua_State *L, int func)
 		{
 			this->L = L;
 			this->func = func;
 		}
-		
+
 		virtual ~PromptTextHandler() {}
-		
+
 		/**
 		* Pass the text back into the lua function
 		**/
@@ -75,23 +75,23 @@ LUA_FUNC(prompt_text)
 		lua_pushstring(L, "Arg #1 is not a string");
 		lua_error(L);
 	}
-	
+
 	if (! lua_isfunction(L, 2)) {
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);
 	}
-	
+
 	const char* message = lua_tostring(L, 1);
-	
+
 	lua_pushvalue(L, -1);
 	int func = luaL_ref(L, LUA_REGISTRYINDEX);
-	
+
 	PromptTextHandler* handler = new PromptTextHandler(L, func);
-	
+
 	GameState* st = getGameState();
 	DialogTextPrompt* dialog = new DialogTextPrompt(st, st->gt->title, message, handler);
 	GEng()->addDialog(dialog);
-	
+
 	return 0;
 }
 
@@ -105,7 +105,7 @@ class MousePickHandler : public MouseEventHandler {
 		lua_State *L;
 		int func;
 		Entity* cursor;
-		
+
 	public:
 		MousePickHandler(lua_State *L, int func, Entity* cursor)
 		{
@@ -247,21 +247,21 @@ DialogButtonBar* addDialogButtonBar(string title, lua_State* L)
 {
 	luabridge::LuaRef argLabels = luabridge::LuaRef::fromStack(L, 2);
 	if (! argLabels.isTable()) return NULL;
-	
+
 	luabridge::LuaRef argFunc = luabridge::LuaRef::fromStack(L, 3);
 	if (! argFunc.isFunction()) return NULL;
-	
+
 	// Load labels into vector
 	vector<string> labels;
 	int len = argLabels.length();
 	for (int i = 1; i <= len; i++) {
 		labels.push_back(argLabels[i]);
 	}
-	
+
 	// Create dialog
 	DialogButtonBar* dialog = new DialogButtonBar(title, labels, new LuaButtonBarHandler(argFunc));
 	GEng()->addDialog(dialog);
-	
+
 	return dialog;
 }
 
@@ -303,7 +303,7 @@ void basicKeyPress(const char* key, lua_State* L)
 {
 	luabridge::LuaRef argFunc = luabridge::LuaRef::fromStack(L, 2);
 	if (! argFunc.isFunction()) return;
-	
+
 	SDL_Keycode keycode = SDL_GetKeyFromName(key);
 
 	getGameState()->logic->keyboard_events = new BasicKeyHandler(keycode, argFunc);

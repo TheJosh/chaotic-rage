@@ -40,36 +40,36 @@ class PickupType
 	public:
 		string name;
 		CRC32 id;
-		
+
 		AssimpModel * model;
 		btCollisionShape* col_shape;
 		int type;
-		
+
 		// Weapon and ammo crates
 		WeaponType* wt;
-		
+
 		// Powerups, permanant and temporary changes
 		PickupTypeAdjust* perm;
 		PickupTypeAdjust* temp;
 		string title;
 		int delay;
-		
+
 	public:
 		PickupType();
 		~PickupType();
 		PickupTypeAdjust* loadAdjust(cfg_t* cfg);
 		void setModel(AssimpModel *model);
-		
+
 		/**
 		* Called by the unit when it interacts with a pickup
 		**/
 		bool doUse(Unit *u);
-		
+
 		/**
 		* Called by the unit when the powerup is finished
 		**/
 		void finished(Unit *u);
-		
+
 		/**
 		* Return the delay (before we mark as finished) in ms
 		**/

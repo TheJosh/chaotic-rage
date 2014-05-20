@@ -95,7 +95,7 @@ PickupType* loadItemPickupType(cfg_t* cfg_item, Mod* mod)
 	pt = new PickupType();
 	pt->name = cfg_getstr(cfg_item, "name");
 	pt->type = cfg_getint(cfg_item, "type");
-	
+
 	// Load model
 	char * tmp = cfg_getstr(cfg_item, "model");
 	if (tmp != NULL) {
@@ -103,7 +103,7 @@ PickupType* loadItemPickupType(cfg_t* cfg_item, Mod* mod)
 		if (! pt->model) return NULL;
 		pt->col_shape = pt->model->getCollisionShape();
 	}
-	
+
 	// Powerups have a bunch more fields
 	if (pt->type == PICKUP_TYPE_POWERUP) {
 		pt->title = std::string(cfg_getstr(cfg_item, "title"));
@@ -134,7 +134,7 @@ PickupTypeAdjust* PickupType::loadAdjust(cfg_t* cfg)
 	pt->melee_damage = (float)cfg_getfloat(cfg, "melee-damage");
 	pt->melee_delay = (float)cfg_getfloat(cfg, "melee-delay");
 	pt->melee_cooldown = (float)cfg_getfloat(cfg, "melee-cooldown");
-	
+
 	return pt;
 }
 
@@ -165,9 +165,9 @@ bool PickupType::doUse(Unit *u)
 				} else {
 					success = u->pickupAmmo(this->wt);
 				}
-				
+
 				if (! success) return false;
-				
+
 				st->addHUDMessage(u->slot, "Picked up some ammo");
 			}
 			break;
@@ -185,7 +185,7 @@ bool PickupType::doUse(Unit *u)
 		default:
 			assert(0);
 	}
-	
+
 	return true;
 }
 

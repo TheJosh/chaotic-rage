@@ -30,22 +30,22 @@ SpritePtr Render::loadSprite(string filename, Mod * mod)
 {
 	SpritePtr sprite;
 	SDL_RWops *rw;
-	
+
 	DEBUG("vid", "Loading sprite '%s'", filename.c_str());
-	
+
 	rw = mod->loadRWops(filename);
 	if (rw == NULL) {
 		load_err = true;
 		return NULL;
 	}
-	
+
 	sprite = this->int_loadSprite(rw, filename);
 	if (sprite == NULL) {
 		this->load_err = true;
 	}
-	
+
 	SDL_RWclose (rw);
-	
+
 	return sprite;
 }
 

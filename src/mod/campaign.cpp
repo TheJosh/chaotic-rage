@@ -18,11 +18,11 @@ static cfg_opt_t campaign_stage_opts[] =
 	// Game stage
 	CFG_STR((char*) "map", 0, CFGF_NONE),
 	CFG_STR((char*) "gametype", 0, CFGF_NONE),
-	
+
 	// image
 	CFG_STR((char*) "image", 0, CFGF_NONE),
 	CFG_INT((char*) "time", 5000, CFGF_NONE),
-	
+
 	CFG_END()
 };
 
@@ -81,7 +81,7 @@ Campaign* loadItemCampaign(cfg_t* cfg_item, Mod* mod)
 		tmp = cfg_getstr(cfg_sub, "map");
 		if (tmp != NULL) {
 			stage->map = std::string(tmp);
-			
+
 			tmp = cfg_getstr(cfg_sub, "gametype");
 			if (tmp == NULL) {
 				mod->setLoadErr("Invalid campaign stage, no 'gametype' specified");

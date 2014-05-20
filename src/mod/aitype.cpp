@@ -31,9 +31,9 @@ AIType* loadItemAIType(cfg_t* cfg_item, Mod* mod)
 	AIType* ai;
 	string filename;
 	char *tmp;
-	
+
 	ai = new AIType();
-	
+
 	// Name field
 	tmp = cfg_getstr(cfg_item, "name");
 	if (tmp == NULL) {
@@ -41,19 +41,19 @@ AIType* loadItemAIType(cfg_t* cfg_item, Mod* mod)
 		return NULL;
 	}
 	ai->name = std::string(tmp);
-	
+
 	// Script field
 	tmp = cfg_getstr(cfg_item, "script");
 	if (tmp == NULL) {
 		mod->setLoadErr("Missing field 'script'");
 		return NULL;
 	}
-	
+
 	// Script filename
 	filename = "ais/";
 	filename.append(std::string(tmp));
 	filename.append(".lua");
-	
+
 	// Try and load the script from file
 	tmp = mod->loadText(filename);
 	if (tmp == NULL) {
@@ -62,7 +62,7 @@ AIType* loadItemAIType(cfg_t* cfg_item, Mod* mod)
 	}
 	ai->script = std::string(tmp);
 	free(tmp);
-	
+
 	return ai;
 }
 

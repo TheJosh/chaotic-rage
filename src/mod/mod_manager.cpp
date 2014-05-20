@@ -39,7 +39,7 @@ using namespace std;
 bool loadMods(GameState *st, UIUpdate* ui)
 {
 	if (ui) ui->updateUI();
-	
+
 	// Load main mod
 	Mod * mod = new Mod(st, "data/cr");
 	if (! mod->load(ui)) {
@@ -47,9 +47,9 @@ bool loadMods(GameState *st, UIUpdate* ui)
 	}
 	GEng()->mm->addMod(mod);
 	GEng()->mm->setBase(mod);
-	
+
 	if (ui) ui->updateUI();
-	
+
 	// If a suppl mod has been specified on the cmdline, try to load it
 	if (GEng()->cmdline->mod != "" && GEng()->cmdline->mod != mod->name) {
 		Mod* newsuppl = new Mod(st, "data/" + GEng()->cmdline->mod);
@@ -59,9 +59,9 @@ bool loadMods(GameState *st, UIUpdate* ui)
 		GEng()->mm->addMod(newsuppl);
 		GEng()->mm->setSuppl(newsuppl);
 	}
-	
+
 	if (ui) ui->updateUI();
-	
+
 	// Load user mods
 	vector<string> * userfiles = getUserModFilenames();
 	for (unsigned int i = 0; i < userfiles->size(); i++) {
@@ -72,9 +72,9 @@ bool loadMods(GameState *st, UIUpdate* ui)
 		GEng()->mm->addMod(mod);
 	}
 	delete(userfiles);
-	
+
 	if (ui) ui->updateUI();
-	
+
 	return true;
 }
 
@@ -118,12 +118,12 @@ void ModManager::remMod(Mod *mod)
 Mod * ModManager::getMod(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	int i;
 	for (i = this->mods->size() - 1; i >= 0; --i) {
 		if (this->mods->at(i)->name.compare(name) == 0) return this->mods->at(i);
 	}
-	
+
 	reportFatalError("Data module is not loaded: " + name);
 	return NULL;
 }
@@ -200,7 +200,7 @@ AIType * ModManager::getAIType(CRC32 id)
 		AIType *et = mod->getAIType(id);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -215,7 +215,7 @@ ObjectType * ModManager::getObjectType(CRC32 id)
 		ObjectType *et = mod->getObjectType(id);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -230,7 +230,7 @@ PickupType * ModManager::getPickupType(CRC32 id)
 		PickupType *et = mod->getPickupType(id);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -245,7 +245,7 @@ UnitType * ModManager::getUnitType(CRC32 id)
 		UnitType *et = mod->getUnitType(id);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -260,7 +260,7 @@ VehicleType * ModManager::getVehicleType(CRC32 id)
 		VehicleType *et = mod->getVehicleType(id);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -275,7 +275,7 @@ WallType * ModManager::getWallType(CRC32 id)
 		WallType *et = mod->getWallType(id);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -290,7 +290,7 @@ WeaponType * ModManager::getWeaponType(CRC32 id)
 		WeaponType *et = mod->getWeaponType(id);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -304,13 +304,13 @@ WeaponType * ModManager::getWeaponType(CRC32 id)
 AIType * ModManager::getAIType(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	for (unsigned int i = 0; i < this->mods->size(); i++) {
 		Mod *mod = this->mods->at(i);
 		AIType *et = mod->getAIType(name);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -321,13 +321,13 @@ AIType * ModManager::getAIType(string name)
 VehicleType * ModManager::getVehicleType(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	for (unsigned int i = 0; i < this->mods->size(); i++) {
 		Mod *mod = this->mods->at(i);
 		VehicleType *et = mod->getVehicleType(name);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -338,13 +338,13 @@ VehicleType * ModManager::getVehicleType(string name)
 GameType * ModManager::getGameType(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	for (unsigned int i = 0; i < this->mods->size(); i++) {
 		Mod *mod = this->mods->at(i);
 		GameType *et = mod->getGameType(name);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -366,17 +366,17 @@ vector<GameType*> * ModManager::getAllGameTypes()
 {
 	vector<GameType*>::iterator start, end;
 	vector<GameType*> * gt;
-	
+
 	gt = new vector<GameType*>();
-	
+
 	for (unsigned int i = 0; i < this->mods->size(); i++) {
 		Mod *mod = this->mods->at(i);
 		mod->getAllGameTypes(&start, &end);
 		gt->insert(gt->end(), start, end);
 	}
-	
+
 	std::sort(gt->begin(), gt->end(), GameTypesPointerCompare());
-	
+
 	return gt;
 }
 
@@ -387,13 +387,13 @@ vector<GameType*> * ModManager::getAllGameTypes()
 ObjectType * ModManager::getObjectType(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	for (unsigned int i = 0; i < this->mods->size(); i++) {
 		Mod *mod = this->mods->at(i);
 		ObjectType *et = mod->getObjectType(name);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -404,13 +404,13 @@ ObjectType * ModManager::getObjectType(string name)
 PickupType * ModManager::getPickupType(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	for (unsigned int i = 0; i < this->mods->size(); i++) {
 		Mod *mod = this->mods->at(i);
 		PickupType *et = mod->getPickupType(name);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -421,13 +421,13 @@ PickupType * ModManager::getPickupType(string name)
 UnitType * ModManager::getUnitType(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	for (unsigned int i = 0; i < this->mods->size(); i++) {
 		Mod *mod = this->mods->at(i);
 		UnitType *et = mod->getUnitType(name);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -439,15 +439,15 @@ vector<UnitType*> * ModManager::getAllUnitTypes()
 {
 	vector<UnitType*>::iterator start, end;
 	vector<UnitType*> * ut;
-	
+
 	ut = new vector<UnitType*>();
-	
+
 	for (unsigned int i = 0; i < this->mods->size(); i++) {
 		Mod *mod = this->mods->at(i);
 		mod->getAllUnitTypes(&start, &end);
 		ut->insert(ut->end(), start, end);
 	}
-	
+
 	return ut;
 }
 
@@ -458,13 +458,13 @@ vector<UnitType*> * ModManager::getAllUnitTypes()
 Song * ModManager::getSong(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	for (unsigned int i = 0; i < this->mods->size(); i++) {
 		Mod *mod = this->mods->at(i);
 		Song *et = mod->getSong(name);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -485,13 +485,13 @@ Song * ModManager::getRandomSong()
 Sound * ModManager::getSound(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	for (unsigned int i = 0; i < this->mods->size(); i++) {
 		Mod *mod = this->mods->at(i);
 		Sound *et = mod->getSound(name);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -502,13 +502,13 @@ Sound * ModManager::getSound(string name)
 WallType * ModManager::getWallType(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	for (unsigned int i = 0; i < this->mods->size(); i++) {
 		Mod *mod = this->mods->at(i);
 		WallType *et = mod->getWallType(name);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -519,13 +519,13 @@ WallType * ModManager::getWallType(string name)
 WeaponType * ModManager::getWeaponType(string name)
 {
 	if (name.empty()) return NULL;
-	
+
 	for (unsigned int i = 0; i < this->mods->size(); i++) {
 		Mod *mod = this->mods->at(i);
 		WeaponType *et = mod->getWeaponType(name);
 		if (et) return et;
 	}
-	
+
 	return NULL;
 }
 
@@ -538,15 +538,15 @@ vector<WeaponType*> * ModManager::getAllWeaponTypes()
 {
 	vector<WeaponType*>::iterator start, end;
 	vector<WeaponType*> * wts;
-	
+
 	wts = new vector<WeaponType*>();
-	
+
 	for (unsigned int i = 0; i < this->mods->size(); i++) {
 		Mod *mod = this->mods->at(i);
 		mod->getAllWeaponTypes(&start, &end);
 		wts->insert(wts->end(), start, end);
 	}
-	
+
 	return wts;
 }
 

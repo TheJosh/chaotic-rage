@@ -19,7 +19,7 @@ using namespace std;
 RenderDebug::RenderDebug(GameState * st) : Render(st)
 {
 	SDL_InitSubSystem(SDL_INIT_VIDEO);
-	
+
 	this->window = NULL;
 	this->renderer = NULL;
 }
@@ -50,25 +50,25 @@ void RenderDebug::setScreenSize(int width, int height, bool fullscreen)
 {
 	this->width = width;
 	this->height = height;
-	
+
 	if (this->window) {
 		this->cleanup();
 	}
-	
+
 	// Create window
 	this->window = SDL_CreateWindow("Chaotic Rage (debug)", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, 0);
 	if (this->window == NULL) {
 		fprintf(stderr, "Unable to set %ix%i video: %s\n", width, height, SDL_GetError());
 		exit(1);
 	}
-	
+
 	// Create renderer
 	this->renderer = SDL_CreateRenderer(this->window, -1, 0);
 	if (this->renderer == NULL) {
 		fprintf(stderr, "Unable to set %ix%i video: %s\n", width, height, SDL_GetError());
 		exit(1);
 	}
-	
+
 	// Load assets
 	this->sprite_wall = this->loadTexture("data/debug/wall.bmp");
 	this->sprite_vehicle = this->loadTexture("data/debug/vehicle.bmp");
@@ -99,7 +99,7 @@ void RenderDebug::cleanup()
 SpritePtr RenderDebug::int_loadSprite(SDL_RWops *rw, string filename)
 {
 	SDL_Surface * surf;
-	
+
 	surf = IMG_Load_RW(rw, 0);
 	if (surf == NULL) {
 		fprintf(stderr, "Couldn't load sprite '%s'\n", filename.c_str());
@@ -112,7 +112,7 @@ SpritePtr RenderDebug::int_loadSprite(SDL_RWops *rw, string filename)
 	sprite->w = surf->w;
 	sprite->h = surf->h;
 	sprite->orig = surf;
-	
+
 	return sprite;
 }
 
@@ -193,8 +193,8 @@ void RenderDebug::render()
 {
 	if (st->game_time - last_render < 500) return;
 	last_render = st->game_time;
-	
-	
+
+
 	float scalex = ((float)st->map->width) / ((float)this->width);
 	float scaley = ((float)st->map->height) / ((float)this->height);
 
@@ -208,25 +208,25 @@ void RenderDebug::render()
 	dest.h = 16;
 
 	SDL_RenderClear(this->renderer);
-	
+
 	// Entities
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {
 		Entity *e = (*it);
-		
+
 		btTransform trans = e->getTransform();
-		
+
 		dest.x = (int)round(trans.getOrigin().getX() / scalex) - 8;
 		dest.y = (int)round(trans.getOrigin().getZ() / scaley) - 8;
-		
+
 		if (e->klass() == WALL) {
 			SDL_RenderCopy(this->renderer, this->sprite_wall, &src, &dest);
-			
+
 		} else if (e->klass() == VEHICLE) {
 			SDL_RenderCopy(this->renderer, this->sprite_vehicle, &src, &dest);
-			
+
 		} else if (e->klass() == OBJECT) {
 			SDL_RenderCopy(this->renderer, this->sprite_object, &src, &dest);
-			
+
 		} else if (e->klass() == UNIT) {
 			if (((Unit*)e)->slot == 0) {
 				SDL_RenderCopy(this->renderer, this->sprite_unit, &src, &dest);
@@ -235,7 +235,7 @@ void RenderDebug::render()
 			}
 		}
 	}
-	
+
 	SDL_RenderPresent(this->renderer);
 }
 

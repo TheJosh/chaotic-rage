@@ -13,14 +13,14 @@ class StreamRedirector {
 	private:
 		std::streambuf* savedBuf_;
 		std::ios& stream_;
-		
+
 	public:
 		explicit StreamRedirector(std::ios& stream, std::streambuf* newBuf)
 			: savedBuf_(stream.rdbuf()), stream_(stream)
 		{
 			stream_.rdbuf(newBuf);
 		}
-		
+
 		~StreamRedirector()
 		{
 			stream_.rdbuf(savedBuf_);

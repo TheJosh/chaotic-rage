@@ -60,10 +60,10 @@ class GameLogic
 	public:
 		GameLogic(GameState *st);
 		~GameLogic();
-		
+
 	public:
 		void update(int delta);
-		
+
 		/**
 		* Does the game logic want to receive mouse events?
 		**/
@@ -71,7 +71,7 @@ class GameLogic
 		{
 			return (this->mouse_events != NULL);
 		}
-		
+
 		/**
 		* Handle a mouse-move event
 		**/
@@ -79,7 +79,7 @@ class GameLogic
 		{
 			return this->mouse_events->onMouseMove(x, y);
 		}
-		
+
 		/**
 		* Handle a mouse-down event
 		**/
@@ -104,7 +104,7 @@ class GameLogic
 		{
 			return (this->keyboard_events != NULL);
 		}
-		
+
 		/**
 		* Handle a key-down event
 		**/
@@ -112,7 +112,7 @@ class GameLogic
 		{
 			return this->keyboard_events->onKeyDown(keycode);
 		}
-		
+
 		/**
 		* Handle a key-up event
 		**/
@@ -128,31 +128,31 @@ class GameLogic
 		* Returns false if there is an error
 		**/
 		bool execScript(string code);
-		
+
 		/**
 		* When the game starts
 		**/
 		void raise_gamestart();
 		vector<int> binds_gamestart;
-		
+
 		/**
 		* When a player joins
 		**/
 		void raise_playerjoin(int arg);
 		vector<int> binds_playerjoin;
-		
+
 		/**
 		* When a player leaves
 		**/
 		void raise_playerleave(int arg);
 		vector<int> binds_playerleave;
-		
+
 		/**
 		* When a player has died
 		**/
 		void raise_playerdied(int arg);
 		vector<int> binds_playerdied;
-		
+
 		/**
 		* When an NPC has died
 		**/

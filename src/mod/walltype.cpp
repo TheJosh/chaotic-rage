@@ -42,7 +42,7 @@ WallType* loadItemWallType(cfg_t* cfg_item, Mod* mod)
 {
 	WallType* wt;
 	int size;
-	
+
 	wt = new WallType();
 	wt->name = cfg_getstr(cfg_item, "name");
 	wt->check_radius = 30;	//TODO: dynamic
@@ -55,7 +55,7 @@ WallType* loadItemWallType(cfg_t* cfg_item, Mod* mod)
 		if (! wt->model) return NULL;
 		wt->col_shape = wt->model->getCollisionShape();
 	}
-	
+
 	// Load damage states
 	size = cfg_size(cfg_item, "damage");
 	if (size == 0) {
@@ -63,31 +63,31 @@ WallType* loadItemWallType(cfg_t* cfg_item, Mod* mod)
 		dam->health = 0;
 		dam->model = mod->getAssimpModel("null.blend");
 		wt->damage_models.push_back(dam);
-		
+
 	} else {
 		for (int j = 0; j < size; j++) {
 			cfg_t *cfg_damage = cfg_getnsec(cfg_item, "damage", j);
-			
+
 			char * tmp = cfg_getstr(cfg_damage, "model");
 			if (tmp == NULL) return NULL;
-			
+
 			WallTypeDamage * dam = new WallTypeDamage();
-			
+
 			dam->health = cfg_getint(cfg_damage, "health");
-			
+
 			dam->model = mod->getAssimpModel(tmp);
 			if (! dam->model) return NULL;
-			
+
 			wt->damage_models.push_back(dam);
 		}
 	}
-	
+
 	// TODO: move to after the mod has loaded
 	//WallType *ground = mod->getWallType(cfg_getint(cfg_walltype, "ground_type"));
 	//if (ground != NULL && ground->wall == 0) {
 	//	wt->ground_type = ground;
 	//}
-	
+
 	return wt;
 }
 

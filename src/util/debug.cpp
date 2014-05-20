@@ -22,20 +22,20 @@ void write_debug(const char * sect, const char * file, int line, const char * fm
 {
 	list<string>::iterator result = find(enabled_sects.begin(), enabled_sects.end(), sect);
 	if (result == enabled_sects.end()) return;
-	
+
 	char msg[1024 * 16];
 	va_list argptr;
-	
+
 	va_start(argptr, fmt);
 	vsprintf(msg, fmt, argptr);
 	va_end(argptr);
-	
+
 	if (lineno) {
 		fprintf(out, "[%4s] %s:%i   %s\n", sect, file, line, msg);
 	} else {
 		fprintf(out, "[%4s] %s\n", sect, msg);
 	}
-	
+
 	fflush(out);
 }
 

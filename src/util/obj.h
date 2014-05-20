@@ -32,12 +32,12 @@ class WavefrontObj {
 		vector<Vertex> normals;
 		vector<string> materials;
 		vector<Face> faces;
-		
+
 		GLVAO* vao;
 		unsigned int count;
-		
+
 		Vertex size;
-		
+
 	public:
 		WavefrontObj();
 		void calcBoundingSize();

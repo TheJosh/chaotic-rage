@@ -77,16 +77,16 @@ void Intro::load()
 void Intro::doit()
 {
 	GLShader *shader;
-	
+
 	if (sg->music != NULL) {
 	//	st->audio->playSong(sg);
 	}
-	
+
 	start = SDL_GetTicks();
 	lasttime = 0;
 
 	CHECK_OPENGL_ERROR
-	
+
 	// Find 'basic' shader
 	map<string, GLShader*>::const_iterator pos = render->shaders.find("basic");
 	if (pos == render->shaders.end()) {
@@ -94,7 +94,7 @@ void Intro::doit()
 	} else {
 		shader = pos->second;
 	}
-	
+
 	// Set shader and uniforms
 	glUseProgram(shader->p());
 	glm::mat4 projection = glm::ortho<float>(
@@ -104,9 +104,9 @@ void Intro::doit()
 	);
 	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, &projection[0][0]);
 	glUniform1i(shader->uniform("uTex"), 0);
-	
+
 	CHECK_OPENGL_ERROR
-	
+
 	this->updateUI();
 }
 
@@ -118,7 +118,7 @@ void Intro::updateUI()
 {
 	int time = SDL_GetTicks() - start;
 	SpritePtr img;
-	
+
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
 		if (event.type == SDL_QUIT) {
@@ -134,11 +134,11 @@ void Intro::updateUI()
 	} else {
 		img = this->img1;
 	}
-	
+
 	CHECK_OPENGL_ERROR
-	
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+
 	// Render img
 	int x = (this->render->getWidth() - img->w) / 2;
 	int y = (this->render->getHeight() - img->h) / 2;
@@ -153,7 +153,7 @@ void Intro::updateUI()
 	}
 
 	SDL_GL_SwapWindow(this->render->window);
-	
+
 	CHECK_OPENGL_ERROR
 }
 

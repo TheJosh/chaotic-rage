@@ -37,7 +37,7 @@ void RenderNull::setScreenSize(int width, int height, bool fullscreen)
 SpritePtr RenderNull::int_loadSprite(SDL_RWops *rw, string filename)
 {
 	SDL_Surface * surf;
-	
+
 	surf = IMG_Load_RW(rw, 0);
 	if (surf == NULL) {
 		fprintf(stderr, "Couldn't load sprite '%s'\n", filename.c_str());
@@ -50,7 +50,7 @@ SpritePtr RenderNull::int_loadSprite(SDL_RWops *rw, string filename)
 	sprite->w = surf->w;
 	sprite->h = surf->h;
 	sprite->orig = surf;
-	
+
 	return sprite;
 }
 
@@ -79,7 +79,7 @@ void RenderNull::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 void RenderNull::preGame()
 {
 	this->last_render = st->game_time;
-	
+
 	cout << "======================================================" << endl;
 	cout << "NEW GAME    map: " << st->map->getName() << endl;
 	cout << "======================================================" << endl;
@@ -137,7 +137,7 @@ void RenderNull::render()
 {
 	if (st->game_time - this->last_render < 5000) return;
 	this->last_render = st->game_time;
-	
+
 	cout << "  [" << st->game_time << "]  Num entities: " << st->entities.size() << endl;
 }
 

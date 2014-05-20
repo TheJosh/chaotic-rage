@@ -17,7 +17,7 @@ using namespace std;
 // Read funcs (client)
 MsgClientRecv msg_client_recv [] = {
 	NULL,                               //<--  0x00
-	
+
 	NULL,                               //<--  0x01
 	&NetClient::handleInfoResp,         //<--  0x02
 	NULL,                               //<--  0x03
@@ -38,7 +38,7 @@ MsgClientRecv msg_client_recv [] = {
 	&NetClient::handleAmmoroundState,   //<--  0x12
 	&NetClient::handlePickupState,      //<--  0x13
 	&NetClient::handleEntityRem,        //<--  0x14
-	
+
 	NULL,                               //<--  0x15
 };
 
@@ -46,7 +46,7 @@ MsgClientRecv msg_client_recv [] = {
 // Read funcs (server)
 MsgServerRecv msg_server_recv [] = {
 	NULL,                               //<--  0x00
-	
+
 	&NetServer::handleInfoReq,          //<--  0x01
 	NULL,                               //<--  0x02
 	&NetServer::handleJoinReq,          //<--  0x03
@@ -67,7 +67,7 @@ MsgServerRecv msg_server_recv [] = {
 	NULL,                               //<--  0x12
 	NULL,                               //<--  0x13
 	NULL,                               //<--  0x14
-	
+
 	&NetServer::handleQuit,             //<--  0x15
 };
 
@@ -77,13 +77,13 @@ NetMsg::NetMsg (NetMsgType type, unsigned int size)
 {
 	this->type = type;
 	this->size = size;
-	
+
 	this->data = NULL;
 	if (size > 0) {
 		this->data = (Uint8*) malloc(size);
 		memset(this->data, 0, size);
 	}
-	
+
 	this->dest = NULL;
 }
 

@@ -37,7 +37,7 @@ typedef double float64_t;
 
 /*
 ** packi16() -- store a 16-bit int into a char buffer (like htons())
-*/ 
+*/
 void packi16(unsigned char *buf, unsigned int i)
 {
     *buf++ = i>>8; *buf++ = i;
@@ -45,7 +45,7 @@ void packi16(unsigned char *buf, unsigned int i)
 
 /*
 ** packi32() -- store a 32-bit int into a char buffer (like htonl())
-*/ 
+*/
 void packi32(unsigned char *buf, unsigned long i)
 {
     *buf++ = static_cast<unsigned char>(i>>24);
@@ -88,7 +88,7 @@ uint64_t pack754(long double f, unsigned bits, unsigned expbits)
 
 /*
 ** unpacki16() -- unpack a 16-bit int from a char buffer (like ntohs())
-*/ 
+*/
 unsigned int unpacki16(unsigned char *buf)
 {
     return (buf[0]<<8) | buf[1];
@@ -96,7 +96,7 @@ unsigned int unpacki16(unsigned char *buf)
 
 /*
 ** unpacki32() -- unpack a 32-bit int from a char buffer (like ntohl())
-*/ 
+*/
 unsigned long unpacki32(unsigned char *buf)
 {
     return (buf[0]<<24) | (buf[1]<<16) | (buf[2]<<8) | buf[3];
@@ -151,11 +151,11 @@ int32_t pack(unsigned char *buf, char const *format, ...)
     float32_t f;
     char *s;
     int32_t size = 0, len;
-    
+
     DEBUG("pack", "PACK %s", format);
-    
+
     va_start(ap, format);
-    
+
     for(; *format != '\0'; format++) {
         switch(*format) {
         case 'h': // 16-bit
@@ -195,14 +195,14 @@ int32_t pack(unsigned char *buf, char const *format, ...)
             memcpy(buf, s, len);
             buf += len;
             break;
-            
+
         case ' ':
             break;
         }
     }
 
     va_end(ap);
-    
+
     return size;
 }
 
@@ -219,11 +219,11 @@ void unpack(unsigned char *buf, char const *format, ...)
     float32_t *f;
     char *s;
     int32_t len, count, maxstrlen=0;
-    
+
     DEBUG("net_pack", "UNPACK %s", format);
-    
+
     va_start(ap, format);
-    
+
     for(; *format != '\0'; format++) {
         switch(*format) {
         case 'h': // 16-bit
@@ -260,10 +260,10 @@ void unpack(unsigned char *buf, char const *format, ...)
             s[count] = '\0';
             buf += len;
             break;
-            
+
         case ' ':
             break;
-            
+
         default:
             if (isdigit(*format)) { // track max str len
                 maxstrlen = maxstrlen * 10 + (*format-'0');

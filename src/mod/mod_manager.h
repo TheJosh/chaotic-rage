@@ -29,11 +29,11 @@ class ModManager {
 		vector<Mod*> * mods;
 		Mod* base;
 		Mod* suppl;
-		
+
 	public:
 		ModManager();
-		
-	public:	
+
+	public:
 		void addMod(Mod *mod);
 		void remMod(Mod *mod);
 		void setBase(Mod *mod) { this->base = mod; }
@@ -47,7 +47,7 @@ class ModManager {
 		vector<string> * getAvailMods();
 
 		bool reloadAttrs();
-		
+
 		AIType * getAIType(CRC32 id);
 		ObjectType * getObjectType(CRC32 id);
 		PickupType * getPickupType(CRC32 id);
@@ -55,7 +55,7 @@ class ModManager {
 		VehicleType * getVehicleType(CRC32 id);
 		WallType * getWallType(CRC32 id);
 		WeaponType * getWeaponType(CRC32 id);
-		
+
 		AIType * getAIType(string name);
 		GameType * getGameType(string name);
 		ObjectType * getObjectType(string name);
@@ -66,9 +66,9 @@ class ModManager {
 		VehicleType * getVehicleType(string name);
 		WallType * getWallType(string name);
 		WeaponType * getWeaponType(string name);
-		
+
 		Song * getRandomSong();
-		
+
 		vector<GameType*> * getAllGameTypes();
 		vector<UnitType*> * getAllUnitTypes();
 		vector<WeaponType*> * getAllWeaponTypes();

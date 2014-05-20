@@ -55,10 +55,10 @@ AILogic::AILogic(Unit *u)
 	this->u = u;
 	this->st = u->getGameState();
 	this->lua = luaL_newstate();
-	
+
 	this->ActiveLuaState();
 	register_lua_functions();
-	
+
 	this->dir = btVector3(0,0,0);
 	this->dir_flag = true;
 	this->speed = 0;
@@ -90,16 +90,16 @@ void AILogic::ActiveLuaState()
 bool AILogic::execScript(string code)
 {
 	this->ActiveLuaState();
-	
+
 	int res = luaL_dostring(L, code.c_str());
-	
+
 	if (res != 0) {
 		string msg = "Failed to execute AI script: ";
 		msg.append(lua_tostring(L, -1));
 		displayMessageBox(msg);
 		this->u->takeDamage(this->u->health);
 	}
-	
+
 	return true;
 }
 
@@ -110,16 +110,16 @@ bool AILogic::execScript(string code)
 void AILogic::update(int delta)
 {
 	this->ActiveLuaState();
-	
+
 	// Fire timers
 	for (unsigned int id = 0; id < this->timers.size(); id++) {
 		LuaTimer* t = this->timers.at(id);
 		if (t == NULL) continue;
-		
+
 		if (this->st->game_time >= t->due) {
 			lua_rawgeti(L, LUA_REGISTRYINDEX, t->lua_func);
 			lua_pcall(L, 0, 0, 0);
-			
+
 			if (t->interval) {
 				t->due += t->interval;
 			} else {
@@ -128,7 +128,7 @@ void AILogic::update(int delta)
 			}
 		}
 	}
-	
+
 	// Handle movement
 	if (this->dir_flag) {
 		this->dir.setY(0.0f);
@@ -148,7 +148,7 @@ void AILogic::update(int delta)
 
 		this->dir_flag = false;
 	}
-	
+
 	// If we should end firing, then end firing
 	if (this->needEndFiring) {
 		this->u->endFiring();
@@ -209,24 +209,24 @@ LUA_FUNC(add_interval)
 		lua_pushstring(L, "Arg #1 is not an integer");
 		lua_error(L);
 	}
-	
+
 	if (! lua_isfunction(L, 2)) {
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);
 	}
-	
+
 	int time = lua_tointeger(L, 1);
-	
+
 	lua_pushvalue(L, -1);
 	int func = luaL_ref(L, LUA_REGISTRYINDEX);
-	
+
 	LuaTimer* t = new LuaTimer();
 	gl->timers.push_back(t);
-	
+
 	t->due = gl->st->game_time + time;
 	t->lua_func = func;
 	t->interval = time;
-	
+
 	lua_pushnumber(L, gl->timers.size() - 1);
 	return 1;
 }
@@ -246,24 +246,24 @@ LUA_FUNC(add_timer)
 		lua_pushstring(L, "Arg #1 is not an integer");
 		lua_error(L);
 	}
-	
+
 	if (! lua_isfunction(L, 2)) {
 		lua_pushstring(L, "Arg #1 is not a function");
 		lua_error(L);
 	}
-	
+
 	int time = lua_tointeger(L, 1);
-	
+
 	lua_pushvalue(L, -1);
 	int func = luaL_ref(L, LUA_REGISTRYINDEX);
-	
+
 	LuaTimer* t = new LuaTimer();
 	gl->timers.push_back(t);
-	
+
 	t->due = gl->st->game_time + time;
 	t->lua_func = func;
 	t->interval = 0;
-	
+
 	lua_pushnumber(L, gl->timers.size() - 1);
 	return 1;
 }
@@ -280,9 +280,9 @@ LUA_FUNC(remove_timer)
 		lua_pushstring(L, "Arg #1 is not an integer");
 		lua_error(L);
 	}
-	
+
 	int id = lua_tointeger(L, 1);
-	
+
 	gl->timers[id] = NULL;
 
 	return 0;
@@ -296,9 +296,9 @@ LUA_FUNC(remove_timer)
 LUA_FUNC(visible_units)
 {
 	list<UnitQueryResult> * uqr = gl->st->findVisibleUnits(gl->u);
-	
+
 	lua_newtable(L);
-	
+
 	int i = 0;
 	for (list<UnitQueryResult>::iterator it = uqr->begin(); it != uqr->end(); ++it) {
 		i++;
@@ -306,9 +306,9 @@ LUA_FUNC(visible_units)
 		new_unitinfo(L, &(*it));
 		lua_rawseti (L, 1, i);
 	}
-	
+
 	delete(uqr);
-	
+
 	return 1;
 }
 
@@ -356,7 +356,7 @@ LUA_FUNC(move)
 	} else {
 		gl->speed = gl->u->getParams()->max_speed;
 	}
-	
+
 	return 0;
 }
 
@@ -371,7 +371,7 @@ LUA_FUNC(melee)
 	double * v = get_vector3(L, 1);
 	btVector3 attackDirection = btVector3((float)v[0], (float)v[1], (float)v[2]);
 	attackDirection.normalize();
-	
+
 	// Determine direction matrix from direction vector
 	btVector3 fwd = btVector3(0.0, 0.0, 1.0);
 	btVector3 axis = fwd.cross(attackDirection);
@@ -379,9 +379,9 @@ LUA_FUNC(melee)
 	float angle = acos(attackDirection.dot(fwd));
 	btQuaternion rot = btQuaternion(axis, angle).normalize();
 	btMatrix3x3 matRot = btMatrix3x3(rot);
-	
+
 	gl->u->meleeAttack(matRot);
-	
+
 	return 0;
 }
 
@@ -446,7 +446,7 @@ void register_lua_functions()
 	load_vector3_lib(L);
 	load_unitinfo_lib(L);
 	load_random_lib(L);
-	
+
 	LUA_REG(add_interval);
 	LUA_REG(add_timer);
 	LUA_REG(remove_timer);

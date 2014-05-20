@@ -52,10 +52,10 @@ class AnimPlay
 		// These are calculated by calcTransforms()
 		// and then fed into the renderer
 		map<AssimpNode*, glm::mat4> transforms;
-		
+
 		// Calculated bone transforms
 		vector<glm::mat4> bone_transforms;
-		
+
 	public:
 		AnimPlay(AssimpModel* model);
 
@@ -63,11 +63,11 @@ class AnimPlay
 		void setAnimation(unsigned int animation, unsigned int start_frame, unsigned int end_frame);
 		void setAnimation(unsigned int animation);
 		void clearAnimation();
-		
+
 		void setEndedCallback(AnimPlayCallback func, void* data);
 		void setEndedCallback(AnimPlayCallback func);
 		void setEndedCallback(void* data);
-		
+
 		void addMoveNode(string node);
 		void addMoveNode(AssimpNode *nd);
 		void setMoveTransform(string node, glm::mat4 transform);
@@ -90,5 +90,5 @@ class AnimPlay
 		void calcTransformNode(AssimpNode* nd, glm::mat4 transform, float animTick);
 		unsigned int findFrameTime(vector<AssimpAnimKey>* keys, float animTick);
 		float mixFactor(vector<AssimpAnimKey>* keys, unsigned int index, float animTick);
-		
+
 };

@@ -21,7 +21,7 @@ using namespace std;
 class AILogic
 {
 	friend class Unit;
-	
+
 	public:
 		Unit *u;
 		lua_State *lua;
@@ -31,14 +31,14 @@ class AILogic
 		bool dir_flag;              // Set when direction has changed
 		float speed;
 		bool needEndFiring;
-		
+
 	public:
 		AILogic(Unit *u);
 		~AILogic();
-		
+
 	private:
 		void ActiveLuaState();
-		
+
 	public:
 		/**
 		* Executes a script.
@@ -46,7 +46,7 @@ class AILogic
 		* Returns false if there is an error
 		**/
 		bool execScript(string code);
-		
+
 		/**
 		* Basically just provides timer ticks
 		**/

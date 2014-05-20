@@ -44,7 +44,7 @@ class Mod {
 		bool has_arcade;
 		bool has_campaign;
 		string load_err;
-		
+
 		// full data
 		vector<AIType*> * ais;
 		vector<Campaign*> * campaigns;
@@ -58,17 +58,17 @@ class Mod {
 		vector<WallType*> * walltypes;
 		vector<WeaponType*> * weapontypes;
 		map<string, AssimpModel*> models;
-		
+
 	public:
 		GameState * st;
 		string name;
 		string directory;
-		
+
 	public:
 		virtual char* loadText(string filename);
 		virtual Uint8* loadBinary(string resname, Sint64 *len);
 		virtual SDL_RWops* loadRWops(string filename);
-		
+
 	public:
 		Mod(GameState * st, string directory);
 		virtual ~Mod();
@@ -79,13 +79,13 @@ class Mod {
 		void setLoadErr(const char *message, ...);
 		string getLoadErr() { return this->load_err; }
 		bool reloadAttrs();
-		
+
 		string getName() { return this->name; }
 		string getTitle() { return this->title; }
 		vector<MapReg>* getMaps() { return this->maps; }
 		bool hasArcade() { return this->has_arcade; }
 		bool hasCampaign() { return this->has_campaign; }
-		
+
 		AIType * getAIType(CRC32 id);
 		ObjectType * getObjectType(CRC32 id);
 		PickupType * getPickupType(CRC32 id);
@@ -93,7 +93,7 @@ class Mod {
 		VehicleType * getVehicleType(CRC32 id);
 		WallType * getWallType(CRC32 id);
 		WeaponType * getWeaponType(CRC32 id);
-		
+
 		AIType * getAIType(string name);
 		Campaign * getCampaign(string name);
 		GameType * getGameType(string name);
@@ -105,13 +105,13 @@ class Mod {
 		VehicleType * getVehicleType(string name);
 		WallType * getWallType(string name);
 		WeaponType * getWeaponType(string name);
-		
+
 		AssimpModel * getAssimpModel(string name);
-		
+
 		vector<Campaign*> * getCampaigns();
 
 		void addObjectType(ObjectType * ot);
-		
+
 		Song * getRandomSong();
 
 		void getAllGameTypes(vector<GameType*>::iterator * start, vector<GameType*>::iterator * end);

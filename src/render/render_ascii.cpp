@@ -50,17 +50,17 @@ void RenderAscii::setScreenSize(int width, int height, bool fullscreen)
 {
 	free(this->buffer);
 	free(this->color);
-	
+
 	#ifdef __gnu_linux__
 		struct winsize w;
 		ioctl(0, TIOCGWINSZ, &w);
 		w.ws_row -= 2;
-		
+
 		if (w.ws_row <= 2 or w.ws_col <= 2) {
 			printf("Terminal too small");
 			exit(1);
 		}
-		
+
 		if ((w.ws_col/2) < w.ws_row) {
 			this->width = w.ws_col;
 			this->height = w.ws_col/2;
@@ -72,10 +72,10 @@ void RenderAscii::setScreenSize(int width, int height, bool fullscreen)
 		this->width = 60;
 		this->height = 30;
 	#endif
-	
+
 	this->buffer = (char*)malloc(this->width * this->height);
 	this->color = (Uint8*)malloc(this->width * this->height);
-	
+
 	printf("\033[0m\033[2J");
 }
 
@@ -86,7 +86,7 @@ void RenderAscii::setScreenSize(int width, int height, bool fullscreen)
 SpritePtr RenderAscii::int_loadSprite(SDL_RWops *rw, string filename)
 {
 	SDL_Surface * surf;
-	
+
 	surf = IMG_Load_RW(rw, 0);
 	if (surf == NULL) {
 		fprintf(stderr, "Couldn't load sprite '%s'\n", filename.c_str());
@@ -99,7 +99,7 @@ SpritePtr RenderAscii::int_loadSprite(SDL_RWops *rw, string filename)
 	sprite->w = surf->w;
 	sprite->h = surf->h;
 	sprite->orig = surf;
-	
+
 	return sprite;
 }
 
@@ -182,36 +182,36 @@ void RenderAscii::render()
 {
 	if (st->game_time - this->last_render < 1000) return;
 	this->last_render = st->game_time;
-	
+
 	float scalex = ((float)st->map->width) / ((float)this->width);
 	float scaley = ((float)st->map->height) / ((float)this->height);
-	
+
 	memset(this->buffer, (int)' ', this->width * this->height);
 	memset(this->color, 7, this->width * this->height);				// white
-	
+
 	// Entities
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {
 		Entity *e = (*it);
 		btTransform trans = e->getTransform();
-		
+
 		int x = (int)round(trans.getOrigin().getX() / scalex);
 		int y = (int)round(trans.getOrigin().getZ() / scaley);
-		
+
 		if (x < 0 or x > this->width) continue;
 		if (y < 0 or y > this->height) continue;
-		
+
 		if (e->klass() == WALL) {
 			this->buffer[y * this->width + x] = '#';
-			
+
 		} else if (e->klass() == VEHICLE) {
 			this->buffer[y * this->width + x] = '%';
-			
+
 		} else if (e->klass() == OBJECT) {
 			this->buffer[y * this->width + x] = 'o';
-			
+
 		} else if (e->klass() == PICKUP) {
 			this->buffer[y * this->width + x] = '@';
-			
+
 		} else if (e->klass() == UNIT) {
 			if (((Unit*)e)->slot == 0) {
 				this->buffer[y * this->width + x] = 'N';
@@ -222,9 +222,9 @@ void RenderAscii::render()
 			}
 		}
 	}
-	
+
 	printf("\033[2J\033[1;1H\033[40;1m");
-	
+
 	char* ptr = this->buffer;
 	Uint8* col = this->color;
 	for (int y = this->height; y != 0; --y) {
@@ -240,6 +240,6 @@ void RenderAscii::render()
 		}
 		if (y != 1) putchar('\n');
 	}
-	
+
 	printf("\033[0m\n");
 }

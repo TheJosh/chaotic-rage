@@ -29,7 +29,7 @@ GLVAO::GLVAO()
 		glGenVertexArrays(1, &this->vao);
 		glBindVertexArray(this->vao);
 	#endif
-	
+
 	this->index = 0;
 	this->position = 0;
 	this->normal = 0;
@@ -136,11 +136,11 @@ void GLVAO::setInterleavedPNT(GLuint vbo)
 	glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(0));   // Position
 	glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(12));    // Normals
 	glVertexAttribPointer(ATTRIB_TEXUV, 2, GL_FLOAT, GL_FALSE, sizeof(VBOvertex), BUFFER_OFFSET(24));     // TexUVs
-	
+
 	glEnableVertexAttribArray(ATTRIB_POSITION);
 	glEnableVertexAttribArray(ATTRIB_NORMAL);
 	glEnableVertexAttribArray(ATTRIB_TEXUV);
-	
+
 	this->interleaved_pnt = vbo;
 }
 
@@ -151,10 +151,10 @@ void GLVAO::setInterleavedPC(GLuint vbo)
 {
 	glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(0));     // Position
 	glVertexAttribPointer(ATTRIB_COLOR, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(12));       // Colour
-	
+
 	glEnableVertexAttribArray(ATTRIB_POSITION);
 	glEnableVertexAttribArray(ATTRIB_COLOR);
-	
+
 	this->interleaved_pc = vbo;
 }
 
@@ -197,49 +197,49 @@ void GLVAO::bindBuffers()
 	if (this->index) {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->index);
 	}
-	
+
 	// Position
 	if (this->position) {
 		glBindBuffer(GL_ARRAY_BUFFER, this->position);
 		this->setPosition(this->position);
 	}
-	
+
 	// Normals
 	if (this->normal) {
 		glBindBuffer(GL_ARRAY_BUFFER, this->normal);
 		this->setNormal(this->normal);
 	}
-	
+
 	// Texture uvs
 	if (this->texuv) {
 		glBindBuffer(GL_ARRAY_BUFFER, this->texuv);
 		this->setTexUV(this->texuv);
 	}
-	
+
 	// Bone id
 	if (this->boneid) {
 		glBindBuffer(GL_ARRAY_BUFFER, this->boneid);
 		this->setBoneId(this->boneid);
 	}
-	
+
 	// Bone weight
 	if (this->boneweight) {
 		glBindBuffer(GL_ARRAY_BUFFER, this->boneweight);
 		this->setBoneWeight(this->boneweight);
 	}
-	
+
 	// Tangent
 	if (this->tangent) {
 		glBindBuffer(GL_ARRAY_BUFFER, this->tangent);
 		this->setTangent(this->tangent);
 	}
-	
+
 	// Interleaved, position normal texture
 	if (this->interleaved_pnt) {
 		glBindBuffer(GL_ARRAY_BUFFER, this->interleaved_pnt);
 		this->setInterleavedPNT(this->interleaved_pnt);
 	}
-	
+
 	// Interleaved, position colour
 	if (this->interleaved_pc) {
 		glBindBuffer(GL_ARRAY_BUFFER, this->interleaved_pc);

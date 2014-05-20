@@ -24,9 +24,9 @@ LUA_FUNC(random)
 {
 	int min = lua_tointeger(L, 1);
 	int max = lua_tointeger(L, 2);
-	
+
 	lua_pushinteger(L, getRandom(min,max));
-	
+
 	return 1;
 }
 
@@ -38,9 +38,9 @@ LUA_FUNC(random_float)
 {
 	float min = static_cast<float>(lua_tonumber(L, 1));
 	float max = static_cast<float>(lua_tonumber(L, 2));
-	
+
 	lua_pushnumber(L, getRandomf(min,max));
-	
+
 	return 1;
 }
 
@@ -52,9 +52,9 @@ LUA_FUNC(random_arg)
 {
 	int num = lua_gettop(L);
 	if (num == 0) return 0;
-	
+
 	lua_pushvalue(L, getRandom(1, num));
-	
+
 	return 1;
 }
 

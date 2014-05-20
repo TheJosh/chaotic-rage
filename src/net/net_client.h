@@ -17,7 +17,7 @@ class UIUpdate;
 
 class NetClient {
 	friend class NetClientSeqPred;
-	
+
 	private:
 		GameState * st;
 		IPaddress ipaddress;
@@ -30,11 +30,11 @@ class NetClient {
 		bool ingame;              // We are in the game
 
 		NetClientSeqPred * seq_pred;
-		
+
 	public:
 		NetClient(GameState * st);
 		~NetClient();
-		
+
 	public:
 		void update();
 
@@ -42,7 +42,7 @@ class NetClient {
 		NetGameinfo * attemptJoinGame(string address, int port, UIUpdate *ui);
 		bool downloadGameState();
 		void preGame();
-		
+
 	public:
 		// One method for each outgoing network message the client sends out
 		void addmsgInfoReq();
@@ -62,7 +62,7 @@ class NetClient {
 		unsigned int handleDataCompl(Uint8 *data, unsigned int size);
 		unsigned int handleChat(Uint8 *data, unsigned int size);
 		unsigned int handlePlayerDrop(Uint8 *data, unsigned int size);
-		
+
 		unsigned int handleUnitState(Uint8 *data, unsigned int size);
 		unsigned int handleWallState(Uint8 *data, unsigned int size);
 		unsigned int handleObjectState(Uint8 *data, unsigned int size);

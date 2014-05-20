@@ -32,7 +32,7 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 	public:
 		string name;
 		CRC32 id;
-		
+
 		string title;
 		GameState * st;
 		int type;
@@ -60,12 +60,12 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 		* Called by the unit class when we should fire
 		**/
 		virtual void doFire(Unit *unit, btTransform &origin) = 0;
-		
+
 		/**
 		* Called by the associated ammo round to update stuff
 		**/
 		virtual void entityUpdate(AmmoRound *e, int delta) {}
-		
+
 };
 
 

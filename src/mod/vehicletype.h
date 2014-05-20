@@ -59,7 +59,7 @@ class VehicleType
 	public:
 		string name;
 		CRC32 id;
-		
+
 		AssimpModel * model;
 		btCollisionShape* col_shape;
 		int health;
@@ -70,25 +70,25 @@ class VehicleType
 		bool helicopter;
 		bool engine;
 		bool steer;
-		
+
 		float engine_accel;
 		float engine_max;
 		float brake_accel;
 		float brake_max;
 		float reverse_accel;
 		float reverse_max;
-		
+
 		WeaponType* weapon_primary;
 		vector <VehicleTypeDamage *> damage_models;
 		vector <VehicleTypeNode> nodes;
 
 		glm::vec3 joint_front;
 		glm::vec3 joint_back;
-		
+
 	public:
 		VehicleType();
 		~VehicleType();
-		
+
 	public:
 		bool hasNode(VehicleNodeType type);
 		VehicleTypeNode* getNode(VehicleNodeType type);

@@ -31,19 +31,19 @@ class GameType
 
 		Mod* mod;
 		string script_filename;
-		
+
 		GameTypeFaction factions[NUM_FACTIONS];
 		unsigned num_factions;
-		
+
 	public:
 		GameType();
-		
+
 	public:
 		bool operator < (const GameType& other) const
 		{
 			return (title < other.title);
 		}
-		
+
 		/**
 		* Return the lua script code
 		* Please free() this when you are done

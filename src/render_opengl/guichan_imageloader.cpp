@@ -27,29 +27,29 @@ Image* ChaoticRageOpenGLSDLImageLoader::load(const std::string& filename, bool c
 		throw GCN_EXCEPTION(
 				std::string("Unable to load image file: ") + filename);
 	}
-	
+
 	SDL_Surface *loadedSurface = IMG_Load_RW(rw, 0);
 	SDL_RWclose(rw);
 	if (loadedSurface == NULL) {
 		throw GCN_EXCEPTION(
 				std::string("Unable to load image file: ") + filename);
 	}
-	
+
 	SDL_Surface *surface = convertToStandardFormat(loadedSurface);
 	SDL_FreeSurface(loadedSurface);
-	
+
 	if (surface == NULL) {
 		throw GCN_EXCEPTION(
 				std::string("Not enough memory to load: ") + filename);
 	}
-	
+
 	OpenGLImage *image = new OpenGLImage((unsigned int*)surface->pixels, surface->w, surface->h, convertToDisplayFormat);
 	SDL_FreeSurface(surface);
-	
+
 	if (image == NULL) {
 		throw GCN_EXCEPTION(
 				std::string("Unable to convert image to OpenGL: ") + filename);
 	}
-	
+
 	return image;
 }

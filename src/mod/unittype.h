@@ -62,11 +62,11 @@ class UnitParams
 class UnitType
 {
 	friend UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod);
-	
+
 	public:
 		string name;
 		CRC32 id;
-		
+
 		AssimpModel * model;
 		btConvexShape* col_shape;
 		float begin_health;
@@ -79,15 +79,15 @@ class UnitType
 		vector<UnitTypeSound*> sounds;
 		vector<UnitTypeAnimation*> animations;
 		Mod * mod;
-		
+
 	public:
 		UnitType();
 		~UnitType();
-		
+
 	public:
 		Sound* getSound(int type);
 		UnitTypeAnimation* getAnimation(int type);
-		
+
 		Mod * getMod() { return this->mod; }
 };
 

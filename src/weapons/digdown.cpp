@@ -30,19 +30,19 @@ static void heightmapCircle(Map* map, int x0, int y0, int radius, float depthadd
 void WeaponDigdown::doFire(Unit *u, btTransform &origin)
 {
 	btTransform xform = origin;
-	
+
 	btVector3 begin = xform.getOrigin();
 	btVector3 end = begin + btVector3(0.0f, -100.0f, 0.0f);
-	
+
 	//st->addDebugLine(&begin, &end);
-	
-	
+
+
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
 	cb.m_collisionFilterGroup = CG_UNIT;
 	cb.m_collisionFilterMask = CG_TERRAIN;
 	this->st->physics->getWorld()->rayTest(begin, end, cb);
-	
+
 	if (cb.hasHit()) {
 		const btRigidBody *body = btRigidBody::upcast(cb.m_collisionObject);
 		if (body && !body->getUserPointer()) {

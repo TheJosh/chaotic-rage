@@ -25,15 +25,15 @@ class HUD {
 	public:
 		PlayerState *ps;
 		RenderOpenGL *render;
-		
+
 	private:
 		bool weapon_menu;
 		list<HUDMessage*> msgs;
 		list<HUDLabel*> labels;
-		
+
 	public:
 		HUD(PlayerState *ps, RenderOpenGL *render);
-	
+
 	public:
 		void draw();
 
@@ -43,7 +43,7 @@ class HUD {
 
 		void addMessage(string text);
 		void addMessage(string text1, string text2);
-		
+
 		HUDLabel * addLabel(float x, float y, string data);
 };
 

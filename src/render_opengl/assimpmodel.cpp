@@ -61,7 +61,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 		| aiProcess_JoinIdenticalVertices
 		| aiProcess_SortByPType
 		| aiProcess_FlipUVs;
-	
+
 	// Read the file from the mod
 	Sint64 len;
 	Uint8 * data = this->mod->loadBinary("models/" + this->name, &len);
@@ -73,7 +73,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 			return false;
 		}
 	}
-	
+
 	// Check we aren't larger than size_t
 	if (len > MAX_FILE_SIZE) {
 		this->mod->setLoadErr("Failed to load %s; file too large", this->name.c_str());
@@ -86,27 +86,27 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 		this->mod->setLoadErr("Failed to load %s; file read failed; %s", this->name.c_str(), importer.GetErrorString());
 		return false;
 	}
-	
+
 	free(data);
-	
+
 	if (render != NULL and render->is3D()) {
 		this->loadMeshes(true);
 		this->loadMaterials(render);
 	} else {
 		this->loadMeshes(false);
 	}
-	
+
 	if (meshdata) {
 		this->loadMeshdata(render != NULL);
 	}
-	
+
 	this->loadNodes();
 	this->loadAnimations();
 	this->calcBoundingBox();
 	this->setBoneNodes();
-	
+
 	this->sc = NULL;
-	
+
 	return true;
 }
 
@@ -185,15 +185,15 @@ void AssimpModel::loadMeshes(bool opengl)
 	for (; n < sc->mNumMeshes; ++n) {
 		const struct aiMesh* mesh = sc->mMeshes[n];
 		AssimpMesh *myMesh = new AssimpMesh();
-		
+
 		myMesh->numFaces = mesh->mNumFaces;
 		myMesh->materialIndex = mesh->mMaterialIndex;
 		this->meshes.push_back(myMesh);
-		
+
 		if (! opengl) continue;
-		
+
 		assert(mesh->mNumFaces * 3 < 65535);
-		
+
 		// VAO
 		myMesh->vao = new GLVAO();
 
@@ -210,14 +210,14 @@ void AssimpModel::loadMeshes(bool opengl)
 			faceArray[faceIndex++] = face->mIndices[1];
 			faceArray[faceIndex++] = face->mIndices[2];
 		}
-		
+
 		// Faces
 		glGenBuffers(1, &buffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Uint16) * mesh->mNumFaces * 3, faceArray, GL_STATIC_DRAW);
 		myMesh->vao->setIndex(buffer);
 		free(faceArray);
-		
+
 		// Positions
 		if (mesh->HasPositions()) {
 			glGenBuffers(1, &buffer);
@@ -225,7 +225,7 @@ void AssimpModel::loadMeshes(bool opengl)
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mVertices, GL_STATIC_DRAW);
 			myMesh->vao->setPosition(buffer);
 		}
-		
+
 		// Normals
 		if (mesh->HasNormals()) {
 			glGenBuffers(1, &buffer);
@@ -233,7 +233,7 @@ void AssimpModel::loadMeshes(bool opengl)
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mNormals, GL_STATIC_DRAW);
 			myMesh->vao->setNormal(buffer);
 		}
-		
+
 		// UVs
 		if (mesh->HasTextureCoords(0)) {
 			glGenBuffers(1, &buffer);
@@ -241,7 +241,7 @@ void AssimpModel::loadMeshes(bool opengl)
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mTextureCoords[0], GL_STATIC_DRAW);
 			myMesh->vao->setTexUV(buffer);
 		}
-		
+
 		// Bone IDs and Weights
 		if (mesh->HasBones()) {
 			this->loadBones(mesh, myMesh);
@@ -267,9 +267,9 @@ void AssimpModel::loadMeshes(bool opengl)
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mTangents, GL_STATIC_DRAW);
 			myMesh->vao->setTangent(buffer);
 		}
-		
+
 		myMesh->vao->unbind();
-		
+
 		CHECK_OPENGL_ERROR;
 	}
 }
@@ -288,7 +288,7 @@ void AssimpModel::loadMeshdata(bool update)
 
 	for (; n < sc->mNumMeshes; ++n) {
 		const struct aiMesh* mesh = sc->mMeshes[n];
-		
+
 		// Grab existing object or create new one
 		if (update) {
 			myMesh = this->meshes.at(n);
@@ -297,7 +297,7 @@ void AssimpModel::loadMeshdata(bool update)
 			myMesh->numFaces = mesh->mNumFaces;
 			this->meshes.push_back(myMesh);
 		}
-		
+
 		// Copy face data
 		myMesh->faces = new vector<AssimpFace>();
 		myMesh->faces->reserve(mesh->mNumFaces);
@@ -308,7 +308,7 @@ void AssimpModel::loadMeshdata(bool update)
 			face.c = mesh->mFaces[t].mIndices[2];
 			myMesh->faces->push_back(face);
 		}
-		
+
 		// Copy verticies
 		myMesh->verticies = new vector<glm::vec4>();
 		myMesh->verticies->reserve(mesh->mNumVertices);
@@ -327,25 +327,25 @@ void AssimpModel::loadMaterials(Render3D* render)
 {
 	unsigned int n;
 	aiString path;
-	
+
 	for (n = 0; n < sc->mNumMaterials; n++) {
 		const aiMaterial* pMaterial = sc->mMaterials[n];
 		AssimpMaterial *myMat = new AssimpMaterial();
-		
+
 		// Diffuse texture
 		if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
 			if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
 				myMat->diffuse = this->loadTexture(render, path);
 			}
 		}
-		
+
 		// Normal map
 		if (pMaterial->GetTextureCount(aiTextureType_NORMALS) > 0) {
 			if (pMaterial->GetTexture(aiTextureType_NORMALS, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
 				myMat->normal = this->loadTexture(render, path);
 			}
 		}
-		
+
 		this->materials.push_back(myMat);
 	}
 }
@@ -359,12 +359,12 @@ void AssimpModel::loadMaterials(Render3D* render)
 SpritePtr AssimpModel::loadTexture(Render3D* render, aiString path)
 {
 	string p(path.data);
-	
+
 	if (p.substr(0, 2) == ".\\") p = p.substr(2, p.size() - 2);
 	if (p.substr(0, 2) == "./") p = p.substr(2, p.size() - 2);
 	if (p.substr(0, 2) == "//") p = p.substr(2, p.size() - 2);
-	
-	return render->loadSprite("models/" + p, this->mod); 
+
+	return render->loadSprite("models/" + p, this->mod);
 }
 
 
@@ -386,23 +386,23 @@ AssimpNode* AssimpModel::loadNode(aiNode* nd, unsigned int depth)
 	unsigned int i;
 	AssimpNode* myNode = new AssimpNode();
 	myNode->name = string(nd->mName.C_Str());
-	
+
 	aiMatrix4x4 m = nd->mTransformation;
 	m.Transpose();
 	myNode->transform = glm::make_mat4((float *) &m);
-	
+
 	//cout << string(depth*4, ' ') << myNode->name << "  " << myNode->transform[3][0] << "x" << myNode->transform[3][1] << "x" << myNode->transform[3][2] << endl;
-	
+
 	for (i = 0; i < nd->mNumMeshes; i++) {
 		myNode->meshes.push_back(nd->mMeshes[i]);
 		this->meshes[nd->mMeshes[i]]->nd = myNode;
 	}
-	
+
 	for (i = 0; i < nd->mNumChildren; i++) {
 		AssimpNode* child = loadNode(nd->mChildren[i], depth + 1);
 		if (child != NULL) myNode->addChild(child);
 	}
-	
+
 	return myNode;
 }
 
@@ -438,10 +438,10 @@ AssimpNode* AssimpModel::findNode(AssimpNode* nd, string name)
 void AssimpModel::loadAnimations()
 {
 	unsigned int n;
-	
+
 	for (n = 0; n < sc->mNumAnimations; n++) {
 		const aiAnimation* pAnimation = sc->mAnimations[n];
-		
+
 		AssimpAnimation* loaded = this->loadAnimation(pAnimation);
 		if (loaded) {
 			this->animations.push_back(loaded);
@@ -549,7 +549,7 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 	unsigned int m;
 	Uint8 n;
 	unsigned int *idx;
-	
+
 	// Allocate space for the IDs and weights
 	this->boneIds = (Uint8*) malloc(sizeof(Uint8) * 4 * mesh->mNumVertices);
 	this->boneWeights = (float*) malloc(sizeof(float) * 4 * mesh->mNumVertices);
@@ -568,13 +568,13 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 	// Save the id and the weight in the arrays as required
 	for (n = 0; n < mesh->mNumBones; n++) {
 		aiBone* bone = mesh->mBones[n];
-		
+
 		for (m = 0; m < bone->mNumWeights; m++) {
 			aiVertexWeight w = bone->mWeights[m];
 
 			if (w.mWeight < 0.01f) continue;
 			if (idx[w.mVertexId] == MAX_WEIGHTS) continue;
-			
+
 			this->boneIds[w.mVertexId * 4 + idx[w.mVertexId]] = n;
 			this->boneWeights[w.mVertexId * 4 + idx[w.mVertexId]] = w.mWeight;
 
@@ -585,14 +585,14 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 		AssimpBone* bn = new AssimpBone();
 		bn->name = string(bone->mName.C_Str());
 		bn->offset = glm::make_mat4((float *) &(bone->mOffsetMatrix));
-		
+
 		aiMatrix4x4 m = bone->mOffsetMatrix;
 		m.Transpose();
 		bn->offset = glm::make_mat4((float *) &m);
-		
+
 		myMesh->bones.push_back(bn);
 	}
-	
+
 	free(idx);
 }
 
@@ -637,7 +637,7 @@ void AssimpModel::setBoneNodes()
 {
 	for (vector<AssimpMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); ++it) {
 		AssimpMesh* mesh = (*it);
-		
+
 		for (unsigned int i = 0; i < mesh->bones.size(); i++) {
 			AssimpBone *bn = mesh->bones[i];
 			bn->nd = this->findNode(this->rootNode, bn->name);

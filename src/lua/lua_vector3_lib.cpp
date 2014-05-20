@@ -28,7 +28,7 @@ static double * _get(lua_State *L, int i)
 	if (luaL_checkudata(L,i,MYTYPE)==NULL) {
 		luaL_typerror(L,i,MYTYPE);
 	}
-	
+
 	return (double*)lua_touserdata(L,i);
 }
 
@@ -308,7 +308,7 @@ void load_vector3_lib(lua_State *L)
 {
 	luaL_newmetatable(L,MYTYPE);
 	luaL_register(L,NULL,R);
-	
+
 	lua_register(L,"vector3",vector3);
 	lua_register(L,"v3normalize",normalize);
 	lua_register(L,"v3normalise",normalize);		// catch both spellings

@@ -17,7 +17,7 @@ class GLVAO
 	private:
 		// VAO
 		GLuint vao;
-		
+
 		// VBOs - separate
 		GLuint index;
 		GLuint position;
@@ -26,11 +26,11 @@ class GLVAO
 		GLuint boneid;
 		GLuint boneweight;
 		GLuint tangent;
-		
+
 		// VBOs - interleaved
 		GLuint interleaved_pnt;
 		GLuint interleaved_pc;
-		
+
 	public:
 		GLVAO();
 		~GLVAO();
@@ -44,19 +44,19 @@ class GLVAO
 		void setBoneId(GLuint vbo);
 		void setBoneWeight(GLuint vbo);
 		void setTangent(GLuint vbo);
-		
+
 		// Set buffer ids - interleaved
 		void setInterleavedPNT(GLuint vbo);
 		void setInterleavedPC(GLuint vbo);
-		
+
 		// Get buffer id, for updating the data
 		GLuint getInterleavedPNT() { return this->interleaved_pnt; }
 		GLuint getInterleavedPC() { return this->interleaved_pc; }
-		
+
 		// Bind the VAO
 		void bind();
 		void unbind();
-		
+
 	private:
 		void bindBuffers();
 		void unbindBuffers();

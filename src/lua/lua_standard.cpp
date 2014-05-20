@@ -40,5 +40,5 @@ void lua_standard_libs(lua_State *L)
 	lua_setglobal(L, "loadfile");
 
 	lua_pushnil(L);
-	lua_setglobal(L, "collectgarbage"); 
+	lua_setglobal(L, "collectgarbage");
 }

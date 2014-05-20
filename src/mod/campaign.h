@@ -21,7 +21,7 @@ class CampaignStage {
 		// Game stage
 		string map;
 		string gametype;
-		
+
 		// Image stage
 		string image_filename;
 		unsigned int image_time;
@@ -33,13 +33,13 @@ class Campaign
 	public:
 		string name;
 		CRC32 id;
-		
+
 		string title;
 		GameState * st;
 		Mod* mod;
-		
+
 		vector<CampaignStage*>* stages;
-		
+
 	public:
 		Campaign();
 		~Campaign();

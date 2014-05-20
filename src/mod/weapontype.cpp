@@ -42,14 +42,14 @@ cfg_opt_t weapontype_opts[] =
 
 	// Sounds
 	CFG_SEC((char*) "sound", weaponsound_opts, CFGF_MULTI),
-	
+
 	// The per-type settings fall into one of five categories:
 	CFG_SEC((char*) "raycast", weapconf_raycast, CFGF_NONE),
 	CFG_SEC((char*) "digdown", weapconf_digdown, CFGF_NONE),
 	CFG_SEC((char*) "mine", weapconf_mine, CFGF_NONE),
 	CFG_SEC((char*) "rocket", weapconf_rocket, CFGF_NONE),
 	CFG_SEC((char*) "attractor", weapconf_attractor, CFGF_NONE),
-	
+
 	CFG_END()
 };
 
@@ -62,9 +62,9 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	WeaponType* wt;
 	cfg_t* cfg_sec;
 	int j, type;
-	
+
 	type = cfg_getint(cfg_item, "type");
-	
+
 	// The exact class is dependent on the type
 	switch (type) {
 		case WEAPON_TYPE_RAYCAST:
@@ -177,8 +177,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		default:
 			return NULL;
 	}
-	
-	
+
+
 	// These settings are common to all weapon types
 	wt->name = cfg_getstr(cfg_item, "name");
 	wt->title = cfg_getstr(cfg_item, "title");
@@ -191,7 +191,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	wt->continuous = (cfg_getint(cfg_item, "continuous") == 1);
 	wt->magazine_limit = cfg_getint(cfg_item, "magazine_limit");
 	wt->belt_limit = cfg_getint(cfg_item, "belt_limit");
-	
+
 	// Crosshair image and sizes
 	char* tmp = cfg_getstr(cfg_item, "crosshair");
 	if (tmp) {
@@ -206,20 +206,20 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	int num_sounds = cfg_size(cfg_item, "sound");
 	for (j = 0; j < num_sounds; j++) {
 		cfg_t* cfg_sound = cfg_getnsec(cfg_item, "sound", j);
-		
+
 		WeaponTypeSound* wts = new WeaponTypeSound();
 		wts->type = cfg_getint(cfg_sound, "type");
-		
+
 		char * tmp = cfg_getstr(cfg_sound, "sound");
 		if (tmp == NULL) {
 			delete(wts);
 			return NULL;
 		}
 		wts->snd = mod->getSound(tmp);
-		
+
 		wt->sounds.push_back(wts);
 	}
-	
+
 	return wt;
 }
 
@@ -232,12 +232,12 @@ Sound* WeaponType::getSound(int type)
 {
 	unsigned int j = 0;
 	unsigned int num = 0;
-	
+
 	// Find out how many of this time exist
 	for (j = 0; j < this->sounds.size(); j++) {
 		if (this->sounds.at(j)->type == type) num++;
 	}
-	
+
 	// Randomly choose one
 	num = getRandom(0, num - 1);
 	for (j = 0; j < this->sounds.size(); j++) {
@@ -248,7 +248,7 @@ Sound* WeaponType::getSound(int type)
 			num--;
 		}
 	}
-	
+
 	return NULL;
 }
 

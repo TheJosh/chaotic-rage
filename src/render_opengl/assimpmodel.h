@@ -60,11 +60,11 @@ class AssimpMesh
 		int materialIndex;
 		vector<AssimpBone*> bones;
 		AssimpNode* nd;
-		
+
 		// For the physics bits
 		vector<AssimpFace>* faces;
 		vector<glm::vec4>* verticies;
-		
+
 	public:
 		AssimpMesh() :
 			vao(NULL), numFaces(0), materialIndex(0), nd(NULL), faces(NULL), verticies(NULL)
@@ -76,7 +76,7 @@ class AssimpMaterial
 	public:
 		SpritePtr diffuse;
 		SpritePtr normal;
-		
+
 	public:
 		AssimpMaterial():
 			diffuse(NULL), normal(NULL)
@@ -94,7 +94,7 @@ class AssimpNode
 
 	public:
 		AssimpNode() : parent(NULL) {}
-		
+
 		void addChild(AssimpNode* child) {
 			this->children.push_back(child);
 			child->parent = this;
@@ -140,7 +140,7 @@ class AssimpModel
 		float* boneWeights;
 		btVector3 boundingSize;
 		btCollisionShape *shape;
-		
+
 	protected:
 		Mod *mod;
 		string name;
@@ -148,12 +148,12 @@ class AssimpModel
 		vector<AssimpMaterial*> materials;
 		vector<AssimpAnimation*> animations;
 		AssimpNode* rootNode;
-		
+
 	public:
 		AssimpModel(Mod* mod, string name);
 		bool load(Render3D* render, bool meshdata);
 		~AssimpModel();
-		
+
 	public:
 		const struct aiScene* getScene() { return this->sc; }		// TODO: remove this too
 		btVector3 getBoundingSize();
@@ -170,11 +170,11 @@ class AssimpModel
 		void loadMaterials(Render3D* render);
 		SpritePtr loadTexture(Render3D* render, aiString path);
 		void loadMeshdata(bool update);
-		
+
 		void loadNodes();
 		AssimpNode* loadNode(aiNode* nd, unsigned int depth);
 		AssimpNode* findNode(AssimpNode* nd, string name);
-		
+
 		void loadAnimations();
 		AssimpAnimation* loadAnimation(const aiAnimation* anim);
 
@@ -186,7 +186,7 @@ class AssimpModel
 		float* getBoneWeights();
 		void freeBones();
 		void setBoneNodes();
-		
+
 		void createCollisionShape();
 };
 

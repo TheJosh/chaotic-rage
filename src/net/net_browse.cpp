@@ -22,7 +22,7 @@ vector<string>* getLocalServers(UIUpdate * ui)
 	UDPsocket sock;
 	UDPpacket *pkt;
 	vector<string>* out;
-	
+
 	if (SDLNet_Init() < 0) {
 		reportFatalError("SDL_net init failed");
 	}

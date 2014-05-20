@@ -132,7 +132,7 @@ void AnimPlay::addMoveNode(string node)
 {
 	AssimpNode* nd = this->model->findNode(this->model->rootNode, node);
 	if (nd == NULL) return;
-	
+
 	this->move_nodes[nd] = glm::mat4();
 }
 
@@ -154,7 +154,7 @@ void AnimPlay::setMoveTransform(string node, glm::mat4 transform)
 {
 	AssimpNode* nd = this->model->findNode(this->model->rootNode, node);
 	if (nd == NULL) return;
-	
+
 	this->move_nodes[nd] = transform;
 }
 
@@ -176,7 +176,7 @@ void AnimPlay::resetMoveTransform(string node)
 {
 	AssimpNode* nd = this->model->findNode(this->model->rootNode, node);
 	if (nd == NULL) return;
-	
+
 	this->move_nodes[nd] = glm::mat4();
 
 	// If it's static, the calcs are really easy
@@ -226,7 +226,7 @@ void AnimPlay::calcTransformNodeStatic(AssimpNode* nd, glm::mat4 transform)
 	transform *= nd->transform;
 
 	this->transforms[nd] = transform;
-	
+
 	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); ++it) {
 		calcTransformNodeStatic((*it), transform);
 	}
@@ -272,12 +272,12 @@ void AnimPlay::calcTransforms()
 					this->anim = NULL;
 				}
 			}
-			
+
 			animTick += (frameTime * this->start_frame);
 
 		} else if (this->loop) {
 			animTick = fmod(timeSecs * ticsPerSec, this->anim->duration);
-			
+
 		} else {
 			animTick = timeSecs * ticsPerSec;
 			if (animTick > this->anim->duration) {
@@ -290,7 +290,7 @@ void AnimPlay::calcTransforms()
 	} else {
 		animTick = 0.0f;
 	}
-	
+
 	this->calcTransformNode(this->model->rootNode, glm::mat4(), animTick);
 }
 
@@ -332,7 +332,7 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float anim
 			glm::mat4 trans = glm::translate(glm::mat4(), glm::mix(animNode->position[positionKey].vec, animNode->position[positionKey + 1].vec, positionMix));
 			glm::mat4 rot = glm::toMat4(glm::mix(animNode->rotation[rotationKey].quat, animNode->rotation[rotationKey + 1].quat, rotationMix));
 			glm::mat4 scale = glm::scale(glm::mat4(), glm::mix(animNode->scale[scaleKey].vec, animNode->scale[scaleKey + 1].vec, scaleMix));
-	
+
 			local = trans * rot * scale;
 		} else {
 			local = nd->transform;
@@ -364,18 +364,18 @@ void AnimPlay::calcBoneTransforms()
 	for (unsigned int i = 0; i < MAX_BONES; i++) {
 		bone_transforms.push_back(glm::mat4(1.0f));
 	}
-	
+
 	// For now we only operate on the first mesh
 	AssimpMesh* mesh = this->model->meshes[0];
-	
+
 	// Iterate through the bones and set the transforms from the nodes
 	for (unsigned int i = 0; i < mesh->bones.size(); i++) {
 		AssimpBone *bn = mesh->bones[i];
 		if (bn->nd == NULL) continue;
-		
+
 		map<AssimpNode*, glm::mat4>::iterator it = this->transforms.find(bn->nd);
 		if (it == this->transforms.end()) continue;
-		
+
 		this->bone_transforms[i] = it->second * bn->offset;
 	}
 }
@@ -402,7 +402,7 @@ unsigned int AnimPlay::findFrameTime(vector<AssimpAnimKey>* keys, float animTick
 			return i;
 		}
 	}
-	
+
 	assert(0);
 	return 0;
 }
@@ -415,7 +415,7 @@ float AnimPlay::mixFactor(vector<AssimpAnimKey>* keys, unsigned int index, float
 {
 	AssimpAnimKey* curr = &(keys->at(index));
 	AssimpAnimKey* next = &(keys->at(index+1));
-	
+
 	return
 		(animTick - curr->time)
 		/

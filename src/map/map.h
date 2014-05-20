@@ -33,11 +33,11 @@ class Light {
 		float z;
 		float diffuse [4];
 		float specular [4];
-		
+
 	public:
 		Light(unsigned int type);
 		~Light();
-		
+
 		void setDiffuse(short r, short g, short b, short a);
 		void setSpecular(short r, short g, short b, short a);
 };
@@ -72,7 +72,7 @@ class MapMesh {
 class Map {
 	friend class RenderSDL;
 	friend class RenderOpenGL;
-	
+
 	private:
 		vector<Zone*> zones;
 		vector<Light*> lights;
@@ -82,13 +82,13 @@ class Map {
 		GameState * st;
 		Mod * mod;
 		string name;
-		
+
 	public:
 		float width;
 		float height;
 		Heightmap* heightmap;		// TODO: Support multiple
 		SpritePtr terrain;
-		
+
 		SpritePtr skybox;
 		glm::vec3 skybox_size;
 
@@ -106,11 +106,11 @@ class Map {
 	public:
 		int load(string name, Render *render, Mod* insideof);
 		void loadDefaultEntities();
-		
+
 		void update(int delta);
 
 		string getName() { return this->name; }
-		
+
 		Zone* getSpawnZone(Faction f);
 		Zone* getPrisonZone(Faction f);
 		Zone* getCollectZone(Faction f);
@@ -118,7 +118,7 @@ class Map {
 		Zone* getNearbaseZone(Faction f);
 		float getRandomX();
 		float getRandomY();
-		
+
 		// todo: support for multiple heightmaps (in different areas)?
 		void createHeightmapRaw();
 		float heightmapGet(int X, int Z);
@@ -140,20 +140,20 @@ class Map {
 **/
 class MapReg {
 	friend class MapRegistry;
-	
+
 	protected:
 		string name;
 		string title;
 		Mod* mod;
 		bool arcade;
-		
+
 	public:
 		MapReg() : name(""), title(""), mod(NULL), arcade(true) {}
 		MapReg(string name) : name(name), title(name), mod(NULL), arcade(true) {}
 		MapReg(string name, string title) : name(name), title(title), mod(NULL), arcade(true) {}
 		MapReg(string name, string title, Mod* mod) : name(name), title(title), mod(mod), arcade(true) {}
 		MapReg(string name, string title, Mod* mod, bool arcade) : name(name), title(title), mod(mod), arcade(arcade) {}
-		
+
 	public:
 		string getName() { return this->name; }
 		string getTitle() { return this->title; }
@@ -168,7 +168,7 @@ class MapReg {
 class MapRegistry {
 	public:
 		vector<MapReg> maps;
-		
+
 	public:
 		void find(string dir);
 		void find(Mod* mod);

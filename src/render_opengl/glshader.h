@@ -17,13 +17,13 @@ class GLShader
 	private:
 		// The shader program
 		GLuint program;
-		
+
 		// Cached list of uniform locations
 		map<const char*, GLuint> uniforms;
-		
+
 	public:
 		GLShader(const GLuint p) : program(p) {}
-		
+
 		GLuint p();
 		GLuint uniform(const char* name);
 };

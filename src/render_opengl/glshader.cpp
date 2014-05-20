@@ -31,11 +31,11 @@ GLuint GLShader::uniform(const char* name)
 	if (it != this->uniforms.end()) {
 		return it->second;
 	}
-	
+
 	GLuint loc = glGetUniformLocation(this->program, name);
-	
+
 	this->uniforms.insert(std::pair<const char*, GLuint>(name, loc));
-	
+
 	return loc;
 }
 

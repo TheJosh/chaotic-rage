@@ -23,22 +23,22 @@ class WallType
 		// from data file
 		string name;
 		CRC32 id;
-		
+
 		bool stretch;
 		bool wall;
 		WallType * ground_type;
-		
+
 		vector <WallTypeDamage *> damage_models;
 		vector <AudioPtr> walk_sounds;
-		
+
 		AssimpModel * model;
 		btCollisionShape* col_shape;
-		
+
 		int check_radius;
 		float health;
 
 		SpritePtr surf;
-		
+
 	public:
 		WallType();
 		~WallType();

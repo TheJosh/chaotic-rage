@@ -173,7 +173,7 @@ class WeaponRocket : public WeaponType
 		AssimpModel* model;
 		float range;
 		float damage;
-		
+
 	public:
 		virtual void doFire(Unit *unit, btTransform &origin);
 		virtual void entityUpdate(AmmoRound *e, int delta);

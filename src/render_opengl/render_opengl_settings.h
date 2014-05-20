@@ -12,16 +12,16 @@ class RenderOpenGLSettings
 		// Values depend on video card;
 		// Typical: 1, 2, 4, 8, 16
 		int msaa;
-		
+
 		// Texture filtering
 		// 1 = GL_NEAREST (worst), 4 = GL_LINEAR_MIPMAP_LINEAR (best)
 		int tex_filter;
-		
+
 		// Anisotropy
 		// Requires GL_EXT_texture_filter_anisotropic
 		float tex_aniso;
-		
-		
+
+
 	public:
 		RenderOpenGLSettings():
 			msaa(1),

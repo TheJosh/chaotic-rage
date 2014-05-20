@@ -11,15 +11,15 @@ class RenderAscii : public Render
 {
 	private:
 		int last_render;
-		
+
 		int width;
 		int height;
 		char *buffer;
 		Uint8 *color;
-		
+
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
-		
+
 	public:
 		virtual void setScreenSize(int width, int height, bool fullscreen);
 		virtual void render();
@@ -31,7 +31,7 @@ class RenderAscii : public Render
 		virtual void freeSprite(SpritePtr sprite);
 		virtual int getSpriteWidth(SpritePtr sprite);
 		virtual int getSpriteHeight(SpritePtr sprite);
-		
+
 	public:
 		RenderAscii(GameState * st);
 		virtual ~RenderAscii();

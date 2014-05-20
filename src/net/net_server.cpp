@@ -38,7 +38,7 @@ NetServer::NetServer(const NetServer & obj)
 {
 	this->st = obj.st;
 	this->conf = obj.conf;
-	
+
 	this->seq = obj.seq;
 	this->seq_pred = new NetServerSeqPred(*obj.seq_pred);
 }
@@ -48,7 +48,7 @@ NetServer::NetServer(GameState * st, ServerConfig * conf)
 {
 	this->st = st;
 	this->conf = conf;
-	
+
 	this->seq = 1;
 	this->seq_pred = new NetServerSeqPred(this);
 
@@ -82,30 +82,30 @@ static bool ClientEraser(NetServerClientInfo* c)
 void NetServer::update()
 {
 	UDPpacket *pkt = SDLNet_AllocPacket(MAX_PKT_SIZE);
-	
-	
+
+
 	// Only update seq if we have clients
 	if (this->clients.size() > 0) {
 		this->seq++;
 	}
-	
-	
+
+
 	// We always recv. messages, so we can handle client joins
 	while (SDLNet_UDP_Recv(this->sock, pkt)) {
 		if (debug_enabled("net_pkt")) {
 			cout << setw (6) << setfill(' ') << st->game_time << " RECV ";
 			dumpPacket(pkt->data, pkt->len);
 		}
-		
+
 		Uint8* ptr = pkt->data;
 		int p = 0;
-		
+
 		SeqNum newseq = SDLNet_Read16(ptr);
 		ptr += 2; p += 2;
-		
+
 		Uint16 code = SDLNet_Read16(ptr);
 		ptr += 2; p += 2;
-		
+
 		// Handle a "browse" packet by echoing back
 		if (pkt->len == 4 && newseq == 0x0000 && code == 0xFFFF) {
 			SDLNet_UDP_Send(this->sock, -1, pkt);
@@ -120,12 +120,12 @@ void NetServer::update()
 				break;
 			}
 		}
-		
+
 		// Update their seq
 		if (client != NULL && newseq > client->seq) {
 			client->seq = newseq;
 		}
-		
+
 		// Create a new client if required
 		if (client == NULL) {
 			client = new NetServerClientInfo();
@@ -133,12 +133,12 @@ void NetServer::update()
 			client->ipaddress.port = pkt->address.port;
 			client->code = code;
 		}
-		
+
 		// Handle messages
 		while (p < pkt->len) {
 			unsigned int type = (*ptr);
 			ptr++; p++;
-			
+
 			if (type > NOTHING && type < BOTTOM) {
 				if (msg_server_recv[type] != NULL) {
 					unsigned int num = ((*this).*(msg_server_recv[type]))(client, ptr, pkt->len - p);
@@ -147,7 +147,7 @@ void NetServer::update()
 			}
 		}
 	}
-	
+
 	if (this->clients.size() > 0) {
 		// Check the seq of all clients
 		// If they are too old, assume lost network connection
@@ -156,13 +156,13 @@ void NetServer::update()
 				this->dropClient(*cli);
 			}
 		}
-		
+
 		// Scrub any dropped clients from the array
 		this->clients.erase(
 			std::remove_if(this->clients.begin(), this->clients.end(), ClientEraser),
 			this->clients.end()
 		);
-		
+
 		// Dump debug info
 		if (debug_enabled("net_info")) {
 			cout << setw (6) << setfill(' ') << st->game_time << " MSG-QUEUE\n";
@@ -170,58 +170,58 @@ void NetServer::update()
 				cout << "       " << setw (6) << setfill(' ') << ((*it).seq) << " " << ((*it).type);
 				dumpPacket((*it).data, (*it).size);
 			}
-			
+
 			cout << setw (6) << setfill(' ') << st->game_time << " CLIENT-INFO\n";
 			for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); ++cli) {
 				cout << "       " << setw (6) << setfill(' ') << ((*cli)->seq) << " " << ((*cli)->slot) << "\n";
 			}
 		}
-		
+
 		// Send messages
 		// TODO: Think up a way to handle packets larger than internet MTU
 		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); ++cli) {
 			if ((*cli) == NULL) continue;
-		
+
 			pkt->address.host = (*cli)->ipaddress.host;
 			pkt->address.port = (*cli)->ipaddress.port;
-		
+
 			pkt->len = 0;
-		
+
 			Uint8* ptr = pkt->data;
-		
+
 			SDLNet_Write16(this->seq, ptr);
 			ptr += 2; pkt->len += 2;
-		
+
 			SDLNet_Write16(0, ptr);		// pad
 			ptr += 2; pkt->len += 2;
-		
+
 			for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); ++it) {
 				if ((*cli)->seq > (*it).seq) continue;
 				if ((*it).dest != NULL && (*it).dest != (*cli)) continue;
-				
+
 				*ptr = (*it).type;
 				ptr++; pkt->len++;
-				
+
 				memcpy(ptr, (*it).data, (*it).size);
 				ptr += (*it).size; pkt->len += (*it).size;
-				
+
 				assert(pkt->len <= MAX_PKT_SIZE);
 			}
-		
+
 			if (pkt->len > 0) {
 				if (debug_enabled("net_pkt")) {
 					cout << setw (6) << setfill(' ') << st->game_time << " SEND ";
 					dumpPacket(pkt->data, pkt->len);
 				}
-				
+
 				SDLNet_UDP_Send(this->sock, -1, pkt);
 			}
 		}
 	}
-	
-	
+
+
 	this->messages.remove_if(*this->seq_pred);
-	
+
 	//SDLNet_FreePacket(pkt);
 }
 
@@ -249,10 +249,10 @@ void NetServer::dropClient(NetServerClientInfo *client)
 	if (u) {
 		u->del = 1;
 	}
-	
+
 	this->st->logic->raise_playerleave(client->slot);
 	this->addmsgClientDrop(client);
-	
+
 	client->inlist = false;
 	client->ingame = false;
 	client->del = true;
@@ -275,16 +275,16 @@ NetMsg * NetServer::addmsgInfoResp()
 NetMsg * NetServer::addmsgJoinAcc(NetServerClientInfo *client)
 {
 	string map = this->st->map->getName();
-	
+
 	NetMsg * msg = new NetMsg(JOIN_OKAY, 4 + map.length());
 	msg->seq = this->seq;
-	
+
 	pack(msg->data, "hs",
 		client->slot, map.c_str()
 	);
-	
+
 	cout << "       Sent slot of: " << client->slot << "  map: " << map << "\n";
-	
+
 	messages.push_back(*msg);
 	return msg;
 }
@@ -310,17 +310,17 @@ NetMsg * NetServer::addmsgChat()
 NetMsg * NetServer::addmsgClientDrop(NetServerClientInfo *client)
 {
 	messages.remove_if(IsTypeUniqPred(PLAYER_DROP, client->slot));
-	
+
 	NetMsg * msg = new NetMsg(PLAYER_DROP, 2);
 	msg->seq = this->seq;
 	msg->uniq = client->slot;
-	
+
 	pack(msg->data, "h",
 		client->slot
 	);
-	
+
 	cout << "       Dropped client: " << client->slot << "\n";
-	
+
 	messages.push_back(*msg);
 	return msg;
 }
@@ -332,22 +332,22 @@ NetMsg * NetServer::addmsgClientDrop(NetServerClientInfo *client)
 NetMsg * NetServer::addmsgUnitState(Unit *u)
 {
 	messages.remove_if(IsTypeUniqPred(UNIT_STATE, u->eid));
-	
+
 	NetMsg * msg = new NetMsg(UNIT_STATE, 40);
 	msg->seq = this->seq;
 	msg->uniq = u->eid;
-	
+
 	btTransform trans = u->getTransform();
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
-	
+
 	pack(msg->data, "hhl ffff fff f",
 		u->eid, u->slot, u->uc->id,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z(),
 		u->health
 	);
-	
+
 	messages.push_back(*msg);
 	return msg;
 }
@@ -359,21 +359,21 @@ NetMsg * NetServer::addmsgUnitState(Unit *u)
 NetMsg * NetServer::addmsgWallState(Wall *w)
 {
 	messages.remove_if(IsTypeUniqPred(WALL_STATE, w->eid));
-	
+
 	NetMsg * msg = new NetMsg(WALL_STATE, 34);
 	msg->seq = this->seq;
 	msg->uniq = w->eid;
-	
+
 	btTransform trans = w->getTransform();
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
-	
+
 	pack(msg->data, "hl ffff fff",
 		w->eid, w->wt->id,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z()
 	);
-	
+
 	messages.push_back(*msg);
 	return msg;
 }
@@ -385,21 +385,21 @@ NetMsg * NetServer::addmsgWallState(Wall *w)
 NetMsg * NetServer::addmsgObjectState(Object *o)
 {
 	messages.remove_if(IsTypeUniqPred(OBJECT_STATE, o->eid));
-	
+
 	NetMsg * msg = new NetMsg(OBJECT_STATE, 34);
 	msg->seq = this->seq;
 	msg->uniq = o->eid;
-	
+
 	btTransform trans = o->getTransform();
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
-	
+
 	pack(msg->data, "hl ffff fff",
 		o->eid, o->ot->id,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z()
 	);
-	
+
 	messages.push_back(*msg);
 	return msg;
 }
@@ -411,21 +411,21 @@ NetMsg * NetServer::addmsgObjectState(Object *o)
 NetMsg * NetServer::addmsgVehicleState(Vehicle *v)
 {
 	messages.remove_if(IsTypeUniqPred(VEHICLE_STATE, v->eid));
-	
+
 	NetMsg * msg = new NetMsg(VEHICLE_STATE, 34);
 	msg->seq = this->seq;
 	msg->uniq = v->eid;
-	
+
 	btTransform trans = v->getTransform();
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
-	
+
 	pack(msg->data, "hl ffff fff",
 		v->eid, v->vt->id,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z()
 	);
-	
+
 	messages.push_back(*msg);
 	return msg;
 }
@@ -437,24 +437,24 @@ NetMsg * NetServer::addmsgVehicleState(Vehicle *v)
 NetMsg * NetServer::addmsgAmmoRoundState(AmmoRound *ar)
 {
 	messages.remove_if(IsTypeUniqPred(AMMOROUND_STATE, ar->eid));
-	
+
 	cout << "       addmsgAmmoRoundState()\n";
-	
+
 	NetMsg * msg = new NetMsg(AMMOROUND_STATE, 40);
 	msg->seq = this->seq;
 	msg->uniq = ar->eid;
-	
+
 	btTransform trans = ar->getTransform();
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
-	
+
 	pack(msg->data, "hhl ffff fff f",
 		ar->eid, ar->owner->eid, ar->wt->id,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z(),
 		ar->mass
 	);
-	
+
 	messages.push_back(*msg);
 	return msg;
 }
@@ -466,21 +466,21 @@ NetMsg * NetServer::addmsgAmmoRoundState(AmmoRound *ar)
 NetMsg * NetServer::addmsgPickupState(Pickup *p)
 {
 	messages.remove_if(IsTypeUniqPred(PICKUP_STATE, p->eid));
-	
+
 	NetMsg * msg = new NetMsg(PICKUP_STATE, 34);
 	msg->seq = this->seq;
 	msg->uniq = p->eid;
-	
+
 	btTransform trans = p->getTransform();
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
-	
+
 	pack(msg->data, "hl ffff fff",
 		p->eid, p->getPickupType()->id,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z()
 	);
-	
+
 	messages.push_back(*msg);
 	return msg;
 }
@@ -493,11 +493,11 @@ NetMsg * NetServer::addmsgEntityRem(Entity *e)
 {
 	NetMsg * msg = new NetMsg(ENTITY_REM, 2);
 	msg->seq = this->seq;
-	
+
 	cout << "       addmsgEntityRem()  klass: " << e->klass() << "  eid: " << e->eid << "\n";
-	
+
 	pack(msg->data, "h", e->eid);
-	
+
 	messages.push_back(*msg);
 	return msg;
 }
@@ -517,14 +517,14 @@ unsigned int NetServer::handleInfoReq(NetServerClientInfo *client, Uint8 *data, 
 unsigned int NetServer::handleJoinReq(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
 	cout << "       handleJoinReq()\n";
-	
+
 	if (client->inlist) return 0;
-	
+
 	client->slot = this->st->num_local + this->clients.size() + 1;
 	client->inlist = true;
 	client->seq = this->seq;
 	this->clients.push_back(client);
-	
+
 	this->addmsgJoinAcc(client);
 
 	return 0;
@@ -577,9 +577,9 @@ unsigned int NetServer::handleJoinAck(NetServerClientInfo *client, Uint8 *data, 
 unsigned int NetServer::handleJoinDone(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
 	cout << "       handleJoinDone() from slot " << client->slot << "\n";
-	
+
 	client->ingame = true;
-	
+
 	this->st->logic->raise_playerjoin(client->slot);
 
 	return 0;
@@ -595,19 +595,19 @@ unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 
 {
 	Sint16 x, y, delta;
 	Uint8 keys;
-	
+
 	unpack(data, "hhhc",
 		&x, &y, &delta, &keys
 	);
-	
+
 	// Find the unit for this slot
 	Player *p = static_cast<Player*>(st->findUnitSlot(client->slot));
 	if (p == NULL) return 7;
-	
+
 	// Update the unit details
 	p->angleFromMouse(x, y, delta);
 	p->setKeys(keys);
-	
+
 	return 7;
 }
 

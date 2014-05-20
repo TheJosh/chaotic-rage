@@ -27,7 +27,7 @@ class ObjectType
 		// from data file
 		string name;
 		CRC32 id;
-		
+
 		bool stretch;
 		bool wall;
 		ObjectType * ground_type;
@@ -35,18 +35,18 @@ class ObjectType
 		btCollisionShape* col_shape;
 		int check_radius;
 		int health;
-		
+
 		vector <ObjectTypeDamage *> damage_models;
 		vector <AudioPtr> walk_sounds;
-		
+
 		string add_object;
 		string show_message;
 		string pickup_weapon;
 		string ammo_crate;
 		bool over;
-		
+
 		SpritePtr surf;
-		
+
 	public:
 		ObjectType();
 		~ObjectType();

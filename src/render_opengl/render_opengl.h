@@ -65,47 +65,47 @@ class RenderOpenGL : public Render3D
 	friend class Menu;
 	friend class Intro;
 	friend class GameState;
-	
+
 	private:
 		SDL_Window *window;
 		SDL_GLContext glcontext;
-		
+
 		// The current player being rendered (split screen)
 		Player* render_player;
-		
+
 		// FreeType
 		FT_Library ft;
 		FT_Face face;
 		vector<SpritePtr> loaded;
 		FreetypeChar char_tex[NUM_CHAR_TEX];
-		
+
 		// VBOs
 		GLuint font_vbo;
 		GLuint sprite_vbo;
-		
+
 		// VAOs
 		GLVAO* ter_vao;
 		GLVAO* skybox_vao;
-		
+
 		// Shadowing
 		GLuint shadow_framebuffer;
 		GLuint shadow_depth_tex;
 
 		// Heightmap
 		unsigned int ter_size;
-		
+
 		// Water
 		WavefrontObj *waterobj;
-		
+
 		// Debugging
 		btIDebugDraw *physicsdebug;
 		bool speeddebug;
-		
+
 		// Shaders
 		bool shaders_loaded;		// true if loaded from a mod
 		bool shaders_error;			// true if a shader load failed
 		map<string, GLShader*> shaders;
-		
+
 		glm::mat4 projection;	// perspective
 		glm::mat4 ortho;		// ortho
 		glm::mat4 view;			// camera
@@ -115,16 +115,16 @@ class RenderOpenGL : public Render3D
 		RenderOpenGLSettings* settings;
 		int min_filter;
 		int mag_filter;
-		
+
 		SPK::GL::GLRenderer* particle_renderer;
 
 		static const int SHADOW_MAP_WIDTH = 2048;
 		static const int SHADOW_MAP_HEIGHT = 2048;
-	
+
 	public:
 		RenderOpenGL(GameState * st, RenderOpenGLSettings* settings);
 		virtual ~RenderOpenGL();
-		
+
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
 
@@ -146,12 +146,12 @@ class RenderOpenGL : public Render3D
 		virtual void freeHeightmap();
 		virtual int getWidth() { return real_width; }
 		virtual int getHeight() { return real_height; }
-		
+
 		virtual void setPhysicsDebug(bool status);
 		virtual bool getPhysicsDebug();
 		virtual void setSpeedDebug(bool status) { this->speeddebug = status; }
 		virtual bool getSpeedDebug() { return this->speeddebug; }
-		
+
 	public:
 		// From class Render3D
 		virtual void saveScreenshot(string filename);
@@ -167,25 +167,25 @@ class RenderOpenGL : public Render3D
 
 		void setSettings(RenderOpenGLSettings* settings);
 		RenderOpenGLSettings* getSettings();
-		
+
 		bool reloadShaders();
-		
+
 	private:
 		void createWater();
 		void createSkybox();
-		
+
 		// Buffers needed for shadowing
 		void createShadowBuffers();
-		
+
 		// Render to those buffers so it all works
 		void entitiesShadowMap();
-		
+
 		void renderAnimPlay(AnimPlay * play, Entity * e);
 		void renderCharacter(char c, float &x, float &y);
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
 		void recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader, glm::mat4 transform);
-		
+
 		void mainViewport(int s, int of);
 		void mainRot();
 		void skybox();
@@ -197,7 +197,7 @@ class RenderOpenGL : public Render3D
 		void guichan();
 		void hud(HUD * hud);
 		void fps();
-		
+
 		void loadShaders();
 		GLuint createShader(const char* code, GLenum type);
 		GLShader* createProgram(const char* vertex, const char* fragment, string name);

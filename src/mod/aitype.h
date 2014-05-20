@@ -13,9 +13,9 @@ class AIType
 	public:
 		string name;
 		CRC32 id;
-		
+
 		string script;
-		
+
 	public:
 		AIType();
 };

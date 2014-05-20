@@ -26,14 +26,14 @@ namespace gcn
 	{
 	private:
 		Mod * mod;
-		
+
 	public:
 		ChaoticRageOpenGLSDLImageLoader(Mod * m)
 		{
 			this->mod = m;
 		}
-		
-		
+
+
 		// Inherited from ImageLoader
 
 		virtual Image* load(const std::string& filename, bool convertToDisplayFormat = true);

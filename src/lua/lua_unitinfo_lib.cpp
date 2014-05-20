@@ -24,7 +24,7 @@ static UnitQueryResult * _get(lua_State *L, int i)
 	if (luaL_checkudata(L, i, MYTYPE) == NULL) {
 		luaL_typerror(L, i, MYTYPE);
 	}
-	
+
 	return (UnitQueryResult*) lua_touserdata(L,i);
 }
 

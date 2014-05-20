@@ -16,7 +16,7 @@ Zone::Zone(float x, float y, float width, float height)
 	this->y1 = y - height / 2.0f;
 	this->x2 = x + width / 2.0f;
 	this->y2 = y + height / 2.0f;
-	
+
 	for (int i = 0; i < NUM_FACTIONS; i++) {
 		this->spawn[i] = 0;
 		this->prison[i] = 0;

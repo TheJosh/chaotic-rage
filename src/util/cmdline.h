@@ -16,7 +16,7 @@ class CommandLineArgs
 	private:
 		int argc;
 		char ** argv;
-		
+
 	public:
 		string mod;
 		bool modlist;
@@ -29,11 +29,11 @@ class CommandLineArgs
 		string audio_class;
 		bool host;
 		bool mouseGrab;
-		
+
 	public:
 		CommandLineArgs(int argc, char ** argv)
 			: argc(argc), argv(argv), modlist(false), host(false), mouseGrab(true)
 			{}
-			
+
 		void process();
 };

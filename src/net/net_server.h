@@ -19,7 +19,7 @@ class ServerConfig;
 
 class NetServer {
 	friend class NetServerSeqPred;
-	
+
 	private:
 		GameState * st;
 		ServerConfig * conf;
@@ -28,19 +28,19 @@ class NetServer {
 		list<NetMsg> messages;
 		SeqNum seq;		// TODO: is this big enough?
 		vector<NetServerClientInfo*> clients;
-		
+
 		NetServerSeqPred * seq_pred;
-		
+
 	public:
 		NetServer(const NetServer & obj);
 		NetServer(GameState * st, ServerConfig * conf);
 		~NetServer();
-		
+
 	public:
 		void update();
 		void listen();
 		void dropClient(NetServerClientInfo *client);
-		
+
 	public:
 		// One method for each outgoing network message the server sends out
 		NetMsg * addmsgInfoResp();
@@ -80,7 +80,7 @@ class NetServerClientInfo
 	public:
 		IPaddress ipaddress;
 		Uint16 code;
-		
+
 	public:
 		SeqNum seq;		// TODO: again...big enough?
 		unsigned int slot;
@@ -99,7 +99,7 @@ class NetServerSeqPred
 {
 	public:
 		NetServer *server;
-		
+
 		// Remove any messages with a seq lower than the lowest client
 		bool operator() (const NetMsg& value) {
 			SeqNum lowest = server->seq;
@@ -109,7 +109,7 @@ class NetServerSeqPred
 			}
 			return (lowest > value.seq);
 		}
-		
+
 		NetServerSeqPred(NetServer *s) { this->server = s; }
 };
 

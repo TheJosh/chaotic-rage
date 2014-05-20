@@ -19,7 +19,7 @@ class Intro : public UIUpdate
 	private:
 		GameState *st;
 		RenderOpenGL *render;
-		
+
 		Song* sg;
 		SpritePtr img1;
 		SpritePtr img2;
@@ -33,7 +33,7 @@ class Intro : public UIUpdate
 		~Intro();
 		void load();
 		void doit();
-		
+
 	public:
 		virtual void updateUI();
 };

@@ -86,15 +86,15 @@ void displayMessageBox(string msg)
 list<string> * getSystemModNames()
 {
 	list<string> * ret = new list<string>();
-	
+
 	WIN32_FIND_DATA fdFile;
 	HANDLE hFind = NULL;
-	
+
 	// Initial search
 	if ((hFind = FindFirstFile("data\\*", &fdFile)) == INVALID_HANDLE_VALUE) {
 		return ret;
 	}
-	
+
 	// Iterate over results
 	do {
 		if (fdFile.cFileName[0] != '.') {
@@ -104,9 +104,9 @@ list<string> * getSystemModNames()
 			// TODO: check for .crk's as well
 		}
 	} while(FindNextFile(hFind, &fdFile));
-	
+
 	FindClose(hFind);
-	
+
 	return ret;
 }
 
@@ -127,17 +127,17 @@ vector<string> * getUserModFilenames()
 {
 	vector<string> * ret = new vector<string>();
 	string userdir = getUserDataDir();
-	
+
 	WIN32_FIND_DATA fdFile;
 	HANDLE hFind = NULL;
 	char sPath[2048];
-	
+
 	// Initial search
 	sprintf(sPath, "%s\\*.crk", userdir);
 	if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE) {
 		return ret;
 	}
-	
+
 	// Iterate over results
 	do {
 		if (fdFile.cFileName[0] != '.') {
@@ -145,9 +145,9 @@ vector<string> * getUserModFilenames()
 			ret->push_back(string(sPath));
 		}
 	} while(FindNextFile(hFind, &fdFile));
-	
+
 	FindClose(hFind);
-	
+
 	return ret;
 }
 

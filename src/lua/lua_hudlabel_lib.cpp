@@ -24,7 +24,7 @@ static HUDLabel * _get(lua_State *L, int i)
 	if (luaL_checkudata(L, i, MYTYPE) == NULL) {
 		luaL_typerror(L, i, MYTYPE);
 	}
-	
+
 	HUDLabel ** ptr = (HUDLabel **) lua_touserdata(L,i);
 	return *ptr;
 }
@@ -63,7 +63,7 @@ LUA_FUNC(get)
 
 	} else if (strcmp(i, "y") == 0) {
 		lua_pushnumber(L, lab->y);
-	
+
 	} else if (strcmp(i, "visible") == 0) {
 		lua_pushboolean(L, lab->visible);
 
@@ -100,7 +100,7 @@ LUA_FUNC(set)
 
 	} else if (strcmp(i, "x") == 0) {
 		lab->x = static_cast<float>(lua_tonumber(L, 3));
-		
+
 	} else if (strcmp(i, "y") == 0) {
 		lab->y = static_cast<float>(lua_tonumber(L, 3));
 

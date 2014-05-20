@@ -18,19 +18,19 @@ class RenderDebug : public Render
 		SDL_Window *window;
 		SDL_Renderer *renderer;
 		int last_render;
-		
+
 		SDL_Texture *sprite_wall;
 		SDL_Texture *sprite_vehicle;
 		SDL_Texture *sprite_object;
 		SDL_Texture *sprite_unit;
 		SDL_Texture *sprite_player;
-		
+
 		int width;
 		int height;
-		
+
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
-		
+
 	public:
 		virtual void setScreenSize(int width, int height, bool fullscreen);
 		virtual void render();
@@ -42,11 +42,11 @@ class RenderDebug : public Render
 		virtual void freeSprite(SpritePtr sprite);
 		virtual int getSpriteWidth(SpritePtr sprite);
 		virtual int getSpriteHeight(SpritePtr sprite);
-		
+
 	public:
 		RenderDebug(GameState * st);
 		virtual ~RenderDebug();
-		
+
 	private:
 		SDL_Texture *loadTexture(const char* filename);
 		void cleanup();

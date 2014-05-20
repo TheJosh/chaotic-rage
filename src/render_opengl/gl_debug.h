@@ -12,7 +12,7 @@
 **/
 #if defined(RELEASE)
 	#define CHECK_OPENGL_ERROR
-	
+
 #elif defined(GLES)
 	#define CHECK_OPENGL_ERROR \
 	{	GLenum error; \
@@ -30,7 +30,7 @@
 			reportFatalError(std::string(buf)); \
 		} \
 	}
-	
+
 #elif defined(OpenGL)
 	#define CHECK_OPENGL_ERROR \
 	{	GLenum error; \
@@ -41,7 +41,7 @@
 			reportFatalError(std::string(buf)); \
 		} \
 	}
-	
+
 #endif
 
 

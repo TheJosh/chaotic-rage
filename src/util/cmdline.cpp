@@ -34,16 +34,16 @@ void CommandLineArgs::process()
 		{"host",		    0, 0, 'n'},
 		{"campaign",		1, 0, 'c'},
 		{"join",		    1, 0, 'j'},
-		
+
 		{"mod",				1, 0, 'm'},
 		{"mod-list",		0, 0, 'l'},
-		
+
 		{"render",			1, 0, 'r'},
 		{"audio",			1, 0, 'u'},
-		
+
 		{"help",			0, 0, 'h'},
 		{"version",			0, 0, 'v'},
-		
+
 		#ifdef DEBUG_OPTIONS
 		{"debug",			1, 0, '1'},
 		{"debug-list",		0, 0, '2'},
@@ -54,7 +54,7 @@ void CommandLineArgs::process()
 		#endif
 		{NULL, 0, NULL, 0}
 	};
-	
+
 	int c;
 	int option_index = 0;
 	while ((c = getopt_long(argc, argv, "h", long_options, &option_index)) != -1) {
@@ -62,7 +62,7 @@ void CommandLineArgs::process()
 			case 'h':
 				output_message(
 					"Chaotic Rage " VERSION "\n"
-					
+
 					"\nOptions:\n"
 					" -a\t--arcade MAP,GAME,UNIT  Play an arcade game, then exit\n"
 					" -n\t--host                  Listen as a network host (requires --arcade)\n"
@@ -77,7 +77,7 @@ void CommandLineArgs::process()
 					"\n"
 					" -h\t--help                  Show this help\n"
 					" -v\t--version               Show version, and exit\n"
-					
+
 					#ifdef DEBUG_OPTIONS
 					"\nDebugging:\n"
 					"   \t--debug SECTION         Enable debug mode for a given section\n"
@@ -90,13 +90,13 @@ void CommandLineArgs::process()
 				);
 				exit(0);
 				break;
-			
+
 			case 'v':
 				cout << "Chaotic Rage " VERSION "\nhttp://www.chaoticrage.com/\n";
 				exit(0);
 				break;
-				
-			
+
+
 			// Arcade, Host, Campaign, Join
 			case 'a':
 				{
@@ -106,30 +106,30 @@ void CommandLineArgs::process()
 					std::getline(ss, this->unittype, ',');
 				}
 				break;
-				
+
 			case 'n':
 				this->host = true;
 				break;
-				
+
 			case 'c':
 				this->campaign = optarg;
 				break;
-				
+
 			case 'j':
 				this->join = optarg;
 				break;
-				
-				
+
+
 			// Mod load, mod list
 			case 'm':
 				this->mod = optarg;
 				break;
-				
+
 			case 'l':
 				this->modlist = true;
 				break;
-				
-				
+
+
 			// Renderer
 			case 'r':
 				if (strcmp(optarg, "opengl") != 0 && strcmp(optarg, "debug") != 0 && strcmp(optarg, "null") != 0 && strcmp(optarg, "ascii") != 0) {
@@ -139,7 +139,7 @@ void CommandLineArgs::process()
 				}
 				this->render_class = optarg;
 				break;
-				
+
 			// Audio
 			case 'u':
 				if (strcmp(optarg, "sdl") != 0 && strcmp(optarg, "null") != 0) {
@@ -149,14 +149,14 @@ void CommandLineArgs::process()
 				}
 				this->audio_class = optarg;
 				break;
-				
-				
+
+
 			#ifdef DEBUG_OPTIONS
 			case '1':
 				debug_enable(optarg);
 				cout << "Enabling debug for '" << optarg << "'.\n";
 				break;
-				
+
 			case '2':
 				cout <<
 					"Chaotic Rage\n\n"
@@ -176,27 +176,27 @@ void CommandLineArgs::process()
 				;
 				exit(0);
 				break;
-				
+
 			case '3':
 				debug_lineno(true);
 				cout << "Enabling file and line numbers in debug.\n";
 				break;
-				
+
 			case '4':
 				debug_tofile(optarg);
 				cout << "Saving debug data to file '" << optarg << "'.\n";
 				break;
-				
+
 			case '5':
 				this->mouseGrab = false;
 				break;
-				
+
 			case '6':
 				profile_enable(optarg);
 				cout << "Saving profile log to file '" << optarg << "'.\n";
 				break;
 			#endif
-			
+
 			default: break;
 		}
 	}

@@ -11,10 +11,10 @@ class RenderNull : public Render
 {
 	private:
 		int last_render;
-		
+
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
-		
+
 	public:
 		virtual void setScreenSize(int width, int height, bool fullscreen);
 		virtual void render();
@@ -26,7 +26,7 @@ class RenderNull : public Render
 		virtual void freeSprite(SpritePtr sprite);
 		virtual int getSpriteWidth(SpritePtr sprite);
 		virtual int getSpriteHeight(SpritePtr sprite);
-		
+
 	public:
 		RenderNull(GameState * st);
 		virtual ~RenderNull();

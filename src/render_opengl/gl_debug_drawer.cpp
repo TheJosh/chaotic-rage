@@ -85,7 +85,7 @@ void GLDebugDrawer::drawBox (const btVector3& boxMin, const btVector3& boxMax, c
 void GLDebugDrawer::drawTriangle(const btVector3& a,const btVector3& b,const btVector3& c,const btVector3& color,btScalar alpha)
 {
 	const btVector3	n=btCross(b-a,c-a).normalized();
-	
+
 	glBegin(GL_TRIANGLES);
 	glColor4f(color.getX(), color.getY(), color.getZ(),alpha);
 	glNormal3d(n.getX(),n.getY(),n.getZ());
@@ -113,11 +113,11 @@ void GLDebugDrawer::reportErrorWarning(const char* warningString)
 void GLDebugDrawer::drawContactPoint(const btVector3& pointOnB,const btVector3& normalOnB,btScalar distance,int lifeTime,const btVector3& color)
 {
 	btVector3 to = pointOnB + normalOnB * 1;//distance;
-	
+
 	const btVector3&from = pointOnB;
-	
+
 	glColor4f(color.getX(), color.getY(), color.getZ(),1.f);
-	
+
 	glBegin(GL_LINES);
 	glVertex3d(from.getX(), from.getY(), from.getZ());
 	glVertex3d(to.getX(), to.getY(), to.getZ());

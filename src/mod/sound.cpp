@@ -32,15 +32,15 @@ Sound* loadItemSound(cfg_t* cfg_item, Mod* mod)
 {
 	Sound* snd;
 	string filename;
-	
+
 	snd = new Sound();
 	snd->name = cfg_getstr(cfg_item, "name");
-	
+
 	filename = "sounds/";
 	filename.append(cfg_getstr(cfg_item, "file"));
 	snd->sound = GEng()->audio->loadSound(filename, mod);
 	if (snd->sound == NULL) return NULL;
-	
+
 	return snd;
 }
 

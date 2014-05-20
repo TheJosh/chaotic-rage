@@ -15,10 +15,10 @@ class Sound
 		// from data file
 		string name;
 		CRC32 id;
-		
+
 		// dynamic
 		AudioPtr sound;
-		
+
 	public:
 		Sound();
 };
