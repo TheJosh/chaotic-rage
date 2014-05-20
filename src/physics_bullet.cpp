@@ -93,16 +93,16 @@ void PhysicsBullet::preGame()
 void PhysicsBullet::postGame()
 {
 	// TODO: Free other stuff properly, see HelloWorld demo
-	
+
 	delete collisionShapes;
-	
+
 	//delete dynamicsWorld;
 	delete solver;
 	delete overlappingPairCache;
 	delete ghostPairCallback;
 	delete dispatcher;
 	delete collisionConfiguration;
-	
+
 	collisionShapes = NULL;
 	ghostPairCallback = NULL;
 	dynamicsWorld = NULL;
@@ -133,14 +133,14 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, fl
 {
 	btDefaultMotionState* myMotionState =
 		new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(x,y,z)));
-	
+
 	btScalar mass(m);
 	bool isDynamic = (mass != 0.f);
-	
+
 	btVector3 localInertia(0,0,0);
 	if (isDynamic)
 		colShape->calculateLocalInertia(mass,localInertia);
-	
+
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(
 		mass,
 		myMotionState,
@@ -148,9 +148,9 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, fl
 		localInertia
 	);
 	btRigidBody* body = new btRigidBody(rbInfo);
-	
+
 	dynamicsWorld->addRigidBody(body, group, this->masks[group]);
-	
+
 	return body;
 }
 
@@ -166,11 +166,11 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, bt
 {
 	btScalar mass(m);
 	bool isDynamic = (mass != 0.f);
-	
+
 	btVector3 localInertia(0,0,0);
 	if (isDynamic)
 		colShape->calculateLocalInertia(mass,localInertia);
-	
+
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(
 		mass,
 		motionState,
@@ -178,9 +178,9 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, bt
 		localInertia
 	);
 	btRigidBody* body = new btRigidBody(rbInfo);
-	
+
 	dynamicsWorld->addRigidBody(body, group, this->masks[group]);
-	
+
 	return body;
 }
 
@@ -236,13 +236,13 @@ void PhysicsBullet::remRigidBody(btCollisionObject* body)
 void PhysicsBullet::delRigidBody(btRigidBody* body)
 {
 	if (!body) return;
-	
+
 	if (body->getMotionState()) {
 		delete body->getMotionState();
 	}
-	
+
 	dynamicsWorld->removeCollisionObject(body);
-	
+
 	delete body;
 }
 
@@ -332,7 +332,7 @@ bool is_removed_callback(const PhysicsCallback* value) { return (value->func == 
 void PhysicsBullet::handleCallback(float delta)
 {
 	this->callbacks.remove_if(is_removed_callback);
-	
+
 	for (std::list<PhysicsCallback*>::iterator it = this->callbacks.begin(); it != this->callbacks.end(); ++it) {
 		PhysicsCallback *callback = (*it);
 		(*callback->func)(delta, callback->e, callback->data1, callback->data2);
@@ -355,20 +355,20 @@ void PhysicsBullet::stepTime(int ms)
 btVector3 PhysicsBullet::spawnLocation(float x, float z, float height)
 {
 	float y = 100.0f;
-	
+
 	btVector3 begin(x, y, z);
 	btVector3 end(x, -y, z);
-	
+
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);
 	cb.m_collisionFilterGroup = CG_WALL;
 	cb.m_collisionFilterMask = CG_TERRAIN;
 
 	dynamicsWorld->rayTest(begin, end, cb);
-	
+
 	if (cb.hasHit()) {
 		y = cb.m_hitPointWorld.y() + height/2.0f;
 	}
-	
+
 	return btVector3(x, y, z);
 }
 
@@ -380,7 +380,7 @@ void PhysicsBullet::QuaternionToEulerXYZ(const btQuaternion &quat, btVector3 &eu
 {
 	float w=quat.getW(); float x=quat.getX(); float y=quat.getY(); float z=quat.getZ();
 	double sqw = w*w; double sqx = x*x; double sqy = y*y; double sqz = z*z;
-	
+
 	euler.setZ(static_cast<float>(atan2(2.0 * (x*y + z*w),(sqx - sqy - sqz + sqw))));
 	euler.setX(static_cast<float>(atan2(2.0 * (y*z + x*w),(-sqx - sqy + sqz + sqw))));
 	euler.setY(static_cast<float>(asin(-2.0 * (x*z - y*w))));
@@ -399,7 +399,7 @@ float PhysicsBullet::QuaternionToYaw(const btQuaternion &quat)
 	float fTxx = fTx*quat.x();
 	float fTxz = fTz*quat.x();
 	float fTyy = fTy*quat.y();
-	 
+
 	return atan2(fTxz+fTwy, 1.0f-(fTxx+fTyy));
 }
 

@@ -31,20 +31,20 @@ int main (int argc, char ** argv)
 	GameState *st;
 	UIUpdate *ui;
 	GameManager* gm;
-	
-	
+
+
 	// Redirect stdout and stderr to files in the user directory
 	#ifdef _WIN32
 		string datadir = getUserDataDir();
-		string nameOut = datadir + "stdout.txt"; 
-		string nameErr = datadir + "stderr.txt"; 
+		string nameOut = datadir + "stdout.txt";
+		string nameErr = datadir + "stderr.txt";
 		ofstream fileOut(nameOut.c_str());
 		ofstream fileErr(nameErr.c_str());
 		StreamRedirector redirOut(cout, fileOut.rdbuf());
 		StreamRedirector redirErr(cerr, fileErr.rdbuf());
 	#endif
-	
-	
+
+
 	chdirToDataDir();
 	SDL_Init(0);
 	seedRandom();
@@ -62,12 +62,12 @@ int main (int argc, char ** argv)
 	GEng()->cconf->initAudio(st);
 	GEng()->cconf->initPhysics(st);
 	GEng()->cconf->initMods(st);
-	
+
 	#ifdef RELEASE
 		// This has to be after the OpenGL init
 		sendClientStats();
 	#endif
-	
+
 	// Intro
 	if (GEng()->render->is3D()) {
 		Intro *i = new Intro(st);
@@ -77,18 +77,18 @@ int main (int argc, char ** argv)
 	} else {
 		ui = new UIUpdateNull();
 	}
-	
+
 	// Load the mods. Uses threads if possible
 	if (! loadMods(st, ui)) {
 		reportFatalError("Module loading failed");
 	}
 
 	gm = new GameManager(st);
-	
+
 	// For now, Android doesn't have a menu
 	#if defined(__ANDROID__)
 		gm->loadModBits(NULL);
-		
+
 		gm->startGame(gm->getMapRegistry()->get("therlor_valley"), "zombies", "robot", GameSettings::behindPlayer, 1, false, new GameSettings());
 		exit(0);
 	#endif
@@ -101,34 +101,34 @@ int main (int argc, char ** argv)
 			cout << "    " << (*it) << "\n";
 		}
 		delete(modnames);
-	
+
 	// Campaign
 	} else if (GEng()->cmdline->campaign != "") {
 		gm->loadModBits(NULL);
 		Campaign *c = GEng()->mm->getSupplOrBase()->getCampaign(GEng()->cmdline->campaign);
 		gm->startCampaign(c, "robot", GameSettings::behindPlayer, 1);
-		
+
 	// Arcade game
 	} else if (GEng()->cmdline->map != "" && GEng()->cmdline->gametype != "" && GEng()->cmdline->unittype != "") {
 		gm->loadModBits(NULL);
 		GameSettings *gs = new GameSettings();
 		gm->startGame(gm->getMapRegistry()->get(GEng()->cmdline->map), GEng()->cmdline->gametype, GEng()->cmdline->unittype, GameSettings::behindPlayer, 1, GEng()->cmdline->host, gs);
 		delete(gs);
-		
+
 	// Network join
 	} else if (GEng()->cmdline->join != "") {
 		gm->loadModBits(NULL);
 		gm->networkJoin(GEng()->cmdline->join, NULL);
-		
+
 	// Regular menu
 	} else if (GEng()->render->is3D()) {
 		Menu *m = new Menu(st, gm);
 		m->doit(NULL);
-		
+
 	} else {
 		cout << "Non-interactive usage requires --campaign, --arcade or --join to be specified." << endl;
 	}
-	
+
 	exit(0);
 }
 

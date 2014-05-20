@@ -26,16 +26,16 @@ using namespace std;
 void handleEvents(GameState *st)
 {
 	SDL_Event event;
-	
+
 	static int screenshot_num = 0;
-	
-	
-	
+
+
+
 	while (SDL_PollEvent(&event)) {
 		// General keys
 		if (event.type == SDL_QUIT) {
 			st->gameOver();
-			
+
 		} else if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.sym) {
 				case SDLK_ESCAPE:
@@ -51,13 +51,13 @@ void handleEvents(GameState *st)
 						screenshot_num++;
 						char buf[50];
 						sprintf(buf, "%i", screenshot_num);
-						
+
 						string filename = getUserDataDir();
 						filename.append("screenshot");
 						filename.append(buf);
 						filename.append(".bmp");
 						dynamic_cast<Render3D*>(GEng()->render)->saveScreenshot(filename);
-						
+
 						filename = "screenshot";
 						filename.append(buf);
 						filename.append(".bmp");
@@ -72,22 +72,22 @@ void handleEvents(GameState *st)
 				case SDLK_F5:
 					st->addHUDMessage(ALL_SLOTS, "Shaders reload: ", dynamic_cast<RenderOpenGL*>(GEng()->render)->reloadShaders() ? "success" : "failure");
 					break;
-					
+
 				case SDLK_F6:
 					GEng()->setMouseGrab(! GEng()->getMouseGrab());
 					st->addHUDMessage(ALL_SLOTS, "Reset-mouse ", GEng()->getMouseGrab() ? "on" : "off");
 					break;
-					
+
 				case SDLK_F7:
 					GEng()->render->setPhysicsDebug(! GEng()->render->getPhysicsDebug());
 					st->addHUDMessage(ALL_SLOTS, "Physics debug ", GEng()->render->getPhysicsDebug() ? "on" : "off");
 					break;
-					
+
 				case SDLK_F8:
 					GEng()->render->setSpeedDebug(! GEng()->render->getSpeedDebug());
 					st->addHUDMessage(ALL_SLOTS, "Speed debug ", GEng()->render->getSpeedDebug() ? "on" : "off");
 					break;
-					
+
 				default: break;
 			}
 		}
@@ -119,7 +119,7 @@ void handleEvents(GameState *st)
 		}
 
 		// TODO: Dynamic keybindings
-		
+
 		// One player, player one
 		if (st->num_local == 1 && st->local_players[0]->p != NULL) {
 			if (event.type == SDL_KEYDOWN) {
@@ -134,7 +134,7 @@ void handleEvents(GameState *st)
 					case SDL_SCANCODE_C: st->gs->switchViewMode(); break;
 					default: break;
 				}
-			
+
 			} else if (event.type == SDL_KEYUP) {
 				switch (event.key.keysym.scancode) {
 					case SDL_SCANCODE_W: st->local_players[0]->p->keyRelease(Player::KEY_UP); break;
@@ -146,17 +146,17 @@ void handleEvents(GameState *st)
 					case SDL_SCANCODE_T: st->local_players[0]->p->keyRelease(Player::KEY_SPECIAL); break;
 					default: break;
 				}
-			
-			
+
+
 			#if defined(__ANDROID__)
 			} else if (event.type == SDL_FINGERDOWN || event.type == SDL_FINGERMOTION) {
 				float x,y;
 				int type = 0;
-				
+
 				// Determine type (1 = left thumb, 2 = right thumb)
 				if (event.tfinger.y > 0.9f) {
 					y = (event.tfinger.y - 0.9f) * 10.0f;
-					
+
 					if (event.tfinger.x < 0.1f) {
 						x = event.tfinger.x * 10.0f;
 						type = 1;
@@ -165,7 +165,7 @@ void handleEvents(GameState *st)
 						type = 2;
 					}
 				}
-				
+
 				if (type == 1) {
 					// Left thumb (type 1) = move
 					if (x < 0.3) {
@@ -173,13 +173,13 @@ void handleEvents(GameState *st)
 					} else if (x > 0.7) {
 						st->local_players[0]->p->keyPress(Player::KEY_RIGHT);
 					}
-					
+
 					if (y < 0.3) {
 						st->local_players[0]->p->keyPress(Player::KEY_UP);
 					} else if (y > 0.7) {
 						st->local_players[0]->p->keyPress(Player::KEY_DOWN);
 					}
-					
+
 				} else if (type == 2) {
 					// Left thumb (type 1) = aim
 					game_x[0] += event.tfinger.dx * 20.0f;
@@ -187,36 +187,36 @@ void handleEvents(GameState *st)
 					game_y[0] += event.tfinger.dy * 20.0f;
 					net_y[0] += event.tfinger.dy * 20.0f;
 				}
-				
+
 			#else
 			} else if (event.type == SDL_MOUSEMOTION) {
 				game_x[0] += event.motion.xrel;
 				net_x[0] += event.motion.xrel;
 				game_y[0] += event.motion.yrel;
 				net_y[0] += event.motion.yrel;
-			
+
 			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
 				st->local_players[0]->hud->eventClick();
 				st->local_players[0]->p->keyPress(Player::KEY_FIRE);
-			
+
 			} else if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT) {
 				st->local_players[0]->p->keyRelease(Player::KEY_FIRE);
 
 			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
 				st->local_players[0]->p->keyPress(Player::KEY_MELEE);
-			
+
 			} else if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_RIGHT) {
 				st->local_players[0]->p->keyRelease(Player::KEY_MELEE);
 
 			} else if (event.type == SDL_MOUSEWHEEL && event.wheel.y > 0) {
 				st->local_players[0]->hud->eventUp();
-			
+
 			} else if (event.type == SDL_MOUSEWHEEL && event.wheel.y < 0) {
 				st->local_players[0]->hud->eventDown();
 			#endif
-			
+
 			}
-			
+
 
 		} // end one player, one
 
@@ -243,7 +243,7 @@ void handleEvents(GameState *st)
 					case SDL_SCANCODE_M: st->local_players[0]->hud->eventDown(); break;
 					default: break;
 				}
-			
+
 			} else if (event.type == SDL_KEYUP) {
 				switch (event.key.keysym.scancode) {
 					case SDL_SCANCODE_W: st->local_players[0]->p->keyRelease(Player::KEY_UP); break;
@@ -280,7 +280,7 @@ void handleEvents(GameState *st)
 					case SDL_SCANCODE_KP_1: st->local_players[1]->p->keyPress(Player::KEY_SPECIAL); break;
 					default: break;
 				}
-			
+
 			} else if (event.type == SDL_KEYUP) {
 				switch (event.key.keysym.scancode) {
 					case SDL_SCANCODE_KP_8: st->local_players[1]->p->keyRelease(Player::KEY_UP); break;
@@ -292,29 +292,29 @@ void handleEvents(GameState *st)
 					case SDL_SCANCODE_KP_1: st->local_players[1]->p->keyRelease(Player::KEY_SPECIAL); break;
 					default: break;
 				}
-			
+
 			} else if (event.type == SDL_MOUSEMOTION) {
 				game_x[1] += event.motion.xrel;
 				net_x[1] += event.motion.xrel;
 				game_y[1] += event.motion.yrel;
 				net_y[1] += event.motion.yrel;
-			
+
 			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
 				st->local_players[1]->hud->eventClick();
 				st->local_players[1]->p->keyPress(Player::KEY_FIRE);
-			
+
 			} else if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT) {
 				st->local_players[1]->p->keyRelease(Player::KEY_FIRE);
 
 			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
 				st->local_players[1]->p->keyPress(Player::KEY_MELEE);
-			
+
 			} else if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_RIGHT) {
 				st->local_players[1]->p->keyRelease(Player::KEY_MELEE);
 
 			} else if (event.type == SDL_MOUSEWHEEL && event.wheel.y > 0) {
 				st->local_players[1]->hud->eventUp();
-			
+
 			} else if (event.type == SDL_MOUSEWHEEL && event.wheel.y < 0) {
 				st->local_players[1]->hud->eventDown();
 

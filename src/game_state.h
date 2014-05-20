@@ -55,7 +55,7 @@ class PlayerState
 		Player * p;				// Player entity
 		HUD* hud;				// Heads-up display rendering (data tables, messages, etc)
 		unsigned int slot;		// Slots are numbered from 1 upwards. Used for network play.
-		
+
 	public:
 		PlayerState(GameState *st);
 		~PlayerState();
@@ -95,10 +95,10 @@ class GameState
 	protected:
 		list<Entity*> entities;
 		list<Entity*> entities_add;
-		
+
 		vector<Unit*> units;		// leaks: items are not removed
 		vector<Wall*> walls;		// leaks: items are not removed
-		
+
 		bool running;
 		unsigned int entropy;		// TODO: gamestate -> localplayers
 
@@ -114,10 +114,10 @@ class GameState
 		PlayerState * local_players[MAX_LOCAL];
 		unsigned int num_local;
 		int last_game_result;
-		
+
 		unsigned int anim_frame;
 		unsigned int game_time;
-		
+
 		GameLogic* logic;
 		PhysicsBullet* physics;
 
@@ -127,7 +127,7 @@ class GameState
 	public:
 		GameState();
 		~GameState();
-		
+
 	public:
 		// Adding
 		void addUnit(Unit* unit);
@@ -140,7 +140,7 @@ class GameState
 
 		// Removing
 		Entity* deadButNotBuried(Entity* e);
-		
+
 		// Network bits (EID = entity-id; slots are for players)
 		EID getNextEID();
 		Entity * getEntity(EID eid);
@@ -155,7 +155,7 @@ class GameState
 		void preGame();
 		void update(int delta);
 		void postGame();
-		
+
 		/**
 		* The main game loop
 		**/
@@ -172,7 +172,7 @@ class GameState
 		// Entropy
 		unsigned int getEntropy(unsigned int slot);
 		void increaseEntropy(unsigned int slot);
-		
+
 		// HUD
 		void addHUDMessage(unsigned int slot, string text);
 		void addHUDMessage(unsigned int slot, string text, string text2);

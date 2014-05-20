@@ -13,8 +13,8 @@
 #include <guichan/sdl.hpp>
 #include <math.h>
 
-#include "rage.h" 
-#include "game.h" 
+#include "rage.h"
+#include "game.h"
 #include "game_state.h"
 #include "game_engine.h"
 #include "game_settings.h"
@@ -97,11 +97,11 @@ GameState::GameState()
 	this->game_time = 0;
 	this->num_local = 0;
 	this->eid_next = 1;
-	
+
 	for (unsigned int i = 0; i < MAX_LOCAL; i++) {
 		this->local_players[i] = new PlayerState(this);
 	}
-	
+
 	this->logic = NULL;
 	this->physics = NULL;
 	this->gt = NULL;
@@ -165,7 +165,7 @@ Entity * GameState::getEntity(EID eid)
 void GameState::addUnit(Unit* unit)
 {
 	unit->eid = this->getNextEID();
-	
+
 	this->entities_add.push_back(unit);
 	this->units.push_back(unit);
 }
@@ -176,7 +176,7 @@ void GameState::addUnit(Unit* unit)
 void GameState::addWall(Wall* wall)
 {
 	wall->eid = this->getNextEID();
-	
+
 	this->entities_add.push_back(wall);
 	this->walls.push_back(wall);
 }
@@ -187,7 +187,7 @@ void GameState::addWall(Wall* wall)
 void GameState::addVehicle(Vehicle* vehicle)
 {
 	vehicle->eid = this->getNextEID();
-	
+
 	this->entities_add.push_back(vehicle);
 }
 
@@ -197,7 +197,7 @@ void GameState::addVehicle(Vehicle* vehicle)
 void GameState::addObject(Object* object)
 {
 	object->eid = this->getNextEID();
-	
+
 	this->entities_add.push_back(object);
 }
 
@@ -207,9 +207,9 @@ void GameState::addObject(Object* object)
 void GameState::addPickup(Pickup* pickup)
 {
 	pickup->eid = this->getNextEID();
-	
+
 	this->entities_add.push_back(pickup);
-	
+
 	if (GEng()->server != NULL) {
 		GEng()->server->addmsgPickupState(pickup);
 	}
@@ -222,7 +222,7 @@ void GameState::addPickup(Pickup* pickup)
 void GameState::addAmmoRound(AmmoRound* ar)
 {
 	this->entities_add.push_back(ar);
-	
+
 	if (GEng()->server != NULL) {
 		GEng()->server->addmsgAmmoRoundState(ar);
 	}
@@ -239,10 +239,10 @@ void GameState::addAmmoRound(AmmoRound* ar)
 Entity* GameState::deadButNotBuried(Entity* e)
 {
 	e->del = true;
-	
+
 	Decaying *d = new Decaying(this, e->getTransform(), e->getAnimModel());
 	this->entities_add.push_back(d);
-	
+
 	return d;
 }
 
@@ -259,7 +259,7 @@ Unit* GameState::findUnitSlot(unsigned int slot)
 		Unit* u = (Unit*)*it;
 		if (u->slot == slot) return u;
 	}
-	
+
 	return NULL;
 }
 
@@ -337,14 +337,14 @@ void GameState::preGame()
 	// It should technically be 0, but 1 avoids division-by-zero
 	this->game_time = 1;
 	this->anim_frame = 1;
-	
+
 	GEng()->initGuichan();
 	GEng()->setMouseGrab(true);
 
 	#ifdef USE_SPARK
 		this->particle_system = new SPK::System();
 	#endif
-	
+
 	this->entropy = 0;
 }
 
@@ -356,7 +356,7 @@ void GameState::postGame()
 {
 	this->entities.remove_if(EntityEraserAll);
 	this->entities_add.remove_if(EntityEraserAll);
-	
+
 	#ifdef USE_SPARK
 		delete this->particle_system;
 	#endif
@@ -364,9 +364,9 @@ void GameState::postGame()
 	// TODO: Are these needed?
 	this->units.clear();
 	this->walls.clear();
-	
+
 	this->eid_next = 1;
-	
+
 	GEng()->setMouseGrab(false);
 }
 
@@ -384,7 +384,7 @@ int mk_down_x[MAX_LOCAL], mk_down_y[MAX_LOCAL];
 void GameState::gameLoop(GameState* st, Render* render, Audio* audio, NetClient* client)
 {
 	int start = 0, net_time = 0, net_timestep = 50;
-	
+
 	for (int i = 0; i < MAX_LOCAL; i++) {
 		game_x[i] = game_y[i] = net_x[i] = net_y[i] = mk_down_x[i] = mk_down_y[i] = 0;
 	}
@@ -408,33 +408,33 @@ void GameState::gameLoop(GameState* st, Render* render, Audio* audio, NetClient*
 
 	this->preGame();
 	this->logic->raise_gamestart();
-	
+
 	if (client == NULL) {
 		for (unsigned int i = 0; i < this->num_local; i++) {
 			this->logic->raise_playerjoin(this->local_players[i]->slot);
 		}
 	}
-	
+
 	this->running = true;
 	while (this->running) {
 		int delta = SDL_GetTicks() - start;
 		start = SDL_GetTicks();
-		
+
 		this->logic->update(delta);
 		this->update(delta);
  		handleEvents(this);
-		
+
 		if (GEng()->getMouseGrab()) {
 			if (this->local_players[0]->p) this->local_players[0]->p->angleFromMouse(game_x[0], game_y[0], delta);
 			if (this->local_players[1]->p) this->local_players[1]->p->angleFromMouse(game_x[1], game_y[1], delta);
 			game_x[0] = game_y[0] = 0;
 			game_x[1] = game_y[1] = 0;
 		}
-		
+
 		net_time += delta;
 		if (net_time > net_timestep) {
 			net_time -= net_timestep;
-			
+
 			if (client != NULL) {
 				if (this->local_players[0]->p) {
 					client->addmsgKeyMouseStatus(net_x[0], net_y[0], net_timestep, this->local_players[0]->p->packKeys());
@@ -442,19 +442,19 @@ void GameState::gameLoop(GameState* st, Render* render, Audio* audio, NetClient*
 				}
 				client->update();
 			}
-			
+
 			if (GEng()->server != NULL) {
 				GEng()->server->update();
 			}
 		}
-		
+
 		PROFILE_START(render);
 		render->render();
 		PROFILE_END(render);
-		
+
 		audio->play();
 	}
-	
+
 	this->postGame();
 	render->postGame();
 	render->freeHeightmap();
@@ -470,8 +470,8 @@ void GameState::gameLoop(GameState* st, Render* render, Audio* audio, NetClient*
 void GameState::update(int delta)
 {
 	DEBUG("loop", "Updating gamestate using delta: %i\n", delta);
-	
-	
+
+
 	// Add new entities
 	this->entities.insert(
 		this->entities.end(),
@@ -479,7 +479,7 @@ void GameState::update(int delta)
 		this->entities_add.end()
 	);
 	this->entities_add.clear();
-	
+
 	// Update entities
 	PROFILE_START(entities);
 	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); ++it) {
@@ -489,15 +489,15 @@ void GameState::update(int delta)
 		}
 	}
 	PROFILE_END(entities);
-	
+
 	// Remove stuff
 	this->entities.remove_if(EntityEraserDead);
-	
+
 	// Update physics
 	PROFILE_START(physics);
 	this->physics->stepTime(delta);
 	PROFILE_END(physics);
-	
+
 	// Particles
 	#ifdef USE_SPARK
 		this->particle_system->update(delta / 1000.0f);
@@ -510,7 +510,7 @@ void GameState::update(int delta)
 	if (this->entropy > 0) {
 		this->entropy--;
 	}
-	
+
 	// Handle guichan logic
 	if (GEng()->hasDialogs()) {
 		GEng()->gui->logic();
@@ -518,7 +518,7 @@ void GameState::update(int delta)
 
 	// Update FPS stats
 	GEng()->calcAverageTick(delta);
-	
+
 	// Update time
 	this->game_time += delta;
 	this->anim_frame = (int) floor(this->game_time * ANIMATION_FPS / 1000.0);
@@ -569,35 +569,35 @@ int GameState::getLastGameResult()
 list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 {
 	list<UnitQueryResult> * ret = new list<UnitQueryResult>();
-	
+
 	float visual_distance = 200;		// TODO: Should this be a unit property?
-	
+
 	btTransform trans = origin->getTransform();
 	UnitQueryResult uqr;
 	btVector3 vecO, vecS;
 	float dist;
 	Unit * u;
-	
+
 	vecO = trans.getOrigin();
-	
+
 	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); ++it) {
 		if ((*it)->klass() != UNIT) continue;
 		u = (Unit*)(*it);
 		if (u == origin) continue;
-		
+
 		trans = u->getTransform();
 		vecS = trans.getOrigin();
 		vecS -= vecO;
-		
+
 		dist = vecS.length();
 		if (dist > visual_distance) continue;
-		
+
 		uqr.u = u;
 		uqr.dist = dist;
-		
+
 		ret->push_back(uqr);
 	}
-	
+
 	return ret;
 }
 
@@ -679,7 +679,7 @@ HUDLabel* GameState::addHUDLabel(unsigned int slot, float x, float y, string dat
 
 /**
 * Pick for an object using the mouse
-* Returns true on hit and false on miss. Sets `hitLocation` and `hitEntity` on success. 
+* Returns true on hit and false on miss. Sets `hitLocation` and `hitEntity` on success.
 *
 * TODO: Does this belong here or in the PhysicsBullet class?
 **/
@@ -692,7 +692,7 @@ bool GameState::mousePick(unsigned int x, unsigned int y, btVector3& hitLocation
 	((Render3D*)GEng()->render)->mouseRaycast(x, y, start, end);
 
 	this->addDebugLine(&start, &end);
-	
+
 	// Do raycast
 	btCollisionWorld::ClosestRayResultCallback cb(start, end);
 	cb.m_collisionFilterGroup = CG_UNIT;
@@ -709,7 +709,7 @@ bool GameState::mousePick(unsigned int x, unsigned int y, btVector3& hitLocation
 		}
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -734,12 +734,12 @@ void GameState::addDebugPoint(float x, float y, float z, float len)
 	dl->a = new btVector3(x - len, y, z);
 	dl->b = new btVector3(x + len, y, z);
 	lines.push_back(dl);
-	
+
 	dl = new DebugLine();
 	dl->a = new btVector3(x, y - len, z);
 	dl->b = new btVector3(x, y + len, z);
 	lines.push_back(dl);
-	
+
 	dl = new DebugLine();
 	dl->a = new btVector3(x, y, z - len);
 	dl->b = new btVector3(x, y, z + len);

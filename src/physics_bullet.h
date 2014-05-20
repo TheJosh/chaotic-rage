@@ -63,7 +63,7 @@ class PhysicsBullet
 {
 	private:
 		GameState * st;
-		
+
 		btDefaultCollisionConfiguration* collisionConfiguration;
 		btCollisionDispatcher* dispatcher;
 		btBroadphaseInterface* overlappingPairCache;
@@ -71,9 +71,9 @@ class PhysicsBullet
 		btDiscreteDynamicsWorld* dynamicsWorld;
 		btAlignedObjectArray<btCollisionShape*>* collisionShapes;
 		btGhostPairCallback *ghostPairCallback;
-		
+
 		btRigidBody* groundRigidBody;
-		
+
 	public:
 		// I like to keep all of my mask suff in one place (this class).
 		// Various constants to achieve that goal
@@ -88,7 +88,7 @@ class PhysicsBullet
 		virtual void init();
 		virtual void preGame();
 		virtual void postGame();
-		
+
 	public:
 		btRigidBody* addRigidBody(btCollisionShape* colShape, float mass, float x, float y, float z, CollisionGroup group);
 		btRigidBody* addRigidBody(btCollisionShape* colShape, float m, btDefaultMotionState* motionState, CollisionGroup group);
@@ -100,7 +100,7 @@ class PhysicsBullet
 		void delRigidBody(btRigidBody* body);
 		void delCollisionObject(btCollisionObject* body);
 		void delAction(btActionInterface* action);
-		
+
 		void addCallback(PhysicsCallback *callback);
 		PhysicsCallback* addCallback(PhysicsTickCallback func);
 		PhysicsCallback* addCallback(PhysicsTickCallback func, Entity *e, void *data1, void *data2);
@@ -109,9 +109,9 @@ class PhysicsBullet
 
 		void stepTime(int ms);
 		void doCollisions();
-		
+
 		btDiscreteDynamicsWorld* getWorld();
-		
+
 		static void QuaternionToEulerXYZ(const btQuaternion &quat, btVector3 &euler);
 		static float QuaternionToYaw(const btQuaternion &quat);
 		btVector3 spawnLocation(float x, float z, float height);

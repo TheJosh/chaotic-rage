@@ -25,17 +25,17 @@ class GameManager
 		vector<string> gametypes;
 		vector<string> viewmodes;
 		vector<string> unittypes;
-		
+
 	public:
 		// Init etc
 		GameManager(GameState *st);
-		
+
 	public:
 		/**
 		* Load stuff from mods into arrays
 		**/
 		void loadModBits(UIUpdate* ui);
-		
+
 		/**
 		* Getting stuff from the mod
 		**/
@@ -43,17 +43,17 @@ class GameManager
 		vector<string>* getGameTypes();
 		vector<string>* getViewModes();
 		vector<string>* getUnitTypes();
-		
+
 		/**
 		* Run a campaign
 		**/
 		void startCampaign(Campaign* c, string unittype, GameSettings::ViewMode viewmode, unsigned int num_local);
-		
+
 		/**
 		* Run an arcade game
 		**/
 		void startGame(MapReg *map, string gametype, string unittype, GameSettings::ViewMode viewmode, unsigned int num_local, bool host, GameSettings *gs);
-		
+
 		/**
 		* Attempt to join a network game
 		**/

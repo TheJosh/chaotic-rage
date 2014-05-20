@@ -48,7 +48,7 @@ GameEngine::GameEngine()
 {
 	this->running = false;
 	this->mouse_grabbed = false;
-	
+
 	this->render = NULL;
 	this->audio = NULL;
 	this->server = NULL;
@@ -85,7 +85,7 @@ GameEngine::~GameEngine()
 void GameEngine::setMouseGrab(bool newval)
 {
 	if (this->cmdline->mouseGrab == false) return;
-	
+
 	this->mouse_grabbed = newval;
 	this->render->setMouseGrab(newval);
 }
@@ -112,20 +112,20 @@ void GameEngine::initGuichan()
 		this->gui = NULL;
 		return;
 	}
-	
+
 	try {
 		this->gui = new gcn::Gui();
 		this->guiinput = new gcn::SDLInput();
 		gui->setInput(guiinput);
-		
+
 		((Render3D*)this->render)->initGuichan(gui, this->mm->getDefaultMod());
-		
+
 		this->guitop = new gcn::Container();
 		this->guitop->setPosition(0,0);
 		this->guitop->setSize(this->render->getWidth(), this->render->getHeight());
 		this->guitop->setBaseColor(gcn::Color(0, 0, 0, 0));
 		gui->setTop(this->guitop);
-		
+
 	} catch (const gcn::Exception & ex) {
 		this->gui = NULL;
 	}
@@ -152,14 +152,14 @@ bool GameEngine::hasDialog(string name)
 void GameEngine::addDialog(Dialog * dialog)
 {
 	if (this->gui == NULL) return;
-	
+
 	gcn::Container * c = dialog->setup();
 	c->setPosition((this->render->getWidth() - c->getWidth()) / 2, (this->render->getHeight() - c->getHeight()) / 2);
 	c->setBaseColor(gcn::Color(150, 150, 150, 200));
 	this->guitop->add(c);
-	
+
 	this->dialogs.push_back(dialog);
-	
+
 	this->setMouseGrab(false);
 }
 
@@ -173,7 +173,7 @@ void GameEngine::remDialog(Dialog * dialog)
 
 	this->dialogs.remove(dialog);
 	this->guitop->remove(dialog->getContainer());
-	
+
 	if (this->dialogs.empty()) {
 		this->setMouseGrab(true);
 	}
@@ -200,7 +200,7 @@ void GameEngine::calcAverageTick(int newtick)
 	this->ticksum -= ticklist[tickindex];
 	this->ticksum += newtick;
 	this->ticklist[tickindex] = newtick;
-	
+
 	if (++tickindex == FPS_SAMPLES) {
 		this->tickindex = 0;
 	}

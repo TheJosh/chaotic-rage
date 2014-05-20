@@ -100,7 +100,7 @@ void GameManager::loadModBits(UIUpdate* ui)
 	this->viewmodes.push_back("Behind player");
 	this->viewmodes.push_back("Above player");
 	this->viewmodes.push_back("First person");
-	
+
 	// Unittypes
 	this->unittypes.clear();
 	{
@@ -142,7 +142,7 @@ void GameManager::startCampaign(Campaign* c, string unittype, GameSettings::View
 			} else if (result == -1) {
 				return;			// error
 			}
-			
+
 
 		} else if (stage->image_filename != "") {
 			///-- Display image --
@@ -197,7 +197,7 @@ void GameManager::startCampaign(Campaign* c, string unittype, GameSettings::View
 			}
 			*/
 			++it;
-			
+
 		} else {
 			assert(0);
 		}
@@ -221,15 +221,15 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, GameS
 	st->logic = NULL;
 	st->map = NULL;
 	char* script = NULL;
-	
+
 	st->physics->init();
-	
+
 	if (host) {
 		sconf = new ServerConfig();
 		server = new NetServer(st, sconf);
 		GEng()->server = server;
 	}
-	
+
 	// Load map
 	m = new Map(st);
 	if (! m->load(map->getName(), GEng()->render, map->getMod())) {
@@ -237,7 +237,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, GameS
 		goto cleanup;
 	}
 	st->map = m;
-	
+
 	// Load gametype
 	gt = GEng()->mm->getGameType(gametype);
 	assert(gt);
@@ -257,7 +257,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, GameS
 	}
 	st->logic->execScript(script);
 	free(script);
-	
+
 	// Create players in GameState.
 	st->num_local = num_local;
 	for (unsigned int i = 0; i < num_local; i++) {
@@ -269,7 +269,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, GameS
 
 	// Begin!
 	st->gameLoop(st, GEng()->render, GEng()->audio, NULL);
-	
+
 	// Cleanup
 cleanup:
 	delete st->logic;
@@ -282,7 +282,7 @@ cleanup:
 	}
 }
 
-	
+
 /**
 * Join a network game
 **/
@@ -294,7 +294,7 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	NetClient *client;
 	st->logic = NULL;
 	st->map = NULL;
-	
+
 	client = new NetClient(st);
 
 	st->physics->init();
@@ -321,7 +321,7 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	m = new Map(st);
 	m->load(map->getName(), GEng()->render, map->getMod());
 	st->map = m;
-	
+
 	// TODO: Do we need to init the gametype? I think we might
 	st->gt = NULL;
 
@@ -333,7 +333,7 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	st->logic->selected_unittype = GEng()->mm->getUnitType("robot");
 
 	GEng()->render->viewmode = GameSettings::behindPlayer;
-	
+
 	// Download the gamestate
 	// When this is done, a final message is sent to tell the server we are done.
 	if (! client->downloadGameState()) {
@@ -344,7 +344,7 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 
 	// Begin!
 	st->gameLoop(st, GEng()->render, GEng()->audio, client);
-	
+
 cleanup:
 	delete st->logic;
 	delete st->map;

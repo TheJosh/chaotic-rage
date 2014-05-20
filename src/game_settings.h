@@ -37,7 +37,7 @@ class GameSettings
 			firstPerson,
 			nrOfViewModes,
 		};
-			
+
 
 	public:
 		GameSettings();
