@@ -1468,7 +1468,7 @@ DLLIMPORT void cfg_opt_print_indent(cfg_opt_t *opt, FILE *fp, int indent)
             else
                 cfg_opt_nprint_var(opt, 0, fp);
         }
-    
+
         fprintf(fp, "\n");
     }
     else if(opt->pf)
@@ -1591,4 +1591,3 @@ DLLIMPORT cfg_validate_callback_t cfg_set_validate_func(cfg_t *cfg,
     opt->validcb = vf;
     return oldvf;
 }
-

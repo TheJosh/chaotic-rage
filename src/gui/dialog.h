@@ -79,7 +79,7 @@ class DialogQuit : public Dialog, public gcn::ActionListener {
 		GameState * st;
 
 	public:
-		DialogQuit(GameState * st);
+		explicit DialogQuit(GameState * st);
 		virtual ~DialogQuit() {}
 
 		virtual gcn::Container * setup();

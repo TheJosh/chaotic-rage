@@ -23,7 +23,7 @@ class DialogNewGame : public Dialog, public gcn::ActionListener {
 	friend class DialogNewGame_Action_Weapons;
 
 	public:
-		DialogNewGame(int num_local);
+		explicit DialogNewGame(int num_local);
 		virtual ~DialogNewGame();
 
 	protected:
@@ -57,7 +57,7 @@ class DialogNewGame_Action_Weapons : public gcn::ActionListener {
 	private:
 		DialogNewGame *parent;
 	public:
-		DialogNewGame_Action_Weapons(DialogNewGame *parent): parent(parent) {}
+		explicit DialogNewGame_Action_Weapons(DialogNewGame *parent): parent(parent) {}
 		virtual void action(const gcn::ActionEvent& actionEvent);
 };
 

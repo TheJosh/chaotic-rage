@@ -2,9 +2,12 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
 #include <SDL.h>
 #include <math.h>
+
+#include <iostream>
+#include <string>
+
 #include "rage.h"
 #include "game.h"
 #include "game_state.h"
@@ -15,6 +18,8 @@
 #include "gui/dialog.h"
 #include "lua/gamelogic.h"
 #include "audio/audio.h"
+
+#define BUFFER_MAX 50
 
 
 using namespace std;
@@ -41,7 +46,7 @@ void handleEvents(GameState *st)
 				case SDLK_ESCAPE:
 				case SDLK_AC_BACK:
 				case SDLK_MENU:
-					if (! GEng()->hasDialog("quit")) {
+					if (!GEng()->hasDialog("quit")) {
 						GEng()->addDialog(new DialogQuit(st));
 					}
 					break;
@@ -49,8 +54,8 @@ void handleEvents(GameState *st)
 				case SDLK_PRINTSCREEN:
 					{
 						screenshot_num++;
-						char buf[50];
-						sprintf(buf, "%i", screenshot_num);
+						char buf[BUFFER_MAX];
+						snprintf(buf, BUFFER_MAX, "%i", screenshot_num);
 
 						string filename = getUserDataDir();
 						filename.append("screenshot");
@@ -74,17 +79,17 @@ void handleEvents(GameState *st)
 					break;
 
 				case SDLK_F6:
-					GEng()->setMouseGrab(! GEng()->getMouseGrab());
+					GEng()->setMouseGrab(!GEng()->getMouseGrab());
 					st->addHUDMessage(ALL_SLOTS, "Reset-mouse ", GEng()->getMouseGrab() ? "on" : "off");
 					break;
 
 				case SDLK_F7:
-					GEng()->render->setPhysicsDebug(! GEng()->render->getPhysicsDebug());
+					GEng()->render->setPhysicsDebug(!GEng()->render->getPhysicsDebug());
 					st->addHUDMessage(ALL_SLOTS, "Physics debug ", GEng()->render->getPhysicsDebug() ? "on" : "off");
 					break;
 
 				case SDLK_F8:
-					GEng()->render->setSpeedDebug(! GEng()->render->getSpeedDebug());
+					GEng()->render->setSpeedDebug(!GEng()->render->getSpeedDebug());
 					st->addHUDMessage(ALL_SLOTS, "Speed debug ", GEng()->render->getSpeedDebug() ? "on" : "off");
 					break;
 
@@ -150,7 +155,7 @@ void handleEvents(GameState *st)
 
 			#if defined(__ANDROID__)
 			} else if (event.type == SDL_FINGERDOWN || event.type == SDL_FINGERMOTION) {
-				float x,y;
+				float x, y;
 				int type = 0;
 
 				// Determine type (1 = left thumb, 2 = right thumb)

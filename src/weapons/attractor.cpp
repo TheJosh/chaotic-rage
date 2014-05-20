@@ -79,7 +79,7 @@ void WeaponAttractor::entityUpdate(AmmoRound *e, int delta)
 			forceAmt = this->force.solve(this->range - dist) / 1000.f * ((float)delta);
 
 			// If the unit is in the center and it's a repel, choose a random direction
-			if (dist < 0.1f and sign < 0.0f) {
+			if (dist < 0.1f && sign < 0.0f) {
 				unitToCenter = btVector3(getRandomf(-1.0f, 1.0f), getRandomf(-1.0f, 1.0f), getRandomf(-1.0f, 1.0f));
 			}
 

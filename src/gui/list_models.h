@@ -26,7 +26,7 @@ class VectorListModel: public gcn::ListModel
 		vector<string> * v;
 
 	public:
-		VectorListModel(vector<string> * vec) {
+		explicit VectorListModel(vector<string> * vec) {
 			this->v = vec;
 		}
 
@@ -48,7 +48,7 @@ class MapRegistryListModel: public gcn::ListModel
 		MapRegistry * mapreg;
 
 	public:
-		MapRegistryListModel(MapRegistry * mapreg) : mapreg(mapreg) {}
+		explicit MapRegistryListModel(MapRegistry * mapreg) : mapreg(mapreg) {}
 
 		std::string getElementAt(int i)
 		{
@@ -68,7 +68,7 @@ class GametypeListModel: public gcn::ListModel
 		vector<GameType*> * gametypes;
 
 	public:
-		GametypeListModel(vector<GameType*> * gametypes) : gametypes(gametypes) {}
+		explicit GametypeListModel(vector<GameType*> * gametypes) : gametypes(gametypes) {}
 		~GametypeListModel() { delete(gametypes); }
 
 		std::string getElementAt(int i)
@@ -89,7 +89,7 @@ class GametypeFactionsListModel: public gcn::ListModel
 		GameType* gt;
 
 	public:
-		GametypeFactionsListModel(GameType* gt) : gt(gt) {}
+		explicit GametypeFactionsListModel(GameType* gt) : gt(gt) {}
 		~GametypeFactionsListModel() {}
 
 		std::string getElementAt(int i)
@@ -110,7 +110,7 @@ class ModListModel: public gcn::ListModel
 		vector<Mod*> * mods;
 
 	public:
-		ModListModel(vector<Mod*> * mods) : mods(mods) {}
+		explicit ModListModel(vector<Mod*> * mods) : mods(mods) {}
 		~ModListModel() { delete(mods); }
 
 		std::string getElementAt(int i)

@@ -62,6 +62,6 @@ class AudioSDLMixer : public Audio
 		virtual void toggleMusicPlay();
 
 	public:
-		AudioSDLMixer(GameState * st);
+		explicit AudioSDLMixer(GameState * st);
 		virtual ~AudioSDLMixer() {}
 };

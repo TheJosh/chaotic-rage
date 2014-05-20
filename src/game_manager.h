@@ -4,6 +4,8 @@
 
 #pragma once
 #include <vector>
+#include <string>
+#include <list>
 #include "game_settings.h"
 
 using namespace std;
@@ -28,7 +30,7 @@ class GameManager
 
 	public:
 		// Init etc
-		GameManager(GameState *st);
+		explicit GameManager(GameState *st);
 
 	public:
 		/**

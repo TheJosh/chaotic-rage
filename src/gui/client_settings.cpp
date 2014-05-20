@@ -2,6 +2,8 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include "client_settings.h"
+
 #include <iostream>
 #include <math.h>
 #include <guichan.hpp>
@@ -16,8 +18,8 @@
 #include "../mod/mod.h"
 #include "../util/clientconfig.h"
 #include "dialog.h"
-#include "client_settings.h"
 
+#define BUFFER_MAX 100
 
 using namespace std;
 
@@ -50,7 +52,7 @@ gcn::Container * DialogClientSettings::setup()
 	const int p = 10;	// padding
 	const int bw = 200;	// buttonwidth
 	const int bh = 20;	// buttonheight
-	char buf[100];
+	char buf[BUFFER_MAX];
 
 	gcn::Label* label;
 
@@ -62,7 +64,7 @@ gcn::Container * DialogClientSettings::setup()
 	label = new gcn::Label("MSAA");
 	c->add(label, 10, 10);
 
-	sprintf(buf, "%i", gl->msaa);
+	snprintf(buf, BUFFER_MAX, "%i", gl->msaa);
 	this->gl_msaa = new gcn::TextField(std::string(buf));
 	this->gl_msaa->setPosition(80, 10);
 	this->gl_msaa->setWidth(50);
@@ -71,7 +73,7 @@ gcn::Container * DialogClientSettings::setup()
 	label = new gcn::Label("Tex Filter");
 	c->add(label, 10, 30);
 
-	sprintf(buf, "%i", gl->tex_filter);
+	snprintf(buf, BUFFER_MAX, "%i", gl->tex_filter);
 	this->gl_tex_filter = new gcn::TextField(std::string(buf));
 	this->gl_tex_filter->setPosition(80, 30);
 	this->gl_tex_filter->setWidth(50);

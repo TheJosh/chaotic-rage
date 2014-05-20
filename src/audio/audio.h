@@ -59,6 +59,6 @@ class Audio
 		virtual void toggleMusicPlay() = 0;
 
 	public:
-		Audio(GameState * st);
+		explicit Audio(GameState * st);
 		virtual ~Audio() {}
 };

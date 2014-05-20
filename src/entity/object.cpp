@@ -28,8 +28,7 @@ Object::Object(ObjectType *ot, GameState *st, float x, float y, float z, float a
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
 			btQuaternion(btScalar(0), btScalar(0), btScalar(DEG_TO_RAD(angle))),
-			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)
-		));
+			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)));
 
 	this->body = st->physics->addRigidBody(ot->col_shape, 1.0f, motionState, CG_OBJECT);
 

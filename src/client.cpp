@@ -4,6 +4,7 @@
 
 #include <string>
 #include <fstream>
+#include <vector>
 #include <SDL.h>
 #include "rage.h"
 #include "http/client_stats.h"
@@ -26,7 +27,7 @@
 using namespace std;
 
 
-int main (int argc, char ** argv)
+int main(int argc, char ** argv)
 {
 	GameState *st;
 	UIUpdate *ui;
@@ -79,7 +80,7 @@ int main (int argc, char ** argv)
 	}
 
 	// Load the mods. Uses threads if possible
-	if (! loadMods(st, ui)) {
+	if (!loadMods(st, ui)) {
 		reportFatalError("Module loading failed");
 	}
 

@@ -147,7 +147,7 @@ typedef int (*cfg_func_t)(cfg_t *cfg, cfg_opt_t *opt,
  * @see cfg_print, cfg_set_print_func
  */
 typedef void (*cfg_print_func_t)(cfg_opt_t *opt, unsigned int index, FILE *fp);
-    
+
 /** Value parsing callback prototype
  *
  * This is a callback function (different from the one registered with the
@@ -486,7 +486,7 @@ extern const char __export confuse_author[];
 /** Initialize a user-defined option
  *
  * CFG_PTR options can only be used together with a value parsing callback.
- * 
+ *
  * @param name The name of the option
  * @param def Default value
  * @param flags Flags
@@ -511,7 +511,7 @@ extern const char __export confuse_author[];
  * the option list.
  */
 #define CFG_END() \
-   {0,CFGT_NONE,0,0,CFGF_NONE,0,{0,0,cfg_false,0,0},0,0,0,0,0,0}
+  {0,CFGT_NONE,0,0,CFGF_NONE,0,{0,0,cfg_false,0,0},0,0,0,0,0,0}
 
 
 
@@ -522,7 +522,7 @@ extern const char __export confuse_author[];
  * segmentation faults.
  *
  * The options must no longer be defined in the same scope as where the cfg_xxx
- * functions are used (since version 2.3). 
+ * functions are used (since version 2.3).
  *
  * @param opts An arrary of options
  * @param flags One or more flags (bitwise or'ed together). Currently only
@@ -678,7 +678,7 @@ DLLIMPORT char * __export cfg_getstr(cfg_t *cfg, const char *name);
  * @see cfg_getnbool
  */
 DLLIMPORT cfg_bool_t __export cfg_opt_getnbool(cfg_opt_t *opt, unsigned int index);
-    
+
 /** Indexed version of cfg_getbool(), used for lists.
  *
  * @param cfg The configuration file context.

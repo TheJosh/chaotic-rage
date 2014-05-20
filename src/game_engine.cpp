@@ -2,15 +2,16 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include "game_engine.h"
+
 #include <vector>
 #include <list>
+#include <string>
 #include <math.h>
-#include <string.h>
 
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
 
-#include "game_engine.h"
 #include "render/render.h"
 #include "render/render_3d.h"
 #include "audio/audio.h"
@@ -118,7 +119,7 @@ void GameEngine::initGuichan()
 #ifdef NOGUI
 	this->gui = NULL;
 #else
-	if (! this->render->is3D()) {
+	if (!this->render->is3D()) {
 		this->gui = NULL;
 		return;
 	}
@@ -128,7 +129,7 @@ void GameEngine::initGuichan()
 		this->guiinput = new gcn::SDLInput();
 		gui->setInput(guiinput);
 
-		((Render3D*)this->render)->initGuichan(gui, this->mm->getDefaultMod());
+		reinterpret_cast<Render3D*>(this->render)->initGuichan(gui, this->mm->getDefaultMod());
 
 		this->guitop = new gcn::Container();
 		this->guitop->setPosition(0,0);
@@ -222,5 +223,5 @@ void GameEngine::calcAverageTick(int newtick)
 **/
 float GameEngine::getAveTick()
 {
-  return ((float)this->ticksum/(float)FPS_SAMPLES);
+  return (static_cast<float>(this->ticksum) / static_cast<float>(FPS_SAMPLES));
 }

@@ -56,7 +56,7 @@ AudioPtr AudioSDLMixer::loadSound(string filename, Mod * mod)
 	}
 
 	sound = Mix_LoadWAV_RW(rw, 0);
-	SDL_RWclose (rw);
+	SDL_RWclose(rw);
 
 	return sound;
 }

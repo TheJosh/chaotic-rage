@@ -26,8 +26,7 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z, float angle) 
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
 			btQuaternion(btScalar(0), btScalar(0), btScalar(DEG_TO_RAD(angle))),
-			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)
-		));
+			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)));
 
 	this->body = st->physics->addRigidBody(wt->col_shape, 0.0f, motionState, CG_WALL);
 

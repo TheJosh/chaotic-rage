@@ -57,7 +57,7 @@ class PlayerState
 		unsigned int slot;		// Slots are numbered from 1 upwards. Used for network play.
 
 	public:
-		PlayerState(GameState *st);
+		explicit PlayerState(GameState *st);
 		~PlayerState();
 };
 

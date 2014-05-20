@@ -78,7 +78,7 @@ void rocketTickCallback(float delta, Entity *e, void *data1, void *data2)
 				int numPairs = pairArray.size();
 
 				bool hit = false;
-				for (int i=0;i<numPairs;i++) {
+				for (int i = 0; i < numPairs; i++) {
 					const btBroadphasePair& pair = pairArray[i];
 
 					//unless we manually perform collision detection on this pair, the contacts are in the dynamics world paircache:
@@ -90,9 +90,9 @@ void rocketTickCallback(float delta, Entity *e, void *data1, void *data2)
 						collisionPair->m_algorithm->getAllContactManifolds(manifoldArray);
 					}
 
-					for (int j=0;j<manifoldArray.size();j++) {
+					for (int j = 0; j < manifoldArray.size(); j++) {
 						btPersistentManifold* manifold = manifoldArray[j];
-						for (int p=0;p<manifold->getNumContacts();p++) {
+						for (int p = 0; p < manifold->getNumContacts(); p++) {
 							const btManifoldPoint&pt = manifold->getContactPoint(p);
 
 							if (pt.getDistance() < 0.f) {

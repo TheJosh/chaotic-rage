@@ -57,7 +57,7 @@ class LocalRefreshAction : public gcn::ActionListener
 		DialogNetJoin* owner;
 
 	public:
-		LocalRefreshAction(DialogNetJoin* owner) : owner(owner) {};
+		explicit LocalRefreshAction(DialogNetJoin* owner) : owner(owner) {}
 
 	public:
 		virtual void action(const gcn::ActionEvent& actionEvent);
@@ -73,7 +73,7 @@ class InternetRefreshAction : public gcn::ActionListener
 		DialogNetJoin* owner;
 
 	public:
-		InternetRefreshAction(DialogNetJoin* owner) : owner(owner) {};
+		explicit InternetRefreshAction(DialogNetJoin* owner) : owner(owner) {}
 
 	public:
 		virtual void action(const gcn::ActionEvent& actionEvent);

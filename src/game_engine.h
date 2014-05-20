@@ -2,7 +2,12 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#pragma once
+#ifndef GAME_ENGINE_H
+#define GAME_ENGINE_H
+
+#include <string>
+#include <list>
+
 #include "rage.h"
 
 using namespace std;
@@ -92,3 +97,5 @@ class GameEngine
 * Returns a pointer to the global GameEngine object
 **/
 GameEngine* GEng();
+
+#endif // GAME_ENGINE_H

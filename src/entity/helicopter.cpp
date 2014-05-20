@@ -2,15 +2,18 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include "helicopter.h"
+
 #include <iostream>
+#include <vector>
 #include <math.h>
+
 #include "../rage.h"
 #include "../physics_bullet.h"
 #include "../game_state.h"
 #include "../render_opengl/animplay.h"
 #include "../mod/vehicletype.h"
 #include "../net/net_server.h"
-#include "helicopter.h"
 
 using namespace std;
 

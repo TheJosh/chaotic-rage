@@ -35,7 +35,7 @@ class Vehicle : public Entity
 		btCollisionShape* wheel_shape;
 
 	public:
-		Vehicle(GameState *st);
+		explicit Vehicle(GameState *st);
 		Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy);
 		Vehicle(VehicleType *vt, GameState *st, btTransform & loc);
 		void init(VehicleType *vt, GameState *st, btTransform & loc);

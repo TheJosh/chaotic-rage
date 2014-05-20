@@ -3,7 +3,10 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
+
 #include <stdint.h>
+
+#include "../rage.h"
 
 
 using namespace std;
@@ -30,7 +33,7 @@ class btRigidBody;
 class Entity
 {
 	public:
-		virtual EntityClass klass() const { return NONE; };
+		virtual EntityClass klass() const { return NONE; }
 
 	public:
 		bool del;
@@ -42,7 +45,7 @@ class Entity
 		GameState* st;
 
 	protected:
-		Entity(GameState *st);
+		explicit Entity(GameState *st);
 
 	public:
 		virtual ~Entity();

@@ -2,6 +2,8 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include "game_state.h"
+
 #include <string.h>
 #include <iostream>
 #include <map>
@@ -15,7 +17,6 @@
 
 #include "rage.h"
 #include "game.h"
-#include "game_state.h"
 #include "game_engine.h"
 #include "game_settings.h"
 #include "lua/gamelogic.h"
@@ -33,7 +34,6 @@
 #include "gui/dialog.h"
 #include "mod/mod_manager.h"
 #include "mod/gametype.h"
-#include "net/net_server.h"
 #include "render_opengl/hud.h"
 #include "render/render_3d.h"
 #include "audio/audio.h"
@@ -124,7 +124,7 @@ PlayerState::PlayerState(GameState *st)
 {
 	this->st = st;
 	this->p = NULL;
-	this->hud = new HUD(this, (RenderOpenGL*)GEng()->render);
+	this->hud = new HUD(this, reinterpret_cast<RenderOpenGL*>(GEng()->render));
 	this->slot = 0;
 }
 
@@ -256,7 +256,7 @@ Unit* GameState::findUnitSlot(unsigned int slot)
 {
 	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); ++it) {
 		if ((*it)->klass() != UNIT) continue;
-		Unit* u = (Unit*)*it;
+		Unit* u = reinterpret_cast<Unit*>(*it);
 		if (u->slot == slot) return u;
 	}
 
@@ -276,8 +276,8 @@ list<AmmoRound*>* GameState::findAmmoRoundsUnit(Unit* u)
 
 	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); ++it) {
 		if ((*it)->klass() != AMMOROUND) continue;
-		if (((AmmoRound*)*it)->owner == u) {
-			out->push_back((AmmoRound*)*it);
+		if (reinterpret_cast<AmmoRound*>(*it)->owner == u) {
+			out->push_back(reinterpret_cast<AmmoRound*>(*it));
 		}
 	}
 
@@ -424,7 +424,7 @@ void GameState::gameLoop(GameState* st, Render* render, Audio* audio, NetClient*
 
 		this->logic->update(delta);
 		this->update(delta);
- 		handleEvents(this);
+		handleEvents(this);
 
 		if (GEng()->getMouseGrab()) {
 			if (this->local_players[0]->p) this->local_players[0]->p->angleFromMouse(game_x[0], game_y[0], delta);
@@ -523,7 +523,7 @@ void GameState::update(int delta)
 
 	// Update time
 	this->game_time += delta;
-	this->anim_frame = (int) floor(this->game_time * ANIMATION_FPS / 1000.0);
+	this->anim_frame = static_cast<int>(floor(this->game_time * ANIMATION_FPS / 1000.0));
 }
 
 
@@ -584,7 +584,7 @@ list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 
 	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); ++it) {
 		if ((*it)->klass() != UNIT) continue;
-		u = (Unit*)(*it);
+		u = reinterpret_cast<Unit*>(*it);
 		if (u == origin) continue;
 
 		trans = u->getTransform();
@@ -691,7 +691,7 @@ bool GameState::mousePick(unsigned int x, unsigned int y, btVector3& hitLocation
 
 	// Get ray coords in world space
 	btVector3 start, end;
-	((Render3D*)GEng()->render)->mouseRaycast(x, y, start, end);
+	reinterpret_cast<Render3D*>(GEng()->render)->mouseRaycast(x, y, start, end);
 
 	this->addDebugLine(&start, &end);
 

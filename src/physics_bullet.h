@@ -83,7 +83,7 @@ class PhysicsBullet
 		std::list<PhysicsCallback*> callbacks;
 
 	public:
-		PhysicsBullet(GameState * st);
+		explicit PhysicsBullet(GameState * st);
 		~PhysicsBullet();
 		virtual void init();
 		virtual void preGame();

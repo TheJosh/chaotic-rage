@@ -418,7 +418,7 @@ float Unit::getHealth()
 **/
 float Unit::getHealthPercent()
 {
-	return (float)this->health / (float)this->uc->begin_health;
+	return static_cast<float>(this->health) / static_cast<float>(this->uc->begin_health);
 }
 
 
@@ -565,7 +565,7 @@ void Unit::update(int delta)
 		btBroadphasePairArray& pairArray = ghost->getOverlappingPairCache()->getOverlappingPairArray();
 		int numPairs = pairArray.size();
 
-		for (int i=0;i<numPairs;i++){
+		for (int i = 0; i < numPairs; i++){
 			manifoldArray.clear();
 
 			const btBroadphasePair& pair = pairArray[i];
@@ -578,7 +578,7 @@ void Unit::update(int delta)
 				collisionPair->m_algorithm->getAllContactManifolds(manifoldArray);
 			}
 
-			for (int j=0;j<manifoldArray.size();j++) {
+			for (int j = 0; j < manifoldArray.size(); j++) {
 				btPersistentManifold* manifold = manifoldArray[j];
 
 				const btCollisionObject* obA = static_cast<const btCollisionObject*>(manifold->getBody0());

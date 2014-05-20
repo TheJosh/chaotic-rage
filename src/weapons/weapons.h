@@ -86,7 +86,7 @@ class WeaponFlamethrower : public WeaponType
 class WeaponTimedMine : public WeaponType
 {
 	public:
-		WeaponTimedMine() {};
+		WeaponTimedMine() {}
 
 	public:
 		float range;
@@ -110,7 +110,7 @@ struct WeaponTimedMineData {
 class WeaponProxiMine : public WeaponType
 {
 	public:
-		WeaponProxiMine() {};
+		WeaponProxiMine() {}
 
 	public:
 		float range;
@@ -133,7 +133,7 @@ struct WeaponProxiMineData {
 class WeaponRemoteMine : public WeaponType
 {
 	public:
-		WeaponRemoteMine() {};
+		WeaponRemoteMine() {}
 
 	public:
 		float range;
@@ -167,7 +167,7 @@ class WeaponRemoteTrigger : public WeaponType
 class WeaponRocket : public WeaponType
 {
 	public:
-		WeaponRocket() : model(NULL) {};
+		WeaponRocket() : model(NULL) {}
 
 	public:
 		AssimpModel* model;
@@ -192,7 +192,7 @@ struct WeaponRocketData {
 class WeaponAttractor : public WeaponType
 {
 	public:
-		WeaponAttractor() : model(NULL) {};
+		WeaponAttractor() : model(NULL) {}
 
 	public:
 		float range;

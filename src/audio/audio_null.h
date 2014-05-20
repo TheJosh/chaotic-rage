@@ -48,6 +48,6 @@ class AudioNull : public Audio
 		virtual void toggleMusicPlay();
 
 	public:
-		AudioNull(GameState * st);
+		explicit AudioNull(GameState * st);
 		virtual ~AudioNull() {}
 };

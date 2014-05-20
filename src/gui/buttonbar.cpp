@@ -2,6 +2,8 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include "buttonbar.h"
+
 #include <iostream>
 #include <math.h>
 #include <guichan.hpp>
@@ -9,8 +11,8 @@
 #include "../rage.h"
 #include "../game_state.h"
 #include "../game_engine.h"
-#include "buttonbar.h"
 
+#define BUFFER_MAX 5
 
 using namespace std;
 
@@ -43,9 +45,9 @@ gcn::Container* DialogButtonBar::setup()
 
 	// Add each button
 	int idx = 0;
-	char buf[5];
+	char buf[BUFFER_MAX];
 	for (vector<gcn::Button*>::iterator it = buttons.begin(); it != buttons.end(); ++it) {
-		sprintf(buf, "%i", idx);
+		snprintf(buf, BUFFER_MAX, "%i", idx);
 
 		gcn::Button* btn = *it;
 		btn->setSize(width - 20, 30);

@@ -18,7 +18,7 @@ class CampaignListModel: public gcn::ListModel
 	private:
 		vector<Campaign*> * campaigns;
 	public:
-		CampaignListModel(vector<Campaign*> * campaigns) : campaigns(campaigns) {}
+		explicit CampaignListModel(vector<Campaign*> * campaigns) : campaigns(campaigns) {}
 		std::string getElementAt(int i);
 		int getNumberOfElements();
 };

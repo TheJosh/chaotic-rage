@@ -24,7 +24,7 @@ class DialogClientSettings : public Dialog, public gcn::ActionListener {
 		gcn::TextField* gl_tex_filter;
 
 	public:
-		DialogClientSettings(GameState* st);
+		explicit DialogClientSettings(GameState* st);
 		virtual ~DialogClientSettings();
 
 		virtual gcn::Container * setup();
