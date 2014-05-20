@@ -30,17 +30,17 @@ class AudioSDLMixer : public Audio
 		* Plays sounds - This method gets called every ~10ms
 		**/
 		virtual void play();
-		
+
 		/**
 		* Loads a wav file into an AudioPtr
 		**/
 		virtual AudioPtr loadSound(string filename, Mod * mod);
-		
+
 		/**
 		* Plays a sound
 		**/
 		virtual int playSound(Sound * snd, bool loop, Entity *e);
-		
+
 		/**
 		* Plays a song
 		**/
@@ -50,11 +50,16 @@ class AudioSDLMixer : public Audio
 		* Doesn't do anything yet, and the exact way which this will work is still undefined.
 		**/
 		virtual void stopSound(int id);
-		
+
 		/**
 		* Stop everything (sound-wise at least)
 		**/
 		virtual void postGame();
+
+		/**
+		* Pause/Resume the music stream
+		**/
+		virtual void toggleMusicPlay();
 
 	public:
 		AudioSDLMixer(GameState * st);

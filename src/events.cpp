@@ -14,7 +14,8 @@
 #include "render_opengl/render_opengl.h"
 #include "gui/dialog.h"
 #include "lua/gamelogic.h"
-#include "mod/song.h"
+#include "audio/audio.h"
+
 
 using namespace std;
 
@@ -65,7 +66,7 @@ void handleEvents(GameState *st)
 					break;
 
 				case SDLK_F2:
-					toggleMusicPlay(st);
+					GEng()->audio->toggleMusicPlay();
 					break;
 
 				case SDLK_F5:

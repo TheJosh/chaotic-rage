@@ -48,18 +48,3 @@ Song::Song()
 {
 	this->music = NULL;
 }
-
-
-/**
-* Pause/Resume the music stream
-**/
-void toggleMusicPlay(GameState* st)
-{
-	if (Mix_PausedMusic() != 0) {
-		Mix_ResumeMusic();
-		st->addHUDMessage(ALL_SLOTS, "Music resumed");
-	} else {
-		Mix_PauseMusic();
-		st->addHUDMessage(ALL_SLOTS, "Music paused");
-	}
-}

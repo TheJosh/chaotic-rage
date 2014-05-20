@@ -29,6 +29,3 @@ extern cfg_opt_t song_opts [];
 
 // Item loading function handler
 Song* loadItemSong(cfg_t* cfg_item, Mod* mod);
-
-// Pause/Resume the music stream
-void toggleMusicPlay(GameState* st);

@@ -28,7 +28,7 @@ using namespace std;
 AudioSDLMixer::AudioSDLMixer(GameState * st) : Audio(st)
 {
 	SDL_InitSubSystem(SDL_INIT_AUDIO);
-	
+
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
 	Mix_AllocateChannels(100);
 
@@ -47,17 +47,17 @@ AudioPtr AudioSDLMixer::loadSound(string filename, Mod * mod)
 {
 	AudioPtr sound;
 	SDL_RWops *rw;
-	
+
 	DEBUG("snd", "Loading sound '%s'", filename.c_str());
-	
+
 	rw = mod->loadRWops(filename);
 	if (rw == NULL) {
 		return NULL;
 	}
-	
+
 	sound = Mix_LoadWAV_RW(rw, 0);
 	SDL_RWclose (rw);
-	
+
 	return sound;
 }
 
@@ -94,20 +94,20 @@ void AudioSDLMixer::playSong(Song * sg)
 int AudioSDLMixer::playSound(Sound * snd, bool loop, Entity *e)
 {
 	if (snd == NULL) return -1;
-	
+
 	if (st->local_players[0]->p == NULL) return -1;
-	
+
 	btTransform trans = e->getTransform();
 	float x1 = trans.getOrigin().getX();
 	float y1 = trans.getOrigin().getY();
-	
+
 	trans = st->local_players[0]->p->getTransform();
 	float x2 = trans.getOrigin().getX();
 	float y2 = trans.getOrigin().getY();
-	
+
 	float vol = ((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2));
 	if (vol > 25.0f * 25.0f) return -1;
-	
+
 	return Mix_PlayChannel(-1, snd->sound, loop ? -1 : 0);
 }
 
@@ -131,3 +131,20 @@ void AudioSDLMixer::postGame()
 }
 
 
+/**
+* Pause/Resume the music stream
+**/
+void AudioSDLMixer::toggleMusicPlay()
+{
+	if (Mix_PausedMusic() != 0) {
+		if (this->lastsong != NULL) {
+			Mix_ResumeMusic();
+			this->st->addHUDMessage(ALL_SLOTS, "Now resuming playing ", this->lastsong->name);
+		} else {
+			this->play();
+		}
+	} else {
+		Mix_PauseMusic();
+		this->st->addHUDMessage(ALL_SLOTS, "Music paused");
+	}
+}

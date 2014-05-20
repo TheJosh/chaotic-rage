@@ -32,3 +32,5 @@ void AudioNull::playSong(Song * sng) {}
 void AudioNull::stopSound(int id) {}
 
 void AudioNull::postGame() {}
+
+void AudioNull::toggleMusicPlay() {}
