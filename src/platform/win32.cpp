@@ -13,6 +13,8 @@
 
 #pragma comment(lib,"shlwapi.lib")
 
+#define BUFFER_MAX 2048
+
 using namespace std;
 
 
@@ -130,10 +132,10 @@ vector<string> * getUserModFilenames()
 
 	WIN32_FIND_DATA fdFile;
 	HANDLE hFind = NULL;
-	char sPath[2048];
+	char sPath[BUFFER_MAX];
 
 	// Initial search
-	sprintf(sPath, "%s\\*.crk", userdir);
+	snprintf(sPath, BUFFER_MAX, "%s\\*.crk", userdir);
 	if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE) {
 		return ret;
 	}
@@ -141,7 +143,7 @@ vector<string> * getUserModFilenames()
 	// Iterate over results
 	do {
 		if (fdFile.cFileName[0] != '.') {
-			sprintf(sPath, "%s\\%s", userdir, fdFile.cFileName);
+			snprintf(sPath, BUFFER_MAX, "%s\\%s", userdir, fdFile.cFileName);
 			ret->push_back(string(sPath));
 		}
 	} while(FindNextFile(hFind, &fdFile));

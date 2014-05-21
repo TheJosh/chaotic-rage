@@ -56,7 +56,7 @@ void RenderAscii::setScreenSize(int width, int height, bool fullscreen)
 		ioctl(0, TIOCGWINSZ, &w);
 		w.ws_row -= 2;
 
-		if (w.ws_row <= 2 or w.ws_col <= 2) {
+		if (w.ws_row <= 2 || w.ws_col <= 2) {
 			printf("Terminal too small");
 			exit(1);
 		}
@@ -197,8 +197,8 @@ void RenderAscii::render()
 		int x = (int)round(trans.getOrigin().getX() / scalex);
 		int y = (int)round(trans.getOrigin().getZ() / scaley);
 
-		if (x < 0 or x > this->width) continue;
-		if (y < 0 or y > this->height) continue;
+		if (x < 0 || x > this->width) continue;
+		if (y < 0 || y > this->height) continue;
 
 		if (e->klass() == WALL) {
 			this->buffer[y * this->width + x] = '#';

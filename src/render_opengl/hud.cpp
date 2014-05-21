@@ -13,6 +13,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#define BUFFER_MAX 50
+
 using namespace std;
 
 
@@ -130,8 +132,8 @@ void HUD::draw()
 
 			val = this->ps->p->getMagazine();
 			if (val >= 0) {
-				char buf[50];
-				sprintf(buf, "%i", val);
+				char buf[BUFFER_MAX];
+				snprintf(buf, BUFFER_MAX, "%i", val);
 				this->render->renderText(buf, 50, 50);
 			} else if (val == -2) {
 				this->render->renderText("relodn!", 50, 50);
@@ -139,15 +141,15 @@ void HUD::draw()
 
 			val = this->ps->p->getBelt();
 			if (val >= 0) {
-				char buf[50];
-				sprintf(buf, "%i", val);
+				char buf[BUFFER_MAX];
+				snprintf(buf, BUFFER_MAX, "%i", val);
 				this->render->renderText(buf, 150, 50);
 			}
 
 			val = (int)floor(this->ps->p->getHealth());
 			if (val >= 0) {
-				char buf[50];
-				sprintf(buf, "%i", val);
+				char buf[BUFFER_MAX];
+				snprintf(buf, BUFFER_MAX, "%i", val);
 				this->render->renderText(buf, 50, 80);
 			}
 		}

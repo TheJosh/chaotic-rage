@@ -227,7 +227,7 @@ class LuaButtonBarHandler : public DialogButtonBarHandler {
 		luabridge::LuaRef func;
 
 	public:
-		LuaButtonBarHandler(luabridge::LuaRef func) : func(func) {}
+		explicit LuaButtonBarHandler(luabridge::LuaRef func) : func(func) {}
 		virtual ~LuaButtonBarHandler() {}
 
 	public:

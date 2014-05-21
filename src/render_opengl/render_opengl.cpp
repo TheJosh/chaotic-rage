@@ -49,6 +49,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#define BUFFER_MAX 200
+
 using namespace std;
 
 
@@ -213,14 +215,14 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	}
 
 	// Window title
-	char title[100];
-	sprintf(title, "Chaotic Rage %s", VERSION);
+	char title[BUFFER_MAX];
+	snprintf(title, BUFFER_MAX, "Chaotic Rage %s", VERSION);
 
 	// Create window
 	this->window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
 	if (this->window == NULL) {
-		char buffer[200];
-		sprintf(buffer, "Unable to set %ix%i video: %s\n", width, height, SDL_GetError());
+		char buffer[BUFFER_MAX];
+		snprintf(buffer, BUFFER_MAX, "Unable to set %ix%i video: %s\n", width, height, SDL_GetError());
 		reportFatalError(buffer);
 	}
 
@@ -2185,12 +2187,12 @@ void RenderOpenGL::guichan()
 **/
 void RenderOpenGL::fps()
 {
-	char buf[50];
+	char buf[BUFFER_MAX];
 	float tick = GEng()->getAveTick();
 
-	sprintf(buf, "%.2f ms", tick);
+	snprintf(buf, BUFFER_MAX, "%.2f ms", tick);
 	this->renderText(buf, 400.0f, 50.0f);
 
-	sprintf(buf, "%.1f fps", 1000.0f/tick);
+	snprintf(buf, BUFFER_MAX, "%.1f fps", 1000.0f/tick);
 	this->renderText(buf, 550.0f, 50.0f);
 }

@@ -18,6 +18,7 @@ extern "C" {
 }
 
 #define MYTYPE		"vector3"
+#define BUFFER_MAX		64
 
 
 /**
@@ -106,8 +107,8 @@ LUA_FUNC(set)
 LUA_FUNC(tostring)
 {
 	double *f=_get(L,1);
-	char s[64];
-	sprintf(s,"vector3 [%5.3f,%5.3f,%5.3f]",f[0],f[1],f[2]);
+	char s[BUFFER_MAX];
+	snprintf(s,BUFFER_MAX,"vector3 [%5.3f,%5.3f,%5.3f]",f[0],f[1],f[2]);
 	lua_pushstring(L,s);
 	return 1;
 }

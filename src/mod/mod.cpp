@@ -29,6 +29,8 @@
 #include "../weapons/weapons.h"
 #include "gametype.h"
 
+#define BUFFER_MAX 255
+
 using namespace std;
 
 
@@ -230,11 +232,11 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 **/
 void Mod::setLoadErr(const char *message, ...)
 {
-	char buf[255];
+	char buf[BUFFER_MAX];
 	va_list argptr;
 
 	va_start(argptr, message);
-	vsnprintf(buf, 255, message, argptr);
+	vsnprintf(buf, BUFFER_MAX, message, argptr);
 	va_end(argptr);
 
 	this->load_err = string(buf);

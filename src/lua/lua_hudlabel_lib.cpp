@@ -14,6 +14,7 @@ extern "C" {
 }
 
 #define MYTYPE "hudlabel"
+#define BUFFER_MAX 64
 
 
 /**
@@ -136,8 +137,8 @@ LUA_FUNC(set)
 LUA_FUNC(tostring)
 {
 	HUDLabel *v=_get(L,1);
-	char s[64];
-	sprintf(s,"%s %p",MYTYPE,(void*)v);
+	char s[BUFFER_MAX];
+	snprintf(s,BUFFER_MAX,"%s %p",MYTYPE,(void*)v);
 	lua_pushstring(L,s);
 	return 1;
 }

@@ -10,6 +10,8 @@
 #include "game_engine.h"
 #include "mod_manager.h"
 
+#define BUFFER_MAX 50
+
 using namespace std;
 
 
@@ -61,8 +63,8 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 		// Default faction titles - only if no faction names provided
 		gt->factions[0].title = "Individuals";
 		for (int i = 1; i < NUM_FACTIONS; i++) {
-			char str[50];
-			sprintf(str, "Faction %i", i);
+			char str[BUFFER_MAX];
+			snprintf(str, BUFFER_MAX, "Faction %i", i);
 			gt->factions[i].title = std::string(str);
 		}
 		gt->num_factions = NUM_FACTIONS;

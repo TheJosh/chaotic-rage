@@ -288,9 +288,9 @@ void Menu::updateUI()
 
 	// Background animation
 	bg_rot1_pos += bg_rot1_dir;
-	if (bg_rot1_pos >= 10.0f or bg_rot1_pos <= -10.0f) bg_rot1_dir = -bg_rot1_dir;
+	if (bg_rot1_pos >= 10.0f || bg_rot1_pos <= -10.0f) bg_rot1_dir = -bg_rot1_dir;
 	bg_rot2_pos += bg_rot2_dir;
-	if (bg_rot2_pos >= 3.0f or bg_rot2_pos <= -3.0f) bg_rot2_dir = -bg_rot2_dir;
+	if (bg_rot2_pos >= 3.0f || bg_rot2_pos <= -3.0f) bg_rot2_dir = -bg_rot2_dir;
 
 	// Background view matrix
 	glm::mat4 bgMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1250.0f));
@@ -386,7 +386,7 @@ void Menu::menuHover(int x, int y)
 	for (unsigned int i = 0; i < this->menuitems.size(); i++) {
 		MenuItem * m = this->menuitems.at(i);
 
-		if (x >= m->x1 and x <= m->x2 and y >= m->y1 and y <= m->y2) {
+		if (x >= m->x1 && x <= m->x2 && y >= m->y1 && y <= m->y2) {
 			m->hover = true;
 		} else {
 			m->hover = false;
@@ -403,7 +403,7 @@ MenuCommand Menu::menuClick(int x, int y)
 	for (unsigned int i = 0; i < this->menuitems.size(); i++) {
 		MenuItem * m = this->menuitems.at(i);
 
-		if (x >= m->x1 and x <= m->x2 and y >= m->y1 and y <= m->y2) {
+		if (x >= m->x1 && x <= m->x2 && y >= m->y1 && y <= m->y2) {
 			return m->cmd;
 		}
 	}

@@ -14,6 +14,7 @@ extern "C" {
 }
 
 #define MYTYPE "unitinfo"
+#define BUFFER_MAX 64
 
 
 /**
@@ -78,8 +79,8 @@ LUA_FUNC(get)
 LUA_FUNC(tostring)
 {
 	UnitQueryResult *v=_get(L,1);
-	char s[64];
-	sprintf(s,"%s %p",MYTYPE,(void*)v);
+	char s[BUFFER_MAX];
+	snprintf(s,BUFFER_MAX,"%s %p",MYTYPE,(void*)v);
 	lua_pushstring(L,s);
 	return 1;
 }

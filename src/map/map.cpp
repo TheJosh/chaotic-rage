@@ -273,7 +273,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 	this->width = cfg_getfloat(cfg, "width");
 	this->height = cfg_getfloat(cfg, "height");
 
-	if (this->width <= 0.0f or this->height <= 0.0f) {
+	if (this->width <= 0.0f || this->height <= 0.0f) {
 		cerr << "No width or height set for map.\n";
 		cfg_free(cfg);
 		return 0;
@@ -339,7 +339,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 
 	// Skybox
 	cfg_sub = cfg_getnsec(cfg, "skybox", 0);
-	if (cfg_sub and this->render->is3D()) {
+	if (cfg_sub && this->render->is3D()) {
 		Render3D* render3d = static_cast<Render3D*>(this->render);
 		this->skybox = render3d->loadCubemap("skybox_", ".jpg", this->mod);
 		this->skybox_size = cfg_getvec3(cfg_sub, "size");

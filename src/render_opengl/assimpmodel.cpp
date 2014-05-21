@@ -89,7 +89,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 
 	free(data);
 
-	if (render != NULL and render->is3D()) {
+	if (render != NULL && render->is3D()) {
 		this->loadMeshes(true);
 		this->loadMaterials(render);
 	} else {
