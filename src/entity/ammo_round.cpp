@@ -19,27 +19,6 @@ btCollisionShape* AmmoRound::col_shape;
 
 
 /**
-* Create an ammo round (static)
-**/
-AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model, Unit* owner) : Entity(st)
-{
-	this->wt = wt;
-	this->data = NULL;
-	this->anim = new AnimPlay(model);
-	this->owner = owner;
-	this->mass = 0.0f;
-
-	if (! AmmoRound::col_shape) {
-		AmmoRound::col_shape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
-	}
-
-	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
-
-	this->body = st->physics->addRigidBody(AmmoRound::col_shape, 0.0f, motionState, CG_DEBRIS);
-}
-
-
-/**
 * Create an ammo round (dynamic with specified mass)
 **/
 AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model, Unit* owner, float mass) : Entity(st)
@@ -50,8 +29,10 @@ AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpMo
 	this->owner = owner;
 	this->mass = mass;
 
-	if (! AmmoRound::col_shape) {
+	if (!AmmoRound::col_shape && mass != 0.0f) {
 		AmmoRound::col_shape = new btBoxShape(btVector3(0.1f, 0.1f, 0.1f));
+	} else if (!AmmoRound::col_shape) {
+		AmmoRound::col_shape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
 	}
 
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));

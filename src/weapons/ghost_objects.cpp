@@ -20,7 +20,7 @@ using namespace std;
 
 
 /**
-* Create a chost object for collision detection
+* Create a ghost object for collision detection
 **/
 btGhostObject* create_ghost(const btTransform& xform, float radius)
 {

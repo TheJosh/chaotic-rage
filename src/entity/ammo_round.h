@@ -35,8 +35,7 @@ class AmmoRound : public Entity
 		static btCollisionShape* col_shape;
 
 	public:
-		AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model, Unit* owner);
-		AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model, Unit* owner, float mass);
+		AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model, Unit* owner, float mass = 0.0f);
 		virtual ~AmmoRound();
 
 		virtual AnimPlay* getAnimModel();
