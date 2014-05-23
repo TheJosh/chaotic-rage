@@ -30,3 +30,9 @@ std::string gettext(unsigned int stringid);
 **/
 bool loadLang(const char* name);
 
+
+/**
+* Get a list of available languages
+* delete() when you are done
+**/
+vector<std::string>* getAvailableLangs();

@@ -56,3 +56,15 @@ std::string gettext(unsigned int stringid)
 	return strings[stringid];
 }
 
+
+/**
+* Get a list of available languages
+* It's hardcoded but I don't think that matters
+**/
+std::vector<std::string>* getAvailableLangs()
+{
+	std::vector<std::string> *out = new std::vector<std::string>();
+	out->push_back("en");
+	out->push_back("en_Pirate");
+	return out;
+}

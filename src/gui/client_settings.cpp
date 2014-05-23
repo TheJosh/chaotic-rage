@@ -18,6 +18,8 @@
 #include "../mod/mod.h"
 #include "../util/clientconfig.h"
 #include "dialog.h"
+#include "list_models.h"
+#include "../i18n/gettext.h"
 
 #define BUFFER_MAX 100
 
@@ -79,13 +81,37 @@ gcn::Container * DialogClientSettings::setup()
 	this->gl_tex_filter->setWidth(50);
 	c->add(this->gl_tex_filter);
 
+	label = new gcn::Label("Language");
+	c->add(label, 10, 50);
+
+	this->langs = getAvailableLangs();
+	this->lang = new gcn::DropDown(new VectorListModel(this->langs));
+	this->lang->setPosition(80, 50);
+	this->lang->setWidth(100);
+	c->add(this->lang);
+
 	this->button = new gcn::Button("Save");
 	this->button->setPosition(w - bw - p, h - bh - p);
 	this->button->setSize(bw, bh);
 	this->button->addActionListener(this);
 	c->add(this->button);
-
+	
 	return c;
+}
+
+
+/**
+* Clean up the dialog
+**/
+void DialogClientSettings::tearDown()
+{
+	c->remove(this->gl_msaa);
+	c->remove(this->gl_tex_filter);
+	c->remove(this->lang);
+
+	delete this->gl_msaa;
+	delete this->gl_tex_filter;
+	delete this->lang;
 }
 
 

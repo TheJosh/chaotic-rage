@@ -22,12 +22,16 @@ class DialogClientSettings : public Dialog, public gcn::ActionListener {
 
 		gcn::TextField* gl_msaa;
 		gcn::TextField* gl_tex_filter;
+		gcn::DropDown* lang;
+		vector<string>* langs;
 
 	public:
 		explicit DialogClientSettings(GameState* st);
 		virtual ~DialogClientSettings();
 
 		virtual gcn::Container * setup();
+		virtual void tearDown();
+
 		virtual string getName() { return "cl-set"; }
 		virtual void action(const gcn::ActionEvent& actionEvent);
 };

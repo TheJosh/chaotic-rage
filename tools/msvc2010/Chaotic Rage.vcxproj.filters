@@ -95,6 +95,9 @@
     <Filter Include="src\map">
       <UniqueIdentifier>{7f1cca99-d3bf-4339-9845-24b720f6de87}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\i18n">
+      <UniqueIdentifier>{1c7f9ba5-5eb0-4a58-81d7-95c8fe67b267}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\data\cr\animmodels.conf">
@@ -225,6 +228,12 @@
     </None>
     <None Include="..\..\data\cr\gametypes\map_builder.lua">
       <Filter>Gametypes</Filter>
+    </None>
+    <None Include="..\..\src\i18n\en.txt">
+      <Filter>src\i18n</Filter>
+    </None>
+    <None Include="..\..\src\i18n\en_Pirate.txt">
+      <Filter>src\i18n</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -815,6 +824,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\gui\buttonbar.cpp">
       <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\i18n\gettext.cpp">
+      <Filter>src\i18n</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1480,6 +1492,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\gui\buttonbar.h">
       <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\i18n\gettext.h">
+      <Filter>src\i18n</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

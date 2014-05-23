@@ -137,6 +137,8 @@
     <None Include="..\..\data\cr\vehicletypes.conf" />
     <None Include="..\..\data\cr\walltypes.conf" />
     <None Include="..\..\data\cr\weapontypes.conf" />
+    <None Include="..\..\src\i18n\en.txt" />
+    <None Include="..\..\src\i18n\en_Pirate.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\audio\audio.cpp" />
@@ -227,6 +229,7 @@
     <ClCompile Include="..\..\src\http\happyhttp.cpp" />
     <ClCompile Include="..\..\src\http\serverlist.cpp" />
     <ClCompile Include="..\..\src\http\url.cpp" />
+    <ClCompile Include="..\..\src\i18n\gettext.cpp" />
     <ClCompile Include="..\..\src\lua\lua_dialog_lib.cpp" />
     <ClCompile Include="..\..\src\lua\lua_entity_lib.cpp" />
     <ClCompile Include="..\..\src\lua\lua_physics_lib.cpp" />
@@ -442,6 +445,7 @@
     <ClInclude Include="..\..\src\http\happyhttp.h" />
     <ClInclude Include="..\..\src\http\serverlist.h" />
     <ClInclude Include="..\..\src\http\url.h" />
+    <ClInclude Include="..\..\src\i18n\gettext.h" />
     <ClInclude Include="..\..\src\map\map.h" />
     <ClInclude Include="..\..\src\map\zone.h" />
     <ClInclude Include="..\..\src\render\render_ascii.h" />
