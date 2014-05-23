@@ -21,7 +21,7 @@
 #include "game_settings.h"
 #include "render_opengl/menu.h"
 #include "render_opengl/intro.h"
-
+#include "i18n/gettext.h"
 
 
 using namespace std;
@@ -63,6 +63,9 @@ int main(int argc, char ** argv)
 	GEng()->cconf->initAudio(st);
 	GEng()->cconf->initPhysics(st);
 	GEng()->cconf->initMods(st);
+
+	// TODO: Add a config option for language
+	loadLang("en");
 
 	#ifdef RELEASE
 		// This has to be after the OpenGL init

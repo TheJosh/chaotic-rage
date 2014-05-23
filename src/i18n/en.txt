@@ -1,5 +1,5 @@
 #
-# English
+# English, the master language file
 #
 
 # Main menu

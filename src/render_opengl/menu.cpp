@@ -20,6 +20,7 @@
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "../i18n/gettext.h"
 #include "../rage.h"
 #include "../render/sprite.h"
 #include "../audio/audio.h"
@@ -99,18 +100,18 @@ void Menu::loadModBits(UIUpdate* ui)
 	y -= 40;
 
 	if (mod->hasArcade()) {
-		this->menuAdd("Network Game", 40, y, MC_NETWORK);
+		this->menuAdd(_(STRING_MENU_NETWORK), 40, y, MC_NETWORK);
 		y -= 40;
 
-		this->menuAdd("Split Screen", 40, y, MC_SPLITSCREEN);
+		this->menuAdd(_(STRING_MENU_SPLIT), 40, y, MC_SPLITSCREEN);
 		y -= 40;
 
-		this->menuAdd("Single Player", 40, y, MC_SINGLEPLAYER);
+		this->menuAdd(_(STRING_MENU_SINGLE), 40, y, MC_SINGLEPLAYER);
 		y -= 40;
 	}
 
 	if (mod->hasCampaign()) {
-		this->menuAdd("Campaign", 40, y, MC_CAMPAIGN);
+		this->menuAdd(_(STRING_MENU_CAMPAIGN), 40, y, MC_CAMPAIGN);
 	}
 }
 

@@ -1,5 +1,5 @@
 #
-# English
+# Pirates, arr!
 #
 
 # Main menu
