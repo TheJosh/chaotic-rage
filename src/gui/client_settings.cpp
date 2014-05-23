@@ -126,6 +126,8 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 	// Populate the class
 	nu->msaa = atoi(this->gl_msaa->getText().c_str());
 	nu->tex_filter = atoi(this->gl_tex_filter->getText().c_str());
+	loadLang(getAvailableLangs()->at(this->lang->getSelected()).c_str());
+	this->m->loadModBits();
 
 	// Do we need a restart?
 	bool restart = false;

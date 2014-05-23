@@ -35,6 +35,7 @@ bool loadLang(const char* name)
 	FILE* fp = fopen(buf, "rb");
 	if (fp == NULL) return false;
 	
+	strings.clear();
 	while (fgets(buf, BUFFER_MAX, fp)) {
 		char* tab = strchr(buf, '\t');
 		char* nl = strchr(buf, '\n');
