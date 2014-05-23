@@ -1,0 +1,4 @@
+1	Campaign
+2	Single Player
+3	Split Screen
+4	Network Game

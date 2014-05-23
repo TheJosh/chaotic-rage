@@ -1,0 +1,4 @@
+1	Quest
+2	Single Battle
+3	Split Screen
+4	Group Battle
