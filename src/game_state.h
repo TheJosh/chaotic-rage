@@ -59,6 +59,9 @@ class PlayerState
 	public:
 		explicit PlayerState(GameState *st);
 		~PlayerState();
+
+	private:
+		PlayerState(const PlayerState& disabledCopyConstuctor);
 };
 
 

@@ -15,6 +15,13 @@ class RenderOpenGL;
 class HUDMessage
 {
 	friend class HUD;
+
+	public:
+		HUDMessage(string text = "") {
+			this->text = text;
+			this->remove_time = 0;
+		}
+
 	private:
 		string text;
 		unsigned int remove_time;

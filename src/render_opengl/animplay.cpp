@@ -118,7 +118,7 @@ void AnimPlay::clearAnimation()
 	this->anim = NULL;
 
 	// If it's static, the calcs are really easy
-	if (this->move_nodes.size() == 0) {
+	if (this->move_nodes.empty()) {
 		this->calcTransformsStatic();
 	}
 }
@@ -180,7 +180,7 @@ void AnimPlay::resetMoveTransform(string node)
 	this->move_nodes[nd] = glm::mat4();
 
 	// If it's static, the calcs are really easy
-	if (this->anim == NULL && this->move_nodes.size() == 0) {
+	if (this->anim == NULL && this->move_nodes.empty()) {
 		this->calcTransformsStatic();
 	}
 }
@@ -242,7 +242,7 @@ void AnimPlay::calcTransformNodeStatic(AssimpNode* nd, glm::mat4 transform)
 **/
 void AnimPlay::calcTransforms()
 {
-	if (this->anim == NULL && this->move_nodes.size() == 0) return;
+	if (this->anim == NULL && this->move_nodes.empty()) return;
 
 	float animTick;
 

@@ -73,7 +73,7 @@ MsgServerRecv msg_server_recv [] = {
 
 
 
-NetMsg::NetMsg (NetMsgType type, unsigned int size)
+NetMsg::NetMsg(NetMsgType type, unsigned int size)
 {
 	this->type = type;
 	this->size = size;
@@ -85,6 +85,24 @@ NetMsg::NetMsg (NetMsgType type, unsigned int size)
 	}
 
 	this->dest = NULL;
+}
+
+
+NetMsg::NetMsg(const NetMsg& that)
+{
+	this->type = that.type;
+	this->size = that.size;
+
+	this->data = NULL;
+	if (this->size > 0) {
+		this->data = (Uint8*) malloc(this->size);
+		memset(this->data, 0, this->size);
+	}
+	for (unsigned int i = 0; i < this->size; i++) {
+		this->data[i] = that.data[i];
+	}
+
+	this->dest = that.dest;
 }
 
 NetMsg::~NetMsg()

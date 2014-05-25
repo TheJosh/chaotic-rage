@@ -110,7 +110,8 @@ class NetMsg {
 		NetServerClientInfo *dest;
 
 	public:
-		NetMsg (NetMsgType type, unsigned int size);
+		NetMsg(NetMsgType type, unsigned int size);
+		NetMsg(const NetMsg& that);
 		~NetMsg();
 };
 

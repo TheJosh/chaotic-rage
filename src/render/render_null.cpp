@@ -16,6 +16,7 @@ using namespace std;
 
 RenderNull::RenderNull(GameState * st) : Render(st)
 {
+	this->last_render = 0;
 }
 
 RenderNull::~RenderNull()

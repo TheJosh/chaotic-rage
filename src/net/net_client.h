@@ -35,6 +35,9 @@ class NetClient {
 		NetClient(GameState * st);
 		~NetClient();
 
+	private:
+		NetClient(const NetClient& disabledCopyConstuctor);
+
 	public:
 		void update();
 

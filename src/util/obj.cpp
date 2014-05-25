@@ -15,6 +15,9 @@ WavefrontObj::WavefrontObj()
 {
 	this->vao = NULL;
 	this->count = 0;
+	this->size.x = 0.0f;
+	this->size.y = 0.0f;
+	this->size.z = 0.0f;
 }
 
 

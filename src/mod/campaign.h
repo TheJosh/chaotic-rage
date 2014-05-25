@@ -43,6 +43,9 @@ class Campaign
 	public:
 		Campaign();
 		~Campaign();
+
+	private:
+		Campaign(const Campaign& disabledCopyConstuctor);
 };
 
 

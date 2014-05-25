@@ -28,6 +28,9 @@ using namespace std;
 **/
 RenderAscii::RenderAscii(GameState * st) : Render(st)
 {
+	this->last_render = 0;
+	this->width = 0;
+	this->height = 0;
 	this->buffer = NULL;
 	this->color = NULL;
 }

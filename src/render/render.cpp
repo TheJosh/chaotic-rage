@@ -19,6 +19,7 @@ Render::Render(GameState * st)
 {
 	this->st = st;
 	this->load_err = false;
+	this->viewmode = GameSettings::behindPlayer;
 }
 
 
