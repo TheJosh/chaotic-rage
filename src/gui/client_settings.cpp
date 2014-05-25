@@ -90,6 +90,13 @@ gcn::Container * DialogClientSettings::setup()
 	this->lang->setWidth(100);
 	c->add(this->lang);
 
+	for (unsigned int i = this->langs->size() - 1; i != 0; --i) {
+		if (this->langs->at(i) == GEng()->cconf->lang) {
+			this->lang->setSelected(i);
+			break;
+		}
+	}
+
 	this->button = new gcn::Button("Save");
 	this->button->setPosition(w - bw - p, h - bh - p);
 	this->button->setSize(bw, bh);
@@ -126,18 +133,21 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 	// Populate the class
 	nu->msaa = atoi(this->gl_msaa->getText().c_str());
 	nu->tex_filter = atoi(this->gl_tex_filter->getText().c_str());
-	loadLang(getAvailableLangs()->at(this->lang->getSelected()).c_str());
-	this->m->loadModBits();
 
 	// Do we need a restart?
 	bool restart = false;
 	if (current->msaa != nu->msaa) restart = true;
 
-	// Set
+	// Update GL settings
 	((RenderOpenGL*)GEng()->render)->setSettings(nu);
 
-	// Save
+	// Re-load language strings
+	loadLang(langs->at(this->lang->getSelected()).c_str());
+	this->m->loadMenuItems();
+
+	// Save config
 	GEng()->cconf->gl = nu;
+	GEng()->cconf->lang = langs->at(this->lang->getSelected());
 	GEng()->cconf->save();
 
 	// If we need a restart, tell the user

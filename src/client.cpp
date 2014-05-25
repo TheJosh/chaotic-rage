@@ -63,9 +63,7 @@ int main(int argc, char ** argv)
 	GEng()->cconf->initAudio(st);
 	GEng()->cconf->initPhysics(st);
 	GEng()->cconf->initMods(st);
-
-	// TODO: Add a config option for language
-	loadLang("en");
+	loadLang(GEng()->cconf->lang.c_str());
 
 	#ifdef RELEASE
 		// This has to be after the OpenGL init

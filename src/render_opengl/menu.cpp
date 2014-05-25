@@ -83,7 +83,17 @@ void Menu::loadModBits(UIUpdate* ui)
 
 	if (ui) ui->updateUI();
 
-	// Main menu items
+	this->loadMenuItems();
+}
+
+
+/**
+* Load main menu items
+**/
+void Menu::loadMenuItems()
+{
+	Mod* mod = GEng()->mm->getSupplOrBase();
+
 	this->menuClear();
 	int y = render->getHeight() - 60;
 

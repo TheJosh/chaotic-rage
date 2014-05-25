@@ -28,6 +28,8 @@ static cfg_opt_t config_opts[] =
 	CFG_INT((char*) "gl-msaa", 1, CFGF_NONE),
 	CFG_INT((char*) "gl-tex-filter", 4, CFGF_NONE),
 
+	CFG_STR((char*) "lang", 0, CFGF_NONE),
+
 	// Deprecated; only in place to not break existing confings
 	CFG_INT((char*) "render", 0, CFGF_NONE),
 
@@ -54,13 +56,22 @@ void ClientConfig::load()
 	cfg_t *cfg;
 	string filename = getUserDataDir().append("client.conf");
 
-	// Load config
+	// Parse config
 	cfg = cfg_init(config_opts, CFGF_NONE);
 	cfg_parse(cfg, filename.c_str());
 
+	// OpenGL
 	this->gl = new RenderOpenGLSettings();
 	this->gl->msaa = cfg_getint(cfg, "gl-msaa");
 	this->gl->tex_filter = cfg_getint(cfg, "gl-tex-filter");
+
+	// Language
+	char* tmp = cfg_getstr(cfg, "lang");
+	if (tmp != NULL) {
+		this->lang = std::string(tmp);
+	} else {
+		this->lang = "en";
+	}
 
 	cfg_free(cfg);
 }
@@ -84,6 +95,7 @@ void ClientConfig::save()
 	fprintf(fp, "# Config file for CR\n");
 	fprintf(fp, "gl-msaa = %i\n", this->gl->msaa);
 	fprintf(fp, "gl-tex-filter = %i\n", this->gl->tex_filter);
+	fprintf(fp, "lang = %s\n", this->lang.c_str());
 
 	fclose(fp);
 }

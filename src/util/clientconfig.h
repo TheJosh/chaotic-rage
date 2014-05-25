@@ -21,6 +21,7 @@ class ClientConfig
 {
 	public:
 		RenderOpenGLSettings* gl;
+		string lang;
 
 	public:
 		ClientConfig();
