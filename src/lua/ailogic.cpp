@@ -98,6 +98,7 @@ bool AILogic::execScript(string code)
 		msg.append(lua_tostring(L, -1));
 		displayMessageBox(msg);
 		this->u->takeDamage(this->u->health);
+		return false;
 	}
 
 	return true;

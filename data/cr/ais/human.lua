@@ -1,21 +1,6 @@
 ----
-----  Lua script for the AI "zomb".
+----  Lua script for the AI "human".
 ----
-
-
---
--- Table filtering routine
--- 
-table.filter = function(tbl, func)
-	local newtbl = {}
-	for i,v in pairs(tbl) do
-		if func(v) then
-			newtbl[i] = v
-		end
-	end
-	return newtbl
-end
-
 
 
 --

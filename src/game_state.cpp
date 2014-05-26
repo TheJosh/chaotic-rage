@@ -584,13 +584,11 @@ list<UnitQueryResult> * GameState::findVisibleUnits(Unit* origin)
 
 	for (list<Entity*>::iterator it = this->entities.begin(); it != this->entities.end(); ++it) {
 		if ((*it)->klass() != UNIT) continue;
+
 		u = reinterpret_cast<Unit*>(*it);
 		if (u == origin) continue;
 
-		trans = u->getTransform();
-		vecS = trans.getOrigin();
-		vecS -= vecO;
-
+		vecS = u->getTransform().getOrigin() - vecO;
 		dist = vecS.length();
 		if (dist > visual_distance) continue;
 

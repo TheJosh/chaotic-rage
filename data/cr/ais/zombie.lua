@@ -1,5 +1,5 @@
 ----
-----  Lua script for the AI "zomb".
+----  Lua script for the AI "zombie".
 ----
 
 
@@ -10,7 +10,7 @@ table.filter = function(tbl, func)
 	local newtbl = {}
 	for i,v in pairs(tbl) do
 		if func(v) then
-			newtbl[i] = v
+			newtbl[#newtbl + 1] = v
 		end
 	end
 	return newtbl

@@ -83,6 +83,7 @@ bool GameLogic::execScript(string code)
 		msg.append(lua_tostring(L, -1));
 		displayMessageBox(msg);
 		this->st->gameOver();
+		return false;
 	}
 
 	return true;
