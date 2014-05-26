@@ -3,11 +3,11 @@
 #
 
 # Main menu
-STRING_MENU_CAMPAIGN     Campaign
-STRING_MENU_SINGLE       Single Player
-STRING_MENU_SPLIT        Split Screen
-STRING_MENU_NETWORK      Network Game
-STRING_MENU_SETTINGS     Settings
-STRING_MENU_MODS         Mods
-STRING_MENU_HELP         Help
-STRING_MENU_QUIT         Quit
+MENU_CAMPAIGN     Campaign
+MENU_SINGLE       Single Player
+MENU_SPLIT        Split Screen
+MENU_NETWORK      Network Game
+MENU_SETTINGS     Settings
+MENU_MODS         Mods
+MENU_HELP         Help
+MENU_QUIT         Quit

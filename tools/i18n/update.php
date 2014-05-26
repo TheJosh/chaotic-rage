@@ -57,7 +57,7 @@ $header .= "// You can re-generate this file using the tool in tools/i18n\n";
 $header .= "\n";
 
 foreach ($base as $idx => $info) {
-	$header .= '#define ' . $info[0] . ' ' . $idx . "\n";
+	$header .= '#define STRING_' . $info[0] . ' ' . $idx . "\n";
 }
 file_put_contents('src/i18n/strings.h', $header);
 

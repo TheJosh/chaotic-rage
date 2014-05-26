@@ -3,6 +3,6 @@
 #
 
 # Main menu
-STRING_MENU_CAMPAIGN     Quest
-STRING_MENU_SINGLE       Single Battle
-STRING_MENU_NETWORK      Group Battle
+MENU_CAMPAIGN     Quest
+MENU_SINGLE       Single Battle
+MENU_NETWORK      Group Battle

@@ -1,4 +1,6 @@
-// This is a generated file
+// This is a generated file.
+// Don't include this file; include gettext.h instead.
+// You can re-generate this file using the tool in tools/i18n
 
 #define STRING_MENU_CAMPAIGN 1
 #define STRING_MENU_SINGLE 2
