@@ -3,7 +3,7 @@
 
 if [ "$PLATFORM" == "linux" ]; then
 	sudo apt-get update -qq || exit 1
-	sudo apt-get install -qq libgl1-mesa-dev libglu1-mesa-dev libglew-dev liblua5.1-0-dev libfreetype6-dev zlib-bin freeglut3-dev >/dev/null || exit 1
+	sudo apt-get install -qq libgl1-mesa-dev libglu1-mesa-dev libglew-dev liblua5.1-0-dev libfreetype6-dev zlib-bin freeglut3-dev php5-cli >/dev/null || exit 1
 	
 	cd tools/linux;
 	./assimp.sh >/dev/null || exit 1;
