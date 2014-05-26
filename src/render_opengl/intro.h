@@ -17,6 +17,7 @@ class Song;
 class Intro : public UIUpdate
 {
 	private:
+		Mod *mod;
 		GameState *st;
 		RenderOpenGL *render;
 

@@ -23,6 +23,7 @@ using namespace std;
 
 Intro::Intro(GameState *st)
 {
+	this->mod = NULL;
 	this->st = st;
 	this->render = (RenderOpenGL*) GEng()->render;
 
@@ -37,9 +38,12 @@ Intro::Intro(GameState *st)
 
 Intro::~Intro()
 {
+	delete(mod);
+	delete(sg);
 	delete(img1);
 	delete(img2);
 	delete(img3);
+	delete(text);
 }
 
 
@@ -49,7 +53,7 @@ Intro::~Intro()
 **/
 void Intro::load()
 {
-	Mod * mod = new Mod(st, "data/intro");
+	mod = new Mod(st, "data/intro");
 	if (!mod) {
 		reportFatalError("Intro failed to load. Is the working directory correct?");
 	}
@@ -59,7 +63,7 @@ void Intro::load()
 	img3 = this->render->loadSprite("game.png", mod);
 	text = this->render->loadSprite("loading.png", mod);
 
-	if (img1 == NULL || img2 == NULL || img3 == NULL) {
+	if (img1 == NULL || img2 == NULL || img3 == NULL || text == NULL) {
 		reportFatalError("Intro failed to load.  Is the working directory correct?");
 	}
 
