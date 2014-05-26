@@ -5,4 +5,17 @@
 # Main menu
 MENU_CAMPAIGN     Quest
 MENU_SINGLE       Single Battle
+MENU_SPLIT        Team Battle
 MENU_NETWORK      Group Battle
+MENU_HELP         Assistance
+MENU_QUIT         Bugg'r off
+
+# New game menu
+NEWGAME_TYPE          Quest type
+NEWGAME_WEAPONS       Weaponry
+NEWGAME_MAP           Battlefield
+NEWGAME_UNIT          Pirate type
+NEWGAME_VIEW          V'ew
+NEWGAME_HOST          Set up group battle
+NEWGAME_START_SINGLE  Start single battle
+NEWGAME_START_SPLIT   Start team battle

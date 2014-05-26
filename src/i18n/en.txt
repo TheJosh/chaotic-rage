@@ -11,3 +11,13 @@ MENU_SETTINGS     Settings
 MENU_MODS         Mods
 MENU_HELP         Help
 MENU_QUIT         Quit
+
+# New game menu
+NEWGAME_TYPE          Game type
+NEWGAME_WEAPONS       Weapons
+NEWGAME_MAP           Map
+NEWGAME_UNIT          Unit type
+NEWGAME_VIEW          View mode
+NEWGAME_HOST          Host network game
+NEWGAME_START_SINGLE  Start single player game
+NEWGAME_START_SPLIT   Start split screen game
