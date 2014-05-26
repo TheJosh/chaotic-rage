@@ -191,6 +191,9 @@ $(OBJPATH)/emscripten.o: $(SRCPATH)/platform/emscripten.cpp $(SRCPATH)/platform/
 	@echo [CC] $<
 	@$(CXX) $(CFLAGS) -o $@ -c $<
 
+$(SRCPATH)/i18n/strings.h: $(SRCPATH)/i18n/en.txt
+	@echo [LANG] $<
+	@php tools/i18n/update.php
 
 
 ifeq ($(wildcard $(OBJPATH)/),)

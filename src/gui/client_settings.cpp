@@ -9,6 +9,7 @@
 #include <guichan.hpp>
 
 #include "../rage.h"
+#include "../i18n/gettext.h"
 #include "../game_state.h"
 #include "../game_engine.h"
 #include "../render_opengl/menu.h"
@@ -58,7 +59,7 @@ gcn::Container * DialogClientSettings::setup()
 
 	gcn::Label* label;
 
-	c = new gcn::Window("Client Settings");
+	c = new gcn::Window(_(STRING_MENU_SETTINGS));
 	c->setDimension(gcn::Rectangle(0, 0, w, h + 15));
 
 	RenderOpenGLSettings* gl = ((RenderOpenGL*)GEng()->render)->getSettings();

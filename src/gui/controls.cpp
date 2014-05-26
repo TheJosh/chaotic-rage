@@ -7,6 +7,7 @@
 #include <guichan.hpp>
 
 #include "../rage.h"
+#include "../i18n/gettext.h"
 #include "../http/serverlist.h"
 #include "dialog.h"
 #include "controls.h"
@@ -68,7 +69,7 @@ gcn::Container * DialogControls::setup()
 
 	gcn::Label* label;
 
-	c = new gcn::Window("Controls");
+	c = new gcn::Window(_(STRING_MENU_HELP));
 	c->setDimension(gcn::Rectangle(0, 0, 622, 100));
 
 	label = new gcn::Label("Single Player");

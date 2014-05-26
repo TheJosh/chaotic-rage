@@ -7,6 +7,7 @@
 #include <guichan.hpp>
 
 #include "../rage.h"
+#include "../i18n/gettext.h"
 #include "../http/serverlist.h"
 #include "../render_opengl/guichan_imageloader.h"
 #include "../mod/mod.h"
@@ -67,7 +68,7 @@ gcn::Container * DialogMods::setup()
 	const int bw = 60;	// buttonwidth
 	const int bh = 20;	// buttonheight
 
-	c = new gcn::Window("Choose current mod");
+	c = new gcn::Window(_(STRING_MENU_MODS));
 	c->setDimension(gcn::Rectangle(0, 0, w, h + 15));
 
 	this->modlist = new gcn::DropDown(this->mods);

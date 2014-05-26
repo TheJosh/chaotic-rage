@@ -2,3 +2,7 @@
 2	Single Battle
 3	Split Screen
 4	Group Battle
+5	Settings
+6	Mods
+7	Help
+8	Quit

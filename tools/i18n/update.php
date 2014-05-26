@@ -4,6 +4,8 @@
 * It's not really meant to be final or complete in any way
 * It probably should be re-implemented in a different language
 * I'm just good (fast) at PHP so I use it for CLI stuff like this occasionally.
+*
+* TODO: rewrite this tool in perl or python
 **/
 
 
@@ -49,7 +51,11 @@ foreach ($base as $idx => $info) {
 }
 
 // Create strings.h
-$header = "// This is a generated file\n\n";
+$header  = "// This is a generated file.\n";
+$header .= "// Don't include this file; include gettext.h instead.\n";
+$header .= "// You can re-generate this file using the tool in tools/i18n\n";
+$header .= "\n";
+
 foreach ($base as $idx => $info) {
 	$header .= '#define ' . $info[0] . ' ' . $idx . "\n";
 }

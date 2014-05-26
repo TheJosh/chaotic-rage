@@ -10,6 +10,7 @@
 #include <guichan/opengl/openglsdlimageloader.hpp>
 
 #include "../rage.h"
+#include "../i18n/gettext.h"
 #include "../render_opengl/menu.h"
 #include "../game_manager.h"
 #include "../http/serverlist.h"
@@ -65,7 +66,7 @@ gcn::Container * DialogNewCampaign::setup()
 	gcn::Button* button;
 	gcn::Label* label;
 
-	c = new gcn::Window("Campaign");
+	c = new gcn::Window(_(STRING_MENU_CAMPAIGN));
 	c->setDimension(gcn::Rectangle(0, 0, 255, 200));
 
 

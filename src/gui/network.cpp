@@ -8,6 +8,7 @@
 #include <guichan/sdl.hpp>
 
 #include "../rage.h"
+#include "../i18n/gettext.h"
 #include "../render_opengl/menu.h"
 #include "../http/serverlist.h"
 #include "../net/net_browse.h"
@@ -59,7 +60,7 @@ gcn::Container * DialogNetJoin::setup()
 {
 	gcn::Button* button;
 
-	c = new gcn::Window("Network game");
+	c = new gcn::Window(_(STRING_MENU_NETWORK));
 	c->setDimension(gcn::Rectangle(0, 0, 265, 250));
 
 	this->tabs = new gcn::TabbedArea();

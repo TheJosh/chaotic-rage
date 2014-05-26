@@ -7,6 +7,7 @@
 #include <guichan.hpp>
 
 #include "../rage.h"
+#include "../i18n/gettext.h"
 #include "../render_opengl/menu.h"
 #include "../game_manager.h"
 #include "../game_settings.h"
@@ -71,9 +72,9 @@ gcn::Container * DialogNewGame::setup()
 
 
 	if (this->num_local == 1) {
-		c = new gcn::Window("Single Player");
+		c = new gcn::Window(_(STRING_MENU_SINGLE));
 	} else if (this->num_local > 1) {
-		c = new gcn::Window("Split Screen");
+		c = new gcn::Window(_(STRING_MENU_SPLIT));
 	}
 
 	c->setDimension(gcn::Rectangle(0, 0, 320, 250));

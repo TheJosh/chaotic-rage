@@ -97,16 +97,16 @@ void Menu::loadMenuItems()
 	this->menuClear();
 	int y = render->getHeight() - 60;
 
-	this->menuAdd("Quit", 40, y, MC_QUIT);
+	this->menuAdd(_(STRING_MENU_QUIT), 40, y, MC_QUIT);
 	y -= 40;
 
-	this->menuAdd("Help", 40, y, MC_HELP);
+	this->menuAdd(_(STRING_MENU_HELP), 40, y, MC_HELP);
 	y -= 40;
 
-	this->menuAdd("Mods", 40, y, MC_MODS);
+	this->menuAdd(_(STRING_MENU_MODS), 40, y, MC_MODS);
 	y -= 40;
 
-	this->menuAdd("Settings", 40, y, MC_SETTINGS);
+	this->menuAdd(_(STRING_MENU_SETTINGS), 40, y, MC_SETTINGS);
 	y -= 40;
 
 	if (mod->hasArcade()) {
