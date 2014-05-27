@@ -20,6 +20,7 @@ class UIUpdate
 		* The UI should update.
 		**/
 		virtual void updateUI() = 0;
+		virtual ~UIUpdate() { /* do nothing */ }
 };
 
 
@@ -28,6 +29,3 @@ class UIUpdateNull : public UIUpdate
 	public:
 		virtual void updateUI() { /* do nothing */ }
 };
-
-
-

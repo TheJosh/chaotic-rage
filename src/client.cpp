@@ -84,6 +84,7 @@ int main(int argc, char ** argv)
 	if (!loadMods(st, ui)) {
 		reportFatalError("Module loading failed");
 	}
+	delete(ui);
 
 	gm = new GameManager(st);
 
@@ -133,4 +134,3 @@ int main(int argc, char ** argv)
 
 	exit(0);
 }
-
