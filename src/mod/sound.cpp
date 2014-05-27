@@ -39,7 +39,10 @@ Sound* loadItemSound(cfg_t* cfg_item, Mod* mod)
 	filename = "sounds/";
 	filename.append(cfg_getstr(cfg_item, "file"));
 	snd->sound = GEng()->audio->loadSound(filename, mod);
-	if (snd->sound == NULL) return NULL;
+	if (snd->sound == NULL) {
+		delete(snd);
+		return NULL;
+	}
 
 	return snd;
 }

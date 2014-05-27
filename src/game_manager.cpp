@@ -34,6 +34,12 @@ GameManager::GameManager(GameState *st)
 }
 
 
+GameManager::~GameManager()
+{
+	delete(this->mapreg);
+}
+
+
 /**
 * Returns a pointer to the loaded map registry
 **/

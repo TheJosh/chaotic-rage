@@ -32,6 +32,7 @@ class ModManager {
 
 	public:
 		ModManager();
+		~ModManager();
 
 	private:
 		ModManager(const ModManager& disabledCopyConstuctor);

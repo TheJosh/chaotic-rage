@@ -56,6 +56,9 @@ AudioPtr AudioSDLMixer::loadSound(string filename, Mod * mod)
 	}
 
 	sound = Mix_LoadWAV_RW(rw, 0);
+	if (!sound) {
+		cout << "Error: Mix_LoadWAV_RW: " << Mix_GetError() << endl;
+	}
 	SDL_RWclose(rw);
 
 	return sound;

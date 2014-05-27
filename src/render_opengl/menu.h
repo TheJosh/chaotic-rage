@@ -74,6 +74,7 @@ class Menu : public UIUpdate
 	public:
 		// Init etc
 		Menu(GameState *st, GameManager *gm);
+		~Menu();
 		GameState *getGameState() { return this->st; }
 
 		void loadModBits(UIUpdate* ui = NULL);

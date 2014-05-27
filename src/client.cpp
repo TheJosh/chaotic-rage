@@ -22,6 +22,7 @@
 #include "render_opengl/menu.h"
 #include "render_opengl/intro.h"
 #include "i18n/gettext.h"
+#include "audio/audio.h"
 
 
 using namespace std;
@@ -127,10 +128,18 @@ int main(int argc, char ** argv)
 	} else if (GEng()->render->is3D()) {
 		Menu *m = new Menu(st, gm);
 		m->doit(NULL);
+		delete(m);
 
 	} else {
 		cout << "Non-interactive usage requires --campaign, --arcade or --join to be specified." << endl;
 	}
 
+	delete(st);
+	delete(gm);
+	delete(GEng()->render);
+	delete(GEng()->audio);
+	delete(GEng()->cmdline);
+	delete(GEng()->mm);
+	delete(GEng()->cconf);
 	exit(0);
 }

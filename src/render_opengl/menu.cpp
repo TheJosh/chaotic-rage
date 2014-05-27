@@ -54,6 +54,15 @@ Menu::Menu(GameState *st, GameManager *gm)
 }
 
 
+Menu::~Menu()
+{
+	menuClear();
+	delete(this->bgmesh);
+	delete(this->logo);
+	delete(this->bg);
+}
+
+
 /**
 * Load stuff from the currently loaded mods into some arrays.
 **/
@@ -63,16 +72,12 @@ void Menu::loadModBits(UIUpdate* ui)
 
 	this->gm->loadModBits(ui);
 
-	if (ui) ui->updateUI();
-
 	// Logo
 	delete(this->logo);
 	this->logo = this->render->loadSprite("menu/logo.png", mod);
 	if (!logo) {
 		this->logo = this->render->loadSprite("menu/logo.png", GEng()->mm->getBase());
 	}
-
-	if (ui) ui->updateUI();
 
 	// Background
 	delete(this->bg);
@@ -184,8 +189,6 @@ void Menu::doit(UIUpdate* ui)
 	// A few bits always load off base
 	this->render->loadFont("orb.otf", mod);
 
-	if (ui) ui->updateUI();
-
 	this->input = new gcn::SDLInput();
 	this->gui = new gcn::Gui();
 	this->gui->setInput(input);
@@ -195,15 +198,11 @@ void Menu::doit(UIUpdate* ui)
 	this->gui_container->setOpaque(false);
 	this->gui->setTop(this->gui_container);
 
-	if (ui) ui->updateUI();
-
 	this->createBGmesh();
 	this->bg_rot1_pos = -10.0f;
 	this->bg_rot1_dir = 0.006f;
 	this->bg_rot2_pos = 3.0f;
 	this->bg_rot2_dir = -0.004f;
-
-	if (ui) ui->updateUI();
 
 	this->loadModBits(ui);
 	this->setupGLstate();
@@ -213,6 +212,10 @@ void Menu::doit(UIUpdate* ui)
 	while (this->running) {
 		this->updateUI();
 	}
+
+	delete(this->input);
+	delete(this->gui);
+	delete(this->gui_container);
 }
 
 
@@ -344,6 +347,7 @@ void Menu::menuClear()
 {
 	for (vector<MenuItem*>::iterator it = this->menuitems.begin(); it != this->menuitems.end(); ++it) {
 		delete(*it);
+		*it = NULL;
 	}
 	this->menuitems.clear();
 	this->menuitems.reserve(7);

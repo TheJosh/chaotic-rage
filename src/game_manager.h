@@ -31,6 +31,7 @@ class GameManager
 	public:
 		// Init etc
 		explicit GameManager(GameState *st);
+		~GameManager();
 
 	public:
 		/**

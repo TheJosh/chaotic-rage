@@ -36,6 +36,9 @@ AssimpModel::AssimpModel(Mod* mod, string name)
 	this->name = name;
 	this->sc = NULL;
 	this->shape = NULL;
+	this->boneIds = NULL;
+	this->boneWeights = NULL;
+	this->rootNode = NULL;
 }
 
 
@@ -45,6 +48,7 @@ AssimpModel::AssimpModel(Mod* mod, string name)
 AssimpModel::~AssimpModel()
 {
 	delete(this->shape);
+	delete(this->rootNode);
 }
 
 
