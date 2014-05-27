@@ -29,9 +29,10 @@ extern "C" {
 
 
 /**
-* Add a vehicle into the game world
+* Add a vehicle at a map X/Z coordinate
+* Y will be calculated so it's on the ground
 **/
-Vehicle* addVehicle(string type, float x, float z)
+Vehicle* addVehicleXZ(string type, float x, float z)
 {
 	Vehicle *v;
 
@@ -53,9 +54,30 @@ Vehicle* addVehicle(string type, float x, float z)
 
 
 /**
-* Add an object at the given coordinate
+* Add a vehicle at a given coordinate
+* TODO: Implement
 **/
-Object* addObject(string type, float x, float z)
+Vehicle* addVehicleCoord(string type, btVector3 &coord)
+{
+	return NULL;
+}
+
+
+/**
+* Add a vehicle at a random location in a zone
+* TODO: Implement
+**/
+Vehicle* addVehicleZone(string type, Zone* zn)
+{
+	return NULL;
+}
+
+
+/**
+* Add an object at a given map X/Z coordinate
+* The Y coordinate is calculated
+**/
+Object* addObjectXZ(string type, float x, float z)
 {
 	Object *o;
 
@@ -73,6 +95,26 @@ Object* addObject(string type, float x, float z)
 
 
 /**
+* Add an object at a given coordinate
+* TODO: Implement
+**/
+Object* addObjectCoord(string type, btVector3 &coord)
+{
+	return NULL;
+}
+
+
+/**
+* Add an object at a random location in a zone
+* TODO: Implement
+**/
+Object* addObjectZone(string type, Zone* zn)
+{
+	return NULL;
+}
+
+
+/**
 * Methods which affect the game world directly, such as,
 *  - Adding in entities at specific locations
 *
@@ -85,8 +127,13 @@ void load_world_lib(lua_State *L)
 	luabridge::getGlobalNamespace(L)
 	.beginNamespace("world")
 
-		.addFunction("addVehicle", &addVehicle)
-		.addFunction("addObject", &addObject)
+		.addFunction("addVehicleXZ", &addVehicleXZ)
+		.addFunction("addVehicleCoord", &addVehicleCoord)
+		.addFunction("addVehicleZone", &addVehicleZone)
+
+		.addFunction("addObjectXZ", &addObjectXZ)
+		.addFunction("addObjectCoord", &addObjectCoord)
+		.addFunction("addObjectZone", &addObjectZone)
 
 	.endNamespace();
 }
