@@ -8,7 +8,7 @@ map_config = ""
 -- Mouse pick handler for adding vehicles
 function pickVehicle(coord)
 	prompt_text("Vehicle type", function(type)
-		world.addVehicle(type, coord.x, coord.z)
+		game.addVehicleXZ(type, coord.x, coord.z)
 		map_config = map_config .. string.format("vehicle {  type = %q  x = %.2f  y = %.2f  }\n", type, coord.x, coord.z)
 	end)
 end
@@ -16,7 +16,7 @@ end
 -- Mouse pick handler for adding objects
 function pickObject(coord)
 	prompt_text("Object type", function(type)
-		world.addObject(type, coord.x, coord.z)
+		game.addObjectXZ(type, coord.x, coord.z)
 		map_config = map_config .. string.format("object {  type = %q  x = %.2f  y = %.2f  }\n", type, coord.x, coord.z)
 	end)
 end
