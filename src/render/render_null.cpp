@@ -108,6 +108,7 @@ void RenderNull::clearPixel(int x, int y)
 **/
 void RenderNull::freeSprite(SpritePtr sprite)
 {
+	SDL_FreeSurface(sprite->orig);
 	delete(sprite);
 }
 

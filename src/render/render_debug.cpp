@@ -165,6 +165,7 @@ void RenderDebug::clearPixel(int x, int y)
 **/
 void RenderDebug::freeSprite(SpritePtr sprite)
 {
+	SDL_FreeSurface(sprite->orig);
 	delete(sprite);
 }
 
