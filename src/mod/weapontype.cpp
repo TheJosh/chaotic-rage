@@ -255,7 +255,15 @@ Sound* WeaponType::getSound(int type)
 
 WeaponType::WeaponType()
 {
+	this->st = NULL;
+	this->type = -1;
+	this->fire_delay = 0;
+	this->reload_delay = 0;
+	this->continuous = false;
+	this->magazine_limit = 0;
+	this->belt_limit = 0;
 	this->model = NULL;
 	this->crosshair = NULL;
+	this->crosshair_min = 0;
+	this->crosshair_max = 0;
 }
-

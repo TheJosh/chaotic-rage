@@ -53,6 +53,7 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 
 	public:
 		WeaponType();
+		virtual ~WeaponType() {}
 		Sound* getSound(int type);
 
 	public:

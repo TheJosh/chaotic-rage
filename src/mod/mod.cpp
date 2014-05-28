@@ -87,12 +87,15 @@ Mod::Mod(GameState * st, string directory)
 template <class T>
 void delete_v(vector<T*> *v)
 {
-	if (v != NULL && !v->empty()) {
-		for (int i = v->size() - 1; i >= 0; --i) {
-			delete(v->at(i));
-			v->at(i) = NULL;
-		}
+	if (v == NULL) {
+		return;
 	}
+
+	for (int i = v->size() - 1; i >= 0; --i) {
+		delete(v->at(i));
+		v->at(i) = NULL;
+	}
+
 	delete(v);
 	v = NULL;
 }
@@ -103,13 +106,13 @@ Mod::~Mod()
 	delete_v(this->ais);
 	delete_v(this->gametypes);
 	delete_v(this->objecttypes);
-	delete(this->pickuptypes);
+	delete_v(this->pickuptypes);
 	delete_v(this->songs);
 	delete_v(this->sounds);
 	delete_v(this->unitclasses);
 	delete_v(this->walltypes);
 	delete_v(this->vehicletypes);
-	delete(this->weapontypes);
+	delete_v(this->weapontypes);
 	delete(this->maps);
 }
 

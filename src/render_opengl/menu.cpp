@@ -521,6 +521,7 @@ void Menu::doHelp()
 
 void Menu::doQuit()
 {
+	this->remAllDialogs();
 	this->running = false;
 }
 

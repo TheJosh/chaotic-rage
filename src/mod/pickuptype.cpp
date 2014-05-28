@@ -58,10 +58,13 @@ cfg_opt_t pickuptype_opts[] =
 **/
 PickupType::PickupType()
 {
+	this->model = NULL;
+	this->col_shape = NULL;
+	this->type = -1;
 	this->wt = NULL;
 	this->perm = NULL;
 	this->temp = NULL;
-	this->col_shape = NULL;
+	this->delay = 0;
 }
 
 /**
@@ -71,7 +74,6 @@ PickupType::~PickupType()
 {
 	delete(this->perm);
 	delete(this->temp);
-	delete(this->col_shape);
 }
 
 
