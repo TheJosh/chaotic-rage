@@ -54,6 +54,7 @@ class Menu : public UIUpdate
 		RenderOpenGL *render;
 		int running;
 		vector<MenuItem*> menuitems;
+		vector<Dialog*> openDialogs;
 
 		gcn::SDLInput* input;
 		gcn::Gui* gui;

@@ -442,15 +442,22 @@ void Menu::addDialog(Dialog* dialog)
 	c->setBaseColor(gcn::Color(150, 150, 150, 225));
 
 	this->gui_container->add(c);
+	this->openDialogs.push_back(dialog);
 }
 
 
 /**
-* Remove a dialog to the list, removing it from the UI
+* Remove a dialog from the list, removing it from the UI
 **/
 void Menu::remDialog(Dialog* dialog)
 {
 	this->gui_container->remove(dialog->getContainer());
+	for (vector<Dialog*>::iterator it = openDialogs.begin(); it != openDialogs.end(); ++it) {
+		if (*it == dialog) {
+			openDialogs.erase(it);
+			break;
+		}
+	}
 	delete dialog->getContainer();
 	delete dialog;
 }
@@ -461,8 +468,11 @@ void Menu::remDialog(Dialog* dialog)
 **/
 void Menu::remAllDialogs()
 {
-	// TODO: delete dialogs
 	this->gui_container->clear();
+	for (vector<Dialog*>::iterator it = openDialogs.begin(); it != openDialogs.end(); ++it) {
+		delete(*it);
+	}
+	this->openDialogs.clear();
 }
 
 
