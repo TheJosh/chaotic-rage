@@ -47,8 +47,10 @@ AssimpModel::AssimpModel(Mod* mod, string name)
 **/
 AssimpModel::~AssimpModel()
 {
-	delete(this->shape);
-	delete(this->rootNode);
+	delete this->shape;
+	delete this->rootNode;
+	delete this->boneIds;
+	delete this->boneWeights;
 }
 
 

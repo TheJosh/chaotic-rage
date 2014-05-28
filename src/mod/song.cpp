@@ -37,7 +37,7 @@ Song* loadItemSong(cfg_t* cfg_item, Mod* mod)
 	filename = "songs/";
 	filename.append(cfg_getstr(cfg_item, "file"));
 	SDL_RWops * rw = mod->loadRWops(filename);
-	sg->music = Mix_LoadMUS_RW(rw, 0);		// todo: change?
+	sg->music = Mix_LoadMUS_RW(rw, 1);
 	if (sg->music == NULL) return NULL;
 
 	return sg;
@@ -48,3 +48,9 @@ Song::Song()
 {
 	this->music = NULL;
 }
+
+Song::~Song()
+{
+	Mix_FreeMusic(this->music);
+}
+

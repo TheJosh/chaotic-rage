@@ -69,6 +69,13 @@ class AssimpMesh
 		AssimpMesh() :
 			vao(NULL), numFaces(0), materialIndex(0), nd(NULL), faces(NULL), verticies(NULL)
 			{}
+			
+		~AssimpMesh()
+		{
+			delete faces;
+			delete verticies;
+			delete vao;
+		}
 };
 
 class AssimpMaterial
