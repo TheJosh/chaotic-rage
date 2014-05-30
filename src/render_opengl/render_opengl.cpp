@@ -107,10 +107,6 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->desktop_width = mode->current_w;
 	this->desktop_height = mode->current_h;*/
 
-	for (unsigned int i = 0; i < NUM_CHAR_TEX; i++) {
-		this->char_tex[i].tex = 0;
-	}
-
 	this->settings = NULL;
 	this->setSettings(settings);
 
@@ -128,6 +124,8 @@ RenderOpenGL::~RenderOpenGL()
 	#ifdef USE_SPARK
 		delete(this->particle_renderer);
 	#endif
+
+	char_tex.clear();
 
 	SDL_GL_DeleteContext(this->glcontext);
 
@@ -294,13 +292,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		}
 	#endif
 
-	// Re-load FreeType character textures
-	for (unsigned int i = 0; i < NUM_CHAR_TEX; i++) {
-		if (this->char_tex[i].tex) {
-			glDeleteTextures(1, &this->char_tex[i].tex);
-			this->char_tex[i].tex = 0;
-		}
-	}
+	// Force re-load of FreeType character textures
+	char_tex.clear();
 
 	// (re-)load shaders
 	// If the base mod isn't yet loaded, will only load the "basic" shader.
@@ -1666,7 +1659,7 @@ void RenderOpenGL::renderCharacter(char character, float &x, float &y)
 {
 	if ((int) character < 32 || (int) character > 128) return;
 
-	FreetypeChar *c = &(this->char_tex[(int) character - 32]);
+	FreetypeChar *c = &(this->char_tex[character]);
 
 	// If the OpenGL tex does not exist for this character, create it
 	if (c->tex == 0) {

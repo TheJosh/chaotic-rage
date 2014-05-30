@@ -13,8 +13,6 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#define NUM_CHAR_TEX (128 - 32)
-
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
 #include <guichan/opengl.hpp>
@@ -45,12 +43,27 @@ struct VBOvertex
 	float tx, ty;         // Tex
 };
 
-struct FreetypeChar
+
+/**
+* Metadata and texture pointer for freetype characters
+**/
+class FreetypeChar
 {
-	GLuint tex;
-	int x, y, w, h;
-	float tx, ty;
-	int advance;
+	public:
+		GLuint tex;
+		int x, y, w, h;
+		float tx, ty;
+		int advance;
+
+	public:
+		FreetypeChar()
+			: tex(x), x(0), y(0), w(0), h(0), tx(0.0f), ty(0.0f), advance(0)
+			{}
+
+		~FreetypeChar()
+		{
+			if (tex) glDeleteTextures(1, &tex);
+		}
 };
 
 
@@ -77,7 +90,7 @@ class RenderOpenGL : public Render3D
 		FT_Library ft;
 		FT_Face face;
 		vector<SpritePtr> loaded;
-		FreetypeChar char_tex[NUM_CHAR_TEX];
+		map<char, FreetypeChar> char_tex;
 
 		// VBOs
 		GLuint font_vbo;
