@@ -90,7 +90,7 @@ class RenderOpenGL : public Render3D
 		FT_Library ft;
 		FT_Face face;
 		vector<SpritePtr> loaded;
-		map<char, FreetypeChar> char_tex;
+		map<Uint16, FreetypeChar> char_tex;
 
 		// VBOs
 		GLuint font_vbo;
@@ -194,7 +194,7 @@ class RenderOpenGL : public Render3D
 		void entitiesShadowMap();
 
 		void renderAnimPlay(AnimPlay * play, Entity * e);
-		void renderCharacter(char c, float &x, float &y);
+		void renderCharacter(Uint16 c, float &x, float &y);
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
 		void recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader, glm::mat4 transform);

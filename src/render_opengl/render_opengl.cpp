@@ -1640,6 +1640,7 @@ void RenderOpenGL::renderText(string text, float x, float y, float r, float g, f
 	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(this->ortho));
 
 	for (unsigned int n = 0; n < text.length(); n++ ) {
+		// TODO: Remap UTF-8 into a 16-bit character code
 		this->renderCharacter(text[n], x, y);
 	}
 
@@ -1653,9 +1654,11 @@ void RenderOpenGL::renderText(string text, float x, float y, float r, float g, f
 
 /**
 * Draws a single character of text
-* Called by ::renderText; you probably want that function instead
+* Called by ::renderText - you probably want that function instead
+*
+* @param Uint16 character A 16-bit character code
 **/
-void RenderOpenGL::renderCharacter(char character, float &x, float &y)
+void RenderOpenGL::renderCharacter(Uint16 character, float &x, float &y)
 {
 	if ((int) character < 32 || (int) character > 128) return;
 
