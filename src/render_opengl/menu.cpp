@@ -187,7 +187,7 @@ void Menu::doit(UIUpdate* ui)
 
 
 	// A few bits always load off base
-	this->render->loadFont("orb.otf", mod);
+	this->render->loadFont("DejaVuSans.ttf", mod);
 
 	this->input = new gcn::SDLInput();
 	this->gui = new gcn::Gui();
