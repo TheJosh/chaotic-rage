@@ -35,7 +35,7 @@ Uint32 UTF8_getch(const char **src, size_t *srclen)
 {
     const Uint8 *p = *(const Uint8**)src;
     size_t left = 0;
-    SDL_bool overlong = SDL_FALSE;
+    /*SDL_bool overlong = SDL_FALSE;*/
     SDL_bool underflow = SDL_FALSE;
     Uint32 ch = UNKNOWN_UNICODE;
 
@@ -44,41 +44,41 @@ Uint32 UTF8_getch(const char **src, size_t *srclen)
     }
     if (p[0] >= 0xFC) {
         if ((p[0] & 0xFE) == 0xFC) {
-            if (p[0] == 0xFC && (p[1] & 0xFC) == 0x80) {
+            /*if (p[0] == 0xFC && (p[1] & 0xFC) == 0x80) {
                 overlong = SDL_TRUE;
-            }
+            }*/
             ch = (Uint32) (p[0] & 0x01);
             left = 5;
         }
     } else if (p[0] >= 0xF8) {
         if ((p[0] & 0xFC) == 0xF8) {
-            if (p[0] == 0xF8 && (p[1] & 0xF8) == 0x80) {
+            /*if (p[0] == 0xF8 && (p[1] & 0xF8) == 0x80) {
                 overlong = SDL_TRUE;
-            }
+            }*/
             ch = (Uint32) (p[0] & 0x03);
             left = 4;
         }
     } else if (p[0] >= 0xF0) {
         if ((p[0] & 0xF8) == 0xF0) {
-            if (p[0] == 0xF0 && (p[1] & 0xF0) == 0x80) {
+            /*if (p[0] == 0xF0 && (p[1] & 0xF0) == 0x80) {
                 overlong = SDL_TRUE;
-            }
+            }*/
             ch = (Uint32) (p[0] & 0x07);
             left = 3;
         }
     } else if (p[0] >= 0xE0) {
         if ((p[0] & 0xF0) == 0xE0) {
-            if (p[0] == 0xE0 && (p[1] & 0xE0) == 0x80) {
+            /*if (p[0] == 0xE0 && (p[1] & 0xE0) == 0x80) {
                 overlong = SDL_TRUE;
-            }
+            }*/
             ch = (Uint32) (p[0] & 0x0F);
             left = 2;
         }
     } else if (p[0] >= 0xC0) {
         if ((p[0] & 0xE0) == 0xC0) {
-            if ((p[0] & 0xDE) == 0xC0) {
+            /*if ((p[0] & 0xDE) == 0xC0) {
                 overlong = SDL_TRUE;
-            }
+            }*/
             ch = (Uint32) (p[0] & 0x1F);
             left = 1;
         }
