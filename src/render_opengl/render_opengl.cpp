@@ -18,6 +18,7 @@
 #include "../util/obj.h"
 #include "../util/sdl_util.h"
 #include "../util/windowicon.h"
+#include "../util/utf8.h"
 #include "../mod/mod_manager.h"
 #include "../mod/vehicletype.h"
 #include "render_opengl.h"
@@ -1630,18 +1631,22 @@ void RenderOpenGL::renderText(string text, float x, float y, float r, float g, f
 		glBindVertexArray(0);
 	#endif
 
-	glEnable(GL_BLEND);
-
 	GLShader* shader = this->shaders["text"];
 
+	glEnable(GL_BLEND);
 	glUseProgram(shader->p());
 	glUniform1i(shader->uniform("uTex"), 0);
 	glUniform4f(shader->uniform("uColor"), r, g, b, a);
 	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(this->ortho));
 
-	for (unsigned int n = 0; n < text.length(); n++ ) {
-		// TODO: Remap UTF-8 into a 16-bit character code
-		this->renderCharacter(text[n], x, y);
+	const char* ptr = text.c_str();
+	size_t textlen = strlen(ptr);
+	while (textlen > 0) {
+		Uint32 c = UTF8_getch(&ptr, &textlen);
+		if (c == UNICODE_BOM_NATIVE || c == UNICODE_BOM_SWAPPED) {
+			continue;
+		}
+		this->renderCharacter(c, x, y);
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -1656,12 +1661,10 @@ void RenderOpenGL::renderText(string text, float x, float y, float r, float g, f
 * Draws a single character of text
 * Called by ::renderText - you probably want that function instead
 *
-* @param Uint16 character A 16-bit character code
+* @param Uint32 character A 32-bit character code
 **/
-void RenderOpenGL::renderCharacter(Uint16 character, float &x, float &y)
+void RenderOpenGL::renderCharacter(Uint32 character, float &x, float &y)
 {
-	if ((int) character < 32 || (int) character > 128) return;
-
 	FreetypeChar *c = &(this->char_tex[character]);
 
 	// If the OpenGL tex does not exist for this character, create it
@@ -1729,7 +1732,7 @@ void RenderOpenGL::renderCharacter(Uint16 character, float &x, float &y)
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-	x += c->advance >> 6;
+	x += (float)(c->advance >> 6);
 }
 
 

@@ -57,7 +57,7 @@ class FreetypeChar
 
 	public:
 		FreetypeChar()
-			: tex(x), x(0), y(0), w(0), h(0), tx(0.0f), ty(0.0f), advance(0)
+			: tex(0), x(0), y(0), w(0), h(0), tx(0.0f), ty(0.0f), advance(0)
 			{}
 
 		~FreetypeChar()
@@ -90,7 +90,7 @@ class RenderOpenGL : public Render3D
 		FT_Library ft;
 		FT_Face face;
 		vector<SpritePtr> loaded;
-		map<Uint16, FreetypeChar> char_tex;
+		map<Uint32, FreetypeChar> char_tex;
 
 		// VBOs
 		GLuint font_vbo;
@@ -194,7 +194,7 @@ class RenderOpenGL : public Render3D
 		void entitiesShadowMap();
 
 		void renderAnimPlay(AnimPlay * play, Entity * e);
-		void renderCharacter(Uint16 c, float &x, float &y);
+		void renderCharacter(Uint32 c, float &x, float &y);
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
 		void recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader, glm::mat4 transform);
