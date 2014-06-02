@@ -36,6 +36,7 @@
 #include <guichan/sdl.hpp>
 #include <guichan/opengl.hpp>
 #include "guichan_imageloader.h"
+#include "guichan_font.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -372,10 +373,7 @@ void RenderOpenGL::initGuichan(gcn::Gui * gui, Mod * mod)
 	gcn::Image::setImageLoader(imageLoader);
 
 	try {
-		gcn::ImageFont* font = new gcn::ImageFont(
-			"fixedfont.bmp",
-			" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?!.,\"'_={}()"
-		);
+		gcn::ChaoticRageFont* font = new gcn::ChaoticRageFont(this);
 		gcn::Widget::setGlobalFont(font);
 	} catch (const gcn::Exception & ex) {
 		reportFatalError(ex.getMessage());
@@ -1745,14 +1743,18 @@ unsigned int RenderOpenGL::widthText(string text)
 
 	unsigned int w = 0;
 
-	for ( unsigned int n = 0; n < text.length(); n++ ) {
-		char character = text[n];
-		if ((int) character < 32 || (int) character > 128) continue;
+	const char* ptr = text.c_str();
+	size_t textlen = strlen(ptr);
+	while (textlen > 0) {
+		Uint32 c = UTF8_getch(&ptr, &textlen);
+		if (c == UNICODE_BOM_NATIVE || c == UNICODE_BOM_SWAPPED) {
+			continue;
+		}
 
 		FT_GlyphSlot slot = face->glyph;
 
 		// Load glyph image into the slot
-		int error = FT_Load_Char(this->face, character, FT_LOAD_DEFAULT);
+		int error = FT_Load_Char(this->face, c, FT_LOAD_DEFAULT);
 		if (error) continue;
 
 		w += (slot->advance.x >> 6);
