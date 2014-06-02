@@ -3,12 +3,12 @@
 #
 
 # Main menu
-MENU_CAMPAIGN     Quest
-MENU_SINGLE       Single Battle
-MENU_SPLIT        Team Battle
-MENU_NETWORK      Group Battle
-MENU_HELP         Assistance
-MENU_QUIT         Bugg'r off
+MENU_CAMPAIGN     CJK: ㌀㌁㌂㌃
+MENU_SINGLE       Arrows: ⟽⟾⟿⟰⟱
+MENU_SPLIT        Latin-1 Supp: èÜÝÞçæ
+MENU_NETWORK      Greek: ΏιϘ
+MENU_HELP         Lao: ຕຖ
+MENU_QUIT         Latin-A Ext: ŨŔĶĳĖĠ
 
 # New game menu
 NEWGAME_TYPE          Quest type
