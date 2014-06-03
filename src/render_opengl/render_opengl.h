@@ -70,7 +70,9 @@ class FreetypeChar
 class GLVAO;
 class RenderOpenGLSettings;
 class btIDebugDraw;
-
+namespace gcn {
+	class ChaoticRageFont;
+}
 
 class RenderOpenGL : public Render3D
 {
@@ -78,6 +80,7 @@ class RenderOpenGL : public Render3D
 	friend class Menu;
 	friend class Intro;
 	friend class GameState;
+	friend class gcn::ChaoticRageFont;
 
 	private:
 		SDL_Window *window;

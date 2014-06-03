@@ -2,10 +2,15 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include "guichan_font.h"
+#include "gl.h"
+#include "gl_debug.h"
 #include "../rage.h"
 #include "../render/render_3d.h"
-#include "guichan_font.h"
+#include "../util/utf8.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace gcn;
 
@@ -47,7 +52,33 @@ int ChaoticRageFont::getHeight() const
 */
 void ChaoticRageFont::drawString(Graphics* graphics, const std::string& text, int x, int y)
 {
-	// TODO: Fix crashes
-	// this->render->renderText(text, (float)x, (float)y, 0.0f, 0.0f, 0.0f, 0.0f);
+	if (this->render->face == NULL) return;
+	if (this->render->font_vbo == 0) return;
+
+	#ifdef OpenGL
+		glBindVertexArray(0);
+	#endif
+
+	// Set up shader
+	GLShader* shader = this->render->shaders["text"];
+	glUseProgram(shader->p());
+	glUniform1i(shader->uniform("uTex"), 0);
+	glUniform4f(shader->uniform("uColor"), 0.0f, 0.0f, 0.0f, 0.0f);
+	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(this->render->ortho));
+
+	// Render each character
+	float xx = x;
+	float yy = y;
+	const char* ptr = text.c_str();
+	size_t textlen = strlen(ptr);
+	while (textlen > 0) {
+		Uint32 c = UTF8_getch(&ptr, &textlen);
+		if (c == UNICODE_BOM_NATIVE || c == UNICODE_BOM_SWAPPED) {
+			continue;
+		}
+		this->render->renderCharacter(c, xx, yy);
+	}
+
+	CHECK_OPENGL_ERROR;
 }
 

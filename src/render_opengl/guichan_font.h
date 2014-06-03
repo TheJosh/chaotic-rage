@@ -3,9 +3,8 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
+#include "render_opengl.h"
 #include "../rage.h"
-#include "../render/render_3d.h"
-
 #include "../guichan/guichan.hpp"
 #include "../guichan/font.hpp"
 
@@ -15,10 +14,10 @@ namespace gcn
 	class ChaoticRageFont : public Font
 	{
 	private:
-		Render3D* render;
+		RenderOpenGL* render;
 
 	public:
-		ChaoticRageFont(Render3D* render)
+		ChaoticRageFont(RenderOpenGL* render)
 		{
 			this->render = render;
 		}
