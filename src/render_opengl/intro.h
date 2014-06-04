@@ -32,10 +32,8 @@ class Intro : public UIUpdate
 	public:
 		Intro(GameState *st);
 		~Intro();
-		void load();
 		void doit();
 
 	public:
 		virtual void updateUI();
 };
-

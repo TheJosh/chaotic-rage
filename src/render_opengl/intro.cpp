@@ -23,18 +23,33 @@ using namespace std;
 
 Intro::Intro(GameState *st)
 {
-	this->mod = NULL;
-	this->st = st;
-	this->render = (RenderOpenGL*) GEng()->render;
+	mod = new Mod(st, "data/intro");
+	if (!mod) {
+		reportFatalError("Intro failed to load. Is the working directory correct?");
+	}
 
-	this->sg = NULL;
-	this->img1 = NULL;
-	this->img2 = NULL;
-	this->img3 = NULL;
-	this->text = NULL;
+	this->st = st;
+	this->render = reinterpret_cast<RenderOpenGL*>(GEng()->render);
+
+	sg = new Song();
+	sg->name = "intro";
+
+	//SDL_RWops * rw = mod->loadRWops("intro.ogg");
+	//sg->music = Mix_LoadMUS_RW(rw, 0);			// is this right?
+
+	img1 = this->render->loadSprite("joshcorp.png", mod);
+	img2 = this->render->loadSprite("sdl.png", mod);
+	img3 = this->render->loadSprite("game.png", mod);
+	text = this->render->loadSprite("loading.png", mod);
+
+	if (img1 == NULL || img2 == NULL || img3 == NULL || text == NULL) {
+		reportFatalError("Intro failed to load. Is the working directory correct?");
+	}
+
 	this->start = 0;
 	this->lasttime = 0;
 }
+
 
 Intro::~Intro()
 {
@@ -44,34 +59,6 @@ Intro::~Intro()
 	delete(img2);
 	delete(img3);
 	delete(text);
-}
-
-
-/**
-* Load intro assets.
-* Has to be before doit()
-**/
-void Intro::load()
-{
-	mod = new Mod(st, "data/intro");
-	if (!mod) {
-		reportFatalError("Intro failed to load. Is the working directory correct?");
-	}
-
-	img1 = this->render->loadSprite("joshcorp.png", mod);
-	img2 = this->render->loadSprite("sdl.png", mod);
-	img3 = this->render->loadSprite("game.png", mod);
-	text = this->render->loadSprite("loading.png", mod);
-
-	if (img1 == NULL || img2 == NULL || img3 == NULL || text == NULL) {
-		reportFatalError("Intro failed to load.  Is the working directory correct?");
-	}
-
-	sg = new Song();
-	sg->name = "intro";
-
-	//SDL_RWops * rw = mod->loadRWops("intro.ogg");
-	//sg->music = Mix_LoadMUS_RW(rw, 0);			// is this right?
 }
 
 
@@ -149,7 +136,7 @@ void Intro::updateUI()
 	this->render->renderSprite(img, x, y);
 
 	// Flashing message
-	int frame = (int)floor(time / 500.0f);
+	int frame = static_cast<int>(floor(time / 500.0f));
 	if (frame % 2 == 0) {
 		x = (this->render->getWidth() - text->w) / 2;
 		y = this->render->getHeight() - text->h - 50;
@@ -160,5 +147,3 @@ void Intro::updateUI()
 
 	CHECK_OPENGL_ERROR
 }
-
-

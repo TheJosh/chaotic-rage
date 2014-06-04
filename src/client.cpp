@@ -74,7 +74,6 @@ int main(int argc, char ** argv)
 	// Intro
 	if (GEng()->render->is3D()) {
 		Intro *i = new Intro(st);
-		i->load();
 		i->doit();
 		ui = i;
 	} else {
