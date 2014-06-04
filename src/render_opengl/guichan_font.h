@@ -15,11 +15,13 @@ namespace gcn
 	{
 	private:
 		RenderOpenGL* render;
+		int height;
 
 	public:
-		ChaoticRageFont(RenderOpenGL* render)
+		ChaoticRageFont(RenderOpenGL* render, int height)
 		{
 			this->render = render;
+			this->height = height;
 		}
 
 		/**

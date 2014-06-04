@@ -35,7 +35,7 @@ int ChaoticRageFont::getWidth(const std::string& text) const
 */
 int ChaoticRageFont::getHeight() const
 {
-	return 20;
+	return round(this->height * 1.3);
 }
 
 
@@ -59,16 +59,22 @@ void ChaoticRageFont::drawString(Graphics* graphics, const std::string& text, in
 		glBindVertexArray(0);
 	#endif
 
+	glEnable(GL_BLEND);
+	glEnable(GL_TEXTURE_2D);
+
 	// Set up shader
 	GLShader* shader = this->render->shaders["text"];
 	glUseProgram(shader->p());
 	glUniform1i(shader->uniform("uTex"), 0);
-	glUniform4f(shader->uniform("uColor"), 0.0f, 0.0f, 0.0f, 0.0f);
+	glUniform4f(shader->uniform("uColor"), 0.0f, 0.0f, 0.0f, 1.0f);
 	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(this->render->ortho));
 
+	// Determine starting X and Y coord
+	const ClipRectangle& top = graphics->getCurrentClipArea();
+	float xx = x + top.xOffset;
+	float yy = y + top.yOffset + this->height;
+
 	// Render each character
-	float xx = x;
-	float yy = y;
 	const char* ptr = text.c_str();
 	size_t textlen = strlen(ptr);
 	while (textlen > 0) {
@@ -78,6 +84,9 @@ void ChaoticRageFont::drawString(Graphics* graphics, const std::string& text, in
 		}
 		this->render->renderCharacter(c, xx, yy);
 	}
+
+	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_BLEND);
 
 	CHECK_OPENGL_ERROR;
 }
