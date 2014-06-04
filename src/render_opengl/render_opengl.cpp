@@ -373,7 +373,7 @@ void RenderOpenGL::initGuichan(gcn::Gui * gui, Mod * mod)
 	gcn::Image::setImageLoader(imageLoader);
 
 	try {
-		gcn::ChaoticRageFont* font = new gcn::ChaoticRageFont(this, 20);
+		gcn::ChaoticRageFont* font = new gcn::ChaoticRageFont(this, 20.0f);
 		gcn::Widget::setGlobalFont(font);
 	} catch (const gcn::Exception & ex) {
 		reportFatalError(ex.getMessage());

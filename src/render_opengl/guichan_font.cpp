@@ -35,7 +35,7 @@ int ChaoticRageFont::getWidth(const std::string& text) const
 */
 int ChaoticRageFont::getHeight() const
 {
-	return round(this->height * 1.3);
+	return (int)round(this->height * 1.3f);
 }
 
 
