@@ -80,7 +80,7 @@ class RenderOpenGL : public Render3D
 	friend class Menu;
 	friend class Intro;
 	friend class GameState;
-	friend class gcn::ChaoticRageFont;
+	friend class OpenGLFont;
 
 	private:
 		SDL_Window *window;

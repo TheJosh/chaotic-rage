@@ -12,8 +12,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-using namespace gcn;
-
 
 /**
 * Gets the width of a string. The width of a string is not necesserily
@@ -22,7 +20,7 @@ using namespace gcn;
 * @param text The string to return the width of.
 * @return The width of a string.
 */
-int ChaoticRageFont::getWidth(const std::string& text) const
+int OpenGLFont::getWidth(const std::string& text) const
 {
 	return this->render->widthText(text);
 }
@@ -33,7 +31,7 @@ int ChaoticRageFont::getWidth(const std::string& text) const
 *
 * @return The height of the glyphs int the font.
 */
-int ChaoticRageFont::getHeight() const
+int OpenGLFont::getHeight() const
 {
 	return (int)round(this->height * 1.3f);
 }
@@ -50,7 +48,7 @@ int ChaoticRageFont::getHeight() const
 * @param x The x coordinate where to draw the string.
 * @param y The y coordinate where to draw the string.
 */
-void ChaoticRageFont::drawString(Graphics* graphics, const std::string& text, int x, int y)
+void OpenGLFont::drawString(gcn::Graphics* graphics, const std::string& text, int x, int y)
 {
 	if (this->render->face == NULL) return;
 	if (this->render->font_vbo == 0) return;
@@ -70,7 +68,7 @@ void ChaoticRageFont::drawString(Graphics* graphics, const std::string& text, in
 	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(this->render->ortho));
 
 	// Determine starting X and Y coord
-	const ClipRectangle& top = graphics->getCurrentClipArea();
+	const gcn::ClipRectangle& top = graphics->getCurrentClipArea();
 	float xx = x + top.xOffset;
 	float yy = y + top.yOffset + this->height;
 

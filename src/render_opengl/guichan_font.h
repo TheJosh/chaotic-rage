@@ -9,16 +9,14 @@
 #include "../guichan/font.hpp"
 
 
-namespace gcn
+class OpenGLFont : public gcn::Font
 {
-	class ChaoticRageFont : public Font
-	{
 	private:
 		RenderOpenGL* render;
 		float height;
 
 	public:
-		ChaoticRageFont(RenderOpenGL* render, float height)
+		OpenGLFont(RenderOpenGL* render, float height)
 		{
 			this->render = render;
 			this->height = height;
@@ -51,8 +49,6 @@ namespace gcn
 		* @param x The x coordinate where to draw the string.
 		* @param y The y coordinate where to draw the string.
 		*/
-		virtual void drawString(Graphics* graphics, const std::string& text, int x, int y);
-
-	};
-}
+		virtual void drawString(gcn::Graphics* graphics, const std::string& text, int x, int y);
+};
 
