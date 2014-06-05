@@ -177,8 +177,17 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 {
 	int flags;
 
-	// On mobile devices, we force fullscreen and a given window size
+	// On mobile devices, we force fullscreen
 	#if defined(__ANDROID__)
+		fullscreen = true;
+	#endif
+
+	// SDL flags
+	flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+
+	if (fullscreen) {
+		flags |= SDL_WINDOW_FULLSCREEN;
+
 		SDL_DisplayMode mode;
 
 		int result = SDL_GetDesktopDisplayMode(0, &mode);
@@ -188,17 +197,10 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 
 		width = mode.w;
 		height = mode.h;
-		fullscreen = true;
-	#endif
+	}
 
 	this->real_width = width;
 	this->real_height = height;
-
-	// SDL flags
-	flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-	if (fullscreen) {
-		flags |= SDL_WINDOW_FULLSCREEN;
-	}
 
 	// Window title
 	char title[BUFFER_MAX];

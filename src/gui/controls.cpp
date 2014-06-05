@@ -29,10 +29,10 @@ gcn::Container * DialogControls::setup()
 		"Melee", "Right Click",
 		"Change Weapon", "Scroll",
 		"Use", "E",
-		"Lift or Drop", "Q",
+		"Lift/Drop", "Q",
 		"Special", "T",
 		"Change Camera", "C",
-		"Play or Pause Music", "F2",
+		"Play/Pause Music", "F2",
 		""
 	};
 
@@ -43,10 +43,10 @@ gcn::Container * DialogControls::setup()
 		"Melee", "I",
 		"Change Weapon", "J M",
 		"Use", "E",
-		"Lift or Drop", "Q",
+		"Lift/Drop", "Q",
 		"Special", "T",
 		"Change Camera", "C",
-		"Play or Pause Music", "F2",
+		"Play/Pause Music", "F2",
 		""
 	};
 
@@ -57,10 +57,10 @@ gcn::Container * DialogControls::setup()
 		"Melee", "Right Click",
 		"Change Weapon", "Scroll",
 		"Use", "Numpad 9",
-		"Lift or Drop", "Numpad 7",
+		"Lift/Drop", "Numpad 7",
 		"Special", "Numpad 1",
 		"Change Camera", "C",
-		"Play or Pause Music", "F2",
+		"Play/Pause Music", "F2",
 		""
 	};
 
@@ -77,12 +77,12 @@ gcn::Container * DialogControls::setup()
 	label->setWidth(178);
 	c->add(label, cols[0], 15);
 
-	label = new gcn::Label("Split Screen Player 1");
+	label = new gcn::Label("Split Screen: Player 1");
 	label->setAlignment(gcn::Graphics::CENTER);
 	label->setWidth(178);
 	c->add(label, cols[2], 15);
 
-	label = new gcn::Label("Split Screen Player 2");
+	label = new gcn::Label("Split Screen: Player 2");
 	label->setAlignment(gcn::Graphics::CENTER);
 	label->setWidth(178);
 	c->add(label, cols[4], 15);
