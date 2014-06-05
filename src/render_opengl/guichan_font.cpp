@@ -50,6 +50,7 @@ class OpenGLFont_Implementation
 		GLuint font_vbo;
 		FT_Library ft;
 		FT_Face face;
+		Uint8 *buf;
 		map<Uint32, FreetypeChar> char_tex;
 };
 
@@ -75,16 +76,13 @@ OpenGLFont::OpenGLFont(RenderOpenGL* render, string name, Mod* mod, float size)
 	}
 
 	// Load file from mod
-	Uint8 *buf = mod->loadBinary(name, &len);
-	if (buf == NULL) {
+	this->pmpl->buf = mod->loadBinary(name, &len);
+	if (this->pmpl->buf == NULL) {
 		reportFatalError("Freetype: Unable to load data");
 	}
 
-	// TODO: You've got to free buf at some point, but only after all the character bitmaps have been loaded
-	// perhaps re-think this all a bit.
-	
 	// Load face
-	error = FT_New_Memory_Face(this->pmpl->ft, (const FT_Byte *) buf, (FT_Long)len, 0, &this->pmpl->face);
+	error = FT_New_Memory_Face(this->pmpl->ft, (const FT_Byte *) this->pmpl->buf, (FT_Long)len, 0, &this->pmpl->face);
 	if (error == FT_Err_Unknown_File_Format) {
 		reportFatalError("Freetype: Unsupported font format");
 	} else if (error) {
@@ -104,6 +102,11 @@ OpenGLFont::OpenGLFont(RenderOpenGL* render, string name, Mod* mod, float size)
 **/
 OpenGLFont::~OpenGLFont()
 {
+	this->pmpl->char_tex.clear();
+	FT_Done_Face(this->pmpl->face);
+	FT_Done_FreeType(this->pmpl->ft);
+	free(this->pmpl->buf);
+	glDeleteBuffers(1, &this->pmpl->font_vbo);
 	delete this->pmpl;
 }
 
