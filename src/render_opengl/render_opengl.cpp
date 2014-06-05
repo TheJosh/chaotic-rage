@@ -18,7 +18,6 @@
 #include "../util/obj.h"
 #include "../util/sdl_util.h"
 #include "../util/windowicon.h"
-#include "../util/utf8.h"
 #include "../mod/mod_manager.h"
 #include "../mod/vehicletype.h"
 #include "render_opengl.h"
@@ -48,9 +47,6 @@
 #include "../spark/SPK_GL.h"
 #endif
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
 #define BUFFER_MAX 200
 
 using namespace std;
@@ -60,17 +56,6 @@ using namespace std;
 * For VBO pointer offsets
 **/
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
-
-
-/**
-* Gets the next highest power-of-two for a number
-**/
-static inline int next_pot (int a)
-{
-	int rval=1;
-	while(rval<a) rval<<=1;
-	return rval;
-}
 
 
 /**
@@ -91,18 +76,18 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->physicsdebug = NULL;
 	this->speeddebug = false;
 	this->viewmode = GameSettings::behindPlayer;
-	this->face = NULL;
 
 	#ifdef USE_SPARK
 	this->particle_renderer = new SPK::GL::GL2PointRenderer(1.0f);
 	this->st->particle_renderer = this->particle_renderer;
 	#endif
 
-	this->font_vbo = 0;
 	this->sprite_vbo = 0;
 
 	this->ter_vao = NULL;
 	this->skybox_vao = NULL;
+	this->font = NULL;
+	this->gui_font = NULL;
 
 	// TODO: Do we need this? SDL2
 	/*const SDL_VideoInfo* mode = SDL_GetVideoInfo();
@@ -127,7 +112,8 @@ RenderOpenGL::~RenderOpenGL()
 		delete(this->particle_renderer);
 	#endif
 
-	char_tex.clear();
+	delete font;
+	delete gui_font;
 
 	SDL_GL_DeleteContext(this->glcontext);
 
@@ -273,13 +259,6 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		}
 	#endif
 
-	// Freetype
-	int error;
-	error = FT_Init_FreeType(&this->ft);
-	if (error) {
-		reportFatalError("Freetype: Unable to init library.");
-	}
-
 	#ifdef USE_SPARK
 		this->particle_renderer->initGLbuffers();
 	#endif
@@ -293,9 +272,6 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 			}
 		}
 	#endif
-
-	// Force re-load of FreeType character textures
-	char_tex.clear();
 
 	// (re-)load shaders
 	// If the base mod isn't yet loaded, will only load the "basic" shader.
@@ -326,31 +302,9 @@ void RenderOpenGL::setMouseGrab(bool newval)
 /**
 * Load a font using freetype
 **/
-void RenderOpenGL::loadFont(string name, Mod * mod)
+void RenderOpenGL::loadFont(string name, Mod* mod)
 {
-	int error;
-	Sint64 len;
-
-	Uint8 *buf = mod->loadBinary(name, &len);
-	if (buf == NULL) {
-		reportFatalError("Freetype: Unable to load data");
-	}
-
-	// TODO: You've got to free buf at some point, but only after all the character bitmaps have been loaded
-	// perhaps re-think this all a bit.
-
-	error = FT_New_Memory_Face(this->ft, (const FT_Byte *) buf, (FT_Long)len, 0, &this->face);
-
-	if (error == FT_Err_Unknown_File_Format) {
-		reportFatalError("Freetype: Unsupported font format");
-	} else if (error) {
-		reportFatalError("Freetype: Unable to load font");
-	}
-
-	error = FT_Set_Char_Size(this->face, 0, 20*64, 72, 72);
-	if (error) {
-		reportFatalError("Freetype: Unable to load font size");
-	}
+	font = new OpenGLFont(this, name, mod, 20.0f);
 
 	// I don't quite know why this is here...
 	// TODO: Move or remove
@@ -372,9 +326,10 @@ void RenderOpenGL::initGuichan(gcn::Gui * gui, Mod * mod)
 	imageLoader = new gcn::ChaoticRageOpenGLSDLImageLoader(mod);
 	gcn::Image::setImageLoader(imageLoader);
 
+	gui_font = new OpenGLFont(this, "DejaVuSans.ttf", mod, 12.0f);
+	
 	try {
-		OpenGLFont* font = new OpenGLFont(this, 20.0f);
-		gcn::Widget::setGlobalFont(font);
+		gcn::Widget::setGlobalFont(gui_font);
 	} catch (const gcn::Exception & ex) {
 		reportFatalError(ex.getMessage());
 	}
@@ -1617,120 +1572,7 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 **/
 void RenderOpenGL::renderText(string text, float x, float y, float r, float g, float b, float a)
 {
-	CHECK_OPENGL_ERROR;
-
-	if (face == NULL) return;
-
-	if (font_vbo == 0) {
-		glGenBuffers(1, &font_vbo);
-	}
-
-	#ifdef OpenGL
-		glBindVertexArray(0);
-	#endif
-
-	GLShader* shader = this->shaders["text"];
-
-	glEnable(GL_BLEND);
-	glUseProgram(shader->p());
-	glUniform1i(shader->uniform("uTex"), 0);
-	glUniform4f(shader->uniform("uColor"), r, g, b, a);
-	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(this->ortho));
-
-	const char* ptr = text.c_str();
-	size_t textlen = strlen(ptr);
-	while (textlen > 0) {
-		Uint32 c = UTF8_getch(&ptr, &textlen);
-		if (c == UNICODE_BOM_NATIVE || c == UNICODE_BOM_SWAPPED) {
-			continue;
-		}
-		this->renderCharacter(c, x, y);
-	}
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glUseProgram(0);
-	glDisable(GL_BLEND);
-
-	CHECK_OPENGL_ERROR;
-}
-
-
-/**
-* Draws a single character of text
-* Called by ::renderText - you probably want that function instead
-*
-* @param Uint32 character A 32-bit character code
-**/
-void RenderOpenGL::renderCharacter(Uint32 character, float &x, float &y)
-{
-	FreetypeChar *c = &(this->char_tex[character]);
-
-	// If the OpenGL tex does not exist for this character, create it
-	if (c->tex == 0) {
-		FT_GlyphSlot slot = face->glyph;
-
-		int error = FT_Load_Char(this->face, character, FT_LOAD_DEFAULT);
-		if (error) return;
-
-		error = FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL);
-		if (error) return;
-
-		int width = next_pot(slot->bitmap.width);
-		int height = next_pot(slot->bitmap.rows);
-
-		GLubyte* gl_data = new GLubyte[2 * width * height];
-
-		for (int j = 0; j < height; j++) {
-			for (int i = 0; i < width; i++) {
-
-				gl_data[2*(i+j*width)] = gl_data[2*(i+j*width)+1] =
-					(i>=slot->bitmap.width || j>=slot->bitmap.rows) ?
-					0 : slot->bitmap.buffer[i + slot->bitmap.width*j];
-
-			}
-		}
-
-		// Create a texture
-		glGenTextures(1, &c->tex);
-		glBindTexture(GL_TEXTURE_2D, c->tex);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		#ifdef OpenGL
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-		#endif
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, gl_data);
-
-		delete [] gl_data;
-
-		c->w = slot->bitmap.width;
-		c->h = slot->bitmap.rows;
-		c->x = slot->bitmap_left;
-		c->y = slot->bitmap_top;
-		c->advance = slot->advance.x;
-		c->tx = (float)slot->bitmap.width / (float)width;
-		c->ty = (float)slot->bitmap.rows / (float)height;
-
-	} else {
-		glBindTexture(GL_TEXTURE_2D, c->tex);
-	}
-
-	GLfloat box[4][4] = {
-		{x + c->x,         y + -c->y + c->h,  0.f,    c->ty},
-		{x + c->x + c->w,  y + -c->y + c->h,  c->tx,  c->ty},
-		{x + c->x,         y + -c->y,         0.f,    0.f},
-		{x + c->x + c->w,  y + -c->y,         c->tx,  0.f},
-	};
-
-	glBindBuffer(GL_ARRAY_BUFFER, font_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
-
-	glVertexAttribPointer(ATTRIB_TEXTCOORD, 4, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(ATTRIB_TEXTCOORD);
-
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-	x += (float)(c->advance >> 6);
+	this->font->drawString(NULL, text, x, y, r, g, b, a);
 }
 
 
@@ -1739,28 +1581,7 @@ void RenderOpenGL::renderCharacter(Uint32 character, float &x, float &y)
 **/
 unsigned int RenderOpenGL::widthText(string text)
 {
-	if (face == NULL) return 0;
-
-	unsigned int w = 0;
-
-	const char* ptr = text.c_str();
-	size_t textlen = strlen(ptr);
-	while (textlen > 0) {
-		Uint32 c = UTF8_getch(&ptr, &textlen);
-		if (c == UNICODE_BOM_NATIVE || c == UNICODE_BOM_SWAPPED) {
-			continue;
-		}
-
-		FT_GlyphSlot slot = face->glyph;
-
-		// Load glyph image into the slot
-		int error = FT_Load_Char(this->face, c, FT_LOAD_DEFAULT);
-		if (error) continue;
-
-		w += (slot->advance.x >> 6);
-	}
-
-	return w;
+	return this->font->getWidth(text);
 }
 
 

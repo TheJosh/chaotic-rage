@@ -3,24 +3,25 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include "render_opengl.h"
 #include "../rage.h"
 #include "../guichan/guichan.hpp"
 #include "../guichan/font.hpp"
+
+
+class OpenGLFont_Implementation;
+class RenderOpenGL;
 
 
 class OpenGLFont : public gcn::Font
 {
 	private:
 		RenderOpenGL* render;
-		float height;
+		float size;
+		OpenGLFont_Implementation *pmpl;
 
 	public:
-		OpenGLFont(RenderOpenGL* render, float height)
-		{
-			this->render = render;
-			this->height = height;
-		}
+		OpenGLFont(RenderOpenGL* render, string name, Mod* mod, float size);
+		~OpenGLFont();
 
 		/**
 		* Gets the width of a string. The width of a string is not necesserily
@@ -50,5 +51,15 @@ class OpenGLFont : public gcn::Font
 		* @param y The y coordinate where to draw the string.
 		*/
 		virtual void drawString(gcn::Graphics* graphics, const std::string& text, int x, int y);
+		virtual void drawString(gcn::Graphics* graphics, const std::string& text, int x, int y, float r, float g, float b, float a);
+		
+	private:
+		/**
+		* Draws a single character of text
+		* Called by ::renderText - you probably want that function instead
+		*
+		* @param Uint32 character A 32-bit character code
+		**/
+		void renderCharacter(Uint32 character, float &x, float &y);
 };
 

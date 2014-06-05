@@ -10,9 +10,6 @@
 #include "glshader.h"
 #include "../render/render_3d.h"
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
 #include <guichan/opengl.hpp>
@@ -44,35 +41,10 @@ struct VBOvertex
 };
 
 
-/**
-* Metadata and texture pointer for freetype characters
-**/
-class FreetypeChar
-{
-	public:
-		GLuint tex;
-		int x, y, w, h;
-		float tx, ty;
-		int advance;
-
-	public:
-		FreetypeChar()
-			: tex(0), x(0), y(0), w(0), h(0), tx(0.0f), ty(0.0f), advance(0)
-			{}
-
-		~FreetypeChar()
-		{
-			if (tex) glDeleteTextures(1, &tex);
-		}
-};
-
-
 class GLVAO;
 class RenderOpenGLSettings;
 class btIDebugDraw;
-namespace gcn {
-	class ChaoticRageFont;
-}
+class OpenGLFont;
 
 class RenderOpenGL : public Render3D
 {
@@ -89,14 +61,13 @@ class RenderOpenGL : public Render3D
 		// The current player being rendered (split screen)
 		Player* render_player;
 
-		// FreeType
-		FT_Library ft;
-		FT_Face face;
+		// Loaded sprites
 		vector<SpritePtr> loaded;
-		map<Uint32, FreetypeChar> char_tex;
+
+		OpenGLFont* font;
+		OpenGLFont* gui_font;
 
 		// VBOs
-		GLuint font_vbo;
 		GLuint sprite_vbo;
 
 		// VAOs

@@ -12,3 +12,6 @@ using namespace std;
 void seedRandom();
 int getRandom(int low, int high);
 float getRandomf(float low, float high);
+
+// Random 3D bits
+int nextPowerOfTwo(int a);

@@ -30,3 +30,12 @@ float getRandomf(float low, float high)
 	return ((float)rand()/(float)RAND_MAX) * (high - low) + low;
 }
 
+/**
+* Gets the next highest power-of-two for a number
+**/
+int nextPowerOfTwo(int a)
+{
+	int rval = 1;
+	while (rval < a) rval <<= 1;
+	return rval;
+}
