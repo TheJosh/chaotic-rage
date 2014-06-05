@@ -252,8 +252,8 @@ void OpenGLFont::renderCharacter(Uint32 character, float &x, float &y)
 		error = FT_Render_Glyph(this->pmpl->face->glyph, FT_RENDER_MODE_NORMAL);
 		if (error) return;
 
-		int width = nextPowerOfTwo(slot->bitmap.width);
-		int height = nextPowerOfTwo(slot->bitmap.rows);
+		int width = MAX(nextPowerOfTwo(slot->bitmap.width), 2);
+		int height = MAX(nextPowerOfTwo(slot->bitmap.rows), 2);
 
 		GLubyte* gl_data = new GLubyte[2 * width * height];
 
