@@ -238,6 +238,7 @@
     <ClCompile Include="..\..\src\map\map.cpp" />
     <ClCompile Include="..\..\src\map\zone.cpp" />
     <ClCompile Include="..\..\src\render\render_ascii.cpp" />
+    <ClCompile Include="..\..\src\render_opengl\guichan_font.cpp" />
     <ClCompile Include="..\..\src\render_opengl\intro.cpp" />
     <ClCompile Include="..\..\src\lua\ailogic.cpp" />
     <ClCompile Include="..\..\src\lua\gamelogic.cpp" />
@@ -331,6 +332,7 @@
     <ClCompile Include="..\..\src\util\obj.cpp" />
     <ClCompile Include="..\..\src\util\sdl_util.cpp" />
     <ClCompile Include="..\..\src\util\serverconfig.cpp" />
+    <ClCompile Include="..\..\src\util\utf8.cpp" />
     <ClCompile Include="..\..\src\util\util.cpp" />
     <ClCompile Include="..\..\src\weapons\attractor.cpp" />
     <ClCompile Include="..\..\src\weapons\digdown.cpp" />
@@ -449,6 +451,7 @@
     <ClInclude Include="..\..\src\map\map.h" />
     <ClInclude Include="..\..\src\map\zone.h" />
     <ClInclude Include="..\..\src\render\render_ascii.h" />
+    <ClInclude Include="..\..\src\render_opengl\guichan_font.h" />
     <ClInclude Include="..\..\src\render_opengl\intro.h" />
     <ClInclude Include="..\..\src\lua\ailogic.h" />
     <ClInclude Include="..\..\src\lua\gamelogic.h" />
@@ -559,6 +562,7 @@
     <ClInclude Include="..\..\src\util\serverconfig.h" />
     <ClInclude Include="..\..\src\util\stream_redirector.h" />
     <ClInclude Include="..\..\src\util\ui_update.h" />
+    <ClInclude Include="..\..\src\util\utf8.h" />
     <ClInclude Include="..\..\src\util\util.h" />
     <ClInclude Include="..\..\src\util\windowicon.h" />
     <ClInclude Include="..\..\src\weapons\ghost_objects.h" />
