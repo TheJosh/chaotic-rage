@@ -138,7 +138,7 @@ void GameManager::startCampaign(Campaign* c, string unittype, GameSettings::View
 
 			// Run game
 			GameSettings* gs = new GameSettings();
-			this->startGame(m, stage->gametype, unittype, GameSettings::behindPlayer, 1, false, gs);
+			this->startGame(m, stage->gametype, unittype, viewmode, 1, false, gs);
 			delete(gs);
 
 			// A result of 1 is success, 0 is failure, -1 is an error.
