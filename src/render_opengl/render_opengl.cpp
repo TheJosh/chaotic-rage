@@ -325,9 +325,11 @@ void RenderOpenGL::initGuichan(gcn::Gui * gui, Mod * mod)
 	gcn::OpenGLGraphics* graphics;
 	gcn::ChaoticRageOpenGLSDLImageLoader* imageLoader;
 
+	delete(gcn::Image::getImageLoader());
 	imageLoader = new gcn::ChaoticRageOpenGLSDLImageLoader(mod);
 	gcn::Image::setImageLoader(imageLoader);
 
+	delete(gui_font);
 	gui_font = new OpenGLFont(this, "DejaVuSans.ttf", mod, 12.0f);
 	
 	try {
@@ -336,6 +338,7 @@ void RenderOpenGL::initGuichan(gcn::Gui * gui, Mod * mod)
 		reportFatalError(ex.getMessage());
 	}
 
+	delete(gui->getGraphics());
 	graphics = new gcn::OpenGLGraphics(this->real_width, this->real_height);
 	gui->setGraphics(graphics);
 }
