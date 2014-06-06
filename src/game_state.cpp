@@ -382,7 +382,7 @@ int mk_down_x[MAX_LOCAL], mk_down_y[MAX_LOCAL];
 /**
 * The main game loop
 **/
-void GameState::gameLoop(GameState* st, Render* render, Audio* audio, NetClient* client)
+void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 {
 	int start = 0, net_time = 0, net_timestep = 50;
 
@@ -409,7 +409,7 @@ void GameState::gameLoop(GameState* st, Render* render, Audio* audio, NetClient*
 	}
 
 	this->preGame();
-	this->logic->raise_gamestart();
+	this->logic->raise_gamestart(this->gs->getRounds());
 
 	if (client == NULL) {
 		for (unsigned int i = 0; i < this->num_local; i++) {

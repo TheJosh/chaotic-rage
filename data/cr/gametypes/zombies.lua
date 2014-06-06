@@ -7,6 +7,7 @@ num_wanted = 0;
 num_dead = 0;
 timer = 0;
 round = 0;
+round_max = 0;
 score_table = 0;
 score_labels = {};
 
@@ -44,8 +45,12 @@ start_round = function()
 	num_dead = 0;
 	round = round + 1;
 	
-	-- Cool label for new round
-	lab = add_label(0, 350, "Round " .. round);
+	-- Cool label
+	if round > round_max then
+		lab = add_label(0, 350, "Winner!");
+	else
+		lab = add_label(0, 350, "Round " .. round);
+	end;
 	lab.align = 2;
 	lab.r = 0.9; lab.g = 0.1; lab.b = 0.1;
 
@@ -60,6 +65,11 @@ start_round = function()
 			remove_timer(anim);
 		end;
 	end);
+
+	-- Winner?
+	if round > round_max then
+		game_over(1);
+	end;
 	
 	-- Do an ammo drop
 	if round % 3 == 0 then
@@ -94,7 +104,9 @@ end);
 --
 -- Game start
 --
-bind_gamestart(function()
+bind_gamestart(function(r_max)
+	round_max = r_max;
+
 	add_timer(10000, start_round);
 	add_timer(5000, initial_ammo);
 	

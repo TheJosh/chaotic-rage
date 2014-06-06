@@ -137,7 +137,8 @@ void GameManager::startCampaign(Campaign* c, string unittype, GameSettings::View
 			}
 
 			// Run game
-			GameSettings* gs = new GameSettings();
+			int rounds = 3;	// TODO: should not be hard-coded
+			GameSettings* gs = new GameSettings(rounds);
 			this->startGame(m, stage->gametype, unittype, viewmode, 1, false, gs);
 			delete(gs);
 
@@ -274,7 +275,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, GameS
 	GEng()->render->viewmode = viewmode;
 
 	// Begin!
-	st->gameLoop(st, GEng()->render, GEng()->audio, NULL);
+	st->gameLoop(GEng()->render, GEng()->audio, NULL);
 
 	// Cleanup
 cleanup:
@@ -349,7 +350,7 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	}
 
 	// Begin!
-	st->gameLoop(st, GEng()->render, GEng()->audio, client);
+	st->gameLoop(GEng()->render, GEng()->audio, client);
 
 cleanup:
 	delete st->logic;

@@ -132,7 +132,7 @@ class GameLogic
 		/**
 		* When the game starts
 		**/
-		void raise_gamestart();
+		void raise_gamestart(int arg);
 		vector<int> binds_gamestart;
 
 		/**

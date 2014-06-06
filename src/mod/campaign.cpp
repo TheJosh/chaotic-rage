@@ -46,12 +46,13 @@ Campaign::Campaign()
 	this->stages = new vector<CampaignStage*>();
 }
 
+
 /**
 * Tear down
 **/
 Campaign::~Campaign()
 {
-	for (vector<CampaignStage*>::iterator it = stages->begin(); it != stages->end();) {
+	for (vector<CampaignStage*>::iterator it = stages->begin(); it != stages->end(); ++it) {
 		delete(*it);
 	}
 	delete(this->stages);

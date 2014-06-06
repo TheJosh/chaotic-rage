@@ -71,6 +71,7 @@ Mod::Mod(GameState * st, string directory)
 	this->has_campaign = false;
 
 	this->ais = NULL;
+	this->campaigns = NULL;
 	this->gametypes = NULL;
 	this->objecttypes = NULL;
 	this->pickuptypes = NULL;
@@ -104,6 +105,7 @@ void delete_v(vector<T*> *v)
 Mod::~Mod()
 {
 	delete_v(this->ais);
+	delete_v(this->campaigns);
 	delete_v(this->gametypes);
 	delete_v(this->objecttypes);
 	delete_v(this->pickuptypes);

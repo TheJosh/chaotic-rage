@@ -136,7 +136,7 @@ void GameLogic::update(int delta)
 }
 
 
-LUA_DEFINE_RAISE(gamestart)
+LUA_DEFINE_RAISE_INTARG(gamestart)
 LUA_DEFINE_RAISE_INTARG(playerjoin)
 LUA_DEFINE_RAISE_INTARG(playerleave)
 LUA_DEFINE_RAISE_INTARG(playerdied)

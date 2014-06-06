@@ -12,8 +12,9 @@ using namespace std;
 /**
 * New, blank game settings
 **/
-GameSettings::GameSettings()
+GameSettings::GameSettings(int rounds)
 {
+	this->rounds = rounds;
 }
 
 /**

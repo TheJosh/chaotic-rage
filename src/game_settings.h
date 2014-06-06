@@ -38,10 +38,13 @@ class GameSettings
 			nrOfViewModes,
 		};
 
-
 	public:
-		GameSettings();
+		GameSettings(int rounds = 20);
 
 	public:
 		void switchViewMode();
+		int getRounds() { return rounds; }
+
+	private:
+		int rounds;
 };
