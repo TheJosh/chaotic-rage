@@ -18,6 +18,8 @@
 #include "../entity/unit.h"
 #include "../entity/player.h"
 #include "../entity/npc.h"
+#include "../map/map.h"
+#include "../map/zone.h"
 
 extern "C" {
 	#include <lua.h>
@@ -115,17 +117,160 @@ Object* addObjectZone(string type, Zone* zn)
 
 
 /**
-* Methods which affect the game world directly, such as,
+* Spawn in a player at a given map X/Z coordinate
+**/
+Player* addPlayerXZ(string type, unsigned int fac, unsigned int slot, float x, float z)
+{
+	Player *p;
+
+	UnitType *ut = GEng()->mm->getUnitType(type);
+	if (ut == NULL) {
+		return NULL;
+	}
+
+	p = new Player(ut, getGameState(), x, z, 0, (Faction)fac, slot);
+
+	// Is it a local player?
+	PlayerState *ps = getGameState()->localPlayerFromSlot(slot);
+	if (ps) {
+		ps->p = p;
+	}
+
+	getGameState()->addUnit(p);
+
+	return p;
+}
+
+
+/**
+* Spawn in a player at the given coordinate
+**/
+Player* addPlayerCoord(string type, unsigned int fac, unsigned int slot, btVector3 &coord)
+{
+	return NULL;
+}
+
+
+/**
+* Spawn in a player in a random location of the specified zone
+**/
+Player* addPlayerZone(string type, unsigned int fac, unsigned int slot, Zone *zn)
+{
+	Player *p;
+
+	UnitType *ut = GEng()->mm->getUnitType(type);
+	if (ut == NULL) {
+		return NULL;
+	}
+
+	p = new Player(ut, getGameState(), zn->getRandomX(), zn->getRandomY(), 0, (Faction)fac, slot);
+
+	// Is it a local player?
+	PlayerState *ps = getGameState()->localPlayerFromSlot(slot);
+	if (ps) {
+		ps->p = p;
+	}
+
+	getGameState()->addUnit(p);
+
+	return p;
+}
+
+
+/**
+* Spawn in a player in a random location of a random spawn zone
+**/
+Player* addPlayer(string type, unsigned int fac, unsigned int slot)
+{
+	Zone *zn = getGameState()->map->getSpawnZone((Faction)fac);
+	if (zn == NULL) {
+		return NULL;
+	}
+
+	return addPlayerZone(type, fac, slot, zn);
+}
+
+
+/**
+* Spawn in a NPC at a given map X/Z coordinate
+**/
+NPC* addNpcXZ(string type, string aitype, unsigned int fac, float x, float z)
+{
+	NPC *p;
+
+	UnitType *ut = GEng()->mm->getUnitType(type);
+	if (ut == NULL) {
+		return NULL;
+	}
+
+	AIType *ai = GEng()->mm->getAIType(aitype);
+	if (ai == NULL) {
+		return NULL;
+	}
+
+	p = new NPC(ut, getGameState(), x, z, 0, ai, (Faction)fac);
+	getGameState()->addUnit(p);
+
+	return p;
+}
+
+
+/**
+* Spawn in a NPC at the given coordinate
+**/
+NPC* addNpcCoord(string type, string aitype, unsigned int fac, btVector3 &coord)
+{
+	return NULL;
+}
+
+
+/**
+* Spawn in a NPC in a random location of the specified zone
+**/
+NPC* addNpcZone(string type, string aitype, unsigned int fac, Zone *zn)
+{
+	NPC *p;
+
+	UnitType *ut = GEng()->mm->getUnitType(type);
+	if (ut == NULL) {
+		return NULL;
+	}
+
+	AIType *ai = GEng()->mm->getAIType(aitype);
+	if (ai == NULL) {
+		return NULL;
+	}
+
+	p = new NPC(ut, getGameState(), zn->getRandomX(), zn->getRandomY(), 0, ai, (Faction)fac);
+	getGameState()->addUnit(p);
+
+	return p;
+}
+
+
+/**
+* Spawn in a NPC in a random location of a random spawn zone
+**/
+NPC* addNpc(string type, string aitype, unsigned int fac)
+{
+	Zone *zn = getGameState()->map->getSpawnZone((Faction)fac);
+	if (zn == NULL) {
+		return NULL;
+	}
+	
+	return addNpcZone(type, aitype, fac, zn);
+}
+
+
+/**
+* Methods which affect the game world such as,
 *  - Adding in entities at specific locations
-*
-* TODO: Getting lists of entities
-* TODO: Other world stuff
-* TODO: Should spawning be here or in the 'game' namespace?
+*  - TODO: Getting lists of entities
 **/
 void load_world_lib(lua_State *L)
 {
 	luabridge::getGlobalNamespace(L)
-	.beginNamespace("world")
+	.beginNamespace("game")
 
 		.addFunction("addVehicleXZ", &addVehicleXZ)
 		.addFunction("addVehicleCoord", &addVehicleCoord)
@@ -134,6 +279,16 @@ void load_world_lib(lua_State *L)
 		.addFunction("addObjectXZ", &addObjectXZ)
 		.addFunction("addObjectCoord", &addObjectCoord)
 		.addFunction("addObjectZone", &addObjectZone)
+
+		.addFunction("addPlayer", &addPlayer)
+		.addFunction("addPlayerXZ", &addPlayerXZ)
+		.addFunction("addPlayerCoord", &addPlayerCoord)
+		.addFunction("addPlayerZone", &addPlayerZone)
+
+		.addFunction("addNpc", &addNpc)
+		.addFunction("addNpcXZ", &addNpcXZ)
+		.addFunction("addNpcCoord", &addNpcCoord)
+		.addFunction("addNpcZone", &addNpcZone)
 
 	.endNamespace();
 }

@@ -12,7 +12,7 @@ round = 0
 -- Spwans zombies
 --
 spawn_humans_func = function()
-	add_npc("robot", "zombie", factions.team2);
+	game.addNpc("robot", "zombie", factions.team2);
 	num_humans = num_humans + 1;
 end;
 
@@ -29,7 +29,7 @@ end);
 -- Spawn in a zombie
 --
 spawn_player_func = function(slot)
-	add_player("zomb", factions.team1, slot)
+	game.addPlayer("zomb", factions.team1, slot)
 	
 	-- Show msg
 	lab = add_label(0, 350, "Find All Humans");

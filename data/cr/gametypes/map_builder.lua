@@ -48,7 +48,7 @@ end
 
 -- Add a player
 bind_playerjoin(function(slot)
-	add_player(get_selected_unittype(), factions.team1, slot)
+	game.addPlayer(get_selected_unittype(), factions.team1, slot)
 end)
 
 -- New game; bind M key

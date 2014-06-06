@@ -32,7 +32,7 @@ bind_gamestart(function()
 		
 		-- bring in the AIs
 		for i = 0, 25, 1 do
-			add_npc("zomb", "human", factions.individual);
+			game.addNpc("zomb", "human", factions.individual);
 		end;
 		
 	end);
@@ -46,7 +46,7 @@ end);
 -- Spawn a player
 --
 bind_playerjoin(function(slot)
-	add_player("zomb", factions.individual, slot);
+	game.addPlayer("zomb", factions.individual, slot);
 end);
 
 

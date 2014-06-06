@@ -390,93 +390,22 @@ LUA_FUNC(remove_timer)
 }
 
 
-/**
-* Spawn a new NPC unit
-*
-* TODO: Need a new method for "add at specific location" vs "spawn in based on game rules"
-**/
+
 LUA_FUNC(add_npc)
 {
-	NPC *p;
-
-	UnitType *uc = GEng()->mm->getUnitType(*(new string(lua_tostring(L, 1))));
-	if (uc == NULL) {
-		return luaL_error(L, "Arg #1 is not an available unittype");
-	}
-
-	AIType *ai = GEng()->mm->getAIType(*(new string(lua_tostring(L, 2))));
-	if (uc == NULL) {
-		return luaL_error(L, "Arg #2 is not an available aitype");
-	}
-
-	Faction fac = (Faction) lua_tointeger(L, 3);
-
-
-	Zone *zn = gl->map->getSpawnZone(fac);
-	if (zn == NULL) {
-		return luaL_error(L, "Map does not have any spawnpoints");
-	}
-
-	p = new NPC(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 2, ai, fac);
-
-	for (unsigned int i = 0; i < uc->spawn_weapons.size(); i++) {
-		p->pickupWeapon(uc->spawn_weapons.at(i));
-	}
-
-	gl->st->addUnit(p);
-
-
+	reportFatalError("Deprecated Lua function 'add_npc' called.");
 	return 0;
 }
 
-
-/**
-* Spawn a new player unit
-*
-* @param String Unit type.
-* @param int Faction-ID. Use the 'factions' enumeration.
-* @param int Player slot, between 1 and N, where N is the number of players in the game, including network.
-*
-* TODO: Need a new method for "add at specific location" vs "spawn in based on game rules"
-**/
 LUA_FUNC(add_player)
 {
-	Player *p;
-
-	const char* name = lua_tostring(L, 1);
-	UnitType *uc = GEng()->mm->getUnitType(*(new string(name)));
-	if (uc == NULL) {
-		return luaL_error(L, "Arg #1 is not an available unittype");
-	}
-
-	Faction fac = (Faction) lua_tointeger(L, 2);
-
-	int slot = lua_tointeger(L, 3);
-
-
-	Zone *zn = gl->map->getSpawnZone(fac);
-	if (zn == NULL) {
-		return luaL_error(L, "Map does not have any spawnpoints");
-	}
-
-	p = new Player(uc, gl->st, zn->getRandomX(), zn->getRandomY(), 0, fac, slot);
-
-	// Is it a local player?
-	PlayerState *ps = gl->st->localPlayerFromSlot(slot);
-	if (ps) {
-		ps->p = p;
-	}
-
-	gl->st->addUnit(p);
-
+	reportFatalError("Deprecated Lua function 'add_player' called.");
 	return 0;
 }
 
 
 /**
-* Kills off the player with a given slot #
-*
-* TODO: Need a new method for "remove given entity" vs "kill off based on game rules"
+* TODO: Move somewhere else
 **/
 LUA_FUNC(kill_player)
 {
@@ -490,11 +419,8 @@ LUA_FUNC(kill_player)
 	return 0;
 }
 
-
 /**
-* Game is over
-* First and only paramater is the result - 1 = success, 0 = failure
-* Success -> next stage of campaign
+* TODO: Move somewhere else
 **/
 LUA_FUNC(game_over)
 {
@@ -502,11 +428,8 @@ LUA_FUNC(game_over)
 	return 0;
 }
 
-
 /**
-* Drop ammo onto the game level
-*
-* TODO: This function is a bit specialised - it might be better to just use add_object
+* TODO: Move somewhere else
 **/
 LUA_FUNC(ammo_drop)
 {
@@ -525,9 +448,8 @@ LUA_FUNC(ammo_drop)
 	return 0;
 }
 
-
 /**
-* Display an alert message
+* TODO: Move somewhere else
 **/
 LUA_FUNC(show_alert_message)
 {
@@ -543,9 +465,8 @@ LUA_FUNC(show_alert_message)
 	return 0;
 }
 
-
 /**
-* Display an alert message
+* TODO: Move somewhere else
 **/
 LUA_FUNC(add_label)
 {
@@ -565,11 +486,8 @@ LUA_FUNC(add_label)
 	return 1;
 }
 
-
 /**
-*
-*
-* @return String: The currently selected unit type
+* TODO: Move somewhere else
 **/
 LUA_FUNC(get_selected_unittype)
 {
@@ -577,9 +495,8 @@ LUA_FUNC(get_selected_unittype)
 	return 1;
 }
 
-
 /**
-* Get the view mode
+* TODO: Move somewhere else
 **/
 LUA_FUNC(get_viewmode)
 {
@@ -587,9 +504,8 @@ LUA_FUNC(get_viewmode)
 	return 1;
 }
 
-
 /**
-* Set the view mode
+* TODO: Move somewhere else
 **/
 LUA_FUNC(set_viewmode)
 {
@@ -621,20 +537,17 @@ void register_lua_functions()
 	LUA_REG(add_timer);
 	LUA_REG(remove_timer);
 
+	// TODO: Move these elsewhere
 	LUA_REG(add_npc);				// TODO: Think up improved
 	LUA_REG(add_player);			// entity handling
 	LUA_REG(kill_player);			// - this too
-	LUA_REG(ammo_drop);				// - and this one
-
+	LUA_REG(ammo_drop);				// - and this on
 	LUA_REG(show_alert_message);	// TODO: needs network support
 	LUA_REG(add_label);				// - this too
 	LUA_REG(game_over);				// - and this one
-
 	LUA_REG(get_selected_unittype);	// TODO: other player deets too?
-
 	LUA_REG(get_viewmode);			// TODO: Add a 'camera' object
 	LUA_REG(set_viewmode);			// dynamic position, animation, etc.
-
 
 	// Factions constants table
 	lua_createtable(L,0,0);

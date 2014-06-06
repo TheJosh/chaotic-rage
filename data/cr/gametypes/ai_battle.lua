@@ -8,7 +8,7 @@
 --
 spawn_ais = function()
 	for i = 0, 25, 1 do
-		add_npc("robot", "human", factions.individual);
+		game.addNpc("robot", "human", factions.individual);
 	end;
 end;
 

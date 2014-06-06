@@ -24,7 +24,7 @@ end;
 spawn_func = function()
 	t = random_arg("zomb", "zomb_fast", "zomb_health", "zomb_strong")
 	
-	add_npc(t, "zombie", factions.team2)
+	game.addNpc(t, "zombie", factions.team2)
 	
 	num_zombies = num_zombies + 1
 	if num_zombies >= num_wanted then remove_timer(timer) end
@@ -87,7 +87,7 @@ end;
 -- Spawn a player
 --
 bind_playerjoin(function(slot)
-	add_player(get_selected_unittype(), factions.team1, slot);
+	game.addPlayer(get_selected_unittype(), factions.team1, slot);
 end);
 
 
@@ -118,7 +118,7 @@ bind_playerdied(function(slot)
 	do_score();
 	
 	add_timer(2000, function()
-		add_player(get_selected_unittype(), factions.team1, slot);
+		game.addPlayer(get_selected_unittype(), factions.team1, slot);
 	end);
 end);
 

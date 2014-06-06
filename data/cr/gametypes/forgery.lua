@@ -7,7 +7,7 @@
 -- Spawn a player
 --
 bind_playerjoin(function(slot)
-	add_player(get_selected_unittype(), factions.team1, slot);
+	game.addPlayer(get_selected_unittype(), factions.team1, slot);
 end);
 
 
@@ -23,7 +23,7 @@ function doPick()
 	mouse_pick(function(coord)
 		local t = random_arg("crate_wood", "crate_steel", "crate_sealed")
 
-		local obj = world.addObject(t, coord.x, coord.z)
+		local obj = game.addObject(t, coord.x, coord.z)
 
 		add_interval(500, function()
 			obj.visible = not obj.visible
