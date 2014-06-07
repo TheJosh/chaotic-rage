@@ -32,9 +32,11 @@ class NetServer {
 		NetServerSeqPred * seq_pred;
 
 	public:
-		NetServer(const NetServer & obj);
 		NetServer(GameState * st, ServerConfig * conf);
 		~NetServer();
+
+	private:
+		NetServer(const NetServer & disabledCopyConstuctor);
 
 	public:
 		void update();
@@ -50,8 +52,8 @@ class NetServer {
 		NetMsg * addmsgChat();
 		NetMsg * addmsgClientDrop(NetServerClientInfo *client);
 		NetMsg * addmsgUnitState(Unit *u);
-		NetMsg * addmsgWallState(Wall *u);
-		NetMsg * addmsgObjectState(Object *u);
+		NetMsg * addmsgWallState(Wall *w);
+		NetMsg * addmsgObjectState(Object *o);
 		NetMsg * addmsgVehicleState(Vehicle *v);
 		NetMsg * addmsgAmmoRoundState(AmmoRound *ar);
 		NetMsg * addmsgPickupState(Pickup *p);
@@ -67,8 +69,6 @@ class NetServer {
 		unsigned int handleChat(NetServerClientInfo *client, Uint8 *data, unsigned int size);
 		unsigned int handleQuit(NetServerClientInfo *client, Uint8 *data, unsigned int size);
 		unsigned int handleKeyMouseStatus(NetServerClientInfo *client, Uint8 *data, unsigned int size);
-
-
 };
 
 
@@ -112,7 +112,3 @@ class NetServerSeqPred
 
 		NetServerSeqPred(NetServer *s) { this->server = s; }
 };
-
-
-
-

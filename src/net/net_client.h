@@ -29,8 +29,6 @@ class NetClient {
 		NetGameinfo *gameinfo;    // Map, etc, provided at join time
 		bool ingame;              // We are in the game
 
-		NetClientSeqPred * seq_pred;
-
 	public:
 		NetClient(GameState * st);
 		~NetClient();

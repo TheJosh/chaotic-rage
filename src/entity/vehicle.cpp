@@ -215,8 +215,7 @@ void Vehicle::update(int delta)
 	}
 
 	// Send state over network
-	// TODO: only when moving
-	if (GEng()->server != NULL) {
+	if (GEng()->server != NULL && abs(this->vehicle->getCurrentSpeedKmHour()) < 0.01) {
 		GEng()->server->addmsgVehicleState(this);
 	}
 }

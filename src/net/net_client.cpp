@@ -11,6 +11,7 @@
 #include "../entity/ammo_round.h"
 #include "../entity/decaying.h"
 #include "../entity/entity.h"
+#include "../entity/helicopter.h"
 #include "../entity/object.h"
 #include "../entity/pickup.h"
 #include "../entity/unit.h"
@@ -35,7 +36,6 @@ NetClient::NetClient(GameState * st)
 	this->ingame = false;
 
 	this->seq = 0;
-	this->seq_pred = new NetClientSeqPred(this);
 
 	this->code = getRandom(0, 32700);
 	this->last_ack = st->game_time;
@@ -493,7 +493,11 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 		VehicleType *vt = GEng()->mm->getVehicleType(type);
 		if (vt == NULL) return 34;		// TODO: Should we err instead?
 
-		v = new Vehicle(vt, st, trans);
+		if (vt->helicopter) {
+			v = new Helicopter(vt, st, trans);
+		} else {
+			v = new Vehicle(vt, st, trans);
+		}
 
 		st->addVehicle(v);
 		v->eid = eid;
@@ -610,6 +614,3 @@ unsigned int NetClient::handleEntityRem(Uint8 *data, unsigned int size)
 
 	return 2;
 }
-
-
-

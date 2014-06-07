@@ -10,6 +10,7 @@
 
 #include "../rage.h"
 #include "../physics_bullet.h"
+#include "../game_engine.h"
 #include "../game_state.h"
 #include "../render_opengl/animplay.h"
 #include "../mod/vehicletype.h"
@@ -94,6 +95,11 @@ void Helicopter::update(int delta)
 	// Blades animation
 	int angle = (this->st->anim_frame * 75) % 360;
 	this->setNodeAngle(VEHICLE_NODE_SPIN, static_cast<float>(angle));
+	
+	// Send state over network
+	if (GEng()->server != NULL) {
+		GEng()->server->addmsgVehicleState(this);
+	}
 }
 
 

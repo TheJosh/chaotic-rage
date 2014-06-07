@@ -31,19 +31,6 @@
 using namespace std;
 
 
-/**
-* Copy constructor
-**/
-NetServer::NetServer(const NetServer & obj)
-{
-	this->st = obj.st;
-	this->conf = obj.conf;
-
-	this->seq = obj.seq;
-	this->seq_pred = new NetServerSeqPred(*obj.seq_pred);
-}
-
-
 NetServer::NetServer(GameState * st, ServerConfig * conf)
 {
 	this->st = st;
