@@ -133,10 +133,9 @@ void NetClient::update()
 		SDLNet_UDP_Send(this->sock, -1, pkt);
 	}
 
+	this->messages.clear();
 
-	this->messages.remove_if(*this->seq_pred);
-
-	//SDLNet_FreePacket(pkt);
+	SDLNet_FreePacket(pkt);
 }
 
 

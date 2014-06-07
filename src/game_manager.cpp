@@ -299,11 +299,12 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	MapReg *map;
 	Map *m;
 	NetClient *client;
-	st->logic = NULL;
-	st->map = NULL;
 
 	client = new NetClient(st);
-
+	st->logic = NULL;
+	st->map = NULL;
+	st->gs = new GameSettings();
+	st->gt = new GameType();
 	st->physics->init();
 
 	// Create local player
@@ -329,13 +330,7 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	m->load(map->getName(), GEng()->render, map->getMod());
 	st->map = m;
 
-	// TODO: Do we need to init the gametype? I think we might
-	st->gt = NULL;
-
-	// TODO: Do we need to init the gamesettings? I think we might
-	st->gs = NULL;
-
-	// Init GameLogic - is this needed?
+	// Init GameLogic
 	new GameLogic(st);
 	st->logic->selected_unittype = GEng()->mm->getUnitType("robot");
 
@@ -355,6 +350,8 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 cleanup:
 	delete st->logic;
 	delete st->map;
+	delete st->gs;
+	delete st->gt;
 	st->physics->postGame();
 	delete client;
 }

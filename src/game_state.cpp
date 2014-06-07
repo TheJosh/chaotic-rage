@@ -384,7 +384,7 @@ int mk_down_x[MAX_LOCAL], mk_down_y[MAX_LOCAL];
 **/
 void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 {
-	int start = 0, net_time = 0, net_timestep = 50;
+	int start = 0;
 
 	for (int i = 0; i < MAX_LOCAL; i++) {
 		game_x[i] = game_y[i] = net_x[i] = net_y[i] = mk_down_x[i] = mk_down_y[i] = 0;
@@ -433,21 +433,16 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 			game_x[1] = game_y[1] = 0;
 		}
 
-		net_time += delta;
-		if (net_time > net_timestep) {
-			net_time -= net_timestep;
-
-			if (client != NULL) {
-				if (this->local_players[0]->p) {
-					client->addmsgKeyMouseStatus(net_x[0], net_y[0], net_timestep, this->local_players[0]->p->packKeys());
-					net_x[0] = net_y[0] = 0;
-				}
-				client->update();
+		if (client != NULL) {
+			if (this->local_players[0]->p) {
+				client->addmsgKeyMouseStatus(net_x[0], net_y[0], delta, this->local_players[0]->p->packKeys());
+				net_x[0] = net_y[0] = 0;
 			}
+			client->update();
+		}
 
-			if (GEng()->server != NULL) {
-				GEng()->server->update();
-			}
+		if (GEng()->server != NULL) {
+			GEng()->server->update();
 		}
 
 		PROFILE_START(render);

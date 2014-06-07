@@ -219,10 +219,9 @@ void NetServer::update()
 		}
 	}
 
+	this->messages.clear();
 
-	this->messages.remove_if(*this->seq_pred);
-
-	//SDLNet_FreePacket(pkt);
+	SDLNet_FreePacket(pkt);
 }
 
 
