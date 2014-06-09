@@ -398,7 +398,8 @@ int Map::load(string name, Render *render, Mod* insideof)
 		// TODO: Fix for dedicated server (no Render3D)
 		if (! m->model->load(static_cast<Render3D*>(this->render), true)) {
 			cerr << "Map model " << tmp << " failed to load.\n";
-			continue;
+			cfg_free(cfg);
+			return 0;
 		}
 
 		m->play = new AnimPlay(m->model);
@@ -985,6 +986,7 @@ void MapRegistry::find(string dir)
 	maps.push_back(MapReg("therlor_valley", "Therlor Valley"));
 	maps.push_back(MapReg("lakeside", "Lakeside"));
 	maps.push_back(MapReg("stormy_desert", "Stormy Desert"));
+	maps.push_back(MapReg("caves", "Caves test"));
 }
 
 
