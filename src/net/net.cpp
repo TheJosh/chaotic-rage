@@ -76,6 +76,7 @@ MsgServerRecv msg_server_recv [] = {
 NetMsg::NetMsg(NetMsgType type, unsigned int size)
 {
 	this->type = type;
+	this->uniq = -1;
 	this->size = size;
 
 	this->data = NULL;
@@ -84,6 +85,7 @@ NetMsg::NetMsg(NetMsgType type, unsigned int size)
 		memset(this->data, 0, size);
 	}
 
+	this->seq = 0;
 	this->dest = NULL;
 }
 
@@ -91,6 +93,7 @@ NetMsg::NetMsg(NetMsgType type, unsigned int size)
 NetMsg::NetMsg(const NetMsg& that)
 {
 	this->type = that.type;
+	this->uniq = that.uniq;
 	this->size = that.size;
 
 	this->data = NULL;
@@ -102,6 +105,7 @@ NetMsg::NetMsg(const NetMsg& that)
 		this->data[i] = that.data[i];
 	}
 
+	this->seq = that.seq;
 	this->dest = that.dest;
 }
 
@@ -119,4 +123,3 @@ void dumpPacket(Uint8* data, int size)
 	}
 	cout << dec << "}" << endl;
 }
-

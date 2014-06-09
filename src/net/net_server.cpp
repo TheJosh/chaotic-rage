@@ -206,13 +206,9 @@ void NetServer::update()
 				SDLNet_UDP_Send(this->sock, -1, pkt);
 			}
 		}
-	} else {
-		// no clients
-		this->messages.clear();
 	}
 
-	//this->messages.remove_if(*this->seq_pred);
-	this->messages.clear();
+	this->messages.remove_if(*this->seq_pred);
 
 	SDLNet_FreePacket(pkt);
 }
