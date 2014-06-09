@@ -57,7 +57,7 @@ MsgServerRecv msg_server_recv [] = {
 	&NetServer::handleChat,             //<--  0x08
 	NULL,                               //<--  0x09
 	NULL,                               //<--  0x0A
-	NULL,                               //<--  0x0B
+	&NetServer::handleQuit,             //<--  0x0B
 	NULL,                               //<--  0x0C
 	&NetServer::handleKeyMouseStatus,   //<--  0x0D
 	NULL,                               //<--  0x0E
@@ -68,7 +68,7 @@ MsgServerRecv msg_server_recv [] = {
 	NULL,                               //<--  0x13
 	NULL,                               //<--  0x14
 
-	&NetServer::handleQuit,             //<--  0x15
+	NULL,                               //<--  0x15
 };
 
 

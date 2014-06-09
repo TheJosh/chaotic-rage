@@ -452,6 +452,11 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 		audio->play();
 	}
 
+	if (client != NULL) {
+		client->addmsgQuit();
+		client->update();
+	}
+
 	this->postGame();
 	render->postGame();
 	render->freeHeightmap();

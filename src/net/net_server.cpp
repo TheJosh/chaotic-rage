@@ -140,6 +140,7 @@ void NetServer::update()
 	this->messages.remove_if(*this->seq_pred);
 
 
+	// Send all messages to all active clients
 	if (!this->clients.empty()) {
 		// Check the seq of all clients
 		// If they are too old, assume lost network connection

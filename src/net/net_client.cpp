@@ -261,7 +261,6 @@ void NetClient::addmsgChat()
 	messages.push_back(*msg);
 }
 
-
 void NetClient::addmsgKeyMouseStatus(int x, int y, int delta, Uint8 k)
 {
 	//cout << "C CLIENT_STATE" << endl;
