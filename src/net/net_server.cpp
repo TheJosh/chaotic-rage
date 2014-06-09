@@ -66,6 +66,7 @@ static bool ClientEraser(NetServerClientInfo* c)
 
 /**
 * Some time has passed, do stuff
+* TODO: Break out code to sub-functions
 **/
 void NetServer::update()
 {
@@ -135,6 +136,9 @@ void NetServer::update()
 			}
 		}
 	}
+	
+	this->messages.remove_if(*this->seq_pred);
+
 
 	if (!this->clients.empty()) {
 		// Check the seq of all clients
@@ -183,21 +187,30 @@ void NetServer::update()
 
 			SDLNet_Write16(0, ptr);		// pad
 			ptr += 2; pkt->len += 2;
+			
+			int emptyPktLen = pkt->len;
 
 			for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); ++it) {
 				if ((*cli)->seq > (*it).seq) continue;
 				if ((*it).dest != NULL && (*it).dest != (*cli)) continue;
+
+				unsigned int futurePktLen = pkt->len + 1 + (*it).size;
+				if (futurePktLen >= MAX_PKT_SIZE) {
+					cout << "Error: Server: Too many messages. Deleting all." << endl;
+					this->messages.clear();
+					SDLNet_FreePacket(pkt);
+					return;
+				}
+				assert(futurePktLen <= MAX_PKT_SIZE);
 
 				*ptr = (*it).type;
 				ptr++; pkt->len++;
 
 				memcpy(ptr, (*it).data, (*it).size);
 				ptr += (*it).size; pkt->len += (*it).size;
-
-				assert(pkt->len <= MAX_PKT_SIZE);
 			}
 
-			if (pkt->len > 0) {
+			if (pkt->len > emptyPktLen) {
 				if (debug_enabled("net_pkt")) {
 					cout << setw (6) << setfill(' ') << st->game_time << " SEND ";
 					dumpPacket(pkt->data, pkt->len);
@@ -206,9 +219,10 @@ void NetServer::update()
 				SDLNet_UDP_Send(this->sock, -1, pkt);
 			}
 		}
+	} else {
+		// no clients
+		this->messages.clear();
 	}
-
-	this->messages.remove_if(*this->seq_pred);
 
 	SDLNet_FreePacket(pkt);
 }
@@ -254,7 +268,7 @@ void NetServer::dropClient(NetServerClientInfo *client)
 
 NetMsg * NetServer::addmsgInfoResp()
 {
-	cout << "INFO_RESP" << endl;
+	//cout << "INFO_RESP" << endl;
 	NetMsg * msg = new NetMsg(INFO_RESP, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
@@ -263,7 +277,7 @@ NetMsg * NetServer::addmsgInfoResp()
 
 NetMsg * NetServer::addmsgJoinAcc(NetServerClientInfo *client)
 {
-	cout << "JOIN_OKAY" << endl;
+	//cout << "JOIN_OKAY" << endl;
 	string map = this->st->map->getName();
 
 	NetMsg * msg = new NetMsg(JOIN_OKAY, 4 + map.length());
@@ -286,7 +300,7 @@ NetMsg * NetServer::addmsgJoinRej()
 
 NetMsg * NetServer::addmsgDataCompl()
 {
-	cout << "JOIN_DONE" << endl;
+	//cout << "JOIN_DONE" << endl;
 	NetMsg * msg = new NetMsg(JOIN_DONE, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
@@ -300,7 +314,7 @@ NetMsg * NetServer::addmsgChat()
 
 NetMsg * NetServer::addmsgClientDrop(NetServerClientInfo *client)
 {
-	cout << "PLAYER_DROP" << endl;
+	//cout << "PLAYER_DROP" << endl;
 	messages.remove_if(IsTypeUniqPred(PLAYER_DROP, client->slot));
 
 	NetMsg * msg = new NetMsg(PLAYER_DROP, 2);
@@ -435,7 +449,7 @@ NetMsg * NetServer::addmsgAmmoRoundState(AmmoRound *ar)
 	//cout << "AMMOROUND_STATE" << endl;
 	messages.remove_if(IsTypeUniqPred(AMMOROUND_STATE, ar->eid));
 
-	cout << "       addmsgAmmoRoundState()\n";
+	//cout << "       addmsgAmmoRoundState()\n";
 
 	NetMsg * msg = new NetMsg(AMMOROUND_STATE, 40);
 	msg->seq = this->seq;
@@ -489,7 +503,7 @@ NetMsg * NetServer::addmsgPickupState(Pickup *p)
 **/
 NetMsg * NetServer::addmsgEntityRem(Entity *e)
 {
-	cout << "ENTITY_REM" << endl;
+	//cout << "ENTITY_REM" << endl;
 	NetMsg * msg = new NetMsg(ENTITY_REM, 2);
 	msg->seq = this->seq;
 
@@ -515,7 +529,7 @@ unsigned int NetServer::handleInfoReq(NetServerClientInfo *client, Uint8 *data, 
 
 unsigned int NetServer::handleJoinReq(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
-	cout << "       handleJoinReq()\n";
+	//cout << "       handleJoinReq()\n";
 
 	if (client->inlist) return 0;
 

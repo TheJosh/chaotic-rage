@@ -61,6 +61,7 @@ NetClient::~NetClient()
 
 /**
 * Some time has passed, do stuff
+* TODO: Break out code to sub-functions
 **/
 void NetClient::update()
 {
@@ -110,7 +111,10 @@ void NetClient::update()
 		}
 	}
 
+	this->messages.remove_if(*this->seq_pred);
 
+
+	// Send messages
 	pkt->address = this->ipaddress;
 	pkt->len = 0;
 
@@ -122,15 +126,15 @@ void NetClient::update()
 	SDLNet_Write16(this->code, ptr);
 	ptr += 2; pkt->len += 2;
 
-	//cout << messages.size() << endl;
 	for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); ++it) {
+		unsigned int futurePktLen = pkt->len + 1 + (*it).size;
+		assert(futurePktLen <= MAX_PKT_SIZE);
+
 		*ptr = (*it).type;
 		ptr++; pkt->len++;
 
 		memcpy(ptr, (*it).data, (*it).size);
 		ptr += (*it).size; pkt->len += (*it).size;
-
-		assert(pkt->len <= MAX_PKT_SIZE);
 	}
 
 	if (pkt->len > 0) {
@@ -141,9 +145,6 @@ void NetClient::update()
 
 		SDLNet_UDP_Send(this->sock, -1, pkt);
 	}
-
-	//this->messages.remove_if(*this->seq_pred);
-	this->messages.clear();
 
 	SDLNet_FreePacket(pkt);
 }
@@ -222,7 +223,7 @@ void NetClient::preGame()
 
 void NetClient::addmsgInfoReq()
 {
-	cout << "C INFO_REQ" << endl;
+	//cout << "C INFO_REQ" << endl;
 	NetMsg * msg = new NetMsg(INFO_REQ, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
@@ -230,7 +231,7 @@ void NetClient::addmsgInfoReq()
 
 void NetClient::addmsgJoinReq()
 {
-	cout << "C JOIN_REQ" << endl;
+	//cout << "C JOIN_REQ" << endl;
 	NetMsg * msg = new NetMsg(JOIN_REQ, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
@@ -238,7 +239,7 @@ void NetClient::addmsgJoinReq()
 
 void NetClient::addmsgJoinAck()
 {
-	cout << "C JOIN_ACK" << endl;
+	//cout << "C JOIN_ACK" << endl;
 	NetMsg * msg = new NetMsg(JOIN_ACK, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
@@ -246,7 +247,7 @@ void NetClient::addmsgJoinAck()
 
 void NetClient::addmsgDataCompl()
 {
-	cout << "C JOIN_DONE" << endl;
+	//cout << "C JOIN_DONE" << endl;
 	NetMsg * msg = new NetMsg(JOIN_DONE, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
@@ -254,7 +255,7 @@ void NetClient::addmsgDataCompl()
 
 void NetClient::addmsgChat()
 {
-	cout << "C CHAT_REQ" << endl;
+	//cout << "C CHAT_REQ" << endl;
 	NetMsg * msg = new NetMsg(CHAT_REQ, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
@@ -263,7 +264,7 @@ void NetClient::addmsgChat()
 
 void NetClient::addmsgKeyMouseStatus(int x, int y, int delta, Uint8 k)
 {
-	cout << "C CLIENT_STATE" << endl;
+	//cout << "C CLIENT_STATE" << endl;
 	NetMsg * msg = new NetMsg(CLIENT_STATE, 7);
 	msg->seq = this->seq;
 
@@ -276,7 +277,7 @@ void NetClient::addmsgKeyMouseStatus(int x, int y, int delta, Uint8 k)
 
 void NetClient::addmsgQuit()
 {
-	cout << "C QUIT_REQ" << endl;
+	//cout << "C QUIT_REQ" << endl;
 	NetMsg * msg = new NetMsg(QUIT_REQ, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
@@ -292,13 +293,13 @@ void NetClient::addmsgQuit()
 
 unsigned int NetClient::handleInfoResp(Uint8 *data, unsigned int size)
 {
-	cout << "       handleInfoResp()\n";
+	//cout << "       handleInfoResp()\n";
 	return 0;
 }
 
 unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 {
-	cout << "       handleJoinAcc()\n";
+	//cout << "       handleJoinAcc()\n";
 
 	unsigned int slot = 0;
 	char map[128];
@@ -324,26 +325,26 @@ unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleJoinRej(Uint8 *data, unsigned int size)
 {
-	cout << "       handleJoinRej()\n";
+	//cout << "       handleJoinRej()\n";
 	return 0;
 }
 
 unsigned int NetClient::handleDataCompl(Uint8 *data, unsigned int size)
 {
-	cout << "       handleDataCompl()\n";
+	//cout << "       handleDataCompl()\n";
 	this->ingame = true;
 	return 0;
 }
 
 unsigned int NetClient::handleChat(Uint8 *data, unsigned int size)
 {
-	cout << "       handleChat()\n";
+	//cout << "       handleChat()\n";
 	return 0;
 }
 
 unsigned int NetClient::handlePlayerDrop(Uint8 *data, unsigned int size)
 {
-	cout << "       handlePlayerDrop()\n";
+	//cout << "       handlePlayerDrop()\n";
 
 	unsigned int slot = 0;
 	unpack(data, "h",
@@ -612,7 +613,7 @@ unsigned int NetClient::handlePickupState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleEntityRem(Uint8 *data, unsigned int size)
 {
-	cout << "       handleEntityRem()\n";
+	//cout << "       handleEntityRem()\n";
 
 	EID eid;
 
