@@ -14,7 +14,7 @@ using namespace std;
 
 
 #define WEAPON_TYPE_RAYCAST 1
-#define WEAPON_TYPE_DIGDOWN 2
+#define WEAPON_TYPE_UNUSED 2
 #define WEAPON_TYPE_FLAMETHROWER 3
 #define WEAPON_TYPE_TIMED_MINE 4
 #define WEAPON_TYPE_PROXI_MINE 5
@@ -25,7 +25,6 @@ using namespace std;
 
 
 extern cfg_opt_t weapconf_raycast [];
-extern cfg_opt_t weapconf_digdown [];
 extern cfg_opt_t weapconf_mine [];
 extern cfg_opt_t weapconf_rocket [];
 extern cfg_opt_t weapconf_attractor [];
@@ -44,20 +43,6 @@ class WeaponRaycast : public WeaponType
 		int angle_range;
 		float range;
 		float damage;
-
-	public:
-		virtual void doFire(Unit *unit, btTransform &origin);
-};
-
-
-/**
-* Weapons which affect the heightmap
-**/
-class WeaponDigdown : public WeaponType
-{
-	public:
-		int radius;
-		float depth;		// negative = go down, positive = go up
 
 	public:
 		virtual void doFire(Unit *unit, btTransform &origin);

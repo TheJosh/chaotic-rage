@@ -45,7 +45,6 @@ cfg_opt_t weapontype_opts[] =
 
 	// The per-type settings fall into one of five categories:
 	CFG_SEC((char*) "raycast", weapconf_raycast, CFGF_NONE),
-	CFG_SEC((char*) "digdown", weapconf_digdown, CFGF_NONE),
 	CFG_SEC((char*) "mine", weapconf_mine, CFGF_NONE),
 	CFG_SEC((char*) "rocket", weapconf_rocket, CFGF_NONE),
 	CFG_SEC((char*) "attractor", weapconf_attractor, CFGF_NONE),
@@ -76,17 +75,6 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				w->angle_range = cfg_getint(cfg_sec, "angle_range");
 				w->range = (float)cfg_getfloat(cfg_sec, "range");
 				w->damage = (float)cfg_getfloat(cfg_sec, "damage");
-			}
-			break;
-
-		case WEAPON_TYPE_DIGDOWN:
-			{
-				WeaponDigdown* w = new WeaponDigdown();
-				cfg_sec = cfg_getnsec(cfg_item, "digdown", 0);
-				wt = w;
-
-				w->radius = cfg_getint(cfg_sec, "radius");
-				w->depth = (float)cfg_getfloat(cfg_sec, "depth");
 			}
 			break;
 

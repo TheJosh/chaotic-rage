@@ -31,17 +31,6 @@ cfg_opt_t weapconf_raycast[] =
 
 
 /**
-* WEAPON_TYPE_DIGDOWN
-**/
-cfg_opt_t weapconf_digdown[] =
-{
-	CFG_INT((char*) "radius", 2, CFGF_NONE),
-	CFG_FLOAT((char*) "depth", -0.1, CFGF_NONE),
-	CFG_END()
-};
-
-
-/**
 * WEAPON_TYPE_TIMED_MINE
 * WEAPON_TYPE_PROXI_MINE
 * WEAPON_TYPE_REMOTE_MINE
