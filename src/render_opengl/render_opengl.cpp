@@ -20,6 +20,7 @@
 #include "../util/windowicon.h"
 #include "../mod/mod_manager.h"
 #include "../mod/vehicletype.h"
+#include "../map/heightmap.h"
 #include "render_opengl.h"
 #include "render_opengl_settings.h"
 #include "gl_debug.h"

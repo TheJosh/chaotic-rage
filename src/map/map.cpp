@@ -12,6 +12,7 @@
 
 #include "map.h"
 #include "zone.h"
+#include "heightmap.h"
 
 #include "../util/btStrideHeightfieldTerrainShape.h"
 #include "../rage.h"
@@ -679,121 +680,6 @@ float Map::getRandomX()
 float Map::getRandomY()
 {
 	return getRandomf(0, this->height);
-}
-
-
-static bool isPowerOfTwo (unsigned int x)
-{
-	return ((x != 0) && ((x & (~x + 1)) == x));
-}
-
-/**
-* Take the heightmap image and turn it into a data array
-*
-* TODO: Rejig this so we don't use SDL (e.g. prebuild byte array)
-**/
-bool Heightmap::loadIMG(Mod* mod, string filename)
-{
-	int nX, nZ;
-	Uint8 r,g,b;
-	SDL_RWops *rw;
-	SDL_Surface *surf;
-
-	// Create rwops
-	rw = mod->loadRWops(filename);
-	if (rw == NULL) {
-		return false;
-	}
-
-	// Load image file
-	surf = IMG_Load_RW(rw, 0);
-	if (surf == NULL) {
-		SDL_RWclose(rw);
-		return false;
-	}
-
-	// Heightmaps need to be powerOfTwo + 1
-	if (!isPowerOfTwo(surf->w - 1) || !isPowerOfTwo(surf->h - 1)) {
-		SDL_RWclose(rw);
-		SDL_FreeSurface(surf);
-		return false;
-	}
-
-	this->data = new float[surf->w * surf->h];
-	this->sx = surf->w;
-	this->sz = surf->h;
-
-	for (nZ = 0; nZ < this->sz; nZ++) {
-		for (nX = 0; nX < this->sx; nX++) {
-
-			Uint32 pixel = getPixel(surf, nX, nZ);
-			SDL_GetRGB(pixel, surf->format, &r, &g, &b);
-
-			this->data[nZ * this->sx + nX] = r / 255.0f * this->scale;
-
-		}
-	}
-
-	SDL_RWclose(rw);
-	SDL_FreeSurface(surf);
-	return true;
-}
-
-
-/**
-* Create the "ground" for the map
-**/
-bool Heightmap::createRigidBody(float mapSX, float mapSZ)
-{
-	if (this->data == NULL) return false;
-
-	bool flipQuadEdges = false;
-
-	btFasterHeightfieldTerrainShape * groundShape = new btFasterHeightfieldTerrainShape(
-		this->sx, this->sz, this->data,
-		0,
-		0.0f, this->scale,
-		1, PHY_FLOAT, flipQuadEdges
-	);
-
-	groundShape->setLocalScaling(btVector3(
-		mapSX / ((float)this->sx - 1.0f),
-		1.0f,
-		mapSZ / ((float)this->sz - 1.0f)
-	));
-
-	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(
-		btQuaternion(0, 0, 0, 1),
-		btVector3(mapSX/2.0f, this->scale/2.0f, mapSZ/2.0f)
-	));
-
-	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
-		0,
-		groundMotionState,
-		groundShape,
-		btVector3(0,0,0)
-	);
-
-	this->ground = new btRigidBody(groundRigidBodyCI);
-	this->ground->setRestitution(0.f);
-	this->ground->setFriction(10.f);
-
-	// Debugging for the terrain without needing to recompile
-	if (!debug_enabled("terrain")) {
-		this->ground->setCollisionFlags(this->ground->getCollisionFlags()|btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);
-	}
-
-	return true;
-}
-
-
-/**
-* Cleanup
-**/
-Heightmap::~Heightmap()
-{
-	delete [] data;
-	delete ground;
 }
 
 

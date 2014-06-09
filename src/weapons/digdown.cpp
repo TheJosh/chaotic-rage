@@ -10,6 +10,7 @@
 #include "../game_state.h"
 #include "../util/quadratic.h"
 #include "../map/map.h"
+#include "../map/heightmap.h"
 #include "../fx/newparticle.h"
 #include "../entity/unit.h"
 #include "../render/render.h"

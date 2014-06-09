@@ -15,10 +15,12 @@ using namespace std;
 
 
 class Zone;
+class Light;
+class Heightmap;
+class MapMesh;
+
 class Render;
 class Mod;
-class Light;
-class MapMesh;
 class RangeF;
 class btTriangleMesh;
 class btRigidBody;
@@ -40,24 +42,6 @@ class Light {
 
 		void setDiffuse(short r, short g, short b, short a);
 		void setSpecular(short r, short g, short b, short a);
-};
-
-// TODO: Cleanup, improve and move to own file.
-class Heightmap {
-	public:
-		int sx;
-		int sz;
-		float scale;
-		float* data;
-		btRigidBody* ground;
-
-	public:
-		Heightmap() : sx(0), sz(0), scale(0.0f), data(NULL), ground(NULL) {};
-		~Heightmap();
-
-	public:
-		bool loadIMG(Mod* mod, string filename);
-		bool createRigidBody(float mapSX, float mapSZ);
 };
 
 // TODO: Cleanup, improve and move to own file.
