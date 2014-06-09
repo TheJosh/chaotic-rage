@@ -51,11 +51,10 @@ NetClient::~NetClient()
 {
 	if (this->sock != NULL) SDLNet_UDP_Close(this->sock);
 
-	if (this->gameinfo) {
-		delete(this->gameinfo);
-	}
-
+	delete(this->gameinfo);
 	delete(this->seq_pred);
+
+	this->messages.clear();
 }
 
 
@@ -111,8 +110,6 @@ void NetClient::update()
 		}
 	}
 
-	this->messages.remove_if(*this->seq_pred);
-
 
 	// Send messages
 	pkt->address = this->ipaddress;
@@ -145,6 +142,8 @@ void NetClient::update()
 
 		SDLNet_UDP_Send(this->sock, -1, pkt);
 	}
+
+	this->messages.remove_if(*this->seq_pred);
 
 	SDLNet_FreePacket(pkt);
 }

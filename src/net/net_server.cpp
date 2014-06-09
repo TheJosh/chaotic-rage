@@ -49,7 +49,11 @@ NetServer::NetServer(GameState * st, ServerConfig * conf)
 NetServer::~NetServer()
 {
 	if (this->sock != NULL) SDLNet_UDP_Close(this->sock);
+
 	delete(this->seq_pred);
+
+	this->clients.clear();
+	this->messages.clear();
 }
 
 
@@ -110,17 +114,16 @@ void NetServer::update()
 			}
 		}
 
-		// Update their seq
-		if (client != NULL && newseq > client->seq) {
-			client->seq = newseq;
-		}
-
-		// Create a new client if required
 		if (client == NULL) {
+			// Create a new client if required
 			client = new NetServerClientInfo();
 			client->ipaddress.host = pkt->address.host;
 			client->ipaddress.port = pkt->address.port;
 			client->code = code;
+			client->seq = newseq;
+		} else if (newseq > client->seq) {
+			// Update their seq
+			client->seq = newseq;
 		}
 
 		// Handle messages
@@ -137,7 +140,6 @@ void NetServer::update()
 		}
 	}
 	
-	this->messages.remove_if(*this->seq_pred);
 
 
 	// Send all messages to all active clients
@@ -219,10 +221,9 @@ void NetServer::update()
 				SDLNet_UDP_Send(this->sock, -1, pkt);
 			}
 		}
-	} else {
-		// no clients
-		this->messages.clear();
 	}
+
+	this->messages.remove_if(*this->seq_pred);
 
 	SDLNet_FreePacket(pkt);
 }
@@ -249,7 +250,7 @@ void NetServer::dropClient(NetServerClientInfo *client)
 {
 	Unit * u = this->st->findUnitSlot(client->slot);
 	if (u) {
-		u->del = 1;
+		u->del = true;
 	}
 
 	this->st->logic->raise_playerleave(client->slot);
