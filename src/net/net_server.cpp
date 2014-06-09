@@ -6,6 +6,7 @@
 #include <math.h>
 #include <algorithm>
 #include <SDL_net.h>
+
 #include "net.h"
 #include "net_server.h"
 #include "../util/serverconfig.h"
@@ -72,7 +73,7 @@ void NetServer::update()
 
 
 	// Only update seq if we have clients
-	if (this->clients.size() > 0) {
+	if (!this->clients.empty()) {
 		this->seq++;
 	}
 
@@ -135,7 +136,7 @@ void NetServer::update()
 		}
 	}
 
-	if (this->clients.size() > 0) {
+	if (!this->clients.empty()) {
 		// Check the seq of all clients
 		// If they are too old, assume lost network connection
 		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); ++cli) {
@@ -165,6 +166,7 @@ void NetServer::update()
 		}
 
 		// Send messages
+		cout << this->messages.size() << endl;
 		// TODO: Think up a way to handle packets larger than internet MTU
 		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); ++cli) {
 			if ((*cli) == NULL) continue;
@@ -204,8 +206,12 @@ void NetServer::update()
 				SDLNet_UDP_Send(this->sock, -1, pkt);
 			}
 		}
+	} else {
+		// no clients
+		this->messages.clear();
 	}
 
+	//this->messages.remove_if(*this->seq_pred);
 	this->messages.clear();
 
 	SDLNet_FreePacket(pkt);
@@ -252,6 +258,7 @@ void NetServer::dropClient(NetServerClientInfo *client)
 
 NetMsg * NetServer::addmsgInfoResp()
 {
+	cout << "INFO_RESP" << endl;
 	NetMsg * msg = new NetMsg(INFO_RESP, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
@@ -260,6 +267,7 @@ NetMsg * NetServer::addmsgInfoResp()
 
 NetMsg * NetServer::addmsgJoinAcc(NetServerClientInfo *client)
 {
+	cout << "JOIN_OKAY" << endl;
 	string map = this->st->map->getName();
 
 	NetMsg * msg = new NetMsg(JOIN_OKAY, 4 + map.length());
@@ -282,6 +290,7 @@ NetMsg * NetServer::addmsgJoinRej()
 
 NetMsg * NetServer::addmsgDataCompl()
 {
+	cout << "JOIN_DONE" << endl;
 	NetMsg * msg = new NetMsg(JOIN_DONE, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
@@ -295,6 +304,7 @@ NetMsg * NetServer::addmsgChat()
 
 NetMsg * NetServer::addmsgClientDrop(NetServerClientInfo *client)
 {
+	cout << "PLAYER_DROP" << endl;
 	messages.remove_if(IsTypeUniqPred(PLAYER_DROP, client->slot));
 
 	NetMsg * msg = new NetMsg(PLAYER_DROP, 2);
@@ -317,6 +327,7 @@ NetMsg * NetServer::addmsgClientDrop(NetServerClientInfo *client)
 **/
 NetMsg * NetServer::addmsgUnitState(Unit *u)
 {
+	//cout << "UNIT_STATE" << endl;
 	messages.remove_if(IsTypeUniqPred(UNIT_STATE, u->eid));
 
 	NetMsg * msg = new NetMsg(UNIT_STATE, 40);
@@ -344,6 +355,7 @@ NetMsg * NetServer::addmsgUnitState(Unit *u)
 **/
 NetMsg * NetServer::addmsgWallState(Wall *w)
 {
+	//cout << "WALL_STATE" << endl;
 	messages.remove_if(IsTypeUniqPred(WALL_STATE, w->eid));
 
 	NetMsg * msg = new NetMsg(WALL_STATE, 34);
@@ -370,6 +382,7 @@ NetMsg * NetServer::addmsgWallState(Wall *w)
 **/
 NetMsg * NetServer::addmsgObjectState(Object *o)
 {
+	//cout << "OBJECT_STATE" << endl;
 	messages.remove_if(IsTypeUniqPred(OBJECT_STATE, o->eid));
 
 	NetMsg * msg = new NetMsg(OBJECT_STATE, 34);
@@ -396,6 +409,7 @@ NetMsg * NetServer::addmsgObjectState(Object *o)
 **/
 NetMsg * NetServer::addmsgVehicleState(Vehicle *v)
 {
+	//cout << "VEHICLE_STATE" << endl;
 	messages.remove_if(IsTypeUniqPred(VEHICLE_STATE, v->eid));
 
 	NetMsg * msg = new NetMsg(VEHICLE_STATE, 34);
@@ -422,6 +436,7 @@ NetMsg * NetServer::addmsgVehicleState(Vehicle *v)
 **/
 NetMsg * NetServer::addmsgAmmoRoundState(AmmoRound *ar)
 {
+	//cout << "AMMOROUND_STATE" << endl;
 	messages.remove_if(IsTypeUniqPred(AMMOROUND_STATE, ar->eid));
 
 	cout << "       addmsgAmmoRoundState()\n";
@@ -451,6 +466,7 @@ NetMsg * NetServer::addmsgAmmoRoundState(AmmoRound *ar)
 **/
 NetMsg * NetServer::addmsgPickupState(Pickup *p)
 {
+	//cout << "PICKUP_STATE" << endl;
 	messages.remove_if(IsTypeUniqPred(PICKUP_STATE, p->eid));
 
 	NetMsg * msg = new NetMsg(PICKUP_STATE, 34);
@@ -477,6 +493,7 @@ NetMsg * NetServer::addmsgPickupState(Pickup *p)
 **/
 NetMsg * NetServer::addmsgEntityRem(Entity *e)
 {
+	cout << "ENTITY_REM" << endl;
 	NetMsg * msg = new NetMsg(ENTITY_REM, 2);
 	msg->seq = this->seq;
 
@@ -603,6 +620,3 @@ unsigned int NetServer::handleQuit(NetServerClientInfo *client, Uint8 *data, uns
 	this->dropClient(client);
 	return 0;
 }
-
-
-

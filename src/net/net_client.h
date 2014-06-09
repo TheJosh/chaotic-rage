@@ -29,6 +29,8 @@ class NetClient {
 		NetGameinfo *gameinfo;    // Map, etc, provided at join time
 		bool ingame;              // We are in the game
 
+		NetClientSeqPred * seq_pred;
+
 	public:
 		NetClient(GameState * st);
 		~NetClient();
@@ -54,7 +56,6 @@ class NetClient {
 		void addmsgQuit();
 		void addmsgKeyMouseStatus(int x, int y, int delta, Uint8 k);
 
-
 	public:
 		// One method for each incoming network message from the server
 		unsigned int handleInfoResp(Uint8 *data, unsigned int size);
@@ -72,7 +73,6 @@ class NetClient {
 		unsigned int handlePickupState(Uint8 *data, unsigned int size);
 		unsigned int handleEntityRem(Uint8 *data, unsigned int size);
 
-
 	private:
 		void bind(string address, int port);
 };
@@ -84,6 +84,3 @@ class NetClientSeqPred
 		bool operator() (const NetMsg& value) { return (this->client->seq > value.seq); }
 		NetClientSeqPred(NetClient *c) { this->client = c; }
 };
-
-
-

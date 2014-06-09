@@ -5,6 +5,7 @@
 #include <iostream>
 #include <math.h>
 #include <SDL_net.h>
+
 #include "../rage.h"
 #include "../game_state.h"
 #include "../game_engine.h"
@@ -36,6 +37,7 @@ NetClient::NetClient(GameState * st)
 	this->ingame = false;
 
 	this->seq = 0;
+	this->seq_pred = new NetClientSeqPred(this);
 
 	this->code = getRandom(0, 32700);
 	this->last_ack = st->game_time;
@@ -52,6 +54,8 @@ NetClient::~NetClient()
 	if (this->gameinfo) {
 		delete(this->gameinfo);
 	}
+
+	delete(this->seq_pred);
 }
 
 
@@ -83,6 +87,10 @@ void NetClient::update()
 		if (newseq > this->seq) {
 			this->seq = newseq;
 			this->last_ack = st->game_time;
+		} else {
+			// ignore old packages
+			//cout << "old package" << endl;
+			//continue;
 		}
 		ptr += 2; p += 2;
 
@@ -114,6 +122,7 @@ void NetClient::update()
 	SDLNet_Write16(this->code, ptr);
 	ptr += 2; pkt->len += 2;
 
+	//cout << messages.size() << endl;
 	for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); ++it) {
 		*ptr = (*it).type;
 		ptr++; pkt->len++;
@@ -133,6 +142,7 @@ void NetClient::update()
 		SDLNet_UDP_Send(this->sock, -1, pkt);
 	}
 
+	//this->messages.remove_if(*this->seq_pred);
 	this->messages.clear();
 
 	SDLNet_FreePacket(pkt);
@@ -174,6 +184,7 @@ NetGameinfo * NetClient::attemptJoinGame(string address, int port, UIUpdate *ui)
 	return this->gameinfo;
 }
 
+
 /**
 * Downloads the game state from the server.
 * Returns true on success or false on failure.
@@ -194,6 +205,7 @@ bool NetClient::downloadGameState()
 	return true;
 }
 
+
 /**
 * Called at engine start time
 **/
@@ -210,6 +222,7 @@ void NetClient::preGame()
 
 void NetClient::addmsgInfoReq()
 {
+	cout << "C INFO_REQ" << endl;
 	NetMsg * msg = new NetMsg(INFO_REQ, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
@@ -217,6 +230,7 @@ void NetClient::addmsgInfoReq()
 
 void NetClient::addmsgJoinReq()
 {
+	cout << "C JOIN_REQ" << endl;
 	NetMsg * msg = new NetMsg(JOIN_REQ, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
@@ -224,6 +238,7 @@ void NetClient::addmsgJoinReq()
 
 void NetClient::addmsgJoinAck()
 {
+	cout << "C JOIN_ACK" << endl;
 	NetMsg * msg = new NetMsg(JOIN_ACK, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
@@ -231,6 +246,7 @@ void NetClient::addmsgJoinAck()
 
 void NetClient::addmsgDataCompl()
 {
+	cout << "C JOIN_DONE" << endl;
 	NetMsg * msg = new NetMsg(JOIN_DONE, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
@@ -238,6 +254,7 @@ void NetClient::addmsgDataCompl()
 
 void NetClient::addmsgChat()
 {
+	cout << "C CHAT_REQ" << endl;
 	NetMsg * msg = new NetMsg(CHAT_REQ, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
@@ -246,6 +263,7 @@ void NetClient::addmsgChat()
 
 void NetClient::addmsgKeyMouseStatus(int x, int y, int delta, Uint8 k)
 {
+	cout << "C CLIENT_STATE" << endl;
 	NetMsg * msg = new NetMsg(CLIENT_STATE, 7);
 	msg->seq = this->seq;
 
@@ -256,7 +274,9 @@ void NetClient::addmsgKeyMouseStatus(int x, int y, int delta, Uint8 k)
 	messages.push_back(*msg);
 }
 
-void NetClient::addmsgQuit() {
+void NetClient::addmsgQuit()
+{
+	cout << "C QUIT_REQ" << endl;
 	NetMsg * msg = new NetMsg(QUIT_REQ, 0);
 	msg->seq = this->seq;
 	messages.push_back(*msg);
@@ -394,7 +414,7 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 {
-	cout << "       handleWallState()\n";
+	//cout << "       handleWallState()\n";
 
 
 	Uint16 eid;
@@ -433,7 +453,7 @@ unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 {
-	cout << "       handleObjectState()\n";
+	//cout << "       handleObjectState()\n";
 
 	Uint16 eid;
 	CRC32 type;
@@ -471,7 +491,7 @@ unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 {
-	cout << "       handleVehicleState()\n";
+	//cout << "       handleVehicleState()\n";
 
 	Uint16 eid;
 	CRC32 type;
@@ -511,7 +531,7 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
 {
-	cout << "       handleAmmoroundState()\n";
+	//cout << "       handleAmmoroundState()\n";
 
 	Uint16 eid, unit_eid;
 	CRC32 type;
@@ -545,7 +565,6 @@ unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
 		ar = new AmmoRound(st, xform, wt, wt->model, u, mass);
 		st->addAmmoRound(ar);
 		ar->eid = eid;
-
 	} else {
 		ar->setTransform(xform);
 	}
@@ -555,7 +574,7 @@ unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handlePickupState(Uint8 *data, unsigned int size)
 {
-	cout << "       handlePickupState()\n";
+	//cout << "       handlePickupState()\n";
 
 	Uint16 eid;
 	CRC32 type;

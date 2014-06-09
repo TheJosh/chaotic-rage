@@ -23,7 +23,7 @@ enum NetMsgType {
 	NOTHING =       0x00,
 
 	INFO_REQ =      0x01,		// [C] Req for server info
-	INFO_RESP =     0x02,		// [S] Server info  (map, gametype, etc)
+	INFO_RESP =     0x02,		// [S] Server info (map, gametype, etc)
 
 	JOIN_REQ =      0x03,		// [C] Join request
 	JOIN_OKAY =     0x04,		// [S] Join accepted
@@ -35,7 +35,7 @@ enum NetMsgType {
 	CHAT_MSG =      0x09,		// [S] Server -> all w/ chat msg
 
 	PLAYER_DROP =   0x0A,		// [S] Player dropped. too laggy -> all clients
-	QUIT_REQ =      0x0B,		// [C] Player want's to leave -> server
+	QUIT_REQ =      0x0B,		// [C] Player wants to leave -> server
 
 	UNUSED1 =       0x0C,		// Unused at the moment
 
@@ -174,5 +174,3 @@ int32_t pack(unsigned char *buf, char const *format, ...);
 ** unpack() -- unpack data dictated by the format string into the buffer
 */
 void unpack(unsigned char *buf, char const *format, ...);
-
-
