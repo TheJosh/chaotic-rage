@@ -283,7 +283,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 	// Heightmap
 	cfg_sub = cfg_getnsec(cfg, "heightmap", 0);
 	if (cfg_sub) {
-		this->heightmap = new Heightmap();
+		this->heightmap = new Heightmap(this->width, this->height);
 		this->heightmap->scale = (float)cfg_getfloat(cfg_sub, "scale-z");
 
 		char* tmp = cfg_getstr(cfg_sub, "data");
@@ -680,52 +680,6 @@ float Map::getRandomX()
 float Map::getRandomY()
 {
 	return getRandomf(0, this->height);
-}
-
-
-/**
-* Get a map cell.
-* TODO: Remove and support multiple heightmaps
-**/
-float Map::heightmapGet(int X, int Z)
-{
-	return heightmap->data[Z * heightmap->sx + X];
-}
-
-
-/**
-* Set a map cell. Returns the new value.
-* TODO: Remove and support multiple heightmaps
-**/
-float Map::heightmapSet(int X, int Z, float val)
-{
-	return heightmap->data[Z * heightmap->sx + X] = val;
-}
-
-
-/**
-* Increase (use neg nums to decrease) a map cell. Returns the new value.
-* TODO: Remove and support multiple heightmaps
-**/
-float Map::heightmapAdd(int X, int Z, float amt)
-{
-	return heightmap->data[Z * heightmap->sx + X] += amt;
-}
-
-
-float Map::heightmapScaleX()
-{
-	return (float)width / (float)(heightmap->sx-1);
-}
-
-float Map::heightmapScaleY()
-{
-	return this->heightmap->scale;
-}
-
-float Map::heightmapScaleZ()
-{
-	return (float)height / (float)(heightmap->sz-1);
 }
 
 

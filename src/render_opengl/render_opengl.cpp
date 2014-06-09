@@ -703,11 +703,11 @@ void RenderOpenGL::loadHeightmap()
 
 			// u = p2 - p1; v = p3 - p1
 			btVector3 u =
-				btVector3(static_cast<float>(nX) + 1.0f, st->map->heightmapGet(nX + 1, nZ + 1), static_cast<float>(nZ) + 1.0f) -
-				btVector3(static_cast<float>(nX), st->map->heightmapGet(nX, nZ), static_cast<float>(nZ));
+				btVector3(static_cast<float>(nX) + 1.0f, st->map->heightmap->getValue(nX + 1, nZ + 1), static_cast<float>(nZ) + 1.0f) -
+				btVector3(static_cast<float>(nX), st->map->heightmap->getValue(nX, nZ), static_cast<float>(nZ));
 			btVector3 v =
-				btVector3(static_cast<float>(nX) + 1.0f, st->map->heightmapGet(nX + 1, nZ), static_cast<float>(nZ)) -
-				btVector3(static_cast<float>(nX), st->map->heightmapGet(nX, nZ), static_cast<float>(nZ));
+				btVector3(static_cast<float>(nX) + 1.0f, st->map->heightmap->getValue(nX + 1, nZ), static_cast<float>(nZ)) -
+				btVector3(static_cast<float>(nX), st->map->heightmap->getValue(nX, nZ), static_cast<float>(nZ));
 
 			// calc vector
 			btVector3 normal = btVector3(
@@ -722,7 +722,7 @@ void RenderOpenGL::loadHeightmap()
 				flX = static_cast<float>(nX);
 				flZ = static_cast<float>(nZ);
 				vertexes[j].x = flX;
-				vertexes[j].y = st->map->heightmapGet(nX, nZ);
+				vertexes[j].y = st->map->heightmap->getValue(nX, nZ);
 				vertexes[j].z = flZ;
 				vertexes[j].nx = normal.x();
 				vertexes[j].ny = normal.y();
@@ -734,7 +734,7 @@ void RenderOpenGL::loadHeightmap()
 				flX = static_cast<float>(nX);
 				flZ = static_cast<float>(nZ) + 1.0f;
 				vertexes[j].x = flX;
-				vertexes[j].y = st->map->heightmapGet(nX, nZ + 1);
+				vertexes[j].y = st->map->heightmap->getValue(nX, nZ + 1);
 				vertexes[j].z = flZ;
 				vertexes[j].nx = normal.x();
 				vertexes[j].ny = normal.y();
@@ -748,7 +748,7 @@ void RenderOpenGL::loadHeightmap()
 			flX = static_cast<float>(nX) + 1.0f;
 			flZ = static_cast<float>(nZ);
 			vertexes[j].x = flX;
-			vertexes[j].y = st->map->heightmapGet(nX + 1, nZ);
+			vertexes[j].y = st->map->heightmap->getValue(nX + 1, nZ);
 			vertexes[j].z = flZ;
 			vertexes[j].nx = normal.x();
 			vertexes[j].ny = normal.y();
@@ -761,7 +761,7 @@ void RenderOpenGL::loadHeightmap()
 			flX = static_cast<float>(nX) + 1.0f;
 			flZ = static_cast<float>(nZ) + 1.0f;
 			vertexes[j].x = flX;
-			vertexes[j].y = st->map->heightmapGet(nX + 1, nZ + 1);
+			vertexes[j].y = st->map->heightmap->getValue(nX + 1, nZ + 1);
 			vertexes[j].z = flZ;
 			vertexes[j].nx = normal.x();
 			vertexes[j].ny = normal.y();
@@ -1865,7 +1865,7 @@ void RenderOpenGL::terrain()
 
 	glm::mat4 modelMatrix = glm::scale(
 		glm::mat4(1.0f),
-		glm::vec3(this->st->map->heightmapScaleX(), 1.0f, this->st->map->heightmapScaleZ())
+		glm::vec3(this->st->map->heightmap->getScaleX(), 1.0f, this->st->map->heightmap->getScaleZ())
 	);
 
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;

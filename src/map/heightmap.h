@@ -19,6 +19,8 @@ class btRigidBody;
 **/
 class Heightmap {
 	public:
+		int width;
+		int height;
 		int sx;
 		int sz;
 		float scale;
@@ -26,8 +28,8 @@ class Heightmap {
 		btRigidBody* ground;
 
 	public:
-		Heightmap()
-			: sx(0), sz(0), scale(0.0f), data(NULL), ground(NULL)
+		Heightmap(int width, int height)
+			: width(width), height(height), sx(0), sz(0), scale(0.0f), data(NULL), ground(NULL)
 			{};
 
 		~Heightmap();
@@ -42,5 +44,17 @@ class Heightmap {
 		* Create regid body for bullet physics
 		**/
 		bool createRigidBody(float mapSX, float mapSZ);
+
+		/**
+		* Get the value from the heightmap array
+		**/
+		float getValue(int X, int Z);
+
+		/**
+		* Get the scale on the X/Y/Z axis
+		**/
+		float getScaleX();
+		float getScaleY();
+		float getScaleZ();
 };
 

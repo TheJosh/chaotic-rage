@@ -125,6 +125,43 @@ bool Heightmap::createRigidBody(float mapSX, float mapSZ)
 }
 
 
+
+/**
+* Get the value from the data array at a given X/Z coord
+**/
+float Heightmap::getValue(int X, int Z)
+{
+	return data[Z * sx + X];
+}
+
+
+/**
+* Get the scale on the X axis
+**/
+float Heightmap::getScaleX()
+{
+	return (float)width / (float)(sx - 1.0f);
+}
+
+
+/**
+* Get the scale on the Y axis
+**/
+float Heightmap::getScaleY()
+{
+	return scale;
+}
+
+
+/**
+* Get the scale on the Z axis
+**/
+float Heightmap::getScaleZ()
+{
+	return (float)height / (float)(sz - 1.0f);
+}
+
+
 /**
 * Cleanup
 **/

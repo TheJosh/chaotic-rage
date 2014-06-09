@@ -103,16 +103,6 @@ class Map {
 		float getRandomX();
 		float getRandomY();
 
-		// todo: support for multiple heightmaps (in different areas)?
-		void createHeightmapRaw();
-		float heightmapGet(int X, int Z);
-		float heightmapSet(int X, int Z, float val);
-		float heightmapAdd(int X, int Z, float amt);
-		float heightmapScaleX();
-		float heightmapScaleY();
-		float heightmapScaleZ();
-		btRigidBody * createGroundBody();
-
 	private:
 		void fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *play, AssimpModel *am, AssimpNode *nd);
 		btRigidBody* createBoundaryPlane(const btVector3 &axis, const btVector3 &loc);
