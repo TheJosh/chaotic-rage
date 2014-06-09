@@ -81,9 +81,9 @@ bool Heightmap::loadIMG(Mod* mod, string filename)
 /**
 * Create the "ground" for the map
 **/
-bool Heightmap::createRigidBody(float mapSX, float mapSZ)
+btRigidBody* Heightmap::createRigidBody()
 {
-	if (this->data == NULL) return false;
+	if (this->data == NULL) return NULL;
 
 	bool flipQuadEdges = false;
 
@@ -95,14 +95,14 @@ bool Heightmap::createRigidBody(float mapSX, float mapSZ)
 	);
 
 	groundShape->setLocalScaling(btVector3(
-		mapSX / ((float)this->sx - 1.0f),
+		sizeX / ((float)this->sx - 1.0f),
 		1.0f,
-		mapSZ / ((float)this->sz - 1.0f)
+		sizeZ / ((float)this->sz - 1.0f)
 	));
 
 	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(
 		btQuaternion(0, 0, 0, 1),
-		btVector3(mapSX/2.0f, this->scale/2.0f, mapSZ/2.0f)
+		btVector3(sizeX/2.0f, this->scale/2.0f, sizeZ/2.0f)
 	));
 
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
@@ -121,7 +121,7 @@ bool Heightmap::createRigidBody(float mapSX, float mapSZ)
 		this->ground->setCollisionFlags(this->ground->getCollisionFlags()|btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);
 	}
 
-	return true;
+	return this->ground;
 }
 
 
@@ -140,7 +140,7 @@ float Heightmap::getValue(int X, int Z)
 **/
 float Heightmap::getScaleX()
 {
-	return (float)width / (float)(sx - 1.0f);
+	return (float)sizeX / (float)(sx - 1.0f);
 }
 
 
@@ -158,7 +158,7 @@ float Heightmap::getScaleY()
 **/
 float Heightmap::getScaleZ()
 {
-	return (float)height / (float)(sz - 1.0f);
+	return (float)sizeZ / (float)(sz - 1.0f);
 }
 
 

@@ -680,7 +680,7 @@ void RenderOpenGL::freeSprite(SpritePtr sprite)
 
 
 /**
-* Loads a heightmap from the raw heightmap data (an array of floats).
+* Create an OpenGL mesh (array of triangle strips) from a heightmap
 **/
 void RenderOpenGL::loadHeightmap()
 {
@@ -688,11 +688,10 @@ void RenderOpenGL::loadHeightmap()
 	float flX, flZ;
 	GLuint buffer;
 
-	if (st->map->heightmap == NULL) return;
-	if (st->map->heightmap->data == NULL) return;
+	if (st->map->heightmap == NULL || !st->map->heightmap->isValid()) return;
 
-	unsigned int maxX = st->map->heightmap->sx - 1;
-	unsigned int maxZ = st->map->heightmap->sz - 1;
+	unsigned int maxX = st->map->heightmap->getDataSizeX() - 1;
+	unsigned int maxZ = st->map->heightmap->getDataSizeZ() - 1;
 
 	this->ter_size = (maxX * maxZ * 2) + (maxZ * 2);
 	VBOvertex* vertexes = new VBOvertex[this->ter_size];
@@ -727,8 +726,8 @@ void RenderOpenGL::loadHeightmap()
 				vertexes[j].nx = normal.x();
 				vertexes[j].ny = normal.y();
 				vertexes[j].nz = normal.z();
-				vertexes[j].tx = flX / st->map->heightmap->sx;
-				vertexes[j].ty = flZ / st->map->heightmap->sz;
+				vertexes[j].tx = flX / st->map->heightmap->getDataSizeX();
+				vertexes[j].ty = flZ / st->map->heightmap->getDataSizeZ();
 				j++;
 
 				flX = static_cast<float>(nX);
@@ -739,8 +738,8 @@ void RenderOpenGL::loadHeightmap()
 				vertexes[j].nx = normal.x();
 				vertexes[j].ny = normal.y();
 				vertexes[j].nz = normal.z();
-				vertexes[j].tx = flX / st->map->heightmap->sx;
-				vertexes[j].ty = flZ / st->map->heightmap->sz;
+				vertexes[j].tx = flX / st->map->heightmap->getDataSizeX();
+				vertexes[j].ty = flZ / st->map->heightmap->getDataSizeZ();
 				j++;
 			}
 
@@ -753,8 +752,8 @@ void RenderOpenGL::loadHeightmap()
 			vertexes[j].nx = normal.x();
 			vertexes[j].ny = normal.y();
 			vertexes[j].nz = normal.z();
-			vertexes[j].tx = flX / st->map->heightmap->sx;
-			vertexes[j].ty = flZ / st->map->heightmap->sz;
+			vertexes[j].tx = flX / st->map->heightmap->getDataSizeX();
+			vertexes[j].ty = flZ / st->map->heightmap->getDataSizeZ();
 			j++;
 
 			// Bottom
@@ -766,8 +765,8 @@ void RenderOpenGL::loadHeightmap()
 			vertexes[j].nx = normal.x();
 			vertexes[j].ny = normal.y();
 			vertexes[j].nz = normal.z();
-			vertexes[j].tx = flX / st->map->heightmap->sx;
-			vertexes[j].ty = flZ / st->map->heightmap->sz;
+			vertexes[j].tx = flX / st->map->heightmap->getDataSizeX();
+			vertexes[j].ty = flZ / st->map->heightmap->getDataSizeZ();
 			j++;
 		}
 	}
@@ -1891,8 +1890,8 @@ void RenderOpenGL::terrain()
 
 	this->ter_vao->bind();
 
-	int numPerStrip = 2 + ((st->map->heightmap->sx-1) * 2);
-	for (int z = 0; z < st->map->heightmap->sz - 1; z++) {
+	int numPerStrip = 2 + ((st->map->heightmap->getDataSizeX()-1) * 2);
+	for (int z = 0; z < st->map->heightmap->getDataSizeZ() - 1; z++) {
 		glDrawArrays(GL_TRIANGLE_STRIP, numPerStrip * z, numPerStrip);
 	}
 

@@ -18,18 +18,22 @@ class btRigidBody;
 * A 3D struture represented by a 2D array of height (Y) values.
 **/
 class Heightmap {
-	public:
-		int width;
-		int height;
+	private:
+		// Physical size
+		float sizeX;
+		float sizeZ;
+
+		// Data array size
 		int sx;
 		int sz;
+
 		float scale;
 		float* data;
 		btRigidBody* ground;
 
 	public:
-		Heightmap(int width, int height)
-			: width(width), height(height), sx(0), sz(0), scale(0.0f), data(NULL), ground(NULL)
+		Heightmap(float sizeX, float sizeZ, float scale)
+			: sizeX(sizeX), sizeZ(sizeZ), sx(0), sz(0), scale(scale), data(NULL), ground(NULL)
 			{};
 
 		~Heightmap();
@@ -43,12 +47,26 @@ class Heightmap {
 		/**
 		* Create regid body for bullet physics
 		**/
-		bool createRigidBody(float mapSX, float mapSZ);
+		btRigidBody* createRigidBody();
+
+		/**
+		* Are we all loaded up?
+		**/
+		bool isValid() { return (data != NULL); }
 
 		/**
 		* Get the value from the heightmap array
 		**/
 		float getValue(int X, int Z);
+
+		/**
+		* Get the size on the X/Z axis
+		**/
+		float getSizeX() { return this->sizeX; }
+		float getSizeZ() { return this->sizeZ; }
+
+		float getDataSizeX() { return this->sx; }
+		float getDataSizeZ() { return this->sz; }
 
 		/**
 		* Get the scale on the X/Y/Z axis

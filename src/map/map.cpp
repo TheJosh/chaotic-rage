@@ -283,8 +283,9 @@ int Map::load(string name, Render *render, Mod* insideof)
 	// Heightmap
 	cfg_sub = cfg_getnsec(cfg, "heightmap", 0);
 	if (cfg_sub) {
-		this->heightmap = new Heightmap(this->width, this->height);
-		this->heightmap->scale = (float)cfg_getfloat(cfg_sub, "scale-z");
+		float scale = (float)cfg_getfloat(cfg_sub, "scale-z");
+
+		this->heightmap = new Heightmap(this->width, this->height, scale);
 
 		char* tmp = cfg_getstr(cfg_sub, "data");
 		if (tmp == NULL) {
@@ -689,12 +690,13 @@ float Map::getRandomY()
 bool Map::preGame()
 {
 	// Create heightmap rigid body
-	if (! heightmap->createRigidBody(this->width, this->height)) {
+	btRigidBody* ground = heightmap->createRigidBody();
+	if (ground == NULL) {
 		return false;
 	}
 
 	// Add to physics
-	this->st->physics->addRigidBody(heightmap->ground, CG_TERRAIN);
+	this->st->physics->addRigidBody(ground, CG_TERRAIN);
 
 	// If there is water in the world, we create a water surface
 	// It doesn't collide with stuff, it's just so we can detect with a raycast
