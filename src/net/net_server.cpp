@@ -157,20 +157,19 @@ void NetServer::update()
 
 		// Dump debug info
 		if (debug_enabled("net_info")) {
-			cout << setw (6) << setfill(' ') << st->game_time << " MSG-QUEUE\n";
+			cout << setw (6) << setfill(' ') << st->game_time << " MSG-QUEUE" << endl;
 			for (list<NetMsg>::iterator it = this->messages.begin(); it != this->messages.end(); ++it) {
 				cout << "       " << setw (6) << setfill(' ') << ((*it).seq) << " " << ((*it).type);
 				dumpPacket((*it).data, (*it).size);
 			}
 
-			cout << setw (6) << setfill(' ') << st->game_time << " CLIENT-INFO\n";
+			cout << setw (6) << setfill(' ') << st->game_time << " CLIENT-INFO" << endl;
 			for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); ++cli) {
-				cout << "       " << setw (6) << setfill(' ') << ((*cli)->seq) << " " << ((*cli)->slot) << "\n";
+				cout << "       " << setw (6) << setfill(' ') << ((*cli)->seq) << " " << ((*cli)->slot) << endl;
 			}
 		}
 
 		// Send messages
-		cout << this->messages.size() << endl;
 		// TODO: Think up a way to handle packets larger than internet MTU
 		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); ++cli) {
 			if ((*cli) == NULL) continue;
@@ -196,7 +195,7 @@ void NetServer::update()
 
 				unsigned int futurePktLen = pkt->len + 1 + (*it).size;
 				if (futurePktLen >= MAX_PKT_SIZE) {
-					cout << "Error: Server: Too many messages. Deleting all." << endl;
+					cout << "Error: Server: Too many messages, deleting all." << endl;
 					this->messages.clear();
 					SDLNet_FreePacket(pkt);
 					return;
@@ -287,7 +286,7 @@ NetMsg * NetServer::addmsgJoinAcc(NetServerClientInfo *client)
 		client->slot, map.c_str()
 	);
 
-	cout << "       Sent slot of: " << client->slot << "  map: " << map << "\n";
+	cout << "       Sent slot of: " << client->slot << "  map: " << map << endl;
 
 	messages.push_back(*msg);
 	return msg;
@@ -325,7 +324,7 @@ NetMsg * NetServer::addmsgClientDrop(NetServerClientInfo *client)
 		client->slot
 	);
 
-	cout << "       Dropped client: " << client->slot << "\n";
+	cout << "       Dropped client: " << client->slot << endl;
 
 	messages.push_back(*msg);
 	return msg;
@@ -449,7 +448,7 @@ NetMsg * NetServer::addmsgAmmoRoundState(AmmoRound *ar)
 	//cout << "AMMOROUND_STATE" << endl;
 	messages.remove_if(IsTypeUniqPred(AMMOROUND_STATE, ar->eid));
 
-	//cout << "       addmsgAmmoRoundState()\n";
+	//cout << "       addmsgAmmoRoundState()" << endl;
 
 	NetMsg * msg = new NetMsg(AMMOROUND_STATE, 40);
 	msg->seq = this->seq;
@@ -507,7 +506,7 @@ NetMsg * NetServer::addmsgEntityRem(Entity *e)
 	NetMsg * msg = new NetMsg(ENTITY_REM, 2);
 	msg->seq = this->seq;
 
-	cout << "       addmsgEntityRem()  klass: " << e->klass() << "  eid: " << e->eid << "\n";
+	cout << "       addmsgEntityRem()  klass: " << e->klass() << "  eid: " << e->eid << endl;
 
 	pack(msg->data, "h", e->eid);
 
@@ -529,7 +528,7 @@ unsigned int NetServer::handleInfoReq(NetServerClientInfo *client, Uint8 *data, 
 
 unsigned int NetServer::handleJoinReq(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
-	//cout << "       handleJoinReq()\n";
+	//cout << "       handleJoinReq()" << endl;
 
 	if (client->inlist) return 0;
 
@@ -545,7 +544,7 @@ unsigned int NetServer::handleJoinReq(NetServerClientInfo *client, Uint8 *data, 
 
 unsigned int NetServer::handleJoinAck(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
-	cout << "       handleJoinAck() from slot " << client->slot << "\n";
+	cout << "       handleJoinAck() from slot " << client->slot << endl;
 
 	NetMsg* msg = NULL;
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {
@@ -589,7 +588,7 @@ unsigned int NetServer::handleJoinAck(NetServerClientInfo *client, Uint8 *data, 
 
 unsigned int NetServer::handleJoinDone(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
-	cout << "       handleJoinDone() from slot " << client->slot << "\n";
+	cout << "       handleJoinDone() from slot " << client->slot << endl;
 
 	client->ingame = true;
 
@@ -600,7 +599,7 @@ unsigned int NetServer::handleJoinDone(NetServerClientInfo *client, Uint8 *data,
 
 unsigned int NetServer::handleChat(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
-	cout << "       handleChat() from slot " << client->slot << "\n";
+	cout << "       handleChat() from slot " << client->slot << endl;
 	return 0;
 }
 
@@ -626,7 +625,7 @@ unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 
 
 unsigned int NetServer::handleQuit(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
-	cout << "       handleQuit() from slot " << client->slot << "\n";
+	cout << "       handleQuit() from slot " << client->slot << endl;
 	this->dropClient(client);
 	return 0;
 }

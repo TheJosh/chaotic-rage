@@ -293,13 +293,13 @@ void NetClient::addmsgQuit()
 
 unsigned int NetClient::handleInfoResp(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleInfoResp()\n";
+	//cout << "       handleInfoResp()" << endl;
 	return 0;
 }
 
 unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleJoinAcc()\n";
+	//cout << "       handleJoinAcc()" << endl;
 
 	unsigned int slot = 0;
 	char map[128];
@@ -310,7 +310,7 @@ unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 
 	if (st->local_players[0]->slot == 0) {
 		st->local_players[0]->slot = slot;
-		cout << "       Our slot: " << slot << "\n";
+		cout << "       Our slot: " << slot << endl;
 	}
 
 	this->gameinfo = new NetGameinfo();
@@ -325,26 +325,26 @@ unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleJoinRej(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleJoinRej()\n";
+	//cout << "       handleJoinRej()" << endl;
 	return 0;
 }
 
 unsigned int NetClient::handleDataCompl(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleDataCompl()\n";
+	//cout << "       handleDataCompl()" << endl;
 	this->ingame = true;
 	return 0;
 }
 
 unsigned int NetClient::handleChat(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleChat()\n";
+	//cout << "       handleChat()" << endl;
 	return 0;
 }
 
 unsigned int NetClient::handlePlayerDrop(Uint8 *data, unsigned int size)
 {
-	//cout << "       handlePlayerDrop()\n";
+	//cout << "       handlePlayerDrop()" << endl;
 
 	unsigned int slot = 0;
 	unpack(data, "h",
@@ -362,7 +362,7 @@ unsigned int NetClient::handlePlayerDrop(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleUnitState()\n";
+	//cout << "       handleUnitState()" << endl;
 
 
 	Uint16 eid, slot;
@@ -384,8 +384,8 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 
 	// If don't exist, create
 	if (u == NULL) {
-		cout << "       CREATE:\n";
-		cout << "       eid: " << eid << "   slot: " << slot << "   our slot: " << st->local_players[0]->slot << "\n";
+		cout << "       CREATE:" << endl;
+		cout << "       eid: " << eid << "   slot: " << slot << "   our slot: " << st->local_players[0]->slot << endl;
 
 		UnitType *ut = GEng()->mm->getUnitType(type);
 		if (! ut) return 40;	// Is this correct?
@@ -415,7 +415,7 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleWallState()\n";
+	//cout << "       handleWallState()" << endl;
 
 
 	Uint16 eid;
@@ -454,7 +454,7 @@ unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleObjectState()\n";
+	//cout << "       handleObjectState()" << endl;
 
 	Uint16 eid;
 	CRC32 type;
@@ -492,7 +492,7 @@ unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleVehicleState()\n";
+	//cout << "       handleVehicleState()" << endl;
 
 	Uint16 eid;
 	CRC32 type;
@@ -532,7 +532,7 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleAmmoroundState()\n";
+	//cout << "       handleAmmoroundState()" << endl;
 
 	Uint16 eid, unit_eid;
 	CRC32 type;
@@ -575,7 +575,7 @@ unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handlePickupState(Uint8 *data, unsigned int size)
 {
-	//cout << "       handlePickupState()\n";
+	//cout << "       handlePickupState()" << endl;
 
 	Uint16 eid;
 	CRC32 type;
@@ -613,13 +613,13 @@ unsigned int NetClient::handlePickupState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleEntityRem(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleEntityRem()\n";
+	//cout << "       handleEntityRem()" << endl;
 
 	EID eid;
 
 	unpack(data, "h", &eid);
 
-	cout << "       REMOVE  eid: " << eid << "\n";
+	cout << "       REMOVE  eid: " << eid << endl;
 
 	// Find and remove
 	Entity *e = st->getEntity(eid);
