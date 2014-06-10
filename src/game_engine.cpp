@@ -136,7 +136,6 @@ void GameEngine::initGuichan()
 		this->guitop->setSize(this->render->getWidth(), this->render->getHeight());
 		this->guitop->setBaseColor(gcn::Color(0, 0, 0, 0));
 		gui->setTop(this->guitop);
-
 	} catch (const gcn::Exception & ex) {
 		this->gui = NULL;
 	}
@@ -163,6 +162,7 @@ bool GameEngine::hasDialog(string name)
 void GameEngine::addDialog(Dialog * dialog)
 {
 	if (this->gui == NULL) return;
+	if (hasDialog(dialog->getName())) return;
 
 	gcn::Container * c = dialog->setup();
 	c->setPosition((this->render->getWidth() - c->getWidth()) / 2, (this->render->getHeight() - c->getHeight()) / 2);

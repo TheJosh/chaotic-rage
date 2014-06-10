@@ -69,6 +69,7 @@ void NetClient::update()
 
 	// Check the server is still chatting to us
 	if (this->ingame && (st->game_time - this->last_ack) > 2500) {
+		GEng()->setMouseGrab(false);
 		displayMessageBox("Disconnected from server.");
 		st->gameOver();
 	}
