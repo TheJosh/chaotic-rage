@@ -70,6 +70,7 @@ class Map {
 	public:
 		float width;
 		float height;
+
 		Heightmap* heightmap;		// TODO: Support multiple
 
 		SpritePtr skybox;
@@ -105,51 +106,5 @@ class Map {
 	private:
 		void fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *play, AssimpModel *am, AssimpNode *nd);
 		btRigidBody* createBoundaryPlane(const btVector3 &axis, const btVector3 &loc);
-};
-
-
-/**
-* A single "registered" map
-**/
-class MapReg {
-	friend class MapRegistry;
-
-	protected:
-		string name;
-		string title;
-		Mod* mod;
-		bool arcade;
-
-	public:
-		MapReg() : name(""), title(""), mod(NULL), arcade(true) {}
-		MapReg(string name) : name(name), title(name), mod(NULL), arcade(true) {}
-		MapReg(string name, string title) : name(name), title(title), mod(NULL), arcade(true) {}
-		MapReg(string name, string title, Mod* mod) : name(name), title(title), mod(mod), arcade(true) {}
-		MapReg(string name, string title, Mod* mod, bool arcade) : name(name), title(title), mod(mod), arcade(arcade) {}
-
-	public:
-		string getName() { return this->name; }
-		string getTitle() { return this->title; }
-		Mod* getMod() { return this->mod; }
-		bool getArcade() { return this->arcade; }
-};
-
-
-/**
-* The registry of maps
-**/
-class MapRegistry {
-	public:
-		vector<MapReg> maps;
-
-	public:
-		void find(string dir);
-		void find(Mod* mod);
-		MapReg* get(string name);
-
-		string nameAt(int index) { return maps.at(index).name; }
-		string titleAt(int index) { return maps.at(index).title; }
-		MapReg* at(int index) { return &maps.at(index); }
-		unsigned int size() { return maps.size(); }
 };
 

@@ -5,7 +5,7 @@
 #pragma once
 #include <SDL.h>
 #include "../rage.h"
-#include "../map/map.h"
+#include "../map/reg.h"
 #include <map>
 
 #ifndef O_BINARY

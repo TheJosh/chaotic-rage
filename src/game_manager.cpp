@@ -8,6 +8,7 @@
 #include "game_engine.h"
 #include "game_settings.h"
 #include "map/map.h"
+#include "map/reg.h"
 #include "physics_bullet.h"
 #include "mod/campaign.h"
 #include "net/net.h"
