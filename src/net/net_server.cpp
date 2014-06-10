@@ -72,7 +72,7 @@ static bool ClientEraser(NetServerClientInfo* c)
 * Some time has passed, do stuff
 * TODO: Break out code to sub-functions
 **/
-void NetServer::update()
+bool NetServer::update()
 {
 	UDPpacket *pkt = SDLNet_AllocPacket(MAX_PKT_SIZE);
 
@@ -173,7 +173,9 @@ void NetServer::update()
 		}
 
 		// Send messages
-		// TODO: Think up a way to handle packets larger than internet MTU
+		// TODO: Think up a way to handle packets larger than internet MTU.
+		// The current workaround is to allow sending packages larger
+		// than MTU (if needed). Leads to package fragmentation.
 		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); ++cli) {
 			if ((*cli) == NULL) continue;
 
@@ -198,10 +200,9 @@ void NetServer::update()
 
 				unsigned int futurePktLen = pkt->len + 1 + (*it).size;
 				if (futurePktLen >= MAX_PKT_SIZE) {
-					cout << "Error: Server: Too many messages, deleting all." << endl;
-					this->messages.clear();
+					cout << "Error: Server: Too many messages. Shutting down." << endl;
 					SDLNet_FreePacket(pkt);
-					return;
+					return false;
 				}
 				assert(futurePktLen <= MAX_PKT_SIZE);
 
@@ -224,8 +225,8 @@ void NetServer::update()
 	}
 
 	this->messages.remove_if(*this->seq_pred);
-
 	SDLNet_FreePacket(pkt);
+	return true;
 }
 
 

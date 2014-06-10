@@ -57,8 +57,12 @@ enum NetMsgType {
 /**
 * The maximum size of packets
 * This might become dynamic and per-client later on
+*
+* Maximum Transmission Unit (MTU) for ethernet is 1492,
+* larger packages will lead to package fragmentations and therefore
+* higher risk of package loss.
 **/
-#define MAX_PKT_SIZE 1492
+#define MAX_PKT_SIZE 1492 * 2
 
 
 /**

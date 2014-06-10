@@ -39,7 +39,7 @@ class NetServer {
 		NetServer(const NetServer & disabledCopyConstuctor);
 
 	public:
-		void update();
+		bool update();
 		void listen();
 		void dropClient(NetServerClientInfo *client);
 

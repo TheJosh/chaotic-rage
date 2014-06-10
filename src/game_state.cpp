@@ -442,7 +442,11 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 		}
 
 		if (GEng()->server != NULL) {
-			GEng()->server->update();
+			if (!GEng()->server->update()) {
+				// Server shutting down, shut down game
+				this->running = false;
+				break;
+			}
 		}
 
 		PROFILE_START(render);
