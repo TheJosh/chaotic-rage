@@ -213,7 +213,6 @@ Map::Map(GameState * st)
 	this->height = 0.0f;
 	this->heightmap = NULL;
 	this->skybox = NULL;
-	this->terrain = NULL;
 	this->water = NULL;
 
 	this->ambient[0] = this->ambient[1] = this->ambient[2] = 0.3f;
@@ -307,12 +306,15 @@ int Map::load(string name, Render *render, Mod* insideof)
 			return 0;
 		}
 
-		this->terrain = this->render->loadSprite(std::string(tmp), this->mod);
-		if (! this->terrain) {
+		SpritePtr tex = this->render->loadSprite(std::string(tmp), this->mod);
+		if (! tex) {
 			cerr << "No terrain image found for map\n";
 			cfg_free(cfg);
 			return 0;
 		}
+
+		this->heightmap->setBigTexture(tex);
+
 	} else {
 		cerr << "Heightmaps are currently required.\n";
 		cfg_free(cfg);
@@ -794,11 +796,6 @@ void Map::postGame()
 {
 	delete this->heightmap;
 	this->heightmap = NULL;
-
-	if (this->terrain != NULL) {
-		this->render->freeSprite(this->terrain);
-		this->terrain = NULL;
-	}
 
 	if (this->skybox != NULL) {
 		this->render->freeSprite(this->skybox);

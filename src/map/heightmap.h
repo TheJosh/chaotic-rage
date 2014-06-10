@@ -27,13 +27,21 @@ class Heightmap {
 		int sx;
 		int sz;
 
+		// Scale on Y axis
 		float scale;
+
+		// Data array
 		float* data;
+
+		// Physics object
 		btRigidBody* ground;
+
+		// BigTexture
+		SpritePtr terrain;
 
 	public:
 		Heightmap(float sizeX, float sizeZ, float scale)
-			: sizeX(sizeX), sizeZ(sizeZ), sx(0), sz(0), scale(scale), data(NULL), ground(NULL)
+			: sizeX(sizeX), sizeZ(sizeZ), sx(0), sz(0), scale(scale), data(NULL), ground(NULL), terrain(NULL)
 			{};
 
 		~Heightmap();
@@ -48,6 +56,16 @@ class Heightmap {
 		* Create regid body for bullet physics
 		**/
 		btRigidBody* createRigidBody();
+
+		/**
+		* Set a big texture image for the heightmap
+		**/
+		void setBigTexture(SpritePtr tex) { terrain = tex; }
+
+		/**
+		* Return the bigtexture if set
+		**/
+		SpritePtr getBigTexture() { return terrain; }
 
 		/**
 		* Are we all loaded up?

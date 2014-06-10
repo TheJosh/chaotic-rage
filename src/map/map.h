@@ -71,7 +71,6 @@ class Map {
 		float width;
 		float height;
 		Heightmap* heightmap;		// TODO: Support multiple
-		SpritePtr terrain;
 
 		SpritePtr skybox;
 		glm::vec3 skybox_size;
@@ -153,8 +152,4 @@ class MapRegistry {
 		MapReg* at(int index) { return &maps.at(index); }
 		unsigned int size() { return maps.size(); }
 };
-
-
-
-
 

@@ -1858,7 +1858,7 @@ void RenderOpenGL::terrain()
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, this->shadow_depth_tex);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, st->map->terrain->pixels);
+	glBindTexture(GL_TEXTURE_2D, st->map->heightmap->getBigTexture()->pixels);
 
 	glUseProgram(s->p());
 
