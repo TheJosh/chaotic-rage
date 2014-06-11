@@ -31,6 +31,8 @@ class Heightmap {
 		// Scale on Y axis
 		float scale;
 
+		glm::vec3 pos;
+
 		// Data array
 		float* data;
 
@@ -46,8 +48,8 @@ class Heightmap {
 		unsigned int glsize;
 
 	public:
-		Heightmap(float sizeX, float sizeZ, float scale)
-			: sizeX(sizeX), sizeZ(sizeZ), sx(0), sz(0), scale(scale), data(NULL), ground(NULL), terrain(NULL)
+		Heightmap(float sizeX, float sizeZ, float scale, glm::vec3 pos)
+			: sizeX(sizeX), sizeZ(sizeZ), sx(0), sz(0), scale(scale), pos(pos), data(NULL), ground(NULL), terrain(NULL)
 			{};
 
 		~Heightmap();
@@ -74,6 +76,11 @@ class Heightmap {
 		SpritePtr getBigTexture() { return terrain; }
 
 		/**
+		* Return the coordinate to position the center of the heightmap
+		**/
+		glm::vec3 getPosition() { return pos; }
+
+		/**
 		* Are we all loaded up?
 		**/
 		bool isValid() { return (data != NULL); }
@@ -84,11 +91,14 @@ class Heightmap {
 		float getValue(int X, int Z);
 
 		/**
-		* Get the size on the X/Z axis
+		* Get the physical size on the X/Z axis
 		**/
 		float getSizeX() { return this->sizeX; }
 		float getSizeZ() { return this->sizeZ; }
 
+		/**
+		* Get the data array size on the X/Z axis
+		**/
 		float getDataSizeX() { return this->sx; }
 		float getDataSizeZ() { return this->sz; }
 

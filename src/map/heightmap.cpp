@@ -102,7 +102,7 @@ btRigidBody* Heightmap::createRigidBody()
 
 	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(
 		btQuaternion(0, 0, 0, 1),
-		btVector3(sizeX/2.0f, this->scale/2.0f, sizeZ/2.0f)
+		btVector3(pos.x, pos.y, pos.z)
 	));
 
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(

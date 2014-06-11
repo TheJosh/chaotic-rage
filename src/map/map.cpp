@@ -131,7 +131,10 @@ static cfg_opt_t heightmap_opts[] =
 {
 	CFG_STR((char*) "data", ((char*)""), CFGF_NONE),
 	CFG_STR((char*) "texture", ((char*)""), CFGF_NONE),
-	CFG_FLOAT((char*) "scale-z", 4.0f, CFGF_NONE),
+	CFG_FLOAT((char*) "scale-y", 4.0f, CFGF_NONE),
+	CFG_FLOAT((char*) "size-x", 0.0f, CFGF_NONE),
+	CFG_FLOAT((char*) "size-z", 0.0f, CFGF_NONE),
+	CFG_FLOAT_LIST((char*) "pos", 0, CFGF_NONE),
 	CFG_END()
 };
 
@@ -281,9 +284,28 @@ int Map::load(string name, Render *render, Mod* insideof)
 	// Heightmap
 	cfg_sub = cfg_getnsec(cfg, "heightmap", 0);
 	if (cfg_sub) {
-		float scale = (float)cfg_getfloat(cfg_sub, "scale-z");
+		float scaleY = (float)cfg_getfloat(cfg_sub, "scale-y");
 
-		Heightmap* heightmap = new Heightmap(this->width, this->height, scale);
+		// Heightmap physical size or default to map size
+		float sizeX = (float)cfg_getfloat(cfg_sub, "size-x");
+		float sizeZ = (float)cfg_getfloat(cfg_sub, "size-z");
+		if (sizeX <= 0.0f && sizeZ <= 0.0f) {
+			sizeX = this->width;
+			sizeZ = this->height;
+		}
+
+		// Heightmap position or default to center of map
+		float posX = (float)cfg_getnfloat(cfg_sub, "pos", 0);
+		float posY = (float)cfg_getnfloat(cfg_sub, "pos", 1);
+		float posZ = (float)cfg_getnfloat(cfg_sub, "pos", 2);
+		if (posX <= 0.0f && posY <= 0.0f && posZ <= 0.0f) {
+			posX = this->width/2.0f;
+			posY = 0.0f;
+			posZ = this->height/2.0f;
+		}
+
+		// Create heightmap
+		Heightmap* heightmap = new Heightmap(sizeX, sizeZ, scaleY, glm::vec3(posX, posY, posZ));
 
 		char* tmp = cfg_getstr(cfg_sub, "data");
 		if (tmp == NULL) {
