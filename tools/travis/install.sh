@@ -18,14 +18,17 @@ if [ "$PLATFORM" == "linux" ]; then
 elif [ "$PLATFORM" == "android" ]; then
 	cd tools/android;
 	
-	# Needed for image resizing
+	# Needed for debugging and image resizing
 	sudo apt-get update -qq || exit 1
-	sudo apt-get install -qq --force-yes imagemagick >/dev/null || exit 1;
+	sudo apt-get install -qq --force-yes ant imagemagick >/dev/null || exit 1;
 	
-	# Need this for x64 machines
-	if [ `uname -m` = x86_64 ]; then
+	# Needed for x64 machines (packages removed between Ubuntu 12.04 LTS and Ubuntu 14.04 LTS)
+	if [ `uname -m` = x86_64 ] && [ `lsb_release -rs` != "14.04" ]; then
 		sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch >/dev/null || exit 1;
 	fi
+	
+	# A Java JDK is also needed, e.g.:
+	# sudo apt-get install openjdk-7-jdk
 	
 	# Download and extract SDK
 	wget http://dl.google.com/android/android-sdk_r22.3-linux.tgz || exit 1
