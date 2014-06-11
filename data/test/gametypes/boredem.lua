@@ -10,7 +10,7 @@ bind_playerjoin(function(slot)
 	
 	add_timer(1000, function()
 		show_alert_message("Timer done, add player; " .. slot);
-		add_player("robot", factions.team1, slot);
+		game.addPlayer("robot", factions.team1, slot);
 	end);
 end);
 

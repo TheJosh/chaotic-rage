@@ -10,7 +10,7 @@ g_slot = 0
 bind_playerjoin(function(slot)
 	add_timer(1000, function()
 		show_alert_message("Spawning player " .. slot)
-		add_player("robot", factions.team1, slot)
+		game.addPlayer("robot", factions.team1, slot)
 		g_slot = slot
 	end)
 end)
@@ -29,7 +29,7 @@ end)
 bind_playerdied(function(slot)
 	add_timer(500, function()
 		show_alert_message("Player " .. slot .. " died, spawning again")
-		add_player("robot", factions.team1, slot)
+		game.addPlayer("robot", factions.team1, slot)
 		g_slot = slot
 	end)
 end)
@@ -58,15 +58,15 @@ bind_gamestart(function()
 		show_alert_message("Adding an AI, type " .. t)
 		
 		if (t == 1) then
-			add_npc("robot", "zombie", factions.team2);
+			game.addNpc("robot", "zombie", factions.team2);
 			
 		elseif (t == 2) then
 			t = random_arg("zomb", "zomb_fast", "zomb_health", "zomb_strong")
-			add_npc(t, "zombie", factions.team1);
+			game.addNpc(t, "zombie", factions.team1);
 			
 		elseif (t == 3) then
 			t = random_arg("zomb", "zomb_fast", "robot")
-			add_npc(t, "human", factions.team2);
+			game.addNpc(t, "human", factions.team2);
 			
 		end
 	end)

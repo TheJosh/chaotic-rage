@@ -43,7 +43,7 @@ end;
 -- Spwans zombies
 --
 spawn_func = function()
-	add_npc("zomb_roo", "zombie", factions.team2);
+	game.addNpc("zomb_roo", "zombie", factions.team2);
 	num_zombies = num_zombies + 1;
 	do_score();
 end;
@@ -53,7 +53,7 @@ end;
 -- Spawn a player
 --
 bind_playerjoin(function(slot)
-	add_player(get_selected_unittype(), factions.team1, slot);
+	game.addPlayer(get_selected_unittype(), factions.team1, slot);
 end);
 
 
@@ -80,7 +80,7 @@ bind_playerdied(function(slot)
 	do_score();
 	
 	add_timer(2000, function()
-		add_player(get_selected_unittype(), factions.team1, slot);
+		game.addPlayer(get_selected_unittype(), factions.team1, slot);
 	end);
 end);
 

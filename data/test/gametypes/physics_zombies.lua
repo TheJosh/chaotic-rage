@@ -1,14 +1,14 @@
 ----
-----  Physics test - 100 crates
+----  Physics test - zombies
 ----
-debug_physics(true)
+
 debug_framerate(true)
 
 
 bind_gamestart(function()
-	-- Make some crates!
+	-- Make some zombies!
 	for i = 0, 50, 1 do
-		add_npc("zomb", "zombie", factions.team2);
+		game.addNpc("zomb", "zombie", factions.team2);
 	end
 	
 	-- The game doesn't last long
