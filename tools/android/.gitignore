@@ -3,3 +3,4 @@ bin
 gen
 local.properties
 *.keystore
+android-*
