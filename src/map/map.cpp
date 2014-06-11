@@ -281,12 +281,14 @@ int Map::load(string name, Render *render, Mod* insideof)
 		return 0;
 	}
 
-	// Heightmap
-	cfg_sub = cfg_getnsec(cfg, "heightmap", 0);
-	if (cfg_sub) {
+	// Heightmaps
+	num_types = cfg_size(cfg, "heightmap");
+	for (j = 0; j < num_types; j++) {
+		cfg_sub = cfg_getnsec(cfg, "heightmap", j);
+
 		float scaleY = (float)cfg_getfloat(cfg_sub, "scale-y");
 
-		// Heightmap physical size or default to map size
+		// Physical size or default to map size
 		float sizeX = (float)cfg_getfloat(cfg_sub, "size-x");
 		float sizeZ = (float)cfg_getfloat(cfg_sub, "size-z");
 		if (sizeX <= 0.0f && sizeZ <= 0.0f) {
@@ -294,7 +296,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 			sizeZ = this->height;
 		}
 
-		// Heightmap position or default to center of map
+		// Position or default to center of map
 		float posX = (float)cfg_getnfloat(cfg_sub, "pos", 0);
 		float posY = (float)cfg_getnfloat(cfg_sub, "pos", 1);
 		float posZ = (float)cfg_getnfloat(cfg_sub, "pos", 2);
@@ -304,36 +306,41 @@ int Map::load(string name, Render *render, Mod* insideof)
 			posZ = this->height/2.0f;
 		}
 
+		// Get data filename
+		char* data = cfg_getstr(cfg_sub, "data");
+		if (data == NULL) {
+			cerr << "Heightmap config does not have 'data' field set" << endl;
+			cfg_free(cfg);
+			return 0;
+		}
+
+		// Get texture filename
+		char* texture = cfg_getstr(cfg_sub, "texture");
+		if (texture == NULL) {
+			cerr << "Heightmap config does not have 'texture' field set" << endl;
+			cfg_free(cfg);
+			return 0;
+		}
+
 		// Create heightmap
 		Heightmap* heightmap = new Heightmap(sizeX, sizeZ, scaleY, glm::vec3(posX, posY, posZ));
 
-		char* tmp = cfg_getstr(cfg_sub, "data");
-		if (tmp == NULL) {
-			cerr << "Heightmap config does not have 'data' field set\n";
+		// Load data
+		if (! heightmap->loadIMG(this->mod, std::string(data))) {
+			cerr << "Failed to load heightmap data image '" << std::string(data) << "'" << endl;
+			delete heightmap;
 			cfg_free(cfg);
 			return 0;
 		}
 
-		if (! heightmap->loadIMG(this->mod, std::string(tmp))) {
-			cerr << "Failed to load heightmap img " << std::string(tmp) << endl;
-			cfg_free(cfg);
-			return 0;
-		}
-
-		tmp = cfg_getstr(cfg_sub, "texture");
-		if (tmp == NULL) {
-			cerr << "Heightmap config does not have 'texture' field set\n";
-			cfg_free(cfg);
-			return 0;
-		}
-
-		SpritePtr tex = this->render->loadSprite(std::string(tmp), this->mod);
+		// BigTexture
+		SpritePtr tex = this->render->loadSprite(std::string(texture), this->mod);
 		if (! tex) {
-			cerr << "No terrain image found for map\n";
+			cerr << "Failed to load heightmap terrain BigTexture '" << std::string(texture) << "'" << endl;
+			delete heightmap;
 			cfg_free(cfg);
 			return 0;
 		}
-
 		heightmap->setBigTexture(tex);
 
 		this->heightmaps.push_back(heightmap);
