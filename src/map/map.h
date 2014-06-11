@@ -71,7 +71,7 @@ class Map {
 		float width;
 		float height;
 
-		Heightmap* heightmap;		// TODO: Support multiple
+		vector<Heightmap*> heightmaps;
 
 		SpritePtr skybox;
 		glm::vec3 skybox_size;

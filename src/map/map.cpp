@@ -211,7 +211,6 @@ Map::Map(GameState * st)
 	this->mod = NULL;
 	this->width = 0.0f;
 	this->height = 0.0f;
-	this->heightmap = NULL;
 	this->skybox = NULL;
 	this->water = NULL;
 
@@ -284,7 +283,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 	if (cfg_sub) {
 		float scale = (float)cfg_getfloat(cfg_sub, "scale-z");
 
-		this->heightmap = new Heightmap(this->width, this->height, scale);
+		Heightmap* heightmap = new Heightmap(this->width, this->height, scale);
 
 		char* tmp = cfg_getstr(cfg_sub, "data");
 		if (tmp == NULL) {
@@ -293,7 +292,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 			return 0;
 		}
 
-		if (! this->heightmap->loadIMG(this->mod, std::string(tmp))) {
+		if (! heightmap->loadIMG(this->mod, std::string(tmp))) {
 			cerr << "Failed to load heightmap img " << std::string(tmp) << endl;
 			cfg_free(cfg);
 			return 0;
@@ -313,12 +312,9 @@ int Map::load(string name, Render *render, Mod* insideof)
 			return 0;
 		}
 
-		this->heightmap->setBigTexture(tex);
+		heightmap->setBigTexture(tex);
 
-	} else {
-		cerr << "Heightmaps are currently required.\n";
-		cfg_free(cfg);
-		return 0;
+		this->heightmaps.push_back(heightmap);
 	}
 
 	// Water
@@ -691,14 +687,14 @@ float Map::getRandomY()
 **/
 bool Map::preGame()
 {
-	// Create heightmap rigid body
-	btRigidBody* ground = heightmap->createRigidBody();
-	if (ground == NULL) {
-		return false;
+	// Create rigid bodies for the heightmaps
+	for (vector<Heightmap*>::iterator it = this->heightmaps.begin(); it != this->heightmaps.end(); ++it) {
+		btRigidBody* ground = (*it)->createRigidBody();
+		if (ground == NULL) {
+			return false;
+		}
+		this->st->physics->addRigidBody(ground, CG_TERRAIN);
 	}
-
-	// Add to physics
-	this->st->physics->addRigidBody(ground, CG_TERRAIN);
 
 	// If there is water in the world, we create a water surface
 	// It doesn't collide with stuff, it's just so we can detect with a raycast
@@ -791,11 +787,13 @@ void Map::fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *ap, AssimpModel *am
 
 /**
 * Cleanup after a game
+* TODO: SHould this be moved to the destructor instead?
 **/
 void Map::postGame()
 {
-	delete this->heightmap;
-	this->heightmap = NULL;
+	for (vector<Heightmap*>::iterator it = this->heightmaps.begin(); it != this->heightmaps.end(); ++it) {
+		delete (*it);
+	}
 
 	if (this->skybox != NULL) {
 		this->render->freeSprite(this->skybox);

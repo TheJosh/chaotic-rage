@@ -45,6 +45,8 @@ class GLVAO;
 class RenderOpenGLSettings;
 class btIDebugDraw;
 class OpenGLFont;
+class Heightmap;
+
 
 class RenderOpenGL : public Render3D
 {
@@ -160,6 +162,7 @@ class RenderOpenGL : public Render3D
 	private:
 		void createWater();
 		void createSkybox();
+		void createHeightmap(Heightmap* heightmap);
 
 		// Buffers needed for shadowing
 		void createShadowBuffers();

@@ -86,7 +86,6 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 
 	this->sprite_vbo = 0;
 
-	this->ter_vao = NULL;
 	this->skybox_vao = NULL;
 	this->font = NULL;
 	this->gui_font = NULL;
@@ -681,21 +680,33 @@ void RenderOpenGL::freeSprite(SpritePtr sprite)
 
 
 /**
-* Create an OpenGL mesh (array of triangle strips) from a heightmap
+* Create an OpenGL mesh for each heightmap in the map
 **/
 void RenderOpenGL::loadHeightmap()
+{
+	for (vector<Heightmap*>::iterator it = this->st->map->heightmaps.begin(); it != this->st->map->heightmaps.end(); ++it) {
+		if ((*it)->isValid()) {
+			this->createHeightmap(*it);
+		}
+	}
+}
+
+
+/**
+* Create an OpenGL mesh (array of triangle strips) from a heightmap
+**/
+void RenderOpenGL::createHeightmap(Heightmap* heightmap)
 {
 	unsigned int nX, nZ, j;
 	float flX, flZ;
 	GLuint buffer;
 
-	if (st->map->heightmap == NULL || !st->map->heightmap->isValid()) return;
+	unsigned int maxX = heightmap->getDataSizeX() - 1;
+	unsigned int maxZ = heightmap->getDataSizeZ() - 1;
 
-	unsigned int maxX = st->map->heightmap->getDataSizeX() - 1;
-	unsigned int maxZ = st->map->heightmap->getDataSizeZ() - 1;
+	heightmap->glsize = (maxX * maxZ * 2) + (maxZ * 2);
 
-	this->ter_size = (maxX * maxZ * 2) + (maxZ * 2);
-	VBOvertex* vertexes = new VBOvertex[this->ter_size];
+	VBOvertex* vertexes = new VBOvertex[heightmap->glsize];
 
 	j = 0;
 	for (nZ = 0; nZ < maxZ; nZ++) {
@@ -703,11 +714,11 @@ void RenderOpenGL::loadHeightmap()
 
 			// u = p2 - p1; v = p3 - p1
 			btVector3 u =
-				btVector3(static_cast<float>(nX) + 1.0f, st->map->heightmap->getValue(nX + 1, nZ + 1), static_cast<float>(nZ) + 1.0f) -
-				btVector3(static_cast<float>(nX), st->map->heightmap->getValue(nX, nZ), static_cast<float>(nZ));
+				btVector3(static_cast<float>(nX) + 1.0f, heightmap->getValue(nX + 1, nZ + 1), static_cast<float>(nZ) + 1.0f) -
+				btVector3(static_cast<float>(nX), heightmap->getValue(nX, nZ), static_cast<float>(nZ));
 			btVector3 v =
-				btVector3(static_cast<float>(nX) + 1.0f, st->map->heightmap->getValue(nX + 1, nZ), static_cast<float>(nZ)) -
-				btVector3(static_cast<float>(nX), st->map->heightmap->getValue(nX, nZ), static_cast<float>(nZ));
+				btVector3(static_cast<float>(nX) + 1.0f, heightmap->getValue(nX + 1, nZ), static_cast<float>(nZ)) -
+				btVector3(static_cast<float>(nX), heightmap->getValue(nX, nZ), static_cast<float>(nZ));
 
 			// calc vector
 			btVector3 normal = btVector3(
@@ -722,25 +733,25 @@ void RenderOpenGL::loadHeightmap()
 				flX = static_cast<float>(nX);
 				flZ = static_cast<float>(nZ);
 				vertexes[j].x = flX;
-				vertexes[j].y = st->map->heightmap->getValue(nX, nZ);
+				vertexes[j].y = heightmap->getValue(nX, nZ);
 				vertexes[j].z = flZ;
 				vertexes[j].nx = normal.x();
 				vertexes[j].ny = normal.y();
 				vertexes[j].nz = normal.z();
-				vertexes[j].tx = flX / st->map->heightmap->getDataSizeX();
-				vertexes[j].ty = flZ / st->map->heightmap->getDataSizeZ();
+				vertexes[j].tx = flX / heightmap->getDataSizeX();
+				vertexes[j].ty = flZ / heightmap->getDataSizeZ();
 				j++;
 
 				flX = static_cast<float>(nX);
 				flZ = static_cast<float>(nZ) + 1.0f;
 				vertexes[j].x = flX;
-				vertexes[j].y = st->map->heightmap->getValue(nX, nZ + 1);
+				vertexes[j].y = heightmap->getValue(nX, nZ + 1);
 				vertexes[j].z = flZ;
 				vertexes[j].nx = normal.x();
 				vertexes[j].ny = normal.y();
 				vertexes[j].nz = normal.z();
-				vertexes[j].tx = flX / st->map->heightmap->getDataSizeX();
-				vertexes[j].ty = flZ / st->map->heightmap->getDataSizeZ();
+				vertexes[j].tx = flX / heightmap->getDataSizeX();
+				vertexes[j].ty = flZ / heightmap->getDataSizeZ();
 				j++;
 			}
 
@@ -748,40 +759,40 @@ void RenderOpenGL::loadHeightmap()
 			flX = static_cast<float>(nX) + 1.0f;
 			flZ = static_cast<float>(nZ);
 			vertexes[j].x = flX;
-			vertexes[j].y = st->map->heightmap->getValue(nX + 1, nZ);
+			vertexes[j].y = heightmap->getValue(nX + 1, nZ);
 			vertexes[j].z = flZ;
 			vertexes[j].nx = normal.x();
 			vertexes[j].ny = normal.y();
 			vertexes[j].nz = normal.z();
-			vertexes[j].tx = flX / st->map->heightmap->getDataSizeX();
-			vertexes[j].ty = flZ / st->map->heightmap->getDataSizeZ();
+			vertexes[j].tx = flX / heightmap->getDataSizeX();
+			vertexes[j].ty = flZ / heightmap->getDataSizeZ();
 			j++;
 
 			// Bottom
 			flX = static_cast<float>(nX) + 1.0f;
 			flZ = static_cast<float>(nZ) + 1.0f;
 			vertexes[j].x = flX;
-			vertexes[j].y = st->map->heightmap->getValue(nX + 1, nZ + 1);
+			vertexes[j].y = heightmap->getValue(nX + 1, nZ + 1);
 			vertexes[j].z = flZ;
 			vertexes[j].nx = normal.x();
 			vertexes[j].ny = normal.y();
 			vertexes[j].nz = normal.z();
-			vertexes[j].tx = flX / st->map->heightmap->getDataSizeX();
-			vertexes[j].ty = flZ / st->map->heightmap->getDataSizeZ();
+			vertexes[j].tx = flX / heightmap->getDataSizeX();
+			vertexes[j].ty = flZ / heightmap->getDataSizeZ();
 			j++;
 		}
 	}
 
-	assert(j == this->ter_size);
+	assert(j == heightmap->glsize);
 
 	// Create VAO
-	ter_vao = new GLVAO();
+	heightmap->glvao = new GLVAO();
 
 	// Create interleaved VBO
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * this->ter_size, vertexes, GL_STATIC_DRAW);
-	ter_vao->setInterleavedPNT(buffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * heightmap->glsize, vertexes, GL_STATIC_DRAW);
+	heightmap->glvao->setInterleavedPNT(buffer);
 
 	delete [] vertexes;
 }
@@ -792,7 +803,9 @@ void RenderOpenGL::loadHeightmap()
 **/
 void RenderOpenGL::freeHeightmap()
 {
-	delete ter_vao;
+	for (vector<Heightmap*>::iterator it = this->st->map->heightmaps.begin(); it != this->st->map->heightmaps.end(); ++it) {
+		delete (*it)->glvao;
+	}
 }
 
 
@@ -1859,43 +1872,47 @@ void RenderOpenGL::terrain()
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, this->shadow_depth_tex);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, st->map->heightmap->getBigTexture()->pixels);
 
 	glUseProgram(s->p());
 
-	glm::mat4 modelMatrix = glm::scale(
-		glm::mat4(1.0f),
-		glm::vec3(this->st->map->heightmap->getScaleX(), 1.0f, this->st->map->heightmap->getScaleZ())
-	);
+	for (vector<Heightmap*>::iterator it = this->st->map->heightmaps.begin(); it != this->st->map->heightmaps.end(); ++it) {
+		Heightmap* heightmap = (*it);
 
-	glm::mat4 MVP = this->projection * this->view * modelMatrix;
-	glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+		glBindTexture(GL_TEXTURE_2D, heightmap->getBigTexture()->pixels);
 
-	glm::mat4 MV = this->view * modelMatrix;
-	glUniformMatrix4fv(s->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
+		glm::mat4 modelMatrix = glm::scale(
+			glm::mat4(1.0f),
+			glm::vec3(heightmap->getScaleX(), 1.0f, heightmap->getScaleZ())
+		);
 
-	glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
-	glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
+		glm::mat4 MVP = this->projection * this->view * modelMatrix;
+		glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 
-	glm::mat4 biasMatrix(
-		0.5, 0.0, 0.0, 0.0,
-		0.0, 0.5, 0.0, 0.0,
-		0.0, 0.0, 0.5, 0.0,
-		0.5, 0.5, 0.5, 1.0
-	);
+		glm::mat4 MV = this->view * modelMatrix;
+		glUniformMatrix4fv(s->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
 
-	glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
-	glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
+		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
+		glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
 
-	glUniform1i(s->uniform("uShadowMap"), 1);
+		glm::mat4 biasMatrix(
+			0.5, 0.0, 0.0, 0.0,
+			0.0, 0.5, 0.0, 0.0,
+			0.0, 0.0, 0.5, 0.0,
+			0.5, 0.5, 0.5, 1.0
+		);
 
-	this->ter_vao->bind();
+		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
+		glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
 
-	int numPerStrip = 2 + ((st->map->heightmap->getDataSizeX()-1) * 2);
-	for (int z = 0; z < st->map->heightmap->getDataSizeZ() - 1; z++) {
-		glDrawArrays(GL_TRIANGLE_STRIP, numPerStrip * z, numPerStrip);
+		glUniform1i(s->uniform("uShadowMap"), 1);
+
+		heightmap->glvao->bind();
+
+		int numPerStrip = 2 + ((heightmap->getDataSizeX()-1) * 2);
+		for (int z = 0; z < heightmap->getDataSizeZ() - 1; z++) {
+			glDrawArrays(GL_TRIANGLE_STRIP, numPerStrip * z, numPerStrip);
+		}
 	}
-
 
 	// Static geometry meshes
 	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); ++it) {

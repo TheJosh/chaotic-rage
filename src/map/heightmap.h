@@ -12,6 +12,7 @@ using namespace std;
 
 class Mod;
 class btRigidBody;
+class GLVAO;
 
 
 /**
@@ -38,6 +39,11 @@ class Heightmap {
 
 		// BigTexture
 		SpritePtr terrain;
+
+	public:
+		// The OpenGL renderer entirely manages these
+		GLVAO* glvao;
+		unsigned int glsize;
 
 	public:
 		Heightmap(float sizeX, float sizeZ, float scale)
