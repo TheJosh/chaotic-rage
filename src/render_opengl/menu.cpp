@@ -186,9 +186,6 @@ void Menu::doit(UIUpdate* ui)
 	Mod *mod = GEng()->mm->getBase();
 
 
-	// A few bits always load off base
-	this->render->loadFont("DejaVuSans.ttf", mod);
-
 	this->input = new gcn::SDLInput();
 	this->gui = new gcn::Gui();
 	this->gui->setInput(input);
