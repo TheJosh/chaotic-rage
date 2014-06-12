@@ -369,10 +369,14 @@ void RenderOpenGL::mainViewport(int s, int of)
 
 	glViewport(x, y, w, h);
 
+	// Projection for 3D stuff
 	this->projection = glm::perspective(45.0f, (float)this->virt_width / (float)this->virt_height, 1.0f, 350.0f);
 
-	// Ortho for gameplay HUD etc
+	// Ortho for gameplay HUD (fixed height, variable width)
 	this->ortho = glm::ortho<float>(0.0f, (float)this->virt_width, (float)this->virt_height, 0.0f, -1.0f, 1.0f);
+
+	// Ortho for guichan (real screen size)
+	this->ortho_guichan = glm::ortho<float>(0.0f, (float)this->real_width, (float)this->real_height, 0.0f, -1.0f, 1.0f);
 }
 
 
@@ -2017,15 +2021,9 @@ void RenderOpenGL::particles()
 **/
 void RenderOpenGL::guichan()
 {
-	if (! GEng()->hasDialogs()) return;
-
-	CHECK_OPENGL_ERROR;
-
-	glDisable(GL_DEPTH_TEST);
-
-	GEng()->gui->draw();
-
-	CHECK_OPENGL_ERROR;
+	if (GEng()->hasDialogs()) {
+		GEng()->gui->draw();
+	}
 }
 
 

@@ -97,6 +97,7 @@ class RenderOpenGL : public Render3D
 
 		glm::mat4 projection;	// perspective
 		glm::mat4 ortho;		// ortho
+		glm::mat4 ortho_guichan;// ortho for guichan
 		glm::mat4 view;			// camera
 		glm::mat4 depthmvp;		// light
 		glm::vec3 camera;

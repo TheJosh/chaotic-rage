@@ -202,16 +202,19 @@ void OpenGLFont::drawString(gcn::Graphics* graphics, const std::string& text, in
 	glUseProgram(shader->p());
 	glUniform1i(shader->uniform("uTex"), 0);
 	glUniform4f(shader->uniform("uColor"), r, g, b, a);
-	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(this->render->ortho));
 
-	// Determine starting X and Y coord
 	if (graphics == NULL) {
-		xx = x;
-		yy = y;
+		// If in standard mode, use the values as-is
+		xx = (float)x;
+		yy = (float)y;
+		glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(this->render->ortho));
+
 	} else {
+		// If in Guichan mode, use the current clip area
 		const gcn::ClipRectangle& top = graphics->getCurrentClipArea();
-		xx = x + top.xOffset;
-		yy = y + top.yOffset + this->size;
+		xx = (float)(x + top.xOffset);
+		yy = (float)(y + top.yOffset) + this->size;
+		glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(this->render->ortho_guichan));
 	}
 
 	// Render each character

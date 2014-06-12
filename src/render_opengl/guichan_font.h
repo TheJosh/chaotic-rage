@@ -51,12 +51,24 @@ class OpenGLFont : public gcn::Font
 		* @param y The y coordinate where to draw the string.
 		*/
 		virtual void drawString(gcn::Graphics* graphics, const std::string& text, int x, int y);
-		virtual void drawString(gcn::Graphics* graphics, const std::string& text, int x, int y, float r, float g, float b, float a);
+		
+		/**
+		* Draws a string.
+		*
+		* @param graphics A Graphics object to use for drawing.
+		* @param text The string to draw.
+		* @param x The x coordinate where to draw the string.
+		* @param y The y coordinate where to draw the string.
+		* @param r Colour - red
+		* @param g Colour - green
+		* @param b Colour - blue
+		* @param a Colour - alpha
+		*/
+		void drawString(gcn::Graphics* graphics, const std::string& text, int x, int y, float r, float g, float b, float a);
 		
 	private:
 		/**
 		* Draws a single character of text
-		* Called by ::renderText - you probably want that function instead
 		*
 		* @param Uint32 character A 32-bit character code
 		**/
