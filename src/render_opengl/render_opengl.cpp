@@ -134,19 +134,27 @@ void RenderOpenGL::setSettings(RenderOpenGLSettings* settings)
 	// Texture filtering modes
 	switch (this->settings->tex_filter) {
 		case 4:
-			this->min_filter = GL_LINEAR_MIPMAP_LINEAR; this->mag_filter = GL_LINEAR;		// trilinear
+			// trilinear
+			this->min_filter = GL_LINEAR_MIPMAP_LINEAR;
+			this->mag_filter = GL_LINEAR;
 			break;
 
 		case 3:
-			this->min_filter = GL_LINEAR_MIPMAP_NEAREST; this->mag_filter = GL_LINEAR;		// bilinear
+			// bilinear
+			this->min_filter = GL_LINEAR_MIPMAP_NEAREST;
+			this->mag_filter = GL_LINEAR;
 			break;
 
 		case 2:
-			this->min_filter = GL_LINEAR_MIPMAP_NEAREST; this->mag_filter = GL_NEAREST;		// bilinear
+			// bilinear
+			this->min_filter = GL_LINEAR_MIPMAP_NEAREST;
+			this->mag_filter = GL_NEAREST;
 			break;
 
 		default:
-			this->min_filter = GL_NEAREST_MIPMAP_NEAREST; this->mag_filter = GL_NEAREST;	// crappy
+			// crappy
+			this->min_filter = GL_NEAREST_MIPMAP_NEAREST;
+			this->mag_filter = GL_NEAREST;
 			break;
 	}
 
