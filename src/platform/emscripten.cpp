@@ -20,22 +20,6 @@ using namespace std;
 **/
 void chdirToDataDir()
 {
-	struct stat sb;
-
-	// Look in current directory - nothing to do
-	if (stat("data", &sb) == 0) {
-		return;
-	}
-
-	// Look in /usr/share/chaoticrage
-	if (stat("/usr/share/chaoticrage/data", &sb) == 0) {
-		if (chdir("/usr/share/chaoticrage") == 0) {
-			return;
-		}
-	}
-
-	cerr << "Could not find data directory\n";
-	exit(0);
 }
 
 
@@ -48,22 +32,7 @@ void chdirToDataDir()
 **/
 string getUserDataDir()
 {
-	char * env;
-
-	env = getenv ("HOME");
-	if (! env) {
-		reportFatalError("Environment variable $HOME is not set");
-	}
-
-	string home(env);
-	home.append("/.chaoticrage/");
-
-	int status = mkdir(home.c_str(), 0777);
-	if (status == -1 && errno != EEXIST) {
-		reportFatalError("Unable to create directory " + home);
-	}
-
-	return home;
+	return "/";
 }
 
 
@@ -73,7 +42,6 @@ string getUserDataDir()
 **/
 void reportFatalError(string msg)
 {
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Chaotic Rage " VERSION, msg.c_str(), NULL);
 	cout << "FATAL ERROR: " << msg << "\n";
 	exit(1);
 }
@@ -84,7 +52,6 @@ void reportFatalError(string msg)
 **/
 void displayMessageBox(string msg)
 {
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "Chaotic Rage " VERSION, msg.c_str(), NULL);
 	cout << msg << "\n";
 }
 
@@ -125,19 +92,7 @@ list<string> * getSystemModNames()
 **/
 vector<string> * getUserModFilenames()
 {
-	vector<string> * ret = new vector<string>();
-
-	string pat = getUserDataDir();
-	pat.append("mods/*.crk");
-
-	glob_t glob_result;
-	glob(pat.c_str(), GLOB_TILDE, NULL, &glob_result);
-	for (unsigned int i = 0; i < glob_result.gl_pathc; ++i) {
-		ret->push_back(string(glob_result.gl_pathv[i]));
-	}
-	globfree(&glob_result);
-
-	return ret;
+	return new vector<string>();
 }
 
 

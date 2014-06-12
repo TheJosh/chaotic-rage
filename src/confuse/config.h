@@ -9,7 +9,7 @@
 #define VERSION "2.5"
 
 // Linux
-#ifdef __linux__
+#if defined(__linux__) || defined(__EMSCRIPTEN__)
 	#define HAVE_DCGETTEXT 1
 	#define HAVE_DLFCN_H 1
 	#define HAVE_GETTEXT 1
