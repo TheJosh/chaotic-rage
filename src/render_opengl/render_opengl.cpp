@@ -1896,7 +1896,7 @@ void RenderOpenGL::terrain()
 			glm::mat4(1.0f),
 			glm::vec3(heightmap->getScaleX(), 1.0f, heightmap->getScaleZ())
 		);
-		modelMatrix = glm::translate(modelMatrix, glm::vec3(-heightmap->getSizeX()/2.0f, -heightmap->getScaleY()/2.0f, -heightmap->getSizeZ()/2.0f));
+		modelMatrix = glm::translate(modelMatrix, glm::vec3(-heightmap->getSizeX()/2.0f, 0.0f, -heightmap->getSizeZ()/2.0f));
 		modelMatrix = glm::translate(modelMatrix, heightmap->getPosition());
 
 		glm::mat4 MVP = this->projection * this->view * modelMatrix;
