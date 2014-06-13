@@ -468,9 +468,6 @@
     <ClCompile Include="..\..\src\util\crc32.cpp">
       <Filter>src\util</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\weapons\digdown.cpp">
-      <Filter>src\weapons</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\weapons\raycast.cpp">
       <Filter>src\weapons</Filter>
     </ClCompile>
@@ -833,6 +830,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\util\utf8.cpp">
       <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\map\heightmap.cpp">
+      <Filter>src\map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\map\reg.cpp">
+      <Filter>src\map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1507,6 +1510,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\util\utf8.h">
       <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\map\heightmap.h">
+      <Filter>src\map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\map\reg.h">
+      <Filter>src\map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

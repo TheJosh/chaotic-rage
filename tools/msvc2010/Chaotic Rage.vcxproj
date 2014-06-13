@@ -235,7 +235,9 @@
     <ClCompile Include="..\..\src\lua\lua_physics_lib.cpp" />
     <ClCompile Include="..\..\src\lua\lua_random_lib.cpp" />
     <ClCompile Include="..\..\src\lua\lua_world_lib.cpp" />
+    <ClCompile Include="..\..\src\map\heightmap.cpp" />
     <ClCompile Include="..\..\src\map\map.cpp" />
+    <ClCompile Include="..\..\src\map\reg.cpp" />
     <ClCompile Include="..\..\src\map\zone.cpp" />
     <ClCompile Include="..\..\src\render\render_ascii.cpp" />
     <ClCompile Include="..\..\src\render_opengl\guichan_font.cpp" />
@@ -335,7 +337,6 @@
     <ClCompile Include="..\..\src\util\utf8.cpp" />
     <ClCompile Include="..\..\src\util\util.cpp" />
     <ClCompile Include="..\..\src\weapons\attractor.cpp" />
-    <ClCompile Include="..\..\src\weapons\digdown.cpp" />
     <ClCompile Include="..\..\src\weapons\ghost_objects.cpp" />
     <ClCompile Include="..\..\src\weapons\mines.cpp" />
     <ClCompile Include="..\..\src\weapons\raycast.cpp" />
@@ -448,7 +449,9 @@
     <ClInclude Include="..\..\src\http\serverlist.h" />
     <ClInclude Include="..\..\src\http\url.h" />
     <ClInclude Include="..\..\src\i18n\gettext.h" />
+    <ClInclude Include="..\..\src\map\heightmap.h" />
     <ClInclude Include="..\..\src\map\map.h" />
+    <ClInclude Include="..\..\src\map\reg.h" />
     <ClInclude Include="..\..\src\map\zone.h" />
     <ClInclude Include="..\..\src\render\render_ascii.h" />
     <ClInclude Include="..\..\src\render_opengl\guichan_font.h" />
