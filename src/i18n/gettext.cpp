@@ -35,10 +35,13 @@ bool loadLang(const char* name)
 	FILE* fp = fopen(buf, "rb");
 	if (fp == NULL) return false;
 	
+	// TODO: Check this code for buffer under/overflows and other (security?) issues
+
 	strings.clear();
 	while (fgets(buf, BUFFER_MAX, fp)) {
 		char* tab = strchr(buf, '\t');
 		char* nl = strchr(buf, '\n');
+		if (*(nl-1) == '\r') nl--;
 		*nl = '\0';
 		strings.insert(std::pair<int,std::string>(atoi(buf), std::string(tab+1)));
 	}
