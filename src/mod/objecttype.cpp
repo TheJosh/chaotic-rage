@@ -67,7 +67,11 @@ ObjectType* loadItemObjectType(cfg_t* cfg_item, Mod* mod)
 	char * tmp = cfg_getstr(cfg_item, "model");
 	if (tmp != NULL) {
 		wt->model = mod->getAssimpModel(tmp);
-		if (! wt->model) return NULL;
+		if (! wt->model) {
+			delete(wt);
+			return NULL;
+		}
+
 		wt->col_shape = wt->model->getCollisionShape();
 	}
 
@@ -78,19 +82,25 @@ ObjectType* loadItemObjectType(cfg_t* cfg_item, Mod* mod)
 		dam->health = 0;
 		dam->model = mod->getAssimpModel("null.blend");
 		wt->damage_models.push_back(dam);
-
 	} else {
 		for (int j = 0; j < size; j++) {
 			cfg_t *cfg_damage = cfg_getnsec(cfg_item, "damage", j);
 
 			char * tmp = cfg_getstr(cfg_damage, "model");
-			if (tmp == NULL) return NULL;
+			if (tmp == NULL) {
+				delete(wt);
+				return NULL;
+			}
 
 			ObjectTypeDamage * dam = new ObjectTypeDamage();
 
 			dam->health = cfg_getint(cfg_damage, "health");
 			dam->model = mod->getAssimpModel(tmp);
-			if (! dam->model) return NULL;
+			if (! dam->model) {
+				delete(wt);
+				delete(dam);
+				return NULL;
+			}
 
 			wt->damage_models.push_back(dam);
 		}
@@ -104,12 +114,12 @@ ObjectType::ObjectType()
 {
 	this->surf = NULL;
 	this->ground_type = NULL;
+	this->model = NULL;
 	this->col_shape = NULL;
 }
 
 ObjectType::~ObjectType()
 {
+	delete(this->ground_type);
 	delete(this->col_shape);
 }
-
-

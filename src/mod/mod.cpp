@@ -115,6 +115,7 @@ Mod::~Mod()
 	delete_v(this->walltypes);
 	delete_v(this->vehicletypes);
 	delete_v(this->weapontypes);
+
 	delete(this->maps);
 }
 
@@ -228,6 +229,7 @@ vector<T> * loadModFile(Mod* mod, UIUpdate* ui, const char* filename, const char
 		T am = (*item_f)(cfg_item, mod);
 		if (am == NULL) {
 			cerr << "Bad definition in file " << filename << " at index " << j << ": " << mod->getLoadErr() << "\n";
+			delete(models);
 			return NULL;
 		}
 
@@ -355,13 +357,11 @@ bool Mod::load(UIUpdate* ui)
 **/
 bool Mod::reloadAttrs()
 {
-	int i;
-
 	// Weapons
 	vector<WeaponType*> * n_weapontypes = loadModFile<WeaponType*>(this, NULL, "weapontypes.conf", "weapon", weapontype_opts, &loadItemWeaponType);
 	if (n_weapontypes == NULL) return false;
 
-	for (i = n_weapontypes->size() - 1; i >= 0; --i) {
+	for (int i = n_weapontypes->size() - 1; i >= 0; --i) {
 		WeaponType *nu = n_weapontypes->at(i);
 		WeaponType *old = this->getWeaponType(nu->name);
 		if (! old) continue;
@@ -378,7 +378,6 @@ bool Mod::reloadAttrs()
 }
 
 
-
 /**
 * Gets an AIType by ID
 **/
@@ -389,6 +388,7 @@ AIType * Mod::getAIType(CRC32 id)
 	}
 	return NULL;
 }
+
 
 AIType * Mod::getAIType(string name)
 {
@@ -413,7 +413,6 @@ AssimpModel * Mod::getAssimpModel(string name)
 	}
 
 	AssimpModel* am = new AssimpModel(this, name);
-
 	if (! am->load((Render3D*) GEng()->render, false)) {
 		delete(am);
 		return NULL;
@@ -425,7 +424,6 @@ AssimpModel * Mod::getAssimpModel(string name)
 }
 
 
-
 /**
 * Return a campaign by it's name
 **/
@@ -433,8 +431,7 @@ Campaign * Mod::getCampaign(string name)
 {
 	if (name.empty()) return NULL;
 
-	int i;
-	for (i = campaigns->size() - 1; i >= 0; --i) {
+	for (int i = campaigns->size() - 1; i >= 0; --i) {
 		if (campaigns->at(i)->name.compare(name) == 0) return campaigns->at(i);
 	}
 	return NULL;
@@ -457,12 +454,12 @@ GameType * Mod::getGameType(string name)
 {
 	if (name.empty()) return NULL;
 
-	int i;
-	for (i = gametypes->size() - 1; i >= 0; --i) {
+	for (int i = gametypes->size() - 1; i >= 0; --i) {
 		if (gametypes->at(i)->name.compare(name) == 0) return gametypes->at(i);
 	}
 	return NULL;
 }
+
 
 /**
 * Returns two iterators for getting all gametypes
@@ -472,7 +469,6 @@ void Mod::getAllGameTypes(vector<GameType*>::iterator * start, vector<GameType*>
 	*start = gametypes->begin();
 	*end = gametypes->end();
 }
-
 
 
 /**
@@ -486,6 +482,7 @@ ObjectType * Mod::getObjectType(CRC32 id)
 	return NULL;
 }
 
+
 /**
 * Gets a unitclass by name
 **/
@@ -493,8 +490,7 @@ ObjectType * Mod::getObjectType(string name)
 {
 	if (name.empty()) return NULL;
 
-	int i;
-	for (i = objecttypes->size() - 1; i >= 0; --i) {
+	for (int i = objecttypes->size() - 1; i >= 0; --i) {
 		if (objecttypes->at(i)->name.compare(name) == 0) return objecttypes->at(i);
 	}
 	return NULL;
@@ -517,6 +513,7 @@ PickupType * Mod::getPickupType(CRC32 id)
 	return NULL;
 }
 
+
 /**
 * Gets a pickup type by name
 **/
@@ -524,8 +521,7 @@ PickupType * Mod::getPickupType(string name)
 {
 	if (name.empty()) return NULL;
 
-	int i;
-	for (i = pickuptypes->size() - 1; i >= 0; --i) {
+	for (int i = pickuptypes->size() - 1; i >= 0; --i) {
 		if (pickuptypes->at(i)->name.compare(name) == 0) return pickuptypes->at(i);
 	}
 	return NULL;
@@ -550,12 +546,12 @@ UnitType * Mod::getUnitType(string name)
 {
 	if (name.empty()) return NULL;
 
-	int i;
-	for (i = unitclasses->size() - 1; i >= 0; --i) {
+	for (int i = unitclasses->size() - 1; i >= 0; --i) {
 		if (unitclasses->at(i)->name.compare(name) == 0) return unitclasses->at(i);
 	}
 	return NULL;
 }
+
 
 /**
 * Returns two iterators for getting all gametypes
@@ -585,8 +581,7 @@ VehicleType * Mod::getVehicleType(string name)
 {
 	if (name.empty()) return NULL;
 
-	int i;
-	for (i = vehicletypes->size() - 1; i >= 0; --i) {
+	for (int i = vehicletypes->size() - 1; i >= 0; --i) {
 		if (vehicletypes->at(i)->name.compare(name) == 0) return vehicletypes->at(i);
 	}
 	return NULL;
@@ -600,20 +595,23 @@ Song * Mod::getSong(string name)
 {
 	if (name.empty()) return NULL;
 
-	int i;
-	for (i = songs->size() - 1; i >= 0; --i) {
+	for (int i = songs->size() - 1; i >= 0; --i) {
 		if (songs->at(i)->name.compare(name) == 0) return songs->at(i);
 	}
 	return NULL;
 }
+
 
 /**
 * Gets a random song
 **/
 Song * Mod::getRandomSong()
 {
+	if (songs == NULL) return NULL;
+
 	unsigned int sz = songs->size();
-	if (songs == NULL || sz == 0) return NULL;
+	if (sz == 0) return NULL;
+
 	return songs->at(getRandom(0, sz - 1));
 }
 
@@ -625,8 +623,7 @@ Sound * Mod::getSound(string name)
 {
 	if (name.empty()) return NULL;
 
-	int i;
-	for (i = sounds->size() - 1; i >= 0; --i) {
+	for (int i = sounds->size() - 1; i >= 0; --i) {
 		if (sounds->at(i)->name.compare(name) == 0) return sounds->at(i);
 	}
 	return NULL;
@@ -648,8 +645,7 @@ WallType * Mod::getWallType(string name)
 {
 	if (name.empty()) return NULL;
 
-	int i;
-	for (i = walltypes->size() - 1; i >= 0; --i) {
+	for (int i = walltypes->size() - 1; i >= 0; --i) {
 		if (walltypes->at(i)->name.compare(name) == 0) return walltypes->at(i);
 	}
 	return NULL;
@@ -667,6 +663,7 @@ WeaponType * Mod::getWeaponType(CRC32 id)
 	return NULL;
 }
 
+
 /**
 * Gets a weapon type by name
 **/
@@ -674,12 +671,12 @@ WeaponType * Mod::getWeaponType(string name)
 {
 	if (name.empty()) return NULL;
 
-	int i;
-	for (i = weapontypes->size() - 1; i >= 0; --i) {
+	for (int i = weapontypes->size() - 1; i >= 0; --i) {
 		if (weapontypes->at(i)->name.compare(name) == 0) return weapontypes->at(i);
 	}
 	return NULL;
 }
+
 
 /**
 * Returns two iterators for getting all weapon types
@@ -781,6 +778,3 @@ SDL_RWops * Mod::loadRWops(string resname)
 
 	return SDL_RWFromFile(filename.c_str(), "rb");
 }
-
-
-
