@@ -52,6 +52,11 @@ class OpenGLFont_Implementation
 		FT_Face face;
 		Uint8 *buf;
 		map<Uint32, FreetypeChar> char_tex;
+
+	public:
+		OpenGLFont_Implementation()
+			: font_vbo(0), ft(NULL), face(NULL), buf(NULL)
+		{}
 };
 
 
