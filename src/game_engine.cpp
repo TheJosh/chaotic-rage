@@ -146,7 +146,7 @@ void GameEngine::initGuichan()
 /**
 * Is there currently a dialog with the specified name onscreen?
 **/
-bool GameEngine::hasDialog(string name)
+bool GameEngine::hasDialog(DialogName name)
 {
 	return (getDialog(name) != NULL ? true : false);
 }
@@ -155,10 +155,10 @@ bool GameEngine::hasDialog(string name)
 /**
 * Get dialog with the specified name
 **/
-Dialog* GameEngine::getDialog(string name)
+Dialog* GameEngine::getDialog(DialogName name)
 {
 	for (list<Dialog*>::iterator it = this->dialogs.begin(); it != this->dialogs.end(); ++it) {
-		if ((*it)->getName().compare(name) == 0) return *it;
+		if ((*it)->getName() == name) return *it;
 	}
 	return NULL;
 }

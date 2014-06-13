@@ -120,6 +120,21 @@ enum Faction {
 	NUM_FACTIONS,
 };
 
+// Dialog names/identifications
+enum DialogName {
+	BUTTONBAR,
+	CAMPAIGN,
+	CLIENT_SETTINGS,
+	CONTROLS,
+	GAME,
+	MODS,
+	NETWORK,
+	QUIT,
+	TEXTBOX,
+	TEXTPROMPT,
+	WEAPONS,
+};
+
 // A buttload of class definitions for forward-decls.
 class AIType;
 class AILogic;
@@ -188,4 +203,3 @@ class Zone;
 
 #include "util/util.h"
 #include "util/debug.h"
-

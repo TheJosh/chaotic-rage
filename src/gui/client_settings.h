@@ -32,6 +32,6 @@ class DialogClientSettings : public Dialog, public gcn::ActionListener {
 		virtual gcn::Container * setup();
 		virtual void tearDown();
 
-		virtual const string getName() { return "cl-set"; }
+		virtual const DialogName getName() { return CLIENT_SETTINGS; }
 		virtual void action(const gcn::ActionEvent& actionEvent);
 };

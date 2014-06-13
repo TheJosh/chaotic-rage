@@ -46,7 +46,7 @@ void handleEvents(GameState *st)
 				case SDLK_AC_BACK:
 				case SDLK_MENU:
 					{
-						Dialog* d = GEng()->getDialog("quit");
+						Dialog* d = GEng()->getDialog(QUIT);
 						if (d == NULL) {
 							GEng()->addDialog(new DialogQuit(st));
 						} else {
@@ -76,7 +76,7 @@ void handleEvents(GameState *st)
 
 				case SDLK_F1:
 					{
-						Dialog* d = GEng()->getDialog("controls");
+						Dialog* d = GEng()->getDialog(CONTROLS);
 						if (d == NULL) {
 							GEng()->addDialog(new DialogControls());
 						} else {

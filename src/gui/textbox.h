@@ -32,7 +32,7 @@ class DialogTextBox : public Dialog, public gcn::ActionListener {
 		virtual ~DialogTextBox();
 
 		virtual gcn::Container* setup();
-		virtual const string getName() { return "textbox"; }
+		virtual const DialogName getName() { return TEXTBOX; }
 
 		virtual void action(const gcn::ActionEvent& actionEvent);
 

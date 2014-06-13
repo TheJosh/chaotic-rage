@@ -43,7 +43,7 @@ class Dialog {
 		/**
 		* Return the internal 'name' of the dialog
 		**/
-		virtual const string getName() = 0;
+		virtual const DialogName getName() = 0;
 
 		/**
 		* Return the pointer to the Guichan container object
@@ -80,6 +80,6 @@ class DialogQuit : public Dialog, public gcn::ActionListener {
 		virtual ~DialogQuit() {}
 
 		virtual gcn::Container * setup();
-		virtual const string getName() { return "quit"; }
+		virtual const DialogName getName() { return QUIT; }
 		virtual void action(const gcn::ActionEvent& actionEvent);
 };

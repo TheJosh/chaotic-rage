@@ -46,5 +46,5 @@ class DialogNewCampaign : public Dialog, public gcn::ActionListener {
 	public:
 		virtual gcn::Container * setup();
 		virtual void action(const gcn::ActionEvent& actionEvent);
-		virtual const string getName() { return "newCampaign"; }
+		virtual const DialogName getName() { return CAMPAIGN; }
 };

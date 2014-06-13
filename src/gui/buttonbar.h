@@ -46,6 +46,6 @@ class DialogButtonBar : public Dialog, public gcn::ActionListener {
 		virtual gcn::Container* setup();
 		virtual void tearDown();
 
-		virtual const string getName() { return "buttonbar"; }
+		virtual const DialogName getName() { return BUTTONBAR; }
 		virtual void action(const gcn::ActionEvent& actionEvent);
 };

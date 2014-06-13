@@ -82,8 +82,8 @@ class GameEngine
 		void initGuichan();
 
 		// Dialog management
-		bool hasDialog(string name);
-		Dialog* getDialog(string name);
+		bool hasDialog(DialogName name);
+		Dialog* getDialog(DialogName name);
 		void addDialog(Dialog * dialog);
 		void remDialog(Dialog * dialog);
 		bool hasDialogs();

@@ -15,6 +15,6 @@ using namespace std;
 class DialogControls : public Dialog {
 	public:
 		virtual gcn::Container * setup();
-		virtual const string getName() { return "controls"; }
+		virtual const DialogName getName() { return CONTROLS; }
 		virtual ~DialogControls() {}
 };
