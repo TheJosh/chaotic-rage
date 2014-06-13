@@ -15,6 +15,51 @@
 
 using namespace std;
 
+static string controls_single[] = {
+	"Move", "W A S D",
+	"Aim", "Mouse",
+	"Fire", "Left Click",
+	"Melee", "Right Click",
+	"Change Weapon", "Scroll",
+	"Use", "E",
+	"Lift/Drop", "Q",
+	"Special", "T",
+	"Change Camera", "C",
+	"Play/Pause Music", "F2",
+	"Show this help", "F1",
+	""
+};
+
+static string controls_split1[] = {
+	"Move", "W A S D",
+	"Aim", "9 K L P",
+	"Fire", "O",
+	"Melee", "I",
+	"Change Weapon", "J M",
+	"Use", "E",
+	"Lift/Drop", "Q",
+	"Special", "T",
+	"Change Camera", "C",
+	"Play/Pause Music", "F2",
+	"Show this help", "F1",
+	""
+};
+
+static string controls_split2[] = {
+	"Move", "Numpad 8 4 5 6",
+	"Aim", "Mouse",
+	"Fire", "Left Click",
+	"Melee", "Right Click",
+	"Change Weapon", "Scroll",
+	"Use", "Numpad 9",
+	"Lift/Drop", "Numpad 7",
+	"Special", "Numpad 1",
+	"Change Camera", "C",
+	"Play/Pause Music", "F2",
+	"Show this help", "F1",
+	""
+};
+
 
 
 /**
@@ -22,48 +67,6 @@ using namespace std;
 **/
 gcn::Container * DialogControls::setup()
 {
-	string controls_single[] = {
-		"Move", "W A S D",
-		"Aim", "Mouse",
-		"Fire", "Left Click",
-		"Melee", "Right Click",
-		"Change Weapon", "Scroll",
-		"Use", "E",
-		"Lift/Drop", "Q",
-		"Special", "T",
-		"Change Camera", "C",
-		"Play/Pause Music", "F2",
-		""
-	};
-
-	string controls_split1[] = {
-		"Move", "W A S D",
-		"Aim", "9 K L P",
-		"Fire", "O",
-		"Melee", "I",
-		"Change Weapon", "J M",
-		"Use", "E",
-		"Lift/Drop", "Q",
-		"Special", "T",
-		"Change Camera", "C",
-		"Play/Pause Music", "F2",
-		""
-	};
-
-	string controls_split2[] = {
-		"Move", "Numpad 8 4 5 6",
-		"Aim", "Mouse",
-		"Fire", "Left Click",
-		"Melee", "Right Click",
-		"Change Weapon", "Scroll",
-		"Use", "Numpad 9",
-		"Lift/Drop", "Numpad 7",
-		"Special", "Numpad 1",
-		"Change Camera", "C",
-		"Play/Pause Music", "F2",
-		""
-	};
-
 	int cols[] = {22, 200, 222, 400, 422, 600};
 
 
@@ -89,9 +92,7 @@ gcn::Container * DialogControls::setup()
 
 	int y = 40;
 	int i = 0;
-	do {
-		if (controls_single[i].length() == 0) break;
-
+	while (!controls_single[i].empty()) {
 		label = new gcn::Label(controls_single[i]);
 		c->add(label, cols[0], y);
 
@@ -118,7 +119,7 @@ gcn::Container * DialogControls::setup()
 		i++;
 
 		y += 17;
-	} while(1);
+	}
 
 	c->setHeight(y + 30);
 

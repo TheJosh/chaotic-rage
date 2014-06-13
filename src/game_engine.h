@@ -83,6 +83,7 @@ class GameEngine
 
 		// Dialog management
 		bool hasDialog(string name);
+		Dialog* getDialog(string name);
 		void addDialog(Dialog * dialog);
 		void remDialog(Dialog * dialog);
 		bool hasDialogs();

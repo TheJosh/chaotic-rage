@@ -31,9 +31,7 @@ class DialogMods : public Dialog, public gcn::ActionListener, public gcn::Select
 		virtual ~DialogMods();
 
 		virtual gcn::Container * setup();
-		virtual string getName() { return "mods"; }
+		virtual const string getName() { return "mods"; }
 		virtual void action(const gcn::ActionEvent& actionEvent);
 		virtual void valueChanged(const gcn::SelectionEvent& selectionEvent);
 };
-
-

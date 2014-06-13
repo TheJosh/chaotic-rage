@@ -45,6 +45,7 @@ class DialogNetJoin : public Dialog, public gcn::ActionListener
 	public:
 		virtual gcn::Container * setup();
 		virtual void action(const gcn::ActionEvent& actionEvent);
+		virtual const string getName() { return "network"; }
 };
 
 
@@ -78,5 +79,3 @@ class InternetRefreshAction : public gcn::ActionListener
 	public:
 		virtual void action(const gcn::ActionEvent& actionEvent);
 };
-
-

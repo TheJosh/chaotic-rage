@@ -47,6 +47,7 @@ class DialogNewGame : public Dialog, public gcn::ActionListener {
 	public:
 		virtual gcn::Container * setup();
 		virtual void action(const gcn::ActionEvent& actionEvent);
+		virtual const string getName() { return "newGame"; }
 };
 
 
@@ -60,4 +61,3 @@ class DialogNewGame_Action_Weapons : public gcn::ActionListener {
 		explicit DialogNewGame_Action_Weapons(DialogNewGame *parent): parent(parent) {}
 		virtual void action(const gcn::ActionEvent& actionEvent);
 };
-

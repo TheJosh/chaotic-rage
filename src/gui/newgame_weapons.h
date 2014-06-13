@@ -38,10 +38,10 @@ class DialogNewGameWeapons : public Dialog, public gcn::ActionListener, public g
 		virtual gcn::Container * setup();
 		virtual void action(const gcn::ActionEvent& actionEvent);
 		virtual void valueChanged(const gcn::SelectionEvent& selectionEvent);
+		virtual const string getName() { return "newGameWeapons"; }
 
 	private:
 		void saveWeapons();
 		void loadWeapons();
 		unsigned int findWeaponType(WeaponType* wt);
 };
-

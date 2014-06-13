@@ -10,10 +10,11 @@ using namespace std;
 
 
 /**
-* Dialog displaying in-game controls - called by the menu
+* Dialog displaying in-game controls
 **/
 class DialogControls : public Dialog {
 	public:
 		virtual gcn::Container * setup();
+		virtual const string getName() { return "controls"; }
 		virtual ~DialogControls() {}
 };

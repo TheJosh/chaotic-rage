@@ -16,6 +16,7 @@
 #include "render_opengl/hud.h"
 #include "render_opengl/render_opengl.h"
 #include "gui/dialog.h"
+#include "gui/controls.h"
 #include "lua/gamelogic.h"
 #include "audio/audio.h"
 
@@ -31,9 +32,7 @@ using namespace std;
 void handleEvents(GameState *st)
 {
 	SDL_Event event;
-
 	static int screenshot_num = 0;
-
 
 
 	while (SDL_PollEvent(&event)) {
@@ -46,8 +45,13 @@ void handleEvents(GameState *st)
 				case SDLK_ESCAPE:
 				case SDLK_AC_BACK:
 				case SDLK_MENU:
-					if (!GEng()->hasDialog("quit")) {
-						GEng()->addDialog(new DialogQuit(st));
+					{
+						Dialog* d = GEng()->getDialog("quit");
+						if (d == NULL) {
+							GEng()->addDialog(new DialogQuit(st));
+						} else {
+							GEng()->remDialog(d);
+						}
 					}
 					break;
 
@@ -67,6 +71,17 @@ void handleEvents(GameState *st)
 						filename.append(buf);
 						filename.append(".bmp");
 						st->addHUDMessage(ALL_SLOTS, "Saved ", filename);
+					}
+					break;
+
+				case SDLK_F1:
+					{
+						Dialog* d = GEng()->getDialog("controls");
+						if (d == NULL) {
+							GEng()->addDialog(new DialogControls());
+						} else {
+							GEng()->remDialog(d);
+						}
 					}
 					break;
 
@@ -345,5 +360,3 @@ void handleEvents(GameState *st)
 		net_y[0] += mk_down_y[0];
 	}
 }
-
-

@@ -50,7 +50,6 @@ class DialogTextPrompt : public Dialog, public gcn::ActionListener {
 		virtual ~DialogTextPrompt();
 
 		virtual gcn::Container* setup();
-		virtual string getName() { return "textprompt"; }
+		virtual const string getName() { return "textprompt"; }
 		virtual void action(const gcn::ActionEvent& actionEvent);
 };
-
