@@ -379,12 +379,12 @@ void Menu::menuRender()
 	for (unsigned int i = 0; i < this->menuitems.size(); i++) {
 		MenuItem * m = this->menuitems.at(i);
 
-		this->render->renderText(m->name, m->x1 + 1.0f, m->y1 + 20.0f + 1.0f, 0.1f, 0.1f, 0.1f);
+		this->render->renderText(m->name, m->x1 + 1.0f, m->y1 + 20.0f + 1.0f, 0.1f, 0.1f, 0.1f, 1.0f);
 
 		if (m->hover) {
-			this->render->renderText(m->name, m->x1, m->y1 + 20.0f, 161.0f/255.0f, 0.0f, 0.0f);
+			this->render->renderText(m->name, m->x1, m->y1 + 20.0f, 161.0f/255.0f, 0.0f, 0.0f, 1.0f);
 		} else {
-			this->render->renderText(m->name, m->x1, m->y1 + 20.0f, 1.0f, 1.0f, 1.0f);
+			this->render->renderText(m->name, m->x1, m->y1 + 20.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 		}
 	}
 }

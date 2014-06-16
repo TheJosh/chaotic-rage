@@ -80,21 +80,13 @@ int main(int argc, char ** argv)
 		ui = new UIUpdateNull();
 	}
 
-	// Load the mods. Uses threads if possible
+	// Load the mods
 	if (!loadMods(st, ui)) {
 		reportFatalError("Module loading failed");
 	}
 	delete(ui);
 
 	gm = new GameManager(st);
-
-	// For now, Android doesn't have a menu
-	#if defined(__ANDROID__)
-		gm->loadModBits(NULL);
-
-		gm->startGame(gm->getMapRegistry()->get("therlor_valley"), "zombies", "robot", GameSettings::behindPlayer, 1, false, new GameSettings());
-		exit(0);
-	#endif
 
 	// List of mods
 	if (GEng()->cmdline->modlist) {

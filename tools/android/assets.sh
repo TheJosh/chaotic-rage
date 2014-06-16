@@ -13,6 +13,7 @@ mkdir assets
 mkdir assets/data
 
 cp -r ../../data/cr assets/data/ || exit 1
+cp -r ../../data/i18n assets/data/ || exit 1
 cp -r ../../data/intro assets/data/ || exit 1
 cp -r ../../maps assets/ || exit 1
 

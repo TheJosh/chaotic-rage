@@ -260,10 +260,6 @@ namespace gcn
         glDisable(GL_CULL_FACE);
         glDisable(GL_DEPTH_TEST);
 
-        #ifdef OpenGL
-        glDisable(GL_TEXTURE_2D);
-        #endif
-
         glLineWidth(1.0);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -279,10 +275,6 @@ namespace gcn
 
         glEnable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
-
-        #ifdef OpenGL
-        glEnable(GL_TEXTURE_2D);
-        #endif
 
         popClipArea();
         glDisable(GL_SCISSOR_TEST);
@@ -355,8 +347,6 @@ namespace gcn
         float texY2 = (srcY+height) / (float)srcImage->getTextureHeight();
 
         glBindTexture(GL_TEXTURE_2D, srcImage->getTextureHandle());
-
-        glEnable(GL_TEXTURE_2D);
 
         // Check if blending already is enabled
         if (!mAlpha)
