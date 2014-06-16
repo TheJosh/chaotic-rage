@@ -78,6 +78,7 @@ namespace gcn
 
         public:
             void createShaders();
+            void shaderSource(GLuint shader, const char *src);
             GLuint createShaderProgram(const char *vs, const char *fs);
     };
     
@@ -112,6 +113,26 @@ namespace gcn
         shader_lines = 0;
     }
     
+    /**
+    * Set the shader source, but tweak it a little for GLES
+    **/
+    void OpenGLGraphics_Impl::shaderSource(GLuint shader, const char *code)
+    {
+        #ifdef GLES
+            char const *extra = "precision mediump float;";
+            char *srcmod = (char*) malloc(strlen(code) + strlen(extra) + 1);
+            srcmod[0] = '\0';
+            strcat(srcmod, extra);
+            strcat(srcmod, code);
+            GLint len = strlen(srcmod);
+            glShaderSource(shader, 1, (const GLchar**) &srcmod, &len);
+            free(srcmod);
+        #else
+            GLint len = strlen(code);
+            glShaderSource(shader, 1, &code, &len);
+        #endif
+    }
+    
     GLuint OpenGLGraphics_Impl::createShaderProgram(const char *vs, const char *fs)
     {
         GLuint program, sVS, sFS;
@@ -125,7 +146,7 @@ namespace gcn
         sVS = glCreateShader(GL_VERTEX_SHADER);
         assert(sVS);
         len = strlen(vs);
-        glShaderSource(sVS, 1, &vs, &len);
+        shaderSource(sVS, vs);
         glCompileShader(sVS);
         glAttachShader(program, sVS);
 
@@ -142,7 +163,7 @@ namespace gcn
         sFS = glCreateShader(GL_FRAGMENT_SHADER);
         assert(sFS);
         len = strlen(fs);
-        glShaderSource(sFS, 1, &fs, &len);
+        shaderSource(sFS, fs);
         glCompileShader(sFS);
         glAttachShader(program, sFS);
 
@@ -238,7 +259,10 @@ namespace gcn
 
         glDisable(GL_CULL_FACE);
         glDisable(GL_DEPTH_TEST);
+
+        #ifdef OpenGL
         glDisable(GL_TEXTURE_2D);
+        #endif
 
         glLineWidth(1.0);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -255,7 +279,10 @@ namespace gcn
 
         glEnable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
+
+        #ifdef OpenGL
         glEnable(GL_TEXTURE_2D);
+        #endif
 
         popClipArea();
         glDisable(GL_SCISSOR_TEST);
