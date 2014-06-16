@@ -961,7 +961,9 @@ void RenderOpenGL::createShadowBuffers()
 	if (status != GL_FRAMEBUFFER_COMPLETE) {
 		switch (status) {
 			case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT: GL_LOG("Framebuffer status %i GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT", status); break;
+			#ifdef GLES
 			case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS: GL_LOG("Framebuffer status %i GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS", status); break;
+			#endif
 			case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT: GL_LOG("Framebuffer status %i GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT", status); break;
 			case GL_FRAMEBUFFER_UNSUPPORTED: GL_LOG("Framebuffer status %i GL_FRAMEBUFFER_UNSUPPORTED", status); break;
 			default: GL_LOG("Framebuffer status %i unknown", status); break;
