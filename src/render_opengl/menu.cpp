@@ -86,8 +86,6 @@ void Menu::loadModBits(UIUpdate* ui)
 		this->bg = this->render->loadSprite("menu/bg.jpg", GEng()->mm->getBase());
 	}
 
-	if (ui) ui->updateUI();
-
 	this->loadMenuItems();
 }
 
@@ -294,7 +292,7 @@ void Menu::updateUI()
 	}
 
 	// Background perspective matrix
-	glm::mat4 proj = glm::perspective(30.0f, (float)(render->virt_width / render->virt_height), 1.0f, 2500.f);
+	glm::mat4 proj = glm::perspective(30.0f, static_cast<float>(render->real_width) / static_cast<float>(render->real_height), 1.0f, 2500.f);
 	proj = glm::scale(proj, glm::vec3(1.0f, -1.0f, 1.0f));
 
 	// Background animation
@@ -556,4 +554,3 @@ void Menu::networkJoin(string host)
 	gm->networkJoin(host, this);
 	this->setupGLstate();
 }
-

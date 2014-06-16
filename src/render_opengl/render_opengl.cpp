@@ -90,10 +90,13 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->font = NULL;
 	this->gui_font = NULL;
 
-	// TODO: Do we need this? SDL2
-	/*const SDL_VideoInfo* mode = SDL_GetVideoInfo();
-	this->desktop_width = mode->current_w;
-	this->desktop_height = mode->current_h;*/
+	SDL_DisplayMode mode;
+	int result = SDL_GetDesktopDisplayMode(0, &mode);
+	if (result != 0) {
+		reportFatalError("Unable to determine current display mode");
+	}
+	this->desktop_width = mode.w;
+	this->desktop_height = mode.h;
 
 	this->settings = NULL;
 	this->setSettings(settings);
@@ -159,12 +162,10 @@ void RenderOpenGL::setSettings(RenderOpenGLSettings* settings)
 	}
 
 	// Update tex with new filtering modes
-	if (!loaded.empty()) {
-		for (unsigned int i = 0; i != loaded.size(); i++) {
-			glBindTexture(GL_TEXTURE_2D, loaded[i]->pixels);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this->min_filter);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, this->mag_filter);
-		}
+	for (unsigned int i = 0; i != loaded.size(); i++) {
+		glBindTexture(GL_TEXTURE_2D, loaded[i]->pixels);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this->min_filter);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, this->mag_filter);
 	}
 }
 
@@ -197,15 +198,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	if (fullscreen) {
 		flags |= SDL_WINDOW_FULLSCREEN;
 
-		SDL_DisplayMode mode;
-
-		int result = SDL_GetDesktopDisplayMode(0, &mode);
-		if (result != 0) {
-			reportFatalError("Unable to determine current display mode");
-		}
-
-		width = mode.w;
-		height = mode.h;
+		width = this->desktop_width;
+		height = this->desktop_height;
 	}
 
 	this->real_width = width;
@@ -285,10 +279,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	// Windows only: Re-load textures.
 	// All other platforms don't destory the context if the window size changes
 	#ifdef _WIN32
-		if (!loaded.empty()) {
-			for (unsigned int i = 0; i != loaded.size(); i++) {
-				this->surfaceToOpenGL(loaded.at(i));
-			}
+		for (unsigned int i = 0; i != loaded.size(); i++) {
+			this->surfaceToOpenGL(loaded.at(i));
 		}
 	#endif
 
@@ -551,7 +543,7 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 			target_format = GL_RGBA;
 		} else {
 			texture_format = target_format = 0;
-			assert(1); // TODO GLES removed: texture_format = GL_BGRA;
+			assert(0); // TODO GLES removed: texture_format = GL_BGRA;
 		}
 
 	} else if (num_colors == 3) {
@@ -560,12 +552,12 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 			target_format = GL_RGB;
 		} else {
 			texture_format = target_format = 0;
-			assert(1); // TODO GLES removed: texture_format = GL_BGR;
+			assert(0); // TODO GLES removed: texture_format = GL_BGR;
 		}
 
 	} else {
 		texture_format = target_format = 0;
-		assert(1);
+		assert(0);
 	}
 
 	#ifdef GLES
@@ -658,7 +650,7 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 				texture_format = GL_RGBA;
 			} else {
 				texture_format = 0;
-				assert(1); // TODO GLES removed: texture_format = GL_BGRA;
+				assert(0); // TODO GLES removed: texture_format = GL_BGRA;
 			}
 
 		} else if (surf->format->BytesPerPixel == 3) {
@@ -666,7 +658,7 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 				texture_format = GL_RGB;
 			} else {
 				texture_format = 0;
-				assert(1); // TODO GLES removed: texture_format = GL_BGR;
+				assert(0); // TODO GLES removed: texture_format = GL_BGR;
 			}
 
 		} else {
@@ -1644,7 +1636,6 @@ unsigned int RenderOpenGL::widthText(string text)
 {
 	return this->font->getWidth(text);
 }
-
 
 
 /**
