@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include "string.h"
+#include "../mod/mod.h"
 #define BUFFER_MAX 255
 
 
@@ -27,27 +28,40 @@ static std::map<int, std::string> strings;
 bool loadLang(const char* name)
 {
 	char buf[BUFFER_MAX];
-	
-	strcpy(buf, "data/i18n/");
-	strcat(buf, name);
+	char buf2[BUFFER_MAX];
+
+	Mod* mod = new Mod(NULL, "data/i18n");
+
+	strcpy(buf, name);
 	strcat(buf, ".txt");
-	
-	FILE* fp = fopen(buf, "rb");
-	if (fp == NULL) return false;
-	
-	// TODO: Check this code for buffer under/overflows and other (security?) issues
+	char* input = mod->loadText(buf);
+	if (input == NULL) {
+		return false;
+	}
+
+	// TODO: Fix potential buffer overflow
 
 	strings.clear();
-	while (fgets(buf, BUFFER_MAX, fp)) {
-		char* tab = strchr(buf, '\t');
-		char* nl = strchr(buf, '\n');
-		if (*(nl-1) == '\r') nl--;
-		*nl = '\0';
-		strings.insert(std::pair<int,std::string>(atoi(buf), std::string(tab+1)));
+	char* ptr = input;
+	char* curr = buf;
+	while (*ptr != 0) {
+		if (*ptr == '\t') {
+			memset(buf2, 0, BUFFER_MAX);
+			curr = buf2;
+		} else if (*ptr == '\r' || *ptr == '\n') {
+			strings.insert(std::pair<int,std::string>(atoi(buf), std::string(buf2)));
+			memset(buf, 0, BUFFER_MAX);
+			curr = buf;
+		} else {
+			*curr = *ptr;
+			++curr;
+		}
+		++ptr;
 	}
-	
-	fclose(fp);
-	
+
+	free(input);
+	delete mod;
+
 	return true;
 }
 
