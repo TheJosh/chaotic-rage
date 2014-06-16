@@ -3,7 +3,7 @@ precision mediump float;
 varying vec2 fTexUV;
 varying vec3 fNormal;
 varying vec3 fLightDir[2];
-varying vec3 fShadowCoord;
+varying vec4 fShadowCoord;
 
 uniform mat4 uMVP;
 uniform mat4 uMV;

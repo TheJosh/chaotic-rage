@@ -252,10 +252,10 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		reportFatalError("Failed to init required png support.");
 	}
 
-	// Check compat an init GLEW
+	// Check compat and init GLEW
 	#ifdef OpenGL
 		if (atof((char*) glGetString(GL_VERSION)) < 3.0) {
-			reportFatalError("OpenGL 3.0 or later is required for the high-end renderer, but not supported on this system. Try the low-end one.");
+			reportFatalError("OpenGL 3.0 or later is required, but not supported on this system");
 		}
 
 		GLenum err = glewInit();
@@ -267,6 +267,14 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		// GL_ARB_framebuffer_object -> shadows and glGenerateMipmap
 		if (! GL_ARB_framebuffer_object) {
 			reportFatalError("OpenGL 3.0 or the extension 'GL_ARB_framebuffer_object' not available.");
+		}
+	#endif
+
+	// Check compatibility - OpenGL ES
+	#ifdef GLES
+		char *exts = (char *)glGetString(GL_EXTENSIONS);
+		if(!strstr(exts, "GL_OES_depth_texture")){
+			reportFatalError("OpenGL ES 2.0 extension 'GL_OES_depth_texture' not available");
 		}
 	#endif
 
@@ -588,7 +596,9 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 	SpritePtr cubemap;
 	SDL_Surface* surf;
 	GLenum texture_format;
+	GLenum target_format;
 
+	CHECK_OPENGL_ERROR;
 	DEBUG("vid", "Loading cubemap '%s'", filename_base.c_str());
 
 	cubemap = new Sprite();
@@ -641,6 +651,8 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 			}
 		}
 
+		target_format = GL_RGBA;
+
 		if (surf->format->BytesPerPixel == 4) {
 			if (surf->format->Rmask == 0x000000ff) {
 				texture_format = GL_RGBA;
@@ -664,8 +676,12 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 			return NULL;
 		}
 
+		#ifdef GLES
+			target_format = texture_format;
+		#endif
+
 		// Load image into] cubemap
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, surf->w, surf->h, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, target_format, surf->w, surf->h, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
 
 		// Free img
 		SDL_FreeSurface(surf);
@@ -675,7 +691,6 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
 	CHECK_OPENGL_ERROR;
-
 	return cubemap;
 }
 
@@ -885,7 +900,7 @@ void RenderOpenGL::createSkybox()
 		0.5f,  0.5f, -0.5f,
 	};
 
-	unsigned int indexData[] = {0, 1, 2, 3, 7, 1, 5, 4, 7, 6, 2, 4, 0, 1};
+	Uint8 indexData[] = {0, 1, 2, 3, 7, 1, 5, 4, 7, 6, 2, 4, 0, 1};
 
 	// Create VAO
 	skybox_vao = new GLVAO();
@@ -915,7 +930,12 @@ void RenderOpenGL::createShadowBuffers()
 
 	// Set up the texture
 	glBindTexture(GL_TEXTURE_2D, this->shadow_depth_tex);
+	#ifdef GLES
+	// Needs GL_OES_depth_texture
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, RenderOpenGL::SHADOW_MAP_WIDTH, RenderOpenGL::SHADOW_MAP_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, 0);
+	#else
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, RenderOpenGL::SHADOW_MAP_WIDTH, RenderOpenGL::SHADOW_MAP_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+	#endif
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -937,7 +957,15 @@ void RenderOpenGL::createShadowBuffers()
 	#endif
 
 	// Check it
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) !=  GL_FRAMEBUFFER_COMPLETE) {
+	GLuint status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	if (status != GL_FRAMEBUFFER_COMPLETE) {
+		switch (status) {
+			case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT: GL_LOG("Framebuffer status %i GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT", status); break;
+			case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS: GL_LOG("Framebuffer status %i GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS", status); break;
+			case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT: GL_LOG("Framebuffer status %i GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT", status); break;
+			case GL_FRAMEBUFFER_UNSUPPORTED: GL_LOG("Framebuffer status %i GL_FRAMEBUFFER_UNSUPPORTED", status); break;
+			default: GL_LOG("Framebuffer status %i unknown", status); break;
+		}
 		reportFatalError("Error creating shadow framebuffer");
 	}
 
@@ -1849,6 +1877,7 @@ void RenderOpenGL::entitiesShadowMap()
 void RenderOpenGL::skybox()
 {
 	if (st->map->skybox == NULL) return;
+	CHECK_OPENGL_ERROR;
 
 	GLShader* s = this->shaders["skybox"];
 
@@ -1865,10 +1894,11 @@ void RenderOpenGL::skybox()
 	glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 
 	skybox_vao->bind();
-	glDrawElements(GL_TRIANGLE_STRIP, 14, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLE_STRIP, 14, GL_UNSIGNED_BYTE, 0);
 
 	glCullFace(GL_BACK);
 	glUseProgram(0);
+	CHECK_OPENGL_ERROR;
 }
 
 

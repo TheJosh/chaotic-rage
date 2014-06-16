@@ -197,10 +197,10 @@ void OpenGLFont::drawString(gcn::Graphics* graphics, const std::string& text, in
 
 	#ifdef OpenGL
 		glBindVertexArray(0);
+		glEnable(GL_TEXTURE_2D);
 	#endif
 
 	glEnable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
 
 	// Set up shader
 	GLShader* shader = this->render->shaders["text"];
@@ -233,9 +233,11 @@ void OpenGLFont::drawString(gcn::Graphics* graphics, const std::string& text, in
 		this->renderCharacter(c, xx, yy);
 	}
 
-	glDisable(GL_TEXTURE_2D);
+	#ifdef OpenGL
+		glDisable(GL_TEXTURE_2D);
+	#endif
+	
 	glDisable(GL_BLEND);
-
 	CHECK_OPENGL_ERROR;
 }
 
@@ -284,7 +286,7 @@ void OpenGLFont::renderCharacter(Uint32 character, float &x, float &y)
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 		#endif
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, gl_data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, gl_data);
 
 		delete [] gl_data;
 
