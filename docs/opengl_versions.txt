@@ -5,7 +5,7 @@ GLSL 1.5 = OpenGL 3.2 ~ DX10 ~ GeForce 9600 GT
 GLSL 4.2 = OpenGL 4.2 ~ DX11 ~ GeForce GT 610
 
 
-This is a summary of removed/deprecated functunality of the OpenGL 3.0 and later
+This is a summary of removed/deprecated functionality of the OpenGL 3.0 and later
 specs.
 
 Functions
@@ -91,7 +91,7 @@ Functions
 	Vertex4*
 	VertexPointer
 	WindowPos*
-	
+
 glEnable/elDisable
 	ALPHA_TEST
 	COLOR_MATERIAL
@@ -113,7 +113,7 @@ glEnable/elDisable
 	TEXTURE_CUBE_MAP
 	TEXTURE_GEN_*
 	VERTEX_PROGRAM_TWO_SIDE
-	
+
 Hints
 	FOG_HINT
 	GENERATE_MIPMAP_HINT
@@ -124,5 +124,3 @@ Drawing modes
 	POLYGON
 	QUADS
 	QUAD_STRIP
-	
-	

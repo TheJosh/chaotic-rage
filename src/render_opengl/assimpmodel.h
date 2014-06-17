@@ -13,7 +13,7 @@ using namespace std;
 
 
 /**
-* How many bones can be in an model
+* How many bones can be in a model
 **/
 #define MAX_BONES 32
 
@@ -142,7 +142,6 @@ class AssimpModel
 	friend class Map;
 
 	private:
-		const struct aiScene* sc;			// TODO: remove this, pass it as a func. arg everywhere instead.
 		Uint8* boneIds;
 		float* boneWeights;
 		btVector3 boundingSize;
@@ -162,7 +161,6 @@ class AssimpModel
 		~AssimpModel();
 
 	public:
-		const struct aiScene* getScene() { return this->sc; }		// TODO: remove this too
 		btVector3 getBoundingSize();
 		btVector3 getBoundingSizeHE();
 		btCollisionShape* getCollisionShape();
@@ -170,19 +168,19 @@ class AssimpModel
 		string getName() { return this->name; }
 
 	private:
-		void calcBoundingBox();
-		void calcBoundingBoxNode(const aiNode* nd, aiVector3D* min, aiVector3D* max, aiMatrix4x4* trafo);
+		void calcBoundingBox(const struct aiScene* sc);
+		void calcBoundingBoxNode(const aiNode* nd, aiVector3D* min, aiVector3D* max, aiMatrix4x4* trafo, const struct aiScene* sc);
 
-		void loadMeshes(bool opengl);
-		void loadMaterials(Render3D* render);
+		void loadMeshes(bool opengl, const struct aiScene* sc);
+		void loadMaterials(Render3D* render, const struct aiScene* sc);
 		SpritePtr loadTexture(Render3D* render, aiString path);
-		void loadMeshdata(bool update);
+		void loadMeshdata(bool update, const struct aiScene* sc);
 
-		void loadNodes();
+		void loadNodes(const struct aiScene* sc);
 		AssimpNode* loadNode(aiNode* nd, unsigned int depth);
 		AssimpNode* findNode(AssimpNode* nd, string name);
 
-		void loadAnimations();
+		void loadAnimations(const struct aiScene* sc);
 		AssimpAnimation* loadAnimation(const aiAnimation* anim);
 
 		glm::vec3 convVector(aiVector3D in);
@@ -196,5 +194,3 @@ class AssimpModel
 
 		void createCollisionShape();
 };
-
-
