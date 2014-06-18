@@ -2,27 +2,19 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include "assimpmodel.h"
+
 #include <iostream>
 #include <string>
-#include <map>
 #include <assimp/Importer.hpp>
 #include <assimp/cimport.h>
-#include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include "gl.h"
-#include "gl_debug.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/matrix_inverse.hpp>
-#include <glm/gtc/quaternion.hpp>
-#include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <btBulletDynamicsCommon.h>
-#include "../rage.h"
+
+#include "gl_debug.h"
 #include "../mod/mod.h"
-#include "assimpmodel.h"
 #include "render_opengl.h"
-#include "../render/sprite.h"
 
 using namespace std;
 
@@ -34,7 +26,6 @@ AssimpModel::AssimpModel(Mod* mod, string name)
 {
 	this->mod = mod;
 	this->name = name;
-	this->sc = NULL;
 	this->shape = NULL;
 	this->boneIds = NULL;
 	this->boneWeights = NULL;
@@ -72,12 +63,8 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 	Sint64 len;
 	Uint8 * data = this->mod->loadBinary("models/" + this->name, &len);
 	if (! data) {
-		// Test also the model path that the 'Australia day' mod uses
-		data = this->mod->loadBinary("animmodels/" + this->name, &len);
-		if (! data) {
-			this->mod->setLoadErr("Failed to load %s; file read failed", this->name.c_str());
-			return false;
-		}
+		this->mod->setLoadErr("Failed to load %s; file read failed", this->name.c_str());
+		return false;
 	}
 
 	// Check we aren't larger than size_t
@@ -87,8 +74,8 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 	}
 
 	// Do the import
-	this->sc = importer.ReadFileFromMemory((const void*) data, (size_t)len, flags, this->name.c_str());
-	if (! this->sc) {
+	const struct aiScene* sc = importer.ReadFileFromMemory((const void*) data, (size_t)len, flags, this->name.c_str());
+	if (!sc) {
 		this->mod->setLoadErr("Failed to load %s; file read failed; %s", this->name.c_str(), importer.GetErrorString());
 		return false;
 	}
@@ -96,22 +83,20 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 	free(data);
 
 	if (render != NULL && render->is3D()) {
-		this->loadMeshes(true);
-		this->loadMaterials(render);
+		this->loadMeshes(true, sc);
+		this->loadMaterials(render, sc);
 	} else {
-		this->loadMeshes(false);
+		this->loadMeshes(false, sc);
 	}
 
 	if (meshdata) {
-		this->loadMeshdata(render != NULL);
+		this->loadMeshdata(render != NULL, sc);
 	}
 
-	this->loadNodes();
-	this->loadAnimations();
-	this->calcBoundingBox();
+	this->loadNodes(sc);
+	this->loadAnimations(sc);
+	this->calcBoundingBox(sc);
 	this->setBoneNodes();
-
-	this->sc = NULL;
 
 	return true;
 }
@@ -120,7 +105,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 /**
 * Returns the bounding size of the mesh of the first frame
 **/
-void AssimpModel::calcBoundingBox()
+void AssimpModel::calcBoundingBox(const struct aiScene* sc)
 {
 	aiMatrix4x4 trafo;
 	aiIdentityMatrix4(&trafo);
@@ -129,7 +114,7 @@ void AssimpModel::calcBoundingBox()
 	// Calculate bounds and size
 	min.x = min.y = min.z = 1e10f;
 	max.x = max.y = max.z = -1e10f;
-	this->calcBoundingBoxNode(sc->mRootNode, &min, &max, &trafo);
+	this->calcBoundingBoxNode(sc->mRootNode, &min, &max, &trafo, sc);
 	boundingSize = btVector3(max.x - min.x, max.y - min.y, max.z - min.z);
 }
 
@@ -137,7 +122,7 @@ void AssimpModel::calcBoundingBox()
 /**
 * Returns the bounding size of the mesh of the first frame
 **/
-void AssimpModel::calcBoundingBoxNode(const aiNode* nd, aiVector3D* min, aiVector3D* max, aiMatrix4x4* trafo)
+void AssimpModel::calcBoundingBoxNode(const aiNode* nd, aiVector3D* min, aiVector3D* max, aiMatrix4x4* trafo, const struct aiScene* sc)
 {
 	aiMatrix4x4 prev;
 	unsigned int n = 0, t;
@@ -173,7 +158,7 @@ void AssimpModel::calcBoundingBoxNode(const aiNode* nd, aiVector3D* min, aiVecto
 
 	// Calculate for children nodes too
 	for (n = 0; n < nd->mNumChildren; ++n) {
-		this->calcBoundingBoxNode(nd->mChildren[n], min, max, trafo);
+		this->calcBoundingBoxNode(nd->mChildren[n], min, max, trafo, sc);
 	}
 
 	*trafo = prev;
@@ -183,7 +168,7 @@ void AssimpModel::calcBoundingBoxNode(const aiNode* nd, aiVector3D* min, aiVecto
 /**
 * Load a model into a VAO, VBOs etc.
 **/
-void AssimpModel::loadMeshes(bool opengl)
+void AssimpModel::loadMeshes(bool opengl, const struct aiScene* sc)
 {
 	unsigned int n = 0;
 	GLuint buffer;
@@ -265,7 +250,7 @@ void AssimpModel::loadMeshes(bool opengl)
 			this->freeBones();
 		}
 
-		// Tangent s and Bittangents, for normal mapping
+		// Tangents and Bittangents, for normal mapping
 		// TODO: Determine if there actually is a normal map in use on this mesh!
 		if (mesh->HasTangentsAndBitangents()) {
 			glGenBuffers(1, &buffer);
@@ -285,9 +270,9 @@ void AssimpModel::loadMeshes(bool opengl)
 * The physics code needs the actual mesh data.
 * If the mesh is used for physics, we load the faces and verts
 *
-* @param bool update Update the existing arrya of `AssimpMesh`, v.s. creating anew.
+* @param bool update Update the existing arrya of `AssimpMesh`, v.s. creating a new.
 **/
-void AssimpModel::loadMeshdata(bool update)
+void AssimpModel::loadMeshdata(bool update, const struct aiScene* sc)
 {
 	unsigned int n = 0;
 	AssimpMesh *myMesh;
@@ -329,7 +314,7 @@ void AssimpModel::loadMeshdata(bool update)
 * Load materials.
 * Only supports simple materials with a single texture at the moment.
 **/
-void AssimpModel::loadMaterials(Render3D* render)
+void AssimpModel::loadMaterials(Render3D* render, const struct aiScene* sc)
 {
 	unsigned int n;
 	aiString path;
@@ -377,9 +362,10 @@ SpritePtr AssimpModel::loadTexture(Render3D* render, aiString path)
 /**
 * Load the node tree
 **/
-void AssimpModel::loadNodes()
+void AssimpModel::loadNodes(const struct aiScene* sc)
 {
-	this->rootNode = this->loadNode(this->sc->mRootNode, 0);
+	assert(sc != NULL);
+	this->rootNode = this->loadNode(sc->mRootNode, 0);
 	assert(this->rootNode != NULL);
 }
 
@@ -441,7 +427,7 @@ AssimpNode* AssimpModel::findNode(AssimpNode* nd, string name)
 /**
 * Load the animations for this assimp model
 **/
-void AssimpModel::loadAnimations()
+void AssimpModel::loadAnimations(const struct aiScene* sc)
 {
 	unsigned int n;
 
@@ -511,7 +497,6 @@ AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
 
 /**
 * Returns the bounding size of the mesh of the first frame
-* HE = half extents
 **/
 btVector3 AssimpModel::getBoundingSize()
 {
@@ -652,7 +637,6 @@ void AssimpModel::setBoneNodes()
 }
 
 
-
 /**
 * Create a collision shape object
 **/
@@ -671,5 +655,3 @@ btCollisionShape* AssimpModel::getCollisionShape()
 	if (this->shape == NULL) this->createCollisionShape();
 	return this->shape;
 }
-
-

@@ -130,7 +130,7 @@ void Menu::loadMenuItems()
 
 /**
 * Run the menu
-* The UIUpdate is for the first-run on the menu, duing initial loading of the menu stuff
+* The UIUpdate is for the first-run on the menu, during initial loading of the menu stuff
 **/
 void Menu::doit(UIUpdate* ui)
 {

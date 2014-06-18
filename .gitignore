@@ -8,3 +8,4 @@
 *.lnk
 
 multipound*.log
+gmon.out
