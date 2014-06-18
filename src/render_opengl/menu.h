@@ -60,11 +60,10 @@ class Menu : public UIUpdate
 		gcn::Gui* gui;
 		gcn::Container* gui_container;
 
-		WavefrontObj * bgmesh;
-		float bg_rot1_pos;
-		float bg_rot1_dir;
-		float bg_rot2_pos;
-		float bg_rot2_dir;
+		// TODO: Mod configuration for this model (multiple?)
+		AssimpModel* model;
+		AnimPlay* play;
+		float model_rot;		// TODO: Proper timing for the animation
 
 	public:
 		// Data for the dialogs

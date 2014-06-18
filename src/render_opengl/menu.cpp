@@ -9,6 +9,7 @@
 #include "gl.h"
 #include "menu.h"
 #include "render_opengl.h"
+#include "animplay.h"
 
 #include "../guichan/guichan.hpp"
 #include "../guichan/sdl.hpp"
@@ -50,14 +51,12 @@ Menu::Menu(GameState *st, GameManager *gm)
 	this->render = (RenderOpenGL*) GEng()->render;
 	this->logo = NULL;
 	this->bg = NULL;
-	this->bgmesh = NULL;
 }
 
 
 Menu::~Menu()
 {
 	menuClear();
-	delete(this->bgmesh);
 	delete(this->logo);
 	delete(this->bg);
 }
@@ -130,52 +129,6 @@ void Menu::loadMenuItems()
 
 
 /**
-* Create the "background" mesh
-* We save it in a WavefrontObj.
-**/
-void Menu::createBGmesh()
-{
-	if (bgmesh != NULL) return;
-
-	Vertex v;
-	TexUV t;
-	Face f;
-
-	bgmesh = new WavefrontObj();
-	v.y = 0.0;
-
-	v.x = -1.0f; v.z = -1.0f; t.x = 0.0f; t.y = 0.0f;
-	bgmesh->vertexes.push_back(v);
-	bgmesh->texuvs.push_back(t);
-
-	v.x = -1.0f; v.z = 1.0f; t.x = 0.0f; t.y = 1.0f;
-	bgmesh->vertexes.push_back(v);
-	bgmesh->texuvs.push_back(t);
-
-	v.x = 1.0f; v.z = 1.0f; t.x = 1.0f; t.y = 1.0f;
-	bgmesh->vertexes.push_back(v);
-	bgmesh->texuvs.push_back(t);
-
-	v.x = 1.0f; v.z = -1.0f; t.x = 1.0f; t.y = 0.0f;
-	bgmesh->vertexes.push_back(v);
-	bgmesh->texuvs.push_back(t);
-
-	v.x = 0.0f; v.y = 1.0f; v.z = 0.0f;
-	bgmesh->normals.push_back(v);
-
-	f.v1 = 1; f.v2 = 2; f.v3 = 3;
-	f.t1 = 1; f.t2 = 2; f.t3 = 3;
-	f.n1 = 1; f.n2 = 1; f.n3 = 1;
-	bgmesh->faces.push_back(f);
-
-	f.v1 = 1; f.v2 = 3; f.v3 = 4;
-	f.t1 = 1; f.t2 = 3; f.t3 = 4;
-	f.n1 = 1; f.n2 = 1; f.n3 = 1;
-	bgmesh->faces.push_back(f);
-}
-
-
-/**
 * Run the menu
 * The UIUpdate is for the first-run on the menu, duing initial loading of the menu stuff
 **/
@@ -193,11 +146,11 @@ void Menu::doit(UIUpdate* ui)
 	this->gui_container->setOpaque(false);
 	this->gui->setTop(this->gui_container);
 
-	this->createBGmesh();
-	this->bg_rot1_pos = -10.0f;
-	this->bg_rot1_dir = 0.006f;
-	this->bg_rot2_pos = 3.0f;
-	this->bg_rot2_dir = -0.004f;
+	// This is a hack and leaks memory too
+	// TODO: Mod to be able to specify models
+	this->model_rot = -10.0f;
+	this->model = mod->getAssimpModel("earth.dae");
+	this->play = new AnimPlay(this->model);
 
 	this->loadModBits(ui);
 	this->setupGLstate();
@@ -291,41 +244,47 @@ void Menu::updateUI()
 		default: break;
 	}
 
-	// Background perspective matrix
-	glm::mat4 proj = glm::perspective(30.0f, static_cast<float>(render->real_width) / static_cast<float>(render->real_height), 1.0f, 2500.f);
-	proj = glm::scale(proj, glm::vec3(1.0f, -1.0f, 1.0f));
+	// Projection and view for 3D elements
+	render->projection = glm::perspective(45.0f, static_cast<float>(render->real_width) / static_cast<float>(render->real_height), 1.0f, 2500.0f);
+	render->view = glm::mat4(1.0f);
 
-	// Background animation
-	bg_rot1_pos += bg_rot1_dir;
-	if (bg_rot1_pos >= 10.0f || bg_rot1_pos <= -10.0f) bg_rot1_dir = -bg_rot1_dir;
-	bg_rot2_pos += bg_rot2_dir;
-	if (bg_rot2_pos >= 3.0f || bg_rot2_pos <= -3.0f) bg_rot2_dir = -bg_rot2_dir;
-
-	// Background view matrix
-	glm::mat4 bgMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1250.0f));
-	bgMatrix = glm::rotate(bgMatrix, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-	bgMatrix = glm::rotate(bgMatrix, bg_rot1_pos, glm::vec3(0.0f, 0.0f, 1.0f));
-	bgMatrix = glm::rotate(bgMatrix, bg_rot2_pos, glm::vec3(1.0f, 0.0f, 0.0f));
-	bgMatrix = glm::scale(bgMatrix, glm::vec3(650.0f, 50.0f, 650.0f));
-
+	// Assign lights to phong shader
+	glUseProgram(render->shaders["phong"]->p());
+	glUniform3fv(render->shaders["phong"]->uniform("uLightPos"), 1, glm::value_ptr(glm::vec3(-200.0f, 200.0f, -1550.0f)));		// TODO: This appears to be ignored
+	glUniform4fv(render->shaders["phong"]->uniform("uLightColor"), 1, glm::value_ptr(glm::vec4(0.7f, 0.7f, 0.6f, 1.0f)));
+	glUniform4fv(render->shaders["phong"]->uniform("uAmbient"), 1, glm::value_ptr(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f)));
 
 	// Begin render
-	glEnable(GL_BLEND);
-	glDisable(GL_CULL_FACE);
-	glDisable(GL_DEPTH_TEST);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glBindTexture(GL_TEXTURE_2D, bg->pixels);
-	this->render->renderObj(bgmesh, proj * bgMatrix);
+	// Draw background
+	glDisable(GL_DEPTH_TEST);
+	glUseProgram(render->shaders["basic"]->p());
+	glUniformMatrix4fv(render->shaders["basic"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
+	this->render->renderSprite(bg, 0, ((static_cast<float>(render->real_height - render->real_width)) / 2.0f), render->real_width, render->real_width);
+
+	// We need depth for the 3D objects
+	glEnable(GL_DEPTH_TEST);
+
+	// Draw an earth
+	if (this->model != NULL && this->play != NULL) {
+		model_rot += 0.005f;
+		glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(400.0f, -200.0f, -1250.0f));
+		modelMatrix = glm::scale(modelMatrix, glm::vec3(250.0f, 250.0f, 250.0f));
+		modelMatrix = glm::rotate(modelMatrix, model_rot, glm::vec3(0.0f, 1.0f, 0.0f));
+		modelMatrix = glm::rotate(modelMatrix, -20.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+		this->render->renderAnimPlay(this->play, modelMatrix);
+	}
 
 	// Menu items
+	glDisable(GL_DEPTH_TEST);
 	this->menuRender();
 
 	// Logo in top-left
 	glEnable(GL_BLEND);
 	glUseProgram(render->shaders["basic"]->p());
 	glUniformMatrix4fv(render->shaders["basic"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
-	this->render->renderSprite(logo, 40, 40);
+	this->render->renderSprite(logo, 30, 30);
 
 	// Render guichan and process events
 	gui->logic();
