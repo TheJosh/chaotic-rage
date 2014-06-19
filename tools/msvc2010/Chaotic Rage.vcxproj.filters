@@ -145,56 +145,8 @@
     <None Include="..\..\data\cr\vehicletypes.conf">
       <Filter>Configs</Filter>
     </None>
-    <None Include="..\..\data\cr\shaders\entities.glslf">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders\entities.glslv">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders\dissolve.glslf">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders\dissolve.glslv">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders\water.glslf">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders\water.glslv">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders\particles.glslf">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders\particles.glslv">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders\text.glslf">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders\text.glslv">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders\bones.glslf">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders\bones.glslv">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="..\..\data\cr\pickuptypes.conf">
       <Filter>Configs</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders\phong.glslf">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders\phong.glslv">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders\phong_bump.glslf">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders\phong_bump.glslv">
-      <Filter>Shaders</Filter>
     </None>
     <None Include="..\..\data\cr\gametypes\zombie_betrayal.lua">
       <Filter>Gametypes</Filter>
@@ -217,12 +169,6 @@
     <None Include="..\..\data\cr\ais\dumbo.lua">
       <Filter>AIs</Filter>
     </None>
-    <None Include="..\..\data\cr\shaders_gl\terrain.glslv">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders_gl\terrain.glslf">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="..\..\data\cr\gametypes\forgery.lua">
       <Filter>Gametypes</Filter>
     </None>
@@ -234,6 +180,66 @@
     </None>
     <None Include="..\..\src\i18n\en_Pirate.txt">
       <Filter>src\i18n</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\bones.glslf">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\bones.glslv">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\dissolve.glslf">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\dissolve.glslv">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\entities.glslf">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\entities.glslv">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\particles.glslf">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\particles.glslv">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\phong.glslf">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\phong.glslv">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\phong_bump.glslf">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\phong_bump.glslv">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\skybox.glslf">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\skybox.glslv">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\terrain.glslf">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\terrain.glslv">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\text.glslf">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\text.glslv">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\water.glslf">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\shaders_gl\water.glslv">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
