@@ -1599,11 +1599,11 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 
 	glm::mat4 MVPstatic = this->projection * this->view * xform_global * transform;
 	glm::mat4 MVstatic = this->view * xform_global * transform;
-	glm::mat3 Nstatic = glm::inverseTranspose(glm::mat3(MVstatic));
+	glm::mat4 Vstatic = this->view;
 
 	glm::mat4 MVPbones = this->projection * this->view * xform_global;
 	glm::mat4 MVbones = this->view * xform_global;
-	glm::mat3 Nbones = glm::inverseTranspose(glm::mat3(MVbones));
+	glm::mat4 Vbones = this->view;
 
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
 		AssimpMesh* mesh = am->meshes[(*it)];
@@ -1611,11 +1611,11 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 		if (mesh->bones.empty()) {
 			glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPstatic));
 			glUniformMatrix4fv(shader->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MVstatic));
-			glUniformMatrix3fv(shader->uniform("uN"), 1, GL_FALSE, glm::value_ptr(Nstatic));
+			glUniformMatrix4fv(shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(Vstatic));
 		} else {
 			glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPbones));
 			glUniformMatrix4fv(shader->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MVbones));
-			glUniformMatrix3fv(shader->uniform("uN"), 1, GL_FALSE, glm::value_ptr(Nbones));
+			glUniformMatrix4fv(shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(Vbones));
 		}
 
 		if (am->materials[mesh->materialIndex]->diffuse == NULL) {

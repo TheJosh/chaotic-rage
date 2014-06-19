@@ -250,8 +250,8 @@ void Menu::updateUI()
 
 	// Assign lights to phong shader
 	glUseProgram(render->shaders["phong"]->p());
-	glUniform3fv(render->shaders["phong"]->uniform("uLightPos"), 1, glm::value_ptr(glm::vec3(-200.0f, 200.0f, -1550.0f)));		// TODO: This appears to be ignored
-	glUniform4fv(render->shaders["phong"]->uniform("uLightColor"), 1, glm::value_ptr(glm::vec4(0.7f, 0.7f, 0.6f, 1.0f)));
+	glUniform3fv(render->shaders["phong"]->uniform("uLightPos"), 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, -2000.0f)));		// TODO: This appears to be ignored
+	glUniform4fv(render->shaders["phong"]->uniform("uLightColor"), 1, glm::value_ptr(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f)));
 	glUniform4fv(render->shaders["phong"]->uniform("uAmbient"), 1, glm::value_ptr(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f)));
 
 	// Begin render
