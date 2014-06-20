@@ -1,0 +1,61 @@
+How to create a Debian package (deb)
+
+TODO: Create script(s) and general improvements
+
+
+Sources for instructions
+http://askubuntu.com/questions/161155/how-to-create-a-ppa-for-c-program/161212#161212
+http://faceted.wordpress.com/2011/05/18/howto-build-a-trivial-debian-package-with-dh_make/
+
+
+Install necessary packages
+> sudo apt-get install build-essential devscripts ubuntu-dev-tools debhelper dh-make patch cdbs quilt gnupg fakeroot lintian pbuilder piuparts
+
+
+[Optional] Be able to sign the package
+	Create a launchpad account
+	https://launchpad.net
+
+	Setup your gpg-key & ssh-key
+	https://help.launchpad.net/YourAccount/ImportingYourPGPKey
+	https://help.launchpad.net/YourAccount/CreatingAnSSHKeyPair
+
+
+Create the source (far from optimal)
+	Go to the Chaotic Rage source root folder
+	> make dist-bin
+	This created the file 'chaoticrage-linuxbin-<version>.tar.bz2'
+	Use the file as source (creating tmp folders and moving the file)
+	> mkdir ../deb_tmp
+	> mv chaoticrage-linuxbin-* ../deb_tmp
+	> cd ../deb_tmp
+	> mkdir chaoticrage-<version>
+	> tar jxf chaoticrage-linuxbin-* chaoticrage-<version>
+	> cd chaoticrage-*
+
+
+Getting ready for building the package
+	Set DEBEMAIL and DEBFULLNAME (optional - add these to '~/.bashrc')
+	(must be the same as the gpg key (command: 'gpg --list-keys'))
+		> export DEBEMAIL=<email address>
+		> export DEBFULLNAME="Full Name"
+	Create 'orig.tar.xz' file
+		> dh_make --copyright gpl2 --createorig --single
+	Replace and edit the 'control' file
+		> cp ../../chaotic-rage/tools/debian_package/debian/control debian/control
+		Update maintainer (name and email)
+		> editor debian/control
+	Copy the 'install' file which decides which files to install and where
+		> cp ../../chaotic-rage/tools/debian_package/debian/chaoticrage.install debian/
+	Update changelog (two alternatives)
+		Do not change version number (use this for first build)
+		> dch --edit
+		Increase the Debian release number
+		> dch --increment
+	[Optional] Clean extra files
+		> rm debian/*.ex debian/*.EX
+
+
+Build package
+	> debuild --no-tgz-check # Do not check for the source tarball
+	The Debian package is now ready to be installed

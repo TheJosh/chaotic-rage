@@ -1,0 +1,17 @@
+Source: chaoticrage
+Section: games
+Priority: optional
+Maintainer: Full name <email adress>
+Build-Depends: debhelper (>= 9.0.0)
+Standards-Version: 3.9.5
+Homepage: http://www.chaoticrage.com
+Vcs-Git: git://github.com:TheJosh/chaotic-rage.git
+Vcs-Browser: https://github.com/TheJosh/chaotic-rage
+
+Package: chaoticrage
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: An unusual zombie shooter game
+ Chaotic Rage is a crazy top-view shooter. You can destroy everything with the
+ many weapons, turrets and vehicles. Choose from multiple characters with
+ unique skills and abilities.
