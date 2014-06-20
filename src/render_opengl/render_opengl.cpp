@@ -1598,11 +1598,11 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 	CHECK_OPENGL_ERROR;
 
 	glm::mat4 MVPstatic = this->projection * this->view * xform_global * transform;
-	glm::mat4 MVstatic = this->view * xform_global * transform;
+	glm::mat4 Mstatic = xform_global * transform;
 	glm::mat4 Vstatic = this->view;
-
+	
 	glm::mat4 MVPbones = this->projection * this->view * xform_global;
-	glm::mat4 MVbones = this->view * xform_global;
+	glm::mat4 Mbones = xform_global;
 	glm::mat4 Vbones = this->view;
 
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
@@ -1610,11 +1610,11 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 
 		if (mesh->bones.empty()) {
 			glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPstatic));
-			glUniformMatrix4fv(shader->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MVstatic));
+			glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(Mstatic));
 			glUniformMatrix4fv(shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(Vstatic));
 		} else {
 			glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPbones));
-			glUniformMatrix4fv(shader->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MVbones));
+			glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(Mbones));
 			glUniformMatrix4fv(shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(Vbones));
 		}
 
