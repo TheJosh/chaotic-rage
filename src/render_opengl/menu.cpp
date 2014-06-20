@@ -244,15 +244,13 @@ void Menu::updateUI()
 		default: break;
 	}
 
-	// Projection and view for 3D elements
-	render->projection = glm::perspective(45.0f, static_cast<float>(render->real_width) / static_cast<float>(render->real_height), 1.0f, 2500.0f);
-	render->view = glm::mat4(1.0f);
+	// Projection for 3D stuff
+	render->projection = glm::perspective(45.0f, static_cast<float>(render->real_width) / static_cast<float>(render->real_height), 0.1f, 100.0f);
 
-	// Assign lights to phong shader
-	glUseProgram(render->shaders["phong"]->p());
-	glUniform3fv(render->shaders["phong"]->uniform("uLightPos"), 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, -2000.0f)));		// TODO: This appears to be ignored
-	glUniform4fv(render->shaders["phong"]->uniform("uLightColor"), 1, glm::value_ptr(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f)));
-	glUniform4fv(render->shaders["phong"]->uniform("uAmbient"), 1, glm::value_ptr(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f)));
+	// View for 3D stuff
+	glm::vec3 position = glm::vec3(0.0f, 0.0f, 5.0f);
+	glm::vec3 direction = glm::vec3(0.0f, 0.0f, 1.0f);
+	render->view = glm::lookAt(position, position + direction, glm::vec3(0.0f, 1.0f, 0.0f));
 
 	// Begin render
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -263,16 +261,20 @@ void Menu::updateUI()
 	glUniformMatrix4fv(render->shaders["basic"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
 	this->render->renderSprite(bg, 0, ((static_cast<float>(render->real_height - render->real_width)) / 2.0f), render->real_width, render->real_width);
 
-	// We need depth for the 3D objects
-	glEnable(GL_DEPTH_TEST);
-
 	// Draw an earth
 	if (this->model != NULL && this->play != NULL) {
-		model_rot += 0.005f;
-		glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(400.0f, -200.0f, -1250.0f));
-		modelMatrix = glm::scale(modelMatrix, glm::vec3(250.0f, 250.0f, 250.0f));
-		modelMatrix = glm::rotate(modelMatrix, model_rot, glm::vec3(0.0f, 1.0f, 0.0f));
-		modelMatrix = glm::rotate(modelMatrix, -20.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+		glEnable(GL_DEPTH_TEST);
+
+		// Set up lights
+		glUseProgram(render->shaders["phong"]->p());
+		glUniform3fv(render->shaders["phong"]->uniform("uLightPos"), 1, glm::value_ptr(glm::vec3(1.2f, -0.8f, 10.7f)));
+		glUniform4fv(render->shaders["phong"]->uniform("uLightColor"), 1, glm::value_ptr(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f)));
+		glUniform4fv(render->shaders["phong"]->uniform("uAmbient"), 1, glm::value_ptr(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
+
+		// Draw earth
+		model_rot += 0.004f;
+		glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-1.5f, -0.8f, 10.0f));
+		modelMatrix = glm::rotate(modelMatrix, model_rot, glm::vec3(0.0f, 1.0f, 0.0f));;
 		this->render->renderAnimPlay(this->play, modelMatrix);
 	}
 
