@@ -1532,16 +1532,28 @@ void RenderOpenGL::renderObj(WavefrontObj * obj, glm::mat4 mvp)
 **/
 void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 {
+	btTransform trans = e->getTransform();
+	float m[16];
+	trans.getOpenGLMatrix(m);
+	glm::mat4 modelMatrix = glm::make_mat4(m);
+
+	this->renderAnimPlay(play, modelMatrix);
+}
+
+
+/**
+* Renders an animation.
+* Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender() afterwards.
+*
+* TODO: This needs HEAPS more work with the new animation system
+**/
+void RenderOpenGL::renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix)
+{
 	AssimpModel* am;
 	GLShader* shader;
 
 	am = play->getModel();
 	if (am == NULL) return;
-
-	btTransform trans = e->getTransform();
-	float m[16];
-	trans.getOpenGLMatrix(m);
-	glm::mat4 modelMatrix = glm::make_mat4(m);
 
 
 	CHECK_OPENGL_ERROR;
@@ -1570,7 +1582,6 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 }
 
 
-
 /**
 * Render an Assimp model.
 * It's a recursive function because Assimp models have a node tree
@@ -1587,18 +1598,25 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 	CHECK_OPENGL_ERROR;
 
 	glm::mat4 MVPstatic = this->projection * this->view * xform_global * transform;
+	glm::mat4 Mstatic = xform_global * transform;
+	glm::mat4 Vstatic = this->view;
+	
 	glm::mat4 MVPbones = this->projection * this->view * xform_global;
+	glm::mat4 Mbones = xform_global;
+	glm::mat4 Vbones = this->view;
 
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
 		AssimpMesh* mesh = am->meshes[(*it)];
 
 		if (mesh->bones.empty()) {
 			glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPstatic));
+			glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(Mstatic));
+			glUniformMatrix4fv(shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(Vstatic));
 		} else {
 			glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPbones));
+			glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(Mbones));
+			glUniformMatrix4fv(shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(Vbones));
 		}
-
-		// TODO: Do we need uMV and uN for phong shading?
 
 		if (am->materials[mesh->materialIndex]->diffuse == NULL) {
 			glBindTexture(GL_TEXTURE_2D, 0);

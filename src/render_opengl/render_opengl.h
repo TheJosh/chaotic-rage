@@ -172,6 +172,7 @@ class RenderOpenGL : public Render3D
 		void entitiesShadowMap();
 
 		void renderAnimPlay(AnimPlay * play, Entity * e);
+		void renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix);
 		void renderCharacter(Uint32 c, float &x, float &y);
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);

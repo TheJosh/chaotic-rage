@@ -4,26 +4,31 @@ in vec3 vPosition;
 in vec3 vNormal;
 in vec2 vTexUV;
 
-out vec2 fTexUV;
-out vec3 fNormal;
-out vec3 fLightDir[2];
+out vec2 TexUV;
+out vec3 csNormal;
+out vec3 wsPosition;
+out vec3 csEyeDirection;
+out vec3 csLightDirection;
 
 uniform mat4 uMVP;
-uniform mat4 uMV;
-uniform mat3 uN;
+uniform mat4 uM;
+uniform mat4 uV;
 uniform vec3 uLightPos[2];
 
 
 void main()
 {
 	gl_Position = uMVP * vec4(vPosition, 1.0f);
-	fTexUV = vTexUV;
-	fNormal = uN * vNormal;
-	
-	vec4 pos4 = uMV * vec4(vPosition, 1.0f);
-	vec3 pos3 = pos4.xyz / pos4.w;
-	
-	for (int i = 0; i < 2; i++) {
-		fLightDir[i] = normalize(uN * uLightPos[i] - pos3);
-	}
+
+	wsPosition = (uM * vec4(vPosition, 1.0f)).xyz;
+
+	vec3 csPosition = (uV * uM * vec4(vPosition, 1.0f)).xyz;
+	csEyeDirection = vec3(0.0, 0.0, 0.0) - csPosition;
+
+	vec3 csLightPos = (uV * vec4(uLightPos[0], 1.0f)).xyz;
+	csLightDirection = csLightPos + csEyeDirection;
+
+	csNormal = (uV * uM * vec4(vNormal, 1.0f)).xyz;
+
+	TexUV = vTexUV;
 }

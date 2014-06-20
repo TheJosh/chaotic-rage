@@ -1,12 +1,14 @@
 #version 130
 
-in vec2 fTexUV;
-in vec3 fNormal;
-in vec3 fLightDir[2];
+in vec2 TexUV;
+in vec3 csNormal;
+in vec3 wsPosition;
+in vec3 csEyeDirection;
+in vec3 csLightDirection;
 
 uniform mat4 uMVP;
-uniform mat4 uMV;
-uniform mat3 uN;
+uniform mat4 uM;
+uniform mat4 uV;
 uniform sampler2D uTex;
 uniform vec3 uLightPos[2];
 uniform vec4 uLightColor[2];
@@ -17,28 +19,29 @@ const float constantAttenuation = 0.3;
 const float linearAttenuation = 0.1;
 const float quadraticAttenuation = 0.01;
 
+
 void main()
 {
-	vec4 light = uAmbient;
-	float NdotL, dist, att;
+	float LightPower = 10.0f;
 
-	for (int i = 0; i < 1; i++) {
-		// Dot product affects strength of light
-		NdotL = max(0.0, dot(normalize(fNormal), normalize(fLightDir[i])));
-	
-		// Calculate attenuation
-		dist = -length(fLightDir[i]) * uLightColor[i].a;
-		att = 1.0 / (constantAttenuation + linearAttenuation*dist + quadraticAttenuation*dist*dist);
-	
-		// Calculate brightness
-		light += uLightColor[i] * NdotL;
-		
-		// Reflections
-		vec3 vReflection = normalize(reflect(-normalize(fLightDir[i]),normalize(fNormal)));
-		float spec = max(0.0, dot(normalize(fNormal), vReflection));
-		float fSpec = pow(spec, 64.0);
-		light += vec4(fSpec, fSpec, fSpec, 0.0f);
-	}
-	
-	gl_FragColor = texture2D(uTex, fTexUV) * light;
+	vec3 n = normalize(csNormal);
+	vec3 l = normalize(csLightDirection);
+	vec3 e = normalize(csEyeDirection);
+	float dist = length(uLightPos[0] - wsPosition);
+
+	// Basic material
+	vec4 matDiffuseColor = texture2D(uTex, TexUV);
+	vec4 matAmbientColor = uAmbient * matDiffuseColor;
+	vec4 matSpecularColor = vec4(0.3, 0.3, 0.3, 1.0);
+
+	// Diffuse
+	float NdotL = clamp(dot(n, l), 0.0, 1.0);
+	vec4 diffuseColor = matDiffuseColor * uLightColor[0] * LightPower * NdotL / (dist*dist);
+
+	// Specular
+	vec3 r = reflect(-l, n);
+	float EdotR = clamp(dot(e, r), 0.0, 1.0);
+	vec4 specularColor = matSpecularColor * uLightColor[0] * LightPower * pow(EdotR, 5) / (dist*dist);
+
+	gl_FragColor = matAmbientColor + diffuseColor + specularColor;
 }
