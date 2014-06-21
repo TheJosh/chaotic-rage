@@ -4,15 +4,17 @@ TODO: Create script(s) and general improvements
 
 
 Sources for instructions
-http://askubuntu.com/questions/161155/how-to-create-a-ppa-for-c-program/161212#161212
-http://faceted.wordpress.com/2011/05/18/howto-build-a-trivial-debian-package-with-dh_make/
+	https://help.launchpad.net/Packaging/PPA
+	http://askubuntu.com/questions/161155/how-to-create-a-ppa-for-c-program/161212#161212
+	http://faceted.wordpress.com/2011/05/18/howto-build-a-trivial-debian-package-with-dh_make/
 
 
 Install necessary packages
-> sudo apt-get install build-essential devscripts ubuntu-dev-tools debhelper dh-make patch cdbs quilt gnupg fakeroot lintian pbuilder piuparts
+	> sudo apt-get install build-essential devscripts ubuntu-dev-tools \
+	debhelper dh-make patch cdbs quilt gnupg fakeroot lintian pbuilder piuparts
 
 
-[Optional] Be able to sign the package
+[Optional for local testing] Be able to sign the package
 	Create a launchpad account
 	https://launchpad.net
 
@@ -23,15 +25,14 @@ Install necessary packages
 
 Create the source (far from optimal)
 	Go to the Chaotic Rage source root folder
-	> make dist-bin
-	This created the file 'chaoticrage-linuxbin-<version>.tar.bz2'
+	Create the file 'chaoticrage-<version>.orig.tar.xz'
+	> make deb
 	Use the file as source (creating tmp folders and moving the file)
-	> mkdir ../deb_tmp
-	> mv chaoticrage-linuxbin-* ../deb_tmp
-	> cd ../deb_tmp
-	> mkdir chaoticrage-<version>
-	> tar jxf chaoticrage-linuxbin-* chaoticrage-<version>
-	> cd chaoticrage-*
+	> mkdir ../deb_tmp && \
+	cp chaoticrage_* ../deb_tmp && \
+	cd ../deb_tmp && \
+	tar xpvf chaoticrage_* && \
+	cd chaoticrage-*
 
 
 Getting ready for building the package
@@ -39,8 +40,8 @@ Getting ready for building the package
 	(must be the same as the gpg key (command: 'gpg --list-keys'))
 		> export DEBEMAIL=<email address>
 		> export DEBFULLNAME="Full Name"
-	Create 'orig.tar.xz' file
-		> dh_make --copyright gpl2 --createorig --single
+	Prepare Debian packaging for an original source archive
+		> dh_make --copyright gpl2 --single --native
 	Replace and edit the 'control' file
 		> cp ../../chaotic-rage/tools/debian_package/debian/control debian/control
 		Update maintainer (name and email)
@@ -50,12 +51,29 @@ Getting ready for building the package
 	Update changelog (two alternatives)
 		Do not change version number (use this for first build)
 		> dch --edit
-		Increase the Debian release number
+		Or increase the Debian release number
 		> dch --increment
-	[Optional] Clean extra files
+
+		Note: Launchpad rejects the PPA upload if distribution is 'unstable',
+		change to wanted target (Ubuntu version), e.g. 'trusty'. Code name for
+		installed Ubuntu version: 'cat /etc/lsb-release'.
+	[Optional] Clean extra/example files
 		> rm debian/*.ex debian/*.EX
 
 
 Build package
-	> debuild --no-tgz-check # Do not check for the source tarball
+	> debuild
 	The Debian package is now ready to be installed
+
+
+Building for Personal Package Archive (PPA)
+	Brand new package with no existing version in Ubuntu's repositories
+	(will be uploaded with the .orig.tar.gz file)
+		> debuild -S -sa
+	Alternative version of an existing package
+	(will be uploaded without the .orig.tar.gz file)
+		> debuild -S -sd
+
+
+Uploading to PPA
+	dput ppa:<username>/chaoticrage ../chaoticrage_<version>ubuntu<build number>_source.changes

@@ -105,6 +105,11 @@ OBJFILES_CLIENT=build/client.o $(PLATFORM) build/confuse/confuse.o build/confuse
 # Dependencies of the source files
 DEPENDENCIES := $(OBJFILES:.o=.d)
 
+# DESTDIR is used by debuild/dpkg-buildpackage
+ifdef DESTDIR
+	DESTPATH := DESTDIR
+endif
+
 
 default: chaoticrage
 .PHONY: all chaoticrage clean
@@ -125,6 +130,22 @@ install: chaoticrage
 	mkdir -p $(DESTPATH)/usr/share/chaoticrage
 	cp -r --no-preserve=ownership data $(DESTPATH)/usr/share/chaoticrage
 	cp -r --no-preserve=ownership maps $(DESTPATH)/usr/share/chaoticrage
+
+
+deb: src data maps
+	mkdir -p $(DISTTMP)
+	cp -r Makefile $(DISTTMP)
+	cp -r LICENSE $(DISTTMP)
+	cp -r README.md $(DISTTMP)
+	cp -r src $(DISTTMP)
+	cp -r data $(DISTTMP)
+	cp -r maps $(DISTTMP)
+
+	mkdir -p $(DISTTMP)/tools
+	cp -r tools/include $(DISTTMP)/tools
+
+	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
+	rm -rf $(DISTTMP)
 
 
 dist: src data maps
