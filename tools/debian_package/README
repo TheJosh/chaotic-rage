@@ -35,12 +35,12 @@ Create the source (far from optimal)
 	cd chaoticrage-*
 
 
-Getting ready for building the package
+Prepare for building the package
 	Set DEBEMAIL and DEBFULLNAME (optional - add these to '~/.bashrc')
 	(must be the same as the gpg key (command: 'gpg --list-keys'))
 		> export DEBEMAIL=<email address>
 		> export DEBFULLNAME="Full Name"
-	Prepare Debian packaging for an original source archive
+	[Only the first time, overwrites e.g. the changelog] Prepare Debian packaging for an original source archive
 		> dh_make --copyright gpl2 --single --native
 	Replace and edit the 'control' file
 		> cp ../../chaotic-rage/tools/debian_package/debian/control debian/control
@@ -66,7 +66,7 @@ Build package
 	The Debian package is now ready to be installed
 
 
-Building for Personal Package Archive (PPA)
+Build for Personal Package Archive (PPA)
 	Brand new package with no existing version in Ubuntu's repositories
 	(will be uploaded with the .orig.tar.gz file)
 		> debuild -S -sa
@@ -75,5 +75,5 @@ Building for Personal Package Archive (PPA)
 		> debuild -S -sd
 
 
-Uploading to PPA
+Upload to PPA
 	dput ppa:<username>/chaoticrage ../chaoticrage_<version>ubuntu<build number>_source.changes
