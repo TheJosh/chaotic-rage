@@ -95,35 +95,39 @@ void Menu::loadModBits(UIUpdate* ui)
 void Menu::loadMenuItems()
 {
 	Mod* mod = GEng()->mm->getSupplOrBase();
+	int offsetX = 40;
+	int menus = 4 + mod->hasArcade() * 3 + mod->hasCampaign();
+	int offsetY = MIN(40, render->getHeight() / (menus + 1));
+	int offsetYFirst = MIN(60, render->getHeight() / (menus + 1));
 
 	this->menuClear();
-	int y = render->getHeight() - 60;
 
-	this->menuAdd(_(STRING_MENU_QUIT), 40, y, MC_QUIT);
-	y -= 40;
+	int y = render->getHeight() - offsetYFirst;
+	this->menuAdd(_(STRING_MENU_QUIT), offsetX, y, MC_QUIT);
 
-	this->menuAdd(_(STRING_MENU_HELP), 40, y, MC_HELP);
-	y -= 40;
+	y -= offsetY;
+	this->menuAdd(_(STRING_MENU_HELP), offsetX, y, MC_HELP);
 
-	this->menuAdd(_(STRING_MENU_MODS), 40, y, MC_MODS);
-	y -= 40;
+	y -= offsetY;
+	this->menuAdd(_(STRING_MENU_MODS), offsetX, y, MC_MODS);
 
-	this->menuAdd(_(STRING_MENU_SETTINGS), 40, y, MC_SETTINGS);
-	y -= 40;
+	y -= offsetY;
+	this->menuAdd(_(STRING_MENU_SETTINGS), offsetX, y, MC_SETTINGS);
 
 	if (mod->hasArcade()) {
-		this->menuAdd(_(STRING_MENU_NETWORK), 40, y, MC_NETWORK);
-		y -= 40;
+		y -= offsetY;
+		this->menuAdd(_(STRING_MENU_NETWORK), offsetX, y, MC_NETWORK);
 
-		this->menuAdd(_(STRING_MENU_SPLIT), 40, y, MC_SPLITSCREEN);
-		y -= 40;
+		y -= offsetY;
+		this->menuAdd(_(STRING_MENU_SPLIT), offsetX, y, MC_SPLITSCREEN);
 
-		this->menuAdd(_(STRING_MENU_SINGLE), 40, y, MC_SINGLEPLAYER);
-		y -= 40;
+		y -= offsetY;
+		this->menuAdd(_(STRING_MENU_SINGLE), offsetX, y, MC_SINGLEPLAYER);
 	}
 
 	if (mod->hasCampaign()) {
-		this->menuAdd(_(STRING_MENU_CAMPAIGN), 40, y, MC_CAMPAIGN);
+		y -= offsetY;
+		this->menuAdd(_(STRING_MENU_CAMPAIGN), offsetX, y, MC_CAMPAIGN);
 	}
 }
 
@@ -212,6 +216,7 @@ void Menu::updateUI()
 			// Key press
 			switch (event.key.keysym.sym) {
 				case SDLK_ESCAPE:
+				case SDLK_AC_BACK:
 					this->remAllDialogs();
 					break;
 
