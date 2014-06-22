@@ -132,22 +132,6 @@ install: chaoticrage
 	cp -r --no-preserve=ownership maps $(DESTPATH)/usr/share/chaoticrage
 
 
-deb: src data maps
-	mkdir -p $(DISTTMP)
-	cp -r Makefile $(DISTTMP)
-	cp -r LICENSE $(DISTTMP)
-	cp -r README.md $(DISTTMP)
-	cp -r src $(DISTTMP)
-	cp -r data $(DISTTMP)
-	cp -r maps $(DISTTMP)
-
-	mkdir -p $(DISTTMP)/tools
-	cp -r tools/include $(DISTTMP)/tools
-
-	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
-	rm -rf $(DISTTMP)
-
-
 dist: src data maps
 	mkdir -p $(DISTTMP)
 
@@ -167,6 +151,7 @@ dist: src data maps
 	chmod 755 $(DISTTMP)/tools/linux/*.sh
 
 	tar -cvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
+	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
 	rm -rf $(DISTTMP)
 
 
