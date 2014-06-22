@@ -1,0 +1,25 @@
+chaoticrage (1.8ubuntu8~saucy1) saucy; urgency=medium
+
+  * Build for Ubuntu Saucy.
+  * Added copyright file.
+
+ -- Magnus Espersson <magnusespersson@gmail.com>  Sun, 22 Jun 2014 17:09:35 +0200
+
+chaoticrage (1.8ubuntu8~trusty2) trusty; urgency=medium
+
+  * Build with minimal debian files linked from repo.
+  * Cleaned the changelog from test builds.
+
+ -- Magnus Espersson <magnusespersson@gmail.com>  Sun, 22 Jun 2014 15:58:11 +0200
+
+chaoticrage (1.8ubuntu8~trusty1) trusty; urgency=medium
+
+  * Build for trusty.
+
+ -- Magnus Espersson <magnusespersson@gmail.com>  Sun, 22 Jun 2014 13:04:38 +0200
+
+chaoticrage (1.8ubuntu7) saucy; urgency=medium
+
+  * Trying to fix depends issue with libglew.
+
+ -- Magnus Espersson <magnusespersson@gmail.com>  Sun, 22 Jun 2014 12:17:47 +0200

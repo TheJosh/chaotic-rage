@@ -1,7 +1,7 @@
-How to create a Debian package (deb)
+How to build a Debian package (deb) and uploading it to the Chaotic Rage PPA
 
-TODO: Create script(s) and general improvements
 TODO: Support older Ubuntu releases than 13.10 'Saucy', use 'tools/linux/*.sh'
+TODO: Upload only the (source) diff to ppa
 
 
 Sources for instructions
@@ -25,14 +25,14 @@ Install necessary packages
 	https://help.launchpad.net/YourAccount/CreatingAnSSHKeyPair
 
 
-Create the source (far from optimal)
+Create the source from repo
 	Go to the Chaotic Rage source root folder
-	Create the file 'chaoticrage-<version>.orig.tar.xz'
+	Create the file 'chaoticrage_<version>.orig.tar.xz'
 	> make dist
-	Use the file as source (creating tmp folders and moving the file)
-	> mkdir ../deb_tmp && \
-	cp chaoticrage_* ../deb_tmp && \
-	cd ../deb_tmp && \
+	Use the file as source
+	> mkdir ../deb_build && \
+	cp chaoticrage_* ../deb_build && \
+	cd ../deb_build && \
 	tar xpvf chaoticrage_* && \
 	cd chaoticrage-*
 
@@ -42,24 +42,13 @@ Prepare for building the package
 	(must be the same as the gpg key (command: 'gpg --list-keys'))
 		> export DEBEMAIL=<email address>
 		> export DEBFULLNAME="Full Name"
-	[Only the first time, overwrites e.g. the changelog] Prepare Debian packaging for an original source archive
-		> dh_make --copyright gpl2 --single --native
-	Replace and edit the 'control' file
-		> cp ../../chaotic-rage/tools/debian_package/debian/control debian/control
-		Update maintainer (name and email)
-		> editor debian/control
-	Copy the 'install' file which decides which files to install and where
-		> cp ../../chaotic-rage/tools/debian_package/debian/chaoticrage.install debian/
 	Update changelog (two alternatives)
-		Do not change version number (use this for first build)
+		Do not change version number (edit changelog for unpublished build)
 		> dch --edit
 		Or increase the Debian release number
 		> dch --increment
-
-		Note: Launchpad rejects the PPA upload if distribution is 'unstable',
-		change to wanted target (Ubuntu version), e.g. 'trusty'.
-	[Optional] Clean extra/example files
-		> rm debian/*.ex debian/*.EX
+		Note: Launchpad rejects the PPA upload if distribution is not a valid
+		target (Ubuntu version), e.g. 'trusty'.
 
 
 Build package
@@ -70,10 +59,7 @@ Build package
 Build for Personal Package Archive (PPA)
 	Brand new package with no existing version in Ubuntu's repositories
 	(will be uploaded with the .orig.tar.gz file)
-		> debuild -S -sa
-	Alternative version of an existing package
-	(will be uploaded without the .orig.tar.gz file)
-		> debuild -S -sd
+	> debuild -S -sa
 
 
 Test building locally
@@ -87,5 +73,9 @@ Test building locally
 	> pbuilder-dist <release> build ../<package>_<version>.dsc
 
 
-Upload to PPA
-	dput ppa:<username>/chaoticrage ../chaoticrage_<version>ubuntu<build number>_source.changes
+Upload to the Chaotic Rage PPA
+	> dput ppa:chaotic-rage/chaoticrage ../<source.changes>
+	Note: one package for each release is required (Ubuntu Saucy and Trusty)
+	
+	Update the repo with the new changelog and any other changes
+	cp -r debian/ ../../chaotic-rage/tools/debian_package/

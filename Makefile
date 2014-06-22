@@ -151,6 +151,9 @@ dist: src data maps
 	chmod 755 $(DISTTMP)/tools/linux/*.sh
 
 	tar -cvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
+
+	mkdir -p $(DISTTMP)/debian
+	cp -r tools/debian_package/debian $(DISTTMP)
 	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
 	rm -rf $(DISTTMP)
 

@@ -1,7 +1,7 @@
 Source: chaoticrage
 Section: games
 Priority: optional
-Maintainer: Full name <email adress>
+Maintainer: Magnus Espersson <magnusespersson@gmail.com>
 Build-Depends:
  debhelper (>= 9.0.0),
  libsdl2-dev,
