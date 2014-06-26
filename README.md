@@ -53,12 +53,12 @@ You should then be able to run `ndk-build` to compile and `ant debug` to create 
 Cross-compiling for Windows using MXE
 -------------------------------------
 
-Check out the latest master version of MXE from GitHub
+Check out the latest master version of MXE from GitHub and install it's dependencies
 ```
 git clone https://github.com/mxe/mxe.git
 ```
 
-Then build all the dependencies
+Then cd to the MXE directory and build all the dependencies
 ```
 make sdl2 sdl2_mixer sdl2_image sdl2_net lua freetype bullet assimp
 ```
