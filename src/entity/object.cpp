@@ -23,12 +23,12 @@ Object::Object(ObjectType *ot, GameState *st, float x, float y, float z, float a
 	this->anim = new AnimPlay(ot->model);
 	this->anim->setAnimation(0);
 
-	btVector3 sizeHE = ot->model->getBoundingSizeHE();
+	btVector3 size = ot->model->getBoundingSize();
 
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
 			btQuaternion(btScalar(0), btScalar(0), btScalar(DEG_TO_RAD(angle))),
-			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)));
+			st->physics->spawnLocation(x, y, size.z())));
 
 	this->body = st->physics->addRigidBody(ot->col_shape, 1.0f, motionState, CG_OBJECT);
 

@@ -22,11 +22,11 @@ using namespace std;
 
 Helicopter::Helicopter(VehicleType *vt, GameState *st, float mapx, float mapy) : Vehicle(st)
 {
-	btVector3 sizeHE = vt->model->getBoundingSizeHE();
+	btVector3 size = vt->model->getBoundingSize();
 
 	btTransform trans = btTransform(
 		btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
-		st->physics->spawnLocation(mapx, mapy, sizeHE.z() * 2.0f)
+		st->physics->spawnLocation(mapx, mapy, size.z())
 	);
 
 	this->init(vt, st, trans);

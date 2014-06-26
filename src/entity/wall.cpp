@@ -21,12 +21,12 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z, float angle) 
 	this->anim = new AnimPlay(wt->model);
 	this->health = wt->health;
 
-	btVector3 sizeHE = wt->model->getBoundingSizeHE();
+	btVector3 size = wt->model->getBoundingSize();
 
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
 			btQuaternion(btScalar(0), btScalar(0), btScalar(DEG_TO_RAD(angle))),
-			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)));
+			st->physics->spawnLocation(x, y, size.z())));
 
 	this->body = st->physics->addRigidBody(wt->col_shape, 0.0f, motionState, CG_WALL);
 
