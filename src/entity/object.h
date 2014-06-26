@@ -5,8 +5,8 @@
 #pragma once
 #include "entity.h"
 
-
 class AnimPlay;
+class GameState;
 class Sound;
 class ObjectType;
 

@@ -2,20 +2,18 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include "../rage.h"
-#include "../physics_bullet.h"
+#include "player.h"
+#include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include "../game_engine.h"
 #include "../game_state.h"
 #include "../lua/gamelogic.h"
+#include "../rage.h"
 #include "../render_opengl/animplay.h"
-#include "../render_opengl/render_opengl.h"
-#include "../mod/unittype.h"
-#include "../mod/vehicletype.h"
+#include "../game_settings.h"
+#include "../render/render.h"
 #include "../util/btCRKinematicCharacterController.h"
-#include <BulletCollision/CollisionDispatch/btGhostObject.h>
-#include "player.h"
+#include "entity.h"
+#include "unit.h"
 #include "vehicle.h"
 
 using namespace std;
@@ -251,4 +249,3 @@ int Player::takeDamage(float damage)
 
 	return result;
 }
-

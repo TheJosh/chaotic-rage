@@ -2,28 +2,33 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include <btBulletDynamicsCommon.h>
+#include "unit.h"
+#include <algorithm>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
-#include "../util/btCRKinematicCharacterController.h"
-#include "../rage.h"
-#include "../physics_bullet.h"
+#include "../audio/audio.h"
+#include "../game_engine.h"
 #include "../game_state.h"
+#include "../fx/newparticle.h"
 #include "../mod/mod_manager.h"
+#include "../mod/objecttype.h"
 #include "../mod/pickuptype.h"
 #include "../mod/unittype.h"
-#include "../mod/objecttype.h"
 #include "../mod/vehicletype.h"
 #include "../mod/weapontype.h"
-#include "../render_opengl/animplay.h"
-#include "../game_engine.h"
 #include "../net/net_server.h"
-#include "../fx/newparticle.h"
-#include "unit.h"
-#include "vehicle.h"
+#include "../physics_bullet.h"
+#include "../rage.h"
+#include "../render_opengl/animplay.h"
+#include "../util/btCRKinematicCharacterController.h"
+#include "../util/debug.h"
+#include "entity.h"
 #include "object.h"
 #include "pickup.h"
+#include "vehicle.h"
+
+class Sound;
+class btTransform;
+class btVector3;
 
 using namespace std;
 

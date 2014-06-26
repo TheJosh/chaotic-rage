@@ -2,14 +2,12 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include "../rage.h"
-#include "../physics_bullet.h"
-#include "../game_state.h"
-#include "../render_opengl/animplay.h"
-#include "../mod/pickuptype.h"
 #include "pickup.h"
+#include "../game_state.h"
+#include "../mod/pickuptype.h"
+#include "../physics_bullet.h"
+#include "../render_opengl/animplay.h"
+#include "entity.h"
 
 
 using namespace std;
@@ -84,5 +82,3 @@ bool Pickup::doUse(Unit *u)
 		return false;
 	}
 }
-
-

@@ -2,13 +2,14 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include "../rage.h"
+#include "decaying.h"
 #include "../game_state.h"
 #include "../physics_bullet.h"
 #include "../render_opengl/animplay.h"
-#include "decaying.h"
+#include "entity.h"
+
+class GameState;
+class Sound;
 
 using namespace std;
 

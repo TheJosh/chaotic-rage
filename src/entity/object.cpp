@@ -2,14 +2,14 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include "../rage.h"
-#include "../physics_bullet.h"
-#include "../game_state.h"
-#include "../render_opengl/animplay.h"
-#include "../mod/objecttype.h"
 #include "object.h"
+#include <vector>
+#include "../game_state.h"
+#include "../mod/objecttype.h"
+#include "../physics_bullet.h"
+#include "../rage.h"
+#include "../render_opengl/animplay.h"
+#include "entity.h"
 
 
 using namespace std;
@@ -78,4 +78,3 @@ void Object::takeDamage(int damage)
 		}
 	}
 }
-
