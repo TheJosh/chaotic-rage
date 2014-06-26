@@ -155,7 +155,7 @@ Sound* UnitType::getSound(int type)
 	unsigned int j = 0;
 	unsigned int num = 0;
 
-	if (this->sounds.size() == 0) return NULL;
+	if (this->sounds.empty()) return NULL;
 
 	// Find out how many of this time exist
 	for (j = 0; j < this->sounds.size(); j++) {
@@ -186,7 +186,7 @@ UnitTypeAnimation* UnitType::getAnimation(int type)
 	unsigned int j = 0;
 	unsigned int num = 0;
 
-	if (this->animations.size() == 0) return NULL;
+	if (this->animations.empty()) return NULL;
 
 	// Find out how many of this type exist
 	for (j = 0; j < this->animations.size(); j++) {
@@ -229,5 +229,3 @@ UnitType::~UnitType()
 {
 	delete(this->col_shape);
 }
-
-

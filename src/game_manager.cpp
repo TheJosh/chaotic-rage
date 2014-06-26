@@ -2,7 +2,6 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
 #include "game_manager.h"
 #include "game_state.h"
 #include "game_engine.h"
@@ -11,7 +10,6 @@
 #include "map/reg.h"
 #include "physics_bullet.h"
 #include "mod/campaign.h"
-#include "net/net.h"
 #include "net/net_client.h"
 #include "net/net_server.h"
 #include "net/net_gameinfo.h"
@@ -21,7 +19,6 @@
 #include "mod/unittype.h"
 #include "lua/gamelogic.h"
 #include "render/render.h"
-#include "audio/audio.h"
 #include "util/ui_update.h"
 
 using namespace std;

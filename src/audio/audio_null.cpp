@@ -2,9 +2,7 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <algorithm>
-#include "../rage.h"
+#include "audio.h"
 #include "audio_null.h"
 
 using namespace std;

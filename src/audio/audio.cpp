@@ -2,13 +2,7 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <algorithm>
-#include <SDL.h>
-#include "../rage.h"
 #include "audio.h"
-#include "../game_state.h"
-
 
 using namespace std;
 

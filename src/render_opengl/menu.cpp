@@ -311,7 +311,7 @@ void Menu::menuClear()
 		*it = NULL;
 	}
 	this->menuitems.clear();
-	this->menuitems.reserve(7);
+	this->menuitems.reserve(8);
 }
 
 

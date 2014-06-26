@@ -40,7 +40,7 @@ AnimPlay::AnimPlay(AssimpModel* model)
 void AnimPlay::setAnimation(unsigned int animation, unsigned int start_frame, unsigned int end_frame, bool loop)
 {
 	// No animations? Fall back to static
-	if (this->model->animations.size() == 0) {
+	if (this->model->animations.empty()) {
 		this->clearAnimation();
 		return;
 	}
@@ -421,5 +421,3 @@ float AnimPlay::mixFactor(vector<AssimpAnimKey>* keys, unsigned int index, float
 		/
 		(next->time - curr->time);
 }
-
-

@@ -3,8 +3,7 @@ Upstream-Name: chaoticrage
 Source: https://github.com/TheJosh/chaotic-rage
 
 Files: *
-Copyright: <years> <put author's name and email here>
-           <years> <likewise for another author>
+Copyright: 2010-2014 Josh Heidenreich
 License: GPL-2.0+
 
 Files: debian/*

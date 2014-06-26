@@ -3,12 +3,8 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <SDL.h>
-#include <math.h>
-
-#include <iostream>
 #include <string>
 
-#include "rage.h"
 #include "game.h"
 #include "game_state.h"
 #include "game_engine.h"

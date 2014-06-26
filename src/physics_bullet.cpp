@@ -2,12 +2,9 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <algorithm>
 #include <map>
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
-#include "rage.h"
 #include "physics_bullet.h"
 #include "game_state.h"
 
@@ -402,5 +399,3 @@ float PhysicsBullet::QuaternionToYaw(const btQuaternion &quat)
 
 	return atan2(fTxz+fTwy, 1.0f-(fTxx+fTyy));
 }
-
-
