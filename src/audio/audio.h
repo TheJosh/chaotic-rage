@@ -5,14 +5,18 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_mixer.h>
-#include "../rage.h"
+#include <string>
+
+class Entity;
+class GameState;
+class Mod;
+class Song;
+class Sound;
 
 using namespace std;
 
 
 typedef Mix_Chunk* AudioPtr;
-
-class GameState;
 
 
 class Audio

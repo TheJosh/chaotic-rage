@@ -5,14 +5,10 @@
 #include "game_state.h"
 
 #include <string.h>
-#include <iostream>
-#include <map>
-#include <algorithm>
 #include <vector>
 #include <list>
 
 #include <guichan.hpp>
-#include <guichan/sdl.hpp>
 #include <math.h>
 
 #include "rage.h"
@@ -31,13 +27,10 @@
 #include "entity/vehicle.h"
 #include "entity/player.h"
 #include "entity/wall.h"
-#include "gui/dialog.h"
-#include "mod/mod_manager.h"
 #include "mod/gametype.h"
-#include "render_opengl/hud.h"
 #include "render/render_3d.h"
+#include "render_opengl/hud.h"
 #include "audio/audio.h"
-#include "util/cmdline.h"
 #include "net/net_client.h"
 #include "net/net_server.h"
 
@@ -749,4 +742,3 @@ void GameState::addDebugPoint(float x, float y, float z, float len)
 	dl->b = new btVector3(x, y, z + len);
 	lines.push_back(dl);
 }
-

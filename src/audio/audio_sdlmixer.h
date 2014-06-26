@@ -5,7 +5,7 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_mixer.h>
-#include "../rage.h"
+#include <string>
 #include "audio.h"
 
 using namespace std;

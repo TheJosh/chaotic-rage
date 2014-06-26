@@ -3,18 +3,13 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <string>
-#include <fstream>
 #include <vector>
 #include <SDL.h>
-#include "rage.h"
-#include "http/client_stats.h"
 #include "util/ui_update.h"
 #include "util/cmdline.h"
 #include "util/clientconfig.h"
-#include "util/stream_redirector.h"
 #include "mod/mod_manager.h"
 #include "mod/mod.h"
-#include "map/map.h"
 #include "game_state.h"
 #include "game_engine.h"
 #include "game_manager.h"

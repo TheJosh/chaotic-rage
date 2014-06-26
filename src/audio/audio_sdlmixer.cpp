@@ -2,21 +2,20 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <algorithm>
-#include <SDL.h>
-#include <SDL_mixer.h>
-#include <math.h>
-#include "../rage.h"
-#include "../game_state.h"
-#include "../game_engine.h"
 #include "audio_sdlmixer.h"
-#include "../mod/mod.h"
-#include "../mod/mod_manager.h"
-#include "../mod/sound.h"
-#include "../mod/song.h"
+#include <iostream>
+#include "audio.h"
 #include "../entity/entity.h"
 #include "../entity/player.h"
+#include "../game_engine.h"
+#include "../game_state.h"
+#include "../mod/mod.h"
+#include "../mod/mod_manager.h"
+#include "../mod/song.h"
+#include "../mod/sound.h"
+#include "../util/debug.h"
+
+struct SDL_RWops;
 
 
 using namespace std;
