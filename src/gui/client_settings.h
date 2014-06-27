@@ -4,13 +4,15 @@
 
 #pragma once
 #include <guichan.hpp>
+#include <string>
+#include <vector>
 #include "../rage.h"
 #include "dialog.h"
 
+class GameState;
+
 using namespace std;
 
-
-class RenderOpenGLSettings;
 
 /**
 * Show mod selection

@@ -3,24 +3,18 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include "client_settings.h"
-
-#include <iostream>
-#include <math.h>
-#include <guichan.hpp>
-
-#include "../rage.h"
-#include "../i18n/gettext.h"
-#include "../game_state.h"
 #include "../game_engine.h"
+#include "../i18n/gettext.h"
+#include "../i18n/strings.h"
+#include "../platform/platform.h"
 #include "../render_opengl/menu.h"
 #include "../render_opengl/render_opengl.h"
 #include "../render_opengl/render_opengl_settings.h"
-#include "../render_opengl/guichan_imageloader.h"
-#include "../mod/mod.h"
 #include "../util/clientconfig.h"
 #include "dialog.h"
 #include "list_models.h"
-#include "../i18n/gettext.h"
+
+class GameState;
 
 #define BUFFER_MAX 100
 
@@ -158,4 +152,3 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 
 	this->m->remDialog(this);
 }
-

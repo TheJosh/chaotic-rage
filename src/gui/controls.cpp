@@ -2,15 +2,10 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include <guichan.hpp>
-
-#include "../rage.h"
-#include "../i18n/gettext.h"
-#include "../http/serverlist.h"
-#include "dialog.h"
 #include "controls.h"
+#include <string>
+#include "../i18n/gettext.h"
+#include "../i18n/strings.h"
 
 
 using namespace std;
