@@ -5,7 +5,6 @@
 #include "client_settings.h"
 #include "../game_engine.h"
 #include "../i18n/gettext.h"
-#include "../i18n/strings.h"
 #include "../platform/platform.h"
 #include "../render_opengl/menu.h"
 #include "../render_opengl/render_opengl.h"

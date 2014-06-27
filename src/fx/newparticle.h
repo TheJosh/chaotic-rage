@@ -3,7 +3,7 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <btBulletDynamicsCommon.h>
+#include <LinearMath/btVector3.h>
 class btVector3;
 class GameState;
 

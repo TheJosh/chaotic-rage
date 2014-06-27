@@ -3,6 +3,7 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include "newparticle.h"
+#include "../rage.h"
 
 
 using namespace std;
@@ -11,13 +12,7 @@ using namespace std;
 #ifdef USE_SPARK
 
 #include "../game_state.h"
-#include "../rage.h"
-#include "../spark/Core/SPK_DEF.h"
-#include "../spark/Core/SPK_Emitter.h"
-#include "../spark/Core/SPK_Group.h"
-#include "../spark/Core/SPK_Model.h"
-#include "../spark/Core/SPK_Vector3D.h"
-#include "../spark/Extensions/Emitters/SPK_RandomEmitter.h"
+#include "../spark/SPK.h"
 
 
 // Gravity, the same for all particles
