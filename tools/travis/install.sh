@@ -18,9 +18,9 @@ if [ "$PLATFORM" == "linux" ]; then
 elif [ "$PLATFORM" == "android" ]; then
 	cd tools/android;
 	
-	# Needed for debugging and image resizing
+	# Needed for debugging, image resizing and php
 	sudo apt-get update -qq || exit 1
-	sudo apt-get install -qq --force-yes ant imagemagick >/dev/null || exit 1;
+	sudo apt-get install -qq --force-yes ant imagemagick php5-cli >/dev/null || exit 1;
 	
 	# Needed for x64 machines (packages removed between Ubuntu 12.04 LTS and Ubuntu 14.04 LTS)
 	if [ `uname -m` = x86_64 ] && [ `lsb_release -rs` != "14.04" ]; then
