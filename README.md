@@ -26,6 +26,7 @@ You'll need the following dependencies:
 * Freetype2
 * Bullet Physics
 * Assimp
+* php5-cli
 
 Some of these (SDL, Bullet, Assimp) have scripts in the `tools/linux` directory
 for downloading, compiling and installing these libraries. Both Bullet and Assimp
@@ -48,7 +49,7 @@ This is a little incomplete and fussy at the moment.
 There is a script in `tools/android` called `prepare.sh` which will try to set everything up for you.
 
 You should then be able to run `ndk-build` to compile and `ant debug` to create the .apk.
- 
+
 
 Cross-compiling for Windows using MXE
 -------------------------------------
@@ -97,4 +98,3 @@ Build Status
 Builds are tested on Travis CI
 
 [![Build Status](https://travis-ci.org/TheJosh/chaotic-rage.png?branch=master)](https://travis-ci.org/TheJosh/chaotic-rage)
-
