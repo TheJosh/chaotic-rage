@@ -35,6 +35,8 @@ elif [ "$PLATFORM" == "android" ]; then
 	if [ ! -f ${SDK_FILE} ]; then
 		wget http://dl.google.com/android/${SDK_FILE} || exit 1
 	fi
+	# Clean (for local testing)
+	rm -rf android-sdk-linux/
 	tar -zxf ${SDK_FILE} || exit 1
 	export ANDROID_HOME=`pwd`/android-sdk-linux
 	export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
@@ -50,6 +52,8 @@ elif [ "$PLATFORM" == "android" ]; then
 	if [ ! -f ${NDK_FILE} ]; then
 		wget http://dl.google.com/android/ndk/${NDK_FILE} || exit 1;
 	fi
+	# Clean (for local testing)
+	rm -rf android-ndk-r*/
 	tar -xjf ${NDK_FILE} || exit 1;
 
 	# Install and prepare all the libs we need for android builds
