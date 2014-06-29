@@ -6,7 +6,6 @@ if [ "$PLATFORM" == "linux" ]; then
 	
 	
 elif [ "$PLATFORM" == "android" ]; then
-	make lang || exit 1
 	cd tools/android
 	android-ndk-r9b/ndk-build || exit 1
 	ant debug || exit 1
