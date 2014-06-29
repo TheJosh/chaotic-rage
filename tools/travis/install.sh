@@ -33,7 +33,7 @@ elif [ "$PLATFORM" == "android" ]; then
 	# Download and extract SDK
 	SDK_FILE="android-sdk_r23-linux.tgz"
 	if [ ! -f ${SDK_FILE} ]; then
-		wget http://dl.google.com/${SDK_FILE} || exit 1
+		wget http://dl.google.com/android/${SDK_FILE} || exit 1
 	fi
 	tar -zxf ${SDK_FILE} || exit 1
 	export ANDROID_HOME=`pwd`/android-sdk-linux
