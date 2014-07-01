@@ -13,8 +13,9 @@ ifdef MXE
 	CC := $(CROSS)gcc
 	PATH := $(MXE)/usr/bin:$(PATH)
 	PLATFORM := build/win32.o
-	LIBS := -lIphlpap
+	LIBS := -liphlpapi
 	LUAPKG := lua
+	POSTFIX := .exe
 
 
 # emscripten llvm to javascript compiler
@@ -128,7 +129,7 @@ all: chaoticrage
 
 chaoticrage: $(OBJFILES_CLIENT)
 	@echo [LINK] $@
-	@$(CXX) $(CFLAGS) $(OBJFILES_CLIENT) -o chaoticrage $(LIBS)
+	@$(CXX) $(CFLAGS) $(OBJFILES_CLIENT) -o chaoticrage$(POSTFIX) $(LIBS)
 
 
 install: chaoticrage
@@ -187,7 +188,12 @@ clean:
 	rm -f chaoticrage
 	rm -f $(OBJFILES)
 	rm -f $(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.d,$(CPPFILES))
-	rm -f $(OBJPATH)/linux.o
+	rm -f $(OBJPATH)/linux.o $(OBJPATH)/linux.d
+	rm -f $(OBJPATH)/client.o $(OBJPATH)/client.d
+	rm -f $(OBJPATH)/emscripten.o $(OBJPATH)/emscripten.d
+	rm -f $(OBJPATH)/win32.o $(OBJPATH)/win32.d
+	rm -f $(OBJPATH)/confuse/confuse.o $(OBJPATH)/confuse/confuse.d
+	rm -f $(OBJPATH)/confuse/lexer.o $(OBJPATH)/confuse/lexer.d
 
 
 $(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h Makefile
