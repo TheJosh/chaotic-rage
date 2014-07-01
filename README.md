@@ -60,7 +60,7 @@ git clone https://github.com/mxe/mxe.git
 
 Then cd to the MXE directory and build all the dependencies
 ```
-make sdl2 sdl2_mixer sdl2_image sdl2_net lua freetype bullet assimp
+make MXE_TARGETS='i686-w64-mingw32.static' sdl2 sdl2_mixer sdl2_image sdl2_net lua freetype bullet assimp glew
 ```
 
 You should then be able to build the game using `make` with an additional option specified
