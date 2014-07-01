@@ -47,15 +47,15 @@ FREETYPE_CONFIG := $(CROSS)freetype-config
 
 # cflags
 CFLAGS := $(shell $(SDL2_CONFIG) --cflags) \
-	$(shell $(PKG_CONFIG) gl glu glew $(LUAPKG) bullet assimp --cflags) \
-	$(shell $(FREETYPE_CONFIG) --cflags) \
+	$(shell export PATH=$(PATH);$(PKG_CONFIG) gl glu glew $(LUAPKG) bullet assimp --cflags) \
+	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --cflags) \
 	$(CFLAGS) \
 	-Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark
 
 # libs
 LIBS := $(shell $(SDL2_CONFIG) --libs) \
-	$(shell $(PKG_CONFIG) glew $(LUAPKG) bullet assimp --libs) \
-	$(shell $(FREETYPE_CONFIG) --libs) \
+	$(shell export PATH=$(PATH);$(PKG_CONFIG) glew $(LUAPKG) bullet assimp --libs) \
+	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --libs) \
 	-lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11 -lm -lstdc++
 
 # Extract the version from rage.h
