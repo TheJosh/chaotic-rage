@@ -126,12 +126,7 @@ all: chaoticrage
 -include $(DEPENDENCIES)
 
 
-lang:
-	@echo [LANG] $<
-	@php tools/i18n/update.php
-
-
-chaoticrage: lang $(OBJFILES_CLIENT)
+chaoticrage: $(OBJFILES_CLIENT)
 	@echo [LINK] $@
 	@$(CXX) $(CFLAGS) $(OBJFILES_CLIENT) -o chaoticrage $(LIBS)
 
@@ -193,7 +188,6 @@ clean:
 	rm -f $(OBJFILES)
 	rm -f $(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.d,$(CPPFILES))
 	rm -f $(OBJPATH)/linux.o
-	rm -f $(SRCPATH)/i18n/strings.h data/i18n/*.txt
 
 
 $(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h Makefile

@@ -7,7 +7,7 @@ MENU_CAMPAIGN     CJK: ㌀㌁㌂㌃
 MENU_SINGLE       Arrows: ⟽⟾⟿⟰⟱
 MENU_SPLIT        Latin-1 Supp: èÜÝÞçæ
 MENU_NETWORK      Greek: ΏιϘ
-MENU_SETTINGS     Settings
+MENU_SETTINGS     Swedish: Inställningar
 MENU_MODS         Mods
 MENU_HELP         Lao: ຕຖ
 MENU_QUIT         Latin-A Ext: ŨŔĶĳĖĠ
