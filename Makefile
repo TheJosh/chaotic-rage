@@ -1,6 +1,9 @@
 # Makefile for Chaotic Rage
 
 
+LUAPKG=lua5.1
+
+
 # MXE cross-compiler environment
 # Use it like this:
 #    make MXE=/path/to/mxe
@@ -10,6 +13,7 @@ ifdef MXE
 	CC := $(CROSS)gcc
 	PATH := $(MXE)/usr/bin:$(PATH)
 	PLATFORM := build/windows.o
+	LUAPKG := lua
 
 
 # emscripten llvm to javascript compiler
@@ -43,14 +47,14 @@ FREETYPE_CONFIG := $(CROSS)freetype-config
 
 # cflags
 CFLAGS := $(shell $(SDL2_CONFIG) --cflags) \
-	$(shell $(PKG_CONFIG) gl glu glew lua5.1 bullet assimp --cflags) \
+	$(shell $(PKG_CONFIG) gl glu glew $(LUAPKG) bullet assimp --cflags) \
 	$(shell $(FREETYPE_CONFIG) --cflags) \
 	$(CFLAGS) \
 	-Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark
 
 # libs
 LIBS := $(shell $(SDL2_CONFIG) --libs) \
-	$(shell $(PKG_CONFIG) glew lua5.1 bullet assimp --libs) \
+	$(shell $(PKG_CONFIG) glew $(LUAPKG) bullet assimp --libs) \
 	$(shell $(FREETYPE_CONFIG) --libs) \
 	-lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11 -lm -lstdc++
 
