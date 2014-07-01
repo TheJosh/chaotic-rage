@@ -23,7 +23,7 @@ using namespace std;
 * Transforms of the raycast weapons
 **/
 template <class T>
-void raycastDoFire(T &weapon, Unit *u, btTransform &origin, btVector3 &begin, btVector3 &end)
+void raycastDoFire(T const &weapon, Unit *u, btTransform &origin, btVector3 &begin, btVector3 &end)
 {
 	btTransform xform = origin;
 

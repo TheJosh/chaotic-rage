@@ -287,7 +287,7 @@ LUA_FUNC(dot)
 /**
 * Metatable definition
 **/
-static const luaL_reg R[] =
+static const luaL_Reg R[] =
 {
 	{ "__index",	get		},
 	{ "__newindex",	set		},

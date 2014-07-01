@@ -30,6 +30,7 @@ else
 	CXX ?= g++
 	CC ?= gcc
 	CFLAGS := -DGETOPT -Werror -Wall -ggdb -MMD
+	LIBS := -lGL -lGLU -L/usr/X11R6/lib -lX11 -lm -lstdc++
 	PLATFORM := build/linux.o
 endif
 
@@ -56,7 +57,8 @@ CFLAGS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --cflags) \
 LIBS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --libs) \
 	$(shell export PATH=$(PATH);$(PKG_CONFIG) glew $(LUAPKG) bullet assimp --libs) \
 	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --libs) \
-	-lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11 -lm -lstdc++
+	-lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net \
+	$(LIBS)
 
 # Extract the version from rage.h
 # Only used for releases
