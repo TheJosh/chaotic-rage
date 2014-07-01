@@ -2,20 +2,23 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include "../rage.h"
-#include "../physics_bullet.h"
-#include "../game_state.h"
-#include "../render_opengl/animplay.h"
-#include "../mod/vehicletype.h"
-#include "../game_engine.h"
-#include "../net/net_server.h"
 #include "vehicle.h"
-#include "../util/util.h"
-#include "../util/convert.h"
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <string>
+#include <vector>
+#include "../game_engine.h"
+#include "../game_state.h"
+#include "../mod/vehicletype.h"
+#include "../net/net_server.h"
+#include "../physics_bullet.h"
+#include "../rage.h"
+#include "../render_opengl/animplay.h"
+#include "../util/convert.h"
+#include "entity.h"
+
+class Unit;
+class btTransform;
+class btVector3;
 
 using namespace std;
 
@@ -55,11 +58,11 @@ Vehicle::Vehicle(GameState *st) : Entity(st)
 
 Vehicle::Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy) : Entity(st)
 {
-	btVector3 sizeHE = vt->model->getBoundingSizeHE();
+	btVector3 size = vt->model->getBoundingSize();
 
 	btTransform trans = btTransform(
 		btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
-		st->physics->spawnLocation(mapx, mapy, sizeHE.z() * 2.0f)
+		st->physics->spawnLocation(mapx, mapy, size.z())
 	);
 
 	this->init(vt, st, trans);
@@ -401,4 +404,3 @@ void Vehicle::setNodeTransformRelative(VehicleNodeType type, glm::mat4 transform
 		}
 	}
 }
-

@@ -4,9 +4,14 @@
 
 #pragma once
 
-#include <stdint.h>
-
 #include "../rage.h"
+
+class AnimPlay;
+class GameState;
+class Sound;
+class btRigidBody;
+class btTransform;
+class btVector3;
 
 
 using namespace std;
@@ -21,13 +26,6 @@ enum EntityClass {
 	AMMOROUND = 7,
 	PICKUP = 8,
 };
-
-
-class GameState;
-class AnimPlay;
-class Sound;
-class btTransform;
-class btRigidBody;
 
 
 class Entity

@@ -6,6 +6,12 @@
 #include "../rage.h"
 #include "unit.h"
 
+class AILogic;
+class AIType;
+class GameState;
+class UnitType;
+
+
 using namespace std;
 
 

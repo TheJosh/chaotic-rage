@@ -65,3 +65,6 @@ LOCAL_LDLIBS := -lGLESv2 -llog
 LOCAL_CFLAGS := -DGL_GLEXT_PROTOTYPES=1
 
 include $(BUILD_SHARED_LIBRARY)
+
+# Generate the language files
+$(INFO $(shell (cd $(LOCAL_PATH)/../../../../ && php tools/i18n/update.php)))

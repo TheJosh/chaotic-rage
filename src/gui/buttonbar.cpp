@@ -4,13 +4,6 @@
 
 #include "buttonbar.h"
 
-#include <iostream>
-#include <math.h>
-#include <guichan.hpp>
-
-#include "../rage.h"
-#include "../game_state.h"
-#include "../game_engine.h"
 
 #define BUFFER_MAX 5
 
@@ -97,5 +90,3 @@ void DialogButtonBar::action(const gcn::ActionEvent& actionEvent)
 		this->ev->handleButton(index);
 	}
 }
-
-

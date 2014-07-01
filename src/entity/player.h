@@ -3,11 +3,13 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
+#include "../rage.h"
 #include "unit.h"
-
 
 class GameState;
 class UnitType;
+class Vehicle;
+
 
 class Player : public Unit
 {

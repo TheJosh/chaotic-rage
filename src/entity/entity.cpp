@@ -2,11 +2,8 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <btBulletDynamicsCommon.h>
-#include "../rage.h"
-#include "../game_state.h"
 #include "entity.h"
+#include <btBulletDynamicsCommon.h>
 
 
 using namespace std;
@@ -88,4 +85,3 @@ void Entity::disableCollision()
 {
 	body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
 }
-

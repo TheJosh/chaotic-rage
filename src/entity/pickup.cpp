@@ -2,14 +2,12 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include "../rage.h"
-#include "../physics_bullet.h"
-#include "../game_state.h"
-#include "../render_opengl/animplay.h"
-#include "../mod/pickuptype.h"
 #include "pickup.h"
+#include "../game_state.h"
+#include "../mod/pickuptype.h"
+#include "../physics_bullet.h"
+#include "../render_opengl/animplay.h"
+#include "entity.h"
 
 
 using namespace std;
@@ -22,12 +20,12 @@ Pickup::Pickup(PickupType *pt, GameState *st, float x, float y, float z) : Entit
 	this->anim = new AnimPlay(pt->model);
 	this->anim->setAnimation(0);
 
-	btVector3 sizeHE = pt->model->getBoundingSizeHE();
+	btVector3 size = pt->model->getBoundingSize();
 
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
 			btQuaternion(0.0f, 0.0f, 0.0f),
-			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)));
+			st->physics->spawnLocation(x, y, size.z())));
 
 	this->body = st->physics->addRigidBody(pt->col_shape, 0.0f, motionState, CG_PICKUP);
 
@@ -84,5 +82,3 @@ bool Pickup::doUse(Unit *u)
 		return false;
 	}
 }
-
-

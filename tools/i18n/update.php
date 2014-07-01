@@ -59,7 +59,12 @@ $header .= "\n";
 foreach ($base as $idx => $info) {
 	$header .= '#define STRING_' . $info[0] . ' ' . $idx . "\n";
 }
-file_put_contents('src/i18n/strings.h', $header);
+
+$dest = 'src/i18n/strings.h';
+// Create/Update only if necessary to not trigger compiler
+if (!file_exists($dest) || sha1_file($dest) != sha1($header)) {
+	file_put_contents($dest, $header);
+}
 
 // Create a data file for each language
 foreach ($languages as $lang) {
@@ -83,4 +88,3 @@ foreach ($languages as $lang) {
 	
 	unset($out);
 }
-

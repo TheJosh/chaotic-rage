@@ -2,15 +2,15 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include "../rage.h"
+#include "ammo_round.h"
 #include "../game_state.h"
+#include "../mod/weapontype.h"
 #include "../physics_bullet.h"
 #include "../render_opengl/animplay.h"
-#include "../mod/weapontype.h"
-#include "ammo_round.h"
-#include "unit.h"
+#include "entity.h"
+
+class btCollisionShape;
+class btTransform;
 
 using namespace std;
 

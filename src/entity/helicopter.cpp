@@ -3,29 +3,30 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include "helicopter.h"
-
-#include <iostream>
 #include <vector>
-#include <math.h>
-
-#include "../rage.h"
-#include "../physics_bullet.h"
 #include "../game_engine.h"
 #include "../game_state.h"
-#include "../render_opengl/animplay.h"
 #include "../mod/vehicletype.h"
 #include "../net/net_server.h"
+#include "../physics_bullet.h"
+#include "../rage.h"
+#include "../render_opengl/animplay.h"
+#include "entity.h"
+#include "vehicle.h"
+
+class Unit;
+class btTransform;
 
 using namespace std;
 
 
 Helicopter::Helicopter(VehicleType *vt, GameState *st, float mapx, float mapy) : Vehicle(st)
 {
-	btVector3 sizeHE = vt->model->getBoundingSizeHE();
+	btVector3 size = vt->model->getBoundingSize();
 
 	btTransform trans = btTransform(
 		btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
-		st->physics->spawnLocation(mapx, mapy, sizeHE.z() * 2.0f)
+		st->physics->spawnLocation(mapx, mapy, size.z())
 	);
 
 	this->init(vt, st, trans);
@@ -169,5 +170,3 @@ void Helicopter::operate(Unit* u, int delta, int key_up, int key_down, int key_l
 		}
 	}
 }
-
-

@@ -3,16 +3,16 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <btBulletDynamicsCommon.h>
 #include "entity.h"
 
-
 class AnimPlay;
-class Sound;
-class ObjectType;
 class AssimpModel;
-class WeaponType;
+class GameState;
+class Sound;
 class Unit;
+class WeaponType;
+class btCollisionShape;
+class btTransform;
 
 
 /**
@@ -42,4 +42,3 @@ class AmmoRound : public Entity
 		virtual Sound* getSound();
 		virtual void update(int delta);
 };
-

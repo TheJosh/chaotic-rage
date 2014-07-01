@@ -5,10 +5,10 @@
 #pragma once
 #include "entity.h"
 
-
 class AnimPlay;
+class GameState;
+class PickupType;
 class Sound;
-class ObjectType;
 class Unit;
 
 
@@ -42,4 +42,3 @@ class Pickup : public Entity
 		virtual Sound* getSound();
 		virtual void update(int delta);
 };
-

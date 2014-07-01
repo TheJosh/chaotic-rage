@@ -120,7 +120,13 @@ all: chaoticrage
 # Include directive for dependencies of the source files
 -include $(DEPENDENCIES)
 
-chaoticrage: $(OBJFILES_CLIENT)
+
+lang:
+	@echo [LANG] $<
+	@php tools/i18n/update.php
+
+
+chaoticrage: lang $(OBJFILES_CLIENT)
 	@echo [LINK] $@
 	@$(CXX) $(CFLAGS) $(OBJFILES_CLIENT) -o chaoticrage $(LIBS)
 
@@ -135,7 +141,8 @@ install: chaoticrage
 
 
 dist: src data maps
-	mkdir -p $(DISTTMP)
+	rm -rf $(DISTTMP)
+	mkdir $(DISTTMP)
 
 	cp -r Makefile $(DISTTMP)
 	cp -r LICENSE $(DISTTMP)
@@ -145,10 +152,12 @@ dist: src data maps
 	cp -r maps $(DISTTMP)
 
 	mkdir -p $(DISTTMP)/tools
+	mkdir -p $(DISTTMP)/tools/i18n
 	mkdir -p $(DISTTMP)/tools/linux
 	mkdir -p $(DISTTMP)/tools/linux/working
 
 	cp -r tools/include $(DISTTMP)/tools
+	cp -r tools/i18n $(DISTTMP)/tools
 	cp tools/linux/*.sh $(DISTTMP)/tools/linux/
 	chmod 755 $(DISTTMP)/tools/linux/*.sh
 
@@ -157,11 +166,12 @@ dist: src data maps
 	mkdir -p $(DISTTMP)/debian
 	cp -r tools/debian_package/debian $(DISTTMP)
 	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
-	rm -rf $(DISTTMP)
+	rm -r $(DISTTMP)
 
 
 dist-bin: chaoticrage data maps
-	mkdir -p $(DISTTMP)
+	rm -rf $(DISTTMP)
+	mkdir $(DISTTMP)
 
 	cp -r LICENSE $(DISTTMP)
 	cp -r README.md $(DISTTMP)
@@ -170,7 +180,7 @@ dist-bin: chaoticrage data maps
 	cp -r maps $(DISTTMP)
 
 	tar -cvjf chaoticrage-linuxbin-$(VERSION).tar.bz2 $(DISTTMP)
-	rm -rf $(DISTTMP)
+	rm -r $(DISTTMP)
 
 
 clean:
@@ -178,6 +188,7 @@ clean:
 	rm -f $(OBJFILES)
 	rm -f $(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.d,$(CPPFILES))
 	rm -f $(OBJPATH)/linux.o
+	rm -f $(SRCPATH)/i18n/strings.h data/i18n/*.txt
 
 
 $(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h Makefile
@@ -201,10 +212,6 @@ $(OBJPATH)/linux.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h
 $(OBJPATH)/emscripten.o: $(SRCPATH)/platform/emscripten.cpp $(SRCPATH)/platform/platform.h Makefile
 	@echo [CC] $<
 	@$(CXX) $(CFLAGS) -o $@ -c $<
-
-$(SRCPATH)/i18n/strings.h: $(SRCPATH)/i18n/en.txt
-	@echo [LANG] $<
-	@php tools/i18n/update.php
 
 
 ifeq ($(wildcard $(OBJPATH)/),)
