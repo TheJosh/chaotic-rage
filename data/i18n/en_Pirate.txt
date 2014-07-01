@@ -1,0 +1,16 @@
+1	Quest
+2	Single Battle
+3	Team Battle
+4	Group Battle
+5	Settings
+6	Mods
+7	Assistance
+8	Bugg'r off
+9	Quest type
+10	Weaponry
+11	Battlefield
+12	Pirate type
+13	V'ew
+14	Set up group battle
+15	Start single battle
+16	Start team battle

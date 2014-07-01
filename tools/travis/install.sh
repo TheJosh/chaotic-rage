@@ -3,7 +3,7 @@
 
 if [ "$PLATFORM" == "linux" ]; then
 	sudo apt-get update -qq || exit 1
-	sudo apt-get install -qq libgl1-mesa-dev libglu1-mesa-dev libglew-dev liblua5.1-0-dev libfreetype6-dev zlib-bin freeglut3-dev php5-cli >/dev/null || exit 1
+	sudo apt-get install -qq libgl1-mesa-dev libglu1-mesa-dev libglew-dev liblua5.1-0-dev libfreetype6-dev zlib-bin freeglut3-dev >/dev/null || exit 1
 
 	cd tools/linux;
 	./assimp.sh >/dev/null || exit 1;
@@ -18,9 +18,9 @@ if [ "$PLATFORM" == "linux" ]; then
 elif [ "$PLATFORM" == "android" ]; then
 	cd tools/android;
 	
-	# Needed for debugging, image resizing and php
+	# Needed for debugging and image resizing
 	sudo apt-get update -qq || exit 1
-	sudo apt-get install -qq --force-yes ant imagemagick php5-cli >/dev/null || exit 1;
+	sudo apt-get install -qq --force-yes ant imagemagick >/dev/null || exit 1;
 
 	# Needed for x64 machines (packages removed between Ubuntu 12.04 LTS and Ubuntu 14.04 LTS)
 	if [ `uname -m` = x86_64 ] && [ `lsb_release -rs` != "14.04" ]; then

@@ -1,0 +1,16 @@
+1	Campaign
+2	Single Player
+3	Split Screen
+4	Network Game
+5	Settings
+6	Mods
+7	Help
+8	Quit
+9	Game type
+10	Weapons
+11	Map
+12	Unit type
+13	View mode
+14	Host network game
+15	Start single player game
+16	Start split screen game
