@@ -19,6 +19,11 @@
 #include "i18n/gettext.h"
 #include "audio/audio.h"
 
+#ifdef _WIN32
+	#include <fstream>
+	#include "util/stream_redirector.h"
+#endif
+
 
 using namespace std;
 
