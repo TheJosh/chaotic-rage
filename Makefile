@@ -12,7 +12,7 @@ ifdef MXE
 	CXX := $(CROSS)g++
 	CC := $(CROSS)gcc
 	PATH := $(MXE)/usr/bin:$(PATH)
-	PLATFORM := build/windows.o
+	PLATFORM := build/win32.o
 	LUAPKG := lua
 
 
@@ -46,14 +46,14 @@ SDL2_CONFIG := $(CROSS)sdl2-config
 FREETYPE_CONFIG := $(CROSS)freetype-config
 
 # cflags
-CFLAGS := $(shell $(SDL2_CONFIG) --cflags) \
+CFLAGS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --cflags) \
 	$(shell export PATH=$(PATH);$(PKG_CONFIG) gl glu glew $(LUAPKG) bullet assimp --cflags) \
 	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --cflags) \
 	$(CFLAGS) \
 	-Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark
 
 # libs
-LIBS := $(shell $(SDL2_CONFIG) --libs) \
+LIBS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --libs) \
 	$(shell export PATH=$(PATH);$(PKG_CONFIG) glew $(LUAPKG) bullet assimp --libs) \
 	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --libs) \
 	-lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11 -lm -lstdc++
@@ -209,6 +209,10 @@ $(OBJPATH)/confuse/%.o: $(SRCPATH)/confuse/%.c $(SRCPATH)/confuse/confuse.h Make
 	@$(CC) $(CFLAGS) -Wno-error -o $@ -c $<
 
 $(OBJPATH)/linux.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h Makefile
+	@echo [CC] $<
+	@$(CXX) $(CFLAGS) -o $@ -c $<
+
+$(OBJPATH)/win32.o: $(SRCPATH)/platform/win32.cpp $(SRCPATH)/platform/platform.h Makefile
 	@echo [CC] $<
 	@$(CXX) $(CFLAGS) -o $@ -c $<
 
