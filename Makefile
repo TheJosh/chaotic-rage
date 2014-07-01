@@ -5,7 +5,7 @@
 # Use it like this:
 #    make MXE=/path/to/mxe
 ifdef MXE
-	CROSS := i686-pc-mingw32-
+	CROSS := i686-w64-mingw32.static-
 	CXX := $(CROSS)g++
 	CC := $(CROSS)gcc
 	PATH := $(MXE)/usr/bin:$(PATH)
