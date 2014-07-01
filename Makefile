@@ -1,41 +1,40 @@
 # Makefile for Chaotic Rage
 
 
-# If MXE is use, set cross compiler vars and PATH
+# MXE cross-compiler environment
 # Use it like this:
 #    make MXE=/path/to/mxe
 ifdef MXE
 	CROSS := i686-pc-mingw32-
+	CXX := $(CROSS)g++
+	CC := $(CROSS)gcc
 	PATH := $(MXE)/usr/bin:$(PATH)
-else
-	CROSS :=
-endif
+	PLATFORM := build/windows.o
 
-# If emscripten is use, set CC and CXX
+
+# emscripten llvm to javascript compiler
 # Use it like this:
 #    make EMSCRIPTEN=1
-ifdef EMSCRIPTEN
+else ifdef EMSCRIPTEN
 	CXX := em++
 	CC := emcc
 	PLATFORM := build/emscripten.o
+
+
+# Standard Linux build
+else
+	CXX ?= g++
+	CC ?= gcc
+	CFLAGS := -DGETOPT -Werror -Wall -ggdb -MMD
+	PLATFORM := build/linux.o
 endif
 
-# Default compiler is GCC
-CXX ?= $(CROSS)g++
-CC ?= $(CROSS)gcc
 
-# If it's gcc we can enable debugging
-ifndef MXE
-	ifndef EMSCRIPTEN
-		CFLAGS := -DGETOPT -Werror -Wall -ggdb -MMD
-		PLATFORM := build/linux.o
-	endif
-endif
-
-# Both Bullet and GLM generate tons on warnings (errors) on clang
+# Both Bullet and GLM generate tons of warnings on clang
 ifeq ($(CXX),clang)
 	CFLAGS := $(CFLAGS) -Wno-unknown-warning-option -Wno-overloaded-virtual -Wno-shift-op-parentheses
 endif
+
 
 # Set other executables, with support for cross-compilers
 PKG_CONFIG := $(CROSS)pkg-config
@@ -44,14 +43,14 @@ FREETYPE_CONFIG := $(CROSS)freetype-config
 
 # cflags
 CFLAGS := $(shell $(SDL2_CONFIG) --cflags) \
-	$(shell $(PKG_CONFIG) gl glu lua5.1 bullet assimp --cflags) \
+	$(shell $(PKG_CONFIG) gl glu glew lua5.1 bullet assimp --cflags) \
 	$(shell $(FREETYPE_CONFIG) --cflags) \
 	$(CFLAGS) \
 	-Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark
 
 # libs
 LIBS := $(shell $(SDL2_CONFIG) --libs) \
-	$(shell $(PKG_CONFIG) lua5.1 bullet assimp --libs) \
+	$(shell $(PKG_CONFIG) glew lua5.1 bullet assimp --libs) \
 	$(shell $(FREETYPE_CONFIG) --libs) \
 	-lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11 -lm -lstdc++
 
