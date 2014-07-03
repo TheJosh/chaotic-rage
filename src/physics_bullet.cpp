@@ -70,6 +70,9 @@ void PhysicsBullet::init()
 		collisionConfiguration
 	);
 
+	btContactSolverInfo& info = dynamicsWorld->getSolverInfo();
+	info.m_solverMode |= SOLVER_ENABLE_FRICTION_DIRECTION_CACHING;
+
 	dynamicsWorld->setGravity(btVector3(0,-10,0));
 	dynamicsWorld->setInternalTickCallback(bulletHandleCallback, static_cast<void *>(this));
 }
