@@ -15,6 +15,7 @@
 #include "../game_engine.h"
 #include "../entity/player.h"
 #include "../entity/vehicle.h"
+#include "../util/clientconfig.h"
 #include "../util/obj.h"
 #include "../util/sdl_util.h"
 #include "../util/windowicon.h"
