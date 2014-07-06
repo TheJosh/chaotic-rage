@@ -1,6 +1,8 @@
 # Makefile for Chaotic Rage
 
-
+# Build dir and sources dir
+OBJPATH=build
+SRCPATH=src
 LUAPKG=lua5.1
 
 
@@ -12,7 +14,7 @@ ifdef MXE
 	CXX := $(CROSS)g++
 	CC := $(CROSS)gcc
 	PATH := $(MXE)/usr/bin:$(PATH)
-	PLATFORM := build/win32.o
+	PLATFORM := $(OBJPATH)/win32.o
 	LIBS := -liphlpapi
 	LUAPKG := lua
 	POSTFIX := .exe
@@ -24,7 +26,7 @@ ifdef MXE
 else ifdef EMSCRIPTEN
 	CXX := em++
 	CC := emcc
-	PLATFORM := build/emscripten.o
+	PLATFORM := $(OBJPATH)/emscripten.o
 
 
 # Standard Linux build
@@ -33,7 +35,7 @@ else
 	CC ?= gcc
 	CFLAGS := -DGETOPT -Werror -Wall -ggdb -MMD
 	LIBS := -lGL -lGLU -L/usr/X11R6/lib -lX11 -lm -lstdc++
-	PLATFORM := build/linux.o
+	PLATFORM := $(OBJPATH)/linux.o
 endif
 
 
@@ -53,7 +55,7 @@ CFLAGS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --cflags) \
 	$(shell export PATH=$(PATH);$(PKG_CONFIG) gl glu glew $(LUAPKG) bullet assimp SDL2_mixer SDL2_image SDL2_net --cflags) \
 	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --cflags) \
 	$(CFLAGS) \
-	-Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark
+	-Itools/include -I$(SRCPATH) -I$(SRCPATH)/guichan -I$(SRCPATH)/confuse -I$(SRCPATH)/spark
 
 # libs
 LIBS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --libs) \
@@ -64,13 +66,9 @@ LIBS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --libs) \
 # Extract the version from rage.h
 # Only used for releases
 ifndef VERSION
-	VERSION := $(shell grep -E -o 'VERSION ".+"' src/rage.h | sed -n 1p | sed "s/VERSION //" | sed 's/"//g')
+	VERSION := $(shell grep -E -o 'VERSION ".+"' $(SRCPATH)/rage.h | sed -n 1p | sed "s/VERSION //" | sed 's/"//g')
 endif
 DISTTMP := chaoticrage-$(VERSION)
-
-# Build dir and sources dir
-OBJPATH=build
-SRCPATH=src
 
 # Complete list of source files
 CPPFILES=$(wildcard \
@@ -105,10 +103,10 @@ CPPFILES=$(wildcard \
 OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES))
 
 # Files which define main() methods
-OBJMAINS=build/client.o
+OBJMAINS=$(OBJPATH)/client.o
 
 # Client = everything but the main() method files + some other bits
-OBJFILES_CLIENT=build/client.o $(PLATFORM) build/confuse/confuse.o build/confuse/lexer.o $(filter-out $(OBJMAINS), $(OBJFILES))
+OBJFILES_CLIENT=$(OBJPATH)/client.o $(PLATFORM) $(OBJPATH)/confuse/confuse.o $(OBJPATH)/confuse/lexer.o $(filter-out $(OBJMAINS), $(OBJFILES))
 
 # Dependencies of the source files
 DEPENDENCIES := $(OBJFILES:.o=.d)
@@ -141,14 +139,14 @@ install: chaoticrage
 	cp -r --no-preserve=ownership maps $(DESTPATH)/usr/share/chaoticrage
 
 
-dist: src data maps
+dist: $(SRCPATH) data maps
 	rm -rf $(DISTTMP)
 	mkdir $(DISTTMP)
 
 	cp -r Makefile $(DISTTMP)
 	cp -r LICENSE $(DISTTMP)
 	cp -r README.md $(DISTTMP)
-	cp -r src $(DISTTMP)
+	cp -r $(SRCPATH) $(DISTTMP)
 	cp -r data $(DISTTMP)
 	cp -r maps $(DISTTMP)
 
@@ -196,9 +194,13 @@ clean:
 	rm -f $(OBJPATH)/confuse/lexer.o $(OBJPATH)/confuse/lexer.d
 
 
+cleaner:
+	rm -rf $(OBJPATH)/
+
+
 $(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h Makefile
 	@echo [CC] $<
-	@mkdir -p `dirname $< | sed "s/src/build/"`
+	@mkdir -p `dirname $< | sed "s/$(SRCPATH)/$(OBJPATH)/"`
 	@$(CXX) $(CFLAGS) -o $@ -c $<
 
 $(OBJPATH)/happyhttp.o: $(SRCPATH)/http/happyhttp.cpp $(SRCPATH)/http/happyhttp.h Makefile

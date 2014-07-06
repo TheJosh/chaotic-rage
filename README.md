@@ -26,7 +26,6 @@ You'll need the following dependencies:
 * Freetype2
 * Bullet Physics
 * Assimp
-* php5-cli
 
 Some of these (SDL, Bullet, Assimp) have scripts in the `tools/linux` directory
 for downloading, compiling and installing these libraries. Both Bullet and Assimp
