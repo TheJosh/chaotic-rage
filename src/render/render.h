@@ -39,7 +39,7 @@ class Render
 		virtual void render() = 0;
 
 		/**
-		* Loads a sprite from a mod into memeory
+		* Loads a sprite from a mod into memory
 		**/
 		SpritePtr loadSprite(string filename, Mod * mod);
 
@@ -141,5 +141,3 @@ class Render
 
 		bool togglePhysicsDebug();
 };
-
-

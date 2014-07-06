@@ -46,8 +46,8 @@ gcn::Container * DialogClientSettings::setup()
 	const int w = 532;	// width
 	const int h = 326;	// height
 	const int p = 10;	// padding
-	const int bw = 200;	// buttonwidth
-	const int bh = 20;	// buttonheight
+	const int bw = 200;	// button width
+	const int bh = 20;	// button height
 	char buf[BUFFER_MAX];
 
 	gcn::Label* label;
@@ -57,33 +57,32 @@ gcn::Container * DialogClientSettings::setup()
 
 	RenderOpenGLSettings* gl = ((RenderOpenGL*)GEng()->render)->getSettings();
 
+	// MSAA
 	label = new gcn::Label("MSAA");
 	c->add(label, 10, 10);
-
 	snprintf(buf, BUFFER_MAX, "%i", gl->msaa);
 	this->gl_msaa = new gcn::TextField(std::string(buf));
 	this->gl_msaa->setPosition(80, 10);
 	this->gl_msaa->setWidth(50);
 	c->add(this->gl_msaa);
 
+	// Tex filter
 	label = new gcn::Label("Tex Filter");
 	c->add(label, 10, 30);
-
 	snprintf(buf, BUFFER_MAX, "%i", gl->tex_filter);
 	this->gl_tex_filter = new gcn::TextField(std::string(buf));
 	this->gl_tex_filter->setPosition(80, 30);
 	this->gl_tex_filter->setWidth(50);
 	c->add(this->gl_tex_filter);
 
+	// Language
 	label = new gcn::Label("Language");
 	c->add(label, 10, 50);
-
 	this->langs = getAvailableLangs();
 	this->lang = new gcn::DropDown(new VectorListModel(this->langs));
 	this->lang->setPosition(80, 50);
 	this->lang->setWidth(100);
 	c->add(this->lang);
-
 	for (unsigned int i = this->langs->size() - 1; i != 0; --i) {
 		if (this->langs->at(i) == GEng()->cconf->lang) {
 			this->lang->setSelected(i);
@@ -91,6 +90,16 @@ gcn::Container * DialogClientSettings::setup()
 		}
 	}
 
+	// Fullscreen (setting hard-coded if Android)
+	#ifndef __ANDROID__
+	label = new gcn::Label("Fullscreen");
+	c->add(label, 10, 70);
+	this->fullscreen = new gcn::CheckBox("", GEng()->cconf->fullscreen);
+	this->fullscreen->setPosition(80, 70);
+	c->add(this->fullscreen);
+	#endif
+
+	// Save button
 	this->button = new gcn::Button("Save");
 	this->button->setPosition(w - bw - p, h - bh - p);
 	this->button->setSize(bw, bh);
@@ -108,10 +117,12 @@ void DialogClientSettings::tearDown()
 {
 	c->remove(this->gl_msaa);
 	c->remove(this->gl_tex_filter);
+	c->remove(this->fullscreen);
 	c->remove(this->lang);
 
 	delete this->gl_msaa;
 	delete this->gl_tex_filter;
+	delete this->fullscreen;
 	delete this->lang;
 }
 
@@ -124,13 +135,17 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 	RenderOpenGLSettings* current = ((RenderOpenGL*)GEng()->render)->getSettings();
 	RenderOpenGLSettings* nu = new RenderOpenGLSettings();
 
+	// Fullscreen
+	bool currentFS = GEng()->cconf->fullscreen;
+	bool newFS = this->fullscreen->isSelected();
+
 	// Populate the class
 	nu->msaa = atoi(this->gl_msaa->getText().c_str());
 	nu->tex_filter = atoi(this->gl_tex_filter->getText().c_str());
 
 	// Do we need a restart?
 	bool restart = false;
-	if (current->msaa != nu->msaa) restart = true;
+	if (current->msaa != nu->msaa || currentFS != newFS) restart = true;
 
 	// Update GL settings
 	((RenderOpenGL*)GEng()->render)->setSettings(nu);
@@ -141,12 +156,13 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 
 	// Save config
 	GEng()->cconf->gl = nu;
+	GEng()->cconf->fullscreen = newFS;
 	GEng()->cconf->lang = langs->at(this->lang->getSelected());
 	GEng()->cconf->save();
 
 	// If we need a restart, tell the user
 	if (restart) {
-		displayMessageBox("One or more of your changes will require a game restart to become effective");
+		displayMessageBox("A game restart is required to apply all settings");
 	}
 
 	this->m->remDialog(this);

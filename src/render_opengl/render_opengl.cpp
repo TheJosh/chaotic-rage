@@ -90,14 +90,6 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->font = NULL;
 	this->gui_font = NULL;
 
-	SDL_DisplayMode mode;
-	int result = SDL_GetDesktopDisplayMode(0, &mode);
-	if (result != 0) {
-		reportFatalError("Unable to determine current display mode");
-	}
-	this->desktop_width = mode.w;
-	this->desktop_height = mode.h;
-
 	this->settings = NULL;
 	this->setSettings(settings);
 
@@ -190,16 +182,23 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	// On mobile devices, we force fullscreen
 	#if defined(__ANDROID__)
 		fullscreen = true;
+		GEng()->cconf->fullscreen = fullscreen;
 	#endif
 
 	// SDL flags
 	flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 	if (fullscreen) {
-		flags |= SDL_WINDOW_FULLSCREEN;
+		// Set the resolution to same as the desktop
+		SDL_DisplayMode mode;
+		int result = SDL_GetDesktopDisplayMode(0, &mode);
+		if (result != 0) {
+			reportFatalError("Unable to determine current display mode");
+		}
+		width = mode.w;
+		height = mode.h;
 
-		width = this->desktop_width;
-		height = this->desktop_height;
+		flags |= SDL_WINDOW_FULLSCREEN;
 	}
 
 	this->real_width = width;
