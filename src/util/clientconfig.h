@@ -21,6 +21,7 @@ class ClientConfig
 {
 	public:
 		RenderOpenGLSettings* gl;
+		bool fullscreen;
 		string lang;
 
 	public:
