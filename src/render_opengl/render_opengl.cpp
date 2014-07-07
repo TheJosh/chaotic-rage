@@ -1759,7 +1759,7 @@ void RenderOpenGL::mainRot()
 				break;
 
 			case GameSettings::abovePlayer:
-				tilt = 70.0f;
+				tilt = 60.0f;
 				dist = 50.0f;
 				lift = 0.0f;
 				break;
