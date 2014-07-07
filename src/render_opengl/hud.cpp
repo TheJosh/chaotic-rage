@@ -71,8 +71,6 @@ HUDLabel * HUD::addLabel(float x, float y, string data)
 **/
 void HUD::draw()
 {
-	glDisable(GL_CULL_FACE);
-
 	if (this->weapon_menu && this->ps->p) {
 		// Weapon menu
 		float x = 100;
