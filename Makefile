@@ -33,9 +33,17 @@ else ifdef EMSCRIPTEN
 else
 	CXX ?= g++
 	CC ?= gcc
-	CFLAGS := -DGETOPT -Werror -Wall -ggdb -MMD
+	CFLAGS := -DGETOPT -Werror -Wall -MMD
 	LIBS := -lGL -lGLU -L/usr/X11R6/lib -lX11 -lm -lstdc++
 	PLATFORM := $(OBJPATH)/linux.o
+endif
+
+
+# Debug vs optimised
+ifdef DEBUG
+	CFLAGS := $(CFLAGS) -Og -ggdb
+else
+	CFLAGS := $(CFLAGS) -O2 -ffast-math
 endif
 
 
