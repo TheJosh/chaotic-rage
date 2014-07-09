@@ -1,7 +1,6 @@
 ----
 ----  Physics test - zombies
 ----
-
 debug_framerate(true)
 
 

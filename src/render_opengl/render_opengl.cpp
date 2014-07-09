@@ -1532,9 +1532,9 @@ void RenderOpenGL::renderObj(WavefrontObj * obj, glm::mat4 mvp)
 **/
 void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 {
-	btTransform trans = e->getTransform();
 	float m[16];
-	trans.getOpenGLMatrix(m);
+
+	e->getTransform().getOpenGLMatrix(m);
 	glm::mat4 modelMatrix = glm::make_mat4(m);
 
 	this->renderAnimPlay(play, modelMatrix);
@@ -1575,8 +1575,6 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix)
 	}
 
 	recursiveRenderAssimpModel(play, am, am->rootNode, shader, modelMatrix);
-
-	glUseProgram(0);
 
 	CHECK_OPENGL_ERROR;
 }
