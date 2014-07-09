@@ -345,7 +345,7 @@ void PhysicsBullet::handleCallback(float delta)
 **/
 void PhysicsBullet::stepTime(int ms)
 {
-	dynamicsWorld->stepSimulation(static_cast<float>(ms) / 1000.0f , 5);
+	dynamicsWorld->stepSimulation(static_cast<float>(ms) / 1000.0f, 1);
 }
 
 
