@@ -101,7 +101,11 @@ int main(int argc, char ** argv)
 	} else if (GEng()->cmdline->campaign != "") {
 		gm->loadModBits(NULL);
 		Campaign *c = GEng()->mm->getSupplOrBase()->getCampaign(GEng()->cmdline->campaign);
-		gm->startCampaign(c, "robot", GameSettings::behindPlayer, 1);
+		if (c == NULL) {
+			cerr << "Error: Campaign '" << GEng()->cmdline->campaign << "' does not exist." << endl;
+		} else {
+			gm->startCampaign(c, "robot", GameSettings::behindPlayer, 1);
+		}
 
 	// Arcade game
 	} else if (GEng()->cmdline->map != "" && GEng()->cmdline->gametype != "" && GEng()->cmdline->unittype != "") {
