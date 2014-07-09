@@ -447,6 +447,8 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 		PROFILE_END(render);
 
 		audio->play();
+
+		MAINLOOP_ITER
 	}
 
 	if (client != NULL) {

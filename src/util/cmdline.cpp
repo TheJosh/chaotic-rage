@@ -51,6 +51,7 @@ void CommandLineArgs::process()
 		{"debug-file",		1, 0, '4'},
 		{"no-mouse-grab",	0, 0, '5'},
 		{"profile",         1, 0, '6'},
+		{"loop-limit",      1, 0, '7'},
 		#endif
 		{NULL, 0, NULL, 0}
 	};
@@ -86,6 +87,7 @@ void CommandLineArgs::process()
 					"   \t--debug-file FILE       Save debug logs in a file instead of stdout\n"
 					"   \t--no-mouse-grab         Disable mouse grab\n"
 					"   \t--profile FILE          Save profile log\n"
+					"   \t--loop-limit NUM        Limit iterations of the main game loop\n"
 					#endif
 				);
 				exit(0);
@@ -194,6 +196,14 @@ void CommandLineArgs::process()
 			case '6':
 				profile_enable(optarg);
 				cout << "Saving profile log to file '" << optarg << "'.\n";
+				break;
+
+			case '7':
+				{
+					int limit = atoi(optarg);
+					mainloop_limit_enable(limit);
+					cout << "Limiting iterations of the main loop to " << limit << ".\n";
+				}
 				break;
 			#endif
 

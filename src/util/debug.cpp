@@ -16,6 +16,8 @@ static list<string> enabled_sects;
 static bool lineno;
 static FILE* out = stdout;
 static FILE* profile = NULL;
+static bool mainloop_limit_enabled = false;
+static int mainloop_limit = 0;
 
 
 void write_debug(const char * sect, const char * file, int line, const char * fmt, ...)
@@ -82,5 +84,26 @@ void profile_write(const char * sect, int start, int end)
 void profile_save()
 {
 	fclose(profile);
+}
+
+
+void mainloop_limit_enable(int limit)
+{
+	mainloop_limit_enabled = true;
+	mainloop_limit = limit;
+}
+
+// return TRUE to break the loop
+bool mainloop_limit_iter()
+{
+	if (mainloop_limit_enabled) {
+		--mainloop_limit;
+		if (mainloop_limit == 0) {
+			cout << "Main loop iteration limit reached; exiting.\n"; 
+			return true;
+		}
+	}
+
+	return false;
 }
 
