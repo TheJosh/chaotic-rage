@@ -2,26 +2,26 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <string>
-#include <sstream>
-#include <iostream>
-#include <getopt.h>
-#include "../rage.h"
 #include "cmdline.h"
+#include <cstring>
+#include <getopt.h>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include "../rage.h"
+#include "debug.h"
 
 
 using namespace std;
 
 
+static void output_message(const char* msg) {
 #ifdef WIN32
-	void output_message(const char* msg) {
-		MessageBox(HWND_DESKTOP, msg, "Chaotic Rage", MB_OK);
-	}
+	MessageBox(HWND_DESKTOP, msg, "Chaotic Rage", MB_OK);
 #else
-	void output_message(const char* msg) {
-		cout << msg;
-	}
+	cout << msg;
 #endif
+}
 
 
 /**
@@ -29,7 +29,7 @@ using namespace std;
 **/
 void CommandLineArgs::process()
 {
-	static struct option long_options[] = {
+	static const struct option long_options[] = {
 		{"arcade",		    1, 0, 'a'},
 		{"host",		    0, 0, 'n'},
 		{"campaign",		1, 0, 'c'},
@@ -55,10 +55,11 @@ void CommandLineArgs::process()
 		#endif
 		{NULL, 0, NULL, 0}
 	};
+	const char *short_options = "a:nc:j:m:r:u:hv";
 
 	int c;
 	int option_index = 0;
-	while ((c = getopt_long(argc, argv, "h", long_options, &option_index)) != -1) {
+	while ((c = getopt_long(argc, argv, short_options, long_options, &option_index)) != -1) {
 		switch (c) {
 			case 'h':
 				output_message(
@@ -102,10 +103,10 @@ void CommandLineArgs::process()
 			// Arcade, Host, Campaign, Join
 			case 'a':
 				{
-					std::stringstream ss(optarg);
-					std::getline(ss, this->map, ',');
-					std::getline(ss, this->gametype, ',');
-					std::getline(ss, this->unittype, ',');
+					stringstream ss(optarg);
+					getline(ss, this->map, ',');
+					getline(ss, this->gametype, ',');
+					getline(ss, this->unittype, ',');
 				}
 				break;
 
@@ -211,5 +212,3 @@ void CommandLineArgs::process()
 		}
 	}
 }
-
-
