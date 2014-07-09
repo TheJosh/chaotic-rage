@@ -1543,9 +1543,6 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 
 /**
 * Renders an animation.
-* Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender() afterwards.
-*
-* TODO: This needs HEAPS more work with the new animation system
 **/
 void RenderOpenGL::renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix)
 {
@@ -1555,26 +1552,39 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix)
 	am = play->getModel();
 	if (am == NULL) return;
 
-
 	CHECK_OPENGL_ERROR;
 
 	// Re-calc animation if needed
 	play->calcTransforms();
 
-	// Bones? Calculate and send through bone transforms
 	if (!am->meshes[0]->bones.empty()) {
+		// Bones
 		shader = this->shaders["bones"];
 		glUseProgram(shader->p());
 
+		// Calculate and set bone transforms
 		play->calcBoneTransforms();
 		glUniformMatrix4fv(shader->uniform("uBones[0]"), MAX_BONES, GL_FALSE, &play->bone_transforms[0][0][0]);
 
+		// Calculate matrixes
+		glm::mat4 MVPbones = this->projection * this->view * modelMatrix;
+		glm::mat4 Mbones = modelMatrix;
+		glm::mat4 Vbones = this->view;
+
+		// Set matrix uniforms
+		glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPbones));
+		glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(Mbones));
+		glUniformMatrix4fv(shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(Vbones));
+
+		// Do it
+		recursiveRenderAssimpModelBones(play, am, am->rootNode, shader);
+
 	} else {
+		// Static
 		shader = this->shaders["phong"];
 		glUseProgram(shader->p());
+		recursiveRenderAssimpModelStatic(play, am, am->rootNode, shader, modelMatrix);
 	}
-
-	recursiveRenderAssimpModel(play, am, am->rootNode, shader, modelMatrix);
 
 	CHECK_OPENGL_ERROR;
 }
@@ -1582,39 +1592,30 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix)
 
 /**
 * Render an Assimp model.
+*
 * It's a recursive function because Assimp models have a node tree
+* This is the 'static' version.
 *
 * @param AssimpModel *am The model
 * @param AssimpNode *nd The root node of the model
 * @param GLuint shader The bound shader, so uniforms will work
 * @param glm::mat4 transform The node transform matrix
 **/
-void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, AssimpNode* nd, GLShader* shader, glm::mat4 xform_global)
+void RenderOpenGL::recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel* am, AssimpNode* nd, GLShader* shader, glm::mat4 modelMatrix)
 {
 	glm::mat4 transform = ap->getNodeTransform(nd);
-
-	CHECK_OPENGL_ERROR;
-
-	glm::mat4 MVPstatic = this->projection * this->view * xform_global * transform;
-	glm::mat4 Mstatic = xform_global * transform;
+	glm::mat4 MVPstatic = this->projection * this->view * modelMatrix * transform;
+	glm::mat4 Mstatic = modelMatrix * transform;
 	glm::mat4 Vstatic = this->view;
-	
-	glm::mat4 MVPbones = this->projection * this->view * xform_global;
-	glm::mat4 Mbones = xform_global;
-	glm::mat4 Vbones = this->view;
 
+	// Set uniforms
+	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPstatic));
+	glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(Mstatic));
+	glUniformMatrix4fv(shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(Vstatic));
+
+	// Render meshes
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
 		AssimpMesh* mesh = am->meshes[(*it)];
-
-		if (mesh->bones.empty()) {
-			glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPstatic));
-			glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(Mstatic));
-			glUniformMatrix4fv(shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(Vstatic));
-		} else {
-			glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPbones));
-			glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(Mbones));
-			glUniformMatrix4fv(shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(Vbones));
-		}
 
 		if (am->materials[mesh->materialIndex]->diffuse == NULL) {
 			glBindTexture(GL_TEXTURE_2D, 0);
@@ -1626,11 +1627,43 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 		glDrawElements(GL_TRIANGLES, mesh->numFaces*3, GL_UNSIGNED_SHORT, 0);
 	}
 
+	// Render child nodes
 	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); ++it) {
-		recursiveRenderAssimpModel(ap, am, (*it), shader, xform_global);
+		recursiveRenderAssimpModelStatic(ap, am, (*it), shader, modelMatrix);
+	}
+}
+
+
+/**
+* Render an Assimp model.
+*
+* It's a recursive function because Assimp models have a node tree
+* This is the 'bones' version.
+* The uMVP, uM, uV and uBones matrixes should be set *before* you call this
+*
+* @param AssimpModel *am The model
+* @param AssimpNode *nd The root node of the model
+* @param GLuint shader The bound shader, so uniforms will work
+**/
+void RenderOpenGL::recursiveRenderAssimpModelBones(AnimPlay* ap, AssimpModel* am, AssimpNode* nd, GLShader* shader)
+{
+	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
+		AssimpMesh* mesh = am->meshes[(*it)];
+
+		if (am->materials[mesh->materialIndex]->diffuse == NULL) {
+			glBindTexture(GL_TEXTURE_2D, 0);
+		} else {
+			glBindTexture(GL_TEXTURE_2D, am->materials[mesh->materialIndex]->diffuse->pixels);
+		}
+
+		mesh->vao->bind();
+		glDrawElements(GL_TRIANGLES, mesh->numFaces*3, GL_UNSIGNED_SHORT, 0);
 	}
 
-	CHECK_OPENGL_ERROR;
+	// Render child nodes
+	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); ++it) {
+		recursiveRenderAssimpModelBones(ap, am, (*it), shader);
+	}
 }
 
 
@@ -1975,7 +2008,7 @@ void RenderOpenGL::terrain()
 		mm->xform.getOpenGLMatrix(m);
 		glm::mat4 modelMatrix = glm::make_mat4(m);
 
-		recursiveRenderAssimpModel(mm->play, mm->model, mm->model->rootNode, s, modelMatrix);
+		recursiveRenderAssimpModelStatic(mm->play, mm->model, mm->model->rootNode, s, modelMatrix);
 	}
 
 	glUseProgram(0);

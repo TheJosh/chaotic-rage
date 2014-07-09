@@ -171,12 +171,15 @@ class RenderOpenGL : public Render3D
 		// Render to those buffers so it all works
 		void entitiesShadowMap();
 
-		void renderAnimPlay(AnimPlay * play, Entity * e);
-		void renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix);
 		void renderCharacter(Uint32 c, float &x, float &y);
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
-		void recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader, glm::mat4 transform);
+
+		// Entity rendering
+		void renderAnimPlay(AnimPlay * play, Entity * e);
+		void renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix);
+		void recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader, glm::mat4 modelMatrix);
+		void recursiveRenderAssimpModelBones(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader);
 
 		void mainViewport(int s, int of);
 		void mainRot();
