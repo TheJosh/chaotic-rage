@@ -587,7 +587,7 @@ void Map::loadDefaultEntities()
 		PickupType *pt = GEng()->mm->getPickupType(type);
 		if (pt == NULL) reportFatalError("Unable to load map; missing or invalid pickup type '" + type + "'");
 
-		Pickup * pu = new Pickup(pt, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"), 1.0f);
+		Pickup * pu = new Pickup(pt, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"));
 
 		this->st->addPickup(pu);
 	}

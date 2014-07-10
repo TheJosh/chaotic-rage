@@ -13,7 +13,11 @@
 using namespace std;
 
 
-Pickup::Pickup(PickupType *pt, GameState *st, float x, float y, float z) : Entity(st)
+/**
+* Create a pickup at the given map coords
+* Will be spawned on the ground at the specified location
+**/
+Pickup::Pickup(PickupType *pt, GameState *st, float x, float z) : Entity(st)
 {
 	this->pt = pt;
 
@@ -25,10 +29,28 @@ Pickup::Pickup(PickupType *pt, GameState *st, float x, float y, float z) : Entit
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
 			btQuaternion(0.0f, 0.0f, 0.0f),
-			st->physics->spawnLocation(x, y, size.z())));
+			st->physics->spawnLocation(x, z, size.z())));
 
 	this->body = st->physics->addRigidBody(pt->col_shape, 0.0f, motionState, CG_PICKUP);
+	this->body->setUserPointer(this);
+}
 
+
+/**
+* Create a pickup at the given 3D coords
+**/
+Pickup::Pickup(PickupType *pt, GameState *st, float x, float y, float z) : Entity(st)
+{
+	this->pt = pt;
+
+	this->anim = new AnimPlay(pt->model);
+	this->anim->setAnimation(0);
+
+	btDefaultMotionState* motionState = new btDefaultMotionState(
+		btTransform(btQuaternion(0.0f, 0.0f, 0.0f), btVector3(x, y, z))
+	);
+
+	this->body = st->physics->addRigidBody(pt->col_shape, 0.0f, motionState, CG_PICKUP);
 	this->body->setUserPointer(this);
 }
 

@@ -138,7 +138,7 @@ Pickup* addPickupXZ(string type, float x, float z)
 		return NULL;
 	}
 
-	Pickup *p = new Pickup(pt, getGameState(), x, z, 0.0f);
+	Pickup *p = new Pickup(pt, getGameState(), x, z);
 	getGameState()->addPickup(p);
 
 	return p;
@@ -147,11 +147,18 @@ Pickup* addPickupXZ(string type, float x, float z)
 
 /**
 * Add an object at a given coordinate
-* TODO: Implement
 **/
 Pickup* addPickupCoord(string type, btVector3 &coord)
 {
-	return NULL;
+	PickupType *pt = GEng()->mm->getPickupType(type);
+	if (pt == NULL) {
+		return NULL;
+	}
+
+	Pickup *p = new Pickup(pt, getGameState(), coord.x(), coord.y(), coord.z());
+	getGameState()->addPickup(p);
+
+	return p;
 }
 
 
@@ -170,7 +177,7 @@ Pickup* addPickupRand(string type)
 **/
 Pickup* addPickupZone(string type, Zone* zn)
 {
-	return NULL;
+	return addPickupXZ(type, zn->getRandomX(), zn->getRandomZ());
 }
 
 
@@ -221,7 +228,7 @@ Player* addPlayerZone(string type, unsigned int fac, unsigned int slot, Zone *zn
 		return NULL;
 	}
 
-	p = new Player(ut, getGameState(), zn->getRandomX(), zn->getRandomY(), 0, (Faction)fac, slot);
+	p = new Player(ut, getGameState(), zn->getRandomX(), zn->getRandomZ(), 0, (Faction)fac, slot);
 
 	// Is it a local player?
 	PlayerState *ps = getGameState()->localPlayerFromSlot(slot);
@@ -299,7 +306,7 @@ NPC* addNpcZone(string type, string aitype, unsigned int fac, Zone *zn)
 		return NULL;
 	}
 
-	p = new NPC(ut, getGameState(), zn->getRandomX(), zn->getRandomY(), 0, ai, (Faction)fac);
+	p = new NPC(ut, getGameState(), zn->getRandomX(), zn->getRandomZ(), 0, ai, (Faction)fac);
 	getGameState()->addUnit(p);
 
 	return p;

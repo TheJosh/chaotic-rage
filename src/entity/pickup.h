@@ -22,6 +22,7 @@ class Pickup : public Entity
 		AnimPlay * anim;
 
 	public:
+		Pickup(PickupType *pt, GameState *st, float x, float z);
 		Pickup(PickupType *pt, GameState *st, float x, float y, float z);
 		virtual ~Pickup();
 
