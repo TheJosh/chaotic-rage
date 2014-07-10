@@ -703,9 +703,9 @@ float Map::getRandomX()
 
 
 /**
-* Return a random Y co-ord
+* Return a random Z co-ord
 **/
-float Map::getRandomY()
+float Map::getRandomZ()
 {
 	return getRandomf(0, this->height);
 }

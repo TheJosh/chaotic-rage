@@ -12,9 +12,11 @@
 #include "../mod/mod_manager.h"
 #include "../mod/vehicletype.h"
 #include "../mod/objecttype.h"
+#include "../mod/pickuptype.h"
 #include "../entity/vehicle.h"
 #include "../entity/helicopter.h"
 #include "../entity/object.h"
+#include "../entity/pickup.h"
 #include "../entity/unit.h"
 #include "../entity/player.h"
 #include "../entity/npc.h"
@@ -107,10 +109,66 @@ Object* addObjectCoord(string type, btVector3 &coord)
 
 
 /**
+* Add an object at a random location on the map
+**/
+Object* addObjectRand(string type)
+{
+	return addObjectXZ(type, getGameState()->map->getRandomX(), getGameState()->map->getRandomZ());
+}
+
+
+/**
 * Add an object at a random location in a zone
 * TODO: Implement
 **/
 Object* addObjectZone(string type, Zone* zn)
+{
+	return NULL;
+}
+
+
+/**
+* Add an object at a given map X/Z coordinate
+* The Y coordinate is calculated
+**/
+Pickup* addPickupXZ(string type, float x, float z)
+{
+	PickupType *pt = GEng()->mm->getPickupType(type);
+	if (pt == NULL) {
+		return NULL;
+	}
+
+	Pickup *p = new Pickup(pt, getGameState(), x, z, 0.0f);
+	getGameState()->addPickup(p);
+
+	return p;
+}
+
+
+/**
+* Add an object at a given coordinate
+* TODO: Implement
+**/
+Pickup* addPickupCoord(string type, btVector3 &coord)
+{
+	return NULL;
+}
+
+
+/**
+* Add an object at a random location on the map
+**/
+Pickup* addPickupRand(string type)
+{
+	return addPickupXZ(type, getGameState()->map->getRandomX(), getGameState()->map->getRandomZ());
+}
+
+
+/**
+* Add an object at a random location in a zone
+* TODO: Implement
+**/
+Pickup* addPickupZone(string type, Zone* zn)
 {
 	return NULL;
 }
@@ -278,8 +336,14 @@ void load_world_lib(lua_State *L)
 
 		.addFunction("addObjectXZ", &addObjectXZ)
 		.addFunction("addObjectCoord", &addObjectCoord)
+		.addFunction("addObjectRand", &addObjectRand)
 		.addFunction("addObjectZone", &addObjectZone)
 
+		.addFunction("addPickupXZ", &addPickupXZ)
+		.addFunction("addPickupCoord", &addPickupCoord)
+		.addFunction("addPickupRand", &addPickupRand)
+		.addFunction("addPickupZone", &addPickupZone)
+		
 		.addFunction("addPlayer", &addPlayer)
 		.addFunction("addPlayerXZ", &addPlayerXZ)
 		.addFunction("addPlayerCoord", &addPlayerCoord)

@@ -101,7 +101,7 @@ class Map {
 		Zone* getDestZone(Faction f);
 		Zone* getNearbaseZone(Faction f);
 		float getRandomX();
-		float getRandomY();
+		float getRandomZ();
 
 	private:
 		void fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *play, AssimpModel *am, AssimpNode *nd);
