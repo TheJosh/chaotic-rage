@@ -17,7 +17,7 @@ using namespace std;
 btCollisionShape* Decaying::col_shape;
 
 
-Decaying::Decaying(GameState *st, const btTransform &xform, AnimPlay *play) : Entity(st)
+Decaying::Decaying(GameState *st, const btTransform &xform, AnimPlay *play, float mass) : Entity(st)
 {
 	this->anim = new AnimPlay(*play);
 
@@ -27,7 +27,7 @@ Decaying::Decaying(GameState *st, const btTransform &xform, AnimPlay *play) : En
 
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
 
-	this->body = st->physics->addRigidBody(Decaying::col_shape, 0.0f, motionState, CG_DEBRIS);
+	this->body = st->physics->addRigidBody(Decaying::col_shape, mass, motionState, CG_DEBRIS);
 }
 
 Decaying::~Decaying()

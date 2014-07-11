@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 2.66.1 r55057</authoring_tool>
+    </contributor>
+    <created>2014-07-11T14:13:00</created>
+    <modified>2014-07-11T14:13:00</modified>
+    <unit name="millimeter" meter="0.001"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_images>
+    <image id="zombie_jpg" name="zombie_jpg">
+      <init_from>zombie.jpg</init_from>
+    </image>
+  </library_images>
+  <library_effects>
+    <effect id="Material0-effect">
+      <profile_COMMON>
+        <newparam sid="zombie_jpg-surface">
+          <surface type="2D">
+            <init_from>zombie_jpg</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="zombie_jpg-sampler">
+          <sampler2D>
+            <source>zombie_jpg-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color sid="emission">1.330196 1.330196 1.330196 1</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="zombie_jpg-sampler" texcoord="UVMap"/>
+            </diffuse>
+            <specular>
+              <color sid="specular">0 0 0 1</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">1</float>
+            </shininess>
+            <transparency>
+              <float sid="transparency">1</float>
+            </transparency>
+            <index_of_refraction>
+              <float sid="index_of_refraction">1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+        <extra>
+          <technique profile="GOOGLEEARTH">
+            <double_sided>1</double_sided>
+          </technique>
+        </extra>
+      </profile_COMMON>
+      <extra><technique profile="MAX3D"><double_sided>1</double_sided></technique></extra>
+    </effect>
+  </library_effects>
+  <library_materials>
+    <material id="Material0-material" name="Material0">
+      <instance_effect url="#Material0-effect"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="Regroup02-mesh" name="Regroup02">
+      <mesh>
+        <source id="Regroup02-mesh-positions">
+          <float_array id="Regroup02-mesh-positions-array" count="159">-0.879464 0.02144128 15.5 0.954545 -0.3655707 16.62065 -0.1466509 2.529417 8.357538 -0.1732229 2.896306 9.428483 -0.371455 2.850178 9.411045 -0.2839579 2.62587 8.943932 -0.748837 1.621887 13.6955 -0.836955 1.921888 12.83112 -0.769588 2.175458 11.90264 -0.815472 2.235983 11.01722 -0.640034 -2.689293 9.932698 0.605965 -2.027856 -0.02755987 0.234291 -1.12881 -0.02755993 0.716255 -1.30388 -0.02755987 -0.08300006 -2.189004 -0.02755987 -1.365514 -1.217723 -0.01854699 -1.455411 -2.008055 -0.01854699 -1.632169 -1.637961 -0.01854699 -0.6427299 -0.8998947 2.289413 -0.3740849 -1.080718 2.295197 -0.7531538 -1.307083 0.8008782 -1.076739 -1.202733 0.7960232 -0.4355579 -1.611767 2.356013 -0.7914418 -1.644136 0.8519272 -0.8195809 -1.729988 2.399478 -1.186896 -1.729584 0.8884122 -1.278973 -0.8706807 2.288493 -1.358061 -1.468262 0.8366652 -1.32908 -1.696125 2.406815 -1.427614 -1.309579 2.340777 0.716258 -1.286022 0.1978861 0.23429 -1.110953 0.1978861 0.605968 -2.009997 0.1978861 -0.09688907 -2.171149 0.1978861 -1.365512 -1.205183 0.182868 -1.45541 -1.995513 0.182868 -1.632173 -1.625421 0.182868 -0.2272729 1.151858 2.047906 -1.156906 2.029133 1.989236 -0.41827 2.229133 1.65969 0 0.7393581 1.797907 -0.9090911 0.5393582 1.81268 -0.832116 -1.775708 5.452715 -0.2272729 -1.108977 2.047906 -1.156906 -1.986252 1.989235 0 -0.6964767 1.797907 -0.796131 0.6416333 10.75595 -0.9477092 1.240846 5.37049 -1.736452 1.654133 1.865372 -1.761364 0.9893583 2.136544 -1.736452 -1.611252 1.865371 -1.761364 -0.9464767 2.136543 -0.562373 -1.821251 15.099</float_array>
+          <technique_common>
+            <accessor source="#Regroup02-mesh-positions-array" count="53" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Regroup02-mesh-normals">
+          <float_array id="Regroup02-mesh-normals-array" count="78">0.5872372 -0.5651417 -0.5793939 0.103946 0.7129734 -0.6934111 0.6973785 0.3877987 -0.6027101 0.03936886 -0.76751 -0.6397901 -0.3982055 0.6613972 -0.6355479 -0.4669332 -0.6559038 -0.5930357 -0.7889645 0.03216648 -0.6135441 0.3215735 0.9139683 -0.2474135 0.8850063 0.3708915 -0.2813807 0.6418348 0.6366161 0.4274728 -0.2445753 0.9696035 -0.005890071 0.7451094 -0.6439711 -0.1734367 0.5774407 -0.6213569 0.5295877 0.1322062 -0.9906613 -0.0323801 -0.4044923 -0.871334 0.2777184 -0.5500351 0.8130436 -0.1907407 -0.9765618 0.1456648 0.158391 -0.6187018 -0.7855769 -0.005493283 -0.9984741 0.02490305 -0.04879909 0.7734306 0.4499344 0.4464552 0.1917173 0.9445784 0.2664266 0.6659139 -0.5624867 0.4900052 0.07675403 -0.9207739 0.3823969 -0.5252846 0.8488419 0.05926692 -0.5792108 -0.7771539 0.2459181 -0.9819636 0.0408948 0.1844844</float_array>
+          <technique_common>
+            <accessor source="#Regroup02-mesh-normals-array" count="26" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Regroup02-mesh-map-0">
+          <float_array id="Regroup02-mesh-map-0-array" count="258">0.774412 0.05068498 0.797842 0.008154988 0.76746 0.01643598 0.774412 0.05068498 0.817843 0.058308 0.797842 0.008154988 0.817843 0.058308 0.89869 0.01236099 0.797842 0.008154988 0.817843 0.058308 0.904357 0.049748 0.89869 0.01236099 0.904357 0.049748 0.915499 0.03224098 0.89869 0.01236099 0.855648 0.2162069 0.837988 0.216591 0.862907 0.1173939 0.884178 0.1170719 0.855648 0.2162069 0.862907 0.1173939 0.805125 0.2179409 0.837025 0.221485 0.838969 0.133825 0.818723 0.130849 0.805125 0.2179409 0.838969 0.133825 0.84178 0.2202309 0.867024 0.2231169 0.89117 0.1228079 0.865175 0.120386 0.84178 0.2202309 0.89117 0.1228079 0.897473 0.2161459 0.855648 0.2162069 0.884178 0.1170719 0.902671 0.1197699 0.897473 0.2161459 0.884178 0.1170719 0.867024 0.2231169 0.900517 0.223604 0.89117 0.1228079 0.946383 0.1223859 0.944708 0.2228019 0.933302 0.118964 0.925359 0.2184349 0.903389 0.214977 0.933302 0.118964 0.944708 0.2228019 0.925359 0.2184349 0.933302 0.118964 0.884178 0.1170719 0.862907 0.1173939 0.766313 0.07736599 0.797996 0.07736599 0.884178 0.1170719 0.766313 0.07736599 0.808152 0.1390249 0.810696 0.118722 0.717848 0.09668302 0.71052 0.140294 0.808152 0.1390249 0.717848 0.09668302 0.810696 0.118722 0.836971 0.1135749 0.764548 0.08697599 0.717848 0.09668302 0.810696 0.118722 0.764548 0.08697599 0.902671 0.1197699 0.884178 0.1170719 0.903161 0.07636898 0.903161 0.07636898 0.884178 0.1170719 0.797996 0.07736599 0.946383 0.1223859 0.933302 0.118964 0.959695 0.07572698 0.819517 0.07696902 0.89117 0.1228079 0.908821 0.07597202 0.941169 0.07572698 0.933302 0.118964 0.920133 0.07572698 0.959695 0.07572698 0.933302 0.118964 0.941169 0.07572698 0.797996 0.07736599 0.766313 0.07736599 0.766313 0.06239998 0.797996 0.06239998 0.797996 0.07736599 0.766313 0.06239998 0.715503 0.07765799 0.764588 0.07765799 0.765798 0.06052798 0.716713 0.06052798 0.715503 0.07765799 0.765798 0.06052798 0.773314 0.07696902 0.819517 0.07696902 0.818604 0.06200301 0.773314 0.06200301 0.773314 0.07696902 0.818604 0.06200301 0.903161 0.07636898 0.797996 0.07736599 0.797996 0.06239998 0.903161 0.06299799 0.903161 0.07636898 0.797996 0.06239998 0.819517 0.07696902 0.908821 0.07597202 0.908822 0.06260198 0.818604 0.06200301 0.819517 0.07696902 0.908822 0.06260198 0.941169 0.07572698 0.920133 0.07572698 0.920761 0.06240701 0.941797 0.06240701 0.941169 0.07572698 0.920761 0.06240701 0.959695 0.07572698 0.941169 0.07572698 0.941797 0.06240701 0.960323 0.06240701 0.959695 0.07572698 0.941797 0.06240701</float_array>
+          <technique_common>
+            <accessor source="#Regroup02-mesh-map-0-array" count="129" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Regroup02-mesh-vertices">
+          <input semantic="POSITION" source="#Regroup02-mesh-positions"/>
+        </vertices>
+        <lines count="7">
+          <input semantic="VERTEX" source="#Regroup02-mesh-vertices" offset="0"/>
+          <p>4 3 9 8 7 6 5 4 9 4 5 2 8 7</p>
+        </lines>
+        <polylist material="Material0-material" count="43">
+          <input semantic="VERTEX" source="#Regroup02-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Regroup02-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Regroup02-mesh-map-0" offset="2" set="0"/>
+          <vcount>3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 </vcount>
+          <p>11 0 0 12 1 1 13 2 2 11 0 3 14 3 4 12 1 5 14 3 6 15 4 7 12 1 8 14 3 9 16 5 10 15 4 11 16 5 12 17 6 13 15 4 14 18 7 15 19 8 16 20 9 17 21 10 18 18 7 19 20 9 20 19 8 21 22 11 22 23 12 23 20 9 24 19 8 25 23 12 26 22 11 27 24 13 28 25 14 29 23 12 30 22 11 31 25 14 32 26 15 33 18 7 34 21 10 35 27 16 36 26 15 37 21 10 38 24 13 39 28 17 40 25 14 41 25 14 42 28 17 43 27 16 44 29 18 45 26 15 46 27 16 47 28 17 48 29 18 49 27 16 50 21 10 51 20 9 52 30 19 53 31 20 54 21 10 55 30 19 56 20 9 57 23 12 58 32 21 59 30 19 60 20 9 61 32 21 62 23 12 63 25 14 64 33 22 65 32 21 66 23 12 67 33 22 68 27 16 69 21 10 70 34 23 71 34 23 72 21 10 73 31 20 74 25 14 75 27 16 76 35 24 77 33 22 78 25 14 79 35 24 80 36 25 81 27 16 82 34 23 83 35 24 84 27 16 85 36 25 86 31 20 87 30 19 88 13 2 89 12 1 90 31 20 91 13 2 92 30 19 93 32 21 94 11 0 95 13 2 96 30 19 97 11 0 98 32 21 99 33 22 100 14 3 101 11 0 102 32 21 103 14 3 104 34 23 105 31 20 106 12 1 107 15 4 108 34 23 109 12 1 110 33 22 111 35 24 112 16 5 113 14 3 114 33 22 115 16 5 116 36 25 117 34 23 118 15 4 119 17 6 120 36 25 121 15 4 122 35 24 123 36 25 124 17 6 125 16 5 126 35 24 127 17 6 128</p>
+        </polylist>
+      </mesh>
+      <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
+    </geometry>
+  </library_geometries>
+  <library_controllers>
+    <controller id="zombie02_ms3d_Regroup02-skin" name="zombie02.ms3d">
+      <skin source="#Regroup02-mesh">
+        <bind_shape_matrix>0.1186827 0 0 0 0 0.1186827 0 0 0 0 0.1186827 0 0 0 0 1</bind_shape_matrix>
+        <source id="zombie02_ms3d_Regroup02-skin-joints">
+          <Name_array id="zombie02_ms3d_Regroup02-skin-joints-array" count="14">Joint6 Joint8 Joint9 Joint10 Joint11 Joint12 Joint14 Joint15 Joint17 Joint18 Joint19 Joint21 Joint22 Joint23</Name_array>
+          <technique_common>
+            <accessor source="#zombie02_ms3d_Regroup02-skin-joints-array" count="14" stride="1">
+              <param name="JOINT" type="name"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="zombie02_ms3d_Regroup02-skin-bind_poses">
+          <float_array id="zombie02_ms3d_Regroup02-skin-bind_poses-array" count="224">6.36132e-7 -8.425827 0 0.02472585 8.425827 6.36132e-7 0 0 0 0 8.425827 0.03661322 0 0 0 1 8.360192 1.049633 0 -0.00129354 -0.002692818 0.02144831 8.425798 -10.96388 1.04963 -8.360165 0.02161669 -0.01782512 0 0 0 1 8.424541 0.1470505 0 0.00102806 -0.1470509 8.424543 -5.47618e-7 -0.02159363 -2.34006e-7 5.3549e-7 8.425826 -15.35956 0 0 0 1 8.425825 0 0 0.001404762 2.34006e-7 0 -8.425826 15.88194 -3.76664e-7 8.425827 0 -0.02157366 0 0 0 1 8.36572 1.004596 0 0.1302656 -0.2644994 2.202603 -8.128536 13.6206 -0.9691507 8.070555 2.21842 -5.682814 0 0 0 1 8.267443 -1.626003 2.38419e-7 0.9339085 0.3263779 1.659474 -8.254343 11.22963 1.592909 8.099185 1.691268 -4.808473 0 0 0 1 -8.379182 0.8853243 -1.93715e-7 -0.09103369 -0.1939205 -1.835375 -8.221214 13.94405 -0.8638249 -8.175706 1.845594 -5.072983 0 0 0 1 -8.232931 -1.792586 -2.98023e-7 -0.8746636 0.4155641 -1.908586 -8.19629 11.11435 1.743751 -8.008652 1.953307 -5.067361 0 0 0 1 -8.425827 -5.24903e-6 6.57187e-7 -1.18654e-6 0 -1.046753 -8.360556 9.303851 5.29001e-6 -8.360554 1.046753 -1.89258 0 0 0 1 -2.357967 8.08916 -2.38419e-7 1.156919 -1.436557 -0.418752 -8.291895 5.460205 -7.960581 -2.320487 1.496347 -1.328028 0 0 0 1 -0.6285121 -8.402352 0 -1.504327 6.761715 -0.5057898 -5.001789 1.069157 4.987855 -0.3731005 6.78061 -0.2394718 0 0 0 1 8.425827 -1.57559e-6 -1.99343e-7 3.65733e-7 0 1.0576 -8.359189 9.295735 1.58815e-6 8.359189 1.0576 -1.949313 0 0 0 1 3.051133 7.853989 3.57628e-7 -1.165249 -1.43583 0.5577916 -8.283829 5.471474 -7.721627 2.999714 1.54037 -1.477853 0 0 0 1 0.3776795 -8.417359 6.31762e-7 1.607649 6.586359 0.2955227 -5.246625 1.132978 5.241353 0.2351742 6.592986 -0.2071495 0 0 0 1</float_array>
+          <technique_common>
+            <accessor source="#zombie02_ms3d_Regroup02-skin-bind_poses-array" count="14" stride="16">
+              <param name="TRANSFORM" type="float4x4"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="zombie02_ms3d_Regroup02-skin-weights">
+          <float_array id="zombie02_ms3d_Regroup02-skin-weights-array" count="53">1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</float_array>
+          <technique_common>
+            <accessor source="#zombie02_ms3d_Regroup02-skin-weights-array" count="53" stride="1">
+              <param name="WEIGHT" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <joints>
+          <input semantic="JOINT" source="#zombie02_ms3d_Regroup02-skin-joints"/>
+          <input semantic="INV_BIND_MATRIX" source="#zombie02_ms3d_Regroup02-skin-bind_poses"/>
+        </joints>
+        <vertex_weights count="53">
+          <input semantic="JOINT" source="#zombie02_ms3d_Regroup02-skin-joints" offset="0"/>
+          <input semantic="WEIGHT" source="#zombie02_ms3d_Regroup02-skin-weights" offset="1"/>
+          <vcount>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </vcount>
+          <v>2 0 3 1 5 2 5 3 5 4 5 5 4 6 4 7 4 8 5 9 7 10 10 11 10 12 10 13 10 14 10 15 10 16 10 17 9 18 9 19 9 20 9 21 9 22 9 23 9 24 9 25 9 26 9 27 9 28 9 29 10 30 10 31 10 32 10 33 10 34 10 35 10 36 12 37 12 38 12 39 12 40 12 41 9 42 9 43 9 44 9 45 1 46 12 47 12 48 12 49 9 50 9 51 6 52</v>
+        </vertex_weights>
+      </skin>
+    </controller>
+  </library_controllers>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="Regroup02" name="Regroup02" type="NODE">
+        <matrix sid="transform">0.1186827 0 0 0 0 0.1186827 0 0 0 0 0.1186827 0 0 0 0 1</matrix>
+        <instance_geometry url="#Regroup02-mesh">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="Material0-material" target="#Material0-material">
+                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>

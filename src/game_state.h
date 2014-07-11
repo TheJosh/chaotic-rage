@@ -141,8 +141,9 @@ class GameState
 		void addAmmoRound(AmmoRound* e);
 		void addParticleGroup(SPK::Group* group);
 
-		// Removing
+		// Debris
 		Entity* deadButNotBuried(Entity* e);
+		void scatterDebris(Entity* e, unsigned int num, float force, vector<AssimpModel*>* debris_models);
 
 		// Network bits (EID = entity-id; slots are for players)
 		EID getNextEID();

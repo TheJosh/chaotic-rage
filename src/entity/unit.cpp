@@ -626,9 +626,15 @@ int Unit::takeDamage(float damage)
 		this->endFiring();
 		this->leaveVehicle();
 
+		// Play a death animation
 		UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_DEATH);
 		if (uta) {
 			this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
+		}
+
+		// Fling some body parts around
+		if (!this->uc->death_debris.empty()) {
+			this->st->scatterDebris(this, 3, 5.0f, &this->uc->death_debris);
 		}
 
 		this->st->deadButNotBuried(this);

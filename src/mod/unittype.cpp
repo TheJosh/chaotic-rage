@@ -55,6 +55,8 @@ cfg_opt_t unittype_opts[] =
 	CFG_INT((char*) "playable", 1, CFGF_NONE),
 	CFG_FLOAT((char*) "health", 0, CFGF_NONE),
 
+	CFG_STR_LIST((char*) "death_debris", 0, CFGF_NONE),
+
 	CFG_END()
 };
 
@@ -142,6 +144,18 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 		uc->special_weapon = mod->getWeaponType(tmp);
 	}
 
+	// Death debris 3D models
+	int num_debris = cfg_size(cfg_item, "death_debris");
+	for (j = 0; j < num_debris; j++) {
+		char *tmp = cfg_getnstr(cfg_item, "death_debris", j);
+		if (tmp != NULL) {
+			AssimpModel *model = mod->getAssimpModel(tmp);
+			if (uc->model != NULL) {
+				uc->death_debris.push_back(model);
+			}
+		}
+	}
+	
 	return uc;
 }
 

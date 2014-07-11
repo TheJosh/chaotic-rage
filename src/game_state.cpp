@@ -30,6 +30,8 @@
 #include "mod/gametype.h"
 #include "render/render_3d.h"
 #include "render_opengl/hud.h"
+#include "render_opengl/animplay.h"
+#include "render_opengl/assimpmodel.h"
 #include "audio/audio.h"
 #include "net/net_client.h"
 #include "net/net_server.h"
@@ -237,6 +239,25 @@ Entity* GameState::deadButNotBuried(Entity* e)
 	this->entities_add.push_back(d);
 
 	return d;
+}
+
+
+/**
+* Scatter some debris in random directions
+**/
+void GameState::scatterDebris(Entity* e, unsigned int num, float force, vector<AssimpModel*>* debris_models)
+{
+	unsigned int limit = debris_models->size() - 1;
+
+	for (unsigned int i = 0; i <= num; ++i) {
+		AssimpModel *model = debris_models->at(getRandom(0, limit));
+
+		AnimPlay play(model);
+		Decaying* d = new Decaying(this, e->getTransform(), &play, 1.0f);
+		this->entities_add.push_back(d);
+
+		d->body->applyCentralImpulse(btVector3(getRandomf(-force, force), getRandomf(-force, force), getRandomf(-force, force)));
+	}
 }
 
 
