@@ -1,6 +1,7 @@
 #version 130
 
 in vec2 TexUV;
+in float Depth;
 in vec3 csNormal;
 in vec3 wsPosition;
 in vec3 csEyeDirection;
@@ -14,10 +15,7 @@ uniform vec3 uLightPos[2];
 uniform vec4 uLightColor[2];
 uniform vec4 uAmbient;
 
-// Light params; these could become uniforms
-const float constantAttenuation = 0.3;
-const float linearAttenuation = 0.1;
-const float quadraticAttenuation = 0.01;
+const float LOG2 = 1.442695;
 
 
 void main()
@@ -43,5 +41,10 @@ void main()
 	float EdotR = clamp(dot(e, r), 0.0, 1.0);
 	vec4 specularColor = matSpecularColor * uLightColor[0] * LightPower * pow(EdotR, 5) / (dist*dist);
 
-	gl_FragColor = matAmbientColor + diffuseColor + specularColor;
+	// Fog
+	float fogDensity = 1.5f;
+	float fogFactor = clamp(exp2(-fogDensity * fogDensity * Depth * Depth * LOG2), 0.0, 1.0);
+	vec4 fogColor = vec4(0.5, 0.5, 0.6, 1.0);
+
+	gl_FragColor = mix(fogColor, matAmbientColor + diffuseColor + specularColor, fogFactor);
 }
