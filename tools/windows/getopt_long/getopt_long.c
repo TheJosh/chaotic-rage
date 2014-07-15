@@ -38,7 +38,7 @@
 #include "getopt.h"
 
 int	  opterr;	/* if error message should be printed */
-int	  optind;	/* index into parent argv vector */
+int	  optind = 1;	/* index into parent argv vector */
 int	  optopt;	/* character checked for validity */
 int	  optreset;	/* reset getopt */
 char *optarg;	/* argument associated with option */
@@ -163,8 +163,8 @@ int
 getopt_long(nargc, nargv, options, long_options, index)
 	int nargc;
 	char ** nargv;
-	char * options;
-	struct option * long_options;
+	const char * options;
+	const struct option * long_options;
 	int * index;
 {
 	int retval;
