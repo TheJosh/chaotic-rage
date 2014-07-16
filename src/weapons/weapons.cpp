@@ -26,6 +26,7 @@ cfg_opt_t weapconf_raycast[] =
 	CFG_INT((char*) "angle_range", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "range", 50, CFGF_NONE),
 	CFG_FLOAT((char*) "damage", 10, CFGF_NONE),
+	CFG_INT((char*) "burst", 1, CFGF_NONE),
 	CFG_END()
 };
 
