@@ -1222,8 +1222,7 @@ bool RenderOpenGL::reloadShaders()
 	this->shaders.clear();
 	this->shaders_loaded = false;
 	this->loadShaders();
-	this->setupShaders();
-
+	
 	// If error, revert to old
 	if (this->shaders_error) {
 		for (map<int, GLShader*>::iterator it = old.begin(); it != old.end(); ++it) {
@@ -1231,6 +1230,8 @@ bool RenderOpenGL::reloadShaders()
 		}
 		return false;
 	}
+
+	this->setupShaders();
 
 	// Kill off the old shaders
 	for (map<int, GLShader*>::iterator it = old.begin(); it != old.end(); ++it) {
@@ -1950,6 +1951,7 @@ void RenderOpenGL::terrain()
 	glActiveTexture(GL_TEXTURE0);
 
 	glUseProgram(s->p());
+	glUniform1i(s->uniform("uShadowMap"), 1);
 
 	for (vector<Heightmap*>::iterator it = this->st->map->heightmaps.begin(); it != this->st->map->heightmaps.end(); ++it) {
 		Heightmap* heightmap = (*it);
@@ -1982,8 +1984,6 @@ void RenderOpenGL::terrain()
 		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
 		glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
 
-		glUniform1i(s->uniform("uShadowMap"), 1);
-
 		heightmap->glvao->bind();
 
 		int numPerStrip = 2 + ((heightmap->getDataSizeX()-1) * 2);
@@ -2014,14 +2014,16 @@ void RenderOpenGL::terrain()
 **/
 void RenderOpenGL::water()
 {
-	if (! this->st->map->water) return;
+	if (this->st->map->water == NULL) return;
 
 	CHECK_OPENGL_ERROR;
 
 	glEnable(GL_BLEND);
 
+	GLShader* s = this->shaders[SHADER_WATER];
+
 	glBindTexture(GL_TEXTURE_2D, this->st->map->water->pixels);
-	glUseProgram(this->shaders[SHADER_WATER]->p());
+	glUseProgram(s->p());
 
 	if (this->waterobj->count == 0) this->createVBO(this->waterobj);
 
@@ -2031,7 +2033,7 @@ void RenderOpenGL::water()
 	);
 
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;
-	glUniformMatrix4fv(this->shaders[SHADER_WATER]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 
 	this->waterobj->vao->bind();
 	glDrawArrays(GL_TRIANGLES, 0, this->waterobj->count);
@@ -2051,8 +2053,6 @@ void RenderOpenGL::entities()
 {
 	CHECK_OPENGL_ERROR;
 
-	glEnable(GL_BLEND);
-
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {
 		Entity *e = (*it);
 
@@ -2063,8 +2063,6 @@ void RenderOpenGL::entities()
 
 		renderAnimPlay(play, e);
 	}
-
-	glDisable(GL_BLEND);
 
 	CHECK_OPENGL_ERROR;
 }
