@@ -1098,22 +1098,16 @@ void RenderOpenGL::setupShaders()
 	glm::vec4 AmbientColor(this->st->map->ambient[0], this->st->map->ambient[1], this->st->map->ambient[2], 1.0f);
 
 	// Assign to phong shader
-	glUseProgram(this->shaders["phong"]->p());
-	glUniform3fv(this->shaders["phong"]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
-	glUniform4fv(this->shaders["phong"]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
-	glUniform4fv(this->shaders["phong"]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
-
-	// Assign to phong_bump shader
-	glUseProgram(this->shaders["phong_bump"]->p());
-	glUniform3fv(this->shaders["phong_bump"]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
-	glUniform4fv(this->shaders["phong_bump"]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
-	glUniform4fv(this->shaders["phong_bump"]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
+	glUseProgram(this->shaders[SHADER_ENTITY_STATIC]->p());
+	glUniform3fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
+	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
+	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
 
 	// And terrain
-	glUseProgram(this->shaders["terrain"]->p());
-	glUniform3fv(this->shaders["terrain"]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
-	glUniform4fv(this->shaders["terrain"]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
-	glUniform4fv(this->shaders["terrain"]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
+	glUseProgram(this->shaders[SHADER_TERRAIN]->p());
+	glUniform3fv(this->shaders[SHADER_TERRAIN]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
+	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
+	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
 
 	CHECK_OPENGL_ERROR;
 }
@@ -1193,12 +1187,12 @@ void RenderOpenGL::loadShaders()
 
 	// Before the mod is loaded, we only need the basic shader
 	// It's are hardcoded (see above)
-	if (! this->shaders.count("basic")) {
+	if (! this->shaders.count(SHADER_BASIC)) {
 		GLShader *shader = createProgram(pVS, pFS, "basic");
 		if (shader == NULL) {
 			reportFatalError("Error loading default OpenGL shader");
 		}
-		this->shaders["basic"] = shader;
+		this->shaders[SHADER_BASIC] = shader;
 	}
 
 	// No mod loaded yet, can't load the shaders
@@ -1206,15 +1200,12 @@ void RenderOpenGL::loadShaders()
 
 	base = GEng()->mm->getBase();
 
-	this->shaders["entities"] = loadProgram(base, "entities");
-	this->shaders["bones"] = loadProgram(base, "bones");
-	this->shaders["phong"] = loadProgram(base, "phong");
-	this->shaders["phong_bump"] = loadProgram(base, "phong_bump");
-	this->shaders["water"] = loadProgram(base, "water");
-	this->shaders["terrain"] = loadProgram(base, "terrain");
-	this->shaders["dissolve"] = loadProgram(base, "dissolve");
-	this->shaders["text"] = loadProgram(base, "text");
-	this->shaders["skybox"] = loadProgram(base, "skybox");
+	this->shaders[SHADER_ENTITY_BONES] = loadProgram(base, "bones");
+	this->shaders[SHADER_ENTITY_STATIC] = loadProgram(base, "phong");
+	this->shaders[SHADER_WATER] = loadProgram(base, "water");
+	this->shaders[SHADER_TERRAIN] = loadProgram(base, "terrain");
+	this->shaders[SHADER_TEXT] = loadProgram(base, "text");
+	this->shaders[SHADER_SKYBOX] = loadProgram(base, "skybox");
 
 	this->shaders_loaded = true;
 }
@@ -1225,23 +1216,24 @@ void RenderOpenGL::loadShaders()
 **/
 bool RenderOpenGL::reloadShaders()
 {
-	map<string, GLShader*> old = map<string, GLShader*>(this->shaders);
+	map<int, GLShader*> old = map<int, GLShader*>(this->shaders);
 
 	// Load new
 	this->shaders.clear();
 	this->shaders_loaded = false;
 	this->loadShaders();
+	this->setupShaders();
 
 	// If error, revert to old
 	if (this->shaders_error) {
-		for (map<string, GLShader*>::iterator it = old.begin(); it != old.end(); ++it) {
+		for (map<int, GLShader*>::iterator it = old.begin(); it != old.end(); ++it) {
 			this->shaders[it->first] = it->second;
 		}
 		return false;
 	}
 
 	// Kill off the old shaders
-	for (map<string, GLShader*>::iterator it = old.begin(); it != old.end(); ++it) {
+	for (map<int, GLShader*>::iterator it = old.begin(); it != old.end(); ++it) {
 		this->deleteProgram(it->second);
 	}
 
@@ -1512,7 +1504,7 @@ void RenderOpenGL::renderObj(WavefrontObj * obj, glm::mat4 mvp)
 	GLShader *shader;
 	if (obj->count == 0) this->createVBO(obj);
 
-	shader = this->shaders["basic"];
+	shader = this->shaders[SHADER_BASIC];
 	glUseProgram(shader->p());
 
 	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(mvp));
@@ -1559,7 +1551,7 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix)
 
 	if (!am->meshes[0]->bones.empty()) {
 		// Bones
-		shader = this->shaders["bones"];
+		shader = this->shaders[SHADER_ENTITY_BONES];
 		glUseProgram(shader->p());
 
 		// Calculate and set bone transforms
@@ -1581,7 +1573,7 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix)
 
 	} else {
 		// Static
-		shader = this->shaders["phong"];
+		shader = this->shaders[SHADER_ENTITY_STATIC];
 		glUseProgram(shader->p());
 		recursiveRenderAssimpModelStatic(play, am, am->rootNode, shader, modelMatrix);
 	}
@@ -1921,7 +1913,7 @@ void RenderOpenGL::skybox()
 	if (st->map->skybox == NULL) return;
 	CHECK_OPENGL_ERROR;
 
-	GLShader* s = this->shaders["skybox"];
+	GLShader* s = this->shaders[SHADER_SKYBOX];
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, st->map->skybox->pixels);
 	glUseProgram(s->p());
@@ -1951,7 +1943,7 @@ void RenderOpenGL::terrain()
 {
 	CHECK_OPENGL_ERROR;
 
-	GLShader* s = this->shaders["terrain"];
+	GLShader* s = this->shaders[SHADER_TERRAIN];
 
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, this->shadow_depth_tex);
@@ -2029,7 +2021,7 @@ void RenderOpenGL::water()
 	glEnable(GL_BLEND);
 
 	glBindTexture(GL_TEXTURE_2D, this->st->map->water->pixels);
-	glUseProgram(this->shaders["water"]->p());
+	glUseProgram(this->shaders[SHADER_WATER]->p());
 
 	if (this->waterobj->count == 0) this->createVBO(this->waterobj);
 
@@ -2039,7 +2031,7 @@ void RenderOpenGL::water()
 	);
 
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;
-	glUniformMatrix4fv(this->shaders["water"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(this->shaders[SHADER_WATER]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 
 	this->waterobj->vao->bind();
 	glDrawArrays(GL_TRIANGLES, 0, this->waterobj->count);

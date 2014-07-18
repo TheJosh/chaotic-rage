@@ -32,6 +32,16 @@
 #define ATTRIB_COLOR 6            // vColor
 #define ATTRIB_TANGENT 7          // vTangent
 
+// Shader IDs
+// TODO: Should this be an enum instead?
+#define SHADER_BASIC 0
+#define SHADER_SKYBOX 1
+#define SHADER_ENTITY_STATIC 2
+#define SHADER_ENTITY_BONES 3
+#define SHADER_TERRAIN 4
+#define SHADER_WATER 5
+#define SHADER_TEXT 6
+
 
 struct VBOvertex
 {
@@ -93,7 +103,7 @@ class RenderOpenGL : public Render3D
 		// Shaders
 		bool shaders_loaded;		// true if loaded from a mod
 		bool shaders_error;			// true if a shader load failed
-		map<string, GLShader*> shaders;
+		map<int, GLShader*> shaders;	// TODO: switch to a vector?
 
 		glm::mat4 projection;	// perspective
 		glm::mat4 ortho;		// ortho

@@ -203,7 +203,7 @@ void OpenGLFont::drawString(gcn::Graphics* graphics, const std::string& text, in
 	glEnable(GL_BLEND);
 
 	// Set up shader
-	GLShader* shader = this->render->shaders["text"];
+	GLShader* shader = this->render->shaders[SHADER_TEXT];
 	glUseProgram(shader->p());
 	glUniform1i(shader->uniform("uTex"), 0);
 	glUniform4f(shader->uniform("uColor"), r, g, b, a);

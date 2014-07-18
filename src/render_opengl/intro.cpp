@@ -79,7 +79,7 @@ void Intro::doit()
 	CHECK_OPENGL_ERROR
 
 	// Find 'basic' shader
-	map<string, GLShader*>::const_iterator pos = render->shaders.find("basic");
+	map<int, GLShader*>::const_iterator pos = render->shaders.find(SHADER_BASIC);
 	if (pos == render->shaders.end()) {
 		assert(false);
 	} else {

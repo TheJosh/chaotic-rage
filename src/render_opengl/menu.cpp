@@ -262,8 +262,8 @@ void Menu::updateUI()
 
 	// Draw background
 	glDisable(GL_DEPTH_TEST);
-	glUseProgram(render->shaders["basic"]->p());
-	glUniformMatrix4fv(render->shaders["basic"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
+	glUseProgram(render->shaders[SHADER_BASIC]->p());
+	glUniformMatrix4fv(render->shaders[SHADER_BASIC]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
 	this->render->renderSprite(bg, 0, ((static_cast<float>(render->real_height - render->real_width)) / 2.0f), render->real_width, render->real_width);
 
 	// Draw an earth
@@ -271,10 +271,10 @@ void Menu::updateUI()
 		glEnable(GL_DEPTH_TEST);
 
 		// Set up lights
-		glUseProgram(render->shaders["phong"]->p());
-		glUniform3fv(render->shaders["phong"]->uniform("uLightPos"), 1, glm::value_ptr(glm::vec3(1.2f, -0.8f, 10.7f)));
-		glUniform4fv(render->shaders["phong"]->uniform("uLightColor"), 1, glm::value_ptr(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f)));
-		glUniform4fv(render->shaders["phong"]->uniform("uAmbient"), 1, glm::value_ptr(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
+		glUseProgram(render->shaders[SHADER_ENTITY_STATIC]->p());
+		glUniform3fv(render->shaders[SHADER_ENTITY_STATIC]->uniform("uLightPos"), 1, glm::value_ptr(glm::vec3(1.2f, -0.8f, 10.7f)));
+		glUniform4fv(render->shaders[SHADER_ENTITY_STATIC]->uniform("uLightColor"), 1, glm::value_ptr(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f)));
+		glUniform4fv(render->shaders[SHADER_ENTITY_STATIC]->uniform("uAmbient"), 1, glm::value_ptr(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
 
 		// Draw earth
 		model_rot += 0.004f;
@@ -289,8 +289,8 @@ void Menu::updateUI()
 
 	// Logo in top-left
 	glEnable(GL_BLEND);
-	glUseProgram(render->shaders["basic"]->p());
-	glUniformMatrix4fv(render->shaders["basic"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
+	glUseProgram(render->shaders[SHADER_BASIC]->p());
+	glUniformMatrix4fv(render->shaders[SHADER_BASIC]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
 	this->render->renderSprite(logo, 30, 30);
 
 	// Render guichan and process events
