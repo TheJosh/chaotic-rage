@@ -25,8 +25,8 @@ class NetServer {
 		ServerConfig * conf;
 		IPaddress ipaddress;
 		UDPsocket sock;
-		list<NetMsg> messages;
-		SeqNum seq;		// TODO: is this big enough?
+		list<NetMsg> messages;		// TODO: re-architecture to involve less allocs and copies. Ringbuffer? Swapbuffer?
+		SeqNum seq;
 		vector<NetServerClientInfo*> clients;
 
 		NetServerSeqPred * seq_pred;
@@ -45,20 +45,19 @@ class NetServer {
 
 	public:
 		// One method for each outgoing network message the server sends out
-		NetMsg * addmsgInfoResp();
-		NetMsg * addmsgJoinAcc(NetServerClientInfo *client);
-		NetMsg * addmsgJoinRej();
-		NetMsg * addmsgDataCompl();
-		NetMsg * addmsgChat();
-		NetMsg * addmsgClientDrop(NetServerClientInfo *client);
-		NetMsg * addmsgUnitState(Unit *u);
-		NetMsg * addmsgWallState(Wall *w);
-		NetMsg * addmsgObjectState(Object *o);
-		NetMsg * addmsgVehicleState(Vehicle *v);
-		NetMsg * addmsgAmmoRoundState(AmmoRound *ar);
-		NetMsg * addmsgPickupState(Pickup *p);
-		NetMsg * addmsgEntityRem(Entity *e);
-
+		void addmsgInfoResp();
+		void addmsgJoinAcc(NetServerClientInfo *client);
+		void addmsgJoinRej();
+		void addmsgDataCompl();
+		void addmsgChat();
+		void addmsgClientDrop(NetServerClientInfo *client);
+		void addmsgUnitState(Unit *u);
+		void addmsgWallState(Wall *w);
+		void addmsgObjectState(Object *o);
+		void addmsgVehicleState(Vehicle *v);
+		void addmsgAmmoRoundState(AmmoRound *ar);
+		void addmsgPickupState(Pickup *p);
+		void addmsgEntityRem(Entity *e);
 
 	public:
 		// One method for each incoming network message from the client
