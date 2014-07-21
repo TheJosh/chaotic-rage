@@ -58,6 +58,14 @@ class OpenGLFont;
 class Heightmap;
 
 
+// temporary class!
+class PlayEntity {
+	public:
+		AnimPlay* play;
+		Entity* e;
+};
+
+
 class RenderOpenGL : public Render3D
 {
 	friend class HUD;
@@ -121,6 +129,12 @@ class RenderOpenGL : public Render3D
 		static const int SHADOW_MAP_WIDTH = 2048;
 		static const int SHADOW_MAP_HEIGHT = 2048;
 
+
+		// This is the INITIAL version of the mirrored entity list
+		// Eventually we will rejig this list to be further optimised
+		// to match the main the render path
+		vector<PlayEntity> animations;
+
 	public:
 		RenderOpenGL(GameState * st, RenderOpenGLSettings* settings);
 		virtual ~RenderOpenGL();
@@ -146,6 +160,8 @@ class RenderOpenGL : public Render3D
 		virtual void freeHeightmap();
 		virtual int getWidth() { return real_width; }
 		virtual int getHeight() { return real_height; }
+		virtual void addAnimPlay(AnimPlay* play, Entity* e);
+		virtual void remAnimPlay(AnimPlay* play);
 
 		virtual void setPhysicsDebug(bool status);
 		virtual bool getPhysicsDebug();

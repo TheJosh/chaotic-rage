@@ -28,6 +28,7 @@
 #include "entity/player.h"
 #include "entity/wall.h"
 #include "mod/gametype.h"
+#include "render/render.h"
 #include "render/render_3d.h"
 #include "render_opengl/hud.h"
 #include "render_opengl/animplay.h"
@@ -225,17 +226,35 @@ void GameState::addAmmoRound(AmmoRound* ar)
 
 
 /**
+* Add an animation to the renderer
+**/
+void GameState::addAnimPlay(AnimPlay* play, Entity* e)
+{
+	GEng()->render->addAnimPlay(play, e);
+}
+
+
+/**
+* Remove an animation from the renderer
+**/
+void GameState::remAnimPlay(AnimPlay* play)
+{
+	GEng()->render->remAnimPlay(play);
+}
+
+
+/**
 * It's dead, but not buried!
 *
 * Marks a given entity as ->del=1
 * Creates a new entity in the same location, with the specified animmodel.
 * The new entity is of type Decaying
 **/
-Entity* GameState::deadButNotBuried(Entity* e)
+Entity* GameState::deadButNotBuried(Entity* e, AnimPlay* play)
 {
 	e->del = true;
 
-	Decaying *d = new Decaying(this, e->getTransform(), e->getAnimModel());
+	Decaying *d = new Decaying(this, e->getTransform(), play);
 	this->entities_add.push_back(d);
 
 	return d;

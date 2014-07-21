@@ -1518,6 +1518,67 @@ void RenderOpenGL::renderObj(WavefrontObj * obj, glm::mat4 mvp)
 
 
 /**
+* Adds an animation to the list
+**/
+void RenderOpenGL::addAnimPlay(AnimPlay* play, Entity* e)
+{
+	PlayEntity ae;
+	ae.play = play;
+	ae.e = e;
+	this->animations.push_back(ae);
+}
+
+
+/**
+* Only temporay until we move the modelmatrix stuff out into the AnimPlay class
+**/
+class DeleteIfPlay
+{
+	public:
+		AnimPlay* del;
+		DeleteIfPlay(AnimPlay* toDelete) {
+			del = toDelete;
+		}
+		bool operator()( PlayEntity &ptr ) const {
+			return (ptr.play == del);
+		}
+};
+
+
+/**
+* Remove an animation
+**/
+void RenderOpenGL::remAnimPlay(AnimPlay* play)
+{
+	this->animations.erase(
+		remove_if(this->animations.begin(), this->animations.end(), DeleteIfPlay(play)),
+		this->animations.end()
+	);
+}
+
+
+bool sorter(const PlayEntity& a, const PlayEntity& b)
+{
+	return (&a.play < &b.play);
+}
+
+/**
+* Render the animations currently in the list
+* We sort too because that makes OpenGL happier
+**/
+void RenderOpenGL::entities()
+{
+	std::sort(this->animations.begin(), this->animations.end(), sorter);
+
+	for (vector<PlayEntity>::iterator it = animations.begin(); it != animations.end(); ++it) {
+		renderAnimPlay((*it).play, (*it).e);
+	}
+
+	CHECK_OPENGL_ERROR;
+}
+
+
+/**
 * Renders an animation.
 * Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender() afterwards.
 *
@@ -2041,28 +2102,6 @@ void RenderOpenGL::water()
 	glUseProgram(0);
 
 	glDisable(GL_BLEND);
-
-	CHECK_OPENGL_ERROR;
-}
-
-
-/**
-* The entities are basically just AnimPlay objects
-**/
-void RenderOpenGL::entities()
-{
-	CHECK_OPENGL_ERROR;
-
-	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {
-		Entity *e = (*it);
-
-		if (e->visible == false) continue;
-
-		AnimPlay *play = e->getAnimModel();
-		if (play == NULL) continue;
-
-		renderAnimPlay(play, e);
-	}
 
 	CHECK_OPENGL_ERROR;
 }

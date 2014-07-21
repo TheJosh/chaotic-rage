@@ -120,7 +120,6 @@ class Unit : public Entity
 		virtual ~Unit();
 
 	public:
-		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
 		virtual const btTransform &getTransform() const;

@@ -39,7 +39,6 @@ class Pickup : public Entity
 
 
 	public:
-		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
 };

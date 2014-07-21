@@ -45,7 +45,6 @@ class Vehicle : public Entity
 		virtual ~Vehicle();
 
 	public:
-		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
 		void takeDamage(int damage);

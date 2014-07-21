@@ -22,6 +22,7 @@ Object::Object(ObjectType *ot, GameState *st, float x, float y, float z, float a
 
 	this->anim = new AnimPlay(ot->model);
 	this->anim->setAnimation(0);
+	st->addAnimPlay(this->anim, this);
 
 	btVector3 size = ot->model->getBoundingSize();
 
@@ -37,7 +38,8 @@ Object::Object(ObjectType *ot, GameState *st, float x, float y, float z, float a
 
 Object::~Object()
 {
-	delete (this->anim);
+	st->remAnimPlay(this->anim);
+	delete(this->anim);
 	st->physics->delRigidBody(this->body);
 }
 
@@ -47,11 +49,6 @@ Object::~Object()
 **/
 void Object::update(int delta)
 {
-}
-
-AnimPlay* Object::getAnimModel()
-{
-	return this->anim;
 }
 
 Sound* Object::getSound()
@@ -72,8 +69,10 @@ void Object::takeDamage(int damage)
 		ObjectTypeDamage * dam = this->ot->damage_models.at(j);
 
 		if (this->health <= dam->health) {
+			st->remAnimPlay(this->anim);
 			delete(this->anim);
 			this->anim = new AnimPlay(dam->model);
+			st->addAnimPlay(this->anim, this);
 			break;
 		}
 	}

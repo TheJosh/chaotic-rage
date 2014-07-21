@@ -28,10 +28,12 @@ Decaying::Decaying(GameState *st, const btTransform &xform, AnimPlay *play, floa
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
 
 	this->body = st->physics->addRigidBody(Decaying::col_shape, mass, motionState, CG_DEBRIS);
+	st->addAnimPlay(this->anim, this);
 }
 
 Decaying::~Decaying()
 {
+	st->remAnimPlay(this->anim);
 	delete(this->anim);
 	st->physics->delRigidBody(this->body);
 }
@@ -42,11 +44,6 @@ Decaying::~Decaying()
 **/
 void Decaying::update(int delta)
 {
-}
-
-AnimPlay* Decaying::getAnimModel()
-{
-	return this->anim;
 }
 
 Sound* Decaying::getSound()

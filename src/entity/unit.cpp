@@ -57,6 +57,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 	this->force = btVector3(0.0f, 0.0f, 0.0f);
 
 	this->anim = new AnimPlay(this->uc->model);
+	st->addAnimPlay(this->anim, this);
 
 	// Set animation
 	UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_STATIC);
@@ -97,6 +98,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 
 Unit::~Unit()
 {
+	st->remAnimPlay(this->anim);
 	delete(this->anim);
 	this->anim = NULL;
 
@@ -428,15 +430,6 @@ float Unit::getHealthPercent()
 
 
 /**
-* Get the current animation play object
-**/
-AnimPlay* Unit::getAnimModel()
-{
-	return this->anim;
-}
-
-
-/**
 * Get the current sound
 * TODO: Remove - not in use...?
 **/
@@ -637,7 +630,7 @@ int Unit::takeDamage(float damage)
 			this->st->scatterDebris(this, 3, 5.0f, &this->uc->death_debris);
 		}
 
-		this->st->deadButNotBuried(this);
+		this->st->deadButNotBuried(this, this->anim);
 		return 1;
 	}
 
@@ -651,7 +644,7 @@ int Unit::takeDamage(float damage)
 void Unit::enterVehicle(Vehicle *v)
 {
 	this->drive = v;
-	this->visible = false;
+	this->st->remAnimPlay(this->anim);
 	this->ghost->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE);
 	this->drive->enter();
 }
@@ -687,7 +680,7 @@ void Unit::leaveVehicle()
 	this->ghost->setWorldTransform(btTransform(btQuaternion(0,0,0,1), spawn));
 	this->ghost->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
 	this->drive->exit();
-	this->visible = true;
+	this->st->addAnimPlay(this->anim, this);
 	this->drive = NULL;
 }
 

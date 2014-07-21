@@ -23,6 +23,7 @@ Pickup::Pickup(PickupType *pt, GameState *st, float x, float z) : Entity(st)
 
 	this->anim = new AnimPlay(pt->model);
 	this->anim->setAnimation(0);
+	st->addAnimPlay(this->anim, this);
 
 	btVector3 size = pt->model->getBoundingSize();
 
@@ -45,6 +46,7 @@ Pickup::Pickup(PickupType *pt, GameState *st, float x, float y, float z) : Entit
 
 	this->anim = new AnimPlay(pt->model);
 	this->anim->setAnimation(0);
+	st->addAnimPlay(this->anim, this);
 
 	btDefaultMotionState* motionState = new btDefaultMotionState(
 		btTransform(btQuaternion(0.0f, 0.0f, 0.0f), btVector3(x, y, z))
@@ -60,7 +62,8 @@ Pickup::Pickup(PickupType *pt, GameState *st, float x, float y, float z) : Entit
 **/
 Pickup::~Pickup()
 {
-	delete (this->anim);
+	st->remAnimPlay(this->anim);
+	delete(this->anim);
 	st->physics->delRigidBody(this->body);
 }
 
@@ -72,14 +75,6 @@ void Pickup::update(int delta)
 {
 }
 
-
-/**
-* Return the 3D model for the pickup
-**/
-AnimPlay* Pickup::getAnimModel()
-{
-	return this->anim;
-}
 
 /**
 * Return a sound for the pickup

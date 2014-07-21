@@ -61,7 +61,7 @@ int NPC::takeDamage(float damage)
 
 		// TODO: play death sound
 
-		this->st->deadButNotBuried(this);
+		this->st->deadButNotBuried(this, this->anim);
 	}
 
 	return result;

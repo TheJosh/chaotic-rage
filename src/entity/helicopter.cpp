@@ -51,6 +51,7 @@ void Helicopter::init(VehicleType *vt, GameState *st, btTransform &loc)
 	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); ++it) {
 		this->anim->addMoveNode((*it).node);
 	}
+	st->addAnimPlay(this->anim, this);
 
 	btDefaultMotionState* motionState = new btDefaultMotionState(loc);
 	this->body = st->physics->addRigidBody(vt->col_shape, vt->mass, motionState, CG_VEHICLE);
@@ -65,6 +66,7 @@ void Helicopter::init(VehicleType *vt, GameState *st, btTransform &loc)
 **/
 Helicopter::~Helicopter()
 {
+	st->remAnimPlay(this->anim);
 	delete(this->anim);
 	this->anim = NULL;
 

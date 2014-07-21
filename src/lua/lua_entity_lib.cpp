@@ -39,7 +39,6 @@ void load_entity_lib(lua_State *L)
 
 		// Entity
 		.beginClass<Entity>("Entity")
-			.addData("visible", &Entity::visible)
 			.addFunction("delete", &Entity::hasDied)
 			.addProperty("position", &Entity::getPosition, &Entity::setPosition)
 		.endClass()

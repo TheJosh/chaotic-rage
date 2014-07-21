@@ -83,6 +83,7 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); ++it) {
 		this->anim->addMoveNode((*it).node);
 	}
+	st->addAnimPlay(this->anim, this);
 
 	this->engineForce = 0.0f;
 	this->brakeForce = 0.0f;
@@ -145,6 +146,7 @@ Vehicle::~Vehicle()
 	delete this->vehicle_raycaster;
 	delete this->vehicle;
 
+	st->remAnimPlay(this->anim);
 	delete this->anim;
 	this->anim = NULL;
 
@@ -283,11 +285,6 @@ void Vehicle::operate(Unit* u, int delta, int key_up, int key_down, int key_left
 }
 
 
-AnimPlay* Vehicle::getAnimModel()
-{
-	return this->anim;
-}
-
 Sound* Vehicle::getSound()
 {
 	return NULL;
@@ -329,8 +326,10 @@ void Vehicle::takeDamage(int damage)
 		VehicleTypeDamage * dam = this->vt->damage_models.at(j);
 
 		if (this->health <= dam->health) {
+			st->remAnimPlay(this->anim);
 			delete(this->anim);
 			this->anim = new AnimPlay(dam->model);
+			st->addAnimPlay(this->anim, this);
 			break;
 		}
 	}
@@ -384,7 +383,7 @@ void Vehicle::setNodeAngle(VehicleNodeType type, float angle)
 	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); ++it) {
 		if ((*it).type == type) {
 			glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), angle, (*it).axis));
-			this->getAnimModel()->setMoveTransform((*it).node, rotation);
+			this->anim->setMoveTransform((*it).node, rotation);
 		}
 	}
 }
@@ -399,7 +398,7 @@ void Vehicle::setNodeTransformRelative(VehicleNodeType type, glm::mat4 transform
 
 	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); ++it) {
 		if ((*it).type == type) {
-			this->getAnimModel()->setMoveTransform((*it).node, (*it).node->transform * transform);
+			this->anim->setMoveTransform((*it).node, (*it).node->transform * transform);
 			break;
 		}
 	}

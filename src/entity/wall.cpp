@@ -21,6 +21,8 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z, float angle) 
 	this->anim = new AnimPlay(wt->model);
 	this->health = wt->health;
 
+	st->addAnimPlay(this->anim, this);
+
 	btVector3 size = wt->model->getBoundingSize();
 
 	btDefaultMotionState* motionState =
@@ -35,7 +37,8 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z, float angle) 
 
 Wall::~Wall()
 {
-	delete (this->anim);
+	st->remAnimPlay(this->anim);
+	delete(this->anim);
 	st->physics->delRigidBody(this->body);
 }
 
@@ -45,11 +48,6 @@ Wall::~Wall()
 **/
 void Wall::update(int delta)
 {
-}
-
-AnimPlay* Wall::getAnimModel()
-{
-	return this->anim;
 }
 
 Sound* Wall::getSound()
@@ -70,8 +68,10 @@ void Wall::takeDamage(float damage)
 		WallTypeDamage * dam = this->wt->damage_models.at(j);
 
 		if (this->health <= dam->health) {
+			st->remAnimPlay(this->anim);
 			delete(this->anim);
 			this->anim = new AnimPlay(dam->model);
+			st->addAnimPlay(this->anim, this);
 			break;
 		}
 	}

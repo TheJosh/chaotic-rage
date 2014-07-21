@@ -12,7 +12,6 @@ using namespace std;
 Entity::Entity(GameState *st)
 {
 	this->del = false;
-	this->visible = true;
 	this->st = st;
 	this->body = NULL;
 }

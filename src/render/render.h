@@ -135,6 +135,16 @@ class Render
 		**/
 		virtual bool is3D() { return false; }
 
+		/**
+		* Add an animation to the renderer
+		**/
+		virtual void addAnimPlay(AnimPlay* play, Entity* e) {}
+
+		/**
+		* Remove an animation from the renderer
+		**/
+		virtual void remAnimPlay(AnimPlay* play) {}
+
 	public:
 		Render(GameState * st);
 		virtual ~Render() {}
