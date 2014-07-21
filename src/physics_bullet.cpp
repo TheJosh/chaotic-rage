@@ -342,10 +342,20 @@ void PhysicsBullet::handleCallback(float delta)
 
 /**
 * Step the physics forward by the given amount of time
+*
+* Very useful docs:
+*   http://bulletphysics.org/mediawiki-1.5.8/index.php/Stepping_The_World
+*
+* Currently running at 60fps with up to 3 substeps
+* Which means below 20fps the simulation will "lose" time
 **/
 void PhysicsBullet::stepTime(int ms)
 {
-	dynamicsWorld->stepSimulation(static_cast<float>(ms) / 1000.0f, 1);
+	dynamicsWorld->stepSimulation(
+		static_cast<float>(ms) / 1000.0f,
+		3,
+		1.0f/60.0f
+	);
 }
 
 
