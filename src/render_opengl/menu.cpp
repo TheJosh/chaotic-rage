@@ -275,6 +275,7 @@ void Menu::updateUI()
 		glUniform3fv(render->shaders[SHADER_ENTITY_STATIC]->uniform("uLightPos"), 1, glm::value_ptr(glm::vec3(1.2f, -0.8f, 10.7f)));
 		glUniform4fv(render->shaders[SHADER_ENTITY_STATIC]->uniform("uLightColor"), 1, glm::value_ptr(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f)));
 		glUniform4fv(render->shaders[SHADER_ENTITY_STATIC]->uniform("uAmbient"), 1, glm::value_ptr(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
+		glUniformMatrix4fv(render->shaders[SHADER_ENTITY_STATIC]->uniform("uV"), 1, GL_FALSE, glm::value_ptr(render->view));
 
 		// Draw earth
 		model_rot += 0.004f;

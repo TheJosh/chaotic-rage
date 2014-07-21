@@ -1532,6 +1532,8 @@ bool sorter(const PlayEntity& a, const PlayEntity& b)
 **/
 void RenderOpenGL::addAnimPlay(AnimPlay* play, Entity* e)
 {
+	if (play->getModel() == NULL) return;
+
 	PlayEntity ae;
 	ae.play = play;
 	ae.e = e;
@@ -1575,6 +1577,13 @@ void RenderOpenGL::remAnimPlay(AnimPlay* play)
 **/
 void RenderOpenGL::entities()
 {
+	// Set VIEW matrix in the shaders
+	glUseProgram(this->shaders[SHADER_ENTITY_STATIC]->p());
+	glUniformMatrix4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
+	glUseProgram(this->shaders[SHADER_ENTITY_BONES]->p());
+	glUniformMatrix4fv(this->shaders[SHADER_ENTITY_BONES]->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
+
+	// Render!
 	for (vector<PlayEntity>::iterator it = animations.begin(); it != animations.end(); ++it) {
 		renderAnimPlay((*it).play, (*it).e);
 	}
@@ -1594,24 +1603,19 @@ void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 	float m[16];
 
 	e->getTransform().getOpenGLMatrix(m);
-	glm::mat4 modelMatrix = glm::make_mat4(m);
-
-	this->renderAnimPlay(play, modelMatrix);
+	this->renderAnimPlay(play, glm::make_mat4(m));
 }
 
 
 /**
 * Renders an animation.
 **/
-void RenderOpenGL::renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix)
+void RenderOpenGL::renderAnimPlay(AnimPlay* play, const glm::mat4 &modelMatrix)
 {
 	AssimpModel* am;
 	GLShader* shader;
 
 	am = play->getModel();
-	if (am == NULL) return;
-
-	CHECK_OPENGL_ERROR;
 
 	// Re-calc animation if needed
 	play->calcTransforms();
@@ -1621,19 +1625,14 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix)
 		shader = this->shaders[SHADER_ENTITY_BONES];
 		glUseProgram(shader->p());
 
-		// Calculate and set bone transforms
+		// Calculate stuff
 		play->calcBoneTransforms();
+		glm::mat4 MVP = this->projection * this->view * modelMatrix;
+
+		// Set uniforms
 		glUniformMatrix4fv(shader->uniform("uBones[0]"), MAX_BONES, GL_FALSE, &play->bone_transforms[0][0][0]);
-
-		// Calculate matrixes
-		glm::mat4 MVPbones = this->projection * this->view * modelMatrix;
-		glm::mat4 Mbones = modelMatrix;
-		glm::mat4 Vbones = this->view;
-
-		// Set matrix uniforms
-		glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPbones));
-		glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(Mbones));
-		glUniformMatrix4fv(shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(Vbones));
+		glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+		glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
 		// Do it
 		recursiveRenderAssimpModelBones(play, am, am->rootNode, shader);
@@ -1644,8 +1643,6 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix)
 		glUseProgram(shader->p());
 		recursiveRenderAssimpModelStatic(play, am, am->rootNode, shader, modelMatrix);
 	}
-
-	CHECK_OPENGL_ERROR;
 }
 
 
@@ -1660,17 +1657,14 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix)
 * @param GLuint shader The bound shader, so uniforms will work
 * @param glm::mat4 transform The node transform matrix
 **/
-void RenderOpenGL::recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel* am, AssimpNode* nd, GLShader* shader, glm::mat4 modelMatrix)
+void RenderOpenGL::recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel* am, AssimpNode* nd, GLShader* shader, const glm::mat4 &modelMatrix)
 {
-	glm::mat4 transform = ap->getNodeTransform(nd);
-	glm::mat4 MVPstatic = this->projection * this->view * modelMatrix * transform;
-	glm::mat4 Mstatic = modelMatrix * transform;
-	glm::mat4 Vstatic = this->view;
+	glm::mat4 transform = modelMatrix * ap->getNodeTransform(nd);
+	glm::mat4 MVP = this->projection * this->view * transform;
 
 	// Set uniforms
-	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPstatic));
-	glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(Mstatic));
-	glUniformMatrix4fv(shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(Vstatic));
+	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(transform));
 
 	// Render meshes
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
@@ -2058,15 +2052,21 @@ void RenderOpenGL::terrain()
 		}
 	}
 
-	// Static geometry meshes
-	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); ++it) {
-		MapMesh* mm = (*it);
+	if (! st->map->meshes.empty()) {
+		// Needed for static render below
+		glUseProgram(this->shaders[SHADER_ENTITY_STATIC]->p());
+		glUniformMatrix4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
 
-		float m[16];
-		mm->xform.getOpenGLMatrix(m);
-		glm::mat4 modelMatrix = glm::make_mat4(m);
+		// Static geometry meshes
+		for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); ++it) {
+			MapMesh* mm = (*it);
 
-		recursiveRenderAssimpModelStatic(mm->play, mm->model, mm->model->rootNode, s, modelMatrix);
+			float m[16];
+			mm->xform.getOpenGLMatrix(m);
+			glm::mat4 modelMatrix = glm::make_mat4(m);
+
+			recursiveRenderAssimpModelStatic(mm->play, mm->model, mm->model->rootNode, s, modelMatrix);
+		}
 	}
 
 	glUseProgram(0);

@@ -203,8 +203,8 @@ class RenderOpenGL : public Render3D
 
 		// Entity rendering
 		void renderAnimPlay(AnimPlay * play, Entity * e);
-		void renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix);
-		void recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader, glm::mat4 modelMatrix);
+		void renderAnimPlay(AnimPlay* play, const glm::mat4 &modelMatrix);
+		void recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader, const glm::mat4 &modelMatrix);
 		void recursiveRenderAssimpModelBones(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader);
 
 		void mainViewport(int s, int of);
