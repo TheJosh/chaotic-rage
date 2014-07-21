@@ -1517,6 +1517,16 @@ void RenderOpenGL::renderObj(WavefrontObj * obj, glm::mat4 mvp)
 }
 
 
+
+/**
+* Sorts so that AnimPlay* instances with the same model are next to each other in the array
+**/
+bool sorter(const PlayEntity& a, const PlayEntity& b)
+{
+	return ((unsigned long)(a.play->getModel()) < (unsigned long)(b.play->getModel()));
+}
+
+
 /**
 * Adds an animation to the list
 **/
@@ -1526,6 +1536,8 @@ void RenderOpenGL::addAnimPlay(AnimPlay* play, Entity* e)
 	ae.play = play;
 	ae.e = e;
 	this->animations.push_back(ae);
+
+	std::sort(this->animations.begin(), this->animations.end(), sorter);
 }
 
 
@@ -1557,19 +1569,12 @@ void RenderOpenGL::remAnimPlay(AnimPlay* play)
 }
 
 
-bool sorter(const PlayEntity& a, const PlayEntity& b)
-{
-	return (&a.play < &b.play);
-}
-
 /**
 * Render the animations currently in the list
 * We sort too because that makes OpenGL happier
 **/
 void RenderOpenGL::entities()
 {
-	std::sort(this->animations.begin(), this->animations.end(), sorter);
-
 	for (vector<PlayEntity>::iterator it = animations.begin(); it != animations.end(); ++it) {
 		renderAnimPlay((*it).play, (*it).e);
 	}
