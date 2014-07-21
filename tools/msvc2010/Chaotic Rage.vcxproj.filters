@@ -1523,6 +1523,9 @@
     <ClInclude Include="..\..\src\map\reg.h">
       <Filter>src\map</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\render_opengl_settings.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res\appicon.rc">
