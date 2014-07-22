@@ -2054,8 +2054,7 @@ void RenderOpenGL::terrain()
 
 	if (! st->map->meshes.empty()) {
 		// Needed for static render below
-		glUseProgram(this->shaders[SHADER_ENTITY_STATIC]->p());
-		glUniformMatrix4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
+		glUniformMatrix4fv(s->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
 
 		// Static geometry meshes
 		for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); ++it) {
