@@ -1790,6 +1790,8 @@ void RenderOpenGL::physics()
 #ifdef OpenGL
 	CHECK_OPENGL_ERROR;
 
+	glUseProgram(0);
+	glDisable(GL_BLEND);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_TEXTURE_2D);
 
