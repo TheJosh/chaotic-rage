@@ -178,7 +178,7 @@ void Player::update(int delta)
 		// Walking around
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		btTransform xform = ghost->getWorldTransform();
-		btScalar walkSpeed = this->params.max_speed * 1.0f/60.0f;		// Physics runs at 60hz
+		btScalar walkSpeed = this->params.max_speed;
 
 		// Mouse rotation
 		btQuaternion rot = btQuaternion(btVector3(0.0f, 1.0f, 0.0f), DEG_TO_RAD(this->mouse_angle));
@@ -211,7 +211,7 @@ void Player::update(int delta)
 		// Apply any force present on the unit
 		walkDirection += this->force;
 
-		this->character->setWalkDirection(walkDirection);
+		this->character->setVelocityForTimeInterval(walkDirection, 1.0f);
 
 		// If "walking" state changes, update animation.
 		if (walking && !this->walking) {

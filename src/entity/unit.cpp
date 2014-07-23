@@ -79,7 +79,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 	this->ghost->setUserPointer(this);
 
 	// Create Kinematic Character Controller
-	btScalar stepHeight = btScalar(0.75);
+	btScalar stepHeight = btScalar(0.25);
 	this->character = new btCRKinematicCharacterController(this->ghost, uc->col_shape, stepHeight);
 
 	// Add character and ghost to the world
