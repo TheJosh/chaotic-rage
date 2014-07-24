@@ -9,4 +9,13 @@
 using namespace std;
 
 
-void glmBullet(glm::mat4 in, btMatrix3x3 & out);
+/**
+* glm::mat4 -> btMatrix3x3
+**/
+void glmBullet(glm::mat4 in, btMatrix3x3& out);
+
+
+/**
+* glm::mat4 -> btTransform
+**/
+void glmBullet(glm::mat4 in, btTransform& out);

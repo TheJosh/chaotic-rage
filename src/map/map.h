@@ -44,15 +44,6 @@ class Light {
 		void setSpecular(short r, short g, short b, short a);
 };
 
-// TODO: Cleanup, improve and move to own file.
-class MapMesh {
-	public:
-		btTransform xform;
-		btRigidBody *body;
-		AssimpModel *model;
-		AnimPlay *play;
-};
-
 class Map {
 	friend class RenderSDL;
 	friend class RenderOpenGL;

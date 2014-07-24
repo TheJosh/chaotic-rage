@@ -13,8 +13,16 @@ using namespace std;
 /**
 * Convert GLM to Bullet (matrix)
 **/
-void glmBullet(glm::mat4 in, btMatrix3x3 & out)
+void glmBullet(glm::mat4 in, btMatrix3x3& out)
 {
 	out.setFromOpenGLSubMatrix(glm::value_ptr(in));
 }
 
+
+/**
+* Convert GLM to Bullet (transform)
+**/
+void glmBullet(glm::mat4 in, btTransform& out)
+{
+	out.setFromOpenGLMatrix(glm::value_ptr(in));
+}

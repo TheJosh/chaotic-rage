@@ -23,6 +23,7 @@
 #include "../mod/vehicletype.h"
 #include "../map/map.h"
 #include "../map/heightmap.h"
+#include "../map/mesh.h"
 #include "render_opengl.h"
 #include "render_opengl_settings.h"
 #include "gl_debug.h"
@@ -2060,21 +2061,17 @@ void RenderOpenGL::terrain()
 	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); ++it) {
 		MapMesh* mm = (*it);
 
-		float m[16];
-		mm->xform.getOpenGLMatrix(m);
-		glm::mat4 modelMatrix = glm::make_mat4(m);
-
-		glm::mat4 MVP = this->projection * this->view * modelMatrix;
-		glm::mat4 MV = this->view * modelMatrix;
+		glm::mat4 MVP = this->projection * this->view * mm->xform;
+		glm::mat4 MV = this->view * mm->xform;
 		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
-		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
+		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * mm->xform;
 
 		glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 		glUniformMatrix4fv(s->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
 		glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
 		glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
 
-		recursiveRenderAssimpModelStatic(mm->play, mm->model, mm->model->rootNode, s, modelMatrix);
+		recursiveRenderAssimpModelStatic(mm->play, mm->model, mm->model->rootNode, s, mm->xform);
 	}
 
 	glUseProgram(0);

@@ -7,12 +7,14 @@
 #include <math.h>
 #include <btBulletDynamicsCommon.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <SDL.h>
 #include <SDL_image.h>
 
 #include "map.h"
 #include "zone.h"
 #include "heightmap.h"
+#include "mesh.h"
 
 #include "../util/btStrideHeightfieldTerrainShape.h"
 #include "../rage.h"
@@ -33,6 +35,7 @@
 #include "../entity/wall.h"
 #include "../entity/pickup.h"
 #include "../util/sdl_util.h"
+#include "../util/convert.h"
 
 
 using namespace std;
@@ -409,30 +412,30 @@ int Map::load(string name, Render *render, Mod* insideof)
 	for (j = 0; j < num_types; j++) {
 		cfg_sub = cfg_getnsec(cfg, "mesh", j);
 
-		MapMesh * m = new MapMesh();
-		m->xform = btTransform(
-			btQuaternion(0.0f, 0.0f, 0.0f),
-			btVector3(
+		// Load model
+		char* tmp = cfg_getstr(cfg_sub, "model");
+		if (tmp == NULL) continue;
+		AssimpModel *model = new AssimpModel(this->mod, std::string(tmp));
+		if (model == NULL) continue;
+
+		// TODO: Fix for dedicated server (no Render3D)
+		if (! model->load(static_cast<Render3D*>(this->render), true)) {
+			cerr << "Map model " << tmp << " failed to load.\n";
+			cfg_free(cfg);
+			return 0;
+		}
+
+		// Set up position into the transform matrix
+		glm::mat4 xform = glm::translate(
+			glm::mat4(1.0f),
+			glm::vec3(
 				(float)cfg_getnfloat(cfg_sub, "pos", 0),
 				(float)cfg_getnfloat(cfg_sub, "pos", 1),
 				(float)cfg_getnfloat(cfg_sub, "pos", 2)
 			)
 		);
 
-		char* tmp = cfg_getstr(cfg_sub, "model");
-		if (tmp == NULL) continue;
-
-		m->model = new AssimpModel(this->mod, std::string(tmp));
-
-		// TODO: Fix for dedicated server (no Render3D)
-		if (! m->model->load(static_cast<Render3D*>(this->render), true)) {
-			cerr << "Map model " << tmp << " failed to load.\n";
-			cfg_free(cfg);
-			return 0;
-		}
-
-		m->play = new AnimPlay(m->model);
-
+		MapMesh* m = new MapMesh(xform, model);
 		this->meshes.push_back(m);
 	}
 
@@ -755,7 +758,9 @@ bool Map::preGame()
 		btCollisionShape* meshShape = new btBvhTriangleMeshShape(trimesh, true, true);
 
 		// Create body
-		btDefaultMotionState* motionState = new btDefaultMotionState((*it)->xform);
+		btTransform xform;
+		glmBullet((*it)->xform, xform);
+		btDefaultMotionState* motionState = new btDefaultMotionState(xform);
 		btRigidBody::btRigidBodyConstructionInfo meshRigidBodyCI(
 			0,
 			motionState,
