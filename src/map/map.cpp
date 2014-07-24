@@ -769,7 +769,6 @@ bool Map::preGame()
 
 /**
 * Cleanup after a game
-* TODO: SHould this be moved to the destructor instead?
 **/
 void Map::postGame()
 {
