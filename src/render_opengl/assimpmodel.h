@@ -139,7 +139,7 @@ class AssimpModel
 {
 	friend class RenderOpenGL;
 	friend class AnimPlay;
-	friend class Map;
+	friend class MapMesh;
 
 	private:
 		Uint8* boneIds;

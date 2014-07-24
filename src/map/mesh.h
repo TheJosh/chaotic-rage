@@ -20,12 +20,27 @@ class MapMesh {
 	friend class Map;
 
 	private:
+		// Positon and rotation
 		glm::mat4 xform;
-		btRigidBody *body;
-		AssimpModel *model;
-		AnimPlay *play;
+
+		// Render
+		AssimpModel* model;
+		AnimPlay* play;
+
+		// Physics
+		btRigidBody* body;
+		btCollisionShape* colshape;
+		btTriangleMesh* trimesh;
 
 	public:
 		MapMesh(const glm::mat4 &xform, AssimpModel* model);
 		~MapMesh();
+
+		/**
+		* Create a rigid body for this mesh
+		**/
+		btRigidBody* createRigidBody();
+
+	private:
+		void fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *ap, AssimpModel *am, AssimpNode *nd);
 };
