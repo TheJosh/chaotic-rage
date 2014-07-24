@@ -2013,8 +2013,17 @@ void RenderOpenGL::terrain()
 	glActiveTexture(GL_TEXTURE0);
 
 	glUseProgram(s->p());
+	glUniform1i(s->uniform("uTex"), 0);
 	glUniform1i(s->uniform("uShadowMap"), 1);
 
+	glm::mat4 biasMatrix(
+		0.5, 0.0, 0.0, 0.0,
+		0.0, 0.5, 0.0, 0.0,
+		0.0, 0.0, 0.5, 0.0,
+		0.5, 0.5, 0.5, 1.0
+	);
+
+	// Heightmaps
 	for (vector<Heightmap*>::iterator it = this->st->map->heightmaps.begin(); it != this->st->map->heightmaps.end(); ++it) {
 		Heightmap* heightmap = (*it);
 
@@ -2036,13 +2045,6 @@ void RenderOpenGL::terrain()
 		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
 		glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
 
-		glm::mat4 biasMatrix(
-			0.5, 0.0, 0.0, 0.0,
-			0.0, 0.5, 0.0, 0.0,
-			0.0, 0.0, 0.5, 0.0,
-			0.5, 0.5, 0.5, 1.0
-		);
-
 		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
 		glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
 
@@ -2054,20 +2056,25 @@ void RenderOpenGL::terrain()
 		}
 	}
 
-	if (! st->map->meshes.empty()) {
-		// Needed for static render below
-		glUniformMatrix4fv(s->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
+	// Geomerty meshes
+	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); ++it) {
+		MapMesh* mm = (*it);
 
-		// Static geometry meshes
-		for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); ++it) {
-			MapMesh* mm = (*it);
+		float m[16];
+		mm->xform.getOpenGLMatrix(m);
+		glm::mat4 modelMatrix = glm::make_mat4(m);
 
-			float m[16];
-			mm->xform.getOpenGLMatrix(m);
-			glm::mat4 modelMatrix = glm::make_mat4(m);
+		glm::mat4 MVP = this->projection * this->view * modelMatrix;
+		glm::mat4 MV = this->view * modelMatrix;
+		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
+		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
 
-			recursiveRenderAssimpModelStatic(mm->play, mm->model, mm->model->rootNode, s, modelMatrix);
-		}
+		glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+		glUniformMatrix4fv(s->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
+		glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
+		glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
+
+		recursiveRenderAssimpModelStatic(mm->play, mm->model, mm->model->rootNode, s, modelMatrix);
 	}
 
 	glUseProgram(0);
