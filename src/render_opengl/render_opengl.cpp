@@ -15,6 +15,7 @@
 #include "../game_engine.h"
 #include "../entity/player.h"
 #include "../entity/vehicle.h"
+#include "../util/clientconfig.h"
 #include "../util/obj.h"
 #include "../util/sdl_util.h"
 #include "../util/windowicon.h"
@@ -22,6 +23,7 @@
 #include "../mod/vehicletype.h"
 #include "../map/map.h"
 #include "../map/heightmap.h"
+#include "../map/mesh.h"
 #include "render_opengl.h"
 #include "render_opengl_settings.h"
 #include "gl_debug.h"
@@ -89,14 +91,6 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->skybox_vao = NULL;
 	this->font = NULL;
 	this->gui_font = NULL;
-
-	SDL_DisplayMode mode;
-	int result = SDL_GetDesktopDisplayMode(0, &mode);
-	if (result != 0) {
-		reportFatalError("Unable to determine current display mode");
-	}
-	this->desktop_width = mode.w;
-	this->desktop_height = mode.h;
 
 	this->settings = NULL;
 	this->setSettings(settings);
@@ -190,16 +184,23 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	// On mobile devices, we force fullscreen
 	#if defined(__ANDROID__)
 		fullscreen = true;
+		GEng()->cconf->fullscreen = fullscreen;
 	#endif
 
 	// SDL flags
 	flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 	if (fullscreen) {
-		flags |= SDL_WINDOW_FULLSCREEN;
+		// Set the resolution to same as the desktop
+		SDL_DisplayMode mode;
+		int result = SDL_GetDesktopDisplayMode(0, &mode);
+		if (result != 0) {
+			reportFatalError("Unable to determine current display mode");
+		}
+		width = mode.w;
+		height = mode.h;
 
-		width = this->desktop_width;
-		height = this->desktop_height;
+		flags |= SDL_WINDOW_FULLSCREEN;
 	}
 
 	this->real_width = width;
@@ -1098,22 +1099,16 @@ void RenderOpenGL::setupShaders()
 	glm::vec4 AmbientColor(this->st->map->ambient[0], this->st->map->ambient[1], this->st->map->ambient[2], 1.0f);
 
 	// Assign to phong shader
-	glUseProgram(this->shaders["phong"]->p());
-	glUniform3fv(this->shaders["phong"]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
-	glUniform4fv(this->shaders["phong"]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
-	glUniform4fv(this->shaders["phong"]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
-
-	// Assign to phong_bump shader
-	glUseProgram(this->shaders["phong_bump"]->p());
-	glUniform3fv(this->shaders["phong_bump"]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
-	glUniform4fv(this->shaders["phong_bump"]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
-	glUniform4fv(this->shaders["phong_bump"]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
+	glUseProgram(this->shaders[SHADER_ENTITY_STATIC]->p());
+	glUniform3fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
+	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
+	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
 
 	// And terrain
-	glUseProgram(this->shaders["terrain"]->p());
-	glUniform3fv(this->shaders["terrain"]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
-	glUniform4fv(this->shaders["terrain"]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
-	glUniform4fv(this->shaders["terrain"]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
+	glUseProgram(this->shaders[SHADER_TERRAIN]->p());
+	glUniform3fv(this->shaders[SHADER_TERRAIN]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
+	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
+	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
 
 	CHECK_OPENGL_ERROR;
 }
@@ -1193,12 +1188,12 @@ void RenderOpenGL::loadShaders()
 
 	// Before the mod is loaded, we only need the basic shader
 	// It's are hardcoded (see above)
-	if (! this->shaders.count("basic")) {
+	if (! this->shaders.count(SHADER_BASIC)) {
 		GLShader *shader = createProgram(pVS, pFS, "basic");
 		if (shader == NULL) {
 			reportFatalError("Error loading default OpenGL shader");
 		}
-		this->shaders["basic"] = shader;
+		this->shaders[SHADER_BASIC] = shader;
 	}
 
 	// No mod loaded yet, can't load the shaders
@@ -1206,15 +1201,12 @@ void RenderOpenGL::loadShaders()
 
 	base = GEng()->mm->getBase();
 
-	this->shaders["entities"] = loadProgram(base, "entities");
-	this->shaders["bones"] = loadProgram(base, "bones");
-	this->shaders["phong"] = loadProgram(base, "phong");
-	this->shaders["phong_bump"] = loadProgram(base, "phong_bump");
-	this->shaders["water"] = loadProgram(base, "water");
-	this->shaders["terrain"] = loadProgram(base, "terrain");
-	this->shaders["dissolve"] = loadProgram(base, "dissolve");
-	this->shaders["text"] = loadProgram(base, "text");
-	this->shaders["skybox"] = loadProgram(base, "skybox");
+	this->shaders[SHADER_ENTITY_BONES] = loadProgram(base, "bones");
+	this->shaders[SHADER_ENTITY_STATIC] = loadProgram(base, "phong");
+	this->shaders[SHADER_WATER] = loadProgram(base, "water");
+	this->shaders[SHADER_TERRAIN] = loadProgram(base, "terrain");
+	this->shaders[SHADER_TEXT] = loadProgram(base, "text");
+	this->shaders[SHADER_SKYBOX] = loadProgram(base, "skybox");
 
 	this->shaders_loaded = true;
 }
@@ -1225,23 +1217,25 @@ void RenderOpenGL::loadShaders()
 **/
 bool RenderOpenGL::reloadShaders()
 {
-	map<string, GLShader*> old = map<string, GLShader*>(this->shaders);
+	map<int, GLShader*> old = map<int, GLShader*>(this->shaders);
 
 	// Load new
 	this->shaders.clear();
 	this->shaders_loaded = false;
 	this->loadShaders();
-
+	
 	// If error, revert to old
 	if (this->shaders_error) {
-		for (map<string, GLShader*>::iterator it = old.begin(); it != old.end(); ++it) {
+		for (map<int, GLShader*>::iterator it = old.begin(); it != old.end(); ++it) {
 			this->shaders[it->first] = it->second;
 		}
 		return false;
 	}
 
+	this->setupShaders();
+
 	// Kill off the old shaders
-	for (map<string, GLShader*>::iterator it = old.begin(); it != old.end(); ++it) {
+	for (map<int, GLShader*>::iterator it = old.begin(); it != old.end(); ++it) {
 		this->deleteProgram(it->second);
 	}
 
@@ -1512,13 +1506,88 @@ void RenderOpenGL::renderObj(WavefrontObj * obj, glm::mat4 mvp)
 	GLShader *shader;
 	if (obj->count == 0) this->createVBO(obj);
 
-	shader = this->shaders["basic"];
+	shader = this->shaders[SHADER_BASIC];
 	glUseProgram(shader->p());
 
 	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(mvp));
 
 	obj->vao->bind();
 	glDrawArrays(GL_TRIANGLES, 0, obj->count);
+
+	CHECK_OPENGL_ERROR;
+}
+
+
+
+/**
+* Sorts so that AnimPlay* instances with the same model are next to each other in the array
+**/
+bool sorter(const PlayEntity& a, const PlayEntity& b)
+{
+	return ((unsigned long)(a.play->getModel()) < (unsigned long)(b.play->getModel()));
+}
+
+
+/**
+* Adds an animation to the list
+**/
+void RenderOpenGL::addAnimPlay(AnimPlay* play, Entity* e)
+{
+	if (play->getModel() == NULL) return;
+
+	PlayEntity ae;
+	ae.play = play;
+	ae.e = e;
+	this->animations.push_back(ae);
+
+	std::sort(this->animations.begin(), this->animations.end(), sorter);
+}
+
+
+/**
+* Only temporay until we move the modelmatrix stuff out into the AnimPlay class
+**/
+class DeleteIfPlay
+{
+	public:
+		AnimPlay* del;
+		DeleteIfPlay(AnimPlay* toDelete) {
+			del = toDelete;
+		}
+		bool operator()( PlayEntity &ptr ) const {
+			return (ptr.play == del);
+		}
+};
+
+
+/**
+* Remove an animation
+**/
+void RenderOpenGL::remAnimPlay(AnimPlay* play)
+{
+	this->animations.erase(
+		remove_if(this->animations.begin(), this->animations.end(), DeleteIfPlay(play)),
+		this->animations.end()
+	);
+}
+
+
+/**
+* Render the animations currently in the list
+* We sort too because that makes OpenGL happier
+**/
+void RenderOpenGL::entities()
+{
+	// Set VIEW matrix in the shaders
+	glUseProgram(this->shaders[SHADER_ENTITY_STATIC]->p());
+	glUniformMatrix4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
+	glUseProgram(this->shaders[SHADER_ENTITY_BONES]->p());
+	glUniformMatrix4fv(this->shaders[SHADER_ENTITY_BONES]->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
+
+	// Render!
+	for (vector<PlayEntity>::iterator it = animations.begin(); it != animations.end(); ++it) {
+		renderAnimPlay((*it).play, (*it).e);
+	}
 
 	CHECK_OPENGL_ERROR;
 }
@@ -1532,91 +1601,75 @@ void RenderOpenGL::renderObj(WavefrontObj * obj, glm::mat4 mvp)
 **/
 void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 {
-	btTransform trans = e->getTransform();
 	float m[16];
-	trans.getOpenGLMatrix(m);
-	glm::mat4 modelMatrix = glm::make_mat4(m);
 
-	this->renderAnimPlay(play, modelMatrix);
+	e->getTransform().getOpenGLMatrix(m);
+	this->renderAnimPlay(play, glm::make_mat4(m));
 }
 
 
 /**
 * Renders an animation.
-* Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender() afterwards.
-*
-* TODO: This needs HEAPS more work with the new animation system
 **/
-void RenderOpenGL::renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix)
+void RenderOpenGL::renderAnimPlay(AnimPlay* play, const glm::mat4 &modelMatrix)
 {
 	AssimpModel* am;
 	GLShader* shader;
 
 	am = play->getModel();
-	if (am == NULL) return;
-
-
-	CHECK_OPENGL_ERROR;
 
 	// Re-calc animation if needed
 	play->calcTransforms();
 
-	// Bones? Calculate and send through bone transforms
 	if (!am->meshes[0]->bones.empty()) {
-		shader = this->shaders["bones"];
+		// Bones
+		shader = this->shaders[SHADER_ENTITY_BONES];
 		glUseProgram(shader->p());
 
+		// Calculate stuff
 		play->calcBoneTransforms();
+		glm::mat4 MVP = this->projection * this->view * modelMatrix;
+
+		// Set uniforms
 		glUniformMatrix4fv(shader->uniform("uBones[0]"), MAX_BONES, GL_FALSE, &play->bone_transforms[0][0][0]);
+		glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+		glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+
+		// Do it
+		recursiveRenderAssimpModelBones(play, am, am->rootNode, shader);
 
 	} else {
-		shader = this->shaders["phong"];
+		// Static
+		shader = this->shaders[SHADER_ENTITY_STATIC];
 		glUseProgram(shader->p());
+		recursiveRenderAssimpModelStatic(play, am, am->rootNode, shader, modelMatrix);
 	}
-
-	recursiveRenderAssimpModel(play, am, am->rootNode, shader, modelMatrix);
-
-	glUseProgram(0);
-
-	CHECK_OPENGL_ERROR;
 }
 
 
 /**
 * Render an Assimp model.
+*
 * It's a recursive function because Assimp models have a node tree
+* This is the 'static' version.
 *
 * @param AssimpModel *am The model
 * @param AssimpNode *nd The root node of the model
 * @param GLuint shader The bound shader, so uniforms will work
 * @param glm::mat4 transform The node transform matrix
 **/
-void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, AssimpNode* nd, GLShader* shader, glm::mat4 xform_global)
+void RenderOpenGL::recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel* am, AssimpNode* nd, GLShader* shader, const glm::mat4 &modelMatrix)
 {
-	glm::mat4 transform = ap->getNodeTransform(nd);
+	glm::mat4 transform = modelMatrix * ap->getNodeTransform(nd);
+	glm::mat4 MVP = this->projection * this->view * transform;
 
-	CHECK_OPENGL_ERROR;
+	// Set uniforms
+	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(transform));
 
-	glm::mat4 MVPstatic = this->projection * this->view * xform_global * transform;
-	glm::mat4 Mstatic = xform_global * transform;
-	glm::mat4 Vstatic = this->view;
-	
-	glm::mat4 MVPbones = this->projection * this->view * xform_global;
-	glm::mat4 Mbones = xform_global;
-	glm::mat4 Vbones = this->view;
-
+	// Render meshes
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
 		AssimpMesh* mesh = am->meshes[(*it)];
-
-		if (mesh->bones.empty()) {
-			glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPstatic));
-			glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(Mstatic));
-			glUniformMatrix4fv(shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(Vstatic));
-		} else {
-			glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVPbones));
-			glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(Mbones));
-			glUniformMatrix4fv(shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(Vbones));
-		}
 
 		if (am->materials[mesh->materialIndex]->diffuse == NULL) {
 			glBindTexture(GL_TEXTURE_2D, 0);
@@ -1628,11 +1681,43 @@ void RenderOpenGL::recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel* am, Ass
 		glDrawElements(GL_TRIANGLES, mesh->numFaces*3, GL_UNSIGNED_SHORT, 0);
 	}
 
+	// Render child nodes
 	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); ++it) {
-		recursiveRenderAssimpModel(ap, am, (*it), shader, xform_global);
+		recursiveRenderAssimpModelStatic(ap, am, (*it), shader, modelMatrix);
+	}
+}
+
+
+/**
+* Render an Assimp model.
+*
+* It's a recursive function because Assimp models have a node tree
+* This is the 'bones' version.
+* The uMVP, uM, uV and uBones matrixes should be set *before* you call this
+*
+* @param AssimpModel *am The model
+* @param AssimpNode *nd The root node of the model
+* @param GLuint shader The bound shader, so uniforms will work
+**/
+void RenderOpenGL::recursiveRenderAssimpModelBones(AnimPlay* ap, AssimpModel* am, AssimpNode* nd, GLShader* shader)
+{
+	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
+		AssimpMesh* mesh = am->meshes[(*it)];
+
+		if (am->materials[mesh->materialIndex]->diffuse == NULL) {
+			glBindTexture(GL_TEXTURE_2D, 0);
+		} else {
+			glBindTexture(GL_TEXTURE_2D, am->materials[mesh->materialIndex]->diffuse->pixels);
+		}
+
+		mesh->vao->bind();
+		glDrawElements(GL_TRIANGLES, mesh->numFaces*3, GL_UNSIGNED_SHORT, 0);
 	}
 
-	CHECK_OPENGL_ERROR;
+	// Render child nodes
+	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); ++it) {
+		recursiveRenderAssimpModelBones(ap, am, (*it), shader);
+	}
 }
 
 
@@ -1706,6 +1791,8 @@ void RenderOpenGL::physics()
 #ifdef OpenGL
 	CHECK_OPENGL_ERROR;
 
+	glUseProgram(0);
+	glDisable(GL_BLEND);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_TEXTURE_2D);
 
@@ -1759,7 +1846,7 @@ void RenderOpenGL::mainRot()
 				break;
 
 			case GameSettings::abovePlayer:
-				tilt = 70.0f;
+				tilt = 60.0f;
 				dist = 50.0f;
 				lift = 0.0f;
 				break;
@@ -1890,7 +1977,7 @@ void RenderOpenGL::skybox()
 	if (st->map->skybox == NULL) return;
 	CHECK_OPENGL_ERROR;
 
-	GLShader* s = this->shaders["skybox"];
+	GLShader* s = this->shaders[SHADER_SKYBOX];
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, st->map->skybox->pixels);
 	glUseProgram(s->p());
@@ -1920,14 +2007,24 @@ void RenderOpenGL::terrain()
 {
 	CHECK_OPENGL_ERROR;
 
-	GLShader* s = this->shaders["terrain"];
+	GLShader* s = this->shaders[SHADER_TERRAIN];
 
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, this->shadow_depth_tex);
 	glActiveTexture(GL_TEXTURE0);
 
 	glUseProgram(s->p());
+	glUniform1i(s->uniform("uTex"), 0);
+	glUniform1i(s->uniform("uShadowMap"), 1);
 
+	glm::mat4 biasMatrix(
+		0.5, 0.0, 0.0, 0.0,
+		0.0, 0.5, 0.0, 0.0,
+		0.0, 0.0, 0.5, 0.0,
+		0.5, 0.5, 0.5, 1.0
+	);
+
+	// Heightmaps
 	for (vector<Heightmap*>::iterator it = this->st->map->heightmaps.begin(); it != this->st->map->heightmaps.end(); ++it) {
 		Heightmap* heightmap = (*it);
 
@@ -1949,17 +2046,8 @@ void RenderOpenGL::terrain()
 		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
 		glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
 
-		glm::mat4 biasMatrix(
-			0.5, 0.0, 0.0, 0.0,
-			0.0, 0.5, 0.0, 0.0,
-			0.0, 0.0, 0.5, 0.0,
-			0.5, 0.5, 0.5, 1.0
-		);
-
 		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
 		glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
-
-		glUniform1i(s->uniform("uShadowMap"), 1);
 
 		heightmap->glvao->bind();
 
@@ -1969,15 +2057,21 @@ void RenderOpenGL::terrain()
 		}
 	}
 
-	// Static geometry meshes
+	// Geomerty meshes
 	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); ++it) {
 		MapMesh* mm = (*it);
 
-		float m[16];
-		mm->xform.getOpenGLMatrix(m);
-		glm::mat4 modelMatrix = glm::make_mat4(m);
+		glm::mat4 MVP = this->projection * this->view * mm->xform;
+		glm::mat4 MV = this->view * mm->xform;
+		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
+		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * mm->xform;
 
-		recursiveRenderAssimpModel(mm->play, mm->model, mm->model->rootNode, s, modelMatrix);
+		glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+		glUniformMatrix4fv(s->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
+		glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
+		glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
+
+		recursiveRenderAssimpModelStatic(mm->play, mm->model, mm->model->rootNode, s, mm->xform);
 	}
 
 	glUseProgram(0);
@@ -1991,14 +2085,16 @@ void RenderOpenGL::terrain()
 **/
 void RenderOpenGL::water()
 {
-	if (! this->st->map->water) return;
+	if (this->st->map->water == NULL) return;
 
 	CHECK_OPENGL_ERROR;
 
 	glEnable(GL_BLEND);
 
+	GLShader* s = this->shaders[SHADER_WATER];
+
 	glBindTexture(GL_TEXTURE_2D, this->st->map->water->pixels);
-	glUseProgram(this->shaders["water"]->p());
+	glUseProgram(s->p());
 
 	if (this->waterobj->count == 0) this->createVBO(this->waterobj);
 
@@ -2008,38 +2104,12 @@ void RenderOpenGL::water()
 	);
 
 	glm::mat4 MVP = this->projection * this->view * modelMatrix;
-	glUniformMatrix4fv(this->shaders["water"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 
 	this->waterobj->vao->bind();
 	glDrawArrays(GL_TRIANGLES, 0, this->waterobj->count);
 
 	glUseProgram(0);
-
-	glDisable(GL_BLEND);
-
-	CHECK_OPENGL_ERROR;
-}
-
-
-/**
-* The entities are basically just AnimPlay objects
-**/
-void RenderOpenGL::entities()
-{
-	CHECK_OPENGL_ERROR;
-
-	glEnable(GL_BLEND);
-
-	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {
-		Entity *e = (*it);
-
-		if (e->visible == false) continue;
-
-		AnimPlay *play = e->getAnimModel();
-		if (play == NULL) continue;
-
-		renderAnimPlay(play, e);
-	}
 
 	glDisable(GL_BLEND);
 

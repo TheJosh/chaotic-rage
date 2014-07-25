@@ -44,15 +44,6 @@ class Light {
 		void setSpecular(short r, short g, short b, short a);
 };
 
-// TODO: Cleanup, improve and move to own file.
-class MapMesh {
-	public:
-		btTransform xform;
-		btRigidBody *body;
-		AssimpModel *model;
-		AnimPlay *play;
-};
-
 class Map {
 	friend class RenderSDL;
 	friend class RenderOpenGL;
@@ -101,10 +92,9 @@ class Map {
 		Zone* getDestZone(Faction f);
 		Zone* getNearbaseZone(Faction f);
 		float getRandomX();
-		float getRandomY();
+		float getRandomZ();
 
 	private:
-		void fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *play, AssimpModel *am, AssimpNode *nd);
 		btRigidBody* createBoundaryPlane(const btVector3 &axis, const btVector3 &loc);
 };
 

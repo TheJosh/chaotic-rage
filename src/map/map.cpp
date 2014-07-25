@@ -7,12 +7,14 @@
 #include <math.h>
 #include <btBulletDynamicsCommon.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <SDL.h>
 #include <SDL_image.h>
 
 #include "map.h"
 #include "zone.h"
 #include "heightmap.h"
+#include "mesh.h"
 
 #include "../util/btStrideHeightfieldTerrainShape.h"
 #include "../rage.h"
@@ -33,6 +35,7 @@
 #include "../entity/wall.h"
 #include "../entity/pickup.h"
 #include "../util/sdl_util.h"
+
 
 
 using namespace std;
@@ -409,30 +412,30 @@ int Map::load(string name, Render *render, Mod* insideof)
 	for (j = 0; j < num_types; j++) {
 		cfg_sub = cfg_getnsec(cfg, "mesh", j);
 
-		MapMesh * m = new MapMesh();
-		m->xform = btTransform(
-			btQuaternion(0.0f, 0.0f, 0.0f),
-			btVector3(
+		// Load model
+		char* tmp = cfg_getstr(cfg_sub, "model");
+		if (tmp == NULL) continue;
+		AssimpModel *model = new AssimpModel(this->mod, std::string(tmp));
+		if (model == NULL) continue;
+
+		// TODO: Fix for dedicated server (no Render3D)
+		if (! model->load(static_cast<Render3D*>(this->render), true)) {
+			cerr << "Map model " << tmp << " failed to load.\n";
+			cfg_free(cfg);
+			return 0;
+		}
+
+		// Set up position into the transform matrix
+		glm::mat4 xform = glm::translate(
+			glm::mat4(1.0f),
+			glm::vec3(
 				(float)cfg_getnfloat(cfg_sub, "pos", 0),
 				(float)cfg_getnfloat(cfg_sub, "pos", 1),
 				(float)cfg_getnfloat(cfg_sub, "pos", 2)
 			)
 		);
 
-		char* tmp = cfg_getstr(cfg_sub, "model");
-		if (tmp == NULL) continue;
-
-		m->model = new AssimpModel(this->mod, std::string(tmp));
-
-		// TODO: Fix for dedicated server (no Render3D)
-		if (! m->model->load(static_cast<Render3D*>(this->render), true)) {
-			cerr << "Map model " << tmp << " failed to load.\n";
-			cfg_free(cfg);
-			return 0;
-		}
-
-		m->play = new AnimPlay(m->model);
-
+		MapMesh* m = new MapMesh(xform, model);
 		this->meshes.push_back(m);
 	}
 
@@ -587,7 +590,7 @@ void Map::loadDefaultEntities()
 		PickupType *pt = GEng()->mm->getPickupType(type);
 		if (pt == NULL) reportFatalError("Unable to load map; missing or invalid pickup type '" + type + "'");
 
-		Pickup * pu = new Pickup(pt, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"), 1.0f);
+		Pickup * pu = new Pickup(pt, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"));
 
 		this->st->addPickup(pu);
 	}
@@ -703,9 +706,9 @@ float Map::getRandomX()
 
 
 /**
-* Return a random Y co-ord
+* Return a random Z co-ord
 **/
-float Map::getRandomY()
+float Map::getRandomZ()
 {
 	return getRandomf(0, this->height);
 }
@@ -725,6 +728,15 @@ bool Map::preGame()
 		this->st->physics->addRigidBody(ground, CG_TERRAIN);
 	}
 
+	// Create rigid bodies for the map meshes
+	for (vector<MapMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); ++it) {
+		btRigidBody* ground = (*it)->createRigidBody();
+		if (ground == NULL) {
+			return false;
+		}
+		this->st->physics->addRigidBody(ground, CG_TERRAIN);
+	}
+	
 	// If there is water in the world, we create a water surface
 	// It doesn't collide with stuff, it's just so we can detect with a raycast
 	if (this->water) {
@@ -745,29 +757,6 @@ bool Map::preGame()
 		this->st->physics->addRigidBody(water, CG_WATER);
 	}
 
-	// Load the assimp models into the physics engine
-	for (vector<MapMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); ++it) {
-		MapMesh *mm = (*it);
-
-		// Fill the triangle mesh
-		btTriangleMesh *trimesh = new btTriangleMesh(false, false);
-		this->fillTriangeMesh(trimesh, mm->play, mm->model, mm->model->rootNode);
-		btCollisionShape* meshShape = new btBvhTriangleMeshShape(trimesh, true, true);
-
-		// Create body
-		btDefaultMotionState* motionState = new btDefaultMotionState((*it)->xform);
-		btRigidBody::btRigidBodyConstructionInfo meshRigidBodyCI(
-			0,
-			motionState,
-			meshShape,
-			btVector3(0,0,0)
-		);
-		btRigidBody *meshBody = new btRigidBody(meshRigidBodyCI);
-		meshBody->setRestitution(0.f);
-		meshBody->setFriction(10.f);
-		this->st->physics->addRigidBody(meshBody, CG_TERRAIN);
-	}
-
 	// Add boundry planes which surround the map
 	this->st->physics->addRigidBody(this->createBoundaryPlane(btVector3(1.0f, 0.0f, 0.0f), btVector3(0.0f, 0.0f, 0.0f)), CG_TERRAIN);
 	this->st->physics->addRigidBody(this->createBoundaryPlane(btVector3(0.0f, 0.0f, 1.0f), btVector3(0.0f, 0.0f, 0.0f)), CG_TERRAIN);
@@ -779,48 +768,15 @@ bool Map::preGame()
 
 
 /**
-* Fill a triangle mesh with triangles
-*
-* TODO: It would be better to use btTriangleIndexVertexArray or make AssimpModel implement btStridingMeshInterface
-**/
-void Map::fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *ap, AssimpModel *am, AssimpNode *nd)
-{
-	glm::mat4 transform;
-	glm::vec4 a, b, c;
-	AssimpMesh* mesh;
-
-	// Grab the transform for this node
-	std::map<AssimpNode*, glm::mat4>::iterator local = ap->transforms.find(nd);
-	assert(local != ap->transforms.end());
-	transform = local->second;
-
-	// Iterate the meshes and add triangles
-	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
-		mesh = am->meshes[(*it)];
-
-		for (vector<AssimpFace>::iterator itt = mesh->faces->begin(); itt != mesh->faces->end(); ++itt) {
-			a = transform * mesh->verticies->at((*itt).a);
-			b = transform * mesh->verticies->at((*itt).b);
-			c = transform * mesh->verticies->at((*itt).c);
-
-			trimesh->addTriangle(btVector3(a.x, a.y, a.z), btVector3(b.x, b.y, b.z), btVector3(c.x, c.y, c.z));
-		}
-	}
-
-	// Iterate children nodes
-	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); ++it) {
-		fillTriangeMesh(trimesh, ap, am, (*it));
-	}
-}
-
-
-/**
 * Cleanup after a game
-* TODO: SHould this be moved to the destructor instead?
 **/
 void Map::postGame()
 {
 	for (vector<Heightmap*>::iterator it = this->heightmaps.begin(); it != this->heightmaps.end(); ++it) {
+		delete (*it);
+	}
+
+	for (vector<MapMesh*>::iterator it = this->meshes.begin(); it != this->meshes.end(); ++it) {
 		delete (*it);
 	}
 

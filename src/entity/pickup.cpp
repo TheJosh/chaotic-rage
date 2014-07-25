@@ -2,35 +2,57 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include "../rage.h"
-#include "../physics_bullet.h"
-#include "../game_state.h"
-#include "../render_opengl/animplay.h"
-#include "../mod/pickuptype.h"
 #include "pickup.h"
+#include "../game_state.h"
+#include "../mod/pickuptype.h"
+#include "../physics_bullet.h"
+#include "../render_opengl/animplay.h"
+#include "entity.h"
 
 
 using namespace std;
 
 
+/**
+* Create a pickup at the given map coords
+* Will be spawned on the ground at the specified location
+**/
+Pickup::Pickup(PickupType *pt, GameState *st, float x, float z) : Entity(st)
+{
+	this->pt = pt;
+
+	this->anim = new AnimPlay(pt->model);
+	this->anim->setAnimation(0);
+	st->addAnimPlay(this->anim, this);
+
+	btVector3 size = pt->model->getBoundingSize();
+
+	btDefaultMotionState* motionState =
+		new btDefaultMotionState(btTransform(
+			btQuaternion(0.0f, 0.0f, 0.0f),
+			st->physics->spawnLocation(x, z, size.z())));
+
+	this->body = st->physics->addRigidBody(pt->col_shape, 0.0f, motionState, CG_PICKUP);
+	this->body->setUserPointer(this);
+}
+
+
+/**
+* Create a pickup at the given 3D coords
+**/
 Pickup::Pickup(PickupType *pt, GameState *st, float x, float y, float z) : Entity(st)
 {
 	this->pt = pt;
 
 	this->anim = new AnimPlay(pt->model);
 	this->anim->setAnimation(0);
+	st->addAnimPlay(this->anim, this);
 
-	btVector3 sizeHE = pt->model->getBoundingSizeHE();
-
-	btDefaultMotionState* motionState =
-		new btDefaultMotionState(btTransform(
-			btQuaternion(0.0f, 0.0f, 0.0f),
-			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)));
+	btDefaultMotionState* motionState = new btDefaultMotionState(
+		btTransform(btQuaternion(0.0f, 0.0f, 0.0f), btVector3(x, y, z))
+	);
 
 	this->body = st->physics->addRigidBody(pt->col_shape, 0.0f, motionState, CG_PICKUP);
-
 	this->body->setUserPointer(this);
 }
 
@@ -40,7 +62,8 @@ Pickup::Pickup(PickupType *pt, GameState *st, float x, float y, float z) : Entit
 **/
 Pickup::~Pickup()
 {
-	delete (this->anim);
+	st->remAnimPlay(this->anim);
+	delete(this->anim);
 	st->physics->delRigidBody(this->body);
 }
 
@@ -52,14 +75,6 @@ void Pickup::update(int delta)
 {
 }
 
-
-/**
-* Return the 3D model for the pickup
-**/
-AnimPlay* Pickup::getAnimModel()
-{
-	return this->anim;
-}
 
 /**
 * Return a sound for the pickup
@@ -84,5 +99,3 @@ bool Pickup::doUse(Unit *u)
 		return false;
 	}
 }
-
-

@@ -36,7 +36,7 @@ float Zone::getRandomX()
 	return getRandomf(this->x1, this->x2);
 }
 
-float Zone::getRandomY()
+float Zone::getRandomZ()
 {
 	return getRandomf(this->y1, this->y2);
 }

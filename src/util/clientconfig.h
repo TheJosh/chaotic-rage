@@ -9,11 +9,6 @@
 
 using namespace std;
 
-
-#define RENDER_OPENGL 1
-#define RENDER_OPENGL_COMPAT 2
-
-
 class RenderOpenGLSettings;
 
 
@@ -21,6 +16,7 @@ class ClientConfig
 {
 	public:
 		RenderOpenGLSettings* gl;
+		bool fullscreen;
 		string lang;
 
 	public:

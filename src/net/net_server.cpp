@@ -268,253 +268,242 @@ void NetServer::dropClient(NetServerClientInfo *client)
 ***  One method for each outgoing network message the server sends out
 **/
 
-NetMsg * NetServer::addmsgInfoResp()
+void NetServer::addmsgInfoResp()
 {
 	//cout << "INFO_RESP" << endl;
-	NetMsg * msg = new NetMsg(INFO_RESP, 0);
-	msg->seq = this->seq;
-	messages.push_back(*msg);
-	return msg;
+	NetMsg msg(INFO_RESP, 0);
+	msg.seq = this->seq;
+	messages.push_back(msg);
 }
 
-NetMsg * NetServer::addmsgJoinAcc(NetServerClientInfo *client)
+void NetServer::addmsgJoinAcc(NetServerClientInfo *client)
 {
 	//cout << "JOIN_OKAY" << endl;
 	string map = this->st->map->getName();
 
-	NetMsg * msg = new NetMsg(JOIN_OKAY, 4 + map.length());
-	msg->seq = this->seq;
+	NetMsg msg(JOIN_OKAY, 4 + map.length());
+	msg.seq = this->seq;
 
-	pack(msg->data, "hs",
+	pack(msg.data, "hs",
 		client->slot, map.c_str()
 	);
 
 	cout << "       Sent slot of: " << client->slot << "  map: " << map << endl;
 
-	messages.push_back(*msg);
-	return msg;
+	messages.push_back(msg);
 }
 
-NetMsg * NetServer::addmsgJoinRej()
+void NetServer::addmsgJoinRej()
 {
-	return NULL;
+	// TODO: Implement
 }
 
-NetMsg * NetServer::addmsgDataCompl()
+void NetServer::addmsgDataCompl()
 {
 	//cout << "JOIN_DONE" << endl;
-	NetMsg * msg = new NetMsg(JOIN_DONE, 0);
-	msg->seq = this->seq;
-	messages.push_back(*msg);
-	return msg;
+	NetMsg msg(JOIN_DONE, 0);
+	msg.seq = this->seq;
+	messages.push_back(msg);
 }
 
-NetMsg * NetServer::addmsgChat()
+void NetServer::addmsgChat()
 {
-	return NULL;
+	// TODO: Implement
 }
 
-NetMsg * NetServer::addmsgClientDrop(NetServerClientInfo *client)
+void NetServer::addmsgClientDrop(NetServerClientInfo *client)
 {
 	//cout << "PLAYER_DROP" << endl;
 	messages.remove_if(IsTypeUniqPred(PLAYER_DROP, client->slot));
 
-	NetMsg * msg = new NetMsg(PLAYER_DROP, 2);
-	msg->seq = this->seq;
-	msg->uniq = client->slot;
+	NetMsg msg(PLAYER_DROP, 2);
+	msg.seq = this->seq;
+	msg.uniq = client->slot;
 
-	pack(msg->data, "h",
+	pack(msg.data, "h",
 		client->slot
 	);
 
 	cout << "       Dropped client: " << client->slot << endl;
 
-	messages.push_back(*msg);
-	return msg;
+	messages.push_back(msg);
 }
 
 
 /**
 * A unit has been updated
 **/
-NetMsg * NetServer::addmsgUnitState(Unit *u)
+void NetServer::addmsgUnitState(Unit *u)
 {
 	//cout << "UNIT_STATE" << endl;
 	messages.remove_if(IsTypeUniqPred(UNIT_STATE, u->eid));
 
-	NetMsg * msg = new NetMsg(UNIT_STATE, 40);
-	msg->seq = this->seq;
-	msg->uniq = u->eid;
+	NetMsg msg(UNIT_STATE, 40);
+	msg.seq = this->seq;
+	msg.uniq = u->eid;
 
 	btTransform trans = u->getTransform();
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 
-	pack(msg->data, "hhl ffff fff f",
+	pack(msg.data, "hhl ffff fff f",
 		u->eid, u->slot, u->uc->id,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z(),
 		u->health
 	);
 
-	messages.push_back(*msg);
-	return msg;
+	messages.push_back(msg);
 }
 
 
 /**
 * A wall has been updated
 **/
-NetMsg * NetServer::addmsgWallState(Wall *w)
+void NetServer::addmsgWallState(Wall *w)
 {
 	//cout << "WALL_STATE" << endl;
 	messages.remove_if(IsTypeUniqPred(WALL_STATE, w->eid));
 
-	NetMsg * msg = new NetMsg(WALL_STATE, 34);
-	msg->seq = this->seq;
-	msg->uniq = w->eid;
+	NetMsg msg(WALL_STATE, 34);
+	msg.seq = this->seq;
+	msg.uniq = w->eid;
 
 	btTransform trans = w->getTransform();
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 
-	pack(msg->data, "hl ffff fff",
+	pack(msg.data, "hl ffff fff",
 		w->eid, w->wt->id,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z()
 	);
 
-	messages.push_back(*msg);
-	return msg;
+	messages.push_back(msg);
 }
 
 
 /**
 * An object has been updated
 **/
-NetMsg * NetServer::addmsgObjectState(Object *o)
+void NetServer::addmsgObjectState(Object *o)
 {
 	//cout << "OBJECT_STATE" << endl;
 	messages.remove_if(IsTypeUniqPred(OBJECT_STATE, o->eid));
 
-	NetMsg * msg = new NetMsg(OBJECT_STATE, 34);
-	msg->seq = this->seq;
-	msg->uniq = o->eid;
+	NetMsg msg(OBJECT_STATE, 34);
+	msg.seq = this->seq;
+	msg.uniq = o->eid;
 
 	btTransform trans = o->getTransform();
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 
-	pack(msg->data, "hl ffff fff",
+	pack(msg.data, "hl ffff fff",
 		o->eid, o->ot->id,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z()
 	);
 
-	messages.push_back(*msg);
-	return msg;
+	messages.push_back(msg);
 }
 
 
 /**
 * A vehicle has been updated
 **/
-NetMsg * NetServer::addmsgVehicleState(Vehicle *v)
+void NetServer::addmsgVehicleState(Vehicle *v)
 {
 	//cout << "VEHICLE_STATE" << endl;
 	messages.remove_if(IsTypeUniqPred(VEHICLE_STATE, v->eid));
 
-	NetMsg * msg = new NetMsg(VEHICLE_STATE, 34);
-	msg->seq = this->seq;
-	msg->uniq = v->eid;
+	NetMsg msg(VEHICLE_STATE, 34);
+	msg.seq = this->seq;
+	msg.uniq = v->eid;
 
 	btTransform trans = v->getTransform();
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 
-	pack(msg->data, "hl ffff fff",
+	pack(msg.data, "hl ffff fff",
 		v->eid, v->vt->id,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z()
 	);
 
-	messages.push_back(*msg);
-	return msg;
+	messages.push_back(msg);
 }
 
 
 /**
 * An ammoround has been updated
 **/
-NetMsg * NetServer::addmsgAmmoRoundState(AmmoRound *ar)
+void NetServer::addmsgAmmoRoundState(AmmoRound *ar)
 {
 	//cout << "AMMOROUND_STATE" << endl;
 	messages.remove_if(IsTypeUniqPred(AMMOROUND_STATE, ar->eid));
 
 	//cout << "       addmsgAmmoRoundState()" << endl;
 
-	NetMsg * msg = new NetMsg(AMMOROUND_STATE, 40);
-	msg->seq = this->seq;
-	msg->uniq = ar->eid;
+	NetMsg msg(AMMOROUND_STATE, 40);
+	msg.seq = this->seq;
+	msg.uniq = ar->eid;
 
 	btTransform trans = ar->getTransform();
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 
-	pack(msg->data, "hhl ffff fff f",
+	pack(msg.data, "hhl ffff fff f",
 		ar->eid, ar->owner->eid, ar->wt->id,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z(),
 		ar->mass
 	);
 
-	messages.push_back(*msg);
-	return msg;
+	messages.push_back(msg);
 }
 
 
 /**
 * A pickup has been updated
 **/
-NetMsg * NetServer::addmsgPickupState(Pickup *p)
+void NetServer::addmsgPickupState(Pickup *p)
 {
 	//cout << "PICKUP_STATE" << endl;
 	messages.remove_if(IsTypeUniqPred(PICKUP_STATE, p->eid));
 
-	NetMsg * msg = new NetMsg(PICKUP_STATE, 34);
-	msg->seq = this->seq;
-	msg->uniq = p->eid;
+	NetMsg msg(PICKUP_STATE, 34);
+	msg.seq = this->seq;
+	msg.uniq = p->eid;
 
 	btTransform trans = p->getTransform();
 	btQuaternion q = trans.getRotation();
 	btVector3 b = trans.getOrigin();
 
-	pack(msg->data, "hl ffff fff",
+	pack(msg.data, "hl ffff fff",
 		p->eid, p->getPickupType()->id,
 		q.x(), q.y(), q.z(), q.w(),
 		b.x(), b.y(), b.z()
 	);
 
-	messages.push_back(*msg);
-	return msg;
+	messages.push_back(msg);
 }
 
 
 /**
 * An entity has been removed
 **/
-NetMsg * NetServer::addmsgEntityRem(Entity *e)
+void NetServer::addmsgEntityRem(Entity *e)
 {
 	//cout << "ENTITY_REM" << endl;
-	NetMsg * msg = new NetMsg(ENTITY_REM, 2);
-	msg->seq = this->seq;
+	NetMsg msg(ENTITY_REM, 2);
+	msg.seq = this->seq;
 
 	cout << "       addmsgEntityRem()  klass: " << e->klass() << "  eid: " << e->eid << endl;
 
-	pack(msg->data, "h", e->eid);
+	pack(msg.data, "h", e->eid);
 
-	messages.push_back(*msg);
-	return msg;
+	messages.push_back(msg);
 }
 
 
@@ -549,38 +538,32 @@ unsigned int NetServer::handleJoinAck(NetServerClientInfo *client, Uint8 *data, 
 {
 	cout << "       handleJoinAck() from slot " << client->slot << endl;
 
-	NetMsg* msg = NULL;
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {
 		Entity *e = (*it);
 
 		switch (e->klass()) {
 			case UNIT:
-				msg = this->addmsgUnitState(static_cast<Unit*>(e));
-				msg->dest = client;
+				this->addmsgUnitState(static_cast<Unit*>(e));
+				(*(messages.end()--)).dest = client;
 				break;
 
 			case WALL:
-				msg = this->addmsgWallState(static_cast<Wall*>(e));
-				msg->dest = client;
+				this->addmsgWallState(static_cast<Wall*>(e));
+				(*(messages.end()--)).dest = client;
 				break;
 
 			case OBJECT:
-				msg = this->addmsgObjectState(static_cast<Object*>(e));
-				msg->dest = client;
+				this->addmsgObjectState(static_cast<Object*>(e));
+				(*(messages.end()--)).dest = client;
 				break;
 
 			case VEHICLE:
-				msg = this->addmsgVehicleState(static_cast<Vehicle*>(e));
-				msg->dest = client;
+				this->addmsgVehicleState(static_cast<Vehicle*>(e));
+				(*(messages.end()--)).dest = client;
 				break;
 
 			default:
 				break;
-		}
-
-		if (msg != NULL) {
-			delete(msg);
-			msg = NULL;
 		}
 	}
 

@@ -2,18 +2,18 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include "../rage.h"
-#include "../game_state.h"
 #include "newparticle.h"
+#include "../rage.h"
+
 
 using namespace std;
 
 
 #ifdef USE_SPARK
 
+#include "../game_state.h"
 #include "../spark/SPK.h"
+
 
 // Gravity, the same for all particles
 SPK::Vector3D gravity(0.0f,-0.9f,0.0f);

@@ -1,7 +1,6 @@
 ----
 ----  Physics test - 100 crates
 ----
-debug_physics(true)
 debug_framerate(true)
 
 

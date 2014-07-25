@@ -23,7 +23,8 @@ extern "C" {
 static HUDLabel * _get(lua_State *L, int i)
 {
 	if (luaL_checkudata(L, i, MYTYPE) == NULL) {
-		luaL_typerror(L, i, MYTYPE);
+		const char *msg = lua_pushfstring(L, MYTYPE " expected, got %s", luaL_typename(L, i));
+		luaL_argerror(L, i, msg);
 	}
 
 	HUDLabel ** ptr = (HUDLabel **) lua_touserdata(L,i);
@@ -147,7 +148,7 @@ LUA_FUNC(tostring)
 /**
 * Metatable definition
 **/
-static const luaL_reg R[] =
+static const luaL_Reg R[] =
 {
 	{ "__index",	get },
 	{ "__newindex",	set },
@@ -162,7 +163,11 @@ static const luaL_reg R[] =
 void load_hudlabel_lib(lua_State *L)
 {
 	luaL_newmetatable(L,MYTYPE);
-	luaL_register(L,NULL,R);
+	#if LUA_VERSION_NUM == 502
+		luaL_setfuncs(L, R, 0);
+	#elif LUA_VERSION_NUM == 501
+		luaL_register(L,NULL,R);
+	#endif
 }
 
 /**

@@ -2,20 +2,23 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include "../rage.h"
-#include "../physics_bullet.h"
-#include "../game_state.h"
-#include "../render_opengl/animplay.h"
-#include "../mod/vehicletype.h"
-#include "../game_engine.h"
-#include "../net/net_server.h"
 #include "vehicle.h"
-#include "../util/util.h"
-#include "../util/convert.h"
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <string>
+#include <vector>
+#include "../game_engine.h"
+#include "../game_state.h"
+#include "../mod/vehicletype.h"
+#include "../net/net_server.h"
+#include "../physics_bullet.h"
+#include "../rage.h"
+#include "../render_opengl/animplay.h"
+#include "../util/convert.h"
+#include "entity.h"
+
+class Unit;
+class btTransform;
+class btVector3;
 
 using namespace std;
 
@@ -55,11 +58,11 @@ Vehicle::Vehicle(GameState *st) : Entity(st)
 
 Vehicle::Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy) : Entity(st)
 {
-	btVector3 sizeHE = vt->model->getBoundingSizeHE();
+	btVector3 size = vt->model->getBoundingSize();
 
 	btTransform trans = btTransform(
 		btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
-		st->physics->spawnLocation(mapx, mapy, sizeHE.z() * 2.0f)
+		st->physics->spawnLocation(mapx, mapy, size.z())
 	);
 
 	this->init(vt, st, trans);
@@ -80,6 +83,7 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); ++it) {
 		this->anim->addMoveNode((*it).node);
 	}
+	st->addAnimPlay(this->anim, this);
 
 	this->engineForce = 0.0f;
 	this->brakeForce = 0.0f;
@@ -142,6 +146,7 @@ Vehicle::~Vehicle()
 	delete this->vehicle_raycaster;
 	delete this->vehicle;
 
+	st->remAnimPlay(this->anim);
 	delete this->anim;
 	this->anim = NULL;
 
@@ -280,11 +285,6 @@ void Vehicle::operate(Unit* u, int delta, int key_up, int key_down, int key_left
 }
 
 
-AnimPlay* Vehicle::getAnimModel()
-{
-	return this->anim;
-}
-
 Sound* Vehicle::getSound()
 {
 	return NULL;
@@ -326,8 +326,10 @@ void Vehicle::takeDamage(int damage)
 		VehicleTypeDamage * dam = this->vt->damage_models.at(j);
 
 		if (this->health <= dam->health) {
+			st->remAnimPlay(this->anim);
 			delete(this->anim);
 			this->anim = new AnimPlay(dam->model);
+			st->addAnimPlay(this->anim, this);
 			break;
 		}
 	}
@@ -381,7 +383,7 @@ void Vehicle::setNodeAngle(VehicleNodeType type, float angle)
 	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); ++it) {
 		if ((*it).type == type) {
 			glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), angle, (*it).axis));
-			this->getAnimModel()->setMoveTransform((*it).node, rotation);
+			this->anim->setMoveTransform((*it).node, rotation);
 		}
 	}
 }
@@ -396,9 +398,8 @@ void Vehicle::setNodeTransformRelative(VehicleNodeType type, glm::mat4 transform
 
 	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); ++it) {
 		if ((*it).type == type) {
-			this->getAnimModel()->setMoveTransform((*it).node, (*it).node->transform * transform);
+			this->anim->setMoveTransform((*it).node, (*it).node->transform * transform);
 			break;
 		}
 	}
 }
-

@@ -41,16 +41,12 @@ function target()
 	
 	-- direction of player
 	dir = units[1].location - me.location
-	
-	-- move, or if too far away, stop
-	if (#dir > 100) then
-		stop()
-	else 
-		move(dir)
-	end
+	move(dir)
 	
 	-- do melee attack
-	if (#dir < 5) then
+	if #dir < 2 then
+		fire()
+	elseif #dir < 5 then
 		melee(dir)
 	end
 end

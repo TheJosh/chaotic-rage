@@ -23,7 +23,7 @@ using namespace std;
 * Transforms of the raycast weapons
 **/
 template <class T>
-void raycastDoFire(T &weapon, Unit *u, btTransform &origin, btVector3 &begin, btVector3 &end)
+void raycastDoFire(T const &weapon, Unit *u, btTransform &origin, btVector3 &begin, btVector3 &end)
 {
 	btTransform xform = origin;
 
@@ -71,10 +71,10 @@ void WeaponRaycast::doFire(Unit *u, btTransform &origin)
 	btVector3 begin;
 	btVector3 end;
 
-	raycastDoFire(this, u, origin, begin, end);
-
-	// Show the weapon bullets
-	create_particles_weapon(u->getGameState(), &begin, &end);
+	for (unsigned int i = this->burst; i != 0; --i) {
+		raycastDoFire(this, u, origin, begin, end);
+		create_particles_weapon(u->getGameState(), &begin, &end);
+	}
 }
 
 

@@ -135,7 +135,7 @@ vector<string> * getUserModFilenames()
 	char sPath[BUFFER_MAX];
 
 	// Initial search
-	snprintf(sPath, BUFFER_MAX, "%s\\*.crk", userdir);
+	snprintf(sPath, BUFFER_MAX, "%s\\*.crk", userdir.c_str());
 	if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE) {
 		return ret;
 	}
@@ -143,7 +143,7 @@ vector<string> * getUserModFilenames()
 	// Iterate over results
 	do {
 		if (fdFile.cFileName[0] != '.') {
-			snprintf(sPath, BUFFER_MAX, "%s\\%s", userdir, fdFile.cFileName);
+			snprintf(sPath, BUFFER_MAX, "%s\\%s", userdir.c_str(), fdFile.cFileName);
 			ret->push_back(string(sPath));
 		}
 	} while(FindNextFile(hFind, &fdFile));

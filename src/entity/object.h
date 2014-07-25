@@ -5,8 +5,8 @@
 #pragma once
 #include "entity.h"
 
-
 class AnimPlay;
+class GameState;
 class Sound;
 class ObjectType;
 
@@ -28,7 +28,6 @@ class Object : public Entity
 		virtual ~Object();
 
 	public:
-		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
 

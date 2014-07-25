@@ -3,18 +3,13 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <string>
-#include <fstream>
 #include <vector>
 #include <SDL.h>
-#include "rage.h"
-#include "http/client_stats.h"
 #include "util/ui_update.h"
 #include "util/cmdline.h"
 #include "util/clientconfig.h"
-#include "util/stream_redirector.h"
 #include "mod/mod_manager.h"
 #include "mod/mod.h"
-#include "map/map.h"
 #include "game_state.h"
 #include "game_engine.h"
 #include "game_manager.h"
@@ -23,6 +18,11 @@
 #include "render_opengl/intro.h"
 #include "i18n/gettext.h"
 #include "audio/audio.h"
+
+#ifdef _WIN32
+	#include <fstream>
+	#include "util/stream_redirector.h"
+#endif
 
 
 using namespace std;
@@ -101,7 +101,11 @@ int main(int argc, char ** argv)
 	} else if (GEng()->cmdline->campaign != "") {
 		gm->loadModBits(NULL);
 		Campaign *c = GEng()->mm->getSupplOrBase()->getCampaign(GEng()->cmdline->campaign);
-		gm->startCampaign(c, "robot", GameSettings::behindPlayer, 1);
+		if (c == NULL) {
+			cerr << "Error: Campaign '" << GEng()->cmdline->campaign << "' does not exist." << endl;
+		} else {
+			gm->startCampaign(c, "robot", GameSettings::behindPlayer, 1);
+		}
 
 	// Arcade game
 	} else if (GEng()->cmdline->map != "" && GEng()->cmdline->gametype != "" && GEng()->cmdline->unittype != "") {

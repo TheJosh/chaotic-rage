@@ -5,7 +5,6 @@
 #pragma once
 #include <vector>
 #include <string>
-#include <list>
 #include "game_settings.h"
 
 using namespace std;
@@ -62,4 +61,3 @@ class GameManager
 		**/
 		void networkJoin(string host, UIUpdate *ui);
 };
-

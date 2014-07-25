@@ -4,23 +4,16 @@
 
 #include "game_engine.h"
 
-#include <vector>
 #include <list>
-#include <string>
-#include <math.h>
-
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
 
 #include "render/render.h"
 #include "render/render_3d.h"
 #include "audio/audio.h"
-#include "lua/gamelogic.h"
 #include "net/net_server.h"
-#include "physics_bullet.h"
 #include "util/cmdline.h"
 #include "util/clientconfig.h"
-#include "util/serverconfig.h"
 #include "mod/mod_manager.h"
 #include "gui/dialog.h"
 #include "game.h"

@@ -2,15 +2,15 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include "../rage.h"
+#include "ammo_round.h"
 #include "../game_state.h"
+#include "../mod/weapontype.h"
 #include "../physics_bullet.h"
 #include "../render_opengl/animplay.h"
-#include "../mod/weapontype.h"
-#include "ammo_round.h"
-#include "unit.h"
+#include "entity.h"
+
+class btCollisionShape;
+class btTransform;
 
 using namespace std;
 
@@ -38,6 +38,7 @@ AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpMo
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
 
 	this->body = st->physics->addRigidBody(AmmoRound::col_shape, mass, motionState, CG_DEBRIS);
+	st->addAnimPlay(this->anim, this);
 }
 
 
@@ -46,6 +47,7 @@ AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpMo
 **/
 AmmoRound::~AmmoRound()
 {
+	st->remAnimPlay(this->anim);
 	delete(this->anim);
 	st->physics->delRigidBody(this->body);
 }
@@ -58,11 +60,6 @@ void AmmoRound::update(int delta)
 {
 	if (this->del) return;
 	this->wt->entityUpdate(this, delta);
-}
-
-AnimPlay* AmmoRound::getAnimModel()
-{
-	return this->anim;
 }
 
 Sound* AmmoRound::getSound()

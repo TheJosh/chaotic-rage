@@ -48,19 +48,19 @@ This is a little incomplete and fussy at the moment.
 There is a script in `tools/android` called `prepare.sh` which will try to set everything up for you.
 
 You should then be able to run `ndk-build` to compile and `ant debug` to create the .apk.
- 
+
 
 Cross-compiling for Windows using MXE
 -------------------------------------
 
-Check out the latest master version of MXE from GitHub
+Check out the latest master version of MXE from GitHub and install it's dependencies
 ```
 git clone https://github.com/mxe/mxe.git
 ```
 
-Then build all the dependencies
+Then cd to the MXE directory and build all the dependencies
 ```
-make sdl2 sdl2_mixer sdl2_image sdl2_net lua freetype bullet assimp
+make MXE_TARGETS='i686-w64-mingw32.static' sdl2 sdl2_mixer sdl2_image sdl2_net lua freetype bullet assimp glew
 ```
 
 You should then be able to build the game using `make` with an additional option specified
@@ -97,4 +97,3 @@ Build Status
 Builds are tested on Travis CI
 
 [![Build Status](https://travis-ci.org/TheJosh/chaotic-rage.png?branch=master)](https://travis-ci.org/TheJosh/chaotic-rage)
-

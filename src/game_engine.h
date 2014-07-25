@@ -5,7 +5,6 @@
 #ifndef GAME_ENGINE_H
 #define GAME_ENGINE_H
 
-#include <string>
 #include <list>
 
 #include "rage.h"

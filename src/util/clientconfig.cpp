@@ -28,6 +28,8 @@ static cfg_opt_t config_opts[] =
 	CFG_INT((char*) "gl-msaa", 1, CFGF_NONE),
 	CFG_INT((char*) "gl-tex-filter", 4, CFGF_NONE),
 
+	CFG_BOOL((char*) "fullscreen", cfg_false, CFGF_NONE),
+
 	CFG_STR((char*) "lang", 0, CFGF_NONE),
 
 	// Deprecated; only in place to not break existing confings
@@ -65,6 +67,9 @@ void ClientConfig::load()
 	this->gl->msaa = cfg_getint(cfg, "gl-msaa");
 	this->gl->tex_filter = cfg_getint(cfg, "gl-tex-filter");
 
+	// Fullscreen
+	this->fullscreen = cfg_getbool(cfg, "fullscreen");
+
 	// Language
 	char* tmp = cfg_getstr(cfg, "lang");
 	if (tmp != NULL) {
@@ -95,6 +100,7 @@ void ClientConfig::save()
 	fprintf(fp, "# Config file for CR\n");
 	fprintf(fp, "gl-msaa = %i\n", this->gl->msaa);
 	fprintf(fp, "gl-tex-filter = %i\n", this->gl->tex_filter);
+	fprintf(fp, "fullscreen = %s\n", (this->fullscreen ? "true" : "false"));
 	fprintf(fp, "lang = %s\n", this->lang.c_str());
 
 	fclose(fp);
@@ -120,7 +126,7 @@ void ClientConfig::initRender(GameState *st)
 	}
 
 	// TODO: Load these settings from a config file
-	GEng()->render->setScreenSize(1000, 700, false);
+	GEng()->render->setScreenSize(1000, 700, this->fullscreen);
 }
 
 

@@ -440,7 +440,7 @@ LUA_FUNC(ammo_drop)
 		GEng()->mm->getPickupType("ammo_current"),
 		gl->st,
 		gl->st->map->getRandomX(),
-		gl->st->map->getRandomY(),
+		gl->st->map->getRandomZ(),
 		15
 	);
 	gl->st->addPickup(pu);

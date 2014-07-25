@@ -26,6 +26,7 @@ class Vehicle;
 class Pickup;
 class AmmoRound;
 class GameSettings;
+class AnimPlay;
 
 namespace gcn {
 	class Gui;
@@ -141,8 +142,14 @@ class GameState
 		void addAmmoRound(AmmoRound* e);
 		void addParticleGroup(SPK::Group* group);
 
-		// Removing
-		Entity* deadButNotBuried(Entity* e);
+		// Add and remove animations from the renderer
+		// This just wraps the render code
+		void addAnimPlay(AnimPlay* play, Entity* e);
+		void remAnimPlay(AnimPlay* play);
+
+		// Debris
+		Entity* deadButNotBuried(Entity* e, AnimPlay* play);
+		void scatterDebris(Entity* e, unsigned int num, float force, vector<AssimpModel*>* debris_models);
 
 		// Network bits (EID = entity-id; slots are for players)
 		EID getNextEID();

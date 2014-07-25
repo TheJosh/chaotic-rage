@@ -129,11 +129,13 @@ class MousePickHandler : public MouseEventHandler {
 			cursor->setTransform(xform1);
 
 			// Do mouse pick
-			this->cursor->visible = getGameState()->mousePick(x, y, hitLocation, &hitEntity);
+			bool success = getGameState()->mousePick(x, y, hitLocation, &hitEntity);
 
 			// Move cursor to location
-			btTransform xform2(btQuaternion(0.0f, 0.0f, 0.0f), hitLocation);
-			cursor->setTransform(xform2);
+			if (success) {
+				btTransform xform2(btQuaternion(0.0f, 0.0f, 0.0f), hitLocation);
+				cursor->setTransform(xform2);
+			}
 
 			return true;
 		}

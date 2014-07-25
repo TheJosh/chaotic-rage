@@ -21,13 +21,11 @@ class Render3D : public Render
 	friend class GameState;
 
 	public:
-		// Size of the actual screen, virtual screen, and desktop
+		// Size of the actual screen and virtual screen
 		int real_width;
 		int real_height;
 		int virt_width;
 		int virt_height;
-		int desktop_width;
-		int desktop_height;
 
 	public:
 		Render3D(GameState *st) : Render(st) {}
@@ -90,7 +88,7 @@ class Render3D : public Render
 		virtual int getSpriteHeight(SpritePtr sprite) = 0;
 
 		/**
-		* Loads a cubemap from a mod into memeory
+		* Loads a cubemap from a mod into memory
 		**/
 		virtual SpritePtr loadCubemap(string filename_base, string filename_ext, Mod * mod) = 0;
 
@@ -147,5 +145,3 @@ class Render3D : public Render
 		virtual void mouseRaycast(int x, int y, btVector3& start, btVector3& end) = 0;
 
 };
-
-

@@ -71,8 +71,6 @@ HUDLabel * HUD::addLabel(float x, float y, string data)
 **/
 void HUD::draw()
 {
-	glDisable(GL_CULL_FACE);
-
 	if (this->weapon_menu && this->ps->p) {
 		// Weapon menu
 		float x = 100;
@@ -165,8 +163,8 @@ void HUD::draw()
 			int y = (int)round(((float)this->render->virt_height - (float)size) / 2.0f);
 
 			glEnable(GL_BLEND);
-			glUseProgram(render->shaders["basic"]->p());
-			glUniformMatrix4fv(render->shaders["basic"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
+			glUseProgram(render->shaders[SHADER_BASIC]->p());
+			glUniformMatrix4fv(render->shaders[SHADER_BASIC]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
 			this->render->renderSprite(wt->crosshair, x, y, size, size);
 		}
 	}

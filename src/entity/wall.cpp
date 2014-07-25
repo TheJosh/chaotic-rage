@@ -2,14 +2,14 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include "../rage.h"
-#include "../physics_bullet.h"
-#include "../game_state.h"
-#include "../render_opengl/animplay.h"
-#include "../mod/walltype.h"
 #include "wall.h"
+#include <vector>
+#include "../game_state.h"
+#include "../mod/walltype.h"
+#include "../physics_bullet.h"
+#include "../rage.h"
+#include "../render_opengl/animplay.h"
+#include "entity.h"
 
 
 using namespace std;
@@ -21,12 +21,14 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z, float angle) 
 	this->anim = new AnimPlay(wt->model);
 	this->health = wt->health;
 
-	btVector3 sizeHE = wt->model->getBoundingSizeHE();
+	st->addAnimPlay(this->anim, this);
+
+	btVector3 size = wt->model->getBoundingSize();
 
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
 			btQuaternion(btScalar(0), btScalar(0), btScalar(DEG_TO_RAD(angle))),
-			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)));
+			st->physics->spawnLocation(x, y, size.z())));
 
 	this->body = st->physics->addRigidBody(wt->col_shape, 0.0f, motionState, CG_WALL);
 
@@ -35,7 +37,8 @@ Wall::Wall(WallType *wt, GameState *st, float x, float y, float z, float angle) 
 
 Wall::~Wall()
 {
-	delete (this->anim);
+	st->remAnimPlay(this->anim);
+	delete(this->anim);
 	st->physics->delRigidBody(this->body);
 }
 
@@ -45,11 +48,6 @@ Wall::~Wall()
 **/
 void Wall::update(int delta)
 {
-}
-
-AnimPlay* Wall::getAnimModel()
-{
-	return this->anim;
 }
 
 Sound* Wall::getSound()
@@ -70,10 +68,11 @@ void Wall::takeDamage(float damage)
 		WallTypeDamage * dam = this->wt->damage_models.at(j);
 
 		if (this->health <= dam->health) {
+			st->remAnimPlay(this->anim);
 			delete(this->anim);
 			this->anim = new AnimPlay(dam->model);
+			st->addAnimPlay(this->anim, this);
 			break;
 		}
 	}
 }
-

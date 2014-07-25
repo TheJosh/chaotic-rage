@@ -5,6 +5,7 @@ in vec3 vNormal;
 in vec2 vTexUV;
 
 out vec2 TexUV;
+out float Depth;
 out vec3 csNormal;
 out vec3 wsPosition;
 out vec3 csEyeDirection;
@@ -31,4 +32,5 @@ void main()
 	csNormal = (uV * uM * vec4(vNormal, 1.0f)).xyz;
 
 	TexUV = vTexUV;
+	Depth = gl_Position.z / 350f;	// TODO: Dont hard-code with far plane distance, use a uniform!
 }

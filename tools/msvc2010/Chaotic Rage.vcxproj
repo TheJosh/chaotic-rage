@@ -47,7 +47,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <AdditionalIncludeDirectories>../windows/include;../windows/include/bullet;../windows/getopt_long;../include;../../src/;../../src/guichan;../../src/confuse;../../src/spark</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -55,6 +55,13 @@
       <MinimalRebuild>true</MinimalRebuild>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS=1</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/fake/dir/%(RelativeDir)/</ObjectFileName>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -501,6 +508,7 @@
     <ClInclude Include="..\..\src\render\render_null.h" />
     <ClInclude Include="..\..\src\render_opengl\render_opengl.h" />
     <ClInclude Include="..\..\src\render\sprite.h" />
+    <ClInclude Include="..\..\src\render_opengl\render_opengl_settings.h" />
     <ClInclude Include="..\..\src\spark\Core\SPK_ArrayBuffer.h" />
     <ClInclude Include="..\..\src\spark\Core\SPK_Buffer.h" />
     <ClInclude Include="..\..\src\spark\Core\SPK_BufferHandler.h" />

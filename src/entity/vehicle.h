@@ -4,13 +4,16 @@
 
 #pragma once
 #include <btBulletDynamicsCommon.h>
-#include "entity.h"
 #include "../mod/vehicletype.h"
-
+#include "entity.h"
 
 class AnimPlay;
+class GameState;
 class Sound;
-class VehicleType;
+class Unit;
+class btCollisionShape;
+class btTransform;
+class btVector3;
 
 
 class Vehicle : public Entity
@@ -42,7 +45,6 @@ class Vehicle : public Entity
 		virtual ~Vehicle();
 
 	public:
-		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
 		void takeDamage(int damage);

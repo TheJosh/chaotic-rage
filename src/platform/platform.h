@@ -11,12 +11,17 @@ class GameState;
 
 
 /**
-* Some help for some compilers
+* Windows bits
 **/
 #ifdef _WIN32
 	#include <windows.h>
 	#include <math.h>
+#endif
 
+/**
+* MSVC bits
+**/
+#ifdef _MSC_VER
 	#define or ||
 	#define and &&
 

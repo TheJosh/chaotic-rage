@@ -1,5 +1,5 @@
-The cammand you want, to load the lua script:
-	
+The command you want, to load the lua script:
+
 	wireshark -X lua_script:chaoticrage.lua
-	
+
 It's different (and untested) on Windows.

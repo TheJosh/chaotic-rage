@@ -5,14 +5,10 @@
 #include "game_state.h"
 
 #include <string.h>
-#include <iostream>
-#include <map>
-#include <algorithm>
 #include <vector>
 #include <list>
 
 #include <guichan.hpp>
-#include <guichan/sdl.hpp>
 #include <math.h>
 
 #include "rage.h"
@@ -31,13 +27,13 @@
 #include "entity/vehicle.h"
 #include "entity/player.h"
 #include "entity/wall.h"
-#include "gui/dialog.h"
-#include "mod/mod_manager.h"
 #include "mod/gametype.h"
-#include "render_opengl/hud.h"
+#include "render/render.h"
 #include "render/render_3d.h"
+#include "render_opengl/hud.h"
+#include "render_opengl/animplay.h"
+#include "render_opengl/assimpmodel.h"
 #include "audio/audio.h"
-#include "util/cmdline.h"
 #include "net/net_client.h"
 #include "net/net_server.h"
 
@@ -230,20 +226,57 @@ void GameState::addAmmoRound(AmmoRound* ar)
 
 
 /**
+* Add an animation to the renderer
+**/
+void GameState::addAnimPlay(AnimPlay* play, Entity* e)
+{
+	GEng()->render->addAnimPlay(play, e);
+}
+
+
+/**
+* Remove an animation from the renderer
+**/
+void GameState::remAnimPlay(AnimPlay* play)
+{
+	GEng()->render->remAnimPlay(play);
+}
+
+
+/**
 * It's dead, but not buried!
 *
 * Marks a given entity as ->del=1
 * Creates a new entity in the same location, with the specified animmodel.
 * The new entity is of type Decaying
 **/
-Entity* GameState::deadButNotBuried(Entity* e)
+Entity* GameState::deadButNotBuried(Entity* e, AnimPlay* play)
 {
 	e->del = true;
 
-	Decaying *d = new Decaying(this, e->getTransform(), e->getAnimModel());
+	Decaying *d = new Decaying(this, e->getTransform(), play);
 	this->entities_add.push_back(d);
 
 	return d;
+}
+
+
+/**
+* Scatter some debris in random directions
+**/
+void GameState::scatterDebris(Entity* e, unsigned int num, float force, vector<AssimpModel*>* debris_models)
+{
+	unsigned int limit = debris_models->size() - 1;
+
+	for (unsigned int i = 0; i <= num; ++i) {
+		AssimpModel *model = debris_models->at(getRandom(0, limit));
+
+		AnimPlay play(model);
+		Decaying* d = new Decaying(this, e->getTransform(), &play, 1.0f);
+		this->entities_add.push_back(d);
+
+		d->body->applyCentralImpulse(btVector3(getRandomf(-force, force), getRandomf(-force, force), getRandomf(-force, force)));
+	}
 }
 
 
@@ -454,6 +487,8 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 		PROFILE_END(render);
 
 		audio->play();
+
+		MAINLOOP_ITER
 	}
 
 	if (client != NULL) {
@@ -749,4 +784,3 @@ void GameState::addDebugPoint(float x, float y, float z, float len)
 	dl->b = new btVector3(x, y, z + len);
 	lines.push_back(dl);
 }
-

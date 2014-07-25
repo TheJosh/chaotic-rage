@@ -3,9 +3,12 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
+#include <list>
 #include <map>
 #include <btBulletDynamicsCommon.h>
-#include "rage.h"
+class Entity;
+class GameState;
+class btGhostPairCallback;
 
 using namespace std;
 
@@ -32,9 +35,6 @@ inline int bullet_btInfinityMask()
 	return btInfinityMask;
 }
 #endif
-
-
-class btGhostPairCallback;
 
 
 /**
@@ -116,7 +116,3 @@ class PhysicsBullet
 		static float QuaternionToYaw(const btQuaternion &quat);
 		btVector3 spawnLocation(float x, float z, float height);
 };
-
-
-
-

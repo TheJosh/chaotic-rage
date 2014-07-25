@@ -4,24 +4,28 @@
 
 #pragma once
 #include <guichan.hpp>
+#include <string>
+#include <vector>
 #include "../rage.h"
 #include "dialog.h"
+
+class GameState;
 
 using namespace std;
 
 
-class RenderOpenGLSettings;
-
 /**
-* Show mod selection
+* Show a dialog with the settings for the client
 **/
-class DialogClientSettings : public Dialog, public gcn::ActionListener {
+class DialogClientSettings : public Dialog, public gcn::ActionListener
+{
 	private:
 		GameState* st;
 		gcn::Button* button;
 
 		gcn::TextField* gl_msaa;
 		gcn::TextField* gl_tex_filter;
+		gcn::CheckBox* fullscreen;
 		gcn::DropDown* lang;
 		vector<string>* langs;
 

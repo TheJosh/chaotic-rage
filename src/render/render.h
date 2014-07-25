@@ -39,7 +39,7 @@ class Render
 		virtual void render() = 0;
 
 		/**
-		* Loads a sprite from a mod into memeory
+		* Loads a sprite from a mod into memory
 		**/
 		SpritePtr loadSprite(string filename, Mod * mod);
 
@@ -135,11 +135,19 @@ class Render
 		**/
 		virtual bool is3D() { return false; }
 
+		/**
+		* Add an animation to the renderer
+		**/
+		virtual void addAnimPlay(AnimPlay* play, Entity* e) {}
+
+		/**
+		* Remove an animation from the renderer
+		**/
+		virtual void remAnimPlay(AnimPlay* play) {}
+
 	public:
 		Render(GameState * st);
 		virtual ~Render() {}
 
 		bool togglePhysicsDebug();
 };
-
-

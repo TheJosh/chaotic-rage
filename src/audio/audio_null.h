@@ -3,8 +3,14 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include "../rage.h"
+#include <string>
 #include "audio.h"
+
+class Entity;
+class GameState;
+class Mod;
+class Song;
+class Sound;
 
 using namespace std;
 

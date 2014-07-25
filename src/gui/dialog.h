@@ -3,14 +3,16 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <vector>
+#include <guichan.hpp>
 #include "../rage.h"
+
+class GameManager;
+class GameState;
+class Menu;
 
 
 using namespace std;
 
-class GameManager;
-class Menu;
 
 
 /**

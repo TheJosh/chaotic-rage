@@ -71,6 +71,7 @@ class UnitType
 		btConvexShape* col_shape;
 		float begin_health;
 		vector<WeaponType*> spawn_weapons;
+		vector<AssimpModel*> death_debris;
 		WeaponType* special_weapon;
 		int playable;
 		UnitParams params;

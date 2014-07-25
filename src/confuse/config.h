@@ -42,5 +42,8 @@
 	#define HAVE__ISATTY 1
 #endif
 
-
+// MinGW32 (e.g. MXE builds) have this too
+#ifdef __MINGW32__
+	#define HAVE_STRCASECMP 1
+#endif
 

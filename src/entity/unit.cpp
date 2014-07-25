@@ -2,28 +2,33 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include <btBulletDynamicsCommon.h>
+#include "unit.h"
+#include <algorithm>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
-#include "../util/btCRKinematicCharacterController.h"
-#include "../rage.h"
-#include "../physics_bullet.h"
+#include "../audio/audio.h"
+#include "../game_engine.h"
 #include "../game_state.h"
+#include "../fx/newparticle.h"
 #include "../mod/mod_manager.h"
+#include "../mod/objecttype.h"
 #include "../mod/pickuptype.h"
 #include "../mod/unittype.h"
-#include "../mod/objecttype.h"
 #include "../mod/vehicletype.h"
 #include "../mod/weapontype.h"
-#include "../render_opengl/animplay.h"
-#include "../game_engine.h"
 #include "../net/net_server.h"
-#include "../fx/newparticle.h"
-#include "unit.h"
-#include "vehicle.h"
+#include "../physics_bullet.h"
+#include "../rage.h"
+#include "../render_opengl/animplay.h"
+#include "../util/btCRKinematicCharacterController.h"
+#include "../util/debug.h"
+#include "entity.h"
 #include "object.h"
 #include "pickup.h"
+#include "vehicle.h"
+
+class Sound;
+class btTransform;
+class btVector3;
 
 using namespace std;
 
@@ -52,6 +57,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 	this->force = btVector3(0.0f, 0.0f, 0.0f);
 
 	this->anim = new AnimPlay(this->uc->model);
+	st->addAnimPlay(this->anim, this);
 
 	// Set animation
 	UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_STATIC);
@@ -73,7 +79,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 	this->ghost->setUserPointer(this);
 
 	// Create Kinematic Character Controller
-	btScalar stepHeight = btScalar(0.75);
+	btScalar stepHeight = btScalar(0.25);
 	this->character = new btCRKinematicCharacterController(this->ghost, uc->col_shape, stepHeight);
 
 	// Add character and ghost to the world
@@ -92,6 +98,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 
 Unit::~Unit()
 {
+	st->remAnimPlay(this->anim);
 	delete(this->anim);
 	this->anim = NULL;
 
@@ -423,15 +430,6 @@ float Unit::getHealthPercent()
 
 
 /**
-* Get the current animation play object
-**/
-AnimPlay* Unit::getAnimModel()
-{
-	return this->anim;
-}
-
-
-/**
 * Get the current sound
 * TODO: Remove - not in use...?
 **/
@@ -621,12 +619,18 @@ int Unit::takeDamage(float damage)
 		this->endFiring();
 		this->leaveVehicle();
 
+		// Play a death animation
 		UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_DEATH);
 		if (uta) {
 			this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
 		}
 
-		this->st->deadButNotBuried(this);
+		// Fling some body parts around
+		if (!this->uc->death_debris.empty()) {
+			this->st->scatterDebris(this, 3, 5.0f, &this->uc->death_debris);
+		}
+
+		this->st->deadButNotBuried(this, this->anim);
 		return 1;
 	}
 
@@ -640,7 +644,7 @@ int Unit::takeDamage(float damage)
 void Unit::enterVehicle(Vehicle *v)
 {
 	this->drive = v;
-	this->visible = false;
+	this->st->remAnimPlay(this->anim);
 	this->ghost->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE);
 	this->drive->enter();
 }
@@ -676,7 +680,7 @@ void Unit::leaveVehicle()
 	this->ghost->setWorldTransform(btTransform(btQuaternion(0,0,0,1), spawn));
 	this->ghost->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
 	this->drive->exit();
-	this->visible = true;
+	this->st->addAnimPlay(this->anim, this);
 	this->drive = NULL;
 }
 

@@ -5,6 +5,7 @@
 #pragma once
 #include <guichan.hpp>
 #include "../rage.h"
+#include "dialog.h"
 
 using namespace std;
 

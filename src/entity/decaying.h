@@ -3,8 +3,13 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include "../rage.h"
 #include "entity.h"
+
+class AnimPlay;
+class GameState;
+class Sound;
+class btCollisionShape;
+class btTransform;
 
 using namespace std;
 
@@ -24,10 +29,9 @@ class Decaying : public Entity
 		static btCollisionShape* col_shape;
 
 	public:
-		Decaying(GameState *st, const btTransform &xform, AnimPlay *model);
+		Decaying(GameState *st, const btTransform &xform, AnimPlay *model, float mass = 0.0f);
 		virtual ~Decaying();
 
-		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
 };

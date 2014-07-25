@@ -1,18 +1,22 @@
-How to create a Debian package (deb)
+How to build a Debian package (deb) and uploading it to the Chaotic Rage PPA
 
-TODO: Create script(s) and general improvements
+TODO: Support older Ubuntu releases than 13.10 'Saucy', use 'tools/linux/*.sh'
+TODO: Upload only the (source) diff to ppa
 
 
 Sources for instructions
-http://askubuntu.com/questions/161155/how-to-create-a-ppa-for-c-program/161212#161212
-http://faceted.wordpress.com/2011/05/18/howto-build-a-trivial-debian-package-with-dh_make/
+	https://help.launchpad.net/Packaging/PPA
+	http://askubuntu.com/questions/161155/how-to-create-a-ppa-for-c-program/161212#161212
+	http://faceted.wordpress.com/2011/05/18/howto-build-a-trivial-debian-package-with-dh_make/
+	http://developer.ubuntu.com/publish/apps/other-forms-of-submitting-apps/ppa/
 
 
 Install necessary packages
-> sudo apt-get install build-essential devscripts ubuntu-dev-tools debhelper dh-make patch cdbs quilt gnupg fakeroot lintian pbuilder piuparts
+	> sudo apt-get install build-essential devscripts ubuntu-dev-tools \
+	debhelper dh-make patch cdbs quilt gnupg fakeroot lintian pbuilder piuparts
 
 
-[Optional] Be able to sign the package
+[Optional for local testing] Be able to sign the package
 	Create a launchpad account
 	https://launchpad.net
 
@@ -21,41 +25,57 @@ Install necessary packages
 	https://help.launchpad.net/YourAccount/CreatingAnSSHKeyPair
 
 
-Create the source (far from optimal)
+Create the source from repo
 	Go to the Chaotic Rage source root folder
-	> make dist-bin
-	This created the file 'chaoticrage-linuxbin-<version>.tar.bz2'
-	Use the file as source (creating tmp folders and moving the file)
-	> mkdir ../deb_tmp
-	> mv chaoticrage-linuxbin-* ../deb_tmp
-	> cd ../deb_tmp
-	> mkdir chaoticrage-<version>
-	> tar jxf chaoticrage-linuxbin-* chaoticrage-<version>
-	> cd chaoticrage-*
+	Create the file 'chaoticrage_<version>.orig.tar.xz'
+	> make dist
+	Use the file as source
+	> mkdir ../deb_build && \
+	cp chaoticrage_* ../deb_build && \
+	cd ../deb_build && \
+	tar xpvf chaoticrage_* && \
+	cd chaoticrage-*
 
 
-Getting ready for building the package
+Prepare for building the package
 	Set DEBEMAIL and DEBFULLNAME (optional - add these to '~/.bashrc')
 	(must be the same as the gpg key (command: 'gpg --list-keys'))
 		> export DEBEMAIL=<email address>
 		> export DEBFULLNAME="Full Name"
-	Create 'orig.tar.xz' file
-		> dh_make --copyright gpl2 --createorig --single
-	Replace and edit the 'control' file
-		> cp ../../chaotic-rage/tools/debian_package/debian/control debian/control
-		Update maintainer (name and email)
-		> editor debian/control
-	Copy the 'install' file which decides which files to install and where
-		> cp ../../chaotic-rage/tools/debian_package/debian/chaoticrage.install debian/
 	Update changelog (two alternatives)
-		Do not change version number (use this for first build)
+		Do not change version number (edit changelog for unpublished build)
 		> dch --edit
-		Increase the Debian release number
+		Or increase the Debian release number
 		> dch --increment
-	[Optional] Clean extra files
-		> rm debian/*.ex debian/*.EX
+		Note: Launchpad rejects the PPA upload if distribution is not a valid
+		target (Ubuntu version), e.g. 'trusty'.
 
 
 Build package
-	> debuild --no-tgz-check # Do not check for the source tarball
+	> debuild
 	The Debian package is now ready to be installed
+
+
+Build for Personal Package Archive (PPA)
+	Brand new package with no existing version in Ubuntu's repositories
+	(will be uploaded with the .orig.tar.gz file)
+	> debuild -S -sa
+
+
+Test building locally
+	pbuilder allows you to build packages locally on your machine. The build
+	will be done in a minimal and clean environment. And possible to set up
+	multiple instances for various Ubuntu and Debian releases.
+
+	Set up pbuilder (only needed once per release)
+	> pbuilder-dist <release> create
+	Build a test package
+	> pbuilder-dist <release> build ../<package>_<version>.dsc
+
+
+Upload to the Chaotic Rage PPA
+	> dput ppa:chaotic-rage/chaoticrage ../<source.changes>
+	Note: one package for each release is required (Ubuntu Saucy and Trusty)
+	
+	Update the repo with the new changelog and any other changes
+	cp -r debian/ ../../chaotic-rage/tools/debian_package/

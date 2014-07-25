@@ -1,8 +1,24 @@
 Source: chaoticrage
 Section: games
 Priority: optional
-Maintainer: Full name <email adress>
-Build-Depends: debhelper (>= 9.0.0)
+Maintainer: Magnus Espersson <magnusespersson@gmail.com>
+Build-Depends:
+ debhelper (>= 9.0.0),
+ libsdl2-dev,
+ liblua5.1-0-dev,
+ libbullet-dev,
+ libbulletdynamics2.81,
+ libbulletcollision2.81,
+ liblinearmath2.81,
+ libassimp-dev,
+ libfreetype6-dev,
+ libgl1-mesa-dev,
+ libglu1-mesa-dev,
+ libglew-dev,
+ libsdl2-mixer-dev,
+ libsdl2-image-dev,
+ libsdl2-net-dev,
+ php5-cli
 Standards-Version: 3.9.5
 Homepage: http://www.chaoticrage.com
 Vcs-Git: git://github.com:TheJosh/chaotic-rage.git

@@ -32,6 +32,16 @@
 #define ATTRIB_COLOR 6            // vColor
 #define ATTRIB_TANGENT 7          // vTangent
 
+// Shader IDs
+// TODO: Should this be an enum instead?
+#define SHADER_BASIC 0
+#define SHADER_SKYBOX 1
+#define SHADER_ENTITY_STATIC 2
+#define SHADER_ENTITY_BONES 3
+#define SHADER_TERRAIN 4
+#define SHADER_WATER 5
+#define SHADER_TEXT 6
+
 
 struct VBOvertex
 {
@@ -46,6 +56,14 @@ class RenderOpenGLSettings;
 class btIDebugDraw;
 class OpenGLFont;
 class Heightmap;
+
+
+// temporary class!
+class PlayEntity {
+	public:
+		AnimPlay* play;
+		Entity* e;
+};
 
 
 class RenderOpenGL : public Render3D
@@ -93,7 +111,7 @@ class RenderOpenGL : public Render3D
 		// Shaders
 		bool shaders_loaded;		// true if loaded from a mod
 		bool shaders_error;			// true if a shader load failed
-		map<string, GLShader*> shaders;
+		map<int, GLShader*> shaders;	// TODO: switch to a vector?
 
 		glm::mat4 projection;	// perspective
 		glm::mat4 ortho;		// ortho
@@ -110,6 +128,12 @@ class RenderOpenGL : public Render3D
 
 		static const int SHADOW_MAP_WIDTH = 2048;
 		static const int SHADOW_MAP_HEIGHT = 2048;
+
+
+		// This is the INITIAL version of the mirrored entity list
+		// Eventually we will rejig this list to be further optimised
+		// to match the main the render path
+		vector<PlayEntity> animations;
 
 	public:
 		RenderOpenGL(GameState * st, RenderOpenGLSettings* settings);
@@ -136,6 +160,8 @@ class RenderOpenGL : public Render3D
 		virtual void freeHeightmap();
 		virtual int getWidth() { return real_width; }
 		virtual int getHeight() { return real_height; }
+		virtual void addAnimPlay(AnimPlay* play, Entity* e);
+		virtual void remAnimPlay(AnimPlay* play);
 
 		virtual void setPhysicsDebug(bool status);
 		virtual bool getPhysicsDebug();
@@ -171,12 +197,15 @@ class RenderOpenGL : public Render3D
 		// Render to those buffers so it all works
 		void entitiesShadowMap();
 
-		void renderAnimPlay(AnimPlay * play, Entity * e);
-		void renderAnimPlay(AnimPlay* play, glm::mat4 modelMatrix);
 		void renderCharacter(Uint32 c, float &x, float &y);
 		void createVBO (WavefrontObj * obj);
 		void surfaceToOpenGL(SpritePtr sprite);
-		void recursiveRenderAssimpModel(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader, glm::mat4 transform);
+
+		// Entity rendering
+		void renderAnimPlay(AnimPlay * play, Entity * e);
+		void renderAnimPlay(AnimPlay* play, const glm::mat4 &modelMatrix);
+		void recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader, const glm::mat4 &modelMatrix);
+		void recursiveRenderAssimpModelBones(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader);
 
 		void mainViewport(int s, int of);
 		void mainRot();

@@ -3,9 +3,9 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include "../rage.h"
-#include "strings.h"
 #include <string>
+#include <vector>
+#include "strings.h"
 
 
 /***
@@ -35,4 +35,4 @@ bool loadLang(const char* name);
 * Get a list of available languages
 * delete() when you are done
 **/
-vector<std::string>* getAvailableLangs();
+std::vector<std::string>* getAvailableLangs();

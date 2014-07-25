@@ -1,11 +1,11 @@
-1	CJK: ㌀㌁㌂㌃
-2	Arrows: ⟽⟾⟿⟰⟱
-3	Latin-1 Supp: èÜÝÞçæ
-4	Greek: ΏιϘ
+1	Quest
+2	Single Battle
+3	Team Battle
+4	Group Battle
 5	Settings
 6	Mods
-7	Lao: ຕຖ
-8	Latin-A Ext: ŨŔĶĳĖĠ
+7	Assistance
+8	Bugg'r off
 9	Quest type
 10	Weaponry
 11	Battlefield

@@ -3,24 +3,29 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include "entity.h"
+#include <list>
+#include <string>
+#include <vector>
+#include "../game_state.h"
 #include "../mod/unittype.h"
+#include "../rage.h"
+#include "entity.h"
+
+class AnimPlay;
+class Object;
+class PickupType;
+class PickupTypeAdjust;
+class Sound;
+class Unit;
+class Vehicle;
+class WeaponType;
+class btCRKinematicCharacterController;
+class btPairCachingGhostObject;
+class btTransform;
+class btVector3;
 
 
 using namespace std;
-
-
-class PickupTypeAdjust;
-class UnitParams;
-class Entity;
-class WeaponType;
-class Unit;
-class PickupType;
-class Vehicle;
-class Object;
-class UnitType;
-class btPairCachingGhostObject;
-class btCRKinematicCharacterController;
 
 
 /**
@@ -115,7 +120,6 @@ class Unit : public Entity
 		virtual ~Unit();
 
 	public:
-		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
 		virtual const btTransform &getTransform() const;

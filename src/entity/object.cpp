@@ -2,14 +2,14 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include "../rage.h"
-#include "../physics_bullet.h"
-#include "../game_state.h"
-#include "../render_opengl/animplay.h"
-#include "../mod/objecttype.h"
 #include "object.h"
+#include <vector>
+#include "../game_state.h"
+#include "../mod/objecttype.h"
+#include "../physics_bullet.h"
+#include "../rage.h"
+#include "../render_opengl/animplay.h"
+#include "entity.h"
 
 
 using namespace std;
@@ -22,13 +22,14 @@ Object::Object(ObjectType *ot, GameState *st, float x, float y, float z, float a
 
 	this->anim = new AnimPlay(ot->model);
 	this->anim->setAnimation(0);
+	st->addAnimPlay(this->anim, this);
 
-	btVector3 sizeHE = ot->model->getBoundingSizeHE();
+	btVector3 size = ot->model->getBoundingSize();
 
 	btDefaultMotionState* motionState =
 		new btDefaultMotionState(btTransform(
 			btQuaternion(btScalar(0), btScalar(0), btScalar(DEG_TO_RAD(angle))),
-			st->physics->spawnLocation(x, y, sizeHE.z() * 2.0f)));
+			st->physics->spawnLocation(x, y, size.z())));
 
 	this->body = st->physics->addRigidBody(ot->col_shape, 1.0f, motionState, CG_OBJECT);
 
@@ -37,7 +38,8 @@ Object::Object(ObjectType *ot, GameState *st, float x, float y, float z, float a
 
 Object::~Object()
 {
-	delete (this->anim);
+	st->remAnimPlay(this->anim);
+	delete(this->anim);
 	st->physics->delRigidBody(this->body);
 }
 
@@ -47,11 +49,6 @@ Object::~Object()
 **/
 void Object::update(int delta)
 {
-}
-
-AnimPlay* Object::getAnimModel()
-{
-	return this->anim;
 }
 
 Sound* Object::getSound()
@@ -72,10 +69,11 @@ void Object::takeDamage(int damage)
 		ObjectTypeDamage * dam = this->ot->damage_models.at(j);
 
 		if (this->health <= dam->health) {
+			st->remAnimPlay(this->anim);
 			delete(this->anim);
 			this->anim = new AnimPlay(dam->model);
+			st->addAnimPlay(this->anim, this);
 			break;
 		}
 	}
 }
-

@@ -2,19 +2,15 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include "../rage.h"
-#include "../physics_bullet.h"
-#include "../game_state.h"
-#include "../render_opengl/animplay.h"
-#include "../mod/unittype.h"
-#include "../mod/aitype.h"
-#include "../lua/ailogic.h"
-#include "../audio/audio.h"
-#include "../mod/mod_manager.h"
-#include "../lua/gamelogic.h"
 #include "npc.h"
+#include "../game_state.h"
+#include "../lua/ailogic.h"
+#include "../lua/gamelogic.h"
+#include "../mod/aitype.h"
+#include "../rage.h"
+#include "unit.h"
+
+class UnitType;
 
 
 using namespace std;
@@ -65,7 +61,7 @@ int NPC::takeDamage(float damage)
 
 		// TODO: play death sound
 
-		this->st->deadButNotBuried(this);
+		this->st->deadButNotBuried(this, this->anim);
 	}
 
 	return result;

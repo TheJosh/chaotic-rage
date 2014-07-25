@@ -4,9 +4,14 @@
 
 #pragma once
 
-#include <stdint.h>
-
 #include "../rage.h"
+
+class AnimPlay;
+class GameState;
+class Sound;
+class btRigidBody;
+class btTransform;
+class btVector3;
 
 
 using namespace std;
@@ -23,13 +28,6 @@ enum EntityClass {
 };
 
 
-class GameState;
-class AnimPlay;
-class Sound;
-class btTransform;
-class btRigidBody;
-
-
 class Entity
 {
 	public:
@@ -37,7 +35,6 @@ class Entity
 
 	public:
 		bool del;
-		bool visible;
 		EID eid;
 		btRigidBody* body;
 
@@ -51,11 +48,6 @@ class Entity
 		virtual ~Entity();
 
 	public:
-		/**
-		* Return an AnimModel to render this entity as
-		**/
-		virtual AnimPlay* getAnimModel() = 0;
-
 		/**
 		* Return Sounds for this entity
 		* This is going to change some time soon!

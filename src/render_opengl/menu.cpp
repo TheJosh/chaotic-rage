@@ -95,35 +95,39 @@ void Menu::loadModBits(UIUpdate* ui)
 void Menu::loadMenuItems()
 {
 	Mod* mod = GEng()->mm->getSupplOrBase();
+	int offsetX = 40;
+	int menus = 4 + mod->hasArcade() * 3 + mod->hasCampaign();
+	int offsetY = MIN(40, render->getHeight() / (menus + 1));
+	int offsetYFirst = MIN(60, render->getHeight() / (menus + 1));
 
 	this->menuClear();
-	int y = render->getHeight() - 60;
 
-	this->menuAdd(_(STRING_MENU_QUIT), 40, y, MC_QUIT);
-	y -= 40;
+	int y = render->getHeight() - offsetYFirst;
+	this->menuAdd(_(STRING_MENU_QUIT), offsetX, y, MC_QUIT);
 
-	this->menuAdd(_(STRING_MENU_HELP), 40, y, MC_HELP);
-	y -= 40;
+	y -= offsetY;
+	this->menuAdd(_(STRING_MENU_HELP), offsetX, y, MC_HELP);
 
-	this->menuAdd(_(STRING_MENU_MODS), 40, y, MC_MODS);
-	y -= 40;
+	y -= offsetY;
+	this->menuAdd(_(STRING_MENU_MODS), offsetX, y, MC_MODS);
 
-	this->menuAdd(_(STRING_MENU_SETTINGS), 40, y, MC_SETTINGS);
-	y -= 40;
+	y -= offsetY;
+	this->menuAdd(_(STRING_MENU_SETTINGS), offsetX, y, MC_SETTINGS);
 
 	if (mod->hasArcade()) {
-		this->menuAdd(_(STRING_MENU_NETWORK), 40, y, MC_NETWORK);
-		y -= 40;
+		y -= offsetY;
+		this->menuAdd(_(STRING_MENU_NETWORK), offsetX, y, MC_NETWORK);
 
-		this->menuAdd(_(STRING_MENU_SPLIT), 40, y, MC_SPLITSCREEN);
-		y -= 40;
+		y -= offsetY;
+		this->menuAdd(_(STRING_MENU_SPLIT), offsetX, y, MC_SPLITSCREEN);
 
-		this->menuAdd(_(STRING_MENU_SINGLE), 40, y, MC_SINGLEPLAYER);
-		y -= 40;
+		y -= offsetY;
+		this->menuAdd(_(STRING_MENU_SINGLE), offsetX, y, MC_SINGLEPLAYER);
 	}
 
 	if (mod->hasCampaign()) {
-		this->menuAdd(_(STRING_MENU_CAMPAIGN), 40, y, MC_CAMPAIGN);
+		y -= offsetY;
+		this->menuAdd(_(STRING_MENU_CAMPAIGN), offsetX, y, MC_CAMPAIGN);
 	}
 }
 
@@ -212,6 +216,7 @@ void Menu::updateUI()
 			// Key press
 			switch (event.key.keysym.sym) {
 				case SDLK_ESCAPE:
+				case SDLK_AC_BACK:
 					this->remAllDialogs();
 					break;
 
@@ -257,8 +262,8 @@ void Menu::updateUI()
 
 	// Draw background
 	glDisable(GL_DEPTH_TEST);
-	glUseProgram(render->shaders["basic"]->p());
-	glUniformMatrix4fv(render->shaders["basic"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
+	glUseProgram(render->shaders[SHADER_BASIC]->p());
+	glUniformMatrix4fv(render->shaders[SHADER_BASIC]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
 	this->render->renderSprite(bg, 0, ((static_cast<float>(render->real_height - render->real_width)) / 2.0f), render->real_width, render->real_width);
 
 	// Draw an earth
@@ -266,10 +271,11 @@ void Menu::updateUI()
 		glEnable(GL_DEPTH_TEST);
 
 		// Set up lights
-		glUseProgram(render->shaders["phong"]->p());
-		glUniform3fv(render->shaders["phong"]->uniform("uLightPos"), 1, glm::value_ptr(glm::vec3(1.2f, -0.8f, 10.7f)));
-		glUniform4fv(render->shaders["phong"]->uniform("uLightColor"), 1, glm::value_ptr(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f)));
-		glUniform4fv(render->shaders["phong"]->uniform("uAmbient"), 1, glm::value_ptr(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
+		glUseProgram(render->shaders[SHADER_ENTITY_STATIC]->p());
+		glUniform3fv(render->shaders[SHADER_ENTITY_STATIC]->uniform("uLightPos"), 1, glm::value_ptr(glm::vec3(1.2f, -0.8f, 10.7f)));
+		glUniform4fv(render->shaders[SHADER_ENTITY_STATIC]->uniform("uLightColor"), 1, glm::value_ptr(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f)));
+		glUniform4fv(render->shaders[SHADER_ENTITY_STATIC]->uniform("uAmbient"), 1, glm::value_ptr(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
+		glUniformMatrix4fv(render->shaders[SHADER_ENTITY_STATIC]->uniform("uV"), 1, GL_FALSE, glm::value_ptr(render->view));
 
 		// Draw earth
 		model_rot += 0.004f;
@@ -284,8 +290,8 @@ void Menu::updateUI()
 
 	// Logo in top-left
 	glEnable(GL_BLEND);
-	glUseProgram(render->shaders["basic"]->p());
-	glUniformMatrix4fv(render->shaders["basic"]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
+	glUseProgram(render->shaders[SHADER_BASIC]->p());
+	glUniformMatrix4fv(render->shaders[SHADER_BASIC]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
 	this->render->renderSprite(logo, 30, 30);
 
 	// Render guichan and process events
@@ -306,7 +312,7 @@ void Menu::menuClear()
 		*it = NULL;
 	}
 	this->menuitems.clear();
-	this->menuitems.reserve(7);
+	this->menuitems.reserve(8);
 }
 
 

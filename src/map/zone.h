@@ -38,6 +38,6 @@ class Zone
 
 	public:
 		float getRandomX();
-		float getRandomY();
+		float getRandomZ();
 };
 

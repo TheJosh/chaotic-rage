@@ -97,12 +97,14 @@ extern MsgServerRecv msg_server_recv [];
 
 /**
 * Sequence number
+* TODO: is this big enough?
 **/
 typedef Uint16 SeqNum;
 
 
 /**
 * A single network message, ready for transmission
+* TODO: re-architecture to involve less allocs and copies
 **/
 class NetMsg {
 	public:

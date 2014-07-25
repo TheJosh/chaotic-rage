@@ -53,11 +53,15 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 {
 	Assimp::Importer importer;
 
+	importer.SetPropertyInteger(AI_CONFIG_PP_SBP_REMOVE, aiPrimitiveType_POINT | aiPrimitiveType_LINE);
+
 	unsigned int flags = aiProcess_CalcTangentSpace
 		| aiProcess_Triangulate
 		| aiProcess_JoinIdenticalVertices
 		| aiProcess_SortByPType
-		| aiProcess_FlipUVs;
+		| aiProcess_FlipUVs
+		| aiProcess_FindDegenerates
+		| aiProcess_ImproveCacheLocality;
 
 	// Read the file from the mod
 	Sint64 len;

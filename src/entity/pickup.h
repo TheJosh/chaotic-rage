@@ -5,10 +5,10 @@
 #pragma once
 #include "entity.h"
 
-
 class AnimPlay;
+class GameState;
+class PickupType;
 class Sound;
-class ObjectType;
 class Unit;
 
 
@@ -22,6 +22,7 @@ class Pickup : public Entity
 		AnimPlay * anim;
 
 	public:
+		Pickup(PickupType *pt, GameState *st, float x, float z);
 		Pickup(PickupType *pt, GameState *st, float x, float y, float z);
 		virtual ~Pickup();
 
@@ -38,8 +39,6 @@ class Pickup : public Entity
 
 
 	public:
-		virtual AnimPlay* getAnimModel();
 		virtual Sound* getSound();
 		virtual void update(int delta);
 };
-

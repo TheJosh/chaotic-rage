@@ -2,20 +2,18 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include "../rage.h"
-#include "../physics_bullet.h"
+#include "player.h"
+#include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include "../game_engine.h"
 #include "../game_state.h"
 #include "../lua/gamelogic.h"
+#include "../rage.h"
 #include "../render_opengl/animplay.h"
-#include "../render_opengl/render_opengl.h"
-#include "../mod/unittype.h"
-#include "../mod/vehicletype.h"
+#include "../game_settings.h"
+#include "../render/render.h"
 #include "../util/btCRKinematicCharacterController.h"
-#include <BulletCollision/CollisionDispatch/btGhostObject.h>
-#include "player.h"
+#include "entity.h"
+#include "unit.h"
 #include "vehicle.h"
 
 using namespace std;
@@ -180,7 +178,7 @@ void Player::update(int delta)
 		// Walking around
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		btTransform xform = ghost->getWorldTransform();
-		btScalar walkSpeed = this->params.max_speed * 1.0f/60.0f;		// Physics runs at 60hz
+		btScalar walkSpeed = this->params.max_speed;
 
 		// Mouse rotation
 		btQuaternion rot = btQuaternion(btVector3(0.0f, 1.0f, 0.0f), DEG_TO_RAD(this->mouse_angle));
@@ -213,7 +211,7 @@ void Player::update(int delta)
 		// Apply any force present on the unit
 		walkDirection += this->force;
 
-		this->character->setWalkDirection(walkDirection);
+		this->character->setVelocityForTimeInterval(walkDirection, 1.0f);
 
 		// If "walking" state changes, update animation.
 		if (walking && !this->walking) {
@@ -251,4 +249,3 @@ int Player::takeDamage(float damage)
 
 	return result;
 }
-

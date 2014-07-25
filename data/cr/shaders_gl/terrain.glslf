@@ -25,9 +25,9 @@ const float LOG2 = 1.442695;
 void main()
 {
 	vec4 light = uAmbient;
-	float NdotL, dist, att;
+	//float NdotL, dist, att;
 
-	for (int i = 0; i < 1; i++) {
+	/*for (int i = 0; i < 1; i++) {
 		// Dot product affects strength of light
 		NdotL = max(0.0, dot(normalize(fNormal), normalize(fLightDir[i])));
 	
@@ -43,7 +43,7 @@ void main()
 		float spec = max(0.0, dot(normalize(fNormal), vReflection));
 		float fSpec = pow(spec, 64.0);
 		light += vec4(fSpec, fSpec, fSpec, 0.0f);
-	}
+	}*/
 	
 	// Shadow
 	float shadowBias = 0.0005;

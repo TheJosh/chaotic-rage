@@ -1,41 +1,57 @@
 # Makefile for Chaotic Rage
 
+# Build dir and sources dir
+OBJPATH=build
+SRCPATH=src
+LUAPKG=lua5.1
 
-# If MXE is use, set cross compiler vars and PATH
+
+# MXE cross-compiler environment
 # Use it like this:
 #    make MXE=/path/to/mxe
 ifdef MXE
-	CROSS := i686-pc-mingw32-
+	CROSS := i686-w64-mingw32.static-
+	CXX := $(CROSS)g++
+	CC := $(CROSS)gcc
 	PATH := $(MXE)/usr/bin:$(PATH)
-else
-	CROSS :=
-endif
+	PLATFORM := $(OBJPATH)/win32.o
+	LIBS := -liphlpapi
+	LUAPKG := lua
+	POSTFIX := .exe
 
-# If emscripten is use, set CC and CXX
+
+# emscripten llvm to javascript compiler
 # Use it like this:
 #    make EMSCRIPTEN=1
-ifdef EMSCRIPTEN
+else ifdef EMSCRIPTEN
 	CXX := em++
 	CC := emcc
-	PLATFORM := build/emscripten.o
+	PLATFORM := $(OBJPATH)/emscripten.o
+
+
+# Standard Linux build
+else
+	CXX ?= g++
+	CC ?= gcc
+	CFLAGS := -DGETOPT -Werror -Wall -MMD
+	LIBS := -lGL -lGLU -L/usr/X11R6/lib -lX11 -lm -lstdc++
+	PLATFORM := $(OBJPATH)/linux.o
 endif
 
-# Default compiler is GCC
-CXX ?= $(CROSS)g++
-CC ?= $(CROSS)gcc
 
-# If it's gcc we can enable debugging
-ifndef MXE
-	ifndef EMSCRIPTEN
-		CFLAGS := -DGETOPT -Werror -Wall -ggdb -MMD
-		PLATFORM := build/linux.o
-	endif
+# Debug vs optimised
+ifdef DEBUG
+	CFLAGS := $(CFLAGS) -Og -ggdb
+else
+	CFLAGS := $(CFLAGS) -O2 -ffast-math
 endif
 
-# Both Bullet and GLM generate tons on warnings (errors) on clang
+
+# Both Bullet and GLM generate tons of warnings on clang
 ifeq ($(CXX),clang)
 	CFLAGS := $(CFLAGS) -Wno-unknown-warning-option -Wno-overloaded-virtual -Wno-shift-op-parentheses
 endif
+
 
 # Set other executables, with support for cross-compilers
 PKG_CONFIG := $(CROSS)pkg-config
@@ -43,26 +59,24 @@ SDL2_CONFIG := $(CROSS)sdl2-config
 FREETYPE_CONFIG := $(CROSS)freetype-config
 
 # cflags
-CFLAGS := $(shell $(SDL2_CONFIG) --cflags) \
-	$(shell $(PKG_CONFIG) gl glu lua5.1 bullet assimp --cflags) \
-	$(shell $(FREETYPE_CONFIG) --cflags) \
+CFLAGS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --cflags) \
+	$(shell export PATH=$(PATH);$(PKG_CONFIG) gl glu glew $(LUAPKG) bullet assimp SDL2_mixer SDL2_image SDL2_net --cflags) \
+	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --cflags) \
 	$(CFLAGS) \
-	-Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark
+	-Itools/include -I$(SRCPATH) -I$(SRCPATH)/guichan -I$(SRCPATH)/confuse -I$(SRCPATH)/spark
 
 # libs
-LIBS := $(shell $(SDL2_CONFIG) --libs) \
-	$(shell $(PKG_CONFIG) lua5.1 bullet assimp --libs) \
-	$(shell $(FREETYPE_CONFIG) --libs) \
-	-lGL -lGLU -lGLEW -lSDL2_mixer -lSDL2_image -lSDL2_net -L/usr/X11R6/lib -lX11 -lm -lstdc++
+LIBS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --libs) \
+	$(shell export PATH=$(PATH);$(PKG_CONFIG) glew $(LUAPKG) bullet assimp SDL2_mixer SDL2_image SDL2_net --libs) \
+	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --libs) \
+	$(LIBS)
 
 # Extract the version from rage.h
 # Only used for releases
-VERSION := $(shell grep -E -o 'VERSION ".+"' src/rage.h | sed -n 1p | sed "s/VERSION //" | sed 's/"//g')
+ifndef VERSION
+	VERSION := $(shell grep -E -o 'VERSION ".+"' $(SRCPATH)/rage.h | sed -n 1p | sed "s/VERSION //" | sed 's/"//g')
+endif
 DISTTMP := chaoticrage-$(VERSION)
-
-# Build dir and sources dir
-OBJPATH=build
-SRCPATH=src
 
 # Complete list of source files
 CPPFILES=$(wildcard \
@@ -97,13 +111,18 @@ CPPFILES=$(wildcard \
 OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES))
 
 # Files which define main() methods
-OBJMAINS=build/client.o
+OBJMAINS=$(OBJPATH)/client.o
 
 # Client = everything but the main() method files + some other bits
-OBJFILES_CLIENT=build/client.o $(PLATFORM) build/confuse/confuse.o build/confuse/lexer.o $(filter-out $(OBJMAINS), $(OBJFILES))
+OBJFILES_CLIENT=$(OBJPATH)/client.o $(PLATFORM) $(OBJPATH)/confuse/confuse.o $(OBJPATH)/confuse/lexer.o $(filter-out $(OBJMAINS), $(OBJFILES))
 
 # Dependencies of the source files
 DEPENDENCIES := $(OBJFILES:.o=.d)
+
+# DESTDIR is used by debuild/dpkg-buildpackage
+ifdef DESTDIR
+	DESTPATH := DESTDIR
+endif
 
 
 default: chaoticrage
@@ -113,9 +132,10 @@ all: chaoticrage
 # Include directive for dependencies of the source files
 -include $(DEPENDENCIES)
 
+
 chaoticrage: $(OBJFILES_CLIENT)
 	@echo [LINK] $@
-	@$(CXX) $(CFLAGS) $(OBJFILES_CLIENT) -o chaoticrage $(LIBS)
+	@$(CXX) $(CFLAGS) $(OBJFILES_CLIENT) -o chaoticrage$(POSTFIX) $(LIBS)
 
 
 install: chaoticrage
@@ -127,30 +147,38 @@ install: chaoticrage
 	cp -r --no-preserve=ownership maps $(DESTPATH)/usr/share/chaoticrage
 
 
-dist: src data maps
-	mkdir -p $(DISTTMP)
+dist: $(SRCPATH) data maps
+	rm -rf $(DISTTMP)
+	mkdir $(DISTTMP)
 
 	cp -r Makefile $(DISTTMP)
 	cp -r LICENSE $(DISTTMP)
 	cp -r README.md $(DISTTMP)
-	cp -r src $(DISTTMP)
+	cp -r $(SRCPATH) $(DISTTMP)
 	cp -r data $(DISTTMP)
 	cp -r maps $(DISTTMP)
 
 	mkdir -p $(DISTTMP)/tools
+	mkdir -p $(DISTTMP)/tools/i18n
 	mkdir -p $(DISTTMP)/tools/linux
 	mkdir -p $(DISTTMP)/tools/linux/working
 
 	cp -r tools/include $(DISTTMP)/tools
+	cp -r tools/i18n $(DISTTMP)/tools
 	cp tools/linux/*.sh $(DISTTMP)/tools/linux/
 	chmod 755 $(DISTTMP)/tools/linux/*.sh
 
 	tar -cvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
-	rm -rf $(DISTTMP)
+
+	mkdir -p $(DISTTMP)/debian
+	cp -r tools/debian_package/debian $(DISTTMP)
+	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
+	rm -r $(DISTTMP)
 
 
 dist-bin: chaoticrage data maps
-	mkdir -p $(DISTTMP)
+	rm -rf $(DISTTMP)
+	mkdir $(DISTTMP)
 
 	cp -r LICENSE $(DISTTMP)
 	cp -r README.md $(DISTTMP)
@@ -159,19 +187,28 @@ dist-bin: chaoticrage data maps
 	cp -r maps $(DISTTMP)
 
 	tar -cvjf chaoticrage-linuxbin-$(VERSION).tar.bz2 $(DISTTMP)
-	rm -rf $(DISTTMP)
+	rm -r $(DISTTMP)
 
 
 clean:
 	rm -f chaoticrage
 	rm -f $(OBJFILES)
 	rm -f $(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.d,$(CPPFILES))
-	rm -f $(OBJPATH)/linux.o
+	rm -f $(OBJPATH)/linux.o $(OBJPATH)/linux.d
+	rm -f $(OBJPATH)/client.o $(OBJPATH)/client.d
+	rm -f $(OBJPATH)/emscripten.o $(OBJPATH)/emscripten.d
+	rm -f $(OBJPATH)/win32.o $(OBJPATH)/win32.d
+	rm -f $(OBJPATH)/confuse/confuse.o $(OBJPATH)/confuse/confuse.d
+	rm -f $(OBJPATH)/confuse/lexer.o $(OBJPATH)/confuse/lexer.d
+
+
+cleaner:
+	rm -rf $(OBJPATH)/
 
 
 $(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h Makefile
 	@echo [CC] $<
-	@mkdir -p `dirname $< | sed "s/src/build/"`
+	@mkdir -p `dirname $< | sed "s/$(SRCPATH)/$(OBJPATH)/"`
 	@$(CXX) $(CFLAGS) -o $@ -c $<
 
 $(OBJPATH)/happyhttp.o: $(SRCPATH)/http/happyhttp.cpp $(SRCPATH)/http/happyhttp.h Makefile
@@ -187,13 +224,13 @@ $(OBJPATH)/linux.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h
 	@echo [CC] $<
 	@$(CXX) $(CFLAGS) -o $@ -c $<
 
-$(OBJPATH)/emscripten.o: $(SRCPATH)/platform/emscripten.cpp $(SRCPATH)/platform/platform.h Makefile
+$(OBJPATH)/win32.o: $(SRCPATH)/platform/win32.cpp $(SRCPATH)/platform/platform.h Makefile
 	@echo [CC] $<
 	@$(CXX) $(CFLAGS) -o $@ -c $<
 
-$(SRCPATH)/i18n/strings.h: $(SRCPATH)/i18n/en.txt
-	@echo [LANG] $<
-	@php tools/i18n/update.php
+$(OBJPATH)/emscripten.o: $(SRCPATH)/platform/emscripten.cpp $(SRCPATH)/platform/platform.h Makefile
+	@echo [CC] $<
+	@$(CXX) $(CFLAGS) -o $@ -c $<
 
 
 ifeq ($(wildcard $(OBJPATH)/),)
