@@ -49,11 +49,12 @@ AssimpModel::~AssimpModel()
 * Load the model.
 * Return true on success, false on failure.
 **/
-bool AssimpModel::load(Render3D* render, bool meshdata)
+bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadType loadtype)
 {
 	Assimp::Importer importer;
 
 	importer.SetPropertyInteger(AI_CONFIG_PP_SBP_REMOVE, aiPrimitiveType_POINT | aiPrimitiveType_LINE);
+	importer.SetPropertyInteger(AI_CONFIG_PP_RVC_FLAGS, aiComponent_COLORS | aiComponent_LIGHTS | aiComponent_CAMERAS);
 
 	unsigned int flags = aiProcess_CalcTangentSpace
 		| aiProcess_Triangulate
@@ -61,7 +62,13 @@ bool AssimpModel::load(Render3D* render, bool meshdata)
 		| aiProcess_SortByPType
 		| aiProcess_FlipUVs
 		| aiProcess_FindDegenerates
-		| aiProcess_ImproveCacheLocality;
+		| aiProcess_ImproveCacheLocality
+		| aiProcess_RemoveComponent;
+
+	// For map meshes we flatten geometry
+	if (loadtype == AssimpLoadMapMesh) {
+		flags |= aiProcess_PreTransformVertices;
+	}
 
 	// Read the file from the mod
 	Sint64 len;
@@ -387,7 +394,9 @@ AssimpNode* AssimpModel::loadNode(aiNode* nd, unsigned int depth)
 	m.Transpose();
 	myNode->transform = glm::make_mat4((float *) &m);
 
-	//cout << string(depth*4, ' ') << myNode->name << "  " << myNode->transform[3][0] << "x" << myNode->transform[3][1] << "x" << myNode->transform[3][2] << endl;
+	if (debug_enabled("loadbones")) {
+		cout << string(depth*4, ' ') << myNode->name << "  " << myNode->transform[3][0] << "x" << myNode->transform[3][1] << "x" << myNode->transform[3][2] << endl;
+	}
 
 	for (i = 0; i < nd->mNumMeshes; i++) {
 		myNode->meshes.push_back(nd->mMeshes[i]);

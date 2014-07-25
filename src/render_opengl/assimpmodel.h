@@ -36,6 +36,11 @@ class Render3D;
 class btCollisionShape;
 
 
+enum AssimpLoadType {
+	AssimpLoadStandard,
+	AssimpLoadMapMesh
+};
+
 class AssimpBone
 {
 	public:
@@ -157,7 +162,7 @@ class AssimpModel
 
 	public:
 		AssimpModel(Mod* mod, string name);
-		bool load(Render3D* render, bool meshdata);
+		bool load(Render3D* render, bool meshdata, AssimpLoadType = AssimpLoadStandard);
 		~AssimpModel();
 
 	public:

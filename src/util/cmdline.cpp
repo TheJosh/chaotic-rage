@@ -176,6 +176,7 @@ void CommandLineArgs::process()
 					"  unit               Unit movements\n"
 					"  vid                Video\n"
 					"  weap               Weapons\n"
+					"  loadbones          Show bone structures during load\n"
 				;
 				exit(0);
 				break;

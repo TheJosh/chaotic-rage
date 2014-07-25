@@ -419,7 +419,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 		if (model == NULL) continue;
 
 		// TODO: Fix for dedicated server (no Render3D)
-		if (! model->load(static_cast<Render3D*>(this->render), true)) {
+		if (! model->load(static_cast<Render3D*>(this->render), true, AssimpLoadMapMesh)) {
 			cerr << "Map model " << tmp << " failed to load.\n";
 			cfg_free(cfg);
 			return 0;
