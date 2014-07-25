@@ -30,7 +30,6 @@ typedef void (*AnimPlayCallback) (AnimPlay* play, void* data);
 class AnimPlay
 {
 	friend class RenderOpenGL;
-	friend class MapMesh;
 
 	private:
 		GameState* st;

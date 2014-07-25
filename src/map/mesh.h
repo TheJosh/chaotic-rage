@@ -42,5 +42,5 @@ class MapMesh {
 		btRigidBody* createRigidBody();
 
 	private:
-		void fillTriangeMesh(btTriangleMesh* trimesh, AnimPlay *ap, AssimpModel *am, AssimpNode *nd);
+		void fillTriangeMesh(btTriangleMesh* trimesh, AssimpModel *am, AssimpNode *nd);
 };
