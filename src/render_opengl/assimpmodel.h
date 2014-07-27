@@ -36,11 +36,21 @@ class Render3D;
 class btCollisionShape;
 
 
+/**
+* Different loading types to affect
+* The postprocessing of the model
+**/
 enum AssimpLoadType {
 	AssimpLoadStandard,
 	AssimpLoadMapMesh
 };
 
+
+
+/**
+* Bone names and offsets
+* Also has a pointer to an AssimpNode
+**/
 class AssimpBone
 {
 	public:
@@ -49,6 +59,9 @@ class AssimpBone
 		AssimpNode* nd;
 };
 
+/**
+* Indexed face data. Must remain a POD class
+**/
 class AssimpFace
 {
 	public:
@@ -57,6 +70,10 @@ class AssimpFace
 		unsigned int c;
 };
 
+/**
+* A mesh. Contains pointers to face and vertex data.
+* Also cointains the material index
+**/
 class AssimpMesh
 {
 	public:
@@ -74,7 +91,7 @@ class AssimpMesh
 		AssimpMesh() :
 			vao(NULL), numFaces(0), materialIndex(0), nd(NULL), faces(NULL), verticies(NULL)
 			{}
-			
+
 		~AssimpMesh()
 		{
 			delete faces;
@@ -83,6 +100,9 @@ class AssimpMesh
 		}
 };
 
+/**
+* A material. CUrretly just a couple of textures
+**/
 class AssimpMaterial
 {
 	public:
@@ -95,6 +115,10 @@ class AssimpMaterial
 			{}
 };
 
+/**
+* A node. Used for animations.
+* Might be related to a bone or a static mesh
+**/
 class AssimpNode
 {
 	public:
@@ -113,6 +137,10 @@ class AssimpNode
 		}
 };
 
+/**
+* Animation value at a given period of time
+* There is a vector of these for each animated property
+**/
 class AssimpAnimKey
 {
 	public:
@@ -121,6 +149,9 @@ class AssimpAnimKey
 		float time;
 };
 
+/**
+* Animation vectors for a given node
+**/
 class AssimpNodeAnim
 {
 	public:
@@ -130,6 +161,9 @@ class AssimpNodeAnim
 		vector<AssimpAnimKey> scale;
 };
 
+/**
+* Overall wrapper for an animation
+**/
 class AssimpAnimation
 {
 	public:
@@ -139,7 +173,10 @@ class AssimpAnimation
 		vector<AssimpNodeAnim*> anims;
 };
 
-
+/**
+* The main model class
+* For rendering, you'll need the AnimPlay class too
+**/
 class AssimpModel
 {
 	friend class RenderOpenGL;
@@ -199,3 +236,4 @@ class AssimpModel
 
 		void createCollisionShape();
 };
+
