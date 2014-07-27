@@ -30,7 +30,7 @@ class MapMesh {
 		// Physics
 		btRigidBody* body;
 		btCollisionShape* colshape;
-		btTriangleMesh* trimesh;
+		btTriangleIndexVertexArray* trimesh;
 
 	public:
 		MapMesh(const glm::mat4 &xform, AssimpModel* model);
@@ -42,5 +42,5 @@ class MapMesh {
 		btRigidBody* createRigidBody();
 
 	private:
-		void fillTriangeMesh(btTriangleMesh* trimesh, AssimpModel *am, AssimpNode *nd);
+		void fillTriangeMesh(AssimpNode *nd);
 };
