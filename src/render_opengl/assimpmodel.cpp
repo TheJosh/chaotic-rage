@@ -55,6 +55,8 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadType loadtype)
 
 	importer.SetPropertyInteger(AI_CONFIG_PP_SBP_REMOVE, aiPrimitiveType_POINT | aiPrimitiveType_LINE);
 	importer.SetPropertyInteger(AI_CONFIG_PP_RVC_FLAGS, aiComponent_COLORS | aiComponent_LIGHTS | aiComponent_CAMERAS);
+	importer.SetPropertyInteger(AI_CONFIG_PP_SLM_VERTEX_LIMIT, 65535);
+	importer.SetPropertyInteger(AI_CONFIG_PP_SLM_TRIANGLE_LIMIT, 65535);
 
 	unsigned int flags = aiProcess_CalcTangentSpace
 		| aiProcess_Triangulate
@@ -72,6 +74,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadType loadtype)
 		flags |= aiProcess_OptimizeMeshes;
 		flags |= aiProcess_FindInvalidData;
 		flags |= aiProcess_OptimizeGraph;
+		flags |= aiProcess_SplitLargeMeshes;
 	}
 
 	// Read the file from the mod
