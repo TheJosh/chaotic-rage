@@ -83,7 +83,7 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	if (uc->model == NULL) return NULL;
 
 	// Col shape
-	uc->col_shape = new btCapsuleShape(0.3f, 0.9f);
+	uc->col_shape = new btCapsuleShape(.05f, 0.9f);
 
 	// Params
 	uc->params.max_speed = (float)cfg_getfloat(cfg_item, "max_speed");

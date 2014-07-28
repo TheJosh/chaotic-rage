@@ -56,9 +56,9 @@ void PhysicsBullet::init()
 
 	ghostPairCallback = new btGhostPairCallback();
 
-	btVector3 worldMin(-1000,-1000,-1000);
-	btVector3 worldMax(1000,1000,1000);
-	overlappingPairCache = new btAxisSweep3(worldMin,worldMax);
+	btVector3 worldMin(-200.0f, -200.0f, -200.0f);
+	btVector3 worldMax(200.0f, 200.0f, 200.0f);
+	overlappingPairCache = new btAxisSweep3(worldMin, worldMax);
 	overlappingPairCache->getOverlappingPairCache()->setInternalGhostPairCallback(ghostPairCallback);
 
 	solver = new btSequentialImpulseConstraintSolver();
@@ -354,7 +354,7 @@ void PhysicsBullet::stepTime(int ms)
 	dynamicsWorld->stepSimulation(
 		static_cast<float>(ms) / 1000.0f,
 		3,
-		1.0f/60.0f
+		1.0f/200.0f
 	);
 }
 

@@ -69,8 +69,6 @@ btRigidBody* MapMesh::createRigidBody()
 
 /**
 * Fill a triangle mesh with triangles
-*
-* TODO: It would be better to use btTriangleIndexVertexArray or make AssimpModel implement btStridingMeshInterface
 **/
 void MapMesh::fillTriangeMesh(AssimpNode *nd)
 {
