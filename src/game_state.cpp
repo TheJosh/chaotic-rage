@@ -36,6 +36,7 @@
 #include "audio/audio.h"
 #include "net/net_client.h"
 #include "net/net_server.h"
+#include "util/cmdline.h"
 
 #ifdef USE_SPARK
 #include "spark/SPK.h"
@@ -487,6 +488,10 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 		PROFILE_END(render);
 
 		audio->play();
+
+		if (GEng()->cmdline->throttle) {
+			SDL_Delay(1);
+		}
 
 		MAINLOOP_ITER
 	}

@@ -34,6 +34,7 @@ void CommandLineArgs::process()
 		{"host",		    0, 0, 'n'},
 		{"campaign",		1, 0, 'c'},
 		{"join",		    1, 0, 'j'},
+		{"throttle",        0, 0, 't'},
 
 		{"mod",				1, 0, 'm'},
 		{"mod-list",		0, 0, 'l'},
@@ -55,7 +56,7 @@ void CommandLineArgs::process()
 		#endif
 		{NULL, 0, NULL, 0}
 	};
-	const char *short_options = "a:nc:j:m:r:u:hv";
+	const char *short_options = "a:nc:j:tm:r:u:hv";
 
 	int c;
 	int option_index = 0;
@@ -70,6 +71,7 @@ void CommandLineArgs::process()
 					" -n\t--host                  Listen as a network host (requires --arcade)\n"
 					" -c\t--campaign NAME         Run the specified campaign, then exit\n"
 					" -j\t--join SERVER           Join a network game\n"
+					" -t\t--throttle              Don't run the game loop at 100%, good for network servers\n"
 					"\n"
 					" -m\t--mod NAME              Load a mod at startup\n"
 					"   \t--mod-list              List all available mods, and exit\n"
@@ -120,6 +122,10 @@ void CommandLineArgs::process()
 
 			case 'j':
 				this->join = optarg;
+				break;
+
+			case 't':
+				this->throttle = true;
 				break;
 
 

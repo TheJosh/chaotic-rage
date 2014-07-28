@@ -27,10 +27,11 @@ class CommandLineArgs
 		string audio_class;
 		bool host;
 		bool mouseGrab;
+		bool throttle;
 
 	public:
 		CommandLineArgs(int argc, char ** argv)
-			: argc(argc), argv(argv), modlist(false), host(false), mouseGrab(true)
+			: argc(argc), argv(argv), modlist(false), host(false), mouseGrab(true), throttle(false)
 			{}
 
 		void process();
