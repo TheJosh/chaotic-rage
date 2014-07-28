@@ -6,11 +6,6 @@
 #include "game_state.h"
 
 
-/**
-* TODO: Rename this file to events.h or maybe rejig the events system
-**/
-
-
 // Mouse movement, including keyboard simulation
 extern bool ignore_relative_mouse[MAX_LOCAL];
 extern int game_x[MAX_LOCAL], game_y[MAX_LOCAL];

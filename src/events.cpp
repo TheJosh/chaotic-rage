@@ -5,7 +5,7 @@
 #include <SDL.h>
 #include <string>
 
-#include "game.h"
+#include "events.h"
 #include "game_state.h"
 #include "game_engine.h"
 #include "entity/player.h"

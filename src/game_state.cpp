@@ -12,7 +12,7 @@
 #include <math.h>
 
 #include "rage.h"
-#include "game.h"
+#include "events.h"
 #include "game_engine.h"
 #include "game_settings.h"
 #include "lua/gamelogic.h"
