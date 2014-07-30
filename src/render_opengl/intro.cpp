@@ -34,8 +34,8 @@ Intro::Intro(GameState *st)
 	sg = new Song();
 	sg->name = "intro";
 
-	//SDL_RWops * rw = mod->loadRWops("intro.ogg");
-	//sg->music = Mix_LoadMUS_RW(rw, 0);			// is this right?
+	SDL_RWops * rw = mod->loadRWops("intro.ogg");
+	sg->music = Mix_LoadMUS_RW(rw, 0);				// does this leak?
 
 	img1 = this->render->loadSprite("joshcorp.png", mod);
 	img2 = this->render->loadSprite("sdl.png", mod);
@@ -54,7 +54,7 @@ Intro::Intro(GameState *st)
 Intro::~Intro()
 {
 	delete(mod);
-	delete(sg);
+	//delete(sg);		// yep it leaks - keep the music playing even after into finished
 	delete(img1);
 	delete(img2);
 	delete(img3);
@@ -70,7 +70,7 @@ void Intro::doit()
 	GLShader *shader;
 
 	if (sg->music != NULL) {
-	//	st->audio->playSong(sg);
+		GEng()->audio->playSong(sg);
 	}
 
 	start = SDL_GetTicks();
