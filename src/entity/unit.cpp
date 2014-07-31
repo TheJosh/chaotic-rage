@@ -120,7 +120,13 @@ void Unit::beginFiring()
 	this->firing = true;
 
 	Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_BEGIN);
-	weapon_sound = GEng()->audio->playSound(snd, this->weapon->wt->continuous, this);
+	GEng()->audio->playSound(snd, false, this);
+
+	// TODO: This should only be after the WEAPON_SOUND_BEGIN sound has finished...
+	if (this->weapon->wt->continuous) {
+		Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_REPEAT);
+		weapon_sound = GEng()->audio->playSound(snd, this->weapon->wt->continuous, this);
+	}
 }
 
 
