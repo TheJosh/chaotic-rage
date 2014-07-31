@@ -120,7 +120,7 @@ void Unit::beginFiring()
 	this->firing = true;
 
 	Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_BEGIN);
-	weapon_sound = GEng()->audio->playSound(snd, true, this);
+	weapon_sound = GEng()->audio->playSound(snd, this->weapon->wt->continuous, this);
 }
 
 
@@ -133,7 +133,9 @@ void Unit::endFiring()
 
 	this->firing = false;
 
-	GEng()->audio->stopSound(this->weapon_sound);
+	if (this->weapon->wt->continuous) {
+		GEng()->audio->stopSound(this->weapon_sound);
+	}
 
 	Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_END);
 	GEng()->audio->playSound(snd, false, this);
