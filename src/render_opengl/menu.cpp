@@ -153,7 +153,7 @@ void Menu::doit(UIUpdate* ui)
 	// This is a hack and leaks memory too
 	// TODO: Mod to be able to specify models
 	this->model_rot = -10.0f;
-	this->model = mod->getAssimpModel("earth.dae");
+	this->model = mod->getAssimpModel("magellan_16.dae");
 	this->play = new AnimPlay(this->model);
 
 	this->loadModBits(ui);
@@ -277,10 +277,12 @@ void Menu::updateUI()
 		glUniform4fv(render->shaders[SHADER_ENTITY_STATIC]->uniform("uAmbient"), 1, glm::value_ptr(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
 		glUniformMatrix4fv(render->shaders[SHADER_ENTITY_STATIC]->uniform("uV"), 1, GL_FALSE, glm::value_ptr(render->view));
 
-		// Draw earth
-		model_rot += 0.004f;
+		// Draw sat
+		model_rot += 0.015f;
 		glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-1.5f, -0.8f, 10.0f));
-		modelMatrix = glm::rotate(modelMatrix, model_rot, glm::vec3(0.0f, 1.0f, 0.0f));;
+		modelMatrix = glm::rotate(modelMatrix, model_rot, glm::vec3(0.0f, 1.0f, 0.0f));
+		modelMatrix = glm::rotate(modelMatrix, 15.0f + model_rot/3.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+		modelMatrix = glm::scale(modelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
 		this->render->renderAnimPlay(this->play, modelMatrix);
 	}
 
