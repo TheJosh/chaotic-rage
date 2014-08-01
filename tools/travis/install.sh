@@ -32,8 +32,12 @@ elif [ "$PLATFORM" == "android" ]; then
 
 	# Download and extract SDK
 	SDK_FILE="android-sdk_r22.6.2-linux.tgz"
+	SDK_LINK="http://dl.google.com/android/${SDK_FILE}"
 	if [ ! -f ${SDK_FILE} ]; then
-		wget http://dl.google.com/android/${SDK_FILE} || exit 1
+		wget ${SDK_LINK} || exit 1
+	else
+		# File exists locally already, check if remote file exists
+		wget --spider ${SDK_LINK} || exit 1;
 	fi
 	# Clean (for local testing)
 	rm -rf android-sdk-linux/
@@ -48,9 +52,13 @@ elif [ "$PLATFORM" == "android" ]; then
 	echo 'y' | android update sdk -a --filter android-10 --no-ui --force >/dev/null || exit 1
 
 	# Download and extract NDK
-	NDK_FILE="android-ndk-r9d-linux-x86_64.tar.bz2"
+	NDK_FILE="android-ndk64-r10-linux-x86_64.tar.bz2"
+	NDK_LINK="http://dl.google.com/android/ndk/${NDK_FILE}"
 	if [ ! -f ${NDK_FILE} ]; then
-		wget http://dl.google.com/android/ndk/${NDK_FILE} || exit 1;
+		wget ${NDK_LINK} || exit 1;
+	else
+		# File exists locally already, check if remote file exists
+		wget --spider ${NDK_LINK} || exit 1;
 	fi
 	# Clean (for local testing)
 	rm -rf android-ndk-r*/

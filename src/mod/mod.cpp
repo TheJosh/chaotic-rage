@@ -425,7 +425,7 @@ AssimpModel * Mod::getAssimpModel(string name)
 
 
 /**
-* Return a campaign by it's name
+* Return a campaign by its name
 **/
 Campaign * Mod::getCampaign(string name)
 {
