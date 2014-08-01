@@ -246,6 +246,7 @@
     <ClCompile Include="..\..\src\lua\lua_world_lib.cpp" />
     <ClCompile Include="..\..\src\map\heightmap.cpp" />
     <ClCompile Include="..\..\src\map\map.cpp" />
+    <ClCompile Include="..\..\src\map\mesh.cpp" />
     <ClCompile Include="..\..\src\map\reg.cpp" />
     <ClCompile Include="..\..\src\map\zone.cpp" />
     <ClCompile Include="..\..\src\render\render_ascii.cpp" />
@@ -460,6 +461,7 @@
     <ClInclude Include="..\..\src\i18n\gettext.h" />
     <ClInclude Include="..\..\src\map\heightmap.h" />
     <ClInclude Include="..\..\src\map\map.h" />
+    <ClInclude Include="..\..\src\map\mesh.h" />
     <ClInclude Include="..\..\src\map\reg.h" />
     <ClInclude Include="..\..\src\map\zone.h" />
     <ClInclude Include="..\..\src\render\render_ascii.h" />

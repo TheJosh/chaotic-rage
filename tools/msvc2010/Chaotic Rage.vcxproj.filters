@@ -843,6 +843,9 @@
     <ClCompile Include="..\..\src\map\reg.cpp">
       <Filter>src\map</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\map\mesh.cpp">
+      <Filter>src\map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\game.h">
@@ -1525,6 +1528,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\render_opengl\render_opengl_settings.h">
       <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\map\mesh.h">
+      <Filter>src\map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
