@@ -58,6 +58,11 @@ DialogNewCampaign::~DialogNewCampaign()
 }
 
 
+#define COLLEFT     10
+#define COLRIGHT    110
+#define COLRIGHTW   195
+
+
 /**
 * Setup routine for the "New Campaign" dialog
 **/
@@ -67,37 +72,37 @@ gcn::Container * DialogNewCampaign::setup()
 	gcn::Label* label;
 
 	c = new gcn::Window(_(STRING_MENU_CAMPAIGN));
-	c->setDimension(gcn::Rectangle(0, 0, 255, 200));
+	c->setDimension(gcn::Rectangle(0, 0, 320, 200));
 
 
-	label = new gcn::Label("Campaign");
-	c->add(label, 10, 10);
+	label = new gcn::Label(_(STRING_MENU_CAMPAIGN));
+	c->add(label, COLLEFT, 10);
 
 	this->campaign = new gcn::DropDown(this->campaigns);
-	this->campaign->setPosition(80, 10);
-	this->campaign->setWidth(160);
+	this->campaign->setPosition(COLRIGHT, 10);
+	this->campaign->setWidth(COLRIGHTW);
 	c->add(this->campaign);
 
 
-	label = new gcn::Label("Unit type");
-	c->add(label, 10, 30);
+	label = new gcn::Label(_(STRING_NEWGAME_UNIT));
+	c->add(label, COLLEFT, 30);
 
 	this->unittype = new gcn::DropDown(new VectorListModel(this->gm->getUnitTypes()));
-	this->unittype->setPosition(80, 30);
-	this->unittype->setWidth(160);
+	this->unittype->setPosition(COLRIGHT, 30);
+	this->unittype->setWidth(COLRIGHTW);
 	c->add(this->unittype);
 
 
-	label = new gcn::Label("View mode");
-	c->add(label, 10, 50);
+	label = new gcn::Label(_(STRING_NEWGAME_VIEW));
+	c->add(label, COLLEFT, 50);
 
 	this->viewmode = new gcn::DropDown(new VectorListModel(this->gm->getViewModes()));
-	this->viewmode->setPosition(80, 50);
-	this->viewmode->setWidth(160);
+	this->viewmode->setPosition(COLRIGHT, 50);
+	this->viewmode->setWidth(COLRIGHTW);
 	c->add(this->viewmode);
 
 
-	button = new gcn::Button("Start Game");
+	button = new gcn::Button(_(STRING_NEWGAME_START_CAMPAIGN));
 	button->setPosition(120, 150);
 	button->addActionListener(this);
 	c->add(button);
@@ -117,4 +122,3 @@ void DialogNewCampaign::action(const gcn::ActionEvent& actionEvent)
 		this->num_local
 	);
 }
-

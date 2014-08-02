@@ -1,0 +1,17 @@
+1	Kampanj
+2	Singelspel
+3	Delad skärm
+4	Nätverksspel
+5	Inställningar
+6	Moddar
+7	Hjälp
+8	Avsluta
+9	Speltyp
+10	Vapen
+11	Karta
+12	Karaktär
+13	Kameraläge
+14	Var värd för nätverksspel
+15	Starta singelspel
+16	Starta spel med delad skärm
+17	Starta kampanj

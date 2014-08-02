@@ -86,6 +86,7 @@ std::vector<std::string>* getAvailableLangs()
 	std::vector<std::string> *out = new std::vector<std::string>();
 	out->push_back("en");
 	out->push_back("en_Pirate");
+	out->push_back("sv");
 	out->push_back("test_utf8");
 	return out;
 }

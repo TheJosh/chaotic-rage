@@ -14,3 +14,4 @@
 14	Set up group battle
 15	Start single battle
 16	Start team battle
+17	Start quest

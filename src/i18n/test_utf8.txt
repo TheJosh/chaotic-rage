@@ -13,11 +13,12 @@ MENU_HELP         Lao: ຕຖ
 MENU_QUIT         Latin-A Ext: ŨŔĶĳĖĠ
 
 # New game menu
-NEWGAME_TYPE          Quest type
-NEWGAME_WEAPONS       Weaponry
-NEWGAME_MAP           Battlefield
-NEWGAME_UNIT          Pirate type
-NEWGAME_VIEW          V'ew
-NEWGAME_HOST          Set up group battle
-NEWGAME_START_SINGLE  Start single battle
-NEWGAME_START_SPLIT   Start team battle
+NEWGAME_TYPE             Quest type
+NEWGAME_WEAPONS          Weaponry
+NEWGAME_MAP              Battlefield
+NEWGAME_UNIT             Pirate type
+NEWGAME_VIEW             V'ew
+NEWGAME_HOST             Set up group battle
+NEWGAME_START_SINGLE     Start single battle
+NEWGAME_START_SPLIT      Start team battle
+NEWGAME_START_CAMPAIGN   Start quest
