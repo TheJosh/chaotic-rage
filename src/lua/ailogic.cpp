@@ -108,7 +108,7 @@ bool AILogic::execScript(string code)
 /**
 * Basically just provides timer ticks
 **/
-void AILogic::update(int delta)
+void AILogic::update()
 {
 	this->ActiveLuaState();
 
@@ -134,7 +134,7 @@ void AILogic::update(int delta)
 	if (this->dir_flag) {
 		this->dir.setY(0.0f);
 
-		btScalar walkSpeed = u->params.max_speed * 1.0f/60.0f;		// Physics runs at 60hz
+		btScalar walkSpeed = u->params.max_speed;
 
 		// Rotation update
 		btVector3 fwd = btVector3(0.0, 0.0, 1.0);
@@ -145,7 +145,7 @@ void AILogic::update(int delta)
 		u->ghost->getWorldTransform().setBasis(btMatrix3x3(rot));
 
 		// Position update
-		u->character->setWalkDirection(this->dir * walkSpeed);
+		u->character->setVelocityForTimeInterval(this->dir * walkSpeed, 1.0f);
 
 		this->dir_flag = false;
 	}
@@ -212,7 +212,7 @@ LUA_FUNC(add_interval)
 	}
 
 	if (! lua_isfunction(L, 2)) {
-		lua_pushstring(L, "Arg #1 is not a function");
+		lua_pushstring(L, "Arg #2 is not a function");
 		lua_error(L);
 	}
 
@@ -249,7 +249,7 @@ LUA_FUNC(add_timer)
 	}
 
 	if (! lua_isfunction(L, 2)) {
-		lua_pushstring(L, "Arg #1 is not a function");
+		lua_pushstring(L, "Arg #2 is not a function");
 		lua_error(L);
 	}
 
@@ -352,11 +352,7 @@ LUA_FUNC(move)
 	gl->dir_flag = true;
 
 	float speed = (float)lua_tonumber(L, 2);
-	if (speed != 0.0f) {
-		gl->speed = MAX(speed, gl->u->getParams()->max_speed);
-	} else {
-		gl->speed = gl->u->getParams()->max_speed;
-	}
+	gl->speed = MAX(speed, gl->u->getParams()->max_speed);
 
 	return 0;
 }
@@ -460,5 +456,3 @@ void register_lua_functions()
 	LUA_REG(fire);
 	LUA_REG(stop);
 }
-
-

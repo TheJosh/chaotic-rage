@@ -50,7 +50,5 @@ class AILogic
 		/**
 		* Basically just provides timer ticks
 		**/
-		void update(int delta);
+		void update();
 };
-
-

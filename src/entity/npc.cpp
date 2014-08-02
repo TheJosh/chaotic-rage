@@ -43,7 +43,7 @@ void NPC::update(int delta)
 		return;
 	}
 
-	logic->update(delta);
+	logic->update();
 	Unit::update(delta);
 
 	if (this->idle_sound_time < st->game_time) {
