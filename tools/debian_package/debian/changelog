@@ -1,3 +1,10 @@
+chaoticrage (1.8ubuntu8~trusty3) trusty; urgency=medium
+
+  * New snapshot from git repo master branch 20140802.
+  * Removed php5-cli from build-depends.
+
+ -- Magnus Espersson <magnusespersson@gmail.com>  Sat, 02 Aug 2014 09:47:13 +0200
+
 chaoticrage (1.8ubuntu8~saucy1) saucy; urgency=medium
 
   * Build for Ubuntu Saucy.

@@ -17,8 +17,7 @@ Build-Depends:
  libglew-dev,
  libsdl2-mixer-dev,
  libsdl2-image-dev,
- libsdl2-net-dev,
- php5-cli
+ libsdl2-net-dev
 Standards-Version: 3.9.5
 Homepage: http://www.chaoticrage.com
 Vcs-Git: git://github.com:TheJosh/chaotic-rage.git
