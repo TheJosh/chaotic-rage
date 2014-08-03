@@ -1,13 +1,13 @@
-#
+ï»¿#
 # French
 #
 
 # Main menu
 MENU_CAMPAIGN     Campagne
 MENU_SINGLE       Solo
-MENU_SPLIT        Écran Partagé
+MENU_SPLIT        Ã‰cran PartagÃ©
 MENU_NETWORK      Multi Joueur
-MENU_SETTINGS     Paramètres
+MENU_SETTINGS     ParamÃ¨tres
 MENU_MODS         Modes
 MENU_HELP         Aide
 MENU_QUIT         Quitter
@@ -18,10 +18,10 @@ NEWGAME_WEAPONS          Armes
 NEWGAME_MAP              Monde
 NEWGAME_UNIT             Personnages
 NEWGAME_VIEW             Vue
-NEWGAME_HOST             Hôte de jeu en réseau
-NEWGAME_START_SINGLE     Commencé la partie
-NEWGAME_START_SPLIT      Commencé la partie
-NEWGAME_START_CAMPAIGN   Commencé la partie
+NEWGAME_HOST             HÃ´te de jeu en rÃ©seau
+NEWGAME_START_SINGLE     CommencÃ© la partie
+NEWGAME_START_SPLIT      CommencÃ© la partie
+NEWGAME_START_CAMPAIGN   CommencÃ© la partie
 
 # Weapon menu
 WEAPONS_STANDARD_UNIT    L'arme standare du personnage
@@ -32,6 +32,6 @@ WEAPONS_SAVE             Sauvgarder
 NETWORK_DIRECT           Direct
 NETWORK_LOCAL            Local
 NETWORK_INTERNET         En ligne
-NETWORK_HOSTNAME         Nom d'hôte
+NETWORK_HOSTNAME         Nom d'hÃ´te
 NETWORK_REFRESH_LIST     Actualiser la liste
 NETWORK_JOIN_GAME        Rejoindre la partie
