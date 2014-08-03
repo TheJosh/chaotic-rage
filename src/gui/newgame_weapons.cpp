@@ -14,6 +14,7 @@
 #include "../http/serverlist.h"
 #include "../mod/mod_manager.h"
 #include "../mod/weapontype.h"
+#include "../i18n/gettext.h"
 #include "dialog.h"
 #include "list_models.h"
 #include "newgame_weapons.h"
@@ -64,7 +65,7 @@ gcn::Container * DialogNewGameWeapons::setup()
 	gcn::Button* button;
 	int y = 10;
 
-	c = new gcn::Window("Weapon Settings");
+	c = new gcn::Window(_(STRING_NEWGAME_WEAPONS));
 	c->setDimension(gcn::Rectangle(0, 0, 360, 300));
 
 	// Dropdown for choosing which faction you are editing
@@ -76,14 +77,14 @@ gcn::Container * DialogNewGameWeapons::setup()
 	y += ROWHEIGHT + 5;
 
 	// Per-unit weapons
-	chk_unit = new gcn::CheckBox("Standard unit weapons");
+	chk_unit = new gcn::CheckBox(_(STRING_WEAPONS_STANDARD_UNIT));
 	chk_unit->setPosition(LEFT, y);
 	chk_unit->setWidth(WIDTH);
 	c->add(chk_unit);
 	y += ROWHEIGHT;
 
 	// Per-gametype weapons
-	chk_gametype = new gcn::CheckBox("Standard game type weapons");
+	chk_gametype = new gcn::CheckBox(_(STRING_WEAPONS_STANDARD_GAME));
 	chk_gametype->setPosition(LEFT, y);
 	chk_gametype->setWidth(WIDTH);
 	c->add(chk_gametype);
@@ -101,7 +102,7 @@ gcn::Container * DialogNewGameWeapons::setup()
 
 	// Save btn
 	y += 5;
-	button = new gcn::Button("Save Weapon Settings");
+	button = new gcn::Button(_(STRING_WEAPONS_SAVE));
 	button->setPosition((360 - button->getWidth()) / 2, y);
 	button->addActionListener(this);
 	c->add(button);

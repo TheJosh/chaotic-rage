@@ -71,9 +71,9 @@ gcn::Container * DialogNetJoin::setup()
 	{
 		gcn::Container* tabc = new gcn::Container();
 		tabc->setDimension(gcn::Rectangle(0, 0, 245, 180));
-		this->tabs->addTab("Direct", tabc);
+		this->tabs->addTab(_(STRING_NETWORK_DIRECT), tabc);
 
-		gcn::Label* label = new gcn::Label("Host");
+		gcn::Label* label = new gcn::Label(_(STRING_NETWORK_HOSTNAME));
 		tabc->add(label, 10, 10);
 
 		this->host = new gcn::TextField("localhost");
@@ -86,7 +86,7 @@ gcn::Container * DialogNetJoin::setup()
 	{
 		gcn::Container* tabc = new gcn::Container();
 		tabc->setDimension(gcn::Rectangle(0, 0, 245, 180));
-		this->tabs->addTab("Local", tabc);
+		this->tabs->addTab(_(STRING_NETWORK_LOCAL), tabc);
 
 		this->local_list = new gcn::ListBox(NULL);
 		this->local_list->setPosition(10, 10);
@@ -94,7 +94,7 @@ gcn::Container * DialogNetJoin::setup()
 		this->local_list->setHeight(110);
 		tabc->add(this->local_list);
 
-		this->local_button = new gcn::Button("Refresh list");
+		this->local_button = new gcn::Button(_(STRING_NETWORK_REFRESH_LIST));
 		this->local_button->setPosition(10, 125);
 		this->local_button->addActionListener(this->local_refresh_action);
 		tabc->add(this->local_button);
@@ -104,7 +104,7 @@ gcn::Container * DialogNetJoin::setup()
 	{
 		gcn::Container* tabc = new gcn::Container();
 		tabc->setDimension(gcn::Rectangle(0, 0, 245, 180));
-		this->tabs->addTab("Internet", tabc);
+		this->tabs->addTab(_(STRING_NETWORK_LOCAL), tabc);
 
 		this->internet_list = new gcn::ListBox(NULL);
 		this->internet_list->setPosition(10, 10);
@@ -112,13 +112,13 @@ gcn::Container * DialogNetJoin::setup()
 		this->internet_list->setHeight(110);
 		tabc->add(this->internet_list);
 
-		this->internet_button = new gcn::Button("Refresh list");
+		this->internet_button = new gcn::Button(_(STRING_NETWORK_REFRESH_LIST));
 		this->internet_button->setPosition(10, 125);
 		this->internet_button->addActionListener(this->internet_refresh_action);
 		tabc->add(this->internet_button);
 	}
 
-	button = new gcn::Button("Join Game");
+	button = new gcn::Button(_(STRING_NETWORK_JOIN_GAME));
 	button->setPosition(192, 200);
 	button->addActionListener(this);
 	c->add(button);
