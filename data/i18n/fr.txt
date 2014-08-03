@@ -1,0 +1,26 @@
+1	Campagne
+2	Solo
+3	Écran Partagé
+4	Multi Joueur
+5	Paramètres
+6	Modes
+7	Aide
+8	Quitter
+9	Type de jeu
+10	Armes
+11	Monde
+12	Personnages
+13	Vue
+14	Hôte de jeu en réseau
+15	Commencé la partie
+16	Commencé la partie
+17	Commencé la partie
+18	L'arme standare du personnage
+19	L'arme standare du jeu
+20	Sauvgarder
+21	Direct
+22	Local
+23	En ligne
+24	Nom d'hôte
+25	Actualiser la liste
+26	Rejoindre la partie
