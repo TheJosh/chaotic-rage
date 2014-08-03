@@ -22,3 +22,16 @@ NEWGAME_HOST             Host network game
 NEWGAME_START_SINGLE     Start single player game
 NEWGAME_START_SPLIT      Start split screen game
 NEWGAME_START_CAMPAIGN   Start campaign game
+
+# Weapon menu
+WEAPONS_STANDARD_UNIT    Standard unit weapons
+WEAPONS_STANDARD_GAME    Standard game type weapons
+WEAPONS_SAVE             Save weapon settings
+
+# Network menu
+NETWORK_DIRECT           Direct
+NETWORK_LOCAL            Local
+NETWORK_INTERNET         Internet
+NETWORK_HOSTNAME         Hostname
+NETWORK_REFRESH_LIST     Refresh list
+NETWORK_JOIN_GAME        Join game
