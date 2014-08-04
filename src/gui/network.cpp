@@ -104,7 +104,7 @@ gcn::Container * DialogNetJoin::setup()
 	{
 		gcn::Container* tabc = new gcn::Container();
 		tabc->setDimension(gcn::Rectangle(0, 0, 245, 180));
-		this->tabs->addTab(_(STRING_NETWORK_LOCAL), tabc);
+		this->tabs->addTab(_(STRING_NETWORK_INTERNET), tabc);
 
 		this->internet_list = new gcn::ListBox(NULL);
 		this->internet_list->setPosition(10, 10);
@@ -119,7 +119,7 @@ gcn::Container * DialogNetJoin::setup()
 	}
 
 	button = new gcn::Button(_(STRING_NETWORK_JOIN_GAME));
-	button->setPosition(192, 200);
+	button->setPosition(120, 200);
 	button->addActionListener(this);
 	c->add(button);
 
@@ -193,4 +193,3 @@ void InternetRefreshAction::action(const gcn::ActionEvent& actionEvent)
 		this->owner->internet_list->setListModel(this->owner->internet_model);
 	}
 }
-

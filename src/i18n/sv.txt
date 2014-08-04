@@ -22,3 +22,16 @@ NEWGAME_HOST             Var värd för nätverksspel
 NEWGAME_START_SINGLE     Starta singelspel
 NEWGAME_START_SPLIT      Starta spel med delad skärm
 NEWGAME_START_CAMPAIGN   Starta kampanj
+
+# Weapon menu
+WEAPONS_STANDARD_UNIT    Standardvapen för karaktär
+WEAPONS_STANDARD_GAME    Standardvapen för speltyp
+WEAPONS_SAVE             Spara val av vapen
+
+# Network menu
+NETWORK_DIRECT           Direkt
+NETWORK_LOCAL            Lokalt
+NETWORK_INTERNET         Internet
+NETWORK_HOSTNAME         Värdnamn
+NETWORK_REFRESH_LIST     Ladda om lista
+NETWORK_JOIN_GAME        Anslut till spel

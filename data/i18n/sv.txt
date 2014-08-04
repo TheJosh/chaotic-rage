@@ -15,12 +15,12 @@
 15	Starta singelspel
 16	Starta spel med delad skärm
 17	Starta kampanj
-18	Standard unit weapons
-19	Standard game type weapons
-20	Save weapon settings
-21	Direct
-22	Local
+18	Standardvapen för karaktär
+19	Standardvapen för speltyp
+20	Spara val av vapen
+21	Direkt
+22	Lokalt
 23	Internet
-24	Hostname
-25	Refresh list
-26	Join game
+24	Värdnamn
+25	Ladda om lista
+26	Anslut till spel
