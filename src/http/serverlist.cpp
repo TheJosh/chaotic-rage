@@ -66,3 +66,61 @@ vector<string> * getServerList(UIUpdate * ui)
 
 	return elems;
 }
+
+
+/**
+* Register a server
+**/
+bool registerServer(string name, Uint16 port)
+{
+	char* params = (char*)malloc(50 + name.length());
+	sprintf(params,
+		"name=%s&port=%u",
+		name.c_str(),
+		port
+	);
+	int l = strlen(params);
+
+	try {
+		happyhttp::Connection conn("servers.chaoticrage.com", 80);
+
+		conn.putrequest("POST", "/register");
+		conn.putheader("Connection", "close");
+		conn.putheader("Content-Length", l);
+		conn.putheader("Content-type", "application/x-www-form-urlencoded");
+		conn.putheader("Accept", "text/plain");
+		conn.endheaders();
+		conn.send((const unsigned char*)params, l);
+
+		while (conn.outstanding()) {
+			conn.pump();
+		}
+	} catch (const happyhttp::Wobbly & w) {
+		free(params);
+		return false;
+	}
+
+	free(params);
+	return true;
+}
+
+
+/**
+* Un-Register a server
+**/
+bool unRegisterServer()
+{
+	try {
+		happyhttp::Connection conn("servers.chaoticrage.com", 80);
+
+		conn.request("POST", "/unregister");
+
+		while (conn.outstanding()) {
+			conn.pump();
+		}
+	} catch (const happyhttp::Wobbly & w) {
+		return false;
+	}
+
+	return true;
+}

@@ -17,4 +17,6 @@ vector<string> * getServerList(UIUpdate * ui);
 /**
 * Register a game server
 **/
-void registerServer(string name, string ip, string port);
+bool registerServer(string name, Uint16 port);
+bool unRegisterServer();
+

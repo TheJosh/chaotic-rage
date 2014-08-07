@@ -20,6 +20,7 @@
 #include "lua/gamelogic.h"
 #include "render/render.h"
 #include "util/ui_update.h"
+#include "http/serverlist.h"
 
 using namespace std;
 
@@ -233,6 +234,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, GameS
 		sconf = new ServerConfig();
 		server = new NetServer(st, sconf);
 		GEng()->server = server;
+		registerServer("n/a", sconf->port);
 	}
 
 	// Load map
@@ -281,6 +283,7 @@ cleanup:
 	delete st->map;
 	st->physics->postGame();
 	if (host) {
+		unRegisterServer();
 		GEng()->server = NULL;
 		delete(server);
 		delete(sconf);
