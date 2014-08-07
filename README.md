@@ -9,64 +9,12 @@ See also:
 * http://chaoticrage.com
 
 
-Compiling on Linux
-------------------
+Compiling
+---------
 
-Compiling on Linux should be a simple `make`.
-
-You'll need the following dependencies:
-* SDL 2.0.1
-* SDL_Mixer 2.0
-* SDL_Image 2.0
-* SDL_Net 2.0
-* gl
-* glu
-* glew
-* Lua
-* Freetype2
-* Bullet Physics
-* Assimp
-
-Some of these (SDL, Bullet, Assimp) have scripts in the `tools/linux` directory
-for downloading, compiling and installing these libraries. Both Bullet and Assimp
-use cmake, so you'll need that as well.
-
-
-Compiling on Windows
---------------------
-
-There is a project in the `tools/msvc2010` directory for MSVC++ 2010 Express Edition.
-I haven't tested any other version of MSVC.
-You should still be able to download that older version.
-
-
-Compiling for Android on Linux
------------------------------
-
-This is a little incomplete and fussy at the moment.
-
-There is a script in `tools/android` called `prepare.sh` which will try to set everything up for you.
-
-You should then be able to run `ndk-build` to compile and `ant debug` to create the .apk.
-
-
-Cross-compiling for Windows using MXE
--------------------------------------
-
-Check out the latest master version of MXE from GitHub and install it's dependencies
-```
-git clone https://github.com/mxe/mxe.git
-```
-
-Then cd to the MXE directory and build all the dependencies
-```
-make MXE_TARGETS='i686-w64-mingw32.static' sdl2 sdl2_mixer sdl2_image sdl2_net lua freetype bullet assimp glew
-```
-
-You should then be able to build the game using `make` with an additional option specified
-```
-make MXE=/path/to/mxe
-```
+Chaotic Rage is supported on a number of platforms and through various
+build environments. For compilation instructions for various platforms,
+see the file COMPILE.md
 
 
 Making Modifications
