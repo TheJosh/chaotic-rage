@@ -1,7 +1,7 @@
 Compiling Chaotic Rage
 ======================
 
-Chaotic Rage is supported on a number of platforms and through various build environments.
+Chaotic Rage is supported on a number of platforms and through various build environments. In many cases you don't need to compile Chaotic Rage yourself, but can instead use one of the [release builds](http://www.chaoticrage.com/download) or [weekly builds](http://dev1.chaoticrage.com/weekly).
 
 
 Dependencies
@@ -38,7 +38,7 @@ Install the dependencies:
 * liblua5.1-0-dev
 * libfreetype6-dev
 * libbullet-dev
-* libbullet-dev
+* libassimp-dev
 
 Some of these (SDL, Bullet, Assimp) have scripts in the `tools/linux` directory
 for downloading, compiling and installing these libraries. These are useful
