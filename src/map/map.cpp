@@ -412,43 +412,6 @@ int Map::load(string name, Render *render, Mod* insideof)
 		this->meshes.push_back(m);
 	}
 
-	// Lights
-	num_types = cfg_size(cfg, "light");
-	for (j = 0; j < num_types; j++) {
-		int num;
-
-		cfg_sub = cfg_getnsec(cfg, "light", j);
-
-		Light * l = new Light(cfg_getint(cfg_sub, "type"));
-
-		l->x = (float)cfg_getfloat(cfg_sub, "x");
-		l->y = (float)cfg_getfloat(cfg_sub, "y");
-		l->z = (float)cfg_getfloat(cfg_sub, "z");
-
-		num = cfg_size(cfg_sub, "diffuse");
-		if (num == 4) {
-			l->setDiffuse(
-				(short)cfg_getnint(cfg_sub, "diffuse", 0),
-				(short)cfg_getnint(cfg_sub, "diffuse", 1),
-				(short)cfg_getnint(cfg_sub, "diffuse", 2),
-				(short)cfg_getnint(cfg_sub, "diffuse", 3)
-			);
-		}
-
-		num = cfg_size(cfg_sub, "specular");
-		if (num == 4) {
-			l->setSpecular(
-				(short)cfg_getnint(cfg_sub, "specular", 0),
-				(short)cfg_getnint(cfg_sub, "specular", 1),
-				(short)cfg_getnint(cfg_sub, "specular", 2),
-				(short)cfg_getnint(cfg_sub, "specular", 3)
-			);
-		}
-
-		this->lights.push_back(l);
-	}
-
-
 	cfg_free(cfg);
 	return 1;
 }
@@ -568,6 +531,42 @@ void Map::loadDefaultEntities()
 		this->st->addPickup(pu);
 	}
 
+	// Lights
+	num_types = cfg_size(cfg, "light");
+	for (j = 0; j < num_types; j++) {
+		int num;
+
+		cfg_sub = cfg_getnsec(cfg, "light", j);
+
+		Light * l = new Light(cfg_getint(cfg_sub, "type"));
+
+		l->x = (float)cfg_getfloat(cfg_sub, "x");
+		l->y = (float)cfg_getfloat(cfg_sub, "y");
+		l->z = (float)cfg_getfloat(cfg_sub, "z");
+
+		num = cfg_size(cfg_sub, "diffuse");
+		if (num == 4) {
+			l->setDiffuse(
+				(short)cfg_getnint(cfg_sub, "diffuse", 0),
+				(short)cfg_getnint(cfg_sub, "diffuse", 1),
+				(short)cfg_getnint(cfg_sub, "diffuse", 2),
+				(short)cfg_getnint(cfg_sub, "diffuse", 3)
+			);
+		}
+
+		num = cfg_size(cfg_sub, "specular");
+		if (num == 4) {
+			l->setSpecular(
+				(short)cfg_getnint(cfg_sub, "specular", 0),
+				(short)cfg_getnint(cfg_sub, "specular", 1),
+				(short)cfg_getnint(cfg_sub, "specular", 2),
+				(short)cfg_getnint(cfg_sub, "specular", 3)
+			);
+		}
+
+		this->st->addLight(l);
+	}
+	
 	cfg_free(cfg);
 }
 

@@ -27,6 +27,7 @@ class Pickup;
 class AmmoRound;
 class GameSettings;
 class AnimPlay;
+class Light;
 
 namespace gcn {
 	class Gui;
@@ -146,6 +147,11 @@ class GameState
 		// This just wraps the render code
 		void addAnimPlay(AnimPlay* play, Entity* e);
 		void remAnimPlay(AnimPlay* play);
+
+		// Add and remove lights from the renderer
+		// This just wraps the render code
+		void addLight(Light* light);
+		void remLight(Light* light);
 
 		// Debris
 		Entity* deadButNotBuried(Entity* e, AnimPlay* play);

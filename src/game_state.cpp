@@ -33,6 +33,7 @@
 #include "render_opengl/hud.h"
 #include "render_opengl/animplay.h"
 #include "render_opengl/assimpmodel.h"
+#include "render_opengl/light.h"
 #include "audio/audio.h"
 #include "net/net_client.h"
 #include "net/net_server.h"
@@ -241,6 +242,24 @@ void GameState::addAnimPlay(AnimPlay* play, Entity* e)
 void GameState::remAnimPlay(AnimPlay* play)
 {
 	GEng()->render->remAnimPlay(play);
+}
+
+
+/**
+* Add a light to the renderer
+**/
+void GameState::addLight(Light* light)
+{
+	GEng()->render->addLight(light);
+}
+
+
+/**
+* Remove a light from the renderer
+**/
+void GameState::remLight(Light* light)
+{
+	GEng()->render->remLight(light);
 }
 
 

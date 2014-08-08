@@ -135,6 +135,9 @@ class RenderOpenGL : public Render3D
 		// to match the main the render path
 		vector<PlayEntity> animations;
 
+		// Lights
+		vector<Light*> lights;
+
 	public:
 		RenderOpenGL(GameState * st, RenderOpenGLSettings* settings);
 		virtual ~RenderOpenGL();
@@ -162,7 +165,9 @@ class RenderOpenGL : public Render3D
 		virtual int getHeight() { return real_height; }
 		virtual void addAnimPlay(AnimPlay* play, Entity* e);
 		virtual void remAnimPlay(AnimPlay* play);
-
+		virtual void addLight(Light* light);
+		virtual void remLight(Light* light);
+		
 		virtual void setPhysicsDebug(bool status);
 		virtual bool getPhysicsDebug();
 		virtual void setSpeedDebug(bool status) { this->speeddebug = status; }

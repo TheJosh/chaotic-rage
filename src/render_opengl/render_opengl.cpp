@@ -1086,8 +1086,8 @@ void RenderOpenGL::setupShaders()
 	glm::vec3 LightPos[2];
 	glm::vec4 LightColor[2];
 	unsigned int idx = 0;
-	for (unsigned int i = 0; i < st->map->lights.size(); i++) {
-		Light * l = st->map->lights[i];
+	for (unsigned int i = 0; i < this->lights.size(); i++) {
+		Light * l = this->lights[i];
 
 		if (l->type == 3) {
 			LightPos[idx] = glm::vec3(l->x, l->y, l->z);
@@ -1547,7 +1547,7 @@ void RenderOpenGL::addAnimPlay(AnimPlay* play, Entity* e)
 
 
 /**
-* Only temporay until we move the modelmatrix stuff out into the AnimPlay class
+* Only temporary until we move the modelmatrix stuff into the AnimPlay class
 **/
 class DeleteIfPlay
 {
@@ -1720,6 +1720,24 @@ void RenderOpenGL::recursiveRenderAssimpModelBones(AnimPlay* ap, AssimpModel* am
 	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); ++it) {
 		recursiveRenderAssimpModelBones(ap, am, (*it), shader);
 	}
+}
+
+
+/**
+* Add a light
+**/
+void RenderOpenGL::addLight(Light* light)
+{
+	this->lights.push_back(light);
+}
+
+
+/**
+* Remove a light
+**/
+void RenderOpenGL::remLight(Light* light)
+{
+	this->lights.erase(std::remove(this->lights.begin(), this->lights.end(), light), this->lights.end());
 }
 
 

@@ -18,6 +18,15 @@ class Light {
 		Light(unsigned int type);
 		~Light();
 
+		/**
+		* Set diffuse color
+		* Red, Green, Blue, Alpha in range 0 to 255
+		**/
 		void setDiffuse(short r, short g, short b, short a);
+
+		/**
+		* Set specular color
+		* Red, Green, Blue, Alpha in range 0 to 255
+		**/
 		void setSpecular(short r, short g, short b, short a);
 };

@@ -9,6 +9,7 @@
 using namespace std;
 
 class GameState;
+class Light;
 
 
 class Render
@@ -145,6 +146,16 @@ class Render
 		**/
 		virtual void remAnimPlay(AnimPlay* play) {}
 
+		/**
+		* Add a light to the renderer
+		**/
+		virtual void addLight(Light* light) {}
+
+		/**
+		* Remove a light from the renderer
+		**/
+		virtual void remLight(Light* light) {}
+		
 	public:
 		Render(GameState * st);
 		virtual ~Render() {}

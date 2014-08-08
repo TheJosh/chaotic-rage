@@ -33,7 +33,6 @@ class Map {
 
 	private:
 		vector<Zone*> zones;
-		vector<Light*> lights;
 		float ambient[3];
 		vector<MapMesh*> meshes;
 		Render * render;
