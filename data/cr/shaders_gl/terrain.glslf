@@ -21,7 +21,7 @@ const float LOG2 = 1.442695;
 
 void main()
 {
-	float LightPower = 100.0f;
+	float LightPower = 30.0f;
 	
 	vec3 n = normalize(csNormal);
 	vec3 e = normalize(csEyeDirection);

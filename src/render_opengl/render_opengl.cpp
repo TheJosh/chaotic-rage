@@ -1096,7 +1096,7 @@ void RenderOpenGL::setupShaders()
 			if (idx == 10) break;
 		}
 	}
-
+	
 	// ...and ambient too
 	glm::vec4 AmbientColor(this->st->map->ambient[0], this->st->map->ambient[1], this->st->map->ambient[2], 1.0f);
 
@@ -1668,7 +1668,8 @@ void RenderOpenGL::recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel* a
 	// Set uniforms
 	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(transform));
-
+	glUniformMatrix3fv(shader->uniform("uMN"), 1, GL_FALSE, glm::value_ptr(glm::inverseTranspose(glm::mat3(transform))));
+	
 	// Render meshes
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
 		AssimpMesh* mesh = am->meshes[(*it)];
@@ -2060,12 +2061,12 @@ void RenderOpenGL::terrain()
 		modelMatrix = glm::translate(modelMatrix, heightmap->getPosition());
 
 		glm::mat4 MVP = this->projection * this->view * modelMatrix;
+		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
 		
 		glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 		glUniformMatrix4fv(s->uniform("uM"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glUniformMatrix3fv(s->uniform("uMN"), 1, GL_FALSE, glm::value_ptr(glm::inverseTranspose(glm::mat3(modelMatrix))));
 		glUniformMatrix4fv(s->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
-
-		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
 		glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
 
 		heightmap->glvao->bind();
@@ -2084,8 +2085,7 @@ void RenderOpenGL::terrain()
 		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * mm->xform;
 
 		glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-		glUniformMatrix4fv(s->uniform("uM"), 1, GL_FALSE, glm::value_ptr(mm->xform));
-		glUniformMatrix3fv(s->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
+		glUniformMatrix4fv(s->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
 		glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
 
 		recursiveRenderAssimpModelStatic(mm->play, mm->model, mm->model->rootNode, s, mm->xform);

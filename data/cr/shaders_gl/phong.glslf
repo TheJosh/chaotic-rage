@@ -9,6 +9,7 @@ in vec3 csLightDirection[10];
 
 uniform mat4 uMVP;
 uniform mat4 uM;
+uniform mat3 uMN;
 uniform mat4 uV;
 uniform sampler2D uTex;
 uniform vec3 uLightPos[10];
@@ -20,7 +21,7 @@ const float LOG2 = 1.442695;
 
 void main()
 {
-	float LightPower = 10.0f;
+	float LightPower = 30.0f;
 
 	vec3 n = normalize(csNormal);
 	vec3 e = normalize(csEyeDirection);

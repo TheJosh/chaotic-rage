@@ -13,6 +13,7 @@ out vec3 csLightDirection[10];
 
 uniform mat4 uMVP;
 uniform mat4 uM;
+uniform mat3 uMN;
 uniform mat4 uV;
 uniform vec3 uLightPos[10];
 
@@ -31,7 +32,7 @@ void main()
 		csLightDirection[i] = csLightPos + csEyeDirection;
 	}
 	
-	csNormal = (uV * uM * vec4(vNormal, 1.0f)).xyz;
+	csNormal = (mat3(uV) * uMN * vNormal).xyz;
 
 	TexUV = vTexUV;
 	Depth = gl_Position.z / 350f;	// TODO: Dont hard-code with far plane distance, use a uniform!
