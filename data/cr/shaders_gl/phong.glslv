@@ -9,12 +9,12 @@ out float Depth;
 out vec3 csNormal;
 out vec3 wsPosition;
 out vec3 csEyeDirection;
-out vec3 csLightDirection;
+out vec3 csLightDirection[10];
 
 uniform mat4 uMVP;
 uniform mat4 uM;
 uniform mat4 uV;
-uniform vec3 uLightPos[2];
+uniform vec3 uLightPos[10];
 
 
 void main()
@@ -26,9 +26,11 @@ void main()
 	vec3 csPosition = (uV * uM * vec4(vPosition, 1.0f)).xyz;
 	csEyeDirection = vec3(0.0, 0.0, 0.0) - csPosition;
 
-	vec3 csLightPos = (uV * vec4(uLightPos[0], 1.0f)).xyz;
-	csLightDirection = csLightPos + csEyeDirection;
-
+	for (int i = 0; i < 10; ++i) {
+		vec3 csLightPos = (uV * vec4(uLightPos[i], 1.0f)).xyz;
+		csLightDirection[i] = csLightPos + csEyeDirection;
+	}
+	
 	csNormal = (uV * uM * vec4(vNormal, 1.0f)).xyz;
 
 	TexUV = vTexUV;

@@ -251,6 +251,7 @@ void GameState::remAnimPlay(AnimPlay* play)
 void GameState::addLight(Light* light)
 {
 	GEng()->render->addLight(light);
+	this->addDebugPoint(light->x, light->y, light->z);
 }
 
 

@@ -1083,8 +1083,8 @@ void RenderOpenGL::setupShaders()
 {
 	// Prep point lights...
 	// TODO: Think about dynamic lights?
-	glm::vec3 LightPos[2];
-	glm::vec4 LightColor[2];
+	glm::vec3 LightPos[10];
+	glm::vec4 LightColor[10];
 	unsigned int idx = 0;
 	for (unsigned int i = 0; i < this->lights.size(); i++) {
 		Light * l = this->lights[i];
@@ -1093,7 +1093,7 @@ void RenderOpenGL::setupShaders()
 			LightPos[idx] = glm::vec3(l->x, l->y, l->z);
 			LightColor[idx] = glm::vec4(l->diffuse[0], l->diffuse[1], l->diffuse[2], 0.8f);
 			idx++;
-			if (idx == 2) break;
+			if (idx == 10) break;
 		}
 	}
 
@@ -1102,14 +1102,14 @@ void RenderOpenGL::setupShaders()
 
 	// Assign to phong shader
 	glUseProgram(this->shaders[SHADER_ENTITY_STATIC]->p());
-	glUniform3fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
-	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
+	glUniform3fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightPos"), idx, glm::value_ptr(LightPos[0]));
+	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightColor"), idx, glm::value_ptr(LightColor[0]));
 	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
 
 	// And terrain
 	glUseProgram(this->shaders[SHADER_TERRAIN]->p());
-	glUniform3fv(this->shaders[SHADER_TERRAIN]->uniform("uLightPos"), 2, glm::value_ptr(LightPos[0]));
-	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uLightColor"), 2, glm::value_ptr(LightColor[0]));
+	glUniform3fv(this->shaders[SHADER_TERRAIN]->uniform("uLightPos"), idx, glm::value_ptr(LightPos[0]));
+	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uLightColor"), idx, glm::value_ptr(LightColor[0]));
 	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
 
 	CHECK_OPENGL_ERROR;
@@ -1729,6 +1729,7 @@ void RenderOpenGL::recursiveRenderAssimpModelBones(AnimPlay* ap, AssimpModel* am
 void RenderOpenGL::addLight(Light* light)
 {
 	this->lights.push_back(light);
+	this->setupShaders();
 }
 
 
@@ -1738,6 +1739,7 @@ void RenderOpenGL::addLight(Light* light)
 void RenderOpenGL::remLight(Light* light)
 {
 	this->lights.erase(std::remove(this->lights.begin(), this->lights.end(), light), this->lights.end());
+	this->setupShaders();
 }
 
 
