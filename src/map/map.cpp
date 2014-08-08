@@ -21,6 +21,7 @@
 #include "../mod/confuse_types.h"
 #include "../physics_bullet.h"
 #include "../render_opengl/animplay.h"
+#include "../render_opengl/light.h"
 #include "../render/sprite.h"
 #include "../render/render_3d.h"
 #include "../mod/mod.h"
@@ -180,34 +181,6 @@ static cfg_opt_t opts[] =
 
 	CFG_END()
 };
-
-Light::Light(unsigned int type)
-{
-	this->type = type;
-	this->x = this->y = this->z = 0.0f;
-	this->diffuse[0] = this->diffuse[1] = this->diffuse[2] = this->diffuse[3] = 0.0;
-	this->specular[0] = this->specular[1] = this->specular[2] = this->specular[3] = 0.0;
-}
-
-Light::~Light()
-{
-}
-
-void Light::setDiffuse(short r, short g, short b, short a)
-{
-	this->diffuse[0] = r / 255.0f;
-	this->diffuse[1] = g / 255.0f;
-	this->diffuse[2] = b / 255.0f;
-	this->diffuse[3] = a / 255.0f;
-}
-
-void Light::setSpecular(short r, short g, short b, short a)
-{
-	this->specular[0] = r / 255.0f;
-	this->specular[1] = g / 255.0f;
-	this->specular[2] = b / 255.0f;
-	this->specular[3] = a / 255.0f;
-}
 
 
 Map::Map(GameState * st)

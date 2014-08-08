@@ -24,15 +24,17 @@
 #include "../map/map.h"
 #include "../map/heightmap.h"
 #include "../map/mesh.h"
+#include "../render/sprite.h"
+
 #include "render_opengl.h"
 #include "render_opengl_settings.h"
 #include "gl_debug.h"
 #include "gl_debug_drawer.h"
 #include "glvao.h"
-#include "../render/sprite.h"
 #include "glshader.h"
 #include "assimpmodel.h"
 #include "animplay.h"
+#include "light.h"
 #include "hud.h"
 
 #include <guichan.hpp>
