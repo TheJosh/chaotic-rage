@@ -40,7 +40,7 @@ vector<string> * getServerList(UIUpdate * ui)
 
 	// Grab the server list
 	try {
-		happyhttp::Connection conn("servers.chaoticrage.com", 80);
+		happyhttp::Connection conn("api.chaoticrage.com", 80);
 		conn.setcallbacks(OnBegin, OnData, 0, 0);
 
 		conn.request("GET", "/list");
