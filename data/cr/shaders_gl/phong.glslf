@@ -24,7 +24,6 @@ void main()
 
 	vec3 n = normalize(csNormal);
 	vec3 e = normalize(csEyeDirection);
-	float dist = length(uLightPos[0] - wsPosition);
 
 	// Basic material
 	vec4 matDiffuseColor = texture2D(uTex, TexUV);
@@ -37,6 +36,7 @@ void main()
 	// Iterate lights and add color for each light
 	for (int i = 0; i < 10; ++i) {
 		vec3 l = normalize(csLightDirection[i]);
+		float dist = length(uLightPos[i] - wsPosition);
 		
 		// Diffuse
 		float NdotL = clamp(dot(n, l), 0.0, 1.0);

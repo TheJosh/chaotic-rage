@@ -1,49 +1,57 @@
 #version 130
 
-in vec2 fTexUV;
-in vec3 fNormal;
-in vec3 fLightDir[2];
+in vec2 TexUV;
 in vec4 fShadowCoord;
 in float fDepth;
+in vec3 csNormal;
+in vec3 wsPosition;
+in vec3 csEyeDirection;
+in vec3 csLightDirection[10];
 
 uniform mat4 uMVP;
 uniform mat4 uMV;
 uniform mat3 uN;
 uniform sampler2D uTex;
 uniform sampler2D uShadowMap;
-uniform vec3 uLightPos[2];
-uniform vec4 uLightColor[2];
+uniform vec3 uLightPos[10];
+uniform vec4 uLightColor[10];
 uniform vec4 uAmbient;
-
-// Light params; these could become uniforms
-const float constantAttenuation = 0.3;
-const float linearAttenuation = 0.1;
-const float quadraticAttenuation = 0.01;
 
 const float LOG2 = 1.442695;
 
 void main()
 {
-	vec4 light = uAmbient;
-	//float NdotL, dist, att;
+	float LightPower = 100.0f;
+	
+	vec3 n = normalize(csNormal);
+	vec3 e = normalize(csEyeDirection);
 
-	/*for (int i = 0; i < 1; i++) {
-		// Dot product affects strength of light
-		NdotL = max(0.0, dot(normalize(fNormal), normalize(fLightDir[i])));
+	// Basic material
+	vec4 matDiffuseColor = texture2D(uTex, TexUV);
+	vec4 matAmbientColor = uAmbient * matDiffuseColor;
+	vec4 matSpecularColor = vec4(0.3, 0.3, 0.3, 1.0);
+
+	vec4 diffuseColor = vec4(0.0, 0.0, 0.0, 0.0);
+	vec4 specularColor = vec4(0.0, 0.0, 0.0, 0.0);
 	
-		// Calculate attenuation
-		dist = -length(fLightDir[i]) * uLightColor[i].a;
-		att = 1.0 / (constantAttenuation + linearAttenuation*dist + quadraticAttenuation*dist*dist);
-	
-		// Calculate brightness
-		light += uLightColor[i] * NdotL;
+	// Iterate lights and add color for each light
+	for (int i = 0; i < 10; ++i) {
+		vec3 l = normalize(csLightDirection[i]);
+		float dist = length(uLightPos[i] - wsPosition);
 		
-		// Reflections
-		vec3 vReflection = normalize(reflect(-normalize(fLightDir[i]),normalize(fNormal)));
-		float spec = max(0.0, dot(normalize(fNormal), vReflection));
-		float fSpec = pow(spec, 64.0);
-		light += vec4(fSpec, fSpec, fSpec, 0.0f);
-	}*/
+		// Diffuse
+		float NdotL = clamp(dot(n, l), 0.0, 1.0);
+		diffuseColor += uLightColor[i] * LightPower * NdotL / (dist*dist);
+
+		// Specular
+		vec3 r = reflect(-l, n);
+		float EdotR = clamp(dot(e, r), 0.0, 1.0);
+		specularColor += uLightColor[i] * LightPower * pow(EdotR, 5) / (dist*dist);
+	}
+	
+	diffuseColor = matDiffuseColor * diffuseColor;
+	specularColor = matSpecularColor * specularColor;
+	
 	
 	// Shadow
 	float shadowBias = 0.0005;
@@ -58,5 +66,5 @@ void main()
 	fogFactor = clamp(fogFactor, 0.0, 1.0);
 	vec4 fogColor = vec4(0.5, 0.5, 0.6, 1.0);
 
-	gl_FragColor = mix(fogColor, texture(uTex, fTexUV) * light * visibility, fogFactor);
+	gl_FragColor = mix(fogColor, (matAmbientColor + diffuseColor + specularColor) * visibility, fogFactor);
 }

@@ -1091,7 +1091,7 @@ void RenderOpenGL::setupShaders()
 
 		if (l->type == 3) {
 			LightPos[idx] = glm::vec3(l->x, l->y, l->z);
-			LightColor[idx] = glm::vec4(l->diffuse[0], l->diffuse[1], l->diffuse[2], 0.8f);
+			LightColor[idx] = glm::vec4(l->diffuse[0], l->diffuse[1], l->diffuse[2], l->diffuse[3]);
 			idx++;
 			if (idx == 10) break;
 		}
@@ -2060,13 +2060,10 @@ void RenderOpenGL::terrain()
 		modelMatrix = glm::translate(modelMatrix, heightmap->getPosition());
 
 		glm::mat4 MVP = this->projection * this->view * modelMatrix;
+		
 		glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-
-		glm::mat4 MV = this->view * modelMatrix;
-		glUniformMatrix4fv(s->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
-
-		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
-		glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
+		glUniformMatrix4fv(s->uniform("uM"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glUniformMatrix4fv(s->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
 
 		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
 		glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
@@ -2084,13 +2081,11 @@ void RenderOpenGL::terrain()
 		MapMesh* mm = (*it);
 
 		glm::mat4 MVP = this->projection * this->view * mm->xform;
-		glm::mat4 MV = this->view * mm->xform;
-		glm::mat3 N = glm::inverseTranspose(glm::mat3(MV));
 		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * mm->xform;
 
 		glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-		glUniformMatrix4fv(s->uniform("uMV"), 1, GL_FALSE, glm::value_ptr(MV));
-		glUniformMatrix3fv(s->uniform("uN"), 1, GL_FALSE, glm::value_ptr(N));
+		glUniformMatrix4fv(s->uniform("uM"), 1, GL_FALSE, glm::value_ptr(mm->xform));
+		glUniformMatrix3fv(s->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
 		glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
 
 		recursiveRenderAssimpModelStatic(mm->play, mm->model, mm->model->rootNode, s, mm->xform);
