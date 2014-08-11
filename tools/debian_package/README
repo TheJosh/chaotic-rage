@@ -1,7 +1,7 @@
 How to build a Debian package (deb) and uploading it to the Chaotic Rage PPA
 
 TODO: Support older Ubuntu LTS releases than 14.04 'Trusty', use 'tools/linux/*.sh'
-TODO: Upload only the (source) diff to ppa
+TODO: Upload only the source diff to ppa
 
 
 Sources for instructions
@@ -29,6 +29,8 @@ Create the source from repo
 	Go to the Chaotic Rage source root folder
 	Create the file 'chaoticrage_<version>.orig.tar.xz'
 	> make dist
+	Remove previous PPA updates if any
+	> rm -rf ../deb_build/
 	Use the created file as source
 	> mkdir ../deb_build && \
 	cp chaoticrage_* ../deb_build && \

@@ -1,3 +1,9 @@
+chaoticrage (1.8ubuntu8~trusty4) trusty; urgency=low
+
+  * New snapshot from git repo master branch 20140811.
+
+ -- Magnus Espersson <magnusespersson@gmail.com>  Mon, 11 Aug 2014 11:29:06 +0200
+
 chaoticrage (1.8ubuntu8~trusty3) trusty; urgency=medium
 
   * New snapshot from git repo master branch 20140802.
