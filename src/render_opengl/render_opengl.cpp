@@ -97,7 +97,8 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->settings = NULL;
 	this->setSettings(settings);
 
-	shaders_loaded = false;
+	this->lights_changed = false;
+	this->shaders_loaded = false;
 }
 
 
@@ -1083,8 +1084,8 @@ void RenderOpenGL::setupShaders()
 {
 	// Prep point lights...
 	// TODO: Think about dynamic lights?
-	glm::vec3 LightPos[10];
-	glm::vec4 LightColor[10];
+	glm::vec3 LightPos[4];
+	glm::vec4 LightColor[4];
 	unsigned int idx = 0;
 	for (unsigned int i = 0; i < this->lights.size(); i++) {
 		Light * l = this->lights[i];
@@ -1093,7 +1094,7 @@ void RenderOpenGL::setupShaders()
 			LightPos[idx] = glm::vec3(l->x, l->y, l->z);
 			LightColor[idx] = glm::vec4(l->diffuse[0], l->diffuse[1], l->diffuse[2], l->diffuse[3]);
 			idx++;
-			if (idx == 10) break;
+			if (idx == 4) break;
 		}
 	}
 	
@@ -1730,7 +1731,7 @@ void RenderOpenGL::recursiveRenderAssimpModelBones(AnimPlay* ap, AssimpModel* am
 void RenderOpenGL::addLight(Light* light)
 {
 	this->lights.push_back(light);
-	this->setupShaders();
+	this->lights_changed = true;
 }
 
 
@@ -1740,7 +1741,7 @@ void RenderOpenGL::addLight(Light* light)
 void RenderOpenGL::remLight(Light* light)
 {
 	this->lights.erase(std::remove(this->lights.begin(), this->lights.end(), light), this->lights.end());
-	this->setupShaders();
+	this->lights_changed = true;
 }
 
 
@@ -1772,7 +1773,10 @@ void RenderOpenGL::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	CHECK_OPENGL_ERROR;
+	if (this->lights_changed) {
+		this->setupShaders();
+		this->lights_changed = false;
+	}
 
 	entitiesShadowMap();
 

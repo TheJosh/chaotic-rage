@@ -137,6 +137,7 @@ class RenderOpenGL : public Render3D
 
 		// Lights
 		vector<Light*> lights;
+		bool lights_changed;
 
 	public:
 		RenderOpenGL(GameState * st, RenderOpenGLSettings* settings);
