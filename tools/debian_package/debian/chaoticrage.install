@@ -1,3 +1,5 @@
 chaoticrage /usr/bin
 data /usr/share/chaoticrage
 maps /usr/share/chaoticrage
+chaoticrage.desktop usr/share/applications
+chaoticrage.png usr/share/icons

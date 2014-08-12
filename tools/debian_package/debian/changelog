@@ -1,3 +1,10 @@
+chaoticrage (1.8ubuntu8~trusty5) trusty; urgency=low
+
+  * New snapshot from git repo master branch 20140812.
+  * Added icon and desktop file.
+
+ -- Magnus Espersson <magnusespersson@gmail.com>  Tue, 12 Aug 2014 13:18:58 +0200
+
 chaoticrage (1.8ubuntu8~trusty4) trusty; urgency=low
 
   * New snapshot from git repo master branch 20140811.

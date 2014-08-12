@@ -151,9 +151,10 @@ dist: $(SRCPATH) data maps
 	rm -rf $(DISTTMP)
 	mkdir $(DISTTMP)
 
-	cp -r Makefile $(DISTTMP)
-	cp -r LICENSE $(DISTTMP)
-	cp -r README.md $(DISTTMP)
+	cp Makefile $(DISTTMP)
+	cp LICENSE $(DISTTMP)
+	cp README.md $(DISTTMP)
+	cp COMPILE.md $(DISTTMP)
 	cp -r $(SRCPATH) $(DISTTMP)
 	cp -r data $(DISTTMP)
 	cp -r maps $(DISTTMP)
@@ -172,6 +173,8 @@ dist: $(SRCPATH) data maps
 
 	mkdir -p $(DISTTMP)/debian
 	cp -r tools/debian_package/debian $(DISTTMP)
+	cp tools/debian_package/chaoticrage.desktop $(DISTTMP)
+	cp orig/2d/game_icon.PNG $(DISTTMP)/chaoticrage.png
 	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
 	rm -r $(DISTTMP)
 
@@ -180,9 +183,9 @@ dist-bin: chaoticrage data maps
 	rm -rf $(DISTTMP)
 	mkdir $(DISTTMP)
 
-	cp -r LICENSE $(DISTTMP)
-	cp -r README.md $(DISTTMP)
-	cp -r chaoticrage $(DISTTMP)
+	cp LICENSE $(DISTTMP)
+	cp README.md $(DISTTMP)
+	cp chaoticrage $(DISTTMP)
 	cp -r data $(DISTTMP)
 	cp -r maps $(DISTTMP)
 
@@ -203,6 +206,7 @@ clean:
 
 
 cleaner:
+	rm -f chaoticrage
 	rm -rf $(OBJPATH)/
 
 

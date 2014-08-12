@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Version=1.8
+Name=Chaotic Rage
+Comment=An unusual zombie shooter game
+Icon=chaoticrage
+Exec=chaoticrage
+Categories=Games;
