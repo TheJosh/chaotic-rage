@@ -138,6 +138,7 @@ class Render
 
 		/**
 		* Add an animation to the renderer
+		* Any animations left over at game end will be delete()ed
 		**/
 		virtual void addAnimPlay(AnimPlay* play, Entity* e) {}
 
@@ -148,6 +149,7 @@ class Render
 
 		/**
 		* Add a light to the renderer
+		* Any lights left over at game end will be delete()ed
 		**/
 		virtual void addLight(Light* light) {}
 

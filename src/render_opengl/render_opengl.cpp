@@ -1103,14 +1103,14 @@ void RenderOpenGL::setupShaders()
 
 	// Assign to phong shader
 	glUseProgram(this->shaders[SHADER_ENTITY_STATIC]->p());
-	glUniform3fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightPos"), idx, glm::value_ptr(LightPos[0]));
-	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightColor"), idx, glm::value_ptr(LightColor[0]));
+	glUniform3fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightPos"), 4, glm::value_ptr(LightPos[0]));
+	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightColor"), 4, glm::value_ptr(LightColor[0]));
 	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
 
 	// And terrain
 	glUseProgram(this->shaders[SHADER_TERRAIN]->p());
-	glUniform3fv(this->shaders[SHADER_TERRAIN]->uniform("uLightPos"), idx, glm::value_ptr(LightPos[0]));
-	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uLightColor"), idx, glm::value_ptr(LightColor[0]));
+	glUniform3fv(this->shaders[SHADER_TERRAIN]->uniform("uLightPos"), 4, glm::value_ptr(LightPos[0]));
+	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uLightColor"), 4, glm::value_ptr(LightColor[0]));
 	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
 
 	CHECK_OPENGL_ERROR;
@@ -1123,6 +1123,18 @@ void RenderOpenGL::setupShaders()
 void RenderOpenGL::postGame()
 {
 	delete(this->waterobj);
+
+	// Delete any `AnimPlay`s we still own
+	for (int i = this->animations.size() - 1; i >= 0; --i) {
+		delete(this->animations.at(i).play);
+	}
+	this->animations.clear();
+
+	// Delete any `Light`s we still own
+	for (int i = this->lights.size() - 1; i >= 0; --i) {
+		delete(this->lights.at(i));
+	}
+	this->lights.clear();
 }
 
 
