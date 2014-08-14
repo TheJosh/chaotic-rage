@@ -3,6 +3,7 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <iostream>
+#include <string>
 #include <confuse.h>
 #include "../rage.h"
 #include "../audio/audio.h"
@@ -32,14 +33,33 @@ Sound* loadItemSound(cfg_t* cfg_item, Mod* mod)
 {
 	Sound* snd;
 	string filename;
+	char* tmp;
 
 	snd = new Sound();
-	snd->name = cfg_getstr(cfg_item, "name");
 
+	// Set name field
+	tmp = cfg_getstr(cfg_item, "name");
+	if (tmp == 0) {
+		mod->setLoadErr("No value for field 'name'");
+		delete(snd);
+		return NULL;
+	}
+	snd->name = std::string(tmp);
+
+	// Determine filename
+	tmp = cfg_getstr(cfg_item, "file");
+	if (tmp == 0) {
+		mod->setLoadErr("No value for field 'file'");
+		delete(snd);
+		return NULL;
+	}
 	filename = "sounds/";
-	filename.append(cfg_getstr(cfg_item, "file"));
+	filename.append(tmp);
+
+	// Read file
 	snd->sound = GEng()->audio->loadSound(filename, mod);
 	if (snd->sound == NULL) {
+		mod->setLoadErr("Unable to load file '%s'", filename.c_str());
 		delete(snd);
 		return NULL;
 	}
