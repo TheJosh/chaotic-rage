@@ -3,7 +3,7 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include "buttonbar.h"
-
+#include <stdio.h>
 
 #define BUFFER_MAX 5
 
