@@ -344,14 +344,14 @@ void AssimpModel::loadMaterials(Render3D* render, const struct aiScene* sc)
 		// Diffuse texture
 		if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
 			if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
-				myMat->diffuse = this->loadTexture(render, path);
+				myMat->diffuse = this->loadTexture(render, &path);
 			}
 		}
 
 		// Normal map
 		if (pMaterial->GetTextureCount(aiTextureType_NORMALS) > 0) {
 			if (pMaterial->GetTexture(aiTextureType_NORMALS, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
-				myMat->normal = this->loadTexture(render, path);
+				myMat->normal = this->loadTexture(render, &path);
 			}
 		}
 
@@ -365,9 +365,9 @@ void AssimpModel::loadMaterials(Render3D* render, const struct aiScene* sc)
 *
 * TODO: We should save these in a std::map so we don't load the same stuff multiple times.
 **/
-SpritePtr AssimpModel::loadTexture(Render3D* render, aiString path)
+SpritePtr AssimpModel::loadTexture(Render3D* render, aiString* path)
 {
-	string p(path.data);
+	string p(path->data);
 
 	if (p.substr(0, 2) == ".\\") p = p.substr(2, p.size() - 2);
 	if (p.substr(0, 2) == "./") p = p.substr(2, p.size() - 2);

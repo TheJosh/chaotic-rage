@@ -32,8 +32,8 @@ bool loadLang(const char* name)
 
 	Mod* mod = new Mod(NULL, "data/i18n");
 
-	strcpy(buf, name);
-	strcat(buf, ".txt");
+	strncpy(buf, name, BUFFER_MAX);
+	strncat(buf, ".txt", BUFFER_MAX);
 	char* input = mod->loadText(buf);
 	if (input == NULL) {
 		delete mod;

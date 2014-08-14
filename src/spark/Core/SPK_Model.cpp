@@ -19,6 +19,8 @@
 // 3. This notice may not be removed or altered from any source distribution.	//
 //////////////////////////////////////////////////////////////////////////////////
 
+// Altered source, not the original software
+
 
 #include "Core/SPK_Model.h"
 #include "Core/SPK_Interpolator.h"
@@ -197,7 +199,7 @@ namespace SPK
 
 		if (nbInterpolatedParams > 0)
 		{
-			interpolatedParams = new int[nbMutableParams];
+			interpolatedParams = new int[nbInterpolatedParams];
 			for (size_t i = 0; i < nbInterpolatedParams; ++i)
 				interpolatedParams[i] = model.interpolatedParams[i];
 		}
