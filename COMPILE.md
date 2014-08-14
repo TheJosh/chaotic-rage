@@ -48,6 +48,12 @@ Both Bullet and Assimp use cmake, so you'll need that as well if you're using
 their install scripts.
 
 
+Compiling on Gentoo
+-------------------
+
+You'll need to edit the makefile and set LUAPKG=lua
+
+
 Compiling on Windows using MSVC
 -------------------------------
 
