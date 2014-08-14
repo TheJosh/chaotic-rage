@@ -52,7 +52,10 @@ WallType* loadItemWallType(cfg_t* cfg_item, Mod* mod)
 	char * tmp = cfg_getstr(cfg_item, "model");
 	if (tmp != NULL) {
 		wt->model = mod->getAssimpModel(tmp);
-		if (! wt->model) return NULL;
+		if (! wt->model) {
+			delete(wt);
+			return NULL;
+		}
 		wt->col_shape = wt->model->getCollisionShape();
 	}
 
@@ -69,14 +72,21 @@ WallType* loadItemWallType(cfg_t* cfg_item, Mod* mod)
 			cfg_t *cfg_damage = cfg_getnsec(cfg_item, "damage", j);
 
 			char * tmp = cfg_getstr(cfg_damage, "model");
-			if (tmp == NULL) return NULL;
+			if (tmp == NULL) {
+				delete(wt);
+				return NULL;
+			}
 
 			WallTypeDamage * dam = new WallTypeDamage();
 
 			dam->health = cfg_getint(cfg_damage, "health");
 
 			dam->model = mod->getAssimpModel(tmp);
-			if (! dam->model) return NULL;
+			if (! dam->model) {
+				delete(dam);
+				delete(wt);
+				return NULL;
+			}
 
 			wt->damage_models.push_back(dam);
 		}
@@ -103,5 +113,3 @@ WallType::~WallType()
 {
 	delete(this->col_shape);
 }
-
-

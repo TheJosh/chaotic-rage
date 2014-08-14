@@ -202,6 +202,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		char * tmp = cfg_getstr(cfg_sound, "sound");
 		if (tmp == NULL) {
 			delete(wts);
+			delete(wt);
 			return NULL;
 		}
 		wts->snd = mod->getSound(tmp);

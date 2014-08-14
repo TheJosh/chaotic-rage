@@ -624,6 +624,7 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 		SDL_RWops* rw = mod->loadRWops(filename);
 		if (rw == NULL) {
 			glDeleteTextures(1, &cubemap->pixels);
+			delete(cubemap);
 			return NULL;
 		}
 
@@ -631,6 +632,7 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 		surf = IMG_Load_RW(rw, 0);
 		if (surf == NULL) {
 			glDeleteTextures(1, &cubemap->pixels);
+			delete(cubemap);
 			SDL_RWclose(rw);
 			return NULL;
 		}
@@ -642,6 +644,7 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 		} else {
 			if (currWidth != surf->w || currHeight != surf->h) {
 				glDeleteTextures(1, &cubemap->pixels);
+				delete(cubemap);
 				SDL_RWclose(rw);
 				return NULL;
 			}
@@ -667,6 +670,7 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 
 		} else {
 			glDeleteTextures(1, &cubemap->pixels);
+			delete(cubemap);
 			SDL_FreeSurface(surf);
 			SDL_RWclose(rw);
 			return NULL;

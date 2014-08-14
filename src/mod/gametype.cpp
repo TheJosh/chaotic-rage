@@ -84,6 +84,7 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 			int faction_id = cfg_getint(cfg_faction, "id");
 			if (faction_id < 0 || faction_id >= NUM_FACTIONS) {
 				mod->setLoadErr("Invalid faction id %i", faction_id);
+				delete(gt);
 				return NULL;
 			}
 
@@ -104,6 +105,7 @@ GameType* loadItemGameType(cfg_t* cfg_item, Mod* mod)
 				WeaponType * wt = mod->getWeaponType(cfg_getnstr(cfg_faction, "spawn_weapons", k));
 				if (wt == NULL) {
 					mod->setLoadErr("Invalid spawn weapon %s for action %i", cfg_getnstr(cfg_faction, "spawn_weapons", k), faction_id);
+					delete(gt);
 					return NULL;
 				}
 

@@ -374,6 +374,7 @@ bool Mod::reloadAttrs()
 		old->belt_limit = nu->belt_limit;
 	}
 
+	delete(n_weapontypes);
 	return true;
 }
 

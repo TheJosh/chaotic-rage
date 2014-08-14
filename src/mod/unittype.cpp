@@ -78,9 +78,15 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 
 	// 3D model
 	char * tmp = cfg_getstr(cfg_item, "model");
-	if (tmp == NULL) return NULL;
+	if (tmp == NULL) {
+		delete(uc);
+		return NULL;
+	}
 	uc->model = mod->getAssimpModel(tmp);
-	if (uc->model == NULL) return NULL;
+	if (uc->model == NULL) {
+		delete(uc);
+		return NULL;
+	}
 
 	// Col shape
 	uc->col_shape = new btCapsuleShape(0.6f, 0.9f);
@@ -121,6 +127,7 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 		char * tmp = cfg_getstr(cfg_sound, "sound");
 		if (tmp == NULL) {
 			delete(uts);
+			delete(uc);
 			return NULL;
 		}
 		uts->snd = mod->getSound(tmp);

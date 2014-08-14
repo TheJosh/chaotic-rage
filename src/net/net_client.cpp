@@ -224,62 +224,62 @@ void NetClient::preGame()
 void NetClient::addmsgInfoReq()
 {
 	//cout << "C INFO_REQ" << endl;
-	NetMsg * msg = new NetMsg(INFO_REQ, 0);
-	msg->seq = this->seq;
-	messages.push_back(*msg);
+	NetMsg msg(INFO_REQ, 0);
+	msg.seq = this->seq;
+	messages.push_back(msg);
 }
 
 void NetClient::addmsgJoinReq()
 {
 	//cout << "C JOIN_REQ" << endl;
-	NetMsg * msg = new NetMsg(JOIN_REQ, 0);
-	msg->seq = this->seq;
-	messages.push_back(*msg);
+	NetMsg msg(JOIN_REQ, 0);
+	msg.seq = this->seq;
+	messages.push_back(msg);
 }
 
 void NetClient::addmsgJoinAck()
 {
 	//cout << "C JOIN_ACK" << endl;
-	NetMsg * msg = new NetMsg(JOIN_ACK, 0);
-	msg->seq = this->seq;
-	messages.push_back(*msg);
+	NetMsg msg(JOIN_ACK, 0);
+	msg.seq = this->seq;
+	messages.push_back(msg);
 }
 
 void NetClient::addmsgDataCompl()
 {
 	//cout << "C JOIN_DONE" << endl;
-	NetMsg * msg = new NetMsg(JOIN_DONE, 0);
-	msg->seq = this->seq;
-	messages.push_back(*msg);
+	NetMsg msg(JOIN_DONE, 0);
+	msg.seq = this->seq;
+	messages.push_back(msg);
 }
 
 void NetClient::addmsgChat()
 {
 	//cout << "C CHAT_REQ" << endl;
-	NetMsg * msg = new NetMsg(CHAT_REQ, 0);
-	msg->seq = this->seq;
-	messages.push_back(*msg);
+	NetMsg msg(CHAT_REQ, 0);
+	msg.seq = this->seq;
+	messages.push_back(msg);
 }
 
 void NetClient::addmsgKeyMouseStatus(int x, int y, int delta, Uint8 k)
 {
 	//cout << "C CLIENT_STATE" << endl;
-	NetMsg * msg = new NetMsg(CLIENT_STATE, 7);
-	msg->seq = this->seq;
+	NetMsg msg(CLIENT_STATE, 7);
+	msg.seq = this->seq;
 
-	pack(msg->data, "hhhc",
+	pack(msg.data, "hhhc",
 		(Sint16)x, (Sint16)y, (Sint16)delta, k
 	);
 
-	messages.push_back(*msg);
+	messages.push_back(msg);
 }
 
 void NetClient::addmsgQuit()
 {
 	//cout << "C QUIT_REQ" << endl;
-	NetMsg * msg = new NetMsg(QUIT_REQ, 0);
-	msg->seq = this->seq;
-	messages.push_back(*msg);
+	NetMsg msg(QUIT_REQ, 0);
+	msg.seq = this->seq;
+	messages.push_back(msg);
 
 	this->ingame = false;
 }

@@ -101,6 +101,7 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 		wt->model = mod->getAssimpModel(tmp);
 		if (! wt->model) {
 			mod->setLoadErr("Invalid model: %s", tmp);
+			delete(wt);
 			return NULL;
 		}
 		wt->col_shape = wt->model->getCollisionShape();
@@ -117,6 +118,7 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 		node.node = wt->model->findNode(tmp);
 		if (node.node == NULL) {
 			mod->setLoadErr("Node '%s' not found in model '%s'", tmp, wt->model->getName().c_str());
+			delete(wt);
 			return NULL;
 		}
 
@@ -132,6 +134,7 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 		wt->weapon_primary = mod->getWeaponType(tmp);
 		if (! wt->weapon_primary) {
 			mod->setLoadErr("Invalid primary weapon: %s", tmp);
+			delete(wt);
 			return NULL;
 		}
 	}
@@ -153,13 +156,20 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 			cfg_t *cfg_damage = cfg_getnsec(cfg_item, "damage", j);
 
 			char * tmp = cfg_getstr(cfg_damage, "model");
-			if (tmp == NULL) return NULL;
+			if (tmp == NULL) {
+				delete(wt);
+				return NULL;
+			}
 
 			VehicleTypeDamage * dam = new VehicleTypeDamage();
 
 			dam->health = cfg_getint(cfg_damage, "health");
 			dam->model = mod->getAssimpModel(tmp);
-			if (! dam->model) return NULL;
+			if (! dam->model) {
+				delete(wt);
+				delete(dam);
+				return NULL;
+			}
 
 			wt->damage_models.push_back(dam);
 		}
@@ -209,4 +219,3 @@ VehicleTypeNode* VehicleType::getNode(VehicleNodeType type)
 	}
 	return NULL;
 }
-

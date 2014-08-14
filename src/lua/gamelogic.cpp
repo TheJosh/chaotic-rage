@@ -454,7 +454,8 @@ LUA_FUNC(ammo_drop)
 LUA_FUNC(show_alert_message)
 {
 	const char* ctext = lua_tostring(L, 1);
-	string text = (*(new string(ctext)));
+	assert(ctext != NULL);
+	string text(ctext);
 	if (text.empty()) {
 		lua_pushstring(L, "Arg #1 is not a string");
 		lua_error(L);

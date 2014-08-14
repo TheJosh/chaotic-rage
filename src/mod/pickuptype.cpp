@@ -102,7 +102,10 @@ PickupType* loadItemPickupType(cfg_t* cfg_item, Mod* mod)
 	char * tmp = cfg_getstr(cfg_item, "model");
 	if (tmp != NULL) {
 		pt->model = mod->getAssimpModel(tmp);
-		if (! pt->model) return NULL;
+		if (! pt->model) {
+			delete(pt);
+			return NULL;
+		}
 		pt->col_shape = pt->model->getCollisionShape();
 	}
 
@@ -201,4 +204,3 @@ void PickupType::finished(Unit *u)
 		u->rollbackPickupAdjust(this->temp);
 	}
 }
-

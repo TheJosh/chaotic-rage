@@ -107,6 +107,7 @@ bool NetServer::update()
 
 		// Find the appropriate client
 		NetServerClientInfo *client = NULL;
+		bool new_client = false;
 		for (vector<NetServerClientInfo*>::iterator cli = this->clients.begin(); cli != this->clients.end(); ++cli) {
 			if ((*cli) != NULL && (*cli)->ipaddress.host == pkt->address.host && (*cli)->code == code) {
 				client = (*cli);
@@ -121,6 +122,7 @@ bool NetServer::update()
 			client->ipaddress.port = pkt->address.port;
 			client->code = code;
 			client->seq = newseq;
+			new_client = true;
 		} else if (newseq > client->seq) {
 			// Update their seq
 			client->seq = newseq;
@@ -137,6 +139,10 @@ bool NetServer::update()
 					ptr += num; p += num;
 				}
 			}
+		}
+
+		if (new_client) {
+			delete(client);
 		}
 	}
 	
