@@ -51,7 +51,23 @@ their install scripts.
 Compiling on Gentoo
 -------------------
 
-You'll need to edit the makefile and set LUAPKG=lua
+To compile this game in gentoo, add these USE flags in package.use:
+media-libs/sdl2-mixer flac wav vorbis
+media-libs/sdl2-image jpeg png
+
+Install the dependencies:
+* sdl2-image
+* sdl2-mixer
+* sdl2-net
+* libsdl2
+* mesa
+* glew
+* lua
+* freetype
+* bullet
+* assimp
+
+You also will need to edit the makefile and set LUAPKG=lua
 
 
 Compiling on Windows using MSVC
