@@ -10,6 +10,7 @@
 #include <assimp/cimport.h>
 #include <assimp/postprocess.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <btBulletDynamicsCommon.h>
 
 #include "gl_debug.h"
@@ -100,6 +101,10 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadType loadtype)
 
 	free(data);
 
+	if (debug_enabled("loadbones")) {
+		cout << endl << this->name << endl;
+	}
+
 	if (render != NULL && render->is3D()) {
 		this->loadMeshes(true, sc);
 		this->loadMaterials(render, sc);
@@ -113,7 +118,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadType loadtype)
 
 	this->loadNodes(sc);
 	this->loadAnimations(sc);
-	this->calcBoundingBox(sc);
+	this->calcBoundingBox(sc, loadtype != AssimpLoadMapMesh);
 	this->setBoneNodes();
 
 	return true;
@@ -123,7 +128,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadType loadtype)
 /**
 * Returns the bounding size of the mesh of the first frame
 **/
-void AssimpModel::calcBoundingBox(const struct aiScene* sc)
+void AssimpModel::calcBoundingBox(const struct aiScene* sc, bool recenter)
 {
 	aiMatrix4x4 trafo;
 	aiIdentityMatrix4(&trafo);
@@ -134,6 +139,20 @@ void AssimpModel::calcBoundingBox(const struct aiScene* sc)
 	max.x = max.y = max.z = -1e10f;
 	this->calcBoundingBoxNode(sc->mRootNode, &min, &max, &trafo, sc);
 	boundingSize = btVector3(max.x - min.x, max.y - min.y, max.z - min.z);
+
+	// Recenter the model to the middle of the bounding box
+	if (recenter) {
+		glm::vec4 translate(
+			(min.x + max.x) / -2.0f,
+			(min.y + max.y) / -2.0f,
+			(min.z + max.z) / -2.0f,
+			1.0f
+		);
+		this->rootNode->transform[3] = translate;
+		if (debug_enabled("loadbones")) {
+			cout << "Recenter " << rootNode->name << "  " << rootNode->transform[3][0] << "x" << rootNode->transform[3][1] << "x" << rootNode->transform[3][2] << endl;
+		}
+	}
 }
 
 
