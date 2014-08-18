@@ -24,6 +24,7 @@ class Decaying : public Entity
 
 	public:
 		AnimPlay *anim;
+		unsigned int remove_after;
 
 	private:
 		static btCollisionShape* col_shape;

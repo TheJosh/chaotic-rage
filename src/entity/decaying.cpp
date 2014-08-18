@@ -17,6 +17,9 @@ using namespace std;
 btCollisionShape* Decaying::col_shape;
 
 
+#define MAX_AGE (5 * 60 * 1000)
+
+
 Decaying::Decaying(GameState *st, const btTransform &xform, AnimPlay *play, float mass) : Entity(st)
 {
 	this->anim = new AnimPlay(*play);
@@ -29,6 +32,8 @@ Decaying::Decaying(GameState *st, const btTransform &xform, AnimPlay *play, floa
 
 	this->body = st->physics->addRigidBody(Decaying::col_shape, mass, motionState, CG_DEBRIS);
 	st->addAnimPlay(this->anim, this);
+	
+	this->remove_after = st->game_time + MAX_AGE;
 }
 
 Decaying::~Decaying()
@@ -44,9 +49,13 @@ Decaying::~Decaying()
 **/
 void Decaying::update(int delta)
 {
+	if (this->st->game_time > this->remove_after) {
+		this->del = true;
+	}
 }
 
 Sound* Decaying::getSound()
 {
 	return NULL;
 }
+
