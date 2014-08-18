@@ -38,11 +38,6 @@ NPC::~NPC()
 **/
 void NPC::update(int delta)
 {
-	if (remove_at != 0) {
-		if (remove_at <= st->game_time) this->del = 1;
-		return;
-	}
-
 	logic->update();
 	Unit::update(delta);
 
@@ -58,8 +53,6 @@ int NPC::takeDamage(float damage)
 
 	if (result == 1) {
 		this->st->logic->raise_npcdied();
-
-		// TODO: play death sound
 
 		this->st->deadButNotBuried(this, this->anim);
 	}

@@ -42,7 +42,6 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 	this->fac = fac;
 
 	this->health = uc->begin_health;
-	this->remove_at = 0;
 
 	this->weapon = NULL;
 	this->firing = false;
@@ -483,11 +482,6 @@ void Unit::setTransform(btTransform &t) {
 **/
 void Unit::update(int delta)
 {
-	if (remove_at != 0) {
-		if (remove_at <= st->game_time) this->del = 1;
-		return;
-	}
-
 	if (GEng()->server != NULL) {
 		GEng()->server->addmsgUnitState(this);
 	}
@@ -613,6 +607,7 @@ void Unit::update(int delta)
 
 /**
 * We have been hit! Take some damage
+* Returns 1 if the unit died, 0 if it did not
 **/
 int Unit::takeDamage(float damage)
 {
@@ -623,7 +618,7 @@ int Unit::takeDamage(float damage)
 
 	this->st->increaseEntropy(1);
 
-	if (this->health <= 0 && remove_at == 0) {
+	if (this->health <= 0 && this->del == false) {
 		this->endFiring();
 		this->leaveVehicle();
 
@@ -632,6 +627,8 @@ int Unit::takeDamage(float damage)
 		if (uta) {
 			this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
 		}
+
+		// TODO: play death sound
 
 		// Fling some body parts around
 		if (!this->uc->death_debris.empty()) {

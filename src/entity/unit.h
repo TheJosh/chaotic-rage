@@ -91,7 +91,6 @@ class Unit : public Entity
 		UnitParams params;
 
 		float health;
-		unsigned int remove_at;
 
 		AnimPlay * anim;
 		int weapon_sound;
