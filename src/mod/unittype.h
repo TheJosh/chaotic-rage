@@ -57,6 +57,7 @@ class UnitParams
 		int melee_cooldown;     // milliseconds
 		int special_delay;      // milliseconds
 		int special_cooldown;   // milliseconds
+		bool invincible;        // cannot be hurt in any way
 };
 
 class UnitType

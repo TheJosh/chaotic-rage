@@ -31,6 +31,7 @@ cfg_opt_t adjust_opts[] =
 	CFG_FLOAT((char*) "melee-damage", 1.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "melee-delay", 1.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "melee-cooldown", 1.0f, CFGF_NONE),
+	CFG_BOOL((char*) "invincible", cfg_false, CFGF_NONE),
 	CFG_END()
 };
 
@@ -139,6 +140,7 @@ PickupTypeAdjust* PickupType::loadAdjust(cfg_t* cfg)
 	pt->melee_damage = (float)cfg_getfloat(cfg, "melee-damage");
 	pt->melee_delay = (float)cfg_getfloat(cfg, "melee-delay");
 	pt->melee_cooldown = (float)cfg_getfloat(cfg, "melee-cooldown");
+	pt->invincible = (cfg_getbool(cfg, "invincible") == cfg_true);
 
 	return pt;
 }
@@ -180,7 +182,9 @@ bool PickupType::doUse(Unit *u)
 		case PICKUP_TYPE_POWERUP:
 			u->applyPickupAdjust(this->perm);
 			u->applyPickupAdjust(this->temp);
-			st->addHUDMessage(u->slot, "Picked up a ", this->title);
+			if (!this->title.empty()) {
+				st->addHUDMessage(u->slot, "Picked up a ", this->title);
+			}
 			break;
 
 		case PICKUP_TYPE_CURSOR:

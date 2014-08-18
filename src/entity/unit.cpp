@@ -32,6 +32,7 @@ class btVector3;
 
 using namespace std;
 
+PickupType* Unit::initial_pickup;
 
 
 Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) : Entity(st)
@@ -91,6 +92,23 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 		this->pickupWeapon(spawn->at(i));
 	}
 	delete(spawn);
+
+	// Create the initial pickup used for invinciblity
+	if (! Unit::initial_pickup) {
+		Unit::initial_pickup = new PickupType();
+		Unit::initial_pickup->type = PICKUP_TYPE_POWERUP;
+		Unit::initial_pickup->perm = new PickupTypeAdjust();
+		Unit::initial_pickup->temp = new PickupTypeAdjust();
+		Unit::initial_pickup->temp->invincible = true;
+	}
+
+	// Make them invincible for a little while
+	Unit::initial_pickup->doUse(this);
+	UnitPickup up;
+	up.pt = Unit::initial_pickup;
+	up.u = this;
+	up.end_time = st->game_time + 2500;
+	pickups.push_back(up);
 
 	this->body = NULL;
 }
@@ -611,6 +629,10 @@ void Unit::update(int delta)
 **/
 int Unit::takeDamage(float damage)
 {
+	if (this->params.invincible) {
+		return 0;
+	}
+
 	this->health -= damage;
 
 	btTransform xform = this->ghost->getWorldTransform();
@@ -794,6 +816,10 @@ void Unit::applyPickupAdjust(PickupTypeAdjust* adj)
 	this->params.melee_damage *= adj->melee_damage;
 	this->params.melee_delay *= adj->melee_delay;
 	this->params.melee_cooldown *= adj->melee_cooldown;
+
+	if (adj->invincible) {
+		this->params.invincible = true;
+	}
 }
 
 
@@ -809,6 +835,10 @@ void Unit::rollbackPickupAdjust(PickupTypeAdjust* adj)
 	this->params.melee_damage /= adj->melee_damage;
 	this->params.melee_delay /= adj->melee_delay;
 	this->params.melee_cooldown /= adj->melee_cooldown;
+
+	if (adj->invincible) {
+		this->params.invincible = false;
+	}
 }
 
 

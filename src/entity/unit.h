@@ -169,4 +169,10 @@ class Unit : public Entity
 		void emptySound();
 		void enterVehicle(Vehicle *v);
 		void leaveVehicle();
+
+	private:
+		/**
+		* A pickup applied when the unit is first created
+		**/
+		static PickupType* initial_pickup;
 };

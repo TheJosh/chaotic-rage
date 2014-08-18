@@ -29,6 +29,12 @@ class PickupTypeAdjust
 		float melee_damage;
 		float melee_delay;
 		float melee_cooldown;
+		bool invincible;
+
+	public:
+		PickupTypeAdjust():
+			health(1.0f), max_speed(1.0f), melee_damage(1.0f), melee_delay(1.0f), melee_cooldown(1.0f), invincible(false)
+			{}
 };
 
 
