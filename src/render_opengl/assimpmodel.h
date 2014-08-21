@@ -188,6 +188,7 @@ class AssimpModel
 		float* boneWeights;
 		btVector3 boundingSize;
 		btCollisionShape *shape;
+		bool recenter;
 
 	protected:
 		Mod *mod;
@@ -210,7 +211,7 @@ class AssimpModel
 		string getName() { return this->name; }
 
 	private:
-		void calcBoundingBox(const struct aiScene* sc, bool recenter);
+		void calcBoundingBox(const struct aiScene* sc);
 		void calcBoundingBoxNode(const aiNode* nd, aiVector3D* min, aiVector3D* max, aiMatrix4x4* trafo, const struct aiScene* sc);
 
 		void loadMeshes(bool opengl, const struct aiScene* sc);
@@ -235,4 +236,5 @@ class AssimpModel
 		void setBoneNodes();
 
 		void createCollisionShape();
+		bool wasRecentered() { return this->recenter; }
 };

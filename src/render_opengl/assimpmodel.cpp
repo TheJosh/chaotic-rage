@@ -31,6 +31,7 @@ AssimpModel::AssimpModel(Mod* mod, string name)
 	this->boneIds = NULL;
 	this->boneWeights = NULL;
 	this->rootNode = NULL;
+	this->recenter = true;
 }
 
 
@@ -76,6 +77,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadType loadtype)
 		flags |= aiProcess_FindInvalidData;
 		flags |= aiProcess_OptimizeGraph;
 		flags |= aiProcess_SplitLargeMeshes;
+		this->recenter = false;
 	}
 
 	// Read the file from the mod
@@ -118,7 +120,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadType loadtype)
 
 	this->loadNodes(sc);
 	this->loadAnimations(sc);
-	this->calcBoundingBox(sc, loadtype != AssimpLoadMapMesh);
+	this->calcBoundingBox(sc);
 	this->setBoneNodes();
 
 	return true;
@@ -128,7 +130,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadType loadtype)
 /**
 * Returns the bounding size of the mesh of the first frame
 **/
-void AssimpModel::calcBoundingBox(const struct aiScene* sc, bool recenter)
+void AssimpModel::calcBoundingBox(const struct aiScene* sc)
 {
 	aiMatrix4x4 trafo;
 	aiIdentityMatrix4(&trafo);
@@ -141,7 +143,7 @@ void AssimpModel::calcBoundingBox(const struct aiScene* sc, bool recenter)
 	boundingSize = btVector3(max.x - min.x, max.y - min.y, max.z - min.z);
 
 	// Recenter the model to the middle of the bounding box
-	if (recenter) {
+	if (this->recenter) {
 		glm::vec4 translate(
 			(min.x + max.x) / -2.0f,
 			(min.y + max.y) / -2.0f,
@@ -150,7 +152,7 @@ void AssimpModel::calcBoundingBox(const struct aiScene* sc, bool recenter)
 		);
 		this->rootNode->transform[3] = translate;
 		if (debug_enabled("loadbones")) {
-			cout << "Recenter " << rootNode->name << "  " << rootNode->transform[3][0] << "x" << rootNode->transform[3][1] << "x" << rootNode->transform[3][2] << endl;
+			cout << "Recenter '" << rootNode->name << "' to " << rootNode->transform[3][0] << "x" << rootNode->transform[3][1] << "x" << rootNode->transform[3][2] << endl;
 		}
 	}
 }
@@ -422,6 +424,11 @@ AssimpNode* AssimpModel::loadNode(aiNode* nd, unsigned int depth)
 
 	if (debug_enabled("loadbones")) {
 		cout << string(depth*4, ' ') << myNode->name << "  " << myNode->transform[3][0] << "x" << myNode->transform[3][1] << "x" << myNode->transform[3][2] << endl;
+	}
+
+	// If this is set, we 
+	if (strstr(nd->mName.C_Str(), "NORECENTER") != NULL) {
+		this->recenter = false;
 	}
 
 	for (i = 0; i < nd->mNumMeshes; i++) {
