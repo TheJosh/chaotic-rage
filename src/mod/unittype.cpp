@@ -89,7 +89,7 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	}
 
 	// Col shape
-	uc->col_shape = new btCapsuleShape(0.6f, 0.9f);
+	uc->col_shape = new btCapsuleShape(0.6f, UNIT_PHYSICS_HEIGHT/2.0f);
 
 	// Params
 	uc->params.max_speed = (float)cfg_getfloat(cfg_item, "max_speed");
