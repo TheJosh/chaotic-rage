@@ -346,7 +346,7 @@ unsigned int NetClient::handlePlayerDrop(Uint8 *data, unsigned int size)
 {
 	//cout << "       handlePlayerDrop()" << endl;
 
-	unsigned int slot = 0;
+	unsigned int slot;
 	unpack(data, "h",
 		&slot
 	);

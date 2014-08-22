@@ -315,8 +315,12 @@ void NetServer::addmsgChat()
 void NetServer::addmsgHUD(HUDLabel *l)
 {
 	//cout << "HUD: " << l->data << endl;
+	// TODO: Implement a proper unique check
+	messages.remove_if(IsTypeUniqPred(HUD_MSG, static_cast<int>(l->x + l->y)));
+
 	NetMsg msg(HUD_MSG, 4 + 4 + l->data.length() + 2);
 	msg.seq = this->seq;
+	msg.uniq = static_cast<int>(l->x + l->y);
 
 	pack(msg.data, "ffs",
 		l->x, l->y, l->data.c_str()

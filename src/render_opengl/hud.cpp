@@ -53,12 +53,6 @@ HUDLabel * HUD::addLabel(float x, float y, string data)
 {
 	HUDLabel * l = new HUDLabel(x, y, data);
 	l->width = (float) (this->render)->virt_width;
-
-	// Send state over network
-	if (GEng()->server != NULL && l->visible == true) {
-		GEng()->server->addmsgHUD(l);
-	}
-
 	this->labels.push_back(l);
 	return l;
 }
@@ -100,7 +94,7 @@ void HUD::draw()
 
 	} else {
 		// Messages
-		float y = 1000.0f;
+		float y = (float) (this->render)->virt_height;
 		for (list<HUDMessage*>::iterator it = this->msgs.begin(); it != this->msgs.end(); ++it) {
 			HUDMessage *msg = (*it);
 
@@ -116,6 +110,10 @@ void HUD::draw()
 		// Labels
 		for (list<HUDLabel*>::iterator it = this->labels.begin(); it != this->labels.end(); ++it) {
 			HUDLabel *l = (*it);
+			// Send state over network
+			if (GEng()->server != NULL) {
+				GEng()->server->addmsgHUD(l);
+			}
 			if (! l->visible) continue;
 
 			if (l->align == ALIGN_LEFT) {
