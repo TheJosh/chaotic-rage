@@ -258,6 +258,7 @@
     <ClCompile Include="..\..\src\lua\lua_standard.cpp" />
     <ClCompile Include="..\..\src\lua\lua_unitinfo_lib.cpp" />
     <ClCompile Include="..\..\src\lua\lua_vector3_lib.cpp" />
+    <ClCompile Include="..\..\src\render_opengl\light.cpp" />
     <ClCompile Include="..\..\src\render_opengl\menu.cpp" />
     <ClCompile Include="..\..\src\mod\aitype.cpp" />
     <ClCompile Include="..\..\src\mod\campaign.cpp" />
@@ -471,6 +472,7 @@
     <ClInclude Include="..\..\src\lua\gamelogic.h" />
     <ClInclude Include="..\..\src\lua\luatimer.h" />
     <ClInclude Include="..\..\src\lua\lua_libs.h" />
+    <ClInclude Include="..\..\src\render_opengl\light.h" />
     <ClInclude Include="..\..\src\render_opengl\menu.h" />
     <ClInclude Include="..\..\src\mod\aitype.h" />
     <ClInclude Include="..\..\src\mod\campaign.h" />
