@@ -48,6 +48,9 @@ class AnimPlay
 		// Move nodes and their transforms
 		map<AssimpNode*, glm::mat4> move_nodes;
 
+		// Additional transform as requested by the caller
+		glm::mat4 custom_transform;
+
 		// These are calculated by calcTransforms()
 		// and then fed into the renderer
 		map<AssimpNode*, glm::mat4> transforms;
@@ -58,31 +61,40 @@ class AnimPlay
 	public:
 		AnimPlay(AssimpModel* model);
 
+		// Animations
 		void setAnimation(unsigned int animation, unsigned int start_frame, unsigned int end_frame, bool loop);
 		void setAnimation(unsigned int animation, unsigned int start_frame, unsigned int end_frame);
 		void setAnimation(unsigned int animation);
 		void clearAnimation();
+		void pause();
+		void resume();
 
+		// Callback fired when the animation ends
 		void setEndedCallback(AnimPlayCallback func, void* data);
 		void setEndedCallback(AnimPlayCallback func);
 		void setEndedCallback(void* data);
 
+		// Arbitary movement of nodes (e.g. gun turret)
 		void addMoveNode(string node);
 		void addMoveNode(AssimpNode *nd);
 		void setMoveTransform(string node, glm::mat4 transform);
 		void setMoveTransform(AssimpNode *nd, glm::mat4 transform);
 		void resetMoveTransform(string node);
 
+		// Custom transform which gets multiplied by the root node transform
+		void setCustomTransform(glm::mat4 custom_transform);
+		void setCustomTransform(glm::vec3 translate);
+
+		// The actual model this animation represents
 		AssimpModel* getModel() { return this->model; }
 
+		// Calculate the animation transforms
 		void calcTransformsStatic();
 		void calcTransforms();
 		void calcBoneTransforms();
 
+		// Get the current transform of a given node
 		glm::mat4 getNodeTransform(AssimpNode* nd);
-
-		void pause();
-		void resume();
 
 	private:
 		void calcTransformNodeStatic(AssimpNode* nd, glm::mat4 transform);
