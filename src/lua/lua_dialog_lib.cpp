@@ -77,7 +77,7 @@ LUA_FUNC(prompt_text)
 	}
 
 	if (! lua_isfunction(L, 2)) {
-		lua_pushstring(L, "Arg #1 is not a function");
+		lua_pushstring(L, "Arg #2 is not a function");
 		lua_error(L);
 	}
 
@@ -337,4 +337,3 @@ void load_dialog_lib(lua_State *L)
 		.addFunction("basicKeyPress", &basicKeyPress)
 	.endNamespace();
 }
-

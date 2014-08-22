@@ -53,5 +53,3 @@ class HUD {
 
 		HUDLabel * addLabel(float x, float y, string data);
 };
-
-

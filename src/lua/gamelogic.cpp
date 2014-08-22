@@ -312,7 +312,7 @@ LUA_FUNC(add_interval)
 	}
 
 	if (! lua_isfunction(L, 2)) {
-		lua_pushstring(L, "Arg #1 is not a function");
+		lua_pushstring(L, "Arg #2 is not a function");
 		lua_error(L);
 	}
 
@@ -349,7 +349,7 @@ LUA_FUNC(add_timer)
 	}
 
 	if (! lua_isfunction(L, 2)) {
-		lua_pushstring(L, "Arg #1 is not a function");
+		lua_pushstring(L, "Arg #2 is not a function");
 		lua_error(L);
 	}
 
