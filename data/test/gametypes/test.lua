@@ -2,14 +2,13 @@
 ----  Test scripting features & gametype concepts
 ----
 
-
 bind_gamestart(function(slot)
-	
-	show_alert_message("testing 1,2,3")
-	
-	ui.basicKeyPress("h", function()
-		show_alert_message("cooooool")
-	end)
-	
+	set_viewmode(2)
+	debug_physics(true)
+	game.addNpc("zomb", "dumbo", factions.team2)
+end);
+
+bind_playerjoin(function(slot)
+	game.addPlayer(get_selected_unittype(), factions.team1, slot)
 end);
 

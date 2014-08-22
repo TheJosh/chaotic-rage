@@ -59,8 +59,8 @@ AILogic::AILogic(Unit *u)
 	this->ActiveLuaState();
 	register_lua_functions();
 
-	this->dir = btVector3(0,0,0);
-	this->dir_flag = true;
+	this->dir = btVector3(0.0f, 0.0f, 0.0f);
+	this->dir_flag = false;
 	this->speed = 0;
 	this->needEndFiring = false;
 }
@@ -137,12 +137,14 @@ void AILogic::update()
 		btScalar walkSpeed = u->params.max_speed;
 
 		// Rotation update
-		btVector3 fwd = btVector3(0.0, 0.0, 1.0);
-		btVector3 axis = fwd.cross(this->dir);
-		axis.normalize();
-		float angle = acos(this->dir.dot(fwd));
-		btQuaternion rot = btQuaternion(axis, angle).normalize();
-		u->ghost->getWorldTransform().setBasis(btMatrix3x3(rot));
+		if (this->dir.length2() > btScalar(0.0001)) {
+			btVector3 fwd = btVector3(0.0, 0.0, 1.0);
+			btVector3 axis = fwd.cross(this->dir);
+			axis.normalize();
+			float angle = acos(this->dir.dot(fwd));
+			btQuaternion rot = btQuaternion(axis, angle).normalize();
+			u->ghost->getWorldTransform().setBasis(btMatrix3x3(rot));
+		}
 
 		// Position update
 		u->character->setVelocityForTimeInterval(this->dir * walkSpeed, 1.0f);
@@ -346,7 +348,10 @@ LUA_FUNC(move)
 {
 	double * v = get_vector3(L, 1);
 	btVector3 walkDirection = btVector3((float)v[0], (float)v[1], (float)v[2]);
-	walkDirection.normalize();
+
+	if (walkDirection.length2() > btScalar(0.0001)) {
+		walkDirection.normalize();
+	}
 
 	gl->dir = walkDirection;
 	gl->dir_flag = true;
