@@ -4,9 +4,11 @@
 
 #include <iostream>
 #include "../rage.h"
+#include "../game_engine.h"
 #include "../game_state.h"
 #include "../entity/player.h"
 #include "../mod/weapontype.h"
+#include "../net/net_server.h"
 #include "hud.h"
 #include "render_opengl.h"
 
@@ -51,6 +53,11 @@ HUDLabel * HUD::addLabel(float x, float y, string data)
 {
 	HUDLabel * l = new HUDLabel(x, y, data);
 	l->width = (float) (this->render)->virt_width;
+
+	// Send state over network
+	if (GEng()->server != NULL && l->visible == true) {
+		GEng()->server->addmsgHUD(l);
+	}
 
 	this->labels.push_back(l);
 	return l;

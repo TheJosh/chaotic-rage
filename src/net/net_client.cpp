@@ -21,6 +21,7 @@
 #include "../entity/wall.h"
 #include "../mod/weapontype.h"
 #include "../mod/mod_manager.h"
+#include "../render_opengl/hud.h"
 #include "../util/ui_update.h"
 #include "net.h"
 #include "net_client.h"
@@ -356,6 +357,22 @@ unsigned int NetClient::handlePlayerDrop(Uint8 *data, unsigned int size)
 	}
 
 	return 2;
+}
+
+unsigned int NetClient::handleHUD(Uint8 *data, unsigned int size)
+{
+	//cout << "       handleHUD()" << endl;
+
+	float x, y;
+	char buffer[512];
+
+	unpack(data, "ffs",
+		&x, &y, &buffer
+	);
+
+	st->addHUDLabel(st->local_players[0]->slot, x, y, string(buffer));
+
+	return 8 + strlen(buffer) + 2;
 }
 
 

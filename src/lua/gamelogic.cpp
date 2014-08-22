@@ -476,7 +476,7 @@ LUA_FUNC(add_label)
 	const char * data = lua_tostring(L, 3);
 	HUDLabel * lab;
 
-	lab = gl->st->addHUDLabel(1, x, y, data);
+	lab = gl->st->addHUDLabel(ALL_SLOTS, x, y, data);
 
 	if (lab) {
 		new_hudlabel(L, lab);

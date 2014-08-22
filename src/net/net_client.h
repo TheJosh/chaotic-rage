@@ -64,6 +64,7 @@ class NetClient {
 		unsigned int handleDataCompl(Uint8 *data, unsigned int size);
 		unsigned int handleChat(Uint8 *data, unsigned int size);
 		unsigned int handlePlayerDrop(Uint8 *data, unsigned int size);
+		unsigned int handleHUD(Uint8 *data, unsigned int size);
 
 		unsigned int handleUnitState(Uint8 *data, unsigned int size);
 		unsigned int handleWallState(Uint8 *data, unsigned int size);

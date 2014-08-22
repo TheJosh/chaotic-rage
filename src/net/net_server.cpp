@@ -28,6 +28,7 @@
 #include "../mod/objecttype.h"
 #include "../mod/pickuptype.h"
 #include "../mod/weapontype.h"
+#include "../render_opengl/hud.h"
 
 using namespace std;
 
@@ -281,7 +282,7 @@ void NetServer::addmsgJoinAcc(NetServerClientInfo *client)
 	//cout << "JOIN_OKAY" << endl;
 	string map = this->st->map->getName();
 
-	NetMsg msg(JOIN_OKAY, 4 + map.length());
+	NetMsg msg(JOIN_OKAY, 2 + map.length() + 2);
 	msg.seq = this->seq;
 
 	pack(msg.data, "hs",
@@ -309,6 +310,19 @@ void NetServer::addmsgDataCompl()
 void NetServer::addmsgChat()
 {
 	// TODO: Implement
+}
+
+void NetServer::addmsgHUD(HUDLabel *l)
+{
+	//cout << "HUD: " << l->data << endl;
+	NetMsg msg(HUD_MSG, 4 + 4 + l->data.length() + 2);
+	msg.seq = this->seq;
+
+	pack(msg.data, "ffs",
+		l->x, l->y, l->data.c_str()
+	);
+
+	messages.push_back(msg);
 }
 
 void NetServer::addmsgClientDrop(NetServerClientInfo *client)

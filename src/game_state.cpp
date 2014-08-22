@@ -378,6 +378,7 @@ void GameState::addParticleGroup(SPK::Group* group)
 	#ifdef USE_SPARK
 		if (this->particle_renderer == NULL) return;
 		group->setRenderer(this->particle_renderer);
+		if (this->particle_system == NULL) return;
 		this->particle_system->addGroup(group);
 	#endif
 }
@@ -726,13 +727,20 @@ void GameState::addHUDMessage(unsigned int slot, string text, string text2)
 **/
 HUDLabel* GameState::addHUDLabel(unsigned int slot, float x, float y, string data)
 {
-
-	// This doesn't actually work properly
-
-	PlayerState *ps = this->localPlayerFromSlot(1);
-
-	if (ps && ps->hud) {
-		return ps->hud->addLabel(x, y, data);
+	PlayerState *ps;
+	
+	if (slot == ALL_SLOTS) {
+		for (unsigned int i = 0; i < num_local; i++) {
+			ps = local_players[i];
+			if (ps && ps->hud) {
+				return ps->hud->addLabel(x, y, data);
+			}
+		}
+	} else {
+		ps = this->localPlayerFromSlot(slot);
+		if (ps && ps->hud) {
+			return ps->hud->addLabel(x, y, data);
+		}
 	}
 
 	return NULL;

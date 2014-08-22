@@ -50,6 +50,7 @@ class NetServer {
 		void addmsgJoinRej();
 		void addmsgDataCompl();
 		void addmsgChat();
+		void addmsgHUD(HUDLabel *l);
 		void addmsgClientDrop(NetServerClientInfo *client);
 		void addmsgUnitState(Unit *u);
 		void addmsgWallState(Wall *w);
