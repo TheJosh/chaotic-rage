@@ -438,14 +438,12 @@ int mk_down_x[MAX_LOCAL], mk_down_y[MAX_LOCAL];
 **/
 void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 {
-	int start = 0;
-
 	for (int i = 0; i < MAX_LOCAL; i++) {
 		game_x[i] = game_y[i] = net_x[i] = net_y[i] = mk_down_x[i] = mk_down_y[i] = 0;
 		ignore_relative_mouse[i] = false;
 	}
 
-	start = SDL_GetTicks();
+	int start = SDL_GetTicks();
 
 	this->physics->preGame();
 	this->map->preGame();
