@@ -22,6 +22,8 @@ using namespace std;
 #define UNIT_SOUND_CELEBRATE 6
 #define UNIT_SOUND_FAIL 7
 
+#define UNIT_PHYSICS_HEIGHT 1.8f
+
 
 class UnitType;
 class Mod;

@@ -57,6 +57,10 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 	this->force = btVector3(0.0f, 0.0f, 0.0f);
 
 	this->anim = new AnimPlay(this->uc->model);
+
+	glm::vec3 translate(0.0f, UNIT_PHYSICS_HEIGHT/-2.0f, 0.0f);
+	this->anim->setCustomTransform(translate);
+
 	st->addAnimPlay(this->anim, this);
 
 	// Set animation
@@ -68,7 +72,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 	// Ghost position
 	btTransform xform = btTransform(
 		btQuaternion(btVector3(0,0,1), 0),
-		st->physics->spawnLocation(x, y, 0.9f)
+		st->physics->spawnLocation(x, y, UNIT_PHYSICS_HEIGHT)
 	);
 
 	// Create ghost
