@@ -11,6 +11,7 @@
 #include "render/render.h"
 #include "render/render_3d.h"
 #include "audio/audio.h"
+#include "net/net_client.h"
 #include "net/net_server.h"
 #include "util/cmdline.h"
 #include "util/clientconfig.h"
@@ -47,6 +48,7 @@ GameEngine::GameEngine()
 	this->render = NULL;
 	this->audio = NULL;
 	this->server = NULL;
+	this->client = NULL;
 	this->cmdline = NULL;
 	this->cconf = NULL;
 	this->mm = NULL;
@@ -67,6 +69,7 @@ GameEngine::~GameEngine()
 	delete(this->render);
 	delete(this->audio);
 	delete(this->server);
+	delete(this->client);
 	delete(this->cmdline);
 	delete(this->cconf);
 	delete(this->mm);

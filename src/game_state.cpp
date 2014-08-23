@@ -593,19 +593,8 @@ void GameState::update(int delta)
 /**
 * Called by non-gameloop code (e.g. network, scripting) to indicate
 * a game-over situation
-**/
-void GameState::gameOver()
-{
-	this->running = false;
-	this->last_game_result = -1;
-}
-
-
-/**
-* Called by non-gameloop code (e.g. network, scripting) to indicate
-* a game-over situation
 *
-* This variant also sets a "result" flag (1 = success, 0 = failure)
+* Sets a "result" flag (1 = success, 0 = failure, -1 = undefined - network error or likewise)
 * which is passed to the campaign logic to decide what to do next.
 **/
 void GameState::gameOver(int result)
@@ -699,8 +688,9 @@ vector<WeaponType*>* GameState::getSpawnWeapons(UnitType* ut, Faction fac)
 /**
 * Send a message to a given slot. Use ALL_SLOTS to send to all slots
 **/
-void GameState::addHUDMessage(unsigned int slot, string text)
+void GameState::addHUDMessage(unsigned int slot, string text, string text2)
 {
+	text.append(text2);
 	if (slot == ALL_SLOTS) {
 		for (unsigned int i = 0; i < num_local; i++) {
 			local_players[i]->hud->addMessage(text);
@@ -709,16 +699,6 @@ void GameState::addHUDMessage(unsigned int slot, string text)
 		PlayerState *ps = localPlayerFromSlot(slot);
 		if (ps) ps->hud->addMessage(text);
 	}
-}
-
-
-/**
-* Send a message to a given slot. Use ALL_SLOTS to send to all slots
-**/
-void GameState::addHUDMessage(unsigned int slot, string text, string text2)
-{
-	text.append(text2);
-	this->addHUDMessage(slot, text);
 }
 
 
@@ -784,18 +764,12 @@ bool GameState::mousePick(unsigned int x, unsigned int y, btVector3& hitLocation
 }
 
 
-
 void GameState::addDebugLine(btVector3 * a, btVector3 * b)
 {
 	DebugLine *dl = new DebugLine();
 	dl->a = new btVector3(*a);
 	dl->b = new btVector3(*b);
 	lines.push_back(dl);
-}
-
-void GameState::addDebugPoint(float x, float y, float z)
-{
-	this->addDebugPoint(x, y, z, 1.0f);
 }
 
 void GameState::addDebugPoint(float x, float y, float z, float len)

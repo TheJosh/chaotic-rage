@@ -54,6 +54,7 @@ class GameEngine
 		Render* render;
 		Audio* audio;
 		NetServer* server;
+		NetClient* client;
 		CommandLineArgs* cmdline;
 		ClientConfig* cconf;
 		ModManager* mm;

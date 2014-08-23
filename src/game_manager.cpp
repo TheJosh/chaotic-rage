@@ -299,9 +299,8 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	NetGameinfo *gameinfo;
 	MapReg *map;
 	Map *m;
-	NetClient *client;
 
-	client = new NetClient(st);
+	GEng()->client = new NetClient(st);
 	st->logic = NULL;
 	st->map = NULL;
 	st->gs = new GameSettings();
@@ -313,7 +312,7 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	st->local_players[0] = new PlayerState(st);
 
 	// Try to join the server
-	gameinfo = client->attemptJoinGame(host, 17778, ui);
+	gameinfo = GEng()->client->attemptJoinGame(host, 17778, ui);
 	if (gameinfo == NULL) {
 		displayMessageBox("Unable to connect to server " + host);
 		goto cleanup;
@@ -339,14 +338,14 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 
 	// Download the gamestate
 	// When this is done, a final message is sent to tell the server we are done.
-	if (! client->downloadGameState()) {
+	if (! GEng()->client->downloadGameState()) {
 		displayMessageBox("Unable to download intial game state from server " + host);
 		//st->postGame();	// TODO: Needed? Crashes
 		goto cleanup;
 	}
 
 	// Begin!
-	st->gameLoop(GEng()->render, GEng()->audio, client);
+	st->gameLoop(GEng()->render, GEng()->audio, GEng()->client);
 
 cleanup:
 	delete st->logic;
@@ -354,5 +353,4 @@ cleanup:
 	delete st->gs;
 	delete st->gt;
 	st->physics->postGame();
-	delete client;
 }

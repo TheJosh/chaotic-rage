@@ -178,8 +178,7 @@ class GameState
 		void gameLoop(Render* render, Audio* audio, NetClient* client);
 
 		// Called by Lua, etc
-		void gameOver();
-		void gameOver(int result);
+		void gameOver(int result = -1);
 		int getLastGameResult();
 
 		// Weapon fun
@@ -190,17 +189,14 @@ class GameState
 		void increaseEntropy(unsigned int slot);
 
 		// HUD
-		void addHUDMessage(unsigned int slot, string text);
-		void addHUDMessage(unsigned int slot, string text, string text2);
+		void addHUDMessage(unsigned int slot, string text, string text2 = "");
 		HUDLabel* addHUDLabel(unsigned int slot, float x, float y, string data);
 		bool mousePick(unsigned int x, unsigned int y, btVector3& hitLocation, Entity** hitEntity);
 
 		// Debugging
 		void addDebugLine(btVector3 * a, btVector3 * b);
-		void addDebugPoint(float x, float y, float z);
-		void addDebugPoint(float x, float y, float z, float len);
+		void addDebugPoint(float x, float y, float z, float len = 1.0f);
 };
 
 
 GameState * getGameState();
-

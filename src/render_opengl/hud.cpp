@@ -111,10 +111,10 @@ void HUD::draw()
 		for (list<HUDLabel*>::iterator it = this->labels.begin(); it != this->labels.end(); ++it) {
 			HUDLabel *l = (*it);
 			// Send state over network
+			if (! l->visible || l->a <= 0.001f) continue;
 			if (GEng()->server != NULL) {
 				GEng()->server->addmsgHUD(l);
 			}
-			if (! l->visible) continue;
 
 			if (l->align == ALIGN_LEFT) {
 				this->render->renderText(l->data, l->x, l->y, l->r, l->g, l->b, l->a);
@@ -127,6 +127,9 @@ void HUD::draw()
 				int w = render->widthText(l->data);
 				this->render->renderText(l->data, l->x + (l->width - w), l->y, l->r, l->g, l->b, l->a);
 			}
+		}
+		if (GEng()->client != NULL) {
+			this->labels.clear();
 		}
 
 		// Health, ammo, etc
