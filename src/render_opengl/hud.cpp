@@ -159,7 +159,7 @@ void HUD::draw()
 	}
 
 	// Crosshair
-	if (this->render->viewmode == GameSettings::firstPerson && this->ps->p != NULL) {
+	if (this->ps->p != NULL && (this->render->viewmode == GameSettings::firstPerson || this->ps->p->getWeaponZoom() > 0.0f)) {
 		WeaponType* wt = this->ps->p->getWeaponTypeCurr();
 		if (wt->crosshair) {
 			int size = wt->crosshair_min;		// TODO: Make dynamic based on accuracy

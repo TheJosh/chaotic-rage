@@ -118,6 +118,10 @@ void Player::handleKeyChange()
 		this->endSpecialAttack();
 	}
 
+	if (this->key[KEY_ZOOM] && !this->lkey[KEY_ZOOM]) {
+		this->zoomWeapon();
+	}
+
 	for (int i = 0; i < 16; i++) this->lkey[i] = this->key[i];
 }
 
@@ -138,7 +142,7 @@ void Player::angleFromMouse(int x, int y, int delta)
 		this->vertical_angle = 0.0f;
 	}
 
-	if (this->drive || GEng()->render->viewmode == GameSettings::firstPerson) {
+	if (this->drive || GEng()->render->viewmode == GameSettings::firstPerson || this->weapon_zoom > 0.0f) {
 		float max_angle;
 
 		if (this->drive) {

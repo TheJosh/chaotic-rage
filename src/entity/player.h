@@ -24,6 +24,7 @@ class Player : public Unit
 			KEY_LIFT,
 			KEY_MELEE,
 			KEY_SPECIAL,
+			KEY_ZOOM,
 		};
 
 	public:

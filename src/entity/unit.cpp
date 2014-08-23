@@ -51,6 +51,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 	this->special_firing = false;
 	this->special_time = 0;
 	this->special_cooldown = 0;
+	this->weapon_zoom = 0.0f;
 
 	this->lift_obj = NULL;
 	this->drive = NULL;
@@ -333,6 +334,19 @@ bool Unit::pickupAmmo(WeaponType* wt)
 	}
 
 	return false;
+}
+
+
+/**
+* Loop through weapon zoom levels
+**/
+void Unit::zoomWeapon()
+{
+	if (this->weapon_zoom == 0.0f) {
+		this->weapon_zoom = 2.5f;
+	} else {
+		this->weapon_zoom = 0.0f;
+	}
 }
 
 

@@ -1878,34 +1878,30 @@ void RenderOpenGL::mainRot()
 		dist = 80.0f;
 		lift = 0.0f;
 		angle = st->game_time / 100.0f;
+
 	} else {
-		switch (this->viewmode) {
-			case GameSettings::behindPlayer:
-				tilt = 17.0f;
-				dist = 25.0f;
-				lift = 0.0f;
-				break;
+		if (this->viewmode == GameSettings::firstPerson || this->render_player->getWeaponZoom() > 0.0f) {
+			tilt = 0.0f;
+			dist = 0.0f - this->render_player->getWeaponZoom();
+			lift = UNIT_PHYSICS_HEIGHT / 2.3f;
 
-			case GameSettings::abovePlayer:
-				tilt = 60.0f;
-				dist = 50.0f;
-				lift = 0.0f;
-				break;
+		} else if (this->viewmode == GameSettings::behindPlayer) {
+			tilt = 17.0f;
+			dist = 25.0f;
+			lift = 0.0f;
 
-			case GameSettings::firstPerson:
-				tilt = 0.0f;
-				dist = 0.0f;
-				lift = 1.72f;
-				break;
+		} else if (this->viewmode == GameSettings::abovePlayer) {
+			tilt = 60.0f;
+			dist = 50.0f;
+			lift = 0.0f;
 
-			default:
-				cerr << "ERROR: Wrong viewmode: " << this->viewmode << endl;
-				// Try to fix it
-				this->viewmode = GameSettings::behindPlayer;
-				tilt = 17.0f;
-				dist = 25.0f;
-				lift = 0.0f;
-				break;
+		} else {
+			// That's odd. Fix it.
+			cerr << "ERROR: Wrong viewmode: " << this->viewmode << endl;
+			this->viewmode = GameSettings::behindPlayer;
+			tilt = 17.0f;
+			dist = 25.0f;
+			lift = 0.0f;
 		}
 
 		// Load the character details into the variables
@@ -1920,7 +1916,7 @@ void RenderOpenGL::mainRot()
 		} else {
 			trans = this->render_player->getTransform();
 			angle = this->render_player->mouse_angle + 180.0f;
-			if (this->viewmode == GameSettings::firstPerson) {
+			if (this->viewmode == GameSettings::firstPerson || this->render_player->getWeaponZoom() > 0.0f) {
 				tilt -= this->render_player->vertical_angle;
 			}
 		}
