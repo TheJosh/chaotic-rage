@@ -24,3 +24,11 @@
 24	Nom d'hôte
 25	Actualiser la liste
 26	Rejoindre la partie
+27	MSAA
+28	Tex Filter
+29	Language
+30	Fullscreen
+31	Save
+32	Quit? Really?
+33	Yes
+34	No

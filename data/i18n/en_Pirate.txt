@@ -24,3 +24,11 @@
 24	Hostname
 25	Refresh list
 26	Join game
+27	MSAA
+28	Tex Filter
+29	Language
+30	Fullscreen
+31	Save
+32	Quit? Really?
+33	Yes
+34	No

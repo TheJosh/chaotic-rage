@@ -35,3 +35,15 @@ NETWORK_INTERNET         Internet
 NETWORK_HOSTNAME         Hostname
 NETWORK_REFRESH_LIST     Refresh list
 NETWORK_JOIN_GAME        Join game
+
+# Settings menu
+SETTINGS_MSAA            MSAA
+SETTINGS_TEX_FILTER      Tex Filter
+SETTINGS_LANGUAGE        Language
+SETTINGS_FULLSCREEN      Fullscreen
+SETTINGS_SAVE            Save
+
+# In game
+GAME_QUIT                Quit? Really?
+GAME_YES                 Yes
+GAME_NO                  No

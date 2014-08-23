@@ -58,7 +58,7 @@ gcn::Container * DialogClientSettings::setup()
 	RenderOpenGLSettings* gl = ((RenderOpenGL*)GEng()->render)->getSettings();
 
 	// MSAA
-	label = new gcn::Label("MSAA");
+	label = new gcn::Label(_(STRING_SETTINGS_MSAA));
 	c->add(label, 10, 10);
 	snprintf(buf, BUFFER_MAX, "%i", gl->msaa);
 	this->gl_msaa = new gcn::TextField(std::string(buf));
@@ -67,7 +67,7 @@ gcn::Container * DialogClientSettings::setup()
 	c->add(this->gl_msaa);
 
 	// Tex filter
-	label = new gcn::Label("Tex Filter");
+	label = new gcn::Label(_(STRING_SETTINGS_TEX_FILTER));
 	c->add(label, 10, 30);
 	snprintf(buf, BUFFER_MAX, "%i", gl->tex_filter);
 	this->gl_tex_filter = new gcn::TextField(std::string(buf));
@@ -76,7 +76,7 @@ gcn::Container * DialogClientSettings::setup()
 	c->add(this->gl_tex_filter);
 
 	// Language
-	label = new gcn::Label("Language");
+	label = new gcn::Label(_(STRING_SETTINGS_LANGUAGE));
 	c->add(label, 10, 50);
 	this->langs = getAvailableLangs();
 	this->lang = new gcn::DropDown(new VectorListModel(this->langs));
@@ -92,7 +92,7 @@ gcn::Container * DialogClientSettings::setup()
 
 	// Fullscreen (setting hard-coded if Android)
 	#ifndef __ANDROID__
-	label = new gcn::Label("Fullscreen");
+	label = new gcn::Label(_(STRING_SETTINGS_FULLSCREEN));
 	c->add(label, 10, 70);
 	this->fullscreen = new gcn::CheckBox("", GEng()->cconf->fullscreen);
 	this->fullscreen->setPosition(80, 70);
@@ -100,7 +100,7 @@ gcn::Container * DialogClientSettings::setup()
 	#endif
 
 	// Save button
-	this->button = new gcn::Button("Save");
+	this->button = new gcn::Button(_(STRING_SETTINGS_SAVE));
 	this->button->setPosition(w - bw - p, h - bh - p);
 	this->button->setSize(bw, bh);
 	this->button->addActionListener(this);

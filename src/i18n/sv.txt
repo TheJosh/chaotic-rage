@@ -35,3 +35,15 @@ NETWORK_INTERNET         Internet
 NETWORK_HOSTNAME         Värdnamn
 NETWORK_REFRESH_LIST     Ladda om lista
 NETWORK_JOIN_GAME        Anslut till spel
+
+# Settings menu
+SETTINGS_MSAA            MSAA
+SETTINGS_TEX_FILTER      Tex-Filter
+SETTINGS_LANGUAGE        Språk
+SETTINGS_FULLSCREEN      Fullskärm
+SETTINGS_SAVE            Spara
+
+# In game
+GAME_QUIT                Avsluta? Säker?
+GAME_YES                 Ja
+GAME_NO                  Nej

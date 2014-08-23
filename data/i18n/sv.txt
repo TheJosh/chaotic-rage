@@ -24,3 +24,11 @@
 24	Värdnamn
 25	Ladda om lista
 26	Anslut till spel
+27	MSAA
+28	Tex-Filter
+29	Språk
+30	Fullskärm
+31	Spara
+32	Avsluta? Säker?
+33	Ja
+34	Nej

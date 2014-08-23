@@ -5,6 +5,7 @@
 #include "dialog.h"
 #include "../game_engine.h"
 #include "../game_state.h"
+#include "../i18n/gettext.h"
 
 
 using namespace std;
@@ -61,17 +62,17 @@ gcn::Container * DialogQuit::setup()
 {
 	gcn::Button* button;
 
-	c = new gcn::Window("Quit? Really?");
+	c = new gcn::Window(_(STRING_GAME_QUIT));
 	c->setDimension(gcn::Rectangle(0, 0, 300, 100));
 
-	button = new gcn::Button("Yes");
+	button = new gcn::Button(_(STRING_GAME_YES));
 	button->setPosition(150 - 5 - 60, 30);
 	button->setWidth(60);
 	button->setId("Y");
 	button->addActionListener(this);
 	c->add(button);
 
-	button = new gcn::Button("No");
+	button = new gcn::Button(_(STRING_GAME_NO));
 	button->setPosition(150 + 5, 30);
 	button->setWidth(60);
 	button->setId("N");
