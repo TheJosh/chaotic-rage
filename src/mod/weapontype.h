@@ -51,6 +51,8 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 		int crosshair_min;
 		int crosshair_max;
 
+		vector<float> zoom_levels;
+
 	public:
 		WeaponType();
 		virtual ~WeaponType() {}

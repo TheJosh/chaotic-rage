@@ -105,7 +105,7 @@ class Unit : public Entity
 		bool firing;
 		vector<UnitWeapon*> avail_weapons;
 		unsigned int curr_weapon_id;
-		float weapon_zoom;
+		unsigned int weapon_zoom_level;
 
 		unsigned int melee_cooldown;
 
@@ -150,7 +150,7 @@ class Unit : public Entity
 		unsigned int getNextWeaponID();
 		int getBelt();
 		int getMagazine();
-		float getWeaponZoom() { return this->weapon_zoom; }
+		float getWeaponZoom();
 
 		float getHealth();
 		float getHealthPercent();

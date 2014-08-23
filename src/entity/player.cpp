@@ -142,7 +142,7 @@ void Player::angleFromMouse(int x, int y, int delta)
 		this->vertical_angle = 0.0f;
 	}
 
-	if (this->drive || GEng()->render->viewmode == GameSettings::firstPerson || this->weapon_zoom > 0.0f) {
+	if (this->drive || GEng()->render->viewmode == GameSettings::firstPerson || this->weapon_zoom_level != 0) {
 		float max_angle;
 
 		if (this->drive) {

@@ -51,7 +51,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 	this->special_firing = false;
 	this->special_time = 0;
 	this->special_cooldown = 0;
-	this->weapon_zoom = 0.0f;
+	this->weapon_zoom_level = 0;
 
 	this->lift_obj = NULL;
 	this->drive = NULL;
@@ -342,11 +342,23 @@ bool Unit::pickupAmmo(WeaponType* wt)
 **/
 void Unit::zoomWeapon()
 {
-	if (this->weapon_zoom == 0.0f) {
-		this->weapon_zoom = 2.5f;
+	if (this->weapon == NULL) return;
+
+	if (this->weapon_zoom_level < this->weapon->wt->zoom_levels.size()-1) {
+		this->weapon_zoom_level++;
 	} else {
-		this->weapon_zoom = 0.0f;
+		this->weapon_zoom_level = 0;
 	}
+}
+
+
+/**
+* Get the current zoom amount in metres
+**/
+float Unit::getWeaponZoom()
+{
+	if (this->weapon == NULL) return 0.0f;
+	return this->weapon->wt->zoom_levels[this->weapon_zoom_level];
 }
 
 
@@ -397,6 +409,7 @@ void Unit::setWeapon(int id)
 
 	this->weapon = uw;
 	this->firing = false;
+	this->weapon_zoom_level = 0;
 
 	curr_weapon_id = id;
 }
