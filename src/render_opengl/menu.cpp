@@ -228,9 +228,12 @@ void Menu::updateUI()
 					}
 					break;
 
+				case SDLK_F2:
+					GEng()->audio->toggleMusicPlay();
+					break;
+
 				default: break;
 			}
-
 		}
 
 		input->pushInput(event);
