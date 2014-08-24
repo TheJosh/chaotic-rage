@@ -2,15 +2,15 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include "net_client.h"
+
 #include <iostream>
-#include <math.h>
 #include <SDL_net.h>
 
 #include "../rage.h"
 #include "../game_state.h"
 #include "../game_engine.h"
 #include "../entity/ammo_round.h"
-#include "../entity/decaying.h"
 #include "../entity/entity.h"
 #include "../entity/helicopter.h"
 #include "../entity/object.h"
@@ -21,10 +21,9 @@
 #include "../entity/wall.h"
 #include "../mod/weapontype.h"
 #include "../mod/mod_manager.h"
-#include "../render_opengl/hud.h"
+#include "../render_opengl/hud_label.h"
 #include "../util/ui_update.h"
 #include "net.h"
-#include "net_client.h"
 #include "net_gameinfo.h"
 
 using namespace std;
@@ -294,7 +293,15 @@ void NetClient::addmsgQuit()
 unsigned int NetClient::handleInfoResp(Uint8 *data, unsigned int size)
 {
 	//cout << "       handleInfoResp()" << endl;
-	return 0;
+
+	char mod[128];
+	char map[128];
+
+	unpack(data, "ss",
+		&mod, &map
+	);
+
+	return strlen(mod) + 2 + strlen(map) + 2;
 }
 
 unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)

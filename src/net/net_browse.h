@@ -3,18 +3,14 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include <SDL.h>
-#include <SDL_net.h>
+#include <string>
 #include <vector>
 
 using namespace std;
-
-
-class UIUpdate;
 
 
 /**
 * Returns a list of local server names
 * Don't forget to delete() the result!
 **/
-vector<string>* getLocalServers(UIUpdate * ui);
+vector<string>* getLocalServers();

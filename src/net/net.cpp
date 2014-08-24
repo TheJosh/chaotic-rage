@@ -2,11 +2,13 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <math.h>
-#include <SDL_net.h>
-#include "../rage.h"
 #include "net.h"
+
+#include <iomanip>
+#include <iostream>
+#include <SDL_net.h>
+
+#include "../rage.h"
 #include "net_client.h"
 #include "net_server.h"
 

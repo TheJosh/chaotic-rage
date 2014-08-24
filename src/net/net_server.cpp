@@ -2,20 +2,20 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include "net_server.h"
+
 #include <iostream>
-#include <math.h>
 #include <algorithm>
 #include <SDL_net.h>
 
 #include "net.h"
-#include "net_server.h"
 #include "../util/serverconfig.h"
 #include "../rage.h"
+#include "../game_engine.h"
 #include "../game_state.h"
 #include "../map/map.h"
 #include "../lua/gamelogic.h"
 #include "../entity/ammo_round.h"
-#include "../entity/decaying.h"
 #include "../entity/entity.h"
 #include "../entity/object.h"
 #include "../entity/pickup.h"
@@ -23,12 +23,14 @@
 #include "../entity/player.h"
 #include "../entity/vehicle.h"
 #include "../entity/wall.h"
+#include "../mod/mod.h"
+#include "../mod/mod_manager.h"
 #include "../mod/unittype.h"
 #include "../mod/walltype.h"
 #include "../mod/objecttype.h"
 #include "../mod/pickuptype.h"
 #include "../mod/weapontype.h"
-#include "../render_opengl/hud.h"
+#include "../render_opengl/hud_label.h"
 
 using namespace std;
 
@@ -199,13 +201,13 @@ bool NetServer::update()
 				if ((*cli)->seq > (*it).seq) continue;
 				if ((*it).dest != NULL && (*it).dest != (*cli)) continue;
 
-				unsigned int futurePktLen = pkt->len + 1 + (*it).size;
-				if (futurePktLen >= MAX_PKT_SIZE) {
+				unsigned int nextPktLen = pkt->len + 1 + (*it).size;
+				if (nextPktLen >= MAX_PKT_SIZE) {
 					cout << "Error: Server: Too many messages. Shutting down." << endl;
 					SDLNet_FreePacket(pkt);
 					return false;
 				}
-				assert(futurePktLen <= MAX_PKT_SIZE);
+				assert(nextPktLen <= MAX_PKT_SIZE);
 
 				*ptr = (*it).type;
 				ptr++; pkt->len++;
@@ -272,8 +274,16 @@ void NetServer::dropClient(NetServerClientInfo *client)
 void NetServer::addmsgInfoResp()
 {
 	//cout << "INFO_RESP" << endl;
-	NetMsg msg(INFO_RESP, 0);
+	string mod = GEng()->mm->getSupplOrBase()->getName();
+	string map = this->st->map->getName();
+
+	NetMsg msg(INFO_RESP, mod.length() + 2 + map.length() + 2);
 	msg.seq = this->seq;
+
+	pack(msg.data, "ss",
+		mod.c_str(), map.c_str()
+	);
+
 	messages.push_back(msg);
 }
 
