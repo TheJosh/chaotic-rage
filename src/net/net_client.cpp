@@ -363,16 +363,19 @@ unsigned int NetClient::handleHUD(Uint8 *data, unsigned int size)
 {
 	//cout << "       handleHUD()" << endl;
 
-	float x, y;
+	float x, y, r, g, b, a;
+	HUDLabelAlign align;
 	char buffer[512];
 
-	unpack(data, "ffs",
-		&x, &y, &buffer
+	unpack(data, "ffs hffff",
+		&x, &y, &buffer,
+		&align, &r, &g, &b, &a
 	);
 
-	st->addHUDLabel(st->local_players[0]->slot, x, y, string(buffer));
+	HUDLabel * l = new HUDLabel(x, y, string(buffer), align, r, g, b, a);
+	st->addHUDLabel(st->local_players[0]->slot, x, y, "", l);
 
-	return 8 + strlen(buffer) + 2;
+	return 4*2 + strlen(buffer)+2 + 2 + 4*4;
 }
 
 

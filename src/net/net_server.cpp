@@ -318,12 +318,13 @@ void NetServer::addmsgHUD(HUDLabel *l)
 	// TODO: Implement a proper unique check
 	messages.remove_if(IsTypeUniqPred(HUD_MSG, static_cast<int>(l->x + l->y)));
 
-	NetMsg msg(HUD_MSG, 4 + 4 + l->data.length() + 2);
+	NetMsg msg(HUD_MSG, 4*2 + l->data.length()+2 + 2 + 4*4);
 	msg.seq = this->seq;
 	msg.uniq = static_cast<int>(l->x + l->y);
 
-	pack(msg.data, "ffs",
-		l->x, l->y, l->data.c_str()
+	pack(msg.data, "ffs hffff",
+		l->x, l->y, l->data.c_str(),
+		l->align, l->r, l->g, l->b, l->a
 	);
 
 	messages.push_back(msg);

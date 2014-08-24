@@ -51,5 +51,5 @@ class HUD {
 		void addMessage(string text);
 		void addMessage(string text1, string text2);
 
-		HUDLabel * addLabel(float x, float y, string data);
+		HUDLabel * addLabel(float x, float y, string data, HUDLabel *l = NULL);
 };

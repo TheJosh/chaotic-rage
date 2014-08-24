@@ -49,9 +49,11 @@ void HUD::addMessage(string text1, string text2)
 /**
 * Add a data table to the HUD
 **/
-HUDLabel * HUD::addLabel(float x, float y, string data)
+HUDLabel * HUD::addLabel(float x, float y, string data, HUDLabel *l)
 {
-	HUDLabel * l = new HUDLabel(x, y, data);
+	if (l == NULL) {
+		l = new HUDLabel(x, y, data);
+	}
 	l->width = (float) (this->render)->virt_width;
 	this->labels.push_back(l);
 	return l;

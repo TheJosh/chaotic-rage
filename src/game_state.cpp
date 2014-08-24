@@ -705,7 +705,7 @@ void GameState::addHUDMessage(unsigned int slot, string text, string text2)
 /**
 * Add a label to a given slot. Use ALL_SLOTS to add to all slots
 **/
-HUDLabel* GameState::addHUDLabel(unsigned int slot, float x, float y, string data)
+HUDLabel* GameState::addHUDLabel(unsigned int slot, float x, float y, string data, HUDLabel* l)
 {
 	PlayerState *ps;
 	
@@ -713,13 +713,13 @@ HUDLabel* GameState::addHUDLabel(unsigned int slot, float x, float y, string dat
 		for (unsigned int i = 0; i < num_local; i++) {
 			ps = local_players[i];
 			if (ps && ps->hud) {
-				return ps->hud->addLabel(x, y, data);
+				return ps->hud->addLabel(x, y, data, l);
 			}
 		}
 	} else {
 		ps = this->localPlayerFromSlot(slot);
 		if (ps && ps->hud) {
-			return ps->hud->addLabel(x, y, data);
+			return ps->hud->addLabel(x, y, data, l);
 		}
 	}
 
