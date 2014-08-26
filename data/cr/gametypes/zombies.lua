@@ -5,6 +5,7 @@
 num_zombies = 0;
 num_wanted = 0;
 num_dead = 0;
+spawn_rate = 500;
 timer = 0;
 round = 0;
 round_max = 0;
@@ -39,8 +40,11 @@ end;
 --
 start_round = function()
 	num_zombies = 0;
-	if num_wanted < 50 then
-		num_wanted = num_wanted + 5;
+	if num_wanted < 30 then
+		num_wanted = num_wanted + 3;
+	end;
+	if spawn_rate > 100 then
+		spawn_rate = spawn_rate - 50;
 	end;
 	num_dead = 0;
 	round = round + 1;
@@ -78,7 +82,7 @@ start_round = function()
 	end;
 	
 	-- Lets get spawning
-	timer = add_interval(500, spawn_func);
+	timer = add_interval(spawn_rate, spawn_func);
 	
 	do_score();
 end;

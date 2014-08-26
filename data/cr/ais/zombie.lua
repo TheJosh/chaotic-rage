@@ -45,9 +45,9 @@ function target()
 	
 	-- do melee attack
 	if #dir < 2 then
-		fire()
-	elseif #dir < 5 then
 		melee(dir)
+	elseif #dir < 5 then
+		fire()
 	end
 end
 
