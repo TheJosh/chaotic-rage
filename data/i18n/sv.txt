@@ -8,27 +8,30 @@
 8	Avsluta
 9	Speltyp
 10	Vapen
-11	Karta
-12	Karaktär
-13	Kameraläge
-14	Var värd för nätverksspel
-15	Starta singelspel
-16	Starta spel med delad skärm
-17	Starta kampanj
-18	Standardvapen för karaktär
-19	Standardvapen för speltyp
-20	Spara val av vapen
-21	Direkt
-22	Lokalt
-23	Internet
-24	Värdnamn
-25	Ladda om lista
-26	Anslut till spel
-27	MSAA
-28	Tex-Filter
-29	Språk
-30	Fullskärm
-31	Spara
-32	Avsluta? Säker?
-33	Ja
-34	Nej
+11	Environment
+12	Karta
+13	Karaktär
+14	Kameraläge
+15	Var värd för nätverksspel
+16	Starta singelspel
+17	Starta spel med delad skärm
+18	Starta kampanj
+19	Standardvapen för karaktär
+20	Standardvapen för speltyp
+21	Spara val av vapen
+22	Day/night cycle
+23	Save environment settings
+24	Direkt
+25	Lokalt
+26	Internet
+27	Värdnamn
+28	Ladda om lista
+29	Anslut till spel
+30	MSAA
+31	Tex-Filter
+32	Språk
+33	Fullskärm
+34	Spara
+35	Avsluta? Säker?
+36	Ja
+37	Nej

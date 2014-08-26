@@ -8,27 +8,30 @@
 8	Quitter
 9	Type de jeu
 10	Armes
-11	Monde
-12	Personnages
-13	Vue
-14	Hôte de jeu en réseau
-15	Commencé la partie
+11	Environment
+12	Monde
+13	Personnages
+14	Vue
+15	Hôte de jeu en réseau
 16	Commencé la partie
 17	Commencé la partie
-18	L'arme standare du personnage
-19	L'arme standare du jeu
-20	Sauvgarder
-21	Direct
-22	Local
-23	En ligne
-24	Nom d'hôte
-25	Actualiser la liste
-26	Rejoindre la partie
-27	MSAA
-28	Tex Filter
-29	Language
-30	Fullscreen
-31	Save
-32	Quit? Really?
-33	Yes
-34	No
+18	Commencé la partie
+19	L'arme standare du personnage
+20	L'arme standare du jeu
+21	Sauvgarder
+22	Day/night cycle
+23	Save environment settings
+24	Direct
+25	Local
+26	En ligne
+27	Nom d'hôte
+28	Actualiser la liste
+29	Rejoindre la partie
+30	MSAA
+31	Tex Filter
+32	Language
+33	Fullscreen
+34	Save
+35	Quit? Really?
+36	Yes
+37	No

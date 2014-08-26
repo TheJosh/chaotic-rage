@@ -133,6 +133,7 @@ enum DialogName {
 	TEXTBOX,
 	TEXTPROMPT,
 	WEAPONS,
+	ENVIRONMENT,
 };
 
 // A buttload of class definitions for forward-decls.

@@ -18,6 +18,7 @@
 #include "list_models.h"
 #include "newgame.h"
 #include "newgame_weapons.h"
+#include "newgame_environment.h"
 
 
 using namespace std;
@@ -33,6 +34,7 @@ DialogNewGame::DialogNewGame(int num_local) : Dialog()
 	this->gametype_model = new GametypeListModel(GEng()->mm->getAllGameTypes());
 
 	this->action_weapons = new DialogNewGame_Action_Weapons(this);
+	this->action_environment = new DialogNewGame_Action_Environment(this);
 
 	this->gs = new GameSettings();
 	
@@ -79,7 +81,7 @@ gcn::Container * DialogNewGame::setup()
 		c = new gcn::Window(_(STRING_MENU_SPLIT));
 	}
 
-	c->setDimension(gcn::Rectangle(0, 0, 320, 250));
+	c->setDimension(gcn::Rectangle(0, 0, 320, 280));
 
 
 	label = new gcn::Label(_(STRING_NEWGAME_TYPE));
@@ -89,14 +91,18 @@ gcn::Container * DialogNewGame::setup()
 	this->gametype->setPosition(COLRIGHT, y);
 	this->gametype->setWidth(COLRIGHTW);
 	c->add(this->gametype);
-
-	y += SMLHEIGHT;
+	y += SMLHEIGHT + 10;
 
 	button = new gcn::Button(_(STRING_NEWGAME_WEAPONS));
 	button->setPosition(COLRIGHT, y);
 	button->addActionListener(this->action_weapons);
 	c->add(button);
+	y += BTNHEIGHT - 5;
 
+	button = new gcn::Button(_(STRING_NEWGAME_ENVIRONMENT));
+	button->setPosition(COLRIGHT, y);
+	button->addActionListener(this->action_environment);
+	c->add(button);
 	y += BTNHEIGHT;
 
 	label = new gcn::Label(_(STRING_NEWGAME_MAP));
@@ -135,7 +141,7 @@ gcn::Container * DialogNewGame::setup()
 	c->add(this->host);
 
 	button = new gcn::Button(this->num_local == 1 ? _(STRING_NEWGAME_START_SINGLE) : _(STRING_NEWGAME_START_SPLIT));
-	button->setPosition((320 - button->getWidth()) / 2, 200);
+	button->setPosition((320 - button->getWidth()) / 2, 230);
 	button->addActionListener(this);
 	c->add(button);
 
@@ -160,7 +166,7 @@ void DialogNewGame::action(const gcn::ActionEvent& actionEvent)
 
 
 /**
-* Button click processing for the "New Game" dialog
+* Button click processing for the "weapons" button
 **/
 void DialogNewGame_Action_Weapons::action(const gcn::ActionEvent& actionEvent)
 {
@@ -172,4 +178,12 @@ void DialogNewGame_Action_Weapons::action(const gcn::ActionEvent& actionEvent)
 	this->parent->m->addDialog(new DialogNewGameWeapons(this->parent, this->parent->gs, gt));
 }
 
+
+/**
+* Button click processing for the "environment" button
+**/
+void DialogNewGame_Action_Environment::action(const gcn::ActionEvent& actionEvent)
+{
+	this->parent->m->addDialog(new DialogNewGameEnvironment(this->parent, this->parent->gs));
+}
 

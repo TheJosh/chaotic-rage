@@ -14,13 +14,14 @@ class MapRegistryListModel;
 class VectorListModel;
 class GameSettings;
 class DialogNewGame_Action_Weapons;
-
+class DialogNewGame_Action_Environment;
 
 /**
 * Dialog for starting a new game - called by the menu
 **/
 class DialogNewGame : public Dialog, public gcn::ActionListener {
 	friend class DialogNewGame_Action_Weapons;
+	friend class DialogNewGame_Action_Environment;
 
 	public:
 		explicit DialogNewGame(int num_local);
@@ -43,6 +44,7 @@ class DialogNewGame : public Dialog, public gcn::ActionListener {
 		gcn::CheckBox *host;
 
 		DialogNewGame_Action_Weapons *action_weapons;
+		DialogNewGame_Action_Environment *action_environment;
 
 	public:
 		virtual gcn::Container * setup();
@@ -52,7 +54,7 @@ class DialogNewGame : public Dialog, public gcn::ActionListener {
 
 
 /**
-* Weapons action
+* Weapons button
 **/
 class DialogNewGame_Action_Weapons : public gcn::ActionListener {
 	private:
@@ -61,3 +63,15 @@ class DialogNewGame_Action_Weapons : public gcn::ActionListener {
 		explicit DialogNewGame_Action_Weapons(DialogNewGame *parent): parent(parent) {}
 		virtual void action(const gcn::ActionEvent& actionEvent);
 };
+
+/**
+* Environment button
+**/
+class DialogNewGame_Action_Environment : public gcn::ActionListener {
+	private:
+		DialogNewGame *parent;
+	public:
+		explicit DialogNewGame_Action_Environment(DialogNewGame *parent): parent(parent) {}
+		virtual void action(const gcn::ActionEvent& actionEvent);
+};
+

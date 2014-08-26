@@ -15,6 +15,7 @@ MENU_QUIT         Quit
 # New game menu
 NEWGAME_TYPE             Game type
 NEWGAME_WEAPONS          Weapons
+NEWGAME_ENVIRONMENT      Environment
 NEWGAME_MAP              Map
 NEWGAME_UNIT             Unit type
 NEWGAME_VIEW             View mode
@@ -27,6 +28,10 @@ NEWGAME_START_CAMPAIGN   Start campaign game
 WEAPONS_STANDARD_UNIT    Standard unit weapons
 WEAPONS_STANDARD_GAME    Standard game type weapons
 WEAPONS_SAVE             Save weapon settings
+
+# Environment menu
+ENVIRONMENT_DAY_NIGHT    Day/night cycle
+ENVIRONMENT_SAVE         Save environment settings
 
 # Network menu
 NETWORK_DIRECT           Direct
