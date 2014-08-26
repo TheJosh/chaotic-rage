@@ -3,7 +3,6 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include "../rage.h"
 
 using namespace std;
 
@@ -30,8 +29,9 @@ class HUDLabel
 		float a;
 
 	public:
-		HUDLabel(float x, float y, string data)
-			: x(x), y(y), width(0.0f), align(ALIGN_LEFT), data(data), visible(true),
-			  r(1.0f), g(1.0f), b(1.0f), a(1.0f)
+		HUDLabel(float x, float y, string data, HUDLabelAlign align = ALIGN_LEFT,
+			float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f)
+			: x(x), y(y), width(0.0f), align(align), data(data), visible(true),
+			  r(r), g(g), b(b), a(a)
 			{};
 };

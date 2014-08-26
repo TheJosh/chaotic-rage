@@ -2,12 +2,11 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include <iostream>
-#include <SDL_net.h>
-#include <vector>
-#include "net.h"
 #include "net_browse.h"
-#include "../util/ui_update.h"
+#include <vector>
+#include <SDL_net.h>
+#include "net.h"
+
 
 using namespace std;
 
@@ -16,7 +15,7 @@ using namespace std;
 * Returns a list of local server names
 * Don't forget to delete() the result!
 **/
-vector<string>* getLocalServers(UIUpdate * ui)
+vector<string>* getLocalServers()
 {
 	IPaddress ipaddress;
 	UDPsocket sock;
@@ -46,7 +45,7 @@ vector<string>* getLocalServers(UIUpdate * ui)
 	pkt->address = ipaddress;
 	SDLNet_UDP_Send(sock, -1, pkt);
 
-	// Wait up to five seconds for any responses
+	// Wait up to five seconds for any respons
 	unsigned int now = SDL_GetTicks();
 	do {
 		pkt->len = 0;
@@ -56,6 +55,7 @@ vector<string>* getLocalServers(UIUpdate * ui)
 				out->push_back(host);
 			}
 		}
+		SDL_Delay(100);
 
 	} while (SDL_GetTicks() - now < 5000);
 
@@ -65,4 +65,3 @@ vector<string>* getLocalServers(UIUpdate * ui)
 
 	return out;
 }
-

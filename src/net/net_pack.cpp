@@ -8,17 +8,13 @@
 // http://beej.us/guide/bgnet/
 //
 
-
-#include <iostream>
-#include <ios>
-#include <iomanip>
-#include <stdio.h>
 #include <ctype.h>
 #include <stdarg.h>
+#include <stdint.h>
 #include <string.h>
 #include <SDL_net.h>
-#include "../rage.h"
-#include "net.h"
+#include "../util/debug.h"
+
 
 using namespace std;
 

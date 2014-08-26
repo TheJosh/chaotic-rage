@@ -163,12 +163,11 @@ void LocalRefreshAction::action(const gcn::ActionEvent& actionEvent)
 
 	delete(this->owner->local_hosts);
 	delete(this->owner->local_model);
+
+	this->owner->local_hosts = getLocalServers();
 	this->owner->local_model = NULL;
 
-	this->owner->local_hosts = getLocalServers(this->owner->m);
-	this->owner->local_model = NULL;
-
-	if (this->owner->local_hosts != NULL && this->owner->local_hosts->size() > 0) {
+	if (this->owner->local_hosts != NULL && !this->owner->local_hosts->empty()) {
 		this->owner->local_model = new VectorListModel(this->owner->local_hosts);
 		this->owner->local_list->setListModel(this->owner->local_model);
 	}
@@ -188,7 +187,7 @@ void InternetRefreshAction::action(const gcn::ActionEvent& actionEvent)
 	this->owner->internet_hosts = getServerList(this->owner->m);
 	this->owner->internet_model = NULL;
 
-	if (this->owner->internet_hosts != NULL && this->owner->internet_hosts->size() > 0) {
+	if (this->owner->internet_hosts != NULL && !this->owner->internet_hosts->empty()) {
 		this->owner->internet_model = new VectorListModel(this->owner->internet_hosts);
 		this->owner->internet_list->setListModel(this->owner->internet_model);
 	}

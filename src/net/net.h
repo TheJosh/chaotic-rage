@@ -9,7 +9,6 @@
 #include "../rage.h"
 
 
-
 class NetServerSeqPred;
 class NetServerClientInfo;
 class NetClientSeqPred;
