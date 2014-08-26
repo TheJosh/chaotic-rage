@@ -49,12 +49,12 @@ void HUD::addMessage(string text1, string text2)
 /**
 * Add a data table to the HUD
 **/
-HUDLabel * HUD::addLabel(float x, float y, string data, HUDLabel *l)
+HUDLabel * HUD::addLabel(int x, int y, string data, HUDLabel *l)
 {
 	if (l == NULL) {
 		l = new HUDLabel(x, y, data);
 	}
-	l->width = (float) (this->render)->virt_width;
+	l->width = this->render->virt_width;
 	this->labels.push_back(l);
 	return l;
 }
@@ -76,8 +76,8 @@ void HUD::draw()
 {
 	if (this->weapon_menu && this->ps->p) {
 		// Weapon menu
-		float x = 100;
-		float y = 100;
+		int x = 100;
+		int y = 100;
 		unsigned int i;
 		unsigned int num = this->ps->p->getNumWeapons();
 
@@ -87,16 +87,16 @@ void HUD::draw()
 			this->render->renderText(wt->title, x, y);
 
 			if (i == this->ps->p->getCurrentWeaponID()) {
-				this->render->renderText(">", x - 25.0f, y);
+				this->render->renderText(">", x - 25, y);
 			}
 
-			y += 30.0f;
+			y += 30;
 		}
 
 
 	} else {
 		// Messages
-		float y = (float) (this->render)->virt_height;
+		int y = this->render->virt_height;
 		for (list<HUDMessage*>::iterator it = this->msgs.begin(); it != this->msgs.end(); ++it) {
 			HUDMessage *msg = (*it);
 
@@ -105,8 +105,8 @@ void HUD::draw()
 				continue;
 			}
 
-			y -= 20.0f;
-			this->render->renderText(msg->text, 20.0f, y);
+			y -= 20;
+			this->render->renderText(msg->text, 20, y);
 		}
 
 		// Labels
@@ -128,9 +128,12 @@ void HUD::draw()
 			} else if (l->align == ALIGN_RIGHT) {
 				int w = render->widthText(l->data);
 				this->render->renderText(l->data, l->x + (l->width - w), l->y, l->r, l->g, l->b, l->a);
+			} else {
+				cerr << "HUD label with unknown align: " << l->align << " : " << l->data << endl;
 			}
 		}
 		if (GEng()->client != NULL) {
+			// Workaround to remove "old" HUD labels when running as a client
 			this->labels.clear();
 		}
 
@@ -169,8 +172,8 @@ void HUD::draw()
 		if (wt->crosshair) {
 			int size = wt->crosshair_min;		// TODO: Make dynamic based on accuracy
 
-			int x = (int)round(((float)this->render->virt_width - (float)size) / 2.0f);
-			int y = (int)round(((float)this->render->virt_height - (float)size) / 2.0f);
+			int x = (this->render->virt_width - size) / 2;
+			int y = (this->render->virt_height - size) / 2;
 
 			glEnable(GL_BLEND);
 			glUseProgram(render->shaders[SHADER_BASIC]->p());
@@ -204,7 +207,7 @@ void HUD::eventDown()
 
 
 /**
-* Click or equivelent
+* Click or equivalent
 **/
 void HUD::eventClick()
 {

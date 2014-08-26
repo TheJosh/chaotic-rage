@@ -714,10 +714,11 @@ void GameState::addHUDMessage(unsigned int slot, string text, string text2)
 /**
 * Add a label to a given slot. Use ALL_SLOTS to add to all slots
 **/
-HUDLabel* GameState::addHUDLabel(unsigned int slot, float x, float y, string data, HUDLabel* l)
+HUDLabel* GameState::addHUDLabel(unsigned int slot, int x, int y, string data, HUDLabel* l)
 {
 	PlayerState *ps;
-	
+
+	// TODO: Fix if ALL_SLOTS, HUD label only added to the first slot/player
 	if (slot == ALL_SLOTS) {
 		for (unsigned int i = 0; i < num_local; i++) {
 			ps = local_players[i];

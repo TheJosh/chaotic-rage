@@ -370,11 +370,12 @@ unsigned int NetClient::handleHUD(Uint8 *data, unsigned int size)
 {
 	//cout << "       handleHUD()" << endl;
 
-	float x, y, r, g, b, a;
+	int x, y;
+	float r, g, b, a;
 	HUDLabelAlign align;
 	char buffer[512];
 
-	unpack(data, "ffs hffff",
+	unpack(data, "lls hffff",
 		&x, &y, &buffer,
 		&align, &r, &g, &b, &a
 	);

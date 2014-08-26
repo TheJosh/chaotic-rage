@@ -1771,7 +1771,7 @@ void RenderOpenGL::setAmbient(glm::vec4 ambient)
 *
 * Note that the Y is for the baseline of the text.
 **/
-void RenderOpenGL::renderText(string text, float x, float y, float r, float g, float b, float a)
+void RenderOpenGL::renderText(string text, int x, int y, float r, float g, float b, float a)
 {
 	this->font->drawString(NULL, text, x, y, r, g, b, a);
 }
@@ -2193,8 +2193,8 @@ void RenderOpenGL::fps()
 	float tick = GEng()->getAveTick();
 
 	snprintf(buf, BUFFER_MAX, "%.2f ms", tick);
-	this->renderText(buf, 400.0f, 50.0f);
+	this->renderText(buf, 400, 50);
 
 	snprintf(buf, BUFFER_MAX, "%.1f fps", 1000.0f/tick);
-	this->renderText(buf, 550.0f, 50.0f);
+	this->renderText(buf, 550, 50);
 }

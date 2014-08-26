@@ -184,7 +184,7 @@ class RenderOpenGL : public Render3D
 		virtual void postVBOrender();
 		virtual void renderObj (WavefrontObj * obj, glm::mat4 mvp);
 		virtual void loadFont(string name, Mod * mod);
-		virtual void renderText(string text, float x = 0.0f, float y = 0.0f, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
+		virtual void renderText(string text, int x = 0, int y = 0, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
 		virtual unsigned int widthText(string text);
 		virtual SpritePtr loadCubemap(string filename_base, string filename_ext, Mod * mod);
 		virtual void mouseRaycast(int x, int y, btVector3& start, btVector3& end);
@@ -234,4 +234,3 @@ class RenderOpenGL : public Render3D
 		void deleteProgram(GLShader* shader);
 		void setupShaders();
 };
-

@@ -17,9 +17,9 @@ enum HUDLabelAlign {
 class HUDLabel
 {
 	public:
-		float x;
-		float y;
-		float width;
+		int x;
+		int y;
+		int width;
 		HUDLabelAlign align;
 		string data;
 		bool visible;
@@ -29,7 +29,7 @@ class HUDLabel
 		float a;
 
 	public:
-		HUDLabel(float x, float y, string data, HUDLabelAlign align = ALIGN_LEFT,
+		HUDLabel(int x, int y, string data, HUDLabelAlign align = ALIGN_LEFT,
 			float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f)
 			: x(x), y(y), width(0.0f), align(align), data(data), visible(true),
 			  r(r), g(g), b(b), a(a)

@@ -39,8 +39,8 @@ enum MenuCommand {
 class MenuItem {
 	public:
 		string name;
-		float x1, x2;
-		float y1, y2;
+		int x1, x2;
+		int y1, y2;
 		MenuCommand cmd;
 		bool hover;
 };
@@ -113,4 +113,3 @@ class Menu : public UIUpdate
 		void startGame(MapReg *map, string gametype, string unittype, GameSettings::ViewMode viewmode, unsigned int num_local, bool host, GameSettings* gs);
 		void networkJoin(string host);
 };
-

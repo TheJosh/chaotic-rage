@@ -329,10 +329,10 @@ void Menu::menuAdd(string name, int x, int y, MenuCommand cmd)
 	MenuItem * nu = new MenuItem();
 	this->menuitems.push_back(nu);
 
-	nu->x1 = static_cast<float>(x);
-	nu->x2 = static_cast<float>(x) + 200.0f;
-	nu->y1 = static_cast<float>(y);
-	nu->y2 = static_cast<float>(y) + 20.0f;
+	nu->x1 = x;
+	nu->x2 = x + 200;
+	nu->y1 = y;
+	nu->y2 = y + 20;
 	nu->name = name;
 	nu->cmd = cmd;
 	nu->hover = false;
@@ -349,12 +349,12 @@ void Menu::menuRender()
 	for (unsigned int i = 0; i < this->menuitems.size(); i++) {
 		MenuItem * m = this->menuitems.at(i);
 
-		this->render->renderText(m->name, m->x1 + 1.0f, m->y1 + 20.0f + 1.0f, 0.1f, 0.1f, 0.1f, 1.0f);
+		this->render->renderText(m->name, m->x1 + 1, m->y1 + 20 + 1, 0.1f, 0.1f, 0.1f, 1.0f);
 
 		if (m->hover) {
-			this->render->renderText(m->name, m->x1, m->y1 + 20.0f, 161.0f/255.0f, 0.0f, 0.0f, 1.0f);
+			this->render->renderText(m->name, m->x1, m->y1 + 20, 161.0f/255.0f, 0.0f, 0.0f, 1.0f);
 		} else {
-			this->render->renderText(m->name, m->x1, m->y1 + 20.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+			this->render->renderText(m->name, m->x1, m->y1 + 20, 1.0f, 1.0f, 1.0f, 1.0f);
 		}
 	}
 }

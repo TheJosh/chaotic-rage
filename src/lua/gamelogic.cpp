@@ -471,8 +471,8 @@ LUA_FUNC(show_alert_message)
 **/
 LUA_FUNC(add_label)
 {
-	float x = (float)lua_tonumber(L, 1);
-	float y = (float)lua_tonumber(L, 2);
+	int x = lua_tointeger(L, 1);
+	int y = lua_tointeger(L, 2);
 	const char * data = lua_tostring(L, 3);
 	HUDLabel * lab;
 
