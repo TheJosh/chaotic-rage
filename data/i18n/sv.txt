@@ -8,7 +8,7 @@
 8	Avsluta
 9	Speltyp
 10	Vapen
-11	Environment
+11	Spelmiljö
 12	Karta
 13	Karaktär
 14	Kameraläge
@@ -19,8 +19,8 @@
 19	Standardvapen för karaktär
 20	Standardvapen för speltyp
 21	Spara val av vapen
-22	Day/night cycle
-23	Save environment settings
+22	Dag/natt-cykler
+23	Spara inställningar
 24	Direkt
 25	Lokalt
 26	Internet

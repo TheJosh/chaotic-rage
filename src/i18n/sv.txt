@@ -15,6 +15,7 @@ MENU_QUIT         Avsluta
 # New game menu
 NEWGAME_TYPE             Speltyp
 NEWGAME_WEAPONS          Vapen
+NEWGAME_ENVIRONMENT      Spelmiljö
 NEWGAME_MAP              Karta
 NEWGAME_UNIT             Karaktär
 NEWGAME_VIEW             Kameraläge
@@ -27,6 +28,10 @@ NEWGAME_START_CAMPAIGN   Starta kampanj
 WEAPONS_STANDARD_UNIT    Standardvapen för karaktär
 WEAPONS_STANDARD_GAME    Standardvapen för speltyp
 WEAPONS_SAVE             Spara val av vapen
+
+# Environment menu
+ENVIRONMENT_DAY_NIGHT    Dag/natt-cykler
+ENVIRONMENT_SAVE         Spara inställningar
 
 # Network menu
 NETWORK_DIRECT           Direkt
