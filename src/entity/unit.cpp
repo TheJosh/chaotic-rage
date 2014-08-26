@@ -258,7 +258,7 @@ void Unit::meleeAttack(btMatrix3x3 &direction)
 
 	// TODO: should we hack the direction to only allow X degrees of freedom in front of the unit?
 
-	Entity *e = this->raytest(direction, 5.0f);	// TODO: unit settings (melee range)
+	Entity *e = this->raytest(direction, this->params.melee_range);
 	if (e == NULL) return;
 
 	DEBUG("weap", "%p meleeAttack; ray hit %p", this, e);

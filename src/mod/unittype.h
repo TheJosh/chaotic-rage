@@ -57,6 +57,7 @@ class UnitParams
 		float melee_damage;     // hit points
 		int melee_delay;        // milliseconds
 		int melee_cooldown;     // milliseconds
+		float melee_range;      // meters
 		int special_delay;      // milliseconds
 		int special_cooldown;   // milliseconds
 		bool invincible;        // cannot be hurt in any way

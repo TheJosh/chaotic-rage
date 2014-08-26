@@ -44,6 +44,7 @@ cfg_opt_t unittype_opts[] =
 	CFG_FLOAT((char*) "melee_damage", 1000, CFGF_NONE),
 	CFG_INT((char*) "melee_delay", 500, CFGF_NONE),
 	CFG_INT((char*) "melee_cooldown", 1000, CFGF_NONE),
+	CFG_FLOAT((char*) "melee_range", 0.8f, CFGF_NONE),
 	CFG_INT((char*) "special_delay", 500, CFGF_NONE),
 	CFG_INT((char*) "special_cooldown", 1000, CFGF_NONE),
 
@@ -96,6 +97,7 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	uc->params.melee_damage = (float)cfg_getfloat(cfg_item, "melee_damage");
 	uc->params.melee_delay = cfg_getint(cfg_item, "melee_delay");
 	uc->params.melee_cooldown = cfg_getint(cfg_item, "melee_cooldown");
+	uc->params.melee_range = (float)cfg_getfloat(cfg_item, "melee_range");
 	uc->params.special_delay = cfg_getint(cfg_item, "special_delay");
 	uc->params.special_cooldown = cfg_getint(cfg_item, "special_cooldown");
 
@@ -242,6 +244,7 @@ UnitType::UnitType()
 	this->params.melee_damage = 0.0f;
 	this->params.melee_delay = 0;
 	this->params.melee_cooldown = 0;
+	this->params.melee_range = 0.0f;
 	this->params.special_delay = 0;
 	this->params.special_cooldown = 0;
 }
