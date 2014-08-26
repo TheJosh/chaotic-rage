@@ -38,6 +38,13 @@ class GameSettings
 			nrOfViewModes,
 		};
 
+		/**
+		* Time of day and day-night cycle
+		**/
+		float time_of_day;			// 0.0 = midnight, 1.0 = midday
+		float time_cycle;
+		bool day_night_cycle;
+
 	public:
 		GameSettings(int rounds = 20);
 

@@ -35,6 +35,8 @@ DialogNewGame::DialogNewGame(int num_local) : Dialog()
 	this->action_weapons = new DialogNewGame_Action_Weapons(this);
 
 	this->gs = new GameSettings();
+	
+	// TODO: This dialog should allow you you change various game settings
 }
 
 DialogNewGame::~DialogNewGame()

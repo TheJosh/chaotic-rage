@@ -571,6 +571,15 @@ void GameState::update(int delta)
 	// Map animationss
 	this->map->update(delta);
 
+	// Time of day cycle
+	if (gs->day_night_cycle) {
+		if (gs->time_of_day > 1.0f || gs->time_of_day < 0.0f) {
+			gs->time_cycle = 0.0f - gs->time_cycle;
+		}
+		gs->time_of_day += gs->time_cycle * delta / 1000.0f;
+		GEng()->render->setAmbient(glm::vec4(gs->time_of_day, gs->time_of_day, gs->time_of_day, 1.0f));
+	}
+
 	// Decrease entropy
 	if (this->entropy > 0) {
 		this->entropy--;

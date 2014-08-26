@@ -15,6 +15,9 @@ using namespace std;
 GameSettings::GameSettings(int rounds)
 {
 	this->rounds = rounds;
+	this->time_of_day = 1.0f;
+	this->time_cycle = 0.01f;
+	this->day_night_cycle = true;
 }
 
 /**
@@ -33,3 +36,4 @@ void GameSettings::switchViewMode()
 {
 	GEng()->render->viewmode = (GEng()->render->viewmode + 1) % nrOfViewModes;
 }
+
