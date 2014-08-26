@@ -33,7 +33,6 @@ class Map {
 
 	private:
 		vector<Zone*> zones;
-		float ambient[3];
 		vector<MapMesh*> meshes;
 		Render * render;
 		GameState * st;

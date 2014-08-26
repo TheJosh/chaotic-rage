@@ -138,6 +138,7 @@ class RenderOpenGL : public Render3D
 		// Lights
 		vector<Light*> lights;
 		bool lights_changed;
+		glm::vec4 ambient;
 
 	public:
 		RenderOpenGL(GameState * st, RenderOpenGLSettings* settings);
@@ -168,7 +169,8 @@ class RenderOpenGL : public Render3D
 		virtual void remAnimPlay(AnimPlay* play);
 		virtual void addLight(Light* light);
 		virtual void remLight(Light* light);
-		
+		virtual void setAmbient(glm::vec4 ambient);
+
 		virtual void setPhysicsDebug(bool status);
 		virtual bool getPhysicsDebug();
 		virtual void setSpeedDebug(bool status) { this->speeddebug = status; }

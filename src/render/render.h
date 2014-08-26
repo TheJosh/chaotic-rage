@@ -3,6 +3,7 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
+#include <glm/glm.hpp>
 #include "../rage.h"
 
 
@@ -157,7 +158,12 @@ class Render
 		* Remove a light from the renderer
 		**/
 		virtual void remLight(Light* light) {}
-		
+
+		/**
+		* Set ambient light
+		**/
+		virtual void setAmbient(glm::vec4 ambient) {}
+
 	public:
 		Render(GameState * st);
 		virtual ~Render() {}

@@ -1100,20 +1100,17 @@ void RenderOpenGL::setupShaders()
 		}
 	}
 	
-	// ...and ambient too
-	glm::vec4 AmbientColor(this->st->map->ambient[0], this->st->map->ambient[1], this->st->map->ambient[2], 1.0f);
-
 	// Assign to phong shader
 	glUseProgram(this->shaders[SHADER_ENTITY_STATIC]->p());
 	glUniform3fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightPos"), 4, glm::value_ptr(LightPos[0]));
 	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightColor"), 4, glm::value_ptr(LightColor[0]));
-	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
+	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uAmbient"), 1, glm::value_ptr(this->ambient));
 
 	// And terrain
 	glUseProgram(this->shaders[SHADER_TERRAIN]->p());
 	glUniform3fv(this->shaders[SHADER_TERRAIN]->uniform("uLightPos"), 4, glm::value_ptr(LightPos[0]));
 	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uLightColor"), 4, glm::value_ptr(LightColor[0]));
-	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uAmbient"), 1, glm::value_ptr(AmbientColor));
+	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uAmbient"), 1, glm::value_ptr(this->ambient));
 
 	CHECK_OPENGL_ERROR;
 }
@@ -1755,6 +1752,16 @@ void RenderOpenGL::addLight(Light* light)
 void RenderOpenGL::remLight(Light* light)
 {
 	this->lights.erase(std::remove(this->lights.begin(), this->lights.end(), light), this->lights.end());
+	this->lights_changed = true;
+}
+
+
+/**
+* Set ambient light
+**/
+void RenderOpenGL::setAmbient(glm::vec4 ambient)
+{
+	this->ambient = ambient;
 	this->lights_changed = true;
 }
 

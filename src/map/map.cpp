@@ -193,7 +193,6 @@ Map::Map(GameState * st)
 	this->skybox = NULL;
 	this->water = NULL;
 
-	this->ambient[0] = this->ambient[1] = this->ambient[2] = 0.3f;
 	this->water_speed = 0.0f;
 	this->water_level = 0.0f;
 }
@@ -348,14 +347,6 @@ int Map::load(string name, Render *render, Mod* insideof)
 		Render3D* render3d = static_cast<Render3D*>(this->render);
 		this->skybox = render3d->loadCubemap("skybox_", ".jpg", this->mod);
 		this->skybox_size = cfg_getvec3(cfg_sub, "size");
-	}
-
-	// Ambient lighting
-	int num = cfg_size(cfg, "ambient");
-	if (num == 3) {
-		this->ambient[0] = (float)(cfg_getnint(cfg, "ambient", 0) / 255.0f);
-		this->ambient[1] = (float)(cfg_getnint(cfg, "ambient", 1) / 255.0f);
-		this->ambient[2] = (float)(cfg_getnint(cfg, "ambient", 2) / 255.0f);
 	}
 
 	// Zones
@@ -566,7 +557,18 @@ void Map::loadDefaultEntities()
 
 		this->st->addLight(l);
 	}
-	
+
+	// Ambient lighting
+	int num = cfg_size(cfg, "ambient");
+	if (num == 3) {
+		GEng()->render->setAmbient(glm::vec4(
+			(float)cfg_getnint(cfg, "ambient", 0) / 255.0f,
+			(float)cfg_getnint(cfg, "ambient", 1) / 255.0f,
+			(float)cfg_getnint(cfg, "ambient", 2) / 255.0f,
+			1.0f
+		));
+	}
+
 	cfg_free(cfg);
 }
 
