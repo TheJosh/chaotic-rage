@@ -11,8 +11,8 @@
     <up_axis>Z_UP</up_axis>
   </asset>
   <library_images>
-    <image id="ammobox_png" name="ammobox_png">
-      <init_from>ammobox.png</init_from>
+    <image id="specialbox_png" name="specialbox_png">
+      <init_from>specialbox.png</init_from>
     </image>
   </library_images>
   <library_effects>
@@ -25,7 +25,7 @@
         </newparam>
         <newparam sid="Untitled-sampler">
           <sampler2D>
-            <source>ammobox_png</source>
+            <source>specialbox_png</source>
           </sampler2D>
         </newparam>
         <technique sid="common">
