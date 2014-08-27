@@ -28,11 +28,16 @@ class CommandLineArgs
 		bool host;
 		bool mouseGrab;
 		bool throttle;
+		int resolution[3];
 
 	public:
 		CommandLineArgs(int argc, char ** argv)
 			: argc(argc), argv(argv), modlist(false), host(false), mouseGrab(true), throttle(false)
-			{}
+		{
+			this->resolution[0] = 0;		// 0 = config, 1 = windowed, 2 = fullscreen
+			this->resolution[1] = 0;		// x
+			this->resolution[2] = 0;		// y
+		}
 
 		void process();
 };

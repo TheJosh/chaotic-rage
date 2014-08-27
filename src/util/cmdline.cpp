@@ -40,6 +40,8 @@ void CommandLineArgs::process()
 		{"mod-list",		0, 0, 'l'},
 
 		{"render",			1, 0, 'r'},
+		{"window",			2, 0, 'w'},
+		{"fullscreen",		0, 0, 'f'},
 		{"audio",			1, 0, 'u'},
 
 		{"help",			0, 0, 'h'},
@@ -56,7 +58,7 @@ void CommandLineArgs::process()
 		#endif
 		{NULL, 0, NULL, 0}
 	};
-	const char *short_options = "a:nc:j:tm:r:u:hv";
+	const char *short_options = "a:nc:j:tm:r:u:w::fhv";
 
 	int c;
 	int option_index = 0;
@@ -77,6 +79,8 @@ void CommandLineArgs::process()
 					"   \t--mod-list              List all available mods, and exit\n"
 					"\n"
 					" -r\t--render SYSTEM         Set the render system. Options: 'opengl', 'debug', 'null'\n"
+					" -w\t--window[=W,H]          Display video in a window. Optional resolution\n"
+					" -f\t--fullscreen            Display video in fullscreen\n"
 					" -u\t--audio SYSTEM          Set the audio system. Options: 'sdl', 'null'\n"
 					"\n"
 					" -h\t--help                  Show this help\n"
@@ -147,6 +151,22 @@ void CommandLineArgs::process()
 					exit(1);
 				}
 				this->render_class = optarg;
+				break;
+
+			case 'w':
+				this->resolution[0] = 1;
+				if (optarg != 0) {
+					string tmp;
+					stringstream ss(optarg);
+					getline(ss, tmp, ',');
+					this->resolution[1] = atoi(tmp.c_str());
+					getline(ss, tmp, ',');
+					this->resolution[2] = atoi(tmp.c_str());
+				}
+				break;
+
+			case 'f':
+				this->resolution[0] = 2;
 				break;
 
 			// Audio

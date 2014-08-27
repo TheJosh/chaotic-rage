@@ -125,8 +125,21 @@ void ClientConfig::initRender(GameState *st)
 		GEng()->render = new RenderOpenGL(st, this->gl);
 	}
 
-	// TODO: Load these settings from a config file
-	GEng()->render->setScreenSize(1000, 700, this->fullscreen);
+	// Determine if fullscreen or not
+	bool fs = false;
+	if (GEng()->cmdline->resolution[0] == 0) {
+		fs = this->fullscreen;
+	} else if (GEng()->cmdline->resolution[0] == 2) {
+		fs = true;
+	}
+
+	// Set size
+	if (GEng()->cmdline->resolution[1] != 0 && GEng()->cmdline->resolution[2] != 2) {
+		GEng()->render->setScreenSize(GEng()->cmdline->resolution[1], GEng()->cmdline->resolution[2], fs);
+	} else {
+		// TODO: Load these settings from a config file
+		GEng()->render->setScreenSize(1000, 700, fs);
+	}
 }
 
 
