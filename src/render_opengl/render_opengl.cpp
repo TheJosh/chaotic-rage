@@ -1106,11 +1106,19 @@ void RenderOpenGL::setupShaders()
 	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightColor"), 4, glm::value_ptr(LightColor[0]));
 	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uAmbient"), 1, glm::value_ptr(this->ambient));
 
+	// Bones as well
+	glUseProgram(this->shaders[SHADER_ENTITY_BONES]->p());
+	glUniform4fv(this->shaders[SHADER_ENTITY_BONES]->uniform("uAmbient"), 1, glm::value_ptr(this->ambient));
+	
 	// And terrain
 	glUseProgram(this->shaders[SHADER_TERRAIN]->p());
 	glUniform3fv(this->shaders[SHADER_TERRAIN]->uniform("uLightPos"), 4, glm::value_ptr(LightPos[0]));
 	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uLightColor"), 4, glm::value_ptr(LightColor[0]));
 	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uAmbient"), 1, glm::value_ptr(this->ambient));
+
+	// Water too
+	glUseProgram(this->shaders[SHADER_WATER]->p());
+	glUniform4fv(this->shaders[SHADER_WATER]->uniform("uAmbient"), 1, glm::value_ptr(this->ambient));
 
 	CHECK_OPENGL_ERROR;
 }
