@@ -19,19 +19,20 @@
 19	L'arme standare du personnage
 20	L'arme standare du jeu
 21	Sauvgarder
-22	Day/night cycle
-23	Save environment settings
-24	Direct
-25	Local
-26	En ligne
-27	Nom d'hôte
-28	Actualiser la liste
-29	Rejoindre la partie
-30	MSAA
-31	Tex Filter
-32	Language
-33	Fullscreen
-34	Save
-35	Quit? Really?
-36	Yes
-37	No
+22	Time of day
+23	Day/night cycle
+24	Save environment settings
+25	Direct
+26	Local
+27	En ligne
+28	Nom d'hôte
+29	Actualiser la liste
+30	Rejoindre la partie
+31	MSAA
+32	Tex Filter
+33	Language
+34	Fullscreen
+35	Save
+36	Quit? Really?
+37	Yes
+38	No

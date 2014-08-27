@@ -401,6 +401,13 @@ void GameState::preGame()
 	#endif
 
 	this->entropy = 0;
+
+	// Time of day cycle
+	this->time_of_day = this->gs->time_of_day;
+	this->time_cycle = this->gs->time_of_day < 0.5f ? -0.01f : 0.01f;
+	if (!gs->day_night_cycle) {
+		GEng()->render->setAmbient(glm::vec4(this->time_of_day, this->time_of_day, this->time_of_day, 1.0f));
+	}
 }
 
 
@@ -573,11 +580,11 @@ void GameState::update(int delta)
 
 	// Time of day cycle
 	if (gs->day_night_cycle) {
-		if (gs->time_of_day > 1.0f || gs->time_of_day < 0.0f) {
-			gs->time_cycle = 0.0f - gs->time_cycle;
+		if (this->time_of_day > 1.0f || this->time_of_day < 0.0f) {
+			this->time_cycle = 0.0f - this->time_cycle;
 		}
-		gs->time_of_day += gs->time_cycle * delta / 1000.0f;
-		GEng()->render->setAmbient(glm::vec4(gs->time_of_day, gs->time_of_day, gs->time_of_day, 1.0f));
+		this->time_of_day += this->time_cycle * delta / 1000.0f;
+		GEng()->render->setAmbient(glm::vec4(this->time_of_day, this->time_of_day, this->time_of_day, 1.0f));
 	}
 
 	// Decrease entropy

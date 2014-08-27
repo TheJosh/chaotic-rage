@@ -19,19 +19,20 @@
 19	Standardvapen för karaktär
 20	Standardvapen för speltyp
 21	Spara val av vapen
-22	Dag/natt-cykler
-23	Spara inställningar
-24	Direkt
-25	Lokalt
-26	Internet
-27	Värdnamn
-28	Ladda om lista
-29	Anslut till spel
-30	MSAA
-31	Tex-Filter
-32	Språk
-33	Fullskärm
-34	Spara
-35	Avsluta? Säker?
-36	Ja
-37	Nej
+22	Time of day
+23	Dag/natt-cykler
+24	Spara inställningar
+25	Direkt
+26	Lokalt
+27	Internet
+28	Värdnamn
+29	Ladda om lista
+30	Anslut till spel
+31	MSAA
+32	Tex-Filter
+33	Språk
+34	Fullskärm
+35	Spara
+36	Avsluta? Säker?
+37	Ja
+38	Nej

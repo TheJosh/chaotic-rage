@@ -18,6 +18,8 @@
 #include "list_models.h"
 #include "newgame_environment.h"
 
+#define BUFFER_MAX 10
+
 using namespace std;
 
 
@@ -32,29 +34,43 @@ DialogNewGameEnvironment::DialogNewGameEnvironment(DialogNewGame *parent, GameSe
 
 DialogNewGameEnvironment::~DialogNewGameEnvironment()
 {
+	delete(txt_timeofday);
 	delete(chk_daynight);
 }
 
 
 #define LEFT        10
+#define MIDDLE      150
 #define WIDTH       340
-#define ROWHEIGHT   21
+#define ROWHEIGHT   25
 
 
 /**
-* Sub-dialog from the new game dialog for mucking about with weapons
+* Sub-dialog fromtime_of_day the new game dialog for mucking about with weapons
 **/
 gcn::Container * DialogNewGameEnvironment::setup()
 {
 	gcn::Button* button;
+	gcn::Label* label;
+	char buf[BUFFER_MAX];
 	int y = 10;
 
 	c = new gcn::Window(_(STRING_NEWGAME_ENVIRONMENT));
 	c->setDimension(gcn::Rectangle(0, 0, 360, 300));
 
+	// Time of day
+	label = new gcn::Label(_(STRING_ENVIRONMENT_TIMEOFDAY));
+	c->add(label, LEFT, y);
+	snprintf(buf, BUFFER_MAX, "%.1f", this->gs->time_of_day);
+	this->txt_timeofday = new gcn::TextField(std::string(buf));
+	this->txt_timeofday->setPosition(MIDDLE, y);
+	this->txt_timeofday->setWidth(100);
+	c->add(this->txt_timeofday);
+	y += ROWHEIGHT;
+	
 	// Day-night cycle
 	chk_daynight = new gcn::CheckBox(_(STRING_ENVIRONMENT_DAY_NIGHT));
-	chk_daynight->setPosition(LEFT, y);
+	chk_daynight->setPosition(MIDDLE, y);
 	chk_daynight->setWidth(WIDTH);
 	chk_daynight->setSelected(this->gs->day_night_cycle);
 	c->add(chk_daynight);
@@ -80,6 +96,7 @@ gcn::Container * DialogNewGameEnvironment::setup()
 **/
 void DialogNewGameEnvironment::action(const gcn::ActionEvent& actionEvent)
 {
+	this->gs->time_of_day = atof(txt_timeofday->getText().c_str());
 	this->gs->day_night_cycle = chk_daynight->isSelected();
 	
 	this->m->remDialog(this);

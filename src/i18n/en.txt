@@ -30,6 +30,7 @@ WEAPONS_STANDARD_GAME    Standard game type weapons
 WEAPONS_SAVE             Save weapon settings
 
 # Environment menu
+ENVIRONMENT_TIMEOFDAY    Time of day
 ENVIRONMENT_DAY_NIGHT    Day/night cycle
 ENVIRONMENT_SAVE         Save environment settings
 

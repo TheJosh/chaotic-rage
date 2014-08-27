@@ -129,6 +129,9 @@ class GameState
 		SPK::System* particle_system;
 		SPK::Renderer* particle_renderer;
 
+		float time_of_day;			// 0.0 = midnight, 1.0 = midday
+		float time_cycle;
+		
 	public:
 		GameState();
 		~GameState();

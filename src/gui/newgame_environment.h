@@ -24,6 +24,7 @@ class DialogNewGameEnvironment : public Dialog, public gcn::ActionListener {
 		DialogNewGame* parent;
 		GameSettings* gs;
 
+		gcn::TextField* txt_timeofday;
 		gcn::CheckBox* chk_daynight;
 
 	public:

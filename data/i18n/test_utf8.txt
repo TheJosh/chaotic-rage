@@ -19,19 +19,20 @@
 19	Standard unit weapons
 20	Standard game type weapons
 21	Save weapon settings
-22	Day/night cycle
-23	Save environment settings
-24	Direct
-25	Local
-26	Internet
-27	Hostname
-28	Refresh list
-29	Join game
-30	MSAA
-31	Tex Filter
-32	Language
-33	Fullscreen
-34	Save
-35	Quit? Really?
-36	Yes
-37	No
+22	Time of day
+23	Day/night cycle
+24	Save environment settings
+25	Direct
+26	Local
+27	Internet
+28	Hostname
+29	Refresh list
+30	Join game
+31	MSAA
+32	Tex Filter
+33	Language
+34	Fullscreen
+35	Save
+36	Quit? Really?
+37	Yes
+38	No
