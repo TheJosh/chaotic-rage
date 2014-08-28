@@ -82,6 +82,7 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->physicsdebug = NULL;
 	this->speeddebug = false;
 	this->viewmode = GameSettings::behindPlayer;
+	this->render_player = NULL;
 
 	#ifdef USE_SPARK
 	this->particle_renderer = new SPK::GL::GL2PointRenderer(1.0f);
@@ -97,7 +98,6 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->settings = NULL;
 	this->setSettings(settings);
 
-	this->lights_changed = false;
 	this->shaders_loaded = false;
 }
 
@@ -1081,11 +1081,14 @@ void RenderOpenGL::preGame()
 
 /**
 * Set up shaders uniforms which are const throughout the game - lights, etc
+*
+* This used to be called once per game, but it's now once per player per frame
+* to allow for dynamic lights
 **/
 void RenderOpenGL::setupShaders()
 {
 	// Prep point lights...
-	// TODO: Think about dynamic lights?
+	// TODO: Use the 4 closest light sources instead of just the first 4 in the list
 	glm::vec3 LightPos[4];
 	glm::vec4 LightColor[4];
 	unsigned int idx = 0;
@@ -1756,7 +1759,6 @@ void RenderOpenGL::recursiveRenderAssimpModelBones(AnimPlay* ap, AssimpModel* am
 void RenderOpenGL::addLight(Light* light)
 {
 	this->lights.push_back(light);
-	this->lights_changed = true;
 }
 
 
@@ -1766,7 +1768,6 @@ void RenderOpenGL::addLight(Light* light)
 void RenderOpenGL::remLight(Light* light)
 {
 	this->lights.erase(std::remove(this->lights.begin(), this->lights.end(), light), this->lights.end());
-	this->lights_changed = true;
 }
 
 
@@ -1776,7 +1777,6 @@ void RenderOpenGL::remLight(Light* light)
 void RenderOpenGL::setAmbient(glm::vec4 ambient)
 {
 	this->ambient = ambient;
-	this->lights_changed = true;
 }
 
 
@@ -1808,15 +1808,11 @@ void RenderOpenGL::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	if (this->lights_changed) {
-		this->setupShaders();
-		this->lights_changed = false;
-	}
-
 	entitiesShadowMap();
 
 	for (unsigned int i = 0; i < this->st->num_local; i++) {
 		this->render_player = this->st->local_players[i]->p;
+		this->setupShaders();
 
 		this->mainViewport(i, this->st->num_local);
 

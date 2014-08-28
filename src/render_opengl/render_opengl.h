@@ -137,7 +137,6 @@ class RenderOpenGL : public Render3D
 
 		// Lights
 		vector<Light*> lights;
-		bool lights_changed;
 		glm::vec4 ambient;
 
 	public:
