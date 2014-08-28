@@ -1099,16 +1099,22 @@ void RenderOpenGL::setupShaders()
 			if (idx == 4) break;
 		}
 	}
-	
+
+	// Make entities stand out a little when it's really dark
+	glm::vec4 entityAmbient = this->ambient;
+	if (st->time_of_day < 0.2f) {
+		entityAmbient += 0.05;
+	}
+
 	// Assign to phong shader
 	glUseProgram(this->shaders[SHADER_ENTITY_STATIC]->p());
 	glUniform3fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightPos"), 4, glm::value_ptr(LightPos[0]));
 	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightColor"), 4, glm::value_ptr(LightColor[0]));
-	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uAmbient"), 1, glm::value_ptr(this->ambient));
+	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uAmbient"), 1, glm::value_ptr(entityAmbient));
 
 	// Bones as well
 	glUseProgram(this->shaders[SHADER_ENTITY_BONES]->p());
-	glUniform4fv(this->shaders[SHADER_ENTITY_BONES]->uniform("uAmbient"), 1, glm::value_ptr(this->ambient));
+	glUniform4fv(this->shaders[SHADER_ENTITY_BONES]->uniform("uAmbient"), 1, glm::value_ptr(entityAmbient));
 	
 	// And terrain
 	glUseProgram(this->shaders[SHADER_TERRAIN]->p());
