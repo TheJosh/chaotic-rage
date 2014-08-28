@@ -80,6 +80,7 @@ class RenderOpenGL : public Render3D
 
 		// The current player being rendered (split screen)
 		Player* render_player;
+		glm::vec3 render_player_pos;
 
 		// Loaded sprites
 		vector<SpritePtr> loaded;

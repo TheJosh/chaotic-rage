@@ -83,6 +83,7 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->speeddebug = false;
 	this->viewmode = GameSettings::behindPlayer;
 	this->render_player = NULL;
+	this->render_player_pos = glm::vec3(0.0f);
 
 	#ifdef USE_SPARK
 	this->particle_renderer = new SPK::GL::GL2PointRenderer(1.0f);
@@ -1812,11 +1813,11 @@ void RenderOpenGL::render()
 
 	for (unsigned int i = 0; i < this->st->num_local; i++) {
 		this->render_player = this->st->local_players[i]->p;
-		this->setupShaders();
 
 		this->mainViewport(i, this->st->num_local);
+		this->mainRot();
+		this->setupShaders();
 
-		mainRot();
 		terrain();
 		entities();
 		skybox();
@@ -1955,6 +1956,9 @@ void RenderOpenGL::mainRot()
 	this->view = glm::rotate(this->view, 360.0f - angle, glm::vec3(0.0f, 1.0f, 0.0f));
 	this->view = glm::translate(this->view, -this->camera);
 
+	// Set the player position which is used in other areas
+	this->render_player_pos = glm::vec3(trans.getOrigin().x(), trans.getOrigin().y(), trans.getOrigin().z());
+	
 	CHECK_OPENGL_ERROR;
 }
 
@@ -2039,9 +2043,8 @@ void RenderOpenGL::skybox()
 
 	glm::mat4 modelMatrix = glm::mat4(1.0f);
 
-	if (this->render_player != NULL) {
-		btTransform trans = this->render_player->getTransform();
-		modelMatrix = glm::translate(modelMatrix, glm::vec3(trans.getOrigin().x(), trans.getOrigin().y(), trans.getOrigin().z()));
+	if (this->st->map->skybox_inf) {
+		modelMatrix = glm::translate(modelMatrix, this->render_player_pos);
 	} else {
 		modelMatrix = glm::translate(modelMatrix, glm::vec3(st->map->skybox_size.x*0.5f, st->map->skybox_size.y*0.5f, st->map->skybox_size.z*0.5f));
 	}
