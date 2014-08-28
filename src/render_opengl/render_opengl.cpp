@@ -2038,7 +2038,14 @@ void RenderOpenGL::skybox()
 	glCullFace(GL_FRONT);
 
 	glm::mat4 modelMatrix = glm::mat4(1.0f);
-	modelMatrix = glm::translate(modelMatrix, glm::vec3(st->map->skybox_size.x*0.5f, st->map->skybox_size.y*0.5f, st->map->skybox_size.z*0.5f)),
+
+	if (this->render_player != NULL) {
+		btTransform trans = this->render_player->getTransform();
+		modelMatrix = glm::translate(modelMatrix, glm::vec3(trans.getOrigin().x(), trans.getOrigin().y(), trans.getOrigin().z()));
+	} else {
+		modelMatrix = glm::translate(modelMatrix, glm::vec3(st->map->skybox_size.x*0.5f, st->map->skybox_size.y*0.5f, st->map->skybox_size.z*0.5f));
+	}
+
 	modelMatrix = glm::scale(modelMatrix, st->map->skybox_size);
 	modelMatrix = glm::rotate(modelMatrix, 90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 

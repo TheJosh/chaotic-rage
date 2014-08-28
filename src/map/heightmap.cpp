@@ -95,9 +95,9 @@ btRigidBody* Heightmap::createRigidBody()
 	);
 
 	groundShape->setLocalScaling(btVector3(
-		sizeX / ((float)this->sx - 1.0f),
+		this->getScaleX(),
 		1.0f,
-		sizeZ / ((float)this->sz - 1.0f)
+		this->getScaleZ()
 	));
 
 	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(
@@ -140,7 +140,7 @@ float Heightmap::getValue(int X, int Z)
 **/
 float Heightmap::getScaleX()
 {
-	return (float)sizeX / (float)(sx - 1.0f);
+	return (float)sizeX / ((float)sx - 1.0f);
 }
 
 
@@ -158,7 +158,7 @@ float Heightmap::getScaleY()
 **/
 float Heightmap::getScaleZ()
 {
-	return (float)sizeZ / (float)(sz - 1.0f);
+	return (float)sizeZ / ((float)sz - 1.0f);
 }
 
 

@@ -47,6 +47,7 @@ class Map {
 
 		SpritePtr skybox;
 		glm::vec3 skybox_size;
+		bool skybox_inf;
 
 		float water_level;
 		SpritePtr water;
