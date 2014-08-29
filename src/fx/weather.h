@@ -31,6 +31,7 @@ class Weather
 	private:
 		GameState* st;
 		float delta;
+		bool random;
 
 		/**
 		* Where all weather comes from
@@ -57,7 +58,13 @@ class Weather
 		/**
 		* The internal clock will do random weather at regular intervals
 		**/
-		void random();
+		void randomWeather();
+
+		/**
+		* Enable or disable the random weather
+		**/
+		void enableRandom() { this->random = true; }
+		void disableRandom() { this->random = false; }
 
 		/**
 		* Specific control for rain

@@ -20,6 +20,7 @@ Weather::Weather(GameState* st, float map_size_x, float map_size_z)
 {
 	this->st = st;
 	this->delta = 0.0f;
+	this->random = true;
 
 	// Main zone for emission
 	this->sky = SPK::AABox::create(SPK::Vector3D(map_size_x/2.0f, 100.0f, map_size_z/2.0f), SPK::Vector3D(map_size_x, 1.0f, map_size_z));
@@ -30,7 +31,7 @@ Weather::Weather(GameState* st, float map_size_x, float map_size_z)
 		SPK::FLAG_NONE,
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA 
 	);
-	this->rain_model->setParam(SPK::PARAM_ALPHA, 0.2f, 0.4f);
+	this->rain_model->setParam(SPK::PARAM_ALPHA, 0.2f, 0.3f);
 	this->rain_model->setParam(SPK::PARAM_RED, 0.7f, 0.9f);
 	this->rain_model->setParam(SPK::PARAM_GREEN, 0.7f, 0.9f);
 	this->rain_model->setParam(SPK::PARAM_BLUE, 0.5f, 1.0f);
@@ -65,9 +66,10 @@ Weather::~Weather()
 **/
 void Weather::update(float delta)
 {
+	if (! this->random) return;
 	this->delta += delta;
 	if (this->delta >= RANDOM_UPDATE_TIME) {
-		this->random();
+		this->randomWeather();
 		this->delta = 0.0f;
 	}
 }
@@ -76,7 +78,7 @@ void Weather::update(float delta)
 /**
 * Do something with the weather
 **/
-void Weather::random()
+void Weather::randomWeather()
 {
 	int action = getRandom(0, 8);
 	if (action <= 5) {
@@ -97,6 +99,7 @@ void Weather::random()
 void Weather::startRain(int flow)
 {
 	this->rain_emitter->setFlow(flow);
+	st->removeParticleGroup(this->rain_group);
 	st->addParticleGroup(this->rain_group);
 }
 

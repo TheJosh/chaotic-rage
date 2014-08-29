@@ -11,6 +11,7 @@ round = 0;
 round_max = 0;
 score_table = 0;
 score_labels = {};
+rain_rate = 1000;
 
 
 do_score = function()
@@ -48,6 +49,12 @@ start_round = function()
 	end;
 	num_dead = 0;
 	round = round + 1;
+	
+	-- start raining after 3rd round
+	if round >= 3 then
+		rain_rate = rain_rate + 1500
+		weather.startRain(rain_rate)
+	end;
 	
 	-- Cool label
 	if round > round_max then
@@ -122,6 +129,8 @@ bind_gamestart(function(r_max)
 
 	add_label(800, 90, "Dead");
 	score_labels.dead = add_label(900, 90, "0");
+	
+	weather.disableRandom();
 end);
 
 

@@ -22,6 +22,7 @@
 #include "../entity/npc.h"
 #include "../map/map.h"
 #include "../map/zone.h"
+#include "../fx/weather.h"
 
 extern "C" {
 	#include <lua.h>
@@ -328,6 +329,43 @@ NPC* addNpc(string type, string aitype, unsigned int fac)
 
 
 /**
+* Disable random weather
+**/
+void weatherDisableRandom()
+{
+	getGameState()->weather->disableRandom();
+}
+
+
+/**
+* Enable random weather
+**/
+void weatherEnableRandom()
+{
+	getGameState()->weather->enableRandom();
+}
+
+
+/**
+* Start or update rain
+**/
+void startRain(int flow)
+{
+	getGameState()->weather->startRain(flow);
+}
+
+
+/**
+* Stop rain
+**/
+void stopRain()
+{
+	getGameState()->weather->stopRain();
+}
+
+
+
+/**
 * Methods which affect the game world such as,
 *  - Adding in entities at specific locations
 *  - TODO: Getting lists of entities
@@ -361,6 +399,14 @@ void load_world_lib(lua_State *L)
 		.addFunction("addNpcCoord", &addNpcCoord)
 		.addFunction("addNpcZone", &addNpcZone)
 
+	.endNamespace()
+	.beginNamespace("weather")
+
+		.addFunction("disableRandom", &weatherDisableRandom)
+		.addFunction("enableRandom", &weatherEnableRandom)
+		.addFunction("startRain", &startRain)
+		.addFunction("stopRain", &stopRain)
+		
 	.endNamespace();
 }
 
