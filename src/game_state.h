@@ -28,6 +28,7 @@ class AmmoRound;
 class GameSettings;
 class AnimPlay;
 class Light;
+class Weather;
 
 namespace gcn {
 	class Gui;
@@ -128,6 +129,7 @@ class GameState
 
 		SPK::System* particle_system;
 		SPK::Renderer* particle_renderer;
+		Weather* weather;
 
 		float time_of_day;			// 0.0 = midnight, 1.0 = midday
 		float time_cycle;
@@ -145,6 +147,7 @@ class GameState
 		void addPickup(Pickup* pickup);
 		void addAmmoRound(AmmoRound* e);
 		void addParticleGroup(SPK::Group* group);
+		void removeParticleGroup(SPK::Group* group);
 
 		// Add and remove animations from the renderer
 		// This just wraps the render code

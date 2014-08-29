@@ -38,6 +38,7 @@
 #include "net/net_client.h"
 #include "net/net_server.h"
 #include "util/cmdline.h"
+#include "fx/weather.h"
 
 #ifdef USE_SPARK
 #include "spark/SPK.h"
@@ -385,6 +386,18 @@ void GameState::addParticleGroup(SPK::Group* group)
 
 
 /**
+* Remove a particle group
+* Is a no-op if we don't have the particle system compiled in
+**/
+void GameState::removeParticleGroup(SPK::Group* group)
+{
+	#ifdef USE_SPARK
+		this->particle_system->removeGroup(group);
+	#endif
+}
+
+
+/**
 * Game has started
 **/
 void GameState::preGame()
@@ -408,6 +421,9 @@ void GameState::preGame()
 	if (!gs->day_night_cycle) {
 		GEng()->render->setAmbient(glm::vec4(this->time_of_day, this->time_of_day, this->time_of_day, 1.0f));
 	}
+
+	// Weather
+	this->weather = new Weather(this, this->map->width, this->map->height);
 }
 
 
@@ -422,6 +438,7 @@ void GameState::postGame()
 	#ifdef USE_SPARK
 		delete this->particle_system;
 	#endif
+	delete this->weather;
 
 	// TODO: Are these needed?
 	this->units.clear();
@@ -570,13 +587,14 @@ void GameState::update(int delta)
 	this->physics->stepTime(delta);
 	PROFILE_END(physics);
 
+	// Map and weather
+	this->map->update(delta);
+	this->weather->update((float)delta);
+
 	// Particles
 	#ifdef USE_SPARK
 		this->particle_system->update(delta / 1000.0f);
 	#endif
-
-	// Map animationss
-	this->map->update(delta);
 
 	// Time of day cycle
 	if (gs->day_night_cycle) {
