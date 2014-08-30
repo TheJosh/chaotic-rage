@@ -48,7 +48,9 @@ Prepare for building the package
 	(must be the same as the gpg key (command: 'gpg --list-keys'))
 		> export DEBEMAIL=<email address>
 		> export DEBFULLNAME="Full Name"
-	Update changelog (two alternatives)
+	Update version number if it has increased
+		> editor chaoticrage.desktop
+	Update changelog
 		Increase the Debian release number (edit with 'dch --edit')
 		> dch --increment
 		Note: Update the target (Ubuntu version) to e.g. 'trusty'.
@@ -81,3 +83,4 @@ Upload to the Chaotic Rage PPA
 	
 	Update the repo with the new changelog and any other changes
 	cp -r debian/ ../../chaotic-rage/tools/debian_package/
+	cp chaoticrage.desktop ../../chaotic-rage/tools/debian_package/

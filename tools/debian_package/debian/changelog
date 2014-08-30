@@ -1,3 +1,15 @@
+chaoticrage (1.9ubuntu1~trusty2) trusty; urgency=low
+
+  * Updated version number to 1.9.
+
+ -- Magnus Espersson <magnusespersson@gmail.com>  Sat, 30 Aug 2014 11:44:14 +0200
+
+chaoticrage (1.9ubuntu1~trusty1) trusty; urgency=low
+
+  * New snapshot from git repo master branch 20140830 commit 141d541615.
+
+ -- Magnus Espersson <magnusespersson@gmail.com>  Sat, 30 Aug 2014 11:17:56 +0200
+
 chaoticrage (1.8ubuntu8~trusty5) trusty; urgency=low
 
   * New snapshot from git repo master branch 20140812.
