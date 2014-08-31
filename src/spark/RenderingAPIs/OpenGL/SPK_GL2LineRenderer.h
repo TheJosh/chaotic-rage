@@ -24,7 +24,6 @@
 #define H_SPK_GL2POINTRENDERER
 
 #include "RenderingAPIs/OpenGL/SPK_GLRenderer.h"
-#include "RenderingAPIs/OpenGL/SPK_GLExtHandler.h"
 #include "Extensions/Renderers/SPK_LineRendererInterface.h"
 #include <glm/glm.hpp>
 

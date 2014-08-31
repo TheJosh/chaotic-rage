@@ -26,9 +26,6 @@
 // Defines
 #include "RenderingAPIs/OpenGL/SPK_GL_DEF.h"
 
-// Extension interface
-#include "RenderingAPIs/OpenGL/SPK_GLExtHandler.h" // 1.01
-
 // Mother Renderer
 #include "RenderingAPIs/OpenGL/SPK_GLRenderer.h"
 
