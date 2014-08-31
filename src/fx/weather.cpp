@@ -6,6 +6,8 @@
 #include "../rage.h"
 #include "../game_state.h"
 #include "../util/util.h"
+#include "../game_engine.h"
+#include "../render/render_3d.h"
 
 using namespace std;
 
@@ -45,6 +47,7 @@ Weather::Weather(GameState* st, float map_size_x, float map_size_z)
 
 	// Rain group
 	this->rain_group = SPK::Group::create(this->rain_model, 50000);
+	this->rain_group->setRenderer(static_cast<Render3D*>(GEng()->render)->renderer_lines);
 	this->rain_group->addEmitter(this->rain_emitter);
 }
 

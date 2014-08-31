@@ -53,8 +53,9 @@ namespace GL
 		glGenBuffers(1, &vboPositionColorIndex);
 		glBindBuffer(GL_ARRAY_BUFFER, vboPositionColorIndex);
 		glEnableVertexAttribArray(ATTRIB_POSITION);
-		glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, ((char *)NULL + 4));
+		glEnableVertexAttribArray(ATTRIB_COLOR);
+		glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 28, ((char *)NULL + 0));
+		glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 28, ((char *)NULL + 12));
 
 		glBindVertexArray(0);
 
@@ -159,6 +160,8 @@ namespace GL
 
 	void GL2LineRenderer::render(const Group& group)
 	{
+		glEnable(GL_LINE_SMOOTH);
+		
 		// Copy data into buffer with the correct layout
 		// TODO: Reuse the buffer instead of malloc/free every frame
 		size_t num = group.getNbParticles();
@@ -192,7 +195,7 @@ namespace GL
 
 		// Set position data
 		glBindBuffer(GL_ARRAY_BUFFER, vboPositionColorIndex);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 7 * num, data, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 7 * num * 2, data, GL_DYNAMIC_DRAW);
 		free(data);
 
 		// Bind shader
@@ -202,7 +205,7 @@ namespace GL
 		glUniformMatrix4fv(shaderVPIndex, 1, GL_FALSE, glm::value_ptr(vp_matrix));
 
 		// Draw
-		glDrawArrays(GL_POINTS, 0, num * 2);
+		glDrawArrays(GL_LINES, 0, num * 2);
 
 		// Clean up
 		glBindVertexArray(0);

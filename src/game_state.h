@@ -128,7 +128,6 @@ class GameState
 		PhysicsBullet* physics;
 
 		SPK::System* particle_system;
-		SPK::Renderer* particle_renderer;
 		Weather* weather;
 
 		float time_of_day;			// 0.0 = midnight, 1.0 = midday

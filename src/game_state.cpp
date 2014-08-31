@@ -106,7 +106,6 @@ GameState::GameState()
 	this->gt = NULL;
 	this->gs = NULL;
 	this->particle_system = NULL;
-	this->particle_renderer = NULL;
 
 	g_st = this;
 }
@@ -377,9 +376,10 @@ void GameState::increaseEntropy(unsigned int slot)
 void GameState::addParticleGroup(SPK::Group* group)
 {
 	#ifdef USE_SPARK
-		if (this->particle_renderer == NULL) return;
-		group->setRenderer(this->particle_renderer);
 		if (this->particle_system == NULL) return;
+		if (group->getRenderer() == NULL) {
+			group->setRenderer(static_cast<Render3D*>(GEng()->render)->renderer_points);
+		}
 		this->particle_system->addGroup(group);
 	#endif
 }
@@ -410,7 +410,9 @@ void GameState::preGame()
 	GEng()->setMouseGrab(true);
 
 	#ifdef USE_SPARK
-		this->particle_system = new SPK::System();
+		if (GEng()->render->is3D()) {
+			this->particle_system = new SPK::System();
+		}
 	#endif
 
 	this->entropy = 0;

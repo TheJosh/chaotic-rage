@@ -11,6 +11,9 @@
 namespace gcn {
 	class Gui;
 }
+namespace SPK {
+	class Renderer;
+}
 
 
 class Render3D : public Render
@@ -26,6 +29,10 @@ class Render3D : public Render
 		int real_height;
 		int virt_width;
 		int virt_height;
+
+		// Spark particle renderers
+		SPK::Renderer* renderer_points;
+		SPK::Renderer* renderer_lines;
 
 	public:
 		Render3D(GameState *st) : Render(st) {}

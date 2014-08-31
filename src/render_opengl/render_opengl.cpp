@@ -86,8 +86,8 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->render_player_pos = glm::vec3(0.0f);
 
 	#ifdef USE_SPARK
-	this->particle_renderer = new SPK::GL::GL2PointRenderer(1.0f);
-	this->st->particle_renderer = this->particle_renderer;
+	this->renderer_points = new SPK::GL::GL2PointRenderer(1.0f);
+	this->renderer_lines = new SPK::GL::GL2LineRenderer(0.05f, 1.0f);
 	#endif
 
 	this->sprite_vbo = 0;
@@ -111,7 +111,8 @@ RenderOpenGL::~RenderOpenGL()
 	delete(this->settings);
 
 	#ifdef USE_SPARK
-		delete(this->particle_renderer);
+		delete(this->renderer_points);
+		delete(this->renderer_lines);
 	#endif
 
 	delete font;
@@ -276,7 +277,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	#endif
 
 	#ifdef USE_SPARK
-		this->particle_renderer->initGLbuffers();
+		this->renderer_points->initGLbuffers();
+		this->renderer_lines->initGLbuffers();
 	#endif
 
 	// Windows only: Re-load textures.
@@ -2184,7 +2186,8 @@ void RenderOpenGL::particles()
 		glEnable(GL_BLEND);
 
 		glm::mat4 vp = this->projection * this->view;
-		this->particle_renderer->setVP(vp);
+		this->renderer_points->setVP(vp);
+		this->renderer_lines->setVP(vp);
 
 		this->st->particle_system->render();
 

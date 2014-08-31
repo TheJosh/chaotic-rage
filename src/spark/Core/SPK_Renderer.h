@@ -26,6 +26,7 @@
 #include "Core/SPK_DEF.h"
 #include "Core/SPK_Registerable.h"
 #include "Core/SPK_BufferHandler.h"
+#include <glm/glm.hpp>
 
 
 namespace SPK
@@ -174,6 +175,21 @@ namespace SPK
 		*/
 		virtual void render(const Group& group) = 0;
 
+		/**
+		* Call this after OpenGL init so all the buffers are created
+		**/
+		virtual void initGLbuffers() = 0;
+
+		/**
+		* Call before after OpenGL destruction so all the buffers are destroyed
+		**/
+		virtual void destroyGLbuffers() = 0;
+
+		/**
+		* Set the current View/Projection matrix
+		**/
+		virtual void setVP(glm::mat4 vp) = 0;
+		
 	private :
 
 		bool active;
