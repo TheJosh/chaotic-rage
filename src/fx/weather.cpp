@@ -23,6 +23,7 @@ Weather::Weather(GameState* st, float map_size_x, float map_size_z)
 	this->st = st;
 	this->delta = 0.0f;
 	this->random = true;
+	this->flow = 0;
 
 	// Main zone for emission
 	this->sky = SPK::AABox::create(SPK::Vector3D(map_size_x/2.0f, 100.0f, map_size_z/2.0f), SPK::Vector3D(map_size_x, 1.0f, map_size_z));
@@ -88,9 +89,9 @@ void Weather::randomWeather()
 		this->stopRain();
 	} else {
 		switch (action) {
-			case 6: this->startRain(3000); break;
-			case 7: this->startRain(5000); break;
-			case 8: this->startRain(15000); break;
+			case 6: this->startRain(MAX_RAIN_FLOW / 5); break;
+			case 7: this->startRain(MAX_RAIN_FLOW / 3); break;
+			case 8: this->startRain(MAX_RAIN_FLOW); break;
 		}
 	}
 }
@@ -104,6 +105,7 @@ void Weather::startRain(int flow)
 	this->rain_emitter->setFlow(flow);
 	st->removeParticleGroup(this->rain_group);
 	st->addParticleGroup(this->rain_group);
+	this->flow = flow;
 }
 
 
@@ -113,6 +115,7 @@ void Weather::startRain(int flow)
 void Weather::stopRain()
 {
 	st->removeParticleGroup(this->rain_group);
+	this->flow = 0;
 }
 
 

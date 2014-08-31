@@ -604,7 +604,10 @@ void GameState::update(int delta)
 			this->time_cycle = 0.0f - this->time_cycle;
 		}
 		this->time_of_day += this->time_cycle * delta / 1000.0f;
-		GEng()->render->setAmbient(glm::vec4(this->time_of_day, this->time_of_day, this->time_of_day, 1.0f));
+		float rain_flow = this->weather->getRainFlow();
+		// Make it darker if it rains
+		float ambient = MAX(0.0f, this->time_of_day - 0.5f * rain_flow);
+		GEng()->render->setAmbient(glm::vec4(ambient, ambient, ambient, 1.0f));
 	}
 
 	// Decrease entropy

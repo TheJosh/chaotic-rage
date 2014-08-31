@@ -22,6 +22,8 @@ namespace SPK
 **/
 #define RANDOM_UPDATE_TIME 30000.0f
 
+#define MAX_RAIN_FLOW 15000
+
 
 /**
 * Weather such as rain etc
@@ -32,6 +34,7 @@ class Weather
 		GameState* st;
 		float delta;
 		bool random;
+		int flow;
 
 		/**
 		* Where all weather comes from
@@ -71,5 +74,7 @@ class Weather
 		**/
 		void startRain(int flow);
 		void stopRain();
+		float getRainFlow() {
+			return (static_cast<float>(this->flow) / static_cast<float>(MAX_RAIN_FLOW));
+		}
 };
-
