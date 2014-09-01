@@ -22,7 +22,11 @@ namespace SPK
 **/
 #define RANDOM_UPDATE_TIME 30000.0f
 
+/**
+* Maximum particle flow rates
+**/
 #define MAX_RAIN_FLOW 15000
+#define MAX_SNOW_FLOW 15000
 
 
 /**
@@ -34,7 +38,6 @@ class Weather
 		GameState* st;
 		float delta;
 		bool random;
-		int flow;
 
 		/**
 		* Where all weather comes from
@@ -47,6 +50,15 @@ class Weather
 		SPK::Emitter* rain_emitter;
 		SPK::Group* rain_group;
 		SPK::Model* rain_model;
+		int rain_flow;
+
+		/**
+		* Snow
+		**/
+		SPK::Emitter* snow_emitter;
+		SPK::Group* snow_group;
+		SPK::Model* snow_model;
+		int snow_flow;
 
 	public:
 		Weather(GameState* st, float map_size_x, float map_size_z);
@@ -75,6 +87,15 @@ class Weather
 		void startRain(int flow);
 		void stopRain();
 		float getRainFlow() {
-			return (static_cast<float>(this->flow) / static_cast<float>(MAX_RAIN_FLOW));
+			return (static_cast<float>(this->rain_flow) / static_cast<float>(MAX_RAIN_FLOW));
+		}
+
+		/**
+		* Specific control for snow
+		**/
+		void startSnow(int flow);
+		void stopSnow();
+		float getSnowFlow() {
+			return (static_cast<float>(this->snow_flow) / static_cast<float>(MAX_SNOW_FLOW));
 		}
 };

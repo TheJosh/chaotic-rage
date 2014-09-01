@@ -364,6 +364,23 @@ void stopRain()
 }
 
 
+/**
+* Start or update rain
+**/
+void startSnow(int flow)
+{
+	getGameState()->weather->startSnow(flow);
+}
+
+
+/**
+* Stop rain
+**/
+void stopSnow()
+{
+	getGameState()->weather->stopSnow();
+}
+
 
 /**
 * Methods which affect the game world such as,
@@ -406,7 +423,9 @@ void load_world_lib(lua_State *L)
 		.addFunction("enableRandom", &weatherEnableRandom)
 		.addFunction("startRain", &startRain)
 		.addFunction("stopRain", &stopRain)
-		
+		.addFunction("startSnow", &startSnow)
+		.addFunction("stopSnow", &stopSnow)
+
 	.endNamespace();
 }
 

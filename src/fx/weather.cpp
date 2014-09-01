@@ -23,10 +23,11 @@ Weather::Weather(GameState* st, float map_size_x, float map_size_z)
 	this->st = st;
 	this->delta = 0.0f;
 	this->random = true;
-	this->flow = 0;
+	this->rain_flow = 0;
 
 	// Main zone for emission
 	this->sky = SPK::AABox::create(SPK::Vector3D(map_size_x/2.0f, 100.0f, map_size_z/2.0f), SPK::Vector3D(map_size_x, 1.0f, map_size_z));
+
 
 	// Rain model
 	this->rain_model = SPK::Model::create(
@@ -50,6 +51,29 @@ Weather::Weather(GameState* st, float map_size_x, float map_size_z)
 	this->rain_group = SPK::Group::create(this->rain_model, 50000);
 	this->rain_group->setRenderer(static_cast<Render3D*>(GEng()->render)->renderer_lines);
 	this->rain_group->addEmitter(this->rain_emitter);
+
+
+	// Snow model
+	this->snow_model = SPK::Model::create(
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
+		SPK::FLAG_NONE,
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA 
+	);
+	this->snow_model->setParam(SPK::PARAM_ALPHA, 0.5f, 0.7f);
+	this->snow_model->setParam(SPK::PARAM_RED, 0.8f, 0.9f);
+	this->snow_model->setParam(SPK::PARAM_GREEN, 0.8f, 0.9f);
+	this->snow_model->setParam(SPK::PARAM_BLUE, 0.8f, 0.9f);
+	this->snow_model->setLifeTime(3.0f, 5.0f);
+
+	// Snow emitter
+	this->snow_emitter = SPK::StraightEmitter::create(SPK::Vector3D(0.0f, -1.0f, 0.0f));
+	this->snow_emitter->setZone(this->sky);
+	this->snow_emitter->setTank(-1);
+	this->snow_emitter->setForce(30.0f, 50.0f);
+
+	// Snow group
+	this->snow_group = SPK::Group::create(this->snow_model, 50000);
+	this->snow_group->addEmitter(this->snow_emitter);
 }
 
 
@@ -61,6 +85,9 @@ Weather::~Weather()
 	delete this->rain_model;
 	delete this->rain_group;
 	delete this->rain_emitter;
+	delete this->snow_model;
+	delete this->snow_group;
+	delete this->snow_emitter;
 	delete this->sky;
 }
 
@@ -84,14 +111,17 @@ void Weather::update(float delta)
 **/
 void Weather::randomWeather()
 {
-	int action = getRandom(0, 8);
+	int action = getRandom(0, 10);
 	if (action <= 5) {
 		this->stopRain();
+		this->stopSnow();
 	} else {
 		switch (action) {
 			case 6: this->startRain(MAX_RAIN_FLOW / 5); break;
 			case 7: this->startRain(MAX_RAIN_FLOW / 3); break;
 			case 8: this->startRain(MAX_RAIN_FLOW); break;
+			case 9: this->startSnow(MAX_RAIN_FLOW / 2); break;
+			case 10: this->startSnow(MAX_RAIN_FLOW); break;
 		}
 	}
 }
@@ -105,7 +135,7 @@ void Weather::startRain(int flow)
 	this->rain_emitter->setFlow(flow);
 	st->removeParticleGroup(this->rain_group);
 	st->addParticleGroup(this->rain_group);
-	this->flow = flow;
+	this->rain_flow = flow;
 }
 
 
@@ -115,8 +145,31 @@ void Weather::startRain(int flow)
 void Weather::stopRain()
 {
 	st->removeParticleGroup(this->rain_group);
-	this->flow = 0;
+	this->rain_flow = 0;
 }
+
+
+/**
+* Start snow falling, or updates existing snow settings
+**/
+void Weather::startSnow(int flow)
+{
+	this->snow_emitter->setFlow(flow);
+	st->removeParticleGroup(this->snow_group);
+	st->addParticleGroup(this->snow_group);
+	this->snow_flow = flow;
+}
+
+
+/**
+* Stop snow falling
+**/
+void Weather::stopSnow()
+{
+	st->removeParticleGroup(this->snow_group);
+	this->snow_flow = 0;
+}
+
 
 
 #else
@@ -127,4 +180,6 @@ void Weather::update(float delta) {}
 void Weather::randomWeather() {}
 void Weather::startRain(int flow) {}
 void Weather::stopRain() {}
+void Weather::startSnow(int flow) {}
+void Weather::stopSnow() {}
 #endif
