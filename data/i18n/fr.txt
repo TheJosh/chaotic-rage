@@ -21,18 +21,22 @@
 21	Sauvgarder
 22	Time of day
 23	Day/night cycle
-24	Save environment settings
-25	Direct
-26	Local
-27	En ligne
-28	Nom d'hôte
-29	Actualiser la liste
-30	Rejoindre la partie
-31	MSAA
-32	Tex Filter
-33	Language
-34	Fullscreen
-35	Save
-36	Quit? Really?
-37	Yes
-38	No
+24	Amount of rain
+25	Amount of snow
+26	Random weather
+27	Allow game type to change weather
+28	Save environment settings
+29	Direct
+30	Local
+31	En ligne
+32	Nom d'hôte
+33	Actualiser la liste
+34	Rejoindre la partie
+35	MSAA
+36	Tex Filter
+37	Language
+38	Fullscreen
+39	Save
+40	Quit? Really?
+41	Yes
+42	No

@@ -21,18 +21,22 @@
 21	Spara val av vapen
 22	Time of day
 23	Dag/natt-cykler
-24	Spara inställningar
-25	Direkt
-26	Lokalt
-27	Internet
-28	Värdnamn
-29	Ladda om lista
-30	Anslut till spel
-31	MSAA
-32	Tex-Filter
-33	Språk
-34	Fullskärm
-35	Spara
-36	Avsluta? Säker?
-37	Ja
-38	Nej
+24	Amount of rain
+25	Amount of snow
+26	Random weather
+27	Allow game type to change weather
+28	Spara inställningar
+29	Direkt
+30	Lokalt
+31	Internet
+32	Värdnamn
+33	Ladda om lista
+34	Anslut till spel
+35	MSAA
+36	Tex-Filter
+37	Språk
+38	Fullskärm
+39	Spara
+40	Avsluta? Säker?
+41	Ja
+42	Nej

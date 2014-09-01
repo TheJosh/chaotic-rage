@@ -44,6 +44,14 @@ class GameSettings
 		float time_of_day;
 		bool day_night_cycle;
 
+		/**
+		* Amount of weather
+		**/
+		int rain_flow;
+		int snow_flow;
+		bool random_weather;
+		bool gametype_weather;
+
 	public:
 		GameSettings(int rounds = 20);
 

@@ -333,7 +333,7 @@ NPC* addNpc(string type, string aitype, unsigned int fac)
 **/
 void weatherDisableRandom()
 {
-	getGameState()->weather->disableRandom();
+	if (getGameState()->gs->gametype_weather) getGameState()->weather->disableRandom();
 }
 
 
@@ -342,7 +342,7 @@ void weatherDisableRandom()
 **/
 void weatherEnableRandom()
 {
-	getGameState()->weather->enableRandom();
+	if (getGameState()->gs->gametype_weather) getGameState()->weather->enableRandom();
 }
 
 
@@ -351,7 +351,7 @@ void weatherEnableRandom()
 **/
 void startRain(int flow)
 {
-	getGameState()->weather->startRain(flow);
+	if (getGameState()->gs->gametype_weather) getGameState()->weather->startRain(flow);
 }
 
 
@@ -360,7 +360,7 @@ void startRain(int flow)
 **/
 void stopRain()
 {
-	getGameState()->weather->stopRain();
+	if (getGameState()->gs->gametype_weather) getGameState()->weather->stopRain();
 }
 
 
@@ -369,7 +369,7 @@ void stopRain()
 **/
 void startSnow(int flow)
 {
-	getGameState()->weather->startSnow(flow);
+	if (getGameState()->gs->gametype_weather) getGameState()->weather->startSnow(flow);
 }
 
 
@@ -378,7 +378,7 @@ void startSnow(int flow)
 **/
 void stopSnow()
 {
-	getGameState()->weather->stopSnow();
+	if (getGameState()->gs->gametype_weather) getGameState()->weather->stopSnow();
 }
 
 

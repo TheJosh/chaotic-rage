@@ -32,6 +32,10 @@ WEAPONS_SAVE             Save weapon settings
 # Environment menu
 ENVIRONMENT_TIMEOFDAY    Time of day
 ENVIRONMENT_DAY_NIGHT    Day/night cycle
+ENVIRONMENT_RAIN         Amount of rain
+ENVIRONMENT_SNOW         Amount of snow
+ENVIRONMENT_RND_WEATHER  Random weather
+ENVIRONMENT_GT_WEATHER   Allow game type to change weather
 ENVIRONMENT_SAVE         Save environment settings
 
 # Network menu
