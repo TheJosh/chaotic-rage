@@ -38,6 +38,17 @@ cfg_opt_t adjust_opts[] =
 
 
 /**
+* Combos, for extra funness
+**/
+cfg_opt_t combo_opts[] =
+{
+	CFG_STR((char*) "second", (char*)"", CFGF_NONE),
+	CFG_STR((char*) "benefit", (char*)"", CFGF_NONE),
+	CFG_END()
+};
+
+
+/**
 * Config file opts
 **/
 cfg_opt_t pickuptype_opts[] =
@@ -50,6 +61,7 @@ cfg_opt_t pickuptype_opts[] =
 	CFG_SEC((char*) "perm", adjust_opts, CFGF_NONE),
 	CFG_SEC((char*) "temp", adjust_opts, CFGF_NONE),
 	CFG_INT((char*) "delay", 15 * 1000, CFGF_NONE),		// default 15 secs
+	CFG_SEC((char*) "combo", combo_opts, CFGF_MULTI),
 
 	CFG_END()
 };
@@ -123,6 +135,17 @@ PickupType* loadItemPickupType(cfg_t* cfg_item, Mod* mod)
 		if (cfg_size(cfg_item, "temp") > 0) {
 			pt->temp = pt->loadAdjust(cfg_getnsec(cfg_item, "temp", 0));
 		}
+		
+		// Combos will be hooked up later
+		if (cfg_size(cfg_item, "combo") > 0) {
+			PowerupCombo combo;
+			for (unsigned int i = 0; i < cfg_size(cfg_item, "combo"); ++i) {
+				cfg_t* cfg_combo = cfg_getnsec(cfg_item, "combo", i);
+				combo.second_name = std::string(cfg_getstr(cfg_combo, "second"));
+				combo.benefit_name = std::string(cfg_getstr(cfg_combo, "benefit"));
+				pt->combos.push_back(combo);
+			}
+		}
 	}
 
 	return pt;
@@ -184,8 +207,16 @@ bool PickupType::doUse(Unit *u)
 		case PICKUP_TYPE_POWERUP:
 			u->applyPickupAdjust(this->perm);
 			u->applyPickupAdjust(this->temp);
+			u->addActivePickup(this);
 			if (!this->title.empty()) {
 				st->addHUDMessage(u->slot, "Picked up a ", this->title);
+			}
+
+			// Apply any combos
+			for (vector<PowerupCombo>::iterator it = this->combos.begin(); it != this->combos.end(); ++it) {
+				if ((*it).benefit != NULL && u->hasActivePickup((*it).second)) {
+					(*it).benefit->doUse(u);
+				}
 			}
 			break;
 

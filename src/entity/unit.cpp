@@ -637,13 +637,7 @@ void Unit::update(int delta)
 
 				if (other->getBroadphaseHandle()->m_collisionFilterGroup == CG_PICKUP) {
 					Pickup* p = static_cast<Pickup*>(other->getUserPointer());
-					if (p->doUse(this)) {
-						UnitPickup up;
-						up.pt = p->getPickupType();
-						up.u = this;
-						up.end_time = st->game_time + up.pt->getDelay();
-						pickups.push_back(up);
-					}
+					p->doUse(this);
 				}
 			}
 		}
@@ -740,6 +734,31 @@ void Unit::leaveVehicle()
 	this->drive->exit();
 	this->st->addAnimPlay(this->anim, this);
 	this->drive = NULL;
+}
+
+
+/**
+* Add a pickup to the 'active' list for this unit
+**/
+void Unit::addActivePickup(PickupType* pt)
+{
+	UnitPickup up;
+	up.pt = pt;
+	up.u = this;
+	up.end_time = st->game_time + pt->getDelay();
+	this->pickups.push_back(up);
+}
+
+
+/**
+* Does the uint currently have the given pickup?
+**/
+bool Unit::hasActivePickup(PickupType* pt)
+{
+	for (list<UnitPickup>::iterator it = this->pickups.begin(); it != this->pickups.end(); ++it) {
+		if ((*it).pt == pt) return true;
+	}
+	return false;
 }
 
 

@@ -311,6 +311,14 @@ bool Mod::load(UIUpdate* ui)
 	pickuptypes = loadModFile<PickupType*>(this, ui, "pickuptypes.conf", "pickuptype", pickuptype_opts, &loadItemPickupType);
 	if (pickuptypes == NULL) return false;
 
+	// Hookup pickup combos
+	for (vector<PickupType*>::iterator it = pickuptypes->begin(); it != pickuptypes->end(); ++it) {
+		for (vector<PowerupCombo>::iterator it2 = (*it)->combos.begin(); it2 != (*it)->combos.end(); ++it2) {
+			(*it2).second = this->getPickupType((*it2).second_name);
+			(*it2).benefit = this->getPickupType((*it2).benefit_name);
+		}
+	}
+
 	// Auto-create pickup types for weapons, ammocrates
 	for (int i = weapontypes->size() - 1; i >= 0; --i) {
 		string tmp;

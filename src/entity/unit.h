@@ -158,6 +158,9 @@ class Unit : public Entity
 
 		void applyPickupAdjust(PickupTypeAdjust* adj);
 		void rollbackPickupAdjust(PickupTypeAdjust* adj);
+		void addActivePickup(PickupType* pt);
+		bool hasActivePickup(PickupType* pt);
+
 		void applyForce(btVector3 &force);
 
 		UnitType* getUnitType() { return this->uc; }

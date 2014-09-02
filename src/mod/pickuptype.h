@@ -13,7 +13,7 @@ using namespace std;
 #define PICKUP_TYPE_AMMO 2
 #define PICKUP_TYPE_POWERUP 3
 #define PICKUP_TYPE_CURSOR 4
-
+#define PICKUP_TYPE_COMBO 5
 
 class btCollisionShape;
 
@@ -40,6 +40,24 @@ class PickupTypeAdjust
 
 
 /**
+* Additional powerups which are applied if you get two at once
+**/
+class PowerupCombo
+{
+	public:
+		string second_name;
+		string benefit_name;
+		PickupType* second;		// Other powerup in the combo
+		PickupType* benefit;	// WHat you get from the combo
+		
+	public:
+		PowerupCombo()
+			: second_name(""), benefit_name(""), second(NULL), benefit(NULL)
+			{}
+};
+
+
+/**
 * The pickup details
 **/
 class PickupType
@@ -60,6 +78,9 @@ class PickupType
 		PickupTypeAdjust* temp;
 		string title;
 		int delay;
+
+		// Powerup combos
+		vector<PowerupCombo> combos;
 
 	public:
 		PickupType();
