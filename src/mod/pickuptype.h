@@ -77,6 +77,7 @@ class PickupType
 		PickupTypeAdjust* perm;
 		PickupTypeAdjust* temp;
 		string title;
+		string message;
 		int delay;
 
 		// Powerup combos

@@ -55,6 +55,7 @@ cfg_opt_t pickuptype_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
 	CFG_STR((char*) "title", (char*)"Powerup", CFGF_NONE),
+	CFG_STR((char*) "message", (char*)"", CFGF_NONE),
 	CFG_STR((char*) "model", 0, CFGF_NONE),
 	CFG_INT((char*) "type", 0, CFGF_NONE),
 
@@ -126,6 +127,7 @@ PickupType* loadItemPickupType(cfg_t* cfg_item, Mod* mod)
 	// Powerups have a bunch more fields
 	if (pt->type == PICKUP_TYPE_POWERUP) {
 		pt->title = std::string(cfg_getstr(cfg_item, "title"));
+		pt->message = std::string(cfg_getstr(cfg_item, "message"));
 		pt->delay = cfg_getint(cfg_item, "delay");
 
 		if (cfg_size(cfg_item, "perm") > 0) {
@@ -208,7 +210,10 @@ bool PickupType::doUse(Unit *u)
 			u->applyPickupAdjust(this->perm);
 			u->applyPickupAdjust(this->temp);
 			u->addActivePickup(this);
-			if (!this->title.empty()) {
+
+			if (!this->message.empty()) {
+				st->addHUDMessage(u->slot, this->message);
+			} else if (!this->title.empty()) {
 				st->addHUDMessage(u->slot, "Picked up a ", this->title);
 			}
 
