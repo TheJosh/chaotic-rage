@@ -23,7 +23,7 @@ using namespace std;
 /**
 * Fires a weapon, from a specified Unit
 **/
-void WeaponTimedMine::doFire(Unit *u, btTransform &origin)
+void WeaponTimedMine::doFire(Unit *u, btTransform &origin, float damage_multiplier)
 {
 	btTransform xform = origin;
 	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->model, u, 1.0f);
@@ -31,6 +31,7 @@ void WeaponTimedMine::doFire(Unit *u, btTransform &origin)
 	WeaponTimedMineData* data = new WeaponTimedMineData();
 	data->time = this->time;
 	data->ghost = NULL;
+	data->damage = this->damage * damage_multiplier;
 	ar->data = data;
 
 	u->getGameState()->addAmmoRound(ar);
@@ -50,7 +51,7 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 
 	// If there is a ghost, see what we hit
 	if (data->ghost) {
-		apply_ghost_damage(data->ghost, Quadratic(0.0f, this->damage, 0.0f), this->range);
+		apply_ghost_damage(data->ghost, Quadratic(0.0f, data->damage, 0.0f), this->range);
 
 		// Remove the mine
 		e->getGameState()->physics->delCollisionObject(data->ghost);
@@ -77,7 +78,7 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 /**
 * Fires a weapon, from a specified Unit
 **/
-void WeaponProxiMine::doFire(Unit *u, btTransform &origin)
+void WeaponProxiMine::doFire(Unit *u, btTransform &origin, float damage_multiplier)
 {
 	btTransform xform = origin;
 	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->model, u);
@@ -85,6 +86,7 @@ void WeaponProxiMine::doFire(Unit *u, btTransform &origin)
 	WeaponProxiMineData* data = new WeaponProxiMineData();
 	data->delay = 2000;
 	data->ghost = create_ghost(xform, this->range);
+	data->damage = this->damage * damage_multiplier;
 	ar->data = data;
 
 	u->getGameState()->addAmmoRound(ar);
@@ -109,7 +111,7 @@ void WeaponProxiMine::entityUpdate(AmmoRound *e, int delta)
 	// If there is something within range...
 	if (check_ghost_triggered_units(data->ghost)) {
 		// ...kaboom
-		apply_ghost_damage(data->ghost, Quadratic(0.0f, this->damage, 0.0f), this->range);
+		apply_ghost_damage(data->ghost, Quadratic(0.0f, data->damage, 0.0f), this->range);
 
 		create_particles_explosion(st, e->getTransform().getOrigin(), 100);
 
@@ -125,13 +127,14 @@ void WeaponProxiMine::entityUpdate(AmmoRound *e, int delta)
 /**
 * Fires a weapon, from a specified Unit
 **/
-void WeaponRemoteMine::doFire(Unit *u, btTransform &origin)
+void WeaponRemoteMine::doFire(Unit *u, btTransform &origin, float damage_multiplier)
 {
 	btTransform xform = origin;
 	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->model, u);
 
 	WeaponRemoteMineData* data = new WeaponRemoteMineData();
 	data->ghost = NULL;
+	data->damage = this->damage * damage_multiplier;
 	ar->data = data;
 
 	u->getGameState()->addAmmoRound(ar);
@@ -147,7 +150,7 @@ void WeaponRemoteMine::entityUpdate(AmmoRound *e, int delta)
 	if (!data || !data->ghost) return;
 
 	// If there is a ghost, we have just boomed, let's see what we hit
-	apply_ghost_damage(data->ghost, Quadratic(0.0f, this->damage, 0.0f), this->range);
+	apply_ghost_damage(data->ghost, Quadratic(0.0f, data->damage, 0.0f), this->range);
 
 	// Remove the mine
 	e->getGameState()->physics->delCollisionObject(data->ghost);
@@ -173,7 +176,7 @@ void WeaponRemoteMine::trigger(AmmoRound *e)
 /**
 * Trigger remote mines
 **/
-void WeaponRemoteTrigger::doFire(Unit *u, btTransform &origin)
+void WeaponRemoteTrigger::doFire(Unit *u, btTransform &origin, float damage_multiplier)
 {
 	list<AmmoRound*>* rounds = u->getGameState()->findAmmoRoundsUnit(u);
 

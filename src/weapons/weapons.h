@@ -46,7 +46,7 @@ class WeaponRaycast : public WeaponType
 		unsigned int burst;
 
 	public:
-		virtual void doFire(Unit *unit, btTransform &origin);
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
 };
 
 
@@ -62,7 +62,7 @@ class WeaponFlamethrower : public WeaponType
 		float damage;
 
 	public:
-		virtual void doFire(Unit *unit, btTransform &origin);
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
 };
 
 
@@ -80,13 +80,14 @@ class WeaponTimedMine : public WeaponType
 		int time;		// ms
 
 	public:
-		virtual void doFire(Unit *unit, btTransform &origin);
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
 		virtual void entityUpdate(AmmoRound *e, int delta);
 };
 
 struct WeaponTimedMineData {
 	int time;
 	btGhostObject* ghost;
+	float damage;
 };
 
 
@@ -103,13 +104,14 @@ class WeaponProxiMine : public WeaponType
 		float damage;
 
 	public:
-		virtual void doFire(Unit *unit, btTransform &origin);
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
 		virtual void entityUpdate(AmmoRound *e, int delta);
 };
 
 struct WeaponProxiMineData {
 	int delay;
 	btGhostObject* ghost;
+	float damage;
 };
 
 
@@ -126,13 +128,14 @@ class WeaponRemoteMine : public WeaponType
 		float damage;
 
 	public:
-		virtual void doFire(Unit *unit, btTransform &origin);
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
 		virtual void entityUpdate(AmmoRound *e, int delta);
 		void trigger(AmmoRound *e);
 };
 
 struct WeaponRemoteMineData {
 	btGhostObject* ghost;
+	float damage;
 };
 
 
@@ -143,7 +146,7 @@ struct WeaponRemoteMineData {
 class WeaponRemoteTrigger : public WeaponType
 {
 	public:
-		virtual void doFire(Unit *unit, btTransform &origin);
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
 };
 
 
@@ -161,7 +164,7 @@ class WeaponRocket : public WeaponType
 		float damage;
 
 	public:
-		virtual void doFire(Unit *unit, btTransform &origin);
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
 		virtual void entityUpdate(AmmoRound *e, int delta);
 };
 
@@ -169,6 +172,7 @@ struct WeaponRocketData {
 	int state;
 	PhysicsCallback *cbk;
 	btGhostObject* ghost;
+	float damage;
 };
 
 
@@ -188,7 +192,7 @@ class WeaponAttractor : public WeaponType
 		bool inwards;
 
 	public:
-		virtual void doFire(Unit *unit, btTransform &origin);
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
 		virtual void entityUpdate(AmmoRound *e, int delta);
 };
 

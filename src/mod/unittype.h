@@ -61,6 +61,7 @@ class UnitParams
 		int special_delay;      // milliseconds
 		int special_cooldown;   // milliseconds
 		bool invincible;        // cannot be hurt in any way
+		float weapon_damage;    // damage multiplier
 };
 
 class UnitType

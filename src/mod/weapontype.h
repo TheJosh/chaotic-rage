@@ -62,7 +62,7 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 		/**
 		* Called by the unit class when we should fire
 		**/
-		virtual void doFire(Unit *unit, btTransform &origin) = 0;
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier) = 0;
 
 		/**
 		* Called by the associated ammo round to update stuff

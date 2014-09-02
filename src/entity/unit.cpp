@@ -563,7 +563,7 @@ void Unit::update(int delta)
 
 	// Fire!
 	if (w != NULL) {
-		w->doFire(this, wxform);
+		w->doFire(this, wxform, this->params.weapon_damage);
 
 		if (w == this->weapon->wt) {
 			this->weapon->next_use = st->game_time + this->weapon->wt->fire_delay;
@@ -601,7 +601,7 @@ void Unit::update(int delta)
 	if (special_firing) {
 		w = this->uc->special_weapon;
 
-		w->doFire(this, xform);
+		w->doFire(this, xform, 1.0f);
 
 		if (!w->continuous || st->game_time > this->special_time) {
 			this->endSpecialAttack();
@@ -847,6 +847,7 @@ void Unit::applyPickupAdjust(PickupTypeAdjust* adj)
 	this->params.melee_damage *= adj->melee_damage;
 	this->params.melee_delay *= adj->melee_delay;
 	this->params.melee_cooldown *= adj->melee_cooldown;
+	this->params.weapon_damage *= adj->weapon_damage;
 
 	if (adj->invincible) {
 		this->params.invincible = true;
@@ -866,6 +867,7 @@ void Unit::rollbackPickupAdjust(PickupTypeAdjust* adj)
 	this->params.melee_damage /= adj->melee_damage;
 	this->params.melee_delay /= adj->melee_delay;
 	this->params.melee_cooldown /= adj->melee_cooldown;
+	this->params.weapon_damage /= adj->weapon_damage;
 
 	if (adj->invincible) {
 		this->params.invincible = false;
@@ -880,3 +882,4 @@ void Unit::applyForce(btVector3 &force)
 {
 	this->force += force;
 }
+

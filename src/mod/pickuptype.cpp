@@ -32,6 +32,7 @@ cfg_opt_t adjust_opts[] =
 	CFG_FLOAT((char*) "melee-delay", 1.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "melee-cooldown", 1.0f, CFGF_NONE),
 	CFG_BOOL((char*) "invincible", cfg_false, CFGF_NONE),
+	CFG_FLOAT((char*) "weapon-damage", 1.0f, CFGF_NONE),
 	CFG_END()
 };
 
@@ -141,6 +142,7 @@ PickupTypeAdjust* PickupType::loadAdjust(cfg_t* cfg)
 	pt->melee_delay = (float)cfg_getfloat(cfg, "melee-delay");
 	pt->melee_cooldown = (float)cfg_getfloat(cfg, "melee-cooldown");
 	pt->invincible = (cfg_getbool(cfg, "invincible") == cfg_true);
+	pt->weapon_damage = (float)cfg_getfloat(cfg, "weapon-damage");
 
 	return pt;
 }

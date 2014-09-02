@@ -28,7 +28,7 @@ static void rocketTickCallback(float delta, Entity* e, void* data1, void* data2)
 /**
 * Fires a weapon, from a specified Unit
 **/
-void WeaponRocket::doFire(Unit *u, btTransform &origin)
+void WeaponRocket::doFire(Unit *u, btTransform &origin, float damage_multiplier)
 {
 	btTransform xform = origin;
 	xform.setOrigin(
@@ -53,6 +53,7 @@ void WeaponRocket::doFire(Unit *u, btTransform &origin)
 	WeaponRocketData* data = new WeaponRocketData();
 	data->state = 0;
 	data->ghost = ghost;
+	data->damage = this->damage * damage_multiplier;
 	ar->data = data;
 
 	// Insert into physics world
@@ -117,7 +118,7 @@ void rocketTickCallback(float delta, Entity *e, void *data1, void *data2)
 
 		case 1:
 			// We've hit something - kaboom
-			apply_ghost_damage(rocket->ghost, Quadratic(0.0f, 0.0f, wt->damage), wt->range);
+			apply_ghost_damage(rocket->ghost, Quadratic(0.0f, 0.0f, rocket->damage), wt->range);
 			create_particles_explosion(wt->st, ar->getPosition(), 100);
 
 			// Remove the rocket
