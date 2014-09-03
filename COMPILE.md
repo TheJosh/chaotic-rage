@@ -119,9 +119,19 @@ Cross-compiling for JavaScript using emscripten
 
 This build configuration has been tested on Debian 8.
 
-This configuration is not yet ready for the prime time!
+This configuration is not yet ready for the prime time! You can experiment using the instructions below.
 
-You can experiment by installing emscripten, and then compiling with:
+Install all of the build dependencies (see above) and also emscripten
+```
+sudo apt-get install emscripten
+```
+
+I had to muck around with multiarch for lua on Debian 8:
+```
+sudo ln -s /usr/include/x86_64-linux-gnu/lua5.1-deb-multiarch.h /usr/include/lua5.1/
+```
+
+and then compile with:
 
 ```
 make EMSCRIPTEN=1
