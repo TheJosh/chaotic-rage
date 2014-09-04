@@ -137,6 +137,13 @@ void HUD::draw()
 			this->labels.clear();
 		}
 
+		// Powerup message
+		string msg = this->ps->p->getPowerupMessage();
+		if (!msg.empty()) {
+			int w = render->widthText(msg);
+			this->render->renderText(msg, (this->render->virt_width - w) / 2, this->render->virt_height - 50, 0.8f, 0.0f, 0.0f, 1.0f);
+		}
+
 		// Health, ammo, etc
 		if (this->ps->p != NULL) {
 			int val;

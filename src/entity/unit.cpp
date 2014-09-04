@@ -651,6 +651,7 @@ void Unit::update(int delta)
 	pickups.remove_if(remove_finished_pickup);
 	if (pickups.empty()) {
 		this->powerup_weapon = NULL;
+		this->powerup_message = "";
 	}
 }
 
@@ -757,6 +758,9 @@ void Unit::addActivePickup(PickupType* pt)
 
 	if (pt->wt != NULL) {
 		this->powerup_weapon = pt->wt;
+	}
+	if (!pt->message.empty()) {
+		this->powerup_message = pt->message;
 	}
 }
 

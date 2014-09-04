@@ -106,7 +106,6 @@ class Unit : public Entity
 		vector<UnitWeapon*> avail_weapons;
 		unsigned int curr_weapon_id;
 		unsigned int weapon_zoom_level;
-		WeaponType* powerup_weapon;
 
 		unsigned int melee_cooldown;
 
@@ -115,6 +114,8 @@ class Unit : public Entity
 		unsigned int special_cooldown;
 
 		list<UnitPickup> pickups;
+		WeaponType* powerup_weapon;
+		string powerup_message;
 
 	public:
 		Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac);
@@ -161,6 +162,7 @@ class Unit : public Entity
 		void rollbackPickupAdjust(PickupTypeAdjust* adj);
 		void addActivePickup(PickupType* pt);
 		bool hasActivePickup(PickupType* pt);
+		string getPowerupMessage() { return this->powerup_message; }
 
 		void applyForce(btVector3 &force);
 

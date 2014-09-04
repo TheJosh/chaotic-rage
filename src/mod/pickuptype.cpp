@@ -219,9 +219,7 @@ bool PickupType::doUse(Unit *u)
 			u->applyPickupAdjust(this->temp);
 			u->addActivePickup(this);
 
-			if (!this->message.empty()) {
-				st->addHUDMessage(u->slot, this->message);
-			} else if (!this->title.empty()) {
+			if (!this->title.empty()) {
 				st->addHUDMessage(u->slot, "Picked up a ", this->title);
 			}
 
