@@ -106,6 +106,7 @@ class Unit : public Entity
 		vector<UnitWeapon*> avail_weapons;
 		unsigned int curr_weapon_id;
 		unsigned int weapon_zoom_level;
+		WeaponType* powerup_weapon;
 
 		unsigned int melee_cooldown;
 

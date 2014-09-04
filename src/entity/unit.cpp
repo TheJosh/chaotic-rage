@@ -52,6 +52,7 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 	this->special_time = 0;
 	this->special_cooldown = 0;
 	this->weapon_zoom_level = 0;
+	this->powerup_weapon = NULL;
 
 	this->lift_obj = NULL;
 	this->drive = NULL;
@@ -555,6 +556,9 @@ void Unit::update(int delta)
 			w = this->drive->vt->weapon_primary;
 			wxform = btTransform();
 			this->drive->getWeaponTransform(wxform);
+		} else if (this->powerup_weapon != NULL) {
+			w = this->powerup_weapon;
+			wxform = btTransform(xform);
 		} else if (this->weapon && this->weapon->next_use < st->game_time && this->weapon->magazine > 0) {
 			w = this->weapon->wt;
 			wxform = btTransform(xform);
@@ -645,6 +649,9 @@ void Unit::update(int delta)
 
 	// Remove (and rollback) old pickups
 	pickups.remove_if(remove_finished_pickup);
+	if (pickups.empty()) {
+		this->powerup_weapon = NULL;
+	}
 }
 
 
@@ -747,6 +754,10 @@ void Unit::addActivePickup(PickupType* pt)
 	up.u = this;
 	up.end_time = st->game_time + pt->getDelay();
 	this->pickups.push_back(up);
+
+	if (pt->wt != NULL) {
+		this->powerup_weapon = pt->wt;
+	}
 }
 
 

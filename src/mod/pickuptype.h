@@ -66,18 +66,19 @@ class PickupType
 		string name;
 		CRC32 id;
 
+		// Common to all
 		AssimpModel * model;
 		btCollisionShape* col_shape;
 		int type;
 
-		// Weapon and ammo crates
+		// Weapon, ammo crates, and powerups which force the weapon
 		WeaponType* wt;
 
 		// Powerups, permanant and temporary changes
-		PickupTypeAdjust* perm;
-		PickupTypeAdjust* temp;
 		string title;
 		string message;
+		PickupTypeAdjust* perm;
+		PickupTypeAdjust* temp;
 		int delay;
 
 		// Powerup combos
