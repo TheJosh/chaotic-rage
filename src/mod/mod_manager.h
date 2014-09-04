@@ -12,6 +12,7 @@ class Mod;
 class GameState;
 class AIType;
 class Campaign;
+class EffectType;
 class GameType;
 class ObjectType;
 class PickupType;
@@ -62,6 +63,7 @@ class ModManager {
 
 		AIType * getAIType(string name);
 		GameType * getGameType(string name);
+		EffectType * getEffectType(string name);
 		ObjectType * getObjectType(string name);
 		PickupType * getPickupType(string name);
 		Song * getSong(string name);
