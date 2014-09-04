@@ -19,12 +19,12 @@
 19	Standardvapen för karaktär
 20	Standardvapen för speltyp
 21	Spara val av vapen
-22	Time of day
+22	Tid på dagen
 23	Dag/natt-cykler
-24	Amount of rain
-25	Amount of snow
-26	Random weather
-27	Allow game type to change weather
+24	Nederbörd (regn)
+25	Nederbörd (snö)
+26	Slumpvist väder
+27	Tillåt att spelet ändrar väder
 28	Spara inställningar
 29	Direkt
 30	Lokalt
