@@ -1,0 +1,5 @@
+*.o
+*.gcc
+*.js
+*.js.map
+*.html
