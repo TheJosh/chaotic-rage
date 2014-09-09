@@ -12,19 +12,19 @@ rm -rf assets
 mkdir assets
 mkdir assets/data
 
+cp -r ../../data/australia_day assets/data/ || exit 1
 cp -r ../../data/cr assets/data/ || exit 1
 cp -r ../../data/i18n assets/data/ || exit 1
 cp -r ../../data/intro assets/data/ || exit 1
+cp -r ../../data/test assets/data/ || exit 1
 cp -r ../../maps assets/ || exit 1
 
 echo "Compressing assets..."
 
 # PNGs
-mogrify -resize 256x256 -quality 99 assets/data/cr/campaigns/*.png || exit 1
-mogrify -resize 256x256 -quality 99 assets/data/cr/models/*.png || exit 1
+find assets/data/ | grep -i png | xargs mogrify -resize 256x256 -quality 99 || exit 1
 
 # JPGs
-mogrify -resize 256x256 -quality 80 assets/data/cr/models/*.jpg || exit 1
-mogrify -resize 256x256 -quality 80 assets/data/cr/menu/bg.jpg || exit 1
+find assets/data/ | grep -i jpg | xargs mogrify -resize 256x256 -quality 80 || exit 1
 
 echo "Done."

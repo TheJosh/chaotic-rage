@@ -95,10 +95,3 @@ rm jni/README.txt
 # Link up src directory
 rm -f jni/src
 ln -s ../../../src jni/src
-
-# Copy assets
-if [ ! -d "assets" ]; then
-	./assets.sh
-fi
-
-
