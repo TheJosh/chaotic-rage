@@ -30,7 +30,12 @@ WEAPONS_STANDARD_GAME    Standardvapen för speltyp
 WEAPONS_SAVE             Spara val av vapen
 
 # Environment menu
+ENVIRONMENT_TIMEOFDAY    Tid på dagen
 ENVIRONMENT_DAY_NIGHT    Dag/natt-cykler
+ENVIRONMENT_RAIN         Nederbörd (regn)
+ENVIRONMENT_SNOW         Nederbörd (snö)
+ENVIRONMENT_RND_WEATHER  Slumpvist väder
+ENVIRONMENT_GT_WEATHER   Tillåt att spelet ändrar väder
 ENVIRONMENT_SAVE         Spara inställningar
 
 # Network menu

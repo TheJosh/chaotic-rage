@@ -22,7 +22,7 @@ end;
 
 
 --
--- Spwans zombies
+-- Spawns zombies
 --
 spawn_func = function()
 	t = random_arg("zomb", "zomb_fast", "zomb_health", "zomb_strong")
@@ -162,6 +162,3 @@ bind_npcdied(function()
 		add_timer(2500, start_round);
 	end;
 end);
-
-
-
