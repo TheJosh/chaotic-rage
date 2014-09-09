@@ -32,6 +32,7 @@ if [ ! -f "../lib/libLinearMath.bc" ]; then
 	cd ..
 fi
 
+
 ## Assimp
 if [ ! -f "../lib/libassimp.bc" ]; then
 	rm -rf assimp
@@ -41,7 +42,8 @@ if [ ! -f "../lib/libassimp.bc" ]; then
 	unzip -q assimp--3.0.1270-source-only.zip || exit 1
 	mv assimp--3.0.1270-source-only assimp || exit 1
 	cd assimp
-	patch -p1 -N --binary -i ../../assimp.patch || exit 1
+	patch -p1 -N --binary -i ../../assimp1.patch || exit 1
+	patch -p1 -N --binary -i ../../assimp2.patch || exit 1
 	emconfigure cmake \
 		-DBUILD_STATIC_LIB=OFF \
 		-DBUILD_ASSIMP_TOOLS=OFF \
