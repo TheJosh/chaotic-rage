@@ -16,11 +16,17 @@ em++ tests/hello.cpp -o tests/hello.html
 # Bullet
 g++ tests/bullet.cpp `pkg-config --cflags bullet` -c -o tests/bullet.o
 g++ tests/bullet.o `pkg-config --libs bullet` -o tests/bullet.gcc
-em++ tests/bullet.cpp -Iinclude -c -o tests/bullet.bc
-em++ tests/bullet.bc lib/libBulletDynamics.bc lib/libBulletCollision.bc lib/libLinearMath.bc -o tests/bullet.html
+em++ tests/bullet.cpp `PKG_CONFIG_PATH=lib/pkgconfig pkg-config --cflags bullet` -c -o tests/bullet.bc
+em++ tests/bullet.bc `PKG_CONFIG_PATH=lib/pkgconfig pkg-config --libs bullet` -o tests/bullet.html
 
 # Assimp
 g++ tests/assimp.cpp `pkg-config --cflags assimp` -c -o tests/assimp.o
 g++ tests/assimp.o `pkg-config --libs assimp` -o tests/assimp.gcc
-em++ tests/assimp.cpp -Iinclude -c -o tests/assimp.bc
-em++ tests/assimp.bc lib/libassimp.bc -o tests/assimp.html
+em++ tests/assimp.cpp `PKG_CONFIG_PATH=lib/pkgconfig pkg-config --cflags assimp` -Iinclude -c -o tests/assimp.bc
+em++ tests/assimp.bc `PKG_CONFIG_PATH=lib/pkgconfig pkg-config --libs assimp` -o tests/assimp.html
+
+# Freetype
+g++ tests/freetype.cpp `pkg-config --cflags freetype2` -c -o tests/freetype.o
+g++ tests/freetype.o `pkg-config --libs freetype2` -o tests/freetype.gcc
+em++ tests/freetype.cpp `PKG_CONFIG_PATH=lib/pkgconfig pkg-config --cflags freetype2` -c -o tests/freetype.bc
+em++ tests/freetype.bc `PKG_CONFIG_PATH=lib/pkgconfig pkg-config --libs freetype2` -o tests/freetype.html

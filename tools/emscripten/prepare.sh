@@ -56,3 +56,19 @@ if [ ! -f "../lib/libassimp.bc" ]; then
 	cd ..
 fi
 
+
+## Freetype
+if [ ! -f "../lib/libfreetype.bc" ]; then
+	rm -rf freetype
+	if [ ! -f "freetype-2.5.3.tar.bz2" ]; then
+		wget http://download.savannah.gnu.org/releases/freetype/freetype-2.5.3.tar.bz2
+	fi
+	tar -xjf freetype-2.5.3.tar.bz2 || exit 1
+	mv freetype-2.5.3 freetype || exit 1
+	cd freetype
+	emconfigure ./configure --prefix=`readlink -f ../..` || exit 1
+	emmake make || exit 1
+	emmake make install || exit 1
+	cd ..
+fi
+
