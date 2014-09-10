@@ -50,7 +50,7 @@ int main (int argc, char ** argv)
 	FT_Library ft;
 	error = FT_Init_FreeType(&ft);
 	if (!error) {
-		std::cerr << "Freetype okay" << std::endl;
+		std::cout << "Freetype okay" << std::endl;
 		FT_Done_FreeType(ft);
 	}
 
@@ -65,7 +65,7 @@ int main (int argc, char ** argv)
 	delete overlappingPairCache;
 	delete dispatcher;
 	delete collisionConfiguration;
-	std::cerr << "Bullet okay" << std::endl;
+	std::cout << "Bullet okay" << std::endl;
 
 	SDL_Quit();
 	exit(0);

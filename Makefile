@@ -27,6 +27,11 @@ else ifdef EMSCRIPTEN
 	CXX := em++
 	CC := emcc
 	PLATFORM := $(OBJPATH)/emscripten.o
+	PKG_CONFIG_PATH := tools/emscripten/lib/pkgconfig
+	CFLAGS := -Itools/emscripten/include
+	LIBS := -Ltools/emscripten/lib -llua5.1
+	POSTFIX := .html
+	LUAPKG=
 
 
 # Standard Linux build
@@ -60,14 +65,14 @@ FREETYPE_CONFIG := $(CROSS)freetype-config
 
 # cflags
 CFLAGS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --cflags) \
-	$(shell export PATH=$(PATH);$(PKG_CONFIG) gl glu glew $(LUAPKG) bullet assimp SDL2_mixer SDL2_image SDL2_net --cflags) \
+	$(shell export PATH=$(PATH) PKG_CONFIG_PATH=$(PKG_CONFIG_PATH);$(PKG_CONFIG) gl glu glew $(LUAPKG) bullet assimp SDL2_mixer SDL2_image SDL2_net --cflags) \
 	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --cflags) \
 	$(CFLAGS) \
 	-Itools/include -I$(SRCPATH) -I$(SRCPATH)/guichan -I$(SRCPATH)/confuse -I$(SRCPATH)/spark
 
 # libs
 LIBS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --libs) \
-	$(shell export PATH=$(PATH);$(PKG_CONFIG) glew $(LUAPKG) bullet assimp SDL2_mixer SDL2_image SDL2_net --libs) \
+	$(shell export PATH=$(PATH) PKG_CONFIG_PATH=$(PKG_CONFIG_PATH);$(PKG_CONFIG) glew $(LUAPKG) bullet assimp SDL2_mixer SDL2_image SDL2_net --libs) \
 	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --libs) \
 	$(LIBS)
 
@@ -192,6 +197,11 @@ dist-bin: chaoticrage data maps
 	tar -cvjf chaoticrage-linuxbin-$(VERSION).tar.bz2 $(DISTTMP)
 	rm -r $(DISTTMP)
 
+
+env:
+	@echo $(CXX)
+	@echo $(CFLAGS)
+	@echo $(LIBS)
 
 clean:
 	rm -f chaoticrage

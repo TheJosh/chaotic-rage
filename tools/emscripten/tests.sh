@@ -41,4 +41,4 @@ em++ tests/lua.bc -Llib -llua5.1 -o tests/lua.html
 g++ tests/multiple.cpp `pkg-config --cflags bullet assimp freetype2 lua5.1 sdl` -c -o tests/multiple.o
 g++ tests/multiple.o `pkg-config --libs bullet assimp freetype2 lua5.1 sdl` -o tests/multiple.gcc
 em++ tests/multiple.cpp `PKG_CONFIG_PATH=lib/pkgconfig pkg-config --cflags bullet assimp freetype2` -Iinclude -c -o tests/multiple.bc
-em++ tests/multiple.bc `PKG_CONFIG_PATH=lib/pkgconfig pkg-config --cflags bullet assimp freetype2` -Llib -llua5.1 -o tests/multiple.html
+em++ tests/multiple.bc `PKG_CONFIG_PATH=lib/pkgconfig pkg-config --libs bullet assimp freetype2` -Llib -llua5.1 -o tests/multiple.html
