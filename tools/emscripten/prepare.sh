@@ -79,3 +79,18 @@ if [ ! -f "../lib/libfreetype.so" ]; then
 	cd ..
 fi
 
+
+## Lua
+if [ ! -f "../lib/liblua5.1.so" ]; then
+	rm -rf lua
+	if [ ! -f "lua-5.1.5.tar.gz" ]; then
+		wget http://www.lua.org/ftp/lua-5.1.5.tar.gz
+	fi
+	tar -xzf lua-5.1.5.tar.gz || exit 1
+	mv lua-5.1.5 lua || exit 1
+	cd lua
+	sed "s~/usr/local~`readlink -f ../..`~" -i Makefile
+	emmake make linux install || exit 1
+	cd ..
+fi
+

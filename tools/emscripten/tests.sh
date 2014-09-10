@@ -30,3 +30,9 @@ g++ tests/freetype.cpp `pkg-config --cflags freetype2` -c -o tests/freetype.o
 g++ tests/freetype.o `pkg-config --libs freetype2` -o tests/freetype.gcc
 em++ tests/freetype.cpp `PKG_CONFIG_PATH=lib/pkgconfig pkg-config --cflags freetype2` -c -o tests/freetype.bc
 em++ tests/freetype.bc `PKG_CONFIG_PATH=lib/pkgconfig pkg-config --libs freetype2` -o tests/freetype.html
+
+# Lua
+g++ tests/lua.cpp `pkg-config --cflags lua5.1` -c -o tests/lua.o
+g++ tests/lua.o `pkg-config --libs lua5.1` -o tests/lua.gcc
+em++ tests/lua.cpp `PKG_CONFIG_PATH=lib/pkgconfig pkg-config --cflags lua5.1` -c -o tests/lua.bc
+em++ tests/lua.bc `PKG_CONFIG_PATH=lib/pkgconfig pkg-config --libs lua5.1` -o tests/lua.html
