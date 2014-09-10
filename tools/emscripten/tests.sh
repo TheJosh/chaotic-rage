@@ -34,5 +34,5 @@ em++ tests/freetype.bc `PKG_CONFIG_PATH=lib/pkgconfig pkg-config --libs freetype
 # Lua
 g++ tests/lua.cpp `pkg-config --cflags lua5.1` -c -o tests/lua.o
 g++ tests/lua.o `pkg-config --libs lua5.1` -o tests/lua.gcc
-em++ tests/lua.cpp `PKG_CONFIG_PATH=lib/pkgconfig pkg-config --cflags lua5.1` -c -o tests/lua.bc
-em++ tests/lua.bc `PKG_CONFIG_PATH=lib/pkgconfig pkg-config --libs lua5.1` -o tests/lua.html
+em++ tests/lua.cpp -Iinclude -c -o tests/lua.bc
+em++ tests/lua.bc -llua5.1 -o tests/lua.html

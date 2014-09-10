@@ -90,7 +90,9 @@ if [ ! -f "../lib/liblua5.1.so" ]; then
 	mv lua-5.1.5 lua || exit 1
 	cd lua
 	sed "s~/usr/local~`readlink -f ../..`~" -i Makefile
-	emmake make linux install || exit 1
+	sed "s~TO_LIB= liblua.a~TO_LIB= liblua.a liblua5.1.so~" -i Makefile
+	patch -p1 -N -i ../../lua1.patch || exit 1
+	emmake make generic install || exit 1
 	cd ..
 fi
 
