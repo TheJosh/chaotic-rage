@@ -5,6 +5,7 @@
 
 
 mkdir -p lib
+mkdir -p include
 mkdir -p working
 
 cd working
@@ -24,11 +25,10 @@ if [ ! -f "../lib/libLinearMath.bc" ]; then
 		-DBUILD_CPU_DEMOS=OFF \
 		-DBUILD_EXTRAS=OFF \
 		-DUSE_GLUT=OFF \
+		-DCMAKE_INSTALL_PREFIX:PATH=`readlink -f ../..` \
 		|| exit 1
 	emmake make || exit 1
-	cp src/LinearMath/libLinearMath.so ../../lib/libLinearMath.bc
-	cp src/BulletDynamics/libBulletDynamics.so ../../lib/libBulletDynamics.bc
-	cp src/BulletCollision/libBulletCollision.so ../../lib/libBulletCollision.bc
+	emmake make install || exit 1
 	cd ..
 fi
 
@@ -49,9 +49,10 @@ if [ ! -f "../lib/libassimp.bc" ]; then
 		-DBUILD_ASSIMP_TOOLS=OFF \
 		-DBUILD_ASSIMP_SAMPLES=OFF \
 		-DENABLE_BOOST_WORKAROUND=ON \
+		-DCMAKE_INSTALL_PREFIX:PATH=`readlink -f ../..` \
 		|| exit 1
 	emmake make || exit 1
-	cp src/Assimp/libassimp.so ../../lib/libassimp.bc
+	emmake make install || exit 1
 	cd ..
 fi
 

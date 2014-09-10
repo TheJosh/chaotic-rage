@@ -121,19 +121,45 @@ This build configuration has been tested on Debian 8.
 
 This configuration is not yet ready for the prime time! You can experiment using the instructions below.
 
-Install all of the build dependencies (see above) and also emscripten
+Install emscripten as per http://kripken.github.io/emscripten-site/docs/getting_started/downloads.html which
+will be something like:
 ```
-sudo apt-get install emscripten
-```
-
-I had to muck around with multiarch for lua on Debian 8:
-```
-sudo ln -s /usr/include/x86_64-linux-gnu/lua5.1-deb-multiarch.h /usr/include/lua5.1/
+./emsdk update
+./emsdk install latest
+./emsdk activate latest
 ```
 
-and then compile with:
+Source the environment. This loads the emscripten path into your PATH, but only applies for this session.
+You'll need to do this for each session that you want to use emscripten.
+```
+cd ~/path/to/emscripten_sdk
+source ./emsdk_env.sh
+```
+
+Do an initial test. Only the hello.cpp test should work at this stage
+```
+cd ~/path/to/chaotic-rage
+cd tools/emscripten
+./tests.sh
+```
+
+Build our libraries
+```
+./prepare.sh
+```
+
+Re-run the tests, they should all pass
+```
+./tests.sh
+```
+
+Your environment is ready! You can now compile with:
 
 ```
+cd ~/path/to/chaotic-rage
 make EMSCRIPTEN=1
 ```
+
+If you go to re-compile later on, you'll need to re-source your environment (see above) so that make knows
+where to find emscripten.
 
