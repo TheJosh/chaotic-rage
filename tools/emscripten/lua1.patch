@@ -1,5 +1,16 @@
 --- a/src/Makefile	2012-02-14 07:11:22.000000000 +1030
 +++ b/src/Makefile.new	2014-09-10 14:34:00.000000000 +0930
+@@ -7,8 +7,8 @@
+ # Your platform. See PLATS for possible values.
+ PLAT= none
+ 
+-CC= gcc
+-CFLAGS= -O2 -Wall $(MYCFLAGS)
++CC= emcc
++CFLAGS= -O2 -Wall -fPIC $(MYCFLAGS)
+ AR= ar rcu
+ RANLIB= ranlib
+ RM= rm -f
 @@ -35,8 +35,10 @@
  LUAC_T=	luac
  LUAC_O=	luac.o print.o
