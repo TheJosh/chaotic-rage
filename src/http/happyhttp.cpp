@@ -45,7 +45,7 @@
 	#endif
 #endif
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__EMSCRIPTEN__)
 	#include <sys/select.h>
 	#include <unistd.h>
 #endif
@@ -60,6 +60,7 @@
 #include <string>
 #include <algorithm>
 #include <cctype>
+#include <stdlib.h>
 
 
 using namespace std;
