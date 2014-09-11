@@ -77,8 +77,8 @@ LIBS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --libs) \
 
 # We need really specific flags and libs for emscrpten
 ifdef EMSCRIPTEN
-	CFLAGS := -Itools/emscripten/include/bullet -Itools/emscripten/include/assimp -Itools/emscripten/include -ffast-math -Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark
-	LIBS := -Ltools/emscripten/lib -lGLEW -lGLU -lGL -llua5.1 -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lassimp -lSDL -lfreetype -lz -lpng12
+	CFLAGS := -Itools/emscripten/include/bullet -Itools/emscripten/include/assimp -Itools/emscripten/include -Itools/emscripten/include/SDL2 -ffast-math -Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark
+	LIBS := -Ltools/emscripten/lib -lGLEW -lGLU -lGL -llua5.1 -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lassimp -lSDL -lSDL2_net -lfreetype -lz -lpng12
 endif
 
 
