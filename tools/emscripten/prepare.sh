@@ -66,7 +66,7 @@ if [ ! -f "../lib/libfreetype.so" ]; then
 	tar -xjf freetype-2.5.3.tar.bz2 || exit 1
 	mv freetype-2.5.3 freetype || exit 1
 	cd freetype
-	echo "# XXX emptied out for emscripten" > builds/exports.mk     
+	echo "# XXX emptied out for emscripten" > builds/exports.mk
 	emconfigure ./configure \
 		--with-zlib=no \
 		--with-bzip2=no \
@@ -93,6 +93,25 @@ if [ ! -f "../lib/liblua5.1.so" ]; then
 	sed "s~TO_LIB= liblua.a~TO_LIB= liblua.a liblua5.1.so~" -i Makefile
 	patch -p1 -N -i ../../lua1.patch || exit 1
 	emmake make generic install || exit 1
+	cd ..
+fi
+
+
+## SDL_net
+if [ ! -f "../lib/libSDL2_net.so" ]; then
+	rm -rf sdl_net
+	if [ ! -f "SDL2_net-2.0.0.tar.gz" ]; then
+		wget http://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.0.0.tar.gz
+	fi
+	tar -xzf SDL2_net-2.0.0.tar.gz || exit 1
+	mv SDL2_net-2.0.0 sdl_net || exit 1
+	cd sdl_net
+	emconfigure ./configure \
+		--disable-sdltest \
+		--prefix=`readlink -f ../..` \
+		|| exit 1
+	make || exit 1
+	make install || exit 1
 	cd ..
 fi
 
