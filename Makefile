@@ -28,8 +28,6 @@ else ifdef EMSCRIPTEN
 	CC := emcc
 	PLATFORM := $(OBJPATH)/emscripten.o
 	PKG_CONFIG_PATH := tools/emscripten/lib/pkgconfig
-	CFLAGS := -Itools/emscripten/include
-	LIBS := -Ltools/emscripten/lib -llua5.1
 	POSTFIX := .html
 	LUAPKG=
 
@@ -75,6 +73,14 @@ LIBS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --libs) \
 	$(shell export PATH=$(PATH) PKG_CONFIG_PATH=$(PKG_CONFIG_PATH);$(PKG_CONFIG) glew $(LUAPKG) bullet assimp SDL2_mixer SDL2_image SDL2_net --libs) \
 	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --libs) \
 	$(LIBS)
+
+
+# We need really specific flags and libs for emscrpten
+ifdef EMSCRIPTEN
+	CFLAGS := -Itools/emscripten/include/bullet -Itools/emscripten/include/assimp -Itools/emscripten/include -ffast-math -Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark
+	LIBS := -Ltools/emscripten/lib -lGLEW -lGLU -lGL -llua5.1 -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lassimp -lSDL -lfreetype -lz -lpng12
+endif
+
 
 # Extract the version from rage.h
 # Only used for releases
