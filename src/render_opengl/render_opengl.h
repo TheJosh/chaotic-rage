@@ -75,8 +75,12 @@ class RenderOpenGL : public Render3D
 	friend class OpenGLFont;
 
 	private:
-		SDL_Window *window;
-		SDL_GLContext glcontext;
+		#ifdef SDL1_VIDEO
+			SDL_Surface *window;
+		#else
+			SDL_Window *window;
+			SDL_GLContext glcontext;
+		#endif
 
 		// The current player being rendered (split screen)
 		Player* render_player;

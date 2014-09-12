@@ -10,16 +10,19 @@
 **/
 #if defined(__ANDROID__) || defined(__EMSCRIPTEN__)
 	#define GLES
-
 	#include <GLES2/gl2.h>
 	#include <GLES2/gl2ext.h>
-
 #else
 	#define OpenGL
-
 	#include <GL/glew.h>
 	#include <GL/gl.h>
 	#include <GL/glu.h>
+#endif
 
+/**
+* Emscripten is SDL1 for video and quasi-SDL2 for everything else
+**/
+#if defined(__EMSCRIPTEN__)
+	#define SDL1_VIDEO
 #endif
 

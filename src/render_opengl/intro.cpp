@@ -148,7 +148,11 @@ void Intro::updateUI()
 		this->render->renderSprite(text, x, y);
 	}
 
-	SDL_GL_SwapWindow(this->render->window);
+	#ifdef SDL1_VIDEO
+		SDL_GL_SwapBuffers();
+	#else
+		SDL_GL_SwapWindow(this->render->window);
+	#endif
 
 	CHECK_OPENGL_ERROR
 }

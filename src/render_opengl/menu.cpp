@@ -303,7 +303,11 @@ void Menu::updateUI()
 	gui->logic();
 	gui->draw();
 
-	SDL_GL_SwapWindow(render->window);
+	#ifdef SDL1_VIDEO
+		SDL_GL_SwapBuffers();
+	#else
+		SDL_GL_SwapWindow(this->render->window);
+	#endif
 }
 
 

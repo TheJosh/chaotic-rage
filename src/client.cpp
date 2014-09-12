@@ -88,6 +88,15 @@ int main(int argc, char ** argv)
 
 	gm = new GameManager(st);
 
+	// For now, Emscripten doesn't have a menu
+	#if defined(__EMSCRIPTEN__)
+		gm->loadModBits(NULL);
+		GameSettings *gs = new GameSettings();
+		gm->startGame(gm->getMapRegistry()->get("therlor_valley"), "zombies", "robot", GameSettings::behindPlayer, 1, false, gs);
+		delete(gs);
+		exit(0);
+	#endif
+
 	// List of mods
 	if (GEng()->cmdline->modlist) {
 		cout << "Available mods:\n";

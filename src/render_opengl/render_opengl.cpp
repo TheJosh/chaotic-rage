@@ -118,9 +118,11 @@ RenderOpenGL::~RenderOpenGL()
 	delete font;
 	delete gui_font;
 
-	SDL_GL_DeleteContext(this->glcontext);
-
 	// TODO: Delete all buffers, tex, etc.
+
+	#ifndef SDL1_VIDEO
+		SDL_GL_DeleteContext(this->glcontext);
+	#endif
 }
 
 
@@ -185,26 +187,29 @@ RenderOpenGLSettings* RenderOpenGL::getSettings()
 void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 {
 	// On mobile devices, we force fullscreen
-	#if defined(__ANDROID__)
+	#if defined(__ANDROID__) || defined(__EMSCRIPTEN__)
 		fullscreen = true;
 		GEng()->cconf->fullscreen = fullscreen;
 	#endif
 
-	// SDL flags
-	int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-
-	if (fullscreen) {
-		// Set the resolution to same as the desktop
-		SDL_DisplayMode mode;
-		int result = SDL_GetDesktopDisplayMode(0, &mode);
-		if (result != 0) {
-			reportFatalError("Unable to determine current display mode");
+	// Fullscreen support
+	#if SDL1_VIDEO
+		int flags = SDL_OPENGL;
+		if (fullscreen) flags |= SDL_FULLSCREEN;
+	#else
+		int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+		if (fullscreen) {
+			// Set the resolution to same as the desktop
+			SDL_DisplayMode mode;
+			int result = SDL_GetDesktopDisplayMode(0, &mode);
+			if (result != 0) {
+				reportFatalError("Unable to determine current display mode");
+			}
+			width = mode.w;
+			height = mode.h;
+			flags |= SDL_WINDOW_FULLSCREEN;
 		}
-		width = mode.w;
-		height = mode.h;
-
-		flags |= SDL_WINDOW_FULLSCREEN;
-	}
+	#endif
 
 	this->real_width = width;
 	this->real_height = height;
@@ -214,20 +219,10 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	snprintf(title, BUFFER_MAX, "Chaotic Rage %s", VERSION);
 
 	// Create window
-	this->window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
-	if (this->window == NULL) {
-		char buffer[BUFFER_MAX];
-		snprintf(buffer, BUFFER_MAX, "Unable to set %ix%i video: %s\n", width, height, SDL_GetError());
-		reportFatalError(buffer);
-	}
+	#if SDL1_VIDEO
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	// GL context settings
-	#if defined(GLES)
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-
-	#elif defined(OpenGL)
+		// In SDL1, the context is created at the same time
 		if (this->settings->msaa >= 2) {
 			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, this->settings->msaa);
@@ -235,14 +230,42 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
 			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
 		}
-	#endif
 
-	// GL context creation
-	this->glcontext = SDL_GL_CreateContext(this->window);
-	if (this->glcontext == NULL) {
-		reportFatalError("Unable to create GL context");
+		this->window = SDL_SetVideoMode(width, height, 32, flags);
+	#else
+		this->window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
+	#endif
+	
+	// Did it work?
+	if (this->window == NULL) {
+		char buffer[BUFFER_MAX];
+		snprintf(buffer, BUFFER_MAX, "Unable to set %ix%i video: %s\n", width, height, SDL_GetError());
+		reportFatalError(buffer);
 	}
 
+	// Create OpenGL context
+	#ifndef SDL1_VIDEO
+		#if defined(GLES)
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+		#elif defined(OpenGL)
+			if (this->settings->msaa >= 2) {
+				SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+				SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, this->settings->msaa);
+			} else {
+				SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
+				SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
+			}
+		#endif
+
+		// GL context creation
+		this->glcontext = SDL_GL_CreateContext(this->window);
+		if (this->glcontext == NULL) {
+			reportFatalError("Unable to create GL context");
+		}
+	#endif
+	
 	// SDL_Image
 	flags = IMG_INIT_PNG;
 	int initted = IMG_Init(flags);
@@ -310,8 +333,10 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 **/
 void RenderOpenGL::setMouseGrab(bool newval)
 {
-	SDL_SetRelativeMouseMode(newval ? SDL_TRUE : SDL_FALSE);
-	SDL_SetWindowGrab(this->window, newval ? SDL_TRUE : SDL_FALSE);
+	#ifndef SDL1_VIDEO
+		SDL_SetRelativeMouseMode(newval ? SDL_TRUE : SDL_FALSE);
+		SDL_SetWindowGrab(this->window, newval ? SDL_TRUE : SDL_FALSE);
+	#endif
 }
 
 
@@ -1840,7 +1865,11 @@ void RenderOpenGL::render()
 
 	CHECK_OPENGL_ERROR;
 
-	SDL_GL_SwapWindow(this->window);
+	#ifdef SDL1_VIDEO
+		SDL_GL_SwapBuffers();
+	#else
+		SDL_GL_SwapWindow(this->window);
+	#endif
 }
 
 
