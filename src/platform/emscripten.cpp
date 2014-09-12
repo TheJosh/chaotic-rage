@@ -96,3 +96,42 @@ vector<string> * getUserModFilenames()
 }
 
 
+/**
+* Fake version of the SDL2 key lookup by name
+* Only includes letter keys
+**/
+SDL_Keycode SDL_GetKeyFromName(const char* name)
+{
+	switch (name[0]) {
+		case 'a': return SDLK_a;
+		case 'b': return SDLK_b;
+		case 'c': return SDLK_c;
+		case 'd': return SDLK_d;
+		case 'e': return SDLK_e;
+		case 'f': return SDLK_f;
+		case 'g': return SDLK_g;
+		case 'h': return SDLK_h;
+		case 'i': return SDLK_i;
+		case 'j': return SDLK_j;
+		case 'k': return SDLK_k;
+		case 'l': return SDLK_l;
+		case 'm': return SDLK_m;
+		case 'n': return SDLK_n;
+		case 'o': return SDLK_o;
+		case 'p': return SDLK_p;
+		case 'q': return SDLK_q;
+		case 'r': return SDLK_r;
+		case 's': return SDLK_s;
+		case 't': return SDLK_t;
+		case 'u': return SDLK_u;
+		case 'v': return SDLK_v;
+		case 'w': return SDLK_w;
+		case 'x': return SDLK_x;
+		case 'y': return SDLK_y;
+		case 'z': return SDLK_z;
+		default:
+			return SDLK_UNKNOWN;
+	}
+}
+
+
