@@ -112,18 +112,19 @@ void ClientConfig::save()
 **/
 void ClientConfig::initRender(GameState *st)
 {
-	if (GEng()->cmdline->render_class == "debug") {
-		GEng()->render = new RenderDebug(st);
-
-	} else if (GEng()->cmdline->render_class == "null") {
-		GEng()->render = new RenderNull(st);
-
-	} else if (GEng()->cmdline->render_class == "ascii") {
-		GEng()->render = new RenderAscii(st);
-
-	} else {
+	#if defined(__ANDROID__) || defined(__EMSCRIPTEN__)
 		GEng()->render = new RenderOpenGL(st, this->gl);
-	}
+	#else
+		if (GEng()->cmdline->render_class == "debug") {
+			GEng()->render = new RenderDebug(st);
+		} else if (GEng()->cmdline->render_class == "null") {
+			GEng()->render = new RenderNull(st);
+		} else if (GEng()->cmdline->render_class == "ascii") {
+			GEng()->render = new RenderAscii(st);
+		} else {
+			GEng()->render = new RenderOpenGL(st, this->gl);
+		}
+	#endif
 
 	// Determine if fullscreen or not
 	bool fs = false;

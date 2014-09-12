@@ -30,6 +30,18 @@ else ifdef EMSCRIPTEN
 	PKG_CONFIG_PATH := tools/emscripten/lib/pkgconfig
 	POSTFIX := .html
 	LUAPKG=
+	DONT_COMPILE = $(OBJPATH)/render_opengl/gl_debug_drawer.o \
+		$(OBJPATH)/render/render_null.o \
+		$(OBJPATH)/render/render_ascii.o \
+		$(OBJPATH)/render/render_debug.o \
+		$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(wildcard \
+			$(SRCPATH)/spark/Core/*.cpp \
+			$(SRCPATH)/spark/Extensions/Emitters/*.cpp \
+			$(SRCPATH)/spark/Extensions/Modifiers/*.cpp \
+			$(SRCPATH)/spark/Extensions/Renderers/*.cpp \
+			$(SRCPATH)/spark/Extensions/Zones/*.cpp \
+			$(SRCPATH)/spark/RenderingAPIs/OpenGL/*.cpp \
+		))
 
 
 # Standard Linux build
@@ -136,7 +148,7 @@ OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES))
 OBJMAINS=$(OBJPATH)/client.o
 
 # Client = everything but the main() method files + some other bits
-OBJFILES_CLIENT=$(OBJPATH)/client.o $(PLATFORM) $(OBJPATH)/confuse/confuse.o $(OBJPATH)/confuse/lexer.o $(filter-out $(OBJMAINS), $(OBJFILES))
+OBJFILES_CLIENT=$(OBJPATH)/client.o $(PLATFORM) $(OBJPATH)/confuse/confuse.o $(OBJPATH)/confuse/lexer.o $(filter-out $(OBJMAINS) $(DONT_COMPILE), $(OBJFILES))
 
 # Dependencies of the source files
 DEPENDENCIES := $(OBJFILES:.o=.d)

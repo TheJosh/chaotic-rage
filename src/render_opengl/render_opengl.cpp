@@ -193,7 +193,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	#endif
 
 	// Fullscreen support
-	#if SDL1_VIDEO
+	#ifdef SDL1_VIDEO
 		int flags = SDL_OPENGL;
 		if (fullscreen) flags |= SDL_FULLSCREEN;
 	#else
@@ -219,7 +219,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	snprintf(title, BUFFER_MAX, "Chaotic Rage %s", VERSION);
 
 	// Create window
-	#if SDL1_VIDEO
+	#ifdef SDL1_VIDEO
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 		// In SDL1, the context is created at the same time
@@ -273,12 +273,15 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		reportFatalError("Failed to init required png support.");
 	}
 
-	// Check compat and init GLEW
+	// Check compat
 	#ifdef OpenGL
 		if (atof((char*) glGetString(GL_VERSION)) < 3.0) {
 			reportFatalError("OpenGL 3.0 or later is required, but not supported on this system");
 		}
+	#endif
 
+	// Init GLEW
+	#if defined(OpenGL) || defined(__EMSCRIPTEN__)
 		GLenum err = glewInit();
 		if (GLEW_OK != err) {
 			GL_LOG("Glew Error: %s", glewGetErrorString(err));
