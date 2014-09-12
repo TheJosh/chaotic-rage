@@ -35,6 +35,7 @@ class GameState;
 * Emscripten fake SDL2 bits
 **/
 #ifdef __EMSCRIPTEN__
+	#include <SDL.h>
 	SDL_Keycode SDL_GetKeyFromName(const char* name);
 #endif
 
