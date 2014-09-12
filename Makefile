@@ -85,11 +85,10 @@ ifdef EMSCRIPTEN
 		-Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark \
 		-ffast-math
 	LIBS := -Ltools/emscripten/lib \
-		-lGLEW -lGLU -lGL \
 		-lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath \
 		-lassimp \
-		-lSDL -lSDL2_net \
-		-lfreetype -lz -lpng12 \
+		-lSDL2_net \
+		-lfreetype \
 		-llua5.1
 endif
 

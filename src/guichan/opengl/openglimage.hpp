@@ -49,15 +49,7 @@
 #include <windows.h>
 #endif
 
-#if defined (__amigaos4__)
-#include <mgl/gl.h>
-#elif defined (__APPLE__)
-#include <OpenGL/gl.h>
-#elif defined (__ANDROID__)
-#include <GLES2/gl2.h>
-#else
-#include <GL/gl.h>
-#endif
+#include "../../render_opengl/gl.h"
 
 #include <string>
 
