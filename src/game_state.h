@@ -181,6 +181,7 @@ class GameState
 		* The main game loop
 		**/
 		void gameLoop(Render* render, Audio* audio, NetClient* client);
+		void gameLoopIter();
 
 		// Called by Lua, etc
 		void gameOver(int result = -1);

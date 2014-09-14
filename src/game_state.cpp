@@ -44,6 +44,11 @@
 #include "spark/SPK.h"
 #endif
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
+
 using namespace std;
 
 
@@ -477,8 +482,6 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 		ignore_relative_mouse[i] = false;
 	}
 
-	int start = SDL_GetTicks();
-
 	this->physics->preGame();
 	this->map->preGame();
 	render->preGame();
@@ -504,49 +507,17 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 	}
 
 	this->running = true;
-	while (this->running) {
-		int delta = SDL_GetTicks() - start;
-		start = SDL_GetTicks();
 
-		this->logic->update(delta);
-		this->update(delta);
-		handleEvents(this);
-
-		if (GEng()->getMouseGrab()) {
-			if (this->local_players[0]->p) this->local_players[0]->p->angleFromMouse(game_x[0], game_y[0], delta);
-			if (this->local_players[1]->p) this->local_players[1]->p->angleFromMouse(game_x[1], game_y[1], delta);
-			game_x[0] = game_y[0] = 0;
-			game_x[1] = game_y[1] = 0;
+	// The main game loop
+	#ifdef __EMSCRIPTEN__
+		emscripten_set_main_loop(GameState::gameLoopIter, 0, true);
+	#else
+		while (this->running) {
+			this->gameLoopIter();
+			if (GEng()->cmdline->throttle) SDL_Delay(1);
+			MAINLOOP_ITER
 		}
-
-		if (client != NULL) {
-			if (this->local_players[0]->p) {
-				client->addmsgKeyMouseStatus(net_x[0], net_y[0], delta, this->local_players[0]->p->packKeys());
-				net_x[0] = net_y[0] = 0;
-			}
-			client->update();
-		}
-
-		if (GEng()->server != NULL) {
-			if (!GEng()->server->update()) {
-				// Server shutting down, shut down game
-				this->running = false;
-				break;
-			}
-		}
-
-		PROFILE_START(render);
-		render->render();
-		PROFILE_END(render);
-
-		audio->play();
-
-		if (GEng()->cmdline->throttle) {
-			SDL_Delay(1);
-		}
-
-		MAINLOOP_ITER
-	}
+	#endif
 
 	if (client != NULL) {
 		client->addmsgQuit();
@@ -559,6 +530,53 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 	audio->postGame();
 	this->map->postGame();
 	this->physics->postGame();
+}
+
+
+/**
+* Internal of the main game loop
+**/
+void GameState::gameLoopIter()
+{
+	static int start = SDL_GetTicks();
+
+	int delta = SDL_GetTicks() - start;
+	start = SDL_GetTicks();
+
+	this->logic->update(delta);
+	this->update(delta);
+	handleEvents(this);
+
+	if (GEng()->getMouseGrab()) {
+		if (this->local_players[0]->p) this->local_players[0]->p->angleFromMouse(game_x[0], game_y[0], delta);
+		if (this->local_players[1]->p) this->local_players[1]->p->angleFromMouse(game_x[1], game_y[1], delta);
+		game_x[0] = game_y[0] = 0;
+		game_x[1] = game_y[1] = 0;
+	}
+
+	if (GEng()->client != NULL) {
+		if (this->local_players[0]->p) {
+			GEng()->client->addmsgKeyMouseStatus(net_x[0], net_y[0], delta, this->local_players[0]->p->packKeys());
+			net_x[0] = net_y[0] = 0;
+		}
+		GEng()->client->update();
+	}
+
+	if (GEng()->server != NULL) {
+		if (!GEng()->server->update()) {
+			this->running = false;
+		}
+	}
+
+	PROFILE_START(render);
+	GEng()->render->render();
+	PROFILE_END(render);
+
+	GEng()->audio->play();
+
+	#ifdef __EMSCRIPTEN__
+		if (! this->running) emscripten_cancel_main_loop();
+	#endif
 }
 
 
