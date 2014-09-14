@@ -8,7 +8,7 @@
 /**
 * Include OpenGL or OpenGL ES on various platforms
 **/
-#if defined(__ANDROID__) || defined(__EMSCRIPTEN__)
+#if defined(__ANDROID__)
 	#define GLES
 	#include <GLES2/gl2.h>
 	#include <GLES2/gl2ext.h>

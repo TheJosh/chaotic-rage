@@ -278,10 +278,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		if (atof((char*) glGetString(GL_VERSION)) < 3.0) {
 			reportFatalError("OpenGL 3.0 or later is required, but not supported on this system");
 		}
-	#endif
 
-	// Init GLEW
-	#if defined(OpenGL) || defined(__EMSCRIPTEN__)
+		// Init GLEW
 		GLenum err = glewInit();
 		if (GLEW_OK != err) {
 			GL_LOG("Glew Error: %s", glewGetErrorString(err));
@@ -292,10 +290,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		if (! GL_ARB_framebuffer_object) {
 			reportFatalError("OpenGL 3.0 or the extension 'GL_ARB_framebuffer_object' not available.");
 		}
-	#endif
-
-	// Check compatibility - OpenGL ES
-	#ifdef GLES
+	#else
+		// Check compatibility - OpenGL ES
 		char *exts = (char *)glGetString(GL_EXTENSIONS);
 		if(!strstr(exts, "GL_OES_depth_texture")){
 			reportFatalError("OpenGL ES 2.0 extension 'GL_OES_depth_texture' not available");
@@ -457,6 +453,7 @@ void RenderOpenGL::mouseRaycast(int x, int y, btVector3& start, btVector3& end)
 void RenderOpenGL::setPhysicsDebug(bool status)
 {
 #ifdef OpenGL
+#ifndef __EMSCRIPTEN__
 	if (status) {
 		this->physicsdebug = new GLDebugDrawer();
 		this->physicsdebug->setDebugMode(
@@ -470,6 +467,7 @@ void RenderOpenGL::setPhysicsDebug(bool status)
 		delete this->physicsdebug;
 		this->physicsdebug = NULL;
 	}
+#endif
 #endif
 }
 
@@ -1882,6 +1880,7 @@ void RenderOpenGL::render()
 void RenderOpenGL::physics()
 {
 #ifdef OpenGL
+#ifndef __EMSCRIPTEN__
 	CHECK_OPENGL_ERROR;
 
 	glUseProgram(0);
@@ -1908,6 +1907,7 @@ void RenderOpenGL::physics()
 	glEnable(GL_TEXTURE_2D);
 
 	CHECK_OPENGL_ERROR;
+#endif
 #endif
 }
 
