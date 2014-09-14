@@ -510,7 +510,7 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 
 	// The main game loop
 	#ifdef __EMSCRIPTEN__
-		emscripten_set_main_loop(GameState::gameLoopIter, 0, true);
+		emscripten_set_main_loop_arg(GameState::gameLoopIterEmscripten, (void*)this, 0, true);
 	#else
 		while (this->running) {
 			this->gameLoopIter();
@@ -530,6 +530,15 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 	audio->postGame();
 	this->map->postGame();
 	this->physics->postGame();
+}
+
+
+/**
+* Internal of the main game loop - emscripten wrapper
+**/
+void GameState::gameLoopIterEmscripten(void* arg)
+{
+	static_cast<GameState*>(arg)->gameLoopIter();
 }
 
 
