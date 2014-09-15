@@ -18,7 +18,6 @@
 #include "confuse_types.h"
 #include "aitype.h"
 #include "campaign.h"
-#include "effecttype.h"
 #include "objecttype.h"
 #include "pickuptype.h"
 #include "unittype.h"
@@ -73,7 +72,6 @@ Mod::Mod(GameState * st, string directory)
 
 	this->ais = NULL;
 	this->campaigns = NULL;
-	this->effecttypes = NULL;
 	this->gametypes = NULL;
 	this->objecttypes = NULL;
 	this->pickuptypes = NULL;
@@ -108,7 +106,6 @@ Mod::~Mod()
 {
 	delete_v(this->ais);
 	delete_v(this->campaigns);
-	delete_v(this->effecttypes);
 	delete_v(this->gametypes);
 	delete_v(this->objecttypes);
 	delete_v(this->pickuptypes);
@@ -287,9 +284,6 @@ bool Mod::load(UIUpdate* ui)
 	if (songs == NULL) return false;
 #endif
 
-	effecttypes = loadModFile<EffectType*>(this, ui, "effecttypes.conf", "effecttype", effecttype_opts, &loadItemEffectType);
-	if (effecttypes == NULL) return false;
-	
 	objecttypes = loadModFile<ObjectType*>(this, ui, "objecttypes.conf", "objecttype", objecttype_opts, &loadItemObjectType);
 	if (objecttypes == NULL) return false;
 
@@ -459,20 +453,6 @@ Campaign * Mod::getCampaign(string name)
 vector<Campaign*> * Mod::getCampaigns()
 {
 	return this->campaigns;
-}
-
-
-/**
-* Return an effect type by its name
-**/
-EffectType * Mod::getEffectType(string name)
-{
-	if (name.empty()) return NULL;
-
-	for (int i = effecttypes->size() - 1; i >= 0; --i) {
-		if (effecttypes->at(i)->name.compare(name) == 0) return effecttypes->at(i);
-	}
-	return NULL;
 }
 
 

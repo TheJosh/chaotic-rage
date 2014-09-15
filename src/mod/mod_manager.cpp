@@ -325,23 +325,6 @@ AIType * ModManager::getAIType(string name)
 
 
 /**
-* Gets an effect type by name
-**/
-EffectType * ModManager::getEffectType(string name)
-{
-	if (name.empty()) return NULL;
-
-	for (unsigned int i = 0; i < this->mods->size(); i++) {
-		Mod *mod = this->mods->at(i);
-		EffectType *et = mod->getEffectType(name);
-		if (et) return et;
-	}
-
-	return NULL;
-}
-
-
-/**
 * Gets an vehicle type by name
 **/
 VehicleType * ModManager::getVehicleType(string name)
