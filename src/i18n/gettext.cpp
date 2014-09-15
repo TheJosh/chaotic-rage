@@ -32,6 +32,7 @@ bool loadLang(const char* name)
 
 	Mod* mod = new Mod(NULL, "data/i18n");
 
+	// Read strings
 	strncpy(buf, name, BUFFER_MAX);
 	strncat(buf, ".txt", BUFFER_MAX);
 	char* input = mod->loadText(buf);
@@ -41,20 +42,29 @@ bool loadLang(const char* name)
 		return false;
 	}
 
-	// TODO: Fix potential buffer overflow
-
+	// Parse strings
 	strings.clear();
 	char* ptr = input;
 	char* curr = buf;
+	int len = 0;
 	while (*ptr != 0) {
 		if (*ptr == '\t') {
 			memset(buf2, 0, BUFFER_MAX);
 			curr = buf2;
+			len = 0;
 		} else if (*ptr == '\r' || *ptr == '\n') {
 			strings.insert(std::pair<int,std::string>(atoi(buf), std::string(buf2)));
 			memset(buf, 0, BUFFER_MAX);
 			curr = buf;
+			len = 0;
 		} else {
+			++len;
+			if (len == BUFFER_MAX) {
+				free(input);
+				delete mod;
+				std::cerr << "Error: Could not load language file; string '" << curr << "' too long" << std::endl;
+				return false;
+			}
 			*curr = *ptr;
 			++curr;
 		}
