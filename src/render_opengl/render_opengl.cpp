@@ -273,12 +273,14 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		reportFatalError("Failed to init required png support.");
 	}
 
-	// Check compat
-	#ifdef OpenGL
+	// Check OpenGL version
+	#if defined(OpenGL) && !defined(__EMSCRIPTEN__)
 		if (atof((char*) glGetString(GL_VERSION)) < 3.0) {
 			reportFatalError("OpenGL 3.0 or later is required, but not supported on this system");
 		}
+	#endif
 
+	#ifdef OpenGL
 		// Init GLEW
 		GLenum err = glewInit();
 		if (GLEW_OK != err) {
@@ -291,7 +293,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 			reportFatalError("OpenGL 3.0 or the extension 'GL_ARB_framebuffer_object' not available.");
 		}
 	#else
-		// Check compatibility - OpenGL ES
+		// Manually check compatibility - OpenGL ES
 		char *exts = (char *)glGetString(GL_EXTENSIONS);
 		if(!strstr(exts, "GL_OES_depth_texture")){
 			reportFatalError("OpenGL ES 2.0 extension 'GL_OES_depth_texture' not available");
