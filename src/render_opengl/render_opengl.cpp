@@ -274,13 +274,11 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	}
 
 	// Check OpenGL version
-	#if defined(OpenGL) && !defined(__EMSCRIPTEN__)
+	#if defined(OpenGL)
 		if (atof((char*) glGetString(GL_VERSION)) < 3.0) {
 			reportFatalError("OpenGL 3.0 or later is required, but not supported on this system");
 		}
-	#endif
 
-	#ifdef OpenGL
 		// Init GLEW
 		GLenum err = glewInit();
 		if (GLEW_OK != err) {
@@ -292,7 +290,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		if (! GL_ARB_framebuffer_object) {
 			reportFatalError("OpenGL 3.0 or the extension 'GL_ARB_framebuffer_object' not available.");
 		}
-	#else
+	#elif defined(GLES) && !defined(__EMSCRIPTEN__)
 		// Manually check compatibility - OpenGL ES
 		char *exts = (char *)glGetString(GL_EXTENSIONS);
 		if(!strstr(exts, "GL_OES_depth_texture")){
@@ -300,6 +298,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		}
 	#endif
 
+	// Init GL for particles
 	#ifdef USE_SPARK
 		this->renderer_points->initGLbuffers();
 		this->renderer_lines->initGLbuffers();
@@ -454,8 +453,7 @@ void RenderOpenGL::mouseRaycast(int x, int y, btVector3& start, btVector3& end)
 **/
 void RenderOpenGL::setPhysicsDebug(bool status)
 {
-#ifdef OpenGL
-#ifndef __EMSCRIPTEN__
+#ifdef USE_DEBUG_DRAW
 	if (status) {
 		this->physicsdebug = new GLDebugDrawer();
 		this->physicsdebug->setDebugMode(
@@ -469,7 +467,6 @@ void RenderOpenGL::setPhysicsDebug(bool status)
 		delete this->physicsdebug;
 		this->physicsdebug = NULL;
 	}
-#endif
 #endif
 }
 
@@ -1881,8 +1878,7 @@ void RenderOpenGL::render()
 **/
 void RenderOpenGL::physics()
 {
-#ifdef OpenGL
-#ifndef __EMSCRIPTEN__
+#ifdef USE_DEBUG_DRAW
 	CHECK_OPENGL_ERROR;
 
 	glUseProgram(0);
@@ -1909,7 +1905,6 @@ void RenderOpenGL::physics()
 	glEnable(GL_TEXTURE_2D);
 
 	CHECK_OPENGL_ERROR;
-#endif
 #endif
 }
 
