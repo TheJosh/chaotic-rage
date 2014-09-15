@@ -703,35 +703,67 @@ void Mod::getAllWeaponTypes(vector<WeaponType*>::iterator * start, vector<Weapon
 **/
 char * Mod::loadText(string resname)
 {
-	SDL_RWops *rw;
 	char *buffer;
 
-	rw = this->loadRWops(resname);
-	if (rw == NULL) return NULL;
+	#if defined(__EMSCRIPTEN__)		/* Non-Android too? */
+		string filename = directory;
+		filename.append(resname);
 
-	// Get and check length
-	Sint64 length = SDL_RWseek(rw, 0, SEEK_END);
-	if (length <= 0 || length > MAX_FILE_SIZE) {
+		FILE* fp = fopen(filename.c_str(), "rb");
+		if (fp == NULL) return NULL;
+
+		// Get and check length
+		fseek(fp, 0, SEEK_END);
+		size_t length = ftell(fp);
+		fseek(fp, 0, SEEK_SET);
+		if (length <= 0 || length > MAX_FILE_SIZE) {
+			fclose(fp);
+			return NULL;
+		}
+
+		// Allocate a buffer
+		buffer = (char*) malloc(length + 1);
+		if (buffer == NULL) {
+			fclose(fp);
+			return NULL;
+		}
+		buffer[length] = '\0';
+
+		// Read file
+		if (fread(buffer, length, 1, fp) == 0) {
+			fclose(fp);
+			return NULL;
+		}
+
+		fclose(fp);
+	#else
+		SDL_RWops *rw = this->loadRWops(resname);
+		if (rw == NULL) return NULL;
+
+		// Get and check length
+		Sint64 length = SDL_RWseek(rw, 0, SEEK_END);
+		if (length <= 0 || length > MAX_FILE_SIZE) {
+			SDL_RWclose(rw);
+			return NULL;
+		}
+
+		// Allocate buffer
+		buffer = (char*) malloc(static_cast<size_t>(length) + 1);
+		if (buffer == NULL) {
+			SDL_RWclose(rw);
+			return NULL;
+		}
+		buffer[length] = '\0';
+
+		// Read data
+		SDL_RWseek(rw, 0, SEEK_SET);
+		if (SDL_RWread(rw, buffer, static_cast<size_t>(length), 1) == 0) {
+			SDL_RWclose(rw);
+			return NULL;
+		}
+
 		SDL_RWclose(rw);
-		return NULL;
-	}
-
-	// Allocate buffer
-	buffer = (char*) malloc(static_cast<size_t>(length) + 1);
-	if (buffer == NULL) {
-		SDL_RWclose(rw);
-		return NULL;
-	}
-	buffer[length] = '\0';
-
-	// Read data
-	SDL_RWseek(rw, 0, SEEK_SET);
-	if (SDL_RWread(rw, buffer, static_cast<size_t>(length), 1) == 0) {
-		SDL_RWclose(rw);
-		return NULL;
-	}
-
-	SDL_RWclose(rw);
+	#endif
 
 	return buffer;
 }
@@ -742,34 +774,65 @@ char * Mod::loadText(string resname)
 **/
 Uint8 * Mod::loadBinary(string resname, Sint64 *len)
 {
-	SDL_RWops *rw;
 	Uint8 *buffer;
 
-	rw = this->loadRWops(resname);
-	if (rw == NULL) return NULL;
+	#if defined(__EMSCRIPTEN__)		/* Non-Android too? */
+		string filename = directory;
+		filename.append(resname);
 
-	// Get and check length
-	Sint64 length = SDL_RWseek(rw, 0, SEEK_END);
-	if (length <= 0 || length > MAX_FILE_SIZE) {
+		FILE* fp = fopen(filename.c_str(), "rb");
+		if (fp == NULL) return NULL;
+
+		// Get and check length
+		fseek(fp, 0, SEEK_END);
+		size_t length = ftell(fp);
+		fseek(fp, 0, SEEK_SET);
+		if (length <= 0 || length > MAX_FILE_SIZE) {
+			fclose(fp);
+			return NULL;
+		}
+
+		// Allocate a buffer
+		buffer = (Uint8*) malloc(length);
+		if (buffer == NULL) {
+			fclose(fp);
+			return NULL;
+		}
+
+		// Read file
+		if (fread(buffer, length, 1, fp) == 0) {
+			fclose(fp);
+			return NULL;
+		}
+
+		fclose(fp);
+	#else
+		SDL_RWops *rw = this->loadRWops(resname);
+		if (rw == NULL) return NULL;
+
+		// Get and check length
+		Sint64 length = SDL_RWseek(rw, 0, SEEK_END);
+		if (length <= 0 || length > MAX_FILE_SIZE) {
+			SDL_RWclose(rw);
+			return NULL;
+		}
+
+		// Allocate a buffer
+		buffer = (Uint8*) malloc(static_cast<size_t>(length));
+		if (buffer == NULL) {
+			SDL_RWclose(rw);
+			return NULL;
+		}
+
+		// Read
+		SDL_RWseek(rw, 0, SEEK_SET);
+		if (SDL_RWread(rw, buffer, static_cast<size_t>(length), 1) == 0) {
+			SDL_RWclose(rw);
+			return NULL;
+		}
+
 		SDL_RWclose(rw);
-		return NULL;
-	}
-
-	// Allocate a buffer
-	buffer = (Uint8*) malloc(static_cast<size_t>(length));
-	if (buffer == NULL) {
-		SDL_RWclose(rw);
-		return NULL;
-	}
-
-	// Read
-	SDL_RWseek(rw, 0, SEEK_SET);
-	if (SDL_RWread(rw, buffer, static_cast<size_t>(length), 1) == 0) {
-		SDL_RWclose(rw);
-		return NULL;
-	}
-
-	SDL_RWclose(rw);
+	#endif
 
 	*len = length;
 	return buffer;
