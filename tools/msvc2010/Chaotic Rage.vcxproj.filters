@@ -777,27 +777,6 @@
     <ClCompile Include="..\..\src\spark\Extensions\Zones\SPK_Cylinder.cpp">
       <Filter>src\spark\ext</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL2PointRenderer.cpp">
-      <Filter>src\spark\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLExtHandler.cpp">
-      <Filter>src\spark\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLLineRenderer.cpp">
-      <Filter>src\spark\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLLineTrailRenderer.cpp">
-      <Filter>src\spark\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLPointRenderer.cpp">
-      <Filter>src\spark\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLQuadRenderer.cpp">
-      <Filter>src\spark\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLRenderer.cpp">
-      <Filter>src\spark\opengl</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\render\render_ascii.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
@@ -848,6 +827,21 @@
     </ClCompile>
     <ClCompile Include="..\..\src\render_opengl\light.cpp">
       <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\fx\weather.cpp">
+      <Filter>src\fx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL2LineRenderer.cpp">
+      <Filter>src\spark\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL2PointRenderer.cpp">
+      <Filter>src\spark\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLRenderer.cpp">
+      <Filter>src\spark\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gui\newgame_environment.cpp">
+      <Filter>src\gui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1466,30 +1460,6 @@
     <ClInclude Include="..\..\src\spark\Extensions\Zones\SPK_AABox.h">
       <Filter>src\spark\ext</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL2PointRenderer.h">
-      <Filter>src\spark\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLExtHandler.h">
-      <Filter>src\spark\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLLineRenderer.h">
-      <Filter>src\spark\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLLineTrailRenderer.h">
-      <Filter>src\spark\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLPointRenderer.h">
-      <Filter>src\spark\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLQuadRenderer.h">
-      <Filter>src\spark\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLRenderer.h">
-      <Filter>src\spark\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL_DEF.h">
-      <Filter>src\spark\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\spark\SPK.h">
       <Filter>src\spark</Filter>
     </ClInclude>
@@ -1537,6 +1507,24 @@
     </ClInclude>
     <ClInclude Include="..\..\src\render_opengl\light.h">
       <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\fx\weather.h">
+      <Filter>src\fx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL_DEF.h">
+      <Filter>src\spark\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL2LineRenderer.h">
+      <Filter>src\spark\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL2PointRenderer.h">
+      <Filter>src\spark\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLRenderer.h">
+      <Filter>src\spark\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\gui\newgame_environment.h">
+      <Filter>src\gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -19,6 +19,10 @@
 #include "i18n/gettext.h"
 #include "audio/audio.h"
 
+#ifdef RELEASE
+	#include "http/client_stats.h"
+#endif
+
 #ifdef _WIN32
 	#include <fstream>
 	#include "util/stream_redirector.h"

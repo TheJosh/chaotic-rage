@@ -171,6 +171,7 @@
     <ClCompile Include="..\..\src\entity\wall.cpp" />
     <ClCompile Include="..\..\src\events.cpp" />
     <ClCompile Include="..\..\src\fx\newparticle.cpp" />
+    <ClCompile Include="..\..\src\fx\weather.cpp" />
     <ClCompile Include="..\..\src\game_settings.cpp" />
     <ClCompile Include="..\..\src\game_state.cpp" />
     <ClCompile Include="..\..\src\game_engine.cpp" />
@@ -231,6 +232,7 @@
     <ClCompile Include="..\..\src\gui\network.cpp" />
     <ClCompile Include="..\..\src\gui\newcampaign.cpp" />
     <ClCompile Include="..\..\src\gui\newgame.cpp" />
+    <ClCompile Include="..\..\src\gui\newgame_environment.cpp" />
     <ClCompile Include="..\..\src\gui\newgame_weapons.cpp" />
     <ClCompile Include="..\..\src\gui\textbox.cpp" />
     <ClCompile Include="..\..\src\gui\textprompt.cpp" />
@@ -328,12 +330,8 @@
     <ClCompile Include="..\..\src\spark\Extensions\Zones\SPK_Point.cpp" />
     <ClCompile Include="..\..\src\spark\Extensions\Zones\SPK_Ring.cpp" />
     <ClCompile Include="..\..\src\spark\Extensions\Zones\SPK_Sphere.cpp" />
+    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL2LineRenderer.cpp" />
     <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL2PointRenderer.cpp" />
-    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLExtHandler.cpp" />
-    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLLineRenderer.cpp" />
-    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLLineTrailRenderer.cpp" />
-    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLPointRenderer.cpp" />
-    <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLQuadRenderer.cpp" />
     <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLRenderer.cpp" />
     <ClCompile Include="..\..\src\util\btCRKinematicCharacterController.cpp" />
     <ClCompile Include="..\..\src\util\btStrideHeightfieldTerrainShape.cpp" />
@@ -373,6 +371,7 @@
     <ClInclude Include="..\..\src\entity\vehicle.h" />
     <ClInclude Include="..\..\src\entity\wall.h" />
     <ClInclude Include="..\..\src\fx\newparticle.h" />
+    <ClInclude Include="..\..\src\fx\weather.h" />
     <ClInclude Include="..\..\src\game.h" />
     <ClInclude Include="..\..\src\game_settings.h" />
     <ClInclude Include="..\..\src\game_state.h" />
@@ -452,6 +451,7 @@
     <ClInclude Include="..\..\src\gui\network.h" />
     <ClInclude Include="..\..\src\gui\newcampaign.h" />
     <ClInclude Include="..\..\src\gui\newgame.h" />
+    <ClInclude Include="..\..\src\gui\newgame_environment.h" />
     <ClInclude Include="..\..\src\gui\newgame_weapons.h" />
     <ClInclude Include="..\..\src\gui\textbox.h" />
     <ClInclude Include="..\..\src\gui\textprompt.h" />
@@ -557,12 +557,8 @@
     <ClInclude Include="..\..\src\spark\Extensions\Zones\SPK_Point.h" />
     <ClInclude Include="..\..\src\spark\Extensions\Zones\SPK_Ring.h" />
     <ClInclude Include="..\..\src\spark\Extensions\Zones\SPK_Sphere.h" />
+    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL2LineRenderer.h" />
     <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL2PointRenderer.h" />
-    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLExtHandler.h" />
-    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLLineRenderer.h" />
-    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLLineTrailRenderer.h" />
-    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLPointRenderer.h" />
-    <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLQuadRenderer.h" />
     <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLRenderer.h" />
     <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL_DEF.h" />
     <ClInclude Include="..\..\src\spark\SPK.h" />
