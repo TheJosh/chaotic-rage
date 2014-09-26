@@ -31,10 +31,10 @@ Create the source from repo
 	> git clone git@github.com:TheJosh/chaotic-rage.git
 	Go to the Chaotic Rage source root folder
 	> cd chaotic-rage
+	Remove any previous tar files and PPA updates if any
+	> rm -f chaoticrage*.tar.* && rm -rf ../deb_build/
 	Create the file 'chaoticrage_<version>.orig.tar.xz'
 	> make dist
-	Remove previous PPA updates if any
-	> rm -rf ../deb_build/
 	Use the created file as source
 	> mkdir ../deb_build && \
 	cp chaoticrage_* ../deb_build && \

@@ -1,3 +1,9 @@
+chaoticrage (1.10ubuntu1~trusty1) trusty; urgency=low
+
+  * New snapshot from git repo master branch 20140926 commit f2d36da.
+
+ -- Magnus Espersson <magnusespersson@gmail.com>  Fri, 26 Sep 2014 18:59:52 +0200
+
 chaoticrage (1.9ubuntu1~trusty2) trusty; urgency=low
 
   * Updated version number to 1.9.
