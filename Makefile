@@ -58,7 +58,7 @@ endif
 ifdef DEBUG
 	CFLAGS := $(CFLAGS) -Og -ggdb
 else
-	CFLAGS := $(CFLAGS) -O2 -ffast-math
+	CFLAGS := $(CFLAGS) -O2 -g -ffast-math
 endif
 
 
