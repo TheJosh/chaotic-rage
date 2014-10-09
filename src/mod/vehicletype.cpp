@@ -58,6 +58,11 @@ cfg_opt_t vehicletype_opts[] =
 
 	CFG_FLOAT((char*) "wheel-radius", 0.3f, CFGF_NONE),
 	CFG_FLOAT((char*) "wheel-width", 0.15f, CFGF_NONE),
+	CFG_FLOAT((char*) "friction-slip", 500.0f, CFGF_NONE),
+	CFG_FLOAT((char*) "roll-influence", 0.2f, CFGF_NONE),
+	CFG_FLOAT((char*) "suspension-stiffness", 20.0f, CFGF_NONE),
+	CFG_FLOAT((char*) "damping-compression", 0.2f, CFGF_NONE),
+	CFG_FLOAT((char*) "damping-relaxation", 0.3f, CFGF_NONE),
 
 	CFG_STR((char*) "weapon-primary", (char*)"", CFGF_NONE),
 
@@ -100,7 +105,12 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 
 	wt->wheel_width = (float)cfg_getfloat(cfg_item, "wheel-radius");
 	wt->wheel_radius = (float)cfg_getfloat(cfg_item, "wheel-width");
-
+	wt->friction_slip = (float)cfg_getfloat(cfg_item, "friction-slip");
+	wt->roll_influence = (float)cfg_getfloat(cfg_item, "roll-influence");
+	wt->suspension_stiffness = (float)cfg_getfloat(cfg_item, "suspension-stiffness");
+	wt->damping_compression = (float)cfg_getfloat(cfg_item, "damping-compression");
+	wt->damping_relaxation = (float)cfg_getfloat(cfg_item, "damping-relaxation");
+	
 	// Load model
 	tmp = cfg_getstr(cfg_item, "model");
 	if (tmp != NULL && strlen(tmp) != 0) {

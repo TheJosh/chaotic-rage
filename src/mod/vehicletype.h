@@ -80,6 +80,11 @@ class VehicleType
 
 		float wheel_radius;
 		float wheel_width;
+		float friction_slip;
+		float roll_influence;
+		float suspension_stiffness;
+		float damping_compression;
+		float damping_relaxation;
 
 		WeaponType* weapon_primary;
 		vector <VehicleTypeDamage *> damage_models;
