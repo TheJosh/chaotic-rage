@@ -56,6 +56,9 @@ cfg_opt_t vehicletype_opts[] =
 	CFG_FLOAT((char*) "reverse-accel", 5.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "reverse-max", 30.0f, CFGF_NONE),
 
+	CFG_FLOAT((char*) "wheel-radius", 0.3f, CFGF_NONE),
+	CFG_FLOAT((char*) "wheel-width", 0.15f, CFGF_NONE),
+
 	CFG_STR((char*) "weapon-primary", (char*)"", CFGF_NONE),
 
 	CFG_SEC((char*) "damage", damage_opts, CFGF_MULTI),
@@ -94,6 +97,9 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	wt->brake_max = (float)cfg_getfloat(cfg_item, "brake-max");
 	wt->reverse_accel = (float)cfg_getfloat(cfg_item, "reverse-accel");
 	wt->reverse_max = (float)cfg_getfloat(cfg_item, "reverse-max");
+
+	wt->wheel_width = (float)cfg_getfloat(cfg_item, "wheel-radius");
+	wt->wheel_radius = (float)cfg_getfloat(cfg_item, "wheel-width");
 
 	// Load model
 	tmp = cfg_getstr(cfg_item, "model");

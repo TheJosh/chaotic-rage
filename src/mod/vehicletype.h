@@ -78,6 +78,9 @@ class VehicleType
 		float reverse_accel;
 		float reverse_max;
 
+		float wheel_radius;
+		float wheel_width;
+
 		WeaponType* weapon_primary;
 		vector <VehicleTypeDamage *> damage_models;
 		vector <VehicleTypeNode> nodes;
