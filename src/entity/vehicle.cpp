@@ -23,24 +23,9 @@ class btVector3;
 using namespace std;
 
 
-/**
-* Defining suspension and wheel parameters
-* More info: https://code.google.com/p/jbullet-jme/wiki/PhysicsVehicleNode
-**/
-static float	wheelRadius = 0.3f;
-static float	wheelWidth = 0.3f;
-static float	frictionSlip = 10.0f; // 0.8 - Realistic car, 10000 - Kart racer
-static float	suspensionStiffness = 20.0f; // 10.0 - Offroad buggy, 50.0 - Sports car, 200.0 - F1 Car
-// k * 2.0 * btSqrt(suspensionStiffness)
-// k = 0.0 undamped & bouncy, k = 1.0 critical damping, k = 0.1 to 0.3 are good values
-static float	wheelsDampingCompression = 0.2f * 2.0 * btSqrt(suspensionStiffness);
-// k * 2.0 * btSqrt(suspensionStiffness), slightly larger than wheelsDampingCompression, k = 0.2 to 0.5
-static float	wheelsDampingRelaxation = 0.3f * 2.0 * btSqrt(suspensionStiffness);
-// Reduces the rolling torque. 0.0 = no roll, 1.0 = physical behaviour
-static float	rollInfluence = 0.1f;
+// Axle direction parameters
 static btVector3 wheelDirectionCS0(0,-1,0);
 static btVector3 wheelAxleCS(-1,0,0);
-
 
 
 Vehicle::Vehicle(GameState *st) : Entity(st)
@@ -75,6 +60,25 @@ Vehicle::Vehicle(VehicleType *vt, GameState *st, btTransform &loc) : Entity(st)
 
 void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 {
+	/**
+	* Defining suspension and wheel parameters
+	* More info: https://code.google.com/p/jbullet-jme/wiki/PhysicsVehicleNode
+	**/
+	static float	frictionSlip = 1000.f; // 0.8 - Realistic car, 10000 - Kart racer
+	
+	static float	suspensionStiffness = 10.0f; // 10.0 - Offroad buggy, 50.0 - Sports car, 200.0 - F1 Car
+	
+	// k = 0.0 undamped & bouncy, k = 1.0 critical damping, k = 0.1 to 0.3 are good values
+	static float	wheelsDampingCompression = 0.2f * 2.0 * btSqrt(suspensionStiffness);
+	
+	// k * 2.0 * btSqrt(suspensionStiffness), slightly larger than wheelsDampingCompression, k = 0.2 to 0.5
+	static float	wheelsDampingRelaxation = 0.3f * 2.0 * btSqrt(suspensionStiffness);
+	
+	// Reduces the rolling torque. 0.0 = no roll, 1.0 = physical behaviour
+	static float	rollInfluence = 0.2f;
+
+
+
 	this->vt = vt;
 	this->anim = new AnimPlay(vt->model);
 	this->health = vt->health;
@@ -105,28 +109,28 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	// TODO: Optimize this for fixed turrets
 	{
 		btVector3 sizeHE = vt->model->getBoundingSizeHE();
-		btScalar suspensionRestLength(sizeHE.y() + 0.1f);
+		btScalar suspensionRestLength(0.6f);
 
-		this->wheel_shape = new btCylinderShapeX(btVector3(wheelWidth,wheelRadius,wheelRadius));
+		this->wheel_shape = new btCylinderShapeX(btVector3(vt->wheel_width, vt->wheel_radius, vt->wheel_radius));
 
 		btVector3 connectionPointCS0;
-		float connectionHeight = 0.0f;
+		float connectionHeight = -sizeHE.y() + 0.2f;
 		bool isFrontWheel = true;
 
-		connectionPointCS0 = btVector3(sizeHE.x(), connectionHeight, sizeHE.y());
-		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
+		connectionPointCS0 = btVector3(sizeHE.x() - vt->wheel_width, connectionHeight, sizeHE.z() - vt->wheel_radius);
+		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, vt->wheel_radius, this->tuning, isFrontWheel);
 
-		connectionPointCS0 = btVector3(-sizeHE.x(), connectionHeight, sizeHE.y());
-		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
+		connectionPointCS0 = btVector3(-sizeHE.x() + vt->wheel_width, connectionHeight, sizeHE.z() - vt->wheel_radius);
+		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, vt->wheel_radius, this->tuning, isFrontWheel);
 
 		if (vt->name.compare("tank") != 0) {
 			isFrontWheel = false;
 		}
-		connectionPointCS0 = btVector3(sizeHE.x(), connectionHeight, -sizeHE.y());
-		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
+		connectionPointCS0 = btVector3(sizeHE.x() - vt->wheel_width, connectionHeight, -sizeHE.z() + vt->wheel_radius);
+		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, vt->wheel_radius, this->tuning, isFrontWheel);
 
-		connectionPointCS0 = btVector3(-sizeHE.x(), connectionHeight, -sizeHE.y());
-		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, this->tuning, isFrontWheel);
+		connectionPointCS0 = btVector3(-sizeHE.x() + vt->wheel_width, connectionHeight, -sizeHE.z() + vt->wheel_radius);
+		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, vt->wheel_radius, this->tuning, isFrontWheel);
 	}
 
 	// Set some wheel dynamics
