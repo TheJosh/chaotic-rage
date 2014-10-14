@@ -3,13 +3,15 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include "../rage.h"
-#include "hud_label.h"
+#include <stddef.h>
+#include <list>
+#include <string>
+
+class HUDLabel;
+class RenderOpenGL;
+class PlayerState;
 
 using namespace std;
-
-
-class RenderOpenGL;
 
 
 class HUDMessage
@@ -35,6 +37,7 @@ class HUD {
 
 	private:
 		bool weapon_menu;
+		unsigned int weapon_menu_remove_time;
 		list<HUDMessage*> msgs;
 		list<HUDLabel*> labels;
 
@@ -48,8 +51,7 @@ class HUD {
 		void eventUp();
 		void eventDown();
 
-		void addMessage(string text);
-		void addMessage(string text1, string text2);
+		void addMessage(string text1, string text2 = "");
 
 		HUDLabel * addLabel(int x, int y, string data, HUDLabel *l = NULL);
 };

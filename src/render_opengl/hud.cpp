@@ -2,20 +2,21 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include "hud.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include "../rage.h"
 #include "../game_engine.h"
 #include "../game_state.h"
 #include "../entity/player.h"
 #include "../mod/weapontype.h"
 #include "../net/net_server.h"
-#include "hud.h"
+#include "hud_label.h"
 #include "render_opengl.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 #define BUFFER_MAX 50
+#define DISPLAY_TIME 1000*5;
 
 using namespace std;
 
@@ -26,22 +27,15 @@ HUD::HUD(PlayerState *ps, RenderOpenGL *render)
 	this->ps = ps;
 	this->render = render;
 	this->weapon_menu = false;
+	this->weapon_menu_remove_time = 0;
 }
 
-
-void HUD::addMessage(string text)
-{
-	HUDMessage *msg = new HUDMessage();
-	msg->text = text;
-	msg->remove_time = this->ps->st->game_time + 5000;
-	this->msgs.push_front(msg);
-}
 
 void HUD::addMessage(string text1, string text2)
 {
 	HUDMessage *msg = new HUDMessage();
 	msg->text = text1.append(text2);
-	msg->remove_time = this->ps->st->game_time + 5000;
+	msg->remove_time = this->ps->st->game_time + DISPLAY_TIME;
 	this->msgs.push_front(msg);
 }
 
@@ -74,26 +68,27 @@ HUDLabel * HUD::addLabel(int x, int y, string data, HUDLabel *l)
 **/
 void HUD::draw()
 {
-	if (this->weapon_menu && this->ps->p) {
+	if (this->weapon_menu && this->ps->p != NULL) {
 		// Weapon menu
-		int x = 100;
-		int y = 100;
-		unsigned int i;
-		unsigned int num = this->ps->p->getNumWeapons();
+		if (this->weapon_menu_remove_time < ps->st->game_time) {
+			this->weapon_menu = false;
+		} else {
+			int x = 100;
+			int y = 100;
+			unsigned int num = this->ps->p->getNumWeapons();
 
-		for (i = 0; i < num; i++) {
-			WeaponType *wt = this->ps->p->getWeaponTypeAt(i);
+			for (unsigned int i = 0; i < num; i++) {
+				WeaponType *wt = this->ps->p->getWeaponTypeAt(i);
 
-			this->render->renderText(wt->title, x, y);
+				this->render->renderText(wt->title, x, y);
 
-			if (i == this->ps->p->getCurrentWeaponID()) {
-				this->render->renderText(">", x - 25, y);
+				if (i == this->ps->p->getCurrentWeaponID()) {
+					this->render->renderText(">", x - 25, y);
+				}
+
+				y += 30;
 			}
-
-			y += 30;
 		}
-
-
 	} else {
 		// Messages
 		int y = this->render->virt_height;
@@ -201,6 +196,7 @@ void HUD::eventUp()
 	if (!this->ps->p->getNumWeapons()) return;
 	this->weapon_menu = true;
 	this->ps->p->setWeapon(this->ps->p->getPrevWeaponID());
+	this->weapon_menu_remove_time = this->ps->st->game_time + DISPLAY_TIME;
 }
 
 
@@ -212,6 +208,7 @@ void HUD::eventDown()
 	if (!this->ps->p->getNumWeapons()) return;
 	this->weapon_menu = true;
 	this->ps->p->setWeapon(this->ps->p->getNextWeaponID());
+	this->weapon_menu_remove_time = this->ps->st->game_time + DISPLAY_TIME;
 }
 
 
@@ -221,4 +218,5 @@ void HUD::eventDown()
 void HUD::eventClick()
 {
 	this->weapon_menu = false;
+	this->weapon_menu_remove_time = 0;
 }
