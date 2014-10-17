@@ -54,4 +54,5 @@ end)
 -- New game; bind M key
 bind_gamestart(function()
 	ui.basicKeyPress("m", createToolbar)
+	weather.disableRandom()
 end)
