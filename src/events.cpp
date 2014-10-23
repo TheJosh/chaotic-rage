@@ -149,6 +149,7 @@ void handleEvents(GameState *st)
 					case SDL_SCANCODE_T: st->local_players[0]->p->keyPress(Player::KEY_SPECIAL); break;
 					case SDL_SCANCODE_Z: st->local_players[0]->p->keyPress(Player::KEY_ZOOM); break;
 					case SDL_SCANCODE_C: st->gs->switchViewMode(); break;
+					case SDL_SCANCODE_R: st->local_players[0]->p->reload(); break;
 					default: break;
 				}
 

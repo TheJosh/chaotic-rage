@@ -577,13 +577,7 @@ void Unit::update(int delta)
 
 			this->weapon->magazine--;
 			if (this->weapon->magazine == 0 && this->weapon->belt > 0) {
-				int load = this->weapon->wt->magazine_limit;
-				if (load > this->weapon->belt) load = this->weapon->belt;
-				this->weapon->magazine = load;
-				this->weapon->belt -= load;
-				this->weapon->next_use += this->weapon->wt->reload_delay;
-				this->weapon->reloading = true;
-				this->endFiring();
+				this->reload();
 				this->emptySound();
 			}
 		}
@@ -656,6 +650,27 @@ void Unit::update(int delta)
 		this->powerup_weapon = NULL;
 		this->powerup_message = "";
 	}
+}
+
+
+
+/*
+* Reload weapon.
+* All ammo in the magazine will be lost, unless magazine is full or belt empty.
+*/
+void Unit::reload()
+{
+	if (this->weapon->belt <= 0) return;
+	if (this->weapon->wt->magazine_limit == this->weapon->magazine) return;
+
+	this->weapon->magazine = 0;
+	int load = this->weapon->wt->magazine_limit;
+	if (load > this->weapon->belt) load = this->weapon->belt;
+	this->weapon->magazine = load;
+	this->weapon->belt -= load;
+	this->weapon->next_use += this->weapon->wt->reload_delay;
+	this->weapon->reloading = true;
+	this->endFiring();
 }
 
 

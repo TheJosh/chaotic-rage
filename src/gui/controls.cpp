@@ -10,12 +10,13 @@
 
 using namespace std;
 
-static string controls_single[] = {
+const static string controls_single[] = {
 	"Move", "W A S D",
 	"Aim", "Mouse",
 	"Fire", "Left Click",
 	"Melee", "Right Click",
 	"Change Weapon", "Scroll",
+	"Reload", "R",
 	"Use", "E",
 	"Lift/Drop", "Q",
 	"Special", "T",
@@ -25,12 +26,13 @@ static string controls_single[] = {
 	""
 };
 
-static string controls_split1[] = {
+const static string controls_split1[] = {
 	"Move", "W A S D",
 	"Aim", "9 K L P",
 	"Fire", "O",
 	"Melee", "I",
 	"Change Weapon", "J M",
+	"Reload", "",
 	"Use", "E",
 	"Lift/Drop", "Q",
 	"Special", "T",
@@ -40,12 +42,13 @@ static string controls_split1[] = {
 	""
 };
 
-static string controls_split2[] = {
+const static string controls_split2[] = {
 	"Move", "Numpad 8 4 5 6",
 	"Aim", "Mouse",
 	"Fire", "Left Click",
 	"Melee", "Right Click",
 	"Change Weapon", "Scroll",
+	"Reload", "",
 	"Use", "Numpad 9",
 	"Lift/Drop", "Numpad 7",
 	"Special", "Numpad 1",

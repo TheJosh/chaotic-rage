@@ -153,6 +153,7 @@ class Unit : public Entity
 		int getBelt();
 		int getMagazine();
 		float getWeaponZoom();
+		void reload();
 
 		float getHealth();
 		float getHealthPercent();
