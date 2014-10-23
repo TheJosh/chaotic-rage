@@ -5,6 +5,7 @@
 #include "unit.h"
 #include <algorithm>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
+#include <sstream>
 #include "../audio/audio.h"
 #include "../game_engine.h"
 #include "../game_state.h"
@@ -339,17 +340,19 @@ bool Unit::pickupAmmo(WeaponType* wt)
 
 
 /**
-* Loop through weapon zoom levels
+* Loop through weapon zoom levels and display current zoom level
 **/
 void Unit::zoomWeapon()
 {
 	if (this->weapon == NULL) return;
 
-	if (this->weapon_zoom_level < this->weapon->wt->zoom_levels.size()-1) {
-		this->weapon_zoom_level++;
-	} else {
-		this->weapon_zoom_level = 0;
-	}
+	this->weapon_zoom_level++;
+	this->weapon_zoom_level %= this->weapon->wt->zoom_levels.size();
+
+	ostringstream ss;
+	ss << this->getWeaponZoom();
+	string s(ss.str());
+	this->st->addHUDMessage(this->slot, "Weapon zoom: " + s);
 }
 
 
@@ -364,7 +367,7 @@ float Unit::getWeaponZoom()
 
 
 /**
-* Return the unber of weapons currently in posession
+* Return the number of weapons currently in posession
 **/
 unsigned int Unit::getNumWeapons()
 {
@@ -916,4 +919,3 @@ void Unit::applyForce(btVector3 &force)
 {
 	this->force += force;
 }
-
