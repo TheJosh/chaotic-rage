@@ -9,6 +9,7 @@
 #include "gamelogic.h"
 #include "../rage.h"
 #include "../gui/textprompt.h"
+#include "../gui/listprompt.h"
 #include "../gui/textbox.h"
 #include "../gui/buttonbar.h"
 #include "../mod/gametype.h"
@@ -238,7 +239,7 @@ class LuaButtonBarHandler : public DialogButtonBarHandler {
 		**/
 		virtual void handleButton(int index)
 		{
-			func(index);
+			func(index + 1);		// Lua array indexes start at 1
 		}
 };
 
@@ -262,6 +263,53 @@ DialogButtonBar* addDialogButtonBar(string title, lua_State* L)
 
 	// Create dialog
 	DialogButtonBar* dialog = new DialogButtonBar(title, labels, new LuaButtonBarHandler(argFunc));
+	GEng()->addDialog(dialog);
+
+	return dialog;
+}
+
+
+/**
+* Receives list prompt selection events
+**/
+class LuaListPromptHandler : public DialogListPromptHandler {
+	private:
+		luabridge::LuaRef func;
+
+	public:
+		explicit LuaListPromptHandler(luabridge::LuaRef func) : func(func) {}
+		virtual ~LuaListPromptHandler() {}
+
+	public:
+		/**
+		* This will be called with the index of the button which was pressed
+		**/
+		virtual void handleSelection(int index)
+		{
+			func(index + 1);		// Lua array indexes start at 1
+		}
+};
+
+/**
+* Add a new ListPrompt dialog
+**/
+DialogListPrompt* addDialogListPrompt(string title, string message, lua_State* L)
+{
+	luabridge::LuaRef argLabels = luabridge::LuaRef::fromStack(L, 3);
+	if (! argLabels.isTable()) return NULL;
+
+	luabridge::LuaRef argFunc = luabridge::LuaRef::fromStack(L, 4);
+	if (! argFunc.isFunction()) return NULL;
+
+	// Load labels into vector
+	vector<string>* items = new vector<string>();
+	int len = argLabels.length();
+	for (int i = 1; i <= len; i++) {
+		items->push_back(argLabels[i]);
+	}
+
+	// Create dialog
+	DialogListPrompt* dialog = new DialogListPrompt(title, message, items, new LuaListPromptHandler(argFunc));
 	GEng()->addDialog(dialog);
 
 	return dialog;
@@ -332,8 +380,11 @@ void load_dialog_lib(lua_State *L)
 		.endClass()
 		.deriveClass<DialogButtonBar, Dialog>("DialogButtonBar")
 		.endClass()
+		.deriveClass<DialogListPrompt, Dialog>("DialogListPrompt")
+		.endClass()
 		.addFunction("addDialogTextBox", &addDialogTextBox)
 		.addFunction("addDialogButtonBar", &addDialogButtonBar)
+		.addFunction("addDialogListPrompt", &addDialogListPrompt)
 		.addFunction("basicKeyPress", &basicKeyPress)
 	.endNamespace();
 }

@@ -39,21 +39,21 @@ class DialogListPromptHandler {
 **/
 class DialogListPrompt : public Dialog, public gcn::ActionListener {
 	private:
-		GameState * st;
 		string title;
 		string message;
 		vector<string>* items;
 		VectorListModel* items_model;
 		DialogListPromptHandler *ev;
 		gcn::Label* label;
-		gcn::ListBox* list;
+		gcn::DropDown* list;
 		gcn::Button* button;
 
 	public:
-		DialogListPrompt(GameState* st, string title, string message, vector<string>* items, DialogListPromptHandler* ev);
+		DialogListPrompt(string title, string message, vector<string>* items, DialogListPromptHandler* ev);
 		virtual ~DialogListPrompt();
 
 		virtual gcn::Container* setup();
+		virtual void tearDown();
 		virtual const DialogName getName() { return LISTPROMPT; }
 		virtual void action(const gcn::ActionEvent& actionEvent);
 };
