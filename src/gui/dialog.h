@@ -28,7 +28,7 @@ class Dialog {
 
 	public:
 		Dialog() : c(NULL), m(NULL), gm(NULL) {}
-		virtual ~Dialog() {}
+		virtual ~Dialog();
 
 		/**
 		* Set up the container, creating all child widgets

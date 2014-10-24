@@ -305,7 +305,8 @@ DialogListPrompt* addDialogListPrompt(string title, string message, lua_State* L
 	vector<string>* items = new vector<string>();
 	int len = argLabels.length();
 	for (int i = 1; i <= len; i++) {
-		items->push_back(argLabels[i]);
+		string tmp = argLabels[i];
+		items->push_back(tmp);
 	}
 
 	// Create dialog

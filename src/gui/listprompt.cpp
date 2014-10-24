@@ -20,6 +20,8 @@ using namespace std;
 /**
 * Allows the user to enter some text
 * The `items` and `ev` will be FREED when this dialog is deleted
+*
+* TODO: Is passing a vector the best thing here, or should we pass a ListModel instead?
 **/
 DialogListPrompt::DialogListPrompt(string title, string message, vector<string>* items, DialogListPromptHandler* ev)
 {
@@ -41,7 +43,7 @@ DialogListPrompt::DialogListPrompt(string title, string message, vector<string>*
 gcn::Container* DialogListPrompt::setup()
 {
 	c = new gcn::Window(this->title);
-	c->setDimension(gcn::Rectangle(0, 0, 340, 200));
+	c->setDimension(gcn::Rectangle(0, 0, 340, 150));
 
 	this->label = new gcn::Label(this->message);
 	this->label->setPosition(20, 20);
@@ -54,7 +56,7 @@ gcn::Container* DialogListPrompt::setup()
 	c->add(this->list);
 
 	this->button = new gcn::Button("OK");
-	this->button->setPosition(150, 100);
+	this->button->setPosition(150, 80);
 	this->button->setWidth(50);
 	this->button->addActionListener(this);
 	c->add(this->button);
@@ -70,8 +72,6 @@ gcn::Container* DialogListPrompt::setup()
 **/
 void DialogListPrompt::tearDown()
 {
-	cout << "DialogListPrompt::tearDown" << endl;
-
 	delete button;
 	delete list;
 	delete label;
@@ -83,8 +83,6 @@ void DialogListPrompt::tearDown()
 **/
 DialogListPrompt::~DialogListPrompt()
 {
-	cout << "DialogListPrompt::~DialogListPrompt()" << endl;
-
 	delete this->items_model;
 	delete items;
 	delete ev;
@@ -96,13 +94,9 @@ DialogListPrompt::~DialogListPrompt()
 **/
 void DialogListPrompt::action(const gcn::ActionEvent& actionEvent)
 {
-	cout << "DialogListPrompt::action " << this->list << " " << this->list->getSelected() << endl;
-
 	if (this->ev != NULL) {
 		this->ev->handleSelection(this->list->getSelected());
 	}
-
-	this->close();
 }
 
 

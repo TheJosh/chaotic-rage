@@ -7,15 +7,19 @@ map_config = ""
 
 -- Mouse pick handler for adding vehicles
 function pickVehicle(coord)
-	ui.addDialogListPrompt(
+	typeselect = ui.addDialogListPrompt(
 		"Vehicle type",
-		"Which type of vehicle do you want to add?",
+		"Vehicle type",
 		{"Tank", "Ute"},
 		function(typeid)
 			types = {"tank", "ute"};
 			
 			game.addVehicleXZ(types[typeid], coord.x, coord.z)
 			map_config = map_config .. string.format("vehicle {  type = %q  x = %.2f  y = %.2f  }\n", types[typeid], coord.x, coord.z)
+			
+			add_timer(100, function()
+				typeselect:close()
+			end)
 		end
 	)
 end
@@ -37,7 +41,7 @@ function createToolbar()
 		"Show config",
 		"Close toolbar"
 	}, function(btn)
-		add_timer(500, function()
+		add_timer(100, function()
 			toolbar:close()
 		end)
 

@@ -12,6 +12,14 @@ using namespace std;
 
 
 /**
+* Dialog cleanup
+**/
+Dialog::~Dialog()
+{
+}
+
+
+/**
 * Return the base container for a dialog
 **/
 gcn::Container* Dialog::getContainer()
