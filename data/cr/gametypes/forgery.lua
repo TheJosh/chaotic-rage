@@ -1,5 +1,5 @@
 ----
-----  Lua script for the gametype "Zombies".
+----  Lua script for the gametype "Forgery".
 ----
 
 
@@ -30,4 +30,3 @@ function doPick()
 		end)
 	end)
 end
-

@@ -75,7 +75,7 @@ end);
 -- Handle unit deaths
 --
 bind_playerdied(function(slot)
-	show_alert_message("Just not good enough I see...");
+	show_alert_message("Just not good enough I see...", slot);
 	
 	do_score();
 	
@@ -105,6 +105,3 @@ bind_npcdied(function()
 		num_achive = num_achive + 10;
 	end;
 end);
-
-
-

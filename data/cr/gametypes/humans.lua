@@ -1,5 +1,5 @@
 ----
-----  Lua script for the gametype "Zombies".
+----  Lua script for the gametype "Humans".
 ----
 
 num_humans = 0
@@ -70,4 +70,3 @@ end);
 bind_npcdied(function()
 	num_dead = num_dead + 1
 end);
-

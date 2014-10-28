@@ -461,7 +461,10 @@ LUA_FUNC(show_alert_message)
 		lua_error(L);
 	}
 
-	gl->st->addHUDMessage(ALL_SLOTS, text);
+	// If no argument the result is zero which is the same as ALL_SLOTS
+	const int slot = lua_tonumber(L, 2);
+
+	gl->st->addHUDMessage(slot, text);
 
 	return 0;
 }
