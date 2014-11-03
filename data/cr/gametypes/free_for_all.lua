@@ -1,5 +1,5 @@
 ----
-----  Lua script for the gametype "Boredem".
+----  Lua script for the gametype "Free For All".
 ----
 
 

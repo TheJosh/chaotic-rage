@@ -663,7 +663,6 @@ void Unit::reload()
 	if (this->weapon->belt <= 0) return;
 	if (this->weapon->wt->magazine_limit == this->weapon->magazine) return;
 
-	this->weapon->magazine = 0;
 	int load = this->weapon->wt->magazine_limit;
 	if (load > this->weapon->belt) load = this->weapon->belt;
 	this->weapon->magazine = load;
