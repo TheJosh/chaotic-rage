@@ -228,6 +228,7 @@
     <ClCompile Include="..\..\src\gui\client_settings.cpp" />
     <ClCompile Include="..\..\src\gui\controls.cpp" />
     <ClCompile Include="..\..\src\gui\dialog.cpp" />
+    <ClCompile Include="..\..\src\gui\listprompt.cpp" />
     <ClCompile Include="..\..\src\gui\mods.cpp" />
     <ClCompile Include="..\..\src\gui\network.cpp" />
     <ClCompile Include="..\..\src\gui\newcampaign.cpp" />
@@ -447,6 +448,7 @@
     <ClInclude Include="..\..\src\gui\client_settings.h" />
     <ClInclude Include="..\..\src\gui\controls.h" />
     <ClInclude Include="..\..\src\gui\dialog.h" />
+    <ClInclude Include="..\..\src\gui\listprompt.h" />
     <ClInclude Include="..\..\src\gui\mods.h" />
     <ClInclude Include="..\..\src\gui\network.h" />
     <ClInclude Include="..\..\src\gui\newcampaign.h" />

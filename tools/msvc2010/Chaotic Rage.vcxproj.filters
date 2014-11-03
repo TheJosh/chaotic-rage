@@ -843,6 +843,9 @@
     <ClCompile Include="..\..\src\gui\newgame_environment.cpp">
       <Filter>src\gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\gui\listprompt.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\game.h">
@@ -1524,6 +1527,9 @@
       <Filter>src\spark\opengl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\gui\newgame_environment.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\gui\listprompt.h">
       <Filter>src\gui</Filter>
     </ClInclude>
   </ItemGroup>

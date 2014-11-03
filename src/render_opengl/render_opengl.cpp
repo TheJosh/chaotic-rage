@@ -2249,4 +2249,30 @@ void RenderOpenGL::fps()
 
 	snprintf(buf, BUFFER_MAX, "%.1f fps", 1000.0f/tick);
 	this->renderText(buf, 550, 50);
+
+	// Count up entities
+	int units = 0;
+	int vehicles = 0;
+	int objects = 0;
+	int pickups = 0;
+	int other = 0;
+	int total = 0;
+	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {
+		Entity *e = (*it);
+		if (e->klass() == VEHICLE) {
+			vehicles++;
+		} else if (e->klass() == OBJECT) {
+			objects++;
+		} else if (e->klass() == PICKUP) {
+			pickups++;
+		} else if (e->klass() == UNIT) {
+			units++;
+		} else {
+			other++;
+		}
+		total++;
+	}
+
+	snprintf(buf, BUFFER_MAX, "U %i  V %i  O %i  P %i  ? %i  T %i", units, vehicles, objects, pickups, other, total);
+	this->renderText(buf, 400, 80);
 }
