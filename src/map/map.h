@@ -42,6 +42,7 @@ class Map {
 	public:
 		float width;
 		float height;
+		bool weather;
 
 		vector<Heightmap*> heightmaps;
 

@@ -165,6 +165,7 @@ static cfg_opt_t opts[] =
 {
 	CFG_FLOAT((char*) "width", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "height", 0, CFGF_NONE),
+	CFG_BOOL((char*) "weather", (cfg_bool_t)true, CFGF_NONE),
 
 	CFG_SEC((char*) "wall", wall_opts, CFGF_MULTI),
 	CFG_SEC((char*) "vehicle", vehicle_opts, CFGF_MULTI),
@@ -250,6 +251,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 	// Get width and height
 	this->width = cfg_getfloat(cfg, "width");
 	this->height = cfg_getfloat(cfg, "height");
+	this->weather = cfg_getbool(cfg, "weather");
 
 	if (this->width <= 0.0f || this->height <= 0.0f) {
 		cerr << "No width or height set for map.\n";

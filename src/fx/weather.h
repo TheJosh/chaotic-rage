@@ -37,6 +37,7 @@ class Weather
 	private:
 		GameState* st;
 		float delta;
+		bool enabled;
 		bool random;
 
 		/**
@@ -61,7 +62,7 @@ class Weather
 		int snow_flow;
 
 	public:
-		Weather(GameState* st, float map_size_x, float map_size_z);
+		Weather(GameState* st, float map_size_x, float map_size_z, bool enabled);
 		~Weather();
 
 	public:

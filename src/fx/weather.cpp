@@ -18,11 +18,12 @@ using namespace std;
 /**
 * Set up everything
 **/
-Weather::Weather(GameState* st, float map_size_x, float map_size_z)
+Weather::Weather(GameState* st, float map_size_x, float map_size_z, bool enabled)
 {
 	this->st = st;
 	this->delta = 0.0f;
 	this->random = true;
+	this->enabled = enabled;
 	this->rain_flow = 0;
 
 	// Main zone for emission
@@ -97,7 +98,7 @@ Weather::~Weather()
 **/
 void Weather::update(float delta)
 {
-	if (! this->random) return;
+	if (!this->enabled || !this->random) return;
 	this->delta += delta;
 	if (this->delta >= RANDOM_UPDATE_TIME) {
 		this->randomWeather();
@@ -132,6 +133,7 @@ void Weather::randomWeather()
 **/
 void Weather::startRain(int flow)
 {
+	if (!this->enabled) return;
 	this->rain_emitter->setFlow(flow);
 	st->removeParticleGroup(this->rain_group);
 	st->addParticleGroup(this->rain_group);
@@ -154,6 +156,7 @@ void Weather::stopRain()
 **/
 void Weather::startSnow(int flow)
 {
+	if (!this->enabled) return;
 	this->snow_emitter->setFlow(flow);
 	st->removeParticleGroup(this->snow_group);
 	st->addParticleGroup(this->snow_group);

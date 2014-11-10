@@ -430,7 +430,7 @@ void GameState::preGame()
 	}
 
 	// Weather
-	this->weather = new Weather(this, this->map->width, this->map->height);
+	this->weather = new Weather(this, this->map->width, this->map->height, this->map->weather);
 	if (this->gs->rain_flow > 0) this->weather->startRain(this->gs->rain_flow);
 	if (this->gs->snow_flow > 0) this->weather->startSnow(this->gs->snow_flow);
 	if (this->gs->random_weather) {
