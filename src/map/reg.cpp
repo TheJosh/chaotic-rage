@@ -15,11 +15,14 @@ using namespace std;
 **/
 void MapRegistry::find(string dir)
 {
-	maps.push_back(MapReg("therlor_valley", "Therlor Valley"));
-	maps.push_back(MapReg("lakeside", "Lakeside"));
-	maps.push_back(MapReg("stormy_desert", "Stormy Desert"));
-	maps.push_back(MapReg("caves", "Caves"));
-	maps.push_back(MapReg("test", "Test"));
+	std::vector< std::pair<std::string, std::string> > *sysmaps = getSystemMapNames();
+	std::vector< std::pair<std::string, std::string> >::iterator it;
+
+	for (it = sysmaps->begin(); it != sysmaps->end(); ++it) {
+		maps.push_back(MapReg(it->first, it->second));
+	}
+
+	delete(sysmaps);
 }
 
 

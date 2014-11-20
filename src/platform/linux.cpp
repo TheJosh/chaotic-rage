@@ -9,6 +9,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <libgen.h>
 
 #include <SDL.h>
 #include "../game_engine.h"
@@ -98,6 +99,42 @@ void displayMessageBox(string msg)
 
 
 /**
+* Returns an array of names of files and/or directories in a directory
+*
+* Please free the result when you are done.
+*
+* @param bool base Return basenames instead of full paths
+* @param int type 0 = all, 1 = directories only, 2 = files only
+**/
+std::vector<std::string> * getDirectoryList(std::string directory, bool base, int type)
+{
+	vector<string> * ret = new vector<string>();
+
+	glob_t glob_result;
+	struct stat statbuf;
+
+	glob(directory.c_str(), GLOB_TILDE, NULL, &glob_result);
+	for (unsigned int i = 0; i < glob_result.gl_pathc; ++i) {
+		if (lstat(glob_result.gl_pathv[i], &statbuf) == -1){
+			continue;
+		}
+		
+		if (type == 1 && S_ISREG(statbuf.st_mode)) continue;
+		if (type == 2 && S_ISDIR(statbuf.st_mode)) continue;
+		
+		if (base) {
+			ret->push_back(string(basename(glob_result.gl_pathv[i])));
+		} else {
+			ret->push_back(string(glob_result.gl_pathv[i]));
+		}
+	}
+	globfree(&glob_result);
+
+	return ret;
+}
+
+
+/**
 * Returns an array of names of system mods
 *
 * Example return value:
@@ -108,14 +145,42 @@ void displayMessageBox(string msg)
 *
 * Please delete() the result when you are done.
 **/
-list<string> * getSystemModNames()
+vector<string> * getSystemModNames()
 {
+	//return getDirectoryList("data/", true, 1);
 	// TODO: Actually code this!
-	list<string> * out = new list<string>();
+	vector<string> * out = new vector<string>();
 	out->push_back("cr");
 	out->push_back("australia_day");
 	out->push_back("test");
 	return out;
+}
+
+
+/**
+* Returns an array of names of system maps
+*
+* Example return value:
+*    <
+*        <therlor_valley, Therlor Valley>
+*        <debug, Debug>
+*    >
+*
+* Please free the result when you are done.
+**/
+std::vector< std::pair<std::string, std::string> > * getSystemMapNames()
+{
+	std::vector< std::pair<std::string, std::string> > * maps;
+
+	maps = new std::vector< std::pair<std::string, std::string> >();
+
+	maps->push_back(std::pair<std::string,std::string>("therlor_valley", "Therlor Valley"));
+	maps->push_back(std::pair<std::string,std::string>("lakeside", "Lakeside"));
+	maps->push_back(std::pair<std::string,std::string>("stormy_desert", "Stormy Desert"));
+	maps->push_back(std::pair<std::string,std::string>("caves", "Caves"));
+	maps->push_back(std::pair<std::string,std::string>("test", "Test"));
+
+	return maps;
 }
 
 

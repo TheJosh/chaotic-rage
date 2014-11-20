@@ -75,6 +75,33 @@ void displayMessageBox(string msg)
 
 
 /**
+* Returns an array of names of system maps
+*
+* Example return value:
+*    <
+*        <therlor_valley, Therlor Valley>
+*        <debug, Debug>
+*    >
+*
+* Please free the result when you are done.
+**/
+std::vector< std::pair<std::string, std::string> > * getSystemMapNames()
+{
+	std::vector< std::pair<std::string, std::string> > * maps;
+
+	maps = new std::vector< std::pair<std::string, std::string> >();
+
+	maps->push_back(std::pair<std::string,std::string>("therlor_valley", "Therlor Valley"));
+	maps->push_back(std::pair<std::string,std::string>("lakeside", "Lakeside"));
+	maps->push_back(std::pair<std::string,std::string>("stormy_desert", "Stormy Desert"));
+	maps->push_back(std::pair<std::string,std::string>("caves", "Caves"));
+	maps->push_back(std::pair<std::string,std::string>("test", "Test"));
+
+	return maps;
+}
+
+
+/**
 * Returns an array of names of system mods
 *
 * Example return value:
@@ -85,9 +112,9 @@ void displayMessageBox(string msg)
 *
 * Please free the result when you are done.
 **/
-list<string> * getSystemModNames()
+vector<string> * getSystemModNames()
 {
-	list<string> * ret = new list<string>();
+	vector<string> * ret = new vector<string>();
 
 	WIN32_FIND_DATA fdFile;
 	HANDLE hFind = NULL;
