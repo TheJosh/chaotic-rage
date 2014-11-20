@@ -55,7 +55,7 @@ string getUserDataDir()
 {
 	char * env;
 
-	env = getenv ("HOME");
+	env = getenv("HOME");
 	if (! env) {
 		reportFatalError("Environment variable $HOME is not set");
 	}
@@ -106,16 +106,21 @@ void displayMessageBox(string msg)
 * @param bool base Return basenames instead of full paths
 * @param int type 0 = all, 1 = directories only, 2 = files only
 **/
-std::vector<std::string> * getDirectoryList(std::string directory, bool base, int type)
+std::vector<std::string> * getDirectoryList(std::string pattern, bool base, int type)
 {
 	vector<string> * ret = new vector<string>();
 
 	glob_t glob_result;
 	struct stat statbuf;
 
-	glob(directory.c_str(), GLOB_TILDE, NULL, &glob_result);
+	glob(pattern.c_str(), GLOB_TILDE, NULL, &glob_result);
+
+	cout << "glob " << pattern << endl;
+
 	for (unsigned int i = 0; i < glob_result.gl_pathc; ++i) {
-		if (lstat(glob_result.gl_pathv[i], &statbuf) == -1){
+		cout << "  " << glob_result.gl_pathv[i] << endl;
+		
+		if (lstat(glob_result.gl_pathv[i], &statbuf) == -1) {
 			continue;
 		}
 		
@@ -147,7 +152,8 @@ std::vector<std::string> * getDirectoryList(std::string directory, bool base, in
 **/
 vector<string> * getSystemModNames()
 {
-	//return getDirectoryList("data/", true, 1);
+	//return getDirectoryList("*", true, 1);
+	
 	// TODO: Actually code this!
 	vector<string> * out = new vector<string>();
 	out->push_back("cr");
