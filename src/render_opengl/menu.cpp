@@ -138,26 +138,24 @@ void Menu::loadMenuItems()
 **/
 void Menu::doit(UIUpdate* ui)
 {
-	Mod *mod = GEng()->mm->getBase();
+	this->base_mod = GEng()->mm->getBase();
 
-
+	// Set up guichan
 	this->input = new gcn::SDLInput();
 	this->gui = new gcn::Gui();
-	this->gui->setInput(input);
-	this->render->initGuichan(gui, mod);
 	this->gui_container = new gcn::Container();
-	this->gui_container->setDimension(gcn::Rectangle(0, 0, render->real_width, render->real_height));
+	this->handleScreenResChange();
+	this->gui->setInput(input);
 	this->gui_container->setOpaque(false);
 	this->gui->setTop(this->gui_container);
 
 	// This is a hack and leaks memory too
 	// TODO: Mod to be able to specify models
 	this->model_rot = -10.0f;
-	this->model = mod->getAssimpModel("magellan_16.dae");
+	this->model = this->base_mod->getAssimpModel("magellan_16.dae");
 	this->play = new AnimPlay(this->model);
 
 	this->loadModBits(ui);
-	this->setupGLstate();
 
 	// Menu loop
 	this->running = true;
@@ -168,6 +166,17 @@ void Menu::doit(UIUpdate* ui)
 	delete(this->input);
 	delete(this->gui);
 	delete(this->gui_container);
+}
+
+
+/**
+* Called by the settings dialog when the screen res changes
+**/
+void Menu::handleScreenResChange()
+{
+	this->setupGLstate();
+	this->render->initGuichan(this->gui, this->base_mod);
+	this->gui_container->setDimension(gcn::Rectangle(0, 0, render->real_width, render->real_height));
 }
 
 

@@ -200,4 +200,5 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 	}
 
 	this->m->remDialog(this);
+	this->m->handleScreenResChange();
 }
