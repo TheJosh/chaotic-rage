@@ -29,6 +29,8 @@ static cfg_opt_t config_opts[] =
 	CFG_INT((char*) "gl-tex-filter", 4, CFGF_NONE),
 
 	CFG_BOOL((char*) "fullscreen", cfg_false, CFGF_NONE),
+	CFG_INT((char*) "width", 1280, CFGF_NONE),
+	CFG_INT((char*) "height", 800, CFGF_NONE),
 
 	CFG_STR((char*) "lang", 0, CFGF_NONE),
 
@@ -67,8 +69,10 @@ void ClientConfig::load()
 	this->gl->msaa = cfg_getint(cfg, "gl-msaa");
 	this->gl->tex_filter = cfg_getint(cfg, "gl-tex-filter");
 
-	// Fullscreen
+	// Screen res
 	this->fullscreen = cfg_getbool(cfg, "fullscreen");
+	this->width = cfg_getint(cfg, "width");
+	this->height = cfg_getint(cfg, "height");
 
 	// Language
 	char* tmp = cfg_getstr(cfg, "lang");
@@ -101,6 +105,8 @@ void ClientConfig::save()
 	fprintf(fp, "gl-msaa = %i\n", this->gl->msaa);
 	fprintf(fp, "gl-tex-filter = %i\n", this->gl->tex_filter);
 	fprintf(fp, "fullscreen = %s\n", (this->fullscreen ? "true" : "false"));
+	fprintf(fp, "width = %i\n", this->width);
+	fprintf(fp, "height = %i\n", this->height);
 	fprintf(fp, "lang = %s\n", this->lang.c_str());
 
 	fclose(fp);
@@ -138,8 +144,7 @@ void ClientConfig::initRender(GameState *st)
 	if (GEng()->cmdline->resolution[1] != 0 && GEng()->cmdline->resolution[2] != 2) {
 		GEng()->render->setScreenSize(GEng()->cmdline->resolution[1], GEng()->cmdline->resolution[2], fs);
 	} else {
-		// TODO: Load these settings from a config file
-		GEng()->render->setScreenSize(1000, 700, fs);
+		GEng()->render->setScreenSize(this->width, this->height, fs);
 	}
 }
 

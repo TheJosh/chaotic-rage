@@ -153,7 +153,6 @@ std::vector<std::string> * getDirectoryList(std::string pattern, bool base, int 
 vector<string> * getSystemModNames()
 {
 	//return getDirectoryList("*", true, 1);
-	
 	// TODO: Actually code this!
 	vector<string> * out = new vector<string>();
 	out->push_back("cr");
