@@ -26,6 +26,8 @@ class DialogClientSettings : public Dialog, public gcn::ActionListener
 		gcn::TextField* gl_msaa;
 		gcn::TextField* gl_tex_filter;
 		gcn::CheckBox* fullscreen;
+		gcn::TextField* width;
+		gcn::TextField* height;
 		gcn::DropDown* lang;
 		vector<string>* langs;
 

@@ -51,6 +51,8 @@ SETTINGS_MSAA            MSAA
 SETTINGS_TEX_FILTER      Tex Filter
 SETTINGS_LANGUAGE        Language
 SETTINGS_FULLSCREEN      Fullscreen
+SETTINGS_WIDTH           Screen width
+SETTINGS_HEIGHT          Screen height
 SETTINGS_SAVE            Save
 
 # In game

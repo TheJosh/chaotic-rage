@@ -36,7 +36,9 @@
 36	Tex-Filter
 37	Språk
 38	Fullskärm
-39	Spara
-40	Avsluta? Säker?
-41	Ja
-42	Nej
+39	Screen width
+40	Screen height
+41	Spara
+42	Avsluta? Säker?
+43	Ja
+44	Nej

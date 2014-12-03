@@ -36,7 +36,9 @@
 36	Tex Filter
 37	Language
 38	Fullscreen
-39	Save
-40	Quit? Really?
-41	Yes
-42	No
+39	Screen width
+40	Screen height
+41	Save
+42	Quit? Really?
+43	Yes
+44	No
