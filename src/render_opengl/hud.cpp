@@ -105,6 +105,7 @@ void HUD::draw()
 		}
 
 		// Labels
+		int x;
 		for (list<HUDLabel*>::iterator it = this->labels.begin(); it != this->labels.end(); ++it) {
 			HUDLabel *l = (*it);
 			// Send state over network
@@ -113,22 +114,29 @@ void HUD::draw()
 				GEng()->server->addmsgHUD(l);
 			}
 
+			x = l->x;
+			y = l->y;
+			if (x < 0) x = this->render->virt_width + x;
+			if (y < 0) y = this->render->virt_height + y;
+			
 			if (l->align == ALIGN_LEFT) {
-				this->render->renderText(l->data, l->x, l->y, l->r, l->g, l->b, l->a);
+				this->render->renderText(l->data, x, y, l->r, l->g, l->b, l->a);
 
 			} else if (l->align == ALIGN_CENTER) {
 				int w = render->widthText(l->data);
-				this->render->renderText(l->data, l->x + (l->width - w) / 2, l->y, l->r, l->g, l->b, l->a);
+				this->render->renderText(l->data, x + (l->width - w) / 2, y, l->r, l->g, l->b, l->a);
 
 			} else if (l->align == ALIGN_RIGHT) {
 				int w = render->widthText(l->data);
-				this->render->renderText(l->data, l->x + (l->width - w), l->y, l->r, l->g, l->b, l->a);
+				this->render->renderText(l->data, x + (l->width - w), y, l->r, l->g, l->b, l->a);
+
 			} else {
 				cerr << "HUD label with unknown align: " << l->align << " : " << l->data << endl;
 			}
 		}
+
+		// Workaround to remove "old" HUD labels when running as a client
 		if (GEng()->client != NULL) {
-			// Workaround to remove "old" HUD labels when running as a client
 			this->labels.clear();
 		}
 

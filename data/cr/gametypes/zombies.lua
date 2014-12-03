@@ -121,14 +121,14 @@ bind_gamestart(function(r_max)
 	add_timer(10000, start_round);
 	add_timer(5000, initial_ammo);
 	
-	add_label(800, 50, "Round");
-	score_labels.round = add_label(900, 50, "0");
+	add_label(-200, 50, "Round");
+	score_labels.round = add_label(-70, 50, "0");
 
-	add_label(800, 70, "Alive");
-	score_labels.alive = add_label(900, 70, "0");
+	add_label(-200, 70, "Alive");
+	score_labels.alive = add_label(-70, 70, "0");
 
-	add_label(800, 90, "Dead");
-	score_labels.dead = add_label(900, 90, "0");
+	add_label(-200, 90, "Dead");
+	score_labels.dead = add_label(-70, 90, "0");
 	
 	weather.disableRandom();
 end);
