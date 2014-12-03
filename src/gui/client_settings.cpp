@@ -164,20 +164,23 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 	RenderOpenGLSettings* current = ((RenderOpenGL*)GEng()->render)->getSettings();
 	RenderOpenGLSettings* nu = new RenderOpenGLSettings();
 
-	// Fullscreen
-	bool currentFS = GEng()->cconf->fullscreen;
-	bool newFS = this->fullscreen->isSelected();
-
 	// Populate the class
 	nu->msaa = atoi(this->gl_msaa->getText().c_str());
 	nu->tex_filter = atoi(this->gl_tex_filter->getText().c_str());
 
 	// Do we need a restart?
 	bool restart = false;
-	if (current->msaa != nu->msaa || currentFS != newFS) restart = true;
+	if (current->msaa != nu->msaa) restart = true;
 
 	// Update GL settings
 	((RenderOpenGL*)GEng()->render)->setSettings(nu);
+
+	// Update screen res
+	int width = atoi(this->width->getText().c_str());
+	int height = atoi(this->height->getText().c_str());
+	if (width < 100) width = 100;
+	if (height < 100) height = 100;
+	((RenderOpenGL*)GEng()->render)->setScreenSize(width, height, this->fullscreen->isSelected());
 
 	// Re-load language strings
 	loadLang(langs->at(this->lang->getSelected()).c_str());
@@ -185,9 +188,9 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 
 	// Save config
 	GEng()->cconf->gl = nu;
-	GEng()->cconf->fullscreen = newFS;
-	GEng()->cconf->width = atoi(this->width->getText().c_str());
-	GEng()->cconf->height = atoi(this->height->getText().c_str());
+	GEng()->cconf->fullscreen = this->fullscreen->isSelected();
+	GEng()->cconf->width = width;
+	GEng()->cconf->height = height;
 	GEng()->cconf->lang = langs->at(this->lang->getSelected());
 	GEng()->cconf->save();
 

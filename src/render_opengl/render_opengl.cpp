@@ -79,6 +79,7 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	SDL_FreeSurface(icon);*/
 
 	this->window = NULL;
+	this->glcontext = NULL;
 	this->physicsdebug = NULL;
 	this->speeddebug = false;
 	this->viewmode = GameSettings::behindPlayer;
@@ -233,7 +234,17 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 
 		this->window = SDL_SetVideoMode(width, height, 32, flags);
 	#else
-		this->window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
+		if (this->window == NULL) {
+			this->window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
+		} else {
+			SDL_SetWindowSize(this->window, width, height);
+			if (fullscreen) {
+				flags = SDL_WINDOW_FULLSCREEN;
+			} else {
+				flags = 0;
+			}
+			SDL_SetWindowFullscreen(this->window, flags);
+		}
 	#endif
 	
 	// Did it work?
@@ -260,9 +271,11 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		#endif
 
 		// GL context creation
-		this->glcontext = SDL_GL_CreateContext(this->window);
 		if (this->glcontext == NULL) {
-			reportFatalError("Unable to create GL context");
+			this->glcontext = SDL_GL_CreateContext(this->window);
+			if (this->glcontext == NULL) {
+				reportFatalError("Unable to create GL context");
+			}
 		}
 	#endif
 	
