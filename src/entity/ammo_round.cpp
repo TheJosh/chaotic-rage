@@ -62,7 +62,3 @@ void AmmoRound::update(int delta)
 	this->wt->entityUpdate(this, delta);
 }
 
-Sound* AmmoRound::getSound()
-{
-	return NULL;
-}

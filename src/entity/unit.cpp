@@ -490,16 +490,6 @@ float Unit::getHealthPercent()
 
 
 /**
-* Get the current sound
-* TODO: Remove - not in use...?
-**/
-Sound* Unit::getSound()
-{
-	return NULL;
-}
-
-
-/**
 * Removes any pickups which are due to finish,
 * and runs their finished() method.
 **/

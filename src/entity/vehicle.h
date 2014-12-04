@@ -48,7 +48,6 @@ class Vehicle : public Entity
 		virtual ~Vehicle();
 
 	public:
-		virtual Sound* getSound();
 		virtual void update(int delta);
 		void takeDamage(int damage);
 		virtual void enter();

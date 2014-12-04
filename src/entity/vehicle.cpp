@@ -308,12 +308,6 @@ void Vehicle::operate(Unit* u, int delta, int key_up, int key_down, int key_left
 }
 
 
-Sound* Vehicle::getSound()
-{
-	return NULL;
-}
-
-
 /**
 * Return the weapon transform for this vehicle
 **/

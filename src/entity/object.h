@@ -28,7 +28,6 @@ class Object : public Entity
 		virtual ~Object();
 
 	public:
-		virtual Sound* getSound();
 		virtual void update(int delta);
 
 	public:

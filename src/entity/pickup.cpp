@@ -77,15 +77,6 @@ void Pickup::update(int delta)
 
 
 /**
-* Return a sound for the pickup
-**/
-Sound* Pickup::getSound()
-{
-	return NULL;
-}
-
-
-/**
 * Handle interaction by the user
 *
 * @return True on success, false on failure (e.g. wrong weapon for ammo box)

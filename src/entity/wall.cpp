@@ -50,11 +50,6 @@ void Wall::update(int delta)
 {
 }
 
-Sound* Wall::getSound()
-{
-	return NULL;
-}
-
 
 /**
 * We have been hit! Take some damage

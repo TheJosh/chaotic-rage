@@ -39,6 +39,5 @@ class Pickup : public Entity
 
 
 	public:
-		virtual Sound* getSound();
 		virtual void update(int delta);
 };

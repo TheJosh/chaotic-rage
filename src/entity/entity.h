@@ -49,12 +49,6 @@ class Entity
 
 	public:
 		/**
-		* Return Sounds for this entity
-		* This is going to change some time soon!
-		**/
-		virtual Sound* getSound() = 0;
-
-		/**
 		* Return the world transform for this entity
 		**/
 		virtual const btTransform &getTransform() const;

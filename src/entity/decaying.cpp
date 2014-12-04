@@ -54,8 +54,3 @@ void Decaying::update(int delta)
 	}
 }
 
-Sound* Decaying::getSound()
-{
-	return NULL;
-}
-

@@ -51,11 +51,6 @@ void Object::update(int delta)
 {
 }
 
-Sound* Object::getSound()
-{
-	return NULL;
-}
-
 
 /**
 * We have been hit! Take some damage

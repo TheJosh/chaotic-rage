@@ -122,7 +122,6 @@ class Unit : public Entity
 		virtual ~Unit();
 
 	public:
-		virtual Sound* getSound();
 		virtual void update(int delta);
 		virtual const btTransform &getTransform() const;
 		virtual void setTransform(btTransform &t);
