@@ -37,9 +37,12 @@ class Vehicle : public Entity
 		btRaycastVehicle* vehicle;
 		btCollisionShape* wheel_shape;
 
-	public:
+	protected:
 		explicit Vehicle(GameState *st);
-		Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy);
+
+	public:
+		Vehicle(VehicleType *vt, GameState *st, float x, float z);
+		Vehicle(VehicleType *vt, GameState *st, float x, float y, float z);
 		Vehicle(VehicleType *vt, GameState *st, btTransform & loc);
 		void init(VehicleType *vt, GameState *st, btTransform & loc);
 		virtual ~Vehicle();

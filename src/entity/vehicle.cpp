@@ -28,6 +28,9 @@ static btVector3 wheelDirectionCS0(0,-1,0);
 static btVector3 wheelAxleCS(-1,0,0);
 
 
+/**
+* Protected contructor for subclassing
+**/
 Vehicle::Vehicle(GameState *st) : Entity(st)
 {
 	this->vehicle_raycaster = NULL;
@@ -41,18 +44,40 @@ Vehicle::Vehicle(GameState *st) : Entity(st)
 	this->wheel_shape = NULL;
 }
 
-Vehicle::Vehicle(VehicleType *vt, GameState *st, float mapx, float mapy) : Entity(st)
+
+/**
+* Create vehicle at Map X/Z coordinates (with Y calculated automatically)
+**/
+Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float z) : Entity(st)
 {
 	btVector3 size = vt->model->getBoundingSize();
 
 	btTransform trans = btTransform(
 		btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
-		st->physics->spawnLocation(mapx, mapy, size.z())
+		st->physics->spawnLocation(x, z, size.z())
 	);
 
 	this->init(vt, st, trans);
 }
 
+
+/**
+* Create vehicle at X/Y/Z coordinates
+**/
+Vehicle::Vehicle(VehicleType *vt, GameState *st, float x, float y, float z) : Entity(st)
+{
+	btTransform trans = btTransform(
+		btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
+		btVector3(x, y, z)
+	);
+
+	this->init(vt, st, trans);
+}
+
+
+/**
+* Create vehicle at location specified by a btTransform
+**/
 Vehicle::Vehicle(VehicleType *vt, GameState *st, btTransform &loc) : Entity(st)
 {
 	this->init(vt, st, loc);
@@ -129,6 +154,10 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	}
 }
 
+
+/**
+* Remove the vehicle
+**/
 Vehicle::~Vehicle()
 {
 	delete this->vehicle_raycaster;
@@ -166,7 +195,7 @@ void Vehicle::trainAttachToNext(Vehicle *next)
 
 
 /**
-* Do stuff
+* Called every tick
 **/
 void Vehicle::update(int delta)
 {
@@ -214,6 +243,9 @@ void Vehicle::update(int delta)
 }
 
 
+/**
+* Called when a unit enters the vehicle
+**/
 void Vehicle::enter()
 {
 	this->engineForce = 0.0f;
@@ -222,6 +254,9 @@ void Vehicle::enter()
 }
 
 
+/**
+* Called when a unit exits the vehicle
+**/
 void Vehicle::exit()
 {
 	this->engineForce = 0.0f;

@@ -22,7 +22,8 @@ class Helicopter : public Vehicle
 		float roll;
 
 	public:
-		Helicopter(VehicleType *vt, GameState *st, float mapx, float mapy);
+		Helicopter(VehicleType *vt, GameState *st, float x, float z);
+		Helicopter(VehicleType *vt, GameState *st, float x, float y, float z);
 		Helicopter(VehicleType *vt, GameState *st, btTransform & loc);
 		void init(VehicleType *vt, GameState *st, btTransform & loc);
 		virtual ~Helicopter();

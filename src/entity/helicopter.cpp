@@ -20,18 +20,41 @@ class btTransform;
 using namespace std;
 
 
-Helicopter::Helicopter(VehicleType *vt, GameState *st, float mapx, float mapy) : Vehicle(st)
+/**
+* Create helicopter at Map X/Z coordinates (with Y calculated automatically)
+**/
+Helicopter::Helicopter(VehicleType *vt, GameState *st, float x, float z) : Vehicle(st)
 {
 	btVector3 size = vt->model->getBoundingSize();
 
 	btTransform trans = btTransform(
 		btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
-		st->physics->spawnLocation(mapx, mapy, size.z())
+		st->physics->spawnLocation(x, z, size.z())
 	);
 
 	this->init(vt, st, trans);
 }
 
+
+/**
+* Create helicopter at X/Y/Z coordinates
+**/
+Helicopter::Helicopter(VehicleType *vt, GameState *st, float x, float y, float z) : Vehicle(st)
+{
+	btVector3 size = vt->model->getBoundingSize();
+
+	btTransform trans = btTransform(
+		btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
+		btVector3(x, y, z)
+	);
+
+	this->init(vt, st, trans);
+}
+
+
+/**
+* Create helicopter at location specified by a btTransform
+**/
 Helicopter::Helicopter(VehicleType *vt, GameState *st, btTransform &loc) : Vehicle(st)
 {
 	this->init(vt, st, loc);
@@ -118,6 +141,9 @@ void Helicopter::getWeaponTransform(btTransform &xform)
 }
 
 
+/**
+* Called when a unit enters the vehicle
+**/
 void Helicopter::enter()
 {
 	this->running = true;
@@ -129,6 +155,9 @@ void Helicopter::enter()
 }
 
 
+/**
+* Called when a unit exits the vehicle
+**/
 void Helicopter::exit()
 {
 	this->running = false;

@@ -60,21 +60,34 @@ Vehicle* addVehicleXZ(string type, float x, float z)
 
 /**
 * Add a vehicle at a given coordinate
-* TODO: Implement
 **/
 Vehicle* addVehicleCoord(string type, btVector3 &coord)
 {
-	return NULL;
+	Vehicle *v;
+
+	VehicleType *vt = GEng()->mm->getVehicleType(type);
+	if (vt == NULL) {
+		return NULL;
+	}
+
+	if (vt->helicopter) {
+		v = new Helicopter(vt, getGameState(), coord.x(), coord.y(), coord.z());
+	} else {
+		v = new Vehicle(vt, getGameState(), coord.x(), coord.y(), coord.z());
+	}
+
+	getGameState()->addVehicle(v);
+
+	return v;
 }
 
 
 /**
 * Add a vehicle at a random location in a zone
-* TODO: Implement
 **/
 Vehicle* addVehicleZone(string type, Zone* zn)
 {
-	return NULL;
+	return addVehicleXZ(type, zn->getRandomX(), zn->getRandomZ());
 }
 
 
