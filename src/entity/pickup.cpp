@@ -27,10 +27,10 @@ Pickup::Pickup(PickupType *pt, GameState *st, float x, float z) : Entity(st)
 
 	btVector3 size = pt->model->getBoundingSize();
 
-	btDefaultMotionState* motionState =
-		new btDefaultMotionState(btTransform(
-			btQuaternion(0.0f, 0.0f, 0.0f),
-			st->physics->spawnLocation(x, z, size.z())));
+	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(
+		btQuaternion(0.0f, 0.0f, 0.0f),
+		st->physics->spawnLocation(x, z, size.z())
+	));
 
 	this->body = st->physics->addRigidBody(pt->col_shape, 0.0f, motionState, CG_PICKUP);
 	this->body->setUserPointer(this);

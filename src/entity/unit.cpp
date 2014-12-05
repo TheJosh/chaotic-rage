@@ -813,7 +813,7 @@ void Unit::doUse()
 		}
 
 		if (ot->add_object.length() != 0) {
-			Object *nu = new Object(GEng()->mm->getObjectType(ot->add_object), this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ(), trans.getRotation().getZ());
+			Object *nu = new Object(GEng()->mm->getObjectType(ot->add_object), this->st, trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
 			this->st->addObject(nu);
 		}
 

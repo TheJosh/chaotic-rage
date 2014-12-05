@@ -69,9 +69,7 @@ static cfg_opt_t wall_opts[] =
 static cfg_opt_t object_opts[] =
 {
 	CFG_FLOAT((char*) "x", 0, CFGF_NONE),
-	CFG_FLOAT((char*) "y", 0, CFGF_NONE),
-	CFG_FLOAT((char*) "z", 0, CFGF_NONE),
-	CFG_FLOAT((char*) "angle", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "y", 0, CFGF_NONE),		// TODO: Change to 'z'
 	CFG_STR((char*) "type", ((char*)""), CFGF_NONE),
 	CFG_END()
 };
@@ -80,8 +78,7 @@ static cfg_opt_t object_opts[] =
 static cfg_opt_t pickup_opts[] =
 {
 	CFG_FLOAT((char*) "x", 0, CFGF_NONE),
-	CFG_FLOAT((char*) "y", 0, CFGF_NONE),
-	CFG_FLOAT((char*) "z", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "y", 0, CFGF_NONE),		// TODO: Change to 'z'
 	CFG_STR((char*) "type", ((char*)""), CFGF_NONE),
 	CFG_END()
 };
@@ -90,9 +87,7 @@ static cfg_opt_t pickup_opts[] =
 static cfg_opt_t vehicle_opts[] =
 {
 	CFG_FLOAT((char*) "x", 0, CFGF_NONE),
-	CFG_FLOAT((char*) "y", 0, CFGF_NONE),
-	CFG_FLOAT((char*) "z", 0, CFGF_NONE),
-	CFG_FLOAT((char*) "angle", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "y", 0, CFGF_NONE),		// TODO: Change to 'z'
 	CFG_STR((char*) "type", ((char*)""), CFGF_NONE),
 	CFG_INT((char*) "train-num", 0, CFGF_NONE),
 	CFG_INT((char*) "train-idx", 0, CFGF_NONE),
@@ -505,7 +500,7 @@ void Map::loadDefaultEntities()
 		ObjectType *ot = GEng()->mm->getObjectType(type);
 		if (ot == NULL) reportFatalError("Unable to load map; missing or invalid object type '" + type + "'");
 
-		Object * ob = new Object(ot, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"), 1.0f, (float)cfg_getfloat(cfg_sub, "angle"));
+		Object * ob = new Object(ot, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"));
 
 		this->st->addObject(ob);
 	}

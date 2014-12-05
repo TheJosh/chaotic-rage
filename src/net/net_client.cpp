@@ -501,7 +501,7 @@ unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 		ObjectType *ot = GEng()->mm->getObjectType(type);
 		if (ot == NULL) return 34;		// TODO: Should we err instead?
 
-		o = new Object(ot, st, bx, bz, by, 0);
+		o = new Object(ot, st, bx, by, bz);
 
 		st->addObject(o);
 		o->eid = eid;

@@ -104,7 +104,7 @@ Object* addObjectXZ(string type, float x, float z)
 		return NULL;
 	}
 
-	o = new Object(ot, getGameState(), x, z, 1.0f, 0.0f);
+	o = new Object(ot, getGameState(), x, z);
 
 	getGameState()->addObject(o);
 
@@ -114,11 +114,21 @@ Object* addObjectXZ(string type, float x, float z)
 
 /**
 * Add an object at a given coordinate
-* TODO: Implement
 **/
 Object* addObjectCoord(string type, btVector3 &coord)
 {
-	return NULL;
+	Object *o;
+
+	ObjectType *ot = GEng()->mm->getObjectType(type);
+	if (ot == NULL) {
+		return NULL;
+	}
+
+	o = new Object(ot, getGameState(), coord.x(), coord.y(), coord.z());
+
+	getGameState()->addObject(o);
+
+	return o;
 }
 
 
@@ -133,11 +143,10 @@ Object* addObjectRand(string type)
 
 /**
 * Add an object at a random location in a zone
-* TODO: Implement
 **/
 Object* addObjectZone(string type, Zone* zn)
 {
-	return NULL;
+	return addObjectXZ(type, zn->getRandomX(), zn->getRandomZ());
 }
 
 
@@ -187,7 +196,6 @@ Pickup* addPickupRand(string type)
 
 /**
 * Add an object at a random location in a zone
-* TODO: Implement
 **/
 Pickup* addPickupZone(string type, Zone* zn)
 {
@@ -223,6 +231,7 @@ Player* addPlayerXZ(string type, unsigned int fac, unsigned int slot, float x, f
 
 /**
 * Spawn in a player at the given coordinate
+* TODO: Implement
 **/
 Player* addPlayerCoord(string type, unsigned int fac, unsigned int slot, btVector3 &coord)
 {
@@ -296,6 +305,7 @@ NPC* addNpcXZ(string type, string aitype, unsigned int fac, float x, float z)
 
 /**
 * Spawn in a NPC at the given coordinate
+* TODO: Implement
 **/
 NPC* addNpcCoord(string type, string aitype, unsigned int fac, btVector3 &coord)
 {

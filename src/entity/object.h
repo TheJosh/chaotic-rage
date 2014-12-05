@@ -24,7 +24,8 @@ class Object : public Entity
 		AnimPlay * anim;
 
 	public:
-		Object(ObjectType *pt, GameState *st, float x, float y, float z, float angle);
+		Object(ObjectType *pt, GameState *st, float x, float z);
+		Object(ObjectType *pt, GameState *st, float x, float y, float z);
 		virtual ~Object();
 
 	public:
