@@ -417,7 +417,7 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 		UnitType *ut = GEng()->mm->getUnitType(type);
 		if (! ut) return 40;	// Is this correct?
 
-		u = new Player(ut, st, bx, bz, by, FACTION_INDIVIDUAL, slot);
+		u = new Player(ut, st, FACTION_INDIVIDUAL, slot, bx, by, bz);
 
 		// If the player is this client, save in the local_players obj
 		if (st->local_players[0]->slot == u->slot) {

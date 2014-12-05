@@ -36,7 +36,9 @@ class Player : public Unit
 		Vehicle* drive_old;
 
 	public:
-		Player(UnitType *uc, GameState *st, float x, float y, float z, Faction fac, int slot);
+		Player(UnitType *uc, GameState *st, Faction fac, int slot, float x, float z);
+		Player(UnitType *uc, GameState *st, Faction fac, int slot, float x, float y, float z);
+		Player(UnitType *uc, GameState *st, Faction fac, int slot, btTransform & loc);
 		virtual ~Player();
 
 	public:

@@ -118,7 +118,10 @@ class Unit : public Entity
 		string powerup_message;
 
 	public:
-		Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac);
+		Unit(UnitType *ut, GameState *st, Faction fac, float x, float z);
+		Unit(UnitType *ut, GameState *st, Faction fac, float x, float y, float z);
+		Unit(UnitType *ut, GameState *st, Faction fac, btTransform & loc);
+		void init(UnitType *ut, GameState *st, Faction fac, btTransform & loc);
 		virtual ~Unit();
 
 	public:

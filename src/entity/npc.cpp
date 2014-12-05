@@ -12,19 +12,47 @@
 
 class UnitType;
 
-
 using namespace std;
 
 
-NPC::NPC(UnitType *uc, GameState *st, float x, float y, float z, AIType *ai, Faction fac) : Unit(uc, st, x, y, z, fac)
+/**
+* Spawn npc using map X/Z coords
+**/
+NPC::NPC(UnitType *uc, GameState *st, Faction fac, AIType *ai, float x, float z) : Unit(uc, st, fac, x, z)
 {
 	vals[0] = vals[1] = vals[2] = vals[3] = 0;
 
 	this->logic = new AILogic(this);
 	this->logic->execScript(ai->script);
-
 	this->idle_sound_time = st->game_time + 15000;
 }
+
+
+/**
+* Spawn npc using X/Y/Z coords
+**/
+NPC::NPC(UnitType *uc, GameState *st, Faction fac, AIType *ai, float x, float y, float z) : Unit(uc, st, fac, x, y, z)
+{
+	vals[0] = vals[1] = vals[2] = vals[3] = 0;
+
+	this->logic = new AILogic(this);
+	this->logic->execScript(ai->script);
+	this->idle_sound_time = st->game_time + 15000;
+}
+
+
+/**
+* Spawn npc using specific coordinates
+**/
+NPC::NPC(UnitType *uc, GameState *st, Faction fac, AIType *ai, btTransform & loc) : Unit(uc, st, fac, loc)
+{
+	vals[0] = vals[1] = vals[2] = vals[3] = 0;
+
+	this->logic = new AILogic(this);
+	this->logic->execScript(ai->script);
+	this->idle_sound_time = st->game_time + 15000;
+}
+
 
 NPC::~NPC()
 {

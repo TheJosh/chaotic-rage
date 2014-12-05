@@ -19,7 +19,10 @@
 using namespace std;
 
 
-Player::Player(UnitType *uc, GameState *st, float x, float y, float z, Faction fac, int slot) : Unit(uc, st, x, y, z, fac)
+/**
+* Spawn player using map X/Z coords
+**/
+Player::Player(UnitType *uc, GameState *st, Faction fac, int slot, float x, float z) : Unit(uc, st, fac, x, z)
 {
 	for (int i = 0; i < 16; i++) {
 		this->key[i] = 0;
@@ -28,13 +31,50 @@ Player::Player(UnitType *uc, GameState *st, float x, float y, float z, Faction f
 
 	this->mouse_angle = 0.0f;
 	this->vertical_angle = 0.0f;
-
 	this->walking = false;
 	this->anim->pause();
-
 	this->slot = slot;
 	this->drive_old = NULL;
 }
+
+
+/**
+* Spawn player using X/Y/Z coords
+**/
+Player::Player(UnitType *uc, GameState *st, Faction fac, int slot, float x, float y, float z) : Unit(uc, st, fac, x, y, z)
+{
+	for (int i = 0; i < 16; i++) {
+		this->key[i] = 0;
+		this->lkey[i] = 0;
+	}
+
+	this->mouse_angle = 0.0f;
+	this->vertical_angle = 0.0f;
+	this->walking = false;
+	this->anim->pause();
+	this->slot = slot;
+	this->drive_old = NULL;
+}
+
+
+/**
+* Spawn player using specific coordinates
+**/
+Player::Player(UnitType *uc, GameState *st, Faction fac, int slot, btTransform & loc) : Unit(uc, st, fac, loc)
+{
+	for (int i = 0; i < 16; i++) {
+		this->key[i] = 0;
+		this->lkey[i] = 0;
+	}
+
+	this->mouse_angle = 0.0f;
+	this->vertical_angle = 0.0f;
+	this->walking = false;
+	this->anim->pause();
+	this->slot = slot;
+	this->drive_old = NULL;
+}
+
 
 Player::~Player()
 {

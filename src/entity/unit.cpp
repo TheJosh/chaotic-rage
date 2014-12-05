@@ -36,14 +36,55 @@ using namespace std;
 PickupType* Unit::initial_pickup;
 
 
-Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) : Entity(st)
+/**
+* Spawn a unit at max X/Z coordinates
+* Y coordinate is calculated
+**/
+Unit::Unit(UnitType *ut, GameState *st, Faction fac, float x, float z) : Entity(st)
 {
-	this->uc = uc;
-	this->params = uc->params;
+	btTransform loc = btTransform(
+		btQuaternion(btVector3(0,0,1), 0),
+		st->physics->spawnLocation(x, z, UNIT_PHYSICS_HEIGHT)
+	);
+	
+	this->init(ut, st, fac, loc);
+}
+
+
+/**
+* Spawn a unit at specific X/Y/Z coordinates
+**/
+Unit::Unit(UnitType *ut, GameState *st, Faction fac, float x, float y, float z) : Entity(st)
+{
+	btTransform loc = btTransform(
+		btQuaternion(btVector3(0,0,1), 0),
+		btVector3(x, y, z)
+	);
+	
+	this->init(ut, st, fac, loc);
+}
+
+
+/**
+* Spawn a unit at specific X/Y/Z coordinates
+**/
+Unit::Unit(UnitType *ut, GameState *st, Faction fac, btTransform & loc) : Entity(st)
+{
+	this->init(ut, st, fac, loc);
+}
+
+
+/**
+* All the init for a unit
+**/
+void Unit::init(UnitType *ut, GameState *st, Faction fac, btTransform & loc)
+{
+	this->uc = ut;
+	this->params = ut->params;
 	this->slot = 0;
 	this->fac = fac;
 
-	this->health = uc->begin_health;
+	this->health = ut->begin_health;
 
 	this->weapon = NULL;
 	this->firing = false;
@@ -72,22 +113,16 @@ Unit::Unit(UnitType *uc, GameState *st, float x, float y, float z, Faction fac) 
 		this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
 	}
 
-	// Ghost position
-	btTransform xform = btTransform(
-		btQuaternion(btVector3(0,0,1), 0),
-		st->physics->spawnLocation(x, y, UNIT_PHYSICS_HEIGHT)
-	);
-
 	// Create ghost
 	this->ghost = new btPairCachingGhostObject();
-	this->ghost->setWorldTransform(xform);
-	this->ghost->setCollisionShape(uc->col_shape);
+	this->ghost->setWorldTransform(loc);
+	this->ghost->setCollisionShape(ut->col_shape);
 	this->ghost->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
 	this->ghost->setUserPointer(this);
 
 	// Create Kinematic Character Controller
 	btScalar stepHeight = btScalar(0.25);
-	this->character = new btCRKinematicCharacterController(this->ghost, uc->col_shape, stepHeight);
+	this->character = new btCRKinematicCharacterController(this->ghost, ut->col_shape, stepHeight);
 
 	// Add character and ghost to the world
 	st->physics->addCollisionObject(this->ghost, CG_UNIT);

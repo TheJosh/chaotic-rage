@@ -215,7 +215,7 @@ Player* addPlayerXZ(string type, unsigned int fac, unsigned int slot, float x, f
 		return NULL;
 	}
 
-	p = new Player(ut, getGameState(), x, z, 0, (Faction)fac, slot);
+	p = new Player(ut, getGameState(), (Faction)fac, slot, x, z);
 
 	// Is it a local player?
 	PlayerState *ps = getGameState()->localPlayerFromSlot(slot);
@@ -231,11 +231,27 @@ Player* addPlayerXZ(string type, unsigned int fac, unsigned int slot, float x, f
 
 /**
 * Spawn in a player at the given coordinate
-* TODO: Implement
 **/
 Player* addPlayerCoord(string type, unsigned int fac, unsigned int slot, btVector3 &coord)
 {
-	return NULL;
+	Player *p;
+
+	UnitType *ut = GEng()->mm->getUnitType(type);
+	if (ut == NULL) {
+		return NULL;
+	}
+
+	p = new Player(ut, getGameState(), (Faction)fac, slot, coord.x(), coord.y(), coord.z());
+
+	// Is it a local player?
+	PlayerState *ps = getGameState()->localPlayerFromSlot(slot);
+	if (ps) {
+		ps->p = p;
+	}
+
+	getGameState()->addUnit(p);
+
+	return p;
 }
 
 
@@ -251,7 +267,7 @@ Player* addPlayerZone(string type, unsigned int fac, unsigned int slot, Zone *zn
 		return NULL;
 	}
 
-	p = new Player(ut, getGameState(), zn->getRandomX(), zn->getRandomZ(), 0, (Faction)fac, slot);
+	p = new Player(ut, getGameState(), (Faction)fac, slot, zn->getRandomX(), zn->getRandomZ());
 
 	// Is it a local player?
 	PlayerState *ps = getGameState()->localPlayerFromSlot(slot);
@@ -296,7 +312,7 @@ NPC* addNpcXZ(string type, string aitype, unsigned int fac, float x, float z)
 		return NULL;
 	}
 
-	p = new NPC(ut, getGameState(), x, z, 0, ai, (Faction)fac);
+	p = new NPC(ut, getGameState(), (Faction)fac, ai, x, z);
 	getGameState()->addUnit(p);
 
 	return p;
@@ -305,11 +321,25 @@ NPC* addNpcXZ(string type, string aitype, unsigned int fac, float x, float z)
 
 /**
 * Spawn in a NPC at the given coordinate
-* TODO: Implement
 **/
 NPC* addNpcCoord(string type, string aitype, unsigned int fac, btVector3 &coord)
 {
-	return NULL;
+	NPC *p;
+
+	UnitType *ut = GEng()->mm->getUnitType(type);
+	if (ut == NULL) {
+		return NULL;
+	}
+
+	AIType *ai = GEng()->mm->getAIType(aitype);
+	if (ai == NULL) {
+		return NULL;
+	}
+
+	p = new NPC(ut, getGameState(), (Faction)fac, ai, coord.x(), coord.y(), coord.z());
+	getGameState()->addUnit(p);
+
+	return p;
 }
 
 
@@ -330,7 +360,7 @@ NPC* addNpcZone(string type, string aitype, unsigned int fac, Zone *zn)
 		return NULL;
 	}
 
-	p = new NPC(ut, getGameState(), zn->getRandomX(), zn->getRandomZ(), 0, ai, (Faction)fac);
+	p = new NPC(ut, getGameState(), (Faction)fac, ai, zn->getRandomX(), zn->getRandomZ());
 	getGameState()->addUnit(p);
 
 	return p;
