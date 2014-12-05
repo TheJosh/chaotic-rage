@@ -41,8 +41,6 @@ Helicopter::Helicopter(VehicleType *vt, GameState *st, float x, float z) : Vehic
 **/
 Helicopter::Helicopter(VehicleType *vt, GameState *st, float x, float y, float z) : Vehicle(st)
 {
-	btVector3 size = vt->model->getBoundingSize();
-
 	btTransform trans = btTransform(
 		btQuaternion(btScalar(0), btScalar(0), btScalar(0)),
 		btVector3(x, y, z)
