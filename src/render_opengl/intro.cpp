@@ -25,7 +25,7 @@ Intro::Intro(GameState *st)
 {
 	mod = new Mod(st, "data/intro");
 	if (!mod) {
-		reportFatalError("Intro failed to load. Is the working directory correct?");
+		reportFatalError("Intro mod failed to load. Is the working directory correct?");
 	}
 
 	this->st = st;

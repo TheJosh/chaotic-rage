@@ -9,8 +9,8 @@ echo "Building assets..."
 
 rm -rf assets
 
-mkdir assets
-mkdir assets/data
+mkdir -p assets
+mkdir -p assets/data
 
 cp -r ../../data/australia_day assets/data/ || exit 1
 cp -r ../../data/cr assets/data/ || exit 1
@@ -22,7 +22,7 @@ cp -r ../../maps assets/ || exit 1
 echo "Compressing assets..."
 
 # PNGs
-find assets/data/ | grep -i png | xargs mogrify -resize 256x256 -quality 99 || exit 1
+find assets/data/ | grep -i png | xargs mogrify -resize 256x256 -quality 99 -depth 24 || exit 1
 
 # JPGs
 find assets/data/ | grep -i jpg | xargs mogrify -resize 256x256 -quality 80 || exit 1
