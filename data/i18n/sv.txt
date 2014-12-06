@@ -36,8 +36,8 @@
 36	Tex-Filter
 37	Språk
 38	Fullskärm
-39	Screen width
-40	Screen height
+39	Skärmbredd
+40	Skärmhöjd
 41	Spara
 42	Avsluta? Säker?
 43	Ja

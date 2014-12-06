@@ -51,6 +51,8 @@ SETTINGS_MSAA            MSAA
 SETTINGS_TEX_FILTER      Tex-Filter
 SETTINGS_LANGUAGE        Språk
 SETTINGS_FULLSCREEN      Fullskärm
+SETTINGS_WIDTH           Skärmbredd
+SETTINGS_HEIGHT          Skärmhöjd
 SETTINGS_SAVE            Spara
 
 # In game

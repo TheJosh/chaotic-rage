@@ -204,7 +204,7 @@ void PhysicsBullet::addCollisionObject(btCollisionObject* obj, CollisionGroup gr
 
 
 /**
-* Add a vehicle
+* Add an action
 **/
 void PhysicsBullet::addAction(btActionInterface* action)
 {
