@@ -240,7 +240,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, GameS
 	// Load map
 	m = new Map(st);
 	if (! m->load(map->getName(), GEng()->render, map->getMod())) {
-		displayMessageBox("Failed to load map");
+		displayMessageBox("Failed to load map: " + map->getName());
 		goto cleanup;
 	}
 	st->map = m;
