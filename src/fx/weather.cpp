@@ -177,7 +177,7 @@ void Weather::stopSnow()
 
 #else
 // No SPARK particles - these become a no-op
-Weather::Weather(GameState* st, float map_size_x, float map_size_z) {}
+Weather::Weather(GameState* st, float map_size_x, float map_size_z, bool enabled) {}
 Weather::~Weather() {}
 void Weather::update(float delta) {}
 void Weather::randomWeather() {}
