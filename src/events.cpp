@@ -16,6 +16,10 @@
 #include "lua/gamelogic.h"
 #include "audio/audio.h"
 
+#if defined(__ANDROID__)
+	#include "touch.h"
+#endif
+
 #define BUFFER_MAX 50
 
 
@@ -166,48 +170,17 @@ void handleEvents(GameState *st)
 					default: break;
 				}
 
+#if defined(__ANDROID__)
+			} else if (event.type == SDL_FINGERDOWN) {
+				fingerDown(st, event.tfinger.fingerId, event.tfinger.x, event.tfinger.y);
 
-			#if defined(__ANDROID__)
-			} else if (event.type == SDL_FINGERDOWN || event.type == SDL_FINGERMOTION) {
-				float x, y;
-				int type = 0;
+			} else if (event.type == SDL_FINGERMOTION) {
+				fingerMove(st, event.tfinger.fingerId, event.tfinger.x, event.tfinger.y);
 
-				// Determine type (1 = left thumb, 2 = right thumb)
-				if (event.tfinger.y > 0.9f) {
-					y = (event.tfinger.y - 0.9f) * 10.0f;
+			} else if (event.type == SDL_FINGERUP) {
+				fingerUp(st, event.tfinger.fingerId, event.tfinger.x, event.tfinger.y);
+#else
 
-					if (event.tfinger.x < 0.1f) {
-						x = event.tfinger.x * 10.0f;
-						type = 1;
-					} else if (event.tfinger.x > 0.9f) {
-						x = (event.tfinger.x - 0.9f) * 10.0f;
-						type = 2;
-					}
-				}
-
-				if (type == 1) {
-					// Left thumb (type 1) = move
-					if (x < 0.3) {
-						st->local_players[0]->p->keyPress(Player::KEY_LEFT);
-					} else if (x > 0.7) {
-						st->local_players[0]->p->keyPress(Player::KEY_RIGHT);
-					}
-
-					if (y < 0.3) {
-						st->local_players[0]->p->keyPress(Player::KEY_UP);
-					} else if (y > 0.7) {
-						st->local_players[0]->p->keyPress(Player::KEY_DOWN);
-					}
-
-				} else if (type == 2) {
-					// Left thumb (type 1) = aim
-					game_x[0] += event.tfinger.dx * 20.0f;
-					net_x[0] += event.tfinger.dx * 20.0f;
-					game_y[0] += event.tfinger.dy * 20.0f;
-					net_y[0] += event.tfinger.dy * 20.0f;
-				}
-
-			#else
 			} else if (event.type == SDL_MOUSEMOTION) {
 				if (ignore_relative_mouse[0]) {
 					ignore_relative_mouse[0] = false;

@@ -51,6 +51,7 @@ else
 	CFLAGS := -DGETOPT -Werror -Wall -MMD
 	LIBS := -lGL -lGLU -L/usr/X11R6/lib -lX11 -lm -lstdc++
 	PLATFORM := $(OBJPATH)/linux.o
+	DONT_COMPILE = $(OBJPATH)/touch.o
 endif
 
 
