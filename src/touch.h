@@ -18,6 +18,11 @@ void fingerDown(GameState *st, int finger, float x, float y);
 **/
 void fingerMove(GameState *st, int finger, float x, float y);
 
+/**
+* Multiple finger gesture event
+**/
+void multigesture(GameState *st, unsigned int fingers, float x, float y);
+
 
 /**
 * A finger has raised off the device

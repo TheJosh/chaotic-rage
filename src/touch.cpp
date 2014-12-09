@@ -2,66 +2,99 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include "touch.h"
 #include <SDL.h>
 #include <string>
 
 #include "events.h"
 #include "game_state.h"
 #include "entity/player.h"
-#include "touch.h"
 
 using namespace std;
 
+// TODO: Move to a common header file
+// Source: http://stackoverflow.com/a/13636164
+#include <sstream>
+template <typename T>
+string numberToString(T number)
+{
+	ostringstream ss;
+	ss << number;
+	return ss.str();
+}
+
+static int numberOfFingers = 0;
 
 /**
 * A finger has touched onto the device
 **/
 void fingerDown(GameState *st, int finger, float x, float y)
 {
-	fingerMove(st, finger, x, y);
-}
+	displayMessageBox("fingerDown " + numberToString(finger));
 
+	numberOfFingers++;
+}
 
 /**
 * A finger has moved
 **/
 void fingerMove(GameState *st, int finger, float x, float y)
 {
-	int type = 0;
+	displayMessageBox("fingerMove " + numberToString(finger) + ": " + numberToString(x) + "x" + numberToString(y));
 
-	// Determine type (1 = left thumb, 2 = right thumb)
-	if (y > 0.9f) {
-		y = (y - 0.9f) * 10.0f;
-
-		if (x < 0.1f) {
-			x = x * 10.0f;
-			type = 1;
-		} else if (x > 0.9f) {
-			x = (x - 0.9f) * 10.0f;
-			type = 2;
-		}
+	if (numberOfFingers != 1) {
+		return;
 	}
 
-	if (type == 1) {
-		// Left thumb (type 1) = move
-		if (x < 0.3) {
+	// Shoot if the middle of the screen is touched using only one finger.
+	// min=0, max=1
+	if (x < 0.6f && x > 0.4f && y < 0.6f && y > 0.4f) {
+		st->local_players[0]->p->keyPress(Player::KEY_FIRE);
+	} else {
+		st->local_players[0]->p->keyRelease(Player::KEY_FIRE);
+	}
+}
+
+
+/**
+* Multiple finger gesture event
+**/
+void multigesture(GameState *st, unsigned int fingers, float x, float y)
+{
+	displayMessageBox("multigusture " + numberToString(fingers) + ": " + numberToString(x) + "x" + numberToString(y));
+
+	numberOfFingers = static_cast<int>(fingers);
+
+	if (fingers == 2) {
+		// move
+		const float middlePoint = 0.5f;
+
+		if (x < middlePoint) {
 			st->local_players[0]->p->keyPress(Player::KEY_LEFT);
-		} else if (x > 0.7) {
+			st->local_players[0]->p->keyRelease(Player::KEY_RIGHT);
+		} else {
 			st->local_players[0]->p->keyPress(Player::KEY_RIGHT);
+			st->local_players[0]->p->keyRelease(Player::KEY_LEFT);
 		}
 
-		if (y < 0.3) {
+		if (y < middlePoint) {
 			st->local_players[0]->p->keyPress(Player::KEY_UP);
-		} else if (y > 0.7) {
+			st->local_players[0]->p->keyRelease(Player::KEY_DOWN);
+		} else {
 			st->local_players[0]->p->keyPress(Player::KEY_DOWN);
+			st->local_players[0]->p->keyRelease(Player::KEY_UP);
 		}
 
-	} else if (type == 2) {
-		// Left thumb (type 1) = aim
-		game_x[0] += x * 20.0f;
-		net_x[0] += x * 20.0f;
-		game_y[0] += y * 20.0f;
-		net_y[0] += y * 20.0f;
+	} else { // more than 2 fingers
+		// aim
+		const float offset = 0.5f; // min=0, max=1
+		const float factor = 5.0f;
+
+		game_x[0] += (offset - x) * factor;
+		net_x[0]  += (offset - x) * factor;
+
+		game_y[0] += (offset - y) * factor;
+		net_y[0]  += (offset - y) * factor;
 	}
 }
 
@@ -71,5 +104,17 @@ void fingerMove(GameState *st, int finger, float x, float y)
 **/
 void fingerUp(GameState *st, int finger, float x, float y)
 {
-}
+	displayMessageBox("fingerUp" + numberToString(finger));
 
+	numberOfFingers--;
+	if (numberOfFingers < 0) {
+		numberOfFingers = 0;
+	}
+
+	st->local_players[0]->p->keyRelease(Player::KEY_FIRE);
+
+	st->local_players[0]->p->keyRelease(Player::KEY_LEFT);
+	st->local_players[0]->p->keyRelease(Player::KEY_RIGHT);
+	st->local_players[0]->p->keyRelease(Player::KEY_UP);
+	st->local_players[0]->p->keyRelease(Player::KEY_DOWN);
+}

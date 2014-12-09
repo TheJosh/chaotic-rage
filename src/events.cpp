@@ -179,6 +179,9 @@ void handleEvents(GameState *st)
 
 			} else if (event.type == SDL_FINGERUP) {
 				fingerUp(st, event.tfinger.fingerId, event.tfinger.x, event.tfinger.y);
+
+			} else if (event.type == SDL_MULTIGESTURE) {
+				multigesture(st, event.mgesture.numFingers, event.tfinger.x, event.tfinger.y);
 #else
 
 			} else if (event.type == SDL_MOUSEMOTION) {
