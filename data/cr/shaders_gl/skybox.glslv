@@ -1,5 +1,3 @@
-#version 130
-
 in vec3 vPosition;
 out vec3 fTexUV;
 out float fDepth;

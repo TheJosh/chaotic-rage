@@ -1,5 +1,3 @@
-#version 130
-
 in vec2 TexUV;
 in float Depth;
 in vec3 csNormal;

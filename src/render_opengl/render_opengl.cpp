@@ -1322,26 +1322,26 @@ bool RenderOpenGL::reloadShaders()
 GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 {
 	GLint success;
+	const char* strings[2];
+	int lengths[2];
 
 	GLuint shader = glCreateShader(type);
 	if (shader == 0) {
 		return 0;
 	}
 
+	// Different header based on GL variant
 	#ifdef GLES
-		char const *extra = "precision mediump float;";
-		char *srcmod = (char*) malloc(strlen(code) + strlen(extra) + 1);
-		srcmod[0] = '\0';
-		strcat(srcmod, extra);
-		strcat(srcmod, code);
-		GLint len = strlen(srcmod);
-		glShaderSource(shader, 1, (const GLchar**) &srcmod, &len);
-		free(srcmod);
-
+		strings[0] = "precision mediump float;\n";
 	#else
-		GLint len = strlen(code);
-		glShaderSource(shader, 1, &code, &len);
+		strings[0] = "#version 130\n";
 	#endif
+
+	strings[1] = code;
+	lengths[0] = strlen(strings[0]);
+	lengths[1] = strlen(strings[1]);
+
+	glShaderSource(shader, 2, strings, lengths);
 
 	glCompileShader(shader);
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
@@ -1426,6 +1426,38 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 
 
 /**
+* Convert GL shaders into ES shaders - vertex shader
+* Only works for a strict subset of GL shaders
+**/
+char* convertGLtoESv(const char* src)
+{
+	string str = string(src);
+
+	replaceString(src, "in ", "attribute ");
+	replaceString(src, "out ", "varying ");
+
+	char* out = (char*)malloc(str.length() + 1);
+	memcpy(out, str.c_str(), str.length() + 1);
+	return out;
+}
+
+
+/**
+* Convert GL shaders into ES shaders - fragment shader
+* Only works for a strict subset of GL shaders
+**/
+char* convertGLtoESf(const char* src)
+{
+	string str = string(src);
+	replaceString(src, "in ", "varying ");
+
+	char* out = (char*)malloc(str.length() + 1);
+	memcpy(out, str.c_str(), str.length() + 1);
+	return out;
+}
+
+
+/**
 * Load shaders using source found in a mod
 *
 * Will load the files:
@@ -1438,14 +1470,27 @@ GLShader* RenderOpenGL::loadProgram(Mod* mod, string name)
 	char* f;
 	GLShader* s;
 
-	#if defined(OpenGL)
+	#ifdef GLES
+		// Specific ES shader or fallback to GL + hacks
+		char* tmpv = mod->loadText("shaders_es/" + name + ".glslv");
+		char* tmpf = mod->loadText("shaders_es/" + name + ".glslf");
+		if (tmpv != NULL && tmpf != NULL) {
+			v = tmpv;
+			f = tmpf;
+		} else {
+			tmpv = mod->loadText("shaders_gl/" + name + ".glslv");
+			tmpf = mod->loadText("shaders_gl/" + name + ".glslf");
+			v = convertGLtoESv(tmpv);
+			f = convertGLtoESv(tmpf);
+			free(tmpv);
+			free(tmpf);
+		}
+	#else
+		// Just use GL shaders directly
 		v = mod->loadText("shaders_gl/" + name + ".glslv");
 		f = mod->loadText("shaders_gl/" + name + ".glslf");
-	#elif defined(GLES)
-		v = mod->loadText("shaders_es/" + name + ".glslv");
-		f = mod->loadText("shaders_es/" + name + ".glslf");
 	#endif
-
+	
 	if (v == NULL || f == NULL) {
 		free(v);
 		free(f);

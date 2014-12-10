@@ -1,5 +1,3 @@
-#version 130
-
 #define MAX_NUM_LIGHTS 4
 
 in vec3 vPosition;

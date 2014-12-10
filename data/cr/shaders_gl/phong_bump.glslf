@@ -1,5 +1,3 @@
-#version 130
-
 in vec2 fTexUV;
 in vec3 fLightDir[2];
 

@@ -1,5 +1,3 @@
-#version 130
-
 in vec3 fTexUV;
 in float fDepth;
 uniform samplerCube uTex;

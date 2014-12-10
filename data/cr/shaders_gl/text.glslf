@@ -1,5 +1,3 @@
-#version 130
-
 in vec2 fTexUV;
 uniform sampler2D uTex;
 uniform vec4 uColor;

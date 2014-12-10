@@ -15,3 +15,6 @@ float getRandomf(float low, float high);
 
 // Random 3D bits
 int nextPowerOfTwo(int a);
+
+// Replace a string in another string
+std::string replaceString(std::string subject, const std::string& search, const std::string& replace);

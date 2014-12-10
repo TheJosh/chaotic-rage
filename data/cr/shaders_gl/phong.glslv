@@ -1,5 +1,3 @@
-#version 130
-
 in vec3 vPosition;
 in vec3 vNormal;
 in vec2 vTexUV;
