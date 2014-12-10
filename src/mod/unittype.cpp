@@ -130,6 +130,7 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 
 		char * tmp = cfg_getstr(cfg_sound, "sound");
 		if (tmp == NULL) {
+			mod->setLoadErr("No value for field 'sound'");
 			delete(uts);
 			delete(uc);
 			return NULL;

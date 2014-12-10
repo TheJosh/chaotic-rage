@@ -725,7 +725,11 @@ int Unit::takeDamage(float damage)
 			this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
 		}
 
-		// TODO: play death sound
+		// Play death sound
+		Sound* snd = this->uc->getSound(UNIT_SOUND_DEATH);
+		if (snd) {
+			GEng()->audio->playSound(snd, false, this);
+		}
 
 		// Fling some body parts around
 		if (!this->uc->death_debris.empty()) {
