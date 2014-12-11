@@ -20,7 +20,7 @@ PhysicsBullet::PhysicsBullet(GameState * st)
 	st->physics = this;
 	this->collisionConfiguration = NULL;
 	this->dispatcher = NULL;
-	this->overlappingPairCache = NULL;
+	this->broadphase = NULL;
 	this->solver = NULL;
 	this->dynamicsWorld = NULL;
 	this->collisionShapes = NULL;
@@ -51,21 +51,19 @@ PhysicsBullet::~PhysicsBullet()
 **/
 void PhysicsBullet::init()
 {
+	broadphase = new btDbvtBroadphase();
+	
 	collisionConfiguration = new btDefaultCollisionConfiguration();
 	dispatcher = new btCollisionDispatcher(collisionConfiguration);
 
 	ghostPairCallback = new btGhostPairCallback();
-
-	btVector3 worldMin(-200.0f, -200.0f, -200.0f);
-	btVector3 worldMax(200.0f, 200.0f, 200.0f);
-	overlappingPairCache = new btAxisSweep3(worldMin, worldMax);
-	overlappingPairCache->getOverlappingPairCache()->setInternalGhostPairCallback(ghostPairCallback);
+	broadphase->getOverlappingPairCache()->setInternalGhostPairCallback(ghostPairCallback);
 
 	solver = new btSequentialImpulseConstraintSolver();
 
 	dynamicsWorld = new btDiscreteDynamicsWorld(
 		dispatcher,
-		overlappingPairCache,
+		broadphase,
 		solver,
 		collisionConfiguration
 	);
@@ -98,7 +96,7 @@ void PhysicsBullet::postGame()
 
 	//delete dynamicsWorld;
 	delete solver;
-	delete overlappingPairCache;
+	delete broadphase;
 	delete ghostPairCallback;
 	delete dispatcher;
 	delete collisionConfiguration;
@@ -107,7 +105,7 @@ void PhysicsBullet::postGame()
 	ghostPairCallback = NULL;
 	dynamicsWorld = NULL;
 	solver = NULL;
-	overlappingPairCache = NULL;
+	broadphase = NULL;
 	dispatcher = NULL;
 	collisionConfiguration = NULL;
 }

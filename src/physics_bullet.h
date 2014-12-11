@@ -66,7 +66,7 @@ class PhysicsBullet
 
 		btDefaultCollisionConfiguration* collisionConfiguration;
 		btCollisionDispatcher* dispatcher;
-		btBroadphaseInterface* overlappingPairCache;
+		btBroadphaseInterface* broadphase;
 		btSequentialImpulseConstraintSolver* solver;
 		btDiscreteDynamicsWorld* dynamicsWorld;
 		btAlignedObjectArray<btCollisionShape*>* collisionShapes;
