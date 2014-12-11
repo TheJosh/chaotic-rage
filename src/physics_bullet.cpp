@@ -352,7 +352,7 @@ void PhysicsBullet::stepTime(int ms)
 	dynamicsWorld->stepSimulation(
 		static_cast<float>(ms) / 1000.0f,
 		3,
-		1.0f/200.0f
+		1.0f/60.0f
 	);
 }
 
