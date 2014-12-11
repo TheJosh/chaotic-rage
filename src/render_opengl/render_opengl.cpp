@@ -1261,7 +1261,7 @@ void RenderOpenGL::loadShaders()
 	// Before the mod is loaded, we only need the basic shader
 	// It's are hardcoded (see above)
 	if (! this->shaders.count(SHADER_BASIC)) {
-		GLShader *shader = createProgram(pVS, pFS, "basic");
+		GLShader *shader = createProgram(pVS, pFS);
 		if (shader == NULL) {
 			reportFatalError("Error loading default OpenGL shader");
 		}
@@ -1363,7 +1363,7 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 * Creates and compile a shader program from two shader code strings
 * Returns the program id.
 **/
-GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, string name)
+GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment)
 {
 	GLint success;
 	GLuint sVertex, sFragment;
@@ -1377,7 +1377,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	// Create and attach vertex shader
 	sVertex = this->createShader(vertex, GL_VERTEX_SHADER);
 	if (sVertex == 0) {
-		GL_LOG("Invalid vertex shader '%s'", name.c_str());
+		GL_LOG("Invalid vertex shader");
 		return NULL;
 	}
 	glAttachShader(program, sVertex);
@@ -1385,7 +1385,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	// Same with frag shader
 	sFragment = this->createShader(fragment, GL_FRAGMENT_SHADER);
 	if (sFragment == 0) {
-		GL_LOG("Invalid fragment shader '%s'", name.c_str());
+		GL_LOG("Invalid fragment shader");
 		return NULL;
 	}
 	glAttachShader(program, sFragment);
@@ -1410,7 +1410,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	if (! success) {
 		GLchar infolog[1024];
 		glGetProgramInfoLog(program, 1024, NULL, infolog);
-		GL_LOG("Error linking program '%s'\n%s", name.c_str(), infolog);
+		GL_LOG("Error linking program\n%s", infolog);
 		return NULL;
 	}
 
@@ -1418,7 +1418,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	glValidateProgram(program);
 	glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
 	if (! success) {
-		GL_LOG("Program didn't validate '%s'", name.c_str());
+		GL_LOG("Program didn't validate");
 		return NULL;
 	}
 
@@ -1465,10 +1465,23 @@ char* convertGLtoESf(const char* src)
 * Load shaders using source found in a mod
 *
 * Will load the files:
-*   shaders/<name>.glslv (vertex)
-*   shaders/<name>.glslf (fragment)
+*   shaders_[gl|es]/<name>.glslv (vertex)
+*   shaders_[gl|es]/<name>.glslf (fragment)
 **/
 GLShader* RenderOpenGL::loadProgram(Mod* mod, string name)
+{
+	return this->loadProgram(mod, name, name);
+}
+
+
+/**
+* Load shaders using source found in a mod
+*
+* Will load the files:
+*   shaders_[gl|es]/<vertex_name>.glslv (vertex)
+*   shaders_[gl|es]/<fragment_name>.glslf (fragment)
+**/
+GLShader* RenderOpenGL::loadProgram(Mod* mod, string vertex_name, string fragment_name)
 {
 	char* v;
 	char* f;
@@ -1476,14 +1489,14 @@ GLShader* RenderOpenGL::loadProgram(Mod* mod, string name)
 
 	#ifdef GLES
 		// Specific ES shader or fallback to GL + hacks
-		char* tmpv = mod->loadText("shaders_es/" + name + ".glslv");
-		char* tmpf = mod->loadText("shaders_es/" + name + ".glslf");
+		char* tmpv = mod->loadText("shaders_es/" + vertex_name + ".glslv");
+		char* tmpf = mod->loadText("shaders_es/" + fragment_name + ".glslf");
 		if (tmpv != NULL && tmpf != NULL) {
 			v = tmpv;
 			f = tmpf;
 		} else {
-			tmpv = mod->loadText("shaders_gl/" + name + ".glslv");
-			tmpf = mod->loadText("shaders_gl/" + name + ".glslf");
+			tmpv = mod->loadText("shaders_gl/" + vertex_name + ".glslv");
+			tmpf = mod->loadText("shaders_gl/" + fragment_name + ".glslf");
 			v = convertGLtoESv(tmpv);
 			f = convertGLtoESf(tmpf);
 			free(tmpv);
@@ -1491,21 +1504,21 @@ GLShader* RenderOpenGL::loadProgram(Mod* mod, string name)
 		}
 	#else
 		// Just use GL shaders directly
-		v = mod->loadText("shaders_gl/" + name + ".glslv");
-		f = mod->loadText("shaders_gl/" + name + ".glslf");
+		v = mod->loadText("shaders_gl/" + vertex_name + ".glslv");
+		f = mod->loadText("shaders_gl/" + fragment_name + ".glslf");
 	#endif
 	
 	if (v == NULL || f == NULL) {
 		free(v);
 		free(f);
-		GL_LOG("Unable to load shader program %s", name.c_str());
+		GL_LOG("Unable to load shader program %s %s", vertex_name.c_str(), fragment_name.c_str());
 		this->shaders_error = true;
 		return NULL;
 	}
 
 	CHECK_OPENGL_ERROR;
 
-	s = this->createProgram(v, f, name);
+	s = this->createProgram(v, f);
 
 	CHECK_OPENGL_ERROR;
 
@@ -1513,6 +1526,7 @@ GLShader* RenderOpenGL::loadProgram(Mod* mod, string name)
 	free(f);
 
 	if (s == NULL) {
+		GL_LOG("Unable to create shader program %s %s", vertex_name.c_str(), fragment_name.c_str());
 		this->shaders_error = true;
 	}
 

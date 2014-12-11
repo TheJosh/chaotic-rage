@@ -50,7 +50,7 @@
 **/
 #if defined(__ANDROID__)
 	#include <android/log.h>
-	#define GL_LOG(msg, ...) __android_log_print(ANDROID_LOG_ERROR, "ChaoticRage", "GL Log: " msg, __VA_ARGS__)
+	#define GL_LOG(msg, ...) __android_log_print(ANDROID_LOG_ERROR, "ChaoticRage", "GL Log: " msg, ##__VA_ARGS__)
 
 #elif defined(__WIN32__)
 	#define GL_LOG(msg, ...) \
@@ -62,10 +62,10 @@
 
 #elif defined(__EMSCRIPTEN__)
 	#include <emscripten.h>
-	#define GL_LOG(msg, ...) emscripten_log(EM_LOG_C_STACK | EM_LOG_NO_PATHS | EM_LOG_DEMANGLE, "GL Log: " msg, __VA_ARGS__)
+	#define GL_LOG(msg, ...) emscripten_log(EM_LOG_C_STACK | EM_LOG_NO_PATHS | EM_LOG_DEMANGLE, "GL Log: " msg, ##__VA_ARGS__)
 
 #else
-	#define GL_LOG(msg, ...) fprintf(stderr, "GL Log: " msg "\n", __VA_ARGS__)
+	#define GL_LOG(msg, ...) fprintf(stderr, "GL Log: " msg "\n", ##__VA_ARGS__)
 
 #endif
 
