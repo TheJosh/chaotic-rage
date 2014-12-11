@@ -21,3 +21,7 @@ std::string replaceString(std::string subject, const std::string& search, const 
 
 // Trim whitespace from a string
 std::string trimString(const std::string& str, const std::string& whitespace = " \t\n\r\f\v");
+
+// Covert any type of number to a string
+template <typename T>
+std::string numberToString(T number);

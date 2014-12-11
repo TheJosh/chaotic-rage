@@ -2,6 +2,7 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include <sstream>
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
@@ -71,3 +72,15 @@ std::string trimString(const std::string& str, const std::string& whitespace)
 	return str.substr(strBegin, strRange);
 }
 
+
+/**
+ * Covert any type of number to a string
+ * Source: http://stackoverflow.com/a/13636164
+ */
+template <typename T>
+std::string numberToString(T number)
+{
+	ostringstream ss;
+	ss << number;
+	return ss.str();
+}
