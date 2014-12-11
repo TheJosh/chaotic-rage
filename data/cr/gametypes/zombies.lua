@@ -5,7 +5,8 @@
 num_zombies = 0;
 num_wanted = 0;
 num_dead = 0;
-spawn_rate = 500;
+num_lives = 10;
+spawn_rate = 3000;
 timer = 0;
 round = 0;
 round_max = 0;
@@ -18,6 +19,11 @@ do_score = function()
 	score_labels.round.data = round;
 	score_labels.alive.data = num_zombies - num_dead;
 	score_labels.dead.data = num_dead;
+
+	score_labels.lives.data = num_lives;
+	score_labels.lives.r = 0.9;
+	score_labels.lives.g = num_lives / 10;
+	score_labels.lives.b = num_lives / 10;
 end;
 
 
@@ -44,15 +50,17 @@ start_round = function()
 	if num_wanted < 30 then
 		num_wanted = num_wanted + 3;
 	end;
-	if spawn_rate > 100 then
-		spawn_rate = spawn_rate - 50;
+	if spawn_rate > 1000 then
+		spawn_rate = spawn_rate - 100;
 	end;
 	num_dead = 0;
 	round = round + 1;
 	
-	-- start raining after 3rd round
-	if round >= 3 then
-		rain_rate = rain_rate + 1500
+	-- start raining after 5th round
+	if round >= 5 then
+		if rain_rate < 5000 then
+			rain_rate = rain_rate + 1500
+		end;
 		weather.startRain(rain_rate)
 	end;
 	
@@ -130,6 +138,9 @@ bind_gamestart(function(r_max)
 	add_label(-200, 90, "Dead");
 	score_labels.dead = add_label(-70, 90, "0");
 	
+	add_label(-200, 110, "Lives");
+	score_labels.lives = add_label(-70, 110, num_lives);
+
 	weather.disableRandom();
 end);
 
@@ -139,7 +150,12 @@ end);
 --
 bind_playerdied(function(slot)
 	show_alert_message("Just not good enough I see...", slot);
-	
+
+	num_lives = num_lives - 1
+	if (num_lives == 0) then
+		game_over(0);
+	end;
+
 	do_score();
 	
 	add_timer(2000, function()
