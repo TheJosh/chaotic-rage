@@ -23,20 +23,20 @@ uniform mat4 uDepthBiasMVP;
 
 void main()
 {
-	gl_Position = uMVP * vec4(vPosition, 1.0f);
+	gl_Position = uMVP * vec4(vPosition, 1.0);
 	
-	wsPosition = (uM * vec4(vPosition, 1.0f)).xyz;
+	wsPosition = (uM * vec4(vPosition, 1.0)).xyz;
 	
-	csEyeDirection = vec3(0.0, 0.0, 0.0) - (uV * uM * vec4(vPosition, 1.0f)).xyz;
+	csEyeDirection = vec3(0.0, 0.0, 0.0) - (uV * uM * vec4(vPosition, 1.0)).xyz;
 	
 	for (int i = 0; i < MAX_NUM_LIGHTS; ++i) {
-		vec3 csLightPos = (uV * vec4(uLightPos[i], 1.0f)).xyz;
+		vec3 csLightPos = (uV * vec4(uLightPos[i], 1.0)).xyz;
 		csLightDirection[i] = csLightPos + csEyeDirection;
 	}
 	
 	csNormal = (mat3(uV) * uMN * vNormal).xyz;
 	
 	TexUV = vTexUV;
-	fShadowCoord = uDepthBiasMVP * vec4(vPosition, 1.0f);
-	fDepth = gl_Position.z / 350f;	// TODO: Dont hard-code with far plane distance, use a uniform!
+	fShadowCoord = uDepthBiasMVP * vec4(vPosition, 1.0);
+	fDepth = gl_Position.z / 350.0;	// TODO: Dont hard-code with far plane distance, use a uniform!
 }

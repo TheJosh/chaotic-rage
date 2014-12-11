@@ -12,5 +12,5 @@ void main()
 	fogFactor = clamp(fogFactor, 0.0, 1.0);
 	vec4 fogColor = vec4(0.4, 0.4, 0.6, 1.0);
 	
-	gl_FragColor = mix(fogColor, texture(uTex, fTexUV), fogFactor);
+	gl_FragColor = mix(fogColor, textureCube(uTex, fTexUV), fogFactor);
 }

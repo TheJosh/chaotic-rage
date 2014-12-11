@@ -21,6 +21,6 @@ void main()
 	BoneTransform += uBones[int(vBoneIDs[2])] * vBoneWeights[2];
 	BoneTransform += uBones[int(vBoneIDs[3])] * vBoneWeights[3];
 
-	gl_Position = uMVP * BoneTransform * vec4(vPosition, 1.0f);
+	gl_Position = uMVP * BoneTransform * vec4(vPosition, 1.0);
 	fTexUV = vTexUV;
 }

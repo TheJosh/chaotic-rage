@@ -10,5 +10,5 @@ void main()
 	gl_Position = pos.xyww;
 	fTexUV.xyz = vPosition.zyx;
 	
-	fDepth = gl_Position.z / 350f;	// TODO: Dont hard-code with far plane distance, use a uniform!
+	fDepth = gl_Position.z / 350.0;	// TODO: Dont hard-code with far plane distance, use a uniform!
 }

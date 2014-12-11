@@ -21,7 +21,7 @@ const float LOG2 = 1.442695;
 
 void main()
 {
-	float LightPower = 30.0f;
+	float LightPower = 30.0;
 	
 	vec3 n = normalize(csNormal);
 	vec3 e = normalize(csEyeDirection);
@@ -46,7 +46,7 @@ void main()
 		// Specular
 		vec3 r = reflect(-l, n);
 		float EdotR = clamp(dot(e, r), 0.0, 1.0);
-		specularColor += uLightColor[i] * LightPower * pow(EdotR, 5) / (dist*dist);
+		specularColor += uLightColor[i] * LightPower * pow(EdotR, 5.0) / (dist*dist);
 	}
 	
 	diffuseColor = matDiffuseColor * diffuseColor;
@@ -56,12 +56,12 @@ void main()
 	// Shadow
 	float shadowBias = 0.0005;
 	float visibility = 1.0;
-	if (texture(uShadowMap, fShadowCoord.xy).r < fShadowCoord.z - shadowBias) {
+	if (texture2D(uShadowMap, fShadowCoord.xy).r < fShadowCoord.z - shadowBias) {
 		visibility = 0.5;
 	}
 
 	// Fog
-	float fogDensity = 1.5f;
+	float fogDensity = 1.5;
 	float fogFactor = exp2(-fogDensity * fogDensity * fDepth * fDepth * LOG2);
 	fogFactor = clamp(fogFactor, 0.0, 1.0);
 	vec4 fogColor = vec4(0.5, 0.5, 0.6, 1.0);
