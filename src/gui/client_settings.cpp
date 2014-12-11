@@ -164,23 +164,26 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 	RenderOpenGLSettings* current = ((RenderOpenGL*)GEng()->render)->getSettings();
 	RenderOpenGLSettings* nu = new RenderOpenGLSettings();
 
-	// Populate the class
+	// Populate the gl settings
 	nu->msaa = atoi(this->gl_msaa->getText().c_str());
 	nu->tex_filter = atoi(this->gl_tex_filter->getText().c_str());
+
+	// Read screen config
+	int width = atoi(this->width->getText().c_str());
+	int height = atoi(this->height->getText().c_str());
+	if (width < 100) width = 100;
+	if (height < 100) height = 100;
 
 	// Do we need a restart?
 	bool restart = false;
 	if (current->msaa != nu->msaa) restart = true;
 
-	// Update GL settings
-	((RenderOpenGL*)GEng()->render)->setSettings(nu);
-
-	// Update screen res
-	int width = atoi(this->width->getText().c_str());
-	int height = atoi(this->height->getText().c_str());
-	if (width < 100) width = 100;
-	if (height < 100) height = 100;
-	((RenderOpenGL*)GEng()->render)->setScreenSize(width, height, this->fullscreen->isSelected());
+	// Windows cannot dynamically change screen res without OpenGL sadness
+	#ifdef _WIN32
+		if (width != GEng()->cconf->width) restart = true;
+		if (height != GEng()->cconf->height) restart = true;
+		if (this->fullscreen->isSelected() != GEng()->cconf->fullscreen) restart = true;
+	#endif
 
 	// Re-load language strings
 	loadLang(langs->at(this->lang->getSelected()).c_str());
@@ -200,5 +203,11 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 	}
 
 	this->m->remDialog(this);
-	this->m->handleScreenResChange();
+
+	// Update screen res
+	#ifndef _WIN32
+		((RenderOpenGL*)GEng()->render)->setScreenSize(width, height, this->fullscreen->isSelected());
+		((RenderOpenGL*)GEng()->render)->setSettings(nu);
+		this->m->handleScreenResChange();
+	#endif
 }
