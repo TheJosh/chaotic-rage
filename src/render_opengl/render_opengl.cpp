@@ -1348,7 +1348,10 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 	if (! success) {
 		GLchar InfoLog[1024];
 		glGetShaderInfoLog(shader, 1024, NULL, InfoLog);
-		GL_LOG("Error compiling shader:\n%s", InfoLog);
+		string log = string(InfoLog);
+		log = replaceString(log, "\n", "\n\t");
+		log = trimString(log);
+		GL_LOG("Error compiling shader:\n\t%s", log.c_str());
 		return 0;
 	}
 
@@ -1374,7 +1377,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	// Create and attach vertex shader
 	sVertex = this->createShader(vertex, GL_VERTEX_SHADER);
 	if (sVertex == 0) {
-		GL_LOG("Invalid vertex shader: %s", name.c_str());
+		GL_LOG("Invalid vertex shader '%s'", name.c_str());
 		return NULL;
 	}
 	glAttachShader(program, sVertex);
@@ -1382,7 +1385,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	// Same with frag shader
 	sFragment = this->createShader(fragment, GL_FRAGMENT_SHADER);
 	if (sFragment == 0) {
-		GL_LOG("Invalid fragment shader: %s", name.c_str());
+		GL_LOG("Invalid fragment shader '%s'", name.c_str());
 		return NULL;
 	}
 	glAttachShader(program, sFragment);
@@ -1407,7 +1410,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	if (! success) {
 		GLchar infolog[1024];
 		glGetProgramInfoLog(program, 1024, NULL, infolog);
-		GL_LOG("Error linking program:\n%s", infolog);
+		GL_LOG("Error linking program '%s'\n%s", name.c_str(), infolog);
 		return NULL;
 	}
 
@@ -1415,7 +1418,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment, 
 	glValidateProgram(program);
 	glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
 	if (! success) {
-		GL_LOG("Program didn't validate: %s", name.c_str());
+		GL_LOG("Program didn't validate '%s'", name.c_str());
 		return NULL;
 	}
 
@@ -1433,8 +1436,8 @@ char* convertGLtoESv(const char* src)
 {
 	string str = string(src);
 
-	replaceString(src, "in ", "attribute ");
-	replaceString(src, "out ", "varying ");
+	str = replaceString(str, "in ", "attribute ");
+	str = replaceString(str, "out ", "varying ");
 
 	char* out = (char*)malloc(str.length() + 1);
 	memcpy(out, str.c_str(), str.length() + 1);
@@ -1449,7 +1452,8 @@ char* convertGLtoESv(const char* src)
 char* convertGLtoESf(const char* src)
 {
 	string str = string(src);
-	replaceString(src, "in ", "varying ");
+
+	str = replaceString(str, "in ", "varying ");
 
 	char* out = (char*)malloc(str.length() + 1);
 	memcpy(out, str.c_str(), str.length() + 1);
@@ -1481,7 +1485,7 @@ GLShader* RenderOpenGL::loadProgram(Mod* mod, string name)
 			tmpv = mod->loadText("shaders_gl/" + name + ".glslv");
 			tmpf = mod->loadText("shaders_gl/" + name + ".glslf");
 			v = convertGLtoESv(tmpv);
-			f = convertGLtoESv(tmpf);
+			f = convertGLtoESf(tmpf);
 			free(tmpv);
 			free(tmpf);
 		}
@@ -1509,7 +1513,6 @@ GLShader* RenderOpenGL::loadProgram(Mod* mod, string name)
 	free(f);
 
 	if (s == NULL) {
-		GL_LOG("Unable to create shader program %s", name.c_str());
 		this->shaders_error = true;
 	}
 

@@ -18,3 +18,6 @@ int nextPowerOfTwo(int a);
 
 // Replace a string in another string
 std::string replaceString(std::string subject, const std::string& search, const std::string& replace);
+
+// Trim whitespace from a string
+std::string trimString(const std::string& str, const std::string& whitespace = " \t\n\r\f\v");
