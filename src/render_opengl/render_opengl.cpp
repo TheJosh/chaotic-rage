@@ -65,6 +65,17 @@ using namespace std;
 
 
 /**
+* Used for shadows
+**/
+glm::mat4 biasMatrix(
+	0.5, 0.0, 0.0, 0.0,
+	0.0, 0.5, 0.0, 0.0,
+	0.0, 0.0, 0.5, 0.0,
+	0.5, 0.5, 0.5, 1.0
+);
+
+
+/**
 * Just set a few things up
 **/
 RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Render3D(st)
@@ -1155,16 +1166,24 @@ void RenderOpenGL::setupShaders()
 	glUniform3fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightPos"), 4, glm::value_ptr(LightPos[0]));
 	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightColor"), 4, glm::value_ptr(LightColor[0]));
 	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uAmbient"), 1, glm::value_ptr(entityAmbient));
+	glUniform1i(this->shaders[SHADER_ENTITY_STATIC]->uniform("uTex"), 0);
+	glUniform1i(this->shaders[SHADER_ENTITY_STATIC]->uniform("uShadowMap"), 1);
 
 	// Bones as well
 	glUseProgram(this->shaders[SHADER_ENTITY_BONES]->p());
+	glUniform3fv(this->shaders[SHADER_ENTITY_BONES]->uniform("uLightPos"), 4, glm::value_ptr(LightPos[0]));
+	glUniform4fv(this->shaders[SHADER_ENTITY_BONES]->uniform("uLightColor"), 4, glm::value_ptr(LightColor[0]));
 	glUniform4fv(this->shaders[SHADER_ENTITY_BONES]->uniform("uAmbient"), 1, glm::value_ptr(entityAmbient));
-	
+	glUniform1i(this->shaders[SHADER_ENTITY_BONES]->uniform("uTex"), 0);
+	glUniform1i(this->shaders[SHADER_ENTITY_BONES]->uniform("uShadowMap"), 1);
+
 	// And terrain
 	glUseProgram(this->shaders[SHADER_TERRAIN]->p());
 	glUniform3fv(this->shaders[SHADER_TERRAIN]->uniform("uLightPos"), 4, glm::value_ptr(LightPos[0]));
 	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uLightColor"), 4, glm::value_ptr(LightColor[0]));
 	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uAmbient"), 1, glm::value_ptr(this->ambient));
+	glUniform1i(this->shaders[SHADER_TERRAIN]->uniform("uTex"), 0);
+	glUniform1i(this->shaders[SHADER_TERRAIN]->uniform("uShadowMap"), 1);
 
 	// Water too
 	glUseProgram(this->shaders[SHADER_WATER]->p());
@@ -1273,10 +1292,10 @@ void RenderOpenGL::loadShaders()
 
 	base = GEng()->mm->getBase();
 
-	this->shaders[SHADER_ENTITY_BONES] = loadProgram(base, "bones");
-	this->shaders[SHADER_ENTITY_STATIC] = loadProgram(base, "phong");
+	this->shaders[SHADER_ENTITY_BONES] = loadProgram(base, "phong_bones", "phong");
+	this->shaders[SHADER_ENTITY_STATIC] = loadProgram(base, "phong_static", "phong");
+	this->shaders[SHADER_TERRAIN] = loadProgram(base, "phong_static", "phong_shadow");
 	this->shaders[SHADER_WATER] = loadProgram(base, "water");
-	this->shaders[SHADER_TERRAIN] = loadProgram(base, "terrain");
 	this->shaders[SHADER_TEXT] = loadProgram(base, "text");
 	this->shaders[SHADER_SKYBOX] = loadProgram(base, "skybox");
 
@@ -1712,6 +1731,10 @@ void RenderOpenGL::remAnimPlay(AnimPlay* play)
 **/
 void RenderOpenGL::entities()
 {
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, this->shadow_depth_tex);
+	glActiveTexture(GL_TEXTURE0);
+
 	// Set VIEW matrix in the shaders
 	glUseProgram(this->shaders[SHADER_ENTITY_STATIC]->p());
 	glUniformMatrix4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
@@ -1763,11 +1786,14 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, const glm::mat4 &modelMatrix)
 		// Calculate stuff
 		play->calcBoneTransforms();
 		glm::mat4 MVP = this->projection * this->view * modelMatrix;
+		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
 
 		// Set uniforms
 		glUniformMatrix4fv(shader->uniform("uBones[0]"), MAX_BONES, GL_FALSE, &play->bone_transforms[0][0][0]);
 		glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 		glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glUniformMatrix3fv(shader->uniform("uMN"), 1, GL_FALSE, glm::value_ptr(glm::inverseTranspose(glm::mat3(modelMatrix))));
+		glUniformMatrix4fv(shader->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
 
 		// Do it
 		recursiveRenderAssimpModelBones(play, am, am->rootNode, shader);
@@ -1796,12 +1822,14 @@ void RenderOpenGL::recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel* a
 {
 	glm::mat4 transform = modelMatrix * ap->getNodeTransform(nd);
 	glm::mat4 MVP = this->projection * this->view * transform;
+	glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * transform;
 
 	// Set uniforms
 	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(transform));
 	glUniformMatrix3fv(shader->uniform("uMN"), 1, GL_FALSE, glm::value_ptr(glm::inverseTranspose(glm::mat3(transform))));
-	
+	glUniformMatrix4fv(shader->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
+
 	// Render meshes
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
 		AssimpMesh* mesh = am->meshes[(*it)];
@@ -2184,15 +2212,6 @@ void RenderOpenGL::terrain()
 	glActiveTexture(GL_TEXTURE0);
 
 	glUseProgram(s->p());
-	glUniform1i(s->uniform("uTex"), 0);
-	glUniform1i(s->uniform("uShadowMap"), 1);
-
-	glm::mat4 biasMatrix(
-		0.5, 0.0, 0.0, 0.0,
-		0.0, 0.5, 0.0, 0.0,
-		0.0, 0.0, 0.5, 0.0,
-		0.5, 0.5, 0.5, 1.0
-	);
 
 	// Heightmaps
 	for (vector<Heightmap*>::iterator it = this->st->map->heightmaps.begin(); it != this->st->map->heightmaps.end(); ++it) {
