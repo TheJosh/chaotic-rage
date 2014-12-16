@@ -20,6 +20,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include \
 	$(LOCAL_PATH)/$(JNI_PATH)/lua/src \
 	$(LOCAL_PATH)/confuse \
 	$(LOCAL_PATH)/guichan \
+	$(LOCAL_PATH)/spark \
 	$(LOCAL_PATH)/../tools/include
 
 # Add your application source files here...
@@ -39,6 +40,12 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 		$(wildcard $(LOCAL_PATH)/entity/*.cpp) \
 		$(wildcard $(LOCAL_PATH)/fx/*.cpp) \
 		$(wildcard $(LOCAL_PATH)/gui/*.cpp) \
+		$(wildcard $(LOCAL_PATH)/spark/Core/*.cpp) \
+		$(wildcard $(LOCAL_PATH)/spark/RenderingAPIs/OpenGL/*.cpp) \
+		$(wildcard $(LOCAL_PATH)/spark/Extensions/Emitters/*.cpp) \
+		$(wildcard $(LOCAL_PATH)/spark/Extensions/Modifiers/*.cpp) \
+		$(wildcard $(LOCAL_PATH)/spark/Extensions/Renderers/*.cpp) \
+		$(wildcard $(LOCAL_PATH)/spark/Extensions/Zones/*.cpp) \
 		$(wildcard $(LOCAL_PATH)/guichan/*.cpp) \
 		$(wildcard $(LOCAL_PATH)/guichan/opengl/*.cpp) \
 		$(wildcard $(LOCAL_PATH)/guichan/sdl/*.cpp) \

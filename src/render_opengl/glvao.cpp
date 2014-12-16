@@ -32,6 +32,7 @@ GLVAO::GLVAO()
 
 	this->index = 0;
 	this->position = 0;
+	this->color = 0;
 	this->normal = 0;
 	this->texuv = 0;
 	this->boneid = 0;
@@ -39,6 +40,7 @@ GLVAO::GLVAO()
 	this->tangent = 0;
 	this->interleaved_pnt = 0;
 	this->interleaved_pc = 0;
+	this->interleaved_pc34 = 0;
 }
 
 
@@ -70,6 +72,17 @@ void GLVAO::setPosition(GLuint vbo)
 	glEnableVertexAttribArray(ATTRIB_POSITION);
 	glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	this->position = vbo;
+}
+
+
+/**
+* Color buffer. 4-coord
+**/
+void GLVAO::setColor(GLuint vbo)
+{
+	glEnableVertexAttribArray(ATTRIB_COLOR);
+	glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, 0);
+	this->color = vbo;
 }
 
 
@@ -144,6 +157,7 @@ void GLVAO::setInterleavedPNT(GLuint vbo)
 	this->interleaved_pnt = vbo;
 }
 
+
 /**
 * Interleaved buffer, 3xPositions, 3xColours
 **/
@@ -156,6 +170,21 @@ void GLVAO::setInterleavedPC(GLuint vbo)
 	glEnableVertexAttribArray(ATTRIB_COLOR);
 
 	this->interleaved_pc = vbo;
+}
+
+
+/**
+* Interleaved buffer, 3xPositions, 4xColours
+**/
+void GLVAO::setInterleavedPC34(GLuint vbo)
+{
+	glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 28, BUFFER_OFFSET(0));     // Position
+	glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 28, BUFFER_OFFSET(12));       // Colour
+
+	glEnableVertexAttribArray(ATTRIB_POSITION);
+	glEnableVertexAttribArray(ATTRIB_COLOR);
+
+	this->interleaved_pc34 = vbo;
 }
 
 
@@ -204,6 +233,12 @@ void GLVAO::bindBuffers()
 		this->setPosition(this->position);
 	}
 
+	// Position
+	if (this->color) {
+		glBindBuffer(GL_ARRAY_BUFFER, this->color);
+		this->setColor(this->color);
+	}
+
 	// Normals
 	if (this->normal) {
 		glBindBuffer(GL_ARRAY_BUFFER, this->normal);
@@ -240,10 +275,16 @@ void GLVAO::bindBuffers()
 		this->setInterleavedPNT(this->interleaved_pnt);
 	}
 
-	// Interleaved, position colour
+	// Interleaved, position colour 3,3
 	if (this->interleaved_pc) {
 		glBindBuffer(GL_ARRAY_BUFFER, this->interleaved_pc);
 		this->setInterleavedPC(this->interleaved_pc);
+	}
+
+	// Interleaved, position colour 3,4
+	if (this->interleaved_pc34) {
+		glBindBuffer(GL_ARRAY_BUFFER, this->interleaved_pc);
+		this->setInterleavedPC34(this->interleaved_pc);
 	}
 }
 

@@ -27,3 +27,25 @@
 	#define SDL1_VIDEO
 #endif
 
+
+// Constants for VBOs <-> Shaders
+// (glBindAttribLocation)
+#define ATTRIB_POSITION 0         // vPosition
+#define ATTRIB_NORMAL 1           // vNormal
+#define ATTRIB_TEXUV 2            // vTexUV
+#define ATTRIB_BONEID 3           // vBoneIDs
+#define ATTRIB_BONEWEIGHT 4       // vBoneWeights
+#define ATTRIB_TEXTCOORD 5        // vCoord
+#define ATTRIB_COLOR 6            // vColor
+#define ATTRIB_TANGENT 7          // vTangent
+
+// Shader IDs
+// TODO: Should this be an enum instead?
+#define SHADER_BASIC 0
+#define SHADER_SKYBOX 1
+#define SHADER_ENTITY_STATIC 2
+#define SHADER_ENTITY_BONES 3
+#define SHADER_TERRAIN 4
+#define SHADER_WATER 5
+#define SHADER_TEXT 6
+

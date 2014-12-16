@@ -25,7 +25,7 @@
 #endif
 
 // For now we aren't going to support Spark particles on GLES devices
-#if defined(__ANDROID__) || defined(__EMSCRIPTEN__)
+#if defined(__EMSCRIPTEN__)
 	#undef USE_SPARK
 #else
 	#define USE_SPARK 1

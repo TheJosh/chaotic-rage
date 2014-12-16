@@ -23,14 +23,13 @@
 #include "RenderingAPIs/OpenGL/SPK_GL2PointRenderer.h"
 #include "Core/SPK_Particle.h"
 #include "Core/SPK_Group.h"
+#include "../../../render_opengl/glvao.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 // Used for the OpenGL debug fun
 #include <stdio.h>
 
-#define ATTRIB_POSITION 1
-#define ATTRIB_COLOR 2
 
 namespace SPK
 {
@@ -41,45 +40,37 @@ namespace GL
 		PointRendererInterface(POINT_SQUARE,size),
 		textureIndex(0),
 		worldSize(false),
-		vaoIndex(0),
+		vao(NULL),
 		vboPositionIndex(0),
 		vboColorIndex(0)
 	{}
 
 	void GL2PointRenderer::initGLbuffers()
 	{
-		// Set up VAO
-		glGenVertexArrays(1, &vaoIndex);
-		glBindVertexArray(vaoIndex);
+		this->vao = new GLVAO();
 
 		// Set up position buffer
 		glGenBuffers(1, &vboPositionIndex);
 		glBindBuffer(GL_ARRAY_BUFFER, vboPositionIndex);
-		glEnableVertexAttribArray(ATTRIB_POSITION);
-		glVertexAttribPointer(ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		vao->setPosition(vboPositionIndex);
 
 		// Set up colors buffer
 		glGenBuffers(1, &vboColorIndex);
 		glBindBuffer(GL_ARRAY_BUFFER, vboColorIndex);
-		glEnableVertexAttribArray(ATTRIB_COLOR);
-		glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, 0);
-
-		glBindVertexArray(0);
+		vao->setColor(vboColorIndex);
 
 		// Create shader
 		shaderIndex = createShaderProgram(
-			"#version 130\n"
-			"in vec3 vPosition;\n"
-			"in vec4 vColor;\n"
-			"out vec4 fColor;\n"
+			"attribute vec3 vPosition;\n"
+			"attribute vec4 vColor;\n"
+			"varying vec4 fColor;\n"
 			"uniform mat4 uVP;\n"
 			"void main() {\n"
 				"gl_Position = uVP * vec4(vPosition, 1.0f);\n"
 				"fColor = vColor;\n"
 			"}\n",
 
-			"#version 130\n"
-			"in vec4 fColor;\n"
+			"varying vec4 fColor;\n"
 			"void main() {\n"
 				"gl_FragColor = fColor;\n"
 			"}\n"
@@ -97,15 +88,26 @@ namespace GL
 	GLuint GL2PointRenderer::createShaderProgram(const char *vs, const char *fs)
 	{
 		GLuint program, sVS, sFS;
-		GLint len, success;
+		GLint success;
+		const char* strings[2];
+		GLint lengths[2];
+
+		// Different header based on GL variant
+		#ifdef GLES
+			strings[0] = "precision mediump float;\n";
+		#else
+			strings[0] = "#version 130\n";
+		#endif
+		lengths[0] = strlen(strings[0]);
 
 		// Create stuff
 		program = glCreateProgram();
 
 		// Compile vertex shader
 		sVS = glCreateShader(GL_VERTEX_SHADER);
-		len = strlen(vs);
-		glShaderSource(sVS, 1, &vs, &len);
+		strings[1] = vs;
+		lengths[1] = strlen(vs);
+		glShaderSource(sVS, 2, strings, lengths);
 		glCompileShader(sVS);
 		glAttachShader(program, sVS);
 
@@ -119,8 +121,9 @@ namespace GL
 
 		// Compile fragment shader
 		sFS = glCreateShader(GL_FRAGMENT_SHADER);
-		len = strlen(fs);
-		glShaderSource(sFS, 1, &fs, &len);
+		strings[1] = fs;
+		lengths[1] = strlen(fs);
+		glShaderSource(sFS, 2, strings, lengths);
 		glCompileShader(sFS);
 		glAttachShader(program, sFS);
 
@@ -155,12 +158,11 @@ namespace GL
 
 	void GL2PointRenderer::destroyGLbuffers()
 	{
-		glDeleteVertexArrays(1, &vaoIndex);
+		delete vao;
 		glDeleteBuffers(1, &vboPositionIndex);
 		glDeleteBuffers(1, &vboColorIndex);
 		glDeleteProgram(shaderIndex);
 
-		vaoIndex = 0;
 		vboPositionIndex = 0;
 		vboColorIndex = 0;
 		shaderIndex = 0;
@@ -169,8 +171,10 @@ namespace GL
 
 	void GL2PointRenderer::render(const Group& group)
 	{
+		#ifndef GLES
 		glEnable(GL_POINT_SMOOTH);
 		glPointSize(2.0f);
+		#endif
 
 		// Copy data into buffer with the correct layout
 		// TODO: Reuse the buffer instead of malloc/free every frame
@@ -186,9 +190,6 @@ namespace GL
 			*ptr++ = particle.position().z;
 		}
 
-		// Bind our VAO
-		glBindVertexArray(vaoIndex);
-
 		// Set position data
 		glBindBuffer(GL_ARRAY_BUFFER, vboPositionIndex);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * num, data, GL_DYNAMIC_DRAW);
@@ -197,7 +198,8 @@ namespace GL
 		// Set color data
 		glBindBuffer(GL_ARRAY_BUFFER, vboColorIndex);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * num, group.getParamAddress(PARAM_RED), GL_DYNAMIC_DRAW);
-		glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, group.getParamStride(), 0);
+
+		vao->bind();
 
 		// Bind shader
 		glUseProgram(shaderIndex);
@@ -206,10 +208,8 @@ namespace GL
 		glUniformMatrix4fv(shaderVPIndex, 1, GL_FALSE, glm::value_ptr(vp_matrix));
 
 		// Draw
-		glDrawArrays(GL_POINTS, 0, num);
-
-		// Clean up
-		glBindVertexArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glDrawArrays(GL_POINTS, 0, num);		// GL_INVALID_OPERATION
+CHECK_OPENGL_ERROR;
+		vao->unbind();
 	}
 }}

@@ -74,15 +74,6 @@ namespace GL
 		void setBlendingFunctions(GLuint src,GLuint dest);
 		virtual void setBlending(BlendingMode blendMode);
 
-		/**
-		* @brief Sets the texture blending function of this GLRenderer
-		*
-		* the texture blending function is one of the openGL texture blending functions.
-		*
-		* @param textureBlending : the texture blending function of this GLRenderer
-		*/
-		void setTextureBlending(GLuint textureBlending);
-
 		/////////////
 		// Getters //
 		/////////////
@@ -104,12 +95,6 @@ namespace GL
 		* @return the source destination function of this GLRenderer
 		*/
 		GLuint getDestBlendingFunction() const;
-
-		/**
-		* @brief Gets the texture blending function of this GLRenderer
-		* @return the texture blending function of this GLRenderer
-		*/
-		GLuint getTextureBlending() const;
 
 		///////////////
 		// Interface //
@@ -169,7 +154,6 @@ namespace GL
 		GLuint srcBlending;
 		GLuint destBlending;
 
-		GLuint textureBlending;
 	};
 
 
@@ -182,11 +166,6 @@ namespace GL
 	{
 		srcBlending = src;
 		destBlending = dest;
-	}
-
-	inline void GLRenderer::setTextureBlending(GLuint textureBlending)
-	{
-		this->textureBlending = textureBlending;
 	}
 
 	inline bool GLRenderer::isBlendingEnabled() const
@@ -204,11 +183,6 @@ namespace GL
 		return destBlending;
 	}
 
-	inline GLuint GLRenderer::getTextureBlending() const
-	{
-		return textureBlending;
-	}
-
 	inline void GLRenderer::initBlending() const
 	{
 		if (blendingEnabled)
@@ -222,6 +196,7 @@ namespace GL
 
 	inline void GLRenderer::initRenderingHints() const
 	{
+		#ifndef GLES
 		// alpha test
 		if (isRenderingHintEnabled(ALPHA_TEST))
 		{
@@ -230,6 +205,7 @@ namespace GL
 		}
 		else
 			glDisable(GL_ALPHA_TEST);
+		#endif
 
 		// depth test
 		if (isRenderingHintEnabled(DEPTH_TEST))

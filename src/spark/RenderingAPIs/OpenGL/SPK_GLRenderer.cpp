@@ -30,8 +30,7 @@ namespace GL
 		Renderer(),
 		blendingEnabled(false),
 		srcBlending(GL_SRC_ALPHA),
-		destBlending(GL_ONE_MINUS_SRC_ALPHA),
-		textureBlending(GL_MODULATE)
+		destBlending(GL_ONE_MINUS_SRC_ALPHA)
 	{}
 
 	GLRenderer::~GLRenderer() {}
@@ -62,19 +61,9 @@ namespace GL
 
 	void GLRenderer::saveGLStates()
 	{
-		glPushAttrib(GL_POINT_BIT |
-			GL_LINE_BIT |
-			GL_ENABLE_BIT |
-			GL_COLOR_BUFFER_BIT |
-			GL_CURRENT_BIT |
-			GL_TEXTURE_BIT |
-			GL_DEPTH_BUFFER_BIT |
-			GL_LIGHTING_BIT |
-			GL_POLYGON_BIT);
 	}
 
 	void GLRenderer::restoreGLStates()
 	{
-		glPopAttrib();
 	}
 }}

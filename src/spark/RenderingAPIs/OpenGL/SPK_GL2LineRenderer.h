@@ -110,7 +110,7 @@ namespace GL
 
 		glm::mat4 vp_matrix;
 
-		GLuint vaoIndex;
+		GLVAO* vao;
 		GLuint vboPositionColorIndex;
 		GLuint shaderIndex;
 		GLuint shaderVPIndex;
