@@ -74,6 +74,11 @@ namespace GL
 		*/
 		GL2LineRenderer(float length = 1.0f,float width = 1.0f);
 
+		/** 
+		* @brief Destructor of GL2LineRenderer
+		*/
+		virtual ~GL2LineRenderer();
+
 		/**
 		* @brief Creates and registers a new GL2PointRenderer
 		* @param size : the size of the points
@@ -114,6 +119,9 @@ namespace GL
 		GLuint vboPositionColorIndex;
 		GLuint shaderIndex;
 		GLuint shaderVPIndex;
+
+		float* buffer;
+		size_t buffer_sz;
 
 	};
 

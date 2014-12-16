@@ -42,8 +42,15 @@ namespace GL
 		worldSize(false),
 		vao(NULL),
 		vboPositionIndex(0),
-		vboColorIndex(0)
+		vboColorIndex(0),
+		buffer(NULL),
+		buffer_sz(0)
 	{}
+
+	GL2PointRenderer::~GL2PointRenderer()
+	{
+		free(buffer);
+	}
 
 	void GL2PointRenderer::initGLbuffers()
 	{
@@ -171,16 +178,25 @@ namespace GL
 
 	void GL2PointRenderer::render(const Group& group)
 	{
+		size_t num = group.getNbParticles();
+
 		#ifndef GLES
 		glEnable(GL_POINT_SMOOTH);
 		glPointSize(2.0f);
 		#endif
 
+		// Resize buffer if not large enough
+		if (num > buffer_sz) {
+			if (buffer_sz == 0) buffer_sz = 1024;
+			while (buffer_sz < num) {
+				buffer_sz *= 2;
+			}
+			free(buffer);
+			buffer = (float*) malloc(sizeof(float) * 3 * buffer_sz);
+		}
+
 		// Copy data into buffer with the correct layout
-		// TODO: Reuse the buffer instead of malloc/free every frame
-		size_t num = group.getNbParticles();
-		float* data = (float*) malloc(sizeof(float) * 3 * num);
-		float* ptr = data;
+		float* ptr = buffer;
 		for (size_t i = 0; i < num; ++i)
 		{
 			const Particle& particle = group.getParticle(i);
@@ -192,24 +208,17 @@ namespace GL
 
 		// Set position data
 		glBindBuffer(GL_ARRAY_BUFFER, vboPositionIndex);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * num, data, GL_DYNAMIC_DRAW);
-		free(data);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * num, buffer, GL_DYNAMIC_DRAW);
 
 		// Set color data
 		glBindBuffer(GL_ARRAY_BUFFER, vboColorIndex);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * num, group.getParamAddress(PARAM_RED), GL_DYNAMIC_DRAW);
 
+		// Bind VAO and shader, set uniforms, draw
 		vao->bind();
-
-		// Bind shader
 		glUseProgram(shaderIndex);
-
-		// Uniforms
 		glUniformMatrix4fv(shaderVPIndex, 1, GL_FALSE, glm::value_ptr(vp_matrix));
-
-		// Draw
-		glDrawArrays(GL_POINTS, 0, num);		// GL_INVALID_OPERATION
-CHECK_OPENGL_ERROR;
+		glDrawArrays(GL_POINTS, 0, num);
 		vao->unbind();
 	}
 }}

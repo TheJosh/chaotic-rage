@@ -39,8 +39,15 @@ namespace GL
 		GLRenderer(),
 		LineRendererInterface(length, width),
 		vao(NULL),
-		vboPositionColorIndex(0)
+		vboPositionColorIndex(0),
+		buffer(NULL),
+		buffer_sz(0)
 	{}
+
+	GL2LineRenderer::~GL2LineRenderer()
+	{
+		free(buffer);
+	}
 
 	void GL2LineRenderer::initGLbuffers()
 	{
@@ -161,15 +168,25 @@ namespace GL
 
 	void GL2LineRenderer::render(const Group& group)
 	{
+		size_t num = group.getNbParticles();
+
 		#ifndef GLES
 		glEnable(GL_LINE_SMOOTH);
 		#endif
 
+		// Resize buffer if not large enough
+		if (num > buffer_sz) {
+			if (buffer_sz == 0) buffer_sz = 1024;
+			while (buffer_sz < num) {
+				buffer_sz *= 2;
+			}
+			free(buffer);
+			buffer = (float*) malloc(sizeof(float) * 7 * buffer_sz * 2);
+		}
+
 		// Copy data into buffer with the correct layout
 		// TODO: Reuse the buffer instead of malloc/free every frame
-		size_t num = group.getNbParticles();
-		float* data = (float*) malloc(sizeof(float) * 7 * num * 2);
-		float* ptr = data;
+		float* ptr = buffer;
 		for (size_t i = 0; i < num; ++i)
 		{
 			const Particle& particle = group.getParticle(i);
@@ -193,22 +210,15 @@ namespace GL
 			*ptr++ = particle.getParamCurrentValue(PARAM_ALPHA);
 		}
 
-		vao->bind();
-
 		// Set position data
 		glBindBuffer(GL_ARRAY_BUFFER, vboPositionColorIndex);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 7 * num * 2, data, GL_DYNAMIC_DRAW);
-		free(data);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 7 * num * 2, buffer, GL_DYNAMIC_DRAW);
 
-		// Bind shader
+		// Bind VAO and shader, set uniforms, draw
+		vao->bind();
 		glUseProgram(shaderIndex);
-
-		// Uniforms
 		glUniformMatrix4fv(shaderVPIndex, 1, GL_FALSE, glm::value_ptr(vp_matrix));
-
-		// Draw
 		glDrawArrays(GL_LINES, 0, num * 2);
-
 		vao->unbind();
 	}
 }}
