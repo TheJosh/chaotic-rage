@@ -185,7 +185,6 @@ namespace GL
 		}
 
 		// Copy data into buffer with the correct layout
-		// TODO: Reuse the buffer instead of malloc/free every frame
 		float* ptr = buffer;
 		for (size_t i = 0; i < num; ++i)
 		{
