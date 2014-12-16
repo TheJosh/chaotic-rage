@@ -17,6 +17,9 @@ class btVector3;
 using namespace std;
 
 
+/**
+* These roughly correspond with the various sub-classes of the Entity class
+**/
 enum EntityClass {
 	NONE = 0,
 	UNIT = 1,
@@ -28,9 +31,15 @@ enum EntityClass {
 };
 
 
+/**
+* The main entity class
+**/
 class Entity
 {
 	public:
+		/**
+		* Return the class of entity
+		**/
 		virtual EntityClass klass() const { return NONE; }
 
 	public:
@@ -67,12 +76,12 @@ class Entity
 		/**
 		* Return the game state for this entity
 		**/
-		GameState * getGameState();
+		GameState* getGameState();
 
 		/**
-		* Called by entity code to indicate the death of itself
+		* Remove the entity from the game world
 		**/
-		void hasDied();
+		void remove();
 
 		/**
 		* Disable collision for this entity
@@ -89,3 +98,4 @@ class Entity
 		**/
 		void setPosition(const btVector3 &p);
 };
+

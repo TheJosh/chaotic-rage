@@ -9,6 +9,9 @@
 using namespace std;
 
 
+/**
+* Constructor
+**/
 Entity::Entity(GameState *st)
 {
 	this->del = false;
@@ -16,6 +19,10 @@ Entity::Entity(GameState *st)
 	this->body = NULL;
 }
 
+
+/**
+* Destructor
+**/
 Entity::~Entity()
 {
 }
@@ -31,9 +38,9 @@ GameState * Entity::getGameState()
 
 
 /**
-* Has this entity died?
+* Remove the entity from the game world
 **/
-void Entity::hasDied()
+void Entity::remove()
 {
 	this->del = true;
 }
@@ -84,3 +91,4 @@ void Entity::disableCollision()
 {
 	body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
 }
+
