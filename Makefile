@@ -18,6 +18,7 @@ ifdef MXE
 	LIBS := -liphlpapi
 	LUAPKG := lua
 	POSTFIX := .exe
+	DONT_COMPILE = $(OBJPATH)/touch.o
 
 
 # emscripten llvm to javascript compiler
@@ -34,14 +35,7 @@ else ifdef EMSCRIPTEN
 		$(OBJPATH)/render/render_null.o \
 		$(OBJPATH)/render/render_ascii.o \
 		$(OBJPATH)/render/render_debug.o \
-		$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(wildcard \
-			$(SRCPATH)/spark/Core/*.cpp \
-			$(SRCPATH)/spark/Extensions/Emitters/*.cpp \
-			$(SRCPATH)/spark/Extensions/Modifiers/*.cpp \
-			$(SRCPATH)/spark/Extensions/Renderers/*.cpp \
-			$(SRCPATH)/spark/Extensions/Zones/*.cpp \
-			$(SRCPATH)/spark/RenderingAPIs/OpenGL/*.cpp \
-		))
+		$(OBJPATH)/touch.o
 
 
 # Standard Linux build

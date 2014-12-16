@@ -8,11 +8,10 @@
 #include "../util/util.h"
 #include "../game_engine.h"
 #include "../render/render_3d.h"
+#include "../spark/SPK.h"
 
 using namespace std;
 
-#ifdef USE_SPARK
-#include "../spark/SPK.h"
 
 
 /**
@@ -173,16 +172,3 @@ void Weather::stopSnow()
 	this->snow_flow = 0;
 }
 
-
-
-#else
-// No SPARK particles - these become a no-op
-Weather::Weather(GameState* st, float map_size_x, float map_size_z, bool enabled) {}
-Weather::~Weather() {}
-void Weather::update(float delta) {}
-void Weather::randomWeather() {}
-void Weather::startRain(int flow) {}
-void Weather::stopRain() {}
-void Weather::startSnow(int flow) {}
-void Weather::stopSnow() {}
-#endif

@@ -4,19 +4,16 @@
 
 #include "newparticle.h"
 #include "../rage.h"
+#include "../game_state.h"
+#include "../spark/SPK.h"
 
 
 using namespace std;
 
 
-#ifdef USE_SPARK
-
-#include "../game_state.h"
-#include "../spark/SPK.h"
-
-
 // Gravity, the same for all particles
 SPK::Vector3D gravity(0.0f, -0.9f, 0.0f);
+
 
 /**
 * Creates particles for a weapon.
@@ -232,11 +229,3 @@ void create_particles_explosion(GameState * st, const btVector3& location, float
 	st->addParticleGroup(group);
 }
 
-
-#else
-// No SPARK particles - these become a no-op
-void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end) {}
-void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 * end) {}
-void create_particles_blood_spray(GameState * st, const btVector3& location, float damage) {}
-void create_particles_explosion(GameState * st, const btVector3& location, float damage) {}
-#endif

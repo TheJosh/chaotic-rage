@@ -24,13 +24,6 @@
 	#define VERSION "Git Master"
 #endif
 
-// For now we aren't going to support Spark particles on GLES devices
-#if defined(__EMSCRIPTEN__)
-	#undef USE_SPARK
-#else
-	#define USE_SPARK 1
-#endif
-
 // Frames-per-second to run all in-game animations at.
 // Specified as a float to help out some arithmetic
 #define ANIMATION_FPS	12.0

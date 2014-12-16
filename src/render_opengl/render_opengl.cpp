@@ -48,10 +48,8 @@
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#ifdef USE_SPARK
 #include "../spark/SPK.h"
 #include "../spark/SPK_GL.h"
-#endif
 
 #define BUFFER_MAX 200
 
@@ -97,10 +95,8 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->render_player = NULL;
 	this->render_player_pos = glm::vec3(0.0f);
 
-	#ifdef USE_SPARK
 	this->renderer_points = new SPK::GL::GL2PointRenderer(1.0f);
 	this->renderer_lines = new SPK::GL::GL2LineRenderer(0.05f, 1.0f);
-	#endif
 
 	this->sprite_vbo = 0;
 
@@ -120,15 +116,11 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 **/
 RenderOpenGL::~RenderOpenGL()
 {
-	delete(this->settings);
-
-	#ifdef USE_SPARK
-		delete(this->renderer_points);
-		delete(this->renderer_lines);
-	#endif
-
-	delete font;
-	delete gui_font;
+	delete this->settings;
+	delete this->renderer_points;
+	delete this->renderer_lines;
+	delete this->font;
+	delete this->gui_font;
 
 	// TODO: Delete all buffers, tex, etc.
 
@@ -323,10 +315,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	#endif
 
 	// Init GL for particles
-	#ifdef USE_SPARK
-		this->renderer_points->initGLbuffers();
-		this->renderer_lines->initGLbuffers();
-	#endif
+	this->renderer_points->initGLbuffers();
+	this->renderer_lines->initGLbuffers();
 
 	// Windows only: Re-load textures.
 	// All other platforms don't destory the context if the window size changes
@@ -2305,17 +2295,15 @@ void RenderOpenGL::water()
 **/
 void RenderOpenGL::particles()
 {
-	#ifdef USE_SPARK
-		glEnable(GL_BLEND);
+	glEnable(GL_BLEND);
 
-		glm::mat4 vp = this->projection * this->view;
-		this->renderer_points->setVP(vp);
-		this->renderer_lines->setVP(vp);
+	glm::mat4 vp = this->projection * this->view;
+	this->renderer_points->setVP(vp);
+	this->renderer_lines->setVP(vp);
 
-		this->st->particle_system->render();
+	this->st->particle_system->render();
 
-		CHECK_OPENGL_ERROR;
-	#endif
+	CHECK_OPENGL_ERROR;
 }
 
 

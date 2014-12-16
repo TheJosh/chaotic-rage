@@ -39,10 +39,7 @@
 #include "net/net_server.h"
 #include "util/cmdline.h"
 #include "fx/weather.h"
-
-#ifdef USE_SPARK
 #include "spark/SPK.h"
-#endif
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -380,13 +377,11 @@ void GameState::increaseEntropy(unsigned int slot)
 **/
 void GameState::addParticleGroup(SPK::Group* group)
 {
-	#ifdef USE_SPARK
-		if (this->particle_system == NULL) return;
-		if (group->getRenderer() == NULL) {
-			group->setRenderer(static_cast<Render3D*>(GEng()->render)->renderer_points);
-		}
-		this->particle_system->addGroup(group);
-	#endif
+	if (this->particle_system == NULL) return;
+	if (group->getRenderer() == NULL) {
+		group->setRenderer(static_cast<Render3D*>(GEng()->render)->renderer_points);
+	}
+	this->particle_system->addGroup(group);
 }
 
 
@@ -396,9 +391,7 @@ void GameState::addParticleGroup(SPK::Group* group)
 **/
 void GameState::removeParticleGroup(SPK::Group* group)
 {
-	#ifdef USE_SPARK
-		this->particle_system->removeGroup(group);
-	#endif
+	this->particle_system->removeGroup(group);
 }
 
 
@@ -414,11 +407,9 @@ void GameState::preGame()
 	GEng()->initGuichan();
 	GEng()->setMouseGrab(true);
 
-	#ifdef USE_SPARK
-		if (GEng()->render->is3D()) {
-			this->particle_system = new SPK::System();
-		}
-	#endif
+	if (GEng()->render->is3D()) {
+		this->particle_system = new SPK::System();
+	}
 
 	this->entropy = 0;
 
@@ -449,9 +440,7 @@ void GameState::postGame()
 	this->entities.remove_if(EntityEraserAll);
 	this->entities_add.remove_if(EntityEraserAll);
 
-	#ifdef USE_SPARK
-		delete this->particle_system;
-	#endif
+	delete this->particle_system;
 	delete this->weather;
 
 	// TODO: Are these needed?
@@ -628,9 +617,7 @@ void GameState::update(int delta)
 	this->weather->update((float)delta);
 
 	// Particles
-	#ifdef USE_SPARK
-		this->particle_system->update(delta / 1000.0f);
-	#endif
+	this->particle_system->update(delta / 1000.0f);
 
 	// Time of day cycle
 	if (gs->day_night_cycle) {
