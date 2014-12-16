@@ -106,7 +106,6 @@ class GameState
 		vector<Wall*> walls;		// leaks: items are not removed
 
 		bool running;
-		unsigned int entropy;		// TODO: gamestate -> localplayers
 
 		list<DebugLine*>lines;
 
@@ -190,10 +189,6 @@ class GameState
 
 		// Weapon fun
 		vector<WeaponType*>* getSpawnWeapons(UnitType* ut, Faction fac);
-
-		// Entropy
-		unsigned int getEntropy(unsigned int slot);
-		void increaseEntropy(unsigned int slot);
 
 		// HUD
 		void addHUDMessage(unsigned int slot, string text, string text2 = "");

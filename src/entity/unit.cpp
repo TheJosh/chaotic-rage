@@ -713,8 +713,6 @@ int Unit::takeDamage(float damage)
 	btTransform xform = this->ghost->getWorldTransform();
 	create_particles_blood_spray(this->st, xform.getOrigin(), damage);
 
-	this->st->increaseEntropy(1);
-
 	if (this->health <= 0 && this->del == false) {
 		this->endFiring();
 		this->leaveVehicle();

@@ -355,23 +355,6 @@ PlayerState * GameState::localPlayerFromSlot(unsigned int slot)
 
 
 /**
-* Gets the entropy for a given player
-**/
-unsigned int GameState::getEntropy(unsigned int slot)
-{
-	return this->entropy;
-}
-
-/**
-* Increases the entropy for a player
-**/
-void GameState::increaseEntropy(unsigned int slot)
-{
-	this->entropy += 10;
-}
-
-
-/**
 * Add a particle group
 * Is a no-op if we don't have the particle system compiled in
 **/
@@ -410,8 +393,6 @@ void GameState::preGame()
 	if (GEng()->render->is3D()) {
 		this->particle_system = new SPK::System();
 	}
-
-	this->entropy = 0;
 
 	// Time of day cycle
 	this->time_of_day = this->gs->time_of_day;
@@ -629,11 +610,6 @@ void GameState::update(int delta)
 		// Make it darker if it rains
 		float ambient = MAX(0.0f, this->time_of_day - 0.5f * rain_flow);
 		GEng()->render->setAmbient(glm::vec4(ambient, ambient, ambient, 1.0f));
-	}
-
-	// Decrease entropy
-	if (this->entropy > 0) {
-		this->entropy--;
 	}
 
 	// Handle guichan logic
