@@ -160,6 +160,7 @@ class Unit : public Entity
 		float getHealth();
 		float getHealthPercent();
 		virtual int takeDamage(float damage);
+		void die();
 
 		void applyPickupAdjust(PickupTypeAdjust* adj);
 		void rollbackPickupAdjust(PickupTypeAdjust* adj);

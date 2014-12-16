@@ -59,6 +59,8 @@ void load_entity_lib(lua_State *L)
 		.beginClass<Unit>("Unit")
 			.addData("faction", &Unit::fac)
 			.addData("slot", &Unit::slot)
+			.addFunction("takeDamage", &Unit::takeDamage)
+			.addFunction("die", &Unit::die)
 		.endClass()
 
 		// Entity : Unit : Player

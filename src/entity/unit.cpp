@@ -572,9 +572,8 @@ void Unit::update(int delta)
 	// If they have fallen a considerable distance, they die
 	btTransform xform = ghost->getWorldTransform();
 	if (xform.getOrigin().y() <= -100.0) {
-		this->takeDamage(this->health);
+		this->die();
 	}
-
 
 	// Which weapon to use?
 	WeaponType *w = NULL;
@@ -714,31 +713,40 @@ int Unit::takeDamage(float damage)
 	create_particles_blood_spray(this->st, xform.getOrigin(), damage);
 
 	if (this->health <= 0 && this->del == false) {
-		this->endFiring();
-		this->leaveVehicle();
-
-		// Play a death animation
-		UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_DEATH);
-		if (uta) {
-			this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
-		}
-
-		// Play death sound
-		Sound* snd = this->uc->getSound(UNIT_SOUND_DEATH);
-		if (snd) {
-			GEng()->audio->playSound(snd, false, this);
-		}
-
-		// Fling some body parts around
-		if (!this->uc->death_debris.empty()) {
-			this->st->scatterDebris(this, 3, 5.0f, &this->uc->death_debris);
-		}
-
-		this->st->deadButNotBuried(this, this->anim);
+		this->die();
 		return 1;
 	}
 
 	return 0;
+}
+
+
+/**
+* The unit has died
+**/
+void Unit::die()
+{
+	this->endFiring();
+	this->leaveVehicle();
+
+	// Play a death animation
+	UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_DEATH);
+	if (uta) {
+		this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
+	}
+
+	// Play death sound
+	Sound* snd = this->uc->getSound(UNIT_SOUND_DEATH);
+	if (snd) {
+		GEng()->audio->playSound(snd, false, this);
+	}
+
+	// Fling some body parts around
+	if (!this->uc->death_debris.empty()) {
+		this->st->scatterDebris(this, 3, 5.0f, &this->uc->death_debris);
+	}
+
+	this->st->deadButNotBuried(this, this->anim);
 }
 
 
