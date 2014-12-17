@@ -10,7 +10,6 @@ class Entity;
 class GameState;
 class Mod;
 class Song;
-class Sound;
 
 using namespace std;
 
@@ -31,7 +30,7 @@ class AudioNull : public Audio
 		/**
 		* Plays a sound
 		**/
-		virtual int playSound(Sound * snd, bool loop, Entity *e);
+		virtual int playSound(AudioPtr snd, bool loop, Entity *e);
 
 		/**
 		* Plays a song

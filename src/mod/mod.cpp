@@ -22,7 +22,6 @@
 #include "pickuptype.h"
 #include "unittype.h"
 #include "song.h"
-#include "sound.h"
 #include "walltype.h"
 #include "vehicletype.h"
 #include "weapontype.h"
@@ -76,7 +75,6 @@ Mod::Mod(GameState * st, string directory)
 	this->objecttypes = NULL;
 	this->pickuptypes = NULL;
 	this->songs = NULL;
-	this->sounds = NULL;
 	this->unitclasses = NULL;
 	this->vehicletypes = NULL;
 	this->walltypes = NULL;
@@ -110,7 +108,6 @@ Mod::~Mod()
 	delete_v(this->objecttypes);
 	delete_v(this->pickuptypes);
 	delete_v(this->songs);
-	delete_v(this->sounds);
 	delete_v(this->unitclasses);
 	delete_v(this->walltypes);
 	delete_v(this->vehicletypes);
@@ -273,13 +270,9 @@ bool Mod::load(UIUpdate* ui)
 	DEBUG("mod", "Loading mod '%s'", this->name.c_str());
 
 #ifdef NOGUI
-	sounds = new vector<Sound*>();
 	songs = new vector<Song*>();
 
 #else
-	sounds = loadModFile<Sound*>(this, ui, "sounds.conf", "sound", sound_opts, &loadItemSound);
-	if (sounds == NULL) return false;
-
 	songs = loadModFile<Song*>(this, ui, "songs.conf", "song", song_opts, &loadItemSong);
 	if (songs == NULL) return false;
 #endif
@@ -414,22 +407,41 @@ AIType * Mod::getAIType(string name)
 /**
 * Load an assimp model
 **/
-AssimpModel * Mod::getAssimpModel(string name)
+AssimpModel * Mod::getAssimpModel(string filename)
 {
-	map<string, AssimpModel*>::iterator it = this->models.find(name);
+	map<string, AssimpModel*>::iterator it = this->models.find(filename);
 	if (it != this->models.end()) {
 		return it->second;
 	}
 
-	AssimpModel* am = new AssimpModel(this, name);
+	AssimpModel* am = new AssimpModel(this, filename);
 	if (! am->load((Render3D*) GEng()->render, false)) {
 		delete(am);
 		return NULL;
 	}
 
-	this->models.insert(pair<string, AssimpModel*>(name, am));
-
+	this->models.insert(pair<string, AssimpModel*>(filename, am));
 	return am;
+}
+
+
+/**
+* Gets a sound by filename
+**/
+AudioPtr Mod::getSound(string filename)
+{
+	map<string, AudioPtr>::iterator it = this->sounds.find(filename);
+	if (it != this->sounds.end()) {
+		return it->second;
+	}
+
+	AudioPtr snd = GEng()->audio->loadSound("sounds/" + filename, this);
+	if (snd == NULL) {
+		return NULL;
+	}
+
+	this->sounds.insert(pair<string, AudioPtr>(filename, snd));
+	return snd;
 }
 
 
@@ -622,20 +634,6 @@ Song * Mod::getRandomSong()
 	if (sz == 0) return NULL;
 
 	return songs->at(getRandom(0, sz - 1));
-}
-
-
-/**
-* Gets a sound by name
-**/
-Sound * Mod::getSound(string name)
-{
-	if (name.empty()) return NULL;
-
-	for (int i = sounds->size() - 1; i >= 0; --i) {
-		if (sounds->at(i)->name.compare(name) == 0) return sounds->at(i);
-	}
-	return NULL;
 }
 
 

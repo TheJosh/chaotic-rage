@@ -9,7 +9,6 @@
 #include "entity.h"
 
 class GameState;
-class Sound;
 
 using namespace std;
 

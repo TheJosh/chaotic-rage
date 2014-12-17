@@ -131,7 +131,6 @@
     <None Include="..\..\data\cr\shaders_gl\water.glslf" />
     <None Include="..\..\data\cr\shaders_gl\water.glslv" />
     <None Include="..\..\data\cr\songs.conf" />
-    <None Include="..\..\data\cr\sounds.conf" />
     <None Include="..\..\data\cr\unittypes.conf" />
     <None Include="..\..\data\cr\vehicletypes.conf" />
     <None Include="..\..\data\cr\walltypes.conf" />
@@ -263,7 +262,6 @@
     <ClCompile Include="..\..\src\mod\objecttype.cpp" />
     <ClCompile Include="..\..\src\mod\pickuptype.cpp" />
     <ClCompile Include="..\..\src\mod\song.cpp" />
-    <ClCompile Include="..\..\src\mod\sound.cpp" />
     <ClCompile Include="..\..\src\mod\unittype.cpp" />
     <ClCompile Include="..\..\src\mod\vehicletype.cpp" />
     <ClCompile Include="..\..\src\mod\walltype.cpp" />
@@ -476,7 +474,6 @@
     <ClInclude Include="..\..\src\mod\objecttype.h" />
     <ClInclude Include="..\..\src\mod\pickuptype.h" />
     <ClInclude Include="..\..\src\mod\song.h" />
-    <ClInclude Include="..\..\src\mod\sound.h" />
     <ClInclude Include="..\..\src\mod\unittype.h" />
     <ClInclude Include="..\..\src\mod\vehicletype.h" />
     <ClInclude Include="..\..\src\mod\walltype.h" />

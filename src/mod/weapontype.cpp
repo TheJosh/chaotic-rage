@@ -202,11 +202,19 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 
 		char * tmp = cfg_getstr(cfg_sound, "sound");
 		if (tmp == NULL) {
+			mod->setLoadErr("No value for field 'sound'");
 			delete(wts);
 			delete(wt);
 			return NULL;
 		}
+
 		wts->snd = mod->getSound(tmp);
+		if (wts->snd == NULL) {
+			mod->setLoadErr("Unable to load sound file");
+			delete(wts);
+			delete(wt);
+			return NULL;
+		}
 
 		wt->sounds.push_back(wts);
 	}
@@ -226,7 +234,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 * Returns a random sound which matches the specified type.
 * If it can't find a sound for that type, return NULL
 **/
-Sound* WeaponType::getSound(int type)
+AudioPtr WeaponType::getSound(int type)
 {
 	unsigned int j = 0;
 	unsigned int num = 0;

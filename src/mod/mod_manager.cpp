@@ -21,7 +21,6 @@
 #include "objecttype.h"
 #include "unittype.h"
 #include "song.h"
-#include "sound.h"
 #include "walltype.h"
 #include "vehicletype.h"
 #include "weapontype.h"
@@ -485,23 +484,6 @@ Song * ModManager::getRandomSong()
 {
 	Mod *mod = this->mods->at(getRandom(0, mods->size() - 1));
 	return mod->getRandomSong();
-}
-
-
-/**
-* Gets a sound by name
-**/
-Sound * ModManager::getSound(string name)
-{
-	if (name.empty()) return NULL;
-
-	for (unsigned int i = 0; i < this->mods->size(); i++) {
-		Mod *mod = this->mods->at(i);
-		Sound *et = mod->getSound(name);
-		if (et) return et;
-	}
-
-	return NULL;
 }
 
 

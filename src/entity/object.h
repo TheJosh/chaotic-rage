@@ -7,7 +7,6 @@
 
 class AnimPlay;
 class GameState;
-class Sound;
 class ObjectType;
 
 

@@ -8,7 +8,6 @@
 
 class AnimPlay;
 class GameState;
-class Sound;
 class btRigidBody;
 class btTransform;
 class btVector3;

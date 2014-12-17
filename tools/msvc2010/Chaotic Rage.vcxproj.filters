@@ -103,9 +103,6 @@
     <None Include="..\..\data\cr\animmodels.conf">
       <Filter>Configs</Filter>
     </None>
-    <None Include="..\..\data\cr\weapontypes.conf">
-      <Filter>Configs</Filter>
-    </None>
     <None Include="..\..\data\cr\floortypes.conf">
       <Filter>Configs</Filter>
     </None>
@@ -116,9 +113,6 @@
       <Filter>Configs</Filter>
     </None>
     <None Include="..\..\data\cr\songs.conf">
-      <Filter>Configs</Filter>
-    </None>
-    <None Include="..\..\data\cr\sounds.conf">
       <Filter>Configs</Filter>
     </None>
     <None Include="..\..\data\cr\unittypes.conf">
@@ -210,6 +204,9 @@
     </None>
     <None Include="..\..\data\cr\shaders_gl\water.glslv">
       <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\data\cr\weapontypes.conf">
+      <Filter>Configs</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -343,9 +340,6 @@
       <Filter>src\mod</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\mod\unittype.cpp">
-      <Filter>src\mod</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\mod\sound.cpp">
       <Filter>src\mod</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\mod\song.cpp">
@@ -963,9 +957,6 @@
       <Filter>src\mod</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\mod\unittype.h">
-      <Filter>src\mod</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mod\sound.h">
       <Filter>src\mod</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\mod\song.h">

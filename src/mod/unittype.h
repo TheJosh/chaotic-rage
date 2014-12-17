@@ -46,7 +46,7 @@ class UnitTypeSound
 {
 	public:
 		int id;
-		Sound * snd;
+		AudioPtr snd;
 		int type;
 };
 
@@ -91,7 +91,7 @@ class UnitType
 		~UnitType();
 
 	public:
-		Sound* getSound(int type);
+		AudioPtr getSound(int type);
 		UnitTypeAnimation* getAnimation(int type);
 
 		Mod * getMod() { return this->mod; }

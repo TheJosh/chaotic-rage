@@ -130,6 +130,10 @@ enum DialogName {
 	ENVIRONMENT,
 };
 
+// Sound pointers
+struct Mix_Chunk;
+typedef Mix_Chunk* AudioPtr;
+
 // A buttload of class definitions for forward-decls.
 class AIType;
 class AILogic;
@@ -180,7 +184,6 @@ class PlayerState;
 class Render;
 class Render3D;
 class Song;
-class Sound;
 class ServerConfig;
 class UIUpdate;
 class Unit;

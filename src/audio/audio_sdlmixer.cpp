@@ -12,7 +12,6 @@
 #include "../mod/mod.h"
 #include "../mod/mod_manager.h"
 #include "../mod/song.h"
-#include "../mod/sound.h"
 #include "../util/debug.h"
 
 struct SDL_RWops;
@@ -93,7 +92,7 @@ void AudioSDLMixer::playSong(Song * sg)
 * An entity wants to play a sound
 * Returns an int which can be used to halt the sound
 **/
-int AudioSDLMixer::playSound(Sound * snd, bool loop, Entity *e)
+int AudioSDLMixer::playSound(AudioPtr snd, bool loop, Entity *e)
 {
 	if (snd == NULL) return -1;
 
@@ -110,7 +109,7 @@ int AudioSDLMixer::playSound(Sound * snd, bool loop, Entity *e)
 	float vol = ((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2));
 	if (vol > 25.0f * 25.0f) return -1;
 
-	return Mix_PlayChannel(-1, snd->sound, loop ? -1 : 0);
+	return Mix_PlayChannel(-1, snd, loop ? -1 : 0);
 }
 
 /**

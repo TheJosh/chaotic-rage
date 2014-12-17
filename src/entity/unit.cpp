@@ -27,7 +27,6 @@
 #include "pickup.h"
 #include "vehicle.h"
 
-class Sound;
 class btTransform;
 class btVector3;
 
@@ -178,12 +177,12 @@ void Unit::beginFiring()
 
 	this->firing = true;
 
-	Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_BEGIN);
+	AudioPtr snd = this->weapon->wt->getSound(WEAPON_SOUND_BEGIN);
 	GEng()->audio->playSound(snd, false, this);
 
 	// TODO: This should only be after the WEAPON_SOUND_BEGIN sound has finished...
 	if (this->weapon->wt->continuous) {
-		Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_REPEAT);
+		AudioPtr snd = this->weapon->wt->getSound(WEAPON_SOUND_REPEAT);
 		weapon_sound = GEng()->audio->playSound(snd, this->weapon->wt->continuous, this);
 	}
 }
@@ -202,7 +201,7 @@ void Unit::endFiring()
 		GEng()->audio->stopSound(this->weapon_sound);
 	}
 
-	Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_END);
+	AudioPtr snd = this->weapon->wt->getSound(WEAPON_SOUND_END);
 	GEng()->audio->playSound(snd, false, this);
 }
 
@@ -218,7 +217,7 @@ void Unit::emptySound()
 	GEng()->audio->stopSound(this->weapon_sound);
 
 	// TODO: Fix this
-	//Sound* snd = this->weapon->wt->getSound(WEAPON_SOUND_EMPTY);
+	//AudioPtr snd = this->weapon->wt->getSound(WEAPON_SOUND_EMPTY);
 	//GEng()->audio->playSound(snd, true, this);
 }
 
@@ -736,7 +735,7 @@ void Unit::die()
 	}
 
 	// Play death sound
-	Sound* snd = this->uc->getSound(UNIT_SOUND_DEATH);
+	AudioPtr snd = this->uc->getSound(UNIT_SOUND_DEATH);
 	if (snd) {
 		GEng()->audio->playSound(snd, false, this);
 	}

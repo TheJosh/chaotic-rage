@@ -8,7 +8,6 @@
 class AnimPlay;
 class GameState;
 class PickupType;
-class Sound;
 class Unit;
 
 

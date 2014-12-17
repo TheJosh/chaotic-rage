@@ -13,7 +13,6 @@ using namespace std;
 
 class GameState;
 class Mod;
-class Sound;
 class Entity;
 class Song;
 
@@ -39,7 +38,7 @@ class AudioSDLMixer : public Audio
 		/**
 		* Plays a sound
 		**/
-		virtual int playSound(Sound * snd, bool loop, Entity *e);
+		virtual int playSound(AudioPtr snd, bool loop, Entity *e);
 
 		/**
 		* Plays a song

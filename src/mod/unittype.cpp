@@ -135,7 +135,14 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 			delete(uc);
 			return NULL;
 		}
+
 		uts->snd = mod->getSound(tmp);
+		if (uts->snd == NULL) {
+			mod->setLoadErr("Unable to load sound file");
+			delete(uts);
+			delete(uc);
+			return NULL;
+		}
 
 		uc->sounds.push_back(uts);
 	}
@@ -176,7 +183,7 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 * Returns a random sound which matches the specified type.
 * If it can't find a sound for that type, return NULL
 **/
-Sound* UnitType::getSound(int type)
+AudioPtr UnitType::getSound(int type)
 {
 	unsigned int j = 0;
 	unsigned int num = 0;

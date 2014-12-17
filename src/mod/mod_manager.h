@@ -16,7 +16,6 @@ class GameType;
 class ObjectType;
 class PickupType;
 class Song;
-class Sound;
 class UnitType;
 class VehicleType;
 class WallType;
@@ -65,7 +64,6 @@ class ModManager {
 		ObjectType * getObjectType(string name);
 		PickupType * getPickupType(string name);
 		Song * getSong(string name);
-		Sound * getSound(string name);
 		UnitType * getUnitType(string name);
 		VehicleType * getVehicleType(string name);
 		WallType * getWallType(string name);

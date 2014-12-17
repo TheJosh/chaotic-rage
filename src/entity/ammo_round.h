@@ -8,7 +8,6 @@
 class AnimPlay;
 class AssimpModel;
 class GameState;
-class Sound;
 class Unit;
 class WeaponType;
 class btCollisionShape;

@@ -23,7 +23,7 @@ class WeaponTypeSound
 {
 	public:
 		int id;
-		Sound * snd;
+		AudioPtr snd;
 		int type;
 };
 
@@ -56,7 +56,7 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 	public:
 		WeaponType();
 		virtual ~WeaponType() {}
-		Sound* getSound(int type);
+		AudioPtr getSound(int type);
 
 	public:
 		/**

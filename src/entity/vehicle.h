@@ -9,7 +9,6 @@
 
 class AnimPlay;
 class GameState;
-class Sound;
 class Unit;
 class btCollisionShape;
 class btTransform;
