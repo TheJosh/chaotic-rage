@@ -181,52 +181,22 @@
     <None Include="..\..\src\i18n\en_Pirate.txt">
       <Filter>src\i18n</Filter>
     </None>
-    <None Include="..\..\data\cr\shaders_gl\bones.glslf">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders_gl\bones.glslv">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders_gl\dissolve.glslf">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders_gl\dissolve.glslv">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders_gl\entities.glslf">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders_gl\entities.glslv">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders_gl\particles.glslf">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders_gl\particles.glslv">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="..\..\data\cr\shaders_gl\phong.glslf">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\..\data\cr\shaders_gl\phong.glslv">
+    <None Include="..\..\data\cr\shaders_gl\phong_bones.glslv">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\..\data\cr\shaders_gl\phong_bump.glslf">
+    <None Include="..\..\data\cr\shaders_gl\phong_shadow.glslf">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\..\data\cr\shaders_gl\phong_bump.glslv">
+    <None Include="..\..\data\cr\shaders_gl\phong_static.glslv">
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\..\data\cr\shaders_gl\skybox.glslf">
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\..\data\cr\shaders_gl\skybox.glslv">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders_gl\terrain.glslf">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\..\data\cr\shaders_gl\terrain.glslv">
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\..\data\cr\shaders_gl\text.glslf">
