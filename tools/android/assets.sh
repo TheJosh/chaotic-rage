@@ -19,12 +19,16 @@ cp -r ../../data/intro assets/data/ || exit 1
 cp -r ../../data/test assets/data/ || exit 1
 cp -r ../../maps assets/ || exit 1
 
+# Remove most songs
+find ./assets/data/cr/songs/ -name "*.ogg" -not -name "Alex*" -delete || exit 1
+
+# Android-specific assets overrides
+cp -r tweaked_assets/* assets/ || exit 1
+
+
 echo "Compressing assets..."
 
-# PNGs
 find assets/data/ | grep -i png | xargs mogrify -resize 256x256 -quality 99 -depth 24 || exit 1
-
-# JPGs
 find assets/data/ | grep -i jpg | xargs mogrify -resize 256x256 -quality 80 || exit 1
 
 echo "Done."
