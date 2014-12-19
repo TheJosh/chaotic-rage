@@ -18,7 +18,8 @@ ifdef MXE
 	LIBS := -liphlpapi
 	LUAPKG := lua
 	POSTFIX := .exe
-	DONT_COMPILE = $(OBJPATH)/touch.o
+	DONT_COMPILE = $(OBJPATH)/touch.o \
+		$(OBJPATH)/gui/controls_touch.o
 
 
 # emscripten llvm to javascript compiler
@@ -35,7 +36,8 @@ else ifdef EMSCRIPTEN
 		$(OBJPATH)/render/render_null.o \
 		$(OBJPATH)/render/render_ascii.o \
 		$(OBJPATH)/render/render_debug.o \
-		$(OBJPATH)/touch.o
+		$(OBJPATH)/touch.o \
+		$(OBJPATH)/gui/controls_touch.o
 
 
 # Standard Linux build
@@ -45,7 +47,8 @@ else
 	CFLAGS := -DGETOPT -Werror -Wall -MMD
 	LIBS := -lGL -lGLU -L/usr/X11R6/lib -lX11 -lm -lstdc++
 	PLATFORM := $(OBJPATH)/linux.o
-	DONT_COMPILE = $(OBJPATH)/touch.o
+	DONT_COMPILE = $(OBJPATH)/touch.o \
+		$(OBJPATH)/gui/controls_touch.o
 endif
 
 

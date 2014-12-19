@@ -8,6 +8,12 @@
 #include "../i18n/strings.h"
 
 
+/**
+* This is the non-touch implementation of the DialogControls class
+* Used for Linux, Windows and Emscripten
+**/
+
+
 using namespace std;
 
 const static string controls_single[] = {

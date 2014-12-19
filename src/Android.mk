@@ -62,7 +62,8 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 		$(wildcard $(LOCAL_PATH)/weapons/*.cpp) \
 	)
 
-DONT_COMPILE_FILES := render_opengl/gl_debug_drawer.cpp
+DONT_COMPILE_FILES := render_opengl/gl_debug_drawer.cpp \
+	gui/controls.cpp
 
 LOCAL_SRC_FILES := $(filter-out $(DONT_COMPILE_FILES),$(LOCAL_SRC_FILES))
 
