@@ -52,12 +52,12 @@ DialogNewGame::~DialogNewGame()
 }
 
 
-#define COLLEFT     10
-#define COLRIGHT    110
-#define COLRIGHTW   195
-#define ROWHEIGHT   27
-#define SMLHEIGHT   23
-#define BTNHEIGHT   37
+#define COLLEFT     10 * GEng()->gui_scale
+#define COLRIGHT    110 * GEng()->gui_scale
+#define COLRIGHTW   195 * GEng()->gui_scale
+#define ROWHEIGHT   27 * GEng()->gui_scale
+#define SMLHEIGHT   23 * GEng()->gui_scale
+#define BTNHEIGHT   37 * GEng()->gui_scale
 
 
 /**
@@ -81,7 +81,7 @@ gcn::Container * DialogNewGame::setup()
 		c = new gcn::Window(_(STRING_MENU_SPLIT));
 	}
 
-	c->setDimension(gcn::Rectangle(0, 0, 320, 280));
+	c->setDimension(gcn::Rectangle(0, 0, 320 * GEng()->gui_scale, 280 * GEng()->gui_scale));
 
 
 	label = new gcn::Label(_(STRING_NEWGAME_TYPE));
@@ -141,7 +141,7 @@ gcn::Container * DialogNewGame::setup()
 	c->add(this->host);
 
 	button = new gcn::Button(this->num_local == 1 ? _(STRING_NEWGAME_START_SINGLE) : _(STRING_NEWGAME_START_SPLIT));
-	button->setPosition((320 - button->getWidth()) / 2, 230);
+	button->setPosition((c->getWidth() - button->getWidth()) / 2, c->getHeight() - button->getHeight() - ROWHEIGHT);
 	button->addActionListener(this);
 	c->add(button);
 

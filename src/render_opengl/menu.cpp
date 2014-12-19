@@ -97,7 +97,7 @@ void Menu::loadMenuItems()
 	Mod* mod = GEng()->mm->getSupplOrBase();
 	int offsetX = 40;
 	int menus = 4 + mod->hasArcade() * 3 + mod->hasCampaign();
-	int offsetY = MIN(40, render->getHeight() / (menus + 1));
+	int offsetY = MIN(40, render->getHeight() / (menus + 1)) * GEng()->gui_scale;
 	int offsetYFirst = MIN(60, render->getHeight() / (menus + 1));
 
 	this->menuClear();
@@ -348,7 +348,7 @@ void Menu::menuAdd(string name, int x, int y, MenuCommand cmd)
 	nu->x1 = x;
 	nu->x2 = x + 200;
 	nu->y1 = y;
-	nu->y2 = y + 20;
+	nu->y2 = y + 20 * GEng()->gui_scale;
 	nu->name = name;
 	nu->cmd = cmd;
 	nu->hover = false;
@@ -419,10 +419,11 @@ void Menu::addDialog(Dialog* dialog)
 	dialog->gm = this->gm;
 	dialog->setup();
 
-	gcn::Container* c = dialog->getContainer();
+	gcn::Window* c = (gcn::Window*)dialog->getContainer();
 
 	c->setPosition((this->render->real_width - c->getWidth()) / 2, (this->render->real_height - c->getHeight()) / 2);
 	c->setBaseColor(gcn::Color(150, 150, 150, 225));
+	c->setTitleBarHeight(c->getTitleBarHeight() * GEng()->gui_scale);
 
 	this->gui_container->add(c);
 	this->openDialogs.push_back(dialog);

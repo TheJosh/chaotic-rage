@@ -218,6 +218,13 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	this->real_width = width;
 	this->real_height = height;
 
+	// If we're on a high-res Android device, make the GUIs larger
+	#if defined(__ANDROID__)
+		if (this->real_width > 640) {
+			GEng()->gui_scale = 2.0f;
+		}
+	#endif
+
 	// Window title
 	char title[BUFFER_MAX];
 	snprintf(title, BUFFER_MAX, "Chaotic Rage %s", VERSION);
@@ -359,7 +366,8 @@ void RenderOpenGL::setMouseGrab(bool newval)
 **/
 void RenderOpenGL::loadFont(string name, Mod* mod)
 {
-	font = new OpenGLFont(this, name, mod, 20.0f);
+	// TODO: Menu to have it's own font
+	font = new OpenGLFont(this, name, mod, 20.0f * GEng()->gui_scale);
 
 	// I don't quite know why this is here...
 	// TODO: Move or remove
@@ -383,7 +391,7 @@ void RenderOpenGL::initGuichan(gcn::Gui * gui, Mod * mod)
 	gcn::Image::setImageLoader(imageLoader);
 
 	delete(gui_font);
-	gui_font = new OpenGLFont(this, "DejaVuSans.ttf", mod, 12.0f);
+	gui_font = new OpenGLFont(this, "DejaVuSans.ttf", mod, 12.0f * GEng()->gui_scale);
 	
 	try {
 		gcn::Widget::setGlobalFont(gui_font);

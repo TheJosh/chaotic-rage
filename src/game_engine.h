@@ -63,6 +63,7 @@ class GameEngine
 		gcn::Gui* gui;
 		gcn::SDLInput* guiinput;
 		gcn::Container* guitop;
+		float gui_scale;
 
 	public:
 		GameEngine();

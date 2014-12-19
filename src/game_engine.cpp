@@ -52,6 +52,7 @@ GameEngine::GameEngine()
 	this->cmdline = NULL;
 	this->cconf = NULL;
 	this->mm = NULL;
+	this->gui_scale = 1.0f;
 
 	this->ticksum = 0;
 	this->tickindex = 0;
