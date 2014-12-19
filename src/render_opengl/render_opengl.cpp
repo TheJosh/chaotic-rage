@@ -367,7 +367,7 @@ void RenderOpenGL::setMouseGrab(bool newval)
 void RenderOpenGL::loadFont(string name, Mod* mod)
 {
 	// TODO: Menu to have it's own font
-	font = new OpenGLFont(this, name, mod, 20.0f * GEng()->gui_scale);
+	font = new OpenGLFont(this, name, mod, 20.0f);
 
 	// I don't quite know why this is here...
 	// TODO: Move or remove

@@ -22,6 +22,7 @@ class RenderOpenGL;
 class GameState;
 class GameManager;
 class GameSettings;
+class OpenGLFont;
 
 
 enum MenuCommand {
@@ -53,6 +54,7 @@ class Menu : public UIUpdate
 		GameManager *gm;
 		Mod *base_mod;
 		RenderOpenGL *render;
+		OpenGLFont* font;
 		int running;
 		vector<MenuItem*> menuitems;
 		vector<Dialog*> openDialogs;

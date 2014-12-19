@@ -10,6 +10,7 @@
 #include "menu.h"
 #include "render_opengl.h"
 #include "animplay.h"
+#include "guichan_font.h"
 
 #include "../guichan/guichan.hpp"
 #include "../guichan/sdl.hpp"
@@ -74,15 +75,22 @@ void Menu::loadModBits(UIUpdate* ui)
 	// Logo
 	delete(this->logo);
 	this->logo = this->render->loadSprite("menu/logo.png", mod);
-	if (!logo) {
+	if (!this->logo) {
 		this->logo = this->render->loadSprite("menu/logo.png", GEng()->mm->getBase());
 	}
 
 	// Background
 	delete(this->bg);
 	this->bg = this->render->loadSprite("menu/bg.jpg", mod);
-	if (!bg) {
+	if (!this->bg) {
 		this->bg = this->render->loadSprite("menu/bg.jpg", GEng()->mm->getBase());
+	}
+
+	// Font
+	delete(this->font);
+	this->font = new OpenGLFont(this->render, "DejaVuSans.ttf", mod, 20.0f * GEng()->gui_scale);
+	if (!this->font) {
+		this->font = new OpenGLFont(this->render, "DejaVuSans.ttf", GEng()->mm->getBase(), 20.0f * GEng()->gui_scale);
 	}
 
 	this->loadMenuItems();
@@ -365,12 +373,12 @@ void Menu::menuRender()
 	for (unsigned int i = 0; i < this->menuitems.size(); i++) {
 		MenuItem * m = this->menuitems.at(i);
 
-		this->render->renderText(m->name, m->x1 + 1, m->y1 + 20 + 1, 0.1f, 0.1f, 0.1f, 1.0f);
+		this->font->drawString(NULL, m->name, m->x1 + 1, m->y1 + 20 + 1, 0.1f, 0.1f, 0.1f, 1.0f);
 
 		if (m->hover) {
-			this->render->renderText(m->name, m->x1, m->y1 + 20, 161.0f/255.0f, 0.0f, 0.0f, 1.0f);
+			this->font->drawString(NULL, m->name, m->x1, m->y1 + 20, 161.0f/255.0f, 0.0f, 0.0f, 1.0f);
 		} else {
-			this->render->renderText(m->name, m->x1, m->y1 + 20, 1.0f, 1.0f, 1.0f, 1.0f);
+			this->font->drawString(NULL, m->name, m->x1, m->y1 + 20, 1.0f, 1.0f, 1.0f, 1.0f);
 		}
 	}
 }
