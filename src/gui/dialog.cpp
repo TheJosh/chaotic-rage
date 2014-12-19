@@ -63,6 +63,11 @@ DialogQuit::DialogQuit(GameState *st)
 }
 
 
+#define WIN_WIDTH 300 * GEng()->gui_scale
+#define WIN_HEIGHT 100 * GEng()->gui_scale
+#define BTN_WIDTH 60 * GEng()->gui_scale
+#define BTN_HEIGHT 30 * GEng()->gui_scale
+
 /**
 * Setup routine for the quit dialog
 **/
@@ -71,18 +76,18 @@ gcn::Container * DialogQuit::setup()
 	gcn::Button* button;
 
 	c = new gcn::Window(_(STRING_GAME_QUIT));
-	c->setDimension(gcn::Rectangle(0, 0, 300, 100));
+	c->setDimension(gcn::Rectangle(0, 0, WIN_WIDTH, WIN_HEIGHT));
 
 	button = new gcn::Button(_(STRING_GAME_YES));
-	button->setPosition(150 - 5 - 60, 30);
-	button->setWidth(60);
+	button->setPosition(WIN_WIDTH/2 - 5 - BTN_WIDTH, BTN_HEIGHT);
+	button->setWidth(BTN_WIDTH);
 	button->setId("Y");
 	button->addActionListener(this);
 	c->add(button);
 
 	button = new gcn::Button(_(STRING_GAME_NO));
-	button->setPosition(150 + 5, 30);
-	button->setWidth(60);
+	button->setPosition(WIN_WIDTH/2 + 5, BTN_HEIGHT);
+	button->setWidth(BTN_WIDTH);
 	button->setId("N");
 	button->addActionListener(this);
 	c->add(button);

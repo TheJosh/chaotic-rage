@@ -52,7 +52,7 @@ GameEngine::GameEngine()
 	this->cmdline = NULL;
 	this->cconf = NULL;
 	this->mm = NULL;
-	this->gui_scale = 1.0f;
+	this->gui_scale = 2.0f;
 
 	this->ticksum = 0;
 	this->tickindex = 0;
@@ -170,9 +170,10 @@ void GameEngine::addDialog(Dialog * dialog)
 	if (this->gui == NULL) return;
 	if (hasDialog(dialog->getName())) return;
 
-	gcn::Container * c = dialog->setup();
+	gcn::Window * c = (gcn::Window*)dialog->setup();
 	c->setPosition((this->render->getWidth() - c->getWidth()) / 2, (this->render->getHeight() - c->getHeight()) / 2);
 	c->setBaseColor(gcn::Color(150, 150, 150, 200));
+	c->setTitleBarHeight(c->getTitleBarHeight() * GEng()->gui_scale);
 	this->guitop->add(c);
 
 	this->dialogs.push_back(dialog);

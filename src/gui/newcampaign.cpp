@@ -13,6 +13,7 @@
 #include "../i18n/gettext.h"
 #include "../render_opengl/menu.h"
 #include "../game_manager.h"
+#include "../game_engine.h"
 #include "../http/serverlist.h"
 #include "../mod/campaign.h"
 #include "dialog.h"
@@ -58,9 +59,10 @@ DialogNewCampaign::~DialogNewCampaign()
 }
 
 
-#define COLLEFT     10
-#define COLRIGHT    110
-#define COLRIGHTW   195
+#define COLLEFT     10 * GEng()->gui_scale
+#define COLRIGHT    110 * GEng()->gui_scale
+#define COLRIGHTW   195 * GEng()->gui_scale
+#define ROWHEIGHT   27 * GEng()->gui_scale
 
 
 /**
@@ -70,40 +72,38 @@ gcn::Container * DialogNewCampaign::setup()
 {
 	gcn::Button* button;
 	gcn::Label* label;
+	int y = 10;
 
 	c = new gcn::Window(_(STRING_MENU_CAMPAIGN));
-	c->setDimension(gcn::Rectangle(0, 0, 320, 200));
-
+	c->setDimension(gcn::Rectangle(0, 0, 320 * GEng()->gui_scale, 200 * GEng()->gui_scale));
 
 	label = new gcn::Label(_(STRING_MENU_CAMPAIGN));
-	c->add(label, COLLEFT, 10);
-
+	c->add(label, COLLEFT, y);
 	this->campaign = new gcn::DropDown(this->campaigns);
-	this->campaign->setPosition(COLRIGHT, 10);
+	this->campaign->setPosition(COLRIGHT, y);
 	this->campaign->setWidth(COLRIGHTW);
 	c->add(this->campaign);
 
+	y += ROWHEIGHT;
 
 	label = new gcn::Label(_(STRING_NEWGAME_UNIT));
-	c->add(label, COLLEFT, 30);
-
+	c->add(label, COLLEFT, y);
 	this->unittype = new gcn::DropDown(new VectorListModel(this->gm->getUnitTypes()));
-	this->unittype->setPosition(COLRIGHT, 30);
+	this->unittype->setPosition(COLRIGHT, y);
 	this->unittype->setWidth(COLRIGHTW);
 	c->add(this->unittype);
 
+	y += ROWHEIGHT;
 
 	label = new gcn::Label(_(STRING_NEWGAME_VIEW));
-	c->add(label, COLLEFT, 50);
-
+	c->add(label, COLLEFT, y);
 	this->viewmode = new gcn::DropDown(new VectorListModel(this->gm->getViewModes()));
-	this->viewmode->setPosition(COLRIGHT, 50);
+	this->viewmode->setPosition(COLRIGHT, y);
 	this->viewmode->setWidth(COLRIGHTW);
 	c->add(this->viewmode);
 
-
 	button = new gcn::Button(_(STRING_NEWGAME_START_CAMPAIGN));
-	button->setPosition(120, 150);
+	button->setPosition((c->getWidth() - button->getWidth()) / 2, c->getHeight() - button->getHeight() - ROWHEIGHT);
 	button->addActionListener(this);
 	c->add(button);
 

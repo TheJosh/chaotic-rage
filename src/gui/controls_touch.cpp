@@ -6,6 +6,7 @@
 #include <string>
 #include "../i18n/gettext.h"
 #include "../i18n/strings.h"
+#include "../game_engine.h"
 
 
 /**
@@ -39,13 +40,13 @@ const static string controls_single[] = {
 **/
 gcn::Container * DialogControls::setup()
 {
-	int cols[] = {22, 600};
+	int cols[] = {22 * GEng()->gui_scale, 400 * GEng()->gui_scale};
 
 
 	gcn::Label* label;
 
 	c = new gcn::Window(_(STRING_MENU_HELP));
-	c->setDimension(gcn::Rectangle(0, 0, 622, 100));
+	c->setDimension(gcn::Rectangle(0, 0, 422 * GEng()->gui_scale, 100 * GEng()->gui_scale));
 
 	int y = 40;
 	int i = 0;
@@ -60,10 +61,10 @@ gcn::Container * DialogControls::setup()
 		c->add(label, cols[1] - label->getWidth(), y);
 
 		i++;
-		y += 17;
+		y += 17 * GEng()->gui_scale;
 	}
 
-	c->setHeight(y + 30);
+	c->setHeight(y + 30 * GEng()->gui_scale);
 
 	return c;
 }
