@@ -52,6 +52,7 @@ Menu::Menu(GameState *st, GameManager *gm)
 	this->render = (RenderOpenGL*) GEng()->render;
 	this->logo = NULL;
 	this->bg = NULL;
+	this->font = NULL;
 }
 
 
@@ -60,6 +61,7 @@ Menu::~Menu()
 	menuClear();
 	delete(this->logo);
 	delete(this->bg);
+	delete(this->font);
 }
 
 
@@ -86,10 +88,8 @@ void Menu::loadModBits(UIUpdate* ui)
 		this->bg = this->render->loadSprite("menu/bg.jpg", GEng()->mm->getBase());
 	}
 
-	// Font
-	delete(this->font);
-	this->font = new OpenGLFont(this->render, "DejaVuSans.ttf", mod, 20.0f * GEng()->gui_scale);
-	if (!this->font) {
+	// Font always loaded from base mod
+	if (this->font == NULL) {
 		this->font = new OpenGLFont(this->render, "DejaVuSans.ttf", GEng()->mm->getBase(), 20.0f * GEng()->gui_scale);
 	}
 
