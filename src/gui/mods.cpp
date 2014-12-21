@@ -57,16 +57,17 @@ DialogMods::~DialogMods()
 	delete(this->icon);
 }
 
+
 /**
 * Setup routine for the mods dialog
 **/
 gcn::Container * DialogMods::setup()
 {
-	const int w = 532;	// width
-	const int h = 326;	// height
-	const int p = 10;	// padding
-	const int bw = 60;	// buttonwidth
-	const int bh = 20;	// buttonheight
+	const int w = 532 * GEng()->gui_scale;	// width
+	const int h = 326 * GEng()->gui_scale;	// height
+	const int p = 10 * GEng()->gui_scale;	// padding
+	const int bw = 60 * GEng()->gui_scale;	// buttonwidth
+	const int bh = 20 * GEng()->gui_scale;	// buttonheight
 
 	c = new gcn::Window(_(STRING_MENU_MODS));
 	c->setDimension(gcn::Rectangle(0, 0, w, h + 15));
@@ -79,8 +80,8 @@ gcn::Container * DialogMods::setup()
 	c->add(this->modlist);
 
 	this->icon = new gcn::Icon();
-	this->icon->setPosition(p, p + 20);
-	this->icon->setSize(512, 256);
+	this->icon->setPosition(p, p + p + this->modlist->getHeight());
+	this->icon->setSize(512 * GEng()->gui_scale, 256 * GEng()->gui_scale);
 	c->add(this->icon);
 	this->valueChanged(NULL);
 

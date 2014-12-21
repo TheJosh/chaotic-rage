@@ -38,20 +38,20 @@ DialogClientSettings::~DialogClientSettings()
 }
 
 
-#define COLLEFT     10
-#define COLRIGHT    110
-#define ROWHEIGHT   27
+#define COLLEFT     10 * GEng()->gui_scale
+#define COLRIGHT    110 * GEng()->gui_scale
+#define ROWHEIGHT   27 * GEng()->gui_scale
 
 /**
 * Setup routine for the client settings dialog
 **/
 gcn::Container * DialogClientSettings::setup()
 {
-	const int w = 532;	// width
-	const int h = 326;	// height
-	const int p = 10;	// padding
-	const int bw = 200;	// button width
-	const int bh = 20;	// button height
+	const int w = 532 * GEng()->gui_scale;	// width
+	const int h = 326 * GEng()->gui_scale;	// height
+	const int p = 10 * GEng()->gui_scale;	// padding
+	const int bw = 200 * GEng()->gui_scale;	// button width
+	const int bh = 20 * GEng()->gui_scale;	// button height
 	char buf[BUFFER_MAX];
 	int y = 10;
 
@@ -68,7 +68,7 @@ gcn::Container * DialogClientSettings::setup()
 	snprintf(buf, BUFFER_MAX, "%i", gl->msaa);
 	this->gl_msaa = new gcn::TextField(std::string(buf));
 	this->gl_msaa->setPosition(COLRIGHT, y);
-	this->gl_msaa->setWidth(50);
+	this->gl_msaa->setWidth(50 * GEng()->gui_scale);
 	c->add(this->gl_msaa);
 	y += ROWHEIGHT;
 
@@ -78,7 +78,7 @@ gcn::Container * DialogClientSettings::setup()
 	snprintf(buf, BUFFER_MAX, "%i", gl->tex_filter);
 	this->gl_tex_filter = new gcn::TextField(std::string(buf));
 	this->gl_tex_filter->setPosition(COLRIGHT, y);
-	this->gl_tex_filter->setWidth(50);
+	this->gl_tex_filter->setWidth(50 * GEng()->gui_scale);
 	c->add(this->gl_tex_filter);
 	y += ROWHEIGHT;
 
@@ -88,7 +88,7 @@ gcn::Container * DialogClientSettings::setup()
 	this->langs = getAvailableLangs();
 	this->lang = new gcn::DropDown(new VectorListModel(this->langs));
 	this->lang->setPosition(COLRIGHT, y);
-	this->lang->setWidth(100);
+	this->lang->setWidth(100 * GEng()->gui_scale);
 	c->add(this->lang);
 	for (unsigned int i = this->langs->size() - 1; i != 0; --i) {
 		if (this->langs->at(i) == GEng()->cconf->lang) {
@@ -113,7 +113,7 @@ gcn::Container * DialogClientSettings::setup()
 		snprintf(buf, BUFFER_MAX, "%i", GEng()->cconf->width);
 		this->width = new gcn::TextField(std::string(buf));
 		this->width->setPosition(COLRIGHT, y);
-		this->width->setWidth(50);
+		this->width->setWidth(50 * GEng()->gui_scale);
 		c->add(this->width);
 		y += ROWHEIGHT;
 
@@ -123,7 +123,7 @@ gcn::Container * DialogClientSettings::setup()
 		snprintf(buf, BUFFER_MAX, "%i", GEng()->cconf->height);
 		this->height = new gcn::TextField(std::string(buf));
 		this->height->setPosition(COLRIGHT, y);
-		this->height->setWidth(50);
+		this->height->setWidth(50 * GEng()->gui_scale);
 		c->add(this->height);
 		y += ROWHEIGHT;
 	#endif

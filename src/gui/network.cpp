@@ -8,6 +8,7 @@
 #include <guichan/sdl.hpp>
 
 #include "../rage.h"
+#include "../game_engine.h"
 #include "../i18n/gettext.h"
 #include "../render_opengl/menu.h"
 #include "../http/serverlist.h"
@@ -53,6 +54,13 @@ DialogNetJoin::~DialogNetJoin()
 }
 
 
+#define TAB_W       245 * GEng()->gui_scale
+#define TAB_H       180 * GEng()->gui_scale
+#define LIST_W      225 * GEng()->gui_scale
+#define LIST_H      110 * GEng()->gui_scale
+#define ROWHEIGHT   27 * GEng()->gui_scale
+#define PADDING     10 * GEng()->gui_scale
+
 /**
 * Setup routine for the join network game dialog
 **/
@@ -61,41 +69,40 @@ gcn::Container * DialogNetJoin::setup()
 	gcn::Button* button;
 
 	c = new gcn::Window(_(STRING_MENU_NETWORK));
-	c->setDimension(gcn::Rectangle(0, 0, 265, 250));
+	c->setDimension(gcn::Rectangle(0, 0, 265 * GEng()->gui_scale, 250 * GEng()->gui_scale));
 
 	this->tabs = new gcn::TabbedArea();
-	this->tabs->setDimension(gcn::Rectangle(10, 10, 245, 180));
+	this->tabs->setDimension(gcn::Rectangle(PADDING, PADDING, TAB_W, TAB_H));
 	c->add(this->tabs);
 
 	// Direct connect to a host
 	{
 		gcn::Container* tabc = new gcn::Container();
-		tabc->setDimension(gcn::Rectangle(0, 0, 245, 180));
+		tabc->setDimension(gcn::Rectangle(0, 0, TAB_W, TAB_H));
 		this->tabs->addTab(_(STRING_NETWORK_DIRECT), tabc);
 
 		gcn::Label* label = new gcn::Label(_(STRING_NETWORK_HOSTNAME));
-		tabc->add(label, 10, 10);
+		tabc->add(label, PADDING, PADDING);
 
 		this->host = new gcn::TextField("localhost");
-		this->host->setPosition(80, 10);
-		this->host->setWidth(150);
+		this->host->setPosition(80 * GEng()->gui_scale, PADDING);
+		this->host->setWidth(150 * GEng()->gui_scale);
 		tabc->add(this->host);
 	}
 
 	// List of local hosts
 	{
 		gcn::Container* tabc = new gcn::Container();
-		tabc->setDimension(gcn::Rectangle(0, 0, 245, 180));
+		tabc->setDimension(gcn::Rectangle(0, 0, TAB_W, TAB_H));
 		this->tabs->addTab(_(STRING_NETWORK_LOCAL), tabc);
 
 		this->local_list = new gcn::ListBox(NULL);
-		this->local_list->setPosition(10, 10);
-		this->local_list->setWidth(225);
-		this->local_list->setHeight(110);
+		this->local_list->setPosition(PADDING, PADDING);
+		this->local_list->setSize(LIST_W, LIST_H);
 		tabc->add(this->local_list);
 
 		this->local_button = new gcn::Button(_(STRING_NETWORK_REFRESH_LIST));
-		this->local_button->setPosition(10, 125);
+		this->local_button->setPosition(PADDING, LIST_H + PADDING);
 		this->local_button->addActionListener(this->local_refresh_action);
 		tabc->add(this->local_button);
 	}
@@ -103,23 +110,22 @@ gcn::Container * DialogNetJoin::setup()
 	// List of internet hosts
 	{
 		gcn::Container* tabc = new gcn::Container();
-		tabc->setDimension(gcn::Rectangle(0, 0, 245, 180));
+		tabc->setDimension(gcn::Rectangle(0, 0, TAB_W, TAB_H));
 		this->tabs->addTab(_(STRING_NETWORK_INTERNET), tabc);
 
 		this->internet_list = new gcn::ListBox(NULL);
-		this->internet_list->setPosition(10, 10);
-		this->internet_list->setWidth(225);
-		this->internet_list->setHeight(110);
+		this->internet_list->setPosition(PADDING, PADDING);
+		this->local_list->setSize(LIST_W, LIST_H);
 		tabc->add(this->internet_list);
 
 		this->internet_button = new gcn::Button(_(STRING_NETWORK_REFRESH_LIST));
-		this->internet_button->setPosition(10, 125);
+		this->internet_button->setPosition(PADDING, LIST_H + PADDING);
 		this->internet_button->addActionListener(this->internet_refresh_action);
 		tabc->add(this->internet_button);
 	}
 
 	button = new gcn::Button(_(STRING_NETWORK_JOIN_GAME));
-	button->setPosition(120, 200);
+	button->setPosition((c->getWidth() - button->getWidth()) / 2, c->getHeight() - button->getHeight() - ROWHEIGHT);
 	button->addActionListener(this);
 	c->add(button);
 
