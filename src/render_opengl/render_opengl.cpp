@@ -1092,6 +1092,7 @@ void RenderOpenGL::renderSprite(GLuint texture, int x, int y, int w, int h)
 void RenderOpenGL::preGame()
 {
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_CLAMP);
 	glEnable(GL_CULL_FACE);
 
 	#ifdef OpenGL

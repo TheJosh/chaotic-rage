@@ -68,6 +68,8 @@ HUDLabel * HUD::addLabel(int x, int y, string data, HUDLabel *l)
 **/
 void HUD::draw()
 {
+	glDisable(GL_DEPTH_TEST);
+
 	if (this->weapon_menu && this->ps->p != NULL) {
 		// Weapon menu
 		if (this->weapon_menu_remove_time < ps->st->game_time) {
@@ -193,6 +195,8 @@ void HUD::draw()
 			this->render->renderSprite(wt->crosshair, x, y, size, size);
 		}
 	}
+
+	glEnable(GL_DEPTH_TEST);
 }
 
 
