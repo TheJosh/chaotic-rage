@@ -72,7 +72,9 @@ class UnitType
 		string name;
 		CRC32 id;
 
-		AssimpModel * model;
+		AssimpModel* model;
+		AssimpNode* node_head;
+
 		btConvexShape* col_shape;
 		float begin_health;
 		vector<WeaponType*> spawn_weapons;

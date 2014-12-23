@@ -77,9 +77,9 @@ class AnimPlay
 		// Arbitary movement of nodes (e.g. gun turret)
 		void addMoveNode(string node);
 		void addMoveNode(AssimpNode *nd);
+		void removeMoveNode(AssimpNode *nd);
 		void setMoveTransform(string node, glm::mat4 transform);
 		void setMoveTransform(AssimpNode *nd, glm::mat4 transform);
-		void resetMoveTransform(string node);
 
 		// Custom transform which gets multiplied by the root node transform
 		void setCustomTransform(glm::mat4 custom_transform);

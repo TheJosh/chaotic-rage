@@ -149,6 +149,21 @@ void AnimPlay::addMoveNode(AssimpNode *nd)
 
 
 /**
+* Remove a "move node", a node which is transformed by some aspect of the game engine
+* If this brings the model back to static, we re-calc the transforms.
+**/
+void AnimPlay::removeMoveNode(AssimpNode *nd)
+{
+	this->move_nodes.erase(nd);
+
+	// If it's static, the calcs are really easy
+	if (this->anim == NULL && this->move_nodes.empty()) {
+		this->calcTransformsStatic();
+	}
+}
+
+
+/**
 * Set the transform for a move node
 **/
 void AnimPlay::setMoveTransform(string node, glm::mat4 transform)
@@ -166,24 +181,6 @@ void AnimPlay::setMoveTransform(string node, glm::mat4 transform)
 void AnimPlay::setMoveTransform(AssimpNode *nd, glm::mat4 transform)
 {
 	this->move_nodes[nd] = transform;
-}
-
-
-/**
-* Clears the "move node", a node which is transformed by some aspect of the game engine.
-* Because this might bring the model back to static, we re-calc the transforms.
-**/
-void AnimPlay::resetMoveTransform(string node)
-{
-	AssimpNode* nd = this->model->findNode(this->model->rootNode, node);
-	if (nd == NULL) return;
-
-	this->move_nodes[nd] = glm::mat4();
-
-	// If it's static, the calcs are really easy
-	if (this->anim == NULL && this->move_nodes.empty()) {
-		this->calcTransformsStatic();
-	}
 }
 
 

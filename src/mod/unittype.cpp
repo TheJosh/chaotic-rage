@@ -7,6 +7,7 @@
 #include <string>
 #include <btBulletDynamicsCommon.h>
 #include "../rage.h"
+#include "../render_opengl/assimpmodel.h"
 #include "mod.h"
 #include "unittype.h"
 
@@ -38,7 +39,9 @@ static cfg_opt_t unitsound_opts[] =
 cfg_opt_t unittype_opts[] =
 {
 	CFG_STR((char*) "name", 0, CFGF_NONE),
+
 	CFG_STR((char*) "model", 0, CFGF_NONE),
+	CFG_STR((char*) "node_head", 0, CFGF_NONE),
 
 	CFG_FLOAT((char*) "max_speed", 0.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "melee_damage", 1000, CFGF_NONE),
@@ -70,6 +73,7 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 {
 	UnitType* uc;
 	int j;
+	char* tmp;
 
 	// Basics
 	uc = new UnitType();
@@ -79,17 +83,31 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	uc->playable = cfg_getint(cfg_item, "playable");
 
 	// 3D model
-	char * tmp = cfg_getstr(cfg_item, "model");
+	tmp = cfg_getstr(cfg_item, "model");
 	if (tmp == NULL) {
+		mod->setLoadErr("No model specified");
 		delete(uc);
 		return NULL;
 	}
 	uc->model = mod->getAssimpModel(tmp);
 	if (uc->model == NULL) {
+		mod->setLoadErr("Invalid model specified");
 		delete(uc);
 		return NULL;
 	}
 
+	// Node representing the head
+	tmp = cfg_getstr(cfg_item, "node_head");
+	if (tmp != NULL) {
+		AssimpNode* nd = uc->model->findNode(std::string(tmp));
+		if (nd == NULL) {
+			mod->setLoadErr("Invalid node_head");
+			delete(uc);
+			return NULL;
+		}
+		uc->node_head = nd;
+	}
+	
 	// Col shape
 	uc->col_shape = new btCapsuleShape(0.6f, UNIT_PHYSICS_HEIGHT/2.0f);
 

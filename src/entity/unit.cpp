@@ -104,6 +104,10 @@ void Unit::init(UnitType *ut, GameState *st, Faction fac, btTransform & loc)
 	glm::vec3 translate(0.0f, UNIT_PHYSICS_HEIGHT/-2.0f, 0.0f);
 	this->anim->setCustomTransform(translate);
 
+	if (uc->node_head) {
+		this->anim->addMoveNode(uc->node_head);
+	}
+
 	st->addAnimPlay(this->anim, this);
 
 	// Set animation
@@ -727,6 +731,9 @@ void Unit::die()
 {
 	this->endFiring();
 	this->leaveVehicle();
+
+	// Remove move nodes so they can be animated
+	this->anim->removeMoveNode(uc->node_head);
 
 	// Play a death animation
 	UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_DEATH);

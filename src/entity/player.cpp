@@ -16,6 +16,9 @@
 #include "unit.h"
 #include "vehicle.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 using namespace std;
 
 
@@ -182,24 +185,20 @@ void Player::angleFromMouse(int x, int y, int delta)
 		this->vertical_angle = 0.0f;
 	}
 
-	if (this->drive || GEng()->render->viewmode == GameSettings::firstPerson || this->weapon_zoom_level != 0) {
-		float max_angle;
-
-		if (this->drive) {
-			max_angle = 10.0f;
-		} else {
-			max_angle = 70.0f;
-		}
-
-		sensitivity *= 0.5f;
-		change_dist = static_cast<float>(y) * sensitivity;
-		this->vertical_angle -= change_dist;
-		if (this->vertical_angle > max_angle) this->vertical_angle = max_angle;
-		if (this->vertical_angle < -max_angle) this->vertical_angle = -max_angle;
+	// Can't tilt as much in a vehicle
+	float max_angle;
+	if (this->drive) {
+		max_angle = 10.0f;
 	} else {
-		// Not in first person view, reset the vertical angle
-		this->vertical_angle = 0.0f;
+		max_angle = 70.0f;
 	}
+
+	// Set vertical angle
+	sensitivity *= 0.5f;
+	change_dist = static_cast<float>(y) * sensitivity;
+	this->vertical_angle -= change_dist;
+	if (this->vertical_angle > max_angle) this->vertical_angle = max_angle;
+	if (this->vertical_angle < -max_angle) this->vertical_angle = -max_angle;
 
 	this->drive_old = this->drive;
 }
@@ -227,10 +226,6 @@ void Player::update(int delta)
 		// Mouse rotation
 		btQuaternion rot = btQuaternion(btVector3(0.0f, 1.0f, 0.0f), DEG_TO_RAD(this->mouse_angle));
 		ghost->getWorldTransform().setBasis(btMatrix3x3(rot));
-		if (GEng()->render->viewmode == GameSettings::firstPerson) {
-			rot *= btQuaternion(btVector3(-1.0f, 0.0f, 0.0f), DEG_TO_RAD(this->vertical_angle));
-			ghost->getWorldTransform().setRotation(rot);
-		}
 
 		// Forward/backward
 		btVector3 forwardDir = xform.getBasis() * btVector3(0.0f, 0.0f, walkSpeed);
@@ -264,6 +259,13 @@ void Player::update(int delta)
 			this->anim->pause();
 		}
 		this->walking = walking;
+
+		// Angle the head
+		if (uc->node_head) {
+			glm::mat4 headxform = glm::mat4();
+			headxform = glm::rotate(headxform, this->vertical_angle, glm::vec3(-1.0f, 0.0f, 0.0f));
+			this->anim->setMoveTransform(uc->node_head, headxform);
+		}
 	}
 
 
