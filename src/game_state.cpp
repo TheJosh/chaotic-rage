@@ -722,6 +722,30 @@ vector<WeaponType*>* GameState::getSpawnWeapons(UnitType* ut, Faction fac)
 
 
 /**
+* Return the PlayerState for a given Player or NULL if not local
+**/
+const PlayerState* GameState::getLocalPlayer(const Player* p)
+{
+	for (unsigned int i = 0; i < this->num_local; i++) {
+		if (local_players[i]->p == p) return local_players[i];
+	}
+	return NULL;
+}
+
+
+/**
+* Return the PlayerState for a given slot or NULL if not local
+**/
+const PlayerState* GameState::getLocalPlayer(unsigned int slot)
+{
+	for (unsigned int i = 0; i < this->num_local; i++) {
+		if (local_players[i]->slot == slot) return local_players[i];
+	}
+	return NULL;
+}
+
+
+/**
 * Send a message to a given slot. Use ALL_SLOTS to send to all slots
 **/
 void GameState::addHUDMessage(unsigned int slot, string text, string text2)
@@ -732,8 +756,10 @@ void GameState::addHUDMessage(unsigned int slot, string text, string text2)
 			local_players[i]->hud->addMessage(text);
 		}
 	} else {
-		PlayerState *ps = localPlayerFromSlot(slot);
-		if (ps) ps->hud->addMessage(text);
+		const PlayerState *ps = this->getLocalPlayer(slot);
+		if (ps != NULL) {
+			ps->hud->addMessage(text);
+		}
 	}
 }
 

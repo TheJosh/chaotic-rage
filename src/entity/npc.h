@@ -28,7 +28,6 @@ class NPC : public Unit
 
 	private:
 		int vals[4];
-		unsigned int idle_sound_time;
 
 	public:
 		virtual void update(int delta);

@@ -24,7 +24,6 @@ NPC::NPC(UnitType *uc, GameState *st, Faction fac, AIType *ai, float x, float z)
 
 	this->logic = new AILogic(this);
 	this->logic->execScript(ai->script);
-	this->idle_sound_time = st->game_time + 15000;
 }
 
 
@@ -37,7 +36,6 @@ NPC::NPC(UnitType *uc, GameState *st, Faction fac, AIType *ai, float x, float y,
 
 	this->logic = new AILogic(this);
 	this->logic->execScript(ai->script);
-	this->idle_sound_time = st->game_time + 15000;
 }
 
 
@@ -50,7 +48,6 @@ NPC::NPC(UnitType *uc, GameState *st, Faction fac, AIType *ai, btTransform & loc
 
 	this->logic = new AILogic(this);
 	this->logic->execScript(ai->script);
-	this->idle_sound_time = st->game_time + 15000;
 }
 
 
@@ -68,21 +65,18 @@ void NPC::update(int delta)
 {
 	logic->update();
 	Unit::update(delta);
-
-	if (this->idle_sound_time < st->game_time) {
-		// TODO: play idle sound
-		this->idle_sound_time = st->game_time + 15000;
-	}
 }
 
+
+/**
+* Additional logic upon death
+**/
 int NPC::takeDamage(float damage)
 {
 	int result = Unit::takeDamage(damage);
 
 	if (result == 1) {
 		this->st->logic->raise_npcdied();
-
-		this->st->deadButNotBuried(this, this->anim);
 	}
 
 	return result;

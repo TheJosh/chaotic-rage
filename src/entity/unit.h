@@ -92,8 +92,10 @@ class Unit : public Entity
 
 		float health;
 
-		AnimPlay * anim;
+		AnimPlay* anim;
+
 		int weapon_sound;
+		unsigned int idle_sound_time;
 
 		btPairCachingGhostObject* ghost;
 		btCRKinematicCharacterController* character;
@@ -182,6 +184,7 @@ class Unit : public Entity
 		void enterVehicle(Vehicle *v);
 		void leaveVehicle();
 		void zoomWeapon();
+		void resetIdleTime();
 
 	private:
 		/**

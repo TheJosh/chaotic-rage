@@ -99,6 +99,8 @@ void Unit::init(UnitType *ut, GameState *st, Faction fac, btTransform & loc)
 	this->drive = NULL;
 	this->force = btVector3(0.0f, 0.0f, 0.0f);
 
+	this->resetIdleTime();
+
 	this->anim = new AnimPlay(this->uc->model);
 
 	glm::vec3 translate(0.0f, UNIT_PHYSICS_HEIGHT/-2.0f, 0.0f);
@@ -306,6 +308,8 @@ void Unit::meleeAttack(btMatrix3x3 &direction)
 	if (e->klass() == UNIT) {
 		(static_cast<Unit*>(e))->takeDamage(this->params.melee_damage);
 	}
+
+	this->resetIdleTime();
 }
 
 
@@ -610,6 +614,8 @@ void Unit::update(int delta)
 		}
 
 		if (! w->continuous) this->endFiring();
+
+		this->resetIdleTime();
 	}
 
 	// Reset the 'reloading' flag if enough time has passed
@@ -634,6 +640,8 @@ void Unit::update(int delta)
 		if (!w->continuous || st->game_time > this->special_time) {
 			this->endSpecialAttack();
 		}
+
+		this->resetIdleTime();
 	}
 
 	// Iterate through the physics pairs to see if there are any Pickups to pick up.
@@ -677,6 +685,15 @@ void Unit::update(int delta)
 		this->powerup_weapon = NULL;
 		this->powerup_message = "";
 	}
+
+	// If too much time has passed, play idle sound
+	if (this->idle_sound_time < st->game_time && st->getLocalPlayer(this->slot) == NULL) {
+		AudioPtr snd = this->uc->getSound(UNIT_SOUND_STATIC);
+		if (snd) {
+			GEng()->audio->playSound(snd, false, this);
+		}
+		this->resetIdleTime();
+	}
 }
 
 
@@ -697,6 +714,15 @@ void Unit::reload()
 	this->weapon->next_use += this->weapon->wt->reload_delay;
 	this->weapon->reloading = true;
 	this->endFiring();
+}
+
+
+/**
+* Reset the idle timer
+**/
+void Unit::resetIdleTime()
+{
+	this->idle_sound_time = st->game_time + 15000;
 }
 
 

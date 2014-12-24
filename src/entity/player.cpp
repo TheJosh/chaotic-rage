@@ -214,6 +214,7 @@ void Player::update(int delta)
 
 	if (this->drive) {
 		this->drive->operate(this, delta, this->key[KEY_UP], this->key[KEY_DOWN], this->key[KEY_LEFT], this->key[KEY_RIGHT], this->mouse_angle, this->vertical_angle);
+		this->resetIdleTime();
 
 	} else {
 		bool walking = false;
@@ -249,7 +250,6 @@ void Player::update(int delta)
 
 		// Apply any force present on the unit
 		walkDirection += this->force;
-
 		this->character->setVelocityForTimeInterval(walkDirection, 1.0f);
 
 		// If "walking" state changes, update animation.
@@ -259,6 +259,11 @@ void Player::update(int delta)
 			this->anim->pause();
 		}
 		this->walking = walking;
+
+		// Reset the idle timer
+		if (this->walking) {
+			this->resetIdleTime();
+		}
 
 		// Angle the head
 		if (uc->node_head) {

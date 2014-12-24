@@ -171,6 +171,10 @@ class GameState
 		PlayerState * localPlayerFromSlot(unsigned int slot);
 		list<AmmoRound*>* findAmmoRoundsUnit(Unit* u);
 
+		// Get the PlayerState or NULL
+		const PlayerState* getLocalPlayer(const Player* p);
+		const PlayerState* getLocalPlayer(unsigned int slot);
+
 		// Start and run
 		void preGame();
 		void update(int delta);
