@@ -193,7 +193,8 @@ class Unit : public Entity
 		// Current weapon
 		WeaponType* getWeaponTypeCurr();
 		unsigned int getCurrentWeaponID();
-		// Se the weapon
+
+		// Set the weapon
 		void setWeapon(int id);
 		
 		// Ammo and zoom level
@@ -228,6 +229,7 @@ class Unit : public Entity
 		void doLift();
 		void doDrop();
 		void emptySound();
+		void walkSound();
 		void enterVehicle(Vehicle *v);
 		void leaveVehicle();
 		void zoomWeapon();

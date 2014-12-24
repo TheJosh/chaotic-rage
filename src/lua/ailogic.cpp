@@ -150,6 +150,8 @@ void AILogic::update()
 		u->character->setVelocityForTimeInterval(this->dir * walkSpeed, 1.0f);
 
 		this->dir_flag = false;
+		this->u->walkSound();
+		this->u->resetIdleTime();
 	}
 
 	// If we should end firing, then end firing

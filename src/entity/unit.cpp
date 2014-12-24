@@ -229,6 +229,15 @@ void Unit::emptySound()
 
 
 /**
+* Play a sound while walking
+**/
+void Unit::walkSound()
+{
+	// TODO: Implement this
+}
+
+
+/**
 * What is directly in front of a unit, upto range meters ahead
 **/
 Entity * Unit::infront(float range)

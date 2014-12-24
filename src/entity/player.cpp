@@ -262,6 +262,7 @@ void Player::update(int delta)
 
 		// Reset the idle timer
 		if (this->walking) {
+			this->walkSound();
 			this->resetIdleTime();
 		}
 
