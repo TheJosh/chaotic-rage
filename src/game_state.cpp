@@ -342,19 +342,6 @@ list<AmmoRound*>* GameState::findAmmoRoundsUnit(Unit* u)
 
 
 /**
-* Return the PlayerState for a local player, with the given slot number.
-* May return NULL (i.e. invalid slot or non-local slot)
-**/
-PlayerState * GameState::localPlayerFromSlot(unsigned int slot)
-{
-	for (unsigned int i = 0; i < num_local; i++) {
-		if (local_players[i]->slot == slot) return local_players[i];
-	}
-	return NULL;
-}
-
-
-/**
 * Add a particle group
 * Is a no-op if we don't have the particle system compiled in
 **/
@@ -724,7 +711,7 @@ vector<WeaponType*>* GameState::getSpawnWeapons(UnitType* ut, Faction fac)
 /**
 * Return the PlayerState for a given Player or NULL if not local
 **/
-const PlayerState* GameState::getLocalPlayer(const Player* p)
+PlayerState* GameState::getLocalPlayer(const Player* p)
 {
 	for (unsigned int i = 0; i < this->num_local; i++) {
 		if (local_players[i]->p == p) return local_players[i];
@@ -736,7 +723,7 @@ const PlayerState* GameState::getLocalPlayer(const Player* p)
 /**
 * Return the PlayerState for a given slot or NULL if not local
 **/
-const PlayerState* GameState::getLocalPlayer(unsigned int slot)
+PlayerState* GameState::getLocalPlayer(unsigned int slot)
 {
 	for (unsigned int i = 0; i < this->num_local; i++) {
 		if (local_players[i]->slot == slot) return local_players[i];
@@ -769,7 +756,7 @@ void GameState::addHUDMessage(unsigned int slot, string text, string text2)
 **/
 HUDLabel* GameState::addHUDLabel(unsigned int slot, int x, int y, string data, HUDLabel* l)
 {
-	PlayerState *ps;
+	const PlayerState *ps;
 
 	// TODO: Fix if ALL_SLOTS, HUD label only added to the first slot/player
 	if (slot == ALL_SLOTS) {
@@ -780,8 +767,8 @@ HUDLabel* GameState::addHUDLabel(unsigned int slot, int x, int y, string data, H
 			}
 		}
 	} else {
-		ps = this->localPlayerFromSlot(slot);
-		if (ps && ps->hud) {
+		ps = this->getLocalPlayer(slot);
+		if (ps != NULL && ps->hud != NULL) {
 			return ps->hud->addLabel(x, y, data, l);
 		}
 	}

@@ -218,8 +218,8 @@ Player* addPlayerXZ(string type, unsigned int fac, unsigned int slot, float x, f
 	p = new Player(ut, getGameState(), (Faction)fac, slot, x, z);
 
 	// Is it a local player?
-	PlayerState *ps = getGameState()->localPlayerFromSlot(slot);
-	if (ps) {
+	PlayerState *ps = getGameState()->getLocalPlayer(slot);
+	if (ps != NULL) {
 		ps->p = p;
 	}
 
@@ -244,8 +244,8 @@ Player* addPlayerCoord(string type, unsigned int fac, unsigned int slot, btVecto
 	p = new Player(ut, getGameState(), (Faction)fac, slot, coord.x(), coord.y(), coord.z());
 
 	// Is it a local player?
-	PlayerState *ps = getGameState()->localPlayerFromSlot(slot);
-	if (ps) {
+	PlayerState *ps = getGameState()->getLocalPlayer(slot);
+	if (ps != NULL) {
 		ps->p = p;
 	}
 
@@ -270,8 +270,8 @@ Player* addPlayerZone(string type, unsigned int fac, unsigned int slot, Zone *zn
 	p = new Player(ut, getGameState(), (Faction)fac, slot, zn->getRandomX(), zn->getRandomZ());
 
 	// Is it a local player?
-	PlayerState *ps = getGameState()->localPlayerFromSlot(slot);
-	if (ps) {
+	PlayerState *ps = getGameState()->getLocalPlayer(slot);
+	if (ps != NULL) {
 		ps->p = p;
 	}
 

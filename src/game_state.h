@@ -168,12 +168,11 @@ class GameState
 		// Data queries
 		list<UnitQueryResult> * findVisibleUnits(Unit* origin);
 		Unit * findUnitSlot(unsigned int slot);
-		PlayerState * localPlayerFromSlot(unsigned int slot);
 		list<AmmoRound*>* findAmmoRoundsUnit(Unit* u);
 
 		// Get the PlayerState or NULL
-		const PlayerState* getLocalPlayer(const Player* p);
-		const PlayerState* getLocalPlayer(unsigned int slot);
+		PlayerState* getLocalPlayer(const Player* p);
+		PlayerState* getLocalPlayer(unsigned int slot);
 
 		// Start and run
 		void preGame();
