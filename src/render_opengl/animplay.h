@@ -72,7 +72,6 @@ class AnimPlay
 		// Callback fired when the animation ends
 		void setEndedCallback(AnimPlayCallback func, void* data);
 		void setEndedCallback(AnimPlayCallback func);
-		void setEndedCallback(void* data);
 
 		// Arbitary movement of nodes (e.g. gun turret)
 		void addMoveNode(string node);

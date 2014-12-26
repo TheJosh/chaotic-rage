@@ -36,6 +36,12 @@ PickupType* Unit::initial_pickup;
 
 
 /**
+* Called when an animation finishes
+**/
+void unit_animation_finished(AnimPlay* play, void* data);
+
+
+/**
 * Spawn a unit at max X/Z coordinates
 * Y coordinate is calculated
 **/
@@ -94,6 +100,7 @@ void Unit::init(UnitType *ut, GameState *st, Faction fac, btTransform & loc)
 	this->special_cooldown = 0;
 	this->weapon_zoom_level = 0;
 	this->powerup_weapon = NULL;
+	this->active = false;
 
 	this->lift_obj = NULL;
 	this->drive = NULL;
@@ -113,9 +120,12 @@ void Unit::init(UnitType *ut, GameState *st, Faction fac, btTransform & loc)
 	st->addAnimPlay(this->anim, this);
 
 	// Set animation
-	UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_STATIC);
+	UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_SPAWN);
 	if (uta) {
-		this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, uta->loop);
+		this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame);
+		this->anim->setEndedCallback(unit_animation_finished, (void*)this);
+	} else {
+		this->animationFinished();
 	}
 
 	// Create ghost
@@ -171,6 +181,31 @@ Unit::~Unit()
 
 	st->physics->delCollisionObject(this->ghost);
 	this->ghost = NULL;
+}
+
+
+/**
+* An animation has finished
+**/
+void unit_animation_finished(AnimPlay* play, void* data)
+{
+	static_cast<Unit*>(data)->animationFinished();
+}
+
+
+/**
+* Spawn animation has finished - begin the walk animation
+**/
+void Unit::animationFinished()
+{
+	this->anim->setEndedCallback(NULL);
+
+	UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_STATIC);
+	if (uta) {
+		this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame, true);
+	}
+
+	this->active = true;
 }
 
 
@@ -579,6 +614,9 @@ void Unit::update(int delta)
 	if (GEng()->server != NULL) {
 		GEng()->server->addmsgUnitState(this);
 	}
+
+	// Units are not active until spawn animation has finished
+	if (!this->active) return;
 
 	// If in a vehicle, move the ghost to AIs know where the unit is
 	if (this->drive) {

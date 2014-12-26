@@ -146,6 +146,9 @@ class Unit : public Entity
 		// A message to be shown while the powerup is active
 		string powerup_message;
 
+		// Not active until fully spawned
+		bool active;
+
 	public:
 		Unit(UnitType *ut, GameState *st, Faction fac, float x, float z);
 		Unit(UnitType *ut, GameState *st, Faction fac, float x, float y, float z);
@@ -222,6 +225,9 @@ class Unit : public Entity
 		// The type and parameters
 		UnitType* getUnitType() { return this->uc; }
 		UnitParams* getParams() { return &this->params; }
+
+		// The currently running animation has finished
+		void animationFinished();
 
 	protected:
 		void setState(int new_type);

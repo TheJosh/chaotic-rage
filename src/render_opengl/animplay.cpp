@@ -102,16 +102,6 @@ void AnimPlay::setEndedCallback(AnimPlayCallback func)
 
 
 /**
-* Set callback when animation ends.
-* Only sets the data, not the function
-**/
-void AnimPlay::setEndedCallback(void* data)
-{
-	this->ended_data = data;
-}
-
-
-/**
 * Clear the animation
 **/
 void AnimPlay::clearAnimation()
