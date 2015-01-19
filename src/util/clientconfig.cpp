@@ -48,6 +48,11 @@ static cfg_opt_t config_opts[] =
 **/
 ClientConfig::ClientConfig()
 {
+	this->gl = NULL;
+	this->fullscreen = false;
+	this->width = 0;
+	this->height = 0;
+
 	this->load();
 }
 

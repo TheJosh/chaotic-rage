@@ -19,6 +19,16 @@ using namespace std;
 **/
 class DialogClientSettings : public Dialog, public gcn::ActionListener
 {
+	public:
+		explicit DialogClientSettings(GameState* st);
+		virtual ~DialogClientSettings();
+
+		virtual gcn::Container * setup();
+		virtual void tearDown();
+
+		virtual const DialogName getName() { return CLIENT_SETTINGS; }
+		virtual void action(const gcn::ActionEvent& actionEvent);
+
 	private:
 		GameState* st;
 		gcn::Button* button;
@@ -30,14 +40,4 @@ class DialogClientSettings : public Dialog, public gcn::ActionListener
 		gcn::TextField* height;
 		gcn::DropDown* lang;
 		vector<string>* langs;
-
-	public:
-		explicit DialogClientSettings(GameState* st);
-		virtual ~DialogClientSettings();
-
-		virtual gcn::Container * setup();
-		virtual void tearDown();
-
-		virtual const DialogName getName() { return CLIENT_SETTINGS; }
-		virtual void action(const gcn::ActionEvent& actionEvent);
 };

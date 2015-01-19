@@ -211,6 +211,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 			}
 			width = mode.w;
 			height = mode.h;
+			GEng()->cconf->width = width;
+			GEng()->cconf->height = height;
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
 	#endif
@@ -1092,7 +1094,9 @@ void RenderOpenGL::renderSprite(GLuint texture, int x, int y, int w, int h)
 void RenderOpenGL::preGame()
 {
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_DEPTH_CLAMP);
+	#ifndef __ANDROID__
+		glEnable(GL_DEPTH_CLAMP);
+	#endif
 	glEnable(GL_CULL_FACE);
 
 	#ifdef OpenGL

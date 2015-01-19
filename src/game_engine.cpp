@@ -54,9 +54,13 @@ GameEngine::GameEngine()
 	this->mm = NULL;
 	this->gui_scale = 1.0f;
 
+	this->gui = NULL;
+	this->guiinput = NULL;
+	this->guitop = NULL;
+
 	this->ticksum = 0;
 	this->tickindex = 0;
-	memset(&this->ticklist, 0, sizeof(this->ticklist));
+	memset(&this->ticklist, 0, static_cast<unsigned int>(sizeof(this->ticklist)));
 
 	g_geng = this;
 }

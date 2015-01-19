@@ -27,6 +27,15 @@ using namespace std;
 DialogClientSettings::DialogClientSettings(GameState* st) : Dialog()
 {
 	this->st = st;
+
+	this->button = NULL;
+	this->gl_msaa = NULL;
+	this->gl_tex_filter = NULL;
+	this->fullscreen = NULL;
+	this->width = NULL;
+	this->height = NULL;
+	this->lang = NULL;
+	this->langs = NULL;
 }
 
 
@@ -168,11 +177,13 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 	nu->msaa = atoi(this->gl_msaa->getText().c_str());
 	nu->tex_filter = atoi(this->gl_tex_filter->getText().c_str());
 
-	// Read screen config
-	int width = atoi(this->width->getText().c_str());
-	int height = atoi(this->height->getText().c_str());
-	if (width < 100) width = 100;
-	if (height < 100) height = 100;
+	#ifndef __ANDROID__	// These are set for Android in RenderOpenGL::setScreenSize()
+		// Read screen config
+		int width = atoi(this->width->getText().c_str());
+		int height = atoi(this->height->getText().c_str());
+		if (width < 100) width = 100;
+		if (height < 100) height = 100;
+	#endif
 
 	// Do we need a restart?
 	bool restart = false;
@@ -181,8 +192,8 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 	// Windows cannot dynamically change screen res without OpenGL sadness
 	#ifdef _WIN32
 		if (width != GEng()->cconf->width) restart = true;
-		if (height != GEng()->cconf->height) restart = true;
-		if (this->fullscreen->isSelected() != GEng()->cconf->fullscreen) restart = true;
+		else if (height != GEng()->cconf->height) restart = true;
+		else if (this->fullscreen->isSelected() != GEng()->cconf->fullscreen) restart = true;
 	#endif
 
 	// Re-load language strings
@@ -191,9 +202,11 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 
 	// Save config
 	GEng()->cconf->gl = nu;
-	GEng()->cconf->fullscreen = this->fullscreen->isSelected();
-	GEng()->cconf->width = width;
-	GEng()->cconf->height = height;
+	#ifndef __ANDROID__	// These are set for Android in RenderOpenGL::setScreenSize()
+		GEng()->cconf->fullscreen = this->fullscreen->isSelected();
+		GEng()->cconf->width = width;
+		GEng()->cconf->height = height;
+	#endif
 	GEng()->cconf->lang = langs->at(this->lang->getSelected());
 	GEng()->cconf->save();
 
@@ -202,12 +215,14 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 		displayMessageBox("A game restart is required to apply all settings");
 	}
 
-	this->m->remDialog(this);
-
 	// Update screen res
 	#ifndef _WIN32
-		((RenderOpenGL*)GEng()->render)->setScreenSize(width, height, this->fullscreen->isSelected());
 		((RenderOpenGL*)GEng()->render)->setSettings(nu);
-		this->m->handleScreenResChange();
+		#ifndef __ANDROID__
+			((RenderOpenGL*)GEng()->render)->setScreenSize(width, height, this->fullscreen->isSelected());
+			this->m->handleScreenResChange();
+		#endif
 	#endif
+
+	this->m->remDialog(this);
 }
