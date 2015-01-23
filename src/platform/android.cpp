@@ -30,7 +30,9 @@ void chdirToDataDir()
 **/
 string getUserDataDir()
 {
-	return "/";
+	// TODO: Use dedicated folder instead of the root folder of the (emulated)
+	// sd-card to store the config files
+	return "/sdcard/";
 }
 
 
@@ -122,5 +124,3 @@ vector<string> * getUserModFilenames()
 	vector<string> * ret = new vector<string>();
 	return ret;
 }
-
-

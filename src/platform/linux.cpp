@@ -53,9 +53,7 @@ void chdirToDataDir()
 **/
 string getUserDataDir()
 {
-	char * env;
-
-	env = getenv("HOME");
+	const char * env = getenv("HOME");
 	if (! env) {
 		reportFatalError("Environment variable $HOME is not set");
 	}
@@ -217,5 +215,3 @@ vector<string> * getUserModFilenames()
 
 	return ret;
 }
-
-
