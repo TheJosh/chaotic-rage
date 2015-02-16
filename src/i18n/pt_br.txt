@@ -1,0 +1,40 @@
+#
+#  Brazilian Portuguese
+#  Thanks to http://goo.gl/fhnw1t
+#
+
+# Main menu
+MENU_CAMPAIGN     Novo jogo
+MENU_SINGLE       Um jogador
+MENU_SPLIT        Multijogadores local
+MENU_NETWORK      Multijogadores online
+MENU_SETTINGS     Configurações
+MENU_MODS         Mods
+MENU_HELP         Help
+MENU_QUIT         Sair
+
+# New game menu
+NEWGAME_TYPE             Modo de jogo
+NEWGAME_WEAPONS          Weapons
+NEWGAME_ENVIRONMENT      Environment
+NEWGAME_MAP              Selecionar nível
+NEWGAME_UNIT             Character
+NEWGAME_VIEW             View
+NEWGAME_HOST             Host network game
+NEWGAME_START_SINGLE     Ok
+NEWGAME_START_SPLIT      Ok
+NEWGAME_START_CAMPAIGN   Ok
+
+# Settings menu
+SETTINGS_MSAA            Anti-serrilhamento
+SETTINGS_TEX_FILTER      Qualidade
+SETTINGS_LANGUAGE        Idioma
+SETTINGS_FULLSCREEN      Tela cheia
+SETTINGS_WIDTH           Resolução width
+SETTINGS_HEIGHT          Resolução height
+SETTINGS_SAVE            Ok
+
+# In game
+GAME_QUIT                Sair?
+GAME_YES                 Sim
+GAME_NO                  Não
