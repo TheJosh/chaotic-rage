@@ -266,6 +266,16 @@ void NetServer::dropClient(NetServerClientInfo *client)
 }
 
 
+/**
+* Handle errors
+* At the moment it just logs to stderr but could possibly be more proactive
+**/
+void NetServer::error(string msg)
+{
+	cerr << msg << endl;
+}
+
+
 
 /**
 ***  One method for each outgoing network message the server sends out
@@ -629,7 +639,10 @@ unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 
 
 	// Find the unit for this slot
 	Player *p = static_cast<Player*>(st->findUnitSlot(client->slot));
-	if (p == NULL) return 8;
+	if (p == NULL) {
+		this->error("Player not found in slot " + client->slot);
+		return 8;
+	}
 
 	// Update the unit details
 	p->angleFromMouse(x, y, delta);
