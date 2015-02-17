@@ -261,13 +261,13 @@ void NetClient::addmsgChat()
 	messages.push_back(msg);
 }
 
-void NetClient::addmsgKeyMouseStatus(int x, int y, int delta, Uint8 k)
+void NetClient::addmsgKeyMouseStatus(int x, int y, int delta, Uint16 k)
 {
 	//cout << "C CLIENT_STATE" << endl;
-	NetMsg msg(CLIENT_STATE, 7);
+	NetMsg msg(CLIENT_STATE, 8);
 	msg.seq = this->seq;
 
-	pack(msg.data, "hhhc",
+	pack(msg.data, "hhhh",
 		(Sint16)x, (Sint16)y, (Sint16)delta, k
 	);
 

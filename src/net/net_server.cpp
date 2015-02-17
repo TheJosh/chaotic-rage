@@ -621,21 +621,21 @@ unsigned int NetServer::handleChat(NetServerClientInfo *client, Uint8 *data, uns
 unsigned int NetServer::handleKeyMouseStatus(NetServerClientInfo *client, Uint8 *data, unsigned int size)
 {
 	Sint16 x, y, delta;
-	Uint8 keys;
+	Uint16 keys;
 
-	unpack(data, "hhhc",
+	unpack(data, "hhhh",
 		&x, &y, &delta, &keys
 	);
 
 	// Find the unit for this slot
 	Player *p = static_cast<Player*>(st->findUnitSlot(client->slot));
-	if (p == NULL) return 7;
+	if (p == NULL) return 8;
 
 	// Update the unit details
 	p->angleFromMouse(x, y, delta);
 	p->setKeys(keys);
 
-	return 7;
+	return 8;
 }
 
 unsigned int NetServer::handleQuit(NetServerClientInfo *client, Uint8 *data, unsigned int size)

@@ -54,7 +54,7 @@ class NetClient {
 		void addmsgDataCompl();
 		void addmsgChat();
 		void addmsgQuit();
-		void addmsgKeyMouseStatus(int x, int y, int delta, Uint8 k);
+		void addmsgKeyMouseStatus(int x, int y, int delta, Uint16 k);
 
 	public:
 		// One method for each incoming network message from the server

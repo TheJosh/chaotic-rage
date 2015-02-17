@@ -105,10 +105,10 @@ void Player::keyRelease(Key idx)
 /**
 * Packs a bitfield of keys
 **/
-Uint8 Player::packKeys()
+Uint16 Player::packKeys()
 {
 	Uint8 k = 0;
-	for (int i = 0; i < 8; i++) {
+	for (int i = 0; i < 16; i++) {
 		k |= this->key[i] << i;
 	}
 	return k;
@@ -117,11 +117,11 @@ Uint8 Player::packKeys()
 
 /**
 * Set all keys.
-* Bitfield should be a Uint8 of flags, with bit 0 => this->key[0], etc.
+* Bitfield should be a Uint16 of flags, with bit 0 => this->key[0], etc.
 **/
-void Player::setKeys(Uint8 bitfield)
+void Player::setKeys(Uint16 bitfield)
 {
-	for (int i = 0; i < 8; i++) {
+	for (int i = 0; i < 16; i++) {
 		this->key[i] = (bitfield & (1 << i)) != 0;
 	}
 }

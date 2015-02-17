@@ -46,8 +46,8 @@ class Player : public Unit
 		void keyRelease(Key idx);
 		void handleKeyChange();
 		void angleFromMouse(int x, int y, int delta);
-		void setKeys(Uint8 bitfield);		// TODO: Use 16-bits
-		Uint8 packKeys();					// TODO: Use 16-bits
+		void setKeys(Uint16 bitfield);
+		Uint16 packKeys();
 
 	public:
 		virtual void update(int delta);
