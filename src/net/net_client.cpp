@@ -234,7 +234,7 @@ void NetClient::error(string msg)
 
 void NetClient::addmsgInfoReq()
 {
-	//cout << "C INFO_REQ" << endl;
+	DEBUGSTR("net", "INFO_REQ");
 	NetMsg msg(INFO_REQ, 0);
 	msg.seq = this->seq;
 	messages.push_back(msg);
@@ -242,7 +242,7 @@ void NetClient::addmsgInfoReq()
 
 void NetClient::addmsgJoinReq()
 {
-	//cout << "C JOIN_REQ" << endl;
+	DEBUGSTR("net", "JOIN_REQ");
 	NetMsg msg(JOIN_REQ, 0);
 	msg.seq = this->seq;
 	messages.push_back(msg);
@@ -250,7 +250,7 @@ void NetClient::addmsgJoinReq()
 
 void NetClient::addmsgJoinAck()
 {
-	//cout << "C JOIN_ACK" << endl;
+	DEBUGSTR("net", "JOIN_ACK");
 	NetMsg msg(JOIN_ACK, 0);
 	msg.seq = this->seq;
 	messages.push_back(msg);
@@ -258,7 +258,7 @@ void NetClient::addmsgJoinAck()
 
 void NetClient::addmsgDataCompl()
 {
-	//cout << "C JOIN_DONE" << endl;
+	DEBUGSTR("net", "JOIN_DONE");
 	NetMsg msg(JOIN_DONE, 0);
 	msg.seq = this->seq;
 	messages.push_back(msg);
@@ -266,7 +266,7 @@ void NetClient::addmsgDataCompl()
 
 void NetClient::addmsgChat()
 {
-	//cout << "C CHAT_REQ" << endl;
+	DEBUGSTR("net", "CHAT_REQ");
 	NetMsg msg(CHAT_REQ, 0);
 	msg.seq = this->seq;
 	messages.push_back(msg);
@@ -274,7 +274,7 @@ void NetClient::addmsgChat()
 
 void NetClient::addmsgKeyMouseStatus(int x, int y, int delta, Uint16 k)
 {
-	//cout << "C CLIENT_STATE" << endl;
+	DEBUGSTR("net", "CLIENT_STATE");
 	NetMsg msg(CLIENT_STATE, 8);
 	msg.seq = this->seq;
 
@@ -287,7 +287,7 @@ void NetClient::addmsgKeyMouseStatus(int x, int y, int delta, Uint16 k)
 
 void NetClient::addmsgQuit()
 {
-	//cout << "C QUIT_REQ" << endl;
+	DEBUGSTR("net", "QUIT_REQ");
 	NetMsg msg(QUIT_REQ, 0);
 	msg.seq = this->seq;
 	messages.push_back(msg);
@@ -303,7 +303,7 @@ void NetClient::addmsgQuit()
 
 unsigned int NetClient::handleInfoResp(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleInfoResp()" << endl;
+	DEBUGSTR("net", "handleInfoResp()");
 
 	char mod[128];
 	char map[128];
@@ -317,7 +317,7 @@ unsigned int NetClient::handleInfoResp(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleJoinAcc()" << endl;
+	DEBUGSTR("net", "handleJoinAcc()");
 
 	unsigned int slot = 0;
 	char map[128];
@@ -328,7 +328,7 @@ unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 
 	if (st->local_players[0]->slot == 0) {
 		st->local_players[0]->slot = slot;
-		cout << "       Our slot: " << slot << endl;
+		DEBUG("net", "  Allocated slot: %i", slot);
 	}
 
 	this->gameinfo = new NetGameinfo();
@@ -343,35 +343,38 @@ unsigned int NetClient::handleJoinAcc(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleJoinRej(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleJoinRej()" << endl;
+	DEBUGSTR("net", "handleJoinRej()");
 	return 0;
 }
 
 unsigned int NetClient::handleDataCompl(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleDataCompl()" << endl;
+	DEBUGSTR("net", "handleDataCompl()");
 	this->ingame = true;
 	return 0;
 }
 
 unsigned int NetClient::handleChat(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleChat()" << endl;
+	DEBUGSTR("net", "handleChat()");
 	return 0;
 }
 
 unsigned int NetClient::handlePlayerDrop(Uint8 *data, unsigned int size)
 {
-	//cout << "       handlePlayerDrop()" << endl;
+	DEBUGSTR("net", "handlePlayerDrop()");
 
 	unsigned int slot;
 	unpack(data, "h",
 		&slot
 	);
 
+	DEBUG("net", "  Slot: %i", slot);
+
 	// Were we booted?
 	if (st->local_players[0]->slot == slot) {
 		st->gameOver();
+		DEBUGSTR("net", "  It's us :(");
 	}
 
 	return 2;
@@ -379,7 +382,7 @@ unsigned int NetClient::handlePlayerDrop(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleHUD(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleHUD()" << endl;
+	DEBUGSTR("net", "handleHUD()");
 
 	int x, y;
 	float r, g, b, a;
@@ -400,7 +403,7 @@ unsigned int NetClient::handleHUD(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleUnitState()" << endl;
+	DEBUGSTR("net", "handleUnitState()");
 
 
 	Uint16 eid, slot;
@@ -422,8 +425,8 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 
 	// If don't exist, create
 	if (u == NULL) {
-		cout << "       CREATE:" << endl;
-		cout << "       eid: " << eid << "   slot: " << slot << "   our slot: " << st->local_players[0]->slot << endl;
+		DEBUGSTR("net", "  Create unit");
+		DEBUG("net", "  eid: %i  slot: %i", eid, slot);
 
 		UnitType *ut = GEng()->mm->getUnitType(type);
 		if (! ut) {
@@ -436,6 +439,7 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 		// If the player is this client, save in the local_players obj
 		if (st->local_players[0]->slot == u->slot) {
 			st->local_players[0]->p = (Player*)u;
+			DEBUGSTR("net", "  It's us :)");
 		}
 
 		st->addUnit(u);
@@ -456,7 +460,7 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleWallState()" << endl;
+	DEBUGSTR("net", "handleWallState()");
 
 
 	Uint16 eid;
@@ -498,7 +502,7 @@ unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleObjectState()" << endl;
+	DEBUGSTR("net", "handleObjectState()");
 
 	Uint16 eid;
 	CRC32 type;
@@ -539,7 +543,7 @@ unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleVehicleState()" << endl;
+	DEBUGSTR("net", "handleVehicleState()");
 
 	Uint16 eid;
 	CRC32 type;
@@ -582,7 +586,7 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleAmmoroundState()" << endl;
+	DEBUGSTR("net", "handleAmmoroundState()");
 
 	Uint16 eid, unit_eid;
 	CRC32 type;
@@ -626,7 +630,7 @@ unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handlePickupState(Uint8 *data, unsigned int size)
 {
-	//cout << "       handlePickupState()" << endl;
+	DEBUGSTR("net", "handlePickupState()");
 
 	Uint16 eid;
 	CRC32 type;
@@ -667,23 +671,24 @@ unsigned int NetClient::handlePickupState(Uint8 *data, unsigned int size)
 
 unsigned int NetClient::handleEntityRem(Uint8 *data, unsigned int size)
 {
-	//cout << "       handleEntityRem()" << endl;
+	DEBUGSTR("net", "handleEntityRem()");
 
 	EID eid;
 
 	unpack(data, "h", &eid);
 
-	cout << "       REMOVE  eid: " << eid << endl;
+	DEBUG("net", "  eid: %i", eid);
 
 	// Find and remove
 	Entity *e = st->getEntity(eid);
-	if (e) {
+	if (e != NULL) {
 		e->del = true;
 	}
 
 	// Is it us? unset the player ref
 	if (e == this->st->local_players[0]->p) {
 		this->st->local_players[0]->p = NULL;
+		DEBUGSTR("net", "  It's us :(");
 	}
 
 	return 2;

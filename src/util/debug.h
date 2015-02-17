@@ -14,6 +14,7 @@ using namespace std;
 	#define WHEREARG __FILE__, __LINE__
 	#define DEBUGPRINT2(...) write_debug(__VA_ARGS__)
 	#define DEBUG(_sect, _fmt, ...) DEBUGPRINT2(_sect, WHEREARG, _fmt, __VA_ARGS__)
+	#define DEBUGSTR(_sect, _fmt) DEBUGPRINT2(_sect, WHEREARG, _fmt)
 #else
 	#define DEBUG(_sect, _fmt, ...) /* nothing! */
 #endif
