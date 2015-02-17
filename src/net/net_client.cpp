@@ -216,6 +216,17 @@ void NetClient::preGame()
 }
 
 
+/**
+* Handle errors
+* At the moment it just logs to stderr but could possibly be more proactive
+**/
+void NetClient::error(string msg)
+{
+	cerr << msg << endl;
+}
+
+
+
 
 /**
 ***  One method for each outgoing network message the client sends out
@@ -415,7 +426,10 @@ unsigned int NetClient::handleUnitState(Uint8 *data, unsigned int size)
 		cout << "       eid: " << eid << "   slot: " << slot << "   our slot: " << st->local_players[0]->slot << endl;
 
 		UnitType *ut = GEng()->mm->getUnitType(type);
-		if (! ut) return 40;	// Is this correct?
+		if (! ut) {
+			this->error("Invalid unit type " + type);
+			return 40;
+		}
 
 		u = new Player(ut, st, FACTION_INDIVIDUAL, slot, bx, by, bz);
 
@@ -461,7 +475,10 @@ unsigned int NetClient::handleWallState(Uint8 *data, unsigned int size)
 	// If don't exist, create
 	if (w == NULL) {
 		WallType *wt = GEng()->mm->getWallType(type);
-		if (! wt) return 34;		// TODO: Should we err instead?
+		if (! wt) {
+			this->error("Invalid wall type " + type);
+			return 34;
+		}
 
 		w = new Wall(wt, st, bx, bz, by, 0);
 
@@ -499,7 +516,10 @@ unsigned int NetClient::handleObjectState(Uint8 *data, unsigned int size)
 	// If don't exist, create
 	if (o == NULL) {
 		ObjectType *ot = GEng()->mm->getObjectType(type);
-		if (ot == NULL) return 34;		// TODO: Should we err instead?
+		if (ot == NULL) {
+			this->error("Invalid object type " + type);
+			return 34;
+		}
 
 		o = new Object(ot, st, bx, by, bz);
 
@@ -539,7 +559,10 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 	// If don't exist, create
 	if (v == NULL) {
 		VehicleType *vt = GEng()->mm->getVehicleType(type);
-		if (vt == NULL) return 34;		// TODO: Should we err instead?
+		if (vt == NULL) {
+			this->error("Invalid vehicle type " + type);
+			return 34;
+		}
 
 		if (vt->helicopter) {
 			v = new Helicopter(vt, st, trans);
@@ -578,10 +601,11 @@ unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
 	WeaponType* wt = GEng()->mm->getWeaponType(type);
 
 	// Check valid
-	if (u == NULL) return 40;
-	if (wt == NULL) return 40;
-	if (wt->model == NULL) return 40;
-
+	if (u == NULL || wt == NULL || wt->model == NULL) {
+		this->error("Invalid ammoround type " + type);
+		return 40;
+	}
+	
 	// Construct transform obj
 	btTransform xform = btTransform(
 		btQuaternion(qx, qy, qz, qw),
@@ -620,7 +644,10 @@ unsigned int NetClient::handlePickupState(Uint8 *data, unsigned int size)
 	// If don't exist, create
 	if (p == NULL) {
 		PickupType *pt = GEng()->mm->getPickupType(type);
-		if (pt == NULL) return 34;		// TODO: Should we err instead?
+		if (pt == NULL) {
+			this->error("Invalid pickup type " + type);
+			return 34;
+		}
 
 		p = new Pickup(pt, st, bx, bz, by);
 
