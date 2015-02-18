@@ -1,0 +1,44 @@
+1	Novo jogo
+2	Um jogador
+3	Multijogadores local
+4	Multijogadores online
+5	Configurações
+6	Mods
+7	Help
+8	Sair
+9	Modo de jogo
+10	Weapons
+11	Environment
+12	Selecionar nível
+13	Character
+14	View
+15	Host network game
+16	Ok
+17	Ok
+18	Ok
+19	Standard unit weapons
+20	Standard game type weapons
+21	Save weapon settings
+22	Time of day
+23	Day/night cycle
+24	Amount of rain
+25	Amount of snow
+26	Random weather
+27	Allow game type to change weather
+28	Save environment settings
+29	Direct
+30	Local
+31	Internet
+32	Hostname
+33	Refresh list
+34	Join game
+35	Anti-serrilhamento
+36	Qualidade
+37	Idioma
+38	Tela cheia
+39	Resolução width
+40	Resolução height
+41	Ok
+42	Sair?
+43	Sim
+44	Não

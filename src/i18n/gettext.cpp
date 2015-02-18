@@ -98,6 +98,7 @@ std::vector<std::string>* getAvailableLangs()
 	out->push_back("en_Pirate");
 	out->push_back("es");
 	out->push_back("fr");
+	out->push_back("pt_br");
 	out->push_back("sv");
 #ifndef RELEASE
 	out->push_back("test_utf8");
