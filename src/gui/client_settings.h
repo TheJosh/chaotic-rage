@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include "../rage.h"
+#include "../i18n/gettext.h"
 #include "dialog.h"
 
 class GameState;
@@ -39,5 +40,5 @@ class DialogClientSettings : public Dialog, public gcn::ActionListener
 		gcn::TextField* width;
 		gcn::TextField* height;
 		gcn::DropDown* lang;
-		vector<string>* langs;
+		vector<Lang>* langs;
 };

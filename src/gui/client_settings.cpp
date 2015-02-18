@@ -21,6 +21,26 @@ using namespace std;
 
 
 
+class LangListModel: public gcn::ListModel
+{
+	private:
+		vector<Lang> * v;
+	public:
+		explicit LangListModel(vector<Lang> * vec) {
+			this->v = vec;
+		}
+		std::string getElementAt(int i)
+		{
+			return v->at(i).label;
+		}
+		int getNumberOfElements()
+		{
+			return v->size();
+		}
+};
+
+
+
 /**
 * Dialog for client settings
 **/
@@ -44,11 +64,12 @@ DialogClientSettings::DialogClientSettings(GameState* st) : Dialog()
 **/
 DialogClientSettings::~DialogClientSettings()
 {
+	delete this->langs;
 }
 
 
 #define COLLEFT     10 * GEng()->gui_scale
-#define COLRIGHT    110 * GEng()->gui_scale
+#define COLRIGHT    150 * GEng()->gui_scale
 #define ROWHEIGHT   27 * GEng()->gui_scale
 
 /**
@@ -95,12 +116,12 @@ gcn::Container * DialogClientSettings::setup()
 	label = new gcn::Label(_(STRING_SETTINGS_LANGUAGE));
 	c->add(label, COLLEFT, y);
 	this->langs = getAvailableLangs();
-	this->lang = new gcn::DropDown(new VectorListModel(this->langs));
+	this->lang = new gcn::DropDown(new LangListModel(this->langs));
 	this->lang->setPosition(COLRIGHT, y);
-	this->lang->setWidth(100 * GEng()->gui_scale);
+	this->lang->setWidth(200 * GEng()->gui_scale);
 	c->add(this->lang);
 	for (unsigned int i = this->langs->size() - 1; i != 0; --i) {
-		if (this->langs->at(i) == GEng()->cconf->lang) {
+		if (this->langs->at(i).name == GEng()->cconf->lang) {
 			this->lang->setSelected(i);
 			break;
 		}
@@ -197,7 +218,7 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 	#endif
 
 	// Re-load language strings
-	loadLang(langs->at(this->lang->getSelected()).c_str());
+	loadLang(langs->at(this->lang->getSelected()).name.c_str());
 	this->m->loadMenuItems();
 
 	// Save config
@@ -207,7 +228,7 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 		GEng()->cconf->width = width;
 		GEng()->cconf->height = height;
 	#endif
-	GEng()->cconf->lang = langs->at(this->lang->getSelected());
+	GEng()->cconf->lang = langs->at(this->lang->getSelected()).name;
 	GEng()->cconf->save();
 
 	// If we need a restart, tell the user

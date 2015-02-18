@@ -11,6 +11,16 @@
 /***
 * This is a simple implementation of an i18n system
 ***/
+class Lang
+{
+	public:
+		std::string name;
+		std::string label;
+
+		explicit Lang(std::string name, std::string label)
+			: name(name), label(label)
+			{}
+};
 
 
 /**
@@ -35,4 +45,4 @@ bool loadLang(const char* name);
 * Get a list of available languages
 * delete() when you are done
 **/
-std::vector<std::string>* getAvailableLangs();
+std::vector<Lang>* getAvailableLangs();

@@ -91,17 +91,18 @@ std::string gettext(unsigned int stringid)
 * Get a list of available languages
 * TODO: Read file names from i18n directory
 **/
-std::vector<std::string>* getAvailableLangs()
+std::vector<Lang>* getAvailableLangs()
 {
-	std::vector<std::string> *out = new std::vector<std::string>();
-	out->push_back("en");
-	out->push_back("en_Pirate");
-	out->push_back("es");
-	out->push_back("fr");
-	out->push_back("pt_br");
-	out->push_back("sv");
+	std::vector<Lang> *out = new std::vector<Lang>();
+	out->push_back(Lang("en", "English"));
+	out->push_back(Lang("en_Pirate", "Pirate"));
+	out->push_back(Lang("es", "Español"));
+	out->push_back(Lang("fr", "Français"));
+	out->push_back(Lang("pt_br", "Português Brasileiro"));
+	out->push_back(Lang("sv", "Svenska"));
 #ifndef RELEASE
-	out->push_back("test_utf8");
+	out->push_back(Lang("test_utf8", "UTF-8 Test"));
 #endif
 	return out;
 }
+
