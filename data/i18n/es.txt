@@ -1,0 +1,44 @@
+1	Campaña
+2	Solo jugador
+3	Pantalla dividida
+4	Juego en red
+5	Ajustes
+6	Modos
+7	Ayuda
+8	Salir
+9	Tipo de juego
+10	Armas
+11	Escenario
+12	Mapa
+13	Tipo de unidad
+14	Modo vista
+15	Equipo principal
+16	Iniciar juego de un solo jugador
+17	Iniciar juego en pantalla dividida
+18	Inicio campaña
+19	Unidad estándar de armas
+20	Estándar armas de tipo juego
+21	Guardar armas
+22	Hora del día
+23	Día/noche
+24	Nivel de precipitaciones
+25	Cantidad de nieve
+26	Tiempo aleatorio
+27	Permita tipo de juego para cambiar el tiempo
+28	Guardar el tipo de tiempo
+29	Directo
+30	Local
+31	Internet
+32	Nombre principal
+33	Actualizar
+34	Comienza el juego
+35	MSAA
+36	Tex filtro
+37	Idioma
+38	Pantalla completa
+39	Ancho de pantalla
+40	Largo de pantalla
+41	Guardar
+42	Salir? Seguro?
+43	Sí
+44	No

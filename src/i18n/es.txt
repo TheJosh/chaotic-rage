@@ -1,0 +1,61 @@
+#
+# Spanish
+#
+
+# Main menu
+MENU_CAMPAIGN            Campaña
+MENU_SINGLE              Solo jugador
+MENU_SPLIT               Pantalla dividida
+MENU_NETWORK             Juego en red
+MENU_SETTINGS            Ajustes
+MENU_MODS                Modos
+MENU_HELP                Ayuda
+MENU_QUIT                Salir
+
+# New game menu
+NEWGAME_TYPE             Tipo de juego
+NEWGAME_WEAPONS          Armas
+NEWGAME_ENVIRONMENT      Escenario
+NEWGAME_MAP              Mapa
+NEWGAME_UNIT             Tipo de unidad
+NEWGAME_VIEW             Modo vista
+NEWGAME_HOST             Equipo principal
+NEWGAME_START_SINGLE     Iniciar juego de un solo jugador
+NEWGAME_START_SPLIT      Iniciar juego en pantalla dividida
+NEWGAME_START_CAMPAIGN   Inicio campaña
+
+# Weapon menu
+WEAPONS_STANDARD_UNIT    Unidad estándar de armas
+WEAPONS_STANDARD_GAME    Estándar armas de tipo juego
+WEAPONS_SAVE             Guardar armas
+
+# Environment menu
+ENVIRONMENT_TIMEOFDAY    Hora del día
+ENVIRONMENT_DAY_NIGHT    Día/noche
+ENVIRONMENT_RAIN         Nivel de precipitaciones
+ENVIRONMENT_SNOW         Cantidad de nieve
+ENVIRONMENT_RND_WEATHER  Tiempo aleatorio
+ENVIRONMENT_GT_WEATHER   Permita tipo de juego para cambiar el tiempo
+ENVIRONMENT_SAVE         Guardar el tipo de tiempo
+
+# Network menu
+NETWORK_DIRECT           Directo
+NETWORK_LOCAL            Local
+NETWORK_INTERNET         Internet
+NETWORK_HOSTNAME         Nombre principal
+NETWORK_REFRESH_LIST     Actualizar
+NETWORK_JOIN_GAME        Comienza el juego
+
+# Settings menu
+SETTINGS_MSAA            MSAA
+SETTINGS_TEX_FILTER      Tex filtro
+SETTINGS_LANGUAGE        Idioma
+SETTINGS_FULLSCREEN      Pantalla completa
+SETTINGS_WIDTH           Ancho de pantalla
+SETTINGS_HEIGHT          Largo de pantalla
+SETTINGS_SAVE            Guardar
+
+# In game
+GAME_QUIT                Salir? Seguro?
+GAME_YES                 Sí
+GAME_NO                  No
