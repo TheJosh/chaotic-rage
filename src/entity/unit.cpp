@@ -249,7 +249,6 @@ void Unit::endFiring()
 
 /**
 * Play the sound of an empty weapon trying to fire
-* TODO: Fix this and get it working
 **/
 void Unit::emptySound()
 {
