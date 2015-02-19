@@ -411,7 +411,7 @@ void Vehicle::setNodeTransformRelative(VehicleNodeType type, glm::mat4 transform
 
 	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); ++it) {
 		if ((*it).type == type) {
-			this->anim->setMoveTransform((*it).node, (*it).node->transform * transform);
+			this->anim->setMoveTransform((*it).node, transform);
 			break;
 		}
 	}
