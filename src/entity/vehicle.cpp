@@ -4,6 +4,7 @@
 
 #include "vehicle.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <string>
 #include <vector>
 #include "../game_engine.h"
@@ -223,17 +224,12 @@ void Vehicle::update(int delta)
 	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
 	this->vehicle->setBrake(this->brakeForce,wheelIndex);
 
-	// Update wheels
+	// Update wheel nodes
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
-		this->vehicle->updateWheelTransform(i, true);
-
-		// TODO: fix the transforms for turning and rotating of the wheels
-		//btTransform newTransform = this->vehicle->getWheelInfo(i).m_worldTransform;
-		//newTransform.setOrigin(newTransform.getOrigin() - this->vehicle->getChassisWorldTransform().getOrigin());
-
-		//btScalar m[16];
-		//newTransform.getOpenGLMatrix(m);
-		//this->setNodeTransformRelative(VEHICLE_NODE_WHEEL0 + i, glm::make_mat4(m));
+		glm::mat4 wheel = glm::mat4();
+		wheel = glm::rotate(wheel, glm::degrees(this->vehicle->getWheelInfo(i).m_steering), glm::vec3(0.0f, 0.0f, 1.0f));
+		wheel = glm::rotate(wheel, glm::degrees(this->vehicle->getWheelInfo(i).m_rotation), glm::vec3(-1.0f, 0.0f, 0.0f));
+		this->setNodeTransformRelative(VEHICLE_NODE_WHEEL0 + i, wheel);
 	}
 
 	// Send state over network

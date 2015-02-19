@@ -288,7 +288,7 @@ Entity * Unit::raytest(btMatrix3x3 &direction, float range)
 {
 	btTransform xform = this->ghost->getWorldTransform();
 
-	btVector3 offGround = btVector3(0.0f, 0.4f, 0.0f);
+	btVector3 offGround = btVector3(0.0f, 0.3f, 0.0f);
 
 	// Begin and end vectors
 	btVector3 begin = xform.getOrigin() + offGround;
