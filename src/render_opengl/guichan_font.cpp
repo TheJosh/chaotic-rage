@@ -271,7 +271,11 @@ void OpenGLFont::renderCharacter(Uint32 character, float &x, float &y)
 			for (int i = 0; i < width; i++) {
 
 				gl_data[2*(i+j*width)] = gl_data[2*(i+j*width)+1] =
+#ifdef _WIN32
 					(i>=slot->bitmap.width || j>=slot->bitmap.rows) ?
+#else
+					(static_cast<unsigned int>(i)>=slot->bitmap.width || static_cast<unsigned int>(j)>=slot->bitmap.rows) ?
+#endif
 					0 : slot->bitmap.buffer[i + slot->bitmap.width*j];
 
 			}
