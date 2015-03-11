@@ -31,7 +31,7 @@ elif [ "$PLATFORM" == "android" ]; then
 	# sudo apt-get install openjdk-7-jdk
 
 	# Download and extract SDK
-	SDK_FILE="android-sdk_r23.0.2-linux.tgz"
+	SDK_FILE="android-sdk_r24.0.2-linux.tgz"
 	SDK_LINK="http://dl.google.com/android/${SDK_FILE}"
 	if [ ! -f ${SDK_FILE} ]; then
 		wget ${SDK_LINK} || exit 1
@@ -47,7 +47,7 @@ elif [ "$PLATFORM" == "android" ]; then
 	echo "sdk.dir=${ANDROID_HOME}" > local.properties
 
 	# Install required Android components
-	echo 'y' | android update sdk --all --filter platform-tools,build-tools-21.0.0,android-10 --no-ui --force >/dev/null || exit 1
+	echo 'y' | android update sdk --all --filter platform-tools,build-tools-22.0.0,android-10 --no-ui --force >/dev/null || exit 1
 
 	# Download and extract NDK
 	NDK_FILE="android-ndk64-r10b-linux-x86_64.tar.bz2"
