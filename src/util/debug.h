@@ -17,6 +17,7 @@ using namespace std;
 	#define DEBUGSTR(_sect, _fmt) DEBUGPRINT2(_sect, WHEREARG, _fmt)
 #else
 	#define DEBUG(_sect, _fmt, ...) /* nothing! */
+	#define DEBUGSTR(_sect, _fmt) /* nothing! */
 #endif
 
 void write_debug(const char * sect, const char * file, int line, const char * fmt, ...);
