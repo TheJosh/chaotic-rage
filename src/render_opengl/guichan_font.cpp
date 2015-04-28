@@ -262,22 +262,24 @@ void OpenGLFont::renderCharacter(Uint32 character, float &x, float &y)
 		error = FT_Render_Glyph(this->pmpl->face->glyph, FT_RENDER_MODE_NORMAL);
 		if (error) return;
 
-		int width = MAX(nextPowerOfTwo(slot->bitmap.width), 2);
-		int height = MAX(nextPowerOfTwo(slot->bitmap.rows), 2);
+		unsigned int width = MAX(nextPowerOfTwo(slot->bitmap.width), 2);
+		unsigned int height = MAX(nextPowerOfTwo(slot->bitmap.rows), 2);
 
 		GLubyte* gl_data = new GLubyte[2 * width * height];
 
-		for (int j = 0; j < height; j++) {
-			for (int i = 0; i < width; i++) {
-
-				gl_data[2*(i+j*width)] = gl_data[2*(i+j*width)+1] =
-#ifdef _WIN32
-					(i>=slot->bitmap.width || j>=slot->bitmap.rows) ?
-#else
-					(static_cast<unsigned int>(i)>=slot->bitmap.width || static_cast<unsigned int>(j)>=slot->bitmap.rows) ?
-#endif
-					0 : slot->bitmap.buffer[i + slot->bitmap.width*j];
-
+		for (unsigned int j = 0; j < height; j++) {
+			for (unsigned int i = 0; i < width; i++) {
+				int index = 2 * (i + j * width);
+				if (i >= static_cast<unsigned int>(slot->bitmap.width)
+				    ||
+				    j >= static_cast<unsigned int>(slot->bitmap.rows)
+				) {
+					gl_data[index] = 0;
+					gl_data[index + 1] = 0;
+				} else {
+					gl_data[index] = slot->bitmap.buffer[i + slot->bitmap.width * j];
+					gl_data[index + 1] = slot->bitmap.buffer[i + slot->bitmap.width * j];
+				}
 			}
 		}
 
