@@ -27,18 +27,10 @@ Compiling on Debian/Ubuntu/Mint
 This build configuration has been tested on Debian 7, Debian 8, Ubuntu 10.04, Ubuntu 12.04 and Mint 17.
 
 Install the dependencies:
-* g++
-* libsdl2-dev
-* libsdl2-image-dev
-* libsdl2-mixer-dev
-* libsdl2-net-dev
-* libgl1-mesa-dev
-* libglu1-mesa-dev
-* libglew-dev
-* liblua5.1-0-dev
-* libfreetype6-dev
-* libbullet-dev
-* libassimp-dev
+
+```.sh
+sudo apt-get install g++ libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libgl1-mesa-dev libglu1-mesa-dev libglew-dev liblua5.1-0-dev libfreetype6-dev libbullet-dev libassimp-dev
+```
 
 Some of these (SDL, Bullet, Assimp) have scripts in the `tools/linux` directory
 for downloading, compiling and installing these libraries. These are useful
