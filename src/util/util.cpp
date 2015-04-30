@@ -2,14 +2,13 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include "util.h"
 #include <sstream>
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
-#include "../rage.h"
 
 using namespace std;
-
 
 
 void seedRandom()
@@ -20,14 +19,14 @@ void seedRandom()
 int getRandom(int low, int high)
 {
 	if (high < low) swap(low, high);
-	if (high == low) return low;
+	else if (high == low) return low;
 	return rand() % (high - low + 1) + low;
 }
 
 float getRandomf(float low, float high)
 {
 	if (high < low) swap(low, high);
-	if (high == low) return low;
+	else if (high == low) return low;
 	return ((float)rand()/(float)RAND_MAX) * (high - low) + low;
 }
 
@@ -41,28 +40,26 @@ int nextPowerOfTwo(int a)
 	return rval;
 }
 
-
 /**
 * Replace one string with another
 **/
-std::string replaceString(std::string subject, const std::string& search, const std::string& replace)
+string replaceString(string subject, const string& search, const string& replace)
 {
 	size_t pos = 0;
-	while ((pos = subject.find(search, pos)) != std::string::npos) {
+	while ((pos = subject.find(search, pos)) != string::npos) {
 		 subject.replace(pos, search.length(), replace);
 		 pos += replace.length();
 	}
 	return subject;
 }
 
-
 /**
 * Trim a string
 **/
-std::string trimString(const std::string& str, const std::string& whitespace)
+string trimString(const string& str, const string& whitespace)
 {
 	const size_t strBegin = str.find_first_not_of(whitespace);
-	if (strBegin == std::string::npos) {
+	if (strBegin == string::npos) {
 		return "";
 	}
 
@@ -72,13 +69,14 @@ std::string trimString(const std::string& str, const std::string& whitespace)
 	return str.substr(strBegin, strRange);
 }
 
-
 /**
- * Covert any type of number to a string
- * Source: http://stackoverflow.com/a/13636164
- */
+* Convert the listed types of number to a string
+* Source: http://stackoverflow.com/a/13636164
+**/
+template string numberToString(int number);
+template string numberToString(float number);
 template <typename T>
-std::string numberToString(T number)
+string numberToString(T number)
 {
 	ostringstream ss;
 	ss << number;

@@ -28,9 +28,9 @@ void fingerDown(GameState *st, int finger, float x, float y)
 /**
 * A finger has moved
 **/
-void fingerMove(GameState *st, int finger, float x, float y)
+void fingerMove(GameState *st, int finger, float x, float y, float dx, float dy)
 {
-	//displayMessageBox("fingerMove " + numberToString(finger) + ": " + numberToString(x) + "x" + numberToString(y));
+	//displayMessageBox("fingerMove " + numberToString(finger) + ": " + numberToString(x) + "x" + numberToString(y) + " delta: " + numberToString(dx) + "x" + numberToString(dy));
 
 	if (finger > numberOfFingers) {
 		numberOfFingers = finger;

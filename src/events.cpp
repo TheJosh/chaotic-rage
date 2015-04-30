@@ -175,7 +175,7 @@ void handleEvents(GameState *st)
 				fingerDown(st, event.tfinger.fingerId, event.tfinger.x, event.tfinger.y);
 
 			} else if (event.type == SDL_FINGERMOTION) {
-				fingerMove(st, event.tfinger.fingerId, event.tfinger.x, event.tfinger.y);
+				fingerMove(st, event.tfinger.fingerId, event.tfinger.x, event.tfinger.y, event.tfinger.dx, event.tfinger.dy);
 
 			} else if (event.type == SDL_FINGERUP) {
 				fingerUp(st, event.tfinger.fingerId, event.tfinger.x, event.tfinger.y);
