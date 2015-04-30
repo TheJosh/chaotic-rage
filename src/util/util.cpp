@@ -74,6 +74,7 @@ string trimString(const string& str, const string& whitespace)
 * Source: http://stackoverflow.com/a/13636164
 **/
 template string numberToString(int number);
+template string numberToString(unsigned int number);
 template string numberToString(float number);
 template <typename T>
 string numberToString(T number)

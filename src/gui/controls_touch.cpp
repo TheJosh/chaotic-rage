@@ -18,8 +18,8 @@
 using namespace std;
 
 const static string controls_single[] = {
-	"Move", "One finger",
-	"Aim", "Two fingers",
+	"Move", "Left side of screen",
+	"Aim", "Right side of screen",
 	"Fire", "Tap middle of screen",
 	//"Melee", "-",
 	//"Change Weapon", "-",

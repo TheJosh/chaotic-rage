@@ -172,16 +172,16 @@ void handleEvents(GameState *st)
 
 #if defined(__ANDROID__)
 			} else if (event.type == SDL_FINGERDOWN) {
-				fingerDown(st, event.tfinger.fingerId, event.tfinger.x, event.tfinger.y);
+				fingerDown(st, event.tfinger.x, event.tfinger.y);
 
 			} else if (event.type == SDL_FINGERMOTION) {
 				fingerMove(st, event.tfinger.fingerId, event.tfinger.x, event.tfinger.y, event.tfinger.dx, event.tfinger.dy);
 
 			} else if (event.type == SDL_FINGERUP) {
-				fingerUp(st, event.tfinger.fingerId, event.tfinger.x, event.tfinger.y);
+				fingerUp(st);
 
 			} else if (event.type == SDL_MULTIGESTURE) {
-				multigesture(st, event.mgesture.numFingers, event.tfinger.x, event.tfinger.y);
+				multigesture(st, event.mgesture.numFingers, event.tfinger.x, event.tfinger.y, event.tfinger.dx, event.tfinger.dy);
 #else
 
 			} else if (event.type == SDL_MOUSEMOTION) {
