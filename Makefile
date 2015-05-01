@@ -3,7 +3,6 @@
 # Build dir and sources dir
 OBJPATH=build
 SRCPATH=src
-LUAPKG=lua5.1
 
 
 # MXE cross-compiler environment
@@ -16,7 +15,6 @@ ifdef MXE
 	PATH := $(MXE)/usr/bin:$(PATH)
 	PLATFORM := $(OBJPATH)/win32.o
 	LIBS := -liphlpapi
-	LUAPKG := lua
 	POSTFIX := .exe
 	DONT_COMPILE = $(OBJPATH)/touch.o \
 		$(OBJPATH)/gui/controls_touch.o
@@ -31,7 +29,6 @@ else ifdef EMSCRIPTEN
 	PLATFORM := $(OBJPATH)/emscripten.o
 	PKG_CONFIG_PATH := tools/emscripten/lib/pkgconfig
 	POSTFIX := .html
-	LUAPKG=
 	DONT_COMPILE = $(OBJPATH)/render_opengl/gl_debug_drawer.o \
 		$(OBJPATH)/render/render_null.o \
 		$(OBJPATH)/render/render_ascii.o \
@@ -73,14 +70,14 @@ FREETYPE_CONFIG := $(CROSS)freetype-config
 
 # cflags
 CFLAGS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --cflags) \
-	$(shell export PATH=$(PATH) PKG_CONFIG_PATH=$(PKG_CONFIG_PATH);$(PKG_CONFIG) gl glu glew $(LUAPKG) bullet assimp SDL2_mixer SDL2_image SDL2_net --cflags) \
+	$(shell export PATH=$(PATH) PKG_CONFIG_PATH=$(PKG_CONFIG_PATH);$(PKG_CONFIG) gl glu glew bullet assimp SDL2_mixer SDL2_image SDL2_net --cflags) \
 	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --cflags) \
 	$(CFLAGS) \
-	-Itools/include -I$(SRCPATH) -I$(SRCPATH)/guichan -I$(SRCPATH)/confuse -I$(SRCPATH)/spark
+	-Itools/include -I$(SRCPATH) -I$(SRCPATH)/guichan -I$(SRCPATH)/confuse -I$(SRCPATH)/spark -I$(SRCPATH)/lua
 
 # libs
 LIBS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --libs) \
-	$(shell export PATH=$(PATH) PKG_CONFIG_PATH=$(PKG_CONFIG_PATH);$(PKG_CONFIG) glew $(LUAPKG) bullet assimp SDL2_mixer SDL2_image SDL2_net --libs) \
+	$(shell export PATH=$(PATH) PKG_CONFIG_PATH=$(PKG_CONFIG_PATH);$(PKG_CONFIG) glew bullet assimp SDL2_mixer SDL2_image SDL2_net --libs) \
 	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --libs) \
 	$(LIBS)
 
@@ -92,14 +89,13 @@ ifdef EMSCRIPTEN
 		-Itools/emscripten/include/SDL2 \
 		-Itools/emscripten/include/freetype2 \
 		-Itools/emscripten/include \
-		-Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark \
+		-Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark -Isrc/lua \
 		-ffast-math
 	LIBS := -Ltools/emscripten/lib \
 		-lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath \
 		-lassimp \
 		-lSDL2_net \
-		-lfreetype \
-		-llua5.1
+		-lfreetype
 endif
 
 
@@ -139,8 +135,12 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/spark/RenderingAPIs/OpenGL/*.cpp \
 )
 
+CFILES=$(wildcard \
+	$(SRCPATH)/lua/*.c \
+)
+
 # The list of source files gets transformed into a list of obj files
-OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES))
+OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES)) $(patsubst $(SRCPATH)/%.c,$(OBJPATH)/%.o,$(CFILES))
 
 # Files which define main() methods
 OBJMAINS=$(OBJPATH)/client.o
@@ -248,12 +248,12 @@ cleaner:
 
 
 $(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h Makefile
-	@echo [CC] $<
+	@echo [CXX] $<
 	@mkdir -p `dirname $< | sed "s/$(SRCPATH)/$(OBJPATH)/"`
 	@$(CXX) $(CFLAGS) -o $@ -c $<
 
 $(OBJPATH)/happyhttp.o: $(SRCPATH)/http/happyhttp.cpp $(SRCPATH)/http/happyhttp.h Makefile
-	@echo [CC] $<
+	@echo [CXX] $<
 	@$(CXX) $(CFLAGS) -Wno-error -o $@ -c $<
 
 $(OBJPATH)/confuse/%.o: $(SRCPATH)/confuse/%.c $(SRCPATH)/confuse/confuse.h Makefile
@@ -261,16 +261,21 @@ $(OBJPATH)/confuse/%.o: $(SRCPATH)/confuse/%.c $(SRCPATH)/confuse/confuse.h Make
 	@mkdir -p $(OBJPATH)/confuse
 	@$(CC) $(CFLAGS) -Wno-error -o $@ -c $<
 
-$(OBJPATH)/linux.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h Makefile
+$(OBJPATH)/lua/%.o: $(SRCPATH)/lua/%.c $(SRCPATH)/lua/lua.h Makefile
 	@echo [CC] $<
+	@mkdir -p $(OBJPATH)/lua
+	@$(CC) -O2 -Wall -DLUA_COMPAT_ALL -DLUA_USE_POSIX -o $@ -c $<
+
+$(OBJPATH)/linux.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h Makefile
+	@echo [CXX] $<
 	@$(CXX) $(CFLAGS) -o $@ -c $<
 
 $(OBJPATH)/win32.o: $(SRCPATH)/platform/win32.cpp $(SRCPATH)/platform/platform.h Makefile
-	@echo [CC] $<
+	@echo [CXX] $<
 	@$(CXX) $(CFLAGS) -o $@ -c $<
 
 $(OBJPATH)/emscripten.o: $(SRCPATH)/platform/emscripten.cpp $(SRCPATH)/platform/platform.h Makefile
-	@echo [CC] $<
+	@echo [CXX] $<
 	@$(CXX) $(CFLAGS) -o $@ -c $<
 
 
