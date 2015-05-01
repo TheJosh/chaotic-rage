@@ -1399,7 +1399,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment)
 	// Create and attach vertex shader
 	sVertex = this->createShader(vertex, GL_VERTEX_SHADER);
 	if (sVertex == 0) {
-		GL_LOG("Invalid vertex shader");
+		GL_LOG("Invalid vertex shader (program %u)", program);
 		return NULL;
 	}
 	glAttachShader(program, sVertex);
@@ -1407,7 +1407,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment)
 	// Same with frag shader
 	sFragment = this->createShader(fragment, GL_FRAGMENT_SHADER);
 	if (sFragment == 0) {
-		GL_LOG("Invalid fragment shader");
+		GL_LOG("Invalid fragment shader (program %u)", program);
 		return NULL;
 	}
 	glAttachShader(program, sFragment);
@@ -1440,7 +1440,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment)
 	glValidateProgram(program);
 	glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
 	if (! success) {
-		GL_LOG("Program didn't validate");
+		GL_LOG("Program didn't validate (program %u)", program);
 		return NULL;
 	}
 
