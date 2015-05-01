@@ -122,7 +122,7 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/entity/*.cpp \
 	$(SRCPATH)/fx/*.cpp \
 	$(SRCPATH)/util/*.cpp \
-	$(SRCPATH)/lua/*.cpp \
+	$(SRCPATH)/script/*.cpp \
 	$(SRCPATH)/gui/*.cpp \
 	$(SRCPATH)/http/*.cpp \
 	$(SRCPATH)/weapons/*.cpp \

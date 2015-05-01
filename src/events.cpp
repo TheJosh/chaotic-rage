@@ -13,7 +13,7 @@
 #include "render_opengl/render_opengl.h"
 #include "gui/dialog.h"
 #include "gui/controls.h"
-#include "lua/gamelogic.h"
+#include "script/gamelogic.h"
 #include "audio/audio.h"
 
 #if defined(__ANDROID__)

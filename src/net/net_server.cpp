@@ -14,7 +14,7 @@
 #include "../game_engine.h"
 #include "../game_state.h"
 #include "../map/map.h"
-#include "../lua/gamelogic.h"
+#include "../script/gamelogic.h"
 #include "../entity/ammo_round.h"
 #include "../entity/entity.h"
 #include "../entity/object.h"

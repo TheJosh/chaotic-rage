@@ -15,7 +15,7 @@
 #include "events.h"
 #include "game_engine.h"
 #include "game_settings.h"
-#include "lua/gamelogic.h"
+#include "script/gamelogic.h"
 #include "map/map.h"
 #include "physics_bullet.h"
 #include "entity/ammo_round.h"

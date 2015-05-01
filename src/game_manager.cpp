@@ -17,7 +17,7 @@
 #include "mod/mod_manager.h"
 #include "mod/gametype.h"
 #include "mod/unittype.h"
-#include "lua/gamelogic.h"
+#include "script/gamelogic.h"
 #include "render/render.h"
 #include "util/ui_update.h"
 #include "http/serverlist.h"

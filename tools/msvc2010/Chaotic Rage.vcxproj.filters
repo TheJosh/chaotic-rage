@@ -255,7 +255,7 @@
     <ClCompile Include="..\..\src\http\url.cpp">
       <Filter>src\http</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lua\ailogic.cpp">
+    <ClCompile Include="..\..\src\script\ailogic.cpp">
       <Filter>src\lua</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\mod\aitype.cpp">
@@ -348,19 +348,19 @@
     <ClCompile Include="..\..\src\mod\objecttype.cpp">
       <Filter>src\mod</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lua\gamelogic.cpp">
+    <ClCompile Include="..\..\src\script\gamelogic.cpp">
       <Filter>src\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lua\lua_hudlabel_lib.cpp">
+    <ClCompile Include="..\..\src\script\lua_hudlabel_lib.cpp">
       <Filter>src\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lua\lua_vector3_lib.cpp">
+    <ClCompile Include="..\..\src\script\lua_vector3_lib.cpp">
       <Filter>src\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lua\lua_standard.cpp">
+    <ClCompile Include="..\..\src\script\lua_standard.cpp">
       <Filter>src\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lua\lua_unitinfo_lib.cpp">
+    <ClCompile Include="..\..\src\script\lua_unitinfo_lib.cpp">
       <Filter>src\lua</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\mod\campaign.cpp">
@@ -624,7 +624,7 @@
     <ClCompile Include="..\..\src\game_engine.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lua\lua_random_lib.cpp">
+    <ClCompile Include="..\..\src\script\lua_random_lib.cpp">
       <Filter>src\lua</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\entity\unit.cpp">
@@ -744,7 +744,7 @@
     <ClCompile Include="..\..\src\render\render_ascii.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lua\lua_dialog_lib.cpp">
+    <ClCompile Include="..\..\src\script\lua_dialog_lib.cpp">
       <Filter>src\lua</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\map\map.cpp">
@@ -756,13 +756,13 @@
     <ClCompile Include="..\..\src\gui\textprompt.cpp">
       <Filter>src\gui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lua\lua_entity_lib.cpp">
+    <ClCompile Include="..\..\src\script\lua_entity_lib.cpp">
       <Filter>src\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lua\lua_world_lib.cpp">
+    <ClCompile Include="..\..\src\script\lua_world_lib.cpp">
       <Filter>src\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lua\lua_physics_lib.cpp">
+    <ClCompile Include="..\..\src\script\lua_physics_lib.cpp">
       <Filter>src\lua</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\gui\textbox.cpp">
@@ -863,7 +863,7 @@
     <ClInclude Include="..\..\src\http\url.h">
       <Filter>src\http</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\lua\ailogic.h">
+    <ClInclude Include="..\..\src\script\ailogic.h">
       <Filter>src\lua</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\mod\aitype.h">
@@ -965,10 +965,10 @@
     <ClInclude Include="..\..\src\mod\objecttype.h">
       <Filter>src\mod</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\lua\gamelogic.h">
+    <ClInclude Include="..\..\src\script\gamelogic.h">
       <Filter>src\lua</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\lua\lua_libs.h">
+    <ClInclude Include="..\..\src\script\lua_libs.h">
       <Filter>src\lua</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\mod\campaign.h">
@@ -986,7 +986,7 @@
     <ClInclude Include="..\..\src\render_opengl\hud_label.h">
       <Filter>src\render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\lua\luatimer.h">
+    <ClInclude Include="..\..\src\script\luatimer.h">
       <Filter>src\lua</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\entity\ammo_round.h">

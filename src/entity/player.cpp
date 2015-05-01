@@ -6,7 +6,7 @@
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include "../game_engine.h"
 #include "../game_state.h"
-#include "../lua/gamelogic.h"
+#include "../script/gamelogic.h"
 #include "../rage.h"
 #include "../render_opengl/animplay.h"
 #include "../game_settings.h"

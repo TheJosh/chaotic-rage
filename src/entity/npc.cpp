@@ -4,8 +4,8 @@
 
 #include "npc.h"
 #include "../game_state.h"
-#include "../lua/ailogic.h"
-#include "../lua/gamelogic.h"
+#include "../script/ailogic.h"
+#include "../script/gamelogic.h"
 #include "../mod/aitype.h"
 #include "../rage.h"
 #include "unit.h"
