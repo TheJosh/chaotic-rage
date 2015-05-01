@@ -17,22 +17,11 @@ extern "C" {
 **/
 void lua_standard_libs(lua_State *L)
 {
-	lua_pushcfunction(L, luaopen_base);
-	lua_pushstring(L, "");
-	lua_call(L, 1, 0);
-
-	lua_pushcfunction(L, luaopen_table);
-	lua_pushstring(L, LUA_TABLIBNAME);
-	lua_call(L, 1, 0);
-
-	lua_pushcfunction(L, luaopen_string);
-	lua_pushstring(L, LUA_STRLIBNAME);
-	lua_call(L, 1, 0);
-
-	lua_pushcfunction(L, luaopen_math);
-	lua_pushstring(L, LUA_MATHLIBNAME);
-	lua_call(L, 1, 0);
-
+	luaL_requiref(L, "", luaopen_base, 1);
+	luaL_requiref(L, LUA_TABLIBNAME, luaopen_table, 1);
+	luaL_requiref(L, LUA_STRLIBNAME, luaopen_string, 1);
+	luaL_requiref(L, LUA_MATHLIBNAME, luaopen_math, 1);
+	
 	lua_pushnil(L);
 	lua_setglobal(L, "dofile");
 
