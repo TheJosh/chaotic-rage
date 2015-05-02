@@ -17,24 +17,17 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include \
 	$(LOCAL_PATH)/$(JNI_PATH)/bullet/src \
 	$(LOCAL_PATH)/$(JNI_PATH)/freetype/include \
 	$(LOCAL_PATH)/$(JNI_PATH)/assimp/include \
-	$(LOCAL_PATH)/$(JNI_PATH)/lua/src \
 	$(LOCAL_PATH)/confuse \
 	$(LOCAL_PATH)/guichan \
+	$(LOCAL_PATH)/lua \
 	$(LOCAL_PATH)/spark \
 	$(LOCAL_PATH)/../tools/include
 
 # Add your application source files here...
 LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 	platform/android.cpp \
-	client.cpp \
-	events.cpp \
-	touch.cpp \
-	game_state.cpp \
-	game_engine.cpp \
-	game_manager.cpp \
-	game_settings.cpp \
-	physics_bullet.cpp \
 	$(subst $(LOCAL_PATH)/,, \
+		$(wildcard $(LOCAL_PATH)/*.cpp) \
 		$(wildcard $(LOCAL_PATH)/audio/*.cpp) \
 		$(wildcard $(LOCAL_PATH)/confuse/*.c) \
 		$(wildcard $(LOCAL_PATH)/entity/*.cpp) \
@@ -63,14 +56,17 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 	)
 
 DONT_COMPILE_FILES := render_opengl/gl_debug_drawer.cpp \
+	render/render_null.cpp \
+	render/render_ascii.cpp \
+	render/render_debug.cpp \
 	gui/controls.cpp
 
 LOCAL_SRC_FILES := $(filter-out $(DONT_COMPILE_FILES),$(LOCAL_SRC_FILES))
 
-LOCAL_SHARED_LIBRARIES := SDL2 SDL2_image SDL2_mixer SDL2_net bullet libft2 bullet assimp lua
+LOCAL_SHARED_LIBRARIES := SDL2 SDL2_image SDL2_mixer SDL2_net bullet libft2 bullet assimp
 
 LOCAL_LDLIBS := -lGLESv2 -llog
 
-LOCAL_CFLAGS := -DGL_GLEXT_PROTOTYPES=1
+LOCAL_CFLAGS := -DGL_GLEXT_PROTOTYPES=1 -DLUA_COMPAT_ALL -DLUA_USE_POSIX
 
 include $(BUILD_SHARED_LIBRARY)

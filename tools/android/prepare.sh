@@ -77,17 +77,6 @@ if [ ! -d "jni/assimp" ]; then
 	cd ..
 fi
 
-# lua
-if [ ! -d "jni/lua" ]; then
-	cd working/ || exit 1
-	if [ ! -f "lua-5.1.5.tar.gz" ]; then
-		wget http://www.lua.org/ftp/lua-5.1.5.tar.gz
-	fi
-	tar -xzf lua-5.1.5.tar.gz || exit 1
-	mv lua-5.1.5 ../jni/lua || exit 1
-	cd ..
-fi
-
 # Copy stuff from the prep dir to the JNI dir.
 cp -r prepare_data/* jni || exit 1
 rm jni/README.txt
