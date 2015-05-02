@@ -5,19 +5,15 @@
 #pragma once
 #include "../rage.h"
 
-using namespace std;
-
-
 class AIType
 {
 	public:
-		string name;
-		CRC32 id;
-
-		string script;
-
-	public:
 		AIType();
+		~AIType();
+
+		std::string name;
+		CRC32 id;
+		std::string script;
 };
 
 

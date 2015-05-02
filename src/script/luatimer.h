@@ -1,15 +1,4 @@
 #pragma once
-#include <SDL.h>
-#include "../rage.h"
-
-extern "C" {
-	#include <lua.h>
-	#include <lauxlib.h>
-}
-
-using namespace std;
-
-
 
 class LuaTimer
 {

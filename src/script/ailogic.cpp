@@ -2,32 +2,27 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include "ailogic.h"
+
 #include <iostream>
 #include <algorithm>
-#include <SDL.h>
+#include <BulletCollision/CollisionDispatch/btGhostObject.h>
 
 extern "C" {
-	#include <lua.h>
 	#include <lauxlib.h>
 	#include <lualib.h>
 }
 
-#include "../rage.h"
 #include "../game_state.h"
 #include "../mod/unittype.h"
 #include "../entity/npc.h"
 #include "../entity/unit.h"
 #include "../entity/pickup.h"
 #include "../util/btCRKinematicCharacterController.h"
-#include <BulletCollision/CollisionDispatch/btGhostObject.h>
-#include "luatimer.h"
 #include "lua_libs.h"
-#include "ailogic.h"
 
 
 using namespace std;
-
-class UnitParams;
 
 
 /**

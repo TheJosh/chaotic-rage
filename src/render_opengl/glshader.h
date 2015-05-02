@@ -19,7 +19,7 @@ class GLShader
 		GLuint program;
 
 		// Cached list of uniform locations
-		map<const char*, GLuint> uniforms;
+		std::map<const char*, GLuint> uniforms;
 
 	public:
 		GLShader(const GLuint p) : program(p) {}

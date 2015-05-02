@@ -11,8 +11,6 @@ class GameState;
 class Mod;
 class Song;
 
-using namespace std;
-
 
 typedef Mix_Chunk* AudioPtr;
 
@@ -31,7 +29,7 @@ class Audio
 		/**
 		* Loads a wav file into an AudioPtr
 		**/
-		virtual AudioPtr loadSound(string filename, Mod * mod) = 0;
+		virtual AudioPtr loadSound(std::string filename, Mod * mod) = 0;
 
 		/**
 		* Plays a sound

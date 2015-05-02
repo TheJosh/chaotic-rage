@@ -2,14 +2,10 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include "aitype.h"
 #include <iostream>
 #include <confuse.h>
-#include "../rage.h"
-#include "aitype.h"
 #include "mod.h"
-
-
-using namespace std;
 
 
 /**
@@ -71,5 +67,10 @@ AIType* loadItemAIType(cfg_t* cfg_item, Mod* mod)
 
 
 AIType::AIType()
+{
+	id = 0;
+}
+
+AIType::~AIType()
 {
 }

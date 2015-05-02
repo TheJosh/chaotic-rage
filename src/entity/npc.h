@@ -3,16 +3,12 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include "../rage.h"
 #include "unit.h"
 
 class AILogic;
 class AIType;
 class GameState;
 class UnitType;
-
-
-using namespace std;
 
 
 class NPC : public Unit

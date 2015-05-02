@@ -20,7 +20,7 @@ class OpenGLFont : public gcn::Font
 		OpenGLFont_Implementation *pmpl;
 
 	public:
-		OpenGLFont(RenderOpenGL* render, string name, Mod* mod, float size);
+		OpenGLFont(RenderOpenGL* render, std::string name, Mod* mod, float size);
 		~OpenGLFont();
 
 		/**

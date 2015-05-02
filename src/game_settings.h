@@ -4,10 +4,7 @@
 
 #pragma once
 #include "rage.h"
-
-using namespace std;
-
-
+class WeaponType;
 
 /**
 * Per-faction game settings
@@ -17,7 +14,7 @@ class GameSettingsFaction
 	public:
 		bool spawn_weapons_unit;
 		bool spawn_weapons_gametype;
-		vector<WeaponType*> spawn_weapons_extra;
+		std::vector<WeaponType*> spawn_weapons_extra;
 
 	public:
 		GameSettingsFaction();

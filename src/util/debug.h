@@ -3,10 +3,6 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include "../rage.h"
-
-using namespace std;
-
 
 // Debugging messages
 // Not used anywhere near as often as they should be used

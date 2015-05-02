@@ -8,7 +8,6 @@
 #include <vector>
 #include "../game_state.h"
 #include "../mod/unittype.h"
-#include "../rage.h"
 #include "entity.h"
 
 class AnimPlay;

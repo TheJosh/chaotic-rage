@@ -7,8 +7,6 @@
 #include <list>
 #include <vector>
 
-class GameState;
-
 
 /**
 * Windows bits
