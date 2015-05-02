@@ -226,6 +226,7 @@ dist-bin: chaoticrage data maps
 
 
 env:
+	@echo $(CC)
 	@echo $(CXX)
 	@echo $(CFLAGS)
 	@echo $(LIBS)
@@ -264,7 +265,7 @@ $(OBJPATH)/confuse/%.o: $(SRCPATH)/confuse/%.c $(SRCPATH)/confuse/confuse.h Make
 $(OBJPATH)/lua/%.o: $(SRCPATH)/lua/%.c $(SRCPATH)/lua/lua.h Makefile
 	@echo [CC] $<
 	@mkdir -p $(OBJPATH)/lua
-	@$(CC) -O2 -Wall -DLUA_COMPAT_ALL -DLUA_USE_POSIX -o $@ -c $<
+	@$(CC) $(CFLAGS) -DLUA_COMPAT_ALL -DLUA_USE_POSIX -o $@ -c $<
 
 $(OBJPATH)/linux.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h Makefile
 	@echo [CXX] $<
