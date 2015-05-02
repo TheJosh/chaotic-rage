@@ -15,7 +15,6 @@ You'll need the following dependencies:
 * gl
 * glu
 * glew
-* Lua
 * Freetype2
 * Bullet Physics
 * Assimp
@@ -29,7 +28,7 @@ This build configuration has been tested on Debian 7, Debian 8, Ubuntu 10.04, Ub
 Install the dependencies:
 
 ```.sh
-sudo apt-get install g++ libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libgl1-mesa-dev libglu1-mesa-dev libglew-dev liblua5.1-0-dev libfreetype6-dev libbullet-dev libassimp-dev
+sudo apt-get install g++ libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libgl1-mesa-dev libglu1-mesa-dev libglew-dev libfreetype6-dev libbullet-dev libassimp-dev
 ```
 
 Some of these (SDL, Bullet, Assimp) have scripts in the `tools/linux` directory
@@ -54,12 +53,9 @@ Install the dependencies:
 * libsdl2
 * mesa
 * glew
-* lua
 * freetype
 * bullet
 * assimp
-
-You also will need to edit the makefile and set LUAPKG=lua
 
 
 Compiling on Windows using MSVC
@@ -97,7 +93,7 @@ git clone https://github.com/mxe/mxe.git
 
 Then cd to the MXE directory and build all the dependencies
 ```
-make MXE_TARGETS='i686-w64-mingw32.static' sdl2 sdl2_mixer sdl2_image sdl2_net lua freetype bullet assimp glew
+make MXE_TARGETS='i686-w64-mingw32.static' sdl2 sdl2_mixer sdl2_image sdl2_net freetype bullet assimp glew
 ```
 
 You should then be able to build the game using `make` with an additional option specified
