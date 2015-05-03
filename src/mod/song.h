@@ -7,14 +7,11 @@
 #include "../rage.h"
 #include "../game_state.h"
 
-using namespace std;
-
-
 class Song
 {
 	public:
 		// from data file
-		string name;
+		std::string name;
 		CRC32 id;
 
 		Mix_Music * music;

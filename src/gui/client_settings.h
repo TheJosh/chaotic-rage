@@ -4,15 +4,12 @@
 
 #pragma once
 #include <guichan.hpp>
-#include <string>
 #include <vector>
 #include "../rage.h"
 #include "../i18n/gettext.h"
 #include "dialog.h"
 
 class GameState;
-
-using namespace std;
 
 
 /**
@@ -40,5 +37,5 @@ class DialogClientSettings : public Dialog, public gcn::ActionListener
 		gcn::TextField* width;
 		gcn::TextField* height;
 		gcn::DropDown* lang;
-		vector<Lang>* langs;
+		std::vector<Lang>* langs;
 };

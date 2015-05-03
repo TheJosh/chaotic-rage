@@ -6,9 +6,6 @@
 #include "../rage.h"
 #include "../audio/audio.h"
 
-using namespace std;
-
-
 class btCollisionShape;
 
 class WallTypeDamage {
@@ -21,15 +18,15 @@ class WallType
 {
 	public:
 		// from data file
-		string name;
+		std::string name;
 		CRC32 id;
 
 		bool stretch;
 		bool wall;
 		WallType * ground_type;
 
-		vector <WallTypeDamage *> damage_models;
-		vector <AudioPtr> walk_sounds;
+		std::vector <WallTypeDamage *> damage_models;
+		std::vector <AudioPtr> walk_sounds;
 
 		AssimpModel * model;
 		btCollisionShape* col_shape;

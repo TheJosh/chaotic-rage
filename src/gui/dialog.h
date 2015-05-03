@@ -11,10 +11,6 @@ class GameState;
 class Menu;
 
 
-using namespace std;
-
-
-
 /**
 * Base dialog class
 **/

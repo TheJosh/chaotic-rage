@@ -10,9 +10,6 @@
 #include "dialog.h"
 
 
-using namespace std;
-
-
 /**
 * Receives button bar click events
 **/
@@ -34,12 +31,12 @@ class DialogButtonBarHandler {
 **/
 class DialogButtonBar : public Dialog, public gcn::ActionListener {
 	private:
-		string title;
+		std::string title;
 		DialogButtonBarHandler *ev;
-		vector<gcn::Button*> buttons;
+		std::vector<gcn::Button*> buttons;
 
 	public:
-		DialogButtonBar(string title, vector<string>& labels, DialogButtonBarHandler* ev);
+		DialogButtonBar(std::string title, std::vector<std::string>& labels, DialogButtonBarHandler* ev);
 		virtual ~DialogButtonBar();
 
 		virtual gcn::Container* setup();

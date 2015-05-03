@@ -5,8 +5,6 @@
 #pragma once
 #include "../rage.h"
 
-using namespace std;
-
 
 /**
 * Per-faction settings for a gametype
@@ -14,7 +12,7 @@ using namespace std;
 class GameTypeFaction
 {
 	public:
-		string title;
+		std::string title;
 		vector<WeaponType*> spawn_weapons;
 };
 
@@ -25,12 +23,12 @@ class GameTypeFaction
 class GameType
 {
 	public:
-		string name;
+		std::string name;
 		CRC32 id;
-		string title;
+		std::string title;
 
 		Mod* mod;
-		string script_filename;
+		std::string script_filename;
 
 		GameTypeFaction factions[NUM_FACTIONS];
 		unsigned num_factions;

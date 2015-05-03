@@ -9,9 +9,6 @@
 
 #include "rage.h"
 
-using namespace std;
-
-
 namespace gcn {
 	class Gui;
 	class SDLInput;
@@ -44,7 +41,7 @@ class GameEngine
 		bool mouse_grabbed;
 
 		// Guichan dialogs
-		list<Dialog*> dialogs;
+		std::list<Dialog*> dialogs;
 
 	public:
 		// Is the game running?

@@ -9,10 +9,6 @@
 #include "../mod/mod.h"
 #include "../mod/gametype.h"
 
-
-using namespace std;
-
-
 class MapRegistry;
 class GameType;
 class Mod;
