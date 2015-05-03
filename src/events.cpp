@@ -23,9 +23,6 @@
 #define BUFFER_MAX 50
 
 
-using namespace std;
-
-
 /**
 * Handles local events (keyboard, mouse)
 **/
@@ -175,13 +172,13 @@ void handleEvents(GameState *st)
 				fingerDown(st, event.tfinger.x, event.tfinger.y);
 
 			} else if (event.type == SDL_FINGERMOTION) {
-				fingerMove(st, event.tfinger.fingerId, event.tfinger.x, event.tfinger.y, event.tfinger.dx, event.tfinger.dy);
+				fingerMove(st, event.tfinger.fingerId, event.tfinger.x, event.tfinger.y);
 
 			} else if (event.type == SDL_FINGERUP) {
 				fingerUp(st);
 
 			} else if (event.type == SDL_MULTIGESTURE) {
-				multigesture(st, event.mgesture.numFingers, event.tfinger.x, event.tfinger.y, event.tfinger.dx, event.tfinger.dy);
+				multigesture(st, event.mgesture.numFingers, event.tfinger.x, event.tfinger.y);
 #else
 
 			} else if (event.type == SDL_MOUSEMOTION) {

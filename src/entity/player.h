@@ -42,6 +42,7 @@ class Player : public Unit
 		virtual ~Player();
 
 	public:
+		void resetKeyPress(bool resetHistory = false);
 		void keyPress(Key idx);
 		void keyRelease(Key idx);
 		void handleKeyChange();

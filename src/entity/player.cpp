@@ -27,10 +27,7 @@ using namespace std;
 **/
 Player::Player(UnitType *uc, GameState *st, Faction fac, int slot, float x, float z) : Unit(uc, st, fac, x, z)
 {
-	for (int i = 0; i < 16; i++) {
-		this->key[i] = 0;
-		this->lkey[i] = 0;
-	}
+	this->resetKeyPress(true);
 
 	this->mouse_angle = 0.0f;
 	this->vertical_angle = 0.0f;
@@ -46,10 +43,7 @@ Player::Player(UnitType *uc, GameState *st, Faction fac, int slot, float x, floa
 **/
 Player::Player(UnitType *uc, GameState *st, Faction fac, int slot, float x, float y, float z) : Unit(uc, st, fac, x, y, z)
 {
-	for (int i = 0; i < 16; i++) {
-		this->key[i] = 0;
-		this->lkey[i] = 0;
-	}
+	this->resetKeyPress(true);
 
 	this->mouse_angle = 0.0f;
 	this->vertical_angle = 0.0f;
@@ -65,10 +59,7 @@ Player::Player(UnitType *uc, GameState *st, Faction fac, int slot, float x, floa
 **/
 Player::Player(UnitType *uc, GameState *st, Faction fac, int slot, btTransform & loc) : Unit(uc, st, fac, loc)
 {
-	for (int i = 0; i < 16; i++) {
-		this->key[i] = 0;
-		this->lkey[i] = 0;
-	}
+	this->resetKeyPress(true);
 
 	this->mouse_angle = 0.0f;
 	this->vertical_angle = 0.0f;
@@ -81,6 +72,20 @@ Player::Player(UnitType *uc, GameState *st, Faction fac, int slot, btTransform &
 
 Player::~Player()
 {
+}
+
+
+/**
+* Resets all pressed keys
+**/
+void Player::resetKeyPress(bool resetHistory /* = false */)
+{
+	for (int i = 0; i < 16; i++) {
+		this->key[i] = 0;
+		if (resetHistory) {
+			this->lkey[i] = 0;
+		}
+	}
 }
 
 
