@@ -1,6 +1,17 @@
 #!/bin/bash
 
 
+ps aux
+free -m -t
+
+sudo /etc/init.d/mysql stop
+sudo /etc/init.d/postgresql stop
+/bin/sync
+
+ps aux
+free -m -t
+
+
 if [ "$PLATFORM" == "linux" ]; then
 	make -j2 || exit 1
 
