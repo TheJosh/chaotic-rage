@@ -2,9 +2,7 @@ language: cpp
 compiler: gcc
 env:
   - PLATFORM=linux
-
-  # Disabled android due to random build failures
-  #- PLATFORM=android
+  - PLATFORM=android
 install:
   - chmod 0755 tools/travis/install.sh
   - tools/travis/install.sh
