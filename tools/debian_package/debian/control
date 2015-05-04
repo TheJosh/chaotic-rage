@@ -5,7 +5,6 @@ Maintainer: Magnus Espersson <magnusespersson@gmail.com>
 Build-Depends:
  debhelper (>= 9.0.0),
  libsdl2-dev,
- liblua5.1-0-dev,
  libbullet-dev,
  libassimp-dev,
  libfreetype6-dev,
