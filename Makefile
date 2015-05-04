@@ -18,7 +18,7 @@ ifdef MXE
 	POSTFIX := .exe
 	DONT_COMPILE = $(OBJPATH)/touch.o \
 		$(OBJPATH)/gui/controls_touch.o
-
+	LUA_CFLAGS := -DLUA_COMPAT_ALL
 
 # emscripten llvm to javascript compiler
 # Use it like this:
@@ -35,7 +35,7 @@ else ifdef EMSCRIPTEN
 		$(OBJPATH)/render/render_debug.o \
 		$(OBJPATH)/touch.o \
 		$(OBJPATH)/gui/controls_touch.o
-
+	LUA_CFLAGS := -DLUA_COMPAT_ALL
 
 # Standard Linux build
 else
@@ -46,6 +46,7 @@ else
 	PLATFORM := $(OBJPATH)/linux.o
 	DONT_COMPILE = $(OBJPATH)/touch.o \
 		$(OBJPATH)/gui/controls_touch.o
+	LUA_CFLAGS := -DLUA_COMPAT_ALL -DLUA_USE_LINUX
 endif
 
 
@@ -265,7 +266,7 @@ $(OBJPATH)/confuse/%.o: $(SRCPATH)/confuse/%.c $(SRCPATH)/confuse/confuse.h Make
 $(OBJPATH)/lua/%.o: $(SRCPATH)/lua/%.c $(SRCPATH)/lua/lua.h Makefile
 	@echo [CC] $<
 	@mkdir -p $(OBJPATH)/lua
-	@$(CC) $(CFLAGS) -DLUA_COMPAT_ALL -DLUA_USE_POSIX -o $@ -c $<
+	@$(CC) $(CFLAGS) $(LUA_CFLAGS) -o $@ -c $<
 
 $(OBJPATH)/linux.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h Makefile
 	@echo [CXX] $<
