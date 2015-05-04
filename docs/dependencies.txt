@@ -7,7 +7,6 @@ You will need at least these:
  - gl
  - glu
  - glew
- - Lua
  - Freetype2
  - Bullet Physics
  - Assimp
@@ -24,15 +23,14 @@ Compiling on Ubuntu 10.04:
      - libgl1-mesa-dev
      - libglu1-mesa-dev
      - libglew-dev
-     - liblua5.1-0-dev
      - libfreetype6-dev
-  
+
     You can also use this command:
-    sudo apt-get install g++ make cmake libgl1-mesa-dev libglu1-mesa-dev libglew-dev liblua5.1-0-dev libfreetype6-dev
+    sudo apt-get install g++ make cmake libgl1-mesa-dev libglu1-mesa-dev libglew-dev libfreetype6-dev
 
  2. Compile libs in tools/linux
     The compile will do an install using sudo, you'll need your password
-    
+
  3. Compile using make
 
 
@@ -41,15 +39,14 @@ Compiling on Windows:
     I haven't tested full edition.
 
  2. Open the solution in the tools/msvc2010 directory
- 
+
  3. It should compile out-of-the-box, no further setup
     should be nessasary.
 
 
 Compiling on Android:
  1. Run tools/android/prepare.sh
- 
+
  2. Run ndk-build
- 
+
  3. Run ant debug
- 
