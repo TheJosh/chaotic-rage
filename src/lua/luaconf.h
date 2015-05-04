@@ -12,6 +12,11 @@
 #include <stddef.h>
 
 
+#ifdef __ANDROID__
+#define getlocaledecpoint()	('.')
+#endif
+
+
 /*
 ** ==================================================================
 ** Search for "@@" to find all configurable definitions.
