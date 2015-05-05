@@ -14,7 +14,7 @@ Build-Depends:
  libsdl2-mixer-dev,
  libsdl2-image-dev,
  libsdl2-net-dev
-Standards-Version: 3.9.5
+Standards-Version: 3.9.6
 Homepage: http://www.chaoticrage.com
 Vcs-Git: git://github.com:TheJosh/chaotic-rage.git
 Vcs-Browser: https://github.com/TheJosh/chaotic-rage

@@ -1,8 +1,8 @@
 How to build a Debian package (deb) using the git repo as source and uploading
 it to the Chaotic Rage PPA
 
-TODO: Support older Ubuntu LTS releases than 14.04 'Trusty', use 'tools/linux/*.sh'
 TODO: Upload only the source diff to ppa
+TODO: Use 'make deb' to reduce the manual steps
 
 
 Sources for instructions
@@ -25,6 +25,11 @@ Set up gpg-key and ssh-key to be able to sign the package
 	https://help.launchpad.net/YourAccount/ImportingYourPGPKey
 	https://help.launchpad.net/YourAccount/CreatingAnSSHKeyPair
 
+	Set DEBEMAIL and DEBFULLNAME (optional - add these to '~/.bashrc')
+	(must be the same as the gpg key (command: 'gpg --list-keys'))
+		> export DEBEMAIL=<email address>
+		> export DEBFULLNAME="Full Name"
+
 
 Create the source from repo
 	Clone the git repo
@@ -44,12 +49,6 @@ Create the source from repo
 
 
 Prepare for building the package
-	Set DEBEMAIL and DEBFULLNAME (optional - add these to '~/.bashrc')
-	(must be the same as the gpg key (command: 'gpg --list-keys'))
-		> export DEBEMAIL=<email address>
-		> export DEBFULLNAME="Full Name"
-	Update version number if it has increased
-		> editor chaoticrage.desktop
 	Update changelog
 		Increase the Debian release number (edit with 'dch --edit')
 		> dch --increment
