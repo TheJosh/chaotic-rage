@@ -209,20 +209,21 @@ dist: $(SRCPATH) data maps
 	cp -r tools/linux/install $(DISTTMP)/tools/linux/
 	chmod 755 $(DISTTMP)/tools/linux/*.sh
 
-	sed -i "s/Version=git/Version=$(VERSION)/" $(DISTTMP)/tools/linux/install/chaoticrage.desktop
-	
 	tar -cvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
 	
 	rm -r $(DISTTMP)
 
+chaoticrage-linux-$(VERSION).tar.bz2: dist
 
-dist-deb: dist
+deb: chaoticrage-linux-$(VERSION).tar.bz2
 	tar -xvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
 
 	mkdir -p $(DISTTMP)/debian
 	cp -r tools/debian_package/debian $(DISTTMP)
 
 	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
+
+	cd $(DISTTMP); debuild -us -uc
 
 	rm -r $(DISTTMP)
 
