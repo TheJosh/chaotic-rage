@@ -1,8 +1,7 @@
 [Desktop Entry]
 Type=Application
-Version=git
 Name=Chaotic Rage
 Comment=An unusual zombie shooter game
 Icon=chaoticrage
 Exec=chaoticrage
-Categories=Games;
+Categories=Game;ActionGame;Shooter;
