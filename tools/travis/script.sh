@@ -18,7 +18,7 @@ elif [ "$PLATFORM" == "android" ]; then
 	ant clean || exit 1
 
 	# Build
-	android-ndk-r*/ndk-build -j2 || exit 1
+	android-ndk-r*/ndk-build -j1 || exit 1
 	ant debug || exit 1
 
 	cd ../..
