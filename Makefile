@@ -179,6 +179,12 @@ install: chaoticrage
 	cp -r --no-preserve=ownership data $(DESTPATH)/usr/share/chaoticrage
 	cp -r --no-preserve=ownership maps $(DESTPATH)/usr/share/chaoticrage
 
+	mkdir -p $(DESTPATH)/usr/share/applications
+	cp -r --no-preserve=ownership tools/linux/install/chaoticrage.desktop $(DESTPATH)/usr/share/applications
+
+	mkdir -p $(DESTPATH)/usr/share/icons
+	cp -r --no-preserve=ownership tools/linux/install/chaoticrage.png $(DESTPATH)/usr/share/icons
+
 
 dist: $(SRCPATH) data maps
 	rm -rf $(DISTTMP)
@@ -200,15 +206,24 @@ dist: $(SRCPATH) data maps
 	cp -r tools/include $(DISTTMP)/tools
 	cp -r tools/i18n $(DISTTMP)/tools
 	cp tools/linux/*.sh $(DISTTMP)/tools/linux/
+	cp -r tools/linux/install $(DISTTMP)/tools/linux/
 	chmod 755 $(DISTTMP)/tools/linux/*.sh
 
+	sed -i "s/Version=git/Version=$(VERSION)/" $(DISTTMP)/tools/linux/install/chaoticrage.desktop
+	
 	tar -cvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
+	
+	rm -r $(DISTTMP)
+
+
+dist-deb: dist
+	tar -xvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
 
 	mkdir -p $(DISTTMP)/debian
 	cp -r tools/debian_package/debian $(DISTTMP)
-	cp tools/debian_package/chaoticrage.desktop $(DISTTMP)
-	cp orig/2d/game_icon.PNG $(DISTTMP)/chaoticrage.png
+
 	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
+
 	rm -r $(DISTTMP)
 
 
