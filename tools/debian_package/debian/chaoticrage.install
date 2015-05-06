@@ -3,4 +3,3 @@ data /usr/share/chaoticrage
 maps /usr/share/chaoticrage
 tools/linux/install/chaoticrage.desktop /usr/share/applications
 tools/linux/install/chaoticrage.png /usr/share/icons
-tools/linux/install/chaoticrage.1 /usr/local/man/man1

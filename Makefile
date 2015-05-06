@@ -231,8 +231,8 @@ deb: chaoticrage-linux-$(VERSION).tar.bz2
 	tar -xvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
 
 	mkdir -p $(DISTTMP)/debian
-	cp -r tools/debian_package/debian $(DISTTMP)
-
+	cp -r tools/debian_package/debian/* $(DISTTMP)/debian/
+	
 	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
 
 	cd $(DISTTMP); debuild -us -uc
