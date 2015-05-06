@@ -22,7 +22,7 @@ Vcs-Browser: https://github.com/TheJosh/chaotic-rage
 Package: chaoticrage
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: An unusual zombie shooter game
- Chaotic Rage is a crazy top-view shooter. You can destroy everything with the
- many weapons, turrets and vehicles. Choose from multiple characters with
- unique skills and abilities.
+Description: Unusual zombie shooter game
+ Chaotic Rage is a crazy top-view shooter.
+ You can destroy everything with the many weapons, turrets and vehicles.
+ Choose from multiple characters with unique skills and abilities.

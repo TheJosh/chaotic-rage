@@ -168,7 +168,7 @@ all: chaoticrage
 
 chaoticrage: $(OBJFILES_CLIENT)
 	@echo [LINK] $@
-	@$(CXX) $(CFLAGS) $(OBJFILES_CLIENT) -o chaoticrage$(POSTFIX) $(LIBS)
+	@$(CXX) $(CFLAGS) $(LDFLAGS) $(OBJFILES_CLIENT) -o chaoticrage$(POSTFIX) $(LIBS)
 
 
 install: chaoticrage
