@@ -31,32 +31,21 @@ Set up gpg-key and ssh-key to be able to sign the package
 		> export DEBFULLNAME="Full Name"
 
 
-Create the source from repo
-	Clone the git repo
+Clone the git repo
 	> git clone git@github.com:TheJosh/chaotic-rage.git
-	Go to the Chaotic Rage source root folder
 	> cd chaotic-rage
-	Remove any previous tar files and PPA updates if any
-	> rm -f chaoticrage*.tar.* && rm -rf ../deb_build/
-	Create the file 'chaoticrage_<version>.orig.tar.xz'
-	> make dist
-	Use the created file as source
-	> mkdir ../deb_build && \
-	cp chaoticrage_* ../deb_build && \
-	cd ../deb_build && \
-	tar xpvf chaoticrage_* && \
-	cd chaoticrage-*
 
 
 Prepare for building the package
-	Update changelog
-		Increase the Debian release number (edit with 'dch --edit')
-		> dch --increment
-		Note: Update the target (Ubuntu version) to e.g. 'trusty'.
+	Update tools/debian_package/ubuntu/changelog
+		
+	Increase the Debian release number (edit with 'dch --edit')
+	> dch --changelog=ubuntu/changelog --increment
+	Note: Update the target (Ubuntu version) to e.g. 'trusty'.
 
 
 Build package
-	> debuild
+	> make deb-ubuntu
 	The Debian package is now ready to be installed
 
 

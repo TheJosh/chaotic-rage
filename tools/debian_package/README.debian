@@ -1,0 +1,26 @@
+How to build a Debian package (deb) using the git repo as source
+
+NOTE: Does not yet contain instructions for uploading to the debian archive
+
+
+Install necessary packages
+	> sudo apt-get install devscripts
+
+
+Clone the git repo
+	> git clone git@github.com:TheJosh/chaotic-rage.git
+	> cd chaotic-rage
+
+
+Prepare for building the package
+	Update tools/debian_package/debian/changelog
+		
+	Increase the Debian release number (edit with 'dch --edit')
+	> dch --increment
+	Note: Update the target (Ubuntu version) to e.g. 'trusty'.
+
+
+Build package
+	> make deb
+	The Debian package is now ready to be installed
+

@@ -227,6 +227,19 @@ deb: chaoticrage-linux-$(VERSION).tar.bz2
 
 	rm -r $(DISTTMP)
 
+deb-ubuntu: chaoticrage-linux-$(VERSION).tar.bz2
+	tar -xvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
+
+	mkdir -p $(DISTTMP)/debian
+	cp -r tools/debian_package/debian/* $(DISTTMP)/debian/
+	cp -r tools/debian_package/ubuntu/* $(DISTTMP)/debian/
+
+	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
+
+	cd $(DISTTMP); debuild -us -uc
+
+	rm -r $(DISTTMP)
+
 
 dist-bin: chaoticrage data maps
 	rm -rf $(DISTTMP)
