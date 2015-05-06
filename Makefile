@@ -172,8 +172,8 @@ chaoticrage: $(OBJFILES_CLIENT)
 
 
 install: chaoticrage
-	mkdir -p $(DESTPATH)/usr/bin
-	install chaoticrage $(DESTPATH)/usr/bin
+	mkdir -p $(DESTPATH)/usr/games
+	install chaoticrage $(DESTPATH)/usr/games
 
 	mkdir -p $(DESTPATH)/usr/share/chaoticrage
 	cp -r --no-preserve=ownership data $(DESTPATH)/usr/share/chaoticrage
@@ -190,7 +190,7 @@ install: chaoticrage
 	gzip $(DESTPATH)/usr/local/man/man1/chaoticrage.1
 
 uninstall:
-	rm -f $(DESTPATH)/usr/bin/chaoticrage
+	rm -f $(DESTPATH)/usr/games/chaoticrage
 	rm -fr $(DESTPATH)/usr/share/chaoticrage
 	rm -f $(DESTPATH)/usr/share/applications/chaoticrage.desktop
 	rm -f $(DESTPATH)/usr/share/icons/chaoticrage.png
