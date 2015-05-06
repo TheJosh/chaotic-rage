@@ -1,11 +1,7 @@
 How to build a Debian package (deb) using the git repo as source and uploading
 it to the Chaotic Rage PPA
 
-TODO: Upload only the source diff to ppa
-TODO: Use 'make deb' to reduce the manual steps
-
-
-Sources for instructions
+References
 	https://help.launchpad.net/Packaging/PPA
 	http://askubuntu.com/questions/161155/how-to-create-a-ppa-for-c-program/161212#161212
 	http://faceted.wordpress.com/2011/05/18/howto-build-a-trivial-debian-package-with-dh_make/
@@ -37,22 +33,19 @@ Clone the git repo
 
 
 Prepare for building the package
-	Update tools/debian_package/ubuntu/changelog
-		
-	Increase the Debian release number (edit with 'dch --edit')
-	> dch --changelog=ubuntu/changelog --increment
+	Increment the changelog with the Debian release number (edit with 'dch --edit')
+	> dch --changelog=tools/debian_package/ubuntu/changelog --increment
 	Note: Update the target (Ubuntu version) to e.g. 'trusty'.
 
 
-Build package
+Build package (optional for PPA upload)
 	> make deb-ubuntu
 	The Debian package is now ready to be installed
 
 
 Build for Personal Package Archive (PPA)
-	Brand new package with no existing version in Ubuntu's repositories
-	(will be uploaded with the .orig.tar.gz file)
-	> debuild -S -sa
+	Create brand new package since no existing version in Ubuntu's repositories
+	> make deb-ubuntu-ppa
 
 
 Test building locally
@@ -63,12 +56,8 @@ Test building locally
 	Set up pbuilder (only needed once per release)
 	> pbuilder-dist <release> create
 	Build a test package
-	> pbuilder-dist <release> build ../<package>_<version>.dsc
+	> pbuilder-dist <release> build <package>_<version>.dsc
 
 
 Upload to the Chaotic Rage PPA
-	> dput ppa:chaotic-rage/chaoticrage ../<source.changes>
-	
-	Update the repo with the new changelog and any other changes
-	cp -r debian/ ../../chaotic-rage/tools/debian_package/
-	cp chaoticrage.desktop ../../chaotic-rage/tools/debian_package/
+	> dput ppa:chaotic-rage/chaoticrage <source.changes>

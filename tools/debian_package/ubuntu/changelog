@@ -1,3 +1,9 @@
+chaoticrage (1.12ubuntu) vivid; urgency=medium
+
+  * Upstream 1.12 release.
+
+ -- Magnus Espersson <magnus.espersson@gmail.com>  Wed, 06 May 2015 22:13:01 +0200
+
 chaoticrage (1.10ubuntu1~utopic1) utopic; urgency=low
 
   * Build for Ubuntu 14.10 Utopic Unicorn.
