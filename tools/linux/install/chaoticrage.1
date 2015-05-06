@@ -1,0 +1,53 @@
+.\" Manpage for chaoticrage.
+.\" Contact josh.sickmate@gmail.com to correct errors or typos.
+.TH man 1 "06 May 2015" "git" "chaoticrage man page"
+.SH NAME
+chaoticrage \- a silly shooter game
+.SH SYNOPSIS
+chaoticrage [--arcade=MAP,GAME,UNIT] [--host] [--campaign NAME] [--join SERVER]
+            [--render SYSTEM] [--window[=W,H]] [--fullscreen]
+            [--audio SYSTEM]
+            [--mod NAME] [--mod-list]
+            [--throttle]
+            [--help] [--version]
+.SH DESCRIPTION
+Chaotic rage is a silly little 3D shooter game which uses OpenGL.
+.SH OPTIONS
+--arcade      Start an arcade game for a specific map, gametype and unit name.
+
+              Argument should be comma-separated;
+                 MAP     The map name to play on
+                 GAME    The name of the gametype to play
+                 UNIT    The name of the unit to play
+              
+--host        When starting an arcade game, also host a network server.
+              
+--campaign    Start a single-player campaign. Takes a single argument, the name of the campaign to play.
+
+--join        Join a network game. Takes a single argument, the IP address of the server to join.
+
+If no specific startup mode is specified, the game loads a menu screen.
+
+
+--render      Specify the video subsystem. Options: 'opengl', 'debug', 'null'.
+
+--window      Run the game in windowed mode (optionally at a specific width and height).
+
+--fullscreen  Run the game in fullscreen mode.
+
+--audio       Specify the audio subsystem. Options: 'sdl', 'null'.
+
+--mod         Load an additional mod.
+
+--mod-list    Show a list of mods, and exit.
+
+--throttle    Add a delay loop to run the game at lower CPU.
+              Normally not required because the GPU throttles the play rate, but very useful on dedicated servers.
+              
+--help        Show help, and exit.
+
+--version     Show version information, and exit.
+.SH BUGS
+Many known and unknown bugs.
+.SH AUTHOR
+Josh Heidenreich (josh.sickmate@gmail.com)

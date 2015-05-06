@@ -184,7 +184,17 @@ install: chaoticrage
 
 	mkdir -p $(DESTPATH)/usr/share/icons
 	cp -r --no-preserve=ownership tools/linux/install/chaoticrage.png $(DESTPATH)/usr/share/icons
+	
+	mkdir -p $(DESTPATH)/usr/local/man/man1
+	cp -r --no-preserve=ownership tools/linux/install/chaoticrage.1 $(DESTPATH)/usr/local/man/man1
+	gzip $(DESTPATH)/usr/local/man/man1/chaoticrage.1
 
+uninstall:
+	rm -f $(DESTPATH)/usr/bin/chaoticrage
+	rm -fr $(DESTPATH)/usr/share/chaoticrage
+	rm -f $(DESTPATH)/usr/share/applications/chaoticrage.desktop
+	rm -f $(DESTPATH)/usr/share/icons/chaoticrage.png
+	rm -f $(DESTPATH)/usr/local/man/man1/chaoticrage.1.gz
 
 dist: $(SRCPATH) data maps
 	rm -rf $(DISTTMP)
@@ -209,6 +219,8 @@ dist: $(SRCPATH) data maps
 	cp -r tools/linux/install $(DISTTMP)/tools/linux/
 	chmod 755 $(DISTTMP)/tools/linux/*.sh
 
+	sed -i "s/\"git\"/\"$(VERSION)\"/" $(DISTTMP)/tools/linux/install/chaoticrage.1
+	
 	tar -cvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
 	
 	rm -r $(DISTTMP)
