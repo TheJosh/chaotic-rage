@@ -30,6 +30,20 @@ language Lua, which provides logic for AIs, as well as managed game types.
 You can read the official modding documentation at: http://chaoticrage.com/modding_docs
 
 
+Issues
+------
+
+List any issues on GitHub:
+https://github.com/TheJosh/chaotic-rage/issues
+
+
+Forum
+-----
+
+Talk about your ideas and your issues at our forum:
+http://chaoticrage.com/forum/topics
+
+
 Contributing
 ------------
 
