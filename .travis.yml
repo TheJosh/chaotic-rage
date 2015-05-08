@@ -3,6 +3,9 @@ compiler: gcc
 env:
   - PLATFORM=linux
   - PLATFORM=android
+matrix:
+  allow_failures:
+    - env: PLATFORM=android
 install:
   - chmod 0755 tools/travis/install.sh
   - tools/travis/install.sh
