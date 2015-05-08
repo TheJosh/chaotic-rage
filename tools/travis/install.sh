@@ -50,7 +50,8 @@ elif [ "$PLATFORM" == "android" ]; then
 	echo 'y' | android update sdk --all --filter platform-tools,build-tools-22.0.0,android-10 --no-ui --force >/dev/null || exit 1
 
 	# Download and extract NDK
-	NDK_FILE="android-ndk64-r10b-linux-x86_64.tar.bz2"
+	# 32-bit to avoid 'cannot locate symbol "signal" referenced by "libSDL2.so"'
+	NDK_FILE="android-ndk32-r10b-linux-x86.tar.bz2"
 	NDK_LINK="http://dl.google.com/android/ndk/${NDK_FILE}"
 	if [ ! -f ${NDK_FILE} ]; then
 		wget ${NDK_LINK} || exit 1;
