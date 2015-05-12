@@ -115,7 +115,7 @@ int main(int argc, char ** argv)
 		gm->loadModBits(NULL);
 		Campaign *c = GEng()->mm->getSupplOrBase()->getCampaign(GEng()->cmdline->campaign);
 		if (c == NULL) {
-			cerr << "Error: Campaign '" << GEng()->cmdline->campaign << "' does not exist." << endl;
+			displayMessageBox("Campaign not found: " + GEng()->cmdline->campaign);
 		} else {
 			gm->startCampaign(c, "robot", GameSettings::behindPlayer, 1);
 		}
@@ -124,7 +124,13 @@ int main(int argc, char ** argv)
 	} else if (GEng()->cmdline->map != "" && GEng()->cmdline->gametype != "" && GEng()->cmdline->unittype != "") {
 		gm->loadModBits(NULL);
 		GameSettings *gs = new GameSettings();
-		gm->startGame(gm->getMapRegistry()->get(GEng()->cmdline->map), GEng()->cmdline->gametype, GEng()->cmdline->unittype, GameSettings::behindPlayer, 1, GEng()->cmdline->host, gs);
+
+		MapReg* map = gm->getMapRegistry()->get(GEng()->cmdline->map);
+		if (map == NULL) {
+			displayMessageBox("Map not found: " + GEng()->cmdline->map);
+		} else {
+			gm->startGame(map, GEng()->cmdline->gametype, GEng()->cmdline->unittype, GameSettings::behindPlayer, 1, GEng()->cmdline->host, gs);
+		}
 		delete(gs);
 
 	// Network join
@@ -139,7 +145,7 @@ int main(int argc, char ** argv)
 		delete(m);
 
 	} else {
-		cout << "Non-interactive usage requires --campaign, --arcade or --join to be specified." << endl;
+		displayMessageBox("Non-interactive usage requires --campaign, --arcade or --join to be specified");
 	}
 
 	delete(st);

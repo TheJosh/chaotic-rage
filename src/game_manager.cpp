@@ -247,16 +247,26 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, GameS
 
 	// Load gametype
 	gt = GEng()->mm->getGameType(gametype);
-	assert(gt);
+	if (gt == NULL) {
+		displayMessageBox("Failed to load game type: " + gametype);
+		goto cleanup;
+	}
 	st->gt = gt;
 
 	// Set game settings
 	assert(gs);
 	st->gs = gs;
 
+	// Load unit type
+	UnitType *ut = GEng()->mm->getUnitType(unittype);
+	if (ut == NULL) {
+		displayMessageBox("Failed to load uni type: " + unittype);
+		goto cleanup;
+	}
+
 	// Load and execute lua script
 	new GameLogic(st);
-	st->logic->selected_unittype = GEng()->mm->getUnitType(unittype);
+	st->logic->selected_unittype = ut;
 	script = gt->getLuaScript();
 	if (!script) {
 		displayMessageBox("Failed to load game script");
