@@ -73,7 +73,7 @@ namespace GL
 			"varying vec4 fColor;\n"
 			"uniform mat4 uVP;\n"
 			"void main() {\n"
-				"gl_Position = uVP * vec4(vPosition, 1.0f);\n"
+				"gl_Position = uVP * vec4(vPosition, 1.0);\n"
 				"fColor = vColor;\n"
 			"}\n",
 

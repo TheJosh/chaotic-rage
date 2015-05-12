@@ -2,6 +2,10 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
+# Set to same as android:minSdkVersion in AndroidManifest.xml
+# http://stackoverflow.com/a/28769262
+APP_PLATFORM := android-10
+
 LOCAL_MODULE := main
 
 JNI_PATH := ../tools/android/jni

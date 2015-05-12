@@ -34,7 +34,7 @@ do_achivements = function()
 			
 			-- Do an ammo drop
 			show_alert_message("Do you need some more ammo?");
-			ammo_drop()
+			game.addPickupRand("ammo_current");
 		end;
 	end);
 end;

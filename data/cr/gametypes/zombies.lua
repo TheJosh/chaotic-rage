@@ -93,7 +93,7 @@ start_round = function()
 	-- Do an ammo drop
 	if round % 3 == 0 then
 		show_alert_message("Would you like some more ammo?");
-		ammo_drop()
+		game.addPickupRand("ammo_current");
 	end;
 	
 	-- Lets get spawning
@@ -108,7 +108,7 @@ end;
 --
 initial_ammo = function()
 	show_alert_message("Here is some ammo...use it wisely!");
-	ammo_drop();
+	game.addPickupRand("ammo_current");
 end;
 
 

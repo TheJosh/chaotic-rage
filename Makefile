@@ -172,8 +172,8 @@ chaoticrage: $(OBJFILES_CLIENT)
 
 
 install: chaoticrage
-	mkdir -p $(DESTPATH)/usr/bin
-	install chaoticrage $(DESTPATH)/usr/bin
+	mkdir -p $(DESTPATH)/usr/games
+	install chaoticrage $(DESTPATH)/usr/games
 
 	mkdir -p $(DESTPATH)/usr/share/chaoticrage
 	cp -r --no-preserve=ownership data $(DESTPATH)/usr/share/chaoticrage
@@ -190,7 +190,7 @@ install: chaoticrage
 	gzip $(DESTPATH)/usr/local/man/man1/chaoticrage.1
 
 uninstall:
-	rm -f $(DESTPATH)/usr/bin/chaoticrage
+	rm -f $(DESTPATH)/usr/games/chaoticrage
 	rm -fr $(DESTPATH)/usr/share/chaoticrage
 	rm -f $(DESTPATH)/usr/share/applications/chaoticrage.desktop
 	rm -f $(DESTPATH)/usr/share/icons/chaoticrage.png
@@ -220,38 +220,41 @@ dist: $(SRCPATH) data maps
 	chmod 755 $(DISTTMP)/tools/linux/*.sh
 
 	sed -i "s/\"git\"/\"$(VERSION)\"/" $(DISTTMP)/tools/linux/install/chaoticrage.1
-	
+
 	tar -cvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
-	
+
 	rm -r $(DISTTMP)
 
 chaoticrage-linux-$(VERSION).tar.bz2: dist
 
 deb: chaoticrage-linux-$(VERSION).tar.bz2
 	tar -xvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
-
 	mkdir -p $(DISTTMP)/debian
 	cp -r tools/debian_package/debian/* $(DISTTMP)/debian/
-	
+
 	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
-
 	cd $(DISTTMP); debuild -us -uc
-
 	rm -r $(DISTTMP)
 
 deb-ubuntu: chaoticrage-linux-$(VERSION).tar.bz2
 	tar -xvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
-
 	mkdir -p $(DISTTMP)/debian
 	cp -r tools/debian_package/debian/* $(DISTTMP)/debian/
 	cp -r tools/debian_package/ubuntu/* $(DISTTMP)/debian/
 
 	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
-
 	cd $(DISTTMP); debuild -us -uc
-
 	rm -r $(DISTTMP)
 
+deb-ubuntu-ppa: chaoticrage-linux-$(VERSION).tar.bz2
+	tar -xvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
+	mkdir -p $(DISTTMP)/debian
+	cp -r tools/debian_package/debian/* $(DISTTMP)/debian/
+	cp -r tools/debian_package/ubuntu/* $(DISTTMP)/debian/
+
+	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
+	cd $(DISTTMP); debuild -S -sa
+	rm -r $(DISTTMP)
 
 dist-bin: chaoticrage data maps
 	rm -rf $(DISTTMP)

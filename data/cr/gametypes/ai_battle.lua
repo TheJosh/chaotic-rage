@@ -77,9 +77,8 @@ bind_npcdied(function()
 		return
 	end
 	
-		
 	if num_dead % 5 == 0 then
 		show_alert_message("Let's throw them some more ammo")
-		ammo_drop()
+		game.addPickupRand("ammo_current");
 	end
 end);
