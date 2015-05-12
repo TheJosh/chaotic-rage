@@ -52,5 +52,5 @@ class Player : public Unit
 
 	public:
 		virtual void update(int delta);
-		virtual int takeDamage(float damage);
+		virtual void die();
 };

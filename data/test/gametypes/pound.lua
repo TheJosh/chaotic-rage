@@ -20,7 +20,10 @@ bind_gamestart(function()
 	add_interval(3000, function()
 		if g_slot ~= 0 then 
 			show_alert_message("Killing off player " .. g_slot)
-			kill_player(g_slot)
+			player = game.getPlayerFromSlot(g_slot);
+			if player ~= nil then
+				player:die()
+			end
 		end
 	end)
 end)

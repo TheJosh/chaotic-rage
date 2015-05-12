@@ -287,22 +287,19 @@ void Player::update(int delta)
 
 
 /**
-* Receive damage from an outside source
+* The player has died
 **/
-int Player::takeDamage(float damage)
+void Player::die()
 {
-	int result = Unit::takeDamage(damage);
+	Unit::die();
 
-	if (result == 1) {
-		this->st->logic->raise_playerdied(this->slot);
+	this->st->logic->raise_playerdied(this->slot);
 
-		for (unsigned int i = 0; i < this->st->num_local; i++) {
-			if (this == this->st->local_players[i]->p) {
-				this->st->local_players[i]->p = NULL;
-				break;
-			}
+	for (unsigned int i = 0; i < this->st->num_local; i++) {
+		if (this == this->st->local_players[i]->p) {
+			this->st->local_players[i]->p = NULL;
+			break;
 		}
 	}
-
-	return result;
 }
+

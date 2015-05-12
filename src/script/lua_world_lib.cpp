@@ -296,6 +296,15 @@ Player* addPlayer(string type, unsigned int fac, unsigned int slot)
 
 
 /**
+* Get a player from a given slot
+**/
+Player* getPlayerFromSlot(int slot)
+{
+	return (Player*) getGameState()->findUnitSlot(slot);
+}
+
+
+/**
 * Spawn in a NPC at a given map X/Z coordinate
 **/
 NPC* addNpcXZ(string type, string aitype, unsigned int fac, float x, float z)
@@ -463,6 +472,8 @@ void load_world_lib(lua_State *L)
 		.addFunction("addPlayerXZ", &addPlayerXZ)
 		.addFunction("addPlayerCoord", &addPlayerCoord)
 		.addFunction("addPlayerZone", &addPlayerZone)
+
+		.addFunction("getPlayerFromSlot", &getPlayerFromSlot)
 
 		.addFunction("addNpc", &addNpc)
 		.addFunction("addNpcXZ", &addNpcXZ)
