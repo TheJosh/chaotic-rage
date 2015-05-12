@@ -253,7 +253,6 @@ void GameState::remAnimPlay(AnimPlay* play)
 void GameState::addLight(Light* light)
 {
 	GEng()->render->addLight(light);
-	this->addDebugPoint(light->x, light->y, light->z);
 }
 
 
@@ -791,8 +790,6 @@ bool GameState::mousePick(unsigned int x, unsigned int y, btVector3& hitLocation
 	btVector3 start, end;
 	reinterpret_cast<Render3D*>(GEng()->render)->mouseRaycast(x, y, start, end);
 
-	this->addDebugLine(&start, &end);
-
 	// Do raycast
 	btCollisionWorld::ClosestRayResultCallback cb(start, end);
 	cb.m_collisionFilterGroup = CG_UNIT;
@@ -811,31 +808,4 @@ bool GameState::mousePick(unsigned int x, unsigned int y, btVector3& hitLocation
 	}
 
 	return false;
-}
-
-
-void GameState::addDebugLine(btVector3 * a, btVector3 * b)
-{
-	DebugLine *dl = new DebugLine();
-	dl->a = new btVector3(*a);
-	dl->b = new btVector3(*b);
-	lines.push_back(dl);
-}
-
-void GameState::addDebugPoint(float x, float y, float z, float len)
-{
-	DebugLine* dl = new DebugLine();
-	dl->a = new btVector3(x - len, y, z);
-	dl->b = new btVector3(x + len, y, z);
-	lines.push_back(dl);
-
-	dl = new DebugLine();
-	dl->a = new btVector3(x, y - len, z);
-	dl->b = new btVector3(x, y + len, z);
-	lines.push_back(dl);
-
-	dl = new DebugLine();
-	dl->a = new btVector3(x, y, z - len);
-	dl->b = new btVector3(x, y, z + len);
-	lines.push_back(dl);
 }

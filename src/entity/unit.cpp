@@ -293,7 +293,6 @@ Entity * Unit::raytest(btMatrix3x3 &direction, float range)
 	// Begin and end vectors
 	btVector3 begin = xform.getOrigin() + offGround;
 	btVector3 end = begin + offGround + direction * btVector3(0.0f, 0.0f, range);
-	st->addDebugLine(&begin, &end);
 
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);

@@ -1998,15 +1998,6 @@ void RenderOpenGL::physics()
 
 	st->physics->getWorld()->debugDrawWorld();
 
-	for (list<DebugLine*>::iterator it = st->lines.begin(); it != st->lines.end(); ++it) {
-		glBegin(GL_LINES);
-			glColor3f(1.f, 0.5f, 0.f);
-			glVertex3d((*it)->a->getX(), (*it)->a->getY(), (*it)->a->getZ());
-			glColor3f(1.f, 0.0f, 0.f);
-			glVertex3d((*it)->b->getX(), (*it)->b->getY(), (*it)->b->getZ());
-		glEnd();
-	}
-
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 

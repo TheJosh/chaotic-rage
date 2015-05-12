@@ -36,7 +36,6 @@ void raycastDoFire(T const &weapon, Unit *u, btTransform &origin, btVector3 &beg
 	// Begin and end vectors
 	begin = xform.getOrigin();
 	end = begin + xform.getBasis() * btVector3(0.0f, 0.0f, weapon->range);
-	weapon->st->addDebugLine(&begin, &end);
 
 	// Do the rayTest
 	btCollisionWorld::ClosestRayResultCallback cb(begin, end);

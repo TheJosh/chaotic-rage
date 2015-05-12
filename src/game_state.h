@@ -68,16 +68,6 @@ class PlayerState
 };
 
 
-/**
-* TODO: Remove me
-**/
-class DebugLine
-{
-	public:
-		btVector3 *a;
-		btVector3 *b;
-};
-
 #define FPS_SAMPLES 100
 
 
@@ -106,8 +96,6 @@ class GameState
 		vector<Wall*> walls;		// leaks: items are not removed
 
 		bool running;
-
-		list<DebugLine*>lines;
 
 		EID eid_next;
 
@@ -197,10 +185,6 @@ class GameState
 		void addHUDMessage(unsigned int slot, string text, string text2 = "");
 		HUDLabel* addHUDLabel(unsigned int slot, int x, int y, string data, HUDLabel* l = NULL);
 		bool mousePick(unsigned int x, unsigned int y, btVector3& hitLocation, Entity** hitEntity);
-
-		// Debugging
-		void addDebugLine(btVector3 * a, btVector3 * b);
-		void addDebugPoint(float x, float y, float z, float len = 1.0f);
 };
 
 
