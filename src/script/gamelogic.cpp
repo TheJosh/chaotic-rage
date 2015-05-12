@@ -403,25 +403,6 @@ LUA_FUNC(game_over)
 /**
 * TODO: Move somewhere else
 **/
-LUA_FUNC(ammo_drop)
-{
-	Pickup *pu;
-
-	// special ammocrate for current weapon
-	pu = new Pickup(
-		GEng()->mm->getPickupType("ammo_current"),
-		gl->st,
-		gl->st->map->getRandomX(),
-		gl->st->map->getRandomZ()
-	);
-	gl->st->addPickup(pu);
-
-	return 0;
-}
-
-/**
-* TODO: Move somewhere else
-**/
 LUA_FUNC(show_alert_message)
 {
 	const char* ctext = lua_tostring(L, 1);
@@ -513,7 +494,6 @@ void register_lua_functions()
 	LUA_REG(remove_timer);
 
 	// TODO: Move these elsewhere
-	LUA_REG(ammo_drop);				// - and this on
 	LUA_REG(show_alert_message);	// TODO: needs network support
 	LUA_REG(add_label);				// - this too
 	LUA_REG(game_over);				// - and this one
