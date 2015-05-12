@@ -224,6 +224,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, GameS
 	NetServer* server = NULL;
 	GameType *gt = NULL;
 	Map *m = NULL;
+	UnitType *ut = NULL;
 	st->logic = NULL;
 	st->map = NULL;
 	char* script = NULL;
@@ -258,7 +259,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, GameS
 	st->gs = gs;
 
 	// Load unit type
-	UnitType *ut = GEng()->mm->getUnitType(unittype);
+	ut = GEng()->mm->getUnitType(unittype);
 	if (ut == NULL) {
 		displayMessageBox("Failed to load uni type: " + unittype);
 		goto cleanup;
