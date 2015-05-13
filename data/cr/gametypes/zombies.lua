@@ -61,6 +61,8 @@ start_round = function()
 	position = table.remove(player_zombies, 1);
 	if position ~= nil then
 		game.addNpcCoord(get_selected_unittype(), "zombie", factions.team2, position)
+		num_zombies = num_zombies + 1;
+		num_wanted = num_wanted + 1;
 	end
 	
 	-- start raining after 5th round
