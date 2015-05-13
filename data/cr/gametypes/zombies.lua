@@ -13,6 +13,7 @@ round_max = 0;
 score_table = 0;
 score_labels = {};
 rain_rate = 1000;
+player_zombies = {};
 
 
 do_score = function()
@@ -55,6 +56,13 @@ start_round = function()
 	end;
 	num_dead = 0;
 	round = round + 1;
+
+	-- Spawn a player zombie, if there is a coordinate in the list
+	--position = table.remove(player_zombies, 1);
+	--if position ~= nil then
+	--	show_alert_message("dequeue  " .. position.x .. " " .. position.y)
+	--	game.addNpcCoord(get_selected_unittype(), "zombie", factions.team2, position)
+	--end
 	
 	-- start raining after 5th round
 	if round >= 5 then
@@ -161,6 +169,14 @@ bind_playerdied(function(slot)
 	add_timer(2000, function()
 		game.addPlayer(get_selected_unittype(), factions.team1, slot);
 	end);
+
+	-- doesn't work at the moment because player.position has c++ lifetime
+	-- so it stops existing once the player is removed
+	--player = game.getPlayerFromSlot(slot)
+	--if player ~= nil then
+	--	show_alert_message("queue  " .. player.position.x .. " " .. player.position.y)
+	--	table.insert(player_zombies, player.position);
+	--end
 end);
 
 
