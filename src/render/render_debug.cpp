@@ -6,6 +6,7 @@
 #include "../rage.h"
 #include "../game_state.h"
 #include "../map/map.h"
+#include "../map/heightmap.h"
 #include "../entity/entity.h"
 #include "../entity/unit.h"
 #include "render_debug.h"
@@ -146,6 +147,14 @@ void RenderDebug::renderSprite(SpritePtr sprite, int x, int y, int w, int h)
 void RenderDebug::preGame()
 {
 	last_render = st->game_time;
+
+	this->bg = NULL;
+	if (!this->st->map->heightmaps.empty()) {
+		SpritePtr bg = this->st->map->heightmaps[0]->getBigTexture();
+		if (bg) {
+			this->bg = SDL_CreateTextureFromSurface(this->renderer, bg->orig);
+		}
+	}
 }
 
 
@@ -154,6 +163,7 @@ void RenderDebug::preGame()
 **/
 void RenderDebug::postGame()
 {
+	SDL_DestroyTexture(this->bg);
 }
 
 
@@ -214,6 +224,10 @@ void RenderDebug::render()
 	dest.h = 16;
 
 	SDL_RenderClear(this->renderer);
+
+	if (this->bg != NULL) {
+		SDL_RenderCopy(this->renderer, this->bg, NULL, NULL);
+	}
 
 	// Entities
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {

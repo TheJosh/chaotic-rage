@@ -24,6 +24,7 @@ class RenderDebug : public Render
 		SDL_Texture *sprite_object;
 		SDL_Texture *sprite_unit;
 		SDL_Texture *sprite_player;
+		SDL_Texture *bg;
 
 		int width;
 		int height;
