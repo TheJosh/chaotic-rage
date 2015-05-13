@@ -40,7 +40,7 @@ void load_entity_lib(lua_State *L)
 		// Entity
 		.beginClass<Entity>("Entity")
 			.addFunction("remove", &Entity::remove)
-			.addProperty("position", &Entity::getPositionByVal, &Entity::setPositionByVal)
+			.addProperty("position", &Entity::getPositionByVal, &Entity::setPosition)
 		.endClass()
 
 		// Entity : Vehicle

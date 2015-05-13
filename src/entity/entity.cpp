@@ -94,17 +94,6 @@ void Entity::setPosition(const btVector3 &p)
 
 
 /**
-* Set the position (by value)
-**/
-void Entity::setPositionByVal(const btVector3 p)
-{
-	btTransform xform = this->getTransform();
-	xform.setOrigin(p);
-	this->setTransform(xform);
-}
-
-
-/**
 * Disable collision for this entity
 **/
 void Entity::disableCollision()

@@ -97,6 +97,5 @@ class Entity
 		* Set position. Convinience method for transforms
 		**/
 		void setPosition(const btVector3 &p);
-		void setPositionByVal(const btVector3 p);
 };
 
