@@ -594,7 +594,9 @@ void GameState::update(int delta)
 	this->weather->update((float)delta);
 
 	// Particles
-	this->particle_system->update(delta / 1000.0f);
+	if (this->particle_system != NULL) {
+		this->particle_system->update(delta / 1000.0f);
+	}
 
 	// Time of day cycle
 	if (gs->day_night_cycle) {
