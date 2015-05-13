@@ -69,15 +69,12 @@ void NPC::update(int delta)
 
 
 /**
-* Additional logic upon death
+* The npc has died
 **/
-int NPC::takeDamage(float damage)
+void NPC::die()
 {
-	int result = Unit::takeDamage(damage);
+	this->st->logic->raise_npcdied();
 
-	if (result == 1) {
-		this->st->logic->raise_npcdied();
-	}
-
-	return result;
+	Unit::die();
 }
+
