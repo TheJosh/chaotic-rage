@@ -160,6 +160,11 @@ class Render
 		virtual void remLight(Light* light) {}
 
 		/**
+		* Set the state of the torch
+		**/
+		virtual void setTorch(bool on) {}
+
+		/**
 		* Set ambient light
 		**/
 		virtual void setAmbient(glm::vec4 ambient) {}

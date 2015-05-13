@@ -266,6 +266,15 @@ void GameState::remLight(Light* light)
 
 
 /**
+* Set torch state
+**/
+void GameState::setTorch(bool on)
+{
+	GEng()->render->setTorch(on);
+}
+
+
+/**
 * It's dead, but not buried!
 *
 * Marks a given entity as ->del=1
@@ -596,6 +605,12 @@ void GameState::update(int delta)
 		// Make it darker if it rains
 		float ambient = MAX(0.0f, this->time_of_day - 0.5f * rain_flow);
 		GEng()->render->setAmbient(glm::vec4(ambient, ambient, ambient, 1.0f));
+
+		if (this->time_of_day < 0.3f) {
+			GEng()->render->setTorch(true);
+		} else {
+			GEng()->render->setTorch(false);
+		}
 	}
 
 	// Handle guichan logic

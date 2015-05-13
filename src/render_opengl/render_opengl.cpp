@@ -1131,6 +1131,9 @@ void RenderOpenGL::preGame()
 	if (this->st->num_local == 1) {
 		this->mainViewport(1, 1);
 	}
+
+	// Torch always starts off
+	this->torch = false;
 }
 
 
@@ -1142,11 +1145,19 @@ void RenderOpenGL::preGame()
 **/
 void RenderOpenGL::setupShaders()
 {
-	// Prep point lights...
-	// TODO: Use the 4 closest light sources instead of just the first 4 in the list
 	glm::vec3 LightPos[4];
 	glm::vec4 LightColor[4];
 	unsigned int idx = 0;
+	
+	// TODO: Torch should be a directional light
+	if (this->torch && this->render_player != NULL) {
+		btVector3 pos = this->render_player->getPosition();
+		LightPos[idx] = glm::vec3(pos.x(), pos.y() + 2.5f, pos.z());
+		LightColor[idx] = glm::vec4(1.0f, 1.0f, 1.0f, 0.3f);
+		idx++;
+	}
+
+	// TODO: Use the 4 closest light sources instead of just the first 4 in the list
 	for (unsigned int i = 0; i < this->lights.size(); i++) {
 		Light * l = this->lights[i];
 
@@ -1902,6 +1913,15 @@ void RenderOpenGL::addLight(Light* light)
 void RenderOpenGL::remLight(Light* light)
 {
 	this->lights.erase(std::remove(this->lights.begin(), this->lights.end(), light), this->lights.end());
+}
+
+
+/**
+* Set the state of the torch
+**/
+void RenderOpenGL::setTorch(bool on)
+{
+	this->torch = on;
 }
 
 

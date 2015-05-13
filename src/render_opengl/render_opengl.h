@@ -120,6 +120,7 @@ class RenderOpenGL : public Render3D
 
 		// Lights
 		vector<Light*> lights;
+		bool torch;
 		glm::vec4 ambient;
 
 	public:
@@ -151,6 +152,7 @@ class RenderOpenGL : public Render3D
 		virtual void remAnimPlay(AnimPlay* play);
 		virtual void addLight(Light* light);
 		virtual void remLight(Light* light);
+		virtual void setTorch(bool on);
 		virtual void setAmbient(glm::vec4 ambient);
 
 		virtual void setPhysicsDebug(bool status);

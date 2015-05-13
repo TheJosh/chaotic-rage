@@ -144,6 +144,7 @@ class GameState
 		// This just wraps the render code
 		void addLight(Light* light);
 		void remLight(Light* light);
+		void setTorch(bool on);
 
 		// Debris
 		Entity* deadButNotBuried(Entity* e, AnimPlay* play);
