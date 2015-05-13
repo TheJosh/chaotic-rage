@@ -291,9 +291,9 @@ void Player::update(int delta)
 **/
 void Player::die()
 {
-	Unit::die();
-
 	this->st->logic->raise_playerdied(this->slot);
+
+	Unit::die();
 
 	for (unsigned int i = 0; i < this->st->num_local; i++) {
 		if (this == this->st->local_players[i]->p) {
