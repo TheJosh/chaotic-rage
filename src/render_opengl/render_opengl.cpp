@@ -1132,7 +1132,8 @@ void RenderOpenGL::preGame()
 		this->mainViewport(1, 1);
 	}
 
-	// Torch always starts off
+	// Set a few other vars
+	this->render_player = NULL;
 	this->torch = false;
 }
 
@@ -1151,9 +1152,14 @@ void RenderOpenGL::setupShaders()
 	
 	// TODO: Torch should be a directional light
 	if (this->torch && this->render_player != NULL) {
-		btVector3 pos = this->render_player->getPosition();
+		float inFront = 2.5f;
+		btVector3 offGround = btVector3(0.0f, 0.3f, 0.0f);
+
+		btTransform xform = this->render_player->getTransform();
+		btVector3 pos = xform.getOrigin() + offGround + xform.getBasis() * btVector3(0.0f, 0.0f, inFront);
+
 		LightPos[idx] = glm::vec3(pos.x(), pos.y() + 2.5f, pos.z());
-		LightColor[idx] = glm::vec4(1.0f, 1.0f, 1.0f, 0.3f);
+		LightColor[idx] = glm::vec4(0.5f, 0.5f, 0.5f, 0.3f);
 		idx++;
 	}
 
