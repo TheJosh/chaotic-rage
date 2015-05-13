@@ -589,12 +589,12 @@ void GameState::update(int delta)
 	this->physics->stepTime(delta);
 	PROFILE_END(physics);
 
-	// Map and weather
+	// Map
 	this->map->update(delta);
-	this->weather->update((float)delta);
-
-	// Particles
+	
+	// Weather and particles
 	if (this->particle_system != NULL) {
+		this->weather->update((float)delta);
 		this->particle_system->update(delta / 1000.0f);
 	}
 
