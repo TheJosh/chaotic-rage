@@ -91,10 +91,12 @@ class Entity
 		* Get position. Convinience method for transforms
 		**/
 		const btVector3& getPosition() const;
-
+		btVector3 getPositionByVal() const;
+		
 		/**
 		* Set position. Convinience method for transforms
 		**/
 		void setPosition(const btVector3 &p);
+		void setPositionByVal(const btVector3 p);
 };
 

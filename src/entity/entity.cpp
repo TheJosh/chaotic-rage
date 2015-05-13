@@ -65,9 +65,18 @@ void Entity::setTransform(btTransform &t)
 
 
 /**
-* Get the current position from the transformation
+* Get the current position from the transformation (by reference)
 **/
 const btVector3& Entity::getPosition() const
+{
+	return this->getTransform().getOrigin();
+}
+
+
+/**
+* Get the current position from the transformation (by value)
+**/
+btVector3 Entity::getPositionByVal() const
 {
 	return this->getTransform().getOrigin();
 }
@@ -77,6 +86,17 @@ const btVector3& Entity::getPosition() const
 * Set the position
 **/
 void Entity::setPosition(const btVector3 &p)
+{
+	btTransform xform = this->getTransform();
+	xform.setOrigin(p);
+	this->setTransform(xform);
+}
+
+
+/**
+* Set the position (by value)
+**/
+void Entity::setPositionByVal(const btVector3 p)
 {
 	btTransform xform = this->getTransform();
 	xform.setOrigin(p);
