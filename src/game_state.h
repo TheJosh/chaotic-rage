@@ -186,6 +186,10 @@ class GameState
 		void addHUDMessage(unsigned int slot, string text, string text2 = "");
 		HUDLabel* addHUDLabel(unsigned int slot, int x, int y, string data, HUDLabel* l = NULL);
 		bool mousePick(unsigned int x, unsigned int y, btVector3& hitLocation, Entity** hitEntity);
+
+	private:
+		void doTimeOfDay(float delta);
+		void doTorch();
 };
 
 

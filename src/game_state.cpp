@@ -394,6 +394,7 @@ void GameState::preGame()
 	this->time_cycle = this->gs->time_of_day < 0.5f ? -0.01f : 0.01f;
 	if (!gs->day_night_cycle) {
 		GEng()->render->setAmbient(glm::vec4(this->time_of_day, this->time_of_day, this->time_of_day, 1.0f));
+		this->doTorch();
 	}
 
 	// Weather
@@ -597,20 +598,8 @@ void GameState::update(int delta)
 
 	// Time of day cycle
 	if (gs->day_night_cycle) {
-		if (this->time_of_day > 1.0f || this->time_of_day < 0.0f) {
-			this->time_cycle = 0.0f - this->time_cycle;
-		}
-		this->time_of_day += this->time_cycle * delta / 1000.0f;
-		float rain_flow = this->weather->getRainFlow();
-		// Make it darker if it rains
-		float ambient = MAX(0.0f, this->time_of_day - 0.5f * rain_flow);
-		GEng()->render->setAmbient(glm::vec4(ambient, ambient, ambient, 1.0f));
-
-		if (this->time_of_day < 0.3f) {
-			GEng()->render->setTorch(true);
-		} else {
-			GEng()->render->setTorch(false);
-		}
+		this->doTimeOfDay(delta);
+		this->doTorch();
 	}
 
 	// Handle guichan logic
@@ -624,6 +613,37 @@ void GameState::update(int delta)
 	// Update time
 	this->game_time += delta;
 	this->anim_frame = static_cast<int>(floor(this->game_time * ANIMATION_FPS / 1000.0));
+}
+
+
+/**
+* Recalculate the ambient light based on time-of-day
+**/
+void GameState::doTimeOfDay(float delta)
+{
+	if (this->time_of_day > 1.0f || this->time_of_day < 0.0f) {
+		this->time_cycle = 0.0f - this->time_cycle;
+	}
+	this->time_of_day += this->time_cycle * delta / 1000.0f;
+
+	// Make it darker if it rains
+	float rain_flow = this->weather->getRainFlow();
+	
+	float ambient = MAX(0.0f, this->time_of_day - 0.5f * rain_flow);
+	GEng()->render->setAmbient(glm::vec4(ambient, ambient, ambient, 1.0f));
+}
+
+
+/**
+* Recalculate if torch should be on or off
+**/
+void GameState::doTorch()
+{
+	if (this->time_of_day < 0.3f) {
+		GEng()->render->setTorch(true);
+	} else {
+		GEng()->render->setTorch(false);
+	}
 }
 
 
