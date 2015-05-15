@@ -66,7 +66,6 @@ class OpenGLFont_Implementation
 OpenGLFont::OpenGLFont(RenderOpenGL* render, string name, Mod* mod, float size)
 {
 	int error;
-	Sint64 len;
 
 	// Basics
 	this->pmpl = new OpenGLFont_Implementation();
@@ -80,14 +79,26 @@ OpenGLFont::OpenGLFont(RenderOpenGL* render, string name, Mod* mod, float size)
 		reportFatalError("Freetype: Unable to init library.");
 	}
 
-	// Load file from mod
-	this->pmpl->buf = mod->loadBinary(name, &len);
-	if (this->pmpl->buf == NULL) {
-		reportFatalError("Freetype: Unable to load data");
+	// On Linux, the system font is preferred
+	#ifdef __linux__
+		error = FT_New_Face(this->pmpl->ft, "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 0, &this->pmpl->face);
+	#else
+		error = 1;
+	#endif
+
+	// Fallback is the font in the mod
+	if (error != 0) {
+		Sint64 len;
+
+		this->pmpl->buf = mod->loadBinary(name, &len);
+		if (this->pmpl->buf == NULL) {
+			reportFatalError("Freetype: Unable to load data");
+		}
+
+		error = FT_New_Memory_Face(this->pmpl->ft, (const FT_Byte *) this->pmpl->buf, (FT_Long)len, 0, &this->pmpl->face);
 	}
 
-	// Load face
-	error = FT_New_Memory_Face(this->pmpl->ft, (const FT_Byte *) this->pmpl->buf, (FT_Long)len, 0, &this->pmpl->face);
+	// Handle errors
 	if (error == FT_Err_Unknown_File_Format) {
 		reportFatalError("Freetype: Unsupported font format");
 	} else if (error) {

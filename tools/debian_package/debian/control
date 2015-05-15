@@ -21,6 +21,7 @@ Vcs-Browser: https://github.com/TheJosh/chaotic-rage
 Package: chaoticrage
 Architecture: any
 Depends: chaoticrage-data (= ${source:Version}),
+	fonts-dejavu-core,
     ${shlibs:Depends},
     ${misc:Depends}
 Description: Unusual 3D shooter game

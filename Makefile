@@ -231,6 +231,7 @@ deb: chaoticrage-linux-$(VERSION).tar.bz2
 	tar -xvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
 	mkdir -p $(DISTTMP)/debian
 	cp -r tools/debian_package/debian/* $(DISTTMP)/debian/
+	rm $(DISTTMP)/data/cr/DejaVuSans.ttf
 
 	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
 	cd $(DISTTMP); debuild -us -uc
@@ -241,6 +242,7 @@ deb-ubuntu: chaoticrage-linux-$(VERSION).tar.bz2
 	mkdir -p $(DISTTMP)/debian
 	cp -r tools/debian_package/debian/* $(DISTTMP)/debian/
 	cp -r tools/debian_package/ubuntu/* $(DISTTMP)/debian/
+	rm $(DISTTMP)/data/cr/DejaVuSans.ttf
 
 	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
 	cd $(DISTTMP); debuild -us -uc
@@ -251,6 +253,7 @@ deb-ubuntu-ppa: chaoticrage-linux-$(VERSION).tar.bz2
 	mkdir -p $(DISTTMP)/debian
 	cp -r tools/debian_package/debian/* $(DISTTMP)/debian/
 	cp -r tools/debian_package/ubuntu/* $(DISTTMP)/debian/
+	rm $(DISTTMP)/data/cr/DejaVuSans.ttf
 
 	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
 	cd $(DISTTMP); debuild -S -sa
