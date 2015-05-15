@@ -1,8 +1,12 @@
 #!/bin/bash
 set -e
 
-rm -f chaoticrage_*_amd64.deb
+# Clear these to avoid when we do the mv below
+rm -f chaoticrage_*.deb
+rm -f chaoticrage_*.dsc
+rm -f chaoticrage_*.tar.xz
 
+# Do the build
 make clean
 make deb
 
@@ -10,8 +14,15 @@ make deb
 # It ignores our $VERSION string
 # Just grab whatever file was created and rename it as required
 mv chaoticrage_*_amd64.deb "${DESTDIR}/chaoticrage_${VERSION}_amd64.deb"
+mv chaoticrage_*.dsc "${DESTDIR}/chaoticrage_${VERSION}.dsc"
 
-rm -f chaoticrage_*_amd64.changes
-rm -f chaoticrage_*_amd64.build
-rm -f chaoticrage_*_amd64.dsc
-rm -f chaoticrage_*_amd64.tar.xz
+# Also move across the source archive, but not the .orig archive
+rm -f chaoticrage_*.orig.tar.xz
+mv chaoticrage_*.tar.xz "${DESTDIR}/chaoticrage_${VERSION}.tar.xz"
+
+# Clear any reminant junk
+rm -f chaoticrage_*.deb
+rm -f chaoticrage_*.changes
+rm -f chaoticrage_*.build
+rm -f chaoticrage_*.dsc
+rm -f chaoticrage_*.tar.xz
