@@ -14,6 +14,9 @@ make deb
 # It ignores our $VERSION string
 # Just grab whatever file was created and rename it as required
 mv chaoticrage_*_amd64.deb "${DESTDIR}/chaoticrage_${VERSION}_amd64.deb"
+mv chaoticrage-data_*_all.deb "${DESTDIR}/chaoticrage-data_${VERSION}_all.deb"
+
+# Move across the source description
 mv chaoticrage_*.dsc "${DESTDIR}/chaoticrage_${VERSION}.dsc"
 
 # Also move across the source archive, but not the .orig archive
