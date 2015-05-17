@@ -71,7 +71,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadType loadtype)
 
 	// For map meshes we flatten geometry
 	if (loadtype == AssimpLoadMapMesh) {
-		flags |= aiProcess_PreTransformVertices;
+		//flags |= aiProcess_PreTransformVertices;
 		flags |= aiProcess_RemoveRedundantMaterials;
 		flags |= aiProcess_OptimizeMeshes;
 		flags |= aiProcess_FindInvalidData;
