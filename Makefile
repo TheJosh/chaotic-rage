@@ -166,11 +166,16 @@ all: chaoticrage
 -include $(DEPENDENCIES)
 
 
+help:		## This help dialog
+	@fgrep -h "##" Makefile | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
+
+
 chaoticrage: $(OBJFILES_CLIENT)
 	@echo [LINK] $@
 	@$(CXX) $(CFLAGS) $(LDFLAGS) $(OBJFILES_CLIENT) -o chaoticrage$(POSTFIX) $(LIBS)
 
 
+install:	## Install game in Linux environment
 install: chaoticrage
 	mkdir -p $(DESTPATH)/usr/games
 	install chaoticrage $(DESTPATH)/usr/games
@@ -189,7 +194,7 @@ install: chaoticrage
 	cp -r --no-preserve=ownership tools/linux/install/chaoticrage.1 $(DESTPATH)/usr/local/man/man1
 	gzip $(DESTPATH)/usr/local/man/man1/chaoticrage.1
 
-uninstall:
+uninstall:	## Uninstall game in Linux environment
 	rm -f $(DESTPATH)/usr/games/chaoticrage
 	rm -fr $(DESTPATH)/usr/share/chaoticrage
 	rm -f $(DESTPATH)/usr/share/applications/chaoticrage.desktop
@@ -227,6 +232,7 @@ dist: $(SRCPATH) data maps
 
 chaoticrage-linux-$(VERSION).tar.bz2: dist
 
+deb:		## Create Debian package
 deb: chaoticrage-linux-$(VERSION).tar.bz2
 	tar -xvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
 	mkdir -p $(DISTTMP)/debian
@@ -237,6 +243,7 @@ deb: chaoticrage-linux-$(VERSION).tar.bz2
 	cd $(DISTTMP); debuild -us -uc
 	rm -r $(DISTTMP)
 
+deb-ubuntu:	## Create Debian package for Ubuntu
 deb-ubuntu: chaoticrage-linux-$(VERSION).tar.bz2
 	tar -xvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
 	mkdir -p $(DISTTMP)/debian
@@ -248,6 +255,7 @@ deb-ubuntu: chaoticrage-linux-$(VERSION).tar.bz2
 	cd $(DISTTMP); debuild -us -uc
 	rm -r $(DISTTMP)
 
+deb-ubuntu-ppa:	## Create signed Debian package for Ubuntu PPA
 deb-ubuntu-ppa: chaoticrage-linux-$(VERSION).tar.bz2
 	tar -xvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
 	mkdir -p $(DISTTMP)/debian
@@ -273,16 +281,17 @@ dist-bin: chaoticrage data maps
 	rm -r $(DISTTMP)
 
 
-env:
+env:		## Print the environment
 	@echo $(CC)
 	@echo $(CXX)
 	@echo $(CFLAGS)
 	@echo $(LIBS)
 
-clean:
+clean:		## Clean, removes generated build files
 	rm -f chaoticrage
 	rm -f $(OBJFILES)
 	rm -f $(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.d,$(CPPFILES))
+	rm -f $(patsubst $(SRCPATH)/%.c,$(OBJPATH)/%.d,$(CFILES))
 	rm -f $(OBJPATH)/linux.o $(OBJPATH)/linux.d
 	rm -f $(OBJPATH)/client.o $(OBJPATH)/client.d
 	rm -f $(OBJPATH)/emscripten.o $(OBJPATH)/emscripten.d
@@ -290,8 +299,7 @@ clean:
 	rm -f $(OBJPATH)/confuse/confuse.o $(OBJPATH)/confuse/confuse.d
 	rm -f $(OBJPATH)/confuse/lexer.o $(OBJPATH)/confuse/lexer.d
 
-
-cleaner:
+cleaner:	## Clean, removes the entire build folder
 	rm -f chaoticrage
 	rm -rf $(OBJPATH)/
 

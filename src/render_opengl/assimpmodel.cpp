@@ -309,7 +309,7 @@ void AssimpModel::loadMeshes(bool opengl, const struct aiScene* sc)
 * The physics code needs the actual mesh data.
 * If the mesh is used for physics, we load the faces and verts
 *
-* @param bool update Update the existing arrya of `AssimpMesh`, v.s. creating a new.
+* @param bool update Update the existing array of `AssimpMesh`, v.s. creating a new.
 **/
 void AssimpModel::loadMeshdata(bool update, const struct aiScene* sc)
 {
