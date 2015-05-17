@@ -50,10 +50,11 @@ void fingerMove(GameState *st, int finger, float x, float y)
 		const float middlePoint = 0.5f;
 
 		if (x < middlePoint) {
+
+			// Left side of screen: Move
 			const float moveOffset = 0.1f;
 			const float middleLeft = middlePoint / 2.0f;
 
-			// Left side of screen: Move
 			if (x + moveOffset < middleLeft) {
 				st->local_players[0]->p->keyPress(Player::KEY_LEFT);
 				st->local_players[0]->p->keyRelease(Player::KEY_RIGHT);
@@ -104,8 +105,6 @@ void multigesture(GameState *st, unsigned int fingers, float x, float y)
 		fingerMove(st, numberOfFingers, x, y);
 	} else if (numberOfFingers == 3) {
 		st->local_players[0]->p->keyPress(Player::KEY_USE);
-	} else if (numberOfFingers == 4) {
-		st->local_players[0]->p->keyPress(Player::KEY_LIFT);
 	} else if (numberOfFingers == 5) {
 		st->gs->switchViewMode();
 	} else {
