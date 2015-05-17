@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 
 # If no SDL directory, download and copy in there
 if [ ! -d "jni/SDL" ]; then

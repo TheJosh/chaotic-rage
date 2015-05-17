@@ -3,7 +3,7 @@
 #  Copies assets from the main game data directories
 #  Scales down PNGs for a smaller APK
 #  You'll need to re-run this every time the assets change
-
+set -e
 
 echo "Building assets..."
 

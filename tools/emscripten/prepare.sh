@@ -2,7 +2,7 @@
 #
 # Build all the deps we need for emscripten
 #
-
+set -e
 
 mkdir -p lib
 mkdir -p include
