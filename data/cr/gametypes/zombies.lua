@@ -3,6 +3,7 @@
 ----
 
 num_zombies = 0;
+num_zombie_players = 0;
 num_wanted = 0;
 num_dead = 0;
 num_lives = 10;
@@ -48,8 +49,18 @@ end;
 --
 start_round = function()
 	num_zombies = 0;
+	
+	-- Spawn the player zombies, if there is a coordinate in the list
+	position = table.remove(player_zombies, 1)
+	while position ~= nil do
+		game.addNpcCoord(get_selected_unittype(), "zombie", factions.team2, position)
+		num_zombie_players = num_zombie_players + 1;
+		num_zombies = num_zombies + 1;
+		position = table.remove(player_zombies, 1)
+	end
+	
 	if num_wanted < 30 then
-		num_wanted = num_wanted + 3;
+		num_wanted = num_wanted + 3 + num_zombie_players;
 	end;
 	if spawn_rate > 1000 then
 		spawn_rate = spawn_rate - 100;
@@ -57,14 +68,6 @@ start_round = function()
 	num_dead = 0;
 	round = round + 1;
 
-	-- Spawn a player zombie, if there is a coordinate in the list
-	position = table.remove(player_zombies, 1);
-	if position ~= nil then
-		game.addNpcCoord(get_selected_unittype(), "zombie", factions.team2, position)
-		num_zombies = num_zombies + 1;
-		num_wanted = num_wanted + 1;
-	end
-	
 	-- start raining after 5th round
 	if round >= 5 then
 		if rain_rate < 5000 then
@@ -189,6 +192,8 @@ bind_npcdied(function()
 	-- Is the round over?
 	if num_dead == num_wanted then
 		show_alert_message("I guess you got them...this time");
+		num_wanted = num_wanted - num_zombie_players;
+		num_zombie_players = 0;
 		add_timer(2500, start_round);
 	end;
 end);
