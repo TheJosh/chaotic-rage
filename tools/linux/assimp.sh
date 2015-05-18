@@ -4,10 +4,10 @@ set -e
 cd working
 
 if [ ! -d "assimp-3.1.1" ]; then
-	if [ ! -f "assimp-3.1.1.zip" ]; then
-		wget http://chaoticrage.com/dev_libs/assimp-3.1.1.zip
+	if [ ! -f "assimp-3.1.1_no_test_models.zip" ]; then
+		wget http://downloads.sourceforge.net/project/assimp/assimp-3.1/assimp-3.1.1_no_test_models.zip
 	fi
-	unzip -q assimp-3.1.1.zip || exit 1
+	unzip -q assimp-3.1.1_no_test_models.zip || exit 1
 fi
 
 cd assimp-3.1.1
