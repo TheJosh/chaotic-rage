@@ -31,7 +31,7 @@ function parse_input($lang, $keys = null) {
 		$info = preg_split('/\s\s+/', $ln);
 		
 		if ($keys) {
-			if ($keys[$info[0]]) $table[$keys[$info[0]]] = $info;
+			if (@$keys[$info[0]]) $table[$keys[$info[0]]] = $info;
 		} else {
 			$table[] = $info;
 		}
@@ -51,19 +51,22 @@ foreach ($base as $idx => $info) {
 }
 
 // Create strings.h
-$header  = "// This is a generated file.\n";
-$header .= "// Don't include this file; include gettext.h instead.\n";
-$header .= "// You can re-generate this file using the tool in tools/i18n\n";
-$header .= "\n";
+$strings_h  = "// This is a generated file.\n";
+$strings_h .= "// Don't include this file; include gettext.h instead.\n";
+$strings_h .= "// You can re-generate this file using the tool in tools/i18n\n";
+$strings_h .= "\n";
 
 foreach ($base as $idx => $info) {
-	$header .= '#define STRING_' . $info[0] . ' ' . $idx . "\n";
+	$strings_h .= '#define STRING_' . $info[0] . ' ' . $idx . "\n";
 }
 
-$dest = 'src/i18n/strings.h';
 // Create/Update only if necessary to not trigger compiler
-if (!file_exists($dest) || sha1_file($dest) != sha1($header)) {
-	file_put_contents($dest, $header);
+$dest = 'src/i18n/strings.h';
+if (!file_exists($dest) || sha1_file($dest) != sha1($strings_h)) {
+	echo "Updated strings.h file\n";
+	file_put_contents($dest, $strings_h);
+} else {
+	echo "No changes to strings.h required\n";
 }
 
 // Create a data file for each language
@@ -71,7 +74,7 @@ foreach ($languages as $lang) {
 	$table = parse_input($lang, $keys);
 	
 	foreach ($base as $idx => $info) {
-		if (!$table[$idx]) {
+		if (empty($table[$idx])) {
 			$table[$idx] = $info;
 		}
 	}
@@ -85,6 +88,8 @@ foreach ($languages as $lang) {
 	}
 	
 	file_put_contents('data/i18n/' . $lang . '.txt', $out);
+	
+	echo "Saved language pack {$lang}\n";
 	
 	unset($out);
 }
