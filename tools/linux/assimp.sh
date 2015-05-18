@@ -3,14 +3,14 @@ set -e
 
 cd working
 
-if [ ! -d "assimp--3.0.1270-source-only" ]; then
-	if [ ! -f "assimp--3.0.1270-source-only.zip" ]; then
-		wget http://chaoticrage.com/dev_libs/assimp--3.0.1270-source-only.zip
+if [ ! -d "assimp-3.1.1" ]; then
+	if [ ! -f "assimp-3.1.1.zip" ]; then
+		wget http://chaoticrage.com/dev_libs/assimp-3.1.1.zip
 	fi
-	unzip -q assimp--3.0.1270-source-only.zip || exit 1
+	unzip -q assimp-3.1.1.zip || exit 1
 fi
 
-cd assimp--3.0.1270-source-only
+cd assimp-3.1.1
 
 cmake -G "Unix Makefiles" \
 	-DCMAKE_BUILD_TYPE=RelWithDbgInfo \
