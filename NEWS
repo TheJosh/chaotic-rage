@@ -1,0 +1,36 @@
+*unreleased changes*
+--------------------
+* Removed Lua dependency
+* Update debian package build process
+* Added a man page
+* Removed unused Lua functions
+* Fixes for non-3D renderers
+* Support Assimp 3.1.1
+* Added a basic torch
+* Many misc bug fixes
+
+Data changes:
+* Updated some function calls to new Lua methods
+* Fix zombie.dae scale
+* Spawn dead players as zombies in the next round
+
+New in 1.12
+-----------
+* UI scaling for Android, so everything isn't so tiny
+* A few other Android tweaks and fixes
+* Fixed font loading issues
+* Rotate head on vertical axis
+* Fix depth issues with close objects and HUD
+* Implemented STATIC sound type for units
+* Implemented spawn animations
+* Added incomplete Brazilian Portuguese translation
+* Some misc networking bugfixes
+* Added Spanish translation
+* Added couple of scripts for quick windows network testing
+* Vehicle wheel rotations
+
+Data changes:
+* Update unit types config for additional sounds
+* Lighting test data
+* Remove broken unit types
+* Updated 'ute' model
