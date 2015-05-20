@@ -47,6 +47,7 @@ static cfg_opt_t mod_opts[] =
 	CFG_SEC((char*) "map", mod_map_opts, CFGF_MULTI),
 	CFG_INT((char*) "arcade", 1, CFGF_NONE),
 	CFG_INT((char*) "campaign", 0, CFGF_NONE),
+	CFG_STR((char*) "menu-model", ((char*)""), CFGF_NONE),
 	CFG_END()
 };
 
@@ -156,6 +157,8 @@ bool Mod::loadMetadata()
 			cfg_getint(cfg_sub, "arcade") == 1
 		));
 	}
+
+	this->menu_model = std::string(cfg_getstr(cfg, "menu-model"));
 
 	cfg_free(cfg);
 

@@ -53,6 +53,8 @@ Menu::Menu(GameState *st, GameManager *gm)
 	this->logo = NULL;
 	this->bg = NULL;
 	this->font = NULL;
+	this->model = NULL;
+	this->play = NULL;
 }
 
 
@@ -61,6 +63,8 @@ Menu::~Menu()
 	menuClear();
 	delete(this->logo);
 	delete(this->bg);
+	delete(this->play);
+	delete(this->model);
 	delete(this->font);
 }
 
@@ -86,6 +90,19 @@ void Menu::loadModBits(UIUpdate* ui)
 	this->bg = this->render->loadSprite("menu/bg.jpg", mod);
 	if (!this->bg) {
 		this->bg = this->render->loadSprite("menu/bg.jpg", GEng()->mm->getBase());
+	}
+
+	// Rotating model
+	delete(this->model);
+	delete(this->play);
+	this->model = NULL;
+	this->play = NULL;
+	if (mod->getMenuModelName() != "") {
+		this->model_rot = -10.0f;
+		this->model = mod->getAssimpModel(mod->getMenuModelName());
+		if (this->model != NULL) {
+			this->play = new AnimPlay(this->model);
+		}
 	}
 
 	// Font always loaded from base mod
@@ -159,12 +176,6 @@ void Menu::doit(UIUpdate* ui)
 	this->gui->setInput(input);
 	this->gui_container->setOpaque(false);
 	this->gui->setTop(this->gui_container);
-
-	// This is a hack and leaks memory too
-	// TODO: Mod to be able to specify models
-	this->model_rot = -10.0f;
-	this->model = this->base_mod->getAssimpModel("magellan_16.dae");
-	this->play = new AnimPlay(this->model);
 
 	this->loadModBits(ui);
 
@@ -289,7 +300,6 @@ void Menu::updateUI()
 	glUniformMatrix4fv(render->shaders[SHADER_BASIC]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
 	this->render->renderSprite(bg, 0, ((static_cast<float>(render->real_height - render->real_width)) / 2.0f), render->real_width, render->real_width);
 
-	// Draw an earth
 	if (this->model != NULL && this->play != NULL) {
 		glEnable(GL_DEPTH_TEST);
 

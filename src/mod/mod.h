@@ -40,10 +40,12 @@ class Mod {
 	private:
 		// metadata
 		string title;
+
+		// menu stuff
 		vector<MapReg> * maps;
 		bool has_arcade;
 		bool has_campaign;
-		string load_err;
+		string menu_model;
 
 		// full data
 		vector<AIType*> * ais;
@@ -60,6 +62,9 @@ class Mod {
 		// Caches
 		map<string, AssimpModel*> models;
 		map<string, AudioPtr> sounds;
+
+		// What went wrong
+		string load_err;
 
 	public:
 		GameState * st;
@@ -87,6 +92,7 @@ class Mod {
 		vector<MapReg>* getMaps() { return this->maps; }
 		bool hasArcade() { return this->has_arcade; }
 		bool hasCampaign() { return this->has_campaign; }
+		string getMenuModelName() { return this->menu_model; }
 
 		AIType * getAIType(CRC32 id);
 		ObjectType * getObjectType(CRC32 id);

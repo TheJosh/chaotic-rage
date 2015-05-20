@@ -4,6 +4,7 @@
 * Linux installer - added a man page and menu item
 * Added a basic torch
 * Added a new scripting function - game.getPlayerFromSlot
+* Added option for mod to specify the model shown in the menu
 * Fixed compile on MXE by bringing Lua dependency in-tree
 * Fixed crashes when using Assimp 3.1.1
 * Fixed compile when using an older version of FreeType
