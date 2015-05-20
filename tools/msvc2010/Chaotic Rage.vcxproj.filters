@@ -101,6 +101,9 @@
     <Filter Include="src\lua">
       <UniqueIdentifier>{23ebc0d3-3872-4f16-83d7-a479547a6895}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\render_opengl">
+      <UniqueIdentifier>{37195299-fb8e-44a3-acf0-e092747d3d7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\data\cr\animmodels.conf">
@@ -264,12 +267,6 @@
     <ClCompile Include="..\..\src\mod\aitype.cpp">
       <Filter>src\mod</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\render_opengl\animplay.cpp">
-      <Filter>src\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render_opengl\assimpmodel.cpp">
-      <Filter>src\render</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\util\btStrideHeightfieldTerrainShape.cpp">
       <Filter>src\util</Filter>
     </ClCompile>
@@ -295,9 +292,6 @@
       <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\render\render_null.cpp">
-      <Filter>src\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render_opengl\render_opengl.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\render\render.cpp">
@@ -372,12 +366,6 @@
     <ClCompile Include="..\..\src\mod\gametype.cpp">
       <Filter>src\mod</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\render_opengl\glshader.cpp">
-      <Filter>src\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render_opengl\hud.cpp">
-      <Filter>src\render</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\entity\ammo_round.cpp">
       <Filter>src\entity</Filter>
     </ClCompile>
@@ -431,9 +419,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\util\btCRKinematicCharacterController.cpp">
       <Filter>src\util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render_opengl\guichan_imageloader.cpp">
-      <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\net\net_browse.cpp">
       <Filter>src\net</Filter>
@@ -600,12 +585,6 @@
     <ClCompile Include="..\..\src\confuse\lexer.c">
       <Filter>src\confuse</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\render_opengl\gl_debug_drawer.cpp">
-      <Filter>src\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render_opengl\glvao.cpp">
-      <Filter>src\render</Filter>
-    </ClCompile>
     <ClCompile Include="..\windows\getopt_long\getopt_long.c">
       <Filter>contrib\getopt_long</Filter>
     </ClCompile>
@@ -614,12 +593,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\game_manager.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render_opengl\menu.cpp">
-      <Filter>src\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render_opengl\intro.cpp">
-      <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\game_state.cpp">
       <Filter>src</Filter>
@@ -777,9 +750,6 @@
     <ClCompile Include="..\..\src\i18n\gettext.cpp">
       <Filter>src\i18n</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\render_opengl\guichan_font.cpp">
-      <Filter>src\render</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\util\utf8.cpp">
       <Filter>src\util</Filter>
     </ClCompile>
@@ -791,9 +761,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\map\mesh.cpp">
       <Filter>src\map</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render_opengl\light.cpp">
-      <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\fx\weather.cpp">
       <Filter>src\fx</Filter>
@@ -909,6 +876,42 @@
     <ClCompile Include="..\..\src\lua\lzio.c">
       <Filter>src\lua</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\animplay.cpp">
+      <Filter>src\render_opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\assimpmodel.cpp">
+      <Filter>src\render_opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\gl_debug_drawer.cpp">
+      <Filter>src\render_opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\glshader.cpp">
+      <Filter>src\render_opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\glvao.cpp">
+      <Filter>src\render_opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\guichan_font.cpp">
+      <Filter>src\render_opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\guichan_imageloader.cpp">
+      <Filter>src\render_opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\hud.cpp">
+      <Filter>src\render_opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\intro.cpp">
+      <Filter>src\render_opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\menu.cpp">
+      <Filter>src\render_opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\light.cpp">
+      <Filter>src\render_opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\render_opengl.cpp">
+      <Filter>src\render_opengl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\game.h">
@@ -968,12 +971,6 @@
     <ClInclude Include="..\..\src\mod\aitype.h">
       <Filter>src\mod</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\render_opengl\animplay.h">
-      <Filter>src\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render_opengl\assimpmodel.h">
-      <Filter>src\render</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\util\btStrideHeightfieldTerrainShape.h">
       <Filter>src\util</Filter>
     </ClInclude>
@@ -1014,9 +1011,6 @@
       <Filter>src\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\render\render_null.h">
-      <Filter>src\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render_opengl\render_opengl.h">
       <Filter>src\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\platform\platform.h">
@@ -1075,15 +1069,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\mod\gametype.h">
       <Filter>src\mod</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render_opengl\glshader.h">
-      <Filter>src\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render_opengl\hud.h">
-      <Filter>src\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render_opengl\hud_label.h">
-      <Filter>src\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\script\luatimer.h">
       <Filter>src\script</Filter>
@@ -1361,29 +1346,11 @@
     <ClInclude Include="..\..\src\render\sprite.h">
       <Filter>src\render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\render_opengl\gl_debug_drawer.h">
-      <Filter>src\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render_opengl\gl.h">
-      <Filter>src\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render_opengl\glvao.h">
-      <Filter>src\render</Filter>
-    </ClInclude>
     <ClInclude Include="..\windows\getopt_long\getopt.h">
       <Filter>contrib\getopt_long</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game_manager.h">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render_opengl\gl_debug.h">
-      <Filter>src\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render_opengl\menu.h">
-      <Filter>src\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render_opengl\intro.h">
-      <Filter>src\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game_settings.h">
       <Filter>src</Filter>
@@ -1550,9 +1517,6 @@
     <ClInclude Include="..\..\src\i18n\gettext.h">
       <Filter>src\i18n</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\render_opengl\guichan_font.h">
-      <Filter>src\render</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\util\utf8.h">
       <Filter>src\util</Filter>
     </ClInclude>
@@ -1562,14 +1526,8 @@
     <ClInclude Include="..\..\src\map\reg.h">
       <Filter>src\map</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\render_opengl\render_opengl_settings.h">
-      <Filter>src\render</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\map\mesh.h">
       <Filter>src\map</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\render_opengl\light.h">
-      <Filter>src\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\fx\weather.h">
       <Filter>src\fx</Filter>
@@ -1663,6 +1621,51 @@
     </ClInclude>
     <ClInclude Include="..\..\src\lua\lzio.h">
       <Filter>src\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\animplay.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\assimpmodel.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\gl.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\gl_debug.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\gl_debug_drawer.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\glshader.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\glvao.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\guichan_font.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\hud.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\hud_label.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\intro.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\menu.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\light.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\render_opengl.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\render_opengl_settings.h">
+      <Filter>src\render_opengl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
