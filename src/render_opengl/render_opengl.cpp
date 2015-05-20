@@ -1118,6 +1118,10 @@ void RenderOpenGL::preGame()
 	if (this->shaders_error) {
 		reportFatalError("Error loading OpenGL shaders");
 	}
+	
+	// Set a few other vars
+	this->render_player = NULL;
+	this->torch = false;
 
 	// Setup all the uniforms and such
 	this->setupShaders();
@@ -1131,10 +1135,6 @@ void RenderOpenGL::preGame()
 	if (this->st->num_local == 1) {
 		this->mainViewport(1, 1);
 	}
-
-	// Set a few other vars
-	this->render_player = NULL;
-	this->torch = false;
 }
 
 
