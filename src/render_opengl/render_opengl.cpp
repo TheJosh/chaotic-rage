@@ -1159,7 +1159,7 @@ void RenderOpenGL::setupShaders()
 		btVector3 pos = xform.getOrigin() + offGround + xform.getBasis() * btVector3(0.0f, 0.0f, inFront);
 
 		LightPos[idx] = glm::vec3(pos.x(), pos.y() + 2.5f, pos.z());
-		LightColor[idx] = glm::vec4(0.5f, 0.5f, 0.5f, 0.3f);
+		LightColor[idx] = glm::vec4(0.5f, 0.5f, 0.5f, 0.5f);
 		idx++;
 	}
 
@@ -1169,7 +1169,7 @@ void RenderOpenGL::setupShaders()
 
 		if (l->type == 3) {
 			LightPos[idx] = glm::vec3(l->x, l->y, l->z);
-			LightColor[idx] = glm::vec4(l->diffuse[0], l->diffuse[1], l->diffuse[2], l->diffuse[3]);
+			LightColor[idx] = glm::vec4(l->diffuse[0], l->diffuse[1], l->diffuse[2], 1.0f);
 			idx++;
 			if (idx == 4) break;
 		}

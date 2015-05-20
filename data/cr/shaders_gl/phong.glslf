@@ -21,7 +21,7 @@ const float LOG2 = 1.442695;
 
 void main()
 {
-	float LightPower = 30.0;
+	float LightPower = 25.0;
 	
 	vec3 n = normalize(csNormal);
 	vec3 e = normalize(csEyeDirection);
@@ -41,12 +41,12 @@ void main()
 		
 		// Diffuse
 		float NdotL = clamp(dot(n, l), 0.0, 1.0);
-		diffuseColor += uLightColor[i] * LightPower * NdotL / (dist*dist);
+		diffuseColor += uLightColor[i] * LightPower * uLightColor[i].a * NdotL / (dist*dist);
 
 		// Specular
 		vec3 r = reflect(-l, n);
 		float EdotR = clamp(dot(e, r), 0.0, 1.0);
-		specularColor += uLightColor[i] * LightPower * pow(EdotR, 5.0) / (dist*dist);
+		specularColor += uLightColor[i] * LightPower * uLightColor[i].a * pow(EdotR, 5.0) / (dist*dist);
 	}
 	
 	diffuseColor = matDiffuseColor * diffuseColor;
