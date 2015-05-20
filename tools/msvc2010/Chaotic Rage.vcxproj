@@ -116,6 +116,7 @@
     <None Include="..\..\data\cr\gametypes\zombies.lua" />
     <None Include="..\..\data\cr\gametypes\zombies2.lua" />
     <None Include="..\..\data\cr\gametypes\zombie_betrayal.lua" />
+    <None Include="..\..\data\cr\mod.conf" />
     <None Include="..\..\data\cr\objecttypes.conf" />
     <None Include="..\..\data\cr\particlegenerators.conf" />
     <None Include="..\..\data\cr\particletypes.conf" />
@@ -135,6 +136,9 @@
     <None Include="..\..\data\cr\vehicletypes.conf" />
     <None Include="..\..\data\cr\walltypes.conf" />
     <None Include="..\..\data\cr\weapontypes.conf" />
+    <None Include="..\..\data\test\campaigns.conf" />
+    <None Include="..\..\data\test\gametypes.conf" />
+    <None Include="..\..\data\test\mod.conf" />
     <None Include="..\..\src\i18n\en.txt" />
     <None Include="..\..\src\i18n\en_Pirate.txt" />
   </ItemGroup>

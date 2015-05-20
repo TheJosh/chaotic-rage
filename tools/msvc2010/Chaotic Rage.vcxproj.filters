@@ -104,49 +104,22 @@
     <Filter Include="src\render_opengl">
       <UniqueIdentifier>{37195299-fb8e-44a3-acf0-e092747d3d7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Configs\test">
+      <UniqueIdentifier>{93208d51-213c-4c98-a114-df617ee340a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configs\cr">
+      <UniqueIdentifier>{edda0ad8-7008-48f6-babe-8f9701d389e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\data\cr\animmodels.conf">
-      <Filter>Configs</Filter>
-    </None>
-    <None Include="..\..\data\cr\floortypes.conf">
-      <Filter>Configs</Filter>
-    </None>
-    <None Include="..\..\data\cr\particlegenerators.conf">
-      <Filter>Configs</Filter>
-    </None>
-    <None Include="..\..\data\cr\particletypes.conf">
-      <Filter>Configs</Filter>
-    </None>
-    <None Include="..\..\data\cr\songs.conf">
-      <Filter>Configs</Filter>
-    </None>
-    <None Include="..\..\data\cr\unittypes.conf">
-      <Filter>Configs</Filter>
-    </None>
-    <None Include="..\..\data\cr\walltypes.conf">
-      <Filter>Configs</Filter>
-    </None>
     <None Include="..\..\data\cr\gametypes\zombies.lua">
       <Filter>Gametypes</Filter>
-    </None>
-    <None Include="..\..\data\cr\gametypes.conf">
-      <Filter>Configs</Filter>
-    </None>
-    <None Include="..\..\data\cr\objecttypes.conf">
-      <Filter>Configs</Filter>
     </None>
     <None Include="..\..\data\cr\gametypes\boredem.lua">
       <Filter>Gametypes</Filter>
     </None>
     <None Include="..\..\data\cr\gametypes\free_for_all.lua">
       <Filter>Gametypes</Filter>
-    </None>
-    <None Include="..\..\data\cr\vehicletypes.conf">
-      <Filter>Configs</Filter>
-    </None>
-    <None Include="..\..\data\cr\pickuptypes.conf">
-      <Filter>Configs</Filter>
     </None>
     <None Include="..\..\data\cr\gametypes\zombie_betrayal.lua">
       <Filter>Gametypes</Filter>
@@ -211,8 +184,53 @@
     <None Include="..\..\data\cr\shaders_gl\water.glslv">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\..\data\test\campaigns.conf">
+      <Filter>Configs\test</Filter>
+    </None>
+    <None Include="..\..\data\test\gametypes.conf">
+      <Filter>Configs\test</Filter>
+    </None>
+    <None Include="..\..\data\test\mod.conf">
+      <Filter>Configs\test</Filter>
+    </None>
+    <None Include="..\..\data\cr\animmodels.conf">
+      <Filter>Configs\cr</Filter>
+    </None>
     <None Include="..\..\data\cr\weapontypes.conf">
-      <Filter>Configs</Filter>
+      <Filter>Configs\cr</Filter>
+    </None>
+    <None Include="..\..\data\cr\floortypes.conf">
+      <Filter>Configs\cr</Filter>
+    </None>
+    <None Include="..\..\data\cr\gametypes.conf">
+      <Filter>Configs\cr</Filter>
+    </None>
+    <None Include="..\..\data\cr\mod.conf">
+      <Filter>Configs\cr</Filter>
+    </None>
+    <None Include="..\..\data\cr\objecttypes.conf">
+      <Filter>Configs\cr</Filter>
+    </None>
+    <None Include="..\..\data\cr\particlegenerators.conf">
+      <Filter>Configs\cr</Filter>
+    </None>
+    <None Include="..\..\data\cr\particletypes.conf">
+      <Filter>Configs\cr</Filter>
+    </None>
+    <None Include="..\..\data\cr\pickuptypes.conf">
+      <Filter>Configs\cr</Filter>
+    </None>
+    <None Include="..\..\data\cr\songs.conf">
+      <Filter>Configs\cr</Filter>
+    </None>
+    <None Include="..\..\data\cr\unittypes.conf">
+      <Filter>Configs\cr</Filter>
+    </None>
+    <None Include="..\..\data\cr\vehicletypes.conf">
+      <Filter>Configs\cr</Filter>
+    </None>
+    <None Include="..\..\data\cr\walltypes.conf">
+      <Filter>Configs\cr</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
