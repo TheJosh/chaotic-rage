@@ -1,16 +1,17 @@
 *unreleased changes*
 --------------------
-* Removed Lua dependency
-* Update debian package build process
-* Added a man page
-* Removed unused Lua functions
-* Fixes for non-3D renderers
-* Support Assimp 3.1.1
+* Android controls update - two virtual joysticks
+* Linux installer - added a man page and menu item
 * Added a basic torch
-* Many misc bug fixes
+* Added a new scripting function - game.getPlayerFromSlot
+* Fixed compile on MXE by bringing Lua dependency in-tree
+* Fixed crashes when using Assimp 3.1.1
+* Fixed compile when using an older version of FreeType
+* Fixed crashes with bad arguments to --campaign and --arcade
+* Fixed crashes when using a non-3D renderers
 
 Data changes:
-* Updated some function calls to new Lua methods
+* Removed calls to deprecated scripting functions
 * Fix zombie.dae scale
 * Spawn dead players as zombies in the next round
 
