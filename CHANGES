@@ -1,4 +1,4 @@
-*unreleased changes*
+New in 1.13
 --------------------
 * Android controls update - two virtual joysticks
 * Linux installer - added a man page and menu item
@@ -15,6 +15,7 @@ Data changes:
 * Removed calls to deprecated scripting functions
 * Fix zombie.dae scale
 * Spawn dead players as zombies in the next round
+
 
 New in 1.12
 -----------
