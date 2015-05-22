@@ -20,6 +20,7 @@ jarsigner \
 	chaoticrage
 
 # Align (reduces ram usage)
+rm bin/ChaoticRage-release.apk
 ~/android-sdk-linux/tools/zipalign \
 	-v 4 \
 	bin/ChaoticRage-release-unsigned.apk \
