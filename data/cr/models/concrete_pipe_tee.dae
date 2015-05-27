@@ -3,42 +3,127 @@
   <asset>
     <contributor>
       <author>Blender User</author>
-      <authoring_tool>Blender 2.66.1 r55057</authoring_tool>
+      <authoring_tool>Blender 2.66.1 r55075:55077</authoring_tool>
     </contributor>
-    <created>2013-05-13T08:50:41</created>
-    <modified>2013-05-13T08:50:41</modified>
+    <created>2015-05-27T22:22:06</created>
+    <modified>2015-05-27T22:22:06</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
+  <library_cameras>
+    <camera id="Camera-camera" name="Camera">
+      <optics>
+        <technique_common>
+          <perspective>
+            <xfov sid="xfov">49.13434</xfov>
+            <aspect_ratio>1.777778</aspect_ratio>
+            <znear sid="znear">0.1</znear>
+            <zfar sid="zfar">100</zfar>
+          </perspective>
+        </technique_common>
+      </optics>
+    </camera>
+  </library_cameras>
+  <library_lights>
+    <light id="Lamp-light" name="Lamp">
+      <technique_common>
+        <point>
+          <color sid="color">1 1 1</color>
+          <constant_attenuation>1</constant_attenuation>
+          <linear_attenuation>0</linear_attenuation>
+          <quadratic_attenuation>0.00111109</quadratic_attenuation>
+        </point>
+      </technique_common>
+      <extra>
+        <technique profile="blender">
+          <adapt_thresh>0.000999987</adapt_thresh>
+          <area_shape>1</area_shape>
+          <area_size>0.1</area_size>
+          <area_sizey>0.1</area_sizey>
+          <area_sizez>1</area_sizez>
+          <atm_distance_factor>1</atm_distance_factor>
+          <atm_extinction_factor>1</atm_extinction_factor>
+          <atm_turbidity>2</atm_turbidity>
+          <att1>0</att1>
+          <att2>1</att2>
+          <backscattered_light>1</backscattered_light>
+          <bias>1</bias>
+          <blue>1</blue>
+          <buffers>1</buffers>
+          <bufflag>0</bufflag>
+          <bufsize>2880</bufsize>
+          <buftype>2</buftype>
+          <clipend>30.002</clipend>
+          <clipsta>1.000799</clipsta>
+          <compressthresh>0.04999995</compressthresh>
+          <dist sid="blender_dist">29.99998</dist>
+          <energy sid="blender_energy">1</energy>
+          <falloff_type>2</falloff_type>
+          <filtertype>0</filtertype>
+          <flag>0</flag>
+          <gamma sid="blender_gamma">1</gamma>
+          <green>1</green>
+          <halo_intensity sid="blnder_halo_intensity">1</halo_intensity>
+          <horizon_brightness>1</horizon_brightness>
+          <mode>8192</mode>
+          <ray_samp>1</ray_samp>
+          <ray_samp_method>1</ray_samp_method>
+          <ray_samp_type>0</ray_samp_type>
+          <ray_sampy>1</ray_sampy>
+          <ray_sampz>1</ray_sampz>
+          <red>1</red>
+          <samp>3</samp>
+          <shadhalostep>0</shadhalostep>
+          <shadow_b sid="blender_shadow_b">0</shadow_b>
+          <shadow_g sid="blender_shadow_g">0</shadow_g>
+          <shadow_r sid="blender_shadow_r">0</shadow_r>
+          <shadspotsize>45</shadspotsize>
+          <sky_colorspace>0</sky_colorspace>
+          <sky_exposure>1</sky_exposure>
+          <skyblendfac>1</skyblendfac>
+          <skyblendtype>1</skyblendtype>
+          <soft>3</soft>
+          <spotblend>0.15</spotblend>
+          <spotsize>75</spotsize>
+          <spread>1</spread>
+          <sun_brightness>1</sun_brightness>
+          <sun_effect_type>0</sun_effect_type>
+          <sun_intensity>1</sun_intensity>
+          <sun_size>1</sun_size>
+          <type>0</type>
+        </technique>
+      </extra>
+    </light>
+  </library_lights>
   <library_images>
-    <image id="concrete_pipes" name="concrete_pipes">
-      <init_from>concrete_pipes.png</init_from>
+    <image id="concrete_pipe_diffuse" name="concrete_pipe_diffuse">
+      <init_from>concrete_pipe_diffuse.png</init_from>
     </image>
-    <image id="concrete_pipes_normal" name="concrete_pipes_normal">
-      <init_from>concrete_pipes_normal.png</init_from>
+    <image id="concrete_pipe_normal" name="concrete_pipe_normal">
+      <init_from>concrete_pipe_normal.png</init_from>
     </image>
   </library_images>
   <library_effects>
     <effect id="Material_001-effect">
       <profile_COMMON>
-        <newparam sid="concrete_pipes-surface">
+        <newparam sid="concrete_pipe_diffuse-surface">
           <surface type="2D">
-            <init_from>concrete_pipes</init_from>
+            <init_from>concrete_pipe_diffuse</init_from>
           </surface>
         </newparam>
-        <newparam sid="concrete_pipes-sampler">
+        <newparam sid="concrete_pipe_diffuse-sampler">
           <sampler2D>
-            <source>concrete_pipes-surface</source>
+            <source>concrete_pipe_diffuse-surface</source>
           </sampler2D>
         </newparam>
-        <newparam sid="concrete_pipes_normal-surface">
+        <newparam sid="concrete_pipe_normal-surface">
           <surface type="2D">
-            <init_from>concrete_pipes_normal</init_from>
+            <init_from>concrete_pipe_normal</init_from>
           </surface>
         </newparam>
-        <newparam sid="concrete_pipes_normal-sampler">
+        <newparam sid="concrete_pipe_normal-sampler">
           <sampler2D>
-            <source>concrete_pipes_normal-surface</source>
+            <source>concrete_pipe_normal-surface</source>
           </sampler2D>
         </newparam>
         <technique sid="common">
@@ -50,7 +135,7 @@
               <color sid="ambient">0 0 0 1</color>
             </ambient>
             <diffuse>
-              <texture texture="concrete_pipes-sampler" texcoord="UVMap"/>
+              <texture texture="concrete_pipe_diffuse-sampler" texcoord="UVMap"/>
             </diffuse>
             <index_of_refraction>
               <float sid="index_of_refraction">1</float>
@@ -59,7 +144,7 @@
           <extra>
             <technique profile="FCOLLADA">
               <bump>
-                <texture texture="concrete_pipes_normal-sampler" texcoord="UVMap"/>
+                <texture texture="concrete_pipe_normal-sampler" texcoord="UVMap"/>
               </bump>
             </technique>
           </extra>
@@ -127,6 +212,14 @@
   <library_controllers/>
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
+      <node id="Camera" name="Camera" type="NODE">
+        <matrix sid="transform">0.6858805 -0.3173701 0.6548619 1.947313 0.7276338 0.3124686 -0.6106656 -3.023346 -0.01081678 0.8953432 0.4452454 1.948119 0 0 0 1</matrix>
+        <instance_camera url="#Camera-camera"/>
+      </node>
+      <node id="Lamp" name="Lamp" type="NODE">
+        <matrix sid="transform">-0.2908646 -0.7711008 0.5663932 4.076245 0.9551712 -0.1998834 0.2183912 1.005454 -0.05518906 0.6045247 0.7946723 5.903862 0 0 0 1</matrix>
+        <instance_light url="#Lamp-light"/>
+      </node>
       <node id="T" name="T" type="NODE">
         <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 -0.1044242 0 0 0 1</matrix>
         <instance_geometry url="#T-mesh">
