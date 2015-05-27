@@ -69,11 +69,11 @@ fi
 # assimp
 if [ ! -d "jni/assimp" ]; then
 	cd working/ || exit 1
-	if [ ! -f "assimp--3.0.1270-source-only.zip" ]; then
-		wget http://chaoticrage.com/dev_libs/assimp--3.0.1270-source-only.zip
+	if [ ! -f "assimp-3.1.1.zip" ]; then
+		wget http://chaoticrage.com/dev_libs/assimp-3.1.1.zip
 	fi
-	unzip -q assimp--3.0.1270-source-only.zip || exit 1
-	mv assimp--3.0.1270-source-only ../jni/assimp || exit 1
+	unzip -q assimp-3.1.1.zip || exit 1
+	mv assimp-3.1.1 ../jni/assimp || exit 1
 	cd ..
 fi
 
