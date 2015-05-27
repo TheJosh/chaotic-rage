@@ -12,7 +12,6 @@ rm -rf assets
 mkdir -p assets
 mkdir -p assets/data
 
-cp -r ../../data/australia_day assets/data/ || exit 1
 cp -r ../../data/cr assets/data/ || exit 1
 cp -r ../../data/i18n assets/data/ || exit 1
 cp -r ../../data/intro assets/data/ || exit 1
