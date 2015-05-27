@@ -105,6 +105,8 @@ void multigesture(GameState *st, unsigned int fingers, float x, float y)
 		fingerMove(st, numberOfFingers, x, y);
 	} else if (numberOfFingers == 3) {
 		st->local_players[0]->p->keyPress(Player::KEY_USE);
+	} else if (numberOfFingers == 4) {
+		st->local_players[0]->p->setWeapon(st->local_players[0]->p->getNextWeaponID());
 	} else if (numberOfFingers == 5) {
 		st->gs->switchViewMode();
 	} else {
