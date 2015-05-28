@@ -1,0 +1,12 @@
+This tool finds all .blend files in the orig/ directory,
+and converts them to .dae format, saving the resulting files in the correct directory.
+
+To run the tool, execute this at the command line:
+    rebuild.sh
+
+You'll need to have blender installed.
+
+
+The file export_dae.py is from the Godot Game Engine
+http://www.godotengine.org/wp/better-collada-exporter/
+It's licensed as GPL v2
