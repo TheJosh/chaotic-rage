@@ -1,0 +1,26 @@
+On Wed, May 27, 2015 at 6:50 AM, Josh Heidenreich <josh.sickmate@gmail.com> wrote:
+    Hi Psionic,
+
+    I'm currently using some of your free models in a game that I've been
+    working on for a few years now. Thank you for them!
+
+    I'm emailing you because the wording on your website doesn't agree
+    with the wording in the README files which are distributed with the
+    models. This is a bit of an issue because my game is open source, and
+    I'm trying to get it into the Debian archive. and they are really
+    fussy with licensing and copyright attribution.
+
+    Thus, can you confirm that the models are definitely free - i.e.
+    public domain or creative commons zero.
+
+    Regards,
+    Josh
+
+
+On 28 May 2015 at 18:41, Psi <psionic@blueyonder.co.uk> wrote:
+    Hi Josh, Sorry for the slow reply!
+
+    The models are indeed free to distribute with your games etc, best of luck
+    with your project!
+
+    Psi
