@@ -315,7 +315,21 @@ bool Mod::load(UIUpdate* ui)
 		}
 	}
 
-	// Auto-create pickup types for weapons, ammocrates
+	// Generic weapon model, in case one has not been specified
+	AssimpModel *generic_weapon = this->getAssimpModel("pickup_weapon_generic.dae");
+	if (generic_weapon == NULL) {
+		cerr << "Unable to load generic weapon model 'pickup_weapon_generic.dae'\n";
+		return false;
+	}
+
+	// Generic ammo model, in case one has not been specified
+	AssimpModel *generic_ammo = this->getAssimpModel("pickup_ammo_generic.dae");
+	if (generic_ammo == NULL) {
+		cerr << "Unable to load generic ammo model 'pickup_ammo_generic.dae'\n";
+		return false;
+	}
+
+	// Auto-create pickup types for weapons, ammocrates	
 	for (int i = weapontypes->size() - 1; i >= 0; --i) {
 		string tmp;
 		AssimpModel *model;
@@ -323,9 +337,7 @@ bool Mod::load(UIUpdate* ui)
 		tmp = "weapon_" + weapontypes->at(i)->name;
 
 		model = this->getAssimpModel("pickup_" + tmp + ".dae");
-		if (model == NULL) {
-			model = this->getAssimpModel("pickup_weapon_generic.dae");
-		}
+		if (model == NULL) model = generic_weapon;
 
 		PickupType* pt = new PickupType();
 		pt->name = tmp;
@@ -339,9 +351,7 @@ bool Mod::load(UIUpdate* ui)
 		tmp = "ammo_" + weapontypes->at(i)->name;
 
 		model = this->getAssimpModel("pickup_" + tmp + ".dae");
-		if (model == NULL) {
-			model = this->getAssimpModel("pickup_ammo_generic.dae");
-		}
+		if (model == NULL) model = generic_ammo;
 
 		pt = new PickupType();
 		pt->name = tmp;
