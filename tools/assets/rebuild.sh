@@ -9,29 +9,34 @@ set -e
 cd `dirname $0`
 cd ../..
 
-# Where to look for copyright files
-PATHS="orig"
-
-# For the right-aligned status fields
+# For the coloured status fields
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
 NORMAL=$(tput sgr0)
 
-# Iterate copyright files and output the results
-for FILE in $(find $PATHS -name "*.blend"); do
-	echo -n "$FILE "
+# Find files in the source directory, and process into the destination directory
+function process {
+	for FILE in $(find $1 -name "*.blend"); do
+		echo -n "$FILE "
 	
-	ERROR=$((
-		blender -b "$FILE" -P tools/assets/rebuild_blender.py >/dev/null
-	) 2>&1)
+		ERROR=$((
+			blender -b "$FILE" -P tools/assets/rebuild_blender.py -- "$2" >/dev/null
+		) 2>&1)
 	
-	if [ "$ERROR" == "" ]; then
-		echo " $GREEN[ OK ]$NORMAL"
-	else
-		echo " $RED[FAIL]$NORMAL"
-		echo
-		echo "$ERROR"
-		echo
-	fi
-done
+		if [ "$ERROR" == "" ]; then
+			echo " $GREEN[ OK ]$NORMAL"
+		else
+			echo " $RED[FAIL]$NORMAL"
+			echo
+			echo "$ERROR"
+			echo
+		fi
+	done
+}
 
+# Do the processing
+process "orig/doodads" "data-test/cr/models"
+process "orig/misc" "data-test/cr/models"
+process "orig/units" "data-test/cr/models"
+process "orig/vehicles" "data-test/cr/models"
+process "orig/weapons" "data-test/cr/models"

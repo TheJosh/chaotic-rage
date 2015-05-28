@@ -21,10 +21,16 @@ class CliOperator (bpy.types.Operator):
 		print(type, msg, file=sys.stderr)
 
 
+# Load the DAE importer code
 include('tools/assets/export_dae.py')
 
+# Get all args after "--"
+argv = sys.argv
+argv = argv[argv.index("--") + 1:]
+
+# Prepare in and out filenames
 basename = bpy.path.basename(bpy.data.filepath)
-destname = "data-test/cr/models/" + basename.replace(".blend", ".dae")
+destname = argv[0] + '/' + basename.replace(".blend", ".dae")
 opts = {};
 
 
