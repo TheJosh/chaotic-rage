@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Find 'copyright' files in orig/ and outputh them all into one big file
-# This can then be copy-pasted into debian/copyright
+# Find 'copyright' files in orig/ and outputh them all into one big file.
+# This can then be copy-pasted into the debian/copyright file.
 #
 set -e
 

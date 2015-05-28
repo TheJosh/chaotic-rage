@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Find 'copyright' files in orig/ and outputh them all into one big file
-# This can then be copy-pasted into debian/copyright
+# Finds all .blend files in the orig/ directory, and convert them
+# to .dae format, saving the resulting files in the correct directory
 #
 set -e
 
