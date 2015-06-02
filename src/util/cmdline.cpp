@@ -38,6 +38,7 @@ void CommandLineArgs::process()
 
 		{"mod",				1, 0, 'm'},
 		{"mod-list",		0, 0, 'l'},
+		{"main-mod-path",   1, 0, 'p'},
 
 		{"render",			1, 0, 'r'},
 		{"window",			2, 0, 'w'},
@@ -58,7 +59,7 @@ void CommandLineArgs::process()
 		#endif
 		{NULL, 0, NULL, 0}
 	};
-	const char *short_options = "a:nc:j:tm:r:u:w::fhv";
+	const char *short_options = "a:nc:j:tm:p:r:u:w::fhv";
 
 	int c;
 	int option_index = 0;
@@ -77,6 +78,7 @@ void CommandLineArgs::process()
 					"\n"
 					" -m\t--mod NAME              Load a mod at startup\n"
 					"   \t--mod-list              List all available mods, and exit\n"
+					"   \t--main-mod-path PATH    Path to the main 'cr' mod\n"
 					"\n"
 					" -r\t--render SYSTEM         Set the render system. Options: 'opengl', 'debug', 'null'\n"
 					" -w\t--window[=W,H]          Display video in a window. Optional resolution\n"
@@ -140,6 +142,10 @@ void CommandLineArgs::process()
 
 			case 'l':
 				this->modlist = true;
+				break;
+
+			case 'p':
+				this->main_mod_path = optarg;
 				break;
 
 

@@ -18,6 +18,7 @@ class CommandLineArgs
 	public:
 		string mod;
 		bool modlist;
+		string main_mod_path;
 		string campaign;
 		string map;
 		string gametype;
@@ -37,6 +38,7 @@ class CommandLineArgs
 			this->resolution[0] = 0;		// 0 = config, 1 = windowed, 2 = fullscreen
 			this->resolution[1] = 0;		// x
 			this->resolution[2] = 0;		// y
+			this->main_mod_path = "data/cr";
 		}
 
 		void process();

@@ -39,7 +39,7 @@ using namespace std;
 bool loadMods(GameState *st, UIUpdate* ui)
 {
 	// Load main mod
-	Mod * mod = new Mod(st, "data/cr");
+	Mod * mod = new Mod(st, GEng()->cmdline->main_mod_path);
 	if (! mod->load(ui)) {
 		reportFatalError("Unable to load mod 'cr'.");
 	}
