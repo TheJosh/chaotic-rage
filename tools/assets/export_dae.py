@@ -190,7 +190,9 @@ class DaeExporter:
 				
 				if (not os.path.isfile(dstfile)):
 					shutil.copy(imgpath,dstfile)
-					imgpath=self.config["image_path"]+os.path.basename(imgpath)
+				
+				imgpath=self.config["image_path"]+os.path.basename(imgpath)
+				
 			else:
 				### if file is not found save it as png file in the destination folder
 				img_tmp_path = image.filepath	
