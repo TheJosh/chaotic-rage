@@ -230,7 +230,7 @@ class DaeExporter:
 #				imgpath=self.config["image_path"]+image.name+".png"
 
 		self.writel(S_IMGS,1,'<image id="'+imgid+'" name="'+image.name+'">')
-		self.writel(S_IMGS,2,'<init_from>'+imgpath+'</init_from>"/>')
+		self.writel(S_IMGS,2,'<init_from>'+imgpath+'</init_from>')
 		self.writel(S_IMGS,1,'</image>')
 		self.image_cache[image]=imgid
 		return imgid
