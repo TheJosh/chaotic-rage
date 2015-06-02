@@ -190,7 +190,7 @@ class DaeExporter:
 				
 				if (not os.path.isfile(dstfile)):
 					shutil.copy(imgpath,dstfile)
-					imgpath="images/"+os.path.basename(imgpath)
+					imgpath=self.config["image_path"]+os.path.basename(imgpath)
 			else:
 				### if file is not found save it as png file in the destination folder
 				img_tmp_path = image.filepath	
@@ -204,7 +204,7 @@ class DaeExporter:
 				if (not os.path.isfile(dstfile)):
 					
 					image.save()
-					imgpath="images/"+os.path.basename(image.filepath)
+					imgpath=self.config["image_path"]+os.path.basename(image.filepath)
 				image.filepath = img_tmp_path
 
 		else:
@@ -223,9 +223,9 @@ class DaeExporter:
 #		if (not os.path.isfile(imgpath)):
 #			print("NOT FILE?")
 #			if imgpath.endswith((".bmp",".rgb",".png",".jpeg",".jpg",".jp2",".tga",".cin",".dpx",".exr",".hdr",".tif")):
-#				imgpath="images/"+os.path.basename(imgpath)
+#				imgpath=self.config["image_path"]"+os.path.basename(imgpath)
 #			else:
-#				imgpath="images/"+image.name+".png"
+#				imgpath=self.config["image_path"]+image.name+".png"
 
 		self.writel(S_IMGS,1,'<image id="'+imgid+'" name="'+image.name+'">')
 		self.writel(S_IMGS,2,'<init_from>'+imgpath+'</init_from>"/>')
