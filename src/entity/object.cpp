@@ -79,7 +79,7 @@ void Object::update(int delta)
 /**
 * We have been hit! Take some damage
 **/
-void Object::takeDamage(int damage)
+void Object::takeDamage(float damage)
 {
 	this->health -= damage;
 	if (this->health < 0) this->health = 0;

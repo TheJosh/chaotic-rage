@@ -773,12 +773,11 @@ void Unit::resetIdleTime()
 
 /**
 * We have been hit! Take some damage
-* Returns 1 if the unit died, 0 if it did not
 **/
-int Unit::takeDamage(float damage)
+void Unit::takeDamage(float damage)
 {
 	if (this->params.invincible) {
-		return 0;
+		return;
 	}
 
 	this->health -= damage;
@@ -788,10 +787,7 @@ int Unit::takeDamage(float damage)
 
 	if (this->health <= 0 && this->del == false) {
 		this->die();
-		return 1;
 	}
-
-	return 0;
 }
 
 
@@ -1004,7 +1000,7 @@ void Unit::doDrop()
 void Unit::applyPickupAdjust(PickupTypeAdjust* adj)
 {
 	this->health *= adj->health;
-	this->takeDamage(0);		// check the player isn't dead.
+	this->takeDamage(0.0f);		// check the player isn't dead.
 
 	this->params.max_speed *= adj->max_speed;
 	this->params.melee_damage *= adj->melee_damage;
@@ -1024,7 +1020,7 @@ void Unit::applyPickupAdjust(PickupTypeAdjust* adj)
 void Unit::rollbackPickupAdjust(PickupTypeAdjust* adj)
 {
 	this->health /= adj->health;
-	this->takeDamage(0);		// check the player isn't dead.
+	this->takeDamage(0.0f);		// check the player isn't dead.
 
 	this->params.max_speed /= adj->max_speed;
 	this->params.melee_damage /= adj->melee_damage;

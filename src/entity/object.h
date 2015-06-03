@@ -29,7 +29,5 @@ class Object : public Entity
 
 	public:
 		virtual void update(int delta);
-
-	public:
-		void takeDamage(int damage);
+		virtual void takeDamage(float damage);
 };

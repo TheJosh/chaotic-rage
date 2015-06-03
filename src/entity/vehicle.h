@@ -48,7 +48,7 @@ class Vehicle : public Entity
 
 	public:
 		virtual void update(int delta);
-		void takeDamage(int damage);
+		virtual void takeDamage(float damage);
 		virtual void enter();
 		virtual void operate(Unit* u, int delta, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle);
 		virtual void exit();

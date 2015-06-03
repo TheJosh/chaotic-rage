@@ -208,7 +208,7 @@ class Unit : public Entity
 		// Health and death
 		float getHealth();
 		float getHealthPercent();
-		virtual int takeDamage(float damage);
+		virtual void takeDamage(float damage);
 		virtual void die();
 
 		// Pickup adjustments (temporary and permanant)

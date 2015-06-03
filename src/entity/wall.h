@@ -28,7 +28,5 @@ class Wall : public Entity
 
 	public:
 		virtual void update(int delta);
-
-	public:
-		void takeDamage(float damage);
+		virtual void takeDamage(float damage);
 };

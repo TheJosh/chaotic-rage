@@ -330,7 +330,7 @@ void Vehicle::getWeaponTransform(btTransform &xform)
 /**
 * We have been hit! Take some damage
 **/
-void Vehicle::takeDamage(int damage)
+void Vehicle::takeDamage(float damage)
 {
 	this->health -= damage;
 	if (this->health < 0) this->health = 0;

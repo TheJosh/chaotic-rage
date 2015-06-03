@@ -92,7 +92,7 @@ bool AILogic::execScript(string code)
 		string msg = "Failed to execute AI script: ";
 		msg.append(lua_tostring(L, -1));
 		displayMessageBox(msg);
-		this->u->takeDamage(this->u->health);
+		this->u->die();
 		return false;
 	}
 

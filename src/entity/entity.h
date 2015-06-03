@@ -71,6 +71,11 @@ class Entity
 		**/
 		virtual void update(int delta) = 0;
 
+		/**
+		* Reduce health of entity, and possibly die too.
+		**/
+		virtual void takeDamage(float damage) {}
+
 	public:
 		/**
 		* Return the game state for this entity

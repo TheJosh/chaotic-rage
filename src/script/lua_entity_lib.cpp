@@ -45,6 +45,7 @@ void load_entity_lib(lua_State *L)
 
 		// Entity : Vehicle
 		.deriveClass<Vehicle, Entity>("Vehicle")
+			.addFunction("takeDamage", &Vehicle::takeDamage)
 		.endClass()
 
 		// Entity : Pickup
@@ -53,6 +54,7 @@ void load_entity_lib(lua_State *L)
 
 		// Entity : Object
 		.deriveClass<Object, Entity>("Object")
+			.addFunction("takeDamage", &Object::takeDamage)
 		.endClass()
 
 		// Entity : Unit
