@@ -335,21 +335,9 @@ void Vehicle::getWeaponTransform(btTransform &xform)
 void Vehicle::takeDamage(float damage)
 {
 	this->health -= damage;
-	if (this->health <= 0.0f && this->del == false) {
-		this->st->deadButNotBuried(this, this->anim);
+	if (this->health <= 0.0f) {
+		this->del = true;
 	}
-
-	/*for (unsigned int j = 0; j < this->vt->damage_models.size(); j++) {
-		VehicleTypeDamage * dam = this->vt->damage_models.at(j);
-
-		if (this->health <= dam->health) {
-			st->remAnimPlay(this->anim);
-			delete(this->anim);
-			this->anim = new AnimPlay(dam->model);
-			st->addAnimPlay(this->anim, this);
-			break;
-		}
-	}*/
 }
 
 

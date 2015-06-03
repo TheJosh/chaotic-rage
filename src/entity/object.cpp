@@ -82,17 +82,7 @@ void Object::update(int delta)
 void Object::takeDamage(float damage)
 {
 	this->health -= damage;
-	if (this->health < 0) this->health = 0;
-
-	for (unsigned int j = 0; j < this->ot->damage_models.size(); j++) {
-		ObjectTypeDamage * dam = this->ot->damage_models.at(j);
-
-		if (this->health <= dam->health) {
-			st->remAnimPlay(this->anim);
-			delete(this->anim);
-			this->anim = new AnimPlay(dam->model);
-			st->addAnimPlay(this->anim, this);
-			break;
-		}
+	if (this->health <= 0.0f) {
+		this->del = true;
 	}
 }
