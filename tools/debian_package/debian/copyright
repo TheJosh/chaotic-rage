@@ -8,6 +8,57 @@ Copyright: 2010-2015, Josh Heidenreich <josh.sickmate@gmail.com>
            2014-2015, Magnus Espersson <magnusespersson@gmail.com>
 License: GPL-2.0+
 
+
+Files: orig/units/zombie/*
+       data/cr/zombie.dae
+License: public-domain
+Copyright: Public domain
+
+Files: orig/doodads/magellan_16/*
+       data/cr/magellan_16.dae
+License: public-domain
+Copyright: U.S. Public Domain from NASA
+
+Files: orig/doodads/trashbox/*
+       data/cr/trashbox.dae
+License: CC0
+Copyright: Public domain (CC0)
+
+Files: orig/doodads/rusty_barrels/*
+       data/cr/barrel.dae
+License: CC0
+Copyright: Public domain (CC0)
+
+Files: orig/doodads/wood_pallet/*
+       data/cr/Quandtum_Pallet_v1_0.dae
+License: CC0
+Copyright: Public domain (CC0)
+
+Files: orig/doodads/wood_boxes/*
+       data/cr/crates.dae
+License: CC0
+Copyright: Public domain (CC0)
+
+Files: orig/doodads/crate/*
+       data/cr/crate_china.dae
+       data/cr/crate_military.dae
+       data/cr/crate_wood.dae
+       data/cr/crate_sealed.dae
+       data/cr/crate_steel.dae
+       data/cr/crate_zombie.dae
+License: public-domain
+Copyright: Public domain
+
+Files: orig/doodads/concrete_pipes/*
+       data/cr/concrete_pipe_tee.dae
+       data/cr/concrete_pipe_channel.dae
+       data/cr/concrete_pipe_joiner.dae
+       data/cr/concrete_pipe_bend.dae
+       data/cr/concrete_pipe_straight.dae
+License: CC0
+Copyright: No Copyright
+
+
 License: GPL-2.0+
  This package is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -36,3 +87,13 @@ License: CC0
  .
  You should have received a copy of the CC0 legalcode along with this
  work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>
+ 
+License: public-domain
+ The person who associated a work with this deed has dedicated the
+ work to the public domain by waiving all of his or her rights to
+ the work worldwide under copyright law, including all related and
+ neighboring rights, to the extent allowed by law.
+ .
+ You can copy, modify, distribute and perform the work, even for
+ commercial purposes, all without asking permission.
+
