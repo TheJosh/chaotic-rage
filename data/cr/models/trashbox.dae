@@ -23,8 +23,8 @@
 	<image id="id-image-12" name="trash_box_SPEC.png">
 		<init_from>trash_box_SPEC.png</init_from>
 	</image>
-	<image id="id-image-15" name="texture 4.jpg">
-		<init_from>texture 4.jpg</init_from>
+	<image id="id-image-15" name="texture_4.jpg">
+		<init_from>texture_4.jpg</init_from>
 	</image>
 	<image id="id-image-18" name="texture_013.jpg">
 		<init_from>texture_013.jpg</init_from>
