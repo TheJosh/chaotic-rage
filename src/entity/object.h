@@ -17,7 +17,7 @@ class Object : public Entity
 
 	public:
 		ObjectType* ot;
-		int health;
+		float health;
 
 	protected:
 		AnimPlay * anim;

@@ -162,11 +162,13 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 Vehicle::~Vehicle()
 {
 	delete this->vehicle_raycaster;
-	delete this->vehicle;
 
 	st->remAnimPlay(this->anim);
 	delete this->anim;
 	this->anim = NULL;
+
+	st->physics->delAction(this->vehicle);
+	this->vehicle = NULL;
 
 	st->physics->delRigidBody(this->body);
 	this->body = NULL;
@@ -333,9 +335,11 @@ void Vehicle::getWeaponTransform(btTransform &xform)
 void Vehicle::takeDamage(float damage)
 {
 	this->health -= damage;
-	if (this->health < 0) this->health = 0;
+	if (this->health <= 0.0f && this->del == false) {
+		this->st->deadButNotBuried(this, this->anim);
+	}
 
-	for (unsigned int j = 0; j < this->vt->damage_models.size(); j++) {
+	/*for (unsigned int j = 0; j < this->vt->damage_models.size(); j++) {
 		VehicleTypeDamage * dam = this->vt->damage_models.at(j);
 
 		if (this->health <= dam->health) {
@@ -345,7 +349,7 @@ void Vehicle::takeDamage(float damage)
 			st->addAnimPlay(this->anim, this);
 			break;
 		}
-	}
+	}*/
 }
 
 

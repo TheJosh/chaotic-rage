@@ -48,11 +48,7 @@ void raycastDoFire(T const &weapon, Unit *u, btTransform &origin, btVector3 &beg
 			Entity* entA = static_cast<Entity*>(cb.m_collisionObject->getUserPointer());
 			DEBUG("weap", "Ray hit %p", entA);
 			if (entA) {
-				if (entA->klass() == UNIT) {
-					((Unit*)entA)->takeDamage(weapon->damage * damage_multiplier);
-				} else if (entA->klass() == WALL) {
-					((Wall*)entA)->takeDamage(weapon->damage * damage_multiplier);
-				}
+				entA->takeDamage(weapon->damage * damage_multiplier);
 			}
 		}
 

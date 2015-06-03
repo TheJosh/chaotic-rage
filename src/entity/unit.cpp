@@ -347,9 +347,7 @@ void Unit::meleeAttack(btMatrix3x3 &direction)
 
 	DEBUG("weap", "%p meleeAttack; ray hit %p", this, e);
 
-	if (e->klass() == UNIT) {
-		(static_cast<Unit*>(e))->takeDamage(this->params.melee_damage);
-	}
+	e->takeDamage(this->params.melee_damage);
 
 	this->resetIdleTime();
 }

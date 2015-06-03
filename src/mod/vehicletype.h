@@ -62,7 +62,7 @@ class VehicleType
 
 		AssimpModel * model;
 		btCollisionShape* col_shape;
-		int health;
+		float health;
 		float mass;
 
 		bool land;

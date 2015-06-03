@@ -51,14 +51,13 @@ void apply_ghost_damage(btGhostObject* ghost, Quadratic damage, float radius)
 
 		Entity* e = (Entity*) co->getUserPointer();
 		if (e == NULL) continue;
-		if (e->klass() != UNIT) continue;
 
 		// Determine distance
 		dist = ghost->getWorldTransform().getOrigin().distance(co->getWorldTransform().getOrigin());
 		if (dist >= radius) continue;
 
 		// We solve the Quadratic based on the distance from the OUTSIDE of the ghost
-		((Unit*)e)->takeDamage(damage.solve(radius - dist));
+		e->takeDamage(damage.solve(radius - dist));
 	}
 }
 
