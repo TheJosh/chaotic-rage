@@ -5,20 +5,20 @@
 		<author> Anonymous </author>
 		<authoring_tool> Collada Exporter for Blender 2.6+, by Juan Linietsky (juan@codenix.com) </authoring_tool>
 	</contributor>
-	<created>2015-06-03T13:10:40Z     </created>
-	<modified>2015-06-03T13:10:40Z</modified>
+	<created>2015-06-04T08:37:30Z     </created>
+	<modified>2015-06-04T08:37:30Z</modified>
 	<unit meter="1.0" name="meter"/>
 	<up_axis>Z_UP</up_axis>
 </asset>
 <library_images>
-	<image id="id-image-4" name="magellan_16_silver">
-		<init_from>foil_silver_ramp.png</init_from>
+	<image id="id-image-4" name="magellan_16_foil">
+		<init_from>magellan_16_foil.png</init_from>
 	</image>
 	<image id="id-image-15" name="magellan_16_dish">
-		<init_from>dish_AO_01.png</init_from>
+		<init_from>magellan_16_dish.png</init_from>
 	</image>
-	<image id="id-image-22" name="magellan_16_body">
-		<init_from>tex_01.png</init_from>
+	<image id="id-image-22" name="magellan_16">
+		<init_from>magellan_16.png</init_from>
 	</image>
 </library_images>
 <library_effects>
