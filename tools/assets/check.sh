@@ -14,7 +14,6 @@ mkdir -p orig-check
 
 # For the coloured status fields
 RED=$(tput setaf 1)
-GREEN=$(tput setaf 2)
 NORMAL=$(tput sgr0)
 
 # Take first argument as a filter on model name, if specified
@@ -57,10 +56,10 @@ function process {
 		# Check for images with the wrong base name
 		BASENAME=$(basename -s .blend "$FILE")
 		ISSUE_WRONG_BASENAME=$(
-			find "orig-check" -type f -not -name "$BASENAME.*"
+			find "orig-check" -type f -not -name "$BASENAME*"
 		)
 		if [ "$ISSUE_WRONG_BASENAME" != "" ]; then
-			echo "$RED  Incorrect basename in generated files  $NORMAL"
+			echo "$RED  Incorrect basename in generated files (expected $BASENAME)  $NORMAL"
 			echo "$ISSUE_WRONG_BASENAME" | sed "s|orig-check/|    |"
 		fi
 	done
@@ -72,7 +71,4 @@ process "orig/misc"
 process "orig/units"
 process "orig/vehicles"
 process "orig/weapons"
-
-# Nuke our temp directory
-rm -rf orig-check
 
