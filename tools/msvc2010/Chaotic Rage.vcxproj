@@ -101,6 +101,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\..\CHANGES" />
     <None Include="..\..\data\cr\ais\dumbo.lua" />
     <None Include="..\..\data\cr\ais\human.lua" />
     <None Include="..\..\data\cr\ais\zombie.lua" />

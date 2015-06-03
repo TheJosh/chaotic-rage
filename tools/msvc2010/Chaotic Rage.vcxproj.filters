@@ -232,6 +232,7 @@
     <None Include="..\..\data\cr\walltypes.conf">
       <Filter>Configs\cr</Filter>
     </None>
+    <None Include="..\..\CHANGES" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\client.cpp">

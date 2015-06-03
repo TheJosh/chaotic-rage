@@ -6,6 +6,7 @@ Unreleased changes
 * Copyright attribution is now listed for all models
 * Buildtool now generates signed builds for Android
 * Model loading doesn't recenter models with bones any more
+* Added vehicle and object damage
 
 Data changes:
 * Removed the 'Australia Day' mod
