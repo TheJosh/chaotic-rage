@@ -275,6 +275,8 @@ void AssimpModel::loadMeshes(bool opengl, const struct aiScene* sc)
 		if (mesh->HasBones()) {
 			this->loadBones(mesh, myMesh);
 
+			this->recenter = false;
+
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(Uint8)*4*mesh->mNumVertices, this->boneIds, GL_STATIC_DRAW);
@@ -423,11 +425,6 @@ AssimpNode* AssimpModel::loadNode(aiNode* nd, unsigned int depth)
 
 	if (debug_enabled("loadbones")) {
 		cout << string(depth*4, ' ') << myNode->name << "  " << myNode->transform[3][0] << "x" << myNode->transform[3][1] << "x" << myNode->transform[3][2] << endl;
-	}
-
-	// If this is set, we 
-	if (strstr(nd->mName.C_Str(), "NORECENTER") != NULL) {
-		this->recenter = false;
 	}
 
 	for (i = 0; i < nd->mNumMeshes; i++) {
