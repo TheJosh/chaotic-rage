@@ -14,11 +14,19 @@ PATHS="orig"
 
 # Iterate copyright files and output the results
 for FILE in $(find $PATHS -name "copyright"); do
-	DIR=`echo "$FILE" | sed -e 's~/copyright~/*~'`
+	DIR=`echo "$FILE" | sed -e 's~/copyright~~'`
 	
-	echo "Files: $DIR";
+	# Main orig/ directory
+	echo "Files: $DIR/*";
+	
+	# Generated .dae files
+	find "$DIR" -name "*.blend" | sed 's/.blend/.dae/' | sed "s|$DIR|data/cr|" | xargs -n1 echo "Files:"
+	
+	# Copy these across from the copyright file
 	grep "License: " $FILE
 	grep "Copyright: " $FILE
+	
+	# Newline between sections
 	echo
 done
 
