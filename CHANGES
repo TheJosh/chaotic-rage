@@ -1,5 +1,18 @@
+Unreleased changes
+------------------
+* Removed all non-free artwork
+* 3D models are now generated using a script from the blender
+  originals
+* Copyright attribution is now listed for all models
+* Buildtool now generates signed builds for Android
+* Model loading doesn't recenter models with bones any more
+
+Data changes:
+* Removed the 'Australia Day' mod
+
+
 New in 1.13
---------------------
+-----------
 * Android controls update - two virtual joysticks
 * Linux installer - added a man page and menu item
 * Added a basic torch
