@@ -42,8 +42,8 @@ function process {
 }
 
 # Do the processing
-process "orig/doodads" "data-test/cr/models"
-process "orig/misc" "data-test/cr/models"
-process "orig/units" "data-test/cr/models"
-process "orig/vehicles" "data-test/cr/models"
-process "orig/weapons" "data-test/cr/models"
+process "orig/doodads" "data/cr/models"
+process "orig/misc" "data/cr/models"
+process "orig/units" "data/cr/models"
+process "orig/vehicles" "data/cr/models"
+process "orig/weapons" "data/cr/models"
