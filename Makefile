@@ -4,6 +4,13 @@
 OBJPATH=build
 SRCPATH=src
 
+# Verbose vs quiet builds
+ifdef VERBOSE
+	Q =
+else
+	Q = @
+endif
+
 
 # MXE cross-compiler environment
 # Use it like this:
@@ -172,7 +179,7 @@ help:		## This help dialog
 
 chaoticrage: $(OBJFILES_CLIENT)
 	@echo [LINK] $@
-	@$(CXX) $(CFLAGS) $(LDFLAGS) $(OBJFILES_CLIENT) -o chaoticrage$(POSTFIX) $(LIBS)
+	$(Q)$(CXX) $(CFLAGS) $(LDFLAGS) $(OBJFILES_CLIENT) -o chaoticrage$(POSTFIX) $(LIBS)
 
 
 install:	## Install game in Linux environment
@@ -306,34 +313,34 @@ cleaner:	## Clean, removes the entire build folder
 
 $(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h Makefile
 	@echo [CXX] $<
-	@mkdir -p `dirname $< | sed "s/$(SRCPATH)/$(OBJPATH)/"`
-	@$(CXX) $(CFLAGS) -o $@ -c $<
+	$(Q)mkdir -p `dirname $< | sed "s/$(SRCPATH)/$(OBJPATH)/"`
+	$(Q)$(CXX) $(CFLAGS) -o $@ -c $<
 
 $(OBJPATH)/happyhttp.o: $(SRCPATH)/http/happyhttp.cpp $(SRCPATH)/http/happyhttp.h Makefile
 	@echo [CXX] $<
-	@$(CXX) $(CFLAGS) -Wno-error -o $@ -c $<
+	$(Q)$(CXX) $(CFLAGS) -Wno-error -o $@ -c $<
 
 $(OBJPATH)/confuse/%.o: $(SRCPATH)/confuse/%.c $(SRCPATH)/confuse/confuse.h Makefile
 	@echo [CC] $<
-	@mkdir -p $(OBJPATH)/confuse
-	@$(CC) $(CFLAGS) -Wno-error -o $@ -c $<
+	$(Q)mkdir -p $(OBJPATH)/confuse
+	$(Q)$(CC) $(CFLAGS) -Wno-error -o $@ -c $<
 
 $(OBJPATH)/lua/%.o: $(SRCPATH)/lua/%.c $(SRCPATH)/lua/lua.h Makefile
 	@echo [CC] $<
-	@mkdir -p $(OBJPATH)/lua
-	@$(CC) $(CFLAGS) $(LUA_CFLAGS) -o $@ -c $<
+	$(Q)mkdir -p $(OBJPATH)/lua
+	$(Q)$(CC) $(CFLAGS) $(LUA_CFLAGS) -o $@ -c $<
 
 $(OBJPATH)/linux.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h Makefile
 	@echo [CXX] $<
-	@$(CXX) $(CFLAGS) -o $@ -c $<
+	$(Q)$(CXX) $(CFLAGS) -o $@ -c $<
 
 $(OBJPATH)/win32.o: $(SRCPATH)/platform/win32.cpp $(SRCPATH)/platform/platform.h Makefile
 	@echo [CXX] $<
-	@$(CXX) $(CFLAGS) -o $@ -c $<
+	$(Q)$(CXX) $(CFLAGS) -o $@ -c $<
 
 $(OBJPATH)/emscripten.o: $(SRCPATH)/platform/emscripten.cpp $(SRCPATH)/platform/platform.h Makefile
 	@echo [CXX] $<
-	@$(CXX) $(CFLAGS) -o $@ -c $<
+	$(Q)$(CXX) $(CFLAGS) -o $@ -c $<
 
 
 ifeq ($(wildcard $(OBJPATH)/),)
