@@ -6,7 +6,21 @@ Source: https://github.com/TheJosh/chaotic-rage
 Files: *
 Copyright: 2010-2015, Josh Heidenreich <josh.sickmate@gmail.com>
            2014-2015, Magnus Espersson <magnusespersson@gmail.com>
+           2014-2015, Jurie Boshoff <enjgine@gmail.com>
 License: GPL-2.0+
+
+Files: data/cr/songs/Alex_*
+       data/intro/intro.ogg
+Copyright: Alexandr Zhelanov (http://opengameart.org/users/alexandr-zhelanov)
+License: CC-BY-3.0
+
+Files: data/cr/songs/Kevin_*
+Copyright: Kevin MacLeod (http://incompetech.com)
+License: CC-BY-3.0
+
+Files: data/cr/songs/Mats_*
+Copyright: Mats Andersson
+License: not-currently-sure
 
 
 Files: orig/units/zombie/*
@@ -96,4 +110,7 @@ License: public-domain
  .
  You can copy, modify, distribute and perform the work, even for
  commercial purposes, all without asking permission.
+
+License: CC-BY
+ Licensed under Creative Commons: By Attribution 3.0
 
