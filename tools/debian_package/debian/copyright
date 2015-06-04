@@ -31,53 +31,53 @@ Copyright: Public domain (CC0)
 
 
 Files: orig/units/zombie/*
-       data/cr/zombie.dae
-License: public-domain
+       data/cr/zombie*
 Copyright: Public domain
+License: public-domain
 
 Files: orig/doodads/magellan_16/*
-       data/cr/magellan_16.dae
-License: public-domain
+       data/cr/magellan_16*
 Copyright: U.S. Public Domain from NASA
+License: public-domain
 
 Files: orig/doodads/trashbox/*
-       data/cr/trashbox.dae
-License: CC0
+       data/cr/trashbox*
 Copyright: Public domain (CC0)
+License: CC0
 
 Files: orig/doodads/rusty_barrels/*
-       data/cr/barrel.dae
-License: CC0
+       data/cr/barrel*
 Copyright: Public domain (CC0)
+License: CC0
 
 Files: orig/doodads/wood_pallet/*
-       data/cr/Quandtum_Pallet_v1_0.dae
-License: CC0
+       data/cr/Quandtum_Pallet_v1_0*
 Copyright: Public domain (CC0)
+License: CC0
 
 Files: orig/doodads/wood_boxes/*
-       data/cr/crates.dae
-License: CC0
+       data/cr/crates*
 Copyright: Public domain (CC0)
+License: CC0
 
 Files: orig/doodads/crate/*
-       data/cr/crate_china.dae
-       data/cr/crate_military.dae
-       data/cr/crate_wood.dae
-       data/cr/crate_sealed.dae
-       data/cr/crate_steel.dae
-       data/cr/crate_zombie.dae
-License: public-domain
+       data/cr/crate_china*
+       data/cr/crate_military*
+       data/cr/crate_wood*
+       data/cr/crate_sealed*
+       data/cr/crate_steel*
+       data/cr/crate_zombie*
 Copyright: Public domain
+License: public-domain
 
 Files: orig/doodads/concrete_pipes/*
-       data/cr/concrete_pipe_tee.dae
-       data/cr/concrete_pipe_channel.dae
-       data/cr/concrete_pipe_joiner.dae
-       data/cr/concrete_pipe_bend.dae
-       data/cr/concrete_pipe_straight.dae
-License: CC0
+       data/cr/concrete_pipe_tee*
+       data/cr/concrete_pipe_channel*
+       data/cr/concrete_pipe_joiner*
+       data/cr/concrete_pipe_bend*
+       data/cr/concrete_pipe_straight*
 Copyright: No Copyright
+License: CC0
 
 
 License: GPL-2.0+
