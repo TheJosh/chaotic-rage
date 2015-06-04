@@ -15,6 +15,7 @@
 #include "../rage.h"
 #include "../render_opengl/animplay.h"
 #include "../util/convert.h"
+#include "../fx/newparticle.h"
 #include "entity.h"
 
 class Unit;
@@ -336,6 +337,7 @@ void Vehicle::takeDamage(float damage)
 {
 	this->health -= damage;
 	if (this->health <= 0.0f) {
+		create_particles_explosion(this->st, this->getTransform().getOrigin(), 100);
 		this->del = true;
 	}
 }
