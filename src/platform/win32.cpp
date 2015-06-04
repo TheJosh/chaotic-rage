@@ -79,23 +79,21 @@ void displayMessageBox(string msg)
 *
 * Example return value:
 *    <
-*        <therlor_valley, Therlor Valley>
-*        <debug, Debug>
+*    therlor_valley
+*    debug
 *    >
 *
 * Please free the result when you are done.
 **/
-std::vector< std::pair<std::string, std::string> > * getSystemMapNames()
+std::vector<string>* getSystemMapNames()
 {
-	std::vector< std::pair<std::string, std::string> > * maps;
+	std::vector<string>* maps = new vector<string>();
 
-	maps = new std::vector< std::pair<std::string, std::string> >();
-
-	maps->push_back(std::pair<std::string,std::string>("therlor_valley", "Therlor Valley"));
-	maps->push_back(std::pair<std::string,std::string>("lakeside", "Lakeside"));
-	maps->push_back(std::pair<std::string,std::string>("stormy_desert", "Stormy Desert"));
-	maps->push_back(std::pair<std::string,std::string>("caves", "Caves"));
-	maps->push_back(std::pair<std::string,std::string>("test", "Test"));
+	maps->push_back("therlor_valley");
+	maps->push_back("lakeside");
+	maps->push_back("stormy_desert");
+	maps->push_back("caves");
+	maps->push_back("test");
 
 	return maps;
 }

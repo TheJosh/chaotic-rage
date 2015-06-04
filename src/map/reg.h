@@ -25,7 +25,6 @@ class MapReg {
 
 	public:
 		MapReg() : name(""), title(""), mod(NULL), arcade(true) {}
-		MapReg(string name) : name(name), title(name), mod(NULL), arcade(true) {}
 		MapReg(string name, string title) : name(name), title(title), mod(NULL), arcade(true) {}
 		MapReg(string name, string title, Mod* mod) : name(name), title(title), mod(mod), arcade(true) {}
 		MapReg(string name, string title, Mod* mod, bool arcade) : name(name), title(title), mod(mod), arcade(arcade) {}

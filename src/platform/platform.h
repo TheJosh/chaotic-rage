@@ -89,13 +89,13 @@ std::vector<std::string> * getDirectoryList(std::string directory, bool base, in
 *
 * Example return value:
 *    <
-*        <therlor_valley, Therlor Valley>
-*        <debug, Debug>
+*    therlor_valley
+*    debug
 *    >
 *
 * Please free the result when you are done.
 **/
-std::vector< std::pair<std::string, std::string> > * getSystemMapNames();
+std::vector<std::string> * getSystemMapNames();
 
 
 /**
