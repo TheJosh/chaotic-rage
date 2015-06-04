@@ -22,6 +22,13 @@ Files: data/cr/songs/Mats_*
 Copyright: Mats Andersson
 License: not-currently-sure
 
+Files: data/cr/sounds/ak*
+       data/cr/sounds/machinegun*
+       data/cr/sounds/pistol*
+       data/cr/sounds/pup_shotgun*
+License: CC0
+Copyright: Public domain (CC0)
+
 
 Files: orig/units/zombie/*
        data/cr/zombie.dae
