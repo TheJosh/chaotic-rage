@@ -89,11 +89,24 @@ std::vector<string>* getSystemMapNames()
 {
 	std::vector<string>* maps = new vector<string>();
 
-	maps->push_back("therlor_valley");
-	maps->push_back("lakeside");
-	maps->push_back("stormy_desert");
-	maps->push_back("caves");
-	maps->push_back("test");
+	WIN32_FIND_DATA fdFile;
+	HANDLE hFind = NULL;
+
+	// Initial search
+	if ((hFind = FindFirstFile("maps\\*", &fdFile)) == INVALID_HANDLE_VALUE) {
+		return maps;
+	}
+
+	// Iterate over results
+	do {
+		if (fdFile.cFileName[0] != '.') {
+			if (fdFile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+				maps->push_back(string(fdFile.cFileName));
+			}
+		}
+	} while(FindNextFile(hFind, &fdFile));
+
+	FindClose(hFind);
 
 	return maps;
 }
