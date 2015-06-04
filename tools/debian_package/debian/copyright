@@ -18,10 +18,6 @@ Files: data/cr/songs/Kevin_*
 Copyright: Kevin MacLeod (http://incompetech.com)
 License: CC-BY-3.0
 
-Files: data/cr/songs/Mats_*
-Copyright: Mats Andersson
-License: not-currently-sure
-
 Files: data/cr/sounds/ak*
        data/cr/sounds/machinegun*
        data/cr/sounds/pistol*
@@ -118,6 +114,6 @@ License: public-domain
  You can copy, modify, distribute and perform the work, even for
  commercial purposes, all without asking permission.
 
-License: CC-BY
- Licensed under Creative Commons: By Attribution 3.0
+License: CC-BY-3.0
+ Licensed under Creative Commons By Attribution 3.0
 
