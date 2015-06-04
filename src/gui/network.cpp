@@ -115,7 +115,7 @@ gcn::Container * DialogNetJoin::setup()
 
 		this->internet_list = new gcn::ListBox(NULL);
 		this->internet_list->setPosition(PADDING, PADDING);
-		this->local_list->setSize(LIST_W, LIST_H);
+		this->internet_list->setSize(LIST_W, LIST_H);
 		tabc->add(this->internet_list);
 
 		this->internet_button = new gcn::Button(_(STRING_NETWORK_REFRESH_LIST));

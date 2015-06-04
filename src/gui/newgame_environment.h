@@ -4,12 +4,12 @@
 
 #pragma once
 #include <guichan.hpp>
-#include "../rage.h"
-
-using namespace std;
-
+#include "dialog.h"
 
 class DialogNewGame;
+class GameSettings;
+
+using namespace std;
 
 
 /**
@@ -24,7 +24,7 @@ class DialogNewGameEnvironment : public Dialog, public gcn::ActionListener {
 		DialogNewGame* parent;
 		GameSettings* gs;
 
-		// Dat and night
+		// Day and night
 		gcn::TextField* txt_timeofday;
 		gcn::CheckBox* chk_daynight;
 

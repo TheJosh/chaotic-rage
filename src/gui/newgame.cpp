@@ -48,6 +48,7 @@ DialogNewGame::~DialogNewGame()
 	delete(this->unittype_model);
 	delete(this->viewmode_model);
 	delete(this->action_weapons);
+	delete(this->action_environment);
 	delete(this->gs);
 }
 

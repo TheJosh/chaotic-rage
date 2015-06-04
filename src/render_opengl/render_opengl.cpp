@@ -198,10 +198,10 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 
 	// Fullscreen support
 	#ifdef SDL1_VIDEO
-		int flags = SDL_OPENGL;
+		int flagsSDL = SDL_OPENGL;
 		if (fullscreen) flags |= SDL_FULLSCREEN;
 	#else
-		int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+		int flagsSDL = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 		if (fullscreen) {
 			// Set the resolution to same as the desktop
 			SDL_DisplayMode mode;
@@ -213,7 +213,7 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 			height = mode.h;
 			GEng()->cconf->width = width;
 			GEng()->cconf->height = height;
-			flags |= SDL_WINDOW_FULLSCREEN;
+			flagsSDL |= SDL_WINDOW_FULLSCREEN;
 		}
 	#endif
 
@@ -247,15 +247,15 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 		this->window = SDL_SetVideoMode(width, height, 32, flags);
 	#else
 		if (this->window == NULL) {
-			this->window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
+			this->window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flagsSDL);
 		} else {
 			SDL_SetWindowSize(this->window, width, height);
 			if (fullscreen) {
-				flags = SDL_WINDOW_FULLSCREEN;
+				flagsSDL = SDL_WINDOW_FULLSCREEN;
 			} else {
-				flags = 0;
+				flagsSDL = 0;
 			}
-			SDL_SetWindowFullscreen(this->window, flags);
+			SDL_SetWindowFullscreen(this->window, flagsSDL);
 		}
 	#endif
 	
@@ -292,9 +292,9 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	#endif
 	
 	// SDL_Image
-	flags = IMG_INIT_PNG;
-	int initted = IMG_Init(flags);
-	if ((initted & flags) != flags) {
+	int flagsIMG = IMG_INIT_PNG;
+	int initted = IMG_Init(flagsIMG);
+	if ((initted & flagsIMG) != flagsIMG) {
 		reportFatalError("Failed to init required png support.");
 	}
 

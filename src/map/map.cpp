@@ -187,9 +187,11 @@ Map::Map(GameState * st)
 	this->mod = NULL;
 	this->width = 0.0f;
 	this->height = 0.0f;
+	this->weather = false;
 	this->skybox = NULL;
-	this->water = NULL;
+	this->skybox_inf = false;
 
+	this->water = NULL;
 	this->water_speed = 0.0f;
 	this->water_level = 0.0f;
 }

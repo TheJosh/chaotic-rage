@@ -24,6 +24,7 @@ Weather::Weather(GameState* st, float map_size_x, float map_size_z, bool enabled
 	this->random = true;
 	this->enabled = enabled;
 	this->rain_flow = 0;
+	this->snow_flow = 0;
 
 	// Main zone for emission
 	this->sky = SPK::AABox::create(SPK::Vector3D(map_size_x/2.0f, 100.0f, map_size_z/2.0f), SPK::Vector3D(map_size_x, 1.0f, map_size_z));

@@ -2,6 +2,7 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
+#include "newgame_environment.h"
 #include <iostream>
 #include <math.h>
 #include <guichan.hpp>
@@ -14,9 +15,8 @@
 #include "../mod/mod_manager.h"
 #include "../mod/weapontype.h"
 #include "../i18n/gettext.h"
-#include "dialog.h"
+
 #include "list_models.h"
-#include "newgame_environment.h"
 
 #define BUFFER_MAX 10
 
@@ -30,6 +30,14 @@ DialogNewGameEnvironment::DialogNewGameEnvironment(DialogNewGame *parent, GameSe
 {
 	this->parent = parent;
 	this->gs = gs;
+
+	this->txt_timeofday = NULL;
+	this->chk_daynight = NULL;
+
+	this->txt_rain = NULL;
+	this->txt_snow = NULL;
+	this->chk_rndweather = NULL;
+	this->chk_gtweather = NULL;
 }
 
 DialogNewGameEnvironment::~DialogNewGameEnvironment()
@@ -148,4 +156,3 @@ void DialogNewGameEnvironment::action(const gcn::ActionEvent& actionEvent)
 	
 	this->m->remDialog(this);
 }
-
