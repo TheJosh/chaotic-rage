@@ -33,9 +33,9 @@ bool loadLang(const char* name)
 	Mod* mod = new Mod(NULL, "data/i18n");
 
 	// Read strings
-	strncpy(buf, name, BUFFER_MAX);
-	strncat(buf, ".txt", BUFFER_MAX);
-	char* input = mod->loadText(buf);
+	std::string filename = std::string(name);
+	filename.append(".txt");
+	char* input = mod->loadText(filename);
 	if (input == NULL) {
 		delete mod;
 		std::cerr << "Error: Could not load language file: " << buf << std::endl;
