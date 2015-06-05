@@ -172,7 +172,7 @@ vector<string> * ModManager::getAvailMods()
 	vector<string>* out = new vector<string>();
 	out->push_back("cr");	// force to top of list
 	for (vector<string>::iterator it = mods->begin(); it != mods->end(); ++it) {
-		if ((*it) != "debug" && (*it) != "intro" && (*it) != "cr") {
+		if ((*it) != "debug" && (*it) != "intro" && (*it) != "i18n" && (*it) != "cr") {
 			out->push_back(*it);
 		}
 	}

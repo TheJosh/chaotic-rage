@@ -113,11 +113,7 @@ std::vector<std::string> * getDirectoryList(std::string pattern, bool base, int 
 
 	glob(pattern.c_str(), GLOB_TILDE, NULL, &glob_result);
 
-	cout << "glob " << pattern << endl;
-
 	for (unsigned int i = 0; i < glob_result.gl_pathc; ++i) {
-		cout << "  " << glob_result.gl_pathv[i] << endl;
-		
 		if (lstat(glob_result.gl_pathv[i], &statbuf) == -1) {
 			continue;
 		}
@@ -150,12 +146,7 @@ std::vector<std::string> * getDirectoryList(std::string pattern, bool base, int 
 **/
 vector<string> * getSystemModNames()
 {
-	//return getDirectoryList("*", true, 1);
-	// TODO: Actually code this!
-	vector<string> * out = new vector<string>();
-	out->push_back("cr");
-	out->push_back("test");
-	return out;
+	return getDirectoryList("data/*", true, 1);
 }
 
 
@@ -172,15 +163,7 @@ vector<string> * getSystemModNames()
 **/
 std::vector<string>* getSystemMapNames()
 {
-	std::vector<string>* maps = new vector<string>();
-
-	maps->push_back("therlor_valley");
-	maps->push_back("lakeside");
-	maps->push_back("stormy_desert");
-	maps->push_back("caves");
-	maps->push_back("test");
-
-	return maps;
+	return getDirectoryList("maps/*", true, 1);
 }
 
 
