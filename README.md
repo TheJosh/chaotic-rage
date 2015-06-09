@@ -63,3 +63,24 @@ Build Status
 Builds are tested on Travis CI
 
 [![Build Status](https://travis-ci.org/TheJosh/chaotic-rage.png?branch=master)](https://travis-ci.org/TheJosh/chaotic-rage)
+
+
+License
+-------
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+Some content contained within this archive is covered by other
+licenses. For full authorship information, see the Git log available
+at <https://github.com/TheJosh/chaotic-rage>.
+
