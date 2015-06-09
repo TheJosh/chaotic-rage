@@ -1,1 +1,37 @@
-All of my past and future contributions to Chaotic Rage may be licensed under the GPLv2 license.
+Den 25 maj 2015 5:43 fm skrev "Josh Heidenreich" <josh.sickmate@gmail.com>:
+
+    Hi Magnus,
+
+    I'm just going through the source code and assets to check licensing.
+
+    Can you confirm that you're willing to license your contributions
+    under the GPL 2.0? You'll still hold the copyright on your
+    contributions.
+
+    You can read the full text of the license here:
+    https://github.com/TheJosh/chaotic-rage/blob/master/LICENSE
+
+    If you are happy with that, can you please reply via an email stating
+    that fact, something like this:
+
+        All of my past & future contributions to Chaotic Rage may
+        be licensed under the GPLv2 license.
+
+    Thank you for all of your contributions!
+
+    Cheers,
+    Josh
+    
+
+On 25 May 2015 at 14:21, Magnus Espersson <magnus.espersson@gmail.com> wrote:
+    Hi Josh,
+    I thought the licence was already GPL 2.0, so I have no problem with the
+    licence.
+
+    To clarify:
+
+    All of my past and future contributions to Chaotic Rage may be licensed
+    under the GPLv2 license.
+
+    BRs
+    Magnus

@@ -1,2 +1,9 @@
-All of my past & future contributions to Chaotic Rage may be
+In-Reply-To: <CALJ4erXE2ua+jfAK7GOMGgQyNCa1Q6g1ZMxzOYecWDh=+WrE=Q@mail.gmail.com>
+Date: Mon, 25 May 2015 12:30:15 +0800
+Subject: Re: Chaotic Rage - Licensing
+From: "Enjgine ." <enjgine@gmail.com>
+To: Josh Heidenreich <josh.sickmate@gmail.com>
+
+ All of my past & future contributions to Chaotic Rage may be
 licensed under the GPLv2 license.
+
