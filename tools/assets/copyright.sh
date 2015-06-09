@@ -20,7 +20,7 @@ for FILE in $(find $PATHS -name "copyright"); do
 	echo "Files: $DIR/*";
 	
 	# Generated .dae files
-	find "$DIR" -name "*.blend" | sed 's/.blend/*/' | sed "s|$DIR|data/cr|" | xargs -n1 echo "      "
+	find "$DIR" -name "*.blend" | sed 's/.blend/*/' | sed "s|$DIR|data/cr/models|" | xargs -n1 echo "      "
 	
 	# Copy these across from the copyright file
 	grep "Copyright: " $FILE

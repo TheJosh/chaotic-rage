@@ -25,12 +25,22 @@ Depends: chaoticrage-data (= ${source:Version}),
     ${shlibs:Depends},
     ${misc:Depends}
 Description: Unusual 3D shooter game
- You can destroy everything with the many weapons, turrets and vehicles.
- Choose from multiple characters with unique skills and abilities.
+ Unusual 3D shooter game with zombies, tanks, boats, and helicopters.
+ Can be played in top-view, 3rd person or 1st person view.
+ Has particle effects, decent physics, weather effects, and day-night effects.
+ Multiple maps and gametypes.
+ Fully moddable.
+ .
+ This is the main game code
  
 Package: chaoticrage-data
 Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Unusual 3D shooter game - data files
- You can destroy everything with the many weapons, turrets and vehicles.
- Choose from multiple characters with unique skills and abilities.
+ Unusual 3D shooter game with zombies, tanks, boats, and helicopters.
+ Can be played in top-view, 3rd person or 1st person view.
+ Has particle effects, decent physics, weather effects, and day-night effects.
+ Multiple maps and gametypes.
+ Fully moddable.
+ .
+ This is the data files and maps

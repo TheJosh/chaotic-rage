@@ -66,57 +66,49 @@ License: CC-BY-3.0
 Files: data/cr/sounds/ak*
        data/cr/sounds/machinegun*
        data/cr/sounds/pistol*
-       data/cr/sounds/pup_shotgun*
+       data/cr/sounds/pump_shotgun*
 License: CC0
 Copyright: Public domain (CC0)
 
 
-Files: orig/units/zombie/*
-       data/cr/zombie*
+Files: data/cr/models/zombie*
 Copyright: Public domain
 License: public-domain
 
-Files: orig/doodads/magellan_16/*
-       data/cr/magellan_16*
+Files: data/cr/models/magellan_16*
 Copyright: U.S. Public Domain from NASA
 License: public-domain
 
-Files: orig/doodads/trashbox/*
-       data/cr/trashbox*
+Files: data/cr/models/trashbox*
 Copyright: Public domain (CC0)
 License: CC0
 
-Files: orig/doodads/rusty_barrels/*
-       data/cr/barrel*
+Files: data/cr/models/barrel*
 Copyright: Public domain (CC0)
 License: CC0
 
-Files: orig/doodads/wood_pallet/*
-       data/cr/Quandtum_Pallet_v1_0*
+Files: data/cr/models/Quandtum_Pallet_v1_0*
 Copyright: Public domain (CC0)
 License: CC0
 
-Files: orig/doodads/wood_boxes/*
-       data/cr/crates*
+Files: data/cr/models/crates*
 Copyright: Public domain (CC0)
 License: CC0
 
-Files: orig/doodads/crate/*
-       data/cr/crate_china*
-       data/cr/crate_military*
-       data/cr/crate_wood*
-       data/cr/crate_sealed*
-       data/cr/crate_steel*
-       data/cr/crate_zombie*
+Files: data/cr/models/crate_china*
+       data/cr/models/crate_military*
+       data/cr/models/crate_wood*
+       data/cr/models/crate_sealed*
+       data/cr/models/crate_steel*
+       data/cr/models/crate_zombie*
 Copyright: Public domain
 License: public-domain
 
-Files: orig/doodads/concrete_pipes/*
-       data/cr/concrete_pipe_tee*
-       data/cr/concrete_pipe_channel*
-       data/cr/concrete_pipe_joiner*
-       data/cr/concrete_pipe_bend*
-       data/cr/concrete_pipe_straight*
+Files: data/cr/models/concrete_pipe_tee*
+       data/cr/models/concrete_pipe_channel*
+       data/cr/models/concrete_pipe_joiner*
+       data/cr/models/concrete_pipe_bend*
+       data/cr/models/concrete_pipe_straight*
 Copyright: No Copyright
 License: CC0
 
