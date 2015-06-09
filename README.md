@@ -1,12 +1,18 @@
 Chaotic Rage
 ============
 
-Chaotic Rage is a crazy top-view shooter.
-You can destroy everything with the many weapons, turrets and vehicles.
-Choose from multiple characters with unique skills and abilities.
+Chaotic Rage is a silly little shooter game. A simple graphical style allows for a focus on gameplay. The game is very customisable with full modding support. There are a variety of game types, with scripting done in Lua. Multiple view modes - top down, behind player and first-person - allow for a unique perspective of the action. Dynamic and scriptable weather and day/night effects create a dynamic environment. The gameplay is rounded out by a number of interesting vehicles including tanks, helicopters and trains. Last but not least is a wide range of weapons including shotguns, machine guns and flame throwers.
 
-See also:
+At the moment there are a few game types and other game content which is zombie themed. This was mostly because zombie AI is very easy to code. There is [a discussion on the forum](http://chaoticrage.com/forum/topic/6) about actually defining a proper "theme" for the game, because most people agree that zombies is a bit dated.
+
+For more information and screenshots, see our website:
 * http://chaoticrage.com
+
+List any issues on GitHub:
+* https://github.com/TheJosh/chaotic-rage/issues
+
+You can also talk about your ideas and your issues at our forum:
+* http://chaoticrage.com/forum/topics
 
 
 Compiling
@@ -15,24 +21,6 @@ Compiling
 Chaotic Rage is supported on a number of platforms and through various
 build environments. For compilation instructions for various platforms,
 see the file COMPILE.md
-
-
-Issues and Feedback
--------------------
-
-List any issues on GitHub:
-
-https://github.com/TheJosh/chaotic-rage/issues
-
-
-You can also talk about your ideas and your issues at our forum:
-
-http://chaoticrage.com/forum/topics
-
-
-We are also asking people to list which operaing systems and video cards the game works on. You can do this on the forum:
-
-http://chaoticrage.com/forum/topic/7
 
 
 Making mods
