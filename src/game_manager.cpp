@@ -350,7 +350,7 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	// Download the gamestate
 	// When this is done, a final message is sent to tell the server we are done.
 	if (! GEng()->client->downloadGameState()) {
-		displayMessageBox("Unable to download intial game state from server " + host);
+		displayMessageBox("Unable to download initial game state from server " + host);
 		//st->postGame();	// TODO: Needed? Crashes
 		goto cleanup;
 	}
