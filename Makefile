@@ -251,29 +251,16 @@ deb: chaoticrage-linux-$(VERSION).tar.bz2
 	cd $(DISTTMP); debuild
 	rm -r $(DISTTMP)
 
-deb-ubuntu:	## Create unsigned Debian package for Ubuntu
-deb-ubuntu: chaoticrage-linux-$(VERSION).tar.bz2
-	tar -xvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
-	mkdir -p $(DISTTMP)/debian
-	cp -r tools/debian_package/debian/* $(DISTTMP)/debian/
-	cp -r tools/debian_package/ubuntu/* $(DISTTMP)/debian/
-	rm $(DISTTMP)/data/cr/DejaVuSans.ttf
-
-	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
-	cd $(DISTTMP); debuild -us -uc
-	rm -r $(DISTTMP)
-
-deb-ubuntu-ppa:	## Create signed Debian package for Ubuntu PPA
+deb-ubuntu-ppa:	## Create signed Ubuntu package for PPA
 deb-ubuntu-ppa: chaoticrage-linux-$(VERSION).tar.bz2
-	tar -xvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
-	mkdir -p $(DISTTMP)/debian
+	mv chaoticrage-linux-$(VERSION).tar.bz2 chaoticrage_$(VERSION)ubuntu.orig.tar.bz2
+	tar -xf chaoticrage_$(VERSION)ubuntu.orig.tar.bz2
+	mkdir $(DISTTMP)/debian
 	cp -r tools/debian_package/debian/* $(DISTTMP)/debian/
 	cp -r tools/debian_package/ubuntu/* $(DISTTMP)/debian/
-	rm $(DISTTMP)/data/cr/DejaVuSans.ttf
-
-	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
 	cd $(DISTTMP); debuild -S -sa
 	rm -r $(DISTTMP)
+
 
 dist-bin: chaoticrage data maps
 	rm -rf $(DISTTMP)
