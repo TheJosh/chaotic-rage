@@ -49,7 +49,7 @@ else
 	CXX ?= g++
 	CC ?= gcc
 	CFLAGS := -DGETOPT -Werror -Wall -MMD
-	LIBS := -lGL -lGLU -L/usr/X11R6/lib -lX11 -lm -lstdc++
+	LIBS := -lGL -lGLU -L/usr/X11R6/lib -lX11 -lfontconfig -lm -lstdc++
 	PLATFORM := $(OBJPATH)/linux.o
 	DONT_COMPILE = $(OBJPATH)/touch.o \
 		$(OBJPATH)/gui/controls_touch.o

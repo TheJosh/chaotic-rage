@@ -393,7 +393,7 @@ void RenderOpenGL::initGuichan(gcn::Gui * gui, Mod * mod)
 	gcn::Image::setImageLoader(imageLoader);
 
 	delete(gui_font);
-	gui_font = new OpenGLFont(this, "DejaVuSans.ttf", mod, 12.0f * GEng()->gui_scale);
+	gui_font = new OpenGLFont(this, "DejaVuSans", mod, 12.0f * GEng()->gui_scale);
 	
 	try {
 		gcn::Widget::setGlobalFont(gui_font);

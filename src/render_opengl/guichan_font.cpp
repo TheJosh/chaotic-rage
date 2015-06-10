@@ -17,6 +17,10 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#ifdef __linux__
+	#include <fontconfig/fontconfig.h>
+#endif
+
 
 /**
 * Metadata and texture pointer for freetype characters
@@ -79,24 +83,45 @@ OpenGLFont::OpenGLFont(RenderOpenGL* render, string name, Mod* mod, float size)
 		reportFatalError("Freetype: Unable to init library.");
 	}
 
-	// On Linux, the system font is preferred
+	// On Linux, the system font is found using fontconfig
 	#ifdef __linux__
-		error = FT_New_Face(this->pmpl->ft, "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 0, &this->pmpl->face);
+		FcConfig* config = FcInitLoadConfigAndFonts();
+
+		FcPattern* pat = FcPatternBuild(
+			NULL,
+			FC_FAMILY, FcTypeString, reinterpret_cast<const char*>(name.c_str()),
+			NULL
+		);
+		FcConfigSubstitute(config, pat, FcMatchPattern);
+		FcDefaultSubstitute(pat);
+
+		FcResult result;
+		FcPattern* font = FcFontMatch(config, pat, &result);
+		if (font == NULL) {
+			reportFatalError("Fontconfig: Unable to find font " + name);
+		}
+
+		FcChar8* filename = NULL;
+		if (FcPatternGetString(font, FC_FILE, 0, &filename) != FcResultMatch) {
+			reportFatalError("Fontconfig: No filename in fontconfig match");
+		}
+
+		error = FT_New_Face(this->pmpl->ft, reinterpret_cast<const char*>(filename), 0, &this->pmpl->face);
+
+		FcPatternDestroy(font);
+		FcPatternDestroy(pat);
+
 	#else
-		error = 1;
-	#endif
-
-	// Fallback is the font in the mod
-	if (error != 0) {
+		// All other systems use a file in the cr/ mod
 		Sint64 len;
-
+		name.append(".ttf");
 		this->pmpl->buf = mod->loadBinary(name, &len);
 		if (this->pmpl->buf == NULL) {
 			reportFatalError("Freetype: Unable to load data");
 		}
 
 		error = FT_New_Memory_Face(this->pmpl->ft, (const FT_Byte *) this->pmpl->buf, (FT_Long)len, 0, &this->pmpl->face);
-	}
+	#endif
 
 	// Handle errors
 	if (error == FT_Err_Unknown_File_Format) {

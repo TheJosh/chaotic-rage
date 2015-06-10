@@ -107,7 +107,7 @@ void Menu::loadModBits(UIUpdate* ui)
 
 	// Font always loaded from base mod
 	if (this->font == NULL) {
-		this->font = new OpenGLFont(this->render, "DejaVuSans.ttf", GEng()->mm->getBase(), 20.0f * GEng()->gui_scale);
+		this->font = new OpenGLFont(this->render, "DejaVuSans", GEng()->mm->getBase(), 20.0f * GEng()->gui_scale);
 	}
 
 	this->loadMenuItems();
