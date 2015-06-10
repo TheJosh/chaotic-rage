@@ -1,5 +1,5 @@
-Unreleased changes
-------------------
+New in 1.14
+-----------
 * Removed all non-free artwork
 * 3D models are now generated using a script from the blender
   originals
@@ -7,9 +7,16 @@ Unreleased changes
 * Buildtool now generates signed builds for Android
 * Model loading doesn't recenter models with bones any more
 * Added vehicle and object damage
+* Linux now uses fontconfig and a native Deja Vu Sans font
+  rather than a bundled one
+* Command line option to specify alternate data path
+* Automatically find maps and mods, instead of the names
+  being hard-coded
 
 Data changes:
 * Removed the 'Australia Day' mod
+* 3D models are now generated using a script from the blender
+  originals
 
 
 New in 1.13
