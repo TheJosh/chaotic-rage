@@ -1,0 +1,4 @@
+version=3
+opts=filenamemangle=s/.+\/v?(\d\S*)\.tar\.gz/chaoticrage-$1\.tar\.gz/ \
+
+https://github.com/TheJosh/chaotic-rage/tags .*/v?(\d\S*)\.tar\.gz

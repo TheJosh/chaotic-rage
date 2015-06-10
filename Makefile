@@ -216,6 +216,7 @@ dist: $(SRCPATH) data maps
 	cp LICENSE $(DISTTMP)
 	cp README.md $(DISTTMP)
 	cp COMPILE.md $(DISTTMP)
+	cp CHANGES $(DISTTMP)
 	cp -r $(SRCPATH) $(DISTTMP)
 	cp -r data $(DISTTMP)
 	cp -r maps $(DISTTMP)
@@ -243,12 +244,10 @@ chaoticrage-linux-$(VERSION).tar.bz2: dist
 
 deb:		## Create signed Debian package
 deb: chaoticrage-linux-$(VERSION).tar.bz2
-	tar -xvjf chaoticrage-linux-$(VERSION).tar.bz2 $(DISTTMP)
-	mkdir -p $(DISTTMP)/debian
+	mv chaoticrage-linux-$(VERSION).tar.bz2 chaoticrage_$(VERSION).orig.tar.bz2
+	tar -xf chaoticrage_$(VERSION).orig.tar.bz2
+	mkdir $(DISTTMP)/debian
 	cp -r tools/debian_package/debian/* $(DISTTMP)/debian/
-	rm $(DISTTMP)/data/cr/DejaVuSans.ttf
-
-	tar -cvJf chaoticrage_$(VERSION).orig.tar.xz $(DISTTMP)
 	cd $(DISTTMP); debuild
 	rm -r $(DISTTMP)
 
