@@ -220,6 +220,8 @@ dist: $(SRCPATH) data maps
 	cp -r data $(DISTTMP)
 	cp -r maps $(DISTTMP)
 
+	rm $(DISTTMP)/data/cr/*.ttf
+
 	mkdir -p $(DISTTMP)/tools
 	mkdir -p $(DISTTMP)/tools/i18n
 	mkdir -p $(DISTTMP)/tools/linux
