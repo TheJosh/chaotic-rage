@@ -23,7 +23,7 @@ using namespace std;
 #define UNIT_SOUND_CELEBRATE 7
 #define UNIT_SOUND_FAIL 8
 
-#define UNIT_PHYSICS_HEIGHT 1.8f
+#define UNIT_PHYSICS_HEIGHT 1.7f
 
 
 class UnitType;
