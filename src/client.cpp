@@ -89,6 +89,7 @@ int main(int argc, char ** argv)
 		reportFatalError("Module loading failed");
 	}
 	delete(ui);
+	ui = NULL;
 
 	gm = new GameManager(st);
 

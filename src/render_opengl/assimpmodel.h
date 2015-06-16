@@ -72,7 +72,7 @@ class AssimpFace
 
 /**
 * A mesh. Contains pointers to face and vertex data.
-* Also cointains the material index
+* Also contains the material index
 **/
 class AssimpMesh
 {

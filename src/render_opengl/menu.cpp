@@ -93,11 +93,10 @@ void Menu::loadModBits(UIUpdate* ui)
 	}
 
 	// Rotating model
-	delete(this->model);
 	delete(this->play);
 	this->model = NULL;
 	this->play = NULL;
-	if (mod->getMenuModelName() != "") {
+	if (!mod->getMenuModelName().empty()) {
 		this->model_rot = -10.0f;
 		this->model = mod->getAssimpModel(mod->getMenuModelName());
 		if (this->model != NULL) {

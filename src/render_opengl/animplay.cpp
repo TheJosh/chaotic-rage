@@ -25,6 +25,9 @@ AnimPlay::AnimPlay(AssimpModel* model)
 {
 	this->st = model->mod->st;
 	this->anim = NULL;
+	this->start_time = 0;
+	this->start_frame = 0;
+	this->end_frame = 0;
 	this->loop = true;
 	this->ended_func = NULL;
 	this->ended_data = NULL;
