@@ -38,6 +38,7 @@
 #define ATTRIB_TEXTCOORD 5        // vCoord
 #define ATTRIB_COLOR 6            // vColor
 #define ATTRIB_TANGENT 7          // vTangent
+#define ATTRIB_BITANGENT 8        // vBitangent
 
 // Shader IDs
 // TODO: Should this be an enum instead?

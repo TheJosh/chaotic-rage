@@ -1438,6 +1438,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment)
 	glBindAttribLocation(program, ATTRIB_TEXTCOORD, "vCoord");
 	glBindAttribLocation(program, ATTRIB_COLOR, "vColor");
 	glBindAttribLocation(program, ATTRIB_TANGENT, "vTangent");
+	glBindAttribLocation(program, ATTRIB_BITANGENT, "vBitangent");
 
 	// Link
 	glLinkProgram(program);

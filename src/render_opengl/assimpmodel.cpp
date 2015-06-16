@@ -297,6 +297,11 @@ void AssimpModel::loadMeshes(bool opengl, const struct aiScene* sc)
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mTangents, GL_STATIC_DRAW);
 			myMesh->vao->setTangent(buffer);
+
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mBitangents, GL_STATIC_DRAW);
+			myMesh->vao->setBitangent(buffer);
 		}
 
 		myMesh->vao->unbind();

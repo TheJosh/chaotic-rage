@@ -188,8 +188,7 @@ class DaeExporter:
 			if os.path.isfile(imgpath):
 				dstfile=basedir+"/"+os.path.basename(imgpath)
 				
-				if (not os.path.isfile(dstfile)):
-					shutil.copy(imgpath,dstfile)
+				shutil.copy(imgpath,dstfile)
 				
 				imgpath=self.config["image_path"]+os.path.basename(imgpath)
 				
