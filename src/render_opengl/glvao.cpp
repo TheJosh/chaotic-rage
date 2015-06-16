@@ -38,6 +38,7 @@ GLVAO::GLVAO()
 	this->boneid = 0;
 	this->boneweight = 0;
 	this->tangent = 0;
+	this->bitangent = 0;
 	this->interleaved_pnt = 0;
 	this->interleaved_pc = 0;
 	this->interleaved_pc34 = 0;
@@ -138,6 +139,17 @@ void GLVAO::setTangent(GLuint vbo)
 	glEnableVertexAttribArray(ATTRIB_TANGENT);
 	glVertexAttribPointer(ATTRIB_TANGENT, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	this->tangent = vbo;
+}
+
+
+/**
+* Bitangents. 3-coord
+**/
+void GLVAO::setBitangent(GLuint vbo)
+{
+	glEnableVertexAttribArray(ATTRIB_BITANGENT);
+	glVertexAttribPointer(ATTRIB_BITANGENT, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	this->bitangent = vbo;
 }
 
 
@@ -267,6 +279,12 @@ void GLVAO::bindBuffers()
 	if (this->tangent) {
 		glBindBuffer(GL_ARRAY_BUFFER, this->tangent);
 		this->setTangent(this->tangent);
+	}
+
+	// Bitangent
+	if (this->bitangent) {
+		glBindBuffer(GL_ARRAY_BUFFER, this->bitangent);
+		this->setTangent(this->bitangent);
 	}
 
 	// Interleaved, position normal texture

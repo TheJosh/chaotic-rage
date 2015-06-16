@@ -27,6 +27,7 @@ class GLVAO
 		GLuint boneid;
 		GLuint boneweight;
 		GLuint tangent;
+		GLuint bitangent;
 
 		// VBOs - interleaved
 		GLuint interleaved_pnt;
@@ -47,6 +48,7 @@ class GLVAO
 		void setBoneId(GLuint vbo);
 		void setBoneWeight(GLuint vbo);
 		void setTangent(GLuint vbo);
+		void setBitangent(GLuint vbo);
 
 		// Set buffer ids - interleaved
 		void setInterleavedPNT(GLuint vbo);
