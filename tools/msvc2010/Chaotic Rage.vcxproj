@@ -124,6 +124,7 @@
     <None Include="..\..\data\cr\pickuptypes.conf" />
     <None Include="..\..\data\cr\shaders_gl\phong.glslf" />
     <None Include="..\..\data\cr\shaders_gl\phong_bones.glslv" />
+    <None Include="..\..\data\cr\shaders_gl\phong_bump.glslf" />
     <None Include="..\..\data\cr\shaders_gl\phong_shadow.glslf" />
     <None Include="..\..\data\cr\shaders_gl\phong_static.glslv" />
     <None Include="..\..\data\cr\shaders_gl\skybox.glslf" />
