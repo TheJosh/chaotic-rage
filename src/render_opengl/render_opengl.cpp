@@ -1645,48 +1645,6 @@ void RenderOpenGL::createVBO(WavefrontObj * obj)
 
 
 /**
-* Call this before VBO render.
-* It's actually a noop in this renderer.
-**/
-void RenderOpenGL::preVBOrender()
-{
-}
-
-
-/**
-* Call this after VBO render, to clean up the OpenGL state.
-* It's actually a noop in this renderer.
-**/
-void RenderOpenGL::postVBOrender()
-{
-}
-
-
-/**
-* Renders a WavefrontObj.
-* This is only use by external callers (i.e. `Menu`).
-* Other parts of this class just do these bits themselves, but slightly differently each time.
-* Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender() afterwards.
-**/
-void RenderOpenGL::renderObj(WavefrontObj * obj, glm::mat4 mvp)
-{
-	GLShader *shader;
-	if (obj->count == 0) this->createVBO(obj);
-
-	shader = this->shaders[SHADER_BASIC];
-	glUseProgram(shader->p());
-
-	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(mvp));
-
-	obj->vao->bind();
-	glDrawArrays(GL_TRIANGLES, 0, obj->count);
-
-	CHECK_OPENGL_ERROR;
-}
-
-
-
-/**
 * Sorts so that AnimPlay* instances with the same model are next to each other in the array
 **/
 bool sorter(const PlayEntity& a, const PlayEntity& b)
@@ -1787,9 +1745,6 @@ GLShader* RenderOpenGL::determineAssimpModelShader(AssimpModel* am)
 
 /**
 * Renders an animation.
-* Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender() afterwards.
-*
-* TODO: This needs HEAPS more work with the new animation system
 **/
 void RenderOpenGL::renderAnimPlay(AnimPlay * play, Entity * e)
 {

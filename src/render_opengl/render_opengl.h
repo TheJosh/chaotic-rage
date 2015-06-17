@@ -164,9 +164,6 @@ class RenderOpenGL : public Render3D
 		// From class Render3D
 		virtual void saveScreenshot(string filename);
 		virtual void initGuichan(gcn::Gui * gui, Mod * mod);
-		virtual void preVBOrender();
-		virtual void postVBOrender();
-		virtual void renderObj (WavefrontObj * obj, glm::mat4 mvp);
 		virtual void loadFont(string name, Mod * mod);
 		virtual void renderText(string text, int x = 0, int y = 0, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
 		virtual unsigned int widthText(string text);

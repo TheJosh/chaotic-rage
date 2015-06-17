@@ -117,21 +117,6 @@ class Render3D : public Render
 		virtual void initGuichan(gcn::Gui * gui, Mod * mod) = 0;
 
 		/**
-		* Before one ore more VBOs are rendered. If not using VBOs, does nothing
-		**/
-		virtual void preVBOrender() = 0;
-
-		/**
-		* After one ore more VBOs are rendered. If not using VBOs, does nothing
-		**/
-		virtual void postVBOrender() = 0;
-
-		/**
-		* Render a object (i.e. a mesh + tex)
-		**/
-		virtual void renderObj (WavefrontObj * obj, glm::mat4 mvp) = 0;
-
-		/**
 		* Load the given ttf font
 		**/
 		virtual void loadFont(string name, Mod * mod) = 0;
