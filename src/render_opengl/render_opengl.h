@@ -194,7 +194,8 @@ class RenderOpenGL : public Render3D
 		void surfaceToOpenGL(SpritePtr sprite);
 
 		// Entity rendering
-		void renderAnimPlay(AnimPlay * play, Entity * e);
+		GLShader* determineAssimpModelShader(AssimpModel* play);
+		void renderAnimPlay(AnimPlay* play, Entity * e);
 		void renderAnimPlay(AnimPlay* play, const glm::mat4 &modelMatrix);
 		void recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader, const glm::mat4 &modelMatrix);
 		void recursiveRenderAssimpModelBones(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader);

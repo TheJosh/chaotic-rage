@@ -1765,6 +1765,21 @@ void RenderOpenGL::entities()
 
 
 /**
+* For a given model, use heuristics to determine the correct shader to use
+*
+* TODO: We might want a way for the model to *specify* the shader in the future
+**/
+GLShader* RenderOpenGL::determineAssimpModelShader(AssimpModel* am)
+{
+	if (!am->meshes[0]->bones.empty()) {
+		return this->shaders[SHADER_ENTITY_BONES];
+	}
+
+	return this->shaders[SHADER_ENTITY_STATIC];
+}
+
+
+/**
 * Renders an animation.
 * Uses VBOs, so you gotta call preVBOrender() beforehand, and postVBOrender() afterwards.
 *
@@ -1789,15 +1804,17 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, const glm::mat4 &modelMatrix)
 
 	am = play->getModel();
 
-	// Re-calc animation if needed
+	shader = this->determineAssimpModelShader(am);
+	glUseProgram(shader->p());
+
 	play->calcTransforms();
 
-	if (!am->meshes[0]->bones.empty()) {
-		// Bones
-		shader = this->shaders[SHADER_ENTITY_BONES];
-		glUseProgram(shader->p());
+	if (am->meshes[0]->bones.empty()) {
+		// Static meshes are very easy
+		recursiveRenderAssimpModelStatic(play, am, am->rootNode, shader, modelMatrix);
 
-		// Calculate stuff
+	} else {
+		// Calculate bone transforms
 		play->calcBoneTransforms();
 		glm::mat4 MVP = this->projection * this->view * modelMatrix;
 		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
@@ -1811,12 +1828,6 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, const glm::mat4 &modelMatrix)
 
 		// Do it
 		recursiveRenderAssimpModelBones(play, am, am->rootNode, shader);
-
-	} else {
-		// Static
-		shader = this->shaders[SHADER_ENTITY_STATIC];
-		glUseProgram(shader->p());
-		recursiveRenderAssimpModelStatic(play, am, am->rootNode, shader, modelMatrix);
 	}
 }
 
