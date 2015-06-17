@@ -1749,12 +1749,18 @@ void RenderOpenGL::entities()
 	glBindTexture(GL_TEXTURE_2D, this->shadow_depth_tex);
 	glActiveTexture(GL_TEXTURE0);
 
-	// Set VIEW matrix in the shaders
-	glUseProgram(this->shaders[SHADER_ENTITY_STATIC]->p());
-	glUniformMatrix4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
-	glUseProgram(this->shaders[SHADER_ENTITY_BONES]->p());
-	glUniformMatrix4fv(this->shaders[SHADER_ENTITY_BONES]->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
-
+	// The uV (view) uniform only needs setting once per frame
+	// Find shaders used in scene, and set the unform for them
+	set<GLShader*> processed = set<GLShader*>();
+	for (vector<PlayEntity>::iterator it = animations.begin(); it != animations.end(); ++it) {
+		GLShader *shader = this->determineAssimpModelShader((*it).play->getModel());
+		if (processed.find(shader) == processed.end()) {
+			glUseProgram(shader->p());
+			glUniformMatrix4fv(shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
+			processed.insert(shader);
+		}
+	}
+	
 	// Render!
 	for (vector<PlayEntity>::iterator it = animations.begin(); it != animations.end(); ++it) {
 		renderAnimPlay((*it).play, (*it).e);
