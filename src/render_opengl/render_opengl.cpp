@@ -1191,6 +1191,7 @@ void RenderOpenGL::setupShaders()
 			glUniform4fv(shader->uniform("uAmbient"), 1, glm::value_ptr(entityAmbient));
 			glUniform1i(shader->uniform("uTex"), 0);
 			glUniform1i(shader->uniform("uShadowMap"), 1);
+			glUniform1i(shader->uniform("uNormal"), 2);
 		}
 	}
 
@@ -1303,6 +1304,7 @@ void RenderOpenGL::loadShaders()
 
 	this->shaders[SHADER_ENTITY_BONES] = loadProgram(base, "phong_bones", "phong");
 	this->shaders[SHADER_ENTITY_STATIC] = loadProgram(base, "phong_static", "phong");
+	this->shaders[SHADER_ENTITY_STATIC_BUMP] = loadProgram(base, "phong_static", "phong_bump");
 	this->shaders[SHADER_TERRAIN] = loadProgram(base, "phong_static", "phong_shadow");
 	this->shaders[SHADER_WATER] = loadProgram(base, "water");
 	this->shaders[SHADER_TEXT] = loadProgram(base, "text");
@@ -1739,6 +1741,10 @@ GLShader* RenderOpenGL::determineAssimpModelShader(AssimpModel* am)
 		return this->shaders[SHADER_ENTITY_BONES];
 	}
 
+	if (am->materials[am->meshes[0]->materialIndex]->normal != NULL) {
+		return this->shaders[SHADER_ENTITY_STATIC_BUMP];
+	}
+
 	return this->shaders[SHADER_ENTITY_STATIC];
 }
 
@@ -1820,6 +1826,14 @@ void RenderOpenGL::recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel* a
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
 		AssimpMesh* mesh = am->meshes[(*it)];
 
+		glActiveTexture(GL_TEXTURE2);
+		if (am->materials[mesh->materialIndex]->normal == NULL) {
+			glBindTexture(GL_TEXTURE_2D, 0);
+		} else {
+			glBindTexture(GL_TEXTURE_2D, am->materials[mesh->materialIndex]->normal->pixels);
+		}
+
+		glActiveTexture(GL_TEXTURE0);
 		if (am->materials[mesh->materialIndex]->diffuse == NULL) {
 			glBindTexture(GL_TEXTURE_2D, 0);
 		} else {
