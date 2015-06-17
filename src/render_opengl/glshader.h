@@ -21,10 +21,30 @@ class GLShader
 		// Cached list of uniform locations
 		std::map<const char*, GLuint> uniforms;
 
+		// Should the various lighting uniforms be set?
+		bool uniforms_lighting;
+		
 	public:
-		GLShader(const GLuint p) : program(p) {}
+		GLShader(const GLuint p) : program(p), uniforms_lighting(true) {}
 
 		GLuint p();
 		GLuint uniform(const char* name);
+		
+		
+		/**
+		* Enables or disables the flag for if lighting uniforms should be set
+		**/
+		void setUniformsLighting(bool flag)
+		{
+			this->uniforms_lighting = flag;
+		}
+		
+		/**
+		* Get the flag for if lighting uniforms should be set
+		**/
+		bool getUniformsLighting()
+		{
+			return this->uniforms_lighting;
+		}
 };
 

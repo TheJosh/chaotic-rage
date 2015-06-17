@@ -1181,31 +1181,20 @@ void RenderOpenGL::setupShaders()
 		entityAmbient += 0.05;
 	}
 
-	// Assign to phong shader
-	glUseProgram(this->shaders[SHADER_ENTITY_STATIC]->p());
-	glUniform3fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightPos"), 4, glm::value_ptr(LightPos[0]));
-	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uLightColor"), 4, glm::value_ptr(LightColor[0]));
-	glUniform4fv(this->shaders[SHADER_ENTITY_STATIC]->uniform("uAmbient"), 1, glm::value_ptr(entityAmbient));
-	glUniform1i(this->shaders[SHADER_ENTITY_STATIC]->uniform("uTex"), 0);
-	glUniform1i(this->shaders[SHADER_ENTITY_STATIC]->uniform("uShadowMap"), 1);
+	// Update the uniforms for all shaders which have the 'lighting' flag set
+	for (map<int, GLShader*>::iterator it = this->shaders.begin(); it != this->shaders.end(); ++it) {
+		GLShader *shader = it->second;
+		if (shader->getUniformsLighting()) {
+			glUseProgram(shader->p());
+			glUniform3fv(shader->uniform("uLightPos"), 4, glm::value_ptr(LightPos[0]));
+			glUniform4fv(shader->uniform("uLightColor"), 4, glm::value_ptr(LightColor[0]));
+			glUniform4fv(shader->uniform("uAmbient"), 1, glm::value_ptr(entityAmbient));
+			glUniform1i(shader->uniform("uTex"), 0);
+			glUniform1i(shader->uniform("uShadowMap"), 1);
+		}
+	}
 
-	// Bones as well
-	glUseProgram(this->shaders[SHADER_ENTITY_BONES]->p());
-	glUniform3fv(this->shaders[SHADER_ENTITY_BONES]->uniform("uLightPos"), 4, glm::value_ptr(LightPos[0]));
-	glUniform4fv(this->shaders[SHADER_ENTITY_BONES]->uniform("uLightColor"), 4, glm::value_ptr(LightColor[0]));
-	glUniform4fv(this->shaders[SHADER_ENTITY_BONES]->uniform("uAmbient"), 1, glm::value_ptr(entityAmbient));
-	glUniform1i(this->shaders[SHADER_ENTITY_BONES]->uniform("uTex"), 0);
-	glUniform1i(this->shaders[SHADER_ENTITY_BONES]->uniform("uShadowMap"), 1);
-
-	// And terrain
-	glUseProgram(this->shaders[SHADER_TERRAIN]->p());
-	glUniform3fv(this->shaders[SHADER_TERRAIN]->uniform("uLightPos"), 4, glm::value_ptr(LightPos[0]));
-	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uLightColor"), 4, glm::value_ptr(LightColor[0]));
-	glUniform4fv(this->shaders[SHADER_TERRAIN]->uniform("uAmbient"), 1, glm::value_ptr(this->ambient));
-	glUniform1i(this->shaders[SHADER_TERRAIN]->uniform("uTex"), 0);
-	glUniform1i(this->shaders[SHADER_TERRAIN]->uniform("uShadowMap"), 1);
-
-	// Water too
+	// Water only gets the 'ambient' set
 	glUseProgram(this->shaders[SHADER_WATER]->p());
 	glUniform4fv(this->shaders[SHADER_WATER]->uniform("uAmbient"), 1, glm::value_ptr(this->ambient));
 
@@ -1318,6 +1307,10 @@ void RenderOpenGL::loadShaders()
 	this->shaders[SHADER_WATER] = loadProgram(base, "water");
 	this->shaders[SHADER_TEXT] = loadProgram(base, "text");
 	this->shaders[SHADER_SKYBOX] = loadProgram(base, "skybox");
+
+	this->shaders[SHADER_WATER]->setUniformsLighting(false);
+	this->shaders[SHADER_TEXT]->setUniformsLighting(false);
+	this->shaders[SHADER_SKYBOX]->setUniformsLighting(false);
 
 	this->shaders_loaded = true;
 }
