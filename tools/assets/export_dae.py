@@ -245,6 +245,7 @@ class DaeExporter:
 
 		#Find and fetch the textures and create sources
 		sampler_table={}
+		ambient_tex=None
 		diffuse_tex=None
 		specular_tex=None
 		emission_tex=None
@@ -283,6 +284,8 @@ class DaeExporter:
 			self.writel(S_FX,3,'</newparam>')
 			sampler_table[i]=sampler_sid
 
+			if (ts.use_map_ambient and ambient_tex==None):
+				ambient_tex=sampler_sid
 			if (ts.use_map_color_diffuse and diffuse_tex==None):
 				diffuse_tex=sampler_sid
 			if (ts.use_map_color_spec and specular_tex==None):
@@ -305,7 +308,10 @@ class DaeExporter:
 		self.writel(S_FX,5,'</emission>')
 
 		self.writel(S_FX,5,'<ambient>')
-		self.writel(S_FX,6,'<color>'+numarr_alpha(self.scene.world.ambient_color,material.ambient)+' </color>')
+		if (ambient_tex!=None):
+			self.writel(S_FX,6,'<texture texture="'+ambient_tex+'" texcoord="CHANNEL1"/>')
+		else:
+			self.writel(S_FX,6,'<color>'+numarr_alpha(self.scene.world.ambient_color,material.ambient)+' </color>')
 		self.writel(S_FX,5,'</ambient>')
 
 		self.writel(S_FX,5,'<diffuse>')
