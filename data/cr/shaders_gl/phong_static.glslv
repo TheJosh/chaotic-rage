@@ -33,6 +33,7 @@ void main()
 	
 	vec3 csTangent = (mat3(uV) * uMN * vTangent).xyz;
 	vec3 csBitangent = (mat3(uV) * uMN * vBitangent).xyz;
+	csNormal = (mat3(uV) * uMN * vNormal).xyz;
 
 	mat3 TBN = transpose(mat3(csTangent, csBitangent, csNormal));
 
@@ -44,8 +45,6 @@ void main()
 		csLightDirection[i] = csLightPos + csEyeDirection;
 		tsLightDirection[i] = TBN * csLightDirection[i];
 	}
-	
-	csNormal = (mat3(uV) * uMN * vNormal).xyz;
 	
 	TexUV = vTexUV;
 	fShadowCoord = uDepthBiasMVP * vec4(vPosition, 1.0);

@@ -27,8 +27,6 @@ void main()
 {
 	float LightPower = 25.0;
 	
-	vec3 n = normalize(csNormal);
-	vec3 e = normalize(csEyeDirection);
 	vec3 tn = normalize(texture2D(uNormal, TexUV).rgb * 2.0 - 1.0);
 	vec3 te = normalize(tsEyeDirection);
 
@@ -42,27 +40,17 @@ void main()
 	
 	// Iterate lights and add color for each light
 	for (int i = 0; i < MAX_NUM_LIGHTS; ++i) {
-		vec3 l = normalize(csLightDirection[i]);
 		vec3 tl = normalize(tsLightDirection[i]);
 
 		float dist = length(uLightPos[i] - wsPosition);
 
-		// Diffuse
-		float NdotL = clamp(dot(n, l), 0.0, 1.0);
-		diffuseColor += uLightColor[i] * LightPower * uLightColor[i].a * NdotL / (dist*dist);
-
-		// Specular
-		vec3 r = reflect(-l, n);
-		float EdotR = clamp(dot(e, r), 0.0, 1.0);
-		specularColor += uLightColor[i] * LightPower * uLightColor[i].a * pow(EdotR, 5.0) / (dist*dist);
-
 		// Diffuse - bump
-		NdotL = clamp(dot(tn, tl), 0.0, 1.0);
+		float NdotL = clamp(dot(tn, tl), 0.0, 1.0);
 		diffuseColor += uLightColor[i] * LightPower * uLightColor[i].a * NdotL / (dist*dist);
 
 		// Specular - bump
 		vec3 tr = reflect(-tl, tn);
-		EdotR = clamp(dot(te, tr), 0.0, 1.0);
+		float EdotR = clamp(dot(te, tr), 0.0, 1.0);
 		specularColor += uLightColor[i] * LightPower * uLightColor[i].a * pow(EdotR, 5.0) / (dist*dist);
 	}
 
