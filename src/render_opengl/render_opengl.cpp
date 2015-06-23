@@ -1192,6 +1192,7 @@ void RenderOpenGL::setupShaders()
 			glUniform1i(shader->uniform("uTex"), 0);
 			glUniform1i(shader->uniform("uShadowMap"), 1);
 			glUniform1i(shader->uniform("uNormal"), 2);
+			glUniform1i(shader->uniform("uLightmap"), 3);
 		}
 	}
 
@@ -1827,11 +1828,16 @@ void RenderOpenGL::recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel* a
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
 		AssimpMesh* mesh = am->meshes[(*it)];
 
-		glActiveTexture(GL_TEXTURE2);
-		if (am->materials[mesh->materialIndex]->normal == NULL) {
-			glBindTexture(GL_TEXTURE_2D, 0);
-		} else {
+		if (am->materials[mesh->materialIndex]->normal != NULL) {
+			glActiveTexture(GL_TEXTURE2);
 			glBindTexture(GL_TEXTURE_2D, am->materials[mesh->materialIndex]->normal->pixels);
+			glActiveTexture(GL_TEXTURE0);
+		}
+
+		if (am->materials[mesh->materialIndex]->lightmap != NULL) {
+			glActiveTexture(GL_TEXTURE3);
+			glBindTexture(GL_TEXTURE_2D, am->materials[mesh->materialIndex]->lightmap->pixels);
+			glActiveTexture(GL_TEXTURE0);
 		}
 
 		glActiveTexture(GL_TEXTURE0);
