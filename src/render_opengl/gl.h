@@ -32,13 +32,13 @@
 // (glBindAttribLocation)
 #define ATTRIB_POSITION 0         // vPosition
 #define ATTRIB_NORMAL 1           // vNormal
-#define ATTRIB_TEXUV 2            // vTexUV
-#define ATTRIB_BONEID 3           // vBoneIDs
-#define ATTRIB_BONEWEIGHT 4       // vBoneWeights
-#define ATTRIB_TEXTCOORD 5        // vCoord
-#define ATTRIB_COLOR 6            // vColor
-#define ATTRIB_TANGENT 7          // vTangent
-#define ATTRIB_BITANGENT 8        // vBitangent
+#define ATTRIB_TEXUV 2            // vTexUV, vTexUV1
+#define ATTRIB_BONEID 4           // vBoneIDs
+#define ATTRIB_BONEWEIGHT 5       // vBoneWeights
+#define ATTRIB_TEXTCOORD 6        // vCoord
+#define ATTRIB_COLOR 7            // vColor
+#define ATTRIB_TANGENT 8          // vTangent
+#define ATTRIB_BITANGENT 9        // vBitangent
 
 // Shader IDs
 // TODO: Should this be an enum instead?

@@ -8,6 +8,8 @@
 #include "../rage.h"
 
 
+#define UV_CHANNELS 2
+
 
 /**
 * VAO wrapper with software fallback
@@ -23,7 +25,7 @@ class GLVAO
 		GLuint position;
 		GLuint color;
 		GLuint normal;
-		GLuint texuv;
+		GLuint texuv[UV_CHANNELS];
 		GLuint boneid;
 		GLuint boneweight;
 		GLuint tangent;
@@ -44,7 +46,7 @@ class GLVAO
 		void setPosition(GLuint vbo);
 		void setColor(GLuint vbo);
 		void setNormal(GLuint vbo);
-		void setTexUV(GLuint vbo);
+		void setTexUV(GLuint vbo, unsigned int channel);
 		void setBoneId(GLuint vbo);
 		void setBoneWeight(GLuint vbo);
 		void setTangent(GLuint vbo);

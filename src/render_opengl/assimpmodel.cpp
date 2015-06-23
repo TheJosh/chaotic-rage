@@ -264,11 +264,13 @@ void AssimpModel::loadMeshes(bool opengl, const struct aiScene* sc)
 		}
 
 		// UVs
-		if (mesh->HasTextureCoords(0)) {
-			glGenBuffers(1, &buffer);
-			glBindBuffer(GL_ARRAY_BUFFER, buffer);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mTextureCoords[0], GL_STATIC_DRAW);
-			myMesh->vao->setTexUV(buffer);
+		for (unsigned int i = 0; i < UV_CHANNELS; ++i) {
+			if (mesh->HasTextureCoords(i)) {
+				glGenBuffers(1, &buffer);
+				glBindBuffer(GL_ARRAY_BUFFER, buffer);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mTextureCoords[i], GL_STATIC_DRAW);
+				myMesh->vao->setTexUV(buffer, i);
+			}
 		}
 
 		// Bone IDs and Weights

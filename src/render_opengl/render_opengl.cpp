@@ -1428,6 +1428,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment)
 	glBindAttribLocation(program, ATTRIB_POSITION, "vPosition");
 	glBindAttribLocation(program, ATTRIB_NORMAL, "vNormal");
 	glBindAttribLocation(program, ATTRIB_TEXUV, "vTexUV");
+	glBindAttribLocation(program, ATTRIB_TEXUV + 1, "vTexUV1");
 	glBindAttribLocation(program, ATTRIB_BONEID, "vBoneIDs");
 	glBindAttribLocation(program, ATTRIB_BONEWEIGHT, "vBoneWeights");
 	glBindAttribLocation(program, ATTRIB_TEXTCOORD, "vCoord");
