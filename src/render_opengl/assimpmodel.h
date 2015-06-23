@@ -108,10 +108,11 @@ class AssimpMaterial
 	public:
 		SpritePtr diffuse;
 		SpritePtr normal;
+		SpritePtr lightmap;
 
 	public:
 		AssimpMaterial():
-			diffuse(NULL), normal(NULL)
+			diffuse(NULL), normal(NULL), lightmap(NULL)
 			{}
 };
 

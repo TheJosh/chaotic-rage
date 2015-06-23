@@ -384,6 +384,13 @@ void AssimpModel::loadMaterials(Render3D* render, const struct aiScene* sc)
 			}
 		}
 
+		// Lightmap (e.g. Ambient Occlusion)
+		if (pMaterial->GetTextureCount(aiTextureType_LIGHTMAP) > 0) {
+			if (pMaterial->GetTexture(aiTextureType_LIGHTMAP, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
+				myMat->lightmap = this->loadTexture(render, &path);
+			}
+		}
+
 		this->materials.push_back(myMat);
 	}
 }
