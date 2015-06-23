@@ -5,8 +5,8 @@
 		<author> Anonymous </author>
 		<authoring_tool> Collada Exporter for Blender 2.6+, by Juan Linietsky (juan@codenix.com) </authoring_tool>
 	</contributor>
-	<created>2015-06-16T12:55:19Z     </created>
-	<modified>2015-06-16T12:55:19Z</modified>
+	<created>2015-06-24T08:46:09Z     </created>
+	<modified>2015-06-24T08:46:09Z</modified>
 	<unit meter="1.0" name="meter"/>
 	<up_axis>Z_UP</up_axis>
 </asset>
@@ -108,7 +108,7 @@
 						<color>  0.0 0.0 0.0 1.0  </color>
 					</emission>
 					<ambient>
-						<color>  0.0 0.0 0.0 1.0  </color>
+						<texture texture="id-fx_sampler-8" texcoord="CHANNEL1"/>
 					</ambient>
 					<diffuse>
 						<texture texture="id-fx_sampler-5" texcoord="CHANNEL1"/>
@@ -213,7 +213,7 @@
 						<color>  0.0 0.0 0.0 1.0  </color>
 					</emission>
 					<ambient>
-						<color>  0.0 0.0 0.0 1.0  </color>
+						<texture texture="id-fx_sampler-31" texcoord="CHANNEL1"/>
 					</ambient>
 					<diffuse>
 						<texture texture="id-fx_sampler-28" texcoord="CHANNEL1"/>
