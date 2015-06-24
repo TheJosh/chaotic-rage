@@ -209,6 +209,7 @@ void CommandLineArgs::process()
 					"  vid                Video\n"
 					"  weap               Weapons\n"
 					"  loadbones          Show bone structures during load\n"
+					"  loadmesh           Show mesh information during load\n"
 				;
 				exit(0);
 				break;

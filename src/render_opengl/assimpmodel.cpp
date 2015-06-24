@@ -223,6 +223,13 @@ void AssimpModel::loadMeshes(bool opengl, const struct aiScene* sc)
 
 		assert(mesh->mNumFaces * 3 < 65535);
 
+		if (debug_enabled("loadmesh")) {
+			cout << this->name << ":" << n;
+			cout << "; " << mesh->mNumFaces << " faces";
+			cout << "; " << mesh->mNumVertices << " vertices";
+			cout << endl;
+		}
+
 		// VAO
 		myMesh->vao = new GLVAO();
 
@@ -245,6 +252,7 @@ void AssimpModel::loadMeshes(bool opengl, const struct aiScene* sc)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Uint16) * mesh->mNumFaces * 3, faceArray, GL_STATIC_DRAW);
 		myMesh->vao->setIndex(buffer);
+		if (debug_enabled("loadmesh")) cout << string(4, ' ') << "Index -> #" << buffer << endl;
 		free(faceArray);
 
 		// Positions
@@ -253,6 +261,7 @@ void AssimpModel::loadMeshes(bool opengl, const struct aiScene* sc)
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mVertices, GL_STATIC_DRAW);
 			myMesh->vao->setPosition(buffer);
+			if (debug_enabled("loadmesh")) cout << string(4, ' ') << "Positions -> #" << buffer << endl;
 		}
 
 		// Normals
@@ -261,6 +270,7 @@ void AssimpModel::loadMeshes(bool opengl, const struct aiScene* sc)
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mNormals, GL_STATIC_DRAW);
 			myMesh->vao->setNormal(buffer);
+			if (debug_enabled("loadmesh")) cout << string(4, ' ') << "Normals -> #" << buffer << endl;
 		}
 
 		// UVs
@@ -270,24 +280,26 @@ void AssimpModel::loadMeshes(bool opengl, const struct aiScene* sc)
 				glBindBuffer(GL_ARRAY_BUFFER, buffer);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mTextureCoords[i], GL_STATIC_DRAW);
 				myMesh->vao->setTexUV(buffer, i);
+				if (debug_enabled("loadmesh")) cout << string(4, ' ') << "UVs " << i << " -> #" << buffer << endl;
 			}
 		}
 
 		// Bone IDs and Weights
 		if (mesh->HasBones()) {
 			this->loadBones(mesh, myMesh);
-
 			this->recenter = false;
 
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(Uint8)*4*mesh->mNumVertices, this->boneIds, GL_STATIC_DRAW);
 			myMesh->vao->setBoneId(buffer);
+			if (debug_enabled("loadmesh")) cout << string(4, ' ') << "Bone IDs -> #" << buffer << endl;
 
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*4*mesh->mNumVertices, this->boneWeights, GL_STATIC_DRAW);
 			myMesh->vao->setBoneWeight(buffer);
+			if (debug_enabled("loadmesh")) cout << string(4, ' ') << "Bone weights -> #" << buffer << endl;
 
 			this->freeBones();
 		}
@@ -299,11 +311,13 @@ void AssimpModel::loadMeshes(bool opengl, const struct aiScene* sc)
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mTangents, GL_STATIC_DRAW);
 			myMesh->vao->setTangent(buffer);
+			if (debug_enabled("loadmesh")) cout << string(4, ' ') << "Tangents -> #" << buffer << endl;
 
 			glGenBuffers(1, &buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mBitangents, GL_STATIC_DRAW);
 			myMesh->vao->setBitangent(buffer);
+			if (debug_enabled("loadmesh")) cout << string(4, ' ') << "Bitangents -> #" << buffer << endl;
 		}
 
 		myMesh->vao->unbind();
