@@ -175,7 +175,7 @@ namespace gcn
         }
 
         glBindAttribLocation(program, 0, "vPosition");
-        glBindAttribLocation(program, 1, "vTexUV");
+        glBindAttribLocation(program, 1, "vTexUV0");
 
         // Link
         glLinkProgram(program);
@@ -199,11 +199,11 @@ namespace gcn
         // Images
         shader_image = createShaderProgram(
             "attribute vec3 vPosition;"
-            "attribute vec2 vTexUV;"
+            "attribute vec2 vTexUV0;"
             "varying vec2 fTexUV;"
             "uniform mat4 uMVP;"
             "void main() {"
-                "gl_Position = uMVP * vec4(vPosition, 1.0); fTexUV = vTexUV;"
+                "gl_Position = uMVP * vec4(vPosition, 1.0); fTexUV = vTexUV0;"
             "}",
 
             "varying vec2 fTexUV;"

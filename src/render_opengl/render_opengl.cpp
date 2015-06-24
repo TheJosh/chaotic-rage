@@ -1351,11 +1351,11 @@ int RenderOpenGL::getSpriteHeight(SpritePtr sprite)
 **/
 static const char* pVS = "\
 attribute vec3 vPosition;   \n\
-attribute vec2 vTexUV;      \n\
+attribute vec2 vTexUV0;      \n\
 varying vec2 fTexUV;        \n\
 uniform mat4 uMVP;          \n\
 void main() {               \n\
-	gl_Position = uMVP * vec4(vPosition, 1.0); fTexUV = vTexUV;   \n\
+	gl_Position = uMVP * vec4(vPosition, 1.0); fTexUV = vTexUV0;   \n\
 }";
 
 /**
@@ -1523,7 +1523,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment)
 	// Bind attribs
 	glBindAttribLocation(program, ATTRIB_POSITION, "vPosition");
 	glBindAttribLocation(program, ATTRIB_NORMAL, "vNormal");
-	glBindAttribLocation(program, ATTRIB_TEXUV, "vTexUV");
+	glBindAttribLocation(program, ATTRIB_TEXUV + 0, "vTexUV0");
 	glBindAttribLocation(program, ATTRIB_TEXUV + 1, "vTexUV1");
 	glBindAttribLocation(program, ATTRIB_BONEID, "vBoneIDs");
 	glBindAttribLocation(program, ATTRIB_BONEWEIGHT, "vBoneWeights");

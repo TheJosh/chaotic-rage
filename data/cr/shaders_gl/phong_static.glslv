@@ -2,12 +2,12 @@
 
 in vec3 vPosition;
 in vec3 vNormal;
-in vec2 vTexUV;
+in vec2 vTexUV0;
 in vec2 vTexUV1;
 in vec3 vTangent;
 in vec3 vBitangent;
 
-out vec2 TexUV;
+out vec2 TexUV0;
 out vec2 TexUV1;
 out vec4 fShadowCoord;
 out float fDepth;
@@ -48,7 +48,7 @@ void main()
 		tsLightDirection[i] = TBN * csLightDirection[i];
 	}
 	
-	TexUV = vTexUV;
+	TexUV0 = vTexUV0;
 	TexUV1 = vTexUV1;
 	fShadowCoord = uDepthBiasMVP * vec4(vPosition, 1.0);
 	fDepth = gl_Position.z / 350.0;	// TODO: Dont hard-code with far plane distance, use a uniform!

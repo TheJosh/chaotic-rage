@@ -32,7 +32,7 @@
 // (glBindAttribLocation)
 #define ATTRIB_POSITION 0         // vPosition
 #define ATTRIB_NORMAL 1           // vNormal
-#define ATTRIB_TEXUV 2            // vTexUV, vTexUV1
+#define ATTRIB_TEXUV 2            // vTexUV0, vTexUV1
 #define ATTRIB_BONEID 4           // vBoneIDs
 #define ATTRIB_BONEWEIGHT 5       // vBoneWeights
 #define ATTRIB_TEXTCOORD 6        // vCoord

@@ -3,11 +3,11 @@
 
 in vec3 vPosition;
 in vec3 vNormal;
-in vec2 vTexUV;
+in vec2 vTexUV0;
 in vec4 vBoneIDs;
 in vec4 vBoneWeights;
 
-out vec2 TexUV;
+out vec2 TexUV0;
 out vec4 fShadowCoord;
 out float fDepth;
 out vec3 csNormal;
@@ -46,7 +46,7 @@ void main()
 	
 	csNormal = (mat3(uV) * uMN * vNormal).xyz;
 	
-	TexUV = vTexUV;
+	TexUV0 = vTexUV0;
 	fShadowCoord = uDepthBiasMVP * BoneTransform * vec4(vPosition, 1.0);
 	fDepth = gl_Position.z / 350.0;	// TODO: Dont hard-code with far plane distance, use a uniform!
 }

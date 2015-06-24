@@ -1,6 +1,6 @@
 #define MAX_NUM_LIGHTS 4
 
-in vec2 TexUV;
+in vec2 TexUV0;
 in vec4 fShadowCoord;
 in float fDepth;
 in vec3 csNormal;
@@ -27,7 +27,7 @@ void main()
 	vec3 e = normalize(csEyeDirection);
 
 	// Basic material
-	vec4 matDiffuseColor = texture2D(uTex, TexUV);
+	vec4 matDiffuseColor = texture2D(uTex, TexUV0);
 	vec4 matAmbientColor = uAmbient * matDiffuseColor;
 	vec4 matSpecularColor = vec4(0.3, 0.3, 0.3, 1.0);
 
