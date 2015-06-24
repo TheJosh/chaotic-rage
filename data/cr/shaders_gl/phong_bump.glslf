@@ -33,8 +33,7 @@ void main()
 	vec3 te = normalize(tsEyeDirection);
 
 	// Basic material
-	vec4 matDiffuseColor = texture2D(uTex, TexUV0);
-	vec4 lightmapColor = texture2D(uLightmap, TexUV1);
+	vec4 matDiffuseColor = texture2D(uTex, TexUV0) * texture2D(uLightmap, TexUV0);
 	vec4 matAmbientColor = uAmbient * matDiffuseColor;
 	vec4 matSpecularColor = vec4(0.3, 0.3, 0.3, 1.0);
 
@@ -57,7 +56,7 @@ void main()
 		specularColor += uLightColor[i] * LightPower * uLightColor[i].a * pow(EdotR, 5.0) / (dist*dist);
 	}
 
-	diffuseColor = matDiffuseColor * diffuseColor + lightmapColor;
+	diffuseColor = matDiffuseColor * diffuseColor;
 	specularColor = matSpecularColor * specularColor;
 
 	// Fog
