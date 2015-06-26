@@ -1354,8 +1354,6 @@ class DaeExporter:
 		self.writel(S_ASSET,2,'<author> Anonymous </author>') #Who made Collada, the FBI ?
 		self.writel(S_ASSET,2,'<authoring_tool> Collada Exporter for Blender 2.6+, by Juan Linietsky (juan@codenix.com) </authoring_tool>') #Who made Collada, the FBI ?
 		self.writel(S_ASSET,1,'</contributor>')
-		self.writel(S_ASSET,1,'<created>'+time.strftime("%Y-%m-%dT%H:%M:%SZ     ")+'</created>')
-		self.writel(S_ASSET,1,'<modified>'+time.strftime("%Y-%m-%dT%H:%M:%SZ")+'</modified>')
 		self.writel(S_ASSET,1,'<unit meter="1.0" name="meter"/>')
 		self.writel(S_ASSET,1,'<up_axis>Z_UP</up_axis>')
 		self.writel(S_ASSET,0,'</asset>')
