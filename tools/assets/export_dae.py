@@ -45,6 +45,7 @@ import shutil
 import bpy
 import bmesh
 from mathutils import Vector, Matrix
+import re;
 
 #according to collada spec, order matters
 S_ASSET=0
@@ -102,6 +103,10 @@ def strarr(arr):
 		s+=" "+str(x)
 	s+=" "
 	return s
+
+def string2name(s):
+	return re.sub(r"[^-_a-zA-Z0-9]", '', s)
+
 
 class DaeExporter:
 
@@ -250,6 +255,11 @@ class DaeExporter:
 		specular_tex=None
 		emission_tex=None
 		normal_tex=None
+		ambient_uv=None
+		diffuse_uv=None
+		specular_uv=None
+		emission_uv=None
+		normal_uv=None
 		for i in range(len(material.texture_slots)):
 			ts=material.texture_slots[i]
 			if (not ts):
@@ -286,14 +296,19 @@ class DaeExporter:
 
 			if (ts.use_map_ambient and ambient_tex==None):
 				ambient_tex=sampler_sid
+				ambient_uv=ts.uv_layer
 			if (ts.use_map_color_diffuse and diffuse_tex==None):
 				diffuse_tex=sampler_sid
+				diffuse_uv=ts.uv_layer
 			if (ts.use_map_color_spec and specular_tex==None):
 				specular_tex=sampler_sid
+				specular_uv=ts.uv_layer
 			if (ts.use_map_emit and emission_tex==None):
 				emission_tex=sampler_sid
+				emission_uv=ts.uv_layer
 			if (ts.use_map_normal and normal_tex==None):
 				normal_tex=sampler_sid
+				normal_uv=ts.uv_layer
 
 		self.writel(S_FX,3,'<technique sid="common">')
 		shtype="blinn"
@@ -302,28 +317,28 @@ class DaeExporter:
 
 		self.writel(S_FX,5,'<emission>')
 		if (emission_tex!=None):
-			self.writel(S_FX,6,'<texture texture="'+emission_tex+'" texcoord="CHANNEL1"/>')
+			self.writel(S_FX,6,'<texture texture="'+emission_tex+'" texcoord="UV-'+string2name(emission_uv)+'"/>')
 		else:
 			self.writel(S_FX,6,'<color>'+numarr_alpha(material.diffuse_color,material.emit)+' </color>') # not totally right but good enough
 		self.writel(S_FX,5,'</emission>')
 
 		self.writel(S_FX,5,'<ambient>')
 		if (ambient_tex!=None):
-			self.writel(S_FX,6,'<texture texture="'+ambient_tex+'" texcoord="CHANNEL1"/>')
+			self.writel(S_FX,6,'<texture texture="'+ambient_tex+'" texcoord="UV-'+string2name(ambient_uv)+'"/>')
 		else:
 			self.writel(S_FX,6,'<color>'+numarr_alpha(self.scene.world.ambient_color,material.ambient)+' </color>')
 		self.writel(S_FX,5,'</ambient>')
 
 		self.writel(S_FX,5,'<diffuse>')
 		if (diffuse_tex!=None):
-			self.writel(S_FX,6,'<texture texture="'+diffuse_tex+'" texcoord="CHANNEL1"/>')
+			self.writel(S_FX,6,'<texture texture="'+diffuse_tex+'" texcoord="UV-'+string2name(diffuse_uv)+'"/>')
 		else:
 			self.writel(S_FX,6,'<color>'+numarr_alpha(material.diffuse_color,material.diffuse_intensity)+'</color>')
 		self.writel(S_FX,5,'</diffuse>')
 
 		self.writel(S_FX,5,'<specular>')
 		if (specular_tex!=None):
-			self.writel(S_FX,6,'<texture texture="'+specular_tex+'" texcoord="CHANNEL1"/>')
+			self.writel(S_FX,6,'<texture texture="'+specular_tex+'" texcoord="UV-'+string2name(specular_uv)+'"/>')
 		else:
 			self.writel(S_FX,6,'<color>'+numarr_alpha(material.specular_color,material.specular_intensity)+'</color>')
 		self.writel(S_FX,5,'</specular>')
@@ -351,7 +366,7 @@ class DaeExporter:
 		self.writel(S_FX,5,'<technique profile="FCOLLADA">')
 		if (normal_tex):
 			self.writel(S_FX,6,'<bump bumptype="NORMALMAP">')
-			self.writel(S_FX,7,'<texture texture="'+normal_tex+'" texcoord="CHANNEL1"/>')
+			self.writel(S_FX,7,'<texture texture="'+normal_tex+'" texcoord="UV-'+string2name(normal_uv)+'"/>')
 			self.writel(S_FX,6,'</bump>')
 
 		self.writel(S_FX,5,'</technique>')
@@ -827,6 +842,7 @@ class DaeExporter:
 		if (skeyindex==-1):
 			self.mesh_cache[node.data]=meshdata
 
+		meshdata["uv_textures"]=mesh.uv_textures
 
 		# Export armature data (if armature exists)
 
@@ -971,7 +987,12 @@ class DaeExporter:
 			self.writel(S_NODES,il+1,'<bind_material>')
 			self.writel(S_NODES,il+2,'<technique_common>')
 			for m in meshdata["material_assign"]:
-				self.writel(S_NODES,il+3,'<instance_material symbol="'+m[1]+'" target="#'+m[0]+'"/>')
+				self.writel(S_NODES,il+3,'<instance_material symbol="'+m[1]+'" target="#'+m[0]+'">')
+				index = 0
+				for uvlayer in meshdata["uv_textures"]:
+					self.writel(S_NODES,il+4,'<bind_vertex_input input_semantic="TEXCOORD" input_set="'+str(index)+'" semantic="UV-'+string2name(uvlayer.name)+'" />')
+					index += 1
+				self.writel(S_NODES,il+3,'</instance_material>')
 
 			self.writel(S_NODES,il+2,'</technique_common>')
 			self.writel(S_NODES,il+1,'</bind_material>')
