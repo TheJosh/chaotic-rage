@@ -59,7 +59,7 @@ DialogNewGameEnvironment::~DialogNewGameEnvironment()
 
 
 /**
-* Sub-dialog fromtime_of_day the new game dialog for mucking about with weapons
+* Sub-dialog fromtime_of_day the new game dialog for mucking about with environment
 **/
 gcn::Container * DialogNewGameEnvironment::setup()
 {
@@ -148,6 +148,11 @@ gcn::Container * DialogNewGameEnvironment::setup()
 void DialogNewGameEnvironment::action(const gcn::ActionEvent& actionEvent)
 {
 	this->gs->time_of_day = atof(this->txt_timeofday->getText().c_str());
+	if (this->gs->time_of_day < this->gs->getTimeOfDayMin()) {
+		this->gs->time_of_day = this->gs->getTimeOfDayMin();
+	} else if (this->gs->time_of_day > this->gs->getTimeOfDayMax()) {
+		this->gs->time_of_day = this->gs->getTimeOfDayMax();
+	}
 	this->gs->day_night_cycle = this->chk_daynight->isSelected();
 	this->gs->rain_flow = atoi(this->txt_rain->getText().c_str());
 	this->gs->snow_flow = atoi(this->txt_snow->getText().c_str());

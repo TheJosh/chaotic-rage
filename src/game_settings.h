@@ -39,6 +39,8 @@ class GameSettings
 		* Time of day and day-night cycle
 		**/
 		float time_of_day;
+		float getTimeOfDayMax() { return 1.0f; }
+		float getTimeOfDayMin() { return 0.0f; }
 		bool day_night_cycle;
 
 		/**
@@ -49,10 +51,8 @@ class GameSettings
 		bool random_weather;
 		bool gametype_weather;
 
-	public:
 		GameSettings(int rounds = 20);
 
-	public:
 		void switchViewMode();
 		int getRounds() { return rounds; }
 

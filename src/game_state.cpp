@@ -394,8 +394,8 @@ void GameState::preGame()
 	this->time_cycle = this->gs->time_of_day < 0.5f ? -0.01f : 0.01f;
 	if (!gs->day_night_cycle) {
 		GEng()->render->setAmbient(glm::vec4(this->time_of_day, this->time_of_day, this->time_of_day, 1.0f));
-		this->doTorch();
 	}
+	this->doTorch();
 
 	// Weather
 	this->weather = new Weather(this, this->map->width, this->map->height, this->map->weather);
@@ -623,14 +623,14 @@ void GameState::update(int delta)
 **/
 void GameState::doTimeOfDay(float delta)
 {
-	if (this->time_of_day > 1.0f || this->time_of_day < 0.0f) {
-		this->time_cycle = 0.0f - this->time_cycle;
+	if (this->time_of_day > this->gs->getTimeOfDayMax() || this->time_of_day < this->gs->getTimeOfDayMin()) {
+		// Handle midnight and midday
+		this->time_cycle = -this->time_cycle;
 	}
 	this->time_of_day += this->time_cycle * delta / 1000.0f;
 
 	// Make it darker if it rains
 	float rain_flow = this->weather->getRainFlow();
-	
 	float ambient = MAX(0.0f, this->time_of_day - 0.5f * rain_flow);
 	GEng()->render->setAmbient(glm::vec4(ambient, ambient, ambient, 1.0f));
 }
@@ -641,7 +641,7 @@ void GameState::doTimeOfDay(float delta)
 **/
 void GameState::doTorch()
 {
-	if (this->time_of_day < 0.3f) {
+	if (this->time_of_day < this->gs->getTimeOfDayMax() * 0.3f) {
 		GEng()->render->setTorch(true);
 	} else {
 		GEng()->render->setTorch(false);
