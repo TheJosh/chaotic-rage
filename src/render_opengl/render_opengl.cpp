@@ -635,6 +635,94 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 
 
 /**
+* Load a 1D texture
+**/
+SpritePtr RenderOpenGL::load1D(string filename, Mod* mod)
+{
+	SpritePtr tex;
+	SDL_Surface* surf;
+	GLenum texture_format;
+	GLenum target_format;
+
+	CHECK_OPENGL_ERROR;
+	DEBUG("vid", "Loading 1D texture '%s'", filename.c_str());
+
+	tex = new Sprite();
+
+	glGenTextures(1, &tex->pixels);
+	glBindTexture(GL_TEXTURE_1D, tex->pixels);
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, this->min_filter);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, this->mag_filter);
+
+	// Open rwops
+	SDL_RWops* rw = mod->loadRWops(filename);
+	if (rw == NULL) {
+		glDeleteTextures(1, &tex->pixels);
+		delete(tex);
+		return NULL;
+	}
+
+	// Read file
+	surf = IMG_Load_RW(rw, 0);
+	if (surf == NULL) {
+		glDeleteTextures(1, &tex->pixels);
+		delete(tex);
+		SDL_RWclose(rw);
+		return NULL;
+	}
+
+	// Check height is exactly 1 pixel
+	if (surf->h != 1) {
+		glDeleteTextures(1, &tex->pixels);
+		delete(tex);
+		SDL_RWclose(rw);
+		return NULL;
+	}
+
+	target_format = GL_RGBA;
+
+	if (surf->format->BytesPerPixel == 4) {
+		if (surf->format->Rmask == 0x000000ff) {
+			texture_format = GL_RGBA;
+		} else {
+			texture_format = 0;
+			assert(0); // TODO GLES removed: texture_format = GL_BGRA;
+		}
+
+	} else if (surf->format->BytesPerPixel == 3) {
+		if (surf->format->Rmask == 0x000000ff) {
+			texture_format = GL_RGB;
+		} else {
+			texture_format = 0;
+			assert(0); // TODO GLES removed: texture_format = GL_BGR;
+		}
+
+	} else {
+		glDeleteTextures(1, &tex->pixels);
+		delete(tex);
+		SDL_FreeSurface(surf);
+		SDL_RWclose(rw);
+		return NULL;
+	}
+
+	#ifdef GLES
+		target_format = texture_format;
+	#endif
+
+	// Load image into] cubemap
+	glTexImage1D(GL_TEXTURE_1D, 0, target_format, surf->w, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
+
+	// Free img
+	SDL_FreeSurface(surf);
+	SDL_RWclose(rw);
+
+	CHECK_OPENGL_ERROR;
+	return tex;
+}
+
+
+/**
 * Load a cubemap
 **/
 SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, Mod * mod)

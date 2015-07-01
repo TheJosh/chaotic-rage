@@ -100,6 +100,11 @@ class Render3D : public Render
 		virtual SpritePtr loadCubemap(string filename_base, string filename_ext, Mod * mod) = 0;
 
 		/**
+		* Loads a 1D tex from a mod into memory
+		**/
+		virtual SpritePtr load1D(string filename, Mod* mod) = 0;
+
+		/**
 		* Is it a 3D renderer?
 		**/
 		virtual bool is3D() { return true; }
