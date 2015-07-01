@@ -652,8 +652,8 @@ SpritePtr RenderOpenGL::load1D(string filename, Mod* mod)
 	glGenTextures(1, &tex->pixels);
 	glBindTexture(GL_TEXTURE_1D, tex->pixels);
 
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, this->min_filter);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, this->mag_filter);
+	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, this->min_filter);
+	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, this->mag_filter);
 
 	// Open rwops
 	SDL_RWops* rw = mod->loadRWops(filename);
@@ -716,7 +716,9 @@ SpritePtr RenderOpenGL::load1D(string filename, Mod* mod)
 	// Free img
 	SDL_FreeSurface(surf);
 	SDL_RWclose(rw);
-
+	
+	glGenerateMipmap(GL_TEXTURE_1D);
+	
 	CHECK_OPENGL_ERROR;
 	return tex;
 }
@@ -1288,6 +1290,11 @@ void RenderOpenGL::setupShaders()
 	glUseProgram(this->shaders[SHADER_WATER]->p());
 	glUniform4fv(this->shaders[SHADER_WATER]->uniform("uAmbient"), 1, glm::value_ptr(this->ambient));
 
+	// Skybox day/night texture
+	glUseProgram(this->shaders[SHADER_SKYBOX]->p());
+	glUniform1i(this->shaders[SHADER_SKYBOX]->uniform("uDayNight"), 1);
+	glUniform1f(this->shaders[SHADER_SKYBOX]->uniform("uTimeOfDay"), st->time_of_day);
+	
 	CHECK_OPENGL_ERROR;
 }
 
@@ -2266,6 +2273,12 @@ void RenderOpenGL::skybox()
 
 	GLShader* s = this->shaders[SHADER_SKYBOX];
 
+	if (st->map->skybox_daynight) {
+		glActiveTexture(GL_TEXTURE0 + 1);
+		glBindTexture(GL_TEXTURE_1D, st->map->skybox_daynight->pixels);
+	}
+
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, st->map->skybox->pixels);
 	glUseProgram(s->p());
 	glCullFace(GL_FRONT);
