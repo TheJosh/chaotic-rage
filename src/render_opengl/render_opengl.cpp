@@ -1550,7 +1550,9 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment)
 	glValidateProgram(program);
 	glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
 	if (! success) {
-		GL_LOG("Program didn't validate (program %u)", program);
+		GLchar infolog[1024];
+		glGetProgramInfoLog(program, 1024, NULL, infolog);
+		GL_LOG("Program didn't validate (program %u)\n%s", program, infolog);
 		return NULL;
 	}
 
