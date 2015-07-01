@@ -41,6 +41,7 @@ class GameSettings
 		float time_of_day;
 		float getTimeOfDayMax() { return 1.0f; }
 		float getTimeOfDayMin() { return 0.0f; }
+		float getTimeOfDayStep() { return 0.01f; }
 		bool day_night_cycle;
 
 		/**

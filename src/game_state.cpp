@@ -391,7 +391,7 @@ void GameState::preGame()
 
 	// Time of day cycle
 	this->time_of_day = this->gs->time_of_day;
-	this->time_cycle = this->gs->time_of_day < 0.5f ? -0.01f : 0.01f;
+	this->time_cycle = this->gs->time_of_day < 0.5f ? -this->gs->getTimeOfDayStep() : this->gs->getTimeOfDayStep();
 	if (!gs->day_night_cycle) {
 		GEng()->render->setAmbient(glm::vec4(this->time_of_day, this->time_of_day, this->time_of_day, 1.0f));
 	}
@@ -623,10 +623,12 @@ void GameState::update(int delta)
 **/
 void GameState::doTimeOfDay(float delta)
 {
-	if (this->time_of_day > this->gs->getTimeOfDayMax() || this->time_of_day < this->gs->getTimeOfDayMin()) {
-		// Handle midnight and midday
-		this->time_cycle = -this->time_cycle;
+	if (this->time_of_day > this->gs->getTimeOfDayMax() && this->time_cycle > 0.0f) {
+		this->time_cycle = -this->gs->getTimeOfDayStep();
+	} else if (this->time_of_day < this->gs->getTimeOfDayMin() && this->time_cycle < 0.0f) {
+		this->time_cycle = this->gs->getTimeOfDayStep();
 	}
+
 	this->time_of_day += this->time_cycle * delta / 1000.0f;
 
 	// Make it darker if it rains
