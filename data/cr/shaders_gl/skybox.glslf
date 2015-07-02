@@ -7,5 +7,5 @@ void main()
 {
 	vec4 skyColor = textureCube(uTex, fTexUV);
 	vec4 todColor = texture(uDayNight, uTimeOfDay);
-	gl_FragColor = skyColor;// * todColor; // FIXME
+	gl_FragColor = skyColor * todColor;
 }
