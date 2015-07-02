@@ -629,6 +629,7 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 	// Load and create mipmaps
 	glTexImage2D(GL_TEXTURE_2D, 0, target_format, sprite->orig->w, sprite->orig->h, 0, texture_format, GL_UNSIGNED_BYTE, sprite->orig->pixels);
 	glGenerateMipmap(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	CHECK_OPENGL_ERROR
 }
@@ -718,7 +719,8 @@ SpritePtr RenderOpenGL::load1D(string filename, Mod* mod)
 	SDL_RWclose(rw);
 	
 	glGenerateMipmap(GL_TEXTURE_1D);
-	
+	glBindTexture(GL_TEXTURE_1D, 0);
+
 	CHECK_OPENGL_ERROR;
 	return tex;
 }
@@ -829,6 +831,7 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 	}
 
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 
 	CHECK_OPENGL_ERROR;
 	return cubemap;
