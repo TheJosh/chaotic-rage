@@ -13,9 +13,11 @@ uniform mat4 uMV;
 uniform mat3 uN;
 uniform sampler2D uTex;
 uniform sampler2D uShadowMap;
+uniform sampler1D uDayNight;
 uniform vec3 uLightPos[MAX_NUM_LIGHTS];
 uniform vec4 uLightColor[MAX_NUM_LIGHTS];
 uniform vec4 uAmbient;
+uniform float uTimeOfDay;
 
 const float LOG2 = 1.442695;
 
@@ -27,8 +29,9 @@ void main()
 	vec3 e = normalize(csEyeDirection);
 
 	// Basic material
+	vec4 todColor = texture(uDayNight, uTimeOfDay);
 	vec4 matDiffuseColor = texture2D(uTex, TexUV0);
-	vec4 matAmbientColor = uAmbient * matDiffuseColor;
+	vec4 matAmbientColor = todColor * matDiffuseColor;
 	vec4 matSpecularColor = vec4(0.3, 0.3, 0.3, 1.0);
 
 	vec4 diffuseColor = vec4(0.0, 0.0, 0.0, 0.0);
@@ -64,7 +67,7 @@ void main()
 	float fogDensity = 1.5;
 	float fogFactor = exp2(-fogDensity * fogDensity * fDepth * fDepth * LOG2);
 	fogFactor = clamp(fogFactor, 0.0, 1.0);
-	vec4 fogColor = vec4(0.5, 0.5, 0.6, 1.0);
+	vec4 fogColor = todColor * vec4(0.5, 0.5, 0.6, 1.0);
 
 	gl_FragColor = mix(fogColor, (matAmbientColor + diffuseColor + specularColor) * visibility, fogFactor);
 }

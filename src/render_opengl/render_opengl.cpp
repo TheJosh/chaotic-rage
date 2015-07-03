@@ -1293,6 +1293,8 @@ void RenderOpenGL::setupShaders()
 			glUniform1i(shader->uniform("uShadowMap"), 1);
 			glUniform1i(shader->uniform("uNormal"), 2);
 			glUniform1i(shader->uniform("uLightmap"), 3);
+			glUniform1i(shader->uniform("uDayNight"), 4);
+			glUniform1f(shader->uniform("uTimeOfDay"), st->time_of_day);
 		}
 	}
 
@@ -2277,12 +2279,6 @@ void RenderOpenGL::skybox()
 
 	GLShader* s = this->shaders[SHADER_SKYBOX];
 
-	if (st->map->skybox_daynight) {
-		glActiveTexture(GL_TEXTURE0 + 1);
-		glBindTexture(GL_TEXTURE_1D, st->map->skybox_daynight->pixels);
-	}
-
-	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, st->map->skybox->pixels);
 	glUseProgram(s->p());
 	glCullFace(GL_FRONT);
