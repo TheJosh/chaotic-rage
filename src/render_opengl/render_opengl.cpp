@@ -1224,6 +1224,13 @@ void RenderOpenGL::preGame()
 	this->createSkybox();
 	this->createShadowBuffers();
 
+	// Texture for ambient values based on time of day
+	this->ambient_daynight = this->load1D("textures/ambient_daynight.png", GEng()->mm->getSupplOrBase());
+	if (this->ambient_daynight) {
+		glActiveTexture(GL_TEXTURE0 + 4);
+		glBindTexture(GL_TEXTURE_1D, this->ambient_daynight->pixels);
+	}
+
 	// Init the viewport for single screen only once
 	if (this->st->num_local == 1) {
 		this->mainViewport(1, 1);
@@ -1295,7 +1302,7 @@ void RenderOpenGL::setupShaders()
 
 	// Skybox day/night texture
 	glUseProgram(this->shaders[SHADER_SKYBOX]->p());
-	glUniform1i(this->shaders[SHADER_SKYBOX]->uniform("uDayNight"), 1);
+	glUniform1i(this->shaders[SHADER_SKYBOX]->uniform("uDayNight"), 4);
 	glUniform1f(this->shaders[SHADER_SKYBOX]->uniform("uTimeOfDay"), st->time_of_day);
 	
 	CHECK_OPENGL_ERROR;
@@ -1320,6 +1327,8 @@ void RenderOpenGL::postGame()
 		delete(this->lights.at(i));
 	}
 	this->lights.clear();
+
+	this->freeSprite(this->ambient_daynight);
 }
 
 

@@ -123,6 +123,8 @@ class RenderOpenGL : public Render3D
 		bool torch;
 		glm::vec4 ambient;
 
+		SpritePtr ambient_daynight;
+
 	public:
 		RenderOpenGL(GameState * st, RenderOpenGLSettings* settings);
 		virtual ~RenderOpenGL();
