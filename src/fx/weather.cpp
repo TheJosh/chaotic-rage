@@ -50,7 +50,9 @@ Weather::Weather(GameState* st, float map_size_x, float map_size_z, bool enabled
 
 	// Rain group
 	this->rain_group = SPK::Group::create(this->rain_model, 50000);
-	this->rain_group->setRenderer(static_cast<Render3D*>(GEng()->render)->renderer_lines);
+	if (GEng()->render->is3D()) {
+		this->rain_group->setRenderer(static_cast<Render3D*>(GEng()->render)->renderer_lines);
+	}
 	this->rain_group->addEmitter(this->rain_emitter);
 
 

@@ -80,7 +80,7 @@ void CommandLineArgs::process()
 					"   \t--mod-list              List all available mods, and exit\n"
 					"   \t--main-mod-path PATH    Path to the main 'cr' mod\n"
 					"\n"
-					" -r\t--render SYSTEM         Set the render system. Options: 'opengl', 'debug', 'null'\n"
+					" -r\t--render SYSTEM         Set the render system. Options: 'opengl', 'debug', 'ascii', ''null'\n"
 					" -w\t--window[=W,H]          Display video in a window. Optional resolution\n"
 					" -f\t--fullscreen            Display video in fullscreen\n"
 					" -u\t--audio SYSTEM          Set the audio system. Options: 'sdl', 'null'\n"
