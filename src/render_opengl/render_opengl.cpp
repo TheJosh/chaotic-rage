@@ -105,9 +105,10 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->gui_font = NULL;
 
 	this->settings = NULL;
-	this->setSettings(settings);
+	this->setSettings(new RenderOpenGLSettings());
 
 	this->shaders_loaded = false;
+	this->ambient_daynight = NULL;
 }
 
 
@@ -1226,7 +1227,7 @@ void RenderOpenGL::preGame()
 
 	// Texture for ambient values based on time of day
 	this->ambient_daynight = this->load1D("textures/ambient_daynight.png", GEng()->mm->getSupplOrBase());
-	if (this->ambient_daynight) {
+	if (this->ambient_daynight != NULL) {
 		glActiveTexture(GL_TEXTURE0 + 4);
 		glBindTexture(GL_TEXTURE_1D, this->ambient_daynight->pixels);
 	}
