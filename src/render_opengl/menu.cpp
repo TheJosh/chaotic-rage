@@ -7,6 +7,7 @@
 #include <math.h>
 
 #include "gl.h"
+#include "gl_debug.h"
 #include "menu.h"
 #include "render_opengl.h"
 #include "animplay.h"
@@ -298,6 +299,7 @@ void Menu::updateUI()
 	glUseProgram(render->shaders[SHADER_BASIC]->p());
 	glUniformMatrix4fv(render->shaders[SHADER_BASIC]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
 	this->render->renderSprite(bg, 0, ((static_cast<float>(render->real_height - render->real_width)) / 2.0f), render->real_width, render->real_width);
+	CHECK_OPENGL_ERROR;
 
 	if (this->model != NULL && this->play != NULL) {
 		glEnable(GL_DEPTH_TEST);
@@ -316,21 +318,26 @@ void Menu::updateUI()
 		modelMatrix = glm::rotate(modelMatrix, 15.0f + model_rot/3.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 		modelMatrix = glm::scale(modelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
 		this->render->renderAnimPlay(this->play, modelMatrix);
+		
+		CHECK_OPENGL_ERROR;
 	}
 
 	// Menu items
 	glDisable(GL_DEPTH_TEST);
 	this->menuRender();
+	CHECK_OPENGL_ERROR;
 
 	// Logo in top-left
 	glEnable(GL_BLEND);
 	glUseProgram(render->shaders[SHADER_BASIC]->p());
 	glUniformMatrix4fv(render->shaders[SHADER_BASIC]->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(render->ortho));
 	this->render->renderSprite(logo, 30, 30);
+	CHECK_OPENGL_ERROR;
 
 	// Render guichan and process events
 	gui->logic();
 	gui->draw();
+	CHECK_OPENGL_ERROR;
 
 	#ifdef SDL1_VIDEO
 		SDL_GL_SwapBuffers();
