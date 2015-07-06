@@ -91,6 +91,9 @@ int main(int argc, char ** argv)
 	delete(ui);
 	ui = NULL;
 
+	// Load rendering data used by all games and maps
+	GEng()->render->loadCommonData();
+
 	gm = new GameManager(st);
 
 	// For now, Emscripten doesn't have a menu

@@ -169,6 +169,11 @@ class Render
 		**/
 		virtual void setAmbient(glm::vec4 ambient) {}
 
+		/**
+		* Load data common across all games
+		**/
+		virtual void loadCommonData() {}
+
 	public:
 		Render(GameState * st);
 		virtual ~Render() {}

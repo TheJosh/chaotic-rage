@@ -1179,6 +1179,20 @@ void RenderOpenGL::renderSprite(GLuint texture, int x, int y, int w, int h)
 
 
 /**
+* Load data which is common across multiple games
+**/
+void RenderOpenGL::loadCommonData()
+{
+	this->ambient_daynight = this->load1D("textures/ambient_daynight.png", GEng()->mm->getBase());
+	if (this->ambient_daynight == NULL) {
+		reportFatalError("Unable to read 'ambient_daynight.png' texture");
+	}
+	glActiveTexture(GL_TEXTURE0 + 4);
+	glBindTexture(GL_TEXTURE_1D, this->ambient_daynight->pixels);
+}
+
+
+/**
 * Various bits of set up before a game begins
 * Some state variables get clobbered by the menu, so we have to set them here instead.
 **/
@@ -1221,13 +1235,6 @@ void RenderOpenGL::preGame()
 	this->createWater();
 	this->createSkybox();
 	this->createShadowBuffers();
-
-	// Texture for ambient values based on time of day
-	this->ambient_daynight = this->load1D("textures/ambient_daynight.png", GEng()->mm->getSupplOrBase());
-	if (this->ambient_daynight != NULL) {
-		glActiveTexture(GL_TEXTURE0 + 4);
-		glBindTexture(GL_TEXTURE_1D, this->ambient_daynight->pixels);
-	}
 
 	// Init the viewport for single screen only once
 	if (this->st->num_local == 1) {
@@ -1327,8 +1334,6 @@ void RenderOpenGL::postGame()
 		delete(this->lights.at(i));
 	}
 	this->lights.clear();
-
-	this->freeSprite(this->ambient_daynight);
 }
 
 
