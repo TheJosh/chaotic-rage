@@ -349,11 +349,6 @@ int Map::load(string name, Render *render, Mod* insideof)
 		this->skybox = render3d->loadCubemap("skybox_", ".jpg", this->mod);
 		this->skybox_size = cfg_getvec3(cfg_sub, "size");
 		this->skybox_inf = cfg_getbool(cfg_sub, "inf");
-
-		char* daynight = cfg_getstr(cfg_sub, "daynight");
-		if (daynight) {
-			this->skybox_daynight = render3d->load1D(daynight, this->mod);
-		}
 	}
 
 	// Zones
