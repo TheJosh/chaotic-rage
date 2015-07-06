@@ -1187,8 +1187,11 @@ void RenderOpenGL::loadCommonData()
 	if (this->ambient_daynight == NULL) {
 		reportFatalError("Unable to read 'ambient_daynight.png' texture");
 	}
+
 	glActiveTexture(GL_TEXTURE0 + 4);
 	glBindTexture(GL_TEXTURE_1D, this->ambient_daynight->pixels);
+	glTexParameterf(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glActiveTexture(GL_TEXTURE0);
 }
 
 

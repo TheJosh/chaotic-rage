@@ -623,9 +623,11 @@ void GameState::update(int delta)
 **/
 void GameState::doTimeOfDay(float delta)
 {
-	if (this->time_of_day > this->gs->getTimeOfDayMax() && this->time_cycle > 0.0f) {
+	if (this->time_of_day > this->gs->getTimeOfDayMax()) {
+		this->time_of_day = this->gs->getTimeOfDayMax();
 		this->time_cycle = -this->gs->getTimeOfDayStep();
-	} else if (this->time_of_day < this->gs->getTimeOfDayMin() && this->time_cycle < 0.0f) {
+	} else if (this->time_of_day < this->gs->getTimeOfDayMin()) {
+		this->time_of_day = this->gs->getTimeOfDayMin();
 		this->time_cycle = this->gs->getTimeOfDayStep();
 	}
 
