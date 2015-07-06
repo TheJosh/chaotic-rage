@@ -654,9 +654,6 @@ SpritePtr RenderOpenGL::load1D(string filename, Mod* mod)
 	glGenTextures(1, &tex->pixels);
 	glBindTexture(GL_TEXTURE_1D, tex->pixels);
 
-	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, this->min_filter);
-	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, this->mag_filter);
-
 	// Open rwops
 	SDL_RWops* rw = mod->loadRWops(filename);
 	if (rw == NULL) {
