@@ -1,0 +1,44 @@
+1	Kampanjo
+2	Unu ludanto
+3	Divida ekrano
+4	Retludo
+5	Agordoj
+6	Modifoj
+7	Helpo
+8	Eksiĝi
+9	Tipo de ludo
+10	Bataliloj
+11	Medio
+12	Mapo
+13	Tipo de unuo
+14	Vida reĝimo
+15	Gastigi retludon
+16	Komenci unu ludantan ludon
+17	Komenci dividan ekranan ludon
+18	Komenci kampanjan ludon
+19	Normala bataliloj de unuoj
+20	Bataliloj de normala ludo
+21	Konservi agordojn de bataliloj
+22	Horo de tago
+23	Tago/nokto ciklo
+24	Kvanto de pluvo
+25	Kvanto de neĝo
+26	Hazarda vetero
+27	Permesi ŝanĝi veteron per tipo de ludo
+28	Konservi argodojn de medio
+29	Rekta
+30	Loka
+31	Interreto
+32	Nomo de gastigo
+33	Aktualigi liston
+34	Ligi al ludo
+35	MSAA
+36	Tekstura filtrilo
+37	Lingvo
+38	Tutekrana
+39	Larĝo de ekrano
+40	Alto de ekrano
+41	Konservi
+42	Ĉu eksiĝi?
+43	Jes
+44	Ne
