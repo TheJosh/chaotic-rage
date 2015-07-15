@@ -95,9 +95,10 @@ std::vector<Lang>* getAvailableLangs()
 {
 	std::vector<Lang> *out = new std::vector<Lang>();
 	out->push_back(Lang("en", "English"));
-	out->push_back(Lang("en_Pirate", "Pirate"));
 	out->push_back(Lang("es", "Español"));
+	out->push_back(Lang("eo", "Esperanto"));
 	out->push_back(Lang("fr", "Français"));
+	out->push_back(Lang("en_Pirate", "Pirate"));
 	out->push_back(Lang("pt_br", "Português Brasileiro"));
 	out->push_back(Lang("sv", "Svenska"));
 #ifndef RELEASE
