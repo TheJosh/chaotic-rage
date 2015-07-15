@@ -1,0 +1,61 @@
+#
+# Esperanto, la internacia lingvo
+#
+
+# Main menu
+MENU_CAMPAIGN     Kampanjo
+MENU_SINGLE       Unu ludanto
+MENU_SPLIT        Divida ekrano
+MENU_NETWORK      Retludo
+MENU_SETTINGS     Agordoj
+MENU_MODS         Modifoj
+MENU_HELP         Helpo
+MENU_QUIT         Eksiĝi
+
+# New game menu
+NEWGAME_TYPE             Tipo de ludo
+NEWGAME_WEAPONS          Bataliloj
+NEWGAME_ENVIRONMENT      Medio
+NEWGAME_MAP              Mapo
+NEWGAME_UNIT             Tipo de unuo
+NEWGAME_VIEW             Vida reĝimo
+NEWGAME_HOST             Gastigi retludon
+NEWGAME_START_SINGLE     Komenci unu ludantan ludon
+NEWGAME_START_SPLIT      Komenci dividan ekranan ludon
+NEWGAME_START_CAMPAIGN   Komenci kampanjan ludon
+
+# Weapon menu
+WEAPONS_STANDARD_UNIT    Normala bataliloj de unuoj
+WEAPONS_STANDARD_GAME    Bataliloj de normala ludo
+WEAPONS_SAVE             Konservi agordojn de bataliloj
+
+# Environment menu
+ENVIRONMENT_TIMEOFDAY    Horo de tago
+ENVIRONMENT_DAY_NIGHT    Tago/nokto ciklo
+ENVIRONMENT_RAIN         Kvanto de pluvo
+ENVIRONMENT_SNOW         Kvanto de neĝo
+ENVIRONMENT_RND_WEATHER  Hazarda vetero
+ENVIRONMENT_GT_WEATHER   Permesi ŝanĝi veteron per tipo de ludo
+ENVIRONMENT_SAVE         Konservi argodojn de medio
+
+# Network menu
+NETWORK_DIRECT           Rekta
+NETWORK_LOCAL            Loka
+NETWORK_INTERNET         Interreto
+NETWORK_HOSTNAME         Nomo de gastigo
+NETWORK_REFRESH_LIST     Aktualigi liston
+NETWORK_JOIN_GAME        Ligi al ludo
+
+# Settings menu
+SETTINGS_MSAA            MSAA
+SETTINGS_TEX_FILTER      Tekstura filtrilo
+SETTINGS_LANGUAGE        Lingvo
+SETTINGS_FULLSCREEN      Tutekrana
+SETTINGS_WIDTH           Larĝo de ekrano
+SETTINGS_HEIGHT          Alto de ekrano
+SETTINGS_SAVE            Konservi
+
+# In game
+GAME_QUIT                Ĉu eksiĝi?
+GAME_YES                 Jes
+GAME_NO                  Ne
