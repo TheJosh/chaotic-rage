@@ -19,7 +19,7 @@ NEWGAME_ENVIRONMENT      Medio
 NEWGAME_MAP              Mapo
 NEWGAME_UNIT             Tipo de unuo
 NEWGAME_VIEW             Vida reĝimo
-NEWGAME_HOST             Gastigi retludo
+NEWGAME_HOST             Gastigi retludon
 NEWGAME_START_SINGLE     Komenci unu ludantan ludon
 NEWGAME_START_SPLIT      Komenci dividan ekranan ludon
 NEWGAME_START_CAMPAIGN   Komenci kampanjan ludon
