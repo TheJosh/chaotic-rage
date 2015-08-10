@@ -150,7 +150,7 @@ void Unit::init(UnitType *ut, GameState *st, Faction fac, btTransform & loc)
 	}
 	delete(spawn);
 
-	// Create the initial pickup used for invinciblity
+	// Create the initial pickup used for invincibility
 	if (! Unit::initial_pickup) {
 		Unit::initial_pickup = new PickupType();
 		Unit::initial_pickup->type = PICKUP_TYPE_POWERUP;
@@ -449,7 +449,7 @@ float Unit::getWeaponZoom()
 
 
 /**
-* Return the number of weapons currently in posession
+* Return the number of weapons currently in possession
 **/
 unsigned int Unit::getNumWeapons()
 {
@@ -889,7 +889,7 @@ void Unit::addActivePickup(PickupType* pt)
 
 
 /**
-* Does the uint currently have the given pickup?
+* Does the unit currently have the given pickup?
 **/
 bool Unit::hasActivePickup(PickupType* pt)
 {
@@ -998,7 +998,7 @@ void Unit::doDrop()
 void Unit::applyPickupAdjust(PickupTypeAdjust* adj)
 {
 	this->health *= adj->health;
-	this->takeDamage(0.0f);		// check the player isn't dead.
+	this->takeDamage(0.0f);		// check that the player isn't dead.
 
 	this->params.max_speed *= adj->max_speed;
 	this->params.melee_damage *= adj->melee_damage;

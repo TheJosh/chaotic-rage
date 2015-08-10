@@ -275,6 +275,8 @@ UnitType::UnitType()
 	this->params.melee_range = 0.0f;
 	this->params.special_delay = 0;
 	this->params.special_cooldown = 0;
+	this->params.invincible = false;
+	this->params.weapon_damage = 0.0f;
 }
 
 UnitType::~UnitType()

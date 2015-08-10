@@ -38,11 +38,13 @@ bool loadLang(const char* name)
 	char* input = mod->loadText(filename);
 	if (input == NULL) {
 		delete mod;
-		std::cerr << "Error: Could not load language file: " << buf << std::endl;
+		std::cerr << "Error: Could not load language file: " << filename << std::endl;
 		return false;
 	}
 
 	// Parse strings
+	memset(buf, 0, BUFFER_MAX);
+	memset(buf2, 0, BUFFER_MAX);
 	strings.clear();
 	char* ptr = input;
 	char* curr = buf;
