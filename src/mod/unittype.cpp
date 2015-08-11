@@ -267,6 +267,8 @@ UnitType::UnitType()
 	this->mod = NULL;
 	this->special_weapon = NULL;
 	this->col_shape = NULL;
+	this->id = 0;
+	this->node_head = NULL;
 
 	this->params.max_speed = 0.0f;
 	this->params.melee_damage = 0.0f;

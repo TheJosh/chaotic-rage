@@ -98,6 +98,11 @@ GameState::GameState()
 	this->game_time = 0;
 	this->num_local = 0;
 	this->eid_next = 1;
+	this->time_cycle = 0.0f;
+	this->time_of_day = 0.0f;
+	this->last_game_result = 0;
+	this->map = NULL;
+	this->weather = NULL;
 
 	for (unsigned int i = 0; i < MAX_LOCAL; i++) {
 		this->local_players[i] = new PlayerState(this);
