@@ -168,8 +168,10 @@ class MousePickHandler : public MouseEventHandler {
 			// Return result back to Lua code
 			if (result) {
 				lua_rawgeti(this->L, LUA_REGISTRYINDEX, this->func);
-				new_vector3(L, hitLocation.x(), hitLocation.y(), hitLocation.z());
-				lua_pcall(this->L, 1, 0, 0);
+				new_vector3(this->L, hitLocation.x(), hitLocation.y(), hitLocation.z());
+				if (lua_pcall(this->L, 1, 0, 0) != 0) {
+					reportFatalError("Lua boo boo: " + std::string(lua_tostring(this->L, -1)));
+				}
 			}
 
 			// Cleanup
