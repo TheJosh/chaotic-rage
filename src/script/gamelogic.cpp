@@ -520,6 +520,7 @@ void register_lua_functions()
 	load_physics_lib(L);
 	load_entity_lib(L);
 	load_world_lib(L);
+	load_mod_lib(L);
 
 	// These do not, but should
 	load_hudlabel_lib(L);

@@ -934,6 +934,9 @@
     <ClCompile Include="..\..\src\render_opengl\render_opengl.cpp">
       <Filter>src\render_opengl</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\script\lua_mod_lib.cpp">
+      <Filter>src\script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\game.h">

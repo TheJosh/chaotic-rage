@@ -271,6 +271,7 @@
     <ClCompile Include="..\..\src\lua\lzio.c" />
     <ClCompile Include="..\..\src\script\lua_dialog_lib.cpp" />
     <ClCompile Include="..\..\src\script\lua_entity_lib.cpp" />
+    <ClCompile Include="..\..\src\script\lua_mod_lib.cpp" />
     <ClCompile Include="..\..\src\script\lua_physics_lib.cpp" />
     <ClCompile Include="..\..\src\script\lua_random_lib.cpp" />
     <ClCompile Include="..\..\src\script\lua_world_lib.cpp" />

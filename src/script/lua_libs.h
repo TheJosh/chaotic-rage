@@ -50,3 +50,4 @@ void load_dialog_lib(lua_State *L);
 void load_entity_lib(lua_State *L);
 void load_world_lib(lua_State *L);
 void load_physics_lib(lua_State *L);
+void load_mod_lib(lua_State *L);

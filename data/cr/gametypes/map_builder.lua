@@ -44,29 +44,18 @@ end
 
 -- Mouse pick handler for adding weapons
 function pickWeapon(x, y, z)
-	local types = {
-		"pistol",
-		"sniper",
-		"poopgun",
-		"rocket_launcher",
-		"box_thorn",
-		"phychic_disruptor",
-		"machinegun",
-		"shotgun",
-		"flamethrower",
-		"fireball_of_death",
-		"timed_mine",
-		"proxi_mine",
-		"remote_mine",
-		"remote_trig",
-		"blackhole",
-		"repeller"
-	}
+	local types = mod.getAllWeaponTypes()
+	local keys = {}
+	local vals = {}
+	for k,v in pairs(types) do
+		table.insert(keys, k)
+		table.insert(vals, v)
+	end
 
-	typeselect = ui.addDialogButtonBar("Weapon", types,
+	typeselect = ui.addDialogButtonBar("Weapon", vals,
 		function(typeid)
-			game.addPickupXZ("weapon_" .. types[typeid], x, z)
-			map_config = map_config .. string.format("pickup {  type = %q  x = %.2f  y = %.2f  }\n", "weapon_" .. types[typeid], x, z)
+			game.addPickupXZ("weapon_" .. keys[typeid], x, z)
+			map_config = map_config .. string.format("pickup {  type = %q  x = %.2f  y = %.2f  }\n", "weapon_" .. keys[typeid], x, z)
 			
 			add_timer(100, function()
 				typeselect:close()
