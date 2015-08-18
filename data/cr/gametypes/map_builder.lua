@@ -9,7 +9,7 @@ map_config = ""
 function pickVehicle(x, y, z)
 	local types = {"tank", "ute"}
 
-	typeselect = ui.addDialogButtonBar("Vehicle type", types,
+	typeselect = ui.addDialogButtonBar("Vehicle", types,
 		function(typeid)
 			game.addVehicleXZ(types[typeid], x, z)
 			map_config = map_config .. string.format("vehicle {  type = %q  x = %.2f  y = %.2f  }\n", types[typeid], x, z)
@@ -30,10 +30,65 @@ function pickObject(x, y, z)
 		"table", "trashbox"
 	}
 
-	typeselect = ui.addDialogButtonBar("Object type", types,
+	typeselect = ui.addDialogButtonBar("Object", types,
 		function(typeid)
 			game.addObjectXZ(types[typeid], x, z)
 			map_config = map_config .. string.format("object {  type = %q  x = %.2f  y = %.2f  }\n", types[typeid], x, z)
+			
+			add_timer(100, function()
+				typeselect:close()
+			end)
+		end
+	)
+end
+
+-- Mouse pick handler for adding weapons
+function pickWeapon(x, y, z)
+	local types = {
+		"pistol",
+		"sniper",
+		"poopgun",
+		"rocket_launcher",
+		"box_thorn",
+		"phychic_disruptor",
+		"machinegun",
+		"shotgun",
+		"flamethrower",
+		"fireball_of_death",
+		"timed_mine",
+		"proxi_mine",
+		"remote_mine",
+		"remote_trig",
+		"blackhole",
+		"repeller"
+	}
+
+	typeselect = ui.addDialogButtonBar("Weapon", types,
+		function(typeid)
+			game.addPickupXZ("weapon_" .. types[typeid], x, z)
+			map_config = map_config .. string.format("pickup {  type = %q  x = %.2f  y = %.2f  }\n", "weapon_" .. types[typeid], x, z)
+			
+			add_timer(100, function()
+				typeselect:close()
+			end)
+		end
+	)
+end
+
+-- Mouse pick handler for adding pickups
+function pickPickup(x, y, z)
+	local types = {
+		"ammo_current",
+		"medbox",
+		"double_time",
+		"chaotic",
+		"rage",
+	}
+
+	typeselect = ui.addDialogButtonBar("Pickup", types,
+		function(typeid)
+			game.addPickupXZ(types[typeid], x, z)
+			map_config = map_config .. string.format("pickup {  type = %q  x = %.2f  y = %.2f  }\n", types[typeid], x, z)
 			
 			add_timer(100, function()
 				typeselect:close()
@@ -48,6 +103,8 @@ function createToolbar()
 	toolbar = ui.addDialogButtonBar("Toolbar", {
 		"Add vehicle",
 		"Add object",
+		"Add weapon",
+		"Add pickup",
 		"Show config",
 		"Close toolbar"
 	}, function(btn)
@@ -60,6 +117,10 @@ function createToolbar()
 		elseif btn == 2 then
 			mouse_pick(pickObject)
 		elseif btn == 3 then
+			mouse_pick(pickWeapon)
+		elseif btn == 4 then
+			mouse_pick(pickPickup)
+		elseif btn == 5 then
 			local dialog = ui.addDialogTextBox("Map Config")
 			dialog.text = map_config
 		end
