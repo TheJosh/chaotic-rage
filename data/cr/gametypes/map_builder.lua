@@ -6,16 +6,13 @@ map_config = ""
 
 
 -- Mouse pick handler for adding vehicles
-function pickVehicle(coord)
-	typeselect = ui.addDialogListPrompt(
-		"Vehicle type",
-		"Vehicle type",
-		{"Tank", "Ute"},
+function pickVehicle(x, y, z)
+	local types = {"tank", "ute"}
+
+	typeselect = ui.addDialogButtonBar("Vehicle type", types,
 		function(typeid)
-			types = {"tank", "ute"};
-			
-			game.addVehicleXZ(types[typeid], coord.x, coord.z)
-			map_config = map_config .. string.format("vehicle {  type = %q  x = %.2f  y = %.2f  }\n", types[typeid], coord.x, coord.z)
+			game.addVehicleXZ(types[typeid], x, z)
+			map_config = map_config .. string.format("vehicle {  type = %q  x = %.2f  y = %.2f  }\n", types[typeid], x, z)
 			
 			add_timer(100, function()
 				typeselect:close()
@@ -25,11 +22,24 @@ function pickVehicle(coord)
 end
 
 -- Mouse pick handler for adding objects
-function pickObject(coord)
-	prompt_text("Object type", function(type)
-		game.addObjectXZ(type, coord.x, coord.z)
-		map_config = map_config .. string.format("object {  type = %q  x = %.2f  y = %.2f  }\n", type, coord.x, coord.z)
-	end)
+function pickObject(x, y, z)
+	local types = {
+		"crate_china", "crate_military", "crate_sealed",
+		"war_fence_metal",
+		"concrete_pipe_straight",
+		"table", "trashbox"
+	}
+
+	typeselect = ui.addDialogButtonBar("Object type", types,
+		function(typeid)
+			game.addObjectXZ(types[typeid], x, z)
+			map_config = map_config .. string.format("object {  type = %q  x = %.2f  y = %.2f  }\n", types[typeid], x, z)
+			
+			add_timer(100, function()
+				typeselect:close()
+			end)
+		end
+	)
 end
 
 
