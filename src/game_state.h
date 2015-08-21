@@ -148,7 +148,7 @@ class GameState
 
 		// Debris
 		Entity* deadButNotBuried(Entity* e, AnimPlay* play);
-		void scatterDebris(Entity* e, unsigned int num, float force, vector<AssimpModel*>* debris_models);
+		void scatterDebris(Entity* e, unsigned int num, float force, const vector<AssimpModel*>& debris_models);
 
 		// Network bits (EID = entity-id; slots are for players)
 		EID getNextEID();

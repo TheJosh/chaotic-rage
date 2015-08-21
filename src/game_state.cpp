@@ -300,12 +300,10 @@ Entity* GameState::deadButNotBuried(Entity* e, AnimPlay* play)
 /**
 * Scatter some debris in random directions
 **/
-void GameState::scatterDebris(Entity* e, unsigned int num, float force, vector<AssimpModel*>* debris_models)
+void GameState::scatterDebris(Entity* e, unsigned int num, float force, const vector<AssimpModel*>& debris_models)
 {
-	unsigned int limit = debris_models->size() - 1;
-
 	for (unsigned int i = 0; i <= num; ++i) {
-		AssimpModel *model = debris_models->at(getRandom(0, limit));
+		AssimpModel *model = debris_models.at(getRandom(1, debris_models.size()) - 1);
 
 		AnimPlay play(model);
 		Decaying* d = new Decaying(this, e->getTransform(), &play, 1.0f);
