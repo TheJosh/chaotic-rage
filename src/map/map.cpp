@@ -323,7 +323,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 
 		// Load normal data, if specified
 		char* normal_file = cfg_getstr(cfg_sub, "normal");
-		if (normal_file == NULL) {
+		if (normal_file != NULL && strlen(normal_file) != 0) {
 			heightmap->normal = this->render->loadSprite(std::string(normal_file), this->mod);
 			if (heightmap->normal == NULL) {
 				cerr << "Failed to load heightmap normal image '" << std::string(normal_file) << "'" << endl;

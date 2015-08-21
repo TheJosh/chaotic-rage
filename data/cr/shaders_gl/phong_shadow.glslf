@@ -12,6 +12,7 @@ uniform mat4 uMVP;
 uniform mat4 uMV;
 uniform mat3 uN;
 uniform sampler2D uTex;
+uniform sampler2D uNormal;
 uniform sampler2D uShadowMap;
 uniform sampler1D uDayNight;
 uniform vec3 uLightPos[MAX_NUM_LIGHTS];

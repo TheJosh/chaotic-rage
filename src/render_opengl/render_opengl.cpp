@@ -895,7 +895,6 @@ void RenderOpenGL::createHeightmap(Heightmap* heightmap)
 				u.x() * v.y() - u.y() * v.x()
 			);
 
-
 			// First cell on the row has two extra verticies
 			if (nX == 0) {
 				flX = static_cast<float>(nX);
@@ -1421,7 +1420,8 @@ void RenderOpenGL::loadShaders()
 	this->shaders[SHADER_ENTITY_BONES] = loadProgram(base, "phong_bones", "phong");
 	this->shaders[SHADER_ENTITY_STATIC] = loadProgram(base, "phong_static", "phong");
 	this->shaders[SHADER_ENTITY_STATIC_BUMP] = loadProgram(base, "phong_static", "phong_bump");
-	this->shaders[SHADER_TERRAIN] = loadProgram(base, "phong_static", "phong_shadow");
+	this->shaders[SHADER_TERRAIN_PLAIN] = loadProgram(base, "phong_static", "phong_shadow");
+	this->shaders[SHADER_TERRAIN_NORMALMAP] = loadProgram(base, "phong_normalmap", "phong_shadow");
 	this->shaders[SHADER_WATER] = loadProgram(base, "water");
 	this->shaders[SHADER_TEXT] = loadProgram(base, "text");
 	this->shaders[SHADER_SKYBOX] = loadProgram(base, "skybox");
@@ -2317,19 +2317,28 @@ void RenderOpenGL::skybox()
 **/
 void RenderOpenGL::terrain()
 {
-	CHECK_OPENGL_ERROR;
+	GLShader* s;
 
-	GLShader* s = this->shaders[SHADER_TERRAIN];
+	CHECK_OPENGL_ERROR;
 
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, this->shadow_depth_tex);
 	glActiveTexture(GL_TEXTURE0);
 
-	glUseProgram(s->p());
-
 	// Heightmaps
 	for (vector<Heightmap*>::iterator it = this->st->map->heightmaps.begin(); it != this->st->map->heightmaps.end(); ++it) {
 		Heightmap* heightmap = (*it);
+
+		if (heightmap->getBigNormal() == NULL) {
+			s = this->shaders[SHADER_TERRAIN_PLAIN];
+		} else {
+			s = this->shaders[SHADER_TERRAIN_NORMALMAP];
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, heightmap->getBigNormal()->pixels);
+			glActiveTexture(GL_TEXTURE0);
+		}
+
+		glUseProgram(s->p());
 
 		glBindTexture(GL_TEXTURE_2D, heightmap->getBigTexture()->pixels);
 
@@ -2358,6 +2367,8 @@ void RenderOpenGL::terrain()
 	}
 
 	// Geomerty meshes
+	s = this->shaders[SHADER_TERRAIN_PLAIN];
+	glUseProgram(s->p());
 	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); ++it) {
 		MapMesh* mm = (*it);
 

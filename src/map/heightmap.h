@@ -78,6 +78,11 @@ class Heightmap {
 		* Return the bigtexture if set
 		**/
 		SpritePtr getBigTexture() { return terrain; }
+		
+		/**
+		* Return the bigtexture if set
+		**/
+		SpritePtr getBigNormal() { return normal; }
 
 		/**
 		* Return the coordinate to position the center of the heightmap
