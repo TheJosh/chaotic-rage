@@ -37,6 +37,14 @@ void handleEvents(GameState *st)
 		if (event.type == SDL_QUIT) {
 			st->gameOver();
 
+		} else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_PRINTSCREEN) {
+			// Note on Linux this only works when used also with SHIFT or CTRL.
+			screenshot_num++;
+			char buf[BUFFER_MAX];
+			snprintf(buf, BUFFER_MAX, "screenshot%i.bmp", screenshot_num);
+			dynamic_cast<Render3D*>(GEng()->render)->saveScreenshot(getUserDataDir() + std::string(buf));
+			st->addHUDMessage(ALL_SLOTS, "Saved ", buf);
+
 		} else if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.sym) {
 				case SDLK_ESCAPE:
@@ -49,25 +57,6 @@ void handleEvents(GameState *st)
 						} else {
 							GEng()->remDialog(d);
 						}
-					}
-					break;
-
-				case SDLK_PRINTSCREEN:
-					{
-						screenshot_num++;
-						char buf[BUFFER_MAX];
-						snprintf(buf, BUFFER_MAX, "%i", screenshot_num);
-
-						string filename = getUserDataDir();
-						filename.append("screenshot");
-						filename.append(buf);
-						filename.append(".bmp");
-						dynamic_cast<Render3D*>(GEng()->render)->saveScreenshot(filename);
-
-						filename = "screenshot";
-						filename.append(buf);
-						filename.append(".bmp");
-						st->addHUDMessage(ALL_SLOTS, "Saved ", filename);
 					}
 					break;
 
