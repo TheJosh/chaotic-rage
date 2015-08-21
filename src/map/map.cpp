@@ -283,8 +283,8 @@ int Map::load(string name, Render *render, Mod* insideof)
 		}
 
 		// Get data filename
-		char* data = cfg_getstr(cfg_sub, "data");
-		if (data == NULL) {
+		char* data_file = cfg_getstr(cfg_sub, "data");
+		if (data_file == NULL) {
 			cerr << "Heightmap config does not have 'data' field set" << endl;
 			cfg_free(cfg);
 			return 0;
@@ -301,9 +301,10 @@ int Map::load(string name, Render *render, Mod* insideof)
 		// Create heightmap
 		Heightmap* heightmap = new Heightmap(sizeX, sizeZ, scaleY, glm::vec3(posX, posY, posZ));
 
-		// Load data
-		if (! heightmap->loadIMG(this->mod, std::string(data))) {
-			cerr << "Failed to load heightmap data image '" << std::string(data) << "'" << endl;
+		// Load height data
+		heightmap->data = heightmap->loadIMG(this->mod, std::string(data_file), &heightmap->sx, &heightmap->sz);
+		if (heightmap->data == NULL) {
+			cerr << "Failed to load heightmap data image '" << std::string(data_file) << "'" << endl;
 			delete heightmap;
 			cfg_free(cfg);
 			return 0;

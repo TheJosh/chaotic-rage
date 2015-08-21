@@ -27,10 +27,8 @@ static bool isPowerOfTwo (unsigned int x)
 
 /**
 * Take the heightmap image and turn it into a data array
-*
-* TODO: Rejig this so we don't use SDL (e.g. prebuild byte array)
 **/
-bool Heightmap::loadIMG(Mod* mod, string filename)
+float* Heightmap::loadIMG(Mod* mod, string filename, int *imW, int *imH)
 {
 	int nX, nZ;
 	Uint8 r,g,b;
@@ -40,26 +38,30 @@ bool Heightmap::loadIMG(Mod* mod, string filename)
 	// Create rwops
 	rw = mod->loadRWops(filename);
 	if (rw == NULL) {
-		return false;
+		return NULL;
 	}
 
 	// Load image file
 	surf = IMG_Load_RW(rw, 0);
 	if (surf == NULL) {
 		SDL_RWclose(rw);
-		return false;
+		return NULL;
 	}
 
 	// Heightmaps need to be powerOfTwo + 1
 	if (!isPowerOfTwo(surf->w - 1) || !isPowerOfTwo(surf->h - 1)) {
 		SDL_RWclose(rw);
 		SDL_FreeSurface(surf);
-		return false;
+		return NULL;
 	}
 
-	this->data = new float[surf->w * surf->h];
-	this->sx = surf->w;
-	this->sz = surf->h;
+	if (imW) *imW = surf->w;
+	if (imH) *imH = surf->h;
+
+	float* data = new float[surf->w * surf->h];
+	if (!data) {
+		return NULL;
+	}
 
 	for (nZ = 0; nZ < this->sz; nZ++) {
 		for (nX = 0; nX < this->sx; nX++) {
@@ -67,14 +69,14 @@ bool Heightmap::loadIMG(Mod* mod, string filename)
 			Uint32 pixel = getPixel(surf, nX, nZ);
 			SDL_GetRGB(pixel, surf->format, &r, &g, &b);
 
-			this->data[nZ * this->sx + nX] = r / 255.0f * this->scale;
+			data[nZ * this->sx + nX] = r / 255.0f * this->scale;
 
 		}
 	}
 
 	SDL_RWclose(rw);
 	SDL_FreeSurface(surf);
-	return true;
+	return data;
 }
 
 

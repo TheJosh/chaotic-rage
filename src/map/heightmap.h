@@ -19,7 +19,9 @@ class GLVAO;
 * A 3D struture represented by a 2D array of height (Y) values.
 **/
 class Heightmap {
-	private:
+	friend class Map;
+
+	protected:
 		// Physical size
 		float sizeX;
 		float sizeZ;
@@ -33,7 +35,7 @@ class Heightmap {
 
 		glm::vec3 pos;
 
-		// Data array
+		// Data arrays
 		float* data;
 
 		// Physics object
@@ -58,7 +60,7 @@ class Heightmap {
 		/**
 		* Load height data from an image
 		**/
-		bool loadIMG(Mod* mod, string filename);
+		float* loadIMG(Mod* mod, string filename, int *imW, int *imH);
 
 		/**
 		* Create regid body for bullet physics
