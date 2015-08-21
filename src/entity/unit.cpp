@@ -812,12 +812,14 @@ void Unit::die()
 		GEng()->audio->playSound(snd, false, this);
 	}
 
-	// Fling some body parts around
 	if (!this->uc->death_debris.empty()) {
+		// Fling some body parts around
 		this->st->scatterDebris(this, 3, 5.0f, this->uc->death_debris);
+		this->del = true;
+	} else {
+		// No body parts - just die
+		this->st->deadButNotBuried(this, this->anim);
 	}
-
-	this->st->deadButNotBuried(this, this->anim);
 }
 
 
