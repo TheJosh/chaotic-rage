@@ -65,6 +65,11 @@ class Heightmap {
 		float* loadIMG(Mod* mod, string filename, int *imW, int *imH);
 
 		/**
+		* Load height data from an image
+		**/
+		float* loadRAW16(Mod* mod, string filename, int sx, int sz);
+
+		/**
 		* Create regid body for bullet physics
 		**/
 		btRigidBody* createRigidBody();

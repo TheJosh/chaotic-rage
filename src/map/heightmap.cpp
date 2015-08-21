@@ -19,12 +19,6 @@
 using namespace std;
 
 
-static bool isPowerOfTwo (unsigned int x)
-{
-	return ((x != 0) && ((x & (~x + 1)) == x));
-}
-
-
 /**
 * Take the heightmap image and turn it into a data array
 **/
@@ -45,13 +39,6 @@ float* Heightmap::loadIMG(Mod* mod, string filename, int *imW, int *imH)
 	surf = IMG_Load_RW(rw, 0);
 	if (surf == NULL) {
 		SDL_RWclose(rw);
-		return NULL;
-	}
-
-	// Heightmaps need to be powerOfTwo + 1
-	if (!isPowerOfTwo(surf->w - 1) || !isPowerOfTwo(surf->h - 1)) {
-		SDL_RWclose(rw);
-		SDL_FreeSurface(surf);
 		return NULL;
 	}
 
@@ -76,6 +63,40 @@ float* Heightmap::loadIMG(Mod* mod, string filename, int *imW, int *imH)
 
 	SDL_RWclose(rw);
 	SDL_FreeSurface(surf);
+	return data;
+}
+
+
+/**
+* Take a raw heightmap image and load it into the data array.
+* Input should be 16-bit ints.
+* If exporting from L3DT, use 16-bit full scale.
+**/
+float* Heightmap::loadRAW16(Mod* mod, string filename, int sx, int sz)
+{
+	Sint64 len;
+
+	Uint8* binary = mod->loadBinary(filename, &len);
+	if (len != (2 * sx * sz)) {
+		free(binary);
+		return NULL;
+	}
+
+	float* data = new float[sx * sz];
+	if (!data) {
+		free(binary);
+		return NULL;
+	}
+
+	Uint8 *in = binary;
+	float* out = data;
+	while (len) {
+		unsigned int val = (in[1]<<8) | in[0];
+		*out++ = (float)val / 65535.0f * this->scale;
+		in += 2; len -= 2;
+	}
+
+	free(binary);
 	return data;
 }
 

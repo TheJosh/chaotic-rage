@@ -129,6 +129,9 @@ static cfg_opt_t mesh_opts[] =
 static cfg_opt_t heightmap_opts[] =
 {
 	CFG_STR((char*) "data", ((char*)""), CFGF_NONE),
+	CFG_STR((char*) "data-type", ((char*)"img"), CFGF_NONE),
+	CFG_INT((char*) "data-raw-sx", 0, CFGF_NONE),
+	CFG_INT((char*) "data-raw-sz", 0, CFGF_NONE),
 	CFG_STR((char*) "normal", ((char*)""), CFGF_NONE),
 	CFG_STR((char*) "texture", ((char*)""), CFGF_NONE),
 	CFG_FLOAT((char*) "scale-y", 4.0f, CFGF_NONE),
@@ -200,6 +203,12 @@ Map::Map(GameState * st)
 
 Map::~Map()
 {
+}
+
+
+static bool isPowerOfTwo (unsigned int x)
+{
+	return ((x != 0) && ((x & (~x + 1)) == x));
 }
 
 
@@ -285,7 +294,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 
 		// Get data filename
 		char* data_file = cfg_getstr(cfg_sub, "data");
-		if (data_file == NULL) {
+		if (data_file[0] == '\0') {
 			cerr << "Heightmap config does not have 'data' field set" << endl;
 			cfg_free(cfg);
 			return 0;
@@ -302,10 +311,34 @@ int Map::load(string name, Render *render, Mod* insideof)
 		// Create heightmap
 		Heightmap* heightmap = new Heightmap(sizeX, sizeZ, scaleY, glm::vec3(posX, posY, posZ));
 
-		// Load height data
-		heightmap->data = heightmap->loadIMG(this->mod, std::string(data_file), &heightmap->sx, &heightmap->sz);
+		if (strcmp(cfg_getstr(cfg_sub, "data-type"), "img") == 0) {
+			// Load an image (red channel 0 - 255)
+			heightmap->data = heightmap->loadIMG(this->mod, std::string(data_file), &heightmap->sx, &heightmap->sz);
+
+		} else if (strcmp(cfg_getstr(cfg_sub, "data-type"), "raw16int") == 0) {
+			// Load a raw data file
+			heightmap->sx = cfg_getint(cfg_sub, "data-raw-sx");
+			heightmap->sz = cfg_getint(cfg_sub, "data-raw-sz");
+			heightmap->data = heightmap->loadRAW16(this->mod, std::string(data_file), heightmap->sx, heightmap->sz);
+
+		} else {
+			cerr << "Invalid data type; expected 'img' or 'raw16int'" << endl;
+			delete heightmap;
+			cfg_free(cfg);
+			return 0;
+		}
+
+		// Heightmaps need to be powerOfTwo + 1
+		if (!isPowerOfTwo(heightmap->sx - 1) || !isPowerOfTwo(heightmap->sz - 1)) {
+			cerr << "Heightmap must be power-of-two plus one" << endl;
+			delete heightmap;
+			cfg_free(cfg);
+			return 0;
+		}
+
+		// Ensure that something was loaded
 		if (heightmap->data == NULL) {
-			cerr << "Failed to load heightmap data image '" << std::string(data_file) << "'" << endl;
+			cerr << "Failed to load heightmap data '" << std::string(data_file) << "'" << endl;
 			delete heightmap;
 			cfg_free(cfg);
 			return 0;
@@ -323,7 +356,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 
 		// Load normal data, if specified
 		char* normal_file = cfg_getstr(cfg_sub, "normal");
-		if (normal_file != NULL && strlen(normal_file) != 0) {
+		if (normal_file[0] != '\0') {
 			heightmap->normal = this->render->loadSprite(std::string(normal_file), this->mod);
 			if (heightmap->normal == NULL) {
 				cerr << "Failed to load heightmap normal image '" << std::string(normal_file) << "'" << endl;
