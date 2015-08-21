@@ -35,14 +35,15 @@ class Heightmap {
 
 		glm::vec3 pos;
 
-		// Data arrays
+		// Heights array
 		float* data;
 
 		// Physics object
 		btRigidBody* ground;
 
-		// BigTexture
+		// BigTexture (note - these leak)
 		SpritePtr terrain;
+		SpritePtr normal;
 
 	public:
 		// The OpenGL renderer entirely manages these
@@ -51,7 +52,8 @@ class Heightmap {
 
 	public:
 		Heightmap(float sizeX, float sizeZ, float scale, glm::vec3 pos)
-			: sizeX(sizeX), sizeZ(sizeZ), sx(0), sz(0), scale(scale), pos(pos), data(NULL), ground(NULL), terrain(NULL)
+			: sizeX(sizeX), sizeZ(sizeZ), sx(0), sz(0), scale(scale), pos(pos), data(NULL), ground(NULL), terrain(NULL),
+			normal(NULL)
 			{};
 
 		~Heightmap();

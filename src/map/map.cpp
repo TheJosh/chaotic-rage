@@ -129,6 +129,7 @@ static cfg_opt_t mesh_opts[] =
 static cfg_opt_t heightmap_opts[] =
 {
 	CFG_STR((char*) "data", ((char*)""), CFGF_NONE),
+	CFG_STR((char*) "normal", ((char*)""), CFGF_NONE),
 	CFG_STR((char*) "texture", ((char*)""), CFGF_NONE),
 	CFG_FLOAT((char*) "scale-y", 4.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "size-x", 0.0f, CFGF_NONE),
@@ -319,6 +320,18 @@ int Map::load(string name, Render *render, Mod* insideof)
 			return 0;
 		}
 		heightmap->setBigTexture(tex);
+
+		// Load normal data, if specified
+		char* normal_file = cfg_getstr(cfg_sub, "normal");
+		if (normal_file == NULL) {
+			heightmap->normal = this->render->loadSprite(std::string(normal_file), this->mod);
+			if (heightmap->normal == NULL) {
+				cerr << "Failed to load heightmap normal image '" << std::string(normal_file) << "'" << endl;
+				delete heightmap;
+				cfg_free(cfg);
+				return 0;
+			}
+		}
 
 		this->heightmaps.push_back(heightmap);
 	}
