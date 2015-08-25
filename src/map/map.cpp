@@ -80,6 +80,7 @@ static cfg_opt_t pickup_opts[] =
 	CFG_FLOAT((char*) "x", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "y", 0, CFGF_NONE),		// TODO: Change to 'z'
 	CFG_STR((char*) "type", ((char*)""), CFGF_NONE),
+	CFG_INT((char*) "respawn", 1, CFGF_NONE),
 	CFG_END()
 };
 
@@ -567,6 +568,7 @@ void Map::loadDefaultEntities()
 		if (pt == NULL) reportFatalError("Unable to load map; missing or invalid pickup type '" + type + "'");
 
 		Pickup * pu = new Pickup(pt, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"));
+		pu->setRespawn(cfg_getint(cfg_sub, "respawn") == 1);
 
 		this->st->addPickup(pu);
 	}

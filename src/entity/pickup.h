@@ -19,6 +19,8 @@ class Pickup : public Entity
 	protected:
 		PickupType* pt;
 		AnimPlay * anim;
+		bool respawn;
+		unsigned int inactive_until;
 
 	public:
 		Pickup(PickupType *pt, GameState *st, float x, float z);
@@ -36,6 +38,20 @@ class Pickup : public Entity
 		**/
 		PickupType* getPickupType() { return this->pt; }
 
+		/**
+		* Does this pickup auto-respawn?
+		**/
+		void setRespawn(bool val) { this->respawn = val; }
+
+		/**
+		* Hide the pickup
+		**/
+		void hide();
+
+		/**
+		* Show the pickup
+		**/
+		void show();
 
 	public:
 		virtual void update(int delta);

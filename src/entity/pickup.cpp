@@ -34,6 +34,9 @@ Pickup::Pickup(PickupType *pt, GameState *st, float x, float z) : Entity(st)
 
 	this->body = st->physics->addRigidBody(pt->col_shape, 0.0f, motionState, CG_PICKUP);
 	this->body->setUserPointer(this);
+
+	this->respawn = false;
+	this->inactive_until = 0;
 }
 
 
@@ -54,6 +57,9 @@ Pickup::Pickup(PickupType *pt, GameState *st, float x, float y, float z) : Entit
 
 	this->body = st->physics->addRigidBody(pt->col_shape, 0.0f, motionState, CG_PICKUP);
 	this->body->setUserPointer(this);
+
+	this->respawn = false;
+	this->inactive_until = 0;
 }
 
 
@@ -73,6 +79,33 @@ Pickup::~Pickup()
 **/
 void Pickup::update(int delta)
 {
+	if (this->inactive_until != 0 && st->game_time > this->inactive_until) {
+		this->show();
+		this->inactive_until = 0;
+	}
+}
+
+
+/**
+* Hide the pickup
+**/
+void Pickup::hide()
+{
+	st->remAnimPlay(this->anim);
+	this->anim = NULL;
+	this->body->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE);
+}
+
+
+/**
+* Show the pickup
+**/
+void Pickup::show()
+{
+	this->anim = new AnimPlay(pt->model);
+	this->anim->setAnimation(0);
+	st->addAnimPlay(this->anim, this);
+	this->body->setCollisionFlags(0);
 }
 
 
@@ -83,8 +116,14 @@ void Pickup::update(int delta)
 **/
 bool Pickup::doUse(Unit *u)
 {
+	if (this->inactive_until != 0) return false;
 	if (this->pt->doUse(u)) {
-		this->del = true;
+		if (this->respawn) {
+			this->hide();
+			this->inactive_until = st->game_time + 60 * 1000;		// 60 seconds
+		} else {
+			this->del = true;
+		}
 		return true;
 	} else {
 		return false;
