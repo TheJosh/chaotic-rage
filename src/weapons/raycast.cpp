@@ -81,8 +81,8 @@ void WeaponFlamethrower::doFire(Unit *u, btTransform &origin, float damage_multi
 	btVector3 begin;
 	btVector3 end;
 
-	raycastDoFire(this, u, origin, begin, end, damage_multiplier);
-
-	// Show the weapon fire
-	create_particles_flamethrower(u->getGameState(), &begin, &end);
+	for (unsigned int i = this->burst; i != 0; --i) {
+		raycastDoFire(this, u, origin, begin, end, damage_multiplier);
+		create_particles_flamethrower(u->getGameState(), &begin, &end);
+	}
 }

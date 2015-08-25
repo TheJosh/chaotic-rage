@@ -60,6 +60,7 @@ class WeaponFlamethrower : public WeaponType
 		int angle_range;
 		float range;
 		float damage;
+		unsigned int burst;
 
 	public:
 		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
