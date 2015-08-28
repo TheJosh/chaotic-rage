@@ -26,7 +26,6 @@ class RenderOpenGLSettings
 		RenderOpenGLSettings():
 			msaa(1),
 			tex_filter(1),
-			tex_aniso(0.0f)
+			tex_aniso(4.0f)
 			{}
 };
-

@@ -140,6 +140,10 @@ void RenderOpenGL::setSettings(RenderOpenGLSettings* settings)
 	delete(this->settings);
 	this->settings = settings;
 
+	if (!GL_EXT_texture_filter_anisotropic) {
+		this->settings->tex_aniso = 0.0f;
+	}
+
 	// Texture filtering modes
 	switch (this->settings->tex_filter) {
 		case 4:
@@ -172,6 +176,9 @@ void RenderOpenGL::setSettings(RenderOpenGLSettings* settings)
 		glBindTexture(GL_TEXTURE_2D, loaded[i]->pixels);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this->min_filter);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, this->mag_filter);
+		if (this->settings->tex_aniso >= 1.0f) {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, this->settings->tex_aniso);
+		}
 	}
 }
 
@@ -627,6 +634,10 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this->min_filter);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, this->mag_filter);
 
+	if (this->settings->tex_aniso >= 1.0f) {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, this->settings->tex_aniso);
+	}
+
 	// Load and create mipmaps
 	glTexImage2D(GL_TEXTURE_2D, 0, target_format, sprite->orig->w, sprite->orig->h, 0, texture_format, GL_UNSIGNED_BYTE, sprite->orig->pixels);
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -751,6 +762,10 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 	#ifdef OpenGL
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	#endif
+
+	if (this->settings->tex_aniso >= 1.0f) {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, this->settings->tex_aniso);
+	}
 
 	const char* faces[6] = { "posx", "negx", "posy", "negy", "posz", "negz" };
 
@@ -1085,6 +1100,10 @@ void RenderOpenGL::createShadowBuffers()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
 	#endif
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	if (this->settings->tex_aniso >= 1.0f) {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, this->settings->tex_aniso);
+	}
 
 	// Set up the framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, this->shadow_framebuffer);
