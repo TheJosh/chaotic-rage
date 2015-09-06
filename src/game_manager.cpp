@@ -360,8 +360,17 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 
 cleanup:
 	delete st->logic;
+	st->logic = NULL;
 	delete st->map;
+	st->map = NULL;
 	delete st->gs;
+	st->gs = NULL;
 	delete st->gt;
+	st->gt = NULL;
+	st->num_local = 0;
+	delete st->local_players[0];
+	st->local_players[0] = NULL;
+	delete GEng()->client;
+	GEng()->client = NULL;
 	st->physics->postGame();
 }
