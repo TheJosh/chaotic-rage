@@ -663,7 +663,9 @@ SpritePtr RenderOpenGL::load1D(string filename, Mod* mod)
 	tex = new Sprite();
 
 	glGenTextures(1, &tex->pixels);
-	glBindTexture(GL_TEXTURE_1D, tex->pixels);
+	#ifndef GLES
+		glBindTexture(GL_TEXTURE_1D, tex->pixels);
+	#endif
 
 	// Open rwops
 	SDL_RWops* rw = mod->loadRWops(filename);
@@ -721,14 +723,18 @@ SpritePtr RenderOpenGL::load1D(string filename, Mod* mod)
 	#endif
 
 	// Load image into] cubemap
-	glTexImage1D(GL_TEXTURE_1D, 0, target_format, surf->w, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
+	#ifndef GLES
+		glTexImage1D(GL_TEXTURE_1D, 0, target_format, surf->w, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
+	#endif
 
 	// Free img
 	SDL_FreeSurface(surf);
 	SDL_RWclose(rw);
-	
-	glGenerateMipmap(GL_TEXTURE_1D);
-	glBindTexture(GL_TEXTURE_1D, 0);
+
+	#ifndef GLES
+		glGenerateMipmap(GL_TEXTURE_1D);
+		glBindTexture(GL_TEXTURE_1D, 0);
+	#endif
 
 	CHECK_OPENGL_ERROR;
 	return tex;
@@ -1207,8 +1213,10 @@ void RenderOpenGL::loadCommonData()
 	}
 
 	glActiveTexture(GL_TEXTURE0 + 4);
-	glBindTexture(GL_TEXTURE_1D, this->ambient_daynight->pixels);
-	glTexParameterf(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	#ifndef GLES
+		glBindTexture(GL_TEXTURE_1D, this->ambient_daynight->pixels);
+		glTexParameterf(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	#endif
 	glActiveTexture(GL_TEXTURE0);
 }
 
