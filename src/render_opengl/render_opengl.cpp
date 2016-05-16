@@ -222,12 +222,10 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	this->real_width = width;
 	this->real_height = height;
 
-	// If we're on a high-res Android device, make the GUIs larger
-	#if defined(__ANDROID__)
-		if (this->real_width > 640) {
-			GEng()->gui_scale = 2.0f;
-		}
-	#endif
+	// If we're on a high-res device, make the GUIs larger
+	if (this->real_width > 3000) {
+		GEng()->gui_scale = 2.0f;
+	}
 
 	// Window title
 	char title[BUFFER_MAX];
@@ -1174,22 +1172,18 @@ void RenderOpenGL::loadCommonData()
 void RenderOpenGL::preGame()
 {
 	glEnable(GL_DEPTH_TEST);
-	#ifndef __ANDROID__
-		glEnable(GL_DEPTH_CLAMP);
-	#endif
+	glEnable(GL_DEPTH_CLAMP);
 	glEnable(GL_CULL_FACE);
 
-	#ifdef OpenGL
-		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-		glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
-		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-		if (this->settings->msaa >= 2) {
-			glEnable(GL_MULTISAMPLE);
-		} else {
-			glDisable(GL_MULTISAMPLE);
-		}
-	#endif
+	if (this->settings->msaa >= 2) {
+		glEnable(GL_MULTISAMPLE);
+	} else {
+		glDisable(GL_MULTISAMPLE);
+	}
 
 	CHECK_OPENGL_ERROR;
 

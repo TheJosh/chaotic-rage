@@ -143,11 +143,8 @@ void Menu::loadMenuItems()
 		y -= offsetY;
 		this->menuAdd(_(STRING_MENU_NETWORK), offsetX, y, MC_NETWORK);
 
-		// There isn't a good way to make this work on Android
-		#if !defined(__ANDROID__)
 		y -= offsetY;
 		this->menuAdd(_(STRING_MENU_SPLIT), offsetX, y, MC_SPLITSCREEN);
-		#endif
 
 		y -= offsetY;
 		this->menuAdd(_(STRING_MENU_SINGLE), offsetX, y, MC_SINGLEPLAYER);

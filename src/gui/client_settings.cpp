@@ -128,35 +128,33 @@ gcn::Container * DialogClientSettings::setup()
 	}
 	y += ROWHEIGHT;
 
-	#ifndef __ANDROID__
-		// Fullscreen
-		label = new gcn::Label(_(STRING_SETTINGS_FULLSCREEN));
-		c->add(label, COLLEFT, y);
-		this->fullscreen = new gcn::CheckBox("", GEng()->cconf->fullscreen);
-		this->fullscreen->setPosition(COLRIGHT, y);
-		c->add(this->fullscreen);
-		y += ROWHEIGHT;
+	// Fullscreen
+	label = new gcn::Label(_(STRING_SETTINGS_FULLSCREEN));
+	c->add(label, COLLEFT, y);
+	this->fullscreen = new gcn::CheckBox("", GEng()->cconf->fullscreen);
+	this->fullscreen->setPosition(COLRIGHT, y);
+	c->add(this->fullscreen);
+	y += ROWHEIGHT;
 
-		// Width
-		label = new gcn::Label(_(STRING_SETTINGS_WIDTH));
-		c->add(label, COLLEFT, y);
-		snprintf(buf, BUFFER_MAX, "%i", GEng()->cconf->width);
-		this->width = new gcn::TextField(std::string(buf));
-		this->width->setPosition(COLRIGHT, y);
-		this->width->setWidth(50 * GEng()->gui_scale);
-		c->add(this->width);
-		y += ROWHEIGHT;
+	// Width
+	label = new gcn::Label(_(STRING_SETTINGS_WIDTH));
+	c->add(label, COLLEFT, y);
+	snprintf(buf, BUFFER_MAX, "%i", GEng()->cconf->width);
+	this->width = new gcn::TextField(std::string(buf));
+	this->width->setPosition(COLRIGHT, y);
+	this->width->setWidth(50 * GEng()->gui_scale);
+	c->add(this->width);
+	y += ROWHEIGHT;
 
-		// Height
-		label = new gcn::Label(_(STRING_SETTINGS_HEIGHT));
-		c->add(label, COLLEFT, y);
-		snprintf(buf, BUFFER_MAX, "%i", GEng()->cconf->height);
-		this->height = new gcn::TextField(std::string(buf));
-		this->height->setPosition(COLRIGHT, y);
-		this->height->setWidth(50 * GEng()->gui_scale);
-		c->add(this->height);
-		y += ROWHEIGHT;
-	#endif
+	// Height
+	label = new gcn::Label(_(STRING_SETTINGS_HEIGHT));
+	c->add(label, COLLEFT, y);
+	snprintf(buf, BUFFER_MAX, "%i", GEng()->cconf->height);
+	this->height = new gcn::TextField(std::string(buf));
+	this->height->setPosition(COLRIGHT, y);
+	this->height->setWidth(50 * GEng()->gui_scale);
+	c->add(this->height);
+	y += ROWHEIGHT;
 
 	// Save button
 	this->button = new gcn::Button(_(STRING_SETTINGS_SAVE));
@@ -198,13 +196,11 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 	nu->msaa = atoi(this->gl_msaa->getText().c_str());
 	nu->tex_filter = atoi(this->gl_tex_filter->getText().c_str());
 
-	#ifndef __ANDROID__	// These are set for Android in RenderOpenGL::setScreenSize()
-		// Read screen config
-		int width = atoi(this->width->getText().c_str());
-		int height = atoi(this->height->getText().c_str());
-		if (width < 100) width = 100;
-		if (height < 100) height = 100;
-	#endif
+	// Read screen config
+	int width = atoi(this->width->getText().c_str());
+	int height = atoi(this->height->getText().c_str());
+	if (width < 100) width = 100;
+	if (height < 100) height = 100;
 
 	// Do we need a restart?
 	bool restart = false;
@@ -223,11 +219,9 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 
 	// Save config
 	GEng()->cconf->gl = nu;
-	#ifndef __ANDROID__	// These are set for Android in RenderOpenGL::setScreenSize()
-		GEng()->cconf->fullscreen = this->fullscreen->isSelected();
-		GEng()->cconf->width = width;
-		GEng()->cconf->height = height;
-	#endif
+	GEng()->cconf->fullscreen = this->fullscreen->isSelected();
+	GEng()->cconf->width = width;
+	GEng()->cconf->height = height;
 	GEng()->cconf->lang = langs->at(this->lang->getSelected()).name;
 	GEng()->cconf->save();
 
@@ -239,10 +233,8 @@ void DialogClientSettings::action(const gcn::ActionEvent& actionEvent)
 	// Update screen res
 	#ifndef _WIN32
 		((RenderOpenGL*)GEng()->render)->setSettings(nu);
-		#ifndef __ANDROID__
-			((RenderOpenGL*)GEng()->render)->setScreenSize(width, height, this->fullscreen->isSelected());
-			this->m->handleScreenResChange();
-		#endif
+		((RenderOpenGL*)GEng()->render)->setScreenSize(width, height, this->fullscreen->isSelected());
+		this->m->handleScreenResChange();
 	#endif
 
 	this->m->remDialog(this);

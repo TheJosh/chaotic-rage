@@ -17,7 +17,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#if defined(__linux__) && !defined(__ANDROID__)
+#if defined(__linux__)
 	#include <fontconfig/fontconfig.h>
 #endif
 
@@ -84,7 +84,7 @@ OpenGLFont::OpenGLFont(RenderOpenGL* render, string name, Mod* mod, float size)
 	}
 
 	// On Linux, the system font is found using fontconfig
-	#if defined(__linux__) && !defined(__ANDROID__)
+	#if defined(__linux__)
 		FcConfig* config = FcInitLoadConfigAndFonts();
 
 		FcPattern* pat = FcPatternBuild(

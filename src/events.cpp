@@ -16,10 +16,6 @@
 #include "script/gamelogic.h"
 #include "audio/audio.h"
 
-#if defined(__ANDROID__)
-	#include "touch.h"
-#endif
-
 #define BUFFER_MAX 50
 
 
@@ -156,20 +152,6 @@ void handleEvents(GameState *st)
 					default: break;
 				}
 
-#if defined(__ANDROID__)
-			} else if (event.type == SDL_FINGERDOWN) {
-				fingerDown(st, event.tfinger.x, event.tfinger.y);
-
-			} else if (event.type == SDL_FINGERMOTION) {
-				fingerMove(st, event.tfinger.fingerId, event.tfinger.x, event.tfinger.y);
-
-			} else if (event.type == SDL_FINGERUP) {
-				fingerUp(st);
-
-			} else if (event.type == SDL_MULTIGESTURE) {
-				multigesture(st, event.mgesture.numFingers, event.tfinger.x, event.tfinger.y);
-#else
-
 			} else if (event.type == SDL_MOUSEMOTION) {
 				if (ignore_relative_mouse[0]) {
 					ignore_relative_mouse[0] = false;
@@ -179,6 +161,7 @@ void handleEvents(GameState *st)
 					game_y[0] += event.motion.yrel;
 					net_y[0] += event.motion.yrel;
 				}
+
 			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
 				st->local_players[0]->hud->eventClick();
 				st->local_players[0]->p->keyPress(Player::KEY_FIRE);
@@ -197,7 +180,6 @@ void handleEvents(GameState *st)
 
 			} else if (event.type == SDL_MOUSEWHEEL && event.wheel.y < 0) {
 				st->local_players[0]->hud->eventDown();
-			#endif
 
 			}
 
