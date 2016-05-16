@@ -196,7 +196,6 @@ namespace GL
 
 	inline void GLRenderer::initRenderingHints() const
 	{
-		#ifndef GLES
 		// alpha test
 		if (isRenderingHintEnabled(ALPHA_TEST))
 		{
@@ -205,7 +204,6 @@ namespace GL
 		}
 		else
 			glDisable(GL_ALPHA_TEST);
-		#endif
 
 		// depth test
 		if (isRenderingHintEnabled(DEPTH_TEST))

@@ -276,19 +276,13 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 
 	// Create OpenGL context
 	#ifndef SDL1_VIDEO
-		#if defined(GLES)
-			SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-		#elif defined(OpenGL)
-			if (this->settings->msaa >= 2) {
-				SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-				SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, this->settings->msaa);
-			} else {
-				SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
-				SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
-			}
-		#endif
+		if (this->settings->msaa >= 2) {
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, this->settings->msaa);
+		} else {
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
+		}
 
 		// GL context creation
 		if (this->glcontext == NULL) {
@@ -307,29 +301,21 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	}
 
 	// Check OpenGL version
-	#if defined(OpenGL)
-		if (atof((char*) glGetString(GL_VERSION)) < 3.0) {
-			reportFatalError("OpenGL 3.0 or later is required, but not supported on this system");
-		}
+	if (atof((char*) glGetString(GL_VERSION)) < 3.0) {
+		reportFatalError("OpenGL 3.0 or later is required, but not supported on this system");
+	}
 
-		// Init GLEW
-		GLenum err = glewInit();
-		if (GLEW_OK != err) {
-			GL_LOG("Glew Error: %s", glewGetErrorString(err));
-			reportFatalError("Unable to init the library GLEW.");
-		}
+	// Init GLEW
+	GLenum err = glewInit();
+	if (GLEW_OK != err) {
+		GL_LOG("Glew Error: %s", glewGetErrorString(err));
+		reportFatalError("Unable to init the library GLEW.");
+	}
 
-		// GL_ARB_framebuffer_object -> shadows and glGenerateMipmap
-		if (! GL_ARB_framebuffer_object) {
-			reportFatalError("OpenGL 3.0 or the extension 'GL_ARB_framebuffer_object' not available.");
-		}
-	#elif defined(GLES) && !defined(__EMSCRIPTEN__)
-		// Manually check compatibility - OpenGL ES
-		char *exts = (char *)glGetString(GL_EXTENSIONS);
-		if(!strstr(exts, "GL_OES_depth_texture")){
-			reportFatalError("OpenGL ES 2.0 extension 'GL_OES_depth_texture' not available");
-		}
-	#endif
+	// GL_ARB_framebuffer_object -> shadows and glGenerateMipmap
+	if (! GL_ARB_framebuffer_object) {
+		reportFatalError("OpenGL 3.0 or the extension 'GL_ARB_framebuffer_object' not available.");
+	}
 
 	// Init GL for particles
 	this->renderer_points->initGLbuffers();
@@ -605,7 +591,7 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 			target_format = GL_RGBA;
 		} else {
 			texture_format = target_format = 0;
-			assert(0); // TODO GLES removed: texture_format = GL_BGRA;
+			assert(0);
 		}
 
 	} else if (num_colors == 3) {
@@ -614,17 +600,13 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 			target_format = GL_RGB;
 		} else {
 			texture_format = target_format = 0;
-			assert(0); // TODO GLES removed: texture_format = GL_BGR;
+			assert(0);
 		}
 
 	} else {
 		texture_format = target_format = 0;
 		assert(0);
 	}
-
-	#ifdef GLES
-		target_format = texture_format;
-	#endif
 
 	// Create and bind texture handle
 	glGenTextures(1, &sprite->pixels);
@@ -663,9 +645,7 @@ SpritePtr RenderOpenGL::load1D(string filename, Mod* mod)
 	tex = new Sprite();
 
 	glGenTextures(1, &tex->pixels);
-	#ifndef GLES
-		glBindTexture(GL_TEXTURE_1D, tex->pixels);
-	#endif
+	glBindTexture(GL_TEXTURE_1D, tex->pixels);
 
 	// Open rwops
 	SDL_RWops* rw = mod->loadRWops(filename);
@@ -699,7 +679,7 @@ SpritePtr RenderOpenGL::load1D(string filename, Mod* mod)
 			texture_format = GL_RGBA;
 		} else {
 			texture_format = 0;
-			assert(0); // TODO GLES removed: texture_format = GL_BGRA;
+			assert(0);
 		}
 
 	} else if (surf->format->BytesPerPixel == 3) {
@@ -707,7 +687,7 @@ SpritePtr RenderOpenGL::load1D(string filename, Mod* mod)
 			texture_format = GL_RGB;
 		} else {
 			texture_format = 0;
-			assert(0); // TODO GLES removed: texture_format = GL_BGR;
+			assert(0);
 		}
 
 	} else {
@@ -718,23 +698,15 @@ SpritePtr RenderOpenGL::load1D(string filename, Mod* mod)
 		return NULL;
 	}
 
-	#ifdef GLES
-		target_format = texture_format;
-	#endif
-
 	// Load image into] cubemap
-	#ifndef GLES
-		glTexImage1D(GL_TEXTURE_1D, 0, target_format, surf->w, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
-	#endif
+	glTexImage1D(GL_TEXTURE_1D, 0, target_format, surf->w, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
 
 	// Free img
 	SDL_FreeSurface(surf);
 	SDL_RWclose(rw);
 
-	#ifndef GLES
-		glGenerateMipmap(GL_TEXTURE_1D);
-		glBindTexture(GL_TEXTURE_1D, 0);
-	#endif
+	glGenerateMipmap(GL_TEXTURE_1D);
+	glBindTexture(GL_TEXTURE_1D, 0);
 
 	CHECK_OPENGL_ERROR;
 	return tex;
@@ -763,11 +735,7 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, this->mag_filter);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	// TODO: Look at this for GLES
-	#ifdef OpenGL
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	#endif
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	if (this->settings->tex_aniso >= 1.0f) {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, this->settings->tex_aniso);
@@ -818,7 +786,7 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 				texture_format = GL_RGBA;
 			} else {
 				texture_format = 0;
-				assert(0); // TODO GLES removed: texture_format = GL_BGRA;
+				assert(0);
 			}
 
 		} else if (surf->format->BytesPerPixel == 3) {
@@ -826,7 +794,7 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 				texture_format = GL_RGB;
 			} else {
 				texture_format = 0;
-				assert(0); // TODO GLES removed: texture_format = GL_BGR;
+				assert(0);
 			}
 
 		} else {
@@ -836,10 +804,6 @@ SpritePtr RenderOpenGL::loadCubemap(string filename_base, string filename_ext, M
 			SDL_RWclose(rw);
 			return NULL;
 		}
-
-		#ifdef GLES
-			target_format = texture_format;
-		#endif
 
 		// Load image into] cubemap
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, target_format, surf->w, surf->h, 0, texture_format, GL_UNSIGNED_BYTE, surf->pixels);
@@ -1091,20 +1055,13 @@ void RenderOpenGL::createShadowBuffers()
 
 	// Set up the texture
 	glBindTexture(GL_TEXTURE_2D, this->shadow_depth_tex);
-	#ifdef GLES
-	// Needs GL_OES_depth_texture
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, RenderOpenGL::SHADOW_MAP_WIDTH, RenderOpenGL::SHADOW_MAP_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, 0);
-	#else
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, RenderOpenGL::SHADOW_MAP_WIDTH, RenderOpenGL::SHADOW_MAP_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
-	#endif
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	#ifdef OpenGL
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
-	#endif
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	if (this->settings->tex_aniso >= 1.0f) {
@@ -1126,9 +1083,6 @@ void RenderOpenGL::createShadowBuffers()
 	if (status != GL_FRAMEBUFFER_COMPLETE) {
 		switch (status) {
 			case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT: GL_LOG("Framebuffer status %i GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT", status); break;
-			#ifdef GLES
-			case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS: GL_LOG("Framebuffer status %i GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS", status); break;
-			#endif
 			case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT: GL_LOG("Framebuffer status %i GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT", status); break;
 			case GL_FRAMEBUFFER_UNSUPPORTED: GL_LOG("Framebuffer status %i GL_FRAMEBUFFER_UNSUPPORTED", status); break;
 			default: GL_LOG("Framebuffer status %i unknown", status); break;
@@ -1213,10 +1167,8 @@ void RenderOpenGL::loadCommonData()
 	}
 
 	glActiveTexture(GL_TEXTURE0 + 4);
-	#ifndef GLES
-		glBindTexture(GL_TEXTURE_1D, this->ambient_daynight->pixels);
-		glTexParameterf(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	#endif
+	glBindTexture(GL_TEXTURE_1D, this->ambient_daynight->pixels);
+	glTexParameterf(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glActiveTexture(GL_TEXTURE0);
 }
 
@@ -1507,15 +1459,10 @@ GLuint RenderOpenGL::createShader(const char* code, GLenum type)
 		return 0;
 	}
 
-	// Different header based on GL variant
-	#ifdef GLES
-		strings[0] = "precision mediump float;\n";
-	#else
-		strings[0] = "#version 130\n";
-	#endif
+	strings[0] = "#version 130\n";
+	lengths[0] = strlen(strings[0]);
 
 	strings[1] = code;
-	lengths[0] = strlen(strings[0]);
 	lengths[1] = strlen(strings[1]);
 
 	glShaderSource(shader, 2, strings, lengths);
@@ -1658,26 +1605,8 @@ GLShader* RenderOpenGL::loadProgram(Mod* mod, string vertex_name, string fragmen
 	char* f;
 	GLShader* s;
 
-	#ifdef GLES
-		// Specific ES shader or fallback to GL + hacks
-		char* tmpv = mod->loadText("shaders_es/" + vertex_name + ".glslv");
-		char* tmpf = mod->loadText("shaders_es/" + fragment_name + ".glslf");
-		if (tmpv != NULL && tmpf != NULL) {
-			v = tmpv;
-			f = tmpf;
-		} else {
-			tmpv = mod->loadText("shaders_gl/" + vertex_name + ".glslv");
-			tmpf = mod->loadText("shaders_gl/" + fragment_name + ".glslf");
-			v = convertGLtoESv(tmpv);
-			f = convertGLtoESf(tmpf);
-			free(tmpv);
-			free(tmpf);
-		}
-	#else
-		// Just use GL shaders directly
-		v = mod->loadText("shaders_gl/" + vertex_name + ".glslv");
-		f = mod->loadText("shaders_gl/" + fragment_name + ".glslf");
-	#endif
+	v = mod->loadText("shaders_gl/" + vertex_name + ".glslv");
+	f = mod->loadText("shaders_gl/" + fragment_name + ".glslf");
 	
 	if (v == NULL || f == NULL) {
 		free(v);

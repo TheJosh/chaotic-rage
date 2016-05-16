@@ -118,19 +118,8 @@ namespace gcn
     **/
     void OpenGLGraphics_Impl::shaderSource(GLuint shader, const char *code)
     {
-        #ifdef GLES
-            char const *extra = "precision mediump float;";
-            char *srcmod = (char*) malloc(strlen(code) + strlen(extra) + 1);
-            srcmod[0] = '\0';
-            strcat(srcmod, extra);
-            strcat(srcmod, code);
-            GLint len = strlen(srcmod);
-            glShaderSource(shader, 1, (const GLchar**) &srcmod, &len);
-            free(srcmod);
-        #else
-            GLint len = strlen(code);
-            glShaderSource(shader, 1, &code, &len);
-        #endif
+        GLint len = strlen(code);
+        glShaderSource(shader, 1, &code, &len);
     }
     
     GLuint OpenGLGraphics_Impl::createShaderProgram(const char *vs, const char *fs)

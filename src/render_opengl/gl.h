@@ -8,17 +8,11 @@
 /**
 * Include OpenGL or OpenGL ES on various platforms
 **/
-#if defined(__ANDROID__) || defined(__EMSCRIPTEN__)
-	#define GLES
-	#include <GLES2/gl2.h>
-	#include <GLES2/gl2ext.h>
-#else
-	#define OpenGL
-	#define USE_DEBUG_DRAW
-	#include <GL/glew.h>
-	#include <GL/gl.h>
-	#include <GL/glu.h>
-#endif
+#define OpenGL
+#define USE_DEBUG_DRAW
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
 
 /**
 * Emscripten is SDL1 for video and quasi-SDL2 for everything else

@@ -13,25 +13,7 @@
 #if defined(RELEASE)
 	#define CHECK_OPENGL_ERROR
 
-#elif defined(GLES)
-	#define CHECK_OPENGL_ERROR \
-	{	GLenum error; \
-		error = glGetError(); \
-		if (error != GL_NO_ERROR) { \
-			char buf[255]; \
-			switch (error) { \
-				case GL_INVALID_ENUM: sprintf(buf, "OpenGL ES error: GL_INVALID_ENUM at line %i of %s", __LINE__, __FILE__); break; \
-				case GL_INVALID_VALUE: sprintf(buf, "OpenGL ES error: GL_INVALID_VALUE at line %i of %s", __LINE__, __FILE__); break; \
-				case GL_INVALID_OPERATION: sprintf(buf, "OpenGL ES error: GL_INVALID_OPERATION at line %i of %s", __LINE__, __FILE__); break; \
-				case GL_INVALID_FRAMEBUFFER_OPERATION: sprintf(buf, "OpenGL ES error: GL_INVALID_FRAMEBUFFER_OPERATION at line %i of %s", __LINE__, __FILE__); break; \
-				case GL_OUT_OF_MEMORY: sprintf(buf, "OpenGL ES error: GL_OUT_OF_MEMORY at line %i of %s", __LINE__, __FILE__); break; \
-				default: sprintf(buf, "Unknown OpenGL ES (%x) error at line %i of %s", error, __LINE__, __FILE__); break; \
-			} \
-			reportFatalError(std::string(buf)); \
-		} \
-	}
-
-#elif defined(OpenGL)
+#else
 	#define CHECK_OPENGL_ERROR \
 	{	GLenum error; \
 		error = glGetError(); \
@@ -48,11 +30,7 @@
 /**
 * For GL logging and errors
 **/
-#if defined(__ANDROID__)
-	#include <android/log.h>
-	#define GL_LOG(msg, ...) __android_log_print(ANDROID_LOG_ERROR, "ChaoticRage", "GL Log: " msg, ##__VA_ARGS__)
-
-#elif defined(__WIN32__)
+#if defined(__WIN32__)
 	#define GL_LOG(msg, ...) \
 	{ \
 		char buf[2048]; \

@@ -53,9 +53,7 @@ GLVAO::GLVAO()
 **/
 GLVAO::~GLVAO()
 {
-	#ifdef OpenGL
-		glDeleteVertexArrays(1, &this->vao);
-	#endif
+	glDeleteVertexArrays(1, &this->vao);
 }
 
 
@@ -209,11 +207,7 @@ void GLVAO::setInterleavedPC34(GLuint vbo)
 **/
 void GLVAO::bind()
 {
-	#if defined(GLES)
-		this->bindBuffers();
-	#elif defined(OpenGL)
-		glBindVertexArray(this->vao);
-	#endif
+	glBindVertexArray(this->vao);
 }
 
 
@@ -222,103 +216,5 @@ void GLVAO::bind()
 **/
 void GLVAO::unbind()
 {
-	#if defined(GLES)
-		this->unbindBuffers();
-	#elif defined(OpenGL)
-		glBindVertexArray(0);
-	#endif
+	glBindVertexArray(0);
 }
-
-
-/**
-* Manually bind all the buffers
-*
-* Internally, we use setPosition, setNormal, etc because those call glVertexAttribPointer
-**/
-void GLVAO::bindBuffers()
-{
-	// Index
-	if (this->index) {
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->index);
-	}
-
-	// Position
-	if (this->position) {
-		glBindBuffer(GL_ARRAY_BUFFER, this->position);
-		this->setPosition(this->position);
-	}
-
-	// Position
-	if (this->color) {
-		glBindBuffer(GL_ARRAY_BUFFER, this->color);
-		this->setColor(this->color);
-	}
-
-	// Normals
-	if (this->normal) {
-		glBindBuffer(GL_ARRAY_BUFFER, this->normal);
-		this->setNormal(this->normal);
-	}
-
-	// Texture UVs
-	for (unsigned int i = 0; i < UV_CHANNELS; ++i) {
-		if (this->texuv[i]) {
-			glBindBuffer(GL_ARRAY_BUFFER, this->texuv[i]);
-			this->setTexUV(this->texuv[i], i);
-		}
-	}
-
-	// Bone id
-	if (this->boneid) {
-		glBindBuffer(GL_ARRAY_BUFFER, this->boneid);
-		this->setBoneId(this->boneid);
-	}
-
-	// Bone weight
-	if (this->boneweight) {
-		glBindBuffer(GL_ARRAY_BUFFER, this->boneweight);
-		this->setBoneWeight(this->boneweight);
-	}
-
-	// Tangent
-	if (this->tangent) {
-		glBindBuffer(GL_ARRAY_BUFFER, this->tangent);
-		this->setTangent(this->tangent);
-	}
-
-	// Bitangent
-	if (this->bitangent) {
-		glBindBuffer(GL_ARRAY_BUFFER, this->bitangent);
-		this->setTangent(this->bitangent);
-	}
-
-	// Interleaved, position normal texture
-	if (this->interleaved_pnt) {
-		glBindBuffer(GL_ARRAY_BUFFER, this->interleaved_pnt);
-		this->setInterleavedPNT(this->interleaved_pnt);
-	}
-
-	// Interleaved, position colour 3,3
-	if (this->interleaved_pc) {
-		glBindBuffer(GL_ARRAY_BUFFER, this->interleaved_pc);
-		this->setInterleavedPC(this->interleaved_pc);
-	}
-
-	// Interleaved, position colour 3,4
-	if (this->interleaved_pc34) {
-		glBindBuffer(GL_ARRAY_BUFFER, this->interleaved_pc);
-		this->setInterleavedPC34(this->interleaved_pc);
-	}
-}
-
-
-/**
-* Manually unbind the buffers
-**/
-void GLVAO::unbindBuffers()
-{
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-

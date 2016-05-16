@@ -100,11 +100,7 @@ namespace GL
 		GLint lengths[2];
 
 		// Different header based on GL variant
-		#ifdef GLES
-			strings[0] = "precision mediump float;\n";
-		#else
-			strings[0] = "#version 130\n";
-		#endif
+		strings[0] = "#version 130\n";
 		lengths[0] = strlen(strings[0]);
 
 		// Create stuff
@@ -180,10 +176,8 @@ namespace GL
 	{
 		size_t num = group.getNbParticles();
 
-		#ifndef GLES
 		glEnable(GL_POINT_SMOOTH);
 		glPointSize(2.0f);
-		#endif
 
 		// Resize buffer if not large enough
 		if (num > buffer_sz) {
