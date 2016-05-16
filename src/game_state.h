@@ -173,7 +173,6 @@ class GameState
 		**/
 		void gameLoop(Render* render, Audio* audio, NetClient* client);
 		void gameLoopIter();
-		static void gameLoopIterEmscripten(void* arg);
 
 		// Called by Lua, etc
 		void gameOver(int result = -1);

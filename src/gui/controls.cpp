@@ -10,7 +10,7 @@
 
 /**
 * This is the non-touch implementation of the DialogControls class
-* Used for Linux, Windows and Emscripten
+* Used for Linux, Windows
 **/
 
 

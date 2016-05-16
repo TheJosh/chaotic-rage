@@ -62,12 +62,7 @@ Song* loadItemSong(cfg_t* cfg_item, Mod* mod)
 	}
 
 	// Load file
-	#ifdef __EMSCRIPTEN__
-	sg->music = Mix_LoadMUS_RW(rw);		// leaks memory
-	#else
 	sg->music = Mix_LoadMUS_RW(rw, 1);
-	#endif
-
 	if (sg->music == NULL) {
 		mod->setLoadErr("Unable to load file '%s'", filename.c_str());
 		delete(sg);

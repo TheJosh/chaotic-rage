@@ -14,13 +14,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-/**
-* Emscripten is SDL1 for video and quasi-SDL2 for everything else
-**/
-#if defined(__EMSCRIPTEN__)
-	#define SDL1_VIDEO
-#endif
-
 
 // Constants for VBOs <-> Shaders
 // (glBindAttribLocation)

@@ -38,10 +38,6 @@
 		displayMessageBox(std::string(buf)); \
 	}
 
-#elif defined(__EMSCRIPTEN__)
-	#include <emscripten.h>
-	#define GL_LOG(msg, ...) emscripten_log(EM_LOG_C_STACK | EM_LOG_NO_PATHS | EM_LOG_DEMANGLE, "GL Log: " msg, ##__VA_ARGS__)
-
 #else
 	#define GL_LOG(msg, ...) fprintf(stderr, "GL Log: " msg "\n", ##__VA_ARGS__)
 

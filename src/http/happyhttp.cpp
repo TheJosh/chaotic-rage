@@ -45,7 +45,7 @@
 	#endif
 #endif
 
-#if defined(__linux__) || defined(__EMSCRIPTEN__)
+#if defined(__linux__)
 	#include <sys/select.h>
 	#include <unistd.h>
 #endif

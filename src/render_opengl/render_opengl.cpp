@@ -198,12 +198,6 @@ RenderOpenGLSettings* RenderOpenGL::getSettings()
 **/
 void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 {
-	// On mobile devices, we force fullscreen
-	#if defined(__ANDROID__) || defined(__EMSCRIPTEN__)
-		fullscreen = true;
-		GEng()->cconf->fullscreen = fullscreen;
-	#endif
-
 	// Fullscreen support
 	#ifdef SDL1_VIDEO
 		int flagsSDL = SDL_OPENGL;

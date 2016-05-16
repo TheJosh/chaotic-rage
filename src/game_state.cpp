@@ -41,10 +41,6 @@
 #include "fx/weather.h"
 #include "spark/SPK.h"
 
-#ifdef __EMSCRIPTEN__
-#include <emscripten.h>
-#endif
-
 
 using namespace std;
 
@@ -478,15 +474,11 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 	this->running = true;
 
 	// The main game loop
-	#ifdef __EMSCRIPTEN__
-		emscripten_set_main_loop_arg(GameState::gameLoopIterEmscripten, (void*)this, 0, true);
-	#else
-		while (this->running) {
-			this->gameLoopIter();
-			if (GEng()->cmdline->throttle) SDL_Delay(1);
-			MAINLOOP_ITER
-		}
-	#endif
+	while (this->running) {
+		this->gameLoopIter();
+		if (GEng()->cmdline->throttle) SDL_Delay(1);
+		MAINLOOP_ITER
+	}
 
 	if (client != NULL) {
 		client->addmsgQuit();
@@ -499,15 +491,6 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 	audio->postGame();
 	this->map->postGame();
 	this->physics->postGame();
-}
-
-
-/**
-* Internal of the main game loop - emscripten wrapper
-**/
-void GameState::gameLoopIterEmscripten(void* arg)
-{
-	static_cast<GameState*>(arg)->gameLoopIter();
 }
 
 
@@ -551,10 +534,6 @@ void GameState::gameLoopIter()
 	PROFILE_END(render);
 
 	GEng()->audio->play();
-
-	#ifdef __EMSCRIPTEN__
-		if (! this->running) emscripten_cancel_main_loop();
-	#endif
 }
 
 

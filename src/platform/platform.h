@@ -29,15 +29,6 @@
 #endif
 
 
-/**
-* Emscripten fake SDL2 bits
-**/
-#ifdef __EMSCRIPTEN__
-	#include <SDL.h>
-	SDL_Keycode SDL_GetKeyFromName(const char* name);
-#endif
-
-
 
 /**
 * Switch the cwd to an appropriate directory to find data files

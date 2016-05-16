@@ -36,11 +36,7 @@ Intro::Intro(GameState *st)
 
 	SDL_RWops * rw = mod->loadRWops("intro.ogg");
 
-	#ifdef __EMSCRIPTEN__
-	sg->music = Mix_LoadMUS_RW(rw);		// leaks memory
-	#else
 	sg->music = Mix_LoadMUS_RW(rw, 0);	// does this leak?
-	#endif
 
 	img1 = this->render->loadSprite("joshcorp.png", mod);
 	img2 = this->render->loadSprite("sdl.png", mod);
