@@ -71,18 +71,6 @@ I haven't tested any other version of MSVC. You should still be able to
 download this older version.
 
 
-Compiling for Android on Linux
-------------------------------
-
-This build configuration has been tested on Debian 7, Debian 8, Ubuntu 10.04 and Ubuntu 12.04.
-
-This is a little incomplete and fussy at the moment.
-
-There is a script in `tools/android` called `prepare.sh` which will try to set everything up for you.
-
-You should then be able to run `ndk-build` to compile and `ant debug` to create the .apk.
-
-
 Cross-compiling for Windows using MXE
 -------------------------------------
 
@@ -102,54 +90,3 @@ You should then be able to build the game using `make` with an additional option
 ```
 make MXE=/path/to/mxe
 ```
-
-
-Cross-compiling for JavaScript using emscripten
------------------------------------------------
-
-This build configuration has been tested on Debian 8.
-
-This configuration is not yet ready for the prime time! You can experiment using the instructions below.
-
-Install emscripten as per http://kripken.github.io/emscripten-site/docs/getting_started/downloads.html which
-will be something like:
-```
-./emsdk update
-./emsdk install latest
-./emsdk activate latest
-```
-
-Source the environment. This loads the emscripten path into your PATH, but only applies for this session.
-You'll need to do this for each session that you want to use emscripten.
-```
-cd ~/path/to/emscripten_sdk
-source ./emsdk_env.sh
-```
-
-Do an initial test. Only the hello.cpp test should work at this stage
-```
-cd ~/path/to/chaotic-rage
-cd tools/emscripten
-./tests.sh
-```
-
-Build our libraries
-```
-./prepare.sh
-```
-
-Re-run the tests, they should all pass
-```
-./tests.sh
-```
-
-Your environment is ready! You can now compile with:
-
-```
-cd ~/path/to/chaotic-rage
-make EMSCRIPTEN=1
-```
-
-If you go to re-compile later on, you'll need to re-source your environment (see above) so that make knows
-where to find emscripten.
-
