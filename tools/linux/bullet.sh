@@ -3,14 +3,14 @@ set -e
 
 cd working
 
-if [ ! -d "bullet-2.82-r2704" ]; then
-	if [ ! -f "bullet-2.82-r2704.tgz" ]; then
-		wget http://bullet.googlecode.com/files/bullet-2.82-r2704.tgz
+if [ ! -d "bullet3-2.83.6" ]; then
+	if [ ! -f "2.83.6.tar.gz" ]; then
+		wget https://github.com/bulletphysics/bullet3/archive/2.83.6.tar.gz
 	fi
-	tar -xzf bullet-2.82-r2704.tgz || exit 1
+	tar -xzf 2.83.6.tar.gz || exit 1
 fi
 
-cd bullet-2.82-r2704
+cd bullet3-2.83.6
 
 cmake -G "Unix Makefiles" \
 	-DCMAKE_BUILD_TYPE=Release \
@@ -19,6 +19,9 @@ cmake -G "Unix Makefiles" \
 	-DBUILD_DEMOS:BOOL=OFF \
 	-DBUILD_CPU_DEMOS:BOOL=OFF \
 	-DBUILD_EXTRAS:BOOL=OFF \
+	-DBUILD_BULLET3:BOOL=OFF \
+	-DBUILD_UNIT_TESTS:BOOL=OFF \
+	-DBUILD_BULLET2_DEMOS:BOOL=OFF \
 	|| exit 1
 	
 make || exit 1
