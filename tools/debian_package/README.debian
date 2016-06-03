@@ -17,7 +17,7 @@ Prepare for building the package
 		
 	Increase the Debian release number (edit with 'dch --edit')
 	> dch --increment
-	Note: Update the target (Ubuntu version) to e.g. 'trusty'.
+	Note: Update the target (Debian version) to e.g. 'jessie'.
 
 
 Build package

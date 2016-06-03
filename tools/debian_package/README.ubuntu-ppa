@@ -39,7 +39,7 @@ Prepare for building the package
 
 
 Build package (optional for PPA upload)
-	> make deb-ubuntu
+	> make deb
 	The Debian package is now ready to be installed
 
 
