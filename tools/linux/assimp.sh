@@ -3,14 +3,14 @@ set -e
 
 cd working
 
-if [ ! -d "assimp-3.1.1" ]; then
-	if [ ! -f "assimp-3.1.1_no_test_models.zip" ]; then
-		wget http://downloads.sourceforge.net/project/assimp/assimp-3.1/assimp-3.1.1_no_test_models.zip
+if [ ! -d "assimp-3.2" ]; then
+	if [ ! -f "v3.2.tar.gz" ]; then
+		wget https://github.com/assimp/assimp/archive/v3.2.tar.gz
 	fi
-	unzip -q assimp-3.1.1_no_test_models.zip || exit 1
+	tar -xzf v3.2.tar.gz || exit 1
 fi
 
-cd assimp-3.1.1
+cd assimp-3.2
 
 cmake -G "Unix Makefiles" \
 	-DCMAKE_BUILD_TYPE=RelWithDbgInfo \
@@ -18,6 +18,7 @@ cmake -G "Unix Makefiles" \
 	-DBUILD_ASSIMP_TOOLS=OFF \
 	-DBUILD_ASSIMP_SAMPLES=OFF \
 	-DENABLE_BOOST_WORKAROUND=ON \
+	-DASSIMP_BUILD_TESTS=OFF \
 	|| exit 1
 	
 make || exit 1
