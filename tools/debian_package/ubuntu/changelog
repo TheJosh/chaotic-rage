@@ -1,3 +1,10 @@
+chaoticrage (1.14ubuntu) xenial; urgency=low
+
+  * Snapshot from git repo master branch commit a1cc4dc.
+  * First build for Ubuntu 16.04 LTS Xenial Xerus.
+
+ -- Magnus Espersson <magnus.espersson@gmail.com>  Fri, 03 Jun 2016 21:53:34 +0200
+
 chaoticrage (1.12ubuntu) vivid; urgency=medium
 
   * Upstream 1.12 release.
