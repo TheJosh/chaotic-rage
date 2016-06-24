@@ -48,6 +48,7 @@ class VehicleTypeNode {
 		AssimpNode * node;
 		glm::vec3 axis;
 		VehicleNodeType type;
+		float modifier;
 };
 
 

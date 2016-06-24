@@ -32,6 +32,7 @@ static cfg_opt_t node_opts[] =
 	CFG_STR((char*) "name", (char*)"", CFGF_NONE),
 	CFG_FLOAT_LIST((char*) "axis", (char*)"{0.0, 0.0, 0.0}", CFGF_NONE),
 	CFG_INT((char*) "type", 0, CFGF_NONE),
+	CFG_FLOAT((char*) "modifier", 0.0f, CFGF_NONE),
 	CFG_END()
 };
 
@@ -140,6 +141,7 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 
 		node.type = (VehicleNodeType) cfg_getint(cfg_node, "type");
 		node.axis = cfg_getvec3(cfg_node, "axis");
+		node.modifier = cfg_getfloat(cfg_node, "modifier");
 
 		wt->nodes.push_back(node);
 	}
