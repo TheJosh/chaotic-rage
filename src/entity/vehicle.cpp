@@ -165,6 +165,9 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 		wheel.m_frictionSlip = vt->friction_slip;
 		wheel.m_rollInfluence = vt->roll_influence;
 	}
+
+	this->setNodeAngle(VEHICLE_NODE_HORIZ, 0.0f);
+	this->setNodeAngle(VEHICLE_NODE_VERT, 0.0f);
 }
 
 
@@ -403,7 +406,7 @@ void Vehicle::setNodeAngle(VehicleNodeType type, float angle)
 
 	for (it = this->vt->nodes.begin(); it != this->vt->nodes.end(); ++it) {
 		if ((*it).type == type) {
-			glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), angle, (*it).axis));
+			glm::mat4 rotation = glm::toMat4(glm::rotate(glm::quat(), angle + (*it).modifier, (*it).axis));
 			this->anim->setMoveTransform((*it).node, rotation);
 		}
 	}
