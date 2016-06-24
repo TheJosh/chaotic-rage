@@ -222,22 +222,22 @@ void Vehicle::update(int delta)
 	wheelIndex = 0;
 	this->vehicle->setSteeringValue(this->steering,wheelIndex);
 	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
-	//this->vehicle->setBrake(this->brakeForce,wheelIndex);
+	this->vehicle->setBrake(this->brakeForce,wheelIndex);
 
 	// Front right
 	wheelIndex = 1;
 	this->vehicle->setSteeringValue(this->steering,wheelIndex);
 	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
-	//this->vehicle->setBrake(this->brakeForce,wheelIndex);
+	this->vehicle->setBrake(this->brakeForce,wheelIndex);
 
 	// Rear left
 	wheelIndex = 2;
-	//this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
+	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
 	this->vehicle->setBrake(this->brakeForce,wheelIndex);
 
 	// Rear right
 	wheelIndex = 3;
-	//this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
+	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
 	this->vehicle->setBrake(this->brakeForce,wheelIndex);
 
 	// Update wheel nodes
