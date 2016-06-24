@@ -243,6 +243,7 @@ void Vehicle::update(int delta)
 	// Update wheel nodes
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
 		glm::mat4 wheel = glm::mat4();
+		wheel = glm::translate(wheel, glm::vec3(0.0f, this->vehicle->getWheelInfo(i).m_raycastInfo.m_suspensionLength, 0.0f));
 		wheel = glm::rotate(wheel, glm::degrees(this->vehicle->getWheelInfo(i).m_steering), glm::vec3(0.0f, 0.0f, 1.0f));
 		wheel = glm::rotate(wheel, glm::degrees(this->vehicle->getWheelInfo(i).m_rotation), glm::vec3(-1.0f, 0.0f, 0.0f));
 		this->setNodeTransformRelative(VEHICLE_NODE_WHEEL0 + i, wheel);
