@@ -58,7 +58,7 @@ cfg_opt_t vehicletype_opts[] =
 
 	CFG_FLOAT((char*) "wheel-radius", 0.3f, CFGF_NONE),
 	CFG_FLOAT((char*) "wheel-width", 0.15f, CFGF_NONE),
-	CFG_FLOAT((char*) "friction-slip", 500.0f, CFGF_NONE),
+	CFG_FLOAT((char*) "friction-slip", 250.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "roll-influence", 0.2f, CFGF_NONE),
 	CFG_FLOAT((char*) "suspension-stiffness", 20.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "damping-compression", 0.2f, CFGF_NONE),

@@ -117,31 +117,42 @@ void Vehicle::init(VehicleType *vt, GameState *st, btTransform &loc)
 	this->vehicle->setCoordinateSystem(0, 1, 2);
 	st->physics->addVehicle(this->vehicle);
 
+	// Some vehicle dynamics
+	this->tuning.m_maxSuspensionTravelCm = 300.0f;
+	this->tuning.m_frictionSlip = vt->friction_slip;
+
+	float k = 0.5;
+	this->tuning.m_suspensionStiffness = vt->suspension_stiffness;
+	this->tuning.m_suspensionCompression = k * 2.0 * btSqrt(this->tuning.m_suspensionStiffness);
+	this->tuning.m_suspensionDamping = k * 2.0 * btSqrt(this->tuning.m_suspensionStiffness);
+
+	btScalar suspensionRestLength = 0.6f;
+
 	// Create and attach wheels
 	// TODO: Optimize this for fixed turrets
 	{
 		btVector3 sizeHE = vt->model->getBoundingSizeHE();
-		btScalar suspensionRestLength(0.6f);
-
+		
 		this->wheel_shape = new btCylinderShapeX(btVector3(vt->wheel_width, vt->wheel_radius, vt->wheel_radius));
-
+		
 		btVector3 connectionPointCS0;
-		float connectionHeight = -sizeHE.y() + 0.2f;
 		bool isFrontWheel = true;
 
-		connectionPointCS0 = btVector3(sizeHE.x() - vt->wheel_width, connectionHeight, sizeHE.z() - vt->wheel_radius);
+		float yOffset = 0.1f;
+
+		connectionPointCS0 = btVector3(sizeHE.x() - vt->wheel_width, -sizeHE.y() + yOffset, sizeHE.z() - vt->wheel_radius);
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, vt->wheel_radius, this->tuning, isFrontWheel);
 
-		connectionPointCS0 = btVector3(-sizeHE.x() + vt->wheel_width, connectionHeight, sizeHE.z() - vt->wheel_radius);
+		connectionPointCS0 = btVector3(-sizeHE.x() + vt->wheel_width, -sizeHE.y() + yOffset, sizeHE.z() - vt->wheel_radius);
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, vt->wheel_radius, this->tuning, isFrontWheel);
 
 		if (vt->name.compare("tank") != 0) {
 			isFrontWheel = false;
 		}
-		connectionPointCS0 = btVector3(sizeHE.x() - vt->wheel_width, connectionHeight, -sizeHE.z() + vt->wheel_radius);
+		connectionPointCS0 = btVector3(sizeHE.x() - vt->wheel_width, -sizeHE.y() + yOffset, -sizeHE.z() + vt->wheel_radius);
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, vt->wheel_radius, this->tuning, isFrontWheel);
 
-		connectionPointCS0 = btVector3(-sizeHE.x() + vt->wheel_width, connectionHeight, -sizeHE.z() + vt->wheel_radius);
+		connectionPointCS0 = btVector3(-sizeHE.x() + vt->wheel_width, -sizeHE.y() + yOffset, -sizeHE.z() + vt->wheel_radius);
 		this->vehicle->addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, vt->wheel_radius, this->tuning, isFrontWheel);
 	}
 
@@ -210,21 +221,23 @@ void Vehicle::update(int delta)
 	// Front left
 	wheelIndex = 0;
 	this->vehicle->setSteeringValue(this->steering,wheelIndex);
+	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
 	//this->vehicle->setBrake(this->brakeForce,wheelIndex);
 
 	// Front right
 	wheelIndex = 1;
 	this->vehicle->setSteeringValue(this->steering,wheelIndex);
+	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
 	//this->vehicle->setBrake(this->brakeForce,wheelIndex);
 
 	// Rear left
 	wheelIndex = 2;
-	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
+	//this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
 	this->vehicle->setBrake(this->brakeForce,wheelIndex);
 
 	// Rear right
 	wheelIndex = 3;
-	this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
+	//this->vehicle->applyEngineForce(this->engineForce,wheelIndex);
 	this->vehicle->setBrake(this->brakeForce,wheelIndex);
 
 	// Update wheel nodes
