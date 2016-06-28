@@ -192,5 +192,6 @@ Heightmap::~Heightmap()
 {
 	delete [] data;
 	delete ground;
+	delete terrain_splat;
 }
 

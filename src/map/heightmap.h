@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <string>
 #include "../rage.h"
+#include "../render_opengl/texture_splat.h"
 
 using namespace std;
 
@@ -45,6 +46,9 @@ class Heightmap {
 		SpritePtr terrain;
 		SpritePtr normal;
 
+		// Texture splatting
+		TextureSplat* terrain_splat;
+
 	public:
 		// The OpenGL renderer entirely manages these
 		GLVAO* glvao;
@@ -53,7 +57,7 @@ class Heightmap {
 	public:
 		Heightmap(float sizeX, float sizeZ, float scale, glm::vec3 pos)
 			: sizeX(sizeX), sizeZ(sizeZ), sx(0), sz(0), scale(scale), pos(pos), data(NULL), ground(NULL), terrain(NULL),
-			normal(NULL)
+			normal(NULL), terrain_splat(NULL)
 			{};
 
 		~Heightmap();
@@ -80,6 +84,11 @@ class Heightmap {
 		void setBigTexture(SpritePtr tex) { terrain = tex; }
 
 		/**
+		* Set splat texture
+		**/
+		void setSplatTexture(TextureSplat* splat) { terrain_splat = splat; }
+
+		/**
 		* Return the bigtexture if set
 		**/
 		SpritePtr getBigTexture() { return terrain; }
@@ -88,6 +97,11 @@ class Heightmap {
 		* Return the bigtexture if set
 		**/
 		SpritePtr getBigNormal() { return normal; }
+
+		/**
+		* Return splat texture if set
+		**/
+		TextureSplat* getSplatTexture() { return terrain_splat; }
 
 		/**
 		* Return the coordinate to position the center of the heightmap

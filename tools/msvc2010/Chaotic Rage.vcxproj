@@ -270,6 +270,7 @@
     <ClCompile Include="..\..\src\lua\lundump.c" />
     <ClCompile Include="..\..\src\lua\lvm.c" />
     <ClCompile Include="..\..\src\lua\lzio.c" />
+    <ClCompile Include="..\..\src\render_opengl\texture_splat.cpp" />
     <ClCompile Include="..\..\src\script\lua_dialog_lib.cpp" />
     <ClCompile Include="..\..\src\script\lua_entity_lib.cpp" />
     <ClCompile Include="..\..\src\script\lua_mod_lib.cpp" />
@@ -522,6 +523,7 @@
     <ClInclude Include="..\..\src\render\render_ascii.h" />
     <ClInclude Include="..\..\src\render_opengl\guichan_font.h" />
     <ClInclude Include="..\..\src\render_opengl\intro.h" />
+    <ClInclude Include="..\..\src\render_opengl\texture_splat.h" />
     <ClInclude Include="..\..\src\script\ailogic.h" />
     <ClInclude Include="..\..\src\script\gamelogic.h" />
     <ClInclude Include="..\..\src\script\luatimer.h" />
