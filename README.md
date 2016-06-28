@@ -1,6 +1,9 @@
 Chaotic Rage
 ============
 
+[![Build Status](https://travis-ci.org/TheJosh/chaotic-rage.png?branch=master)](https://travis-ci.org/TheJosh/chaotic-rage)
+[![Code Climate](https://codeclimate.com/github/TheJosh/chaotic-rage.png)](https://codeclimate.com/github/TheJosh/chaotic-rage)
+
 Chaotic Rage is a silly little shooter game. A simple graphical style allows for a focus on gameplay. The game is very customisable with full modding support. There are a variety of game types, with scripting done in Lua. Multiple view modes - top down, behind player and first-person - allow for a unique perspective of the action. Dynamic and scriptable weather and day/night effects create a dynamic environment. The gameplay is rounded out by a number of interesting vehicles including tanks, helicopters and trains. Last but not least is a wide range of weapons including shotguns, machine guns and flame throwers.
 
 At the moment there are a few game types and other game content which is zombie themed. This was mostly because zombie AI is very easy to code. There is [a discussion on the forum](http://chaoticrage.com/forum/topic/6) about actually defining a proper "theme" for the game, because most people agree that zombies is a bit dated.
@@ -44,13 +47,6 @@ All contributions (even documentation) are welcome :) Open a pull request and I 
 If you've got ideas, code or content, but don't know where to start, email me at help@chaoticrage.com.
 
 You can read the technical documentation at http://chaoticrage.com/dev_docs
-
-
-Build Status
-------------
-Builds are tested on Travis CI
-
-[![Build Status](https://travis-ci.org/TheJosh/chaotic-rage.png?branch=master)](https://travis-ci.org/TheJosh/chaotic-rage)
 
 
 License
