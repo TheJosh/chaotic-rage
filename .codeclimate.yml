@@ -1,0 +1,7 @@
+exclude_paths:
+- data/**
+- docs/**
+- maps/**
+- maptool/**
+- orig/**
+- tools/**
