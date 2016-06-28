@@ -24,5 +24,11 @@ TextureSplat::~TextureSplat()
 
 void TextureSplat::bindTextures()
 {
+	for (unsigned int i = 0; i < TEXTURE_SPLAT_LAYERS; ++i) {
+		if (this->layers[i] == NULL) break;
+		glActiveTexture(GL_TEXTURE2 + i);
+		glBindTexture(GL_TEXTURE_2D, this->layers[i]->pixels);
+	}
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, this->alphamap->pixels);
 }
