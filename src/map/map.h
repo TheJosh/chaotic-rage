@@ -25,6 +25,7 @@ class RangeF;
 class btTriangleMesh;
 class btRigidBody;
 class Light;
+class TextureSplat;
 
 
 class Map {
@@ -64,6 +65,8 @@ class Map {
 	public:
 		int load(string name, Render *render, Mod* insideof);
 		void loadDefaultEntities();
+
+		TextureSplat* loadTextureSplat(cfg_t *cfg);
 
 		void update(int delta);
 

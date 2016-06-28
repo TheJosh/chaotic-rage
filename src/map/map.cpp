@@ -22,6 +22,7 @@
 #include "../physics_bullet.h"
 #include "../render_opengl/animplay.h"
 #include "../render_opengl/light.h"
+#include "../render_opengl/texture_splat.h"
 #include "../render/sprite.h"
 #include "../render/render_3d.h"
 #include "../mod/mod.h"
@@ -127,6 +128,13 @@ static cfg_opt_t mesh_opts[] =
 	CFG_END()
 };
 
+static cfg_opt_t texture_splat_opts[] =
+{
+	CFG_STR((char*) "alphamap", ((char*)""), CFGF_NONE),
+	CFG_STR_LIST((char*) "layers", ((char*)""), CFGF_NONE),
+	CFG_END()
+};
+
 static cfg_opt_t heightmap_opts[] =
 {
 	CFG_STR((char*) "data", ((char*)""), CFGF_NONE),
@@ -135,6 +143,7 @@ static cfg_opt_t heightmap_opts[] =
 	CFG_INT((char*) "data-raw-sz", 0, CFGF_NONE),
 	CFG_STR((char*) "normal", ((char*)""), CFGF_NONE),
 	CFG_STR((char*) "texture", ((char*)""), CFGF_NONE),
+	CFG_SEC((char*) "texture-splat", texture_splat_opts, CFGF_MULTI),
 	CFG_FLOAT((char*) "scale-y", 4.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "size-x", 0.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "size-z", 0.0f, CFGF_NONE),
@@ -301,12 +310,15 @@ int Map::load(string name, Render *render, Mod* insideof)
 			return 0;
 		}
 
-		// Get texture filename
-		char* texture = cfg_getstr(cfg_sub, "texture");
-		if (texture == NULL) {
-			cerr << "Heightmap config does not have 'texture' field set" << endl;
-			cfg_free(cfg);
-			return 0;
+		char* texture = NULL;
+		if (cfg_size(cfg_sub, "texture-splat") == 0) {
+			// Load BigTexture
+			texture = cfg_getstr(cfg_sub, "texture");
+			if (texture == NULL) {
+				cerr << "Heightmap config does not have 'texture' field set" << endl;
+				cfg_free(cfg);
+				return 0;
+			}
 		}
 
 		// Create heightmap
@@ -345,15 +357,26 @@ int Map::load(string name, Render *render, Mod* insideof)
 			return 0;
 		}
 
-		// BigTexture
-		SpritePtr tex = this->render->loadSprite(std::string(texture), this->mod);
-		if (! tex) {
-			cerr << "Failed to load heightmap terrain BigTexture '" << std::string(texture) << "'" << endl;
-			delete heightmap;
-			cfg_free(cfg);
-			return 0;
+		if (cfg_size(cfg_sub, "texture-splat") == 0) {
+			// BigTexture
+			SpritePtr tex = this->render->loadSprite(std::string(texture), this->mod);
+			if (! tex) {
+				cerr << "Failed to load heightmap terrain BigTexture '" << std::string(texture) << "'" << endl;
+				delete heightmap;
+				cfg_free(cfg);
+				return 0;
+			}
+			heightmap->setBigTexture(tex);
+		} else {
+			// Load texture splat
+			TextureSplat* splat = this->loadTextureSplat(cfg_getsec(cfg_sub, "texture-splat"));
+			if (splat == NULL) {
+				cerr << "Heightmap config does not have valid 'texture-splat' section set" << endl;
+				cfg_free(cfg);
+				return 0;
+			}
+			heightmap->setSplatTexture(splat);
 		}
-		heightmap->setBigTexture(tex);
 
 		// Load normal data, if specified
 		char* normal_file = cfg_getstr(cfg_sub, "normal");
@@ -455,6 +478,40 @@ int Map::load(string name, Render *render, Mod* insideof)
 
 	cfg_free(cfg);
 	return 1;
+}
+
+
+/**
+* Load a TextureSplat object from the a config section
+**/
+TextureSplat* Map::loadTextureSplat(cfg_t *cfg)
+{
+	unsigned int num_layers, j;
+	char* tmpstr;
+	TextureSplat* splat;
+
+	splat = new TextureSplat();
+
+	tmpstr = cfg_getstr(cfg, "alphamap");
+	if (tmpstr == NULL) {
+		return NULL;
+	}
+	splat->alphamap = this->render->loadSprite(std::string(tmpstr), this->mod);
+
+	num_layers = cfg_size(cfg, "layers");
+	if (num_layers > TEXTURE_SPLAT_LAYERS) {
+		return NULL;
+	}
+
+	for (j = 0; j < num_layers; j++) {
+		tmpstr = cfg_getnstr(cfg, "layers", j);
+		if (tmpstr == NULL) {
+			return NULL;
+		}
+		splat->layers[j] = this->render->loadSprite(std::string(tmpstr), this->mod);
+	}
+
+	return splat;
 }
 
 
