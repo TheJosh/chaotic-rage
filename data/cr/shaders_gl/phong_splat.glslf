@@ -30,9 +30,15 @@ void main()
 	vec3 n = normalize(csNormal);
 	vec3 e = normalize(csEyeDirection);
 
+	vec4 alphaMap = texture2D(uAlphaMap, TexUV0);
+	vec4 matDiffuseColor
+		= alphaMap.r * texture2D(uLayers[0], wsPosition.xz)
+		+ alphaMap.g * texture2D(uLayers[1], wsPosition.xz)
+		+ alphaMap.b * texture2D(uLayers[2], wsPosition.xz)
+		+ (1.0 - alphaMap.a) * texture2D(uLayers[3], wsPosition.xz);
+
 	// Basic material
 	vec4 todColor = texture(uDayNight, uTimeOfDay);
-	vec4 matDiffuseColor = texture2D(uAlphaMap, TexUV0);
 	vec4 matAmbientColor = todColor * matDiffuseColor;
 	vec4 matSpecularColor = vec4(0.3, 0.3, 0.3, 1.0);
 

@@ -1270,10 +1270,10 @@ void RenderOpenGL::setupShaders()
 			glUniform1i(shader->uniform("uDayNight"), 4);
 			glUniform1f(shader->uniform("uTimeOfDay"), st->time_of_day);
 			glUniform1i(shader->uniform("uAlphaMap"), 0);
-			glUniform1i(shader->uniform("uLayers[0]"), 2);
-			glUniform1i(shader->uniform("uLayers[1]"), 3);
-			glUniform1i(shader->uniform("uLayers[2]"), 4);
-			glUniform1i(shader->uniform("uLayers[3]"), 5);
+			glUniform1i(shader->uniform("uLayers[0]"), 5);
+			glUniform1i(shader->uniform("uLayers[1]"), 6);
+			glUniform1i(shader->uniform("uLayers[2]"), 7);
+			glUniform1i(shader->uniform("uLayers[3]"), 8);
 		}
 	}
 
