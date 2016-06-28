@@ -6,8 +6,9 @@
 
 #include "../render/sprite.h"
 
-
 #define TEXTURE_SPLAT_LAYERS 4
+
+class GLShader;
 
 
 class TextureSplat {
@@ -15,9 +16,16 @@ class TextureSplat {
 		SpritePtr alphamap;
 		SpritePtr layers[TEXTURE_SPLAT_LAYERS];
 
+		/**
+		* Alphamap UVs are multiplied by this for layers to produce tiling
+		**/
+		float scale;
+
+
 	public:
 		TextureSplat();
 		~TextureSplat();
 
 		void bindTextures();
+		void setUniforms(GLShader *s);
 };

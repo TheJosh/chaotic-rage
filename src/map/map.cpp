@@ -132,6 +132,7 @@ static cfg_opt_t texture_splat_opts[] =
 {
 	CFG_STR((char*) "alphamap", ((char*)""), CFGF_NONE),
 	CFG_STR_LIST((char*) "layers", ((char*)""), CFGF_NONE),
+	CFG_FLOAT((char*) "scale", 100.0f, CFGF_NONE),
 	CFG_END()
 };
 
@@ -491,6 +492,7 @@ TextureSplat* Map::loadTextureSplat(cfg_t *cfg)
 	TextureSplat* splat;
 
 	splat = new TextureSplat();
+	splat->scale = cfg_getfloat(cfg, "scale");
 
 	tmpstr = cfg_getstr(cfg, "alphamap");
 	if (tmpstr == NULL) {

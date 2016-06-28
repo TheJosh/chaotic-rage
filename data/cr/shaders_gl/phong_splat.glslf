@@ -20,6 +20,7 @@ uniform vec3 uLightPos[MAX_NUM_LIGHTS];
 uniform vec4 uLightColor[MAX_NUM_LIGHTS];
 uniform vec4 uAmbient;
 uniform float uTimeOfDay;
+uniform float uLayersScale;
 
 const float LOG2 = 1.442695;
 
@@ -32,10 +33,10 @@ void main()
 
 	vec4 alphaMap = texture2D(uAlphaMap, TexUV0);
 	vec4 matDiffuseColor
-		= alphaMap.r * texture2D(uLayers[0], wsPosition.xz)
-		+ alphaMap.g * texture2D(uLayers[1], wsPosition.xz)
-		+ alphaMap.b * texture2D(uLayers[2], wsPosition.xz)
-		+ (1.0 - alphaMap.a) * texture2D(uLayers[3], wsPosition.xz);
+		= alphaMap.r * texture2D(uLayers[0], TexUV0 * uLayersScale)
+		+ alphaMap.g * texture2D(uLayers[1], TexUV0 * uLayersScale)
+		+ alphaMap.b * texture2D(uLayers[2], TexUV0 * uLayersScale)
+		+ (1.0 - alphaMap.a) * texture2D(uLayers[3], TexUV0 * uLayersScale);
 
 	// Basic material
 	vec4 todColor = texture(uDayNight, uTimeOfDay);

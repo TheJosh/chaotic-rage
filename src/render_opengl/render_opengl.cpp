@@ -2296,6 +2296,7 @@ void RenderOpenGL::terrain()
 			glBindTexture(GL_TEXTURE_2D, heightmap->getBigTexture()->pixels);
 		} else {
 			heightmap->getSplatTexture()->bindTextures();
+			heightmap->getSplatTexture()->setUniforms(s);
 		}
 
 		glm::mat4 modelMatrix = glm::scale(

@@ -4,6 +4,7 @@
 
 
 #include "texture_splat.h"
+#include "glshader.h"
 
 
 
@@ -13,6 +14,7 @@ TextureSplat::TextureSplat()
 	for (unsigned int i = 0; i < TEXTURE_SPLAT_LAYERS; ++i) {
 		this->layers[i] = NULL;
 	}
+	this->scale = 100.0f;
 }
 
 
@@ -31,4 +33,10 @@ void TextureSplat::bindTextures()
 	}
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, this->alphamap->pixels);
+}
+
+
+void TextureSplat::setUniforms(GLShader *s)
+{
+	glUniform1f(s->uniform("uLayersScale"), this->scale);
 }
