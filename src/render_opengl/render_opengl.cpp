@@ -1389,6 +1389,7 @@ void RenderOpenGL::loadShaders()
 	this->shaders[SHADER_ENTITY_STATIC_BUMP] = loadProgram(base, "phong_static", "phong_bump");
 	this->shaders[SHADER_TERRAIN_PLAIN] = loadProgram(base, "phong_static", "phong_shadow");
 	this->shaders[SHADER_TERRAIN_NORMALMAP] = loadProgram(base, "phong_normalmap", "phong_shadow");
+	this->shaders[SHADER_TERRAIN_SPLAT] = loadProgram(base, "phong_static", "phong_shadow");
 	this->shaders[SHADER_WATER] = loadProgram(base, "water");
 	this->shaders[SHADER_TEXT] = loadProgram(base, "text");
 	this->shaders[SHADER_SKYBOX] = loadProgram(base, "skybox");
@@ -2273,7 +2274,9 @@ void RenderOpenGL::terrain()
 	for (vector<Heightmap*>::iterator it = this->st->map->heightmaps.begin(); it != this->st->map->heightmaps.end(); ++it) {
 		Heightmap* heightmap = (*it);
 
-		if (heightmap->getBigNormal() == NULL) {
+		if (heightmap->getBigTexture() == NULL) {
+			s = this->shaders[SHADER_TERRAIN_SPLAT];
+		} else if (heightmap->getBigNormal() == NULL) {
 			s = this->shaders[SHADER_TERRAIN_PLAIN];
 		} else {
 			s = this->shaders[SHADER_TERRAIN_NORMALMAP];
@@ -2284,7 +2287,11 @@ void RenderOpenGL::terrain()
 
 		glUseProgram(s->p());
 
-		glBindTexture(GL_TEXTURE_2D, heightmap->getBigTexture()->pixels);
+		if (heightmap->getBigTexture() != NULL) {
+			glBindTexture(GL_TEXTURE_2D, heightmap->getBigTexture()->pixels);
+		} else {
+			heightmap->getSplatTexture()->bindTextures();
+		}
 
 		glm::mat4 modelMatrix = glm::scale(
 			glm::mat4(1.0f),

@@ -19,4 +19,5 @@ class TextureSplat {
 		TextureSplat();
 		~TextureSplat();
 
+		void bindTextures();
 };

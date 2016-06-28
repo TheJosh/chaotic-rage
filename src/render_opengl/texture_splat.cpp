@@ -20,3 +20,9 @@ TextureSplat::~TextureSplat()
 {
 	// TODO: How to free sprites without a ptr to the renderer?
 }
+
+
+void TextureSplat::bindTextures()
+{
+	glBindTexture(GL_TEXTURE_2D, this->alphamap->pixels);
+}
