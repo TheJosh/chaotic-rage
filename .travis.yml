@@ -1,10 +1,28 @@
 language: cpp
 compiler: gcc
+
 env:
   - PLATFORM=linux
+  
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "T5etXz6ru3TSrrKuzyJ15w6uV4EquyJfPMVhSipMCbRgEZhjh5pAW4UrCluFXbJrg3dRqvnrNVJe1Oq3puPWy99p9Zwvi+WBJwWarxW3SOfeUAATHazFBbYxnu9OJc4I2H7WtmQbV2b/DhxQaBVkzabS5uOL3dyG8CxSxHcQ86o="
+
 install:
   - chmod 0755 tools/travis/install.sh
   - tools/travis/install.sh
+
 script:
   - chmod 0755 tools/travis/script.sh
   - tools/travis/script.sh
+
+addons:
+  coverity_scan:
+    project:
+      name: "TheJosh/chaotic-rage"
+      description: "Build submitted via Travis CI"
+    notification_email: josh.sickmate@gmail.com
+    build_command_prepend: "chmod 0755 tools/travis/install.sh; tools/travis/install.sh"
+    build_command: "chmod 0755 tools/travis/script.sh; tools/travis/script.sh"
+    branch_pattern: coverity_scan
