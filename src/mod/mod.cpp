@@ -97,7 +97,6 @@ void delete_v(vector<T*> *v)
 	}
 
 	delete(v);
-	v = NULL;
 }
 
 
