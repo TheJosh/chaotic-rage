@@ -373,6 +373,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 			TextureSplat* splat = this->loadTextureSplat(cfg_getsec(cfg_sub, "texture-splat"));
 			if (splat == NULL) {
 				cerr << "Heightmap config does not have valid 'texture-splat' section set" << endl;
+				delete heightmap;
 				cfg_free(cfg);
 				return 0;
 			}
@@ -496,18 +497,21 @@ TextureSplat* Map::loadTextureSplat(cfg_t *cfg)
 
 	tmpstr = cfg_getstr(cfg, "alphamap");
 	if (tmpstr == NULL) {
+		delete splat;
 		return NULL;
 	}
 	splat->alphamap = this->render->loadSprite(std::string(tmpstr), this->mod);
 
 	num_layers = cfg_size(cfg, "layers");
 	if (num_layers > TEXTURE_SPLAT_LAYERS) {
+		delete splat;
 		return NULL;
 	}
 
 	for (j = 0; j < num_layers; j++) {
 		tmpstr = cfg_getnstr(cfg, "layers", j);
 		if (tmpstr == NULL) {
+			delete splat;
 			return NULL;
 		}
 		splat->layers[j] = this->render->loadSprite(std::string(tmpstr), this->mod);
