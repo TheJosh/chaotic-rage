@@ -229,8 +229,10 @@ void CommandLineArgs::process()
 				break;
 
 			case '6':
-				profile_enable(optarg);
-				cout << "Saving profile log to file '" << optarg << "'.\n";
+				if (optarg != NULL) {
+					profile_enable(optarg);
+					cout << "Saving profile log to file '" << optarg << "'.\n";
+				}
 				break;
 
 			case '7':
