@@ -182,6 +182,10 @@ chaoticrage: $(OBJFILES_CLIENT)
 	$(Q)$(CXX) $(CFLAGS) $(LDFLAGS) $(OBJFILES_CLIENT) -o chaoticrage$(POSTFIX) $(LIBS)
 
 
+test: chaoticrage
+	./chaoticrage --mod test --arcade generaltest,pound,robot --render null --audio null
+
+
 install:	## Install game in Linux environment
 install: chaoticrage
 	mkdir -p $(DESTPATH)/usr/games
