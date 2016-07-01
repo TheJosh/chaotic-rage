@@ -22,6 +22,13 @@ class GLVAO;
 class Heightmap {
 	friend class Map;
 
+	public:
+		/**
+		 * Max size for data, per axis
+		 * Total max size will be 8192 x 8192 = ~67 million cells
+		 */
+		static const int MAX_DATA_SIZE = 8192;
+
 	protected:
 		// Physical size
 		float sizeX;

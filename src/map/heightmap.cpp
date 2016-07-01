@@ -45,6 +45,11 @@ float* Heightmap::loadIMG(Mod* mod, string filename, int *imW, int *imH)
 	if (imW) *imW = surf->w;
 	if (imH) *imH = surf->h;
 
+	if (surf->w > Heightmap::MAX_DATA_SIZE || surf->h > Heightmap::MAX_DATA_SIZE) {
+		SDL_RWclose(rw);
+		return NULL;
+	}
+
 	float* data = new float[surf->w * surf->h];
 	if (!data) {
 		return NULL;
@@ -76,6 +81,10 @@ float* Heightmap::loadRAW16(Mod* mod, string filename, int sx, int sz)
 {
 	Sint64 len;
 
+	if (sx > Heightmap::MAX_DATA_SIZE || sz > Heightmap::MAX_DATA_SIZE) {
+		return NULL;
+	}
+	
 	Uint8* binary = mod->loadBinary(filename, &len);
 	if (len != (2 * sx * sz)) {
 		free(binary);
