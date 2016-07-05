@@ -362,7 +362,7 @@ void PhysicsBullet::stepTime(int ms)
 **/
 btVector3 PhysicsBullet::spawnLocation(float x, float z, float height)
 {
-	float y = 100.0f;
+	float y = 1000.0f;
 
 	btVector3 begin(x, y, z);
 	btVector3 end(x, -y, z);
