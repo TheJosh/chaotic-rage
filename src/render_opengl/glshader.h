@@ -24,21 +24,27 @@ class GLShader
 		// Should the various lighting uniforms be set?
 		bool uniforms_lighting;
 
-	protected:
+	public:
+		GLShader(const GLuint p) : program(p), uniforms_lighting(true) {}
+
 		/**
 		* Creates and compile an OpenGL "shader" object
 		* @return GLuint
 		**/
 		GLuint GLShader::createShader(const char* code, GLenum type);
 
-	public:
-		GLShader(const GLuint p) : program(p), uniforms_lighting(true) {}
+		/**
+		* Create a shader from already-compiled shader objects
+		* Does NOT delete the linked shaders - calling code needs to do this
+		* @return True on success, false on failure
+		**/
+		bool createProgFromShaders(GLuint vertex, GLuint fragment);
 
 		/**
 		* Create a shader from strings containing GLSL code
 		* @return True on success, false on failure
 		**/
-		bool createFromStrings(const char* vertex, const char* fragment);
+		bool createProgFromStrings(const char* vertex, const char* fragment);
 
 		GLuint p();
 		GLuint uniform(const char* name);

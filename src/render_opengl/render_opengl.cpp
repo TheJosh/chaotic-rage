@@ -1368,7 +1368,7 @@ GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment)
 {
 	GLShader *s = new GLShader(0);
 
-	bool result = s->createFromStrings(vertex, fragment);
+	bool result = s->createProgFromStrings(vertex, fragment);
 	if (!result) {
 		delete s;
 		return NULL;

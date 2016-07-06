@@ -53,13 +53,13 @@ GLuint GLShader::createShader(const char* code, GLenum type)
 
 
 /**
-* Creates and compile a shader program from two shader code strings
+* Create and link a shader program from two compiled shaders
+* Does NOT delete the linked shaders - calling code needs to do this
 * @return True on success, false on failure
 **/
-bool GLShader::createFromStrings(const char* vertex, const char* fragment)
+bool GLShader::createProgFromShaders(GLuint vertex, GLuint fragment)
 {
 	GLint success;
-	GLuint sVertex, sFragment;
 
 	// Create program object
 	GLuint program = glCreateProgram();
@@ -67,21 +67,8 @@ bool GLShader::createFromStrings(const char* vertex, const char* fragment)
 		return false;
 	}
 
-	// Create and attach vertex shader
-	sVertex = this->createShader(vertex, GL_VERTEX_SHADER);
-	if (sVertex == 0) {
-		GL_LOG("Invalid vertex shader (program %u)", program);
-		return false;
-	}
-	glAttachShader(program, sVertex);
-
-	// Same with frag shader
-	sFragment = this->createShader(fragment, GL_FRAGMENT_SHADER);
-	if (sFragment == 0) {
-		GL_LOG("Invalid fragment shader (program %u)", program);
-		return false;
-	}
-	glAttachShader(program, sFragment);
+	glAttachShader(program, vertex);
+	glAttachShader(program, fragment);
 
 	// Bind attribs
 	glBindAttribLocation(program, ATTRIB_POSITION, "vPosition");
@@ -97,8 +84,6 @@ bool GLShader::createFromStrings(const char* vertex, const char* fragment)
 
 	// Link
 	glLinkProgram(program);
-	glDeleteShader(sVertex);
-	glDeleteShader(sFragment);
 
 	// Check link worked
 	glGetProgramiv(program, GL_LINK_STATUS, &success);
@@ -113,6 +98,37 @@ bool GLShader::createFromStrings(const char* vertex, const char* fragment)
 
 	this->program = program;
 	return true;
+}
+
+
+/**
+* Creates and link a shader program from two shader code strings
+* @return True on success, false on failure
+**/
+bool GLShader::createProgFromStrings(const char* vertex, const char* fragment)
+{
+	GLuint sVertex, sFragment;
+	bool result;
+
+	sVertex = this->createShader(vertex, GL_VERTEX_SHADER);
+	if (sVertex == 0) {
+		GL_LOG("Invalid vertex shader (program %u)", program);
+		return false;
+	}
+
+	sFragment = this->createShader(fragment, GL_FRAGMENT_SHADER);
+	if (sFragment == 0) {
+		glDeleteShader(sVertex);
+		GL_LOG("Invalid fragment shader (program %u)", program);
+		return false;
+	}
+
+	result = this->createProgFromShaders(sVertex, sFragment);
+
+	glDeleteShader(sVertex);
+	glDeleteShader(sFragment);
+
+	return result;
 }
 
 
