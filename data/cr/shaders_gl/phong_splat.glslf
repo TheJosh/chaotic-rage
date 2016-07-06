@@ -33,8 +33,8 @@ void main()
 
 	vec4 alphaMap = texture2D(uAlphaMap, TexUV0);
 	vec4 matDiffuseColor
-		= alphaMap.r * texture2D(uLayers[0], TexUV0 * uLayersScale)
-		+ alphaMap.g * texture2D(uLayers[1], TexUV0 * uLayersScale)
+		= alphaMap.r * texture2D(uLayers[0], TexUV0 * uLayersScale) * texture2D(uLayers[0], TexUV0 * uLayersScale * -0.25) * 1.5
+		+ alphaMap.g * texture2D(uLayers[1], TexUV0 * uLayersScale) * texture2D(uLayers[1], TexUV0 * uLayersScale * -0.25) * 1.5
 		+ alphaMap.b * texture2D(uLayers[2], TexUV0 * uLayersScale)
 		+ (1.0 - alphaMap.a) * texture2D(uLayers[3], TexUV0 * uLayersScale);
 
