@@ -67,7 +67,13 @@ void ClientConfig::load()
 
 	// Parse config
 	cfg = cfg_init(config_opts, CFGF_NONE);
-	cfg_parse(cfg, filename.c_str());
+	int result = cfg_parse(cfg, filename.c_str());
+
+	if (result == CFG_PARSE_ERROR) {
+		reportFatalError("Unable to parse client config file");
+		cfg_free(cfg);
+		return;
+	}
 
 	// OpenGL
 	this->gl = new RenderOpenGLSettings();
