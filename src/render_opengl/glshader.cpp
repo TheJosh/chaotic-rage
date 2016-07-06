@@ -14,31 +14,49 @@ using namespace std;
 
 
 /**
-* Creates and compile an OpenGL "shader" object
+* Creates and compile an OpenGL "shader" object from a single string of GLSL code
+* Prepends the shader source code with a GLSL version string
+*
+* @param GLenum type Shader type, e.g. GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
+* @param char* code NULL-terminated string of GLSL code
 * @return GLuint
 **/
-GLuint GLShader::createShader(const char* code, GLenum type)
+GLuint GLShader::createShader(GLenum type, const char* code)
 {
 	GLint success;
 	const char* strings[2];
-	int lengths[2];
+
+	strings[0] = "#version 130\n";
+	strings[1] = code;
+
+	return this->createShader(type, 2, strings);
+}
+
+
+/**
+* Creates and compile an OpenGL "shader" object from a one or more strings of GLSL code
+*
+* @param GLenum type Shader type, e.g. GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
+* @param GLsizei count Number of elements in the 'code' array
+* @param char** code Array of NULL-terminated strings of GLSL code
+* @return GLuint
+**/
+GLuint GLShader::createShader(GLenum type, const GLsizei count, const char** code)
+{
+	GLint success;
 
 	GLuint shader = glCreateShader(type);
 	if (shader == 0) {
 		return 0;
 	}
 
-	strings[0] = "#version 130\n";
-	lengths[0] = strlen(strings[0]);
-
-	strings[1] = code;
-	lengths[1] = strlen(strings[1]);
-
-	glShaderSource(shader, 2, strings, lengths);
+	glShaderSource(shader, count, code, NULL);
 
 	glCompileShader(shader);
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-	if (! success) {
+
+	if (success == 0) {
+		glDeleteShader(shader);
 		GLchar InfoLog[1024];
 		glGetShaderInfoLog(shader, 1024, NULL, InfoLog);
 		string log = string(InfoLog);
@@ -110,13 +128,13 @@ bool GLShader::createProgFromStrings(const char* vertex, const char* fragment)
 	GLuint sVertex, sFragment;
 	bool result;
 
-	sVertex = this->createShader(vertex, GL_VERTEX_SHADER);
+	sVertex = this->createShader(GL_VERTEX_SHADER, vertex);
 	if (sVertex == 0) {
 		GL_LOG("Invalid vertex shader (program %u)", program);
 		return false;
 	}
 
-	sFragment = this->createShader(fragment, GL_FRAGMENT_SHADER);
+	sFragment = this->createShader(GL_FRAGMENT_SHADER, fragment);
 	if (sFragment == 0) {
 		glDeleteShader(sVertex);
 		GL_LOG("Invalid fragment shader (program %u)", program);

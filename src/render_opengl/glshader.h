@@ -28,10 +28,24 @@ class GLShader
 		GLShader(const GLuint p) : program(p), uniforms_lighting(true) {}
 
 		/**
-		* Creates and compile an OpenGL "shader" object
+		* Creates and compile an OpenGL "shader" object from a single string of GLSL code
+		* Prepends the shader source code with a GLSL version string
+		*
+		* @param GLenum type Shader type, e.g. GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
+		* @param char* code NULL-terminated string of GLSL code
 		* @return GLuint
 		**/
-		GLuint GLShader::createShader(const char* code, GLenum type);
+		GLuint createShader(GLenum type, const char* code);
+
+		/**
+		* Creates and compile an OpenGL "shader" object from a one or more strings of GLSL code
+		*
+		* @param GLenum type Shader type, e.g. GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
+		* @param GLsizei count Number of elements in the 'code' array
+		* @param char** code Array of NULL-terminated strings of GLSL code
+		* @return GLuint
+		**/
+		GLuint createShader(GLenum type, const GLsizei count, const char** code);
 
 		/**
 		* Create a shader from already-compiled shader objects
