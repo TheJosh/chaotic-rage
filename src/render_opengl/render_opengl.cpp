@@ -1362,6 +1362,23 @@ void main() {              \n\
 
 
 /**
+* Load a pair of strings into a GLShader object
+**/
+GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment)
+{
+	GLShader *s = new GLShader(0);
+
+	bool result = s->createFromStrings(vertex, fragment);
+	if (!result) {
+		delete s;
+		return NULL;
+	}
+
+	return s;
+}
+
+
+/**
 * Load all of the general shaders we use for rendering
 * Doesn't include various special-effects shaders that may be in use.
 **/
@@ -1435,108 +1452,6 @@ bool RenderOpenGL::reloadShaders()
 	}
 
 	return true;
-}
-
-
-/**
-* Creates and compile a shader
-* Returns the shader id.
-**/
-GLuint RenderOpenGL::createShader(const char* code, GLenum type)
-{
-	GLint success;
-	const char* strings[2];
-	int lengths[2];
-
-	GLuint shader = glCreateShader(type);
-	if (shader == 0) {
-		return 0;
-	}
-
-	strings[0] = "#version 130\n";
-	lengths[0] = strlen(strings[0]);
-
-	strings[1] = code;
-	lengths[1] = strlen(strings[1]);
-
-	glShaderSource(shader, 2, strings, lengths);
-
-	glCompileShader(shader);
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-	if (! success) {
-		GLchar InfoLog[1024];
-		glGetShaderInfoLog(shader, 1024, NULL, InfoLog);
-		string log = string(InfoLog);
-		log = replaceString(log, "\n", "\n\t");
-		log = trimString(log);
-		GL_LOG("Error compiling shader:\n\t%s", log.c_str());
-		return 0;
-	}
-
-	return shader;
-}
-
-
-/**
-* Creates and compile a shader program from two shader code strings
-* Returns the program id.
-**/
-GLShader* RenderOpenGL::createProgram(const char* vertex, const char* fragment)
-{
-	GLint success;
-	GLuint sVertex, sFragment;
-
-	// Create program object
-	GLuint program = glCreateProgram();
-	if (program == 0) {
-		return NULL;
-	}
-
-	// Create and attach vertex shader
-	sVertex = this->createShader(vertex, GL_VERTEX_SHADER);
-	if (sVertex == 0) {
-		GL_LOG("Invalid vertex shader (program %u)", program);
-		return NULL;
-	}
-	glAttachShader(program, sVertex);
-
-	// Same with frag shader
-	sFragment = this->createShader(fragment, GL_FRAGMENT_SHADER);
-	if (sFragment == 0) {
-		GL_LOG("Invalid fragment shader (program %u)", program);
-		return NULL;
-	}
-	glAttachShader(program, sFragment);
-
-	// Bind attribs
-	glBindAttribLocation(program, ATTRIB_POSITION, "vPosition");
-	glBindAttribLocation(program, ATTRIB_NORMAL, "vNormal");
-	glBindAttribLocation(program, ATTRIB_TEXUV + 0, "vTexUV0");
-	glBindAttribLocation(program, ATTRIB_TEXUV + 1, "vTexUV1");
-	glBindAttribLocation(program, ATTRIB_BONEID, "vBoneIDs");
-	glBindAttribLocation(program, ATTRIB_BONEWEIGHT, "vBoneWeights");
-	glBindAttribLocation(program, ATTRIB_TEXTCOORD, "vCoord");
-	glBindAttribLocation(program, ATTRIB_COLOR, "vColor");
-	glBindAttribLocation(program, ATTRIB_TANGENT, "vTangent");
-	glBindAttribLocation(program, ATTRIB_BITANGENT, "vBitangent");
-
-	// Link
-	glLinkProgram(program);
-	glDeleteShader(sVertex);
-	glDeleteShader(sFragment);
-
-	// Check link worked
-	glGetProgramiv(program, GL_LINK_STATUS, &success);
-	if (! success) {
-		GLchar infolog[1024];
-		glGetProgramInfoLog(program, 1024, NULL, infolog);
-		GL_LOG("Error linking program\n%s", infolog);
-		return NULL;
-	}
-
-	CHECK_OPENGL_ERROR;
-
-	return new GLShader(program);
 }
 
 
