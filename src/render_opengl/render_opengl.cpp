@@ -1456,39 +1456,6 @@ bool RenderOpenGL::reloadShaders()
 
 
 /**
-* Convert GL shaders into ES shaders - vertex shader
-* Only works for a strict subset of GL shaders
-**/
-char* convertGLtoESv(const char* src)
-{
-	string str = string(src);
-
-	str = replaceString(str, "in ", "attribute ");
-	str = replaceString(str, "out ", "varying ");
-
-	char* out = (char*)malloc(str.length() + 1);
-	memcpy(out, str.c_str(), str.length() + 1);
-	return out;
-}
-
-
-/**
-* Convert GL shaders into ES shaders - fragment shader
-* Only works for a strict subset of GL shaders
-**/
-char* convertGLtoESf(const char* src)
-{
-	string str = string(src);
-
-	str = replaceString(str, "in ", "varying ");
-
-	char* out = (char*)malloc(str.length() + 1);
-	memcpy(out, str.c_str(), str.length() + 1);
-	return out;
-}
-
-
-/**
 * Load shaders using source found in a mod
 *
 * Will load the files:
