@@ -23,7 +23,6 @@ using namespace std;
 **/
 GLuint GLShader::createShader(GLenum type, const char* code)
 {
-	GLint success;
 	const char* strings[2];
 
 	strings[0] = "#version 130\n";
