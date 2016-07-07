@@ -946,6 +946,9 @@
     <ClCompile Include="..\..\src\render_opengl\texture_splat.cpp">
       <Filter>src\render_opengl</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\renderer_heightmap.cpp">
+      <Filter>src\render_opengl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\game.h">
@@ -1702,6 +1705,9 @@
       <Filter>src\render_opengl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\render_opengl\texture_splat.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\renderer_heightmap.h">
       <Filter>src\render_opengl</Filter>
     </ClInclude>
   </ItemGroup>

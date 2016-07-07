@@ -34,6 +34,7 @@ class RenderOpenGLSettings;
 class btIDebugDraw;
 class OpenGLFont;
 class Heightmap;
+class RendererHeightmap;
 
 
 // temporary class!
@@ -51,6 +52,7 @@ class RenderOpenGL : public Render3D
 	friend class Intro;
 	friend class GameState;
 	friend class OpenGLFont;
+	friend class RendererHeightmap;
 
 	private:
 		#ifdef SDL1_VIDEO

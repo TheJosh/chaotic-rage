@@ -36,6 +36,7 @@
 #include "animplay.h"
 #include "light.h"
 #include "hud.h"
+#include "renderer_heightmap.h"
 
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
@@ -928,6 +929,8 @@ void RenderOpenGL::createHeightmap(Heightmap* heightmap)
 	}
 
 	assert(j == heightmap->glsize);
+
+	heightmap->renderer = new RendererHeightmap(this, heightmap);
 
 	// Create VAO
 	heightmap->glvao = new GLVAO();
@@ -2149,8 +2152,6 @@ void RenderOpenGL::skybox()
 **/
 void RenderOpenGL::terrain()
 {
-	GLShader* s;
-
 	CHECK_OPENGL_ERROR;
 
 	glActiveTexture(GL_TEXTURE1);
@@ -2159,54 +2160,11 @@ void RenderOpenGL::terrain()
 
 	// Heightmaps
 	for (vector<Heightmap*>::iterator it = this->st->map->heightmaps.begin(); it != this->st->map->heightmaps.end(); ++it) {
-		Heightmap* heightmap = (*it);
-
-		if (heightmap->getBigTexture() == NULL) {
-			s = this->shaders[SHADER_TERRAIN_SPLAT];
-		} else if (heightmap->getBigNormal() == NULL) {
-			s = this->shaders[SHADER_TERRAIN_PLAIN];
-		} else {
-			s = this->shaders[SHADER_TERRAIN_NORMALMAP];
-			glActiveTexture(GL_TEXTURE2);
-			glBindTexture(GL_TEXTURE_2D, heightmap->getBigNormal()->pixels);
-			glActiveTexture(GL_TEXTURE0);
-		}
-
-		glUseProgram(s->p());
-
-		if (heightmap->getBigTexture() != NULL) {
-			glBindTexture(GL_TEXTURE_2D, heightmap->getBigTexture()->pixels);
-		} else {
-			heightmap->getSplatTexture()->bindTextures();
-			heightmap->getSplatTexture()->setUniforms(s);
-		}
-
-		glm::mat4 modelMatrix = glm::scale(
-			glm::mat4(1.0f),
-			glm::vec3(heightmap->getScaleX(), 1.0f, heightmap->getScaleZ())
-		);
-		modelMatrix = glm::translate(modelMatrix, glm::vec3(-heightmap->getSizeX()/2.0f, 0.0f, -heightmap->getSizeZ()/2.0f));
-		modelMatrix = glm::translate(modelMatrix, heightmap->getPosition());
-
-		glm::mat4 MVP = this->projection * this->view * modelMatrix;
-		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
-		
-		glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-		glUniformMatrix4fv(s->uniform("uM"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-		glUniformMatrix3fv(s->uniform("uMN"), 1, GL_FALSE, glm::value_ptr(glm::inverseTranspose(glm::mat3(modelMatrix))));
-		glUniformMatrix4fv(s->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
-		glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
-
-		heightmap->glvao->bind();
-
-		int numPerStrip = 2 + ((heightmap->getDataSizeX()-1) * 2);
-		for (int z = 0; z < heightmap->getDataSizeZ() - 1; z++) {
-			glDrawArrays(GL_TRIANGLE_STRIP, numPerStrip * z, numPerStrip);
-		}
+		(*it)->renderer->draw(this);
 	}
 
 	// Geomerty meshes
-	s = this->shaders[SHADER_TERRAIN_PLAIN];
+	GLShader* s = this->shaders[SHADER_TERRAIN_PLAIN];
 	glUseProgram(s->p());
 	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); ++it) {
 		MapMesh* mm = (*it);
