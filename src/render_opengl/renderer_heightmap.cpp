@@ -17,6 +17,9 @@
 extern glm::mat4 biasMatrix;
 
 
+/**
+* Prepare the heightmap renderer
+**/
 RendererHeightmap::RendererHeightmap(RenderOpenGL* render, Heightmap* heightmap)
 	: heightmap(heightmap)
 {
@@ -143,6 +146,9 @@ void RendererHeightmap::createVAO()
 }
 
 
+/**
+* Draw a heightmap
+**/
 void RendererHeightmap::draw(RenderOpenGL* render)
 {
 	if (heightmap->getBigNormal() != NULL) {

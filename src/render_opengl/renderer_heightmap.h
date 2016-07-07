@@ -17,10 +17,25 @@ class RendererHeightmap {
 		GLVAO* vao;
 
 	public:
+		/**
+		* Prepare the heightmap renderer
+		**/
 		RendererHeightmap(RenderOpenGL* render, Heightmap* heightmap);
+
+		/**
+		* Clean up
+		**/
 		~RendererHeightmap();
+
+		/**
+		* Draw a heightmap
+		**/
 		void draw(RenderOpenGL* render);
 
 	protected:
+		/**
+		* Create an OpenGL mesh (array of triangle strips) from a heightmap
+		* Generates a VAO
+		**/
 		void createVAO();
 };
