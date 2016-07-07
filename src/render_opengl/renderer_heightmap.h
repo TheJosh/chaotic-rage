@@ -36,7 +36,12 @@ class RendererHeightmap {
 		/**
 		* Create a shader, optimised for the specific splat rendering used
 		**/
-		static GLShader* createSplatShader(RenderOpenGL* render);
+		static GLShader* createSplatShader(RenderOpenGL* render, Heightmap* heightmap);
+
+		/**
+		* Create the 'diffuseColor' method used in splat fragment shader
+		**/
+		static char* createSplatMethod_diffuseColor(Heightmap* heightmap);
 
 		/**
 		* Create an OpenGL mesh (array of triangle strips) from a heightmap

@@ -16,6 +16,9 @@
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <string>
+#include <sstream>
+
 extern glm::mat4 biasMatrix;
 
 using namespace std;
@@ -28,7 +31,7 @@ RendererHeightmap::RendererHeightmap(RenderOpenGL* render, Heightmap* heightmap)
 	: heightmap(heightmap)
 {
 	if (heightmap->getBigTexture() == NULL) {
-		this->shader = this->createSplatShader(render);		// NOTE: Generated shader leaks
+		this->shader = this->createSplatShader(render, heightmap);		// NOTE: Generated shader leaks
 	} else if (heightmap->getBigNormal() == NULL) {
 		this->shader = render->shaders[SHADER_TERRAIN_PLAIN];
 	} else {
@@ -48,7 +51,7 @@ RendererHeightmap::~RendererHeightmap()
 /**
 * Create a shader, optimised for the specific splat rendering used
 **/
-GLShader* RendererHeightmap::createSplatShader(RenderOpenGL* render)
+GLShader* RendererHeightmap::createSplatShader(RenderOpenGL* render, Heightmap* heightmap)
 {
 	CHECK_OPENGL_ERROR;
 
@@ -64,24 +67,16 @@ GLShader* RendererHeightmap::createSplatShader(RenderOpenGL* render)
 	}
 
 	char* base_fragment_code = s->loadCodeFile("phong_splat.glslf");
-
-	string diffuse_code = "vec4 diffuseColor() {";
-	diffuse_code += "vec4 layers[4];";
-	diffuse_code += "vec4 alphaMap = texture2D(uAlphaMap, TexUV0);";
-	diffuse_code += "layers[0] = alphaMap[0] * texture2D(uLayers[0], TexUV0 * uLayersScale) * texture2D(uLayers[0], TexUV0 * uLayersScale * -0.25) * 1.5;";
-	diffuse_code += "layers[1] = alphaMap[1] * texture2D(uLayers[1], TexUV0 * uLayersScale) * texture2D(uLayers[1], TexUV0 * uLayersScale * -0.25) * 1.5;";
-	diffuse_code += "layers[2] = alphaMap[2] * texture2D(uLayers[2], TexUV0 * uLayersScale) * texture2D(uLayers[2], TexUV0 * uLayersScale * -0.25) * 1.5;";
-	diffuse_code += "layers[3] = alphaMap[3] * texture2D(uLayers[3], TexUV0 * uLayersScale) * texture2D(uLayers[3], TexUV0 * uLayersScale * -0.25) * 1.5;";
-	diffuse_code += "return layers[0] + layers[1] + layers[2] + layers[3];";
-	diffuse_code += "}";
+	char* diffuse_code = RendererHeightmap::createSplatMethod_diffuseColor(heightmap);
 
 	const char* strings[3];
 	strings[0] = "#version 130\n";
 	strings[1] = base_fragment_code;
-	strings[2] = diffuse_code.c_str();
+	strings[2] = diffuse_code;
 
 	GLuint fragment = s->createShader(GL_FRAGMENT_SHADER, 3, strings);
 	free(base_fragment_code);
+	free(diffuse_code);
 	if (fragment == 0) {
 		glDeleteShader(vertex);
 		GL_LOG("Invalid fragment shader");
@@ -112,6 +107,38 @@ GLShader* RendererHeightmap::createSplatShader(RenderOpenGL* render)
 	CHECK_OPENGL_ERROR;
 
 	return s;
+}
+
+
+/**
+* Create the 'diffuseColor' method used in splat fragment shader
+**/
+char* RendererHeightmap::createSplatMethod_diffuseColor(Heightmap* heightmap)
+{
+	std::stringstream ss;
+
+	ss << "vec4 diffuseColor() {\n";
+	ss << "vec4 alphaMap = texture2D(uAlphaMap, TexUV0);\n";
+	ss << "vec4 diffuse = vec4(0.0, 0.0, 0.0, 0.0);\n";
+
+	for (unsigned int i = 0; i < TEXTURE_SPLAT_LAYERS; ++i) {
+		if (heightmap->getSplatTexture()->layers[i] != NULL) {
+			ss << "diffuse += ";
+			ss <<  "alphaMap[" << i << "] * texture2D(uLayers[" << i << "], TexUV0 * uLayersScale)";
+			ss << "* texture2D(uLayers[" << i << "], TexUV0 * uLayersScale * -0.25) * 1.5";
+			ss << ";\n";
+		}
+	}
+
+	ss << "return diffuse;\n";
+	ss << "}";
+
+	// TODO: I'm sure there are better ways to do this!
+	const std::string tmp = ss.str();
+	const char* cstr = tmp.c_str();
+	char* ret = (char*) malloc(strlen(cstr) + 1);
+	memcpy(ret, cstr, strlen(cstr) + 1);
+	return ret;
 }
 
 
