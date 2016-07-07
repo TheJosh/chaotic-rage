@@ -9,6 +9,9 @@
 #include "gl_debug.h"
 #include "../rage.h"
 #include "glshader.h"
+#include "../game_engine.h"
+#include "../mod/mod.h"
+#include "../mod/mod_manager.h"
 
 using namespace std;
 
@@ -146,6 +149,16 @@ bool GLShader::createProgFromStrings(const char* vertex, const char* fragment)
 	glDeleteShader(sFragment);
 
 	return result;
+}
+
+
+/**
+* Load GLSL code from a shader source file in the base mod
+**/
+char* GLShader::loadCodeFile(std::string filename)
+{
+	Mod* mod = GEng()->mm->getBase();
+	return mod->loadText("shaders_gl/" + filename);
 }
 
 

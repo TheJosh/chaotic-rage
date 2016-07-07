@@ -7,7 +7,9 @@
 #include "glshader.h"
 #include "render_opengl.h"
 #include "glvao.h"
+#include "gl_debug.h"
 #include "../map/heightmap.h"
+#include "../game_state.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -15,6 +17,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 extern glm::mat4 biasMatrix;
+
+using namespace std;
 
 
 /**
@@ -24,7 +28,7 @@ RendererHeightmap::RendererHeightmap(RenderOpenGL* render, Heightmap* heightmap)
 	: heightmap(heightmap)
 {
 	if (heightmap->getBigTexture() == NULL) {
-		this->shader = render->shaders[SHADER_TERRAIN_SPLAT];
+		this->shader = this->createSplatShader(render);		// NOTE: Generated shader leaks
 	} else if (heightmap->getBigNormal() == NULL) {
 		this->shader = render->shaders[SHADER_TERRAIN_PLAIN];
 	} else {
@@ -38,6 +42,60 @@ RendererHeightmap::RendererHeightmap(RenderOpenGL* render, Heightmap* heightmap)
 RendererHeightmap::~RendererHeightmap()
 {
 	delete this->vao;
+}
+
+
+/**
+* Create a shader, optimised for the specific splat rendering used
+**/
+GLShader* RendererHeightmap::createSplatShader(RenderOpenGL* render)
+{
+	CHECK_OPENGL_ERROR;
+
+	GLShader* s = new GLShader(0);
+	
+	char* vertex_code = s->loadCodeFile("phong_static.glslv");
+	
+	GLuint vertex = s->createShader(GL_VERTEX_SHADER, vertex_code);
+	free(vertex_code);
+	if (vertex == 0) {
+		GL_LOG("Invalid vertex shader");
+		return NULL;
+	}
+
+	char* fragment_code = s->loadCodeFile("phong_splat.glslf");
+	GLuint fragment = s->createShader(GL_FRAGMENT_SHADER, fragment_code);
+	free(fragment_code);
+	if (fragment == 0) {
+		glDeleteShader(vertex);
+		GL_LOG("Invalid fragment shader");
+		return NULL;
+	}
+
+	bool result = s->createProgFromShaders(vertex, fragment);
+
+	glDeleteShader(vertex);
+	glDeleteShader(fragment);
+
+	if (!result) {
+		return NULL;
+	}
+
+	glUseProgram(s->p());
+	glUniform1i(s->uniform("uTex"), 0);
+	glUniform1i(s->uniform("uShadowMap"), 1);
+	glUniform1i(s->uniform("uNormal"), 2);
+	glUniform1i(s->uniform("uLightmap"), 3);
+	glUniform1i(s->uniform("uDayNight"), 4);
+	glUniform1i(s->uniform("uAlphaMap"), 0);
+	glUniform1i(s->uniform("uLayers[0]"), 5);
+	glUniform1i(s->uniform("uLayers[1]"), 6);
+	glUniform1i(s->uniform("uLayers[2]"), 7);
+	glUniform1i(s->uniform("uLayers[3]"), 8);
+
+	CHECK_OPENGL_ERROR;
+
+	return s;
 }
 
 
@@ -176,6 +234,7 @@ void RendererHeightmap::draw(RenderOpenGL* render)
 	glm::mat4 MVP = render->projection * render->view * modelMatrix;
 	glm::mat4 depthBiasMVP = biasMatrix * render->depthmvp * modelMatrix;
 	
+	glUniform1f(this->shader->uniform("uTimeOfDay"), render->st->time_of_day);
 	glUniformMatrix4fv(this->shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	glUniformMatrix4fv(this->shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 	glUniformMatrix3fv(this->shader->uniform("uMN"), 1, GL_FALSE, glm::value_ptr(glm::inverseTranspose(glm::mat3(modelMatrix))));

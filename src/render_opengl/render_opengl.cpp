@@ -1165,12 +1165,11 @@ void RenderOpenGL::setupShaders()
 			glUniform1i(shader->uniform("uLightmap"), 3);
 			glUniform1i(shader->uniform("uDayNight"), 4);
 			glUniform1f(shader->uniform("uTimeOfDay"), st->time_of_day);
-			glUniform1i(shader->uniform("uAlphaMap"), 0);
-			glUniform1i(shader->uniform("uLayers[0]"), 5);
-			glUniform1i(shader->uniform("uLayers[1]"), 6);
-			glUniform1i(shader->uniform("uLayers[2]"), 7);
-			glUniform1i(shader->uniform("uLayers[3]"), 8);
 		}
+	}
+
+	for (vector<Heightmap*>::iterator it = this->st->map->heightmaps.begin(); it != this->st->map->heightmaps.end(); ++it) {
+		// TODO: Set lighting in heightmap shaders too
 	}
 
 	// Water only gets the 'ambient' set
@@ -1415,6 +1414,7 @@ void RenderOpenGL::deleteProgram(GLShader* shader)
 	glDeleteProgram(shader->p());
 	delete(shader);
 }
+
 
 
 /**

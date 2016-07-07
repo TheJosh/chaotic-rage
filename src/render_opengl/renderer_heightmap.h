@@ -34,6 +34,11 @@ class RendererHeightmap {
 
 	protected:
 		/**
+		* Create a shader, optimised for the specific splat rendering used
+		**/
+		static GLShader* createSplatShader(RenderOpenGL* render);
+
+		/**
 		* Create an OpenGL mesh (array of triangle strips) from a heightmap
 		* Generates a VAO
 		**/

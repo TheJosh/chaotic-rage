@@ -60,6 +60,13 @@ class GLShader
 		**/
 		bool createProgFromStrings(const char* vertex, const char* fragment);
 
+		/**
+		* Load GLSL code from a shader source file in the base mod
+		* Don't forget to free when done.
+		**/
+		static char* loadCodeFile(std::string filename);
+
+
 		GLuint p();
 		GLuint uniform(const char* name);
 		
