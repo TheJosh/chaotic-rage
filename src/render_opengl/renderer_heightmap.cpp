@@ -27,11 +27,119 @@ RendererHeightmap::RendererHeightmap(RenderOpenGL* render, Heightmap* heightmap)
 	} else {
 		this->shader = render->shaders[SHADER_TERRAIN_NORMALMAP];
 	}
+
+	this->createVAO();
 }
 
 
 RendererHeightmap::~RendererHeightmap()
 {
+	delete this->vao;
+}
+
+
+/**
+* Create an OpenGL mesh (array of triangle strips) from a heightmap
+**/
+void RendererHeightmap::createVAO()
+{
+	unsigned int nX, nZ, j;
+	float flX, flZ;
+	GLuint buffer;
+
+	unsigned int maxX = heightmap->getDataSizeX() - 1;
+	unsigned int maxZ = heightmap->getDataSizeZ() - 1;
+
+	unsigned int glsize = (maxX * maxZ * 2) + (maxZ * 2);
+
+	VBOvertex* vertexes = new VBOvertex[glsize];
+
+	j = 0;
+	for (nZ = 0; nZ < maxZ; nZ++) {
+		for(nX = 0; nX < maxX; nX++) {
+
+			// u = p2 - p1; v = p3 - p1
+			btVector3 u =
+				btVector3(static_cast<float>(nX) + 1.0f, heightmap->getValue(nX + 1, nZ + 1), static_cast<float>(nZ) + 1.0f) -
+				btVector3(static_cast<float>(nX), heightmap->getValue(nX, nZ), static_cast<float>(nZ));
+			btVector3 v =
+				btVector3(static_cast<float>(nX) + 1.0f, heightmap->getValue(nX + 1, nZ), static_cast<float>(nZ)) -
+				btVector3(static_cast<float>(nX), heightmap->getValue(nX, nZ), static_cast<float>(nZ));
+
+			// calc vector
+			btVector3 normal = btVector3(
+				u.y() * v.z() - u.z() * v.y(),
+				u.z() * v.x() - u.x() * v.z(),
+				u.x() * v.y() - u.y() * v.x()
+			);
+
+			// First cell on the row has two extra verticies
+			if (nX == 0) {
+				flX = static_cast<float>(nX);
+				flZ = static_cast<float>(nZ);
+				vertexes[j].x = flX;
+				vertexes[j].y = heightmap->getValue(nX, nZ);
+				vertexes[j].z = flZ;
+				vertexes[j].nx = normal.x();
+				vertexes[j].ny = normal.y();
+				vertexes[j].nz = normal.z();
+				vertexes[j].tx = flX / heightmap->getDataSizeX();
+				vertexes[j].ty = flZ / heightmap->getDataSizeZ();
+				j++;
+
+				flX = static_cast<float>(nX);
+				flZ = static_cast<float>(nZ) + 1.0f;
+				vertexes[j].x = flX;
+				vertexes[j].y = heightmap->getValue(nX, nZ + 1);
+				vertexes[j].z = flZ;
+				vertexes[j].nx = normal.x();
+				vertexes[j].ny = normal.y();
+				vertexes[j].nz = normal.z();
+				vertexes[j].tx = flX / heightmap->getDataSizeX();
+				vertexes[j].ty = flZ / heightmap->getDataSizeZ();
+				j++;
+			}
+
+			// Top
+			flX = static_cast<float>(nX) + 1.0f;
+			flZ = static_cast<float>(nZ);
+			vertexes[j].x = flX;
+			vertexes[j].y = heightmap->getValue(nX + 1, nZ);
+			vertexes[j].z = flZ;
+			vertexes[j].nx = normal.x();
+			vertexes[j].ny = normal.y();
+			vertexes[j].nz = normal.z();
+			vertexes[j].tx = flX / heightmap->getDataSizeX();
+			vertexes[j].ty = flZ / heightmap->getDataSizeZ();
+			j++;
+
+			// Bottom
+			flX = static_cast<float>(nX) + 1.0f;
+			flZ = static_cast<float>(nZ) + 1.0f;
+			vertexes[j].x = flX;
+			vertexes[j].y = heightmap->getValue(nX + 1, nZ + 1);
+			vertexes[j].z = flZ;
+			vertexes[j].nx = normal.x();
+			vertexes[j].ny = normal.y();
+			vertexes[j].nz = normal.z();
+			vertexes[j].tx = flX / heightmap->getDataSizeX();
+			vertexes[j].ty = flZ / heightmap->getDataSizeZ();
+			j++;
+		}
+	}
+
+	assert(j == glsize);
+
+	// Create VAO
+	this->vao = new GLVAO();
+
+	// Create interleaved VBO
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * glsize, vertexes, GL_STATIC_DRAW);
+	this->vao->setInterleavedPNT(buffer);
+
+	delete [] vertexes;
 }
 
 
@@ -68,7 +176,7 @@ void RendererHeightmap::draw(RenderOpenGL* render)
 	glUniformMatrix4fv(this->shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(render->view));
 	glUniformMatrix4fv(this->shader->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
 
-	this->heightmap->glvao->bind();
+	this->vao->bind();
 	
 	int numPerStrip = 2 + ((heightmap->getDataSizeX()-1) * 2);
 	for (int z = 0; z < heightmap->getDataSizeZ() - 1; z++) {

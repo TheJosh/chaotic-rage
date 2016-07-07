@@ -7,15 +7,20 @@
 class Heightmap;
 class RenderOpenGL;
 class GLShader;
+class GLVAO;
 
 
 class RendererHeightmap {
 	private:
 		Heightmap* heightmap;
 		GLShader* shader;
+		GLVAO* vao;
 
 	public:
 		RendererHeightmap(RenderOpenGL* render, Heightmap* heightmap);
 		~RendererHeightmap();
 		void draw(RenderOpenGL* render);
+
+	protected:
+		void createVAO();
 };

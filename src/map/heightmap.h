@@ -13,7 +13,6 @@ using namespace std;
 
 class Mod;
 class btRigidBody;
-class GLVAO;
 class RendererHeightmap;
 
 
@@ -58,10 +57,7 @@ class Heightmap {
 		TextureSplat* terrain_splat;
 
 	public:
-		// The OpenGL renderer entirely manages these
-		GLVAO* glvao;
 		RendererHeightmap* renderer;
-		unsigned int glsize;
 
 	public:
 		Heightmap(float sizeX, float sizeZ, float scale, glm::vec3 pos)

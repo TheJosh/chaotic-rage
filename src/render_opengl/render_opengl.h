@@ -184,8 +184,7 @@ class RenderOpenGL : public Render3D
 	private:
 		void createWater();
 		void createSkybox();
-		void createHeightmap(Heightmap* heightmap);
-
+		
 		// Buffers needed for shadowing
 		void createShadowBuffers();
 
