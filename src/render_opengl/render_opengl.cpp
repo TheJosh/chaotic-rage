@@ -1306,7 +1306,6 @@ void RenderOpenGL::loadShaders()
 	this->shaders[SHADER_ENTITY_STATIC_BUMP] = loadProgram(base, "phong_static", "phong_bump");
 	this->shaders[SHADER_TERRAIN_PLAIN] = loadProgram(base, "phong_static", "phong_shadow");
 	this->shaders[SHADER_TERRAIN_NORMALMAP] = loadProgram(base, "phong_normalmap", "phong_shadow");
-	this->shaders[SHADER_TERRAIN_SPLAT] = loadProgram(base, "phong_static", "phong_splat");
 	this->shaders[SHADER_WATER] = loadProgram(base, "water");
 	this->shaders[SHADER_TEXT] = loadProgram(base, "text");
 	this->shaders[SHADER_SKYBOX] = loadProgram(base, "skybox");

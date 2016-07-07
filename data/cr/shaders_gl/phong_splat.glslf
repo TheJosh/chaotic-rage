@@ -25,18 +25,11 @@ uniform float uLayersScale;
 const float LOG2 = 1.442695;
 
 
-vec4 diffuseColor()
-{
-	vec4 layers[4];
-	vec4 alphaMap = texture2D(uAlphaMap, TexUV0);
-
-	layers[0] = alphaMap[0] * texture2D(uLayers[0], TexUV0 * uLayersScale) * texture2D(uLayers[0], TexUV0 * uLayersScale * -0.25) * 1.5;
-	layers[1] = alphaMap[1] * texture2D(uLayers[1], TexUV0 * uLayersScale) * texture2D(uLayers[1], TexUV0 * uLayersScale * -0.25) * 1.5;
-	layers[2] = alphaMap[2] * texture2D(uLayers[2], TexUV0 * uLayersScale) * texture2D(uLayers[2], TexUV0 * uLayersScale * -0.25) * 1.5;
-	layers[3] = alphaMap[3] * texture2D(uLayers[3], TexUV0 * uLayersScale) * texture2D(uLayers[3], TexUV0 * uLayersScale * -0.25) * 1.5;
-
-	return layers[0] + layers[1] + layers[2] + layers[3];
-}
+/**
+* Return the diffuse colour
+* Code for this function is located in RendererHeightmap class
+**/
+vec4 diffuseColor();
 
 
 void main()
