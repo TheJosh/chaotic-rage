@@ -103,6 +103,7 @@ GLShader* RendererHeightmap::createSplatShader(RenderOpenGL* render, Heightmap* 
 	glUniform1i(s->uniform("uLayers[1]"), 6);
 	glUniform1i(s->uniform("uLayers[2]"), 7);
 	glUniform1i(s->uniform("uLayers[3]"), 8);
+	glUniform1i(s->uniform("uLightmap"), 9);
 
 	CHECK_OPENGL_ERROR;
 
@@ -132,6 +133,10 @@ char* RendererHeightmap::createSplatMethod_diffuseColor(Heightmap* heightmap)
 			}
 			ss << ";\n";
 		}
+	}
+
+	if (heightmap->getLightmap() != NULL) {
+		ss << "diffuse *= texture2D(uLightmap, TexUV0);\n";
 	}
 
 	ss << "return diffuse;\n";
@@ -259,12 +264,17 @@ void RendererHeightmap::draw(RenderOpenGL* render)
 	if (heightmap->getBigNormal() != NULL) {
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, heightmap->getBigNormal()->pixels);
-		glActiveTexture(GL_TEXTURE0);
+	}
+
+	if (heightmap->getLightmap() != NULL) {
+		glActiveTexture(GL_TEXTURE9);
+		glBindTexture(GL_TEXTURE_2D, heightmap->getLightmap()->pixels);
 	}
 
 	glUseProgram(this->shader->p());
 
 	if (heightmap->getBigTexture() != NULL) {
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, heightmap->getBigTexture()->pixels);
 	} else {
 		heightmap->getSplatTexture()->bindTextures();

@@ -15,6 +15,7 @@ uniform mat3 uN;
 uniform sampler2D uAlphaMap;
 uniform sampler2D uLayers[MAX_NUM_LAYERS];
 uniform sampler2D uShadowMap;
+uniform sampler2D uLightmap;
 uniform sampler1D uDayNight;
 uniform vec3 uLightPos[MAX_NUM_LIGHTS];
 uniform vec4 uLightColor[MAX_NUM_LIGHTS];
