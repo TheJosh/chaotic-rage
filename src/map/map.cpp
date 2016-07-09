@@ -152,6 +152,7 @@ static cfg_opt_t heightmap_opts[] =
 	CFG_STR((char*) "normal", ((char*)""), CFGF_NONE),
 	CFG_STR((char*) "texture", ((char*)""), CFGF_NONE),
 	CFG_SEC((char*) "texture-splat", texture_splat_opts, CFGF_MULTI),
+	CFG_STR((char*) "lightmap", ((char*)""), CFGF_NONE),
 	CFG_FLOAT((char*) "scale-y", 4.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "size-x", 0.0f, CFGF_NONE),
 	CFG_FLOAT((char*) "size-z", 0.0f, CFGF_NONE),
@@ -393,6 +394,18 @@ int Map::load(string name, Render *render, Mod* insideof)
 			heightmap->normal = this->render->loadSprite(std::string(normal_file), this->mod);
 			if (heightmap->normal == NULL) {
 				cerr << "Failed to load heightmap normal image '" << std::string(normal_file) << "'" << endl;
+				delete heightmap;
+				cfg_free(cfg);
+				return 0;
+			}
+		}
+
+		// Load lightmap, if specified
+		char* lightmap_file = cfg_getstr(cfg_sub, "lightmap");
+		if (lightmap_file[0] != '\0') {
+			heightmap->lightmap = this->render->loadSprite(std::string(lightmap_file), this->mod);
+			if (heightmap->lightmap == NULL) {
+				cerr << "Failed to load heightmap lightmap image '" << std::string(lightmap_file) << "'" << endl;
 				delete heightmap;
 				cfg_free(cfg);
 				return 0;

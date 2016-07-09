@@ -56,13 +56,16 @@ class Heightmap {
 		// Texture splatting
 		TextureSplat* terrain_splat;
 
+		// Lightmaps (only supported by texture splat at the moment)
+		SpritePtr lightmap;
+
 	public:
 		RendererHeightmap* renderer;
 
 	public:
 		Heightmap(float sizeX, float sizeZ, float scale, glm::vec3 pos)
 			: sizeX(sizeX), sizeZ(sizeZ), sx(0), sz(0), scale(scale), pos(pos), data(NULL), ground(NULL), terrain(NULL),
-			normal(NULL), terrain_splat(NULL)
+			normal(NULL), terrain_splat(NULL), lightmap(NULL)
 			{};
 
 		~Heightmap();
@@ -107,6 +110,11 @@ class Heightmap {
 		* Return splat texture if set
 		**/
 		TextureSplat* getSplatTexture() { return terrain_splat; }
+
+		/**
+		* Return the lightmap if set
+		**/
+		SpritePtr getLightmap() { return lightmap; }
 
 		/**
 		* Return the coordinate to position the center of the heightmap
