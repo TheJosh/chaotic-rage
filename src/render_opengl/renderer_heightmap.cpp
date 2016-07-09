@@ -128,9 +128,8 @@ char* RendererHeightmap::createSplatMethod_diffuseColor(Heightmap* heightmap)
 			ss << "diffuse += ";
 			ss << "alphaMap[" << i << "] * texture2D(uLayers[" << i << "], TexUV0 * " << lyr->scale << ")";
 			if (lyr->dbl) {
-				ss << "* texture2D(uLayers[" << i << "], TexUV0 * " << (lyr->scale * -0.25f) << ")";
+				ss << "* texture2D(uLayers[" << i << "], TexUV0 * " << (lyr->scale * -0.25f) << ") * 1.5";
 			}
-			ss << " * 1.5";
 			ss << ";\n";
 		}
 	}

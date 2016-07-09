@@ -128,11 +128,18 @@ static cfg_opt_t mesh_opts[] =
 	CFG_END()
 };
 
+static cfg_opt_t texture_splat_layer_opts[] =
+{
+	CFG_STR((char*) "texture", ((char*)""), CFGF_NONE),
+	CFG_FLOAT((char*) "scale", 100.0f, CFGF_NONE),
+	CFG_BOOL((char*) "dbl", cfg_false, CFGF_NONE),
+	CFG_END()
+};
+
 static cfg_opt_t texture_splat_opts[] =
 {
 	CFG_STR((char*) "alphamap", ((char*)""), CFGF_NONE),
-	CFG_STR_LIST((char*) "layers", ((char*)""), CFGF_NONE),
-	CFG_FLOAT((char*) "scale", 100.0f, CFGF_NONE),
+	CFG_SEC((char*) "layer", texture_splat_layer_opts, CFGF_MULTI),
 	CFG_END()
 };
 
@@ -492,8 +499,6 @@ TextureSplat* Map::loadTextureSplat(cfg_t *cfg)
 	char* tmpstr;
 	TextureSplat* splat;
 
-	float scale = cfg_getfloat(cfg, "scale");
-
 	splat = new TextureSplat();
 	
 	tmpstr = cfg_getstr(cfg, "alphamap");
@@ -503,20 +508,24 @@ TextureSplat* Map::loadTextureSplat(cfg_t *cfg)
 	}
 	splat->alphamap = this->render->loadSprite(std::string(tmpstr), this->mod);
 
-	num_layers = cfg_size(cfg, "layers");
-	if (num_layers > TEXTURE_SPLAT_LAYERS) {
+	num_layers = cfg_size(cfg, "layer");
+	if (num_layers == 0 || num_layers > TEXTURE_SPLAT_LAYERS) {
 		delete splat;
 		return NULL;
 	}
 
 	for (j = 0; j < num_layers; j++) {
-		tmpstr = cfg_getnstr(cfg, "layers", j);
+		cfg_t *cfg_layer = cfg_getnsec(cfg, "layer", j);
+
+		tmpstr = cfg_getstr(cfg_layer, "texture");
 		if (tmpstr == NULL) {
 			delete splat;
 			return NULL;
 		}
+
 		splat->layers[j].texture = this->render->loadSprite(std::string(tmpstr), this->mod);
-		splat->layers[j].scale = scale;
+		splat->layers[j].scale = cfg_getfloat(cfg_layer, "scale");
+		splat->layers[j].dbl = cfg_getbool(cfg_layer, "dbl");
 	}
 
 	return splat;
