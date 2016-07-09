@@ -122,10 +122,15 @@ char* RendererHeightmap::createSplatMethod_diffuseColor(Heightmap* heightmap)
 	ss << "vec4 diffuse = vec4(0.0, 0.0, 0.0, 0.0);\n";
 
 	for (unsigned int i = 0; i < TEXTURE_SPLAT_LAYERS; ++i) {
-		if (heightmap->getSplatTexture()->layers[i] != NULL) {
+		TextureSplatLayer *lyr = &heightmap->getSplatTexture()->layers[i];
+
+		if (lyr->texture != NULL) {
 			ss << "diffuse += ";
-			ss <<  "alphaMap[" << i << "] * texture2D(uLayers[" << i << "], TexUV0 * uLayersScale)";
-			ss << "* texture2D(uLayers[" << i << "], TexUV0 * uLayersScale * -0.25) * 1.5";
+			ss << "alphaMap[" << i << "] * texture2D(uLayers[" << i << "], TexUV0 * " << lyr->scale << ")";
+			if (lyr->dbl) {
+				ss << "* texture2D(uLayers[" << i << "], TexUV0 * " << (lyr->scale * -0.25f) << ")";
+			}
+			ss << " * 1.5";
 			ss << ";\n";
 		}
 	}
@@ -264,7 +269,6 @@ void RendererHeightmap::draw(RenderOpenGL* render)
 		glBindTexture(GL_TEXTURE_2D, heightmap->getBigTexture()->pixels);
 	} else {
 		heightmap->getSplatTexture()->bindTextures();
-		heightmap->getSplatTexture()->setUniforms(this->shader);
 	}
 
 	glm::mat4 modelMatrix = glm::scale(

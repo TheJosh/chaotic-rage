@@ -492,9 +492,10 @@ TextureSplat* Map::loadTextureSplat(cfg_t *cfg)
 	char* tmpstr;
 	TextureSplat* splat;
 
-	splat = new TextureSplat();
-	splat->scale = cfg_getfloat(cfg, "scale");
+	float scale = cfg_getfloat(cfg, "scale");
 
+	splat = new TextureSplat();
+	
 	tmpstr = cfg_getstr(cfg, "alphamap");
 	if (tmpstr == NULL) {
 		delete splat;
@@ -514,7 +515,8 @@ TextureSplat* Map::loadTextureSplat(cfg_t *cfg)
 			delete splat;
 			return NULL;
 		}
-		splat->layers[j] = this->render->loadSprite(std::string(tmpstr), this->mod);
+		splat->layers[j].texture = this->render->loadSprite(std::string(tmpstr), this->mod);
+		splat->layers[j].scale = scale;
 	}
 
 	return splat;

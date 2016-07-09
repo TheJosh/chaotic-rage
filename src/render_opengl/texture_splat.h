@@ -11,21 +11,35 @@
 class GLShader;
 
 
-class TextureSplat {
+class TextureSplatLayer
+{
 	public:
-		SpritePtr alphamap;
-		SpritePtr layers[TEXTURE_SPLAT_LAYERS];
+		/**
+		* Main texture
+		**/
+		SpritePtr texture;
 
 		/**
-		* Alphamap UVs are multiplied by this for layers to produce tiling
+		* Scale for main texture
 		**/
 		float scale;
 
+		/**
+		* Should this texture be doubled up?
+		**/
+		bool dbl;
+};
+
+
+class TextureSplat
+{
+	public:
+		SpritePtr alphamap;
+		TextureSplatLayer layers[TEXTURE_SPLAT_LAYERS];
 
 	public:
 		TextureSplat();
 		~TextureSplat();
 
 		void bindTextures();
-		void setUniforms(GLShader *s);
 };
