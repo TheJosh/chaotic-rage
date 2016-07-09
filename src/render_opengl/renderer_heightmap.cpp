@@ -104,6 +104,10 @@ GLShader* RendererHeightmap::createSplatShader(RenderOpenGL* render, Heightmap* 
 	glUniform1i(s->uniform("uLayers[2]"), 7);
 	glUniform1i(s->uniform("uLayers[3]"), 8);
 	glUniform1i(s->uniform("uLightmap"), 9);
+	glUniform1i(s->uniform("uDetail[0]"), 10);
+	glUniform1i(s->uniform("uDetail[1]"), 11);
+	glUniform1i(s->uniform("uDetail[2]"), 12);
+	glUniform1i(s->uniform("uDetail[3]"), 13);
 
 	CHECK_OPENGL_ERROR;
 
@@ -130,6 +134,9 @@ char* RendererHeightmap::createSplatMethod_diffuseColor(Heightmap* heightmap)
 			ss << "alphaMap[" << i << "] * texture2D(uLayers[" << i << "], TexUV0 * " << lyr->scale << ")";
 			if (lyr->dbl) {
 				ss << "* texture2D(uLayers[" << i << "], TexUV0 * " << (lyr->scale * -0.25f) << ") * 1.5";
+			}
+			if (lyr->detail != NULL) {
+				ss << "* texture2D(uDetail[" << i << "], TexUV0 * " << lyr->detail_scale << ") * 1.5";
 			}
 			ss << ";\n";
 		}

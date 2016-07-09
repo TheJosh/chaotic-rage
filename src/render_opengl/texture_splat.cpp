@@ -14,6 +14,7 @@ TextureSplat::TextureSplat()
 	for (unsigned int i = 0; i < TEXTURE_SPLAT_LAYERS; ++i) {
 		this->layers[i].texture = NULL;
 		this->layers[i].scale = 100.0f;
+		this->layers[i].detail = NULL;
 	}
 }
 
@@ -30,6 +31,11 @@ void TextureSplat::bindTextures()
 		if (this->layers[i].texture == NULL) break;
 		glActiveTexture(GL_TEXTURE5 + i);
 		glBindTexture(GL_TEXTURE_2D, this->layers[i].texture->pixels);
+	}
+	for (unsigned int i = 0; i < TEXTURE_SPLAT_LAYERS; ++i) {
+		if (this->layers[i].detail == NULL) break;
+		glActiveTexture(GL_TEXTURE10 + i);
+		glBindTexture(GL_TEXTURE_2D, this->layers[i].detail->pixels);
 	}
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, this->alphamap->pixels);

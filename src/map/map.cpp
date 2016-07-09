@@ -133,6 +133,8 @@ static cfg_opt_t texture_splat_layer_opts[] =
 	CFG_STR((char*) "texture", ((char*)""), CFGF_NONE),
 	CFG_FLOAT((char*) "scale", 100.0f, CFGF_NONE),
 	CFG_BOOL((char*) "dbl", cfg_false, CFGF_NONE),
+	CFG_STR((char*) "detail", ((char*)""), CFGF_NONE),
+	CFG_FLOAT((char*) "detail-scale", 1000.0f, CFGF_NONE),
 	CFG_END()
 };
 
@@ -539,6 +541,12 @@ TextureSplat* Map::loadTextureSplat(cfg_t *cfg)
 		splat->layers[j].texture = this->render->loadSprite(std::string(tmpstr), this->mod);
 		splat->layers[j].scale = cfg_getfloat(cfg_layer, "scale");
 		splat->layers[j].dbl = cfg_getbool(cfg_layer, "dbl");
+
+		tmpstr = cfg_getstr(cfg_layer, "detail");
+		if (tmpstr != NULL) {
+			splat->layers[j].detail = this->render->loadSprite(std::string(tmpstr), this->mod);
+			splat->layers[j].detail_scale = cfg_getfloat(cfg_layer, "detail-scale");
+		}
 	}
 
 	return splat;

@@ -14,6 +14,7 @@ uniform mat4 uMV;
 uniform mat3 uN;
 uniform sampler2D uAlphaMap;
 uniform sampler2D uLayers[MAX_NUM_LAYERS];
+uniform sampler2D uDetail[MAX_NUM_LAYERS];
 uniform sampler2D uShadowMap;
 uniform sampler2D uLightmap;
 uniform sampler1D uDayNight;

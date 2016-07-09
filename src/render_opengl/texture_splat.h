@@ -28,6 +28,12 @@ class TextureSplatLayer
 		* Should this texture be doubled up?
 		**/
 		bool dbl;
+
+		/**
+		* Detail texture
+		**/
+		SpritePtr detail;
+		float detail_scale;
 };
 
 
