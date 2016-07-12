@@ -136,7 +136,7 @@ char* RendererHeightmap::createSplatMethod_diffuseColor(Heightmap* heightmap)
 				ss << "* texture2D(uLayers[" << i << "], TexUV0 * " << (lyr->scale * -0.25f) << ") * 1.5";
 			}
 			if (lyr->detail != NULL) {
-				ss << "* texture2D(uDetail[" << i << "], TexUV0 * " << lyr->detail_scale << ") * 1.5";
+				ss << "* texture2D(uDetail[" << i << "], TexUV0 * " << (lyr->scale * lyr->detail_scale) << ") * 1.5";
 			}
 			ss << ";\n";
 		}
