@@ -920,7 +920,7 @@ void hfzClose(hfzFile* fs) {
 	} else {
 		switch(fs->Format) {
 		case LIBHFZ_FORMAT_HF2:	fclose((FILE*)fs->pIoStream); break;
-		case LIBHFZ_FORMAT_HF2_GZ: gzclose(fs->pIoStream); break;
+		case LIBHFZ_FORMAT_HF2_GZ: gzclose((gzFile)fs->pIoStream); break;
 		}
 	}
 
@@ -943,7 +943,7 @@ long hfzRead(hfzFile* fs, void* pData, long len) {
 	} else {
 		switch(fs->Format) {
 		case LIBHFZ_FORMAT_HF2:    return (long)fread(pData, 1, len, (FILE*)fs->pIoStream);
-		case LIBHFZ_FORMAT_HF2_GZ: return (long)gzread(fs->pIoStream, pData, len);
+		case LIBHFZ_FORMAT_HF2_GZ: return (long)gzread((gzFile)fs->pIoStream, pData, len);
 		}
 	}
 
@@ -966,7 +966,7 @@ long hfzWrite(hfzFile* fs, const void* pData, long len) {
 	} else {
 		switch(fs->Format) {
 		case LIBHFZ_FORMAT_HF2:    return (long)fwrite(pData, 1, len, (FILE*)fs->pIoStream);
-		case LIBHFZ_FORMAT_HF2_GZ: return (long)gzwrite(fs->pIoStream, pData, len);
+		case LIBHFZ_FORMAT_HF2_GZ: return (long)gzwrite((gzFile)fs->pIoStream, pData, len);
 		}
 	}
 

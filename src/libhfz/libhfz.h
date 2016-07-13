@@ -5,6 +5,10 @@
 
 #include <zlib.h>
 
+#ifndef WIN32
+#define __stdcall
+#endif
+
 
 #define LIBHFZ_STATUS_OK				0
 #define LIBHFZ_ERROR_OPEN_FAILED		-1
