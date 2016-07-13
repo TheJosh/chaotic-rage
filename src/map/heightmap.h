@@ -82,6 +82,11 @@ class Heightmap {
 		float* loadRAW16(Mod* mod, string filename, int sx, int sz);
 
 		/**
+		* Load height data from a HFZ file
+		**/
+		bool Heightmap::loadHFZ(Mod* mod, string filename);
+
+		/**
 		* Create regid body for bullet physics
 		**/
 		btRigidBody* createRigidBody();

@@ -345,8 +345,12 @@ int Map::load(string name, Render *render, Mod* insideof)
 			heightmap->sz = cfg_getint(cfg_sub, "data-raw-sz");
 			heightmap->data = heightmap->loadRAW16(this->mod, std::string(data_file), heightmap->sx, heightmap->sz);
 
+		} else if (strcmp(cfg_getstr(cfg_sub, "data-type"), "hfz") == 0) {
+			// Load a hfz file
+			heightmap->loadHFZ(this->mod, std::string(data_file));
+
 		} else {
-			cerr << "Invalid data type; expected 'img' or 'raw16int'" << endl;
+			cerr << "Invalid data type; expected 'img', 'raw16int', 'hfz'" << endl;
 			delete heightmap;
 			cfg_free(cfg);
 			return 0;

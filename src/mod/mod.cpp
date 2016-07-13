@@ -851,3 +851,13 @@ SDL_RWops * Mod::loadRWops(string resname)
 
 	return SDL_RWFromFile(filename.c_str(), "rb");
 }
+
+
+/**
+* Returns the "real" filename of a file in a mod
+* This idea breaks if we ever have compression or anything special like that
+**/
+std::string Mod::getRealFilename(std::string resname)
+{
+	return this->directory + resname;
+}

@@ -14,6 +14,7 @@
 #include "../mod/mod.h"
 #include "../util/sdl_util.h"
 #include "../util/btStrideHeightfieldTerrainShape.h"
+#include "../libhfz/libhfz.h"
 
 
 using namespace std;
@@ -107,6 +108,48 @@ float* Heightmap::loadRAW16(Mod* mod, string filename, int sx, int sz)
 
 	free(binary);
 	return data;
+}
+
+
+/**
+* Take a raw heightmap image and load it into the data array.
+* Input should be 16-bit ints.
+* If exporting from L3DT, use 16-bit full scale.
+**/
+bool Heightmap::loadHFZ(Mod* mod, string filename)
+{
+	float* hfdata;
+	hfzHeader fh;
+
+	filename = mod->getRealFilename(filename);
+
+	// load the file
+	long rval = hfzLoadEx(filename.c_str(), fh, &hfdata, NULL, NULL);
+	if (LIBHFZ_STATUS_OK != rval) {
+		reportFatalError(
+			"Error when loading hfz: " + std::string(hfzGetErrorStr(rval))
+		);
+	}
+
+	this->sx = fh.nx;
+	this->sz = fh.ny;
+	hfzHeader_Reset(fh);
+
+	this->data = new float[this->sx * this->sz];
+	if (!data) {
+		return false;
+	}
+
+	// HFZ files use a different coordinate system, so flip the Y-axis
+	int src_z = this->sz - 1;
+	int dst_z = 0;
+	for (; src_z >= 0; --src_z, ++dst_z) {
+		for (int x = 0; x < this->sx; ++x) {
+			data[x + dst_z * this->sx] = hfdata[x + src_z * this->sx];
+		}
+	}
+
+	return true;
 }
 
 
