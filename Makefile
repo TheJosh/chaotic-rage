@@ -27,23 +27,6 @@ ifdef MXE
 		$(OBJPATH)/gui/controls_touch.o
 	LUA_CFLAGS := -DLUA_COMPAT_ALL
 
-# emscripten llvm to javascript compiler
-# Use it like this:
-#    make EMSCRIPTEN=1
-else ifdef EMSCRIPTEN
-	CXX := em++
-	CC := emcc
-	PLATFORM := $(OBJPATH)/emscripten.o
-	PKG_CONFIG_PATH := tools/emscripten/lib/pkgconfig
-	POSTFIX := .html
-	DONT_COMPILE = $(OBJPATH)/render_opengl/gl_debug_drawer.o \
-		$(OBJPATH)/render/render_null.o \
-		$(OBJPATH)/render/render_ascii.o \
-		$(OBJPATH)/render/render_debug.o \
-		$(OBJPATH)/touch.o \
-		$(OBJPATH)/gui/controls_touch.o
-	LUA_CFLAGS := -DLUA_COMPAT_ALL
-
 # Standard Linux build
 else
 	CXX ?= g++
@@ -88,23 +71,6 @@ LIBS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --libs) \
 	$(shell export PATH=$(PATH) PKG_CONFIG_PATH=$(PKG_CONFIG_PATH);$(PKG_CONFIG) glew bullet assimp SDL2_mixer SDL2_image SDL2_net --libs) \
 	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --libs) \
 	$(LIBS)
-
-
-# We need really specific flags and libs for emscrpten
-ifdef EMSCRIPTEN
-	CFLAGS := -Itools/emscripten/include/bullet \
-		-Itools/emscripten/include/assimp \
-		-Itools/emscripten/include/SDL2 \
-		-Itools/emscripten/include/freetype2 \
-		-Itools/emscripten/include \
-		-Itools/include -Isrc -Isrc/guichan -Isrc/confuse -Isrc/spark -Isrc/lua \
-		-ffast-math
-	LIBS := -Ltools/emscripten/lib \
-		-lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath \
-		-lassimp \
-		-lSDL2_net \
-		-lfreetype
-endif
 
 
 # Extract the version from rage.h
@@ -293,7 +259,6 @@ clean:		## Clean, removes generated build files
 	rm -f $(patsubst $(SRCPATH)/%.c,$(OBJPATH)/%.d,$(CFILES))
 	rm -f $(OBJPATH)/linux.o $(OBJPATH)/linux.d
 	rm -f $(OBJPATH)/client.o $(OBJPATH)/client.d
-	rm -f $(OBJPATH)/emscripten.o $(OBJPATH)/emscripten.d
 	rm -f $(OBJPATH)/win32.o $(OBJPATH)/win32.d
 	rm -f $(OBJPATH)/confuse/confuse.o $(OBJPATH)/confuse/confuse.d
 	rm -f $(OBJPATH)/confuse/lexer.o $(OBJPATH)/confuse/lexer.d
@@ -330,9 +295,6 @@ $(OBJPATH)/win32.o: $(SRCPATH)/platform/win32.cpp $(SRCPATH)/platform/platform.h
 	@echo [CXX] $<
 	$(Q)$(CXX) $(CFLAGS) -o $@ -c $<
 
-$(OBJPATH)/emscripten.o: $(SRCPATH)/platform/emscripten.cpp $(SRCPATH)/platform/platform.h Makefile
-	@echo [CXX] $<
-	$(Q)$(CXX) $(CFLAGS) -o $@ -c $<
 
 
 ifeq ($(wildcard $(OBJPATH)/),)
