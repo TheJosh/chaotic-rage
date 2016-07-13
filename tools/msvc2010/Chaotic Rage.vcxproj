@@ -239,6 +239,7 @@
     <ClCompile Include="..\..\src\http\serverlist.cpp" />
     <ClCompile Include="..\..\src\http\url.cpp" />
     <ClCompile Include="..\..\src\i18n\gettext.cpp" />
+    <ClCompile Include="..\..\src\libhfz\libhfz.cpp" />
     <ClCompile Include="..\..\src\lua\lapi.c" />
     <ClCompile Include="..\..\src\lua\lauxlib.c" />
     <ClCompile Include="..\..\src\lua\lbaselib.c" />
@@ -493,6 +494,7 @@
     <ClInclude Include="..\..\src\http\serverlist.h" />
     <ClInclude Include="..\..\src\http\url.h" />
     <ClInclude Include="..\..\src\i18n\gettext.h" />
+    <ClInclude Include="..\..\src\libhfz\libhfz.h" />
     <ClInclude Include="..\..\src\lua\lapi.h" />
     <ClInclude Include="..\..\src\lua\lauxlib.h" />
     <ClInclude Include="..\..\src\lua\lcode.h" />

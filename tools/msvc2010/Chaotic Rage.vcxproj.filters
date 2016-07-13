@@ -110,6 +110,9 @@
     <Filter Include="Configs\cr">
       <UniqueIdentifier>{edda0ad8-7008-48f6-babe-8f9701d389e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\libhfz">
+      <UniqueIdentifier>{8df89a8a-c10a-4f21-b437-a858743f69fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\data\cr\gametypes\zombies.lua">
@@ -949,6 +952,9 @@
     <ClCompile Include="..\..\src\render_opengl\renderer_heightmap.cpp">
       <Filter>src\render_opengl</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\libhfz\libhfz.cpp">
+      <Filter>src\libhfz</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\game.h">
@@ -1709,6 +1715,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\render_opengl\renderer_heightmap.h">
       <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\libhfz\libhfz.h">
+      <Filter>src\libhfz</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
