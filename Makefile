@@ -107,6 +107,7 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/spark/Extensions/Renderers/*.cpp \
 	$(SRCPATH)/spark/Extensions/Zones/*.cpp \
 	$(SRCPATH)/spark/RenderingAPIs/OpenGL/*.cpp \
+	$(SRCPATH)/libhfz/*.cpp \
 )
 
 CFILES=$(wildcard \
