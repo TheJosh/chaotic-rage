@@ -120,7 +120,7 @@ long hfzSave(const char* lpFileName, hfzFormat Format, hfzHeader& fh, float* pDa
 long hfzLoad(const char* lpFileName, hfzHeader& fh, float *pData, LIBHFZ_PROG_CALLBACK lpProgCallback, void* lpCallbackParam) {
 
 	// null header (in case caller forgot to do so)
-	hfzHeader_Init(fh, 0, 0, 0, 0, 0, NULL);
+	hfzHeader_Init(fh, 0, 0, 0, 0, 0, 0);
 
 	if(!pData)
 		return LIBHFZ_ERROR_INVALID_HANDLE;
@@ -171,7 +171,7 @@ long hfzLoad(const char* lpFileName, hfzHeader& fh, float *pData, LIBHFZ_PROG_CA
 long hfzLoadEx(const char* lpFileName, hfzHeader& fh, float **h_pData, LIBHFZ_PROG_CALLBACK lpProgCallback, void* lpCallbackParam) {
 
 	// null header (in case caller forgot to do so)
-	hfzHeader_Init(fh, 0, 0, 0, 0, 0, NULL);
+	hfzHeader_Init(fh, 0, 0, 0, 0, 0, 0);
 
 	long rval = hfzReadHeader2(lpFileName, fh);
 	if(LIBHFZ_STATUS_OK!=rval) {
