@@ -238,12 +238,12 @@ long hfzWriteHeader(hfzFile* fs, hfzHeader& fh) {
 	}
 
 	// write header
-	if(28!=hfzWrite(fs, HeaderBuf, 28)) 
+	if(28!=hfzWrite(fs, HeaderBuf, 28))
 		return LIBHFZ_ERROR_WRITE_HEADER_FAILED;
 
 	// write extended header
 	if(pExtHeaderData) {
-		if(fh.ExtHeaderLength!=hfzWrite(fs, pExtHeaderData, fh.ExtHeaderLength)) {
+		if(fh.ExtHeaderLength!=(unsigned long)hfzWrite(fs, pExtHeaderData, fh.ExtHeaderLength)) {
 			hfzFree(pExtHeaderData);
 			return LIBHFZ_ERROR_WRITE_EXTHEAD_FAILED;
 		}
@@ -303,7 +303,7 @@ long hfzReadHeader(hfzFile* fs, hfzHeader& fh) {
 			return LIBHFZ_ERROR_ALLOC_FAILED;
 		}
 
-        if(hl!=hfzRead(fs, pBuf, hl)) {
+        if(hl!=(unsigned long)hfzRead(fs, pBuf, hl)) {
 			hfzFree(pBuf);
 			return LIBHFZ_ERROR_READ_FAILED;
 		}
@@ -1120,7 +1120,7 @@ long hfzHeader_DecodeExtHeaderBuf(hfzHeader &fh, char* pBuf) {
 
 	// read once to determine number of blocks
 	bool DoneFlag = false;
-	int offset = 0;
+	unsigned int offset = 0;
 	unsigned long BlockLen;
 	do {
 		if(offset==fh.ExtHeaderLength) {
