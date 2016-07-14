@@ -1185,14 +1185,14 @@ long hfzExtHeaderBlock_Init(hfzExtHeaderBlock* pBlock, const char* lpBlockType, 
 		if(strlen(lpBlockType)>=4)
 			return LIBHFZ_ERROR_INVALID_PARAM;
 
-		sprintf(pBlock->BlockType, lpBlockType);
+		sprintf(pBlock->BlockType, "%s", lpBlockType);
 	}
 
 	if(lpBlockName)	{
 		if(strlen(lpBlockName)>=16)
 			return LIBHFZ_ERROR_INVALID_PARAM;
 
-		sprintf(pBlock->BlockName, lpBlockName);
+		sprintf(pBlock->BlockName, "%s", lpBlockName);
 	}
 	
 	
