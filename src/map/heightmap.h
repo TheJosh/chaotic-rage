@@ -84,7 +84,7 @@ class Heightmap {
 		/**
 		* Load height data from a HFZ file
 		**/
-		bool Heightmap::loadHFZ(Mod* mod, string filename);
+		bool loadHFZ(Mod* mod, string filename);
 
 		/**
 		* Create regid body for bullet physics
