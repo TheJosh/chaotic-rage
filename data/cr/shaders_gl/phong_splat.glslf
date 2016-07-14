@@ -68,19 +68,19 @@ void main()
 	diffuseColor = matDiffuseColor * diffuseColor;
 	specularColor = matSpecularColor * specularColor;
 	
-	
+	vec4 mainColor = matAmbientColor + diffuseColor + specularColor;
+
 	// Shadow
 	float shadowBias = 0.0005;
-	float visibility = 1.0;
 	if (texture2D(uShadowMap, fShadowCoord.xy).r < fShadowCoord.z - shadowBias) {
-		visibility = 0.5;
+		mainColor *= 0.5;
 	}
 
 	// Fog
-	float fogDensity = 1.5;
-	float fogFactor = exp2(-fogDensity * fogDensity * fDepth * fDepth * LOG2);
+	float fogDensity = 0.8;
+	float fogFactor = exp2(-fogDensity * fogDensity * fDepth * fDepth * LOG2) + 0.2;
 	fogFactor = clamp(fogFactor, 0.0, 1.0);
 	vec4 fogColor = todColor * vec4(0.5, 0.5, 0.6, 1.0);
 
-	gl_FragColor = mix(fogColor, (matAmbientColor + diffuseColor + specularColor) * visibility, fogFactor);
+	gl_FragColor = mix(fogColor, mainColor, fogFactor);
 }
