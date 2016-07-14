@@ -83,7 +83,6 @@ long hfzSave(const char* lpFileName, hfzFormat Format, hfzHeader& fh, float* pDa
 	long nBlocksY = fh.ny / fh.TileSize;
 	if(fh.nx%fh.TileSize)	nBlocksX++;
 	if(fh.ny%fh.TileSize)	nBlocksY++;
-	long BlockCount = nBlocksX * nBlocksY;
 
 	// open file for writing
 	hfzFile* fs;
@@ -148,10 +147,6 @@ long hfzLoad(const char* lpFileName, hfzHeader& fh, float *pData, LIBHFZ_PROG_CA
 	long nBlocksY = ny / TileSize;
 	if(nx%TileSize)	nBlocksX++;
 	if(ny%TileSize)	nBlocksY++;
-	long BlockCount = nBlocksX * nBlocksY;
-
-	// start reading tiles
-	bool ErrorFlag = false;
 
 	rval = LIBHFZ_STATUS_OK;
 	for(long bj = 0; bj<nBlocksY && rval == LIBHFZ_STATUS_OK; bj++) {
@@ -361,9 +356,6 @@ long hfzReadTile(hfzFile* fs, hfzHeader& fh, unsigned long TileX, unsigned long 
 	if(i2>=nx)	i2 = nx;
 	if(j2>=ny)	j2 = ny;
 
-	unsigned long bnx = i2 - i1;
-	unsigned long bny = j2 - j1;
-
 	// read vert offset and sale
 	float VertOffset, VertScale;
 	if(4!=hfzRead(fs, &VertScale, 4))
@@ -452,9 +444,6 @@ long hfzReadTile2(hfzFile* fs, hfzHeader& fh, unsigned long TileX, unsigned long
 	if(i2>=nx)	i2 = nx;
 	if(j2>=ny)	j2 = ny;
 
-	unsigned long bnx = i2 - i1;
-	unsigned long bny = j2 - j1;
-
 	// read vert offset and sale
 	float VertOffset, VertScale;
 	if(4!=hfzRead(fs, &VertScale, 4))
@@ -538,7 +527,7 @@ long hfzWriteTile(hfzFile* fs, hfzHeader& fh, unsigned long TileX, unsigned long
 	float HFmin, HFmax;
 	char c;
 	short s;
-	unsigned long i1, j1, i2, j2, bnx, bny, zi;
+	unsigned long i1, j1, i2, j2, zi;
 	long FirstVal;
 	float VertScale;
 	float VertOffset;
@@ -556,9 +545,6 @@ long hfzWriteTile(hfzFile* fs, hfzHeader& fh, unsigned long TileX, unsigned long
 
 	if(i2>=nx)	i2 = nx;
 	if(j2>=ny)	j2 = ny;
-
-	bnx = i2 - i1;
-	bny = j2 - j1;
 
 	// prepare buffer for line
 	char * pDiffBuf = (char*)hfzMalloc(TileSize * 4);
@@ -710,7 +696,7 @@ long hfzWriteTile2(hfzFile* fs, hfzHeader& fh, unsigned long TileX, unsigned lon
 	float HFmin, HFmax;
 	char c;
 	short s;
-	unsigned long i1, j1, i2, j2, bnx, bny, zi;
+	unsigned long i1, j1, i2, j2, zi;
 	long FirstVal;
 	float VertScale;
 	float VertOffset;
@@ -728,9 +714,6 @@ long hfzWriteTile2(hfzFile* fs, hfzHeader& fh, unsigned long TileX, unsigned lon
 
 	if(i2>=nx)	i2 = nx;
 	if(j2>=ny)	j2 = ny;
-
-	bnx = i2 - i1;
-	bny = j2 - j1;
 
 	// prepare buffer for line
 	char * pDiffBuf = (char*)hfzMalloc(TileSize * 4);
