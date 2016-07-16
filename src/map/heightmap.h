@@ -145,8 +145,8 @@ class Heightmap {
 		/**
 		* Get the data array size on the X/Z axis
 		**/
-		float getDataSizeX() { return this->sx; }
-		float getDataSizeZ() { return this->sz; }
+		unsigned int getDataSizeX() { return this->sx; }
+		unsigned int getDataSizeZ() { return this->sz; }
 
 		/**
 		* Get the scale on the X/Y/Z axis
