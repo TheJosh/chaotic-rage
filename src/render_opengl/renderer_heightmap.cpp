@@ -163,18 +163,22 @@ char* RendererHeightmap::createSplatMethod_diffuseColor(Heightmap* heightmap)
 **/
 void RendererHeightmap::createVAO()
 {
-	unsigned int nX, nZ, j;
+	unsigned int nX, nZ, j, k;
 	float flX, flZ;
 	GLuint buffer;
 
 	unsigned int maxX = heightmap->getDataSizeX() - 1;
 	unsigned int maxZ = heightmap->getDataSizeZ() - 1;
 
-	unsigned int glsize = (maxX * maxZ * 2) + (maxZ * 2);
+	unsigned int num_verts = (maxX * maxZ * 2) + (maxZ * 2);
+	unsigned int num_index = maxX * maxZ * 6;
 
-	VBOvertex* vertexes = new VBOvertex[glsize];
+	VBOvertex* vertexes = new VBOvertex[num_verts];
+	Uint32* index = new Uint32[num_index];
 
 	j = 0;
+	k = 0;
+	btVector3 normal;
 	for (nZ = 0; nZ < maxZ; nZ++) {
 		for(nX = 0; nX < maxX; nX++) {
 
@@ -187,44 +191,17 @@ void RendererHeightmap::createVAO()
 				btVector3(static_cast<float>(nX), heightmap->getValue(nX, nZ), static_cast<float>(nZ));
 
 			// calc vector
-			btVector3 normal = btVector3(
+			normal = btVector3(
 				u.y() * v.z() - u.z() * v.y(),
 				u.z() * v.x() - u.x() * v.z(),
 				u.x() * v.y() - u.y() * v.x()
 			);
 
-			// First cell on the row has two extra verticies
-			if (nX == 0) {
-				flX = static_cast<float>(nX);
-				flZ = static_cast<float>(nZ);
-				vertexes[j].x = flX;
-				vertexes[j].y = heightmap->getValue(nX, nZ);
-				vertexes[j].z = flZ;
-				vertexes[j].nx = normal.x();
-				vertexes[j].ny = normal.y();
-				vertexes[j].nz = normal.z();
-				vertexes[j].tx = flX / heightmap->getDataSizeX();
-				vertexes[j].ty = flZ / heightmap->getDataSizeZ();
-				j++;
-
-				flX = static_cast<float>(nX);
-				flZ = static_cast<float>(nZ) + 1.0f;
-				vertexes[j].x = flX;
-				vertexes[j].y = heightmap->getValue(nX, nZ + 1);
-				vertexes[j].z = flZ;
-				vertexes[j].nx = normal.x();
-				vertexes[j].ny = normal.y();
-				vertexes[j].nz = normal.z();
-				vertexes[j].tx = flX / heightmap->getDataSizeX();
-				vertexes[j].ty = flZ / heightmap->getDataSizeZ();
-				j++;
-			}
-
-			// Top
-			flX = static_cast<float>(nX) + 1.0f;
+			// TL (top left)
+			flX = static_cast<float>(nX);
 			flZ = static_cast<float>(nZ);
 			vertexes[j].x = flX;
-			vertexes[j].y = heightmap->getValue(nX + 1, nZ);
+			vertexes[j].y = heightmap->getValue(nX, nZ);
 			vertexes[j].z = flZ;
 			vertexes[j].nx = normal.x();
 			vertexes[j].ny = normal.y();
@@ -233,11 +210,11 @@ void RendererHeightmap::createVAO()
 			vertexes[j].ty = flZ / heightmap->getDataSizeZ();
 			j++;
 
-			// Bottom
-			flX = static_cast<float>(nX) + 1.0f;
+			// BL (bottom left)
+			flX = static_cast<float>(nX);
 			flZ = static_cast<float>(nZ) + 1.0f;
 			vertexes[j].x = flX;
-			vertexes[j].y = heightmap->getValue(nX + 1, nZ + 1);
+			vertexes[j].y = heightmap->getValue(nX, nZ + 1);
 			vertexes[j].z = flZ;
 			vertexes[j].nx = normal.x();
 			vertexes[j].ny = normal.y();
@@ -245,10 +222,44 @@ void RendererHeightmap::createVAO()
 			vertexes[j].tx = flX / heightmap->getDataSizeX();
 			vertexes[j].ty = flZ / heightmap->getDataSizeZ();
 			j++;
+
+			index[k++] = j - 2;  // TL
+			index[k++] = j - 1;  // BL
+			index[k++] = j;      // TR
+			index[k++] = j - 1;  // BL
+			index[k++] = j + 1;  // BR
+			index[k++] = j;      // TR
 		}
+
+		// Create TR vertex for last cell in row
+		flX = static_cast<float>(nX) + 1.0f;
+		flZ = static_cast<float>(nZ);
+		vertexes[j].x = flX;
+		vertexes[j].y = heightmap->getValue(nX + 1, nZ);
+		vertexes[j].z = flZ;
+		vertexes[j].nx = normal.x();
+		vertexes[j].ny = normal.y();
+		vertexes[j].nz = normal.z();
+		vertexes[j].tx = flX / heightmap->getDataSizeX();
+		vertexes[j].ty = flZ / heightmap->getDataSizeZ();
+		j++;
+
+		// Same with BR vertex
+		flX = static_cast<float>(nX) + 1.0f;
+		flZ = static_cast<float>(nZ) + 1.0f;
+		vertexes[j].x = flX;
+		vertexes[j].y = heightmap->getValue(nX + 1, nZ + 1);
+		vertexes[j].z = flZ;
+		vertexes[j].nx = normal.x();
+		vertexes[j].ny = normal.y();
+		vertexes[j].nz = normal.z();
+		vertexes[j].tx = flX / heightmap->getDataSizeX();
+		vertexes[j].ty = flZ / heightmap->getDataSizeZ();
+		j++;
 	}
 
-	assert(j == glsize);
+	assert(j == num_verts);
+	assert(k == num_index);
 
 	// Create VAO
 	this->vao = new GLVAO();
@@ -256,10 +267,17 @@ void RendererHeightmap::createVAO()
 	// Create interleaved VBO
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * glsize, vertexes, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(VBOvertex) * num_verts, vertexes, GL_STATIC_DRAW);
 	this->vao->setInterleavedPNT(buffer);
 
+	// Create index buffer
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Uint32) * num_index, index, GL_STATIC_DRAW);
+	this->vao->setIndex(buffer);
+
 	delete [] vertexes;
+	delete [] index;
 }
 
 
@@ -306,8 +324,6 @@ void RendererHeightmap::draw(RenderOpenGL* render)
 
 	this->vao->bind();
 	
-	int numPerStrip = 2 + ((heightmap->getDataSizeX()-1) * 2);
-	for (int z = 0; z < heightmap->getDataSizeZ() - 1; z++) {
-		glDrawArrays(GL_TRIANGLE_STRIP, numPerStrip * z, numPerStrip);
-	}
+	int numTiles = (heightmap->getDataSizeX() - 1) * (heightmap->getDataSizeZ() - 1);
+	glDrawElements(GL_TRIANGLES, numTiles * 6, GL_UNSIGNED_INT, 0);
 }
