@@ -163,26 +163,22 @@ char* RendererHeightmap::createSplatMethod_diffuseColor(Heightmap* heightmap)
 **/
 void RendererHeightmap::createVAO()
 {
-	unsigned int nX, nZ, j, k;
+	unsigned int nX, nZ, j;
 	float flX, flZ;
 	GLuint buffer;
 
-	unsigned int maxX = heightmap->getDataSizeX() - 1;
-	unsigned int maxZ = heightmap->getDataSizeZ() - 1;
+	unsigned int maxX = heightmap->getDataSizeX();
+	unsigned int maxZ = heightmap->getDataSizeZ();
 
-	unsigned int num_verts = (maxX * maxZ * 2) + (maxZ * 2);
-	unsigned int num_index = maxX * maxZ * 6;
-
+	unsigned int num_verts = maxX * maxZ;
 	VBOvertex* vertexes = new VBOvertex[num_verts];
-	Uint32* index = new Uint32[num_index];
 
+	// Create vertextes
 	j = 0;
-	k = 0;
-	btVector3 normal;
 	for (nZ = 0; nZ < maxZ; nZ++) {
 		for(nX = 0; nX < maxX; nX++) {
 
-			// u = p2 - p1; v = p3 - p1
+			/*// u = p2 - p1; v = p3 - p1
 			btVector3 u =
 				btVector3(static_cast<float>(nX) + 1.0f, heightmap->getValue(nX + 1, nZ + 1), static_cast<float>(nZ) + 1.0f) -
 				btVector3(static_cast<float>(nX), heightmap->getValue(nX, nZ), static_cast<float>(nZ));
@@ -191,75 +187,53 @@ void RendererHeightmap::createVAO()
 				btVector3(static_cast<float>(nX), heightmap->getValue(nX, nZ), static_cast<float>(nZ));
 
 			// calc vector
-			normal = btVector3(
+			btVector3 normal = btVector3(
 				u.y() * v.z() - u.z() * v.y(),
 				u.z() * v.x() - u.x() * v.z(),
 				u.x() * v.y() - u.y() * v.x()
-			);
+			);*/
 
-			// TL (top left)
 			flX = static_cast<float>(nX);
 			flZ = static_cast<float>(nZ);
 			vertexes[j].x = flX;
 			vertexes[j].y = heightmap->getValue(nX, nZ);
 			vertexes[j].z = flZ;
-			vertexes[j].nx = normal.x();
-			vertexes[j].ny = normal.y();
-			vertexes[j].nz = normal.z();
+			vertexes[j].nx = 0.0f;
+			vertexes[j].ny = -1.0f;
+			vertexes[j].nz = 0.0f;
 			vertexes[j].tx = flX / heightmap->getDataSizeX();
 			vertexes[j].ty = flZ / heightmap->getDataSizeZ();
 			j++;
-
-			// BL (bottom left)
-			flX = static_cast<float>(nX);
-			flZ = static_cast<float>(nZ) + 1.0f;
-			vertexes[j].x = flX;
-			vertexes[j].y = heightmap->getValue(nX, nZ + 1);
-			vertexes[j].z = flZ;
-			vertexes[j].nx = normal.x();
-			vertexes[j].ny = normal.y();
-			vertexes[j].nz = normal.z();
-			vertexes[j].tx = flX / heightmap->getDataSizeX();
-			vertexes[j].ty = flZ / heightmap->getDataSizeZ();
-			j++;
-
-			index[k++] = j - 2;  // TL
-			index[k++] = j - 1;  // BL
-			index[k++] = j;      // TR
-			index[k++] = j - 1;  // BL
-			index[k++] = j + 1;  // BR
-			index[k++] = j;      // TR
 		}
-
-		// Create TR vertex for last cell in row
-		flX = static_cast<float>(nX) + 1.0f;
-		flZ = static_cast<float>(nZ);
-		vertexes[j].x = flX;
-		vertexes[j].y = heightmap->getValue(nX + 1, nZ);
-		vertexes[j].z = flZ;
-		vertexes[j].nx = normal.x();
-		vertexes[j].ny = normal.y();
-		vertexes[j].nz = normal.z();
-		vertexes[j].tx = flX / heightmap->getDataSizeX();
-		vertexes[j].ty = flZ / heightmap->getDataSizeZ();
-		j++;
-
-		// Same with BR vertex
-		flX = static_cast<float>(nX) + 1.0f;
-		flZ = static_cast<float>(nZ) + 1.0f;
-		vertexes[j].x = flX;
-		vertexes[j].y = heightmap->getValue(nX + 1, nZ + 1);
-		vertexes[j].z = flZ;
-		vertexes[j].nx = normal.x();
-		vertexes[j].ny = normal.y();
-		vertexes[j].nz = normal.z();
-		vertexes[j].tx = flX / heightmap->getDataSizeX();
-		vertexes[j].ty = flZ / heightmap->getDataSizeZ();
-		j++;
 	}
-
 	assert(j == num_verts);
-	assert(k == num_index);
+
+	// There is one fewer face then there are vertexes on each axis
+	maxX--;
+	maxZ--;
+
+	unsigned int num_index = maxX * maxZ * 6;
+	unsigned int stride = maxX + 1;
+	Uint32* index = new Uint32[num_index];
+
+	// Create indexes
+	j = 0;
+	for (nZ = 0; nZ < maxZ; nZ++) {
+		for (nX = 0; nX < maxX; nX++) {
+			unsigned int top_left = nZ * (maxZ + 1) + nX;
+
+			// TL, BL, TR
+			index[j++] = top_left;
+			index[j++] = top_left + stride;
+			index[j++] = top_left + 1;
+
+			// BL, BR, TR
+			index[j++] = top_left + stride;
+			index[j++] = top_left + stride + 1;
+			index[j++] = top_left + 1;
+		}
+	}
+	assert(j == num_index);
 
 	// Create VAO
 	this->vao = new GLVAO();
