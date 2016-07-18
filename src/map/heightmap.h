@@ -14,6 +14,8 @@ using namespace std;
 class Mod;
 class btRigidBody;
 class RendererHeightmap;
+class btCollisionShape;
+class btTriangleIndexVertexArray;
 
 
 /**
@@ -48,6 +50,8 @@ class Heightmap {
 
 		// Physics object
 		btRigidBody* ground;
+		btCollisionShape* colshape;
+		btTriangleIndexVertexArray* trimesh;
 
 		// BigTexture (note - these leak)
 		SpritePtr terrain;

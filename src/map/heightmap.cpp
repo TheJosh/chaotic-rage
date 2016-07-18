@@ -21,6 +21,18 @@ using namespace std;
 
 
 /**
+* Indexed face data. Must remain a POD class
+**/
+class HeightmapFace
+{
+	public:
+		unsigned int a;
+		unsigned int b;
+		unsigned int c;
+};
+
+
+/**
 * Take the heightmap image and turn it into a data array
 **/
 float* Heightmap::loadIMG(Mod* mod, string filename, int *imW, int *imH)
@@ -160,30 +172,90 @@ btRigidBody* Heightmap::createRigidBody()
 {
 	if (this->data == NULL) return NULL;
 
-	bool flipQuadEdges = false;
 
-	btFasterHeightfieldTerrainShape * groundShape = new btFasterHeightfieldTerrainShape(
-		this->sx, this->sz, this->data,
-		0,
-		0.0f, this->scale,
-		1, PHY_FLOAT, flipQuadEdges
-	);
 
-	groundShape->setLocalScaling(btVector3(
-		this->getScaleX(),
-		1.0f,
-		this->getScaleZ()
-	));
+
+	unsigned int nX, nZ, j;
+	unsigned int maxX = this->getDataSizeX();
+	unsigned int maxZ = this->getDataSizeZ();
+
+	unsigned int num_verts = maxX * maxZ;
+	glm::vec4* vertexes = new glm::vec4[num_verts];
+
+	// Create vertextes
+	j = 0;
+	for (nZ = 0; nZ < maxZ; nZ++) {
+		for(nX = 0; nX < maxX; nX++) {
+			vertexes[j].x = static_cast<float>(nX) * this->getScaleX();
+			vertexes[j].y = this->getValue(nX, nZ);
+			vertexes[j].z = static_cast<float>(nZ) * this->getScaleZ();
+			vertexes[j].w = 0.0f;
+			j++;
+		}
+	}
+	assert(j == num_verts);
+
+	// There is one fewer face then there are vertexes on each axis
+	maxX--;
+	maxZ--;
+
+	unsigned int num_index = maxX * maxZ * 2;
+	unsigned int stride = maxX + 1;
+	HeightmapFace* index = new HeightmapFace[num_index];
+
+	// Create indexes
+	j = 0;
+	for (nZ = 0; nZ < maxZ; nZ++) {
+		for (nX = 0; nX < maxX; nX++) {
+			unsigned int top_left = nZ * (maxZ + 1) + nX;
+
+			// TL, BL, TR
+			index[j].a = top_left;
+			index[j].b = top_left + stride;
+			index[j].c = top_left + 1;
+			++j;
+
+			// BL, BR, TR
+			index[j].a = top_left + stride;
+			index[j].b = top_left + stride + 1;
+			index[j].c = top_left + 1;
+			++j;
+		}
+	}
+	assert(j == num_index);
+	
+	cout << "built " << num_verts << " " << num_index << endl;
+	
+	btIndexedMesh btMesh;
+	btMesh.m_numTriangles = num_index;
+	btMesh.m_triangleIndexBase = (const unsigned char*) &index[0];
+	btMesh.m_triangleIndexStride = sizeof(HeightmapFace);
+	btMesh.m_indexType = PHY_INTEGER;
+
+	btMesh.m_numVertices = num_verts;
+	btMesh.m_vertexBase = (const unsigned char*) &vertexes[0];
+	btMesh.m_vertexStride = sizeof(glm::vec4);
+	btMesh.m_vertexType = PHY_FLOAT;
+
+	this->trimesh = new btTriangleIndexVertexArray();
+	this->trimesh->addIndexedMesh(btMesh);
+	this->colshape = new btBvhTriangleMeshShape(this->trimesh, true, true);
+
+
 
 	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(
 		btQuaternion(0, 0, 0, 1),
-		btVector3(pos.x, this->scale/2.0f - pos.y, pos.z)
+		btVector3(
+			pos.x - this->getSizeX()/2.0f,
+			pos.y,
+			pos.z - this->getSizeZ()/2.0f
+		)
 	));
 
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
 		0,
 		groundMotionState,
-		groundShape,
+		this->colshape,
 		btVector3(0,0,0)
 	);
 
