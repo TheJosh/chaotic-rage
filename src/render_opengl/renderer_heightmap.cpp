@@ -30,7 +30,7 @@ using namespace std;
 RendererHeightmap::RendererHeightmap(RenderOpenGL* render, Heightmap* heightmap)
 	: heightmap(heightmap)
 {
-	this->shader = this->createSplatShader(render, heightmap);		// NOTE: Generated shader leaks
+	this->shader = this->createShader(render, heightmap);
 	this->createVAO();
 }
 
@@ -38,13 +38,14 @@ RendererHeightmap::RendererHeightmap(RenderOpenGL* render, Heightmap* heightmap)
 RendererHeightmap::~RendererHeightmap()
 {
 	delete this->vao;
+	delete this->shader;
 }
 
 
 /**
 * Create a shader, optimised for the specific splat rendering used
 **/
-GLShader* RendererHeightmap::createSplatShader(RenderOpenGL* render, Heightmap* heightmap)
+GLShader* RendererHeightmap::createShader(RenderOpenGL* render, Heightmap* heightmap)
 {
 	CHECK_OPENGL_ERROR;
 
@@ -60,7 +61,7 @@ GLShader* RendererHeightmap::createSplatShader(RenderOpenGL* render, Heightmap* 
 	}
 
 	char* base_fragment_code = s->loadCodeFile("phong_splat.glslf");
-	char* diffuse_code = RendererHeightmap::createSplatMethod_diffuseColor(heightmap);
+	char* diffuse_code = RendererHeightmap::createShaderFunction_diffuseColor(heightmap);
 
 	const char* strings[3];
 	strings[0] = "#version 130\n";
@@ -111,7 +112,7 @@ GLShader* RendererHeightmap::createSplatShader(RenderOpenGL* render, Heightmap* 
 /**
 * Create the 'diffuseColor' method used in splat fragment shader
 **/
-char* RendererHeightmap::createSplatMethod_diffuseColor(Heightmap* heightmap)
+char* RendererHeightmap::createShaderFunction_diffuseColor(Heightmap* heightmap)
 {
 	std::stringstream ss;
 

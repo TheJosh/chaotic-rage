@@ -36,12 +36,12 @@ class RendererHeightmap {
 		/**
 		* Create a shader, optimised for the specific splat rendering used
 		**/
-		static GLShader* createSplatShader(RenderOpenGL* render, Heightmap* heightmap);
+		static GLShader* createShader(RenderOpenGL* render, Heightmap* heightmap);
 
 		/**
 		* Create the 'diffuseColor' method used in splat fragment shader
 		**/
-		static char* createSplatMethod_diffuseColor(Heightmap* heightmap);
+		static char* createShaderFunction_diffuseColor(Heightmap* heightmap);
 
 		/**
 		* Bind the 'splat' tectures
