@@ -508,13 +508,12 @@ int Map::load(string name, Render *render, Mod* insideof)
 
 
 /**
-* Load a TextureSplat object from the a config section
+* Load a texture splat into the heightmap from a config section
 **/
 bool Map::loadTextureSplat(Heightmap* heightmap, cfg_t *cfg)
 {
 	unsigned int num_layers, j;
 	char* tmpstr;
-	TextureSplat* splat;
 
 	tmpstr = cfg_getstr(cfg, "alphamap");
 	if (tmpstr == NULL) {

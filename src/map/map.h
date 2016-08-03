@@ -25,7 +25,6 @@ class RangeF;
 class btTriangleMesh;
 class btRigidBody;
 class Light;
-class TextureSplat;
 
 
 class Map {
