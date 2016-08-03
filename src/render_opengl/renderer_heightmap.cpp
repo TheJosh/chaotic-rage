@@ -30,14 +30,7 @@ using namespace std;
 RendererHeightmap::RendererHeightmap(RenderOpenGL* render, Heightmap* heightmap)
 	: heightmap(heightmap)
 {
-	if (heightmap->getBigTexture() == NULL) {
-		this->shader = this->createSplatShader(render, heightmap);		// NOTE: Generated shader leaks
-	} else if (heightmap->getBigNormal() == NULL) {
-		this->shader = render->shaders[SHADER_TERRAIN_PLAIN];
-	} else {
-		this->shader = render->shaders[SHADER_TERRAIN_NORMALMAP];
-	}
-
+	this->shader = this->createSplatShader(render, heightmap);		// NOTE: Generated shader leaks
 	this->createVAO();
 }
 
@@ -123,9 +116,12 @@ char* RendererHeightmap::createSplatMethod_diffuseColor(Heightmap* heightmap)
 	std::stringstream ss;
 
 	ss << "vec4 diffuseColor() {\n";
-	ss << "vec4 alphaMap = texture2D(uAlphaMap, TexUV0);\n";
 	ss << "vec4 diffuse = vec4(0.0, 0.0, 0.0, 0.0);\n";
 
+	if (heightmap->getBigTexture() != NULL) {
+		ss << "diffuse += texture2D(uTex, TexUV0);";
+	} else {
+	ss << "vec4 alphaMap = texture2D(uAlphaMap, TexUV0);\n";
 	for (unsigned int i = 0; i < TEXTURE_SPLAT_LAYERS; ++i) {
 		TextureSplatLayer *lyr = &heightmap->layers[i];
 
@@ -140,6 +136,7 @@ char* RendererHeightmap::createSplatMethod_diffuseColor(Heightmap* heightmap)
 			}
 			ss << ";\n";
 		}
+	}
 	}
 
 	if (heightmap->getLightmap() != NULL) {
