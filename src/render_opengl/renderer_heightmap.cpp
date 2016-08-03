@@ -121,22 +121,22 @@ char* RendererHeightmap::createSplatMethod_diffuseColor(Heightmap* heightmap)
 	if (heightmap->getBigTexture() != NULL) {
 		ss << "diffuse += texture2D(uTex, TexUV0);";
 	} else {
-	ss << "vec4 alphaMap = texture2D(uAlphaMap, TexUV0);\n";
-	for (unsigned int i = 0; i < TEXTURE_SPLAT_LAYERS; ++i) {
-		TextureSplatLayer *lyr = &heightmap->layers[i];
+		ss << "vec4 alphaMap = texture2D(uAlphaMap, TexUV0);\n";
+		for (unsigned int i = 0; i < TEXTURE_SPLAT_LAYERS; ++i) {
+			TextureSplatLayer *lyr = &heightmap->layers[i];
 
-		if (lyr->texture != NULL) {
-			ss << "diffuse += ";
-			ss << "alphaMap[" << i << "] * texture2D(uLayers[" << i << "], TexUV0 * " << lyr->scale << ")";
-			if (lyr->dbl) {
-				ss << "* texture2D(uLayers[" << i << "], TexUV0 * " << (lyr->scale * -0.25f) << ") * 1.5";
+			if (lyr->texture != NULL) {
+				ss << "diffuse += ";
+				ss << "alphaMap[" << i << "] * texture2D(uLayers[" << i << "], TexUV0 * " << lyr->scale << ")";
+				if (lyr->dbl) {
+					ss << "* texture2D(uLayers[" << i << "], TexUV0 * " << (lyr->scale * -0.25f) << ") * 1.5";
+				}
+				if (lyr->detail != NULL) {
+					ss << "* texture2D(uDetail[" << i << "], TexUV0 * " << (lyr->scale * lyr->detail_scale) << ") * 1.5";
+				}
+				ss << ";\n";
 			}
-			if (lyr->detail != NULL) {
-				ss << "* texture2D(uDetail[" << i << "], TexUV0 * " << (lyr->scale * lyr->detail_scale) << ") * 1.5";
-			}
-			ss << ";\n";
 		}
-	}
 	}
 
 	if (heightmap->getLightmap() != NULL) {
