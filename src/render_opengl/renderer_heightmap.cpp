@@ -127,7 +127,7 @@ char* RendererHeightmap::createSplatMethod_diffuseColor(Heightmap* heightmap)
 	ss << "vec4 diffuse = vec4(0.0, 0.0, 0.0, 0.0);\n";
 
 	for (unsigned int i = 0; i < TEXTURE_SPLAT_LAYERS; ++i) {
-		TextureSplatLayer *lyr = &heightmap->getSplatTexture()->layers[i];
+		TextureSplatLayer *lyr = &heightmap->layers[i];
 
 		if (lyr->texture != NULL) {
 			ss << "diffuse += ";
@@ -256,6 +256,28 @@ void RendererHeightmap::createVAO()
 
 
 /**
+* Bind the 'splat' tectures
+**/
+void RendererHeightmap::bindSplatTextures()
+{
+	for (unsigned int i = 0; i < TEXTURE_SPLAT_LAYERS; ++i) {
+		if (heightmap->layers[i].texture == NULL) break;
+		glActiveTexture(GL_TEXTURE5 + i);
+		glBindTexture(GL_TEXTURE_2D, heightmap->layers[i].texture->pixels);
+	}
+
+	for (unsigned int i = 0; i < TEXTURE_SPLAT_LAYERS; ++i) {
+		if (heightmap->layers[i].detail == NULL) break;
+		glActiveTexture(GL_TEXTURE10 + i);
+		glBindTexture(GL_TEXTURE_2D, heightmap->layers[i].detail->pixels);
+	}
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, heightmap->alphamap->pixels);
+}
+
+
+/**
 * Draw a heightmap
 **/
 void RendererHeightmap::draw(RenderOpenGL* render)
@@ -276,7 +298,7 @@ void RendererHeightmap::draw(RenderOpenGL* render)
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, heightmap->getBigTexture()->pixels);
 	} else {
-		heightmap->getSplatTexture()->bindTextures();
+		this->bindSplatTextures();
 	}
 
 	glm::mat4 modelMatrix = glm::scale(

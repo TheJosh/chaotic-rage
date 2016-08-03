@@ -66,7 +66,7 @@ class Map {
 		int load(string name, Render *render, Mod* insideof);
 		void loadDefaultEntities();
 
-		TextureSplat* loadTextureSplat(cfg_t *cfg);
+		bool loadTextureSplat(Heightmap* heightmap, cfg_t *cfg);
 
 		void update(int delta);
 

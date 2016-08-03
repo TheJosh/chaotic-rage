@@ -22,7 +22,6 @@
 #include "../physics_bullet.h"
 #include "../render_opengl/animplay.h"
 #include "../render_opengl/light.h"
-#include "../render_opengl/texture_splat.h"
 #include "../render/sprite.h"
 #include "../render/render_3d.h"
 #include "../mod/mod.h"
@@ -384,14 +383,13 @@ int Map::load(string name, Render *render, Mod* insideof)
 			heightmap->setBigTexture(tex);
 		} else {
 			// Load texture splat
-			TextureSplat* splat = this->loadTextureSplat(cfg_getsec(cfg_sub, "texture-splat"));
-			if (splat == NULL) {
+			bool result = this->loadTextureSplat(heightmap, cfg_getsec(cfg_sub, "texture-splat"));
+			if (!result) {
 				cerr << "Heightmap config does not have valid 'texture-splat' section set" << endl;
 				delete heightmap;
 				cfg_free(cfg);
 				return 0;
 			}
-			heightmap->setSplatTexture(splat);
 		}
 
 		// Load normal data, if specified
@@ -512,25 +510,21 @@ int Map::load(string name, Render *render, Mod* insideof)
 /**
 * Load a TextureSplat object from the a config section
 **/
-TextureSplat* Map::loadTextureSplat(cfg_t *cfg)
+bool Map::loadTextureSplat(Heightmap* heightmap, cfg_t *cfg)
 {
 	unsigned int num_layers, j;
 	char* tmpstr;
 	TextureSplat* splat;
 
-	splat = new TextureSplat();
-	
 	tmpstr = cfg_getstr(cfg, "alphamap");
 	if (tmpstr == NULL) {
-		delete splat;
-		return NULL;
+		return false;
 	}
-	splat->alphamap = this->render->loadSprite(std::string(tmpstr), this->mod);
+	heightmap->alphamap = this->render->loadSprite(std::string(tmpstr), this->mod);
 
 	num_layers = cfg_size(cfg, "layer");
 	if (num_layers == 0 || num_layers > TEXTURE_SPLAT_LAYERS) {
-		delete splat;
-		return NULL;
+		return false;
 	}
 
 	for (j = 0; j < num_layers; j++) {
@@ -538,22 +532,21 @@ TextureSplat* Map::loadTextureSplat(cfg_t *cfg)
 
 		tmpstr = cfg_getstr(cfg_layer, "texture");
 		if (tmpstr == NULL) {
-			delete splat;
-			return NULL;
+			return false;
 		}
 
-		splat->layers[j].texture = this->render->loadSprite(std::string(tmpstr), this->mod);
-		splat->layers[j].scale = cfg_getfloat(cfg_layer, "scale");
-		splat->layers[j].dbl = cfg_getbool(cfg_layer, "dbl");
+		heightmap->layers[j].texture = this->render->loadSprite(std::string(tmpstr), this->mod);
+		heightmap->layers[j].scale = cfg_getfloat(cfg_layer, "scale");
+		heightmap->layers[j].dbl = cfg_getbool(cfg_layer, "dbl");
 
 		tmpstr = cfg_getstr(cfg_layer, "detail");
 		if (tmpstr != NULL) {
-			splat->layers[j].detail = this->render->loadSprite(std::string(tmpstr), this->mod);
-			splat->layers[j].detail_scale = cfg_getfloat(cfg_layer, "detail-scale");
+			heightmap->layers[j].detail = this->render->loadSprite(std::string(tmpstr), this->mod);
+			heightmap->layers[j].detail_scale = cfg_getfloat(cfg_layer, "detail-scale");
 		}
 	}
 
-	return splat;
+	return true;
 }
 
 

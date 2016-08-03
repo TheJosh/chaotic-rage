@@ -44,6 +44,11 @@ class RendererHeightmap {
 		static char* createSplatMethod_diffuseColor(Heightmap* heightmap);
 
 		/**
+		* Bind the 'splat' tectures
+		**/
+		void bindSplatTextures();
+
+		/**
 		* Create an OpenGL mesh (array of triangle strips) from a heightmap
 		* Generates a VAO
 		**/

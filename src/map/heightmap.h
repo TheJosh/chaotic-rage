@@ -6,14 +6,49 @@
 #include <glm/glm.hpp>
 #include <string>
 #include "../rage.h"
-#include "../render_opengl/texture_splat.h"
+#include "../render/sprite.h"
 
 using namespace std;
+
+
+#define TEXTURE_SPLAT_LAYERS 4
 
 
 class Mod;
 class btRigidBody;
 class RendererHeightmap;
+class GLShader;
+
+
+class TextureSplatLayer
+{
+	public:
+		/**
+		* Main texture
+		**/
+		SpritePtr texture;
+
+		/**
+		* Scale for main texture
+		**/
+		float scale;
+
+		/**
+		* Should this texture be doubled up?
+		**/
+		bool dbl;
+
+		/**
+		* Detail texture
+		**/
+		SpritePtr detail;
+		float detail_scale;
+
+	public:
+		TextureSplatLayer() :
+			texture(NULL), scale(128.0f), dbl(false), detail(NULL), detail_scale(4.0f)
+			{};
+};
 
 
 /**
@@ -21,6 +56,7 @@ class RendererHeightmap;
 **/
 class Heightmap {
 	friend class Map;
+	friend class RendererHeightmap;
 
 	public:
 		/**
@@ -54,7 +90,8 @@ class Heightmap {
 		SpritePtr normal;
 
 		// Texture splatting
-		TextureSplat* terrain_splat;
+		SpritePtr alphamap;
+		TextureSplatLayer layers[TEXTURE_SPLAT_LAYERS];
 
 		// Lightmaps (only supported by texture splat at the moment)
 		SpritePtr lightmap;
@@ -65,7 +102,7 @@ class Heightmap {
 	public:
 		Heightmap(float sizeX, float sizeZ, float scale, glm::vec3 pos)
 			: sizeX(sizeX), sizeZ(sizeZ), sx(0), sz(0), scale(scale), pos(pos), data(NULL), ground(NULL), terrain(NULL),
-			normal(NULL), terrain_splat(NULL), lightmap(NULL)
+			normal(NULL), alphamap(NULL), lightmap(NULL), layers()
 			{};
 
 		~Heightmap();
@@ -97,11 +134,6 @@ class Heightmap {
 		void setBigTexture(SpritePtr tex) { terrain = tex; }
 
 		/**
-		* Set splat texture
-		**/
-		void setSplatTexture(TextureSplat* splat) { terrain_splat = splat; }
-
-		/**
 		* Return the bigtexture if set
 		**/
 		SpritePtr getBigTexture() { return terrain; }
@@ -110,11 +142,6 @@ class Heightmap {
 		* Return the bigtexture if set
 		**/
 		SpritePtr getBigNormal() { return normal; }
-
-		/**
-		* Return splat texture if set
-		**/
-		TextureSplat* getSplatTexture() { return terrain_splat; }
 
 		/**
 		* Return the lightmap if set

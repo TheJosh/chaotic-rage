@@ -244,6 +244,7 @@ Heightmap::~Heightmap()
 {
 	delete [] data;
 	delete ground;
-	delete terrain_splat;
+	
+	// TODO: How to free sprites without a ptr to the renderer?
 }
 
