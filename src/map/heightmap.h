@@ -102,7 +102,7 @@ class Heightmap {
 	public:
 		Heightmap(float sizeX, float sizeZ, float scale, glm::vec3 pos)
 			: sizeX(sizeX), sizeZ(sizeZ), sx(0), sz(0), scale(scale), pos(pos), data(NULL), ground(NULL), terrain(NULL),
-			normal(NULL), alphamap(NULL), lightmap(NULL), layers()
+			normal(NULL), alphamap(NULL), layers(), lightmap(NULL)
 			{};
 
 		~Heightmap();
