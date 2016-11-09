@@ -50,6 +50,8 @@ class Player : public Unit
 		void angleFromMouse(int x, int y, int delta);
 		void setKeys(Uint16 bitfield);
 		Uint16 packKeys();
+		bool isDying();
+		float dyingPercent();
 		void actualDeath();
 
 	public:

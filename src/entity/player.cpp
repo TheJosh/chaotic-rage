@@ -218,7 +218,7 @@ void Player::angleFromMouse(int x, int y, int delta)
 **/
 void Player::update(int delta)
 {
-	if (this->death_time != 0) {
+	if (this->isDying()) {
 		if (this->death_time <= this->st->game_time) {
 			this->actualDeath();
 		}
@@ -303,6 +303,32 @@ void Player::die()
 {
 	Unit::dieAnimSound();
 	this->death_time = this->st->game_time + DEATH_DELAY_MS;
+}
+
+
+/**
+* Is the player in their death delay?
+**/
+bool Player::isDying()
+{
+	return (this->death_time != 0);
+}
+
+
+/**
+* How far through the death delay is the player?
+* Return value is between 0.0 (just started dying) and 1.0 (almost dead)
+**/
+float Player::dyingPercent()
+{
+	if (this->death_time < this->st->game_time) {
+		return 1.0;
+	}
+	
+	float delay_remaining = this->death_time - this->st->game_time;
+	float percent = (DEATH_DELAY_MS - delay_remaining) / DEATH_DELAY_MS;
+	
+	return percent;
 }
 
 

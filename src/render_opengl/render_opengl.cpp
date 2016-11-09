@@ -1873,7 +1873,13 @@ void RenderOpenGL::mainRot()
 		angle = st->game_time / 100.0f;
 
 	} else {
-		if (this->viewmode == GameSettings::firstPerson || this->render_player->getWeaponZoom() > 0.0f) {
+		if (this->render_player->isDying()) {
+			float perc = this->render_player->dyingPercent();
+			tilt = 17.0f + (22.0f - 17.0f) * perc;
+			dist = 25.0f + (80.0f - 25.0f) * perc;
+			lift = 0.0f;
+			
+		} else if (this->viewmode == GameSettings::firstPerson || this->render_player->getWeaponZoom() > 0.0f) {
 			tilt = 0.0f;
 			dist = 0.0f - this->render_player->getWeaponZoom();
 			lift = UNIT_PHYSICS_HEIGHT / 2.3f;
