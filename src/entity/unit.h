@@ -225,8 +225,7 @@ class Unit : public Entity
 		UnitType* getUnitType() { return this->uc; }
 		UnitParams* getParams() { return &this->params; }
 
-		// The currently running animation has finished
-		void animationFinished();
+		void spawnAnimationFinished();
 
 	protected:
 		void setState(int new_type);

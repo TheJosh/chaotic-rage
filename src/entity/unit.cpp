@@ -38,7 +38,7 @@ PickupType* Unit::initial_pickup;
 /**
 * Called when an animation finishes
 **/
-void unit_animation_finished(AnimPlay* play, void* data);
+void unit_spawn_animation_finished(AnimPlay* play, void* data);
 
 
 /**
@@ -123,9 +123,9 @@ void Unit::init(UnitType *ut, GameState *st, Faction fac, btTransform & loc)
 	UnitTypeAnimation* uta = this->uc->getAnimation(UNIT_ANIM_SPAWN);
 	if (uta) {
 		this->anim->setAnimation(uta->animation, uta->start_frame, uta->end_frame);
-		this->anim->setEndedCallback(unit_animation_finished, (void*)this);
+		this->anim->setEndedCallback(unit_spawn_animation_finished, (void*)this);
 	} else {
-		this->animationFinished();
+		this->spawnAnimationFinished();
 	}
 
 	// Create ghost
@@ -187,16 +187,16 @@ Unit::~Unit()
 /**
 * An animation has finished
 **/
-void unit_animation_finished(AnimPlay* play, void* data)
+void unit_spawn_animation_finished(AnimPlay* play, void* data)
 {
-	static_cast<Unit*>(data)->animationFinished();
+	static_cast<Unit*>(data)->spawnAnimationFinished();
 }
 
 
 /**
 * Spawn animation has finished - begin the walk animation
 **/
-void Unit::animationFinished()
+void Unit::spawnAnimationFinished()
 {
 	this->anim->setEndedCallback(NULL);
 
