@@ -22,6 +22,9 @@
 using namespace std;
 
 
+#define DEATH_DELAY_MS 2000
+
+
 /**
 * Spawn player using map X/Z coords
 **/
@@ -35,6 +38,7 @@ Player::Player(UnitType *uc, GameState *st, Faction fac, int slot, float x, floa
 	this->anim->pause();
 	this->slot = slot;
 	this->drive_old = NULL;
+	this->death_time = 0;
 }
 
 
@@ -214,8 +218,14 @@ void Player::angleFromMouse(int x, int y, int delta)
 **/
 void Player::update(int delta)
 {
-	this->handleKeyChange();
+	if (this->death_time != 0) {
+		if (this->death_time <= this->st->game_time) {
+			this->actualDeath();
+		}
+		return;
+	}
 
+	this->handleKeyChange();
 
 	if (this->drive) {
 		this->drive->operate(this, delta, this->key[KEY_UP], this->key[KEY_DOWN], this->key[KEY_LEFT], this->key[KEY_RIGHT], this->mouse_angle, this->vertical_angle);
@@ -291,11 +301,8 @@ void Player::update(int delta)
 **/
 void Player::die()
 {
-	this->st->logic->raise_playerdied(this->slot);
-
 	Unit::dieAnimSound();
-
-	this->actualDeath();
+	this->death_time = this->st->game_time + DEATH_DELAY_MS;
 }
 
 
@@ -304,6 +311,8 @@ void Player::die()
 **/
 void Player::actualDeath()
 {
+	this->st->logic->raise_playerdied(this->slot);
+
 	this->st->deadButNotBuried(this, this->anim);
 
 	for (unsigned int i = 0; i < this->st->num_local; i++) {

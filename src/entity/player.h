@@ -34,6 +34,7 @@ class Player : public Unit
 		float vertical_angle;
 		bool walking;
 		Vehicle* drive_old;
+		unsigned int death_time;
 
 	public:
 		Player(UnitType *uc, GameState *st, Faction fac, int slot, float x, float z);
