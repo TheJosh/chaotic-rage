@@ -1860,13 +1860,13 @@ void RenderOpenGL::mainRot()
 {
 	CHECK_OPENGL_ERROR;
 
-	btTransform trans;
+	btVector3 origin;
 	float tilt, angle, dist, lift;		// Up/down; left/right; distance of camera, dist off ground
 
 	glEnable(GL_DEPTH_TEST);
 
 	if (this->render_player == NULL) {
-		trans = btTransform(btQuaternion(0,0,0,0),btVector3(st->map->width/2.0f, 0.0f, st->map->height/2.0f));
+		origin = btVector3(st->map->width/2.0f, 0.0f, st->map->height/2.0f);
 		tilt = 22.0f;
 		dist = 80.0f;
 		lift = 0.0f;
@@ -1905,7 +1905,9 @@ void RenderOpenGL::mainRot()
 
 		// Load the character details into the variables
 		if (this->render_player->drive) {
-			trans = this->render_player->drive->getTransform();
+			btTransform trans = this->render_player->drive->getTransform();
+			
+			origin = trans.getOrigin();
 			angle = RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 180.0f;
 
 			if (this->render_player->drive->vt->hasNode(VEHICLE_NODE_HORIZ)) {
@@ -1913,7 +1915,7 @@ void RenderOpenGL::mainRot()
 			}
 
 		} else {
-			trans = this->render_player->getTransform();
+			origin = this->render_player->getTransform().getOrigin();
 			angle = this->render_player->mouse_angle + 180.0f;
 			if (this->viewmode == GameSettings::firstPerson || this->render_player->getWeaponZoom() > 0.0f) {
 				tilt -= this->render_player->vertical_angle;
@@ -1926,9 +1928,9 @@ void RenderOpenGL::mainRot()
 	while (angle > 360.0f) angle -= 360.0f;
 
 	// Camera angle calculations
-	float camerax = dist * sin(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().x();
-	float cameray = dist * sin(DEG_TO_RAD(tilt)) + trans.getOrigin().y() + lift;
-	float cameraz = dist * cos(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + trans.getOrigin().z();
+	float camerax = dist * sin(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + origin.x();
+	float cameray = dist * sin(DEG_TO_RAD(tilt)) + origin.y() + lift;
+	float cameraz = dist * cos(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + origin.z();
 	this->camera = glm::vec3(camerax, cameray, cameraz);
 
 	// Prep the view matrix
@@ -1938,7 +1940,7 @@ void RenderOpenGL::mainRot()
 	this->view = glm::translate(this->view, -this->camera);
 
 	// Set the player position which is used in other areas
-	this->render_player_pos = glm::vec3(trans.getOrigin().x(), trans.getOrigin().y(), trans.getOrigin().z());
+	this->render_player_pos = glm::vec3(origin.x(), origin.y(), origin.z());
 	
 	CHECK_OPENGL_ERROR;
 }
