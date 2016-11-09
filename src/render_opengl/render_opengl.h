@@ -127,6 +127,9 @@ class RenderOpenGL : public Render3D
 
 		SpritePtr ambient_daynight;
 
+		// Most recent camera position, for when the player is dead
+		btVector3 last_origin[2];
+
 	public:
 		RenderOpenGL(GameState * st, RenderOpenGLSettings* settings);
 		virtual ~RenderOpenGL();
@@ -203,7 +206,7 @@ class RenderOpenGL : public Render3D
 		void recursiveRenderAssimpModelBones(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader);
 
 		void mainViewport(int s, int of);
-		void mainRot();
+		void mainRot(unsigned int screen_index);
 		void skybox();
 		void terrain();
 		void entities();

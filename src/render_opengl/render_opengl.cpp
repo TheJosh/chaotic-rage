@@ -1105,6 +1105,11 @@ void RenderOpenGL::preGame()
 	if (this->st->num_local == 1) {
 		this->mainViewport(1, 1);
 	}
+	
+	// Set default camera at middle of map
+	for (unsigned int i = 0; i < this->st->num_local; ++i) {
+		this->last_origin[i] = btVector3(st->map->width/2.0f, 0.0f, st->map->height/2.0f);
+	}
 }
 
 
@@ -1795,7 +1800,7 @@ void RenderOpenGL::render()
 		this->render_player = this->st->local_players[i]->p;
 
 		this->mainViewport(i, this->st->num_local);
-		this->mainRot();
+		this->mainRot(i);
 		this->setupShaders();
 
 		terrain();
@@ -1856,7 +1861,7 @@ void RenderOpenGL::physics()
 /**
 * Main rotation for camera
 **/
-void RenderOpenGL::mainRot()
+void RenderOpenGL::mainRot(unsigned int screen_index)
 {
 	CHECK_OPENGL_ERROR;
 
@@ -1866,7 +1871,7 @@ void RenderOpenGL::mainRot()
 	glEnable(GL_DEPTH_TEST);
 
 	if (this->render_player == NULL) {
-		origin = btVector3(st->map->width/2.0f, 0.0f, st->map->height/2.0f);
+		origin = this->last_origin[screen_index];
 		tilt = 22.0f;
 		dist = 80.0f;
 		lift = 0.0f;
@@ -1921,6 +1926,8 @@ void RenderOpenGL::mainRot()
 				tilt -= this->render_player->vertical_angle;
 			}
 		}
+
+		this->last_origin[screen_index] = origin;
 	}
 
 	// Clamp angle
