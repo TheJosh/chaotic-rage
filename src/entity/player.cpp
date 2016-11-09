@@ -293,7 +293,18 @@ void Player::die()
 {
 	this->st->logic->raise_playerdied(this->slot);
 
-	Unit::die();
+	Unit::dieAnimSound();
+
+	this->actualDeath();
+}
+
+
+/**
+* Okay now the player is actually dead.
+**/
+void Player::actualDeath()
+{
+	this->st->deadButNotBuried(this, this->anim);
 
 	for (unsigned int i = 0; i < this->st->num_local; i++) {
 		if (this == this->st->local_players[i]->p) {

@@ -790,9 +790,9 @@ void Unit::takeDamage(float damage)
 
 
 /**
-* The unit has died
+* Most of the death animation, etc
 **/
-void Unit::die()
+void Unit::dieAnimSound()
 {
 	this->endFiring();
 	this->leaveVehicle();
@@ -811,6 +811,18 @@ void Unit::die()
 	if (snd) {
 		GEng()->audio->playSound(snd, false, this);
 	}
+}
+
+
+/**
+* The unit has died
+**/
+void Unit::die()
+{
+	this->dieAnimSound();
+
+	// TODO: Both of these code paths cause this->del = true
+	// which means that the death animation will never actually be seen
 
 	if (!this->uc->death_debris.empty()) {
 		// Fling some body parts around

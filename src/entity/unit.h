@@ -238,6 +238,7 @@ class Unit : public Entity
 		void leaveVehicle();
 		void zoomWeapon();
 		void resetIdleTime();
+		void dieAnimSound();
 
 	private:
 		/**
