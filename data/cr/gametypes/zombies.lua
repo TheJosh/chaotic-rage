@@ -6,7 +6,7 @@ num_zombies = 0;
 num_zombie_players = 0;
 num_wanted = 0;
 num_dead = 0;
-num_lives = 10;
+num_lives = 3;
 spawn_rate = 3000;
 timer = 0;
 round = 0;
@@ -34,12 +34,12 @@ end;
 --
 spawn_func = function()
 	t = random_arg("zomb", "zomb_fast", "zomb_health", "zomb_strong")
-	
+
 	game.addNpc(t, "zombie", factions.team2)
-	
+
 	num_zombies = num_zombies + 1
 	if num_zombies >= num_wanted then remove_timer(timer) end
-	
+
 	do_score()
 end;
 
@@ -49,7 +49,7 @@ end;
 --
 start_round = function()
 	num_zombies = 0;
-	
+
 	-- Spawn the player zombies, if there is a coordinate in the list
 	position = table.remove(player_zombies, 1)
 	while position ~= nil do
@@ -58,7 +58,7 @@ start_round = function()
 		num_zombies = num_zombies + 1;
 		position = table.remove(player_zombies, 1)
 	end
-	
+
 	if num_wanted < 30 then
 		num_wanted = num_wanted + 3 + num_zombie_players;
 	end;
@@ -75,7 +75,7 @@ start_round = function()
 		end;
 		weather.startRain(rain_rate)
 	end;
-	
+
 	-- Cool label
 	if round > round_max then
 		lab = add_label(0, 350, "Winner!");
@@ -101,16 +101,16 @@ start_round = function()
 	if round > round_max then
 		game_over(1);
 	end;
-	
+
 	-- Do an ammo drop
 	if round % 3 == 0 then
 		show_alert_message("Would you like some more ammo?");
 		game.addPickupRand("ammo_current");
 	end;
-	
+
 	-- Lets get spawning
 	timer = add_interval(spawn_rate, spawn_func);
-	
+
 	do_score();
 end;
 
@@ -140,7 +140,7 @@ bind_gamestart(function(r_max)
 
 	add_timer(10000, start_round);
 	add_timer(5000, initial_ammo);
-	
+
 	add_label(-200, 50, "Round");
 	score_labels.round = add_label(-70, 50, "0");
 
@@ -149,7 +149,7 @@ bind_gamestart(function(r_max)
 
 	add_label(-200, 90, "Dead");
 	score_labels.dead = add_label(-70, 90, "0");
-	
+
 	add_label(-200, 110, "Lives");
 	score_labels.lives = add_label(-70, 110, num_lives);
 
@@ -161,15 +161,21 @@ end);
 -- Handle unit deaths
 --
 bind_playerdied(function(slot)
-	show_alert_message("Just not good enough I see...", slot);
-
 	num_lives = num_lives - 1
+	do_score();
+
 	if (num_lives == 0) then
-		game_over(0);
+		lab = add_label(0, 350, "FAILURE");
+		lab.align = 2;
+		lab.r = 0.9; lab.g = 0.1; lab.b = 0.1;
+		add_timer(5000, function()
+		  game_over(0);
+		end)
+		return
 	end;
 
-	do_score();
-	
+	show_alert_message("Just not good enough I see...", slot);
+
 	add_timer(2000, function()
 		game.addPlayer(get_selected_unittype(), factions.team1, slot);
 	end);
@@ -186,9 +192,9 @@ end);
 --
 bind_npcdied(function()
 	num_dead = num_dead + 1;
-	
+
 	do_score();
-	
+
 	-- Is the round over?
 	if num_dead == num_wanted then
 		show_alert_message("I guess you got them...this time");

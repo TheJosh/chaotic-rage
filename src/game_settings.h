@@ -52,7 +52,7 @@ class GameSettings
 		bool random_weather;
 		bool gametype_weather;
 
-		GameSettings(int rounds = 20);
+		GameSettings(int rounds = 10);
 
 		void switchViewMode();
 		int getRounds() { return rounds; }
