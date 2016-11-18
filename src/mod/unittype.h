@@ -63,6 +63,8 @@ class UnitParams
 		int special_cooldown;   // milliseconds
 		bool invincible;        // cannot be hurt in any way
 		float weapon_damage;    // damage multiplier
+		int health_regen_delay;     // milliseconds
+		float health_regen_speed;   // hp per second
 };
 
 class UnitType

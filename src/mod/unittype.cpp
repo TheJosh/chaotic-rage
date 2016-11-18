@@ -51,6 +51,8 @@ cfg_opt_t unittype_opts[] =
 	CFG_INT((char*) "special_delay", 500, CFGF_NONE),
 	CFG_INT((char*) "special_cooldown", 1000, CFGF_NONE),
 	CFG_FLOAT((char*) "weapon_damage", 1.0f, CFGF_NONE),
+	CFG_INT((char*) "health_regen_delay", 2500, CFGF_NONE),
+	CFG_FLOAT((char*) "health_regen_speed", 100.0f, CFGF_NONE),
 
 	CFG_SEC((char*) "animation", unitanim_opts, CFGF_MULTI),
 	CFG_SEC((char*) "sound", unitsound_opts, CFGF_MULTI),
@@ -120,6 +122,8 @@ UnitType* loadItemUnitType(cfg_t* cfg_item, Mod* mod)
 	uc->params.special_delay = cfg_getint(cfg_item, "special_delay");
 	uc->params.special_cooldown = cfg_getint(cfg_item, "special_cooldown");
 	uc->params.weapon_damage = (float)cfg_getfloat(cfg_item, "weapon_damage");
+	uc->params.health_regen_delay = cfg_getint(cfg_item, "health_regen_delay");
+	uc->params.health_regen_speed = (float)cfg_getfloat(cfg_item, "health_regen_speed");
 	
 	// Animations
 	int num_animations = cfg_size(cfg_item, "animation");

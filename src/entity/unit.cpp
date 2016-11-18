@@ -90,6 +90,7 @@ void Unit::init(UnitType *ut, GameState *st, Faction fac, btTransform & loc)
 	this->fac = fac;
 
 	this->health = ut->begin_health;
+	this->last_hit = st->game_time;
 
 	this->weapon = NULL;
 	this->firing = false;
@@ -625,6 +626,17 @@ void Unit::update(int delta)
 		this->die();
 	}
 
+	// Regenerate health
+	if (this->health < this->uc->begin_health) {
+		int time_since_hit = this->st->game_time - this->last_hit;
+		if (time_since_hit >= this->params.health_regen_delay) {
+			this->health += round(this->params.health_regen_speed / 1000.0f * delta);
+			if (this->health > this->uc->begin_health) {
+				this->health = this->uc->begin_health;
+			}
+		}
+	}
+
 	// Which weapon to use?
 	WeaponType *w = NULL;
 	btTransform wxform;
@@ -779,6 +791,7 @@ void Unit::takeDamage(float damage)
 	}
 
 	this->health -= damage;
+	this->last_hit = this->st->game_time;
 
 	btTransform xform = this->ghost->getWorldTransform();
 	create_particles_blood_spray(this->st, xform.getOrigin(), damage);

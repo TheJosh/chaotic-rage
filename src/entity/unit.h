@@ -95,6 +95,7 @@ class Unit : public Entity
 
 		// When this reaches zero, the unit dies
 		float health;
+		unsigned int last_hit;
 
 		// 3D model
 		AnimPlay* anim;
