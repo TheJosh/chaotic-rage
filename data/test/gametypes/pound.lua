@@ -1,7 +1,6 @@
 ----
 ----  Pounds the game engine by doing lots of random stuff
 ----
-debug_physics(true)
 debug_framerate(true)
 
 g_slot = 0
@@ -71,20 +70,6 @@ bind_gamestart(function()
 			t = random_arg("zomb", "zomb_fast", "robot")
 			game.addNpc(t, "human", factions.team2);
 			
-		end
-	end)
-end)
-
--- randomly toggle physics debugging every 10 secs
-bind_gamestart(function()
-	add_interval(10000, function()
-		t = random(1,2)
-		if t == 1 then
-			show_alert_message("Turning on physics debugging")
-			debug_physics(true)
-		else
-			show_alert_message("Turning off physics debugging")
-			debug_physics(false)
 		end
 	end)
 end)
