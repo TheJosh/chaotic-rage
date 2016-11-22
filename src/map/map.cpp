@@ -719,7 +719,7 @@ void Map::loadDefaultEntities()
 * Update map stuff
 * Only water level at the moment...
 **/
-void Map::update(int delta)
+void Map::update(float delta)
 {
 	if (this->water_speed != 0.0f) {
 		this->water_level += (this->water_speed * delta);
@@ -914,4 +914,3 @@ btRigidBody* Map::createBoundaryPlane(const btVector3 &axis, const btVector3 &lo
 	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(0, motionState, shape, btVector3(0,0,0));
 	return new btRigidBody(rigidBodyCI);
 }
-

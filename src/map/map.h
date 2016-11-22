@@ -67,7 +67,7 @@ class Map {
 
 		bool loadTextureSplat(Heightmap* heightmap, cfg_t *cfg);
 
-		void update(int delta);
+		void update(float delta);
 
 		string getName() { return this->name; }
 
@@ -82,4 +82,3 @@ class Map {
 	private:
 		btRigidBody* createBoundaryPlane(const btVector3 &axis, const btVector3 &loc);
 };
-

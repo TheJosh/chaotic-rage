@@ -107,7 +107,7 @@ class PhysicsBullet
 		void removeCallback(PhysicsCallback *callback);
 		void handleCallback(float delta);
 
-		void stepTime(int ms);
+		void stepTime(float delta);
 		void doCollisions();
 
 		btDiscreteDynamicsWorld* getWorld();

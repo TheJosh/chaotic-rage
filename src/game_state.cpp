@@ -499,10 +499,11 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 **/
 void GameState::gameLoopIter()
 {
-	static int start = SDL_GetTicks();
+	static float current_time = SDL_GetTicks();
 
-	int delta = SDL_GetTicks() - start;
-	start = SDL_GetTicks();
+	float new_time = SDL_GetTicks();
+	float delta = new_time - current_time;
+	current_time = new_time;
 
 	this->logic->update(delta);
 	this->update(delta);
@@ -540,9 +541,9 @@ void GameState::gameLoopIter()
 /**
 * Updates the state of everything
 **/
-void GameState::update(int delta)
+void GameState::update(float delta)
 {
-	DEBUG("loop", "Updating gamestate using delta: %i\n", delta);
+	DEBUG("loop", "Updating gamestate using delta: %f\n", delta);
 
 
 	// Add new entities
@@ -576,7 +577,7 @@ void GameState::update(int delta)
 	
 	// Weather and particles
 	if (this->particle_system != NULL) {
-		this->weather->update((float)delta);
+		this->weather->update(delta);
 		this->particle_system->update(delta / 1000.0f);
 	}
 

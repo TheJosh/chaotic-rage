@@ -165,7 +165,7 @@ class GameState
 
 		// Start and run
 		void preGame();
-		void update(int delta);
+		void update(float delta);
 		void postGame();
 
 		/**

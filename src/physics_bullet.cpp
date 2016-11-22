@@ -347,10 +347,10 @@ void PhysicsBullet::handleCallback(float delta)
 * Currently running at 60fps with up to 3 substeps
 * Which means below 20fps the simulation will "lose" time
 **/
-void PhysicsBullet::stepTime(int ms)
+void PhysicsBullet::stepTime(float delta)
 {
 	dynamicsWorld->stepSimulation(
-		static_cast<float>(ms) / 1000.0f,
+		delta / 1000.0f,
 		3,
 		1.0f/60.0f
 	);
