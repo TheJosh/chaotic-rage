@@ -33,9 +33,10 @@ class GameEngine
 {
 	protected:
 		// FPS ringbuffer + average
-		int ticksum;
+		float ticksum;
 		int tickindex;
-		int ticklist[FPS_SAMPLES];
+		int tickcount;
+		float ticklist[FPS_SAMPLES];
 
 		// Is the mouse currently "grabbed"?
 		bool mouse_grabbed;
@@ -87,7 +88,7 @@ class GameEngine
 		bool hasDialogs();
 
 		// Frames-per-second calcs
-		void calcAverageTick(int newtick);
+		void calcAverageTick(float newtick);
 		float getAveTick();
 };
 

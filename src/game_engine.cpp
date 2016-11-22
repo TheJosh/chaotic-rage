@@ -60,7 +60,7 @@ GameEngine::GameEngine()
 
 	this->ticksum = 0;
 	this->tickindex = 0;
-	memset(&this->ticklist, 0, static_cast<unsigned int>(sizeof(this->ticklist)));
+	memset(&this->ticklist, 0, static_cast<float>(sizeof(this->ticklist)));
 
 	g_geng = this;
 }
@@ -217,7 +217,7 @@ bool GameEngine::hasDialogs()
 * Add a new tick to the ringbuffer, for FPS calcs.
 * Borrowed from http://stackoverflow.com/questions/87304/calculating-frames-per-second-in-a-game
 **/
-void GameEngine::calcAverageTick(int newtick)
+void GameEngine::calcAverageTick(float newtick)
 {
 	this->ticksum -= ticklist[tickindex];
 	this->ticksum += newtick;
@@ -225,6 +225,9 @@ void GameEngine::calcAverageTick(int newtick)
 
 	if (++tickindex == FPS_SAMPLES) {
 		this->tickindex = 0;
+	}
+	if (tickcount < FPS_SAMPLES) {
+		++tickcount;
 	}
 }
 
@@ -234,5 +237,5 @@ void GameEngine::calcAverageTick(int newtick)
 **/
 float GameEngine::getAveTick()
 {
-  return (static_cast<float>(this->ticksum) / static_cast<float>(FPS_SAMPLES));
+	return (this->ticksum / static_cast<float>(tickcount));
 }
