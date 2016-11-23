@@ -97,6 +97,7 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/http/*.cpp \
 	$(SRCPATH)/weapons/*.cpp \
 	$(SRCPATH)/i18n/*.cpp \
+	$(SRCPATH)/physics/*.cpp \
 	$(SRCPATH)/guichan/*.cpp \
 	$(SRCPATH)/guichan/opengl/*.cpp \
 	$(SRCPATH)/guichan/sdl/*.cpp \

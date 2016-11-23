@@ -15,7 +15,7 @@
 #include "../audio/audio_sdlmixer.h"
 #include "../audio/audio_null.h"
 #include "../mod/mod_manager.h"
-#include "../physics_bullet.h"
+#include "../physics/physics_bullet.h"
 #include "clientconfig.h"
 #include "cmdline.h"
 

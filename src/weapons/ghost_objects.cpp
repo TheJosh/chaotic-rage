@@ -11,7 +11,7 @@
 #include "../game_state.h"
 #include "../entity/entity.h"
 #include "../entity/unit.h"
-#include "../physics_bullet.h"
+#include "../physics/physics_bullet.h"
 #include "ghost_objects.h"
 
 using namespace std;

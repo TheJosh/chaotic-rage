@@ -4,7 +4,7 @@
 
 #include "decaying.h"
 #include "../game_state.h"
-#include "../physics_bullet.h"
+#include "../physics/physics_bullet.h"
 #include "../render_opengl/animplay.h"
 #include "entity.h"
 

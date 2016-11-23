@@ -5,7 +5,7 @@
 #include "ammo_round.h"
 #include "../game_state.h"
 #include "../mod/weapontype.h"
-#include "../physics_bullet.h"
+#include "../physics/physics_bullet.h"
 #include "../render_opengl/animplay.h"
 #include "entity.h"
 
@@ -61,4 +61,3 @@ void AmmoRound::update(int delta)
 	if (this->del) return;
 	this->wt->entityUpdate(this, delta);
 }
-

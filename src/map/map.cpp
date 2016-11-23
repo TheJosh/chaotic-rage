@@ -19,7 +19,7 @@
 #include "../util/btStrideHeightfieldTerrainShape.h"
 #include "../rage.h"
 #include "../mod/confuse_types.h"
-#include "../physics_bullet.h"
+#include "../physics/physics_bullet.h"
 #include "../render_opengl/animplay.h"
 #include "../render_opengl/light.h"
 #include "../render/sprite.h"

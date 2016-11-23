@@ -32,7 +32,7 @@ subject to the following restrictions:
 
 #include "../rage.h"
 #include "../game_state.h"
-#include "../physics_bullet.h"
+#include "../physics/physics_bullet.h"
 
 
 ///@todo Interact with dynamic objects,

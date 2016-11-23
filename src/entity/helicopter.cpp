@@ -8,7 +8,7 @@
 #include "../game_state.h"
 #include "../mod/vehicletype.h"
 #include "../net/net_server.h"
-#include "../physics_bullet.h"
+#include "../physics/physics_bullet.h"
 #include "../rage.h"
 #include "../render_opengl/animplay.h"
 #include "entity.h"

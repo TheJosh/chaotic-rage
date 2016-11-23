@@ -4,7 +4,7 @@
 
 
 #include <stdio.h>
-#include "../physics_bullet.h"
+#include "../physics/physics_bullet.h"
 
 extern "C" {
 	#include <lua.h>

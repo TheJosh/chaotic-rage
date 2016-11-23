@@ -250,7 +250,7 @@
     <ClCompile Include="..\..\src\client.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\physics_bullet.cpp">
+    <ClCompile Include="..\..\src\physics\physics_bullet.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\events.cpp">
@@ -963,7 +963,7 @@
     <ClInclude Include="..\..\src\game_engine.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\physics_bullet.h">
+    <ClInclude Include="..\..\src\physics\physics_bullet.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rage.h">

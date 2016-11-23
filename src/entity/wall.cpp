@@ -6,7 +6,7 @@
 #include <vector>
 #include "../game_state.h"
 #include "../mod/walltype.h"
-#include "../physics_bullet.h"
+#include "../physics/physics_bullet.h"
 #include "../rage.h"
 #include "../render_opengl/animplay.h"
 #include "entity.h"

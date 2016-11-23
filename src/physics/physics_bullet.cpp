@@ -5,7 +5,7 @@
 #include <map>
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
-#include "physics_bullet.h"
+#include "physics/physics_bullet.h"
 #include "game_state.h"
 
 using namespace std;

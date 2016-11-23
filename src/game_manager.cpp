@@ -8,7 +8,7 @@
 #include "game_settings.h"
 #include "map/map.h"
 #include "map/reg.h"
-#include "physics_bullet.h"
+#include "physics/physics_bullet.h"
 #include "mod/campaign.h"
 #include "net/net_client.h"
 #include "net/net_server.h"

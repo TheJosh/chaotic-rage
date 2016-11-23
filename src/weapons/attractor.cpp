@@ -11,7 +11,7 @@
 #include "../util/quadratic.h"
 #include "../entity/ammo_round.h"
 #include "../entity/unit.h"
-#include "../physics_bullet.h"
+#include "../physics/physics_bullet.h"
 #include "ghost_objects.h"
 #include "weapons.h"
 

@@ -17,7 +17,7 @@
 #include "game_settings.h"
 #include "script/gamelogic.h"
 #include "map/map.h"
-#include "physics_bullet.h"
+#include "physics/physics_bullet.h"
 #include "entity/ammo_round.h"
 #include "entity/decaying.h"
 #include "entity/entity.h"

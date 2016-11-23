@@ -314,7 +314,7 @@
     <ClCompile Include="..\..\src\net\net_client.cpp" />
     <ClCompile Include="..\..\src\net\net_pack.cpp" />
     <ClCompile Include="..\..\src\net\net_server.cpp" />
-    <ClCompile Include="..\..\src\physics_bullet.cpp" />
+    <ClCompile Include="..\..\src\physics\physics_bullet.cpp" />
     <ClCompile Include="..\..\src\platform\win32.cpp" />
     <ClCompile Include="..\..\src\render_opengl\animplay.cpp" />
     <ClCompile Include="..\..\src\render_opengl\assimpmodel.cpp" />
@@ -552,7 +552,7 @@
     <ClInclude Include="..\..\src\net\net_client.h" />
     <ClInclude Include="..\..\src\net\net_gameinfo.h" />
     <ClInclude Include="..\..\src\net\net_server.h" />
-    <ClInclude Include="..\..\src\physics_bullet.h" />
+    <ClInclude Include="..\..\src\physics\physics_bullet.h" />
     <ClInclude Include="..\..\src\platform\platform.h" />
     <ClInclude Include="..\..\src\rage.h" />
     <ClInclude Include="..\..\src\render_opengl\animplay.h" />

@@ -17,7 +17,7 @@
 #include "../mod/vehicletype.h"
 #include "../mod/weapontype.h"
 #include "../net/net_server.h"
-#include "../physics_bullet.h"
+#include "../physics/physics_bullet.h"
 #include "../rage.h"
 #include "../render_opengl/animplay.h"
 #include "../util/btCRKinematicCharacterController.h"
