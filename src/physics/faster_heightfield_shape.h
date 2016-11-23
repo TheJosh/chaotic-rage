@@ -13,28 +13,24 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_STRIDE_HEIGHTFIELD_TERRAIN_SHAPE_H
-#define BT_STRIDE_HEIGHTFIELD_TERRAIN_SHAPE_H
-
+#pragma once
 #include <BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
 
-///btFasterHeightfieldTerrainShape simulates a 2D heightfield terrain
+
 /**
-  I'm just trying to make heightfields quicker by removing code I don't need.
+ * I'm just trying to make heightfields quicker by removing code I don't need.
+ *
+ * Extends btHeightfieldTerrainShape which simulates a 2D heightfield terrain
  */
 class btFasterHeightfieldTerrainShape : public btHeightfieldTerrainShape
 {
-protected:
-	virtual btScalar	getRawHeightFieldValue(int x,int y) const;
+	protected:
+		virtual btScalar getRawHeightFieldValue(int x, int y) const;
 
-public:
-
-	btFasterHeightfieldTerrainShape(int heightStickWidth,int heightStickLength,
-		const void* heightfieldData, btScalar heightScale,
-		btScalar minHeight, btScalar maxHeight,
-		int upAxis, PHY_ScalarType heightDataType,
-		bool flipQuadEdges);
-
+	public:
+		btFasterHeightfieldTerrainShape(int heightStickWidth, int heightStickLength,
+			const void* heightfieldData, btScalar heightScale,
+			btScalar minHeight, btScalar maxHeight,
+			int upAxis, PHY_ScalarType heightDataType,
+			bool flipQuadEdges);
 };
-
-#endif //BT_STRIDE_HEIGHTFIELD_TERRAIN_SHAPE_H

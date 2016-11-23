@@ -19,24 +19,32 @@ subject to the following restrictions:
 #include "../rage.h"
 
 
+/**
+ * Constructor just calls the base constructor
+ */
 btFasterHeightfieldTerrainShape::btFasterHeightfieldTerrainShape
 (
-int heightStickWidth, int heightStickLength, const void* heightfieldData,
-btScalar heightScale, btScalar minHeight, btScalar maxHeight,int upAxis,
-PHY_ScalarType hdt, bool flipQuadEdges
-) : btHeightfieldTerrainShape(heightStickWidth,heightStickLength,
-	                          (void*) heightfieldData, heightScale,
-	                          minHeight, maxHeight,
-	                          upAxis, hdt,
-	                          flipQuadEdges) {}
+	int heightStickWidth, int heightStickLength, const void* heightfieldData,
+	btScalar heightScale, btScalar minHeight, btScalar maxHeight,int upAxis,
+	PHY_ScalarType hdt, bool flipQuadEdges
+) :
+	btHeightfieldTerrainShape(
+		heightStickWidth, heightStickLength,
+		(void*) heightfieldData, heightScale,
+		minHeight, maxHeight,
+		upAxis, hdt,
+		flipQuadEdges
+	)
+{}
 
 
 
-/// This returns the "raw" (user's initial) height, not the actual height.
-/// The actual height needs to be adjusted to be relative to the center
-///   of the heightfield's AABB.
-btScalar
-btFasterHeightfieldTerrainShape::getRawHeightFieldValue(int x,int y) const
+/**
+ * This returns the "raw" (user's initial) height, not the actual height.
+ * The actual height needs to be adjusted to be relative to the center
+ * of the heightfield's AABB.
+ */
+btScalar btFasterHeightfieldTerrainShape::getRawHeightFieldValue(int x, int y) const
 {
-	return m_heightfieldDataFloat[(y*m_heightStickWidth)+x];
+	return m_heightfieldDataFloat[(y * m_heightStickWidth) + x];
 }
