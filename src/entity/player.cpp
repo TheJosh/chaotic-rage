@@ -11,7 +11,7 @@
 #include "../render_opengl/animplay.h"
 #include "../game_settings.h"
 #include "../render/render.h"
-#include "../util/btCRKinematicCharacterController.h"
+#include "../physics/kinematic_character_controller.h"
 #include "entity.h"
 #include "unit.h"
 #include "vehicle.h"
@@ -348,4 +348,3 @@ void Player::actualDeath()
 		}
 	}
 }
-

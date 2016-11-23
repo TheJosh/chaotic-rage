@@ -27,12 +27,12 @@ subject to the following restrictions:
 #include <BulletCollision/BroadphaseCollision/btCollisionAlgorithm.h>
 #include <BulletCollision/CollisionDispatch/btCollisionWorld.h>
 #include <LinearMath/btDefaultMotionState.h>
-#include "btCRKinematicCharacterController.h"
 #include <stdio.h>
 
+#include "kinematic_character_controller.h"
+#include "physics_bullet.h"
 #include "../rage.h"
 #include "../game_state.h"
-#include "../physics/physics_bullet.h"
 
 
 ///@todo Interact with dynamic objects,
@@ -869,4 +869,3 @@ void btCRKinematicCharacterController::setUpInterpolate(bool value)
 {
 	m_interpolateUp = value;
 }
-

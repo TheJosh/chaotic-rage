@@ -20,7 +20,7 @@
 #include "../physics/physics_bullet.h"
 #include "../rage.h"
 #include "../render_opengl/animplay.h"
-#include "../util/btCRKinematicCharacterController.h"
+#include "../physics/kinematic_character_controller.h"
 #include "../util/debug.h"
 #include "entity.h"
 #include "object.h"
