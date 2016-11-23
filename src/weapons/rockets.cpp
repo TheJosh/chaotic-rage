@@ -138,4 +138,3 @@ void WeaponRocket::entityUpdate(AmmoRound *e, int delta)
 {
 	return;
 }
-

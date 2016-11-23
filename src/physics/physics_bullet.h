@@ -6,8 +6,10 @@
 #include <list>
 #include <map>
 #include <btBulletDynamicsCommon.h>
+#include "physics_callback.h"
 class Entity;
 class GameState;
+class PhysicsCallback;
 class btGhostPairCallback;
 
 using namespace std;
@@ -35,25 +37,6 @@ inline int bullet_btInfinityMask()
 	return btInfinityMask;
 }
 #endif
-
-
-/**
-* Custom tick callbacks - function
-**/
-typedef void (*PhysicsTickCallback)(float delta, Entity *e, void *data1, void *data2);
-
-
-/**
-* Details about all attached functions
-**/
-class PhysicsCallback
-{
-	public:
-		PhysicsTickCallback func;
-		Entity *e;
-		void *data1;
-		void *data2;
-};
 
 
 /**
