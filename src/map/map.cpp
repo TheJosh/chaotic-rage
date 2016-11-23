@@ -16,7 +16,7 @@
 #include "heightmap.h"
 #include "mesh.h"
 
-#include "../util/btStrideHeightfieldTerrainShape.h"
+#include "../physics/faster_heightfield_shape.h"
 #include "../rage.h"
 #include "../mod/confuse_types.h"
 #include "../physics/physics_bullet.h"

@@ -13,7 +13,7 @@
 
 #include "../mod/mod.h"
 #include "../util/sdl_util.h"
-#include "../util/btStrideHeightfieldTerrainShape.h"
+#include "../physics/faster_heightfield_shape.h"
 #include "../libhfz/libhfz.h"
 
 
@@ -243,4 +243,3 @@ Heightmap::~Heightmap()
 	
 	// TODO: How to free sprites without a ptr to the renderer?
 }
-

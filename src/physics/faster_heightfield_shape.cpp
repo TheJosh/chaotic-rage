@@ -13,9 +13,9 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "btStrideHeightfieldTerrainShape.h"
+#include <LinearMath/btTransformUtil.h>
 
-#include "LinearMath/btTransformUtil.h"
+#include "faster_heightfield_shape.h"
 #include "../rage.h"
 
 
@@ -40,4 +40,3 @@ btFasterHeightfieldTerrainShape::getRawHeightFieldValue(int x,int y) const
 {
 	return m_heightfieldDataFloat[(y*m_heightStickWidth)+x];
 }
-
