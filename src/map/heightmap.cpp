@@ -190,11 +190,7 @@ btRigidBody* Heightmap::createRigidBody()
 	this->ground = new btRigidBody(groundRigidBodyCI);
 	this->ground->setRestitution(0.f);
 	this->ground->setFriction(10.f);
-
-	// Debugging for the terrain without needing to recompile
-	if (!debug_enabled("terrain")) {
-		this->ground->setCollisionFlags(this->ground->getCollisionFlags()|btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);
-	}
+	this->ground->setCollisionFlags(this->ground->getCollisionFlags()|btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);
 
 	return this->ground;
 }

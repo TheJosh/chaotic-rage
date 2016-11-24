@@ -119,7 +119,18 @@ char* RendererHeightmap::createShaderFunction_diffuseColor(Heightmap* heightmap)
 	ss << "vec4 diffuseColor() {\n";
 	ss << "vec4 diffuse = vec4(0.0, 0.0, 0.0, 0.0);\n";
 
-	if (heightmap->getBigTexture() != NULL) {
+	if (debug_enabled("terrain")) {
+		// Dump tex coords
+		ss << "diffuse += vec4(TexUV0, 0.0, 0.0);\n";
+		
+		// Also create a checkerboard pattern
+		ss << "float cellX = TexUV0.x * " << heightmap->getDataSizeX() << ";\n";
+		ss << "float cellZ = TexUV0.y * " << heightmap->getDataSizeZ() << ";\n";
+		ss << "if ((mod(cellX, 2.0) < 1.0 && mod(cellZ, 2.0) > 1.0) || (mod(cellX, 2.0) > 1.0 && mod(cellZ, 2.0) < 1.0)) {\n";
+		ss << "    diffuse *= 0.5;\n";
+		ss << "}\n";
+		
+	} else if (heightmap->getBigTexture() != NULL) {
 		ss << "diffuse += texture2D(uTex, TexUV0);";
 	} else {
 		ss << "vec4 alphaMap = texture2D(uAlphaMap, TexUV0);\n";
