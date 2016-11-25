@@ -240,6 +240,9 @@ class Unit : public Entity
 		void resetIdleTime();
 		void dieAnimSound();
 
+		void createKinematicCtlr(btTransform & loc);
+		void removeCtlr();
+
 	private:
 		/**
 		* A pickup applied when the unit is first created

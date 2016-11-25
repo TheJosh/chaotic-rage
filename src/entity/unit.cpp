@@ -129,20 +129,7 @@ void Unit::init(UnitType *ut, GameState *st, Faction fac, btTransform & loc)
 		this->spawnAnimationFinished();
 	}
 
-	// Create ghost
-	this->ghost = new btPairCachingGhostObject();
-	this->ghost->setWorldTransform(loc);
-	this->ghost->setCollisionShape(ut->col_shape);
-	this->ghost->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
-	this->ghost->setUserPointer(this);
-
-	// Create Kinematic Character Controller
-	btScalar stepHeight = btScalar(0.25);
-	this->char_ctlr = new btCRKinematicCharacterController(this->ghost, ut->col_shape, stepHeight);
-
-	// Add character and ghost to the world
-	st->physics->addCollisionObject(this->ghost, CG_UNIT);
-	st->physics->addAction(this->char_ctlr);
+	this->createKinematicCtlr(loc);
 
 	// Give them some weapons
 	vector<WeaponType*>* spawn = st->getSpawnWeapons(this->uc, this->fac);
@@ -177,11 +164,44 @@ Unit::~Unit()
 	delete(this->anim);
 	this->anim = NULL;
 
-	st->physics->delAction(this->char_ctlr);
-	this->char_ctlr = NULL;
+	this->removeCtlr();
+}
 
-	st->physics->delCollisionObject(this->ghost);
-	this->ghost = NULL;
+
+/**
+* Create and register a kinematic character controller and associated ghost object
+**/
+void Unit::createKinematicCtlr(btTransform & loc)
+{
+	btScalar stepHeight = btScalar(0.25);
+
+	this->ghost = new btPairCachingGhostObject();
+	this->ghost->setWorldTransform(loc);
+	this->ghost->setCollisionShape(this->uc->col_shape);
+	this->ghost->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
+	this->ghost->setUserPointer(this);
+
+	this->char_ctlr = new btCRKinematicCharacterController(this->ghost, this->uc->col_shape, stepHeight);
+
+	st->physics->addCollisionObject(this->ghost, CG_UNIT);
+	st->physics->addAction(this->char_ctlr);
+}
+
+
+/**
+* Unregister and remove character controller and ghost object
+**/
+void Unit::removeCtlr()
+{
+	if (this->char_ctlr != NULL) {
+		st->physics->delAction(this->char_ctlr);
+		this->char_ctlr = NULL;
+	}
+
+	if (this->ghost != NULL) {
+		st->physics->delCollisionObject(this->ghost);
+		this->ghost = NULL;
+	}
 }
 
 
