@@ -644,6 +644,8 @@ void Unit::update(int delta)
 	// Units are not active until spawn animation has finished
 	if (!this->active) return;
 
+	if (this->ghost != NULL) {
+
 	// If in a vehicle, move the ghost to AIs know where the unit is
 	if (this->drive) {
 		this->ghost->setWorldTransform(this->drive->getTransform());
@@ -654,6 +656,7 @@ void Unit::update(int delta)
 	if (xform.getOrigin().y() <= -100.0) {
 		this->die();
 	}
+}
 
 	// Regenerate health
 	if (this->health < this->uc->begin_health) {
@@ -729,7 +732,7 @@ void Unit::update(int delta)
 	}
 
 	// Iterate through the physics pairs to see if there are any Pickups to pick up.
-	{
+	if (this->ghost != NULL) {
 		btManifoldArray   manifoldArray;
 		btBroadphasePairArray& pairArray = ghost->getOverlappingPairCache()->getOverlappingPairArray();
 		int numPairs = pairArray.size();
