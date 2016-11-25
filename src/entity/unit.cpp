@@ -138,11 +138,11 @@ void Unit::init(UnitType *ut, GameState *st, Faction fac, btTransform & loc)
 
 	// Create Kinematic Character Controller
 	btScalar stepHeight = btScalar(0.25);
-	this->character = new btCRKinematicCharacterController(this->ghost, ut->col_shape, stepHeight);
+	this->char_ctlr = new btCRKinematicCharacterController(this->ghost, ut->col_shape, stepHeight);
 
 	// Add character and ghost to the world
 	st->physics->addCollisionObject(this->ghost, CG_UNIT);
-	st->physics->addAction(character);
+	st->physics->addAction(this->char_ctlr);
 
 	// Give them some weapons
 	vector<WeaponType*>* spawn = st->getSpawnWeapons(this->uc, this->fac);
@@ -177,8 +177,8 @@ Unit::~Unit()
 	delete(this->anim);
 	this->anim = NULL;
 
-	st->physics->delAction(this->character);
-	this->character = NULL;
+	st->physics->delAction(this->char_ctlr);
+	this->char_ctlr = NULL;
 
 	st->physics->delCollisionObject(this->ghost);
 	this->ghost = NULL;
@@ -316,7 +316,7 @@ Entity * Unit::raytest(btMatrix3x3 &direction, float range)
 **/
 bool Unit::onground()
 {
-	return this->character->canJump();
+	return this->char_ctlr->canJump();
 }
 
 

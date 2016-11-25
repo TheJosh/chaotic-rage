@@ -265,7 +265,7 @@ void Player::update(int delta)
 
 		// Apply any force present on the unit
 		walkDirection += this->force;
-		this->character->setVelocityForTimeInterval(walkDirection, 1.0f);
+		this->char_ctlr->setVelocityForTimeInterval(walkDirection, 1.0f);
 
 		// If "walking" state changes, update animation.
 		if (walking && !this->walking) {

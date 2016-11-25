@@ -107,7 +107,7 @@ class Unit : public Entity
 
 		// Physics bits
 		btPairCachingGhostObject* ghost;
-		btCRKinematicCharacterController* character;
+		btCRKinematicCharacterController* char_ctlr;
 
 		// The object we're lifting
 		Object* lift_obj;

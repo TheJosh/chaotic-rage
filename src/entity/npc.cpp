@@ -85,5 +85,5 @@ void NPC::die()
 **/
 void NPC::setWalkVelocity(const btVector3& velocity)
 {
-	this->character->setVelocityForTimeInterval(velocity, 1.0f);
+	this->char_ctlr->setVelocityForTimeInterval(velocity, 1.0f);
 }
