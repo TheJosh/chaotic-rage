@@ -8,6 +8,7 @@
 #include "../script/gamelogic.h"
 #include "../mod/aitype.h"
 #include "../rage.h"
+#include "../util/btCRKinematicCharacterController.h"
 #include "unit.h"
 
 class UnitType;
@@ -78,3 +79,11 @@ void NPC::die()
 	Unit::die();
 }
 
+
+/**
+* Set the walk direction and velocity, in meters per second
+**/
+void NPC::setWalkVelocity(const btVector3& velocity)
+{
+	this->character->setVelocityForTimeInterval(velocity, 1.0f);
+}

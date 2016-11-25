@@ -18,7 +18,6 @@ extern "C" {
 #include "../entity/npc.h"
 #include "../entity/unit.h"
 #include "../entity/pickup.h"
-#include "../util/btCRKinematicCharacterController.h"
 #include "lua_libs.h"
 
 
@@ -45,7 +44,7 @@ static void register_lua_functions();
 /**
 * Basic set up
 **/
-AILogic::AILogic(Unit *u)
+AILogic::AILogic(NPC *u)
 {
 	this->u = u;
 	this->st = u->getGameState();
@@ -141,10 +140,8 @@ void AILogic::update()
 			u->ghost->getWorldTransform().setBasis(btMatrix3x3(rot));
 		}
 
-		// Position update
-		u->character->setVelocityForTimeInterval(this->dir * walkSpeed, 1.0f);
-
 		this->dir_flag = false;
+		this->u->setWalkVelocity(this->dir * walkSpeed);
 		this->u->walkSound();
 		this->u->resetIdleTime();
 	}

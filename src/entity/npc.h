@@ -13,6 +13,9 @@ class UnitType;
 
 class NPC : public Unit
 {
+	friend class AILogic;
+
+
 	private:
 		AILogic *logic;
 
@@ -28,4 +31,6 @@ class NPC : public Unit
 	public:
 		virtual void update(int delta);
 		virtual void die();
+		void setWalkVelocity(const btVector3& velocity);
+
 };

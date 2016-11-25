@@ -16,10 +16,11 @@ extern "C" {
 **/
 class AILogic
 {
-	friend class Unit;
+	friend class NPC;
+
 
 	public:
-		Unit *u;
+		NPC *u;
 		lua_State *lua;
 		GameState *st;
 		std::vector<LuaTimer*> timers;
@@ -29,7 +30,7 @@ class AILogic
 		bool needEndFiring;
 
 	public:
-		AILogic(Unit *u);
+		AILogic(NPC *u);
 		~AILogic();
 
 	private:

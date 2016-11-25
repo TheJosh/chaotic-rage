@@ -73,7 +73,6 @@ class Unit : public Entity
 {
 	friend class NetClient;
 	friend class NetServer;
-	friend class AILogic;
 
 
 	public:
