@@ -237,6 +237,8 @@ void Unit::beginFiring()
 {
 	if (this->weapon == NULL) return;
 
+	this->removeCtlr();
+
 	this->firing = true;
 
 	AudioPtr snd = this->weapon->wt->getSound(WEAPON_SOUND_BEGIN);
@@ -256,6 +258,8 @@ void Unit::beginFiring()
 void Unit::endFiring()
 {
 	if (this->weapon == NULL) return;
+
+	this->createKinematicCtlr(btTransform());
 
 	this->firing = false;
 
