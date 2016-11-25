@@ -145,6 +145,8 @@ class Unit : public Entity
 		// A message to be shown while the powerup is active
 		string powerup_message;
 
+		btTransform xform;
+
 		// Not active until fully spawned
 		bool active;
 

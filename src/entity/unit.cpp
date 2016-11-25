@@ -237,6 +237,7 @@ void Unit::beginFiring()
 {
 	if (this->weapon == NULL) return;
 
+	this->xform = this->getTransform();
 	this->removeCtlr();
 
 	this->firing = true;
@@ -259,7 +260,7 @@ void Unit::endFiring()
 {
 	if (this->weapon == NULL) return;
 
-	this->createKinematicCtlr(btTransform());
+	this->createKinematicCtlr(this->xform);
 
 	this->firing = false;
 
@@ -615,7 +616,11 @@ bool remove_finished_pickup(const UnitPickup& up)
 **/
 btTransform const &Unit::getTransform() const
 {
-	return ghost->getWorldTransform();
+	if (ghost == NULL) {
+		return this->xform;
+	} else {
+		return ghost->getWorldTransform();
+	}
 }
 
 
