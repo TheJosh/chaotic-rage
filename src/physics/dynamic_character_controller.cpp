@@ -90,13 +90,27 @@ void btDynamicCharacterController::warp(const btVector3& origin)
 /**
 * The main movement logic
 **/
-void btDynamicCharacterController::playerStep(btCollisionWorld* collisionWorld, btScalar dt)
+void btDynamicCharacterController::updateAction(btCollisionWorld* collisionWorld, btScalar dt)
 {
-	if (m_velocityTimeInterval <= 0.0) {
-		return;
-	}
+	//if (m_walkDirection.fuzzyZero()) {
+		//m_body->setLinearVelocity(btVector3(0.0, 0.0f, 0.0f));
+	//	m_body->applyCentralImpulse(btVector3(0.0, 0.0, 0.0f));
+	//	return;
+	//}
 
-	// TODO: Move the rigid body!!
+	btVector3 curVel = m_body->getLinearVelocity();
+	
+	//btVector3 velocity = mShipBody->getLinearVelocity();
+	//   btScalar speed = velocity.length();
+	
+	//btVector3 vel = m_walkDirection;// * dt / m_velocityTimeInterval;
+	
+	btVector3 velChange = m_walkDirection - curVel;
+	//printf("walkdir: %f   dt: %f  timeint: %f   vel:  %f\n", m_walkDirection.length(), dt, m_velocityTimeInterval, vel.length());
+	
+	//vel *= 100.0;
+	
+	m_body->applyCentralImpulse(velChange);
 }
 
 
@@ -104,5 +118,16 @@ void btDynamicCharacterController::playerStep(btCollisionWorld* collisionWorld, 
 * Special fun for debug drawing - does nothing
 **/
 void btDynamicCharacterController::debugDraw(btIDebugDraw* debugDrawer)
+{
+}
+
+
+bool btDynamicCharacterController::canJump () const
+{
+	return false;
+}
+
+
+void btDynamicCharacterController::jump ()
 {
 }

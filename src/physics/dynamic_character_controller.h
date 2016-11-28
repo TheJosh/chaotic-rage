@@ -15,7 +15,7 @@ subject to the following restrictions:
 
 
 #pragma once
-#include <BulletDynamics/Character/btCharacterControllerInterface.h>
+#include "character_controller_interface.h"
 
 
 class btCollisionShape;
@@ -40,11 +40,7 @@ ATTRIBUTE_ALIGNED16(class) btDynamicCharacterController : public btCharacterCont
 		~btDynamicCharacterController();
 
 		///btActionInterface interface
-		virtual void updateAction(btCollisionWorld* collisionWorld, btScalar deltaTime)
-		{
-			preStep(collisionWorld);
-			playerStep(collisionWorld, deltaTime);
-		}
+		virtual void updateAction(btCollisionWorld* collisionWorld, btScalar deltaTime);
 
 		///btActionInterface interface
 		void debugDraw(btIDebugDraw* debugDrawer);
@@ -58,8 +54,7 @@ ATTRIBUTE_ALIGNED16(class) btDynamicCharacterController : public btCharacterCont
 		
 		void reset ();
 		void reset (btCollisionWorld* collisionWorld);
-
 		void warp (const btVector3& origin);
-		
-		void playerStep(btCollisionWorld* collisionWorld, btScalar dt);
+		bool canJump () const;
+		void jump ();
 };
