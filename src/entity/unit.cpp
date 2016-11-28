@@ -719,40 +719,7 @@ void Unit::update(int delta)
 		this->resetIdleTime();
 	}
 
-	// Iterate through the physics pairs to see if there are any Pickups to pick up.
-	{
-		btManifoldArray   manifoldArray;
-		btBroadphasePairArray& pairArray = ghost->getOverlappingPairCache()->getOverlappingPairArray();
-		int numPairs = pairArray.size();
-
-		for (int i = 0; i < numPairs; i++){
-			manifoldArray.clear();
-
-			const btBroadphasePair& pair = pairArray[i];
-
-			//unless we manually perform collision detection on this pair, the contacts are in the dynamics world paircache:
-			btBroadphasePair* collisionPair = st->physics->getWorld()->getPairCache()->findPair(pair.m_pProxy0,pair.m_pProxy1);
-			if (!collisionPair) continue;
-
-			if (collisionPair->m_algorithm) {
-				collisionPair->m_algorithm->getAllContactManifolds(manifoldArray);
-			}
-
-			for (int j = 0; j < manifoldArray.size(); j++) {
-				btPersistentManifold* manifold = manifoldArray[j];
-
-				const btCollisionObject* obA = static_cast<const btCollisionObject*>(manifold->getBody0());
-				const btCollisionObject* obB = static_cast<const btCollisionObject*>(manifold->getBody1());
-
-				const btCollisionObject* other = obA == ghost ? obB : obA;
-
-				if (other->getBroadphaseHandle()->m_collisionFilterGroup == CG_PICKUP) {
-					Pickup* p = static_cast<Pickup*>(other->getUserPointer());
-					p->doUse(this);
-				}
-			}
-		}
-	}
+	detectCollision();
 
 	// Remove (and rollback) old pickups
 	pickups.remove_if(remove_finished_pickup);
@@ -771,6 +738,46 @@ void Unit::update(int delta)
 	}
 }
 
+
+/**
+* Iterate through the physics pairs to see if there are any Pickups to pick up
+**/
+void Unit::detectCollision()
+{
+	btManifoldArray manifoldArray;
+	btPairCachingGhostObject* ghost = static_cast<btPairCachingGhostObject*>(this->ghost);
+	
+	btBroadphasePairArray& pairArray = ghost->getOverlappingPairCache()->getOverlappingPairArray();
+	int numPairs = pairArray.size();
+
+	for (int i = 0; i < numPairs; i++){
+		manifoldArray.clear();
+
+		const btBroadphasePair& pair = pairArray[i];
+
+		//unless we manually perform collision detection on this pair, the contacts are in the dynamics world paircache:
+		btBroadphasePair* collisionPair = st->physics->getWorld()->getPairCache()->findPair(pair.m_pProxy0,pair.m_pProxy1);
+		if (!collisionPair) continue;
+
+		if (collisionPair->m_algorithm) {
+			collisionPair->m_algorithm->getAllContactManifolds(manifoldArray);
+		}
+
+		for (int j = 0; j < manifoldArray.size(); j++) {
+			btPersistentManifold* manifold = manifoldArray[j];
+
+			const btCollisionObject* obA = static_cast<const btCollisionObject*>(manifold->getBody0());
+			const btCollisionObject* obB = static_cast<const btCollisionObject*>(manifold->getBody1());
+
+			const btCollisionObject* other = obA == ghost ? obB : obA;
+
+			if (other->getBroadphaseHandle()->m_collisionFilterGroup == CG_PICKUP) {
+				Pickup* p = static_cast<Pickup*>(other->getUserPointer());
+				p->doUse(this);
+			}
+		}
+	}
+}
 
 
 /*

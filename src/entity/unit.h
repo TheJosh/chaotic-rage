@@ -239,6 +239,7 @@ class Unit : public Entity
 		void zoomWeapon();
 		void resetIdleTime();
 		void dieAnimSound();
+		void detectCollision();
 
 		void createKinematicCtlr(btTransform & loc);
 		void removeCtlr();
