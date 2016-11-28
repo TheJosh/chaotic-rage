@@ -174,14 +174,16 @@ Unit::~Unit()
 void Unit::createKinematicCtlr(btTransform & loc)
 {
 	btScalar stepHeight = btScalar(0.25);
-
-	this->ghost = new btPairCachingGhostObject();
+	
+	btPairCachingGhostObject* ghost = new btPairCachingGhostObject();
+	
+	this->ghost = ghost;
 	this->ghost->setWorldTransform(loc);
 	this->ghost->setCollisionShape(this->uc->col_shape);
 	this->ghost->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
 	this->ghost->setUserPointer(this);
 
-	this->char_ctlr = new btCRKinematicCharacterController(this->ghost, this->uc->col_shape, stepHeight);
+	this->char_ctlr = new btCRKinematicCharacterController(ghost, this->uc->col_shape, stepHeight);
 
 	st->physics->addCollisionObject(this->ghost, CG_UNIT);
 	st->physics->addAction(this->char_ctlr);

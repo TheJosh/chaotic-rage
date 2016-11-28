@@ -19,7 +19,7 @@ class Unit;
 class Vehicle;
 class WeaponType;
 class btCRKinematicCharacterController;
-class btPairCachingGhostObject;
+class btCollisionObject;
 class btTransform;
 class btVector3;
 
@@ -106,7 +106,7 @@ class Unit : public Entity
 		unsigned int idle_sound_time;
 
 		// Physics bits
-		btPairCachingGhostObject* ghost;
+		btCollisionObject* ghost;
 		btCRKinematicCharacterController* char_ctlr;
 
 		// The object we're lifting
