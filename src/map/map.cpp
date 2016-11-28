@@ -869,7 +869,7 @@ bool Map::preGame()
 		btRigidBody *water = new btRigidBody(groundRigidBodyCI);
 
 		water->setRestitution(0.f);
-		water->setFriction(10.f);
+		water->setFriction(0.2f);
 		this->st->physics->addRigidBody(water, CG_WATER);
 	}
 

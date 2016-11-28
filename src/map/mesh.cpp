@@ -61,7 +61,7 @@ btRigidBody* MapMesh::createRigidBody()
 	// Create body
 	this->body = new btRigidBody(meshRigidBodyCI);
 	this->body->setRestitution(0.f);
-	this->body->setFriction(10.f);
+	this->body->setFriction(0.4f);
 
 	return this->body;
 }
@@ -97,4 +97,3 @@ void MapMesh::fillTriangeMesh(AssimpNode *nd)
 		this->fillTriangeMesh(*it);
 	}
 }
-
