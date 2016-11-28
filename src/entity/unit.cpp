@@ -21,6 +21,7 @@
 #include "../rage.h"
 #include "../render_opengl/animplay.h"
 #include "../physics/kinematic_character_controller.h"
+#include "../physics/dynamic_character_controller.h"
 #include "../util/debug.h"
 #include "entity.h"
 #include "object.h"
@@ -186,6 +187,29 @@ void Unit::createKinematicCtlr(btTransform & loc)
 	this->char_ctlr = new btCRKinematicCharacterController(ghost, this->uc->col_shape, stepHeight);
 
 	st->physics->addCollisionObject(this->ghost, CG_UNIT);
+	st->physics->addAction(this->char_ctlr);
+}
+
+
+/**
+* Create and register a dynamic character controller and associated ghost object
+**/
+void Unit::createDynamicCtlr(btTransform & loc)
+{
+	btDefaultMotionState* motionState = new btDefaultMotionState(loc);
+	
+	btRigidBody* body = st->physics->addRigidBody(
+		uc->col_shape, 50.0f, motionState, CG_UNIT
+	);
+	
+	body->setAngularFactor(btVector3(0.0f, 0.0f, 0.0f));
+	body->setRestitution(1.f);
+	body->setRollingFriction(10.f);
+	body->setFriction(0.5f);
+	
+	this->char_ctlr = new btDynamicCharacterController(body);
+	this->ghost = body;
+	
 	st->physics->addAction(this->char_ctlr);
 }
 
@@ -721,7 +745,8 @@ void Unit::update(int delta)
 		this->resetIdleTime();
 	}
 
-	detectCollision();
+	// TODO: Get this working for dynamic controller
+	//detectCollision();
 
 	// Remove (and rollback) old pickups
 	pickups.remove_if(remove_finished_pickup);

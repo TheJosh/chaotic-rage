@@ -242,6 +242,7 @@ class Unit : public Entity
 		void detectCollision();
 
 		void createKinematicCtlr(btTransform & loc);
+		void createDynamicCtlr(btTransform & loc);
 		void removeCtlr();
 
 	private:
