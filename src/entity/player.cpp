@@ -236,7 +236,7 @@ void Player::update(int delta)
 
 		// Walking around
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
-		btTransform xform = ghost->getWorldTransform();
+		btTransform xform = this->getTransform();
 		btScalar walkSpeed = this->params.max_speed;
 
 		// Mouse rotation

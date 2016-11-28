@@ -309,7 +309,7 @@ Entity * Unit::infront(float range)
 **/
 Entity * Unit::raytest(btMatrix3x3 &direction, float range)
 {
-	btTransform xform = this->ghost->getWorldTransform();
+	btTransform xform = this->getTransform();
 
 	btVector3 offGround = btVector3(0.0f, 0.3f, 0.0f);
 
@@ -347,7 +347,7 @@ bool Unit::onground()
 **/
 void Unit::meleeAttack()
 {
-	btTransform xform = this->ghost->getWorldTransform();
+	btTransform xform = this->getTransform();
 	this->meleeAttack(xform.getBasis());
 }
 
@@ -613,7 +613,7 @@ bool remove_finished_pickup(const UnitPickup& up)
 **/
 btTransform const &Unit::getTransform() const
 {
-	return ghost->getWorldTransform();
+	return this->ghost->getWorldTransform();
 }
 
 
@@ -643,7 +643,7 @@ void Unit::update(int delta)
 	}
 
 	// If they have fallen a considerable distance, they die
-	btTransform xform = ghost->getWorldTransform();
+	btTransform xform = this->getTransform();
 	if (xform.getOrigin().y() <= -100.0) {
 		this->die();
 	}
@@ -822,7 +822,7 @@ void Unit::takeDamage(float damage)
 	this->health -= damage;
 	this->last_hit = this->st->game_time;
 
-	btTransform xform = this->ghost->getWorldTransform();
+	btTransform xform = this->getTransform();
 	create_particles_blood_spray(this->st, xform.getOrigin(), damage);
 
 	if (this->health <= 0 && this->del == false) {
