@@ -18,8 +18,8 @@ subject to the following restrictions:
 #define BT_KINEMATIC_CHARACTER_CONTROLLER_H
 
 #include <LinearMath/btVector3.h>
-#include <BulletDynamics/Character/btCharacterControllerInterface.h>
 #include <BulletCollision/BroadphaseCollision/btCollisionAlgorithm.h>
+#include "character_controller_interface.h"
 
 
 class btCollisionShape;
@@ -146,8 +146,8 @@ public:
 	void setFallSpeed (btScalar fallSpeed);
 	void setJumpSpeed (btScalar jumpSpeed);
 	void setMaxJumpHeight (btScalar maxJumpHeight);
-	bool canJump () const;
 
+	bool canJump () const;
 	void jump ();
 
 	void setGravity(btScalar gravity);

@@ -18,7 +18,7 @@ class Sound;
 class Unit;
 class Vehicle;
 class WeaponType;
-class btCRKinematicCharacterController;
+class btCharacterControllerInterface;
 class btCollisionObject;
 class btTransform;
 class btVector3;
@@ -107,7 +107,7 @@ class Unit : public Entity
 
 		// Physics bits
 		btCollisionObject* ghost;
-		btCRKinematicCharacterController* char_ctlr;
+		btCharacterControllerInterface* char_ctlr;
 
 		// The object we're lifting
 		Object* lift_obj;
