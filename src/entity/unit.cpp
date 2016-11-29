@@ -130,7 +130,7 @@ void Unit::init(UnitType *ut, GameState *st, Faction fac, btTransform & loc)
 		this->spawnAnimationFinished();
 	}
 
-	this->createKinematicCtlr(loc);
+	this->createDynamicCtlr(loc);
 
 	// Give them some weapons
 	vector<WeaponType*>* spawn = st->getSpawnWeapons(this->uc, this->fac);
