@@ -172,7 +172,7 @@ class AssimpAnimation
 		float duration;
 		float ticsPerSec;
 		float frameTime;       // length of a single frame
-		vector<AssimpNodeAnim*> anims;
+		std::map<std::string, AssimpNodeAnim*> anims;
 };
 
 /**

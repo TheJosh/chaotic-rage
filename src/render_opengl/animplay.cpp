@@ -326,17 +326,12 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float anim
 		local = nd->transform * this->move_nodes[nd];
 
 	} else if (this->anim) {
-		// Find animation channel
-		AssimpNodeAnim* animNode = NULL;
-		for (vector<AssimpNodeAnim*>::iterator it = this->anim->anims.begin(); it != this->anim->anims.end(); ++it) {
-			if ((*it)->name == nd->name) {
-				animNode = (*it);
-				break;
-			}
-		}
+		std::map<std::string, AssimpNodeAnim*>::iterator it = this->anim->anims.find(nd->name);
 
 		// If channel found, do animation
-		if (animNode) {
+		if (it != this->anim->anims.end()) {
+			AssimpNodeAnim* animNode = it->second;
+			
 			unsigned int positionKey = this->findFrameTime(&animNode->position, animTick);
 			unsigned int rotationKey = this->findFrameTime(&animNode->rotation, animTick);
 			unsigned int scaleKey = this->findFrameTime(&animNode->scale, animTick);

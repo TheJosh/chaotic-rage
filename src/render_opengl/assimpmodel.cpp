@@ -531,7 +531,6 @@ AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
 		- (float)anim->mChannels[0]->mPositionKeys[0].mTime;
 
 	// Load animation channels
-	out->anims.reserve(anim->mNumChannels);
 	for (n = 0; n < anim->mNumChannels; n++) {
 		const aiNodeAnim* pNodeAnim = anim->mChannels[n];
 
@@ -562,7 +561,9 @@ AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
 			na->scale.push_back(key);
 		}
 
-		out->anims.push_back(na);
+		out->anims.insert(
+			std::pair<std::string, AssimpNodeAnim*>(na->name, na)
+		);
 	}
 
 	return out;
