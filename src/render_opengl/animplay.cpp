@@ -436,9 +436,9 @@ unsigned int AnimPlay::findFrameTime(vector<AssimpAnimKey>* keys, float animTick
 **/
 float AnimPlay::mixFactor(vector<AssimpAnimKey>* keys, unsigned int index, float animTick)
 {
-	AssimpAnimKey* curr = &(keys->at(index));
-	AssimpAnimKey* next = &(keys->at(index+1));
-
+	AssimpAnimKey* curr = &(*keys)[index];
+	AssimpAnimKey* next = curr + 1;
+	
 	return
 		(animTick - curr->time)
 		/
