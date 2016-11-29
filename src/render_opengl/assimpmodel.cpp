@@ -526,6 +526,10 @@ AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
 	out->ticsPerSec = (float)anim->mTicksPerSecond;
 	out->duration = (float)anim->mDuration;
 
+	// Calculate the length of a single frame
+	out->frameTime = (float)anim->mChannels[0]->mPositionKeys[1].mTime
+		- (float)anim->mChannels[0]->mPositionKeys[0].mTime;
+
 	// Load animation channels
 	out->anims.reserve(anim->mNumChannels);
 	for (n = 0; n < anim->mNumChannels; n++) {

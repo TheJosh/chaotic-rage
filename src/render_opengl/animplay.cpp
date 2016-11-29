@@ -275,7 +275,7 @@ void AnimPlay::calcTransforms()
 
 		// If a start/end frame has been specified, we assume a fixed frame length
 		if (this->start_frame != 0 && this->end_frame != 0) {
-			float frameTime = this->anim->anims[0]->position[1].time - this->anim->anims[0]->position[0].time;
+			float frameTime = this->anim->frameTime;
 			float totalTime = frameTime * (this->end_frame - this->start_frame);
 
 			if (this->loop) {
