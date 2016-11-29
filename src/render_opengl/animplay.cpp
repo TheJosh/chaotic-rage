@@ -410,11 +410,18 @@ glm::mat4 AnimPlay::getNodeTransform(AssimpNode* nd)
 
 /**
 * Find a valid key from the list of keys, for a given time value (in ticks)
+*
+* @return int Frame index 0-based
 **/
 unsigned int AnimPlay::findFrameTime(vector<AssimpAnimKey>* keys, float animTick)
 {
-	for (unsigned int i = 0; i < keys->size() - 1; i++) {
-		if (animTick < keys->at(i + 1).time) {
+	unsigned int i = 0;
+
+	vector<AssimpAnimKey>::iterator begin = keys->begin() + 1;
+	vector<AssimpAnimKey>::iterator end = keys->end();
+
+	for(vector<AssimpAnimKey>::iterator it = begin; it != end; ++it, ++i) {
+		if (animTick < (*it).time) {
 			return i;
 		}
 	}
