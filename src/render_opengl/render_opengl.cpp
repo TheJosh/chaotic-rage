@@ -1615,8 +1615,6 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, const glm::mat4 &modelMatrix)
 	shader = this->determineAssimpModelShader(am);
 	glUseProgram(shader->p());
 
-	play->calcTransforms();
-
 	if (am->meshes[0]->bones.empty()) {
 		// Static meshes are very easy
 		recursiveRenderAssimpModelStatic(play, am, am->rootNode, shader, modelMatrix);
@@ -1794,6 +1792,7 @@ void RenderOpenGL::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	entitiesCalcTransforms();
 	entitiesShadowMap();
 
 	for (unsigned int i = 0; i < this->st->num_local; i++) {
@@ -1950,6 +1949,17 @@ void RenderOpenGL::mainRot(unsigned int screen_index)
 	this->render_player_pos = glm::vec3(origin.x(), origin.y(), origin.z());
 	
 	CHECK_OPENGL_ERROR;
+}
+
+
+/**
+* Calculate the bone and animation transforms for all entity animations
+**/
+void RenderOpenGL::entitiesCalcTransforms()
+{
+	for (vector<PlayEntity>::iterator it = animations.begin(); it != animations.end(); ++it) {
+		(*it).play->calcTransforms();
+	}
 }
 
 
