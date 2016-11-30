@@ -97,7 +97,7 @@ class AnimPlay
 
 	private:
 		void calcTransformNodeStatic(AssimpNode* nd, glm::mat4 transform);
-		void calcTransformNode(AssimpNode* nd, glm::mat4 transform, float animTick);
+		void calcTransformNode(AssimpNode* nd, glm::mat4 &transform, float animTick);
 		unsigned int findFrameTime(vector<AssimpAnimKey>* keys, float animTick);
 		float mixFactor(vector<AssimpAnimKey>* keys, unsigned int index, float animTick);
 

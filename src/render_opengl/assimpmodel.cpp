@@ -542,6 +542,7 @@ AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
 		for (m = 0; m < pNodeAnim->mNumPositionKeys; m++) {
 			key.time = (float)pNodeAnim->mPositionKeys[m].mTime;
 			key.vec = this->convVector(pNodeAnim->mPositionKeys[m].mValue);
+			key.mat = glm::translate(glm::mat4(), key.vec);
 			na->position.push_back(key);
 		}
 
@@ -550,6 +551,7 @@ AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
 		for (m = 0; m < pNodeAnim->mNumRotationKeys; m++) {
 			key.time = (float)pNodeAnim->mRotationKeys[m].mTime;
 			key.quat = this->convQuaternion(pNodeAnim->mRotationKeys[m].mValue);
+			key.mat = glm::toMat4(key.quat);
 			na->rotation.push_back(key);
 		}
 
@@ -558,6 +560,7 @@ AssimpAnimation* AssimpModel::loadAnimation(const aiAnimation* anim)
 		for (m = 0; m < pNodeAnim->mNumScalingKeys; m++) {
 			key.time = (float)pNodeAnim->mScalingKeys[m].mTime;
 			key.vec = this->convVector(pNodeAnim->mScalingKeys[m].mValue);
+			key.mat = glm::scale(glm::mat4(), key.vec);
 			na->scale.push_back(key);
 		}
 

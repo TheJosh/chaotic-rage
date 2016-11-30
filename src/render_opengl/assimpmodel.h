@@ -147,6 +147,7 @@ class AssimpAnimKey
 	public:
 		glm::vec3 vec;		// vector for position/scale
 		glm::quat quat;		// quaternion for rotation
+		glm::mat4 mat;		// precomputed
 		float time;
 };
 

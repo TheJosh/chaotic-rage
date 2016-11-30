@@ -318,14 +318,14 @@ void AnimPlay::calcTransforms()
 * @param glm::mat4 transform The transform of the parent node
 * @param unsigned int time The current animation time
 **/
-void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float animTick)
+void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 &transform, float animTick)
 {
 	glm::mat4 local;
 
 	if (this->move_nodes.find(nd) != this->move_nodes.end()) {
 		local = nd->transform * this->move_nodes[nd];
 
-	} else if (this->anim) {
+	} else if (this->anim != NULL) {
 		std::map<std::string, AssimpNodeAnim*>::iterator it = this->anim->anims.find(nd->name);
 
 		// If channel found, do animation
@@ -336,15 +336,21 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float anim
 			unsigned int rotationKey = this->findFrameTime(&animNode->rotation, animTick);
 			unsigned int scaleKey = this->findFrameTime(&animNode->scale, animTick);
 
+			// The below supports animations which have keyframes only instead
+			// of every frame specified.
+			/*
 			float positionMix = this->mixFactor(&animNode->position, positionKey, animTick);
 			float rotationMix = this->mixFactor(&animNode->rotation, rotationKey, animTick);
 			float scaleMix = this->mixFactor(&animNode->scale, scaleKey, animTick);
-
+			
 			glm::mat4 trans = glm::translate(glm::mat4(), glm::mix(animNode->position[positionKey].vec, animNode->position[positionKey + 1].vec, positionMix));
 			glm::mat4 rot = glm::toMat4(glm::mix(animNode->rotation[rotationKey].quat, animNode->rotation[rotationKey + 1].quat, rotationMix));
 			glm::mat4 scale = glm::scale(glm::mat4(), glm::mix(animNode->scale[scaleKey].vec, animNode->scale[scaleKey + 1].vec, scaleMix));
+			*/
 
-			local = trans * rot * scale;
+			local = animNode->position[positionKey].mat
+				* animNode->rotation[rotationKey].mat
+				* animNode->scale[scaleKey].mat;
 		} else {
 			local = nd->transform;
 		}
@@ -353,11 +359,11 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 transform, float anim
 		local = nd->transform;
 	}
 
-	transform *= local;
-	this->transforms[nd] = transform;
+	glm::mat4 localTransform = transform * local;
+	this->transforms[nd] = localTransform;
 
 	for (vector<AssimpNode*>::iterator it = nd->children.begin(); it != nd->children.end(); ++it) {
-		calcTransformNode((*it), transform, animTick);
+		calcTransformNode((*it), localTransform, animTick);
 	}
 }
 

@@ -199,12 +199,13 @@ class RenderOpenGL : public Render3D
 		void surfaceToOpenGL(SpritePtr sprite);
 
 		// Entity rendering
+		void entitiesCalcTransforms();
 		GLShader* determineAssimpModelShader(AssimpModel* play);
 		void renderAnimPlay(AnimPlay* play, Entity * e);
 		void renderAnimPlay(AnimPlay* play, const glm::mat4 &modelMatrix);
 		void recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader, const glm::mat4 &modelMatrix);
 		void recursiveRenderAssimpModelBones(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader);
-
+		
 		void mainViewport(int s, int of);
 		void mainRot(unsigned int screen_index);
 		void skybox();
