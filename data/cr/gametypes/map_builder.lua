@@ -24,9 +24,10 @@ end
 -- Mouse pick handler for adding objects
 function pickObject(x, y, z)
 	local types = {
-		"crate_china", "crate_military", "crate_sealed",
+		"crate_china", "crate_military", "crate_sealed", "crate_steel", "crate_wood", "crate_zombie",
 		"war_fence_metal",
-		"concrete_pipe_straight",
+		"concrete_pipe_straight", "concrete_pipe_bend", "concrete_pipe_joiner", "concrete_pipe_tee", "concrete_pipe_channel",
+		"rock_01",
 		"table", "trashbox"
 	}
 
