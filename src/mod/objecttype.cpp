@@ -32,6 +32,7 @@ cfg_opt_t objecttype_opts[] =
 	CFG_STR_LIST((char*) "walk_sounds", 0, CFGF_NONE),
 	CFG_SEC((char*) "damage", damage_opts, CFGF_MULTI),
 	CFG_INT((char*) "health", 5000, CFGF_NONE),
+	CFG_FLOAT((char*) "mass", 100.0f, CFGF_NONE),
 
 	CFG_STR((char*) "add-object", (char*)"", CFGF_NONE),
 	CFG_STR((char*) "show-message", (char*)"", CFGF_NONE),
@@ -55,6 +56,7 @@ ObjectType* loadItemObjectType(cfg_t* cfg_item, Mod* mod)
 	wt->name = cfg_getstr(cfg_item, "name");
 	wt->check_radius = 30;	//TODO: dynamic
 	wt->health = cfg_getint(cfg_item, "health");
+	wt->mass = cfg_getfloat(cfg_item, "mass");
 
 	wt->add_object = cfg_getstr(cfg_item, "add-object");
 	wt->show_message = cfg_getstr(cfg_item, "show-message");

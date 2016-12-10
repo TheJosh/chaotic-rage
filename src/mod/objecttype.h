@@ -35,6 +35,7 @@ class ObjectType
 		btCollisionShape* col_shape;
 		int check_radius;
 		int health;
+		float mass;
 
 		vector <ObjectTypeDamage *> damage_models;
 		vector <AudioPtr> walk_sounds;

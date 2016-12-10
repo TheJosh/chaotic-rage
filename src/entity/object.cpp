@@ -34,7 +34,7 @@ Object::Object(ObjectType *ot, GameState *st, float x, float z) : Entity(st)
 		st->physics->spawnLocation(x, z, size.z())
 	));
 
-	this->body = st->physics->addRigidBody(ot->col_shape, 1.0f, motionState, CG_OBJECT);
+	this->body = st->physics->addRigidBody(ot->col_shape, ot->mass, motionState, CG_OBJECT);
 	this->body->setUserPointer(this);
 }
 
@@ -56,7 +56,7 @@ Object::Object(ObjectType *ot, GameState *st, float x, float y, float z) : Entit
 		btVector3(x, y, z)
 	));
 
-	this->body = st->physics->addRigidBody(ot->col_shape, 1.0f, motionState, CG_OBJECT);
+	this->body = st->physics->addRigidBody(ot->col_shape, ot->mass, motionState, CG_OBJECT);
 	this->body->setUserPointer(this);
 }
 
