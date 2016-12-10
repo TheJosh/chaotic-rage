@@ -150,6 +150,8 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, fl
 
 	dynamicsWorld->addRigidBody(body, group, this->masks[group]);
 
+	body->setFriction(0.8f);
+
 	return body;
 }
 
@@ -179,6 +181,8 @@ btRigidBody* PhysicsBullet::addRigidBody(btCollisionShape* colShape, float m, bt
 	btRigidBody* body = new btRigidBody(rbInfo);
 
 	dynamicsWorld->addRigidBody(body, group, this->masks[group]);
+
+	body->setFriction(0.8f);
 
 	return body;
 }

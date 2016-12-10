@@ -61,7 +61,7 @@ btRigidBody* MapMesh::createRigidBody()
 	// Create body
 	this->body = new btRigidBody(meshRigidBodyCI);
 	this->body->setRestitution(0.f);
-	this->body->setFriction(0.4f);
+	this->body->setFriction(0.8f);
 
 	return this->body;
 }

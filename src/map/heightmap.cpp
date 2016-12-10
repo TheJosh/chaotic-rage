@@ -189,7 +189,7 @@ btRigidBody* Heightmap::createRigidBody()
 
 	this->ground = new btRigidBody(groundRigidBodyCI);
 	this->ground->setRestitution(0.f);
-	this->ground->setFriction(0.4f);
+	this->ground->setFriction(0.8f);
 	this->ground->setCollisionFlags(this->ground->getCollisionFlags()|btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);
 
 	return this->ground;
