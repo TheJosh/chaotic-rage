@@ -262,6 +262,10 @@ void Unit::spawnAnimationFinished()
 void Unit::beginFiring()
 {
 	if (this->weapon == NULL) return;
+	if (this->weapon->reloading) {
+		emptySound();
+		return;
+	}
 
 	this->firing = true;
 
