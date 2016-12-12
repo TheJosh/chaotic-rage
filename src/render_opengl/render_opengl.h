@@ -140,6 +140,7 @@ class RenderOpenGL : public Render3D
 	public:
 		// From class Render
 		virtual void setScreenSize(int width, int height, bool fullscreen);
+		virtual void setViewMode(int viewmode);
 		virtual void setMouseGrab(bool newval);
 		virtual void render();
 		virtual void renderSprite(SpritePtr sprite, int x, int y);

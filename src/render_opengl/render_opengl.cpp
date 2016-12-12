@@ -339,6 +339,30 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 
 
 /**
+* Sets the view mode (above, behind, etc)
+* Informs the player entities of first-person vs third-person
+**/
+void RenderOpenGL::setViewMode(int viewmode)
+{
+	this->viewmode = viewmode;
+	
+	if (viewmode == GameSettings::firstPerson) {
+		for (unsigned int i = 0; i < this->st->num_local; i++) {
+			if (this->st->local_players[i]->p != NULL) {
+				this->st->local_players[i]->p->viewModeFirstPerson();
+			}
+		}
+	} else {
+		for (unsigned int i = 0; i < this->st->num_local; i++) {
+			if (this->st->local_players[i]->p != NULL) {
+				this->st->local_players[i]->p->viewModeThirdPerson();
+			}
+		}
+	}
+}
+
+
+/**
 * Set the mouse grab status
 **/
 void RenderOpenGL::setMouseGrab(bool newval)

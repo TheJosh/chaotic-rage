@@ -53,6 +53,8 @@ class Player : public Unit
 		bool isDying();
 		float dyingPercent();
 		void actualDeath();
+		void viewModeFirstPerson();
+		void viewModeThirdPerson();
 
 	public:
 		virtual void update(int delta);

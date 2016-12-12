@@ -297,11 +297,38 @@ void Player::update(int delta)
 
 
 /**
+* View has entered first-person for the local player
+**/
+void Player::viewModeFirstPerson()
+{
+	if (this->ghost != NULL) {
+		this->ghost->setCollisionFlags(
+			this->ghost->getCollisionFlags() | btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT
+		);
+	}
+}
+
+
+/**
+* View has left first-person for the local player
+**/
+void Player::viewModeThirdPerson()
+{
+	if (this->ghost != NULL) {
+		this->ghost->setCollisionFlags(
+			this->ghost->getCollisionFlags() & ~btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT
+		);
+	}
+}
+
+
+/**
 * The player has died
 **/
 void Player::die()
 {
 	Unit::dieAnimSound();
+	viewModeThirdPerson();
 	this->death_time = this->st->game_time + DEATH_DELAY_MS;
 }
 
