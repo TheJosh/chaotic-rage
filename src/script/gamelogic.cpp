@@ -456,7 +456,7 @@ LUA_FUNC(get_selected_unittype)
 **/
 LUA_FUNC(get_viewmode)
 {
-	lua_pushinteger(L, GEng()->render->viewmode);
+	lua_pushinteger(L, GEng()->render->getViewMode());
 	return 1;
 }
 
@@ -465,7 +465,7 @@ LUA_FUNC(get_viewmode)
 **/
 LUA_FUNC(set_viewmode)
 {
-	GEng()->render->viewmode = lua_tointeger(L, 1);
+	GEng()->render->setViewMode(lua_tointeger(L, 1));
 	return 0;
 }
 

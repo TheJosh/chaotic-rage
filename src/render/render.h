@@ -18,17 +18,26 @@ class Render
 	protected:
 		bool load_err;
 		GameState * st;
+		int viewmode;
 
 	protected:
 		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename) = 0;
 
 	public:
-		int viewmode;
-
 		/**
 		* Sets the screen size of this renderer
 		**/
 		virtual void setScreenSize(int width, int height, bool fullscreen) = 0;
+
+		/**
+		* Sets the view mode (above, behind, etc)
+		**/
+		virtual void setViewMode(int viewmode);
+
+		/**
+		* Gets the view mode (above, behind, etc)
+		**/
+		int getViewMode() { return this->viewmode; }
 
 		/**
 		* Set the mouse grab mode; default method does nothing

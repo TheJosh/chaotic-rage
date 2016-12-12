@@ -54,3 +54,9 @@ bool Render::wasLoadSpriteError()
 {
 	return load_err;
 }
+
+
+void Render::setViewMode(int viewmode)
+{
+	this->viewmode = viewmode;
+}

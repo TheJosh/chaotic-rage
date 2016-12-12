@@ -37,6 +37,5 @@ GameSettingsFaction::GameSettingsFaction()
 **/
 void GameSettings::switchViewMode()
 {
-	GEng()->render->viewmode = (GEng()->render->viewmode + 1) % nrOfViewModes;
+	GEng()->render->setViewMode((GEng()->render->getViewMode() + 1) % nrOfViewModes);
 }
-

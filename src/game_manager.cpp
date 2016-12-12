@@ -283,7 +283,7 @@ void GameManager::startGame(MapReg *map, string gametype, string unittype, GameS
 		st->local_players[i]->slot = i + 1;
 	}
 
-	GEng()->render->viewmode = viewmode;
+	GEng()->render->setViewMode(viewmode);
 
 	// Begin!
 	st->gameLoop(GEng()->render, GEng()->audio, NULL);
@@ -345,7 +345,7 @@ void GameManager::networkJoin(string host, UIUpdate *ui)
 	new GameLogic(st);
 	st->logic->selected_unittype = GEng()->mm->getUnitType("robot");
 
-	GEng()->render->viewmode = GameSettings::behindPlayer;
+	GEng()->render->setViewMode(GameSettings::behindPlayer);
 
 	// Download the gamestate
 	// When this is done, a final message is sent to tell the server we are done.
