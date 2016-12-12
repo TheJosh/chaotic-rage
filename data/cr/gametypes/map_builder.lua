@@ -27,7 +27,8 @@ function pickObject(x, y, z)
 		"crate_china", "crate_military", "crate_sealed", "crate_steel", "crate_wood", "crate_zombie",
 		"war_fence_metal",
 		"concrete_pipe_straight", "concrete_pipe_bend", "concrete_pipe_joiner", "concrete_pipe_tee", "concrete_pipe_channel",
-		"rock_01",
+		"rock_01", "rock_02", "rock_03", "rock_04", "rock_05",
+		"wood_pallet",
 		"table", "trashbox"
 	}
 
