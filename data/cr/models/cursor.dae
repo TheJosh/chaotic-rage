@@ -5,8 +5,6 @@
 		<author> Anonymous </author>
 		<authoring_tool> Collada Exporter for Blender 2.6+, by Juan Linietsky (juan@codenix.com) </authoring_tool>
 	</contributor>
-	<created>2015-06-03T13:11:18Z     </created>
-	<modified>2015-06-03T13:11:18Z</modified>
 	<unit meter="1.0" name="meter"/>
 	<up_axis>Z_UP</up_axis>
 </asset>
@@ -38,7 +36,7 @@
 						<color>  0.0 0.0 0.0 1.0  </color>
 					</ambient>
 					<diffuse>
-						<texture texture="id-fx_sampler-5" texcoord="CHANNEL1"/>
+						<texture texture="id-fx_sampler-5" texcoord="UV-"/>
 					</diffuse>
 					<specular>
 						<color>  0.5 0.5 0.5 1.0 </color>
@@ -144,11 +142,13 @@
 <library_visual_scenes>
 	<visual_scene id="id-scene-1" name="scene">
 		<node id="Sphere" name="Sphere" type="NODE">
-			<matrix sid="transform"> 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0  </matrix>
+			<matrix sid="transform"> 0.49999988079071045 0.0 0.0 0.0 0.0 0.4999999403953552 0.0 0.0 0.0 0.0 0.5 0.0 0.0 0.0 0.0 1.0  </matrix>
 			<instance_geometry url="#id-mesh-7">
 				<bind_material>
 					<technique_common>
-						<instance_material symbol="id-trimat-8" target="#id-material-6"/>
+						<instance_material symbol="id-trimat-8" target="#id-material-6">
+							<bind_vertex_input input_semantic="TEXCOORD" input_set="0" semantic="UV-UVMap" />
+						</instance_material>
 					</technique_common>
 				</bind_material>
 			</instance_geometry>
