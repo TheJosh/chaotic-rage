@@ -306,6 +306,8 @@ void Player::viewModeFirstPerson()
 			this->ghost->getCollisionFlags() | btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT
 		);
 	}
+	
+	this->st->remAnimPlay(this->anim);
 }
 
 
@@ -319,6 +321,10 @@ void Player::viewModeThirdPerson()
 			this->ghost->getCollisionFlags() & ~btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT
 		);
 	}
+	
+	// Remove first, in case it's already there
+	this->st->remAnimPlay(this->anim);
+	this->st->addAnimPlay(this->anim, this);
 }
 
 
