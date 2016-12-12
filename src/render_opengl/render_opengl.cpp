@@ -439,6 +439,8 @@ void RenderOpenGL::mainViewport(int s, int of)
 **/
 void RenderOpenGL::mouseRaycast(int x, int y, btVector3& start, btVector3& end)
 {
+	const float ray_length = 500.0f;
+	
 	glm::vec4 ray_nds(
 		((2.0f * x) / this->real_width) - 1.0f,
 		1.0f - ((2.0f * y) / this->real_height),
@@ -446,16 +448,19 @@ void RenderOpenGL::mouseRaycast(int x, int y, btVector3& start, btVector3& end)
 		1.0f
 	);
 
-	glm::vec4 ray_world = glm::inverse(this->projection * this->view) * ray_nds;
+	glm::vec4 ray_clip = glm::vec4(ray_nds.x, ray_nds.y, -1.0, 1.0);
 
+	glm::vec4 ray_eye = glm::inverse(this->projection) * ray_clip;
+	ray_eye = glm::vec4(ray_eye.x, ray_eye.y, -1.0, 0.0);
+
+	glm::vec3 ray_world = glm::vec3(glm::inverse(this->view) * ray_eye);
 	ray_world = glm::normalize(ray_world);
-	ray_world *= 100.0f;
 
 	// Start is camera position
 	start = btVector3(this->camera.x, this->camera.y, this->camera.z);
 
 	// End is start + direction
-	end = start + btVector3(ray_world.x, ray_world.y, ray_world.z);
+	end = start + (btVector3(ray_world.x, ray_world.y, ray_world.z) * ray_length);
 }
 
 
