@@ -82,8 +82,7 @@ class Unit : public Entity
 		string name;
 		Faction fac;
 		unsigned int slot;		// zero for npcs, non-zero for players
-		Vehicle* drive;
-
+		
 	protected:
 		// Type
 		UnitType* uc;
@@ -95,6 +94,8 @@ class Unit : public Entity
 		// When this reaches zero, the unit dies
 		float health;
 		unsigned int last_hit;
+
+		Vehicle* drive;
 
 		// 3D model
 		AnimPlay* anim;

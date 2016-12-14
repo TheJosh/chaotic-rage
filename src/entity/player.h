@@ -48,6 +48,7 @@ class Player : public Unit
 		void keyRelease(Key idx);
 		void handleKeyChange();
 		void angleFromMouse(int x, int y, int delta);
+		float getRenderAngle();
 		void setKeys(Uint16 bitfield);
 		Uint16 packKeys();
 		bool isDying();

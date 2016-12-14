@@ -641,7 +641,11 @@ bool remove_finished_pickup(const UnitPickup& up)
 **/
 btTransform const &Unit::getTransform() const
 {
-	return this->ghost->getWorldTransform();
+	if (this->drive) {
+		return this->drive->getTransform();
+	} else {
+		return this->ghost->getWorldTransform();
+	}
 }
 
 

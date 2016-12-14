@@ -12,6 +12,7 @@
 #include "../game_settings.h"
 #include "../render/render.h"
 #include "../physics/kinematic_character_controller.h"
+#include "../physics/physics_bullet.h"
 #include "entity.h"
 #include "unit.h"
 #include "vehicle.h"
@@ -210,6 +211,31 @@ void Player::angleFromMouse(int x, int y, int delta)
 	if (this->vertical_angle < -max_angle) this->vertical_angle = -max_angle;
 
 	this->drive_old = this->drive;
+}
+
+
+/**
+* Return the view angle, for camera movement
+*
+* @return float Degrees
+**/
+float Player::getRenderAngle()
+{
+	float angle;
+	
+	if (this->drive != NULL) {
+		btTransform trans = this->drive->getTransform();
+		angle = RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation()));
+		
+		if (this->drive->vt->hasNode(VEHICLE_NODE_HORIZ)) {
+			angle += this->mouse_angle;
+		}
+		
+	} else {
+		angle = this->mouse_angle;
+	}
+	
+	return angle;
 }
 
 

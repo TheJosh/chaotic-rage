@@ -1937,22 +1937,12 @@ void RenderOpenGL::mainRot(unsigned int screen_index)
 		}
 
 		// Load the character details into the variables
-		if (this->render_player->drive) {
-			btTransform trans = this->render_player->drive->getTransform();
-			
-			origin = trans.getOrigin();
-			angle = RAD_TO_DEG(PhysicsBullet::QuaternionToYaw(trans.getRotation())) + 180.0f;
+		btTransform trans = this->render_player->getTransform();
+		origin = trans.getOrigin();
+		angle = this->render_player->getRenderAngle() + 180.0f;
 
-			if (this->render_player->drive->vt->hasNode(VEHICLE_NODE_HORIZ)) {
-				angle += this->render_player->mouse_angle;
-			}
-
-		} else {
-			origin = this->render_player->getTransform().getOrigin();
-			angle = this->render_player->mouse_angle + 180.0f;
-			if (this->viewmode == GameSettings::firstPerson || this->render_player->getWeaponZoom() > 0.0f) {
-				tilt -= this->render_player->vertical_angle;
-			}
+		if (this->viewmode == GameSettings::firstPerson || this->render_player->getWeaponZoom() > 0.0f) {
+			tilt -= this->render_player->vertical_angle;
 		}
 
 		this->last_origin[screen_index] = origin;
