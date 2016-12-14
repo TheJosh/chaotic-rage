@@ -111,7 +111,7 @@ class Unit : public Entity
 		btCharacterControllerInterface* char_ctlr;
 
 		// The object we're lifting
-		Object* lift_obj;
+		Entity* lift_obj;
 
 		// External forces (e.g. black holes)
 		btVector3 force;

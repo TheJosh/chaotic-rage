@@ -1056,11 +1056,9 @@ void Unit::doUse()
 void Unit::doLift()
 {
 	Entity *closest = this->infront(2.0f);
-	if (! closest) return;
-
-	int klass = closest->klass();
-	if (klass == OBJECT || klass == UNIT) {
-		this->lift_obj = static_cast<Object*>(closest);
+	if (closest) {
+		this->doDrop();
+		this->lift_obj = closest;
 	}
 }
 
