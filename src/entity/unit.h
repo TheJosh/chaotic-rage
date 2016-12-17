@@ -158,7 +158,7 @@ class Unit : public Entity
 
 	public:
 		// Update every frame
-		virtual void update(int delta);
+		virtual void update(float delta);
 
 		// The location and rotation in the universe
 		virtual const btTransform &getTransform() const;

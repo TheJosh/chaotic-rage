@@ -93,7 +93,7 @@ bool GameLogic::execScript(string code)
 /**
 * Basically just provides timer ticks
 **/
-void GameLogic::update(int delta)
+void GameLogic::update(float delta)
 {
 	for (unsigned int id = 0; id < this->timers.size(); id++) {
 		LuaTimer* t = this->timers.at(id);

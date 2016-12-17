@@ -29,7 +29,7 @@ class NPC : public Unit
 		int vals[4];
 
 	public:
-		virtual void update(int delta);
+		virtual void update(float delta);
 		virtual void die();
 		void setWalkVelocity(const btVector3& velocity);
 

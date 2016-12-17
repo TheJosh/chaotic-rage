@@ -660,7 +660,7 @@ void Unit::setTransform(btTransform &t) {
 /**
 * Called once per tick to do all of the logic and stuff
 **/
-void Unit::update(int delta)
+void Unit::update(float delta)
 {
 	if (GEng()->server != NULL) {
 		GEng()->server->addmsgUnitState(this);

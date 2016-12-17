@@ -58,6 +58,6 @@ class Player : public Unit
 		void viewModeThirdPerson();
 
 	public:
-		virtual void update(int delta);
+		virtual void update(float delta);
 		virtual void die();
 };

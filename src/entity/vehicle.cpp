@@ -216,7 +216,7 @@ void Vehicle::trainAttachToNext(Vehicle *next)
 /**
 * Called every tick
 **/
-void Vehicle::update(int delta)
+void Vehicle::update(float delta)
 {
 	int wheelIndex;
 

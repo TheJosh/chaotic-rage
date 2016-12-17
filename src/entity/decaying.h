@@ -32,5 +32,5 @@ class Decaying : public Entity
 		Decaying(GameState *st, const btTransform &xform, AnimPlay *model, float mass = 0.0f);
 		virtual ~Decaying();
 
-		virtual void update(int delta);
+		virtual void update(float delta);
 };

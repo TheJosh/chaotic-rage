@@ -28,6 +28,6 @@ class Object : public Entity
 		virtual ~Object();
 
 	public:
-		virtual void update(int delta);
+		virtual void update(float delta);
 		virtual void takeDamage(float damage);
 };

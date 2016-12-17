@@ -54,5 +54,5 @@ class Pickup : public Entity
 		void show();
 
 	public:
-		virtual void update(int delta);
+		virtual void update(float delta);
 };

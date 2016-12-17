@@ -71,7 +71,7 @@ Object::~Object()
 /**
 * Do stuff
 **/
-void Object::update(int delta)
+void Object::update(float delta)
 {
 }
 

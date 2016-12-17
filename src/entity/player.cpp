@@ -242,7 +242,7 @@ float Player::getRenderAngle()
 /**
 * Uses the currently pressed keys to change the player movement
 **/
-void Player::update(int delta)
+void Player::update(float delta)
 {
 	if (this->isDying()) {
 		if (this->death_time <= this->st->game_time) {

@@ -62,7 +62,7 @@ NPC::~NPC()
 /**
 * Try to find a player and attack them
 **/
-void NPC::update(int delta)
+void NPC::update(float delta)
 {
 	logic->update();
 	Unit::update(delta);

@@ -77,7 +77,7 @@ Pickup::~Pickup()
 /**
 * Do stuff
 **/
-void Pickup::update(int delta)
+void Pickup::update(float delta)
 {
 	if (this->inactive_until != 0 && st->game_time > this->inactive_until) {
 		this->show();

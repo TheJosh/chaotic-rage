@@ -46,7 +46,7 @@ Wall::~Wall()
 /**
 * Do stuff
 **/
-void Wall::update(int delta)
+void Wall::update(float delta)
 {
 }
 

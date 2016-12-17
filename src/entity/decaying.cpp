@@ -46,10 +46,9 @@ Decaying::~Decaying()
 /**
 * Do stuff
 **/
-void Decaying::update(int delta)
+void Decaying::update(float delta)
 {
 	if (this->st->game_time > this->remove_after) {
 		this->del = true;
 	}
 }
-

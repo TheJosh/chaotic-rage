@@ -27,6 +27,6 @@ class Wall : public Entity
 		virtual ~Wall();
 
 	public:
-		virtual void update(int delta);
+		virtual void update(float delta);
 		virtual void takeDamage(float damage);
 };

@@ -28,7 +28,7 @@ class Helicopter : public Vehicle
 		void init(VehicleType *vt, GameState *st, btTransform & loc);
 		virtual ~Helicopter();
 
-		virtual void update(int delta);
+		virtual void update(float delta);
 		virtual void enter();
 		virtual void operate(Unit* u, int delta, bool keys[16], float horiz_angle, float vert_angle);
 		virtual void exit();

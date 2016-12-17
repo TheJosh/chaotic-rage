@@ -62,7 +62,7 @@ class GameLogic
 		~GameLogic();
 
 	public:
-		void update(int delta);
+		void update(float delta);
 
 		/**
 		* Does the game logic want to receive mouse events?

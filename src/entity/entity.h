@@ -69,7 +69,7 @@ class Entity
 		/**
 		* Update the entity. Time is provided in milliseconds (ms)
 		**/
-		virtual void update(int delta) = 0;
+		virtual void update(float delta) = 0;
 
 		/**
 		* Reduce health of entity, and possibly die too.
@@ -103,4 +103,3 @@ class Entity
 		**/
 		void setPosition(const btVector3 &p);
 };
-

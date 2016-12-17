@@ -56,7 +56,7 @@ AmmoRound::~AmmoRound()
 /**
 * Do stuff
 **/
-void AmmoRound::update(int delta)
+void AmmoRound::update(float delta)
 {
 	if (this->del) return;
 	this->wt->entityUpdate(this, delta);

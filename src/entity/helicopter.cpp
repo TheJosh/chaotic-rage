@@ -100,7 +100,7 @@ Helicopter::~Helicopter()
 /**
 * Update the vehicle
 **/
-void Helicopter::update(int delta)
+void Helicopter::update(float delta)
 {
 	if (! this->running) return;
 	if (this->health == 0) return;
