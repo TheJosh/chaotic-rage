@@ -17,6 +17,7 @@
 #include "../util/convert.h"
 #include "../fx/newparticle.h"
 #include "entity.h"
+#include "player.h"
 
 class Unit;
 class btTransform;
@@ -284,14 +285,14 @@ void Vehicle::exit()
 /**
 * Called by the unit to update driving status
 **/
-void Vehicle::operate(Unit* u, int delta, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle)
+void Vehicle::operate(Unit* u, int delta, bool keys[16], float horiz_angle, float vert_angle)
 {
 	// Accel and brake
 	if (this->vt->engine) {
-		if (key_up) {
+		if (keys[Player::KEY_UP]) {
 			this->engineForce = MIN(this->engineForce + this->vt->engine_accel, this->vt->engine_max);
 			this->brakeForce = 0.0f;
-		} else if (key_down) {
+		} else if (keys[Player::KEY_UP]) {
 			if (this->vehicle->getCurrentSpeedKmHour() > 0.0) {
 				this->brakeForce = MIN(this->brakeForce + this->vt->brake_accel, this->vt->brake_max);
 				this->engineForce = 0.0f;
@@ -307,9 +308,9 @@ void Vehicle::operate(Unit* u, int delta, int key_up, int key_down, int key_left
 
 	// Steering
 	if (this->vt->steer) {
-		if (key_left) {
+		if (keys[Player::KEY_LEFT]) {
 			this->steering = MIN(this->steering + 0.01f, 0.3f);
-		} else if (key_right) {
+		} else if (keys[Player::KEY_LEFT]) {
 			this->steering = MAX(this->steering - 0.01f, -0.3f);
 		} else if (this->steering > 0.0f) {
 			this->steering = MAX(this->steering - 0.01f, 0.0f);

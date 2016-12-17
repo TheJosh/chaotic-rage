@@ -13,6 +13,7 @@
 #include "../render_opengl/animplay.h"
 #include "entity.h"
 #include "vehicle.h"
+#include "player.h"
 
 class Unit;
 class btTransform;
@@ -165,32 +166,33 @@ void Helicopter::exit()
 /**
 * Called by the unit to update driving status
 **/
-void Helicopter::operate(Unit* u, int delta, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle)
+void Helicopter::operate(Unit* u, int delta, bool keys[16], float horiz_angle, float vert_angle)
 {
 	float currY = this->getTransform().getOrigin().y();
 
-	if (currY > 50.0f) {
-		this->lift = -0.01f * delta;
-	} else if (key_down) {
+	this->yaw = DEG_TO_RAD(horiz_angle);
+
+	if (keys[Player::KEY_UP]) {
+		this->forward = MIN(this->forward + 0.15f * delta, 3.0f);
+		this->pitch = MIN(this->pitch + 0.002f * delta, PI / 8.0f);
+	} else if (keys[Player::KEY_DOWN]) {
+		this->forward = MAX(this->forward - 0.15f * delta, -3.0f);
+		this->pitch = MAX(this->pitch - 0.002f * delta, 0.0f - PI / 8.0f);
+	} else {
+		this->forward = 0.0f;
+		this->pitch = 0.0f;
+	}
+	
+	if (keys[Player::KEY_LIFT] && currY < 50.0f) {
 		this->lift = MIN(this->lift + 0.15f * delta, 2.0f);
 	} else {
 		this->lift = 0.0f;
 	}
 
-	this->yaw = DEG_TO_RAD(horiz_angle);
-
-	if (currY > 5.0f) {
-		if (key_up) {
-			this->forward = MIN(this->forward + 0.15f * delta, 3.0f);
-			this->pitch = MIN(this->pitch + 0.002f * delta, PI / 8.0f);
-		} else {
-			this->forward = 0.0f;
-			this->pitch = MAX(this->pitch - 0.01f * delta, 0.0f);
-		}
-
-		if (key_right) {
+	if (currY > 10.0f) {
+		if (keys[Player::KEY_RIGHT]) {
 			this->roll = MIN(this->roll + 0.002f * delta, PI / 6.0f);
-		} else if (key_left) {
+		} else if (keys[Player::KEY_LEFT]) {
 			this->roll = MAX(this->roll - 0.002f * delta, PI / -6.0f);
 		} else if (this->roll > 0.0f) {
 			this->roll = MAX(this->roll - 0.002f * delta, 0.0f);

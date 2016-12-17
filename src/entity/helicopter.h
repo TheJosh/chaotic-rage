@@ -30,7 +30,7 @@ class Helicopter : public Vehicle
 
 		virtual void update(int delta);
 		virtual void enter();
-		virtual void operate(Unit* u, int delta, int key_up, int key_down, int key_left, int key_right, float horiz_angle, float vert_angle);
+		virtual void operate(Unit* u, int delta, bool keys[16], float horiz_angle, float vert_angle);
 		virtual void exit();
 		virtual void getWeaponTransform(btTransform &xform);
 };
