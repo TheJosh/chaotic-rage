@@ -427,18 +427,15 @@ void RenderOpenGL::initGuichan(gcn::Gui * gui, Mod * mod)
 **/
 void RenderOpenGL::mainViewport(int s, int of)
 {
-	int w = this->real_width;
-	int h = this->real_height;
-	int x = 0;
-	int y = 0;
+	float w = (float)this->real_width;
+	float h = (float)this->real_height;
+	float x = 0.0f;
+	float y = 0.0f;
 
 	if (of == 2) {
-		h /= 2;
-		y = (s == 1 ? 0 : h);
+		h /= 2.0f;
+		y = (s == 1 ? 0.0f : h);
 	}
-
-	this->virt_height = 1000;
-	this->virt_width = (int) floor(this->virt_height * (float)w / (float)h);
 
 	glViewport(x, y, w, h);
 
@@ -458,14 +455,11 @@ void RenderOpenGL::mainViewport(int s, int of)
 	}
 
 	// Projection for 3D stuff
-	this->projection = glm::perspective(
-		fov,
-		(float)this->virt_width / (float)this->virt_height,
-		near,
-		far
-	);
+	this->projection = glm::perspective(fov, w / h, near, far);
 
 	// Ortho for gameplay HUD (fixed height, variable width)
+	this->virt_height = 1000;
+	this->virt_width = (int) floor(1000.0f * w / h);
 	this->ortho = glm::ortho<float>(0.0f, (float)this->virt_width, (float)this->virt_height, 0.0f, -1.0f, 1.0f);
 
 	// Ortho for guichan (real screen size)
