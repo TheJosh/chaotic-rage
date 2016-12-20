@@ -1897,7 +1897,8 @@ void RenderOpenGL::mainRot(unsigned int screen_index)
 	float tilt, angle, dist, lift;		// Up/down; left/right; distance of camera, dist off ground
 
 	glEnable(GL_DEPTH_TEST);
-
+	glDisable(GL_BLEND);
+	
 	if (this->render_player == NULL) {
 		origin = this->last_origin[screen_index];
 		tilt = 22.0f;
