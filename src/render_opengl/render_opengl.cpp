@@ -1149,11 +1149,6 @@ void RenderOpenGL::preGame()
 	this->createWater();
 	this->createSkybox();
 	this->createShadowBuffers();
-
-	// Init the viewport for single screen only once
-	if (this->st->num_local == 1) {
-		this->mainViewport(1, 1);
-	}
 	
 	// Set default camera at middle of map
 	for (unsigned int i = 0; i < this->st->num_local; ++i) {
