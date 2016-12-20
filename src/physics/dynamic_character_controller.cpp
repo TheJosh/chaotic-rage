@@ -51,7 +51,8 @@ btDynamicCharacterController::~btDynamicCharacterController()
 **/
 void btDynamicCharacterController::setVelocityForTimeInterval(const btVector3& velocity, btScalar timeInterval)
 {
-	m_walkDirection = velocity;
+	// Need to add velocity to counter friction, gravity, etc
+	m_walkDirection = velocity * 1.5f;
 	m_velocityTimeInterval = timeInterval;
 }
 

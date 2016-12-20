@@ -205,7 +205,7 @@ void Unit::createDynamicCtlr(btTransform & loc)
 	body->setAngularFactor(btVector3(0.0f, 0.0f, 0.0f));
 	body->setRestitution(1.f);
 	body->setRollingFriction(10.f);
-	body->setFriction(0.2f);
+	body->setFriction(0.1f);
 	
 	this->char_ctlr = new btDynamicCharacterController(body);
 	this->ghost = body;
