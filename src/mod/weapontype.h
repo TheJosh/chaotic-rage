@@ -37,6 +37,7 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 		int belt_limit;
 
 		std::vector<WeaponTypeSound*> sounds;
+		AssimpModel* model;
 		AssimpModel* ammo_model;
 
 		// Crosshair image and min/max size

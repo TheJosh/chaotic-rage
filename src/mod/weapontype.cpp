@@ -40,6 +40,7 @@ cfg_opt_t weapontype_opts[] =
 	CFG_INT((char*) "crosshair_min", 10, CFGF_NONE),
 	CFG_INT((char*) "crosshair_max", 20, CFGF_NONE),
 	CFG_FLOAT_LIST((char*) "zoom_levels", (char*)"", CFGF_NONE),
+	CFG_STR((char*) "model", 0, CFGF_NONE),
 
 	// Sounds
 	CFG_SEC((char*) "sound", weaponsound_opts, CFGF_MULTI),
@@ -193,6 +194,12 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 		wt->crosshair_max = cfg_getint(cfg_item, "crosshair_max");
 	}
 
+	// 3D model for pickups (and maybe also in first-person view one day)
+	tmp = cfg_getstr(cfg_item, "model");
+	if (tmp) {
+		wt->model = mod->getAssimpModel(tmp);
+	}
+
 	// Load sounds
 	int num_sounds = cfg_size(cfg_item, "sound");
 	for (j = 0; j < num_sounds; j++) {
@@ -269,6 +276,7 @@ WeaponType::WeaponType()
 	this->continuous = false;
 	this->magazine_limit = 0;
 	this->belt_limit = 0;
+	this->model = NULL;
 	this->ammo_model = NULL;
 	this->crosshair = NULL;
 	this->crosshair_min = 0;
