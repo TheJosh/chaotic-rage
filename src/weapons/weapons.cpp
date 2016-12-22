@@ -69,5 +69,3 @@ cfg_opt_t weapconf_attractor[] =
 	CFG_INT((char*) "inwards", 1, CFGF_NONE),		// 1 = attract, 2 = repel
 	CFG_END()
 };
-
-

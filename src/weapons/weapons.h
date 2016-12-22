@@ -201,5 +201,3 @@ struct WeaponAttractorData {
 	unsigned int destroy_time;
 	btGhostObject* ghost;
 };
-
-

@@ -70,4 +70,3 @@ extern cfg_opt_t weapontype_opts [];
 
 // Item loading function handler
 WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod);
-

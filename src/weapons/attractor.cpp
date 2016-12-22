@@ -97,4 +97,3 @@ void WeaponAttractor::entityUpdate(AmmoRound *e, int delta)
 		}
 	}
 }
-
