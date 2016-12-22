@@ -100,8 +100,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				wt = w;
 
 				w->time = cfg_getint(cfg_sec, "time");
-				char* tmp = cfg_getstr(cfg_sec, "model");
-				if (tmp) w->model = mod->getAssimpModel(tmp);
+				char* tmp = cfg_getstr(cfg_sec, "ammo-model");
+				if (tmp) w->ammo_model = mod->getAssimpModel(tmp);
 				w->range = (float)cfg_getfloat(cfg_sec, "range");
 				w->damage = (float)cfg_getfloat(cfg_sec, "damage");
 			}
@@ -113,8 +113,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				cfg_sec = cfg_getnsec(cfg_item, "mine", 0);
 				wt = w;
 
-				char* tmp = cfg_getstr(cfg_sec, "model");
-				if (tmp) w->model = mod->getAssimpModel(tmp);
+				char* tmp = cfg_getstr(cfg_sec, "ammo-model");
+				if (tmp) w->ammo_model = mod->getAssimpModel(tmp);
 				w->range = (float)cfg_getfloat(cfg_sec, "range");
 				w->damage = (float)cfg_getfloat(cfg_sec, "damage");
 			}
@@ -126,8 +126,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				cfg_sec = cfg_getnsec(cfg_item, "mine", 0);
 				wt = w;
 
-				char* tmp = cfg_getstr(cfg_sec, "model");
-				if (tmp) w->model = mod->getAssimpModel(tmp);
+				char* tmp = cfg_getstr(cfg_sec, "ammo-model");
+				if (tmp) w->ammo_model = mod->getAssimpModel(tmp);
 				w->range = (float)cfg_getfloat(cfg_sec, "range");
 				w->damage = (float)cfg_getfloat(cfg_sec, "damage");
 			}
@@ -143,8 +143,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				cfg_sec = cfg_getnsec(cfg_item, "rocket", 0);
 				wt = w;
 
-				char* tmp = cfg_getstr(cfg_sec, "model");
-				if (tmp) w->model = mod->getAssimpModel(tmp);
+				char* tmp = cfg_getstr(cfg_sec, "ammo-model");
+				if (tmp) w->ammo_model = mod->getAssimpModel(tmp);
 				w->range = (float)cfg_getfloat(cfg_sec, "range");		// TODO: blast radius vs detection radius?
 				w->damage = (float)cfg_getfloat(cfg_sec, "damage");
 			}
@@ -156,8 +156,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				cfg_sec = cfg_getnsec(cfg_item, "attractor", 0);
 				wt = w;
 
-				char* tmp = cfg_getstr(cfg_sec, "model");
-				if (tmp) w->model = mod->getAssimpModel(tmp);
+				char* tmp = cfg_getstr(cfg_sec, "ammo-model");
+				if (tmp) w->ammo_model = mod->getAssimpModel(tmp);
 				w->range = (float)cfg_getfloat(cfg_sec, "range");
 				w->time = cfg_getint(cfg_sec, "time");
 				w->force = Quadratic(3.0f, 3.0f, 3.0f);		// TODO configuration
@@ -269,7 +269,7 @@ WeaponType::WeaponType()
 	this->continuous = false;
 	this->magazine_limit = 0;
 	this->belt_limit = 0;
-	this->model = NULL;
+	this->ammo_model = NULL;
 	this->crosshair = NULL;
 	this->crosshair_min = 0;
 	this->crosshair_max = 0;

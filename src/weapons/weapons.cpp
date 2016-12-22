@@ -39,7 +39,7 @@ cfg_opt_t weapconf_raycast[] =
 cfg_opt_t weapconf_mine[] =
 {
 	CFG_INT((char*) "time", 1000, CFGF_NONE),
-	CFG_STR((char*) "model", 0, CFGF_NONE),
+	CFG_STR((char*) "ammo-model", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "damage", 10, CFGF_NONE),
 	CFG_FLOAT((char*) "range", 50, CFGF_NONE),
 	CFG_END()
@@ -51,7 +51,7 @@ cfg_opt_t weapconf_mine[] =
 **/
 cfg_opt_t weapconf_rocket[] =
 {
-	CFG_STR((char*) "model", 0, CFGF_NONE),
+	CFG_STR((char*) "ammo-model", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "range", 50, CFGF_NONE),
 	CFG_FLOAT((char*) "damage", 10, CFGF_NONE),
 	CFG_END()
@@ -63,7 +63,7 @@ cfg_opt_t weapconf_rocket[] =
 **/
 cfg_opt_t weapconf_attractor[] =
 {
-	CFG_STR((char*) "model", 0, CFGF_NONE),
+	CFG_STR((char*) "ammo-model", 0, CFGF_NONE),
 	CFG_FLOAT((char*) "range", 50, CFGF_NONE),
 	CFG_INT((char*) "time", 1000, CFGF_NONE),
 	CFG_INT((char*) "inwards", 1, CFGF_NONE),		// 1 = attract, 2 = repel

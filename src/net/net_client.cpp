@@ -605,7 +605,7 @@ unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
 	WeaponType* wt = GEng()->mm->getWeaponType(type);
 
 	// Check valid
-	if (u == NULL || wt == NULL || wt->model == NULL) {
+	if (u == NULL || wt == NULL || wt->ammo_model == NULL) {
 		this->error("Invalid ammoround type " + type);
 		return 40;
 	}
@@ -618,7 +618,7 @@ unsigned int NetClient::handleAmmoroundState(Uint8 *data, unsigned int size)
 
 	// Create or update
 	if (ar == NULL) {
-		ar = new AmmoRound(st, xform, wt, wt->model, u, mass);
+		ar = new AmmoRound(st, xform, wt, wt->ammo_model, u, mass);
 		st->addAmmoRound(ar);
 		ar->eid = eid;
 	} else {

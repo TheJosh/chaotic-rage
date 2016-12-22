@@ -36,7 +36,7 @@ void WeaponRocket::doFire(Unit *u, btTransform &origin, float damage_multiplier)
 	);
 
 	// Create ammo obj
-	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->model, u, 1.0f);
+	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->ammo_model, u, 1.0f);
 
 	// Create ghost for detection
 	btPairCachingGhostObject* ghost = new btPairCachingGhostObject();

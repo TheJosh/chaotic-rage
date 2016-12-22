@@ -25,7 +25,7 @@ using namespace std;
 void WeaponAttractor::doFire(Unit *u, btTransform &origin, float damage_multiplier)
 {
 	btTransform xform = origin;
-	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->model, u);
+	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->ammo_model, u);
 
 	WeaponAttractorData* data = new WeaponAttractorData();
 	data->destroy_time = u->getGameState()->game_time + this->time;

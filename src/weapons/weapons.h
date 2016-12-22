@@ -157,10 +157,10 @@ class WeaponRemoteTrigger : public WeaponType
 class WeaponRocket : public WeaponType
 {
 	public:
-		WeaponRocket() : model(NULL) {}
+		WeaponRocket() : ammo_model(NULL) {}
 
 	public:
-		AssimpModel* model;
+		AssimpModel* ammo_model;
 		float range;
 		float damage;
 
@@ -183,12 +183,12 @@ struct WeaponRocketData {
 class WeaponAttractor : public WeaponType
 {
 	public:
-		WeaponAttractor() : model(NULL) {}
+		WeaponAttractor() : ammo_model(NULL) {}
 
 	public:
 		float range;
 		int time;
-		AssimpModel* model;
+		AssimpModel* ammo_model;
 		Quadratic force;
 		bool inwards;
 
