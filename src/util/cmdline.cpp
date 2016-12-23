@@ -81,7 +81,7 @@ void CommandLineArgs::process()
 					"   \t--main-mod-path PATH    Path to the main 'cr' mod\n"
 					"\n"
 					" -r\t--render SYSTEM         Set the render system. Options: 'opengl', 'debug', 'ascii', ''null'\n"
-					" -w\t--window[=W,H]          Display video in a window. Optional resolution\n"
+					" -w\t--window[=WxH]          Display video in a window. Optional resolution\n"
 					" -f\t--fullscreen            Display video in fullscreen\n"
 					" -u\t--audio SYSTEM          Set the audio system. Options: 'sdl', 'null'\n"
 					"\n"
@@ -164,9 +164,9 @@ void CommandLineArgs::process()
 				if (optarg != 0) {
 					string tmp;
 					stringstream ss(optarg);
-					getline(ss, tmp, ',');
+					getline(ss, tmp, 'x');
 					this->resolution[1] = atoi(tmp.c_str());
-					getline(ss, tmp, ',');
+					getline(ss, tmp);
 					this->resolution[2] = atoi(tmp.c_str());
 				}
 				break;
