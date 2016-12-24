@@ -214,6 +214,7 @@ class RenderOpenGL : public Render3D
 		void entities();
 		void physics();
 		void water();
+		void weapon();
 		void particles();
 		void guichan();
 		void hud(HUD * hud);

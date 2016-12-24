@@ -21,6 +21,7 @@
 #include "../util/windowicon.h"
 #include "../mod/mod_manager.h"
 #include "../mod/vehicletype.h"
+#include "../mod/weapontype.h"
 #include "../map/map.h"
 #include "../map/heightmap.h"
 #include "../map/mesh.h"
@@ -1846,6 +1847,10 @@ void RenderOpenGL::render()
 		particles();
 		water();
 
+		if (viewmode == GameSettings::firstPerson) {
+			weapon();
+		}
+
 		if (physicsdebug != NULL) physics();
 
 		this->st->local_players[i]->hud->draw();
@@ -2165,6 +2170,31 @@ void RenderOpenGL::water()
 	glDisable(GL_BLEND);
 
 	CHECK_OPENGL_ERROR;
+}
+
+
+/**
+* First person view of weapon
+**/
+void RenderOpenGL::weapon()
+{
+	if (this->render_player == NULL) return;
+	
+	WeaponType* wt = this->render_player->getWeaponTypeCurr();
+	if (wt == NULL) return;
+	if (wt->model == NULL) return;
+	
+	float m[16];
+	this->render_player->getTransform().getOpenGLMatrix(m);
+
+	glm::mat4 modelMatrix = glm::translate(
+		glm::make_mat4(m),
+		glm::vec3(0.0f, 0.5f, 0.0f)
+	);
+	
+	AnimPlay* ap = new AnimPlay(wt->model);
+	this->renderAnimPlay(ap, modelMatrix);
+	delete ap;
 }
 
 

@@ -197,7 +197,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	// 3D model for pickups (and maybe also in first-person view one day)
 	tmp = cfg_getstr(cfg_item, "model");
 	if (tmp) {
-		wt->model = mod->getAssimpModel(tmp);
+		wt->model = mod->getAssimpModel(tmp, ALF_NoRecenter);
 	}
 
 	// Load sounds
