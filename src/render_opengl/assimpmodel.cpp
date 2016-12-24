@@ -51,7 +51,7 @@ AssimpModel::~AssimpModel()
 * Load the model.
 * Return true on success, false on failure.
 **/
-bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadType loadtype)
+bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadFlags flags)
 {
 	Assimp::Importer importer;
 
@@ -60,7 +60,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadType loadtype)
 	importer.SetPropertyInteger(AI_CONFIG_PP_SLM_VERTEX_LIMIT, 65535);
 	importer.SetPropertyInteger(AI_CONFIG_PP_SLM_TRIANGLE_LIMIT, 65535);
 
-	unsigned int flags = aiProcess_CalcTangentSpace
+	unsigned int assflags = aiProcess_CalcTangentSpace
 		| aiProcess_Triangulate
 		| aiProcess_JoinIdenticalVertices
 		| aiProcess_SortByPType
@@ -70,12 +70,16 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadType loadtype)
 		| aiProcess_RemoveComponent;
 
 	// For map meshes we flatten geometry
-	if (loadtype == AssimpLoadMapMesh) {
-		flags |= aiProcess_PreTransformVertices;
-		flags |= aiProcess_RemoveRedundantMaterials;
-		flags |= aiProcess_OptimizeMeshes;
-		flags |= aiProcess_FindInvalidData;
-		flags |= aiProcess_SplitLargeMeshes;
+	if (flags & ALM_FlattenGeometry) {
+		assflags |= aiProcess_PreTransformVertices;
+		assflags |= aiProcess_RemoveRedundantMaterials;
+		assflags |= aiProcess_OptimizeMeshes;
+		assflags |= aiProcess_FindInvalidData;
+		assflags |= aiProcess_SplitLargeMeshes;
+	}
+
+	// Normally models are re-centered; this isn't always deisred.
+	if (flags & ALF_NoRecenter) {
 		this->recenter = false;
 	}
 
@@ -94,7 +98,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadType loadtype)
 	}
 
 	// Do the import
-	const struct aiScene* sc = importer.ReadFileFromMemory((const void*) data, (size_t)len, flags, this->name.c_str());
+	const struct aiScene* sc = importer.ReadFileFromMemory((const void*) data, (size_t)len, assflags, this->name.c_str());
 	if (!sc) {
 		this->mod->setLoadErr("Failed to load %s; file read failed; %s", this->name.c_str(), importer.GetErrorString());
 		return false;

@@ -193,7 +193,7 @@ class AssimpModel
 
 	public:
 		AssimpModel(Mod* mod, string name);
-		bool load(Render3D* render, bool meshdata, AssimpLoadType = AssimpLoadStandard);
+		bool load(Render3D* render, bool meshdata, AssimpLoadFlags = ALF_None);
 		~AssimpModel();
 
 	public:

@@ -115,7 +115,7 @@ class Mod {
 		WeaponType * getWeaponType(string name);
 
 		AssimpModel * getAssimpModel(string filename);
-		AssimpModel * getAssimpModel(string filename, AssimpLoadType loadtype);
+		AssimpModel * getAssimpModel(string filename, AssimpLoadFlags flags);
 		AudioPtr getSound(string filename);
 
 		vector<Campaign*> * getCampaigns();
