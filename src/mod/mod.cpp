@@ -415,13 +415,23 @@ AIType * Mod::getAIType(string name)
 **/
 AssimpModel * Mod::getAssimpModel(string filename)
 {
+	return this->getAssimpModel(filename, AssimpLoadStandard);
+}
+
+
+/**
+* Load an assimp model
+**/
+AssimpModel * Mod::getAssimpModel(string filename, AssimpLoadType loadtype)
+{
 	map<string, AssimpModel*>::iterator it = this->models.find(filename);
 	if (it != this->models.end()) {
 		return it->second;
 	}
 
 	AssimpModel* am = new AssimpModel(this, filename);
-	if (! am->load((Render3D*) GEng()->render, false)) {
+	bool success = am->load((Render3D*) GEng()->render, false, loadtype);
+	if (!success) {
 		delete(am);
 		return NULL;
 	}

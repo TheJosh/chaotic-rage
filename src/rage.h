@@ -130,6 +130,15 @@ enum DialogName {
 	ENVIRONMENT,
 };
 
+/**
+* Different loading types to affect
+* The postprocessing of the model
+**/
+enum AssimpLoadType {
+	AssimpLoadStandard,
+	AssimpLoadMapMesh
+};
+
 // Sound pointers
 struct Mix_Chunk;
 typedef Mix_Chunk* AudioPtr;

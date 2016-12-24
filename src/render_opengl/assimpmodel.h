@@ -36,16 +36,6 @@ class Render3D;
 class btCollisionShape;
 
 
-/**
-* Different loading types to affect
-* The postprocessing of the model
-**/
-enum AssimpLoadType {
-	AssimpLoadStandard,
-	AssimpLoadMapMesh
-};
-
-
 
 /**
 * Bone names and offsets
