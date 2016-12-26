@@ -25,6 +25,7 @@
 #include "walltype.h"
 #include "vehicletype.h"
 #include "weapontype.h"
+#include "weaponattachment.h"
 #include "../weapons/weapons.h"
 #include "gametype.h"
 
@@ -80,6 +81,7 @@ Mod::Mod(GameState * st, string directory)
 	this->vehicletypes = NULL;
 	this->walltypes = NULL;
 	this->weapontypes = NULL;
+	this->weaponattachments = NULL;
 	this->maps = NULL;
 }
 
@@ -112,6 +114,7 @@ Mod::~Mod()
 	delete_v(this->walltypes);
 	delete_v(this->vehicletypes);
 	delete_v(this->weapontypes);
+	delete_v(this->weaponattachments);
 
 	delete(this->maps);
 }
@@ -287,6 +290,9 @@ bool Mod::load(UIUpdate* ui)
 
 	weapontypes = loadModFile<WeaponType*>(this, ui, "weapontypes.conf", "weapon", weapontype_opts, &loadItemWeaponType);
 	if (weapontypes == NULL) return false;
+
+	weaponattachments = loadModFile<WeaponAttachment*>(this, ui, "weaponattachments.conf", "attachment", weaponattachment_opts, &loadItemWeaponAttachment);
+	if (weaponattachments == NULL) return false;
 
 	vehicletypes = loadModFile<VehicleType*>(this, ui, "vehicletypes.conf", "vehicletype", vehicletype_opts, &loadItemVehicleType);
 	if (vehicletypes == NULL) return false;

@@ -33,6 +33,7 @@ class UnitType;
 class VehicleType;
 class WallType;
 class WeaponType;
+class WeaponAttachment;
 class AssimpModel;
 
 
@@ -58,6 +59,7 @@ class Mod {
 		vector<VehicleType*> * vehicletypes;
 		vector<WallType*> * walltypes;
 		vector<WeaponType*> * weapontypes;
+		vector<WeaponAttachment*> * weaponattachments;
 
 		// Caches
 		map<string, AssimpModel*> models;
