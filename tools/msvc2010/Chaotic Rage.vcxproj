@@ -272,6 +272,10 @@
     <ClCompile Include="..\..\src\lua\lundump.c" />
     <ClCompile Include="..\..\src\lua\lvm.c" />
     <ClCompile Include="..\..\src\lua\lzio.c" />
+    <ClCompile Include="..\..\src\mod\weaponattachment.cpp" />
+    <ClCompile Include="..\..\src\physics\dynamic_character_controller.cpp" />
+    <ClCompile Include="..\..\src\physics\faster_heightfield_shape.cpp" />
+    <ClCompile Include="..\..\src\physics\kinematic_character_controller.cpp" />
     <ClCompile Include="..\..\src\render_opengl\renderer_heightmap.cpp" />
     <ClCompile Include="..\..\src\script\lua_dialog_lib.cpp" />
     <ClCompile Include="..\..\src\script\lua_entity_lib.cpp" />
@@ -365,8 +369,6 @@
     <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL2LineRenderer.cpp" />
     <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL2PointRenderer.cpp" />
     <ClCompile Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GLRenderer.cpp" />
-    <ClCompile Include="..\..\src\util\btCRKinematicCharacterController.cpp" />
-    <ClCompile Include="..\..\src\util\btStrideHeightfieldTerrainShape.cpp" />
     <ClCompile Include="..\..\src\util\clientconfig.cpp" />
     <ClCompile Include="..\..\src\util\cmdline.cpp" />
     <ClCompile Include="..\..\src\util\convert.cpp" />
@@ -523,6 +525,12 @@
     <ClInclude Include="..\..\src\map\mesh.h" />
     <ClInclude Include="..\..\src\map\reg.h" />
     <ClInclude Include="..\..\src\map\zone.h" />
+    <ClInclude Include="..\..\src\mod\weaponattachment.h" />
+    <ClInclude Include="..\..\src\physics\character_controller_interface.h" />
+    <ClInclude Include="..\..\src\physics\dynamic_character_controller.h" />
+    <ClInclude Include="..\..\src\physics\faster_heightfield_shape.h" />
+    <ClInclude Include="..\..\src\physics\kinematic_character_controller.h" />
+    <ClInclude Include="..\..\src\physics\physics_callback.h" />
     <ClInclude Include="..\..\src\render\render_ascii.h" />
     <ClInclude Include="..\..\src\render_opengl\guichan_font.h" />
     <ClInclude Include="..\..\src\render_opengl\intro.h" />
@@ -621,8 +629,6 @@
     <ClInclude Include="..\..\src\spark\RenderingAPIs\OpenGL\SPK_GL_DEF.h" />
     <ClInclude Include="..\..\src\spark\SPK.h" />
     <ClInclude Include="..\..\src\spark\SPK_GL.h" />
-    <ClInclude Include="..\..\src\util\btCRKinematicCharacterController.h" />
-    <ClInclude Include="..\..\src\util\btStrideHeightfieldTerrainShape.h" />
     <ClInclude Include="..\..\src\util\clientconfig.h" />
     <ClInclude Include="..\..\src\util\cmdline.h" />
     <ClInclude Include="..\..\src\util\convert.h" />

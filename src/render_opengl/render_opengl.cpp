@@ -440,23 +440,23 @@ void RenderOpenGL::mainViewport(int s, int of)
 
 	glViewport(x, y, w, h);
 
-	float fov, near, far;
+	float fov, dnear, dfar;
 	if (viewmode == GameSettings::firstPerson) {
 		fov = 90.0f;
-		near = 0.1f;
-		far = 350.0f;
+		dnear = 0.1f;
+		dfar = 350.0f;
 	} else if (viewmode == GameSettings::behindPlayer) {
 		fov = 60.0f;
-		near = 1.0f;
-		far = 350.0f;
+		dnear = 1.0f;
+		dfar = 350.0f;
 	} else {
 		fov = 45.0f;
-		near = 1.0f;
-		far = 350.0f;
+		dnear = 1.0f;
+		dfar = 350.0f;
 	}
 
 	// Projection for 3D stuff
-	this->projection = glm::perspective(fov, w / h, near, far);
+	this->projection = glm::perspective(fov, w / h, dnear, dfar);
 
 	// Ortho for gameplay HUD (fixed height, variable width)
 	this->virt_height = 1000;

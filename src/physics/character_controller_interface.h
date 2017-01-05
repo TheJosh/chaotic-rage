@@ -31,7 +31,7 @@ class btCharacterControllerInterface : public btActionInterface
         virtual void reset () = 0;
         virtual void warp (const btVector3& origin) = 0;
 
-        virtual void updateAction(btCollisionWorld* collisionWorld, btScalar deltaTime);
+        virtual void updateAction(btCollisionWorld* collisionWorld, btScalar deltaTime) = 0;
 
         virtual bool canJump () const = 0;
         virtual void jump () = 0;
