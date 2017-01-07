@@ -208,6 +208,7 @@ class Unit : public Entity
 
 		void weaponAttach(WeaponAttachmentLocation loc, WeaponAttachment* att);
 		void weaponDetatch(WeaponAttachmentLocation loc);
+		WeaponAttachment* getAttachment(WeaponAttachmentLocation loc);
 
 		// Ammo and zoom level
 		int getBelt();

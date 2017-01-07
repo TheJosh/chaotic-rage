@@ -2187,14 +2187,28 @@ void RenderOpenGL::weapon()
 	float m[16];
 	this->render_player->getTransform().getOpenGLMatrix(m);
 
-	glm::mat4 modelMatrix = glm::translate(
+	glm::mat4 weaponModelMatrix = glm::translate(
 		glm::make_mat4(m),
 		glm::vec3(0.0f, 0.5f, 0.0f)
 	);
 	
 	AnimPlay* ap = new AnimPlay(wt->model);
-	this->renderAnimPlay(ap, modelMatrix);
+	this->renderAnimPlay(ap, weaponModelMatrix);
 	delete ap;
+	
+	// Render attachments too
+	for (int i = 0; i < NUM_WPATT; ++i) {
+		WeaponAttachmentLocation loc = static_cast<WeaponAttachmentLocation>(i);
+		WeaponAttachment *wa = this->render_player->getAttachment(loc);
+		if (wa == NULL) continue;
+		
+		glm::mat4 attModelMatrix = glm::translate(weaponModelMatrix, wt->attach_loc[i]);
+		attModelMatrix = glm::translate(attModelMatrix, wa->loc[i]);
+		
+		AnimPlay* ap = new AnimPlay(wa->model);
+		this->renderAnimPlay(ap, attModelMatrix);
+		delete ap;
+	}
 }
 
 

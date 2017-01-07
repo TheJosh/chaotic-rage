@@ -574,6 +574,15 @@ void Unit::weaponDetatch(WeaponAttachmentLocation loc)
 
 
 /**
+* Return attachment at a given location
+**/
+WeaponAttachment* Unit::getAttachment(WeaponAttachmentLocation loc)
+{
+	return this->weapon->attach[loc];
+}
+
+
+/**
 * Get the ID of the currently selected weapon
 **/
 unsigned int Unit::getCurrentWeaponID()
