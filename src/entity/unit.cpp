@@ -447,6 +447,9 @@ bool Unit::pickupWeapon(WeaponType* wt)
 		this->setWeapon(0);
 	}
 
+	// TODO: This is for testing only!!
+	uw->attach[WPATT_BARREL] = GEng()->mm->getWeaponAttachment("silencer");
+
 	return true;
 }
 
