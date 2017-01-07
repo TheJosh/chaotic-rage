@@ -5,6 +5,8 @@
 #pragma once
 #include "../rage.h"
 #include "weaponattachment.h"
+#include <glm/glm.hpp>
+
 
 #define WEAPON_SOUND_BEGIN 1
 #define WEAPON_SOUND_REPEAT 2
@@ -48,7 +50,7 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 
 		std::vector<float> zoom_levels;
 
-		btVector3 attach_loc[NUM_WPATT];
+		glm::vec3 attach_loc[NUM_WPATT];
 
 	public:
 		WeaponType();

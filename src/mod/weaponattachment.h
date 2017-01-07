@@ -4,6 +4,7 @@
 
 #pragma once
 #include "../rage.h"
+#include <glm/glm.hpp>
 
 
 enum WeaponAttachmentLocation
@@ -21,7 +22,8 @@ class WeaponAttachment
 	public:
 		std::string name;
 		CRC32 id;
-		btVector3 loc[NUM_WPATT];
+		AssimpModel* model;
+		glm::vec3 loc[NUM_WPATT];
 		
 	public:
 		bool canAttach(WeaponAttachmentLocation loc);

@@ -8,6 +8,7 @@
 #include "../util/quadratic.h"
 #include "mod.h"
 #include "weapontype.h"
+#include "confuse_types.h"
 #include "../weapons/weapons.h"
 #include "../game_engine.h"
 #include "../render/render.h"
@@ -44,6 +45,12 @@ cfg_opt_t weapontype_opts[] =
 
 	// Sounds
 	CFG_SEC((char*) "sound", weaponsound_opts, CFGF_MULTI),
+
+	// Attachment locations (3D coord on weapon to place attachment)
+	CFG_FLOAT_LIST((char*) "loc-top", (char*)"{0.0, 0.0, 0.0}", CFGF_NONE),
+	CFG_FLOAT_LIST((char*) "loc-left", (char*)"{0.0, 0.0, 0.0}", CFGF_NONE),
+	CFG_FLOAT_LIST((char*) "loc-right", (char*)"{0.0, 0.0, 0.0}", CFGF_NONE),
+	CFG_FLOAT_LIST((char*) "loc-barrel", (char*)"{0.0, 0.0, 0.0}", CFGF_NONE),
 
 	// The per-type settings fall into one of five categories:
 	CFG_SEC((char*) "raycast", weapconf_raycast, CFGF_NONE),
@@ -199,6 +206,11 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	if (tmp) {
 		wt->model = mod->getAssimpModel(tmp, ALF_NoRecenter);
 	}
+
+	wt->attach_loc[WPATT_TOP] = cfg_getvec3(cfg_item, "loc-top");
+	wt->attach_loc[WPATT_LEFT] = cfg_getvec3(cfg_item, "loc-left");
+	wt->attach_loc[WPATT_RIGHT] = cfg_getvec3(cfg_item, "loc-right");
+	wt->attach_loc[WPATT_BARREL] = cfg_getvec3(cfg_item, "loc-barrel");
 
 	// Load sounds
 	int num_sounds = cfg_size(cfg_item, "sound");
