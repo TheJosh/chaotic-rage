@@ -718,6 +718,23 @@ void Mod::getAllWeaponTypes(vector<WeaponType*>::iterator * start, vector<Weapon
 
 
 /**
+* Gets a weapon attachment by name
+**/
+WeaponAttachment * Mod::getWeaponAttachment(string name)
+{
+	if (name.empty()) return NULL;
+
+	for (int i = weaponattachments->size() - 1; i >= 0; --i) {
+		if (weaponattachments->at(i)->name.compare(name) == 0) {
+			return weaponattachments->at(i);
+		}
+	}
+
+	return NULL;
+}
+
+
+/**
 * Loads a text file into a char * pointer.
 * Don't forget to free() when you are done.
 **/

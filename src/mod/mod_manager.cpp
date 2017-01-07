@@ -542,3 +542,18 @@ vector<WeaponType*> * ModManager::getAllWeaponTypes()
 }
 
 
+/**
+* Gets a weapon type by name
+**/
+WeaponAttachment * ModManager::getWeaponAttachment(string name)
+{
+	if (name.empty()) return NULL;
+
+	for (unsigned int i = 0; i < this->mods->size(); i++) {
+		Mod *mod = this->mods->at(i);
+		WeaponAttachment *wa = mod->getWeaponAttachment(name);
+		if (wa) return wa;
+	}
+
+	return NULL;
+}

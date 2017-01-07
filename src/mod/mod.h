@@ -115,6 +115,7 @@ class Mod {
 		VehicleType * getVehicleType(string name);
 		WallType * getWallType(string name);
 		WeaponType * getWeaponType(string name);
+		WeaponAttachment * getWeaponAttachment(string name);
 
 		AssimpModel * getAssimpModel(string filename);
 		AssimpModel * getAssimpModel(string filename, AssimpLoadFlags flags);

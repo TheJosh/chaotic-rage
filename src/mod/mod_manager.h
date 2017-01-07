@@ -20,6 +20,7 @@ class UnitType;
 class VehicleType;
 class WallType;
 class WeaponType;
+class WeaponAttachment;
 class AssimpModel;
 
 
@@ -68,6 +69,7 @@ class ModManager {
 		VehicleType * getVehicleType(string name);
 		WallType * getWallType(string name);
 		WeaponType * getWeaponType(string name);
+		WeaponAttachment * getWeaponAttachment(string name);
 
 		Song * getRandomSong();
 
