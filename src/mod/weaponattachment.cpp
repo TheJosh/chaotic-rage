@@ -29,3 +29,12 @@ WeaponAttachment* loadItemWeaponAttachment(cfg_t* cfg_item, Mod* mod)
 	
 	return wa;
 }
+
+
+/**
+* Can this attachment be used in the given location?
+**/
+bool WeaponAttachment::canAttach(WeaponAttachmentLocation loc)
+{
+	return true;
+}

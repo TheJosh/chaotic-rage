@@ -8,6 +8,7 @@
 #include <vector>
 #include "../game_state.h"
 #include "../mod/unittype.h"
+#include "../mod/weaponattachment.h"
 #include "entity.h"
 
 class AnimPlay;
@@ -42,6 +43,10 @@ class UnitWeapon
 			this->belt = belt;
 			this->next_use = next_use;
 			this->reloading = reloading;
+			
+			for (unsigned int i = 0; i < NUM_WPATT; ++i) {
+				this->attach[i] = NULL;
+			}
 		}
 		~UnitWeapon();
 
@@ -51,6 +56,7 @@ class UnitWeapon
 		int belt;
 		unsigned int next_use;		// time after which the weapon can be used again
 		bool reloading;
+		WeaponAttachment* attach[NUM_WPATT];
 };
 
 
@@ -199,7 +205,10 @@ class Unit : public Entity
 
 		// Set the weapon
 		void setWeapon(int id);
-		
+
+		void weaponAttach(WeaponAttachmentLocation loc, WeaponAttachment* att);
+		void weaponDetatch(WeaponAttachmentLocation loc);
+
 		// Ammo and zoom level
 		int getBelt();
 		int getMagazine();

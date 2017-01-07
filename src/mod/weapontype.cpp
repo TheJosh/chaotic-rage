@@ -282,3 +282,12 @@ WeaponType::WeaponType()
 	this->crosshair_min = 0;
 	this->crosshair_max = 0;
 }
+
+
+/**
+* Can an attachment be made at this location
+**/
+bool WeaponType::canAttach(WeaponAttachmentLocation loc)
+{
+	return true;
+}

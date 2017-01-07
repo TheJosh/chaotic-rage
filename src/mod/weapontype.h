@@ -4,6 +4,7 @@
 
 #pragma once
 #include "../rage.h"
+#include "weaponattachment.h"
 
 #define WEAPON_SOUND_BEGIN 1
 #define WEAPON_SOUND_REPEAT 2
@@ -47,12 +48,18 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 
 		std::vector<float> zoom_levels;
 
+		btVector3 attach_loc[NUM_WPATT];
+
 	public:
 		WeaponType();
 		virtual ~WeaponType() {}
 		AudioPtr getSound(int type);
 
-	public:
+		/**
+		* Can an attachment be made at this location
+		**/
+		bool canAttach(WeaponAttachmentLocation loc);
+
 		/**
 		* Called by the unit class when we should fire
 		**/
@@ -62,7 +69,6 @@ class WeaponType		// TODO: Should this be renamed to just "Weapon"?
 		* Called by the associated ammo round to update stuff
 		**/
 		virtual void entityUpdate(AmmoRound *e, int delta) {}
-
 };
 
 

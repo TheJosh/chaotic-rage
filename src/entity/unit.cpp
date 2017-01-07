@@ -553,6 +553,24 @@ void Unit::setWeapon(int id)
 
 
 /**
+* Attach an attachment to the current weapon
+**/
+void Unit::weaponAttach(WeaponAttachmentLocation loc, WeaponAttachment* att)
+{
+	this->weapon->attach[loc] = att;
+}
+
+
+/**
+* Detatch an attachment from the current weapon
+**/
+void Unit::weaponDetatch(WeaponAttachmentLocation loc)
+{
+	this->weapon->attach[loc] = NULL;
+}
+
+
+/**
 * Get the ID of the currently selected weapon
 **/
 unsigned int Unit::getCurrentWeaponID()

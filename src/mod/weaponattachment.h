@@ -3,7 +3,17 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include "rage.h"
+#include "../rage.h"
+
+
+enum WeaponAttachmentLocation
+{
+	WPATT_TOP,
+	WPATT_LEFT,
+	WPATT_RIGHT,
+	WPATT_BARREL,
+	NUM_WPATT,
+};
 
 
 class WeaponAttachment
@@ -11,6 +21,10 @@ class WeaponAttachment
 	public:
 		std::string name;
 		CRC32 id;
+		btVector3 loc[NUM_WPATT];
+		
+	public:
+		bool canAttach(WeaponAttachmentLocation loc);
 };
 
 
