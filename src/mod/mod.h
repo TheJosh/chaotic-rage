@@ -88,6 +88,7 @@ class Mod {
 		bool load(UIUpdate* ui);
 		void setLoadErr(const char *message, ...);
 		string getLoadErr() { return this->load_err; }
+		void createWeaponPickups();
 		bool reloadAttrs();
 
 		string getName() { return this->name; }
