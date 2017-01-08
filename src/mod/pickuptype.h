@@ -14,8 +14,10 @@ using namespace std;
 #define PICKUP_TYPE_POWERUP 3
 #define PICKUP_TYPE_CURSOR 4
 #define PICKUP_TYPE_COMBO 5
+#define PICKUP_TYPE_WPATT 6
 
 class btCollisionShape;
+class WeaponAttachment;
 
 
 /**
@@ -71,8 +73,11 @@ class PickupType
 		btCollisionShape* col_shape;
 		int type;
 
-		// Weapon, ammo crates, and powerups which force the weapon
+		// Weapon, ammo crates, and powerups which pickup a weapon
 		WeaponType* wt;
+
+		// Weapon attachment pickups
+		WeaponAttachment* wa;
 
 		// Powerups, permanant and temporary changes
 		string title;

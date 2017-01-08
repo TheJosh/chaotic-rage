@@ -89,6 +89,7 @@ class Mod {
 		void setLoadErr(const char *message, ...);
 		string getLoadErr() { return this->load_err; }
 		void createWeaponPickups();
+		void createAttachmentPickups();
 		bool reloadAttrs();
 
 		string getName() { return this->name; }

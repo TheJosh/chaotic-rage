@@ -235,6 +235,10 @@ bool PickupType::doUse(Unit *u)
 			return false;
 			break;
 
+		case PICKUP_TYPE_WPATT:
+			/* TODO: Implement me */
+			break;
+
 		default:
 			assert(0);
 	}

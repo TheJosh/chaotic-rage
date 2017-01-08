@@ -321,6 +321,7 @@ bool Mod::load(UIUpdate* ui)
 	}
 
 	this->createWeaponPickups();
+	this->createAttachmentPickups();
 
 	return true;
 }
@@ -353,6 +354,26 @@ void Mod::createWeaponPickups()
 		pt->type = PICKUP_TYPE_AMMO;
 		pt->wt = weapontypes->at(i);
 		pt->setModel(generic_ammo);
+		pickuptypes->push_back(pt);
+	}
+}
+
+
+/**
+* Create pickups for all weapon attachments
+**/
+void Mod::createAttachmentPickups()
+{
+	PickupType* pt;
+	
+	for (int i = weaponattachments->size() - 1; i >= 0; --i) {
+		WeaponAttachment* wa = weaponattachments->at(0);
+
+		pt = new PickupType();
+		pt->name = "wpatt_" + wa->name;
+		pt->type = PICKUP_TYPE_WPATT;
+		pt->wa = wa;
+		pt->setModel(wa->model);
 		pickuptypes->push_back(pt);
 	}
 }
