@@ -11,12 +11,14 @@
 #include "../../mod/weaponattachment.h"
 #include "../entity.h"
 
+
 class AnimPlay;
 class Object;
 class PickupType;
 class PickupTypeAdjust;
 class Sound;
 class Unit;
+class UnitWeapon;
 class Vehicle;
 class WeaponType;
 class btCharacterControllerInterface;
@@ -26,38 +28,6 @@ class btVector3;
 
 
 using namespace std;
-
-
-/**
-* The currently available weapons
-**/
-class UnitWeapon
-{
-	friend class Unit;
-
-
-	public:
-		UnitWeapon(WeaponType* wt, int magazine, int belt, unsigned int next_use, bool reloading) {
-			this->wt = wt;
-			this->magazine = magazine;
-			this->belt = belt;
-			this->next_use = next_use;
-			this->reloading = reloading;
-			
-			for (unsigned int i = 0; i < NUM_WPATT; ++i) {
-				this->attach[i] = NULL;
-			}
-		}
-		~UnitWeapon();
-
-	private:
-		WeaponType* wt;
-		int magazine;
-		int belt;
-		unsigned int next_use;		// time after which the weapon can be used again
-		bool reloading;
-		WeaponAttachment* attach[NUM_WPATT];
-};
 
 
 /**

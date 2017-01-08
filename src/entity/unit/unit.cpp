@@ -3,6 +3,7 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include "unit.h"
+#include "unit_weapon.h"
 #include <algorithm>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include <sstream>
