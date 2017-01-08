@@ -90,6 +90,7 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/render/*.cpp \
 	$(SRCPATH)/render_opengl/*.cpp \
 	$(SRCPATH)/entity/*.cpp \
+	$(SRCPATH)/entity/unit/*.cpp \
 	$(SRCPATH)/fx/*.cpp \
 	$(SRCPATH)/util/*.cpp \
 	$(SRCPATH)/script/*.cpp \

@@ -8,7 +8,7 @@
 #include "../map/map.h"
 #include "../map/heightmap.h"
 #include "../entity/entity.h"
-#include "../entity/unit.h"
+#include "../entity/unit/unit.h"
 #include "render_debug.h"
 #include "sprite.h"
 #include <SDL_image.h>

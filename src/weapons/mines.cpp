@@ -11,7 +11,7 @@
 #include "../fx/newparticle.h"
 #include "../physics/physics_bullet.h"
 #include "../entity/ammo_round.h"
-#include "../entity/unit.h"
+#include "../entity/unit/unit.h"
 #include "ghost_objects.h"
 #include "weapons.h"
 

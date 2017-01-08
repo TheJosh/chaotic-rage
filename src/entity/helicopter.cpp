@@ -13,7 +13,7 @@
 #include "../render_opengl/animplay.h"
 #include "entity.h"
 #include "vehicle.h"
-#include "player.h"
+#include "unit/player.h"
 
 class Unit;
 class btTransform;

@@ -4,18 +4,18 @@
 
 #include "player.h"
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
-#include "../game_engine.h"
-#include "../game_state.h"
-#include "../script/gamelogic.h"
-#include "../rage.h"
-#include "../render_opengl/animplay.h"
-#include "../game_settings.h"
-#include "../render/render.h"
-#include "../physics/kinematic_character_controller.h"
-#include "../physics/physics_bullet.h"
-#include "entity.h"
+#include "../../game_engine.h"
+#include "../../game_state.h"
+#include "../../script/gamelogic.h"
+#include "../../rage.h"
+#include "../../render_opengl/animplay.h"
+#include "../../game_settings.h"
+#include "../../render/render.h"
+#include "../../physics/kinematic_character_controller.h"
+#include "../../physics/physics_bullet.h"
+#include "../entity.h"
 #include "unit.h"
-#include "vehicle.h"
+#include "../vehicle.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

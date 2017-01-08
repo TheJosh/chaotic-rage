@@ -8,7 +8,7 @@
 #include "events.h"
 #include "game_state.h"
 #include "game_engine.h"
-#include "entity/player.h"
+#include "entity/unit/player.h"
 #include "render_opengl/hud.h"
 #include "render_opengl/render_opengl.h"
 #include "gui/dialog.h"

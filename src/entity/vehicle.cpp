@@ -17,7 +17,7 @@
 #include "../util/convert.h"
 #include "../fx/newparticle.h"
 #include "entity.h"
-#include "player.h"
+#include "unit/player.h"
 
 class Unit;
 class btTransform;

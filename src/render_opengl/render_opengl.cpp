@@ -13,7 +13,7 @@
 #include "../physics/physics_bullet.h"
 #include "../game_state.h"
 #include "../game_engine.h"
-#include "../entity/player.h"
+#include "../entity/unit/player.h"
 #include "../entity/vehicle.h"
 #include "../util/clientconfig.h"
 #include "../util/obj.h"

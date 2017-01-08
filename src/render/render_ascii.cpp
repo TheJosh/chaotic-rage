@@ -7,7 +7,7 @@
 #include "../game_state.h"
 #include "../map/map.h"
 #include "../entity/entity.h"
-#include "../entity/unit.h"
+#include "../entity/unit/unit.h"
 #include "render_ascii.h"
 #include "sprite.h"
 #include <SDL.h>

@@ -10,7 +10,7 @@
 #include "../rage.h"
 #include "../game_state.h"
 #include "../entity/entity.h"
-#include "../entity/unit.h"
+#include "../entity/unit/unit.h"
 #include "../physics/physics_bullet.h"
 #include "ghost_objects.h"
 

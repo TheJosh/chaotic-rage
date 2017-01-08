@@ -12,9 +12,9 @@
 #include "../entity/vehicle.h"
 #include "../entity/helicopter.h"
 #include "../entity/object.h"
-#include "../entity/unit.h"
-#include "../entity/player.h"
-#include "../entity/npc.h"
+#include "../entity/unit/unit.h"
+#include "../entity/unit/player.h"
+#include "../entity/unit/npc.h"
 
 extern "C" {
 	#include <lua.h>

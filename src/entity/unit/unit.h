@@ -6,10 +6,10 @@
 #include <list>
 #include <string>
 #include <vector>
-#include "../game_state.h"
-#include "../mod/unittype.h"
-#include "../mod/weaponattachment.h"
-#include "entity.h"
+#include "../../game_state.h"
+#include "../../mod/unittype.h"
+#include "../../mod/weaponattachment.h"
+#include "../entity.h"
 
 class AnimPlay;
 class Object;

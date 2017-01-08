@@ -3,12 +3,12 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include "npc.h"
-#include "../game_state.h"
-#include "../script/ailogic.h"
-#include "../script/gamelogic.h"
-#include "../mod/aitype.h"
-#include "../rage.h"
-#include "../physics/kinematic_character_controller.h"
+#include "../../game_state.h"
+#include "../../script/ailogic.h"
+#include "../../script/gamelogic.h"
+#include "../../mod/aitype.h"
+#include "../../rage.h"
+#include "../../physics/kinematic_character_controller.h"
 #include "unit.h"
 
 class UnitType;

@@ -10,7 +10,7 @@
 #include "../game_state.h"
 #include "../util/quadratic.h"
 #include "../entity/ammo_round.h"
-#include "../entity/unit.h"
+#include "../entity/unit/unit.h"
 #include "../physics/physics_bullet.h"
 #include "ghost_objects.h"
 #include "weapons.h"

@@ -15,8 +15,8 @@ extern "C" {
 
 #include "../game_state.h"
 #include "../mod/unittype.h"
-#include "../entity/npc.h"
-#include "../entity/unit.h"
+#include "../entity/unit/npc.h"
+#include "../entity/unit/unit.h"
 #include "../entity/pickup.h"
 #include "lua_libs.h"
 

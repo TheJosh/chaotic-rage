@@ -6,7 +6,7 @@
 #include <iostream>
 #include "audio.h"
 #include "../entity/entity.h"
-#include "../entity/player.h"
+#include "../entity/unit/player.h"
 #include "../game_engine.h"
 #include "../game_state.h"
 #include "../mod/mod.h"
