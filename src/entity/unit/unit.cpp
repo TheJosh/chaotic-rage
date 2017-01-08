@@ -4,6 +4,7 @@
 
 #include "unit.h"
 #include "unit_weapon.h"
+#include "unit_pickup.h"
 #include <algorithm>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include <sstream>

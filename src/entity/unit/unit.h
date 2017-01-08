@@ -18,6 +18,7 @@ class PickupType;
 class PickupTypeAdjust;
 class Sound;
 class Unit;
+class UnitPickup;
 class UnitWeapon;
 class Vehicle;
 class WeaponType;
@@ -28,18 +29,6 @@ class btVector3;
 
 
 using namespace std;
-
-
-/**
-* The currently active pickups
-**/
-class UnitPickup
-{
-	public:
-		Unit* u;
-		PickupType* pt;
-		unsigned int end_time;
-};
 
 
 /**
