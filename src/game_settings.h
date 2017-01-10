@@ -7,6 +7,9 @@
 #include <vector>
 
 class WeaponType;
+class Mod;
+class AnimPlay;
+class Entity;
 
 
 /**

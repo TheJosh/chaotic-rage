@@ -8,6 +8,9 @@
 using namespace std;
 
 
+class UIUpdate;
+
+
 /**
 * Get a list of registered game servers
 **/

@@ -8,6 +8,8 @@
 #include <glm/glm.hpp>
 
 
+class HUDLabel;
+
 namespace gcn {
 	class Gui;
 }

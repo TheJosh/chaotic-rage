@@ -5,6 +5,10 @@
 #pragma once
 #include "../rage.h"
 
+
+class Mod;
+
+
 class AIType
 {
 	public:

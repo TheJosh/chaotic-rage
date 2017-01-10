@@ -10,6 +10,7 @@
 
 class OpenGLFont_Implementation;
 class RenderOpenGL;
+class Mod;
 
 
 class OpenGLFont : public gcn::Font

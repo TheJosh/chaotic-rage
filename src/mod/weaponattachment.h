@@ -7,6 +7,10 @@
 #include <glm/glm.hpp>
 
 
+class AssimpModel;
+class Mod;
+
+
 enum WeaponAttachmentLocation
 {
 	WPATT_TOP,

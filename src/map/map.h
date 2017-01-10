@@ -18,7 +18,7 @@ class Zone;
 class Light;
 class Heightmap;
 class MapMesh;
-
+class GameState;
 class Render;
 class Mod;
 class RangeF;

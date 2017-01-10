@@ -17,7 +17,12 @@ using namespace std;
 #define PICKUP_TYPE_WPATT 6
 
 class btCollisionShape;
+class AssimpModel;
+class Mod;
+class PickupType;
+class Unit;
 class WeaponAttachment;
+class WeaponType;
 
 
 /**

@@ -13,6 +13,8 @@ class NetServerSeqPred;
 class NetServerClientInfo;
 class NetClientSeqPred;
 class NetGameinfo;
+class NetClient;
+class NetServer;
 
 
 /**

@@ -16,6 +16,7 @@ class GameType;
 class ObjectType;
 class PickupType;
 class Song;
+class UIUpdate;
 class UnitType;
 class VehicleType;
 class WallType;

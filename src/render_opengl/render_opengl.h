@@ -29,12 +29,21 @@ struct VBOvertex
 };
 
 
+class AnimPlay;
+class AnimPlay;
+class AssimpModel;
+class AssimpNode;
+class Entity;
 class GLVAO;
-class RenderOpenGLSettings;
-class btIDebugDraw;
-class OpenGLFont;
+class HUD;
 class Heightmap;
+class Mod;
+class OpenGLFont;
+class Player;
+class RenderOpenGLSettings;
 class RendererHeightmap;
+class WavefrontObj;
+class btIDebugDraw;
 
 
 // temporary class!

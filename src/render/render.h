@@ -9,8 +9,11 @@
 
 using namespace std;
 
+class AnimPlay;
+class Entity;
 class GameState;
 class Light;
+class Mod;
 
 
 class Render

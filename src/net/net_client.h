@@ -13,6 +13,10 @@ using namespace std;
 
 
 class UIUpdate;
+class GameState;
+class HUDLabel;
+class Entity;
+class Mod;
 
 
 class NetClient {

@@ -12,6 +12,8 @@ using namespace std;
 class btCollisionShape;
 class AssimpModel;
 class AssimpNode;
+class Mod;
+class WeaponType;
 
 
 /**

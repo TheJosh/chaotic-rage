@@ -15,6 +15,10 @@
 #define WEAPON_SOUND_EMPTY 5
 
 
+class AmmoRound;
+class Unit;
+
+
 class WeaponTypeSound
 {
 	public:

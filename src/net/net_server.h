@@ -10,11 +10,19 @@
 
 using namespace std;
 
-
 // How far behind a client can be before being dropped
 #define MAX_SEQ_LAG 20
 
+class AmmoRound;
+class Object;
+class Pickup;
 class ServerConfig;
+class Unit;
+class Vehicle;
+class Wall;
+class GameState;
+class HUDLabel;
+class Entity;
 
 
 class NetServer {

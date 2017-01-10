@@ -11,6 +11,10 @@ extern "C" {
 }
 
 
+class NPC;
+class GameState;
+
+
 /**
 * Logic for the game - like spawning units, etc
 **/

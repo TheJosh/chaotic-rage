@@ -11,6 +11,7 @@ using namespace std;
 
 
 class AssimpModel;
+class AssimpNode;
 class AnimPlay;
 class btRigidBody;
 

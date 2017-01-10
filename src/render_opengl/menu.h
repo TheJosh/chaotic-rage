@@ -23,6 +23,10 @@ class GameState;
 class GameManager;
 class GameSettings;
 class OpenGLFont;
+class Dialog;
+class AssimpModel;
+class Campaign;
+class MapReg;
 
 
 enum MenuCommand {

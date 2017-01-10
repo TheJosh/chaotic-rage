@@ -11,6 +11,9 @@
 using namespace std;
 
 
+class GameState;
+
+
 /**
 * Represents no animation, just a single frame
 **/

@@ -37,7 +37,6 @@ extern "C" {
 **/
 
 
-
 /**
 * Handle prompt events
 **/

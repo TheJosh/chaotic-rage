@@ -10,6 +10,9 @@
 using namespace std;
 
 
+class Mod;
+
+
 /**
 * A lightweight handle to the metadata for a map without
 * requiring the loading of the whole map

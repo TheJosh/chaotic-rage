@@ -15,6 +15,11 @@ extern "C" {
 using namespace std;
 
 
+class GameState;
+class Map;
+class UnitType;
+
+
 /**
 * Allows GameLogic code to handle mouse events
 * Handlers return TRUE if they handled the event and FALSE if they didn't

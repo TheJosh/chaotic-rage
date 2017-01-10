@@ -12,6 +12,7 @@ using namespace std;
 
 
 class Mod;
+class GameState;
 
 
 // A stage of the campaign
