@@ -7,7 +7,7 @@
 #include "../../script/ailogic.h"
 #include "../../script/gamelogic.h"
 #include "../../mod/aitype.h"
-#include "../../rage.h"
+#include "../../types.h"
 #include "../../physics/kinematic_character_controller.h"
 #include "unit.h"
 

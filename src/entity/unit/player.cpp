@@ -7,7 +7,7 @@
 #include "../../game_engine.h"
 #include "../../game_state.h"
 #include "../../script/gamelogic.h"
-#include "../../rage.h"
+#include "../../types.h"
 #include "../../render_opengl/animplay.h"
 #include "../../game_settings.h"
 #include "../../render/render.h"

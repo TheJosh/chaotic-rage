@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../rage.h"
+#include "../types.h"
 
 class AnimPlay;
 class GameState;

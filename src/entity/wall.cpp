@@ -7,7 +7,7 @@
 #include "../game_state.h"
 #include "../mod/walltype.h"
 #include "../physics/physics_bullet.h"
-#include "../rage.h"
+#include "../types.h"
 #include "../render_opengl/animplay.h"
 #include "entity.h"
 
