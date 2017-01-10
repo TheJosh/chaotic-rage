@@ -9,6 +9,7 @@
 #include "../rage.h"
 #include "../game_engine.h"
 #include "../game_state.h"
+#include "../game_settings.h"
 #include "../mod/mod_manager.h"
 #include "../mod/vehicletype.h"
 #include "../mod/objecttype.h"

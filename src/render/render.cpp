@@ -7,6 +7,7 @@
 #include <SDL.h>
 #include "../rage.h"
 #include "../game_state.h"
+#include "../game_settings.h"
 #include "../mod/mod.h"
 #include "render.h"
 #include "sprite.h"
