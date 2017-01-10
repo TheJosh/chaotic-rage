@@ -4,8 +4,10 @@
 
 #pragma once
 
-#include "rage.h"
-
+#include "types.h"
+#include <vector>
+#include <list>
+#include <string>
 
 using namespace std;
 
@@ -17,17 +19,32 @@ using namespace std;
 #define ALL_SLOTS 0
 
 
-class btVector3;
-class Entity;
-class Unit;
-class Wall;
-class Vehicle;
-class Pickup;
 class AmmoRound;
-class GameSettings;
 class AnimPlay;
+class AssimpModel;
+class Audio;
+class Entity;
+class GameLogic;
+class GameSettings;
+class GameState;
+class GameType;
+class HUD;
+class HUDLabel;
 class Light;
+class Map;
+class NetClient;
+class Object;
+class PhysicsBullet;
+class Pickup;
+class Player;
+class Render;
+class Unit;
+class UnitType;
+class Vehicle;
+class Wall;
+class WeaponType;
 class Weather;
+class btVector3;
 
 namespace gcn {
 	class Gui;

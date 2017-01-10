@@ -30,6 +30,7 @@ class UnitType;
 class Mod;
 class WeaponType;
 class AssimpModel;
+class AssimpNode;
 class btConvexShape;
 
 

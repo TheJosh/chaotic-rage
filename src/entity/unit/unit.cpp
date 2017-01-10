@@ -22,6 +22,7 @@
 #include "../../physics/physics_bullet.h"
 #include "../../rage.h"
 #include "../../render_opengl/animplay.h"
+#include "../../render_opengl/assimpmodel.h"
 #include "../../physics/kinematic_character_controller.h"
 #include "../../physics/dynamic_character_controller.h"
 #include "../../util/debug.h"
