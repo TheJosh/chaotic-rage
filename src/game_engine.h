@@ -6,8 +6,16 @@
 #define GAME_ENGINE_H
 
 #include <list>
+#include "types.h"
 
-#include "rage.h"
+class Audio;
+class ClientConfig;
+class CommandLineArgs;
+class Dialog;
+class ModManager;
+class NetClient;
+class NetServer;
+class Render;
 
 namespace gcn {
 	class Gui;
