@@ -2185,14 +2185,14 @@ void RenderOpenGL::weapon()
 	if (wt == NULL) return;
 	if (wt->model == NULL) return;
 	
-	float m[16];
-	this->render_player->getTransform().getOpenGLMatrix(m);
-
 	glm::mat4 weaponModelMatrix = glm::translate(
-		glm::make_mat4(m),
-		glm::vec3(0.0f, 0.5f, 0.0f)
+		glm::inverse(this->view),
+		glm::vec3(0.15f, -0.30f, -0.15f)   // left-right, down-up, forward-back
 	);
-	
+
+	// TODO: Should the models just be rotated instead?
+	weaponModelMatrix = glm::rotate(weaponModelMatrix, 180.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
 	AnimPlay* ap = new AnimPlay(wt->model);
 	this->renderAnimPlay(ap, weaponModelMatrix);
 	delete ap;
