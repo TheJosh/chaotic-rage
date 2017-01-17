@@ -133,7 +133,7 @@ void Unit::init(UnitType *ut, GameState *st, Faction fac, btTransform & loc)
 		this->spawnAnimationFinished();
 	}
 
-	this->createDynamicCtlr(loc);
+	this->createKinematicCtlr(loc);
 
 	// Give them some weapons
 	vector<WeaponType*>* spawn = st->getSpawnWeapons(this->uc, this->fac);
@@ -787,7 +787,7 @@ void Unit::update(float delta)
 	}
 
 	// TODO: Get this working for dynamic controller
-	//detectCollision();
+	detectCollision();
 
 	// Remove (and rollback) old pickups
 	pickups.remove_if(remove_finished_pickup);
