@@ -1,3 +1,21 @@
+chaoticrage (1.15ubuntu1~yakkety) yakkety; urgency=medium
+
+  * Upstream 1.15 release.
+
+ -- Magnus Espersson <magnus.espersson@gmail.com>  Thu, 26 Jan 2017 22:35:12 +0100
+
+chaoticrage (1.15ubuntu1~xenial) xenial; urgency=medium
+
+  * Upstream 1.15 release.
+
+ -- Magnus Espersson <magnus.espersson@gmail.com>  Thu, 26 Jan 2017 22:28:42 +0100
+
+chaoticrage (1.15ubuntu~precise) precise; urgency=medium
+
+  * Upstream 1.15 release.
+
+ -- Magnus Espersson <magnus.espersson@gmail.com>  Thu, 26 Jan 2017 21:41:54 +0100
+
 chaoticrage (1.15ubuntu) trusty; urgency=medium
 
   * Upstream 1.15 release.
