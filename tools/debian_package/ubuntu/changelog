@@ -1,3 +1,9 @@
+chaoticrage (1.15ubuntu) trusty; urgency=medium
+
+  * Upstream 1.15 release.
+
+ -- Magnus Espersson <magnus.espersson@gmail.com>  Thu, 26 Jan 2017 20:03:49 +0100
+
 chaoticrage (1.14ubuntu) xenial; urgency=low
 
   * Snapshot from git repo master branch commit a1cc4dc.
