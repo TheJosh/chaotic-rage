@@ -14,7 +14,7 @@ Build-Depends: debhelper (>= 9.0.0),
     libsdl2-image-dev,
     libsdl2-net-dev,
     libfontconfig-dev
-Standards-Version: 3.9.7
+Standards-Version: 3.9.8
 Homepage: http://www.chaoticrage.com
 Vcs-Git: git://github.com:TheJosh/chaotic-rage.git
 Vcs-Browser: https://github.com/TheJosh/chaotic-rage
