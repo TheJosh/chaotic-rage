@@ -151,6 +151,7 @@ chaoticrage: $(OBJFILES_CLIENT)
 	$(Q)$(CXX) $(CFLAGS) $(LDFLAGS) $(OBJFILES_CLIENT) -o chaoticrage$(POSTFIX) $(LIBS)
 
 
+test:		## Smoke test
 test: chaoticrage
 	./chaoticrage --mod test --arcade generaltest,pound,robot --render null --audio null
 
