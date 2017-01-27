@@ -9,6 +9,7 @@
 #include <shlwapi.h>
 #include <SDL.h>
 #include <SDL_syswm.h>
+#include "platform.h"
 #include "../game_state.h"
 
 #pragma comment(lib,"shlwapi.lib")

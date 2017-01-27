@@ -116,6 +116,9 @@
     <Filter Include="src\physics">
       <UniqueIdentifier>{b9dbc747-5425-4b9c-bf60-b7ae1e4b3db0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\entity\unit">
+      <UniqueIdentifier>{79b0137b-161a-4e76-8b99-c7c70b760d15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\data\cr\gametypes\zombies.lua">
@@ -403,13 +406,7 @@
     <ClCompile Include="..\..\src\entity\entity.cpp">
       <Filter>src\entity</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\entity\npc.cpp">
-      <Filter>src\entity</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\entity\object.cpp">
-      <Filter>src\entity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\entity\player.cpp">
       <Filter>src\entity</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\entity\vehicle.cpp">
@@ -627,9 +624,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\script\lua_random_lib.cpp">
       <Filter>src\script</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\entity\unit.cpp">
-      <Filter>src\entity</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\game_settings.cpp">
       <Filter>src</Filter>
@@ -961,6 +955,15 @@
     <ClCompile Include="..\..\src\mod\weaponattachment.cpp">
       <Filter>src\mod</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\entity\unit\npc.cpp">
+      <Filter>src\entity\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entity\unit\player.cpp">
+      <Filter>src\entity\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entity\unit\unit.cpp">
+      <Filter>src\entity\unit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\game.h">
@@ -1125,16 +1128,7 @@
     <ClInclude Include="..\..\src\entity\entity.h">
       <Filter>src\entity</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\entity\npc.h">
-      <Filter>src\entity</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\entity\object.h">
-      <Filter>src\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\entity\player.h">
-      <Filter>src\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\entity\unit.h">
       <Filter>src\entity</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\entity\vehicle.h">
@@ -1733,6 +1727,21 @@
     </ClInclude>
     <ClInclude Include="..\..\src\mod\weaponattachment.h">
       <Filter>src\mod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\entity\unit\npc.h">
+      <Filter>src\entity\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\entity\unit\player.h">
+      <Filter>src\entity\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\entity\unit\unit.h">
+      <Filter>src\entity\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\entity\unit\unit_pickup.h">
+      <Filter>src\entity\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\entity\unit\unit_weapon.h">
+      <Filter>src\entity\unit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
