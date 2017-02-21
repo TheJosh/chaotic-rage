@@ -39,7 +39,7 @@
 						<texture texture="id-fx_sampler-5" texcoord="UV-UVMap"/>
 					</diffuse>
 					<specular>
-						<color>  0.5 0.5 0.5 1.0 </color>
+						<color>  0.05652174353599548 0.05652174353599548 0.05652174353599548 1.0 </color>
 					</specular>
 					<shininess>
 						<float>50</float>
