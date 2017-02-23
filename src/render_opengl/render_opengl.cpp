@@ -306,17 +306,27 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	}
 
 	// Init GLEW
+	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 	if (GLEW_OK != err) {
 		GL_LOG("Glew Error: %s", glewGetErrorString(err));
 		reportFatalError("Unable to init the library GLEW.");
 	}
 
+	// Some versions of GLEW in experimental mode throw an OpenGL error
+	// so just gobble it up.
+	glGetError();
+	
 	// GL_ARB_framebuffer_object -> shadows and glGenerateMipmap
 	if (! GL_ARB_framebuffer_object) {
 		reportFatalError("OpenGL 3.0 or the extension 'GL_ARB_framebuffer_object' not available.");
 	}
-
+	
+	// GL_ARB_instanced_arrays -> instancing
+	if (! GL_ARB_instanced_arrays) {
+		reportFatalError("OpenGL 3.3 or the extension 'GL_ARB_instanced_arrays' not available.");
+	}
+	
 	// Init GL for particles
 	this->renderer_points->initGLbuffers();
 	this->renderer_lines->initGLbuffers();
