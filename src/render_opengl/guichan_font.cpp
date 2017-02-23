@@ -51,6 +51,7 @@ class FreetypeChar
 class OpenGLFont_Implementation
 {
 	public:
+		GLuint font_vao;
 		GLuint font_vbo;
 		FT_Library ft;
 		FT_Face face;
@@ -59,7 +60,7 @@ class OpenGLFont_Implementation
 
 	public:
 		OpenGLFont_Implementation()
-			: font_vbo(0), ft(NULL), face(NULL), buf(NULL)
+			: font_vao(0), font_vbo(0), ft(NULL), face(NULL), buf(NULL)
 		{}
 };
 
@@ -148,6 +149,7 @@ OpenGLFont::~OpenGLFont()
 	FT_Done_FreeType(this->pmpl->ft);
 	free(this->pmpl->buf);
 	glDeleteBuffers(1, &this->pmpl->font_vbo);
+	glDeleteVertexArrays(1, &this->pmpl->font_vao);
 	delete this->pmpl;
 }
 
@@ -228,14 +230,11 @@ void OpenGLFont::drawString(gcn::Graphics* graphics, const std::string& text, in
 	float xx, yy;
 
 	if (this->pmpl->font_vbo == 0) {
+		glGenVertexArrays(1, &this->pmpl->font_vao);
 		glGenBuffers(1, &this->pmpl->font_vbo);
 	}
 
-	#ifdef OpenGL
-		glBindVertexArray(0);
-		glEnable(GL_TEXTURE_2D);
-	#endif
-
+	glBindVertexArray(this->pmpl->font_vao);
 	glEnable(GL_BLEND);
 
 	// Set up shader
@@ -269,10 +268,6 @@ void OpenGLFont::drawString(gcn::Graphics* graphics, const std::string& text, in
 		this->renderCharacter(c, xx, yy);
 	}
 
-	#ifdef OpenGL
-		glDisable(GL_TEXTURE_2D);
-	#endif
-	
 	glDisable(GL_BLEND);
 	CHECK_OPENGL_ERROR;
 }
@@ -325,10 +320,10 @@ void OpenGLFont::renderCharacter(Uint32 character, float &x, float &y)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		#ifdef OpenGL
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		#endif
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, gl_data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RG, width, height, 0, GL_RG, GL_UNSIGNED_BYTE, gl_data);
 
 		delete [] gl_data;
 
@@ -361,4 +356,3 @@ void OpenGLFont::renderCharacter(Uint32 character, float &x, float &y)
 
 	x += (float)(c->advance >> 6);
 }
-
