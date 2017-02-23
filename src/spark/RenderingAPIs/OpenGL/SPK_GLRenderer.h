@@ -135,7 +135,7 @@ namespace GL
 		/**
 		* Set the current View/Projection matrix
 		**/
-		virtual void setVP(glm::mat4 vp) {}
+		virtual void setVP(glm::mat4 viewMatrix, glm::mat4 viewProjectionMatrix) {}
 
 	protected :
 

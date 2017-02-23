@@ -78,9 +78,9 @@ namespace GL
 		shaderVPIndex = glGetUniformLocation(shaderIndex, "uVP");
 	}
 
-	void GL2LineRenderer::setVP(glm::mat4 vp)
+	void GL2LineRenderer::setVP(glm::mat4 viewMatrix, glm::mat4 viewProjectionMatrix)
 	{
-		vp_matrix = vp;
+		vp_matrix = viewProjectionMatrix;
 	}
 
 	// TODO: This is cloned from Guichan; we should probably have a common function for this!

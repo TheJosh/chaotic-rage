@@ -2219,8 +2219,8 @@ void RenderOpenGL::particles()
 	glEnable(GL_BLEND);
 
 	glm::mat4 vp = this->projection * this->view;
-	this->renderer_points->setVP(vp);
-	this->renderer_lines->setVP(vp);
+	this->renderer_points->setVP(this->view, vp);
+	this->renderer_lines->setVP(this->view, vp);
 
 	this->st->particle_system->render();
 

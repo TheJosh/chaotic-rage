@@ -188,7 +188,7 @@ namespace SPK
 		/**
 		* Set the current View/Projection matrix
 		**/
-		virtual void setVP(glm::mat4 vp) = 0;
+		virtual void setVP(glm::mat4 viewMatrix, glm::mat4 viewProjectionMatrix) = 0;
 		
 	private :
 
