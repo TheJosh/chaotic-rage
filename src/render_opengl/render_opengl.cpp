@@ -1072,9 +1072,11 @@ void RenderOpenGL::renderSprite(GLuint texture, int x, int y, int w, int h)
 	};
 
 	if (sprite_vbo == 0) {
+		glGenVertexArrays(1, &sprite_vao);
 		glGenBuffers(1, &sprite_vbo);
 	}
 
+	glBindVertexArray(sprite_vao);
 	glBindBuffer(GL_ARRAY_BUFFER, sprite_vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
 
@@ -1115,10 +1117,6 @@ void RenderOpenGL::preGame()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_DEPTH_CLAMP);
 	glEnable(GL_CULL_FACE);
-
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 	if (this->settings->msaa >= 2) {
 		glEnable(GL_MULTISAMPLE);

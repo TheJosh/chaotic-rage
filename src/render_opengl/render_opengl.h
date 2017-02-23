@@ -82,6 +82,7 @@ class RenderOpenGL : public Render3D
 		OpenGLFont* gui_font;
 
 		// VBOs
+		GLuint sprite_vao;
 		GLuint sprite_vbo;
 
 		// VAOs
