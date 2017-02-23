@@ -279,6 +279,11 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
 		}
 
+		// We might do this later on; code should be compatible
+		//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+		//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+		//SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
 		// GL context creation
 		if (this->glcontext == NULL) {
 			this->glcontext = SDL_GL_CreateContext(this->window);
