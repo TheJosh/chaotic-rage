@@ -98,7 +98,7 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->render_player = NULL;
 	this->render_player_pos = glm::vec3(0.0f);
 
-	this->renderer_points = new SPK::GL::GL2PointRenderer(1.0f);
+	this->renderer_points = new SPK::GL::GL2InstanceQuadRenderer(1.0f);
 	this->renderer_lines = new SPK::GL::GL2LineRenderer(0.05f, 1.0f);
 
 	this->sprite_vbo = 0;
