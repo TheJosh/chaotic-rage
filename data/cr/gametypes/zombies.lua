@@ -70,23 +70,24 @@ start_round = function()
 		position = table.remove(player_zombies, 1)
 	end
 
-	-- increase number of zombies
-	if num_wanted < 30 then
-		num_wanted = num_wanted + 4 + num_zombie_players;
-	end;
-	
-	-- decrease gap (ms) between clusters
-	if spawn_cluster_gap > 1000 then
-		spawn_cluster_gap = spawn_cluster_gap - 100
-	end;
-	
+	round = round + 1;
+	num_dead = 0;
+
 	-- increase size of clusters
 	if round >= 7 then
 		spawn_cluster_num = spawn_cluster_num + 1
 	end;
-	
-	num_dead = 0;
-	round = round + 1;
+
+	-- increase number of zombies
+	-- increase is always in the size of a cluster
+	if num_wanted < 30 then
+		num_wanted = num_wanted + spawn_cluster_num + num_zombie_players;
+	end;
+
+	-- decrease gap (ms) between clusters
+	if spawn_cluster_gap > 1000 then
+		spawn_cluster_gap = spawn_cluster_gap - 100
+	end;
 
 	-- start raining after 5th round
 	if round >= 5 then
