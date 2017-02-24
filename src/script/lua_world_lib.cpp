@@ -35,6 +35,15 @@ extern "C" {
 
 
 /**
+* Return a randomly selected spawn zone
+**/
+Zone* getRandomSpawnZone(unsigned int fac)
+{
+	return getGameState()->map->getSpawnZone((Faction)fac);
+}
+
+
+/**
 * Add a vehicle at a map X/Z coordinate
 * Y will be calculated so it's on the ground
 **/
@@ -454,6 +463,13 @@ void load_world_lib(lua_State *L)
 {
 	luabridge::getGlobalNamespace(L)
 	.beginNamespace("game")
+
+		.beginClass<Zone>("Zone")
+			.addFunction("getRandomX", &Zone::getRandomX)
+			.addFunction("getRandomZ", &Zone::getRandomZ)
+		.endClass()
+
+		.addFunction("getRandomSpawnZone", &getRandomSpawnZone)
 
 		.addFunction("addVehicleXZ", &addVehicleXZ)
 		.addFunction("addVehicleCoord", &addVehicleCoord)

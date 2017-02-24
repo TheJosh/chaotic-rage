@@ -33,11 +33,16 @@ end;
 -- Spawns zombies
 --
 spawn_func = function()
+	zone = game.getRandomSpawnZone(factions.team2)
+	if zone == nil then
+		return
+	end
+
 	for i=1, spawn_cluster_num, 1
 	do
 		-- may need to run this in a timer instead of three at once
 		t = random_arg("zomb", "zomb_fast", "zomb_health", "zomb_strong")
-		game.addNpc(t, "zombie", factions.team2)
+		game.addNpcZone(t, "zombie", factions.team2, zone)
 	end
 
 	num_zombies = num_zombies + spawn_cluster_num
