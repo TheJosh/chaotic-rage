@@ -102,9 +102,9 @@ void GameManager::loadModBits(UIUpdate* ui)
 
 	// Viewmodes
 	this->viewmodes.clear();
+	this->viewmodes.push_back("First person");
 	this->viewmodes.push_back("Behind player");
 	this->viewmodes.push_back("Above player");
-	this->viewmodes.push_back("First person");
 
 	// Unittypes
 	this->unittypes.clear();
