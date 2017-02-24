@@ -7,8 +7,8 @@ num_zombie_players = 0;
 num_wanted = 0;
 num_dead = 0;
 num_lives = 3;
-spawn_rate = 3000;
-timer = 0;
+spawn_cluster_num = 3;
+spawn_cluster_gap = 3000;
 round = 0;
 round_max = 0;
 score_table = 0;
@@ -33,12 +33,18 @@ end;
 -- Spawns zombies
 --
 spawn_func = function()
-	t = random_arg("zomb", "zomb_fast", "zomb_health", "zomb_strong")
+	for i=1, spawn_cluster_num, 1
+	do
+		-- may need to run this in a timer instead of three at once
+		t = random_arg("zomb", "zomb_fast", "zomb_health", "zomb_strong")
+		game.addNpc(t, "zombie", factions.team2)
+	end
 
-	game.addNpc(t, "zombie", factions.team2)
+	num_zombies = num_zombies + spawn_cluster_num
 
-	num_zombies = num_zombies + 1
-	if num_zombies >= num_wanted then remove_timer(timer) end
+	if num_zombies < num_wanted then
+		add_timer(spawn_cluster_gap, spawn_func);
+	end
 
 	do_score()
 end;
@@ -59,12 +65,21 @@ start_round = function()
 		position = table.remove(player_zombies, 1)
 	end
 
+	-- increase number of zombies
 	if num_wanted < 30 then
-		num_wanted = num_wanted + 3 + num_zombie_players;
+		num_wanted = num_wanted + 4 + num_zombie_players;
 	end;
-	if spawn_rate > 1000 then
-		spawn_rate = spawn_rate - 100;
+	
+	-- decrease gap (ms) between clusters
+	if spawn_cluster_gap > 1000 then
+		spawn_cluster_gap = spawn_cluster_gap - 100
 	end;
+	
+	-- increase size of clusters
+	if round >= 7 then
+		spawn_cluster_num = spawn_cluster_num + 1
+	end;
+	
 	num_dead = 0;
 	round = round + 1;
 
@@ -109,7 +124,7 @@ start_round = function()
 	end;
 
 	-- Lets get spawning
-	timer = add_interval(spawn_rate, spawn_func);
+	add_timer(spawn_cluster_gap, spawn_func);
 
 	do_score();
 end;
