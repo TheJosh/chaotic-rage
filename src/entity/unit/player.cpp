@@ -359,6 +359,7 @@ void Player::viewModeThirdPerson()
 **/
 void Player::die()
 {
+	if (this->death_time != 0) return;    // cannot die if already dead
 	Unit::dieAnimSound();
 	viewModeThirdPerson();
 	this->death_time = this->st->game_time + DEATH_DELAY_MS;
