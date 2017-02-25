@@ -457,11 +457,11 @@ void RenderOpenGL::mainViewport(int s, int of)
 	glViewport(x, y, w, h);
 
 	float fov, dnear, dfar;
-	if (viewmode == GameSettings::firstPerson) {
+	if (eff_viewmode == GameSettings::firstPerson) {
 		fov = 90.0f;
 		dnear = 0.1f;
 		dfar = 350.0f;
-	} else if (viewmode == GameSettings::behindPlayer) {
+	} else if (eff_viewmode == GameSettings::behindPlayer) {
 		fov = 60.0f;
 		dnear = 1.0f;
 		dfar = 350.0f;
@@ -1850,6 +1850,7 @@ void RenderOpenGL::render()
 
 	for (unsigned int i = 0; i < this->st->num_local; i++) {
 		this->render_player = this->st->local_players[i]->p;
+		this->eff_viewmode = this->effectiveViewmode();
 
 		this->mainViewport(i, this->st->num_local);
 		this->mainRot(i);
@@ -1861,7 +1862,7 @@ void RenderOpenGL::render()
 		particles();
 		water();
 
-		if (viewmode == GameSettings::firstPerson) {
+		if (eff_viewmode == GameSettings::firstPerson) {
 			weapon();
 		}
 
@@ -1915,6 +1916,21 @@ void RenderOpenGL::physics()
 
 
 /**
+* Determine the "effective" viewmode, i.e. tweaked in some curcimstances
+**/
+int RenderOpenGL::effectiveViewmode()
+{
+	if (this->render_player->getWeaponZoom() > 0.0f) {
+		return GameSettings::firstPerson;
+	} else if (this->render_player->isInVehicle()) {
+		return GameSettings::behindPlayer;
+	} else {
+		return this->viewmode;
+	}
+}
+
+
+/**
 * Main rotation for camera
 **/
 void RenderOpenGL::mainRot(unsigned int screen_index)
@@ -1941,17 +1957,17 @@ void RenderOpenGL::mainRot(unsigned int screen_index)
 			dist = 25.0f + (80.0f - 25.0f) * perc;
 			lift = 0.0f;
 			
-		} else if (this->viewmode == GameSettings::firstPerson || this->render_player->getWeaponZoom() > 0.0f) {
+		} else if (this->eff_viewmode == GameSettings::firstPerson) {
 			tilt = 0.0f;
 			dist = 0.0f - this->render_player->getWeaponZoom();
 			lift = UNIT_PHYSICS_HEIGHT / 2.3f;
 
-		} else if (this->viewmode == GameSettings::behindPlayer) {
+		} else if (this->eff_viewmode == GameSettings::behindPlayer) {
 			tilt = 17.0f;
 			dist = 15.0f;
 			lift = 0.0f;
 
-		} else if (this->viewmode == GameSettings::abovePlayer) {
+		} else if (this->eff_viewmode == GameSettings::abovePlayer) {
 			tilt = 60.0f;
 			dist = 50.0f;
 			lift = 0.0f;
@@ -1970,7 +1986,7 @@ void RenderOpenGL::mainRot(unsigned int screen_index)
 		origin = trans.getOrigin();
 		angle = this->render_player->getRenderAngle() + 180.0f;
 
-		if (this->viewmode == GameSettings::firstPerson || this->render_player->getWeaponZoom() > 0.0f) {
+		if (this->eff_viewmode == GameSettings::firstPerson) {
 			tilt -= this->render_player->vertical_angle;
 		}
 

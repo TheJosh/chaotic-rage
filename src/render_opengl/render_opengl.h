@@ -74,6 +74,7 @@ class RenderOpenGL : public Render3D
 		// The current player being rendered (split screen)
 		Player* render_player;
 		glm::vec3 render_player_pos;
+		int eff_viewmode;
 
 		// Loaded sprites
 		vector<SpritePtr> loaded;
@@ -217,6 +218,7 @@ class RenderOpenGL : public Render3D
 		void recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader, const glm::mat4 &modelMatrix);
 		void recursiveRenderAssimpModelBones(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader);
 		
+		int effectiveViewmode();
 		void mainViewport(int s, int of);
 		void mainRot(unsigned int screen_index);
 		void skybox();

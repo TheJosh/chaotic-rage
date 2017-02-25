@@ -181,6 +181,9 @@ class Unit : public Entity
 		virtual void takeDamage(float damage);
 		virtual void die();
 
+		// Vehicles
+		bool isInVehicle() { return (drive != NULL); }
+
 		// Pickup adjustments (temporary and permanant)
 		void applyPickupAdjust(PickupTypeAdjust* adj);
 		void rollbackPickupAdjust(PickupTypeAdjust* adj);
