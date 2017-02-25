@@ -40,6 +40,12 @@ Player::Player(UnitType *uc, GameState *st, Faction fac, int slot, float x, floa
 	this->slot = slot;
 	this->drive_old = NULL;
 	this->death_time = 0;
+	
+	if (GEng()->render->getViewMode() == GameSettings::firstPerson) {
+		this->viewModeFirstPerson();
+	} else {
+		this->viewModeThirdPerson();
+	}
 }
 
 
@@ -56,6 +62,12 @@ Player::Player(UnitType *uc, GameState *st, Faction fac, int slot, float x, floa
 	this->anim->pause();
 	this->slot = slot;
 	this->drive_old = NULL;
+	
+	if (GEng()->render->getViewMode() == GameSettings::firstPerson) {
+		this->viewModeFirstPerson();
+	} else {
+		this->viewModeThirdPerson();
+	}
 }
 
 
@@ -72,6 +84,12 @@ Player::Player(UnitType *uc, GameState *st, Faction fac, int slot, btTransform &
 	this->anim->pause();
 	this->slot = slot;
 	this->drive_old = NULL;
+	
+	if (GEng()->render->getViewMode() == GameSettings::firstPerson) {
+		this->viewModeFirstPerson();
+	} else {
+		this->viewModeThirdPerson();
+	}
 }
 
 
