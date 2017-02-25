@@ -193,6 +193,7 @@ class RenderOpenGL : public Render3D
 
 		void setSettings(RenderOpenGLSettings* settings);
 		RenderOpenGLSettings* getSettings();
+		int effectiveViewmode();
 
 		bool reloadShaders();
 
@@ -218,7 +219,6 @@ class RenderOpenGL : public Render3D
 		void recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader, const glm::mat4 &modelMatrix);
 		void recursiveRenderAssimpModelBones(AnimPlay* ap, AssimpModel *am, AssimpNode *nd, GLShader *shader);
 		
-		int effectiveViewmode();
 		void mainViewport(int s, int of);
 		void mainRot(unsigned int screen_index);
 		void skybox();
