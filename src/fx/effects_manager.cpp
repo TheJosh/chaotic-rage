@@ -27,6 +27,68 @@ EffectsManager::~EffectsManager()
 
 
 /**
+* Load the effects models
+**/
+void EffectsManager::loadModels(Mod* mod)
+{
+	bullets = SPK::Model::create(
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
+		SPK::FLAG_ALPHA,
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
+	);
+	bullets->setParam(SPK::PARAM_ALPHA, 1.0f, 0.0f);
+	bullets->setParam(SPK::PARAM_RED, 0.1f, 0.3f);
+	bullets->setParam(SPK::PARAM_GREEN, 0.1f, 0.3f);
+	bullets->setParam(SPK::PARAM_BLUE, 0.1f, 0.3f);
+	bullets->setLifeTime(0.5f, 0.7f);
+
+	SPK::Model* flames = SPK::Model::create(
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
+		SPK::FLAG_ALPHA,
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
+	);
+	flames->setParam(SPK::PARAM_ALPHA, 0.5f, 0.5f);
+	flames->setParam(SPK::PARAM_RED, 0.9f, 0.5f);
+	flames->setParam(SPK::PARAM_GREEN, 0.3f, 0.2f);
+	flames->setParam(SPK::PARAM_BLUE, 0.1f, 0.0f);
+	flames->setLifeTime(0.5f, 0.7f);
+
+	blood = SPK::Model::create(
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
+		SPK::FLAG_ALPHA,
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
+	);
+	blood->setParam(SPK::PARAM_ALPHA, 0.8f, 1.0f);
+	blood->setParam(SPK::PARAM_RED, 0.5f, 1.0f);
+	blood->setParam(SPK::PARAM_GREEN, 0.0f, 0.1f);
+	blood->setParam(SPK::PARAM_BLUE, 0.0f, 0.2f);
+	blood->setLifeTime(0.4f, 0.7f);
+
+	fireball = SPK::Model::create(
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
+		SPK::FLAG_ALPHA,
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
+	);
+	fireball->setParam(SPK::PARAM_ALPHA, 0.8f, 1.0f);
+	fireball->setParam(SPK::PARAM_RED, 0.8f, 1.0f);
+	fireball->setParam(SPK::PARAM_GREEN, 0.0f, 0.5f);
+	fireball->setParam(SPK::PARAM_BLUE, 0.0f, 0.1f);
+	fireball->setLifeTime(0.2f, 0.3f);
+
+	dust = SPK::Model::create(
+			SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
+			SPK::FLAG_ALPHA,
+			SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
+	);
+	dust->setParam(SPK::PARAM_ALPHA, 0.2f, 0.0f);
+	dust->setParam(SPK::PARAM_RED, 0.6f, 0.8f);
+	dust->setParam(SPK::PARAM_GREEN, 0.6f, 0.8f);
+	dust->setParam(SPK::PARAM_BLUE, 0.6f, 0.8f);
+	dust->setLifeTime(1.2f, 8.0f);
+}
+
+
+/**
 * Creates particles for a weapon.
 * Angles and speeds are randomised. Lifetime is calculated based on the end vector and a constant speed.
 *
@@ -42,18 +104,6 @@ void EffectsManager::weaponBullets(btVector3 * begin, btVector3 * end)
 	btVector3 dir = *end - *begin;
 	dir.normalize();
 
-	// Bullets - model
-	SPK::Model* model = SPK::Model::create(
-		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
-		SPK::FLAG_ALPHA,
-		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
-	);
-	model->setParam(SPK::PARAM_ALPHA, 1.0f, 0.0f);
-	model->setParam(SPK::PARAM_RED, 0.1f, 0.3f);
-	model->setParam(SPK::PARAM_GREEN, 0.1f, 0.3f);
-	model->setParam(SPK::PARAM_BLUE, 0.1f, 0.3f);
-	model->setLifeTime(0.5f, 0.7f);
-
 	// Bullets - emitter
 	SPK::Emitter* emitter = SPK::StraightEmitter::create(SPK::Vector3D(dir.x(), dir.y(), dir.z()));
 	emitter->setZone(SPK::Point::create(SPK::Vector3D(begin->x(), begin->y(), begin->z())));
@@ -62,7 +112,7 @@ void EffectsManager::weaponBullets(btVector3 * begin, btVector3 * end)
 	emitter->setForce(40.0f, 50.0f);
 
 	// Bullets - group
-	SPK::Group* group = SPK::Group::create(model, 25);
+	SPK::Group* group = SPK::Group::create(bullets, 25);
 	group->addEmitter(emitter);
 	st->addParticleGroup(group);
 }
@@ -84,27 +134,14 @@ void EffectsManager::weaponFlamethrower(btVector3 * begin, btVector3 * end)
 	btVector3 dir = *end - *begin;
 	dir.normalize();
 
-	SPK::Model* model = SPK::Model::create(
-		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
-		SPK::FLAG_ALPHA,
-		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
-	);
-
-	model->setParam(SPK::PARAM_ALPHA, 0.5f, 0.5f);
-	model->setParam(SPK::PARAM_RED, 0.9f, 0.5f);
-	model->setParam(SPK::PARAM_GREEN, 0.3f, 0.2f);
-	model->setParam(SPK::PARAM_BLUE, 0.1f, 0.0f);
-	model->setLifeTime(0.5f, 0.7f);
-
-	SPK::Group* group = SPK::Group::create(model, 100);
-
 	SPK::Emitter* emitter = SPK::SphericEmitter::create(SPK::Vector3D(dir.x(), dir.y(), dir.z()), 0.02f * PI, 0.06f * PI);
 	emitter->setZone(SPK::Point::create(SPK::Vector3D(begin->x(), begin->y(), begin->z())));
 	emitter->setFlow(-1);
 	emitter->setTank(100);
 	emitter->setForce(40.0f, 50.0f);
+	
+	SPK::Group* group = SPK::Group::create(flames, 100);
 	group->addEmitter(emitter);
-
 	st->addParticleGroup(group);
 }
 
@@ -114,21 +151,8 @@ void EffectsManager::weaponFlamethrower(btVector3 * begin, btVector3 * end)
 **/
 void EffectsManager::bloodSpray(const btVector3& location, float damage)
 {
-	SPK::Model* model;
 	SPK::RandomEmitter* emitter;
 	SPK::Group* group;
-
-	/* Yellow and red fireball */
-	model = SPK::Model::create(
-		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
-		SPK::FLAG_ALPHA,
-		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
-	);
-	model->setParam(SPK::PARAM_ALPHA, 0.8f, 1.0f);
-	model->setParam(SPK::PARAM_RED, 0.5f, 1.0f);
-	model->setParam(SPK::PARAM_GREEN, 0.0f, 0.1f);
-	model->setParam(SPK::PARAM_BLUE, 0.0f, 0.2f);
-	model->setLifeTime(0.4f, 0.7f);
 
 	// Falling
 	emitter = SPK::RandomEmitter::create();
@@ -145,7 +169,7 @@ void EffectsManager::bloodSpray(const btVector3& location, float damage)
 	emitter->setForce(10.0f, 15.0f);
 
 	// Create group
-	group = SPK::Group::create(model, damage);
+	group = SPK::Group::create(blood, damage);
 	group->addEmitter(emitter);
 	group->setGravity(gravity);
 	st->addParticleGroup(group);
@@ -157,21 +181,8 @@ void EffectsManager::bloodSpray(const btVector3& location, float damage)
 **/
 void EffectsManager::explosion(const btVector3& location, float damage)
 {
-	SPK::Model* model;
 	SPK::Emitter* emitter;
 	SPK::Group* group;
-
-	/* Yellow and red fireball */
-	model = SPK::Model::create(
-		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
-		SPK::FLAG_ALPHA,
-		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
-	);
-	model->setParam(SPK::PARAM_ALPHA, 0.8f, 1.0f);
-	model->setParam(SPK::PARAM_RED, 0.8f, 1.0f);
-	model->setParam(SPK::PARAM_GREEN, 0.0f, 0.5f);
-	model->setParam(SPK::PARAM_BLUE, 0.0f, 0.1f);
-	model->setLifeTime(0.2f, 0.3f);
 
 	// Emitter
 	emitter = SPK::RandomEmitter::create();
@@ -181,22 +192,10 @@ void EffectsManager::explosion(const btVector3& location, float damage)
 	emitter->setForce(20.0f, 40.0f);
 
 	// Create group
-	group = SPK::Group::create(model, 4000);
+	group = SPK::Group::create(fireball, 4000);
 	group->addEmitter(emitter);
 	group->setGravity(gravity);
 	st->addParticleGroup(group);
-
-	/* Dustsplosion */
-	model = SPK::Model::create(
-			SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
-			SPK::FLAG_ALPHA,
-			SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
-	);
-	model->setParam(SPK::PARAM_ALPHA, 0.2f, 0.0f);
-	model->setParam(SPK::PARAM_RED, 0.6f, 0.8f);
-	model->setParam(SPK::PARAM_GREEN, 0.6f, 0.8f);
-	model->setParam(SPK::PARAM_BLUE, 0.6f, 0.8f);
-	model->setLifeTime(1.2f, 8.0f);
 
 	// Emitter
 	emitter = SPK::NormalEmitter::create();
@@ -206,7 +205,7 @@ void EffectsManager::explosion(const btVector3& location, float damage)
 	emitter->setForce(3.0f, 5.0f);
 
 	// Create group
-	group = SPK::Group::create(model, 2000);
+	group = SPK::Group::create(dust, 2000);
 	group->addEmitter(emitter);
 	group->setGravity(gravity);
 	group->setFriction(1.0f);

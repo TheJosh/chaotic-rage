@@ -4,14 +4,23 @@
 
 #pragma once
 #include <LinearMath/btVector3.h>
+
+
 class btVector3;
 class GameState;
+class Mod;
+
+namespace SPK {
+	class Model;
+}
 
 
 class EffectsManager {
 	public:
 		EffectsManager(GameState* st);
 		~EffectsManager();
+
+		void loadModels(Mod* mod);
 
 		void weaponBullets(btVector3 * begin, btVector3 * end);
 		void weaponFlamethrower(btVector3 * begin, btVector3 * end);
@@ -20,4 +29,10 @@ class EffectsManager {
 
 	private:
 		GameState* st;
+
+		SPK::Model* bullets;
+		SPK::Model* flames;
+		SPK::Model* blood;
+		SPK::Model* fireball;
+		SPK::Model* dust;
 };

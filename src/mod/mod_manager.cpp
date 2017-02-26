@@ -13,6 +13,7 @@
 #include "../util/cmdline.h"
 #include "../render_opengl/assimpmodel.h"
 #include "../render/render_3d.h"
+#include "../fx/effects_manager.h"
 #include "mod.h"
 #include "mod_manager.h"
 #include "confuse_types.h"
@@ -49,6 +50,9 @@ bool loadMods(GameState *st, UIUpdate* ui)
 	// Load the game font from the main mod
 	if (GEng()->render->is3D()) {
 		static_cast<Render3D*>(GEng()->render)->loadFont("DejaVuSans", mod);
+
+		// Effects are hard-coded but their textures are stored in the main mod
+		GEng()->fx->loadModels(mod);
 	}
 
 	// If a suppl mod has been specified on the cmdline, try to load it
