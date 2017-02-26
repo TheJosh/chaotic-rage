@@ -1920,7 +1920,9 @@ void RenderOpenGL::physics()
 **/
 int RenderOpenGL::effectiveViewmode()
 {
-	if (this->render_player->getWeaponZoom() > 0.0f) {
+	if (this->render_player == NULL) {
+		return GameSettings::behindPlayer;
+	} else if (this->render_player->getWeaponZoom() > 0.0f) {
 		return GameSettings::firstPerson;
 	} else if (this->render_player->isInVehicle()) {
 		return GameSettings::behindPlayer;
