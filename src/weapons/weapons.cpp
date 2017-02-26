@@ -10,7 +10,7 @@
 #include "../rage.h"
 #include "../game_state.h"
 #include "../util/quadratic.h"
-#include "../fx/newparticle.h"
+#include "../fx/effects_manager.h"
 #include "weapons.h"
 
 using namespace std;

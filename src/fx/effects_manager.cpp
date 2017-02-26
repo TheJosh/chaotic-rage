@@ -2,7 +2,7 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include "newparticle.h"
+#include "effects_manager.h"
 #include "../rage.h"
 #include "../game_state.h"
 #include "../spark/SPK.h"

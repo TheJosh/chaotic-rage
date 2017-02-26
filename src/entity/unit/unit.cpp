@@ -11,7 +11,7 @@
 #include "../../audio/audio.h"
 #include "../../game_engine.h"
 #include "../../game_state.h"
-#include "../../fx/newparticle.h"
+#include "../../fx/effects_manager.h"
 #include "../../mod/mod_manager.h"
 #include "../../mod/objecttype.h"
 #include "../../mod/pickuptype.h"

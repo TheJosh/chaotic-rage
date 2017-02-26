@@ -9,7 +9,7 @@
 #include "../rage.h"
 #include "../game_state.h"
 #include "../game_engine.h"
-#include "../fx/newparticle.h"
+#include "../fx/effects_manager.h"
 #include "../physics/physics_bullet.h"
 #include "../entity/ammo_round.h"
 #include "../entity/unit/unit.h"

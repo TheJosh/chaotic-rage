@@ -17,7 +17,7 @@
 #include "util/clientconfig.h"
 #include "mod/mod_manager.h"
 #include "gui/dialog.h"
-#include "fx/newparticle.h"
+#include "fx/effects_manager.h"
 #include "events.h"
 
 using namespace std;

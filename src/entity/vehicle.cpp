@@ -15,7 +15,7 @@
 #include "../types.h"
 #include "../render_opengl/animplay.h"
 #include "../util/convert.h"
-#include "../fx/newparticle.h"
+#include "../fx/effects_manager.h"
 #include "entity.h"
 #include "unit/player.h"
 
