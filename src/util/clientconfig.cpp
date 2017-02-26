@@ -15,6 +15,7 @@
 #include "../audio/audio_sdlmixer.h"
 #include "../audio/audio_null.h"
 #include "../mod/mod_manager.h"
+#include "../fx/newparticle.h"
 #include "../physics/physics_bullet.h"
 #include "clientconfig.h"
 #include "cmdline.h"
@@ -185,4 +186,13 @@ void ClientConfig::initPhysics(GameState *st)
 void ClientConfig::initMods(GameState *st)
 {
 	GEng()->mm = new ModManager();
+}
+
+
+/**
+* Init mods engine based on config options
+**/
+void ClientConfig::initFx(GameState *st)
+{
+	GEng()->fx = new EffectsManager(st);
 }

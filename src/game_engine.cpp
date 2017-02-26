@@ -17,6 +17,7 @@
 #include "util/clientconfig.h"
 #include "mod/mod_manager.h"
 #include "gui/dialog.h"
+#include "fx/newparticle.h"
 #include "events.h"
 
 using namespace std;
@@ -52,6 +53,7 @@ GameEngine::GameEngine()
 	this->cmdline = NULL;
 	this->cconf = NULL;
 	this->mm = NULL;
+	this->fx = NULL;
 	this->gui_scale = 1.0f;
 
 	this->gui = NULL;
@@ -78,6 +80,7 @@ GameEngine::~GameEngine()
 	delete(this->cmdline);
 	delete(this->cconf);
 	delete(this->mm);
+	delete(this->fx);
 }
 
 

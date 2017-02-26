@@ -15,6 +15,16 @@ using namespace std;
 SPK::Vector3D gravity(0.0f, -0.9f, 0.0f);
 
 
+EffectsManager::EffectsManager(GameState *st)
+{
+}
+
+
+EffectsManager::~EffectsManager()
+{
+}
+
+
 /**
 * Creates particles for a weapon.
 * Angles and speeds are randomised. Lifetime is calculated based on the end vector and a constant speed.
@@ -26,7 +36,7 @@ SPK::Vector3D gravity(0.0f, -0.9f, 0.0f);
 * @param start The start location of the particle stream
 * @param end The end location of the particle stream
 **/
-void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end)
+void EffectsManager::create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end)
 {
 	btVector3 dir = *end - *begin;
 	dir.normalize();
@@ -68,7 +78,7 @@ void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end)
 * @param start The start location of the particle stream
 * @param end The end location of the particle stream
 **/
-void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 * end)
+void EffectsManager::create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 * end)
 {
 	btVector3 dir = *end - *begin;
 	dir.normalize();
@@ -101,7 +111,7 @@ void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 
 /**
 * Spray blood in all directions
 **/
-void create_particles_blood_spray(GameState * st, const btVector3& location, float damage)
+void EffectsManager::create_particles_blood_spray(GameState * st, const btVector3& location, float damage)
 {
 	SPK::Model* model;
 	SPK::RandomEmitter* emitter;
@@ -144,7 +154,7 @@ void create_particles_blood_spray(GameState * st, const btVector3& location, flo
 /**
 * It's an EXPLOSION!
 **/
-void create_particles_explosion(GameState * st, const btVector3& location, float damage)
+void EffectsManager::create_particles_explosion(GameState * st, const btVector3& location, float damage)
 {
 	SPK::Model* model;
 	SPK::Emitter* emitter;
@@ -201,4 +211,3 @@ void create_particles_explosion(GameState * st, const btVector3& location, float
 	group->setFriction(1.0f);
 	st->addParticleGroup(group);
 }
-

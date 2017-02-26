@@ -8,17 +8,12 @@ class btVector3;
 class GameState;
 
 
-class NewParticle
-{
+class EffectsManager {
 	public:
-		btVector3 pos;
-		btVector3 vel;
-		float r, g, b;
-		unsigned int time_death;
+		EffectsManager(GameState *st);
+		~EffectsManager();
+		void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end);
+		void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 * end);
+		void create_particles_blood_spray(GameState * st, const btVector3& location, float damage);
+		void create_particles_explosion(GameState * st, const btVector3& location, float damage);
 };
-
-
-void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end);
-void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 * end);
-void create_particles_blood_spray(GameState * st, const btVector3& location, float damage);
-void create_particles_explosion(GameState * st, const btVector3& location, float damage);

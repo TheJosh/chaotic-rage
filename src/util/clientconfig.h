@@ -34,4 +34,5 @@ class ClientConfig
 		void initAudio(GameState *st);
 		void initPhysics(GameState *st);
 		void initMods(GameState *st);
+		void initFx(GameState *st);
 };

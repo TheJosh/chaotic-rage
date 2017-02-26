@@ -8,6 +8,7 @@
 
 #include "../rage.h"
 #include "../game_state.h"
+#include "../game_engine.h"
 #include "../fx/newparticle.h"
 #include "../physics/physics_bullet.h"
 #include "../entity/unit/unit.h"
@@ -119,7 +120,7 @@ void rocketTickCallback(float delta, Entity *e, void *data1, void *data2)
 		case 1:
 			// We've hit something - kaboom
 			apply_ghost_damage(rocket->ghost, Quadratic(0.0f, 0.0f, rocket->damage), wt->range);
-			create_particles_explosion(wt->st, ar->getPosition(), 100);
+			GEng()->fx->create_particles_explosion(wt->st, ar->getPosition(), 100);
 
 			// Remove the rocket
 			wt->st->physics->removeCallback(rocket->cbk);

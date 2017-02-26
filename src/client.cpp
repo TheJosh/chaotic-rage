@@ -68,6 +68,7 @@ int main(int argc, char ** argv)
 	GEng()->cconf->initAudio(st);
 	GEng()->cconf->initPhysics(st);
 	GEng()->cconf->initMods(st);
+	GEng()->cconf->initFx(st);
 	loadLang(GEng()->cconf->lang.c_str());
 
 	#ifdef RELEASE

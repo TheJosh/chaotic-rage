@@ -8,6 +8,7 @@
 
 #include "../rage.h"
 #include "../game_state.h"
+#include "../game_engine.h"
 #include "../fx/newparticle.h"
 #include "../physics/physics_bullet.h"
 #include "../entity/ammo_round.h"
@@ -69,7 +70,7 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 		data->ghost = create_ghost(e->getTransform(), this->range);
 		st->physics->addCollisionObject(data->ghost, CG_AMMO);
 
-		create_particles_explosion(st, e->getTransform().getOrigin(), 100);
+		GEng()->fx->create_particles_explosion(st, e->getTransform().getOrigin(), 100);
 	}
 }
 
@@ -113,7 +114,7 @@ void WeaponProxiMine::entityUpdate(AmmoRound *e, int delta)
 		// ...kaboom
 		apply_ghost_damage(data->ghost, Quadratic(0.0f, data->damage, 0.0f), this->range);
 
-		create_particles_explosion(st, e->getTransform().getOrigin(), 100);
+		GEng()->fx->create_particles_explosion(st, e->getTransform().getOrigin(), 100);
 
 		// Remove the mine
 		e->getGameState()->physics->delCollisionObject(data->ghost);
@@ -169,7 +170,7 @@ void WeaponRemoteMine::trigger(AmmoRound *e)
 	data->ghost = create_ghost(e->getTransform(), this->range);
 	st->physics->addCollisionObject(data->ghost, CG_AMMO);
 
-	create_particles_explosion(st, e->getTransform().getOrigin(), 100);
+	GEng()->fx->create_particles_explosion(st, e->getTransform().getOrigin(), 100);
 }
 
 

@@ -889,7 +889,7 @@ void Unit::takeDamage(float damage)
 	this->last_hit = this->st->game_time;
 
 	btTransform xform = this->getTransform();
-	create_particles_blood_spray(this->st, xform.getOrigin(), damage);
+	GEng()->fx->create_particles_blood_spray(this->st, xform.getOrigin(), damage);
 
 	if (this->health <= 0 && this->del == false) {
 		this->die();

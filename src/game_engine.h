@@ -16,6 +16,7 @@ class ModManager;
 class NetClient;
 class NetServer;
 class Render;
+class EffectsManager;
 
 namespace gcn {
 	class Gui;
@@ -64,6 +65,7 @@ class GameEngine
 		CommandLineArgs* cmdline;
 		ClientConfig* cconf;
 		ModManager* mm;
+		EffectsManager* fx;
 
 		// Guichan
 		gcn::Gui* gui;
