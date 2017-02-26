@@ -15,8 +15,9 @@ using namespace std;
 SPK::Vector3D gravity(0.0f, -0.9f, 0.0f);
 
 
-EffectsManager::EffectsManager(GameState *st)
+EffectsManager::EffectsManager(GameState* st)
 {
+	this->st = st;
 }
 
 
@@ -36,7 +37,7 @@ EffectsManager::~EffectsManager()
 * @param start The start location of the particle stream
 * @param end The end location of the particle stream
 **/
-void EffectsManager::create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end)
+void EffectsManager::weaponBullets(btVector3 * begin, btVector3 * end)
 {
 	btVector3 dir = *end - *begin;
 	dir.normalize();
@@ -78,7 +79,7 @@ void EffectsManager::create_particles_weapon(GameState * st, btVector3 * begin, 
 * @param start The start location of the particle stream
 * @param end The end location of the particle stream
 **/
-void EffectsManager::create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 * end)
+void EffectsManager::weaponFlamethrower(btVector3 * begin, btVector3 * end)
 {
 	btVector3 dir = *end - *begin;
 	dir.normalize();
@@ -111,7 +112,7 @@ void EffectsManager::create_particles_flamethrower(GameState * st, btVector3 * b
 /**
 * Spray blood in all directions
 **/
-void EffectsManager::create_particles_blood_spray(GameState * st, const btVector3& location, float damage)
+void EffectsManager::bloodSpray(const btVector3& location, float damage)
 {
 	SPK::Model* model;
 	SPK::RandomEmitter* emitter;
@@ -154,7 +155,7 @@ void EffectsManager::create_particles_blood_spray(GameState * st, const btVector
 /**
 * It's an EXPLOSION!
 **/
-void EffectsManager::create_particles_explosion(GameState * st, const btVector3& location, float damage)
+void EffectsManager::explosion(const btVector3& location, float damage)
 {
 	SPK::Model* model;
 	SPK::Emitter* emitter;

@@ -10,10 +10,14 @@ class GameState;
 
 class EffectsManager {
 	public:
-		EffectsManager(GameState *st);
+		EffectsManager(GameState* st);
 		~EffectsManager();
-		void create_particles_weapon(GameState * st, btVector3 * begin, btVector3 * end);
-		void create_particles_flamethrower(GameState * st, btVector3 * begin, btVector3 * end);
-		void create_particles_blood_spray(GameState * st, const btVector3& location, float damage);
-		void create_particles_explosion(GameState * st, const btVector3& location, float damage);
+
+		void weaponBullets(btVector3 * begin, btVector3 * end);
+		void weaponFlamethrower(btVector3 * begin, btVector3 * end);
+		void bloodSpray(const btVector3& location, float damage);
+		void explosion(const btVector3& location, float damage);
+
+	private:
+		GameState* st;
 };

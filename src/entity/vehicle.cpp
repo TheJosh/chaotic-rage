@@ -355,7 +355,7 @@ void Vehicle::takeDamage(float damage)
 {
 	this->health -= damage;
 	if (this->health <= 0.0f) {
-		GEng()->fx->create_particles_explosion(this->st, this->getTransform().getOrigin(), 100);
+		GEng()->fx->explosion(this->getTransform().getOrigin(), 100);
 		this->del = true;
 	}
 }

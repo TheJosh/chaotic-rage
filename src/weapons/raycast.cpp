@@ -69,7 +69,7 @@ void WeaponRaycast::doFire(Unit *u, btTransform &origin, float damage_multiplier
 
 	for (unsigned int i = this->burst; i != 0; --i) {
 		raycastDoFire(this, u, origin, begin, end, damage_multiplier);
-		GEng()->fx->create_particles_weapon(u->getGameState(), &begin, &end);
+		GEng()->fx->weaponBullets(&begin, &end);
 	}
 }
 
@@ -84,6 +84,6 @@ void WeaponFlamethrower::doFire(Unit *u, btTransform &origin, float damage_multi
 
 	for (unsigned int i = this->burst; i != 0; --i) {
 		raycastDoFire(this, u, origin, begin, end, damage_multiplier);
-		GEng()->fx->create_particles_flamethrower(u->getGameState(), &begin, &end);
+		GEng()->fx->weaponFlamethrower(&begin, &end);
 	}
 }
