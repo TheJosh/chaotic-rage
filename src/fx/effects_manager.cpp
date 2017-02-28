@@ -39,10 +39,7 @@ EffectsManager::~EffectsManager()
 **/
 void EffectsManager::setUpCoreEffects()
 {
-	SpritePtr test = mod->getTexture2D("textures/blood.png");
-
 	points = new SPK::GL::GL2InstanceQuadRenderer();
-	points->setTexture(test);
 	points->initGLbuffers();
 	GEng()->render->addParticleRenderer(points);
 
@@ -68,16 +65,23 @@ void EffectsManager::setUpCoreEffects()
 	flames->setParam(SPK::PARAM_BLUE, 0.1f, 0.0f);
 	flames->setLifeTime(0.5f, 0.7f);
 
-	blood = SPK::Model::create(
+	tex_blood = GEng()->mm->getBase()->getTexture2D("textures/blood.png");
+
+	render_blood = new SPK::GL::GL2InstanceQuadRenderer();
+	render_blood->setTexture(tex_blood);
+	render_blood->initGLbuffers();
+	GEng()->render->addParticleRenderer(render_blood);
+
+	model_blood = SPK::Model::create(
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
 		SPK::FLAG_ALPHA,
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
 	);
-	blood->setParam(SPK::PARAM_ALPHA, 0.8f, 1.0f);
-	blood->setParam(SPK::PARAM_RED, 0.5f, 1.0f);
-	blood->setParam(SPK::PARAM_GREEN, 0.0f, 0.1f);
-	blood->setParam(SPK::PARAM_BLUE, 0.0f, 0.2f);
-	blood->setLifeTime(0.4f, 0.7f);
+	model_blood->setParam(SPK::PARAM_ALPHA, 0.8f, 1.0f);
+	model_blood->setParam(SPK::PARAM_RED, 0.5f, 1.0f);
+	model_blood->setParam(SPK::PARAM_GREEN, 0.0f, 0.1f);
+	model_blood->setParam(SPK::PARAM_BLUE, 0.0f, 0.2f);
+	model_blood->setLifeTime(0.4f, 0.7f);
 
 	fireball = SPK::Model::create(
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
@@ -186,10 +190,10 @@ void EffectsManager::bloodSpray(const btVector3& location, float damage)
 	emitter->setForce(10.0f, 15.0f);
 
 	// Create group
-	group = SPK::Group::create(blood, damage);
+	group = SPK::Group::create(model_blood, damage);
 	group->addEmitter(emitter);
 	group->setGravity(gravity);
-	group->setRenderer(points);
+	group->setRenderer(render_blood);
 	st->addParticleGroup(group);
 }
 

@@ -39,7 +39,10 @@ class EffectsManager {
 
 		SPK::Model* bullets;
 		SPK::Model* flames;
-		SPK::Model* blood;
 		SPK::Model* fireball;
 		SPK::Model* dust;
+
+		Sprite* tex_blood;
+		SPK::GL::GL2InstanceQuadRenderer* render_blood;
+		SPK::Model* model_blood;
 };
