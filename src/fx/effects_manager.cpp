@@ -83,16 +83,23 @@ void EffectsManager::setUpCoreEffects()
 	model_blood->setParam(SPK::PARAM_BLUE, 0.0f, 0.2f);
 	model_blood->setLifeTime(0.4f, 0.7f);
 
-	fireball = SPK::Model::create(
+	tex_fireball = GEng()->mm->getBase()->getTexture2D("textures/explosion00.png");
+
+	render_fireball = new SPK::GL::GL2InstanceQuadRenderer();
+	render_fireball->setTexture(tex_fireball);
+	render_fireball->initGLbuffers();
+	GEng()->render->addParticleRenderer(render_fireball);
+	
+	model_fireball = SPK::Model::create(
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
 		SPK::FLAG_ALPHA,
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
 	);
-	fireball->setParam(SPK::PARAM_ALPHA, 0.8f, 1.0f);
-	fireball->setParam(SPK::PARAM_RED, 0.8f, 1.0f);
-	fireball->setParam(SPK::PARAM_GREEN, 0.0f, 0.5f);
-	fireball->setParam(SPK::PARAM_BLUE, 0.0f, 0.1f);
-	fireball->setLifeTime(0.2f, 0.3f);
+	model_fireball->setParam(SPK::PARAM_ALPHA, 0.8f, 1.0f);
+	model_fireball->setParam(SPK::PARAM_RED, 0.8f, 1.0f);
+	model_fireball->setParam(SPK::PARAM_GREEN, 0.0f, 0.5f);
+	model_fireball->setParam(SPK::PARAM_BLUE, 0.0f, 0.1f);
+	model_fireball->setLifeTime(0.2f, 0.3f);
 
 	dust = SPK::Model::create(
 			SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
@@ -214,10 +221,10 @@ void EffectsManager::explosion(const btVector3& location, float damage)
 	emitter->setForce(20.0f, 40.0f);
 
 	// Create group
-	group = SPK::Group::create(fireball, 4000);
+	group = SPK::Group::create(model_fireball, 4000);
 	group->addEmitter(emitter);
 	group->setGravity(gravity);
-	group->setRenderer(points);
+	group->setRenderer(render_fireball);
 	st->addParticleGroup(group);
 
 	// Emitter
