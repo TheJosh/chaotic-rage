@@ -37,6 +37,7 @@ namespace GL
 {
 	GL2InstanceQuadRenderer::GL2InstanceQuadRenderer() :
 		GLRenderer(),
+		texture(NULL),
 		vao(0),
 		vboBillboardVertex(0),
 		vboPositions(0),
@@ -252,9 +253,12 @@ namespace GL
 		glm::vec3 camRight = glm::vec3(v_matrix[0][0], v_matrix[1][0], v_matrix[2][0]);
 		glm::vec2 size = glm::vec2(1.0f, 1.0f);
 
+		if (texture != NULL) {
+			glBindTexture(GL_TEXTURE_2D, texture->pixels);
+		}
+		
 		// Bind VAO and shader, set uniforms, draw
 		glBindVertexArray(vao);
-		glBindTexture(GL_TEXTURE_2D, texture->pixels);
 		glUseProgram(shaderIndex);
 		glUniform3fv(uniform_camUp, 1, glm::value_ptr(camUp));
 		glUniform3fv(uniform_camRight, 1, glm::value_ptr(camRight));
