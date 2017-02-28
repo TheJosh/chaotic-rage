@@ -657,7 +657,6 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 		// We also have to save the bone data in our structure
 		AssimpBone* bn = new AssimpBone();
 		bn->name = string(bone->mName.C_Str());
-		bn->offset = glm::make_mat4((float *) &(bone->mOffsetMatrix));
 
 		aiMatrix4x4 m = bone->mOffsetMatrix;
 		m.Transpose();
