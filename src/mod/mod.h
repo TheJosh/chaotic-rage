@@ -36,6 +36,7 @@ class WallType;
 class WeaponType;
 class WeaponAttachment;
 class AssimpModel;
+class Sprite;
 
 
 class Mod {
@@ -122,7 +123,9 @@ class Mod {
 
 		AssimpModel * getAssimpModel(string filename);
 		AssimpModel * getAssimpModel(string filename, AssimpLoadFlags flags);
+
 		AudioPtr getSound(string filename);
+		Sprite* getTexture2D(string filename);
 
 		vector<Campaign*> * getCampaigns();
 

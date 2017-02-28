@@ -11,6 +11,7 @@
 #include "../game_state.h"
 #include "../game_engine.h"
 #include "../util/ui_update.h"
+#include "../render/render.h"
 #include "../render_opengl/assimpmodel.h"
 #include "../util/crc32.h"
 #include "../util/debug.h"
@@ -478,6 +479,15 @@ AudioPtr Mod::getSound(string filename)
 
 	this->sounds.insert(pair<string, AudioPtr>(filename, snd));
 	return snd;
+}
+
+
+/**
+* Gets a texture by filename
+**/
+Sprite* Mod::getTexture2D(string filename)
+{
+	return GEng()->render->loadSprite(filename, this);
 }
 
 
