@@ -9,6 +9,7 @@
 #include "../game_engine.h"
 #include "../render/render_3d.h"
 #include "../spark/SPK.h"
+#include "../spark/SPK_GL.h"
 
 using namespace std;
 
@@ -29,12 +30,16 @@ Weather::Weather(GameState* st, float map_size_x, float map_size_z, bool enabled
 	// Main zone for emission
 	this->sky = SPK::AABox::create(SPK::Vector3D(map_size_x/2.0f, 100.0f, map_size_z/2.0f), SPK::Vector3D(map_size_x, 1.0f, map_size_z));
 
+	// Renderer for rain uses lines
+	this->rain_renderer = new SPK::GL::GL2LineRenderer(0.05f, 1.0f);
+	this->rain_renderer->initGLbuffers();
+	GEng()->render->addParticleRenderer(this->rain_renderer);
 
 	// Rain model
 	this->rain_model = SPK::Model::create(
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
 		SPK::FLAG_NONE,
-		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA 
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA
 	);
 	this->rain_model->setParam(SPK::PARAM_ALPHA, 0.2f, 0.3f);
 	this->rain_model->setParam(SPK::PARAM_RED, 0.7f, 0.9f);
@@ -50,17 +55,20 @@ Weather::Weather(GameState* st, float map_size_x, float map_size_z, bool enabled
 
 	// Rain group
 	this->rain_group = SPK::Group::create(this->rain_model, 50000);
-	if (GEng()->render->is3D()) {
-		this->rain_group->setRenderer(static_cast<Render3D*>(GEng()->render)->renderer_lines);
-	}
+	this->rain_group->setRenderer(this->rain_renderer);
 	this->rain_group->addEmitter(this->rain_emitter);
 
+
+	// Renderer for snow uses quads
+	this->snow_renderer = new SPK::GL::GL2InstanceQuadRenderer(1.0f);
+	this->snow_renderer->initGLbuffers();
+	GEng()->render->addParticleRenderer(this->snow_renderer);
 
 	// Snow model
 	this->snow_model = SPK::Model::create(
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
 		SPK::FLAG_NONE,
-		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA 
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA
 	);
 	this->snow_model->setParam(SPK::PARAM_ALPHA, 0.5f, 0.7f);
 	this->snow_model->setParam(SPK::PARAM_RED, 0.8f, 0.9f);
@@ -76,6 +84,7 @@ Weather::Weather(GameState* st, float map_size_x, float map_size_z, bool enabled
 
 	// Snow group
 	this->snow_group = SPK::Group::create(this->snow_model, 50000);
+	this->snow_group->setRenderer(this->snow_renderer);
 	this->snow_group->addEmitter(this->snow_emitter);
 }
 
@@ -85,9 +94,11 @@ Weather::Weather(GameState* st, float map_size_x, float map_size_z, bool enabled
 **/
 Weather::~Weather()
 {
+	delete this->rain_renderer;
 	delete this->rain_model;
 	delete this->rain_group;
 	delete this->rain_emitter;
+	delete this->snow_renderer;
 	delete this->snow_model;
 	delete this->snow_group;
 	delete this->snow_emitter;

@@ -98,8 +98,6 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->render_player = NULL;
 	this->render_player_pos = glm::vec3(0.0f);
 
-	this->renderer_lines = new SPK::GL::GL2LineRenderer(0.05f, 1.0f);
-
 	this->sprite_vbo = 0;
 
 	this->skybox_vao = NULL;
@@ -120,7 +118,6 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 RenderOpenGL::~RenderOpenGL()
 {
 	delete this->settings;
-	delete this->renderer_lines;
 	delete this->font;
 	delete this->gui_font;
 
@@ -324,9 +321,6 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	if (! GL_ARB_instanced_arrays) {
 		reportFatalError("OpenGL 3.3 or the extension 'GL_ARB_instanced_arrays' not available.");
 	}
-	
-	// Init GL for particles
-	this->renderer_lines->initGLbuffers();
 
 	// Windows only: Re-load textures.
 	// All other platforms don't destory the context if the window size changes
@@ -2254,6 +2248,7 @@ void RenderOpenGL::particles()
 {
 	glEnable(GL_BLEND);
 
+	// TODO: Should this be moved into SPK::System and only called for used renderers?
 	glm::mat4 vp = this->projection * this->view;
 	std::vector<SPK::Renderer*>::iterator it;
 	for (it = particle_renderers.begin() ; it != particle_renderers.end(); ++it) {

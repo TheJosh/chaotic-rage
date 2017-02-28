@@ -13,6 +13,7 @@ namespace SPK
 	class Emitter;
 	class Group;
 	class Model;
+	class Renderer;
 }
 
 
@@ -47,6 +48,7 @@ class Weather
 		/**
 		* Rain
 		**/
+		SPK::Renderer* rain_renderer;
 		SPK::Emitter* rain_emitter;
 		SPK::Group* rain_group;
 		SPK::Model* rain_model;
@@ -55,6 +57,7 @@ class Weather
 		/**
 		* Snow
 		**/
+		SPK::Renderer* snow_renderer;
 		SPK::Emitter* snow_emitter;
 		SPK::Group* snow_group;
 		SPK::Model* snow_model;

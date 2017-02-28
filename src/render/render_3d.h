@@ -32,9 +32,6 @@ class Render3D : public Render
 		int virt_width;
 		int virt_height;
 
-		// Spark particle renderers
-		SPK::Renderer* renderer_lines;
-
 	public:
 		Render3D(GameState *st) : Render(st) {}
 		virtual ~Render3D() {}
