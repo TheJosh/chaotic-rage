@@ -10,6 +10,7 @@
 #include "../spark/SPK_GL.h"
 #include "../render/render.h"
 #include "../mod/mod.h"
+#include "../mod/mod_manager.h"
 
 
 using namespace std;
@@ -22,18 +23,21 @@ SPK::Vector3D gravity(0.0f, -0.9f, 0.0f);
 EffectsManager::EffectsManager(GameState* st)
 {
 	this->st = st;
+	this->setUpCoreEffects();
 }
 
 
 EffectsManager::~EffectsManager()
 {
+	delete points;
+	delete render_blood;
 }
 
 
 /**
 * Load the effects models
 **/
-void EffectsManager::loadModels(Mod* mod)
+void EffectsManager::setUpCoreEffects()
 {
 	SpritePtr test = mod->getTexture2D("textures/blood.png");
 

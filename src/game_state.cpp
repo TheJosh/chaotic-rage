@@ -39,6 +39,7 @@
 #include "net/net_server.h"
 #include "util/cmdline.h"
 #include "fx/weather.h"
+#include "fx/effects_manager.h"
 #include "spark/SPK.h"
 
 
@@ -402,6 +403,8 @@ void GameState::preGame()
 	} else {
 		this->weather->disableRandom();
 	}
+	
+	this->effects = new EffectsManager(this);
 }
 
 
@@ -415,6 +418,7 @@ void GameState::postGame()
 
 	delete this->particle_system;
 	delete this->weather;
+	delete this->effects;
 
 	// TODO: Are these needed?
 	this->units.clear();

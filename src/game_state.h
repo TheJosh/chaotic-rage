@@ -45,6 +45,7 @@ class Wall;
 class WeaponType;
 class Weather;
 class btVector3;
+class EffectsManager;
 
 namespace gcn {
 	class Gui;
@@ -132,6 +133,7 @@ class GameState
 
 		SPK::System* particle_system;
 		Weather* weather;
+		EffectsManager* effects;
 
 		float time_of_day;			// 0.0 = midnight, 1.0 = midday
 		float time_cycle;

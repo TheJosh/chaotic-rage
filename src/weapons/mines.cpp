@@ -69,8 +69,7 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 	if (data->time <= 0) {
 		data->ghost = create_ghost(e->getTransform(), this->range);
 		st->physics->addCollisionObject(data->ghost, CG_AMMO);
-
-		GEng()->fx->explosion(e->getTransform().getOrigin(), 100);
+		st->effects->explosion(e->getTransform().getOrigin(), 100);
 	}
 }
 
@@ -114,7 +113,7 @@ void WeaponProxiMine::entityUpdate(AmmoRound *e, int delta)
 		// ...kaboom
 		apply_ghost_damage(data->ghost, Quadratic(0.0f, data->damage, 0.0f), this->range);
 
-		GEng()->fx->explosion(e->getTransform().getOrigin(), 100);
+		st->effects->explosion(e->getTransform().getOrigin(), 100);
 
 		// Remove the mine
 		e->getGameState()->physics->delCollisionObject(data->ghost);
@@ -169,8 +168,7 @@ void WeaponRemoteMine::trigger(AmmoRound *e)
 
 	data->ghost = create_ghost(e->getTransform(), this->range);
 	st->physics->addCollisionObject(data->ghost, CG_AMMO);
-
-	GEng()->fx->explosion(e->getTransform().getOrigin(), 100);
+	st->effects->explosion(e->getTransform().getOrigin(), 100);
 }
 
 

@@ -9,6 +9,7 @@
 class btVector3;
 class GameState;
 class Mod;
+class Sprite;
 
 namespace SPK {
 	class Model;
@@ -24,7 +25,7 @@ class EffectsManager {
 		EffectsManager(GameState* st);
 		~EffectsManager();
 
-		void loadModels(Mod* mod);
+		void setUpCoreEffects();
 
 		void weaponBullets(btVector3 * begin, btVector3 * end);
 		void weaponFlamethrower(btVector3 * begin, btVector3 * end);

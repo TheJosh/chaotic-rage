@@ -53,7 +53,6 @@ GameEngine::GameEngine()
 	this->cmdline = NULL;
 	this->cconf = NULL;
 	this->mm = NULL;
-	this->fx = NULL;
 	this->gui_scale = 1.0f;
 
 	this->gui = NULL;
@@ -80,7 +79,6 @@ GameEngine::~GameEngine()
 	delete(this->cmdline);
 	delete(this->cconf);
 	delete(this->mm);
-	delete(this->fx);
 }
 
 

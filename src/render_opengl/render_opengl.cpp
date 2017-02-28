@@ -1252,6 +1252,8 @@ void RenderOpenGL::postGame()
 		delete(this->lights.at(i));
 	}
 	this->lights.clear();
+
+	particle_renderers.clear();
 }
 
 
