@@ -292,7 +292,7 @@ void Vehicle::operate(Unit* u, int delta, bool keys[16], float horiz_angle, floa
 		if (keys[Player::KEY_UP]) {
 			this->engineForce = MIN(this->engineForce + this->vt->engine_accel, this->vt->engine_max);
 			this->brakeForce = 0.0f;
-		} else if (keys[Player::KEY_UP]) {
+		} else if (keys[Player::KEY_DOWN]) {
 			if (this->vehicle->getCurrentSpeedKmHour() > 0.0) {
 				this->brakeForce = MIN(this->brakeForce + this->vt->brake_accel, this->vt->brake_max);
 				this->engineForce = 0.0f;
@@ -310,7 +310,7 @@ void Vehicle::operate(Unit* u, int delta, bool keys[16], float horiz_angle, floa
 	if (this->vt->steer) {
 		if (keys[Player::KEY_LEFT]) {
 			this->steering = MIN(this->steering + 0.01f, 0.3f);
-		} else if (keys[Player::KEY_LEFT]) {
+		} else if (keys[Player::KEY_RIGHT]) {
 			this->steering = MAX(this->steering - 0.01f, -0.3f);
 		} else if (this->steering > 0.0f) {
 			this->steering = MAX(this->steering - 0.01f, 0.0f);
