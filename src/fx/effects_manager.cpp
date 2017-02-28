@@ -9,6 +9,7 @@
 #include "../spark/SPK.h"
 #include "../spark/SPK_GL.h"
 #include "../render/render.h"
+#include "../mod/mod.h"
 
 
 using namespace std;
@@ -34,7 +35,10 @@ EffectsManager::~EffectsManager()
 **/
 void EffectsManager::loadModels(Mod* mod)
 {
+	SpritePtr test = mod->getTexture2D("textures/blood.png");
+
 	points = new SPK::GL::GL2InstanceQuadRenderer();
+	points->setTexture(test);
 	points->initGLbuffers();
 	GEng()->render->addParticleRenderer(points);
 

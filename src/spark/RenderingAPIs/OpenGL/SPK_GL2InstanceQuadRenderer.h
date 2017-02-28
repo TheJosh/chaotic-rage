@@ -27,6 +27,7 @@
 #include <glm/glm.hpp>
 
 class GLVAO;
+class Sprite;
 
 
 namespace SPK
@@ -87,10 +88,21 @@ namespace GL
 		**/
 		virtual void setVP(glm::mat4 viewMatrix, glm::mat4 viewProjectionMatrix);
 
+		/////////////
+		// Options //
+		/////////////
+
+		inline void setTexture(Sprite* val)
+		{
+			this->texture = val;
+		}
+
 	protected :
 		GLuint createShaderProgram(const char *vs, const char *fs);
 
 	private :
+
+		Sprite* texture;
 
 		glm::mat4 v_matrix;
 		glm::mat4 vp_matrix;

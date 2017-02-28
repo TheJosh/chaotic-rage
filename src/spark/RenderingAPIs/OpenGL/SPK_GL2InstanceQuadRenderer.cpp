@@ -23,6 +23,7 @@
 #include "RenderingAPIs/OpenGL/SPK_GL2InstanceQuadRenderer.h"
 #include "Core/SPK_Particle.h"
 #include "Core/SPK_Group.h"
+#include "../../../render/sprite.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -92,28 +93,36 @@ namespace GL
 			"in vec3 vParticlePosition;\n"
 			"in vec4 vColor;\n"
 			"out vec4 fColor;\n"
+			"out vec2 fTexUV;\n"
 			"uniform vec3 camUp;\n"
 			"uniform vec3 camRight;\n"
 			"uniform vec2 size;\n"
 			"uniform mat4 mVP;\n"
+			
 			"void main() {\n"
 				"vec3 pos = vParticlePosition\n"
 				"+ camRight * vVertexPosition.x * size.x\n"
 				"+ camUp * vVertexPosition.y * size.y;\n"
 				"gl_Position = mVP * vec4(pos, 1.0);\n"
 				"fColor = vColor;\n"
+				"fTexUV = vVertexPosition.xy + vec2(0.5, 0.5);\n"
 			"}\n",
 
 			"in vec4 fColor;\n"
+			"in vec2 fTexUV;\n"
+			"uniform sampler2D tex;\n"
 			"void main() {\n"
-				"gl_FragColor = fColor;\n"
+				"gl_FragColor = texture2D(tex, fTexUV) * fColor;\n"
 			"}\n"
 		);
-		
-		uniform_camUp = glGetUniformLocation(shaderIndex, "camUp");
-		uniform_camRight = glGetUniformLocation(shaderIndex, "camRight");
-		uniform_size = glGetUniformLocation(shaderIndex, "size");
-		uniform_mvp = glGetUniformLocation(shaderIndex, "mVP");
+
+		uniform_camUp = glGetUniformLocation(shaderIndex, "camUp");CHECK_OPENGL_ERROR;
+		uniform_camRight = glGetUniformLocation(shaderIndex, "camRight");CHECK_OPENGL_ERROR;
+		uniform_size = glGetUniformLocation(shaderIndex, "size");CHECK_OPENGL_ERROR;
+		uniform_mvp = glGetUniformLocation(shaderIndex, "mVP");CHECK_OPENGL_ERROR;
+
+		GLuint uniform_tex_slot = glGetUniformLocation(shaderIndex, "fTexUV");
+		glUniform1i(uniform_tex_slot, 1);
 	}
 
 	void GL2InstanceQuadRenderer::setVP(glm::mat4 viewMatrix, glm::mat4 viewProjectionMatrix)
@@ -241,16 +250,20 @@ namespace GL
 
 		glm::vec3 camUp = glm::vec3(v_matrix[0][1], v_matrix[1][1], v_matrix[2][1]);
 		glm::vec3 camRight = glm::vec3(v_matrix[0][0], v_matrix[1][0], v_matrix[2][0]);
-		glm::vec2 size = glm::vec2(0.25f, 0.25f);
+		glm::vec2 size = glm::vec2(1.0f, 1.0f);
 
 		// Bind VAO and shader, set uniforms, draw
 		glBindVertexArray(vao);
+		glBindTexture(GL_TEXTURE_2D, texture->pixels);
 		glUseProgram(shaderIndex);
 		glUniform3fv(uniform_camUp, 1, glm::value_ptr(camUp));
 		glUniform3fv(uniform_camRight, 1, glm::value_ptr(camRight));
 		glUniform2fv(uniform_size, 1, glm::value_ptr(size));
 		glUniformMatrix4fv(uniform_mvp, 1, GL_FALSE, glm::value_ptr(vp_matrix));
+		
+		glDepthMask(GL_FALSE);
 		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, num);
+		glDepthMask(GL_TRUE);
 		glBindVertexArray(0);
 
 		CHECK_OPENGL_ERROR;
