@@ -15,6 +15,10 @@ class GameState;
 class Light;
 class Mod;
 
+namespace SPK {
+	class Renderer;
+}
+
 
 class Render
 {
@@ -185,6 +189,11 @@ class Render
 		* Load data common across all games
 		**/
 		virtual void loadCommonData() {}
+
+		/**
+		* Add a particle renderer; these get updated with view/projection matrixes each frame
+		**/
+		virtual void addParticleRenderer(SPK::Renderer* r) {}
 
 	public:
 		Render(GameState * st);

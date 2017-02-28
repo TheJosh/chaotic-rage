@@ -33,7 +33,6 @@ class Render3D : public Render
 		int virt_height;
 
 		// Spark particle renderers
-		SPK::Renderer* renderer_points;
 		SPK::Renderer* renderer_lines;
 
 	public:

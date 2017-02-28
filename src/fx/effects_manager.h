@@ -12,6 +12,7 @@ class Mod;
 
 namespace SPK {
 	class Model;
+	class Renderer;
 }
 
 
@@ -29,6 +30,8 @@ class EffectsManager {
 
 	private:
 		GameState* st;
+
+		SPK::Renderer* points;
 
 		SPK::Model* bullets;
 		SPK::Model* flames;

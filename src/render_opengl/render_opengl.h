@@ -120,7 +120,7 @@ class RenderOpenGL : public Render3D
 		int min_filter;
 		int mag_filter;
 
-		SPK::GL::GLRenderer* particle_renderer;
+		vector<SPK::Renderer*>particle_renderers;
 
 		static const int SHADOW_MAP_WIDTH = 2048;
 		static const int SHADOW_MAP_HEIGHT = 2048;
@@ -174,6 +174,7 @@ class RenderOpenGL : public Render3D
 		virtual void setTorch(bool on);
 		virtual void setAmbient(glm::vec4 ambient);
 		virtual void loadCommonData();
+		virtual void addParticleRenderer(SPK::Renderer* r);
 
 		virtual void setPhysicsDebug(bool status);
 		virtual bool getPhysicsDebug();

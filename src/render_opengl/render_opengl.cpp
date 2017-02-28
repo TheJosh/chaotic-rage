@@ -98,7 +98,6 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->render_player = NULL;
 	this->render_player_pos = glm::vec3(0.0f);
 
-	this->renderer_points = new SPK::GL::GL2InstanceQuadRenderer(1.0f);
 	this->renderer_lines = new SPK::GL::GL2LineRenderer(0.05f, 1.0f);
 
 	this->sprite_vbo = 0;
@@ -121,7 +120,6 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 RenderOpenGL::~RenderOpenGL()
 {
 	delete this->settings;
-	delete this->renderer_points;
 	delete this->renderer_lines;
 	delete this->font;
 	delete this->gui_font;
@@ -328,7 +326,6 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	}
 	
 	// Init GL for particles
-	this->renderer_points->initGLbuffers();
 	this->renderer_lines->initGLbuffers();
 
 	// Windows only: Re-load textures.
@@ -2244,6 +2241,12 @@ void RenderOpenGL::weapon()
 }
 
 
+void RenderOpenGL::addParticleRenderer(SPK::Renderer* r)
+{
+	particle_renderers.push_back(r);
+}
+
+
 /**
 * Particle effects using SPARK
 **/
@@ -2252,8 +2255,10 @@ void RenderOpenGL::particles()
 	glEnable(GL_BLEND);
 
 	glm::mat4 vp = this->projection * this->view;
-	this->renderer_points->setVP(this->view, vp);
-	this->renderer_lines->setVP(this->view, vp);
+	std::vector<SPK::Renderer*>::iterator it;
+	for (it = particle_renderers.begin() ; it != particle_renderers.end(); ++it) {
+		(*it)->setVP(this->view, vp);
+	}
 
 	this->st->particle_system->render();
 

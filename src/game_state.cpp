@@ -355,9 +355,6 @@ list<AmmoRound*>* GameState::findAmmoRoundsUnit(Unit* u)
 void GameState::addParticleGroup(SPK::Group* group)
 {
 	if (this->particle_system == NULL) return;
-	if (group->getRenderer() == NULL) {
-		group->setRenderer(static_cast<Render3D*>(GEng()->render)->renderer_points);
-	}
 	this->particle_system->addGroup(group);
 }
 

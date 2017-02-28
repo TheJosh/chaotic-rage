@@ -5,7 +5,10 @@
 #include "effects_manager.h"
 #include "../rage.h"
 #include "../game_state.h"
+#include "../game_engine.h"
 #include "../spark/SPK.h"
+#include "../spark/SPK_GL.h"
+#include "../render/render.h"
 
 
 using namespace std;
@@ -31,6 +34,10 @@ EffectsManager::~EffectsManager()
 **/
 void EffectsManager::loadModels(Mod* mod)
 {
+	points = new SPK::GL::GL2InstanceQuadRenderer(1.0f);
+	points->initGLbuffers();
+	GEng()->render->addParticleRenderer(points);
+
 	bullets = SPK::Model::create(
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
 		SPK::FLAG_ALPHA,
@@ -114,6 +121,7 @@ void EffectsManager::weaponBullets(btVector3 * begin, btVector3 * end)
 	// Bullets - group
 	SPK::Group* group = SPK::Group::create(bullets, 25);
 	group->addEmitter(emitter);
+	group->setRenderer(points);
 	st->addParticleGroup(group);
 }
 
@@ -142,6 +150,7 @@ void EffectsManager::weaponFlamethrower(btVector3 * begin, btVector3 * end)
 	
 	SPK::Group* group = SPK::Group::create(flames, 100);
 	group->addEmitter(emitter);
+	group->setRenderer(points);
 	st->addParticleGroup(group);
 }
 
@@ -172,6 +181,7 @@ void EffectsManager::bloodSpray(const btVector3& location, float damage)
 	group = SPK::Group::create(blood, damage);
 	group->addEmitter(emitter);
 	group->setGravity(gravity);
+	group->setRenderer(points);
 	st->addParticleGroup(group);
 }
 
@@ -195,6 +205,7 @@ void EffectsManager::explosion(const btVector3& location, float damage)
 	group = SPK::Group::create(fireball, 4000);
 	group->addEmitter(emitter);
 	group->setGravity(gravity);
+	group->setRenderer(points);
 	st->addParticleGroup(group);
 
 	// Emitter
@@ -209,5 +220,6 @@ void EffectsManager::explosion(const btVector3& location, float damage)
 	group->addEmitter(emitter);
 	group->setGravity(gravity);
 	group->setFriction(1.0f);
+	group->setRenderer(points);
 	st->addParticleGroup(group);
 }
