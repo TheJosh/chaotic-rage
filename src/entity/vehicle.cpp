@@ -294,7 +294,7 @@ void Vehicle::operate(Unit* u, int delta, bool keys[16], float horiz_angle, floa
 			this->brakeForce = 0.0f;
 		} else if (keys[Player::KEY_DOWN]) {
 			if (this->vehicle->getCurrentSpeedKmHour() > 0.0) {
-				this->brakeForce = MIN(this->brakeForce + this->vt->brake_accel, this->vt->brake_max);
+				this->brakeForce = MIN(this->brakeForce + this->vt->brake_accel * 0.001, this->vt->brake_max);
 				this->engineForce = 0.0f;
 			} else {
 				this->engineForce = MAX(this->engineForce - this->vt->reverse_accel, 0.0f - this->vt->reverse_max);
