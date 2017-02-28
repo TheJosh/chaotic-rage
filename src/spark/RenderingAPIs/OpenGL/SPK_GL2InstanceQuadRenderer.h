@@ -51,7 +51,7 @@ namespace GL
 		* @brief Constructor of GL2PointRenderer
 		* @param size : the size of the points
 		*/
-		GL2InstanceQuadRenderer(float size = 1.0f);
+		GL2InstanceQuadRenderer();
 
 		/**
 		* @brief Destructor of GL2PointRenderer
@@ -64,7 +64,7 @@ namespace GL
 		* @return A new registered GL2PointRenderer
 		* @since 1.04.00
 		*/
-		static GL2InstanceQuadRenderer* create(float size = 1.0f);
+		static GL2InstanceQuadRenderer* create();
 
 		///////////////
 		// Interface //
@@ -111,9 +111,9 @@ namespace GL
 	};
 
 
-	inline GL2InstanceQuadRenderer* GL2InstanceQuadRenderer::create(float size)
+	inline GL2InstanceQuadRenderer* GL2InstanceQuadRenderer::create()
 	{
-		GL2InstanceQuadRenderer* obj = new GL2InstanceQuadRenderer(size);
+		GL2InstanceQuadRenderer* obj = new GL2InstanceQuadRenderer();
 		registerObject(obj);
 		return obj;
 	}

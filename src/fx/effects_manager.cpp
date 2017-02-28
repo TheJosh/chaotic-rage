@@ -34,7 +34,7 @@ EffectsManager::~EffectsManager()
 **/
 void EffectsManager::loadModels(Mod* mod)
 {
-	points = new SPK::GL::GL2InstanceQuadRenderer(1.0f);
+	points = new SPK::GL::GL2InstanceQuadRenderer();
 	points->initGLbuffers();
 	GEng()->render->addParticleRenderer(points);
 

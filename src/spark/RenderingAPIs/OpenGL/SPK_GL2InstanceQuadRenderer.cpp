@@ -34,7 +34,7 @@ namespace SPK
 {
 namespace GL
 {
-	GL2InstanceQuadRenderer::GL2InstanceQuadRenderer(float size) :
+	GL2InstanceQuadRenderer::GL2InstanceQuadRenderer() :
 		GLRenderer(),
 		vao(0),
 		vboBillboardVertex(0),
