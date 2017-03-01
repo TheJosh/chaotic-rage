@@ -6,7 +6,7 @@
 #ifndef H_SPK_GL2INSTANCEQUADRENDERER
 #define H_SPK_GL2INSTANCEQUADRENDERER
 
-#include "../spark/RenderingAPIs/OpenGL/SPK_GLRenderer.h"
+#include "SPK_BaseQuadRenderer.h"
 #include <glm/glm.hpp>
 
 class GLVAO;
@@ -20,7 +20,7 @@ namespace GL
 	/**
 	* Render particles using instanced quads
 	*/
-	class SPK_GL_PREFIX GL2InstanceQuadRenderer : public GLRenderer
+	class SPK_GL_PREFIX GL2InstanceQuadRenderer : public BaseQuadRenderer
 	{
 		
 		SPK_IMPLEMENT_REGISTERABLE(GL2InstanceQuadRenderer)
@@ -66,11 +66,6 @@ namespace GL
 		**/
 		virtual void destroyGLbuffers();
 
-		/**
-		* Set the current View/Projection matrix
-		**/
-		virtual void setVP(glm::mat4 viewMatrix, glm::mat4 viewProjectionMatrix);
-
 		/////////////
 		// Options //
 		/////////////
@@ -80,16 +75,10 @@ namespace GL
 			this->texture = val;
 		}
 
-	protected :
-		GLuint createShaderProgram(const char *vs, const char *fs);
-
 	private :
 
 		Sprite* texture;
 		float size[2];
-
-		glm::mat4 v_matrix;
-		glm::mat4 vp_matrix;
 
 		GLuint vao;
 		GLuint vboBillboardVertex;

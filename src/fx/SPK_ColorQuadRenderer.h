@@ -6,7 +6,7 @@
 #ifndef H_SPK_GL2COLORQUADRENDERER
 #define H_SPK_GL2COLORQUADRENDERER
 
-#include "../spark/RenderingAPIs/OpenGL/SPK_GLRenderer.h"
+#include "SPK_BaseQuadRenderer.h"
 #include <glm/glm.hpp>
 
 
@@ -17,7 +17,7 @@ namespace GL
 	/**
 	* Render particles using instanced quads
 	*/
-	class SPK_GL_PREFIX GL2ColorQuadRenderer : public GLRenderer
+	class SPK_GL_PREFIX GL2ColorQuadRenderer : public BaseQuadRenderer
 	{
 		
 		SPK_IMPLEMENT_REGISTERABLE(GL2ColorQuadRenderer)
@@ -63,20 +63,9 @@ namespace GL
 		**/
 		virtual void destroyGLbuffers();
 
-		/**
-		* Set the current View/Projection matrix
-		**/
-		virtual void setVP(glm::mat4 viewMatrix, glm::mat4 viewProjectionMatrix);
-
-	protected :
-		GLuint createShaderProgram(const char *vs, const char *fs);
-
 	private :
 
 		float size[2];
-
-		glm::mat4 v_matrix;
-		glm::mat4 vp_matrix;
 
 		GLuint vao;
 		GLuint vboBillboardVertex;
