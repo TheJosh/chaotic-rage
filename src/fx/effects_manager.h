@@ -16,6 +16,7 @@ namespace SPK {
 	class Renderer;
 	namespace GL {
 		class GL2InstanceQuadRenderer;
+		class GL2ColorQuadRenderer;
 	}
 }
 
@@ -35,7 +36,7 @@ class EffectsManager {
 	private:
 		GameState* st;
 
-		SPK::GL::GL2InstanceQuadRenderer* points;
+		SPK::GL::GL2ColorQuadRenderer* points;
 
 		SPK::Model* bullets;
 		SPK::Model* flames;

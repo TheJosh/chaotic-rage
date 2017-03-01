@@ -4,6 +4,7 @@
 
 #include "effects_manager.h"
 #include "SPK_TextureQuadRenderer.h"
+#include "SPK_ColorQuadRenderer.h"
 #include "../rage.h"
 #include "../game_state.h"
 #include "../game_engine.h"
@@ -39,7 +40,7 @@ EffectsManager::~EffectsManager()
 **/
 void EffectsManager::setUpCoreEffects()
 {
-	points = new SPK::GL::GL2InstanceQuadRenderer();
+	points = new SPK::GL::GL2ColorQuadRenderer();
 	points->initGLbuffers();
 	GEng()->render->addParticleRenderer(points);
 
