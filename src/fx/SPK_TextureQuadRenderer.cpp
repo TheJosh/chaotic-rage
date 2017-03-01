@@ -20,10 +20,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-#include "RenderingAPIs/OpenGL/SPK_GL2InstanceQuadRenderer.h"
-#include "Core/SPK_Particle.h"
-#include "Core/SPK_Group.h"
-#include "../../../render/sprite.h"
+#include "SPK_TextureQuadRenderer.h"
+#include "../spark/Core/SPK_Particle.h"
+#include "../spark/Core/SPK_Group.h"
+#include "../render/sprite.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 

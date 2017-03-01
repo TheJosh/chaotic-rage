@@ -52,7 +52,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "../spark/SPK.h"
-#include "../spark/SPK_GL.h"
 
 #define BUFFER_MAX 200
 

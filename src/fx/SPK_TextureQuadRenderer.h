@@ -23,7 +23,7 @@
 #ifndef H_SPK_GL2INSTANCEQUADRENDERER
 #define H_SPK_GL2INSTANCEQUADRENDERER
 
-#include "RenderingAPIs/OpenGL/SPK_GLRenderer.h"
+#include "../spark/RenderingAPIs/OpenGL/SPK_GLRenderer.h"
 #include <glm/glm.hpp>
 
 class GLVAO;

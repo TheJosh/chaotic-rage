@@ -3,11 +3,11 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include "effects_manager.h"
+#include "SPK_TextureQuadRenderer.h"
 #include "../rage.h"
 #include "../game_state.h"
 #include "../game_engine.h"
 #include "../spark/SPK.h"
-#include "../spark/SPK_GL.h"
 #include "../render/render.h"
 #include "../mod/mod.h"
 #include "../mod/mod_manager.h"

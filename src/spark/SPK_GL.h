@@ -32,6 +32,5 @@
 // New OpenGL 2+ only renderers
 #include "RenderingAPIs/OpenGL/SPK_GL2PointRenderer.h"
 #include "RenderingAPIs/OpenGL/SPK_GL2LineRenderer.h"
-#include "RenderingAPIs/OpenGL/SPK_GL2InstanceQuadRenderer.h"
 
 #endif
