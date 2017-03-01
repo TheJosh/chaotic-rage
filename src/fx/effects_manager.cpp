@@ -40,7 +40,7 @@ EffectsManager::~EffectsManager()
 **/
 void EffectsManager::setUpCoreEffects()
 {
-	points = new SPK::GL::GL2ColorQuadRenderer();
+	points = new SPK::GL::GL2ColorQuadRenderer(1.0f);
 	points->initGLbuffers();
 	GEng()->render->addParticleRenderer(points);
 
@@ -66,9 +66,23 @@ void EffectsManager::setUpCoreEffects()
 	flames->setParam(SPK::PARAM_BLUE, 0.1f, 0.0f);
 	flames->setLifeTime(0.5f, 0.7f);
 
+	dust = SPK::Model::create(
+			SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
+			SPK::FLAG_ALPHA,
+			SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
+	);
+	dust->setParam(SPK::PARAM_ALPHA, 0.2f, 0.0f);
+	dust->setParam(SPK::PARAM_RED, 0.6f, 0.8f);
+	dust->setParam(SPK::PARAM_GREEN, 0.6f, 0.8f);
+	dust->setParam(SPK::PARAM_BLUE, 0.6f, 0.8f);
+	dust->setLifeTime(1.2f, 8.0f);
+
+
+	//  Blood  //
+
 	tex_blood = GEng()->mm->getBase()->getTexture2D("textures/blood.png");
 
-	render_blood = new SPK::GL::GL2InstanceQuadRenderer();
+	render_blood = new SPK::GL::GL2InstanceQuadRenderer(1.0f);
 	render_blood->setTexture(tex_blood);
 	render_blood->initGLbuffers();
 	GEng()->render->addParticleRenderer(render_blood);
@@ -84,9 +98,12 @@ void EffectsManager::setUpCoreEffects()
 	model_blood->setParam(SPK::PARAM_BLUE, 0.0f, 0.2f);
 	model_blood->setLifeTime(0.4f, 0.7f);
 
+
+	//  Fireball (explosion)  //
+
 	tex_fireball = GEng()->mm->getBase()->getTexture2D("textures/explosion00.png");
 
-	render_fireball = new SPK::GL::GL2InstanceQuadRenderer();
+	render_fireball = new SPK::GL::GL2InstanceQuadRenderer(1.0f);
 	render_fireball->setTexture(tex_fireball);
 	render_fireball->initGLbuffers();
 	GEng()->render->addParticleRenderer(render_fireball);
@@ -101,17 +118,6 @@ void EffectsManager::setUpCoreEffects()
 	model_fireball->setParam(SPK::PARAM_GREEN, 0.0f, 0.5f);
 	model_fireball->setParam(SPK::PARAM_BLUE, 0.0f, 0.1f);
 	model_fireball->setLifeTime(0.2f, 0.3f);
-
-	dust = SPK::Model::create(
-			SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
-			SPK::FLAG_ALPHA,
-			SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
-	);
-	dust->setParam(SPK::PARAM_ALPHA, 0.2f, 0.0f);
-	dust->setParam(SPK::PARAM_RED, 0.6f, 0.8f);
-	dust->setParam(SPK::PARAM_GREEN, 0.6f, 0.8f);
-	dust->setParam(SPK::PARAM_BLUE, 0.6f, 0.8f);
-	dust->setLifeTime(1.2f, 8.0f);
 }
 
 

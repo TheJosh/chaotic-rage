@@ -32,7 +32,7 @@ namespace GL
 		* @brief Constructor of GL2PointRenderer
 		* @param size : the size of the points
 		*/
-		GL2ColorQuadRenderer();
+		GL2ColorQuadRenderer(float size);
 
 		/**
 		* @brief Destructor of GL2PointRenderer
@@ -45,7 +45,7 @@ namespace GL
 		* @return A new registered GL2PointRenderer
 		* @since 1.04.00
 		*/
-		static GL2ColorQuadRenderer* create();
+		static GL2ColorQuadRenderer* create(float size);
 
 		///////////////
 		// Interface //
@@ -73,6 +73,8 @@ namespace GL
 
 	private :
 
+		float size[2];
+
 		glm::mat4 v_matrix;
 		glm::mat4 vp_matrix;
 
@@ -92,9 +94,9 @@ namespace GL
 	};
 
 
-	inline GL2ColorQuadRenderer* GL2ColorQuadRenderer::create()
+	inline GL2ColorQuadRenderer* GL2ColorQuadRenderer::create(float size)
 	{
-		GL2ColorQuadRenderer* obj = new GL2ColorQuadRenderer();
+		GL2ColorQuadRenderer* obj = new GL2ColorQuadRenderer(size);
 		registerObject(obj);
 		return obj;
 	}

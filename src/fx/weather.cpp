@@ -61,7 +61,7 @@ Weather::Weather(GameState* st, float map_size_x, float map_size_z, bool enabled
 
 
 	// Renderer for snow uses quads
-	this->snow_renderer = new SPK::GL::GL2InstanceQuadRenderer();
+	this->snow_renderer = new SPK::GL::GL2InstanceQuadRenderer(0.25f);
 	this->snow_renderer->initGLbuffers();
 	GEng()->render->addParticleRenderer(this->snow_renderer);
 

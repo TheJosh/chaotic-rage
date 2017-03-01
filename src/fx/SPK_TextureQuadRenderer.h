@@ -35,7 +35,7 @@ namespace GL
 		* @brief Constructor of GL2PointRenderer
 		* @param size : the size of the points
 		*/
-		GL2InstanceQuadRenderer();
+		GL2InstanceQuadRenderer(float size);
 
 		/**
 		* @brief Destructor of GL2PointRenderer
@@ -48,7 +48,7 @@ namespace GL
 		* @return A new registered GL2PointRenderer
 		* @since 1.04.00
 		*/
-		static GL2InstanceQuadRenderer* create();
+		static GL2InstanceQuadRenderer* create(float size);
 
 		///////////////
 		// Interface //
@@ -86,6 +86,7 @@ namespace GL
 	private :
 
 		Sprite* texture;
+		float size[2];
 
 		glm::mat4 v_matrix;
 		glm::mat4 vp_matrix;
@@ -106,9 +107,9 @@ namespace GL
 	};
 
 
-	inline GL2InstanceQuadRenderer* GL2InstanceQuadRenderer::create()
+	inline GL2InstanceQuadRenderer* GL2InstanceQuadRenderer::create(float size)
 	{
-		GL2InstanceQuadRenderer* obj = new GL2InstanceQuadRenderer();
+		GL2InstanceQuadRenderer* obj = new GL2InstanceQuadRenderer(size);
 		registerObject(obj);
 		return obj;
 	}

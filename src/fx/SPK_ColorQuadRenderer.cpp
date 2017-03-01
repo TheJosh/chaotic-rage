@@ -17,7 +17,7 @@ namespace SPK
 {
 namespace GL
 {
-	GL2ColorQuadRenderer::GL2ColorQuadRenderer() :
+	GL2ColorQuadRenderer::GL2ColorQuadRenderer(float size) :
 		GLRenderer(),
 		vao(0),
 		vboBillboardVertex(0),
@@ -25,7 +25,9 @@ namespace GL
 		vboColors(0),
 		buffer(NULL),
 		buffer_sz(0)
-	{}
+	{
+		this->size[0] = this->size[1] = size;
+	}
 
 	GL2ColorQuadRenderer::~GL2ColorQuadRenderer()
 	{
@@ -225,14 +227,13 @@ namespace GL
 
 		glm::vec3 camUp = glm::vec3(v_matrix[0][1], v_matrix[1][1], v_matrix[2][1]);
 		glm::vec3 camRight = glm::vec3(v_matrix[0][0], v_matrix[1][0], v_matrix[2][0]);
-		glm::vec2 size = glm::vec2(1.0f, 1.0f);
 
 		// Bind VAO and shader, set uniforms, draw
 		glBindVertexArray(vao);
 		glUseProgram(shaderIndex);
 		glUniform3fv(uniform_camUp, 1, glm::value_ptr(camUp));
 		glUniform3fv(uniform_camRight, 1, glm::value_ptr(camRight));
-		glUniform2fv(uniform_size, 1, glm::value_ptr(size));
+		glUniform2fv(uniform_size, 1, this->size);
 		glUniformMatrix4fv(uniform_mvp, 1, GL_FALSE, glm::value_ptr(vp_matrix));
 		
 		glDepthMask(GL_FALSE);
