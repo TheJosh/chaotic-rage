@@ -53,6 +53,7 @@ namespace GL
 			GLchar infolog[1024];
 			glGetShaderInfoLog(sVS, 1024, NULL, infolog);
 			GL_LOG("Error compiling vertex shader:\n%s", infolog);
+			assert(0);
 		}
 
 		// Compile fragment shader
@@ -69,6 +70,7 @@ namespace GL
 			GLchar infolog[1024];
 			glGetShaderInfoLog(sFS, 1024, NULL, infolog);
 			GL_LOG("Error compiling fragment shader:\n%s", infolog);
+			assert(0);
 		}
 
 		glBindAttribLocation(program, 0, "vVertexPosition");
@@ -86,6 +88,7 @@ namespace GL
 			GLchar infolog[1024];
 			glGetProgramInfoLog(program, 1024, NULL, infolog);
 			GL_LOG("Error linking program:\n%s", infolog);
+			assert(0);
 		}
 
 		CHECK_OPENGL_ERROR;
