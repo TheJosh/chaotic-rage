@@ -75,10 +75,17 @@ namespace GL
 			this->texture = val;
 		}
 
+		inline void setAtlas(int x, int y)
+		{
+			atlas[0] = x;
+			atlas[1] = y;
+		}
+
 	private :
 
 		Sprite* texture;
 		float size[2];
+		int atlas[2];
 
 		GLuint vao;
 		GLuint vboBillboardVertex;

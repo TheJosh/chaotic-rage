@@ -29,6 +29,7 @@ namespace GL
 		buffer_sz(0)
 	{
 		this->size[0] = this->size[1] = size;
+		this->atlas[0] = this->atlas[1] = 1;
 	}
 
 	GL2InstanceQuadRenderer::~GL2InstanceQuadRenderer()
