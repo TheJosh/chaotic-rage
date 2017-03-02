@@ -102,7 +102,8 @@ namespace GL
 			"in float fTexIndex;\n"
 			"uniform sampler2D tex;\n"
 			"void main() {\n"
-				"gl_FragColor = texture2D(tex, fTexUV) * fColor;\n"
+				"vec2 uv = fTexUV / vec2(3.0, 3.0);\n"
+				"gl_FragColor = texture2D(tex, uv) * fColor;\n"
 			"}\n"
 		);
 
