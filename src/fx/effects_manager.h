@@ -10,6 +10,7 @@ class btVector3;
 class GameState;
 class Mod;
 class Sprite;
+class Texture2DArray;
 
 namespace SPK {
 	class Model;
@@ -42,11 +43,11 @@ class EffectsManager {
 		SPK::Model* flames;
 		SPK::Model* dust;
 
-		Sprite* tex_fireball;
+		Texture2DArray* tex_fireball;
 		SPK::GL::GL2InstanceQuadRenderer* render_fireball;
 		SPK::Model* model_fireball;
 
 		Sprite* tex_blood;
-		SPK::GL::GL2InstanceQuadRenderer* render_blood;
+		SPK::GL::GL2ColorQuadRenderer* render_blood;
 		SPK::Model* model_blood;
 };

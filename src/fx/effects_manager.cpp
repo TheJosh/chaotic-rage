@@ -10,6 +10,7 @@
 #include "../game_engine.h"
 #include "../spark/SPK.h"
 #include "../render/render.h"
+#include "../render_opengl/texture_2d_array.h"
 #include "../mod/mod.h"
 #include "../mod/mod_manager.h"
 
@@ -80,10 +81,7 @@ void EffectsManager::setUpCoreEffects()
 
 	//  Blood  //
 
-	tex_blood = GEng()->mm->getBase()->getTexture2D("textures/blood.png");
-
-	render_blood = new SPK::GL::GL2InstanceQuadRenderer(1.0f);
-	render_blood->setTexture(tex_blood);
+	render_blood = new SPK::GL::GL2ColorQuadRenderer(1.0f);
 	render_blood->initGLbuffers();
 	GEng()->render->addParticleRenderer(render_blood);
 
@@ -101,16 +99,18 @@ void EffectsManager::setUpCoreEffects()
 
 	//  Fireball (explosion)  //
 
-	tex_fireball = GEng()->mm->getBase()->getTexture2D("textures/explosion_atlas.png");
+	tex_fireball = new Texture2DArray();
+	tex_fireball->loadSingleImage(
+		"textures/explosion_atlas.png", GEng()->mm->getBase(), 9
+	);
 
 	render_fireball = new SPK::GL::GL2InstanceQuadRenderer(1.0f);
 	render_fireball->setTexture(tex_fireball);
-	render_fireball->setAtlas(3, 3);
 	render_fireball->initGLbuffers();
 	GEng()->render->addParticleRenderer(render_fireball);
 	
 	model_fireball = SPK::Model::create(
-		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA | SPK::FLAG_TEXTURE_INDEX,
 		SPK::FLAG_ALPHA,
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_TEXTURE_INDEX
 	);
@@ -118,7 +118,7 @@ void EffectsManager::setUpCoreEffects()
 	model_fireball->setParam(SPK::PARAM_RED, 0.8f, 1.0f);
 	model_fireball->setParam(SPK::PARAM_GREEN, 0.0f, 0.5f);
 	model_fireball->setParam(SPK::PARAM_BLUE, 0.0f, 0.1f);
-	model_fireball->setParam(SPK::PARAM_TEXTURE_INDEX, 1.0f, 9.0f);
+	model_fireball->setParam(SPK::PARAM_TEXTURE_INDEX, 0.0f, 8.0f);
 	model_fireball->setLifeTime(0.2f, 0.3f);
 }
 
