@@ -22,7 +22,7 @@ Texture2DArray::~Texture2DArray()
 /**
 * Load a image in a mod into a SDL_Surface
 **/
-SDL_Surface* Texture2DArray::rawLoadImage(string filename, Mod* mod)
+SDL_Surface* Texture2DArray::rawLoadImage(std::string filename, Mod* mod)
 {
 	SDL_Surface* surf;
 	SDL_RWops* rw;
@@ -60,7 +60,7 @@ void Texture2DArray::freeRawImage(SDL_Surface* surf)
 * Load a whole array from a single image
 * Array layers should be stacked vertically.
 **/
-void Texture2DArray::loadSingleImage(string filename, Mod* mod, unsigned int numLayers)
+void Texture2DArray::loadSingleImage(std::string filename, Mod* mod, unsigned int numLayers)
 {
 	GLenum texture_format;
 	SDL_Surface* surf;
