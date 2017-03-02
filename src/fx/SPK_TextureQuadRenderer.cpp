@@ -107,10 +107,10 @@ namespace GL
 			"}\n"
 		);
 
-		uniform_camUp = glGetUniformLocation(shaderIndex, "camUp");CHECK_OPENGL_ERROR;
-		uniform_camRight = glGetUniformLocation(shaderIndex, "camRight");CHECK_OPENGL_ERROR;
-		uniform_size = glGetUniformLocation(shaderIndex, "size");CHECK_OPENGL_ERROR;
-		uniform_mvp = glGetUniformLocation(shaderIndex, "mVP");CHECK_OPENGL_ERROR;
+		uniform_camUp = glGetUniformLocation(shaderIndex, "camUp");
+		uniform_camRight = glGetUniformLocation(shaderIndex, "camRight");
+		uniform_size = glGetUniformLocation(shaderIndex, "size");
+		uniform_mvp = glGetUniformLocation(shaderIndex, "mVP");
 
 		GLuint uniform_tex_slot = glGetUniformLocation(shaderIndex, "fTexUV");
 		glUniform1i(uniform_tex_slot, 1);
