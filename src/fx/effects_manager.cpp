@@ -41,7 +41,7 @@ EffectsManager::~EffectsManager()
 **/
 void EffectsManager::setUpCoreEffects()
 {
-	points = new SPK::GL::GL2ColorQuadRenderer(1.0f);
+	points = new SPK::GL::GL2ColorQuadRenderer(0.25f);
 	points->initGLbuffers();
 	GEng()->render->addParticleRenderer(points);
 
@@ -81,7 +81,7 @@ void EffectsManager::setUpCoreEffects()
 
 	//  Blood  //
 
-	render_blood = new SPK::GL::GL2ColorQuadRenderer(1.0f);
+	render_blood = new SPK::GL::GL2ColorQuadRenderer(0.25f);
 	render_blood->initGLbuffers();
 	GEng()->render->addParticleRenderer(render_blood);
 
@@ -104,7 +104,7 @@ void EffectsManager::setUpCoreEffects()
 		"textures/explosion_atlas.png", GEng()->mm->getBase(), 9
 	);
 
-	render_fireball = new SPK::GL::GL2InstanceQuadRenderer(1.0f);
+	render_fireball = new SPK::GL::GL2InstanceQuadRenderer(0.25f);
 	render_fireball->setTexture(tex_fireball);
 	render_fireball->initGLbuffers();
 	GEng()->render->addParticleRenderer(render_fireball);
@@ -203,7 +203,7 @@ void EffectsManager::bloodSpray(const btVector3& location, float damage)
 	emitter->setZone(SPK::Point::create(SPK::Vector3D(location.x(), location.y() - 0.5f, location.z())));
 	emitter->setFlow(-1);
 	emitter->setTank(damage / 2);
-	emitter->setForce(10.0f, 15.0f);
+	emitter->setForce(5.0f, 10.0f);
 
 	// Create group
 	group = SPK::Group::create(model_blood, damage);
