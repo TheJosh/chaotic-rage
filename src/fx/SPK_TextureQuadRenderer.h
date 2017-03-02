@@ -10,7 +10,7 @@
 #include <glm/glm.hpp>
 
 class GLVAO;
-class Sprite;
+class Texture2DArray;
 
 
 namespace SPK
@@ -70,22 +70,15 @@ namespace GL
 		// Options //
 		/////////////
 
-		inline void setTexture(Sprite* val)
+		inline void setTexture(Texture2DArray* val)
 		{
 			this->texture = val;
 		}
 
-		inline void setAtlas(int x, int y)
-		{
-			atlas[0] = x;
-			atlas[1] = y;
-		}
-
 	private :
 
-		Sprite* texture;
+		Texture2DArray* texture;
 		float size[2];
-		int atlas[2];
 
 		GLuint vao;
 		GLuint vboBillboardVertex;

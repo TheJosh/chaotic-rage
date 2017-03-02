@@ -6,7 +6,7 @@
 #include "SPK_TextureQuadRenderer.h"
 #include "../spark/Core/SPK_Particle.h"
 #include "../spark/Core/SPK_Group.h"
-#include "../render/sprite.h"
+#include "../render_opengl/texture_2d_array.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -29,7 +29,6 @@ namespace GL
 		buffer_sz(0)
 	{
 		this->size[0] = this->size[1] = size;
-		this->atlas[0] = this->atlas[1] = 1;
 	}
 
 	GL2InstanceQuadRenderer::~GL2InstanceQuadRenderer()
@@ -76,8 +75,8 @@ namespace GL
 		glBindVertexArray(0);
 
 		shaderIndex = createShaderProgram(
-			"in vec4 vVertexPosition;\n"
-			"in vec3 vParticlePosition;\n"
+			"in vec3 vVertexPosition;\n"
+			"in vec4 vParticlePosition;\n"
 			"in vec4 vColor;\n"
 			"out vec4 fColor;\n"
 			"out vec2 fTexUV;\n"
@@ -88,22 +87,21 @@ namespace GL
 			"uniform mat4 mVP;\n"
 			
 			"void main() {\n"
-				"vec3 pos = vParticlePosition\n"
+				"vec3 pos = vParticlePosition.xyz\n"
 				"+ camRight * vVertexPosition.x * size.x\n"
 				"+ camUp * vVertexPosition.y * size.y;\n"
 				"gl_Position = mVP * vec4(pos, 1.0);\n"
 				"fColor = vColor;\n"
 				"fTexUV = vVertexPosition.xy + vec2(0.5, 0.5);\n"
-				"fTexIndex = vVertexPosition.w;\n"
+				"fTexIndex = vParticlePosition.w;\n"
 			"}\n",
 
 			"in vec4 fColor;\n"
 			"in vec2 fTexUV;\n"
 			"in float fTexIndex;\n"
-			"uniform sampler2D tex;\n"
+			"uniform sampler2DArray tex;\n"
 			"void main() {\n"
-				"vec2 uv = fTexUV / vec2(3.0, 3.0);\n"
-				"gl_FragColor = texture2D(tex, uv) * fColor;\n"
+				"gl_FragColor = texture(tex, vec3(fTexUV.xy, fTexIndex));\n"
 			"}\n"
 		);
 
@@ -111,9 +109,6 @@ namespace GL
 		uniform_camRight = glGetUniformLocation(shaderIndex, "camRight");
 		uniform_size = glGetUniformLocation(shaderIndex, "size");
 		uniform_mvp = glGetUniformLocation(shaderIndex, "mVP");
-
-		GLuint uniform_tex_slot = glGetUniformLocation(shaderIndex, "fTexUV");
-		glUniform1i(uniform_tex_slot, 1);
 	}
 
 	void GL2InstanceQuadRenderer::destroyGLbuffers()
@@ -169,9 +164,7 @@ namespace GL
 		glm::vec3 camUp = glm::vec3(v_matrix[0][1], v_matrix[1][1], v_matrix[2][1]);
 		glm::vec3 camRight = glm::vec3(v_matrix[0][0], v_matrix[1][0], v_matrix[2][0]);
 
-		if (texture != NULL) {
-			glBindTexture(GL_TEXTURE_2D, texture->pixels);
-		}
+		glBindTexture(GL_TEXTURE_2D_ARRAY, texture->getTexIndex());
 		
 		// Bind VAO and shader, set uniforms, draw
 		glBindVertexArray(vao);
