@@ -62,7 +62,7 @@ namespace GL
 		glGenBuffers(1, &vboPositions);
 		glBindBuffer(GL_ARRAY_BUFFER, vboPositions);
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
 		glVertexAttribDivisor(1, 1);
 
 		// Set up colors buffer
@@ -75,11 +75,12 @@ namespace GL
 		glBindVertexArray(0);
 
 		shaderIndex = createShaderProgram(
-			"in vec3 vVertexPosition;\n"
+			"in vec4 vVertexPosition;\n"
 			"in vec3 vParticlePosition;\n"
 			"in vec4 vColor;\n"
 			"out vec4 fColor;\n"
 			"out vec2 fTexUV;\n"
+			"out float fTexIndex;\n"
 			"uniform vec3 camUp;\n"
 			"uniform vec3 camRight;\n"
 			"uniform vec2 size;\n"
@@ -92,10 +93,12 @@ namespace GL
 				"gl_Position = mVP * vec4(pos, 1.0);\n"
 				"fColor = vColor;\n"
 				"fTexUV = vVertexPosition.xy + vec2(0.5, 0.5);\n"
+				"fTexIndex = vVertexPosition.w;\n"
 			"}\n",
 
 			"in vec4 fColor;\n"
 			"in vec2 fTexUV;\n"
+			"in float fTexIndex;\n"
 			"uniform sampler2D tex;\n"
 			"void main() {\n"
 				"gl_FragColor = texture2D(tex, fTexUV) * fColor;\n"
@@ -137,10 +140,11 @@ namespace GL
 				buffer_sz *= 2;
 			}
 			free(buffer);
-			buffer = (float*) malloc(sizeof(float) * 3 * buffer_sz);
+			buffer = (float*) malloc(sizeof(float) * 4 * buffer_sz);
 		}
 
 		// Copy data into buffer with the correct layout
+		// XYZ is coordinate and W is texture index
 		float* ptr = buffer;
 		for (size_t i = 0; i < num; ++i)
 		{
@@ -149,11 +153,12 @@ namespace GL
 			*ptr++ = particle.position().x;
 			*ptr++ = particle.position().y;
 			*ptr++ = particle.position().z;
+			*ptr++ = particle.getParamCurrentValue(SPK::PARAM_TEXTURE_INDEX);
 		}
 
 		// Set position data
 		glBindBuffer(GL_ARRAY_BUFFER, vboPositions);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * num, buffer, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * num, buffer, GL_DYNAMIC_DRAW);
 
 		// Set color data
 		glBindBuffer(GL_ARRAY_BUFFER, vboColors);
