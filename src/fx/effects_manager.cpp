@@ -101,22 +101,24 @@ void EffectsManager::setUpCoreEffects()
 
 	//  Fireball (explosion)  //
 
-	tex_fireball = GEng()->mm->getBase()->getTexture2D("textures/explosion00.png");
+	tex_fireball = GEng()->mm->getBase()->getTexture2D("textures/explosion_atlas.png");
 
 	render_fireball = new SPK::GL::GL2InstanceQuadRenderer(1.0f);
 	render_fireball->setTexture(tex_fireball);
+	render_fireball->setAtlas(3, 3);
 	render_fireball->initGLbuffers();
 	GEng()->render->addParticleRenderer(render_fireball);
 	
 	model_fireball = SPK::Model::create(
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
 		SPK::FLAG_ALPHA,
-		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_TEXTURE_INDEX
 	);
 	model_fireball->setParam(SPK::PARAM_ALPHA, 0.8f, 1.0f);
 	model_fireball->setParam(SPK::PARAM_RED, 0.8f, 1.0f);
 	model_fireball->setParam(SPK::PARAM_GREEN, 0.0f, 0.5f);
 	model_fireball->setParam(SPK::PARAM_BLUE, 0.0f, 0.1f);
+	model_fireball->setParam(SPK::PARAM_TEXTURE_INDEX, 1.0f, 9.0f);
 	model_fireball->setLifeTime(0.2f, 0.3f);
 }
 
