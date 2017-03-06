@@ -50,7 +50,7 @@ class EffectsManager {
 		SPK::GL::GL2InstanceQuadRenderer* render_fireball;
 		SPK::Model* model_fireball;
 
-		Sprite* tex_blood;
-		SPK::GL::GL2ColorQuadRenderer* render_blood;
+		Texture2DArray* tex_blood;
+		SPK::GL::GL2InstanceQuadRenderer* render_blood;
 		SPK::Model* model_blood;
 };

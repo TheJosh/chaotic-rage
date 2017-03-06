@@ -85,20 +85,24 @@ void EffectsManager::setUpCoreEffects()
 
 	//  Blood  //
 
-	render_blood = new SPK::GL::GL2ColorQuadRenderer(0.25f);
+	tex_blood = new Texture2DArray();
+	tex_blood->loadSingleImage(
+		"textures/blood_atlas.png", GEng()->mm->getBase(), 4
+	);
+
+	render_blood = new SPK::GL::GL2InstanceQuadRenderer(0.25f);
+	render_blood->setTexture(tex_blood);
 	render_blood->initGLbuffers();
 	GEng()->render->addParticleRenderer(render_blood);
 
 	model_blood = SPK::Model::create(
-		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
+		SPK::FLAG_ALPHA | SPK::FLAG_TEXTURE_INDEX,
 		SPK::FLAG_ALPHA,
-		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
+		SPK::FLAG_ALPHA | SPK::FLAG_TEXTURE_INDEX
 	);
-	model_blood->setParam(SPK::PARAM_ALPHA, 0.8f, 1.0f);
-	model_blood->setParam(SPK::PARAM_RED, 0.5f, 1.0f);
-	model_blood->setParam(SPK::PARAM_GREEN, 0.0f, 0.1f);
-	model_blood->setParam(SPK::PARAM_BLUE, 0.0f, 0.2f);
-	model_blood->setLifeTime(0.4f, 0.7f);
+	model_blood->setParam(SPK::PARAM_ALPHA, 0.8f, 1.0f,  0.0f, 0.2f);
+	model_blood->setParam(SPK::PARAM_TEXTURE_INDEX, 0.0f, 3.0f);
+	model_blood->setLifeTime(0.2f, 0.4f);
 
 
 	//  Fireball (explosion)  //
@@ -134,7 +138,7 @@ void EffectsManager::setUpCoreEffects()
 * @param num The number of particles to create
 * @param start The start location of the particle stream
 * @param end The end location of the particle stream
-* @param float speed How fast bullets should be moving, in metres/second
+* @param float speed How fast bullets should be moving, in metres/
 **/
 void EffectsManager::weaponBullets(btVector3* begin, btVector3* end, float speed)
 {
