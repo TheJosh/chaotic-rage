@@ -906,6 +906,10 @@ void Unit::dieAnimSound()
 	this->endFiring();
 	this->leaveVehicle();
 
+	// Bonus splatter of blood
+	btTransform xform = this->getTransform();
+	st->effects->bloodSpray(xform.getOrigin(), 500.0f);
+	
 	// Remove move nodes so they can be animated
 	this->anim->removeMoveNode(uc->node_head);
 

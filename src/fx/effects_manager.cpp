@@ -186,21 +186,12 @@ void EffectsManager::bloodSpray(const btVector3& location, float damage)
 	SPK::RandomEmitter* emitter;
 	SPK::Group* group;
 
-	// Falling
 	emitter = SPK::RandomEmitter::create();
 	emitter->setZone(SPK::Point::create(SPK::Vector3D(location.x(), location.y() - 0.5f, location.z())));
 	emitter->setFlow(-1);
-	emitter->setTank(damage / 2);
-	emitter->setForce(10.0f, 15.0f);
-
-	// Splatting
-	emitter = SPK::RandomEmitter::create();
-	emitter->setZone(SPK::Point::create(SPK::Vector3D(location.x(), location.y() - 0.5f, location.z())));
-	emitter->setFlow(-1);
-	emitter->setTank(damage / 2);
+	emitter->setTank(damage / 10.0f);
 	emitter->setForce(5.0f, 10.0f);
 
-	// Create group
 	group = SPK::Group::create(model_blood, damage);
 	group->addEmitter(emitter);
 	group->setGravity(gravity);
