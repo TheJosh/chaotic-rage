@@ -228,6 +228,9 @@ void Player::angleFromMouse(int x, int y, int delta)
 	if (this->vertical_angle > max_angle) this->vertical_angle = max_angle;
 	if (this->vertical_angle < -max_angle) this->vertical_angle = -max_angle;
 
+	aim_dir = this->getTransform().getRotation()
+		* btQuaternion(btVector3(-1.0f, 0.0f, 0.0f), DEG_TO_RAD(this->vertical_angle));
+
 	this->drive_old = this->drive;
 }
 

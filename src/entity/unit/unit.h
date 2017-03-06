@@ -26,6 +26,7 @@ class btCharacterControllerInterface;
 class btCollisionObject;
 class btTransform;
 class btVector3;
+class btQuaternion;
 
 
 using namespace std;
@@ -55,6 +56,8 @@ class Unit : public Entity
 		// Parameters are copied from the type
 		// Might also be adjusted by powerups
 		UnitParams params;
+
+		btQuaternion aim_dir;
 
 		// When this reaches zero, the unit dies
 		float health;

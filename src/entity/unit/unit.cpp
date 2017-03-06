@@ -738,6 +738,7 @@ void Unit::update(float delta)
 		} else if (this->weapon && this->weapon->next_use < st->game_time && this->weapon->magazine > 0) {
 			w = this->weapon->wt;
 			wxform = btTransform(xform);
+			wxform.setRotation(aim_dir);
 		}
 	}
 

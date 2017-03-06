@@ -138,6 +138,7 @@ void AILogic::update()
 			float angle = acos(this->dir.dot(fwd));
 			btQuaternion rot = btQuaternion(axis, angle).normalize();
 			u->ghost->getWorldTransform().setBasis(btMatrix3x3(rot));
+			u->aim_dir = rot;
 		}
 
 		this->dir_flag = false;
