@@ -112,7 +112,7 @@ void EffectsManager::setUpCoreEffects()
 		"textures/explosion_atlas.png", GEng()->mm->getBase(), 9
 	);
 
-	render_fireball = new SPK::GL::GL2InstanceQuadRenderer(0.25f);
+	render_fireball = new SPK::GL::GL2InstanceQuadRenderer(3.0f);
 	render_fireball->setTexture(tex_fireball);
 	render_fireball->initGLbuffers();
 	GEng()->render->addParticleRenderer(render_fireball);
@@ -216,11 +216,11 @@ void EffectsManager::explosion(const btVector3& location, float damage)
 	emitter = SPK::RandomEmitter::create();
 	emitter->setZone(SPK::Point::create(SPK::Vector3D(location.x(), location.y(), location.z())));
 	emitter->setFlow(-1);
-	emitter->setTank(4000);
-	emitter->setForce(20.0f, 40.0f);
+	emitter->setTank(100);
+	emitter->setForce(10.0f, 20.0f);
 
 	// Create group
-	group = SPK::Group::create(model_fireball, 4000);
+	group = SPK::Group::create(model_fireball, 100);
 	group->addEmitter(emitter);
 	group->setGravity(gravity);
 	group->setRenderer(render_fireball);
