@@ -13,6 +13,7 @@ class Sprite;
 class Texture2DArray;
 
 namespace SPK {
+	class Group;
 	class Model;
 	class Renderer;
 	namespace GL {
@@ -39,7 +40,9 @@ class EffectsManager {
 
 		SPK::GL::GL2ColorQuadRenderer* points;
 
-		SPK::Model* bullets;
+		SPK::Model* bullets_model;
+		SPK::Group* bullets_group;
+		
 		SPK::Model* flames;
 		SPK::Model* dust;
 

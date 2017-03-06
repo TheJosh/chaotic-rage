@@ -45,16 +45,20 @@ void EffectsManager::setUpCoreEffects()
 	points->initGLbuffers();
 	GEng()->render->addParticleRenderer(points);
 
-	bullets = SPK::Model::create(
+	bullets_model = SPK::Model::create(
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
 		SPK::FLAG_ALPHA,
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
 	);
-	bullets->setParam(SPK::PARAM_ALPHA, 1.0f, 0.0f);
-	bullets->setParam(SPK::PARAM_RED, 0.1f, 0.3f);
-	bullets->setParam(SPK::PARAM_GREEN, 0.1f, 0.3f);
-	bullets->setParam(SPK::PARAM_BLUE, 0.1f, 0.3f);
-	bullets->setLifeTime(0.5f, 0.7f);
+	bullets_model->setParam(SPK::PARAM_ALPHA, 1.0f, 0.0f);
+	bullets_model->setParam(SPK::PARAM_RED, 0.0f, 0.1f);
+	bullets_model->setParam(SPK::PARAM_GREEN, 0.0f, 0.1f);
+	bullets_model->setParam(SPK::PARAM_BLUE, 0.0f, 0.1f);
+	bullets_model->setLifeTime(0.5f, 0.7f);
+
+	bullets_group = SPK::Group::create(bullets_model, 25);
+	bullets_group->setRenderer(points);
+	st->addParticleGroup(bullets_group);
 
 	SPK::Model* flames = SPK::Model::create(
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
@@ -136,21 +140,14 @@ void EffectsManager::setUpCoreEffects()
 **/
 void EffectsManager::weaponBullets(btVector3 * begin, btVector3 * end)
 {
-	btVector3 dir = *end - *begin;
-	dir.normalize();
+	btVector3 velocity = *end - *begin;
+	velocity.normalize();
+	velocity *= 100.0f;
 
-	// Bullets - emitter
-	SPK::Emitter* emitter = SPK::StraightEmitter::create(SPK::Vector3D(dir.x(), dir.y(), dir.z()));
-	emitter->setZone(SPK::Point::create(SPK::Vector3D(begin->x(), begin->y(), begin->z())));
-	emitter->setFlow(-1);
-	emitter->setTank(25);
-	emitter->setForce(40.0f, 50.0f);
+	SPK::Vector3D spk_pos(begin->x(), begin->y(), begin->z());
+	SPK::Vector3D spk_vel(velocity.x(), velocity.y(), velocity.z());
 
-	// Bullets - group
-	SPK::Group* group = SPK::Group::create(bullets, 25);
-	group->addEmitter(emitter);
-	group->setRenderer(points);
-	st->addParticleGroup(group);
+	bullets_group->addParticles(1, spk_pos, spk_vel);
 }
 
 
