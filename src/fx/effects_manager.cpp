@@ -71,16 +71,25 @@ void EffectsManager::setUpCoreEffects()
 	flames->setParam(SPK::PARAM_BLUE, 0.1f, 0.0f);
 	flames->setLifeTime(0.5f, 0.7f);
 
-	dust = SPK::Model::create(
-			SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
-			SPK::FLAG_ALPHA,
-			SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
+
+	tex_dust = new Texture2DArray();
+	tex_dust->loadSingleImage(
+		"textures/dust_atlas.png", GEng()->mm->getBase(), 4
 	);
-	dust->setParam(SPK::PARAM_ALPHA, 0.2f, 0.0f);
-	dust->setParam(SPK::PARAM_RED, 0.6f, 0.8f);
-	dust->setParam(SPK::PARAM_GREEN, 0.6f, 0.8f);
-	dust->setParam(SPK::PARAM_BLUE, 0.6f, 0.8f);
-	dust->setLifeTime(1.2f, 8.0f);
+
+	render_dust = new SPK::GL::GL2InstanceQuadRenderer(1.0f);
+	render_dust->setTexture(tex_dust);
+	render_dust->initGLbuffers();
+	GEng()->render->addParticleRenderer(render_dust);
+
+	model_dust = SPK::Model::create(
+			SPK::FLAG_ALPHA | SPK::FLAG_TEXTURE_INDEX,
+			SPK::FLAG_ALPHA,
+			SPK::FLAG_TEXTURE_INDEX
+	);
+	model_dust->setParam(SPK::PARAM_ALPHA, 0.3f, 0.0f);
+	model_dust->setParam(SPK::PARAM_TEXTURE_INDEX, 0.0f, 3.0f);
+	model_dust->setLifeTime(1.2f, 8.0f);
 
 
 	//  Blood  //
@@ -230,14 +239,14 @@ void EffectsManager::explosion(const btVector3& location, float damage)
 	emitter = SPK::NormalEmitter::create();
 	emitter->setZone(SPK::Sphere::create(SPK::Vector3D(location.x(), location.y(), location.z()), 2.0f));
 	emitter->setFlow(-1);
-	emitter->setTank(2000);
+	emitter->setTank(50);
 	emitter->setForce(3.0f, 5.0f);
 
 	// Create group
-	group = SPK::Group::create(dust, 2000);
+	group = SPK::Group::create(model_dust, 50);
 	group->addEmitter(emitter);
 	group->setGravity(gravity);
 	group->setFriction(1.0f);
-	group->setRenderer(points);
+	group->setRenderer(render_dust);
 	st->addParticleGroup(group);
 }
