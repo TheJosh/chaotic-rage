@@ -44,6 +44,7 @@ class WeaponRaycast : public WeaponType
 		float range;
 		float damage;
 		unsigned int burst;
+		float speed;
 
 	public:
 		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);

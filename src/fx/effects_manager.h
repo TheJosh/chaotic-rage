@@ -30,7 +30,7 @@ class EffectsManager {
 
 		void setUpCoreEffects();
 
-		void weaponBullets(btVector3 * begin, btVector3 * end);
+		void weaponBullets(btVector3* begin, btVector3* end, float speed);
 		void weaponFlamethrower(btVector3 * begin, btVector3 * end);
 		void bloodSpray(const btVector3& location, float damage);
 		void explosion(const btVector3& location, float damage);

@@ -85,6 +85,7 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				w->range = (float)cfg_getfloat(cfg_sec, "range");
 				w->damage = (float)cfg_getfloat(cfg_sec, "damage");
 				w->burst = (float)cfg_getint(cfg_sec, "burst");
+				w->speed = (float)cfg_getfloat(cfg_sec, "speed");
 			}
 			break;
 

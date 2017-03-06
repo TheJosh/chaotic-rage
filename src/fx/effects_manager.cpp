@@ -131,18 +131,16 @@ void EffectsManager::setUpCoreEffects()
 * Creates particles for a weapon.
 * Angles and speeds are randomised. Lifetime is calculated based on the end vector and a constant speed.
 *
-* TODO: This should have a variable speed as an argument, with the function calculating the age based on the length
-*       This will allow the actual (post-rayTest) endpoint to be used, which would be much better
-*
 * @param num The number of particles to create
 * @param start The start location of the particle stream
 * @param end The end location of the particle stream
+* @param float speed How fast bullets should be moving, in metres/second
 **/
-void EffectsManager::weaponBullets(btVector3 * begin, btVector3 * end)
+void EffectsManager::weaponBullets(btVector3* begin, btVector3* end, float speed)
 {
 	btVector3 velocity = *end - *begin;
 	velocity.normalize();
-	velocity *= 100.0f;
+	velocity *= speed;
 
 	SPK::Vector3D spk_pos(begin->x(), begin->y(), begin->z());
 	SPK::Vector3D spk_vel(velocity.x(), velocity.y(), velocity.z());

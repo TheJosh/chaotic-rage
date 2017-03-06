@@ -70,7 +70,7 @@ void WeaponRaycast::doFire(Unit *u, btTransform &origin, float damage_multiplier
 
 	for (unsigned int i = this->burst; i != 0; --i) {
 		raycastDoFire(this, u, origin, begin, end, damage_multiplier);
-		st->effects->weaponBullets(&begin, &end);
+		st->effects->weaponBullets(&begin, &end, this->speed);
 	}
 }
 
