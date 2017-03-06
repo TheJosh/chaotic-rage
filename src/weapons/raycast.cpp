@@ -46,12 +46,21 @@ void raycastDoFire(T const &weapon, Unit *u, btTransform &origin, btVector3 &beg
 	weapon->st->physics->getWorld()->rayTest(begin, end, cb);
 
 	if (cb.hasHit()) {
-		if (cb.m_collisionObject->getUserPointer()) {
+		if (cb.m_collisionObject->getUserPointer() != NULL) {
+			btVector3 dist_vec = cb.m_hitPointWorld - begin;
+			float dist = dist_vec.length();
+			float damage_falloff;
+			
+			if (dist < 3.0f) {
+				damage_falloff = 1.0f;
+			} else {
+				damage_falloff = (weapon->range - dist) / weapon->range;
+			}
+			
 			Entity* entA = static_cast<Entity*>(cb.m_collisionObject->getUserPointer());
 			DEBUG("weap", "Ray hit %p", entA);
-			if (entA) {
-				entA->takeDamage(weapon->damage * damage_multiplier);
-			}
+			
+			entA->takeDamage(weapon->damage * damage_falloff * damage_multiplier);
 		}
 
 	} else {
