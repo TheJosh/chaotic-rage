@@ -86,6 +86,10 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				w->damage = (float)cfg_getfloat(cfg_sec, "damage");
 				w->burst = (float)cfg_getint(cfg_sec, "burst");
 				w->speed = (float)cfg_getfloat(cfg_sec, "speed");
+
+				// Damage in config file is across the whole shot
+				// rather than per raycast in a burst
+				w->damage = w->damage / w->burst;
 			}
 			break;
 
