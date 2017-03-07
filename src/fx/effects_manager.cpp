@@ -56,7 +56,7 @@ void EffectsManager::setUpCoreEffects()
 	bullets_model->setParam(SPK::PARAM_BLUE, 0.0f, 0.1f);
 	bullets_model->setLifeTime(0.5f, 0.7f);
 
-	bullets_group = SPK::Group::create(bullets_model, 25);
+	bullets_group = SPK::Group::create(bullets_model, 1024);
 	bullets_group->setRenderer(points);
 	st->addParticleGroup(bullets_group);
 
