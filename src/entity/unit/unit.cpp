@@ -451,7 +451,9 @@ bool Unit::pickupWeapon(WeaponType* wt)
 	}
 
 	// TODO: This is for testing only!!
-	uw->attach[WPATT_BARREL] = GEng()->mm->getWeaponAttachment("silencer");
+	if (wt->name == "uzi") {
+		uw->attach[WPATT_BARREL] = GEng()->mm->getWeaponAttachment("silencer");
+	}
 
 	return true;
 }
