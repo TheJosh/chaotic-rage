@@ -60,16 +60,21 @@ void EffectsManager::setUpCoreEffects()
 	bullets_group->setRenderer(points);
 	st->addParticleGroup(bullets_group);
 
-	SPK::Model* flames = SPK::Model::create(
+
+	SPK::Model* flames_model = SPK::Model::create(
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
 		SPK::FLAG_ALPHA,
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE
 	);
-	flames->setParam(SPK::PARAM_ALPHA, 0.5f, 0.5f);
-	flames->setParam(SPK::PARAM_RED, 0.9f, 0.5f);
-	flames->setParam(SPK::PARAM_GREEN, 0.3f, 0.2f);
-	flames->setParam(SPK::PARAM_BLUE, 0.1f, 0.0f);
-	flames->setLifeTime(0.5f, 0.7f);
+	flames_model->setParam(SPK::PARAM_ALPHA, 0.5f, 0.0f);
+	flames_model->setParam(SPK::PARAM_RED, 0.5f, 0.9f);
+	flames_model->setParam(SPK::PARAM_GREEN, 0.2f, 0.3f);
+	flames_model->setParam(SPK::PARAM_BLUE, 0.0f, 0.1f);
+	flames_model->setLifeTime(0.5f, 0.7f);
+
+	flames_group = SPK::Group::create(flames_model, 1024);
+	flames_group->setRenderer(points);
+	st->addParticleGroup(flames_group);
 
 
 	tex_dust = new Texture2DArray();
@@ -166,28 +171,26 @@ void EffectsManager::weaponBullets(btVector3* begin, btVector3* end, float speed
 * Creates particles for a flamethrower.
 * Angles and speeds are randomised. Lifetime is calculated based on the end vector and a constant speed.
 *
-* TODO: This should have a variable speed as an argument, with the function calculating the age based on the length
-*       This will allow the actual (post-rayTest) endpoint to be used, which would be much better
-*
 * @param num The number of particles to create
 * @param start The start location of the particle stream
 * @param end The end location of the particle stream
 **/
 void EffectsManager::weaponFlamethrower(btVector3 * begin, btVector3 * end)
 {
-	btVector3 dir = *end - *begin;
-	dir.normalize();
+	btVector3 velocity = *end - *begin;
+	velocity.normalize();
+	velocity *= 45.0f;
 
-	SPK::Emitter* emitter = SPK::SphericEmitter::create(SPK::Vector3D(dir.x(), dir.y(), dir.z()), 0.02f * PI, 0.06f * PI);
-	emitter->setZone(SPK::Point::create(SPK::Vector3D(begin->x(), begin->y(), begin->z())));
-	emitter->setFlow(-1);
-	emitter->setTank(100);
-	emitter->setForce(40.0f, 50.0f);
-	
-	SPK::Group* group = SPK::Group::create(flames, 100);
-	group->addEmitter(emitter);
-	group->setRenderer(points);
-	st->addParticleGroup(group);
+	SPK::Vector3D spk_vel(velocity.x(), velocity.y(), velocity.z());
+
+	SPK::Zone* spk_zone = SPK::Cylinder::create(
+		SPK::Vector3D(begin->x(), begin->y(), begin->z()),
+		spk_vel,
+		0.25f,
+		0.25f
+	);
+
+	flames_group->addParticles(25, spk_zone, spk_vel, true);
 }
 
 
