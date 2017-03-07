@@ -29,6 +29,9 @@ void WeaponTimedMine::doFire(Unit *u, btTransform &origin, float damage_multipli
 	btTransform xform = origin;
 	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->ammo_model, u, 1.0f);
 
+	btVector3 throwing = xform.getBasis() * btVector3(0.0f, 0.0f, 10.0f);
+	ar->body->applyCentralImpulse(throwing);
+
 	WeaponTimedMineData* data = new WeaponTimedMineData();
 	data->time = this->time;
 	data->ghost = NULL;
@@ -83,6 +86,9 @@ void WeaponProxiMine::doFire(Unit *u, btTransform &origin, float damage_multipli
 	btTransform xform = origin;
 	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->ammo_model, u, 1.0f);
 
+	btVector3 throwing = xform.getBasis() * btVector3(0.0f, 0.0f, 10.0f);
+	ar->body->applyCentralImpulse(throwing);
+
 	WeaponProxiMineData* data = new WeaponProxiMineData();
 	data->delay = 2000;
 	data->ghost = create_ghost(xform, this->range);
@@ -101,6 +107,8 @@ void WeaponProxiMine::entityUpdate(AmmoRound *e, int delta)
 {
 	WeaponProxiMineData* data = (WeaponProxiMineData*)e->data;
 	if (!data) return;
+
+	data->ghost->setWorldTransform(e->body->getWorldTransform());
 
 	// Give the user a chance
 	if (data->delay > 0) {
@@ -131,6 +139,9 @@ void WeaponRemoteMine::doFire(Unit *u, btTransform &origin, float damage_multipl
 {
 	btTransform xform = origin;
 	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->ammo_model, u, 1.0f);
+
+	btVector3 throwing = xform.getBasis() * btVector3(0.0f, 0.0f, 10.0f);
+	ar->body->applyCentralImpulse(throwing);
 
 	WeaponRemoteMineData* data = new WeaponRemoteMineData();
 	data->ghost = NULL;
