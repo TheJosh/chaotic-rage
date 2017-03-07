@@ -22,7 +22,7 @@ using namespace std;
 /**
 * Fires a weapon, from a specified Unit
 **/
-void WeaponAttractor::doFire(Unit *u, btTransform &origin, float damage_multiplier)
+void WeaponAttractor::doFire(Unit *u, btTransform &origin, btVector3 tip_offset, float damage_multiplier)
 {
 	btTransform xform = origin;
 	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->ammo_model, u);
