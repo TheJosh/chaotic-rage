@@ -96,10 +96,10 @@ namespace GL
 			"}\n"
 		);
 
-		uniform_camUp = glGetUniformLocation(shaderIndex, "camUp");CHECK_OPENGL_ERROR;
-		uniform_camRight = glGetUniformLocation(shaderIndex, "camRight");CHECK_OPENGL_ERROR;
-		uniform_size = glGetUniformLocation(shaderIndex, "size");CHECK_OPENGL_ERROR;
-		uniform_mvp = glGetUniformLocation(shaderIndex, "mVP");CHECK_OPENGL_ERROR;
+		uniform_camUp = glGetUniformLocation(shaderIndex, "camUp");
+		uniform_camRight = glGetUniformLocation(shaderIndex, "camRight");
+		uniform_size = glGetUniformLocation(shaderIndex, "size");
+		uniform_mvp = glGetUniformLocation(shaderIndex, "mVP");
 	}
 
 	void GL2ColorQuadRenderer::destroyGLbuffers()
@@ -160,10 +160,7 @@ namespace GL
 		glUniform3fv(uniform_camRight, 1, glm::value_ptr(camRight));
 		glUniform2fv(uniform_size, 1, this->size);
 		glUniformMatrix4fv(uniform_mvp, 1, GL_FALSE, glm::value_ptr(vp_matrix));
-		
-		glDepthMask(GL_FALSE);
 		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, num);
-		glDepthMask(GL_TRUE);
 		glBindVertexArray(0);
 
 		CHECK_OPENGL_ERROR;
