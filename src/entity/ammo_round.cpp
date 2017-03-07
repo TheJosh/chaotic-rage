@@ -25,7 +25,12 @@ AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpMo
 	this->anim = new AnimPlay(model);
 	this->owner = owner;
 	this->mass = mass;
-	this->col_shape = new btBoxShape(model->getBoundingSizeHE());
+
+	// Boxes too small may fall through terrain; enforce min size on X and Z axis
+	btVector3 box = model->getBoundingSizeHE();
+	if (box.x() < 0.4f) box.setX(0.4f);
+	if (box.z() < 0.4f) box.setZ(0.4f);
+	this->col_shape = new btBoxShape(box);
 
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
 
