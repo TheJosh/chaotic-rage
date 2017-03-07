@@ -81,7 +81,7 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 void WeaponProxiMine::doFire(Unit *u, btTransform &origin, float damage_multiplier)
 {
 	btTransform xform = origin;
-	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->ammo_model, u);
+	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->ammo_model, u, 1.0f);
 
 	WeaponProxiMineData* data = new WeaponProxiMineData();
 	data->delay = 2000;
@@ -130,7 +130,7 @@ void WeaponProxiMine::entityUpdate(AmmoRound *e, int delta)
 void WeaponRemoteMine::doFire(Unit *u, btTransform &origin, float damage_multiplier)
 {
 	btTransform xform = origin;
-	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->ammo_model, u);
+	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->ammo_model, u, 1.0f);
 
 	WeaponRemoteMineData* data = new WeaponRemoteMineData();
 	data->ghost = NULL;

@@ -29,9 +29,7 @@ class AmmoRound : public Entity
 		void* data;
 		Unit* owner;
 		float mass;
-
-	private:
-		static btCollisionShape* col_shape;
+		btCollisionShape* col_shape;
 
 	public:
 		AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpModel* model, Unit* owner, float mass = 0.0f);

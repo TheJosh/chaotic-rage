@@ -15,9 +15,6 @@ class btTransform;
 using namespace std;
 
 
-btCollisionShape* AmmoRound::col_shape;
-
-
 /**
 * Create an ammo round (dynamic with specified mass)
 **/
@@ -28,16 +25,11 @@ AmmoRound::AmmoRound(GameState* st, btTransform& xform, WeaponType* wt, AssimpMo
 	this->anim = new AnimPlay(model);
 	this->owner = owner;
 	this->mass = mass;
-
-	if (!AmmoRound::col_shape && mass != 0.0f) {
-		AmmoRound::col_shape = new btBoxShape(btVector3(0.1f, 0.1f, 0.1f));
-	} else if (!AmmoRound::col_shape) {
-		AmmoRound::col_shape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
-	}
+	this->col_shape = new btBoxShape(model->getBoundingSizeHE());
 
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(xform));
 
-	this->body = st->physics->addRigidBody(AmmoRound::col_shape, mass, motionState, CG_DEBRIS);
+	this->body = st->physics->addRigidBody(this->col_shape, mass, motionState, CG_DEBRIS);
 	st->addAnimPlay(this->anim, this);
 }
 
@@ -50,6 +42,7 @@ AmmoRound::~AmmoRound()
 	st->remAnimPlay(this->anim);
 	delete(this->anim);
 	st->physics->delRigidBody(this->body);
+	delete(this->col_shape);
 }
 
 
