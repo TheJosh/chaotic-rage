@@ -744,12 +744,15 @@ void Unit::update(float delta)
 			w = this->weapon->wt;
 			wxform = btTransform(xform);
 			wxform.setRotation(aim_dir);
-			tip_offset = btVector3();
+			tip_offset = btVector3(-0.15f, 0.45f, 0.5f);        // magic
+			tip_offset += btVector3(0.0f, 0.0339f, 0.9301f);    // flamethrower barrel
 		}
 	}
 
 	// Fire!
 	if (w != NULL) {
+		tip_offset = wxform.getBasis() * tip_offset;
+		
 		w->doFire(this, wxform, tip_offset, this->params.weapon_damage);
 
 		if (w == this->weapon->wt) {
