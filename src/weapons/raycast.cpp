@@ -91,6 +91,12 @@ void WeaponFlamethrower::doFire(Unit *u, btTransform &origin, float damage_multi
 
 	for (unsigned int i = this->burst; i != 0; --i) {
 		raycastDoFire(this, u, origin, begin, end, damage_multiplier);
+
+		// TODO: This is not offsetting correctly when a non-zero vertical angle is in affect
+		begin = begin
+			+ (origin.getBasis() * btVector3(0.0f, 0.0f, 1.0f))       // outwards away from player
+			+ (origin.getBasis() * btVector3(0.0f, 0.5f, 0.0f));      // upwards from ground
+
 		st->effects->weaponFlamethrower(&begin, &end);
 	}
 }
