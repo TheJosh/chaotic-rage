@@ -42,7 +42,8 @@ class EffectsManager {
 		SPK::Model* bullets_model;
 		SPK::Group* bullets_group;
 
-		SPK::GL::GL2ColorQuadRenderer* render_flames;
+		Texture2DArray* tex_flames;
+		SPK::GL::GL2InstanceQuadRenderer* render_flames;
 		SPK::Model* flames_model;
 		SPK::Group* flames_group;
 
