@@ -31,7 +31,10 @@ EffectsManager::EffectsManager(GameState* st)
 
 EffectsManager::~EffectsManager()
 {
-	delete points;
+	delete render_bullets;
+	delete render_flames;
+	delete render_dust;
+	delete render_fireball;
 	delete render_blood;
 }
 
@@ -41,9 +44,9 @@ EffectsManager::~EffectsManager()
 **/
 void EffectsManager::setUpCoreEffects()
 {
-	points = new SPK::GL::GL2ColorQuadRenderer(0.25f);
-	points->initGLbuffers();
-	GEng()->render->addParticleRenderer(points);
+	render_bullets = new SPK::GL::GL2ColorQuadRenderer(0.25f);
+	render_bullets->initGLbuffers();
+	GEng()->render->addParticleRenderer(render_bullets);
 
 	bullets_model = SPK::Model::create(
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
@@ -57,9 +60,13 @@ void EffectsManager::setUpCoreEffects()
 	bullets_model->setLifeTime(0.5f, 0.7f);
 
 	bullets_group = SPK::Group::create(bullets_model, 1024);
-	bullets_group->setRenderer(points);
+	bullets_group->setRenderer(render_bullets);
 	st->addParticleGroup(bullets_group);
 
+
+	render_flames = new SPK::GL::GL2ColorQuadRenderer(0.10f);
+	render_flames->initGLbuffers();
+	GEng()->render->addParticleRenderer(render_flames);
 
 	SPK::Model* flames_model = SPK::Model::create(
 		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA,
@@ -73,7 +80,7 @@ void EffectsManager::setUpCoreEffects()
 	flames_model->setLifeTime(0.5f, 0.7f);
 
 	flames_group = SPK::Group::create(flames_model, 1024);
-	flames_group->setRenderer(points);
+	flames_group->setRenderer(render_flames);
 	st->addParticleGroup(flames_group);
 
 
@@ -179,18 +186,14 @@ void EffectsManager::weaponFlamethrower(btVector3 * begin, btVector3 * end)
 {
 	btVector3 velocity = *end - *begin;
 	velocity.normalize();
-	velocity *= 45.0f;
+	velocity *= 30.0f;
 
-	SPK::Vector3D spk_vel(velocity.x(), velocity.y(), velocity.z());
-
-	SPK::Zone* spk_zone = SPK::Cylinder::create(
-		SPK::Vector3D(begin->x(), begin->y(), begin->z()),
-		spk_vel,
-		0.5f,   // radius
-		0.1f    // length
+	flames_group->addParticles(
+		15,
+		SPK::Point::create(SPK::Vector3D(begin->x(), begin->y(), begin->z())),
+		SPK::Vector3D(velocity.x(), velocity.y(), velocity.z()),
+		true
 	);
-
-	flames_group->addParticles(10, spk_zone, spk_vel, true);
 }
 
 

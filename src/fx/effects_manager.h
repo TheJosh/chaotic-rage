@@ -38,11 +38,11 @@ class EffectsManager {
 	private:
 		GameState* st;
 
-		SPK::GL::GL2ColorQuadRenderer* points;
-
+		SPK::GL::GL2ColorQuadRenderer* render_bullets;
 		SPK::Model* bullets_model;
 		SPK::Group* bullets_group;
 
+		SPK::GL::GL2ColorQuadRenderer* render_flames;
 		SPK::Model* flames_model;
 		SPK::Group* flames_group;
 
