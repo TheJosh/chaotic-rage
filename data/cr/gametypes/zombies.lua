@@ -80,8 +80,13 @@ start_round = function()
 
 	-- increase number of zombies
 	-- increase is always in the size of a cluster
-	if num_wanted < 30 then
+	if num_wanted < 40 then
 		num_wanted = num_wanted + spawn_cluster_num + num_zombie_players;
+	end;
+
+	-- start off with a few extras
+	if round == 1 then
+		num_wanted = num_wanted + spawn_cluster_num
 	end;
 
 	-- decrease gap (ms) between clusters
