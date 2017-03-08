@@ -247,16 +247,23 @@ void EffectsManager::explosion(const btVector3& location, float damage)
 	group->setGravity(gravity);
 	group->setRenderer(render_fireball);
 	st->addParticleGroup(group);
+	
+	this->smokeCloud(location);
+}
 
-	// Emitter
-	emitter = SPK::NormalEmitter::create();
+
+/**
+* A cloud of smoke
+**/
+void EffectsManager::smokeCloud(const btVector3& location)
+{
+	SPK::Emitter* emitter = SPK::NormalEmitter::create();
 	emitter->setZone(SPK::Sphere::create(SPK::Vector3D(location.x(), location.y(), location.z()), 2.0f));
 	emitter->setFlow(-1);
 	emitter->setTank(50);
 	emitter->setForce(3.0f, 5.0f);
 
-	// Create group
-	group = SPK::Group::create(model_smoke, 50);
+	SPK::Group* group = SPK::Group::create(model_smoke, 50);
 	group->addEmitter(emitter);
 	group->setGravity(gravity);
 	group->setFriction(1.0f);

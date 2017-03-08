@@ -34,6 +34,7 @@ class EffectsManager {
 		void weaponFlamethrower(btVector3 * begin, btVector3 * end);
 		void bloodSpray(const btVector3& location, float damage);
 		void explosion(const btVector3& location, float damage);
+		void smokeCloud(const btVector3& location);
 
 	private:
 		GameState* st;
