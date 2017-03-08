@@ -137,15 +137,6 @@ end;
 
 
 --
--- Some initial ammo to get them started
---
-initial_ammo = function()
-	show_alert_message("Here is some ammo...use it wisely!");
-	game.addPickupRand("ammo_current");
-end;
-
-
---
 -- Spawn a player
 --
 bind_playerjoin(function(slot)
@@ -159,8 +150,7 @@ end);
 bind_gamestart(function(r_max)
 	round_max = r_max;
 
-	add_timer(10000, start_round);
-	add_timer(5000, initial_ammo);
+	add_timer(2500, start_round);
 
 	add_label(-200, 50, "Round");
 	score_labels.round = add_label(-70, 50, "0");
