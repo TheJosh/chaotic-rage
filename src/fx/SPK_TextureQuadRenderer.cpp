@@ -101,7 +101,7 @@ namespace GL
 			"in float fTexIndex;\n"
 			"uniform sampler2DArray tex;\n"
 			"void main() {\n"
-				"gl_FragColor = texture(tex, vec3(fTexUV.xy, fTexIndex));\n"
+				"gl_FragColor = texture(tex, vec3(fTexUV.xy, fTexIndex)) * fColor;\n"
 			"}\n"
 		);
 
@@ -128,6 +128,7 @@ namespace GL
 
 	void GL2InstanceQuadRenderer::render(const Group& group)
 	{
+		float* ptr;
 		size_t num = group.getNbParticles();
 
 		// Resize buffer if not large enough
@@ -142,11 +143,9 @@ namespace GL
 
 		// Copy data into buffer with the correct layout
 		// XYZ is coordinate and W is texture index
-		float* ptr = buffer;
-		for (size_t i = 0; i < num; ++i)
-		{
+		ptr = buffer;
+		for (size_t i = 0; i < num; ++i) {
 			const Particle& particle = group.getParticle(i);
-
 			*ptr++ = particle.position().x;
 			*ptr++ = particle.position().y;
 			*ptr++ = particle.position().z;
@@ -157,9 +156,19 @@ namespace GL
 		glBindBuffer(GL_ARRAY_BUFFER, vboPositions);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * num, buffer, GL_DYNAMIC_DRAW);
 
+		// again for the color buffer
+		ptr = buffer;
+		for (size_t i = 0; i < num; ++i) {
+			const Particle& particle = group.getParticle(i);
+			*ptr++ = particle.getParamCurrentValue(SPK::PARAM_RED);
+			*ptr++ = particle.getParamCurrentValue(SPK::PARAM_GREEN);
+			*ptr++ = particle.getParamCurrentValue(SPK::PARAM_BLUE);
+			*ptr++ = particle.getParamCurrentValue(SPK::PARAM_ALPHA);
+		}
+
 		// Set color data
 		glBindBuffer(GL_ARRAY_BUFFER, vboColors);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * num, group.getParamAddress(PARAM_RED), GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * num, buffer, GL_DYNAMIC_DRAW);
 
 		glm::vec3 camUp = glm::vec3(v_matrix[0][1], v_matrix[1][1], v_matrix[2][1]);
 		glm::vec3 camRight = glm::vec3(v_matrix[0][0], v_matrix[1][0], v_matrix[2][0]);
