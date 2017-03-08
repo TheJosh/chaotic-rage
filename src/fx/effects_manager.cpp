@@ -186,11 +186,11 @@ void EffectsManager::weaponFlamethrower(btVector3 * begin, btVector3 * end)
 	SPK::Zone* spk_zone = SPK::Cylinder::create(
 		SPK::Vector3D(begin->x(), begin->y(), begin->z()),
 		spk_vel,
-		0.25f,
-		0.25f
+		0.5f,   // radius
+		0.1f    // length
 	);
 
-	flames_group->addParticles(25, spk_zone, spk_vel, true);
+	flames_group->addParticles(10, spk_zone, spk_vel, true);
 }
 
 
