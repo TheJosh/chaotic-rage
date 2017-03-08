@@ -1932,7 +1932,7 @@ void RenderOpenGL::mainRot(unsigned int screen_index)
 	CHECK_OPENGL_ERROR;
 
 	btVector3 origin;
-	float tilt, angle, dist, lift;		// Up/down; left/right; distance of camera, dist off ground
+	float tilt, angle, dist;		// Up/down; left/right; distance of camera
 
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
@@ -1941,30 +1941,31 @@ void RenderOpenGL::mainRot(unsigned int screen_index)
 		origin = this->last_origin[screen_index];
 		tilt = 22.0f;
 		dist = 80.0f;
-		lift = 0.0f;
 		angle = st->game_time / 100.0f;
 
 	} else {
+		btTransform trans = this->render_player->getTransform();
+		origin = trans.getOrigin();
+
+		angle = this->render_player->getRenderAngle() + 180.0f;
+
 		if (this->render_player->isDying()) {
 			float perc = this->render_player->dyingPercent();
 			tilt = 17.0f + (22.0f - 17.0f) * perc;
 			dist = 25.0f + (80.0f - 25.0f) * perc;
-			lift = 0.0f;
 			
 		} else if (this->eff_viewmode == GameSettings::firstPerson) {
-			tilt = 0.0f;
+			tilt = 0.0f - this->render_player->vertical_angle;
 			dist = 0.0f - this->render_player->getWeaponZoom();
-			lift = UNIT_PHYSICS_HEIGHT / 2.3f;
+			origin += btVector3(0.0f, UNIT_PHYSICS_HEIGHT / 2.3f, 0.0f);
 
 		} else if (this->eff_viewmode == GameSettings::behindPlayer) {
 			tilt = 17.0f;
 			dist = 15.0f;
-			lift = 0.0f;
 
 		} else if (this->eff_viewmode == GameSettings::abovePlayer) {
 			tilt = 60.0f;
 			dist = 50.0f;
-			lift = 0.0f;
 
 		} else {
 			// That's odd. Fix it.
@@ -1972,16 +1973,6 @@ void RenderOpenGL::mainRot(unsigned int screen_index)
 			this->viewmode = GameSettings::behindPlayer;
 			tilt = 17.0f;
 			dist = 25.0f;
-			lift = 0.0f;
-		}
-
-		// Load the character details into the variables
-		btTransform trans = this->render_player->getTransform();
-		origin = trans.getOrigin();
-		angle = this->render_player->getRenderAngle() + 180.0f;
-
-		if (this->eff_viewmode == GameSettings::firstPerson) {
-			tilt -= this->render_player->vertical_angle;
 		}
 
 		this->last_origin[screen_index] = origin;
@@ -1993,7 +1984,7 @@ void RenderOpenGL::mainRot(unsigned int screen_index)
 
 	// Camera angle calculations
 	float camerax = dist * sin(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + origin.x();
-	float cameray = dist * sin(DEG_TO_RAD(tilt)) + origin.y() + lift;
+	float cameray = dist * sin(DEG_TO_RAD(tilt)) + origin.y();
 	float cameraz = dist * cos(DEG_TO_RAD(angle)) * cos(DEG_TO_RAD(tilt)) + origin.z();
 	this->camera = glm::vec3(camerax, cameray, cameraz);
 
