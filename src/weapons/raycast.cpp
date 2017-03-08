@@ -92,11 +92,17 @@ void WeaponFlamethrower::doFire(Unit *u, btTransform &origin, float damage_multi
 	for (unsigned int i = this->burst; i != 0; --i) {
 		raycastDoFire(this, u, origin, begin, end, damage_multiplier);
 
-		// TODO: This is not offsetting correctly when a non-zero vertical angle is in affect
-		begin = begin
-			+ (origin.getBasis() * btVector3(0.0f, 0.0f, 1.0f))       // outwards away from player
-			+ (origin.getBasis() * btVector3(0.0f, 0.5f, 0.0f));      // upwards from ground
+		// Camera is brought up to eye level
+		begin += btVector3(0.0f, UNIT_PHYSICS_HEIGHT / 2.3f, 0.0f);
 
-		st->effects->weaponFlamethrower(&begin, &end);
+		// Location of weapon relative to camera (see also RenderOpenGL::weapon)
+		btVector3 localOffset = btVector3(-0.15f, -0.3f, 0.15f);
+
+		// Location of barrel tip
+		glm::vec3 barrel = attach_loc[WPATT_BARREL];
+		localOffset += btVector3(barrel.x, barrel.y, barrel.z);
+
+		btVector3 worldOffset = begin + (origin.getBasis() * localOffset);
+		st->effects->weaponFlamethrower(&worldOffset, &end);
 	}
 }
