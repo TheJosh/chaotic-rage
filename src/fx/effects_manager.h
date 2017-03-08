@@ -47,9 +47,9 @@ class EffectsManager {
 		SPK::Model* flames_model;
 		SPK::Group* flames_group;
 
-		Texture2DArray* tex_dust;
-		SPK::GL::GL2InstanceQuadRenderer* render_dust;
-		SPK::Model* model_dust;
+		Texture2DArray* tex_smoke;
+		SPK::GL::GL2InstanceQuadRenderer* render_smoke;
+		SPK::Model* model_smoke;
 
 		Texture2DArray* tex_fireball;
 		SPK::GL::GL2InstanceQuadRenderer* render_fireball;

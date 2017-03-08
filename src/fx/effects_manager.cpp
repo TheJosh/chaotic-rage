@@ -33,7 +33,7 @@ EffectsManager::~EffectsManager()
 {
 	delete render_bullets;
 	delete render_flames;
-	delete render_dust;
+	delete render_smoke;
 	delete render_fireball;
 	delete render_blood;
 }
@@ -91,24 +91,24 @@ void EffectsManager::setUpCoreEffects()
 	st->addParticleGroup(flames_group);
 
 
-	tex_dust = new Texture2DArray();
-	tex_dust->loadSingleImage(
-		"textures/dust_atlas.png", GEng()->mm->getBase(), 4
+	tex_smoke = new Texture2DArray();
+	tex_smoke->loadSingleImage(
+		"textures/smoke_atlas.png", GEng()->mm->getBase(), 4
 	);
 
-	render_dust = new SPK::GL::GL2InstanceQuadRenderer(1.0f);
-	render_dust->setTexture(tex_dust);
-	render_dust->initGLbuffers();
-	GEng()->render->addParticleRenderer(render_dust);
+	render_smoke = new SPK::GL::GL2InstanceQuadRenderer(1.0f);
+	render_smoke->setTexture(tex_smoke);
+	render_smoke->initGLbuffers();
+	GEng()->render->addParticleRenderer(render_smoke);
 
-	model_dust = SPK::Model::create(
+	model_smoke = SPK::Model::create(
 			SPK::FLAG_ALPHA | SPK::FLAG_TEXTURE_INDEX,
 			SPK::FLAG_ALPHA,
 			SPK::FLAG_TEXTURE_INDEX
 	);
-	model_dust->setParam(SPK::PARAM_ALPHA, 0.3f, 0.0f);
-	model_dust->setParam(SPK::PARAM_TEXTURE_INDEX, 0.0f, 3.0f);
-	model_dust->setLifeTime(1.2f, 8.0f);
+	model_smoke->setParam(SPK::PARAM_ALPHA, 0.3f, 0.0f);
+	model_smoke->setParam(SPK::PARAM_TEXTURE_INDEX, 0.0f, 3.0f);
+	model_smoke->setLifeTime(1.2f, 8.0f);
 
 
 	//  Blood  //
@@ -256,10 +256,10 @@ void EffectsManager::explosion(const btVector3& location, float damage)
 	emitter->setForce(3.0f, 5.0f);
 
 	// Create group
-	group = SPK::Group::create(model_dust, 50);
+	group = SPK::Group::create(model_smoke, 50);
 	group->addEmitter(emitter);
 	group->setGravity(gravity);
 	group->setFriction(1.0f);
-	group->setRenderer(render_dust);
+	group->setRenderer(render_smoke);
 	st->addParticleGroup(group);
 }
