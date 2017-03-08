@@ -137,6 +137,8 @@ class GameState
 
 		float time_of_day;			// 0.0 = midnight, 1.0 = midday
 		float time_cycle;
+		float tod_target_val;
+		float tod_target_psec;
 		
 	public:
 		GameState();
@@ -205,6 +207,7 @@ class GameState
 		bool mousePick(unsigned int x, unsigned int y, btVector3& hitLocation, Entity** hitEntity);
 
 	private:
+		void animateTimeOfDay(float delta);
 		void doTimeOfDay(float delta);
 		void doTorch();
 };

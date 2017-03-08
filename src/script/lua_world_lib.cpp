@@ -481,6 +481,22 @@ void daynightSetMax(float max)
 }
 
 
+void daynightAnimate(float target_val, float total_time)
+{
+	float diff = abs(getGameState()->time_of_day - target_val);
+	getGameState()->tod_target_val = target_val;
+	getGameState()->tod_target_psec = diff / total_time;
+}
+
+
+void daynightAnimateCancel()
+{
+	getGameState()->tod_target_val = 0.0f;
+	getGameState()->tod_target_psec = 0.0f;
+}
+
+
+
 /**
 * Methods which affect the game world such as,
 *  - Adding in entities at specific locations
@@ -541,6 +557,8 @@ void load_world_lib(lua_State *L)
 		.addFunction("enableCycle", &daynightEnableCycle)
 		.addFunction("setMin", &daynightSetMin)
 		.addFunction("setMax", &daynightSetMax)
+		.addFunction("animate", &daynightAnimate)
+		.addFunction("animateCancel", &daynightAnimateCancel)
 
 	.endNamespace();
 }

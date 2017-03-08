@@ -389,6 +389,8 @@ void GameState::preGame()
 	// Time of day cycle
 	this->time_of_day = this->gs->time_of_day;
 	this->time_cycle = this->gs->time_of_day < 0.5f ? -this->gs->getTimeOfDayStep() : this->gs->getTimeOfDayStep();
+	this->tod_target_val = 0.0f;
+	this->tod_target_psec = 0.0f;
 	if (!gs->day_night_cycle) {
 		GEng()->render->setAmbient(glm::vec4(this->time_of_day, this->time_of_day, this->time_of_day, 1.0f));
 	}
@@ -583,7 +585,10 @@ void GameState::update(float delta)
 	}
 
 	// Time of day cycle
-	if (gs->day_night_cycle) {
+	if (this->tod_target_psec > 0.0f) {
+		this->animateTimeOfDay(delta);
+		this->doTorch();
+	} else if (gs->day_night_cycle) {
 		this->doTimeOfDay(delta);
 		this->doTorch();
 	}
@@ -603,7 +608,27 @@ void GameState::update(float delta)
 
 
 /**
-* Recalculate the ambient light based on time-of-day
+* Custom (scripted) day-night animation
+**/
+void GameState::animateTimeOfDay(float delta)
+{
+	float change_amt = this->tod_target_psec * delta / 1000.0f;
+	float diff = this->time_of_day - this->tod_target_val;
+
+	if (abs(diff) < change_amt) {
+		this->time_of_day -= diff;
+	} else if (diff < 0.0f) {
+		this->time_of_day += change_amt;
+	} else {
+		this->time_of_day -= change_amt;
+	}
+
+	GEng()->render->setAmbient(glm::vec4(this->time_of_day, this->time_of_day, this->time_of_day, 1.0f));
+}
+
+
+/**
+* Standard day-night-day-night cycle
 **/
 void GameState::doTimeOfDay(float delta)
 {
