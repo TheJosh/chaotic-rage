@@ -729,28 +729,24 @@ void Unit::update(float delta)
 	// Which weapon to use?
 	WeaponType *w = NULL;
 	btTransform wxform;
-	btVector3 tip_offset;
 	if (this->firing) {
 		if (this->drive) {
 			w = this->drive->vt->weapon_primary;
 			wxform = btTransform();
-			tip_offset = btVector3();
 			this->drive->getWeaponTransform(wxform);
 		} else if (this->powerup_weapon != NULL) {
 			w = this->powerup_weapon;
 			wxform = btTransform(xform);
-			tip_offset = btVector3();
 		} else if (this->weapon && this->weapon->next_use < st->game_time && this->weapon->magazine > 0) {
 			w = this->weapon->wt;
 			wxform = btTransform(xform);
 			wxform.setRotation(aim_dir);
-			tip_offset = btVector3();
 		}
 	}
 
 	// Fire!
 	if (w != NULL) {
-		w->doFire(this, wxform, tip_offset, this->params.weapon_damage);
+		w->doFire(this, wxform, this->params.weapon_damage);
 
 		if (w == this->weapon->wt) {
 			this->weapon->next_use = st->game_time + this->weapon->wt->fire_delay;
@@ -784,7 +780,7 @@ void Unit::update(float delta)
 	if (special_firing) {
 		w = this->uc->special_weapon;
 
-		w->doFire(this, xform, btVector3(), 1.0f);
+		w->doFire(this, xform, 1.0f);
 
 		if (!w->continuous || st->game_time > this->special_time) {
 			this->endSpecialAttack();

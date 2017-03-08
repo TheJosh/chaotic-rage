@@ -29,7 +29,7 @@ static void rocketTickCallback(float delta, Entity* e, void* data1, void* data2)
 /**
 * Fires a weapon, from a specified Unit
 **/
-void WeaponRocket::doFire(Unit *u, btTransform &origin, btVector3 tip_offset, float damage_multiplier)
+void WeaponRocket::doFire(Unit *u, btTransform &origin, float damage_multiplier)
 {
 	btTransform xform = origin;
 	xform.setOrigin(

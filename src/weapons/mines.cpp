@@ -24,7 +24,7 @@ using namespace std;
 /**
 * Fires a weapon, from a specified Unit
 **/
-void WeaponTimedMine::doFire(Unit *u, btTransform &origin, btVector3 tip_offset, float damage_multiplier)
+void WeaponTimedMine::doFire(Unit *u, btTransform &origin, float damage_multiplier)
 {
 	btTransform xform = origin;
 	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->ammo_model, u, 1.0f);
@@ -81,7 +81,7 @@ void WeaponTimedMine::entityUpdate(AmmoRound *e, int delta)
 /**
 * Fires a weapon, from a specified Unit
 **/
-void WeaponProxiMine::doFire(Unit *u, btTransform &origin, btVector3 tip_offset, float damage_multiplier)
+void WeaponProxiMine::doFire(Unit *u, btTransform &origin, float damage_multiplier)
 {
 	btTransform xform = origin;
 	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->ammo_model, u, 1.0f);
@@ -135,7 +135,7 @@ void WeaponProxiMine::entityUpdate(AmmoRound *e, int delta)
 /**
 * Fires a weapon, from a specified Unit
 **/
-void WeaponRemoteMine::doFire(Unit *u, btTransform &origin, btVector3 tip_offset, float damage_multiplier)
+void WeaponRemoteMine::doFire(Unit *u, btTransform &origin, float damage_multiplier)
 {
 	btTransform xform = origin;
 	AmmoRound* ar = new AmmoRound(u->getGameState(), xform, this, this->ammo_model, u, 1.0f);
@@ -186,7 +186,7 @@ void WeaponRemoteMine::trigger(AmmoRound *e)
 /**
 * Trigger remote mines
 **/
-void WeaponRemoteTrigger::doFire(Unit *u, btTransform &origin, btVector3 tip_offset, float damage_multiplier)
+void WeaponRemoteTrigger::doFire(Unit *u, btTransform &origin, float damage_multiplier)
 {
 	list<AmmoRound*>* rounds = u->getGameState()->findAmmoRoundsUnit(u);
 

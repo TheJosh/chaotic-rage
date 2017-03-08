@@ -47,7 +47,7 @@ class WeaponRaycast : public WeaponType
 		float speed;
 
 	public:
-		virtual void doFire(Unit *unit, btTransform &origin, btVector3 tip_offset, float damage_multiplier);
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
 };
 
 
@@ -64,7 +64,7 @@ class WeaponFlamethrower : public WeaponType
 		unsigned int burst;
 
 	public:
-		virtual void doFire(Unit *unit, btTransform &origin, btVector3 tip_offset, float damage_multiplier);
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
 };
 
 
@@ -82,7 +82,7 @@ class WeaponTimedMine : public WeaponType
 		int time;		// ms
 
 	public:
-		virtual void doFire(Unit *unit, btTransform &origin, btVector3 tip_offset, float damage_multiplier);
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
 		virtual void entityUpdate(AmmoRound *e, int delta);
 };
 
@@ -106,7 +106,7 @@ class WeaponProxiMine : public WeaponType
 		float damage;
 
 	public:
-		virtual void doFire(Unit *unit, btTransform &origin, btVector3 tip_offset, float damage_multiplier);
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
 		virtual void entityUpdate(AmmoRound *e, int delta);
 };
 
@@ -130,7 +130,7 @@ class WeaponRemoteMine : public WeaponType
 		float damage;
 
 	public:
-		virtual void doFire(Unit *unit, btTransform &origin, btVector3 tip_offset, float damage_multiplier);
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
 		virtual void entityUpdate(AmmoRound *e, int delta);
 		void trigger(AmmoRound *e);
 };
@@ -148,7 +148,7 @@ struct WeaponRemoteMineData {
 class WeaponRemoteTrigger : public WeaponType
 {
 	public:
-		virtual void doFire(Unit *unit, btTransform &origin, btVector3 tip_offset, float damage_multiplier);
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
 };
 
 
@@ -166,7 +166,7 @@ class WeaponRocket : public WeaponType
 		float damage;
 
 	public:
-		virtual void doFire(Unit *unit, btTransform &origin, btVector3 tip_offset, float damage_multiplier);
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
 		virtual void entityUpdate(AmmoRound *e, int delta);
 };
 
@@ -194,7 +194,7 @@ class WeaponAttractor : public WeaponType
 		bool inwards;
 
 	public:
-		virtual void doFire(Unit *unit, btTransform &origin, btVector3 tip_offset, float damage_multiplier);
+		virtual void doFire(Unit *unit, btTransform &origin, float damage_multiplier);
 		virtual void entityUpdate(AmmoRound *e, int delta);
 };
 

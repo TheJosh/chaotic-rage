@@ -69,7 +69,7 @@ void raycastDoFire(T const &weapon, Unit *u, btTransform &origin, btVector3 &beg
 /**
 * Fires a weapon, from a specified Unit
 **/
-void WeaponRaycast::doFire(Unit *u, btTransform &origin, btVector3 tip_offset, float damage_multiplier)
+void WeaponRaycast::doFire(Unit *u, btTransform &origin, float damage_multiplier)
 {
 	btVector3 begin;
 	btVector3 end;
@@ -84,7 +84,7 @@ void WeaponRaycast::doFire(Unit *u, btTransform &origin, btVector3 tip_offset, f
 /**
 * Fires a weapon, from a specified Unit
 **/
-void WeaponFlamethrower::doFire(Unit *u, btTransform &origin, btVector3 tip_offset, float damage_multiplier)
+void WeaponFlamethrower::doFire(Unit *u, btTransform &origin, float damage_multiplier)
 {
 	btVector3 begin;
 	btVector3 end;
