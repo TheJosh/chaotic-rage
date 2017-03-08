@@ -94,6 +94,11 @@ start_round = function()
 		spawn_cluster_gap = spawn_cluster_gap - 100
 	end;
 
+	-- Start getting darker round three
+	if round == 3 then
+		daynight.animate(0.25, 10.0);
+	end;
+
 	-- start raining after 5th round
 	if round >= 5 then
 		if rain_rate < 5000 then
@@ -170,6 +175,7 @@ bind_gamestart(function(r_max)
 	score_labels.lives = add_label(-70, 110, num_lives);
 
 	weather.disableRandom();
+	daynight.disableCycle();
 end);
 
 
