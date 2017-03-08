@@ -69,19 +69,19 @@ void EffectsManager::setUpCoreEffects()
 		"textures/flames_atlas.png", GEng()->mm->getBase(), 4
 	);
 
-	render_flames = new SPK::GL::GL2InstanceQuadRenderer(0.25f);
+	render_flames = new SPK::GL::GL2InstanceQuadRenderer(0.30f);
 	render_flames->setTexture(tex_flames);
 	render_flames->initGLbuffers();
 	GEng()->render->addParticleRenderer(render_flames);
 
 	SPK::Model* flames_model = SPK::Model::create(
-		SPK::FLAG_ALPHA | SPK::FLAG_TEXTURE_INDEX,
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_ALPHA | SPK::FLAG_TEXTURE_INDEX,
 		SPK::FLAG_ALPHA,
-		SPK::FLAG_TEXTURE_INDEX
+		SPK::FLAG_RED | SPK::FLAG_GREEN | SPK::FLAG_BLUE | SPK::FLAG_TEXTURE_INDEX
 	);
-	flames_model->setParam(SPK::PARAM_ALPHA, 0.5f, 0.0f);
-	flames_model->setParam(SPK::PARAM_RED, 0.5f, 0.9f);
-	flames_model->setParam(SPK::PARAM_GREEN, 0.2f, 0.3f);
+	flames_model->setParam(SPK::PARAM_ALPHA, 1.0f, 0.0f);
+	flames_model->setParam(SPK::PARAM_RED, 0.5f, 1.0f);
+	flames_model->setParam(SPK::PARAM_GREEN, 0.1f, 0.2f);
 	flames_model->setParam(SPK::PARAM_BLUE, 0.0f, 0.1f);
 	flames_model->setParam(SPK::PARAM_TEXTURE_INDEX, 0.0f, 0.3f);
 	flames_model->setLifeTime(0.5f, 0.7f);
