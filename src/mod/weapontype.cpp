@@ -103,6 +103,9 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 				w->range = (float)cfg_getfloat(cfg_sec, "range");
 				w->damage = (float)cfg_getfloat(cfg_sec, "damage");
 				w->burst = (float)cfg_getint(cfg_sec, "burst");
+
+				// Again, damage is across all rays
+				w->damage = w->damage / w->burst;
 			}
 			break;
 
