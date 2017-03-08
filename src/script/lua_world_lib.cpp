@@ -454,6 +454,33 @@ void stopSnow()
 }
 
 
+void daynightDisableCycle()
+{
+	getGameState()->gs->day_night_cycle = false;
+}
+
+void daynightEnableCycle()
+{
+	getGameState()->gs->day_night_cycle = true;
+}
+
+void daynightSetMin(float min)
+{
+	if (min < getGameState()->gs->getTimeOfDayMin()) {
+		min = getGameState()->gs->getTimeOfDayMin();
+	}
+	getGameState()->gs->tod_min = min;
+}
+
+void daynightSetMax(float max)
+{
+	if (max > getGameState()->gs->getTimeOfDayMin()) {
+		max = getGameState()->gs->getTimeOfDayMin();
+	}
+	getGameState()->gs->tod_max = max;
+}
+
+
 /**
 * Methods which affect the game world such as,
 *  - Adding in entities at specific locations
@@ -507,6 +534,13 @@ void load_world_lib(lua_State *L)
 		.addFunction("startSnow", &startSnow)
 		.addFunction("stopSnow", &stopSnow)
 
+	.endNamespace()
+	.beginNamespace("daynight")
+
+		.addFunction("disableCycle", &daynightDisableCycle)
+		.addFunction("enableCycle", &daynightEnableCycle)
+		.addFunction("setMin", &daynightSetMin)
+		.addFunction("setMax", &daynightSetMax)
+
 	.endNamespace();
 }
-
