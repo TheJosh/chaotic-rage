@@ -91,7 +91,6 @@ void WeaponFlamethrower::doFire(Unit *u, btTransform &origin, btVector3 tip_offs
 
 	for (unsigned int i = this->burst; i != 0; --i) {
 		raycastDoFire(this, u, origin, begin, end, damage_multiplier);
-		begin += tip_offset;
 		st->effects->weaponFlamethrower(&begin, &end);
 	}
 }
