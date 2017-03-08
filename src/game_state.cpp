@@ -607,11 +607,11 @@ void GameState::update(float delta)
 **/
 void GameState::doTimeOfDay(float delta)
 {
-	if (this->time_of_day > this->gs->getTimeOfDayMax()) {
-		this->time_of_day = this->gs->getTimeOfDayMax();
+	if (this->time_of_day > this->gs->tod_max) {
+		this->time_of_day = this->gs->tod_max;
 		this->time_cycle = -this->gs->getTimeOfDayStep();
-	} else if (this->time_of_day < this->gs->getTimeOfDayMin()) {
-		this->time_of_day = this->gs->getTimeOfDayMin();
+	} else if (this->time_of_day < this->gs->tod_min) {
+		this->time_of_day = this->gs->tod_min;
 		this->time_cycle = this->gs->getTimeOfDayStep();
 	}
 
@@ -629,7 +629,7 @@ void GameState::doTimeOfDay(float delta)
 **/
 void GameState::doTorch()
 {
-	if (this->time_of_day < this->gs->getTimeOfDayMax() * 0.3f) {
+	if (this->time_of_day < this->gs->tod_max * 0.3f) {
 		GEng()->render->setTorch(true);
 	} else {
 		GEng()->render->setTorch(false);

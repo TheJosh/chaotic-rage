@@ -45,10 +45,14 @@ class GameSettings
 		* Time of day and day-night cycle
 		**/
 		float time_of_day;
+		float tod_min;
+		float tod_max;
+		bool day_night_cycle;
+
+		// Max legal values
 		float getTimeOfDayMax() { return 1.0f; }
 		float getTimeOfDayMin() { return 0.0f; }
 		float getTimeOfDayStep() { return 0.01f; }
-		bool day_night_cycle;
 
 		/**
 		* Amount of weather
