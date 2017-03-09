@@ -102,7 +102,7 @@ gcn::Container * DialogQuit::setup()
 void DialogQuit::action(const gcn::ActionEvent& actionEvent)
 {
 	if (actionEvent.getSource()->getId() == "Y") {
-		this->st->gameOver();
+		this->st->terminate();
 	}
 
 	GEng()->remDialog(this);

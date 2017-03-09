@@ -664,6 +664,17 @@ void GameState::doTorch()
 
 /**
 * Called by non-gameloop code (e.g. network, scripting) to indicate
+* a game termination - ESC key for example
+**/
+void GameState::terminate()
+{
+	this->status = FINISHED;
+	this->last_game_result = -1;
+}
+
+
+/**
+* Called by non-gameloop code (e.g. network, scripting) to indicate
 * a game-over situation
 *
 * Sets a "result" flag (1 = success, 0 = failure, -1 = undefined - network error or likewise)

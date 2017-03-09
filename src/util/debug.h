@@ -46,7 +46,7 @@ void profile_save();
 
 
 #ifdef DEBUG_OPTIONS
-	#define MAINLOOP_ITER if (mainloop_limit_iter()) this->gameOver();
+	#define MAINLOOP_ITER if (mainloop_limit_iter()) this->terminate();
 #else
 	#define MAINLOOP_ITER /* nothing! */
 #endif

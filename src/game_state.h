@@ -203,7 +203,8 @@ class GameState
 		void gameLoopIter();
 
 		// Called by Lua, etc
-		void gameOver(int result = -1);
+		void terminate();
+		void gameOver(int result);
 		int getLastGameResult();
 
 		// Weapon fun

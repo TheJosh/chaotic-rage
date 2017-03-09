@@ -71,7 +71,7 @@ void NetClient::update()
 	if (this->ingame && (st->game_time - this->last_ack) > 2500) {
 		GEng()->setMouseGrab(false);
 		displayMessageBox("Disconnected from server.");
-		st->gameOver();
+		st->terminate();
 	}
 
 	// Handle packets coming in
@@ -373,7 +373,7 @@ unsigned int NetClient::handlePlayerDrop(Uint8 *data, unsigned int size)
 
 	// Were we booted?
 	if (st->local_players[0]->slot == slot) {
-		st->gameOver();
+		st->terminate();
 		DEBUGSTR("net", "  It's us :(");
 	}
 

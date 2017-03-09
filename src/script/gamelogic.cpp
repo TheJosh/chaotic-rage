@@ -82,7 +82,7 @@ bool GameLogic::execScript(string code)
 		string msg = "Failed to execute GameType script: ";
 		msg.append(lua_tostring(L, -1));
 		displayMessageBox(msg);
-		this->st->gameOver();
+		this->st->terminate();
 		return false;
 	}
 

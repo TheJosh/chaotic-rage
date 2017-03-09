@@ -32,7 +32,7 @@ void handleEvents(GameState *st)
 	while (SDL_PollEvent(&event)) {
 		// General keys
 		if (event.type == SDL_QUIT) {
-			st->gameOver();
+			st->terminate();
 
 		} else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_PRINTSCREEN) {
 			// Note on Linux this only works when used also with SHIFT or CTRL.
