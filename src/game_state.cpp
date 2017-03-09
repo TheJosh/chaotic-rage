@@ -477,7 +477,7 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 	this->status = RUNNING;
 
 	// The main game loop
-	while (this->status != FINISHED) {
+	while (this->status == RUNNING) {
 		this->gameLoopIter();
 		if (GEng()->cmdline->throttle) SDL_Delay(1);
 		MAINLOOP_ITER
@@ -486,6 +486,12 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 	if (client != NULL) {
 		client->addmsgQuit();
 		client->update();
+	}
+
+	// End screen loop
+	while (this->status == END_SCREEN) {
+		this->endScreenLoopIter();
+		if (GEng()->cmdline->throttle) SDL_Delay(1);
 	}
 
 	this->postGame();
@@ -512,6 +518,10 @@ void GameState::gameLoopIter()
 	this->update(delta);
 	handleEvents(this);
 
+	if (GEng()->hasDialogs()) {
+		GEng()->gui->logic();
+	}
+
 	if (GEng()->getMouseGrab()) {
 		if (this->local_players[0]->p) this->local_players[0]->p->angleFromMouse(game_x[0], game_y[0], delta);
 		if (this->local_players[1]->p) this->local_players[1]->p->angleFromMouse(game_x[1], game_y[1], delta);
@@ -537,6 +547,31 @@ void GameState::gameLoopIter()
 	GEng()->render->render();
 	PROFILE_END(render);
 
+	GEng()->audio->play();
+}
+
+
+/**
+* Post-game loop
+**/
+void GameState::endScreenLoopIter()
+{
+	static float current_time = SDL_GetTicks();
+	float new_time = SDL_GetTicks();
+	float delta = new_time - current_time;
+	current_time = new_time;
+
+	this->logic->update(delta);
+	handleEvents(this);
+
+	this->game_time += delta;
+	this->anim_frame = static_cast<int>(floor(this->game_time * ANIMATION_FPS / 1000.0));
+
+	if (GEng()->hasDialogs()) {
+		GEng()->gui->logic();
+	}
+
+	GEng()->render->render();
 	GEng()->audio->play();
 }
 
@@ -591,11 +626,6 @@ void GameState::update(float delta)
 	} else if (gs->day_night_cycle) {
 		this->doTimeOfDay(delta);
 		this->doTorch();
-	}
-
-	// Handle guichan logic
-	if (GEng()->hasDialogs()) {
-		GEng()->gui->logic();
 	}
 
 	// Update FPS stats
@@ -682,7 +712,7 @@ void GameState::terminate()
 **/
 void GameState::gameOver(int result)
 {
-	this->status = FINISHED;
+	this->status = END_SCREEN;
 	this->last_game_result = result;
 }
 
