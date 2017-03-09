@@ -113,6 +113,9 @@ class GameState
 	friend class NetServer;
 	friend void gameLoop(GameState *st, Render *render, Audio* audio, NetClient* client);
 
+	private:
+		unsigned int last_tick;
+
 	protected:
 		list<Entity*> entities;
 		list<Entity*> entities_add;

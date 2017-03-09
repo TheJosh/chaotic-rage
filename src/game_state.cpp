@@ -472,6 +472,7 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 		}
 	}
 
+	this->last_tick = SDL_GetTicks();;
 	this->status = RUNNING;
 
 	// The main game loop
@@ -506,11 +507,9 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 **/
 void GameState::gameLoopIter()
 {
-	static float current_time = SDL_GetTicks();
-
-	float new_time = SDL_GetTicks();
-	float delta = new_time - current_time;
-	current_time = new_time;
+	unsigned int new_tick = SDL_GetTicks();
+	float delta = new_tick - this->last_tick;
+	this->last_tick = new_tick;
 
 	this->logic->update(delta);
 	this->update(delta);
@@ -554,10 +553,9 @@ void GameState::gameLoopIter()
 **/
 void GameState::endScreenLoopIter()
 {
-	static float current_time = SDL_GetTicks();
-	float new_time = SDL_GetTicks();
-	float delta = new_time - current_time;
-	current_time = new_time;
+	unsigned int new_tick = SDL_GetTicks();
+	float delta = new_tick - this->last_tick;
+	this->last_tick = new_tick;
 
 	this->logic->update(delta);
 	handleEvents(this);
