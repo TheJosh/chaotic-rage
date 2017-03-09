@@ -53,9 +53,6 @@ class GameEngine
 		std::list<Dialog*> dialogs;
 
 	public:
-		// Is the game running?
-		bool running;
-
 		// Pointers to all of the subsystems
 		Render* render;
 		Audio* audio;

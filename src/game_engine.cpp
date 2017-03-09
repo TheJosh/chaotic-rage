@@ -43,7 +43,6 @@ GameEngine* GEng()
 **/
 GameEngine::GameEngine()
 {
-	this->running = false;
 	this->mouse_grabbed = false;
 
 	this->render = NULL;
