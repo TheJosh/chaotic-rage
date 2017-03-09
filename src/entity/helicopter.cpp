@@ -118,7 +118,7 @@ void Helicopter::update(float delta)
 	this->body->applyCentralImpulse(absForce);
 
 	// Blades animation
-	int angle = (this->st->anim_frame * 75) % 360;
+	int angle = (this->st->game_time / 250) % 360;
 	this->setNodeAngle(VEHICLE_NODE_SPIN, static_cast<float>(angle));
 	
 	// Send state over network

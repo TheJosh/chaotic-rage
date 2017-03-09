@@ -91,7 +91,6 @@ GameState * getGameState()
 GameState::GameState()
 {
 	this->status = STARTUP;
-	this->anim_frame = 0;
 	this->game_time = 0;
 	this->num_local = 0;
 	this->eid_next = 1;
@@ -377,7 +376,6 @@ void GameState::preGame()
 {
 	// It should technically be 0, but 1 avoids division-by-zero
 	this->game_time = 1;
-	this->anim_frame = 1;
 
 	GEng()->initGuichan();
 	GEng()->setMouseGrab(true);
@@ -565,7 +563,6 @@ void GameState::endScreenLoopIter()
 	handleEvents(this);
 
 	this->game_time += delta;
-	this->anim_frame = static_cast<int>(floor(this->game_time * ANIMATION_FPS / 1000.0));
 
 	if (GEng()->hasDialogs()) {
 		GEng()->gui->logic();
@@ -633,7 +630,6 @@ void GameState::update(float delta)
 
 	// Update time
 	this->game_time += delta;
-	this->anim_frame = static_cast<int>(floor(this->game_time * ANIMATION_FPS / 1000.0));
 }
 
 

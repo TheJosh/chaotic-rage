@@ -133,7 +133,6 @@ class GameState
 		unsigned int num_local;
 		int last_game_result;
 
-		unsigned int anim_frame;
 		unsigned int game_time;
 
 		GameLogic* logic;
