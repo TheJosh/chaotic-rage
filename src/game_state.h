@@ -88,6 +88,14 @@ class PlayerState
 #define FPS_SAMPLES 100
 
 
+enum GameStatus {
+	STARTUP,
+	RUNNING,
+	END_SCREEN,
+	FINISHED,
+};
+
+
 /**
 * Contains all of the state variables for the game
 *
@@ -112,7 +120,7 @@ class GameState
 		vector<Unit*> units;		// leaks: items are not removed
 		vector<Wall*> walls;		// leaks: items are not removed
 
-		bool running;
+		GameStatus status;
 
 		EID eid_next;
 

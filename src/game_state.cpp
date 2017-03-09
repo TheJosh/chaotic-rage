@@ -90,7 +90,7 @@ GameState * getGameState()
 **/
 GameState::GameState()
 {
-	this->running = false;
+	this->status = STARTUP;
 	this->anim_frame = 0;
 	this->game_time = 0;
 	this->num_local = 0;
@@ -474,10 +474,10 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 		}
 	}
 
-	this->running = true;
+	this->status = RUNNING;
 
 	// The main game loop
-	while (this->running) {
+	while (this->status != FINISHED) {
 		this->gameLoopIter();
 		if (GEng()->cmdline->throttle) SDL_Delay(1);
 		MAINLOOP_ITER
@@ -529,7 +529,7 @@ void GameState::gameLoopIter()
 
 	if (GEng()->server != NULL) {
 		if (!GEng()->server->update()) {
-			this->running = false;
+			this->status = FINISHED;
 		}
 	}
 
@@ -671,7 +671,7 @@ void GameState::doTorch()
 **/
 void GameState::gameOver(int result)
 {
-	this->running = false;
+	this->status = FINISHED;
 	this->last_game_result = result;
 }
 
