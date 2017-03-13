@@ -346,7 +346,13 @@ int Map::load(string name, Render *render, Mod* insideof)
 
 		} else if (strcmp(cfg_getstr(cfg_sub, "data-type"), "hfz") == 0) {
 			// Load a hfz file
-			heightmap->loadHFZ(this->mod, std::string(data_file));
+			bool ret = heightmap->loadHFZ(this->mod, std::string(data_file));
+			if (!ret) {
+				cerr << "Error loading hfz heightmap data" << endl;
+				delete heightmap;
+				cfg_free(cfg);
+				return 0;
+			}
 
 		} else {
 			cerr << "Invalid data type; expected 'img', 'raw16int', 'hfz'" << endl;
@@ -520,6 +526,9 @@ bool Map::loadTextureSplat(Heightmap* heightmap, cfg_t *cfg)
 		return false;
 	}
 	heightmap->alphamap = this->render->loadSprite(std::string(tmpstr), this->mod);
+	if (heightmap->alphamap == NULL) {
+		return false;
+	}
 
 	num_layers = cfg_size(cfg, "layer");
 	if (num_layers == 0 || num_layers > TEXTURE_SPLAT_LAYERS) {
@@ -533,8 +542,11 @@ bool Map::loadTextureSplat(Heightmap* heightmap, cfg_t *cfg)
 		if (tmpstr == NULL) {
 			return false;
 		}
-
 		heightmap->layers[j].texture = this->render->loadSprite(std::string(tmpstr), this->mod);
+		if (heightmap->layers[j].texture == NULL) {
+			return false;
+		}
+
 		heightmap->layers[j].scale = cfg_getfloat(cfg_layer, "scale");
 		heightmap->layers[j].dbl = cfg_getbool(cfg_layer, "dbl");
 
