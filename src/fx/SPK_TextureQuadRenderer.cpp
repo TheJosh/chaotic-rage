@@ -131,6 +131,11 @@ namespace GL
 		float* ptr;
 		size_t num = group.getNbParticles();
 
+		// Unable to render if no texture set
+		if (texture == NULL) {
+			return;
+		}
+
 		// Resize buffer if not large enough
 		if (num > buffer_sz) {
 			if (buffer_sz == 0) buffer_sz = 1024;
