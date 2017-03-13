@@ -85,7 +85,7 @@ class PlayerState
 };
 
 
-#define FPS_SAMPLES 100
+#define FPS_SAMPLES 250
 
 
 enum GameStatus {

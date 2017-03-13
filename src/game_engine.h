@@ -27,7 +27,7 @@ namespace gcn {
 /**
 * Size of the frames-per-second ringbuffer
 **/
-#define FPS_SAMPLES 100
+#define FPS_SAMPLES 250
 
 
 /**
@@ -41,10 +41,10 @@ class GameEngine
 {
 	protected:
 		// FPS ringbuffer + average
-		float ticksum;
+		double ticksum;
 		int tickindex;
 		int tickcount;
-		float ticklist[FPS_SAMPLES];
+		double ticklist[FPS_SAMPLES];
 
 		// Is the mouse currently "grabbed"?
 		bool mouse_grabbed;
