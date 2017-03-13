@@ -342,7 +342,7 @@ long hfzReadTile(hfzFile* fs, hfzHeader& fh, unsigned long TileX, unsigned long 
 
 	char c;
 	short s;
-	long li;
+	uint32_t li;
 
 	unsigned long TileSize = fh.TileSize;
 	unsigned long nx = fh.nx;
@@ -372,7 +372,7 @@ long hfzReadTile(hfzFile* fs, hfzHeader& fh, unsigned long TileX, unsigned long 
 	for(j=j1; j<j2; j++) {
 
 		char LineDepth; // 1, 2, or 4
-		long FirstVal;
+		uint32_t FirstVal;
 
 		if(1!=hfzRead(fs, &LineDepth, 1))
 			return LIBHFZ_ERROR_READ_FAILED;
@@ -388,7 +388,7 @@ long hfzReadTile(hfzFile* fs, hfzHeader& fh, unsigned long TileX, unsigned long 
 		// set first pixel
 		pMapData[i1 + nx * j] = f;
 
-		long LastVal = FirstVal;
+		uint32_t LastVal = FirstVal;
 
 		for(i=i1+1; i<i2; i++) {
 			switch(LineDepth) {
