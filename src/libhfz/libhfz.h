@@ -4,6 +4,7 @@
 #pragma once
 
 #include <zlib.h>
+#include <stdint.h>
 
 #ifndef WIN32
 #define __stdcall
@@ -45,13 +46,13 @@ typedef struct {
 
 // header block
 typedef struct {
-	unsigned short FileVersionNo;
-	unsigned long nx;
-	unsigned long ny;
-	unsigned short TileSize;
+	uint16_t FileVersionNo;
+	uint32_t nx;
+	uint32_t ny;
+	uint16_t TileSize;
 	float HorizScale;
 	float Precis;
-	unsigned long ExtHeaderLength;
+	uint32_t ExtHeaderLength;
 	unsigned long nExtHeaderBlocks;
 	hfzExtHeaderBlock* pExtHeaderBlocks;
 } hfzHeader;
