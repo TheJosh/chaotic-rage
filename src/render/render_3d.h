@@ -123,8 +123,7 @@ class Render3D : public Render
 		/**
 		* Load the given ttf font
 		**/
-		virtual void loadFonts(Mod* mod) = 0;
-		virtual OpenGLFont* loadFont(string name, float size, Mod * mod) = 0;
+		virtual void loadFonts() = 0;
 		virtual OpenGLFont* getFont(string name, float size) = 0;
 
 		/**

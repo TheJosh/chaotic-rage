@@ -386,10 +386,16 @@ void RenderOpenGL::setMouseGrab(bool newval)
 }
 
 
-void RenderOpenGL::loadFonts(Mod* mod)
+/**
+* Load game fonts (and also the base shaders needed by the menu)
+*
+* Strictly this isn't required, as fonts are loaded on-demand,
+* But it should help avoid random dips in framerate the first
+* time a font is used.
+**/
+void RenderOpenGL::loadFonts()
 {
-	this->loadFont("DejaVuSans", 20.0f, mod);
-	
+	this->getFont("DejaVuSans", 20.0f);
 	
 	// ModManager loads the fonts after mod loading but before
 	// the menu has loaded menu needs some shaders loaded too.
@@ -402,40 +408,21 @@ void RenderOpenGL::loadFonts(Mod* mod)
 
 
 /**
-* Load a font using freetype
-* Caches loads in a map
-**/
-OpenGLFont* RenderOpenGL::loadFont(string name, float size, Mod * mod)
-{
-	std::ostringstream key;
-	key << name;
-	key << size;
-
-	std::map<std::string, OpenGLFont*>::iterator it = this->fonts.find(key.str());
-	if (it != this->fonts.end()) {
-		return it->second;
-	} else {
-		OpenGLFont* fnt = new OpenGLFont(this, name, mod, size);
-		this->fonts.insert(std::pair<std::string, OpenGLFont*>(key.str(), fnt));
-		return fnt;
-	}
-}
-
-
-/**
-* Return an already-loaded font, or NULL if font is not loaded
+* Load a font, or fetch an already loaded font
 **/
 OpenGLFont* RenderOpenGL::getFont(string name, float size)
 {
 	std::ostringstream key;
 	key << name;
 	key << size;
-	
+
 	std::map<std::string, OpenGLFont*>::iterator it = this->fonts.find(key.str());
 	if (it != this->fonts.end()) {
 		return it->second;
 	} else {
-		return NULL;
+		OpenGLFont* fnt = new OpenGLFont(this, name, GEng()->mm->getBase(), size);
+		this->fonts.insert(std::pair<std::string, OpenGLFont*>(key.str(), fnt));
+		return fnt;
 	}
 }
 

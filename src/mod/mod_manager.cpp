@@ -49,7 +49,7 @@ bool loadMods(GameState *st, UIUpdate* ui)
 
 	// Load the game fonts from the main mod
 	if (GEng()->render->is3D()) {
-		static_cast<Render3D*>(GEng()->render)->loadFonts(mod);
+		static_cast<Render3D*>(GEng()->render)->loadFonts();
 	}
 
 	// If a suppl mod has been specified on the cmdline, try to load it
