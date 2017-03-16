@@ -44,7 +44,7 @@
 #include <guichan/sdl.hpp>
 #include <guichan/opengl.hpp>
 #include "guichan_imageloader.h"
-#include "guichan_font.h"
+#include "opengl_font.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

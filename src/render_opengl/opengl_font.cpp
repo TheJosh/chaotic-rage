@@ -2,7 +2,7 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include "guichan_font.h"
+#include "opengl_font.h"
 #include "gl.h"
 #include "gl_debug.h"
 #include "render_opengl.h"

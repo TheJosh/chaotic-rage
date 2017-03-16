@@ -11,7 +11,7 @@
 #include "menu.h"
 #include "render_opengl.h"
 #include "animplay.h"
-#include "guichan_font.h"
+#include "opengl_font.h"
 
 #include "../guichan/guichan.hpp"
 #include "../guichan/sdl.hpp"
