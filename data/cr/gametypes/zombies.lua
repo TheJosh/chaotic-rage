@@ -115,6 +115,8 @@ start_round = function()
 	end;
 	lab.align = 2;
 	lab.r = 0.9; lab.g = 0.1; lab.b = 0.1;
+	lab.font = "Digitalt"
+	lab.size = 70.0
 
 	-- Fade out the message
 	anim = add_interval(100, function()
@@ -190,6 +192,8 @@ bind_playerdied(function(slot)
 		lab = add_label(0, 350, "FAILURE");
 		lab.align = 2;
 		lab.r = 0.9; lab.g = 0.1; lab.b = 0.1;
+		lab.font = "Digitalt"
+		lab.size = 70.0
 		add_timer(5000, function()
 		  game_over(0);
 		end)
