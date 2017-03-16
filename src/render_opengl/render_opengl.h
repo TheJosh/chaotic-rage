@@ -79,7 +79,7 @@ class RenderOpenGL : public Render3D
 		// Loaded sprites
 		vector<SpritePtr> loaded;
 
-		OpenGLFont* font;
+		std::map<std::string, OpenGLFont*> fonts;
 		OpenGLFont* gui_font;
 
 		// VBOs
@@ -185,9 +185,11 @@ class RenderOpenGL : public Render3D
 		// From class Render3D
 		virtual void saveScreenshot(string filename);
 		virtual void initGuichan(gcn::Gui * gui, Mod * mod);
-		virtual void loadFont(string name, Mod * mod);
-		virtual void renderText(string text, int x = 0, int y = 0, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
-		virtual unsigned int widthText(string text);
+		virtual void loadFonts(Mod* mod);
+		virtual OpenGLFont* loadFont(string name, float size, Mod * mod);
+		virtual OpenGLFont* getFont(string name, float size);
+		virtual void renderText(OpenGLFont* font, string text, int x = 0, int y = 0, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
+		virtual unsigned int widthText(OpenGLFont* font, string text);
 		virtual SpritePtr loadCubemap(string filename_base, string filename_ext, Mod * mod);
 		virtual SpritePtr load1D(string filename, Mod* mod);
 		virtual void mouseRaycast(int x, int y, btVector3& start, btVector3& end);

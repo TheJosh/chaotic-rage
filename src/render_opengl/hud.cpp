@@ -71,6 +71,11 @@ void HUD::draw()
 {
 	glDisable(GL_DEPTH_TEST);
 
+	OpenGLFont* font = this->render->getFont("DejaVuSans", 20.0f);
+	if (font == NULL) {
+		return;
+	}
+
 	if (this->weapon_menu && this->ps->p != NULL) {
 		// Weapon menu
 		if (this->weapon_menu_remove_time < ps->st->game_time) {
@@ -83,10 +88,10 @@ void HUD::draw()
 			for (unsigned int i = 0; i < num; i++) {
 				WeaponType *wt = this->ps->p->getWeaponTypeAt(i);
 
-				this->render->renderText(wt->title, x, y);
+				this->render->renderText(font, wt->title, x, y);
 
 				if (i == this->ps->p->getCurrentWeaponID()) {
-					this->render->renderText(">", x - 25, y);
+					this->render->renderText(font, ">", x - 25, y);
 				}
 
 				y += 30;
@@ -104,7 +109,7 @@ void HUD::draw()
 			}
 
 			y -= 20;
-			this->render->renderText(msg->text, 20, y);
+			this->render->renderText(font, msg->text, 20, y);
 		}
 
 		// Labels
@@ -123,15 +128,15 @@ void HUD::draw()
 			if (y < 0) y = this->render->virt_height + y;
 			
 			if (l->align == ALIGN_LEFT) {
-				this->render->renderText(l->data, x, y, l->r, l->g, l->b, l->a);
+				this->render->renderText(font, l->data, x, y, l->r, l->g, l->b, l->a);
 
 			} else if (l->align == ALIGN_CENTER) {
-				int w = render->widthText(l->data);
-				this->render->renderText(l->data, x + (l->width - w) / 2, y, l->r, l->g, l->b, l->a);
+				int w = render->widthText(font, l->data);
+				this->render->renderText(font, l->data, x + (l->width - w) / 2, y, l->r, l->g, l->b, l->a);
 
 			} else if (l->align == ALIGN_RIGHT) {
-				int w = render->widthText(l->data);
-				this->render->renderText(l->data, x + (l->width - w), y, l->r, l->g, l->b, l->a);
+				int w = render->widthText(font, l->data);
+				this->render->renderText(font, l->data, x + (l->width - w), y, l->r, l->g, l->b, l->a);
 
 			} else {
 				cerr << "HUD label with unknown align: " << l->align << " : " << l->data << endl;
@@ -147,8 +152,8 @@ void HUD::draw()
 		if (this->ps->p != NULL) {
 			string msg = this->ps->p->getPowerupMessage();
 			if (!msg.empty()) {
-				int w = render->widthText(msg);
-				this->render->renderText(msg, (this->render->virt_width - w) / 2, this->render->virt_height - 50, 0.8f, 0.0f, 0.0f, 1.0f);
+				int w = render->widthText(font, msg);
+				this->render->renderText(font, msg, (this->render->virt_width - w) / 2, this->render->virt_height - 50, 0.8f, 0.0f, 0.0f, 1.0f);
 			}
 		}
 
@@ -160,23 +165,23 @@ void HUD::draw()
 			if (val >= 0) {
 				char buf[BUFFER_MAX];
 				snprintf(buf, BUFFER_MAX, "%i", val);
-				this->render->renderText(buf, 50, 50);
+				this->render->renderText(font, buf, 50, 50);
 			} else if (val == -2) {
-				this->render->renderText("relodn!", 50, 50);
+				this->render->renderText(font, "relodn!", 50, 50);
 			}
 
 			val = this->ps->p->getBelt();
 			if (val >= 0) {
 				char buf[BUFFER_MAX];
 				snprintf(buf, BUFFER_MAX, "%i", val);
-				this->render->renderText(buf, 150, 50);
+				this->render->renderText(font, buf, 150, 50);
 			}
 
 			val = (int)floor(this->ps->p->getHealth());
 			if (val >= 0) {
 				char buf[BUFFER_MAX];
 				snprintf(buf, BUFFER_MAX, "%i", val);
-				this->render->renderText(buf, 50, 80);
+				this->render->renderText(font, buf, 50, 80);
 			}
 		}
 	}

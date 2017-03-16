@@ -5,6 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include <map>
+#include <sstream>
 #include "gl.h"
 #include <SDL_image.h>
 #include <math.h>
@@ -100,7 +101,6 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 	this->sprite_vbo = 0;
 
 	this->skybox_vao = NULL;
-	this->font = NULL;
 	this->gui_font = NULL;
 
 	this->settings = NULL;
@@ -117,9 +117,14 @@ RenderOpenGL::RenderOpenGL(GameState* st, RenderOpenGLSettings* settings) : Rend
 RenderOpenGL::~RenderOpenGL()
 {
 	delete this->settings;
-	delete this->font;
 	delete this->gui_font;
 
+	std::map<std::string, OpenGLFont*>::iterator it;
+	for (it = this->fonts.begin(); it != this->fonts.end(); ++it) {
+		delete it->second;
+	}
+	this->fonts.clear();
+	
 	// TODO: Delete all buffers, tex, etc.
 
 	#ifndef SDL1_VIDEO
@@ -381,19 +386,56 @@ void RenderOpenGL::setMouseGrab(bool newval)
 }
 
 
-/**
-* Load a font using freetype
-**/
-void RenderOpenGL::loadFont(string name, Mod* mod)
+void RenderOpenGL::loadFonts(Mod* mod)
 {
-	// TODO: Menu to have it's own font
-	font = new OpenGLFont(this, name, mod, 20.0f);
-
-	// I don't quite know why this is here...
-	// TODO: Move or remove
+	this->loadFont("DejaVuSans", 20.0f, mod);
+	
+	
+	// ModManager loads the fonts after mod loading but before
+	// the menu has loaded menu needs some shaders loaded too.
+	// This is a hack of a place to put this, but it works.
 	this->loadShaders();
 	if (this->shaders_error) {
 		reportFatalError("Error loading OpenGL shaders");
+	}
+}
+
+
+/**
+* Load a font using freetype
+* Caches loads in a map
+**/
+OpenGLFont* RenderOpenGL::loadFont(string name, float size, Mod * mod)
+{
+	std::ostringstream key;
+	key << name;
+	key << size;
+
+	std::map<std::string, OpenGLFont*>::iterator it = this->fonts.find(key.str());
+	if (it != this->fonts.end()) {
+		return it->second;
+	} else {
+		OpenGLFont* fnt = new OpenGLFont(this, name, mod, size);
+		this->fonts.insert(std::pair<std::string, OpenGLFont*>(key.str(), fnt));
+		return fnt;
+	}
+}
+
+
+/**
+* Return an already-loaded font, or NULL if font is not loaded
+**/
+OpenGLFont* RenderOpenGL::getFont(string name, float size)
+{
+	std::ostringstream key;
+	key << name;
+	key << size;
+	
+	std::map<std::string, OpenGLFont*>::iterator it = this->fonts.find(key.str());
+	if (it != this->fonts.end()) {
+		return it->second;
+	} else {
+		return NULL;
 	}
 }
 
@@ -1814,18 +1856,18 @@ void RenderOpenGL::setAmbient(glm::vec4 ambient)
 *
 * Note that the Y is for the baseline of the text.
 **/
-void RenderOpenGL::renderText(string text, int x, int y, float r, float g, float b, float a)
+void RenderOpenGL::renderText(OpenGLFont* font, string text, int x, int y, float r, float g, float b, float a)
 {
-	this->font->drawString(NULL, text, x, y, r, g, b, a);
+	font->drawString(NULL, text, x, y, r, g, b, a);
 }
 
 
 /**
 * Returns the width of a string
 **/
-unsigned int RenderOpenGL::widthText(string text)
+unsigned int RenderOpenGL::widthText(OpenGLFont* font, string text)
 {
-	return this->font->getWidth(text);
+	return font->getWidth(text);
 }
 
 
@@ -2272,11 +2314,16 @@ void RenderOpenGL::fps()
 	char buf[BUFFER_MAX];
 	float tick = GEng()->getAveTick();
 
+	OpenGLFont* font = this->getFont("DejaVuSans", 20.0f);
+	if (font == NULL) {
+		return;
+	}
+
 	snprintf(buf, BUFFER_MAX, "%.2f ms", tick);
-	this->renderText(buf, 400, 50);
+	this->renderText(font, buf, 400, 50);
 
 	snprintf(buf, BUFFER_MAX, "%.1f fps", 1000.0f/tick);
-	this->renderText(buf, 550, 50);
+	this->renderText(font, buf, 550, 50);
 
 	// Count up entities
 	int units = 0;
@@ -2302,5 +2349,5 @@ void RenderOpenGL::fps()
 	}
 
 	snprintf(buf, BUFFER_MAX, "U %i  V %i  O %i  P %i  ? %i  T %i", units, vehicles, objects, pickups, other, total);
-	this->renderText(buf, 400, 80);
+	this->renderText(font, buf, 400, 80);
 }

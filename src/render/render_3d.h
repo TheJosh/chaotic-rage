@@ -9,6 +9,7 @@
 
 
 class HUDLabel;
+class OpenGLFont;
 
 namespace gcn {
 	class Gui;
@@ -122,17 +123,19 @@ class Render3D : public Render
 		/**
 		* Load the given ttf font
 		**/
-		virtual void loadFont(string name, Mod * mod) = 0;
+		virtual void loadFonts(Mod* mod) = 0;
+		virtual OpenGLFont* loadFont(string name, float size, Mod * mod) = 0;
+		virtual OpenGLFont* getFont(string name, float size) = 0;
 
 		/**
 		* Render some text
 		**/
-		virtual void renderText(string text, int x = 0, int y = 0, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f) = 0;
+		virtual void renderText(OpenGLFont* font, string text, int x = 0, int y = 0, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f) = 0;
 
 		/**
 		* Render some text
 		**/
-		virtual unsigned int widthText(string text) = 0;
+		virtual unsigned int widthText(OpenGLFont* font, string text) = 0;
 
 		/**
 		* Calculate the raycast start and end vectors in world space for mouse picking

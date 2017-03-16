@@ -47,9 +47,9 @@ bool loadMods(GameState *st, UIUpdate* ui)
 	GEng()->mm->addMod(mod);
 	GEng()->mm->setBase(mod);
 
-	// Load the game font from the main mod
+	// Load the game fonts from the main mod
 	if (GEng()->render->is3D()) {
-		static_cast<Render3D*>(GEng()->render)->loadFont("DejaVuSans", mod);
+		static_cast<Render3D*>(GEng()->render)->loadFonts(mod);
 	}
 
 	// If a suppl mod has been specified on the cmdline, try to load it
