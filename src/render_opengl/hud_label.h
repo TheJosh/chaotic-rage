@@ -7,6 +7,8 @@
 using namespace std;
 
 
+class OpenGLFont;
+
 enum HUDLabelAlign {
 	ALIGN_LEFT = 1,
 	ALIGN_CENTER = 2,
@@ -27,11 +29,13 @@ class HUDLabel
 		float g;
 		float b;
 		float a;
+		string font_face;
+		float font_size;
 
 	public:
 		HUDLabel(int x, int y, string data, HUDLabelAlign align = ALIGN_LEFT,
 			float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f)
 			: x(x), y(y), width(0.0f), align(align), data(data), visible(true),
-			  r(r), g(g), b(b), a(a)
+			  r(r), g(g), b(b), a(a), font_face(""), font_size(10.0f)
 			{};
 };

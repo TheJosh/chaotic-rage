@@ -116,6 +116,14 @@ void HUD::draw()
 		int x;
 		for (list<HUDLabel*>::iterator it = this->labels.begin(); it != this->labels.end(); ++it) {
 			HUDLabel *l = (*it);
+			
+			OpenGLFont *lf;
+			if (l->font_face.empty()) {
+				lf = font;
+			} else {
+				lf = this->render->getFont(l->font_face, l->font_size);
+			}
+
 			// Send state over network
 			if (! l->visible || l->a <= 0.001f) continue;
 			if (GEng()->server != NULL) {
@@ -128,15 +136,15 @@ void HUD::draw()
 			if (y < 0) y = this->render->virt_height + y;
 			
 			if (l->align == ALIGN_LEFT) {
-				this->render->renderText(font, l->data, x, y, l->r, l->g, l->b, l->a);
+				this->render->renderText(lf, l->data, x, y, l->r, l->g, l->b, l->a);
 
 			} else if (l->align == ALIGN_CENTER) {
-				int w = render->widthText(font, l->data);
-				this->render->renderText(font, l->data, x + (l->width - w) / 2, y, l->r, l->g, l->b, l->a);
+				int w = render->widthText(lf, l->data);
+				this->render->renderText(lf, l->data, x + (l->width - w) / 2, y, l->r, l->g, l->b, l->a);
 
 			} else if (l->align == ALIGN_RIGHT) {
-				int w = render->widthText(font, l->data);
-				this->render->renderText(font, l->data, x + (l->width - w), y, l->r, l->g, l->b, l->a);
+				int w = render->widthText(lf, l->data);
+				this->render->renderText(lf, l->data, x + (l->width - w), y, l->r, l->g, l->b, l->a);
 
 			} else {
 				cerr << "HUD label with unknown align: " << l->align << " : " << l->data << endl;
