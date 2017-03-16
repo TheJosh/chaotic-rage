@@ -124,6 +124,12 @@ LUA_FUNC(set)
 	} else if (strcmp(i, "a") == 0) {
 		lab->a = static_cast<float>(lua_tonumber(L, 3));
 
+	} else if (strcmp(i, "font") == 0) {
+		lab->font_face.assign(lua_tostring(L, 3));
+
+	} else if (strcmp(i, "size") == 0) {
+		lab->font_size = static_cast<float>(lua_tonumber(L, 3));
+
 	} else {
 		lua_pushstring(L, "Invalid property for object " MYTYPE);
 		lua_error(L);
