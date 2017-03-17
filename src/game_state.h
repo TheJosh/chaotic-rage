@@ -85,9 +85,6 @@ class PlayerState
 };
 
 
-#define FPS_SAMPLES 250
-
-
 enum GameStatus {
 	STARTUP,
 	RUNNING,

@@ -60,7 +60,8 @@ GameEngine::GameEngine()
 
 	this->ticksum = 0;
 	this->tickindex = 0;
-	memset(&this->ticklist, 0, static_cast<float>(sizeof(this->ticklist)));
+	this->tickcount = 0;
+	memset(&this->ticklist, 0, sizeof(float) * FPS_SAMPLES);
 
 	g_geng = this;
 }
