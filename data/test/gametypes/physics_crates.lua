@@ -5,6 +5,9 @@ debug_framerate(true)
 
 
 bind_gamestart(function()
+	weather.disableRandom();
+	daynight.disableCycle();
+	
 	-- Make some crates!
 	for i = 0, 50, 1 do
 		game.addPickupRand("ammo_current");
@@ -12,6 +15,6 @@ bind_gamestart(function()
 	
 	-- The game doesn't last long
 	add_interval(1000 * 20, function()
-		game_over(1)
+		terminate()
 	end)
 end)
