@@ -17,7 +17,7 @@ GameSettings::GameSettings(int rounds)
 	this->rounds = rounds;
 	this->time_of_day = this->getTimeOfDayMax();
 	this->tod_min = this->getTimeOfDayMin();
-	this->tod_max = this->getTimeOfDayMin();
+	this->tod_max = this->getTimeOfDayMax();
 	this->day_night_cycle = true;
 	this->rain_flow = 0;
 	this->snow_flow = 0;
