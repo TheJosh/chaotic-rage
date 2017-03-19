@@ -112,7 +112,7 @@ int main(int argc, char ** argv)
 		if (c == NULL) {
 			displayMessageBox("Campaign not found: " + GEng()->cmdline->campaign);
 		} else {
-			gm->startCampaign(c, "robot", GameSettings::behindPlayer, 1);
+			gm->startCampaign(c, "robot", GameSettings::firstPerson, 1);
 		}
 
 	// Arcade game
@@ -124,7 +124,7 @@ int main(int argc, char ** argv)
 		if (map == NULL) {
 			displayMessageBox("Map not found: " + GEng()->cmdline->map);
 		} else {
-			gm->startGame(map, GEng()->cmdline->gametype, GEng()->cmdline->unittype, GameSettings::behindPlayer, 1, GEng()->cmdline->host, gs);
+			gm->startGame(map, GEng()->cmdline->gametype, GEng()->cmdline->unittype, GameSettings::firstPerson, 1, GEng()->cmdline->host, gs);
 		}
 		delete(gs);
 
