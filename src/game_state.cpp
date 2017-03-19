@@ -389,9 +389,8 @@ void GameState::preGame()
 	this->time_cycle = this->gs->time_of_day < 0.5f ? -this->gs->getTimeOfDayStep() : this->gs->getTimeOfDayStep();
 	this->tod_target_val = 0.0f;
 	this->tod_target_psec = 0.0f;
-	if (!gs->day_night_cycle) {
-		GEng()->render->setAmbient(glm::vec4(this->time_of_day, this->time_of_day, this->time_of_day, 1.0f));
-	}
+
+	GEng()->render->setAmbient(glm::vec4(this->time_of_day, this->time_of_day, this->time_of_day, 1.0f));
 	this->doTorch();
 
 	// Weather
