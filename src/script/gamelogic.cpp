@@ -400,6 +400,12 @@ LUA_FUNC(game_over)
 	return 0;
 }
 
+LUA_FUNC(terminate)
+{
+	gl->st->terminate();
+	return 0;
+}
+
 /**
 * TODO: Move somewhere else
 **/
@@ -497,6 +503,7 @@ void register_lua_functions()
 	LUA_REG(show_alert_message);	// TODO: needs network support
 	LUA_REG(add_label);				// - this too
 	LUA_REG(game_over);				// - and this one
+	LUA_REG(terminate);
 	LUA_REG(get_selected_unittype);	// TODO: other player deets too?
 	LUA_REG(get_viewmode);			// TODO: Add a 'camera' object
 	LUA_REG(set_viewmode);			// dynamic position, animation, etc.
