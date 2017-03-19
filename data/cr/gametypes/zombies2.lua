@@ -5,7 +5,7 @@
 num_zombies = 0;
 num_dead = 0;
 num_achive = 10;
-spawn_delay = 3000;
+spawn_delay = 1000;
 score_table = 0;
 score_labels = {};
 
@@ -43,19 +43,8 @@ end;
 -- Spwans zombies
 --
 spawn_func = function()
-	t = random(1, 5);
-	
-	if (t == 1) then
-		game.addNpc("zomb", "zombie", factions.team2);
-	elseif (t == 2) then
-		game.addNpc("zomb_fast", "zombie", factions.team2);
-	elseif (t == 3) then
-		game.addNpc("zomb_baby", "zombie", factions.team2);
-	elseif (t == 4) then
-		game.addNpc("zomb_facebook", "zombie", factions.team2);
-	elseif (t == 5) then
-		game.addNpc("zomb_robot", "zombie", factions.team2);
-	end;
+	t = random_arg("zomb", "zomb_fast", "zomb_health", "zomb_strong")
+	game.addNpc(t, "zombie", factions.team2);
 	
 	num_zombies = num_zombies + 1;
 	
