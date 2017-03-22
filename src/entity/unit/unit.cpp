@@ -265,7 +265,7 @@ void Unit::spawnAnimationFinished()
 void Unit::beginFiring()
 {
 	if (this->weapon == NULL) return;
-	if (this->weapon->reloading) {
+	if (this->weapon->reloading || this->weapon->magazine <= 0) {
 		emptySound();
 		return;
 	}
@@ -308,7 +308,9 @@ void Unit::emptySound()
 {
 	if (this->weapon == NULL) return;
 
-	GEng()->audio->stopSound(this->weapon_sound);
+	if (this->weapon->wt->continuous) {
+		GEng()->audio->stopSound(this->weapon_sound);
+	}
 
 	// TODO: Fix this
 	//AudioPtr snd = this->weapon->wt->getSound(WEAPON_SOUND_EMPTY);
