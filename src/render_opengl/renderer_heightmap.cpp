@@ -329,6 +329,10 @@ void RendererHeightmap::draw(RenderOpenGL* render)
 
 	this->vao->bind();
 	
+	glDisable(GL_DEPTH_CLAMP);
+	
 	int numTiles = (heightmap->getDataSizeX() - 1) * (heightmap->getDataSizeZ() - 1);
 	glDrawElements(GL_TRIANGLES, numTiles * 6, GL_UNSIGNED_INT, 0);
+	
+	glEnable(GL_DEPTH_CLAMP);
 }
