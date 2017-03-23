@@ -20,13 +20,23 @@
 #define BUFFER_MAX 50
 
 
+void takeScreenshot()
+{
+	static int screenshot_num = 0;
+
+	screenshot_num++;
+	char buf[BUFFER_MAX];
+	snprintf(buf, BUFFER_MAX, "screenshot%i.bmp", screenshot_num);
+	dynamic_cast<Render3D*>(GEng()->render)->saveScreenshot(getUserDataDir() + std::string(buf));
+}
+
+
 /**
 * Handles local events (keyboard, mouse)
 **/
 void handleEvents(GameState *st)
 {
 	SDL_Event event;
-	static int screenshot_num = 0;
 
 
 	while (SDL_PollEvent(&event)) {
@@ -36,11 +46,7 @@ void handleEvents(GameState *st)
 
 		} else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_PRINTSCREEN) {
 			// Note on Linux this only works when used also with SHIFT or CTRL.
-			screenshot_num++;
-			char buf[BUFFER_MAX];
-			snprintf(buf, BUFFER_MAX, "screenshot%i.bmp", screenshot_num);
-			dynamic_cast<Render3D*>(GEng()->render)->saveScreenshot(getUserDataDir() + std::string(buf));
-			st->addHUDMessage(ALL_SLOTS, "Saved ", buf);
+			takeScreenshot();
 
 		} else if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.sym) {
@@ -89,6 +95,11 @@ void handleEvents(GameState *st)
 				case SDLK_F8:
 					GEng()->render->setSpeedDebug(!GEng()->render->getSpeedDebug());
 					st->addHUDMessage(ALL_SLOTS, "Speed debug ", GEng()->render->getSpeedDebug() ? "on" : "off");
+					break;
+
+				case SDLK_F9:
+					// In case print screen cannot be used
+					takeScreenshot();
 					break;
 
 				default: break;
