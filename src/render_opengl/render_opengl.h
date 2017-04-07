@@ -88,6 +88,9 @@ class RenderOpenGL : public Render3D
 		// may need multiple g-buffers at different sizes
 		GBuffer gbuf;
 
+		GLuint quad_vao;
+		GLuint quad_vbo;
+
 		// VBOs
 		GLuint sprite_vao;
 		GLuint sprite_vbo;
@@ -211,6 +214,7 @@ class RenderOpenGL : public Render3D
 		
 		// Buffers needed for shadowing
 		void createShadowBuffers();
+		void createQuadBuffers();
 
 		// Render to those buffers so it all works
 		void entitiesShadowMap();

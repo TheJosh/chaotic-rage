@@ -1074,6 +1074,35 @@ void RenderOpenGL::createShadowBuffers()
 
 
 /**
+* Create VBO and VAO for rendering a fullscreen quad
+**/
+void RenderOpenGL::createQuadBuffers()
+{
+	static const GLfloat quad_vertex_data[] = {
+		// pos               // tex uvs
+		-1.0f, 1.0f, 0.0f,   0.0f, 1.0f,
+		-1.0f, -1.0f, 0.0f,  0.0f, 0.0f,
+		1.0f, 1.0f, 0.0f,    1.0f, 1.0f,
+		1.0f, -1.0f, 0.0f,   1.0f, 0.0f,
+	};
+
+	glGenVertexArrays(1, &quad_vao);
+	glGenBuffers(1, &quad_vbo);
+
+	glBindVertexArray(quad_vao);
+
+	glBindBuffer(GL_ARRAY_BUFFER, quad_vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertex_data), quad_vertex_data, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+
+	glBindVertexArray(0);
+}
+
+
+/**
 * Renders a sprite.
 * Should only be used if the the caller was called by this classes 'Render' function.
 **/
@@ -1182,6 +1211,7 @@ void RenderOpenGL::preGame()
 	this->createWater();
 	this->createSkybox();
 	this->createShadowBuffers();
+	this->createQuadBuffers();
 	
 	// Set default camera at middle of map
 	for (unsigned int i = 0; i < this->st->num_local; ++i) {
