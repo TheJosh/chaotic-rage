@@ -244,6 +244,8 @@ class RenderOpenGL : public Render3D
 		void hud(HUD * hud);
 		void fps();
 
+		void lightingPass();
+
 		void loadShaders();
 		GLShader* createProgram(const char* vertex, const char* fragment);
 		GLShader* loadProgram(Mod* mod, string name);

@@ -1427,7 +1427,15 @@ void RenderOpenGL::loadShaders()
 	this->shaders[SHADER_WATER]->setUniformsLighting(false);
 	this->shaders[SHADER_TEXT]->setUniformsLighting(false);
 	this->shaders[SHADER_SKYBOX]->setUniformsLighting(false);
-
+	
+	this->shaders[SHADER_LIGHT_PASS] = loadProgram(base, "light_pass");
+	
+	GLShader *s = this->shaders[SHADER_LIGHT_PASS];
+	glUseProgram(s->p());
+	glUniform1i(s->uniform("gPosition"), 0);
+	glUniform1i(s->uniform("gDiffuse"), 1);
+	glUniform1i(s->uniform("gNormal"), 2);
+	
 	this->shaders_loaded = true;
 }
 
@@ -1899,10 +1907,13 @@ unsigned int RenderOpenGL::widthText(OpenGLFont* font, string text)
 **/
 void RenderOpenGL::render()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	entitiesCalcTransforms();
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	entitiesShadowMap();
+
+	glBindFramebuffer(GL_FRAMEBUFFER, gbuf.fbo);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	for (unsigned int i = 0; i < this->st->num_local; i++) {
 		this->render_player = this->st->local_players[i]->p;
@@ -1921,6 +1932,8 @@ void RenderOpenGL::render()
 		if (eff_viewmode == GameSettings::firstPerson) {
 			weapon();
 		}
+
+		lightingPass();
 
 		if (physicsdebug != NULL) physics();
 
@@ -1941,6 +1954,33 @@ void RenderOpenGL::render()
 	#else
 		SDL_GL_SwapWindow(this->window);
 	#endif
+}
+
+
+/**
+* Render the scene again, with lighting
+**/
+void RenderOpenGL::lightingPass()
+{
+	GLShader *s = this->shaders[SHADER_LIGHT_PASS];
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glUseProgram(s->p());
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, gbuf.tex_position);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, gbuf.tex_diffuse);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, gbuf.tex_normal);
+
+	glBindVertexArray(quad_vao);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+	glBindVertexArray(0);
+	glActiveTexture(GL_TEXTURE0);
 }
 
 
