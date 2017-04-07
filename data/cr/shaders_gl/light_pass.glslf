@@ -7,5 +7,11 @@ uniform sampler2D gNormal;
 
 void main()
 {
-    gl_FragColor = texture(gNormal, TexCoords);
+	vec3 FragPos = texture(gPosition, TexCoords).rgb;
+	vec3 Diffuse = texture(gDiffuse, TexCoords).rgb;
+	vec3 Normal = texture(gNormal, TexCoords).rgb;
+
+	// Lighting calcs will come later
+
+	gl_FragColor = vec4(Diffuse, 1.0);
 }
