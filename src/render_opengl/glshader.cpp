@@ -58,13 +58,13 @@ GLuint GLShader::createShader(GLenum type, const GLsizei count, const char** cod
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 
 	if (success == 0) {
-		glDeleteShader(shader);
 		GLchar InfoLog[1024];
 		glGetShaderInfoLog(shader, 1024, NULL, InfoLog);
 		string log = string(InfoLog);
 		log = replaceString(log, "\n", "\n\t");
 		log = trimString(log);
 		GL_LOG("Error compiling shader:\n\t%s", log.c_str());
+		glDeleteShader(shader);
 		return 0;
 	}
 
