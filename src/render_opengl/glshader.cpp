@@ -28,7 +28,7 @@ GLuint GLShader::createShader(GLenum type, const char* code)
 {
 	const char* strings[2];
 
-	strings[0] = "#version 130\n";
+	strings[0] = "#version 330 core\n";
 	strings[1] = code;
 
 	return this->createShader(type, 2, strings);

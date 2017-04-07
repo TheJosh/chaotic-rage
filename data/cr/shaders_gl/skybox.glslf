@@ -1,3 +1,5 @@
+#extension GL_NV_shadow_samplers_cube : enable
+
 in vec3 fTexUV;
 uniform samplerCube uTex;
 uniform sampler1D uDayNight;
