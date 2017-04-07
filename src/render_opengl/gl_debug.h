@@ -5,6 +5,7 @@
 #pragma once
 
 #include "../platform/platform.h"
+#include <stdio.h>
 
 
 /**
@@ -42,4 +43,3 @@
 	#define GL_LOG(msg, ...) fprintf(stderr, "GL Log: " msg "\n", ##__VA_ARGS__)
 
 #endif
-
