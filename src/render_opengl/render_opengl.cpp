@@ -40,6 +40,7 @@
 #include "light.h"
 #include "hud.h"
 #include "renderer_heightmap.h"
+#include "g_buffer.h"
 
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
@@ -124,7 +125,9 @@ RenderOpenGL::~RenderOpenGL()
 		delete it->second;
 	}
 	this->fonts.clear();
-	
+
+	this->gbuf.cleanup();
+
 	// TODO: Delete all buffers, tex, etc.
 
 	#ifndef SDL1_VIDEO
@@ -340,6 +343,8 @@ void RenderOpenGL::setScreenSize(int width, int height, bool fullscreen)
 	if (this->shaders_error) {
 		reportFatalError("Error loading OpenGL shaders");
 	}
+
+	this->gbuf.init(width, height);
 
 	// OpenGL env
 	glDepthFunc(GL_LEQUAL);

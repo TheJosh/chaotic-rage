@@ -8,6 +8,7 @@
 
 #include "../rage.h"
 #include "glshader.h"
+#include "g_buffer.h"
 #include "../render/render_3d.h"
 
 #include <guichan.hpp>
@@ -81,6 +82,11 @@ class RenderOpenGL : public Render3D
 
 		std::map<std::string, OpenGLFont*> fonts;
 		OpenGLFont* gui_font;
+
+		// G-buffer, for deferred shading
+		// TODO: Split screen could introduce variable viewport sizes (e.g. 3-player)
+		// may need multiple g-buffers at different sizes
+		GBuffer gbuf;
 
 		// VBOs
 		GLuint sprite_vao;
