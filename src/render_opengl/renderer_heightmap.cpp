@@ -135,12 +135,12 @@ char* RendererHeightmap::createShaderFunction_diffuseColor(Heightmap* heightmap)
 
 			if (lyr->texture != NULL) {
 				ss << "diffuse += ";
-				ss << "alphaMap[" << i << "] * texture2D(uLayers[" << i << "], TexUV0 * " << lyr->scale << ")";
+				ss << "alphaMap[" << i << "] * texture2D(uLayers[" << i << "], TexCoords * " << lyr->scale << ")";
 				if (lyr->dbl) {
-					ss << "* texture2D(uLayers[" << i << "], TexUV0 * " << (lyr->scale * -0.25f) << ") * 1.5";
+					ss << "* texture2D(uLayers[" << i << "], TexCoords * " << (lyr->scale * -0.25f) << ") * 1.5";
 				}
 				if (lyr->detail != NULL) {
-					ss << "* texture2D(uDetail[" << i << "], TexUV0 * " << (lyr->scale * lyr->detail_scale) << ") * 1.5";
+					ss << "* texture2D(uDetail[" << i << "], TexCoords * " << (lyr->scale * lyr->detail_scale) << ") * 1.5";
 				}
 				ss << ";\n";
 			}
