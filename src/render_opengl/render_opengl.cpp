@@ -1415,11 +1415,10 @@ void RenderOpenGL::loadShaders()
 
 	base = GEng()->mm->getBase();
 
-	this->shaders[SHADER_ENTITY_BONES] = loadProgram(base, "phong_bones", "phong");
-	this->shaders[SHADER_ENTITY_STATIC] = loadProgram(base, "phong_static", "phong");
+	this->shaders[SHADER_ENTITY_BONES] = loadProgram(base, "gbuf_bones", "gbuf_textured");
+	this->shaders[SHADER_ENTITY_STATIC] = loadProgram(base, "gbuf_static", "gbuf_textured");
 	this->shaders[SHADER_ENTITY_STATIC_BUMP] = loadProgram(base, "phong_static", "phong_bump");
-	this->shaders[SHADER_TERRAIN_PLAIN] = loadProgram(base, "phong_static", "phong_shadow");
-	this->shaders[SHADER_TERRAIN_NORMALMAP] = loadProgram(base, "phong_normalmap", "phong_shadow");
+	
 	this->shaders[SHADER_WATER] = loadProgram(base, "water");
 	this->shaders[SHADER_TEXT] = loadProgram(base, "text");
 	this->shaders[SHADER_SKYBOX] = loadProgram(base, "skybox");
@@ -1667,6 +1666,16 @@ void RenderOpenGL::entities()
 	glBindTexture(GL_TEXTURE_2D, this->shadow_depth_tex);
 	glActiveTexture(GL_TEXTURE0);
 
+	GLShader *shader = this->shaders[SHADER_ENTITY_STATIC];
+	glUseProgram(shader->p());
+	glUniformMatrix4fv(shader->uniform("view"), 1, GL_FALSE, glm::value_ptr(this->view));
+	glUniformMatrix4fv(shader->uniform("projection"), 1, GL_FALSE, glm::value_ptr(this->projection));
+
+	shader = this->shaders[SHADER_ENTITY_BONES];
+	glUseProgram(shader->p());
+	glUniformMatrix4fv(shader->uniform("view"), 1, GL_FALSE, glm::value_ptr(this->view));
+	glUniformMatrix4fv(shader->uniform("projection"), 1, GL_FALSE, glm::value_ptr(this->projection));
+
 	// The uV (view) uniform only needs setting once per frame
 	// Find shaders used in scene, and set the unform for them
 	set<GLShader*> processed = set<GLShader*>();
@@ -1739,15 +1748,8 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, const glm::mat4 &modelMatrix)
 	} else {
 		// Calculate bone transforms
 		play->calcBoneTransforms();
-		glm::mat4 MVP = this->projection * this->view * modelMatrix;
-		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
-
-		// Set uniforms
+		glUniformMatrix4fv(shader->uniform("model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		glUniformMatrix4fv(shader->uniform("uBones[0]"), MAX_BONES, GL_FALSE, &play->bone_transforms[0][0][0]);
-		glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-		glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-		glUniformMatrix3fv(shader->uniform("uMN"), 1, GL_FALSE, glm::value_ptr(glm::inverseTranspose(glm::mat3(modelMatrix))));
-		glUniformMatrix4fv(shader->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
 
 		// Do it
 		recursiveRenderAssimpModelBones(play, am, am->rootNode, shader);
@@ -1769,14 +1771,9 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, const glm::mat4 &modelMatrix)
 void RenderOpenGL::recursiveRenderAssimpModelStatic(AnimPlay* ap, AssimpModel* am, AssimpNode* nd, GLShader* shader, const glm::mat4 &modelMatrix)
 {
 	glm::mat4 transform = modelMatrix * ap->getNodeTransform(nd);
-	glm::mat4 MVP = this->projection * this->view * transform;
-	glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * transform;
 
 	// Set uniforms
-	glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-	glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(transform));
-	glUniformMatrix3fv(shader->uniform("uMN"), 1, GL_FALSE, glm::value_ptr(glm::inverseTranspose(glm::mat3(transform))));
-	glUniformMatrix4fv(shader->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
+	glUniformMatrix4fv(shader->uniform("model"), 1, GL_FALSE, glm::value_ptr(transform));
 
 	// Render meshes
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
@@ -2234,17 +2231,15 @@ void RenderOpenGL::terrain()
 	}
 
 	// Geomerty meshes
-	GLShader* s = this->shaders[SHADER_TERRAIN_PLAIN];
+	GLShader* s = this->shaders[SHADER_ENTITY_STATIC];
 	glUseProgram(s->p());
+	glUniformMatrix4fv(s->uniform("view"), 1, GL_FALSE, glm::value_ptr(this->view));
+	glUniformMatrix4fv(s->uniform("projection"), 1, GL_FALSE, glm::value_ptr(this->projection));
+	
 	for (vector<MapMesh*>::iterator it = st->map->meshes.begin(); it != st->map->meshes.end(); ++it) {
 		MapMesh* mm = (*it);
 
-		glm::mat4 MVP = this->projection * this->view * mm->xform;
-		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * mm->xform;
-
-		glUniformMatrix4fv(s->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-		glUniformMatrix4fv(s->uniform("uV"), 1, GL_FALSE, glm::value_ptr(this->view));
-		glUniformMatrix4fv(s->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
+		glUniformMatrix4fv(s->uniform("model"), 1, GL_FALSE, glm::value_ptr(mm->xform));
 
 		recursiveRenderAssimpModelStatic(mm->play, mm->model, mm->model->rootNode, s, mm->xform);
 	}

@@ -51,7 +51,7 @@ GLShader* RendererHeightmap::createShader(RenderOpenGL* render, Heightmap* heigh
 
 	GLShader* s = new GLShader(0);
 	
-	char* vertex_code = s->loadCodeFile("phong_static.glslv");
+	char* vertex_code = s->loadCodeFile("gbuf_static.glslv");
 	
 	GLuint vertex = s->createShader(GL_VERTEX_SHADER, vertex_code);
 	free(vertex_code);
@@ -60,11 +60,11 @@ GLShader* RendererHeightmap::createShader(RenderOpenGL* render, Heightmap* heigh
 		return NULL;
 	}
 
-	char* base_fragment_code = s->loadCodeFile("phong_splat.glslf");
+	char* base_fragment_code = s->loadCodeFile("gbuf_terrain.glslf");
 	char* diffuse_code = RendererHeightmap::createShaderFunction_diffuseColor(heightmap);
 
 	const char* strings[3];
-	strings[0] = "#version 130\n";
+	strings[0] = "#version 330 core\n";
 	strings[1] = base_fragment_code;
 	strings[2] = diffuse_code;
 
@@ -88,10 +88,6 @@ GLShader* RendererHeightmap::createShader(RenderOpenGL* render, Heightmap* heigh
 
 	glUseProgram(s->p());
 	glUniform1i(s->uniform("uTex"), 0);
-	glUniform1i(s->uniform("uShadowMap"), 1);
-	glUniform1i(s->uniform("uNormal"), 2);
-	glUniform1i(s->uniform("uLightmap"), 3);
-	glUniform1i(s->uniform("uDayNight"), 4);
 	glUniform1i(s->uniform("uAlphaMap"), 0);
 	glUniform1i(s->uniform("uLayers[0]"), 5);
 	glUniform1i(s->uniform("uLayers[1]"), 6);
@@ -121,19 +117,19 @@ char* RendererHeightmap::createShaderFunction_diffuseColor(Heightmap* heightmap)
 
 	if (debug_enabled("terrain")) {
 		// Dump tex coords
-		ss << "diffuse += vec4(TexUV0, 0.0, 0.0);\n";
+		ss << "diffuse += vec4(TexCoords, 0.0, 0.0);\n";
 		
 		// Also create a checkerboard pattern
-		ss << "float cellX = TexUV0.x * " << heightmap->getDataSizeX() << ";\n";
-		ss << "float cellZ = TexUV0.y * " << heightmap->getDataSizeZ() << ";\n";
+		ss << "float cellX = TexCoords.x * " << heightmap->getDataSizeX() << ";\n";
+		ss << "float cellZ = TexCoords.y * " << heightmap->getDataSizeZ() << ";\n";
 		ss << "if ((mod(cellX, 2.0) < 1.0 && mod(cellZ, 2.0) > 1.0) || (mod(cellX, 2.0) > 1.0 && mod(cellZ, 2.0) < 1.0)) {\n";
 		ss << "    diffuse *= 0.5;\n";
 		ss << "}\n";
 		
 	} else if (heightmap->getBigTexture() != NULL) {
-		ss << "diffuse += texture2D(uTex, TexUV0);";
+		ss << "diffuse += texture2D(uTex, TexCoords);";
 	} else {
-		ss << "vec4 alphaMap = texture2D(uAlphaMap, TexUV0);\n";
+		ss << "vec4 alphaMap = texture2D(uAlphaMap, TexCoords);\n";
 		for (unsigned int i = 0; i < TEXTURE_SPLAT_LAYERS; ++i) {
 			TextureSplatLayer *lyr = &heightmap->layers[i];
 
@@ -152,7 +148,7 @@ char* RendererHeightmap::createShaderFunction_diffuseColor(Heightmap* heightmap)
 	}
 
 	if (heightmap->getLightmap() != NULL) {
-		ss << "diffuse *= texture2D(uLightmap, TexUV0);\n";
+		ss << "diffuse *= texture2D(uLightmap, TexCoords);\n";
 	}
 
 	ss << "return diffuse;\n";
@@ -317,15 +313,9 @@ void RendererHeightmap::draw(RenderOpenGL* render)
 	modelMatrix = glm::translate(modelMatrix, glm::vec3(-heightmap->getSizeX()/2.0f, 0.0f, -heightmap->getSizeZ()/2.0f));
 	modelMatrix = glm::translate(modelMatrix, heightmap->getPosition());
 
-	glm::mat4 MVP = render->projection * render->view * modelMatrix;
-	glm::mat4 depthBiasMVP = biasMatrix * render->depthmvp * modelMatrix;
-	
-	glUniform1f(this->shader->uniform("uTimeOfDay"), render->st->time_of_day);
-	glUniformMatrix4fv(this->shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-	glUniformMatrix4fv(this->shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-	glUniformMatrix3fv(this->shader->uniform("uMN"), 1, GL_FALSE, glm::value_ptr(glm::inverseTranspose(glm::mat3(modelMatrix))));
-	glUniformMatrix4fv(this->shader->uniform("uV"), 1, GL_FALSE, glm::value_ptr(render->view));
-	glUniformMatrix4fv(this->shader->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
+	glUniformMatrix4fv(this->shader->uniform("model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+	glUniformMatrix4fv(this->shader->uniform("view"), 1, GL_FALSE, glm::value_ptr(render->view));
+	glUniformMatrix4fv(this->shader->uniform("projection"), 1, GL_FALSE, glm::value_ptr(render->projection));
 
 	this->vao->bind();
 	
