@@ -98,7 +98,6 @@ GLShader* RendererHeightmap::createShader(RenderOpenGL* render, Heightmap* heigh
 	glUniform1i(s->uniform("uDetail[1]"), 11);
 	glUniform1i(s->uniform("uDetail[2]"), 12);
 	glUniform1i(s->uniform("uDetail[3]"), 13);
-	glUniform3fv(s->uniform("worldSize"), 1, glm::value_ptr(render->worldSize));
 	
 	CHECK_OPENGL_ERROR;
 

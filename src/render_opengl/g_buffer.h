@@ -13,9 +13,8 @@ class GBuffer
         void cleanup();
 
     public:
-        GLuint tex_position;
         GLuint tex_diffuse;
         GLuint tex_normal;
-        GLuint rbo_depth;
+        GLuint tex_depth;
         GLuint fbo;
 };

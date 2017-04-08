@@ -1279,8 +1279,6 @@ void RenderOpenGL::setupShaders()
 			glUniform1i(shader->uniform("uDayNight"), 4);
 			glUniform1f(shader->uniform("uTimeOfDay"), st->time_of_day);
 		}
-		
-		glUniform3fv(shader->uniform("worldSize"), 1, glm::value_ptr(worldSize));
 	}
 
 	for (vector<Heightmap*>::iterator it = this->st->map->heightmaps.begin(); it != this->st->map->heightmaps.end(); ++it) {
@@ -1421,7 +1419,7 @@ void RenderOpenGL::loadShaders()
 	this->shaders[SHADER_ENTITY_BONES] = loadProgram(base, "gbuf_bones", "gbuf_textured");
 	this->shaders[SHADER_ENTITY_STATIC] = loadProgram(base, "gbuf_static", "gbuf_textured");
 	this->shaders[SHADER_ENTITY_STATIC_BUMP] = loadProgram(base, "phong_static", "phong_bump");
-	
+
 	this->shaders[SHADER_WATER] = loadProgram(base, "water");
 	this->shaders[SHADER_TEXT] = loadProgram(base, "text");
 	this->shaders[SHADER_SKYBOX] = loadProgram(base, "skybox");
@@ -1434,9 +1432,9 @@ void RenderOpenGL::loadShaders()
 	
 	GLShader *s = this->shaders[SHADER_LIGHT_PASS];
 	glUseProgram(s->p());
-	glUniform1i(s->uniform("gPosition"), 0);
-	glUniform1i(s->uniform("gDiffuse"), 1);
-	glUniform1i(s->uniform("gNormal"), 2);
+	glUniform1i(s->uniform("gDiffuse"), 0);
+	glUniform1i(s->uniform("gNormal"), 1);
+	glUniform1i(s->uniform("gDepth"), 2);
 	
 	this->shaders_loaded = true;
 }
@@ -1969,8 +1967,12 @@ void RenderOpenGL::lightingPass()
 
 	glUseProgram(s->p());
 	glUniform3fv(s->uniform("viewPos"), 1, glm::value_ptr(this->camera));
-	glUniform3fv(s->uniform("worldSize"), 1, glm::value_ptr(worldSize));
 
+	glm::mat4 view_inv = glm::inverse(this->view);
+	glm::mat4 proj_inv = glm::inverse(this->projection);
+	glUniformMatrix4fv(s->uniform("viewInv"), 1, GL_FALSE, glm::value_ptr(view_inv));
+	glUniformMatrix4fv(s->uniform("projInv"), 1, GL_FALSE, glm::value_ptr(proj_inv));
+	
 	glUniform3f(glGetUniformLocation(s->p(), "lights[0].Position"), 100.0f, 3.0f, 100.0f);
 	glUniform3f(glGetUniformLocation(s->p(), "lights[0].Color"), 1.0f, 0.5f, 0.1f);
 
@@ -1980,21 +1982,23 @@ void RenderOpenGL::lightingPass()
 	glUniform3f(glGetUniformLocation(s->p(), "lights[2].Position"), 120.0f, 3.0f, 110.0f);
 	glUniform3f(glGetUniformLocation(s->p(), "lights[2].Color"), 0.0f, 0.0f, 1.0f);
 
-	glUniform3f(glGetUniformLocation(s->p(), "lights[2].Position"), 103.0f, 3.0f, 101.0f);
-	glUniform3f(glGetUniformLocation(s->p(), "lights[2].Color"), 0.0f, 1.0f, 0.0f);
+	glUniform3f(glGetUniformLocation(s->p(), "lights[3].Position"), 103.0f, 3.0f, 101.0f);
+	glUniform3f(glGetUniformLocation(s->p(), "lights[3].Color"), 0.0f, 1.0f, 0.0f);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gbuf.tex_position);
-	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, gbuf.tex_diffuse);
-	glActiveTexture(GL_TEXTURE2);
+	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, gbuf.tex_normal);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, gbuf.tex_depth);
 
 	glBindVertexArray(quad_vao);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	glBindVertexArray(0);
 	glActiveTexture(GL_TEXTURE0);
+	
+	CHECK_OPENGL_ERROR;
 }
 
 
