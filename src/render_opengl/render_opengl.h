@@ -118,6 +118,7 @@ class RenderOpenGL : public Render3D
 		bool shaders_error;			// true if a shader load failed
 		map<int, GLShader*> shaders;	// TODO: switch to a vector?
 
+		glm::vec3 worldSize;
 		glm::mat4 projection;	// perspective
 		glm::mat4 ortho;		// ortho
 		glm::mat4 ortho_guichan;// ortho for guichan

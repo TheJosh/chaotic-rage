@@ -1203,6 +1203,7 @@ void RenderOpenGL::preGame()
 	// Set a few other vars
 	this->render_player = NULL;
 	this->torch = false;
+	this->worldSize = glm::vec3(st->map->width, 50.0f, st->map->height);
 
 	// Setup all the uniforms and such
 	this->setupShaders();
@@ -1278,6 +1279,8 @@ void RenderOpenGL::setupShaders()
 			glUniform1i(shader->uniform("uDayNight"), 4);
 			glUniform1f(shader->uniform("uTimeOfDay"), st->time_of_day);
 		}
+		
+		glUniform3fv(shader->uniform("worldSize"), 1, glm::value_ptr(worldSize));
 	}
 
 	for (vector<Heightmap*>::iterator it = this->st->map->heightmaps.begin(); it != this->st->map->heightmaps.end(); ++it) {
@@ -1965,6 +1968,7 @@ void RenderOpenGL::lightingPass()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glUseProgram(s->p());
+	glUniform3fv(s->uniform("worldSize"), 1, glm::value_ptr(worldSize));
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, gbuf.tex_position);

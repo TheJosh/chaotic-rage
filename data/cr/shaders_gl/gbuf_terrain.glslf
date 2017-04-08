@@ -13,6 +13,7 @@ uniform sampler2D uAlphaMap;
 uniform sampler2D uLightmap;
 uniform sampler2D uLayers[MAX_NUM_LAYERS];
 uniform sampler2D uDetail[MAX_NUM_LAYERS];
+uniform vec3 worldSize;
 
 
 /**
@@ -24,7 +25,7 @@ vec4 diffuseColor();
 
 void main()
 {
-	gPosition = FragPos;
+	gPosition = FragPos / worldSize;
 
 	gNormal = normalize(Normal);
 

@@ -7,11 +7,12 @@ layout (location = 1) out vec4 gDiffuse;
 layout (location = 2) out vec3 gNormal;
 
 uniform sampler2D uTex;
+uniform vec3 worldSize;
 
 
 void main()
 {
-	gPosition = FragPos;
+	gPosition = FragPos / worldSize;
 
 	gNormal = normalize(Normal);
 
