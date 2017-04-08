@@ -1968,7 +1968,20 @@ void RenderOpenGL::lightingPass()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glUseProgram(s->p());
+	glUniform3fv(s->uniform("viewPos"), 1, glm::value_ptr(this->camera));
 	glUniform3fv(s->uniform("worldSize"), 1, glm::value_ptr(worldSize));
+
+	glUniform3f(glGetUniformLocation(s->p(), "lights[0].Position"), 100.0f, 3.0f, 100.0f);
+	glUniform3f(glGetUniformLocation(s->p(), "lights[0].Color"), 1.0f, 0.5f, 0.1f);
+
+	glUniform3f(glGetUniformLocation(s->p(), "lights[1].Position"), 80.0f, 3.0f, 100.0f);
+	glUniform3f(glGetUniformLocation(s->p(), "lights[1].Color"), 1.0f, 0.0f, 0.0f);
+
+	glUniform3f(glGetUniformLocation(s->p(), "lights[2].Position"), 120.0f, 3.0f, 110.0f);
+	glUniform3f(glGetUniformLocation(s->p(), "lights[2].Color"), 0.0f, 0.0f, 1.0f);
+
+	glUniform3f(glGetUniformLocation(s->p(), "lights[2].Position"), 103.0f, 3.0f, 101.0f);
+	glUniform3f(glGetUniformLocation(s->p(), "lights[2].Color"), 0.0f, 1.0f, 0.0f);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, gbuf.tex_position);
