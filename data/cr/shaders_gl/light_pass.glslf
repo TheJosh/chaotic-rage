@@ -24,16 +24,16 @@ vec3 worldPositionFromDepth(float depth);
 void main()
 {
 	vec3 Diffuse = texture(gDiffuse, TexCoords).rgb;
-	vec3 Specular = vec3(0.0f);
+	float Specular = 0.1;
 	vec3 Normal = texture(gNormal, TexCoords).rgb;
 	float Depth = texture(gDepth, TexCoords).rgb;
 
 	vec3 FragPos = worldPositionFromDepth(Depth);
 	vec3 viewDir  = normalize(viewPos - FragPos);
 
-	vec3 lighting = Diffuse * 0.1;
+	vec3 lighting = Diffuse * 0.2;
 	for (int i = 0; i < 4; ++i) {
-		float distance = abs(length(FragPos - lights[i].Position));
+		float distance = abs(length(lights[i].Position - FragPos));
 		if (distance < lights[i].Radius) {
 			// Diffuse
 			vec3 lightDir = normalize(lights[i].Position - FragPos);
@@ -48,6 +48,7 @@ void main()
 			float attenuation = 1.0 / (1.0 + lights[i].Linear * distance + lights[i].Quadratic * distance * distance);
 			diffuse *= attenuation;
 			specular *= attenuation;
+
 			lighting += diffuse + specular;
 		}
 	}
