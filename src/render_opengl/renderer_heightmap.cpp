@@ -183,7 +183,7 @@ void RendererHeightmap::createVAO()
 	for (nZ = 0; nZ < maxZ; nZ++) {
 		for(nX = 0; nX < maxX; nX++) {
 
-			/*// u = p2 - p1; v = p3 - p1
+			// u = p2 - p1; v = p3 - p1
 			btVector3 u =
 				btVector3(static_cast<float>(nX) + 1.0f, heightmap->getValue(nX + 1, nZ + 1), static_cast<float>(nZ) + 1.0f) -
 				btVector3(static_cast<float>(nX), heightmap->getValue(nX, nZ), static_cast<float>(nZ));
@@ -196,16 +196,16 @@ void RendererHeightmap::createVAO()
 				u.y() * v.z() - u.z() * v.y(),
 				u.z() * v.x() - u.x() * v.z(),
 				u.x() * v.y() - u.y() * v.x()
-			);*/
+			);
 
 			flX = static_cast<float>(nX);
 			flZ = static_cast<float>(nZ);
 			vertexes[j].x = flX;
 			vertexes[j].y = heightmap->getValue(nX, nZ);
 			vertexes[j].z = flZ;
-			vertexes[j].nx = 0.0f;
-			vertexes[j].ny = -1.0f;
-			vertexes[j].nz = 0.0f;
+			vertexes[j].nx = normal.x();
+			vertexes[j].ny = normal.y();
+			vertexes[j].nz = normal.z();
 			vertexes[j].tx = flX / heightmap->getDataSizeX();
 			vertexes[j].ty = flZ / heightmap->getDataSizeZ();
 			j++;
