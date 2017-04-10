@@ -7,6 +7,9 @@ uniform sampler2D gDepth;
 struct Light {
 	vec3 Position;
 	vec3 Color;
+	float Linear;
+	float Quadratic;
+	float Radius;
 };
 
 uniform Light lights[4];
@@ -21,17 +24,31 @@ vec3 worldPositionFromDepth(float depth);
 void main()
 {
 	vec3 Diffuse = texture(gDiffuse, TexCoords).rgb;
+	vec3 Specular = vec3(0.0f);
 	vec3 Normal = texture(gNormal, TexCoords).rgb;
 	float Depth = texture(gDepth, TexCoords).rgb;
 
 	vec3 FragPos = worldPositionFromDepth(Depth);
+	vec3 viewDir  = normalize(viewPos - FragPos);
 
 	vec3 lighting = Diffuse * 0.1;
-
 	for (int i = 0; i < 4; ++i) {
 		float distance = abs(length(FragPos - lights[i].Position));
-		if (distance < 5.0f) {
-			lighting += lights[i].Color * vec3(0.1, 0.1, 0.1);
+		if (distance < lights[i].Radius) {
+			// Diffuse
+			vec3 lightDir = normalize(lights[i].Position - FragPos);
+			vec3 diffuse = max(dot(Normal, lightDir), 0.0) * Diffuse * lights[i].Color;
+
+			// Specular
+			vec3 halfwayDir = normalize(lightDir + viewDir);
+			float spec = pow(max(dot(Normal, halfwayDir), 0.0), 16.0);
+			vec3 specular = lights[i].Color * spec * Specular;
+
+			// Attenuation
+			float attenuation = 1.0 / (1.0 + lights[i].Linear * distance + lights[i].Quadratic * distance * distance);
+			diffuse *= attenuation;
+			specular *= attenuation;
+			lighting += diffuse + specular;
 		}
 	}
 

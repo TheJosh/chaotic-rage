@@ -1972,18 +1972,30 @@ void RenderOpenGL::lightingPass()
 	glm::mat4 proj_inv = glm::inverse(this->projection);
 	glUniformMatrix4fv(s->uniform("viewInv"), 1, GL_FALSE, glm::value_ptr(view_inv));
 	glUniformMatrix4fv(s->uniform("projInv"), 1, GL_FALSE, glm::value_ptr(proj_inv));
-	
+
 	glUniform3f(glGetUniformLocation(s->p(), "lights[0].Position"), 100.0f, 3.0f, 100.0f);
 	glUniform3f(glGetUniformLocation(s->p(), "lights[0].Color"), 1.0f, 0.5f, 0.1f);
+	glUniform1f(glGetUniformLocation(s->p(), "lights[0].Linear"), 0.7f);
+	glUniform1f(glGetUniformLocation(s->p(), "lights[0].Quadratic"), 1.8f);
+	glUniform1f(glGetUniformLocation(s->p(), "lights[0].Radius"), 5.0f);
 
-	glUniform3f(glGetUniformLocation(s->p(), "lights[1].Position"), 80.0f, 3.0f, 100.0f);
+	glUniform3f(glGetUniformLocation(s->p(), "lights[1].Position"), 80.0f, 1.5f, 100.0f);
 	glUniform3f(glGetUniformLocation(s->p(), "lights[1].Color"), 1.0f, 0.0f, 0.0f);
+	glUniform1f(glGetUniformLocation(s->p(), "lights[1].Linear"), 0.7f);
+	glUniform1f(glGetUniformLocation(s->p(), "lights[1].Quadratic"), 1.8f);
+	glUniform1f(glGetUniformLocation(s->p(), "lights[1].Radius"), 5.0f);
 
 	glUniform3f(glGetUniformLocation(s->p(), "lights[2].Position"), 120.0f, 3.0f, 110.0f);
 	glUniform3f(glGetUniformLocation(s->p(), "lights[2].Color"), 0.0f, 0.0f, 1.0f);
+	glUniform1f(glGetUniformLocation(s->p(), "lights[2].Linear"), 0.7f);
+	glUniform1f(glGetUniformLocation(s->p(), "lights[2].Quadratic"), 1.3f);
+	glUniform1f(glGetUniformLocation(s->p(), "lights[2].Radius"), 5.0f);
 
 	glUniform3f(glGetUniformLocation(s->p(), "lights[3].Position"), 103.0f, 3.0f, 101.0f);
 	glUniform3f(glGetUniformLocation(s->p(), "lights[3].Color"), 0.0f, 1.0f, 0.0f);
+	glUniform1f(glGetUniformLocation(s->p(), "lights[3].Linear"), 0.7f);
+	glUniform1f(glGetUniformLocation(s->p(), "lights[3].Quadratic"), 1.8f);
+	glUniform1f(glGetUniformLocation(s->p(), "lights[3].Radius"), 5.0f);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, gbuf.tex_diffuse);
