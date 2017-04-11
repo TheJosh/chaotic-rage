@@ -1709,9 +1709,10 @@ GLShader* RenderOpenGL::determineAssimpModelShader(AssimpModel* am)
 		return this->shaders[SHADER_ENTITY_BONES];
 	}
 
-	if (am->materials[am->meshes[0]->materialIndex]->normal != NULL) {
-		return this->shaders[SHADER_ENTITY_STATIC_BUMP];
-	}
+	// TODO: Get bump mapping working again with deferred shader
+	//if (am->materials[am->meshes[0]->materialIndex]->normal != NULL) {
+	//	return this->shaders[SHADER_ENTITY_STATIC_BUMP];
+	//}
 
 	return this->shaders[SHADER_ENTITY_STATIC];
 }
@@ -1907,8 +1908,9 @@ void RenderOpenGL::render()
 {
 	entitiesCalcTransforms();
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	entitiesShadowMap();
+	// TODO: Get shadows working again
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//entitiesShadowMap();
 
 	glBindFramebuffer(GL_FRAMEBUFFER, gbuf.fbo);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
