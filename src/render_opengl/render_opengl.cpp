@@ -1419,10 +1419,10 @@ void RenderOpenGL::loadShaders()
 	this->shaders[SHADER_ENTITY_BONES] = loadProgram(base, "gbuf_bones", "gbuf_textured");
 	this->shaders[SHADER_ENTITY_STATIC] = loadProgram(base, "gbuf_static", "gbuf_textured");
 	this->shaders[SHADER_ENTITY_STATIC_BUMP] = loadProgram(base, "phong_static", "phong_bump");
+	this->shaders[SHADER_SKYBOX] = loadProgram(base, "gbuf_skybox", "gbuf_skybox");
 
 	this->shaders[SHADER_WATER] = loadProgram(base, "water");
 	this->shaders[SHADER_TEXT] = loadProgram(base, "text");
-	this->shaders[SHADER_SKYBOX] = loadProgram(base, "skybox");
 
 	this->shaders[SHADER_WATER]->setUniformsLighting(false);
 	this->shaders[SHADER_TEXT]->setUniformsLighting(false);
