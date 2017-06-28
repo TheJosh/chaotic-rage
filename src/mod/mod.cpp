@@ -42,6 +42,7 @@ static cfg_opt_t mod_map_opts[] =
 	CFG_STR((char*) "name", ((char*)""), CFGF_NONE),
 	CFG_STR((char*) "title", ((char*)""), CFGF_NONE),
 	CFG_INT((char*) "arcade", 1, CFGF_NONE),
+	CFG_STR((char*) "preview", ((char*)""), CFGF_NONE),
 	CFG_END()
 };
 
@@ -161,6 +162,16 @@ bool Mod::loadMetadata()
 			this,
 			cfg_getint(cfg_sub, "arcade") == 1
 		));
+
+		char* preview = cfg_getstr(cfg_sub, "preview");
+		if (preview != NULL) {
+			std::string filename = this->directory;
+			filename.append("maps/");
+			filename.append(this->maps->back().getName());
+			filename.append("/");
+			filename.append(preview);
+			this->maps->back().setPreview(filename);
+		}
 	}
 
 	this->menu_model = std::string(cfg_getstr(cfg, "menu-model"));

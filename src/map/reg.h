@@ -38,6 +38,7 @@ class MapReg {
 		string getTitle() { return this->title; }
 		Mod* getMod() { return this->mod; }
 		bool getArcade() { return this->arcade; }
+		void setPreview(string preview) { this->preview = preview; }
 		string getPreview() { return this->preview; }
 };
 

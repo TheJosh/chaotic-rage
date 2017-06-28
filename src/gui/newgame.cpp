@@ -157,7 +157,7 @@ void DialogNewGame::addAllMapIcons(gcn::Container *c)
 	unsigned int num_maps = maps->size();
 
 	gcn::Image::setImageLoader(
-		new gcn::ChaoticRageOpenGLSDLImageLoader(GEng()->mm->getSupplOrBase())
+		new gcn::ChaoticRageOpenGLSDLImageLoader(GEng()->mm->getBase())
 	);
 	map_default = gcn::Image::load("default_preview.png", true);
 
