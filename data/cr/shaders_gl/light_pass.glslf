@@ -26,7 +26,7 @@ void main()
 	vec3 Diffuse = texture(gDiffuse, TexCoords).rgb;
 	float Specular = 0.1;
 	vec3 Normal = texture(gNormal, TexCoords).rgb;
-	float Depth = texture(gDepth, TexCoords).rgb;
+	float Depth = texture(gDepth, TexCoords).r;
 
 	vec3 FragPos = worldPositionFromDepth(Depth);
 	vec3 viewDir  = normalize(viewPos - FragPos);
