@@ -80,6 +80,7 @@ class Mod {
 		virtual Uint8* loadBinary(string resname, Sint64 *len);
 		virtual SDL_RWops* loadRWops(string filename);
 		virtual std::string getRealFilename(std::string resname);
+		bool resExists(string resname);
 
 	public:
 		Mod(GameState * st, string directory);

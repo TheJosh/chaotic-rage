@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <sys/stat.h>
+
 #include <SDL.h>
 #include <confuse.h>
 #include "../rage.h"
@@ -910,6 +912,19 @@ SDL_RWops * Mod::loadRWops(string resname)
 	filename.append(resname);
 
 	return SDL_RWFromFile(filename.c_str(), "rb");
+}
+
+
+/**
+* Does a given resource exist?
+**/
+bool Mod::resExists(string resname)
+{
+	string filename = directory;
+	filename.append(resname);
+
+	struct stat buf;
+	return (stat(filename.c_str(), &buf) == 0);
 }
 
 
