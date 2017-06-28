@@ -25,18 +25,20 @@ class MapReg {
 		string title;
 		Mod* mod;
 		bool arcade;
+		string preview;     // full path to preview image
 
 	public:
-		MapReg() : name(""), title(""), mod(NULL), arcade(true) {}
-		MapReg(string name, string title) : name(name), title(title), mod(NULL), arcade(true) {}
-		MapReg(string name, string title, Mod* mod) : name(name), title(title), mod(mod), arcade(true) {}
-		MapReg(string name, string title, Mod* mod, bool arcade) : name(name), title(title), mod(mod), arcade(arcade) {}
+		MapReg() : name(""), title(""), mod(NULL), arcade(true), preview("") {}
+		MapReg(string name, string title) : name(name), title(title), mod(NULL), arcade(true), preview("") {}
+		MapReg(string name, string title, Mod* mod) : name(name), title(title), mod(mod), arcade(true), preview("") {}
+		MapReg(string name, string title, Mod* mod, bool arcade) : name(name), title(title), mod(mod), arcade(arcade), preview("") {}
 
 	public:
 		string getName() { return this->name; }
 		string getTitle() { return this->title; }
 		Mod* getMod() { return this->mod; }
 		bool getArcade() { return this->arcade; }
+		string getPreview() { return this->preview; }
 };
 
 
@@ -57,4 +59,3 @@ class MapRegistry {
 		MapReg* at(int index) { return &maps.at(index); }
 		unsigned int size() { return maps.size(); }
 };
-

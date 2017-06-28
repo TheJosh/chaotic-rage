@@ -38,26 +38,6 @@ class VectorListModel: public gcn::ListModel
 };
 
 
-class MapRegistryListModel: public gcn::ListModel
-{
-	private:
-		MapRegistry * mapreg;
-
-	public:
-		explicit MapRegistryListModel(MapRegistry * mapreg) : mapreg(mapreg) {}
-
-		std::string getElementAt(int i)
-		{
-			return mapreg->titleAt(i);
-		}
-
-		int getNumberOfElements()
-		{
-			return mapreg->size();
-		}
-};
-
-
 class GametypeListModel: public gcn::ListModel
 {
 	private:
@@ -132,4 +112,3 @@ class ModListModel: public gcn::ListModel
 			return 0;
 		}
 };
-

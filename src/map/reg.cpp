@@ -15,6 +15,7 @@ using namespace std;
 static cfg_opt_t opts[] =
 {
 	CFG_STR((char*) "title", 0, CFGF_NONE),
+	CFG_STR((char*) "preview", 0, CFGF_NONE),
 	CFG_END()
 };
 
@@ -42,6 +43,15 @@ void MapRegistry::find(string dir)
 		} else if (result == CFG_SUCCESS) {
 			string title = cfg_getstr(cfg, "title");
 			maps.push_back(MapReg(*it, title));
+
+			char* preview = cfg_getstr(cfg, "preview");
+			if (preview != NULL) {
+				filename = "maps/";
+				filename.append(*it);
+				filename.append("/");
+				filename.append(preview);
+				maps.back().preview = filename;
+			}
 		}
 
 		cfg_free(cfg);
@@ -75,4 +85,3 @@ MapReg * MapRegistry::get(string name)
 	}
 	return NULL;
 }
-

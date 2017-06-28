@@ -10,11 +10,72 @@ using namespace std;
 
 
 class GametypeListModel;
-class MapRegistryListModel;
 class VectorListModel;
 class GameSettings;
 class DialogNewGame_Action_Weapons;
 class DialogNewGame_Action_Environment;
+class DialogNewGame;
+class MapReg;
+class MapTile;
+
+
+/**
+* Handler for mouse events for map tiles
+**/
+class MapTileMouseListener : public gcn::MouseListener
+{
+	public:
+		MapTileMouseListener(MapTile* tile, DialogNewGame* dialog):
+			tile(tile),
+			dialog(dialog)
+			{};
+
+		void setMapTile(MapTile *tile) { this->tile = tile; }
+
+		virtual void mouseClicked(gcn::MouseEvent& mouseEvent);
+
+	protected:
+		MapTile* tile;
+		DialogNewGame* dialog;
+};
+
+
+/**
+* A single "tile" in the scrollable map selection ui
+**/
+class MapTile
+{
+	friend class DialogNewGame;
+	friend class MapTileMouseListener;
+
+	public:
+		MapTile() {};
+
+		MapTile(const MapTile& tile):
+			cont(tile.cont),
+			icon(tile.icon),
+			img(tile.img),
+			name(tile.name),
+			mouse(tile.mouse),
+			reg(tile.reg)
+			{
+				this->mouse->setMapTile(this);
+			};
+
+		~MapTile();
+
+	protected:
+		// Internal
+		gcn::Container* cont;
+		gcn::Icon* icon;
+		gcn::Image* img;
+		gcn::Label* name;
+		MapTileMouseListener* mouse;
+
+		// External
+		MapReg *reg;
+};
+
 
 /**
 * Dialog for starting a new game - called by the menu
@@ -22,6 +83,7 @@ class DialogNewGame_Action_Environment;
 class DialogNewGame : public Dialog, public gcn::ActionListener {
 	friend class DialogNewGame_Action_Weapons;
 	friend class DialogNewGame_Action_Environment;
+	friend class MapTileMouseListener;
 
 	public:
 		explicit DialogNewGame(int num_local);
@@ -33,12 +95,14 @@ class DialogNewGame : public Dialog, public gcn::ActionListener {
 
 	private:
 		GametypeListModel *gametype_model;
-		MapRegistryListModel *map_model;
 		VectorListModel *unittype_model;
 		VectorListModel *viewmode_model;
 
+		std::vector<MapTile> map_tiles;
+		MapTile* map_sel;
+		gcn::Image* map_default;
+
 		gcn::DropDown *gametype;
-		gcn::DropDown *map;
 		gcn::DropDown *unittype;
 		gcn::DropDown *viewmode;
 		gcn::CheckBox *host;
@@ -50,6 +114,11 @@ class DialogNewGame : public Dialog, public gcn::ActionListener {
 		virtual gcn::Container * setup();
 		virtual void action(const gcn::ActionEvent& actionEvent);
 		virtual const DialogName getName() { return GAME; }
+
+	protected:
+		void addAllMapIcons(gcn::Container *c);
+		void addMapIcon(gcn::Container *c, int idx, MapReg *reg);
+		void selectMapTile(MapTile* tile);
 };
 
 
@@ -74,4 +143,3 @@ class DialogNewGame_Action_Environment : public gcn::ActionListener {
 		explicit DialogNewGame_Action_Environment(DialogNewGame *parent): parent(parent) {}
 		virtual void action(const gcn::ActionEvent& actionEvent);
 };
-

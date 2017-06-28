@@ -5,10 +5,12 @@
 #include <iostream>
 #include <math.h>
 #include <guichan.hpp>
+#include <guichan/opengl/openglsdlimageloader.hpp>
 
 #include "../rage.h"
 #include "../i18n/gettext.h"
 #include "../render_opengl/menu.h"
+#include "../render_opengl/guichan_imageloader.h"
 #include "../game_manager.h"
 #include "../game_settings.h"
 #include "../game_engine.h"
@@ -31,6 +33,8 @@ DialogNewGame::DialogNewGame(int num_local) : Dialog()
 {
 	this->num_local = num_local;
 
+	this->map_sel = NULL;
+
 	this->gametype_model = new GametypeListModel(GEng()->mm->getAllGameTypes());
 
 	this->action_weapons = new DialogNewGame_Action_Weapons(this);
@@ -44,7 +48,6 @@ DialogNewGame::DialogNewGame(int num_local) : Dialog()
 DialogNewGame::~DialogNewGame()
 {
 	delete(this->gametype_model);
-	delete(this->map_model);
 	delete(this->unittype_model);
 	delete(this->viewmode_model);
 	delete(this->action_weapons);
@@ -71,7 +74,6 @@ gcn::Container * DialogNewGame::setup()
 	int y = 10;
 
 	// This is a bit crap. We can't use ->gm until after the dialog is created
-	this->map_model = new MapRegistryListModel(this->gm->getMapRegistry());
 	this->unittype_model = new VectorListModel(this->gm->getUnitTypes());
 	this->viewmode_model = new VectorListModel(this->gm->getViewModes());
 
@@ -82,7 +84,12 @@ gcn::Container * DialogNewGame::setup()
 		c = new gcn::Window(_(STRING_MENU_SPLIT));
 	}
 
-	c->setDimension(gcn::Rectangle(0, 0, 320 * GEng()->gui_scale, 280 * GEng()->gui_scale));
+	c->setDimension(gcn::Rectangle(0, 0, 800 * GEng()->gui_scale, 550 * GEng()->gui_scale));
+
+
+	addAllMapIcons(c);
+	selectMapTile(&map_tiles.at(0));
+	y += 330;
 
 
 	label = new gcn::Label(_(STRING_NEWGAME_TYPE));
@@ -92,27 +99,16 @@ gcn::Container * DialogNewGame::setup()
 	this->gametype->setPosition(COLRIGHT, y);
 	this->gametype->setWidth(COLRIGHTW);
 	c->add(this->gametype);
-	y += SMLHEIGHT + 10;
 
 	button = new gcn::Button(_(STRING_NEWGAME_WEAPONS));
-	button->setPosition(COLRIGHT, y);
+	button->setPosition(COLRIGHT + COLRIGHTW + 20, y - 2);
 	button->addActionListener(this->action_weapons);
 	c->add(button);
-	y += BTNHEIGHT - 5;
 
 	button = new gcn::Button(_(STRING_NEWGAME_ENVIRONMENT));
-	button->setPosition(COLRIGHT, y);
+	button->setPosition(COLRIGHT + COLRIGHTW + 100, y - 2);
 	button->addActionListener(this->action_environment);
 	c->add(button);
-	y += BTNHEIGHT;
-
-	label = new gcn::Label(_(STRING_NEWGAME_MAP));
-	c->add(label, COLLEFT, y);
-
-	this->map = new gcn::DropDown(this->map_model);
-	this->map->setPosition(COLRIGHT, y);
-	this->map->setWidth(COLRIGHTW);
-	c->add(this->map);
 
 	y += ROWHEIGHT;
 
@@ -149,13 +145,115 @@ gcn::Container * DialogNewGame::setup()
 	return c;
 }
 
+
+/**
+* Create a scrollarea and map icon for each map, and add to the window
+**/
+void DialogNewGame::addAllMapIcons(gcn::Container *c)
+{
+	MapRegistry* maps = this->gm->getMapRegistry();
+	gcn::Container* map_cont = new gcn::Container();
+	gcn::ScrollArea* map_scroll = new gcn::ScrollArea(map_cont);
+	unsigned int num_maps = maps->size();
+
+	gcn::Image::setImageLoader(
+		new gcn::ChaoticRageOpenGLSDLImageLoader(GEng()->mm->getSupplOrBase())
+	);
+	map_default = gcn::Image::load("default_preview.png", true);
+
+	gcn::Image::setImageLoader(new gcn::OpenGLSDLImageLoader());
+	for (unsigned int i = 0; i < num_maps; ++i) {
+		MapReg *reg = maps->at(i);
+		addMapIcon(map_cont, i, reg);
+	}
+
+	map_cont->setSize(5 + num_maps * (256 + 5), 256 + 35);
+
+	map_scroll->setSize(800 - COLLEFT - COLLEFT, 256 + 35 + 12);
+	map_scroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
+	map_scroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+	c->add(map_scroll, 10, 10);
+}
+
+
+/**
+* Create a single map icon
+**/
+void DialogNewGame::addMapIcon(gcn::Container *c, int idx, MapReg *reg)
+{
+	MapTile tile;
+	tile.reg = reg;
+
+	tile.mouse = new MapTileMouseListener(&tile, this);
+
+	tile.cont  = new gcn::Container();
+	tile.cont->setPosition(idx * (256 + 5), 0);
+	tile.cont->setSize(256 + 10, 256 + 35);
+	tile.cont->setOpaque(false);
+	tile.cont->setBaseColor(gcn::Color(255, 128, 128));
+
+	tile.icon = new gcn::Icon();
+	tile.icon->setPosition(5, 5);
+	tile.icon->addMouseListener(tile.mouse);
+	tile.cont->add(tile.icon);
+
+	tile.name = new gcn::Label(reg->getTitle());
+	tile.name->setPosition(5, 256 + 10);
+	tile.name->setAlignment(gcn::Graphics::Alignment::CENTER);
+	tile.name->setWidth(256);
+	tile.name->addMouseListener(tile.mouse);
+	tile.cont->add(tile.name);
+
+	if (reg->getPreview() != "") {
+		try {
+			tile.img = gcn::Image::load(reg->getPreview());
+			tile.icon->setImage(tile.img);
+		} catch (gcn::Exception) {
+			tile.img = NULL;
+			tile.icon->setImage(map_default);
+		}
+	} else {
+		tile.img = NULL;
+		tile.icon->setImage(map_default);
+	}
+
+	c->add(tile.cont);
+	this->map_tiles.push_back(tile);
+}
+
+
+void MapTileMouseListener::mouseClicked(gcn::MouseEvent& mouseEvent)
+{
+	dialog->selectMapTile(tile);
+}
+
+
+void DialogNewGame::selectMapTile(MapTile* tile)
+{
+	if (this->map_sel != NULL) {
+		map_sel->cont->setOpaque(false);
+	}
+	tile->cont->setOpaque(true);
+	this->map_sel = tile;
+}
+
+
+MapTile::~MapTile()
+{
+	//delete icon;
+	//delete img;
+	//delete name;
+	//delete mouse;
+}
+
+
 /**
 * Button click processing for the "New Game" dialog
 **/
 void DialogNewGame::action(const gcn::ActionEvent& actionEvent)
 {
 	this->m->startGame(
-		this->gm->getMapRegistry()->at(this->map->getSelected()),
+		this->map_sel->reg,
 		this->gm->getGameTypes()->at(this->gametype->getSelected()),
 		this->gm->getUnitTypes()->at(this->unittype->getSelected()),
 		static_cast<GameSettings::ViewMode>(this->viewmode->getSelected()),
@@ -187,4 +285,3 @@ void DialogNewGame_Action_Environment::action(const gcn::ActionEvent& actionEven
 {
 	this->parent->m->addDialog(new DialogNewGameEnvironment(this->parent, this->parent->gs));
 }
-
