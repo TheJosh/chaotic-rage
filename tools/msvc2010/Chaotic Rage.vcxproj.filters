@@ -415,9 +415,6 @@
     <ClCompile Include="..\..\src\entity\wall.cpp">
       <Filter>src\entity</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\fx\newparticle.cpp">
-      <Filter>src\fx</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\mod\confuse_types.cpp">
       <Filter>src\mod</Filter>
     </ClCompile>
@@ -910,9 +907,6 @@
     <ClCompile Include="..\..\src\render_opengl\glvao.cpp">
       <Filter>src\render_opengl</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\render_opengl\guichan_font.cpp">
-      <Filter>src\render_opengl</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\render_opengl\guichan_imageloader.cpp">
       <Filter>src\render_opengl</Filter>
     </ClCompile>
@@ -963,6 +957,24 @@
     </ClCompile>
     <ClCompile Include="..\..\src\entity\unit\unit.cpp">
       <Filter>src\entity\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\fx\effects_manager.cpp">
+      <Filter>src\fx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\fx\SPK_BaseQuadRenderer.cpp">
+      <Filter>src\fx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\fx\SPK_ColorQuadRenderer.cpp">
+      <Filter>src\fx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\fx\SPK_TextureQuadRenderer.cpp">
+      <Filter>src\fx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\opengl_font.cpp">
+      <Filter>src\render_opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render_opengl\texture_2d_array.cpp">
+      <Filter>src\render_opengl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1136,9 +1148,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\entity\wall.h">
       <Filter>src\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\fx\newparticle.h">
-      <Filter>src\fx</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\mod\confuse_types.h">
       <Filter>src\mod</Filter>
@@ -1677,9 +1686,6 @@
     <ClInclude Include="..\..\src\render_opengl\glvao.h">
       <Filter>src\render_opengl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\render_opengl\guichan_font.h">
-      <Filter>src\render_opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\render_opengl\hud.h">
       <Filter>src\render_opengl</Filter>
     </ClInclude>
@@ -1742,6 +1748,27 @@
     </ClInclude>
     <ClInclude Include="..\..\src\entity\unit\unit_weapon.h">
       <Filter>src\entity\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\fx\effects_manager.h">
+      <Filter>src\fx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\fx\SPK_BaseQuadRenderer.h">
+      <Filter>src\fx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\fx\SPK_ColorQuadRenderer.h">
+      <Filter>src\fx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\fx\SPK_TextureQuadRenderer.h">
+      <Filter>src\fx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\guichan_imageloader.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\opengl_font.h">
+      <Filter>src\render_opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\render_opengl\texture_2d_array.h">
+      <Filter>src\render_opengl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
