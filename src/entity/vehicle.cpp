@@ -245,6 +245,8 @@ void Vehicle::update(float delta)
 	this->vehicle->setBrake(this->brakeForce,wheelIndex);
 
 	// Update wheel nodes
+	// TODO: This needs to occur after physics processing; it's currently before
+	//       even better - only if wheels have changed
 	for (int i = 0; i < this->vehicle->getNumWheels(); i++) {
 		glm::mat4 wheel = glm::mat4();
 		wheel = glm::translate(wheel, glm::vec3(0.0f, this->vehicle->getWheelInfo(i).m_raycastInfo.m_suspensionLength, 0.0f));
