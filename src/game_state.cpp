@@ -487,9 +487,11 @@ void GameState::gameLoop(Render* render, Audio* audio, NetClient* client)
 	}
 
 	// End screen loop
+	unsigned int break_time = SDL_GetTicks() + (1000 * 30);
 	while (this->status == END_SCREEN) {
 		this->endScreenLoopIter();
 		if (GEng()->cmdline->throttle) SDL_Delay(1);
+		if (SDL_GetTicks() >= break_time) break;
 	}
 
 	this->postGame();
