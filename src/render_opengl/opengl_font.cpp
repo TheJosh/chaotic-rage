@@ -151,6 +151,7 @@ OpenGLFont::~OpenGLFont()
 	glDeleteBuffers(1, &this->pmpl->font_vbo);
 	glDeleteVertexArrays(1, &this->pmpl->font_vao);
 	delete this->pmpl;
+	this->pmpl = NULL;
 }
 
 
