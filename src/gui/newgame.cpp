@@ -199,7 +199,7 @@ void DialogNewGame::addMapIcon(gcn::Container *c, int idx, MapReg *reg)
 
 	tile.name = new gcn::Label(reg->getTitle());
 	tile.name->setPosition(5, 256 + 10);
-	tile.name->setAlignment(gcn::Graphics::Alignment::CENTER);
+	tile.name->setAlignment(gcn::Graphics::CENTER);
 	tile.name->setWidth(256);
 	tile.name->addMouseListener(tile.mouse);
 	tile.cont->add(tile.name);
