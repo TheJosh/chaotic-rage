@@ -6,6 +6,7 @@
 #include <string.h>
 #include "cmd_manager.h"
 #include "commands/echo.h"
+#include "commands/stats.h"
 
 
 /**
@@ -116,6 +117,10 @@ Cmd* CmdManager::dispatch(
         if (val) {
             return new CmdEcho(std::string(val));
         }
+    }
+
+    if (strcmp(url, "/stats") == 0) {
+        return new CmdStats();
     }
 
     return NULL;
