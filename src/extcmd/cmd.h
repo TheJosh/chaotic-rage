@@ -9,7 +9,7 @@
 class Cmd
 {
     public:
-        Cmd(std::string x): x(x) {
+        Cmd() {
             lock = SDL_CreateMutex();
             complete = SDL_CreateCond();
         };
@@ -21,9 +21,7 @@ class Cmd
             SDL_UnlockMutex(lock);
         };
 
-        std::string doWork() {
-            return "url is " + x;
-        };
+        virtual std::string doWork() = 0;
 
         std::string waitDone() {
             SDL_LockMutex(lock);
@@ -36,6 +34,4 @@ class Cmd
         SDL_mutex* lock;
         SDL_cond* complete;
         std::string resp;
-
-        std::string x;
 };

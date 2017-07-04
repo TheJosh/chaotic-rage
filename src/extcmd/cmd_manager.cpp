@@ -5,6 +5,7 @@
 #include <microhttpd.h>
 #include <string.h>
 #include "cmd_manager.h"
+#include "commands/echo.h"
 
 
 /**
@@ -79,7 +80,10 @@ int CmdManager::AccessHandlerCallback(
     // clear context pointer
     *ptr = NULL;
 
-    Cmd* c = new Cmd(std::string(url));
+    Cmd* c = this->dispatch(url, method);
+    if (c == NULL) {
+        return MHD_NO;
+    }
     work.push(c);
     std::string resp = c->waitDone();
 
@@ -97,6 +101,15 @@ int CmdManager::AccessHandlerCallback(
     MHD_destroy_response(response);
 
     return ret;
+}
+
+
+/**
+* Create a command object based on incoming request details
+**/
+Cmd* CmdManager::dispatch(const char* url, const char* method)
+{
+    return new CmdEcho(std::string(url));
 }
 
 

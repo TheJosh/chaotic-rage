@@ -36,6 +36,11 @@ class CmdManager
         );
 
         /**
+        * Create a command object based on incoming request details
+        **/
+        Cmd* dispatch(const char* url, const char* method);
+
+        /**
         * Execute the queued commands
         **/
         void exec(GameState* st);
