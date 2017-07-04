@@ -93,6 +93,7 @@ int CmdManager::AccessHandlerCallback(
     }
     work.push(c);
     std::string resp = c->waitDone();
+    delete c;
 
     response = MHD_create_response_from_buffer(
         resp.length(),

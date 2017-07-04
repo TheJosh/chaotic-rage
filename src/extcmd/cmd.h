@@ -17,6 +17,12 @@ class Cmd
             complete = SDL_CreateCond();
         };
 
+        virtual ~Cmd()
+        {
+            SDL_DestroyMutex(lock);
+            SDL_DestroyCond(complete);
+        }
+
         void exec(GameState* st) {
             SDL_LockMutex(lock);
             this->resp = this->doWork(st);
