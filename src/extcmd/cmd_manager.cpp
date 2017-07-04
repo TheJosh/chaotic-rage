@@ -80,7 +80,7 @@ int CmdManager::AccessHandlerCallback(
     // clear context pointer
     *ptr = NULL;
 
-    Cmd* c = this->dispatch(url, method);
+    Cmd* c = this->dispatch(connection, url, method);
     if (c == NULL) {
         return MHD_NO;
     }
@@ -107,9 +107,18 @@ int CmdManager::AccessHandlerCallback(
 /**
 * Create a command object based on incoming request details
 **/
-Cmd* CmdManager::dispatch(const char* url, const char* method)
-{
-    return new CmdEcho(std::string(url));
+Cmd* CmdManager::dispatch(
+    struct MHD_Connection* connection,
+    const char* url, const char* method
+) {
+    if (strcmp(url, "/echo") == 0) {
+        const char *val = MHD_lookup_connection_value(connection, MHD_GET_ARGUMENT_KIND, "msg");
+        if (val) {
+            return new CmdEcho(std::string(val));
+        }
+    }
+
+    return NULL;
 }
 
 

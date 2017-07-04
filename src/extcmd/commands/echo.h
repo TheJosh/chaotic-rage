@@ -9,14 +9,14 @@
 class CmdEcho : public Cmd
 {
     public:
-        CmdEcho(std::string url):
-            Cmd(), url(url)
+        CmdEcho(std::string msg):
+            Cmd(), msg(msg)
             {};
 
         virtual std::string doWork() {
-            return "URL: " + url;
+            return msg;
         };
 
     private:
-        std::string url;
+        std::string msg;
 };
