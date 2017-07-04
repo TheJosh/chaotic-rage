@@ -61,14 +61,14 @@ FREETYPE_CONFIG := $(CROSS)freetype-config
 
 # cflags
 CFLAGS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --cflags) \
-	$(shell export PATH=$(PATH) PKG_CONFIG_PATH=$(PKG_CONFIG_PATH);$(PKG_CONFIG) gl glu glew bullet assimp SDL2_mixer SDL2_image SDL2_net --cflags) \
+	$(shell export PATH=$(PATH) PKG_CONFIG_PATH=$(PKG_CONFIG_PATH);$(PKG_CONFIG) gl glu glew bullet assimp libmicrohttpd SDL2_mixer SDL2_image SDL2_net --cflags) \
 	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --cflags) \
 	$(CFLAGS) \
 	-Itools/include -I$(SRCPATH) -I$(SRCPATH)/guichan -I$(SRCPATH)/confuse -I$(SRCPATH)/spark -I$(SRCPATH)/lua
 
 # libs
 LIBS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --libs) \
-	$(shell export PATH=$(PATH) PKG_CONFIG_PATH=$(PKG_CONFIG_PATH);$(PKG_CONFIG) glew bullet assimp SDL2_mixer SDL2_image SDL2_net --libs) \
+	$(shell export PATH=$(PATH) PKG_CONFIG_PATH=$(PKG_CONFIG_PATH);$(PKG_CONFIG) glew bullet assimp libmicrohttpd SDL2_mixer SDL2_image SDL2_net --libs) \
 	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --libs) \
 	$(LIBS)
 
@@ -110,6 +110,7 @@ CPPFILES=$(wildcard \
 	$(SRCPATH)/spark/Extensions/Zones/*.cpp \
 	$(SRCPATH)/spark/RenderingAPIs/OpenGL/*.cpp \
 	$(SRCPATH)/libhfz/*.cpp \
+	$(SRCPATH)/extcmd/*.cpp \
 )
 
 CFILES=$(wildcard \

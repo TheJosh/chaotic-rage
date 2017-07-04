@@ -46,6 +46,7 @@ class WeaponType;
 class Weather;
 class btVector3;
 class EffectsManager;
+class CmdManager;
 
 namespace gcn {
 	class Gui;
@@ -123,6 +124,8 @@ class GameState
 		GameStatus status;
 
 		EID eid_next;
+
+		CmdManager* extcmd;
 
 	public:
 		Map* map;

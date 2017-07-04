@@ -41,6 +41,7 @@
 #include "fx/weather.h"
 #include "fx/effects_manager.h"
 #include "spark/SPK.h"
+#include "extcmd/cmd_manager.h"
 
 
 using namespace std;
@@ -99,6 +100,7 @@ GameState::GameState()
 	this->last_game_result = 0;
 	this->map = NULL;
 	this->weather = NULL;
+	this->extcmd = NULL;
 
 	for (unsigned int i = 0; i < MAX_LOCAL; i++) {
 		this->local_players[i] = new PlayerState(this);
@@ -404,6 +406,8 @@ void GameState::preGame()
 	}
 	
 	this->effects = new EffectsManager(this);
+	
+	this->extcmd = new CmdManager(8987);
 }
 
 
@@ -418,6 +422,7 @@ void GameState::postGame()
 	delete this->particle_system;
 	delete this->weather;
 	delete this->effects;
+	delete this->extcmd;
 
 	// TODO: Are these needed?
 	this->units.clear();
@@ -513,6 +518,9 @@ void GameState::gameLoopIter()
 	this->last_tick = new_tick;
 
 	this->logic->update(delta);
+	if (this->extcmd != NULL) {
+		this->extcmd->exec(this);
+	}
 	this->update(delta);
 	handleEvents(this);
 
