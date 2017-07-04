@@ -5,11 +5,11 @@
 #pragma once
 #include <stdint.h>
 #include <stddef.h>
-#include "cmd.h"
 #include "../util/thread_safe_queue.h"
 
 struct MHD_Daemon;
 class GameState;
+class Cmd;
 
 
 class CmdManager
