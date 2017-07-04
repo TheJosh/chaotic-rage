@@ -7,6 +7,7 @@
 #include "cmd_manager.h"
 #include "commands/echo.h"
 #include "commands/stats.h"
+#include "commands/day_night_animate.h"
 
 
 /**
@@ -121,6 +122,12 @@ Cmd* CmdManager::dispatch(
 
     if (strcmp(url, "/stats") == 0) {
         return new CmdStats();
+    }
+
+    if (strcmp(url, "/env/day-night") == 0) {
+        float target_val = atof(MHD_lookup_connection_value(connection, MHD_GET_ARGUMENT_KIND, "val"));
+        float total_time = atof(MHD_lookup_connection_value(connection, MHD_GET_ARGUMENT_KIND, "time"));
+        return new CmdDayNightAnimate(target_val, total_time);
     }
 
     return NULL;
