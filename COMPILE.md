@@ -19,6 +19,7 @@ You'll need the following dependencies:
 * Bullet Physics
 * Assimp
 * Fontconfig (Linux only)
+* libmicrohttp
 
 
 Compiling on Debian/Ubuntu/Mint
@@ -29,7 +30,7 @@ This build configuration has been tested on Debian 7, Debian 8, Ubuntu 10.04, Ub
 Install the dependencies:
 
 ```.sh
-sudo apt-get install g++ libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libgl1-mesa-dev libglu1-mesa-dev libglew-dev libfreetype6-dev libbullet-dev libassimp-dev libfontconfig-dev
+sudo apt-get install g++ libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libgl1-mesa-dev libglu1-mesa-dev libglew-dev libfreetype6-dev libbullet-dev libassimp-dev libfontconfig-dev libmicrohttp
 ```
 
 Some of these (SDL, Bullet, Assimp) have scripts in the `tools/linux` directory
@@ -58,6 +59,7 @@ Install the dependencies:
 * bullet
 * assimp
 * fontconfig
+* libmicrohttp
 
 
 Compiling on Windows using MSVC
