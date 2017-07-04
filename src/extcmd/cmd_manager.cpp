@@ -81,11 +81,12 @@ int CmdManager::AccessHandlerCallback(
 
     Cmd* c = new Cmd(std::string(url));
     work.push(c);
+    std::string resp = c->waitDone();
 
     response = MHD_create_response_from_buffer(
-        5,
-        (void*) "XXXXX",
-        MHD_RESPMEM_PERSISTENT
+        resp.length(),
+        (void*) resp.c_str(),
+        MHD_RESPMEM_MUST_COPY
     );
 
     ret = MHD_queue_response(
