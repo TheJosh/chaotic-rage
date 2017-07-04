@@ -24,6 +24,13 @@ class Cmd
             SDL_UnlockMutex(lock);
         };
 
+        void cancel() {
+            SDL_LockMutex(lock);
+            this->resp = "";
+            SDL_CondBroadcast(complete);
+            SDL_UnlockMutex(lock);
+        }
+
         virtual std::string doWork(GameState* st) = 0;
 
         std::string waitDone() {

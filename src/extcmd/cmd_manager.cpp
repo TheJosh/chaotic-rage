@@ -48,6 +48,11 @@ CmdManager::CmdManager(uint16_t port)
 **/
 CmdManager::~CmdManager()
 {
+    Cmd* c;
+    while (work.trypop(c)) {
+        c->cancel();
+    }
+
     MHD_stop_daemon(daemon);
 }
 
