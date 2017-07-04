@@ -33,6 +33,7 @@ class ThreadSafeQueue
 
         void push(T job);
         T pop(void);
+        bool trypop(T& top);
 };
 
 template <class T>
@@ -76,6 +77,21 @@ T ThreadSafeQueue<T>::pop(void)
     SDL_UnlockMutex(lock);
 
     return top;
+}
+
+template <class T>
+bool ThreadSafeQueue<T>::trypop(T& top)
+{
+    SDL_LockMutex(lock);
+    if (workQueue.empty()) {
+        SDL_UnlockMutex(lock);
+        return false;
+    } else {
+        top = workQueue.front();
+        workQueue.pop();
+        SDL_UnlockMutex(lock);
+        return true;
+    }
 }
 
 #endif
