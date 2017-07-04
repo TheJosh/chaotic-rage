@@ -39,7 +39,7 @@ class CmdManager
         * Create a command object based on incoming request details
         **/
         Cmd* dispatch(
-            struct MHD_Connection* conn,
+            struct MHD_Connection* connection,
             const char* url, const char* method
         );
 

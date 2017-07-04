@@ -129,6 +129,6 @@ void CmdManager::exec(GameState* st)
 {
     Cmd* c;
     while (work.trypop(c)) {
-        c->exec();
+        c->exec(st);
     }
 }

@@ -6,6 +6,9 @@
 #include <string>
 #include <SDL2/SDL.h>
 
+class GameState;
+
+
 class Cmd
 {
     public:
@@ -14,14 +17,14 @@ class Cmd
             complete = SDL_CreateCond();
         };
 
-        void exec() {
+        void exec(GameState* st) {
             SDL_LockMutex(lock);
-            this->resp = this->doWork();
+            this->resp = this->doWork(st);
             SDL_CondBroadcast(complete);
             SDL_UnlockMutex(lock);
         };
 
-        virtual std::string doWork() = 0;
+        virtual std::string doWork(GameState* st) = 0;
 
         std::string waitDone() {
             SDL_LockMutex(lock);

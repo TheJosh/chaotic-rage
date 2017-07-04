@@ -13,7 +13,7 @@ class CmdEcho : public Cmd
             Cmd(), msg(msg)
             {};
 
-        virtual std::string doWork() {
+        virtual std::string doWork(GameState* st) {
             return msg;
         };
 
