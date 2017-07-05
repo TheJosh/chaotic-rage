@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sudo apt-get update -qq || exit 1
-sudo apt-get install -qq libgl1-mesa-dev libglu1-mesa-dev libglew-dev libfreetype6-dev zlib-bin freeglut3-dev >/dev/null || exit 1
+sudo apt-get install -qq libgl1-mesa-dev libglu1-mesa-dev libglew-dev libfreetype6-dev zlib-bin freeglut3-dev libmicrohttpd >/dev/null || exit 1
 
 cd tools/linux;
 ./assimp.sh >/dev/null || exit 1;
