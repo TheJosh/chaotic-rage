@@ -101,6 +101,9 @@ int CmdManager::AccessHandlerCallback(
         MHD_RESPMEM_MUST_COPY
     );
 
+    // Allows other origins to access data via AJAX
+    MHD_add_response_header(response, "Access-Control-Allow-Origin", "*");
+
     ret = MHD_queue_response(
         connection,
         MHD_HTTP_OK,
