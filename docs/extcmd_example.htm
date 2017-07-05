@@ -1,0 +1,52 @@
+<html>
+<head>
+
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+	<script>
+	function loadStats() {
+		$.ajax({
+			url: 'http://localhost:8987/stats',
+			success: function(data) {
+				$('#stats').html(data);
+			}
+		});
+	}
+
+	function setDayNight(val, time) {
+		$.ajax({
+			url: 'http://localhost:8987/env/day-night',
+			data: {'val': val, 'time': time}
+		});
+	}
+
+	$(document).ready(function() {
+		window.setInterval(loadStats, 2000);
+		$('#day').on('click', function(){ setDayNight(1, 2); });
+		$('#night').on('click', function(){ setDayNight(0, 2); });
+	});
+	</script>
+
+	<style>
+	#stats { background: #eee; padding: 20px; width: 300px; }
+	</style>
+
+</head>
+<body>
+
+	<p>
+		This example connects to localhost.
+		Once a game is running, you should see stats and you can
+		change the time of day.
+	</p>
+
+	<div id="stats">Game stats will be shown here.</div>
+
+	<p>
+		<button id="day">Day</button>
+		<button id="night">Night</button>
+	</p>
+
+</body>
+</html>
+
