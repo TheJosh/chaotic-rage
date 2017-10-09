@@ -26,7 +26,7 @@ Depends: chaoticrage-data (= ${source:Version}),
     ${shlibs:Depends},
     ${misc:Depends}
 Description: Unusual 3D shooter game
- Unusual 3D shooter game with zombies, tanks, boats, and helicopters.
+ Unusual 3D shooter game with zombies, tanks, boats, and utes.
  Can be played in top-view, 3rd person or 1st person view.
  Has particle effects, decent physics, weather effects, and day-night effects.
  Multiple maps and gametypes.
@@ -38,7 +38,7 @@ Package: chaoticrage-data
 Architecture: all
 Depends: ${misc:Depends}
 Description: Unusual 3D shooter game - data files
- Unusual 3D shooter game with zombies, tanks, boats, and helicopters.
+ Unusual 3D shooter game with zombies, tanks, boats, and utes.
  Can be played in top-view, 3rd person or 1st person view.
  Has particle effects, decent physics, weather effects, and day-night effects.
  Multiple maps and gametypes.

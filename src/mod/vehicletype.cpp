@@ -46,7 +46,6 @@ cfg_opt_t vehicletype_opts[] =
 
 	CFG_INT((char*) "land", 1, CFGF_NONE),
 	CFG_INT((char*) "water", 0, CFGF_NONE),
-	CFG_INT((char*) "helicopter", 0, CFGF_NONE),
 	CFG_INT((char*) "engine", 1, CFGF_NONE),
 	CFG_INT((char*) "steer", 1, CFGF_NONE),
 
@@ -93,7 +92,6 @@ VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod)
 	wt->mass = (float)cfg_getfloat(cfg_item, "mass");
 	wt->land = (cfg_getint(cfg_item, "land") == 1);
 	wt->water = (cfg_getint(cfg_item, "water") == 1);
-	wt->helicopter = (cfg_getint(cfg_item, "helicopter") == 1);
 	wt->engine = (cfg_getint(cfg_item, "engine") == 1);
 	wt->steer = (cfg_getint(cfg_item, "steer") == 1);
 

@@ -448,9 +448,6 @@
     <ClCompile Include="..\..\src\weapons\raycast.cpp">
       <Filter>src\weapons</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\entity\helicopter.cpp">
-      <Filter>src\entity</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\guichan\actionevent.cpp">
       <Filter>src\guichan</Filter>
     </ClCompile>
@@ -1172,9 +1169,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\util\crc32.h">
       <Filter>src\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\entity\helicopter.h">
-      <Filter>src\entity</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\util\stream_redirector.h">
       <Filter>src\util</Filter>

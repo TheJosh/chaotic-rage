@@ -15,7 +15,6 @@
 #include "../mod/objecttype.h"
 #include "../mod/pickuptype.h"
 #include "../entity/vehicle.h"
-#include "../entity/helicopter.h"
 #include "../entity/object.h"
 #include "../entity/pickup.h"
 #include "../entity/unit/unit.h"
@@ -56,14 +55,8 @@ Vehicle* addVehicleXZ(string type, float x, float z)
 		return NULL;
 	}
 
-	if (vt->helicopter) {
-		v = new Helicopter(vt, getGameState(), x, z);
-	} else {
-		v = new Vehicle(vt, getGameState(), x, z);
-	}
-
+	v = new Vehicle(vt, getGameState(), x, z);
 	getGameState()->addVehicle(v);
-
 	return v;
 }
 
@@ -80,14 +73,8 @@ Vehicle* addVehicleCoord(string type, btVector3 &coord)
 		return NULL;
 	}
 
-	if (vt->helicopter) {
-		v = new Helicopter(vt, getGameState(), coord.x(), coord.y(), coord.z());
-	} else {
-		v = new Vehicle(vt, getGameState(), coord.x(), coord.y(), coord.z());
-	}
-
+	v = new Vehicle(vt, getGameState(), coord.x(), coord.y(), coord.z());
 	getGameState()->addVehicle(v);
-
 	return v;
 }
 

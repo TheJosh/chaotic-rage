@@ -10,7 +10,6 @@
 #include "../game_engine.h"
 #include "../game_state.h"
 #include "../entity/vehicle.h"
-#include "../entity/helicopter.h"
 #include "../entity/object.h"
 #include "../entity/unit/unit.h"
 #include "../entity/unit/player.h"
@@ -75,4 +74,3 @@ void load_entity_lib(lua_State *L)
 
 	.endNamespace();
 }
-

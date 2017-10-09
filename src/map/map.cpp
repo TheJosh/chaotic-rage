@@ -32,7 +32,6 @@
 #include "../game_engine.h"
 #include "../entity/object.h"
 #include "../entity/vehicle.h"
-#include "../entity/helicopter.h"
 #include "../entity/wall.h"
 #include "../entity/pickup.h"
 #include "../util/sdl_util.h"
@@ -619,11 +618,7 @@ void Map::loadDefaultEntities()
 		VehicleType *vt = GEng()->mm->getVehicleType(type);
 		if (vt == NULL) reportFatalError("Unable to load map; missing or invalid vehicle type '" + type + "'");
 
-		if (vt->helicopter) {
-			v = new Helicopter(vt, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"));
-		} else {
-			v = new Vehicle(vt, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"));
-		}
+		v = new Vehicle(vt, this->st, (float)cfg_getfloat(cfg_sub, "x"), (float)cfg_getfloat(cfg_sub, "y"));
 
 		tid.num = cfg_getint(cfg_sub, "train-num");
 		tid.idx = cfg_getint(cfg_sub, "train-idx");

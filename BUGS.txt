@@ -6,8 +6,6 @@ Tank weapon shoots from wrong place
 Ute texture wrong
 Ute easily flipped
 
-Helicopter very broken
-
 Weapon pickups too small
 
 Odd black shadow line across the map

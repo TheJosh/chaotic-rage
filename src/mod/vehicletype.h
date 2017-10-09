@@ -70,7 +70,6 @@ class VehicleType
 
 		bool land;
 		bool water;
-		bool helicopter;
 		bool engine;
 		bool steer;
 
@@ -111,4 +110,3 @@ extern cfg_opt_t vehicletype_opts [];
 
 // Item loading function handler
 VehicleType* loadItemVehicleType(cfg_t* cfg_item, Mod* mod);
-

@@ -12,7 +12,6 @@
 #include "../game_engine.h"
 #include "../entity/ammo_round.h"
 #include "../entity/entity.h"
-#include "../entity/helicopter.h"
 #include "../entity/object.h"
 #include "../entity/pickup.h"
 #include "../entity/unit/unit.h"
@@ -568,12 +567,7 @@ unsigned int NetClient::handleVehicleState(Uint8 *data, unsigned int size)
 			return 34;
 		}
 
-		if (vt->helicopter) {
-			v = new Helicopter(vt, st, trans);
-		} else {
-			v = new Vehicle(vt, st, trans);
-		}
-
+		v = new Vehicle(vt, st, trans);
 		st->addVehicle(v);
 		v->eid = eid;
 	}
