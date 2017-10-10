@@ -118,12 +118,13 @@ PickupType* loadItemPickupType(cfg_t* cfg_item, Mod* mod)
 	// Load model
 	char * tmp = cfg_getstr(cfg_item, "model");
 	if (tmp != NULL) {
-		pt->model = mod->getAssimpModel(tmp);
-		if (! pt->model) {
+		AssimpModel* model = mod->getAssimpModel(tmp);
+		if (!model) {
 			delete(pt);
 			return NULL;
+		} else {
+			pt->setModel(model);
 		}
-		pt->col_shape = pt->model->getCollisionShape();
 	}
 
 	// Powerups have a bunch more fields

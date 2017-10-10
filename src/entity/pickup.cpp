@@ -29,7 +29,6 @@ Pickup::Pickup(PickupType *pt, GameState *st, float x, float z) : Entity(st)
 	st->addAnimPlay(this->anim, this);
 
 	btVector3 size = pt->model->getBoundingSize();
-
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(
 		btQuaternion(0.0f, 0.0f, 0.0f),
 		st->physics->spawnLocation(x, z, size.z())
