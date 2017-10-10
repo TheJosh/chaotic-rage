@@ -99,8 +99,11 @@ PickupType::~PickupType()
 **/
 void PickupType::setModel(AssimpModel *model)
 {
+	float scale = 2.5f;
+
 	this->model = model;
 	this->col_shape = this->model->getCollisionShape();
+	this->col_shape->setLocalScaling(btVector3(scale, scale, scale));
 }
 
 

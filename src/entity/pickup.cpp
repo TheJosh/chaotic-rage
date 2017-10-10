@@ -7,6 +7,7 @@
 #include "../mod/pickuptype.h"
 #include "../physics/physics_bullet.h"
 #include "../render_opengl/animplay.h"
+#include <glm/gtc/matrix_transform.hpp>
 #include "entity.h"
 
 
@@ -25,8 +26,13 @@ Pickup::Pickup(PickupType *pt, GameState *st, float x, float z) : Entity(st)
 
 	this->anim = new AnimPlay(pt->model);
 	this->anim->setAnimation(0);
-	this->anim->setCustomTransformScale(glm::vec3(scale, scale, scale));
 	st->addAnimPlay(this->anim, this);
+
+	// At load time the weapon models *aren't* recentered so they need to be manually
+	// translated to the correct offset
+	glm::mat4 transform = glm::scale(glm::mat4(1.0f), glm::vec3(scale, scale, scale));
+	transform = glm::translate(transform, glm::vec3(pt->model->getRecenterOffs()));
+	this->anim->setCustomTransform(transform);
 
 	btVector3 size = pt->model->getBoundingSize();
 	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(
