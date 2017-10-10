@@ -145,15 +145,17 @@ void AssimpModel::calcBoundingBox(const struct aiScene* sc)
 	this->calcBoundingBoxNode(sc->mRootNode, &min, &max, &trafo, sc);
 	boundingSize = btVector3(max.x - min.x, max.y - min.y, max.z - min.z);
 
+	// Calculate recenter offset
+	recenterOffs = glm::vec4(
+		(min.x + max.x) / -2.0f,
+		(min.y + max.y) / -2.0f,
+		(min.z + max.z) / -2.0f,
+		1.0f
+	);
+
 	// Recenter the model to the middle of the bounding box
 	if (this->recenter) {
-		glm::vec4 translate(
-			(min.x + max.x) / -2.0f,
-			(min.y + max.y) / -2.0f,
-			(min.z + max.z) / -2.0f,
-			1.0f
-		);
-		this->rootNode->transform[3] = translate;
+		this->rootNode->transform[3] = recenterOffs;
 		if (debug_enabled("loadbones")) {
 			cout << "Recenter '" << rootNode->name << "' to " << rootNode->transform[3][0] << "x" << rootNode->transform[3][1] << "x" << rootNode->transform[3][2] << endl;
 		}

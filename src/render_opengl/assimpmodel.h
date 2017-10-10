@@ -182,6 +182,7 @@ class AssimpModel
 		btVector3 boundingSize;
 		btCollisionShape *shape;
 		bool recenter;
+		glm::vec4 recenterOffs;
 
 	protected:
 		Mod *mod;
@@ -202,6 +203,7 @@ class AssimpModel
 		btCollisionShape* getCollisionShape();
 		AssimpNode* findNode(string name);
 		string getName() { return this->name; }
+		glm::vec4 getRecenterOffs() { return this->recenterOffs; }
 
 	private:
 		void calcBoundingBox(const struct aiScene* sc);
