@@ -85,7 +85,8 @@ class AnimPlay
 
 		// Custom transform which gets multiplied by the root node transform
 		void setCustomTransform(glm::mat4 custom_transform);
-		void setCustomTransform(glm::vec3 translate);
+		void setCustomTransformTranslate(glm::vec3 translate);
+		void setCustomTransformScale(glm::vec3 scale);
 
 		// The actual model this animation represents
 		AssimpModel* getModel() { return this->model; }

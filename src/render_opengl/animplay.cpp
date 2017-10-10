@@ -193,12 +193,22 @@ void AnimPlay::setCustomTransform(glm::mat4 custom_transform)
 /**
 * Set the custom transform to a translation matrix
 **/
-void AnimPlay::setCustomTransform(glm::vec3 translate)
+void AnimPlay::setCustomTransformTranslate(glm::vec3 translate)
 {
-	this->custom_transform = glm::translate(glm::mat4(1.0f), translate);
-	if (this->anim == NULL && this->move_nodes.empty()) {
-		this->calcTransformsStatic();
-	}
+	this->setCustomTransform(
+		glm::translate(glm::mat4(1.0f), translate)
+	);
+}
+
+
+/**
+* Set the custom transform to a scale matrix
+**/
+void AnimPlay::setCustomTransformScale(glm::vec3 scale)
+{
+	this->setCustomTransform(
+		glm::scale(glm::mat4(1.0f), scale)
+	);
 }
 
 

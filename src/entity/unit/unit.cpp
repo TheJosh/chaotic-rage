@@ -116,7 +116,7 @@ void Unit::init(UnitType *ut, GameState *st, Faction fac, btTransform & loc)
 	this->anim = new AnimPlay(this->uc->model);
 
 	glm::vec3 translate(0.0f, UNIT_PHYSICS_HEIGHT/-2.0f, 0.0f);
-	this->anim->setCustomTransform(translate);
+	this->anim->setCustomTransformTranslate(translate);
 
 	if (uc->node_head) {
 		this->anim->addMoveNode(uc->node_head);
