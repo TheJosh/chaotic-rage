@@ -19,10 +19,13 @@ using namespace std;
 **/
 Pickup::Pickup(PickupType *pt, GameState *st, float x, float z) : Entity(st)
 {
+	float scale = 2.5f;
+
 	this->pt = pt;
 
 	this->anim = new AnimPlay(pt->model);
 	this->anim->setAnimation(0);
+	this->anim->setCustomTransformScale(glm::vec3(scale, scale, scale));
 	st->addAnimPlay(this->anim, this);
 
 	btVector3 size = pt->model->getBoundingSize();
