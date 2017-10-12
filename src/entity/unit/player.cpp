@@ -261,7 +261,7 @@ float Player::getRenderAngle()
 
 
 /**
-* Uses the currently pressed keys to change the player movement
+* Update every frame
 **/
 void Player::update(float delta)
 {
@@ -274,6 +274,17 @@ void Player::update(float delta)
 
 	this->handleKeyChange();
 
+printf("update %f\n", delta);
+	Unit::update(delta);
+}
+
+
+/**
+* Update every physics tick
+**/
+void Player::physicsUpdate(float delta)
+{
+printf("physicsUpdate %f\n", delta);
 	if (this->drive) {
 		this->drive->operate(this, delta, this->key, this->mouse_angle, this->vertical_angle);
 		this->resetIdleTime();
@@ -339,7 +350,7 @@ void Player::update(float delta)
 
 	this->force = btVector3(0.0f, 0.0f, 0.0f);
 
-	Unit::update(delta);
+	Unit::physicsUpdate(delta);
 }
 
 

@@ -791,9 +791,6 @@ void Unit::update(float delta)
 		this->resetIdleTime();
 	}
 
-	// TODO: Get this working for dynamic controller
-	detectCollision();
-
 	// Remove (and rollback) old pickups
 	pickups.remove_if(remove_finished_pickup);
 	if (pickups.empty()) {
@@ -809,6 +806,16 @@ void Unit::update(float delta)
 		}
 		this->resetIdleTime();
 	}
+}
+
+
+/**
+* Called once per tick to do all of the logic and stuff
+**/
+void Unit::physicsUpdate(float delta)
+{
+	// TODO: Get this working for dynamic controller
+	detectCollision();
 }
 
 
