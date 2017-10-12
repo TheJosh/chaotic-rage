@@ -8,6 +8,7 @@
 #include "physics_bullet.h"
 #include "physics_callback.h"
 #include "../game_state.h"
+#include "../entity/entity.h"
 
 using namespace std;
 
@@ -339,6 +340,12 @@ void PhysicsBullet::handleCallback(float delta)
 	for (std::list<PhysicsCallback*>::iterator it = this->callbacks.begin(); it != this->callbacks.end(); ++it) {
 		PhysicsCallback *callback = (*it);
 		(*callback->func)(delta, callback->e, callback->data1, callback->data2);
+	}
+
+	float deltaMs = delta * 1000.0f;
+	for (std::list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {
+		Entity* e = (*it);
+		e->physicsUpdate(deltaMs);
 	}
 }
 

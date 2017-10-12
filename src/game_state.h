@@ -109,6 +109,7 @@ class GameState
 	friend class RenderAscii;
 	friend class AudioSDLMixer;
 	friend class NetServer;
+	friend class PhysicsBullet;
 	friend void gameLoop(GameState *st, Render *render, Audio* audio, NetClient* client);
 
 	private:

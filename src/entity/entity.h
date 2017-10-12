@@ -67,9 +67,16 @@ class Entity
 		virtual void setTransform(btTransform &t);
 
 		/**
-		* Update the entity. Time is provided in milliseconds (ms)
+		* Update the entity. Called once per frame.
+		* Time is provided in milliseconds (ms)
 		**/
 		virtual void update(float delta) = 0;
+
+		/**
+		* Update the entity. Called once per physics tick.
+		* Time is provided in milliseconds (ms)
+		**/
+		virtual void physicsUpdate(float delta) {}
 
 		/**
 		* Reduce health of entity, and possibly die too.
