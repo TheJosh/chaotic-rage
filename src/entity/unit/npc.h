@@ -30,6 +30,7 @@ class NPC : public Unit
 
 	public:
 		virtual void update(float delta);
+		virtual void physicsUpdate(float delta);
 		virtual void die();
 		void setWalkVelocity(const btVector3& velocity);
 

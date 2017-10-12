@@ -65,7 +65,37 @@ NPC::~NPC()
 void NPC::update(float delta)
 {
 	logic->update();
+
+	this->walkSound();
+	this->resetIdleTime();
+
 	Unit::update(delta);
+}
+
+
+/**
+* Try to find a player and attack them
+**/
+void NPC::physicsUpdate(float delta)
+{
+	btVector3 moveDir = logic->getDir();
+	moveDir.setY(0.0f);
+
+	// Rotation update
+	if (moveDir.length2() > btScalar(0.0001)) {
+		btVector3 fwd = btVector3(0.0, 0.0, 1.0);
+		btVector3 axis = fwd.cross(moveDir);
+		axis.normalize();
+		float angle = acos(moveDir.dot(fwd));
+		btQuaternion rot = btQuaternion(axis, angle).normalize();
+		this->ghost->getWorldTransform().setBasis(btMatrix3x3(rot));
+		this->aim_dir = rot;
+	}
+
+	btScalar walkSpeed = this->params.max_speed;
+	this->setWalkVelocity(moveDir * walkSpeed);
+
+	Unit::physicsUpdate(delta);
 }
 
 

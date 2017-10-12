@@ -52,4 +52,7 @@ class AILogic
 		* Basically just provides timer ticks
 		**/
 		void update();
+
+		btVector3& getDir() { return this->dir; }
+
 };

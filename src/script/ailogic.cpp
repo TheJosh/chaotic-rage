@@ -124,29 +124,6 @@ void AILogic::update()
 		}
 	}
 
-	// Handle movement
-	if (this->dir_flag) {
-		this->dir.setY(0.0f);
-
-		btScalar walkSpeed = u->params.max_speed;
-
-		// Rotation update
-		if (this->dir.length2() > btScalar(0.0001)) {
-			btVector3 fwd = btVector3(0.0, 0.0, 1.0);
-			btVector3 axis = fwd.cross(this->dir);
-			axis.normalize();
-			float angle = acos(this->dir.dot(fwd));
-			btQuaternion rot = btQuaternion(axis, angle).normalize();
-			u->ghost->getWorldTransform().setBasis(btMatrix3x3(rot));
-			u->aim_dir = rot;
-		}
-
-		this->dir_flag = false;
-		this->u->setWalkVelocity(this->dir * walkSpeed);
-		this->u->walkSound();
-		this->u->resetIdleTime();
-	}
-
 	// If we should end firing, then end firing
 	if (this->needEndFiring) {
 		this->u->endFiring();
