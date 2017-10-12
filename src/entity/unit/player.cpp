@@ -274,7 +274,6 @@ void Player::update(float delta)
 
 	this->handleKeyChange();
 
-printf("update %f\n", delta);
 	Unit::update(delta);
 }
 
@@ -284,7 +283,6 @@ printf("update %f\n", delta);
 **/
 void Player::physicsUpdate(float delta)
 {
-printf("physicsUpdate %f\n", delta);
 	if (this->drive) {
 		this->drive->operate(this, delta, this->key, this->mouse_angle, this->vertical_angle);
 		this->resetIdleTime();
