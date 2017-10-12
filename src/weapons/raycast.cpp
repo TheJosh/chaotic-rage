@@ -56,7 +56,7 @@ void raycastDoFire(T const &weapon, Unit *u, btTransform &origin, btVector3 &beg
 	if (dist < 3.0f) {
 		damage_falloff = 1.0f;
 	} else {
-		damage_falloff = (weapon->range - dist) / weapon->range;
+		damage_falloff = sqrt(weapon->range - dist) / sqrt(weapon->range);
 	}
 
 	Entity* entA = static_cast<Entity*>(cb.m_collisionObject->getUserPointer());
