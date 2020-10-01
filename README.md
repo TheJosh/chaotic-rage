@@ -1,4 +1,4 @@
-Chaotic Rage
+Chaotic Rage -An Amazing Game
 ============
 
 [![Build Status](https://travis-ci.org/TheJosh/chaotic-rage.png?branch=master)](https://travis-ci.org/TheJosh/chaotic-rage)
