@@ -57,7 +57,7 @@ endif
 # Set other executables, with support for cross-compilers
 PKG_CONFIG := $(CROSS)pkg-config
 SDL2_CONFIG := $(CROSS)sdl2-config
-FREETYPE_CONFIG := $(CROSS)freetype-config
+FREETYPE_CONFIG := $(CROSS)pkg-config freetype2
 
 # cflags
 CFLAGS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --cflags) \
