@@ -5,6 +5,7 @@
 #pragma once
 #include <stdint.h>
 #include <stddef.h>
+#include <microhttpd.h>
 #include "../util/thread_safe_queue.h"
 
 struct MHD_Daemon;
@@ -28,7 +29,7 @@ class CmdManager
         /**
         * Handle incoming HTTP requests
         **/
-        int AccessHandlerCallback(
+        MHD_Result AccessHandlerCallback(
             struct MHD_Connection* connection,
             const char* url, const char* method,
             const char* upload_data, size_t* upload_data_size,

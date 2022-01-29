@@ -13,10 +13,10 @@
 /**
 * Wrapper for the actual AccessHandlerCallback method in the CmdManager class
 **/
-int ahc(
+MHD_Result ahc(
     void* cls, struct MHD_Connection* connection, const char* url,
     const char* method, const char* version, const char* upload_data,
-    size_t* upload_data_size, void** ptr
+    long unsigned int* upload_data_size, void** ptr
 ) {
     return static_cast<CmdManager*>(cls)->AccessHandlerCallback(
         connection, url, method, upload_data, upload_data_size, ptr
@@ -60,7 +60,7 @@ CmdManager::~CmdManager()
 /**
 * Handle incoming HTTP requests
 **/
-int CmdManager::AccessHandlerCallback(
+MHD_Result CmdManager::AccessHandlerCallback(
     struct MHD_Connection* connection,
     const char* url, const char* method,
     const char* upload_data, size_t* upload_data_size,
@@ -68,7 +68,7 @@ int CmdManager::AccessHandlerCallback(
 ) {
     static int dummy;
     struct MHD_Response* response;
-    int ret;
+    MHD_Result ret;
 
     if (0 != strcmp(method, "GET")) {
         return MHD_NO; /* unexpected method */
