@@ -25,7 +25,7 @@ You'll need the following dependencies:
 Compiling on Debian/Ubuntu/Mint
 -------------------------------
 
-This build configuration has been tested on Debian 7, Debian 8, Ubuntu 10.04, Ubuntu 12.04 and Mint 17.
+This build configuration has been tested on Debian 11
 
 Install the dependencies:
 
