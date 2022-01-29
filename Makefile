@@ -54,6 +54,9 @@ ifeq ($(CXX),clang)
 endif
 
 
+CFLAGS := -Wno-maybe-uninitialized
+
+
 # Set other executables, with support for cross-compilers
 PKG_CONFIG := $(CROSS)pkg-config
 SDL2_CONFIG := $(CROSS)sdl2-config
