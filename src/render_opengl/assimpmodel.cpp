@@ -59,6 +59,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadFlags flags)
 	importer.SetPropertyInteger(AI_CONFIG_PP_RVC_FLAGS, aiComponent_COLORS | aiComponent_LIGHTS | aiComponent_CAMERAS);
 	importer.SetPropertyInteger(AI_CONFIG_PP_SLM_VERTEX_LIMIT, 65535);
 	importer.SetPropertyInteger(AI_CONFIG_PP_SLM_TRIANGLE_LIMIT, 65535);
+	importer.SetPropertyInteger(AI_CONFIG_IMPORT_COLLADA_USE_COLLADA_NAMES, 1);
 
 	unsigned int assflags = aiProcess_CalcTangentSpace
 		| aiProcess_Triangulate
