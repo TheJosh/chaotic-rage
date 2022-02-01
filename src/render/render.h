@@ -28,7 +28,7 @@ class Render
 		int viewmode;
 
 	protected:
-		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename) = 0;
+		virtual SpritePtr loadSpriteFromRWops(SDL_RWops *rw, string filename) = 0;
 
 	public:
 		/**

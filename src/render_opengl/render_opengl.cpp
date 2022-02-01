@@ -594,7 +594,7 @@ void RenderOpenGL::saveScreenshot(string filename)
 /**
 * Internal sprite loading from a SDL_RWops
 **/
-SpritePtr RenderOpenGL::int_loadSprite(SDL_RWops *rw, string filename)
+SpritePtr RenderOpenGL::loadSpriteFromRWops(SDL_RWops *rw, string filename)
 {
 	SDL_Surface * surf;
 

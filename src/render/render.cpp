@@ -41,7 +41,7 @@ SpritePtr Render::loadSprite(string filename, Mod * mod)
 		return NULL;
 	}
 
-	sprite = this->int_loadSprite(rw, filename);
+	sprite = this->loadSpriteFromRWops(rw, filename);
 	if (sprite == NULL) {
 		this->load_err = true;
 	}

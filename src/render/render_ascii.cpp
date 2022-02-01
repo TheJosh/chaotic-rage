@@ -86,7 +86,7 @@ void RenderAscii::setScreenSize(int width, int height, bool fullscreen)
 /**
 * Internal sprite loading from a SDL_RWops
 **/
-SpritePtr RenderAscii::int_loadSprite(SDL_RWops *rw, string filename)
+SpritePtr RenderAscii::loadSpriteFromRWops(SDL_RWops *rw, string filename)
 {
 	SDL_Surface * surf;
 

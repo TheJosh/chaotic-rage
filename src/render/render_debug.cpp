@@ -102,7 +102,7 @@ void RenderDebug::cleanup()
 /**
 * Internal sprite loading from a SDL_RWops
 **/
-SpritePtr RenderDebug::int_loadSprite(SDL_RWops *rw, string filename)
+SpritePtr RenderDebug::loadSpriteFromRWops(SDL_RWops *rw, string filename)
 {
 	SDL_Surface * surf;
 

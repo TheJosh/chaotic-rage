@@ -35,7 +35,7 @@ void RenderNull::setScreenSize(int width, int height, bool fullscreen)
 /**
 * Internal sprite loading from a SDL_RWops
 **/
-SpritePtr RenderNull::int_loadSprite(SDL_RWops *rw, string filename)
+SpritePtr RenderNull::loadSpriteFromRWops(SDL_RWops *rw, string filename)
 {
 	SDL_Surface * surf;
 

@@ -38,7 +38,7 @@ class Render3D : public Render
 		virtual ~Render3D() {}
 
 	protected:
-		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename) = 0;
+		virtual SpritePtr loadSpriteFromRWops(SDL_RWops *rw, string filename) = 0;
 
 	public:
 		/**

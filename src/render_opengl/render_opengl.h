@@ -146,7 +146,7 @@ class RenderOpenGL : public Render3D
 		virtual ~RenderOpenGL();
 
 	protected:
-		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
+		virtual SpritePtr loadSpriteFromRWops(SDL_RWops *rw, string filename);
 
 	public:
 		// From class Render

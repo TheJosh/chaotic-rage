@@ -13,7 +13,7 @@ class RenderNull : public Render
 		int last_render;
 
 	protected:
-		virtual SpritePtr int_loadSprite(SDL_RWops *rw, string filename);
+		virtual SpritePtr loadSpriteFromRWops(SDL_RWops *rw, string filename);
 
 	public:
 		virtual void setScreenSize(int width, int height, bool fullscreen);
