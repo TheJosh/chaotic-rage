@@ -37,10 +37,10 @@ gcn::Container* DialogButtonBar::setup()
 	c->setDimension(gcn::Rectangle(0, 0, width, this->buttons.size() * 40 + 30));
 
 	// Add each button
-	int idx = 0;
+	unsigned short int idx = 0;
 	char buf[BUFFER_MAX];
 	for (vector<gcn::Button*>::iterator it = buttons.begin(); it != buttons.end(); ++it) {
-		snprintf(buf, BUFFER_MAX, "%i", idx);
+		snprintf(buf, BUFFER_MAX, "%hu", idx);
 
 		gcn::Button* btn = *it;
 		btn->setSize(width - 20, 30);
