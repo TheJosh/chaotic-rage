@@ -379,9 +379,9 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 &transform, float ani
 
 
 /**
-* Calculate the bone transforms
+* Apply animation transforms into the "bone transforms" ready for sending to OpenGL
 **/
-void AnimPlay::calcBoneTransforms()
+void AnimPlay::applyBoneTransforms()
 {
 	if (this->anim == NULL && this->move_nodes.empty() && !bone_transforms.empty()) return;
 

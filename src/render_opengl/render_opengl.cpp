@@ -1708,19 +1708,21 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, const glm::mat4 &modelMatrix)
 		recursiveRenderAssimpModelStatic(play, am, am->rootNode, shader, modelMatrix);
 
 	} else {
-		// Calculate bone transforms
-		play->calcBoneTransforms();
+		// Skinned meshes are a bit trickier
 		glm::mat4 MVP = this->projection * this->view * modelMatrix;
 		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
 
 		// Set uniforms
-		glUniformMatrix4fv(shader->uniform("uBones[0]"), MAX_BONES, GL_FALSE, &play->bone_transforms[0][0][0]);
 		glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 		glUniformMatrix4fv(shader->uniform("uM"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		glUniformMatrix3fv(shader->uniform("uMN"), 1, GL_FALSE, glm::value_ptr(glm::inverseTranspose(glm::mat3(modelMatrix))));
 		glUniformMatrix4fv(shader->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
 
-		// Do it
+		// Calculate and apply bone transforms
+		play->applyBoneTransforms();
+		glUniformMatrix4fv(shader->uniform("uBones[0]"), MAX_BONES, GL_FALSE, &play->bone_transforms[0][0][0]);
+
+		// Render the model
 		recursiveRenderAssimpModelBones(play, am, am->rootNode, shader);
 	}
 }
