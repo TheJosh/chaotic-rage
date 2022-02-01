@@ -16,6 +16,7 @@
 #include "gl_debug.h"
 #include "../mod/mod.h"
 #include "render_opengl.h"
+#include "../render/sprite.h"
 
 using namespace std;
 
@@ -394,21 +395,21 @@ void AssimpModel::loadMaterials(Render3D* render, const struct aiScene* sc)
 		// Diffuse texture
 		if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
 			if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
-				myMat->diffuse = this->loadTexture(render, &path);
+				myMat->diffuse = this->loadTexture(render, &path, sc);
 			}
 		}
 
 		// Normal map
 		if (pMaterial->GetTextureCount(aiTextureType_NORMALS) > 0) {
 			if (pMaterial->GetTexture(aiTextureType_NORMALS, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
-				myMat->normal = this->loadTexture(render, &path);
+				myMat->normal = this->loadTexture(render, &path, sc);
 			}
 		}
 
 		// Lightmap (e.g. Ambient Occlusion)
 		if (pMaterial->GetTextureCount(aiTextureType_LIGHTMAP) > 0) {
 			if (pMaterial->GetTexture(aiTextureType_LIGHTMAP, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
-				myMat->lightmap = this->loadTexture(render, &path);
+				myMat->lightmap = this->loadTexture(render, &path, sc);
 			}
 		}
 
@@ -422,15 +423,47 @@ void AssimpModel::loadMaterials(Render3D* render, const struct aiScene* sc)
 *
 * TODO: We should save these in a std::map so we don't load the same stuff multiple times.
 **/
-SpritePtr AssimpModel::loadTexture(Render3D* render, aiString* path)
+SpritePtr AssimpModel::loadTexture(Render3D* render, aiString* path, const struct aiScene* sc)
 {
 	string p(path->data);
 
+	// Check if it's an embedded texture
+	const aiTexture* tex = sc->GetEmbeddedTexture(path->data);
+	if (tex != NULL) {
+		return this->loadEmbeddedTexture(render, tex);
+	}
+
+	// Cleanup filename path
 	if (p.substr(0, 2) == ".\\") p = p.substr(2, p.size() - 2);
 	if (p.substr(0, 2) == "./") p = p.substr(2, p.size() - 2);
 	if (p.substr(0, 2) == "//") p = p.substr(2, p.size() - 2);
 
 	return render->loadSprite("models/" + p, this->mod);
+}
+
+
+/**
+* Load an embedded texture into the 3D renderer
+**/
+SpritePtr AssimpModel::loadEmbeddedTexture(Render3D* render, const aiTexture* tex)
+{
+	SpritePtr sprite;
+
+	if (tex->mHeight == 0) {
+		// Compressed data loaded using IMG_Load
+		SDL_RWops* rw = SDL_RWFromConstMem(tex->pcData, tex->mWidth);
+		sprite = render->loadSpriteFromRWops(rw, string(tex->mFilename.data));
+		SDL_RWclose(rw);
+	} else {
+		// Uncompressed data loaded directly into OpenGL
+		sprite = new Sprite();
+		sprite->w = tex->mWidth;
+		sprite->h = tex->mHeight;
+		sprite->orig = NULL;
+		sprite->pixels = render->loadTextureRBGA(tex->pcData, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, tex->mWidth, tex->mHeight);
+	}
+
+	return sprite;
 }
 
 

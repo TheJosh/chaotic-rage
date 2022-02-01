@@ -211,7 +211,8 @@ class AssimpModel
 
 		void loadMeshes(bool opengl, const struct aiScene* sc);
 		void loadMaterials(Render3D* render, const struct aiScene* sc);
-		SpritePtr loadTexture(Render3D* render, aiString* path);
+		SpritePtr loadTexture(Render3D* render, aiString* path, const struct aiScene* sc);
+		SpritePtr loadEmbeddedTexture(Render3D* render, const aiTexture* tex);
 		void loadMeshdata(bool update, const struct aiScene* sc);
 
 		void loadNodes(const struct aiScene* sc);
