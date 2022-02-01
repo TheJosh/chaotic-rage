@@ -96,7 +96,7 @@ class AnimPlay
 		void calcTransforms();
 
 		// Apply anim transforms into bone transforms
-		void applyBoneTransforms();
+		void applyBoneTransforms(AssimpMesh* mesh);
 
 		// Get the current transform of a given node
 		glm::mat4 getNodeTransform(AssimpNode* nd);

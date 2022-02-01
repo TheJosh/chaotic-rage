@@ -381,7 +381,7 @@ void AnimPlay::calcTransformNode(AssimpNode* nd, glm::mat4 &transform, float ani
 /**
 * Apply animation transforms into the "bone transforms" ready for sending to OpenGL
 **/
-void AnimPlay::applyBoneTransforms()
+void AnimPlay::applyBoneTransforms(AssimpMesh* mesh)
 {
 	if (this->anim == NULL && this->move_nodes.empty() && !bone_transforms.empty()) return;
 
@@ -391,9 +391,6 @@ void AnimPlay::applyBoneTransforms()
 	for (unsigned int i = 0; i < MAX_BONES; i++) {
 		bone_transforms.push_back(glm::mat4(1.0f));
 	}
-
-	// For now we only operate on the first mesh
-	AssimpMesh* mesh = this->model->meshes[0];
 
 	// Iterate through the bones and set the transforms from the nodes
 	for (unsigned int i = 0; i < mesh->bones.size(); i++) {

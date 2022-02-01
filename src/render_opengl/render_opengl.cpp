@@ -1718,10 +1718,6 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, const glm::mat4 &modelMatrix)
 		glUniformMatrix3fv(shader->uniform("uMN"), 1, GL_FALSE, glm::value_ptr(glm::inverseTranspose(glm::mat3(modelMatrix))));
 		glUniformMatrix4fv(shader->uniform("uDepthBiasMVP"), 1, GL_FALSE, glm::value_ptr(depthBiasMVP));
 
-		// Calculate and apply bone transforms
-		play->applyBoneTransforms();
-		glUniformMatrix4fv(shader->uniform("uBones[0]"), MAX_BONES, GL_FALSE, &play->bone_transforms[0][0][0]);
-
 		// Render the model
 		recursiveRenderAssimpModelBones(play, am, am->rootNode, shader);
 	}
@@ -1800,6 +1796,10 @@ void RenderOpenGL::recursiveRenderAssimpModelBones(AnimPlay* ap, AssimpModel* am
 {
 	for (vector<unsigned int>::iterator it = nd->meshes.begin(); it != nd->meshes.end(); ++it) {
 		AssimpMesh* mesh = am->meshes[(*it)];
+
+		// Calculate and apply bone transforms
+		ap->applyBoneTransforms(mesh);
+		glUniformMatrix4fv(shader->uniform("uBones[0]"), MAX_BONES, GL_FALSE, &ap->bone_transforms[0][0][0]);
 
 		if (am->materials[mesh->materialIndex]->diffuse == NULL) {
 			glBindTexture(GL_TEXTURE_2D, 0);
