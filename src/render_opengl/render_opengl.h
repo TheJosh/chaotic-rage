@@ -189,6 +189,7 @@ class RenderOpenGL : public Render3D
 		virtual OpenGLFont* getFont(string name, float size);
 		virtual void renderText(OpenGLFont* font, string text, int x = 0, int y = 0, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
 		virtual unsigned int widthText(OpenGLFont* font, string text);
+		virtual Uint32 loadTextureRBGA(void* data, Uint32 format, Uint32 type, int w, int h);
 		virtual SpritePtr loadCubemap(string filename_base, string filename_ext, Mod * mod);
 		virtual SpritePtr load1D(string filename, Mod* mod);
 		virtual void mouseRaycast(int x, int y, btVector3& start, btVector3& end);

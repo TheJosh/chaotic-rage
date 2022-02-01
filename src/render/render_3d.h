@@ -104,6 +104,11 @@ class Render3D : public Render
 		virtual SpritePtr load1D(string filename, Mod* mod) = 0;
 
 		/**
+		* Load a texture from an array of pixel data
+		**/
+		virtual Uint32 loadTextureRBGA(void* data, Uint32 format, Uint32 type, int w, int h) = 0;
+
+		/**
 		* Is it a 3D renderer?
 		**/
 		virtual bool is3D() { return true; }

@@ -680,9 +680,23 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 		assert(0);
 	}
 
+	// Load texture
+	sprite->pixels = this->loadTextureRBGA(sprite->orig->pixels, texture_format, GL_UNSIGNED_BYTE, sprite->w, sprite->h);
+
+	CHECK_OPENGL_ERROR
+}
+
+
+/**
+* Load a texture from an array of pixel data
+**/
+Uint32 RenderOpenGL::loadTextureRBGA(void* data, Uint32 format, Uint32 type, int w, int h)
+{
+	GLuint handle;
+
 	// Create and bind texture handle
-	glGenTextures(1, &sprite->pixels);
-	glBindTexture(GL_TEXTURE_2D, sprite->pixels);
+	glGenTextures(1, &handle);
+	glBindTexture(GL_TEXTURE_2D, handle);
 
 	// Set stretching properties
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this->min_filter);
@@ -693,11 +707,11 @@ void RenderOpenGL::surfaceToOpenGL(SpritePtr sprite)
 	}
 
 	// Load and create mipmaps
-	glTexImage2D(GL_TEXTURE_2D, 0, target_format, sprite->orig->w, sprite->orig->h, 0, texture_format, GL_UNSIGNED_BYTE, sprite->orig->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, format, type, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	CHECK_OPENGL_ERROR
+	return handle;
 }
 
 
