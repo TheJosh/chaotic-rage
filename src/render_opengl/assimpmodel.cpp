@@ -659,6 +659,9 @@ void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 	Uint8 n;
 	unsigned int *idx;
 
+	// Ensure mesh is valid
+	assert(mesh->mNumBones < MAX_BONES);
+
 	// Allocate space for the IDs and weights
 	this->boneIds = (Uint8*) malloc(sizeof(Uint8) * 4 * mesh->mNumVertices);
 	this->boneWeights = (float*) malloc(sizeof(float) * 4 * mesh->mNumVertices);

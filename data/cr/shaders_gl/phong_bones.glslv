@@ -1,5 +1,5 @@
 #define MAX_NUM_LIGHTS 4
-#define MAX_BONES 32
+#define MAX_BONES 100
 
 in vec3 vPosition;
 in vec3 vNormal;

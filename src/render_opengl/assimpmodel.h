@@ -15,7 +15,7 @@ using namespace std;
 /**
 * How many bones can be in a model
 **/
-#define MAX_BONES 32
+#define MAX_BONES 100
 
 /**
 * How many bone ids/weights can be assigned to a vertex
