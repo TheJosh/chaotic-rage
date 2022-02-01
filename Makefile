@@ -44,7 +44,7 @@ endif
 ifdef DEBUG
 	CFLAGS := $(CFLAGS) -Og -ggdb
 else
-	CFLAGS := $(CFLAGS) -O2 -g -ffast-math
+	CFLAGS := $(CFLAGS) -O2 -ffast-math
 endif
 
 
@@ -53,8 +53,8 @@ ifeq ($(CXX),clang)
 	CFLAGS := $(CFLAGS) -Wno-unknown-warning-option -Wno-overloaded-virtual -Wno-shift-op-parentheses
 endif
 
-
-CFLAGS := -Wno-maybe-uninitialized
+# Fix for GCC 10 and Bullet Physics and some uninit variables
+CFLAGS := $(CFLAGS) -Wno-maybe-uninitialized
 
 
 # Set other executables, with support for cross-compilers
