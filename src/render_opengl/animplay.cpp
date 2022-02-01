@@ -394,6 +394,7 @@ void AnimPlay::calcBoneTransforms()
 
 	// For now we only operate on the first mesh
 	AssimpMesh* mesh = this->model->meshes[0];
+	assert(mesh->bones.size() < MAX_BONES);
 
 	// Iterate through the bones and set the transforms from the nodes
 	for (unsigned int i = 0; i < mesh->bones.size(); i++) {
