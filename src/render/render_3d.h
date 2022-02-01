@@ -37,9 +37,6 @@ class Render3D : public Render
 		Render3D(GameState *st) : Render(st) {}
 		virtual ~Render3D() {}
 
-	protected:
-		virtual SpritePtr loadSpriteFromRWops(SDL_RWops *rw, string filename) = 0;
-
 	public:
 		/**
 		* Sets the screen size of this renderer
@@ -50,6 +47,8 @@ class Render3D : public Render
 		* Renders the provided game state
 		**/
 		virtual void render() = 0;
+
+		virtual SpritePtr loadSpriteFromRWops(SDL_RWops *rw, string filename) = 0;
 
 		/**
 		* Renders a sprite.

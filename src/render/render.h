@@ -27,9 +27,6 @@ class Render
 		GameState * st;
 		int viewmode;
 
-	protected:
-		virtual SpritePtr loadSpriteFromRWops(SDL_RWops *rw, string filename) = 0;
-
 	public:
 		/**
 		* Sets the screen size of this renderer
@@ -60,6 +57,8 @@ class Render
 		* Loads a sprite from a mod into memory
 		**/
 		SpritePtr loadSprite(string filename, Mod * mod);
+
+		virtual SpritePtr loadSpriteFromRWops(SDL_RWops *rw, string filename) = 0;
 
 		/**
 		* Renders a sprite.

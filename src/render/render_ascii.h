@@ -17,12 +17,10 @@ class RenderAscii : public Render
 		char *buffer;
 		Uint8 *color;
 
-	protected:
-		virtual SpritePtr loadSpriteFromRWops(SDL_RWops *rw, string filename);
-
 	public:
 		virtual void setScreenSize(int width, int height, bool fullscreen);
 		virtual void render();
+		virtual SpritePtr loadSpriteFromRWops(SDL_RWops *rw, string filename);
 		virtual void renderSprite(SpritePtr sprite, int x, int y);
 		virtual void renderSprite(SpritePtr sprite, int x, int y, int w, int h);
 		virtual void preGame();
@@ -36,4 +34,3 @@ class RenderAscii : public Render
 		RenderAscii(GameState * st);
 		virtual ~RenderAscii();
 };
-

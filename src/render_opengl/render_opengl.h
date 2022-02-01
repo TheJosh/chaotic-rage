@@ -145,9 +145,6 @@ class RenderOpenGL : public Render3D
 		RenderOpenGL(GameState * st, RenderOpenGLSettings* settings);
 		virtual ~RenderOpenGL();
 
-	protected:
-		virtual SpritePtr loadSpriteFromRWops(SDL_RWops *rw, string filename);
-
 	public:
 		// From class Render
 		virtual void setScreenSize(int width, int height, bool fullscreen);
@@ -160,6 +157,7 @@ class RenderOpenGL : public Render3D
 		virtual void preGame();
 		virtual void postGame();
 		virtual void clearPixel(int x, int y);
+		virtual SpritePtr loadSpriteFromRWops(SDL_RWops *rw, string filename);
 		virtual void freeSprite(SpritePtr sprite);
 		virtual int getSpriteWidth(SpritePtr sprite);
 		virtual int getSpriteHeight(SpritePtr sprite);

@@ -29,12 +29,10 @@ class RenderDebug : public Render
 		int width;
 		int height;
 
-	protected:
-		virtual SpritePtr loadSpriteFromRWops(SDL_RWops *rw, string filename);
-
 	public:
 		virtual void setScreenSize(int width, int height, bool fullscreen);
 		virtual void render();
+		virtual SpritePtr loadSpriteFromRWops(SDL_RWops *rw, string filename);
 		virtual void renderSprite(SpritePtr sprite, int x, int y);
 		virtual void renderSprite(SpritePtr sprite, int x, int y, int w, int h);
 		virtual void preGame();
@@ -52,4 +50,3 @@ class RenderDebug : public Render
 		SDL_Texture *createSolidTexture(int width, int height, int r, int g, int b, int a);
 		void cleanup();
 };
-
