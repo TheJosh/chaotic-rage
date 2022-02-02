@@ -25,4 +25,7 @@ class AssimpLoadConfig
 
 		// Amount to scale the model, 1.0 is no scaling
 		glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+		// Movement of the model, in meters
+		glm::vec3 translate = glm::vec3(0.0f, 0.0f, 0.0f);
 };

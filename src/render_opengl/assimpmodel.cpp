@@ -129,9 +129,9 @@ bool AssimpModel::load(Render3D* render, AssimpLoadConfig& config)
 	this->calcBoundingBox(sc);
 	this->setBoneNodes();
 
-	// Create a transform using the load config. Only scale is
-	// supported at the moment, but it would be easy to add others
-	this->transform = glm::scale(glm::mat4(), config.scale);
+	// Create a transform using the load config params
+	this->transform = glm::translate(glm::mat4(), config.translate);
+	this->transform = glm::scale(this->transform, config.scale);
 
 	return true;
 }

@@ -459,6 +459,7 @@ AssimpModel * Mod::getAssimpModel(string filename)
 	// that the loading code isn't too insane.
 	if (filename.compare("mocap-man-walking.fbx") == 0) {
 		config.scale = glm::vec3(0.01f, 0.01f, 0.01f);
+		config.translate = glm::vec3(0.0f, -0.85f, 0.0f);
 	}
 
 	return this->getAssimpModel(filename, config);
