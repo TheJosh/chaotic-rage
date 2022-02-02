@@ -14,6 +14,7 @@
 #include "../game_engine.h"
 #include "../util/ui_update.h"
 #include "../render/render.h"
+#include "../render_opengl/assimp_load_config.h"
 #include "../render_opengl/assimpmodel.h"
 #include "../util/crc32.h"
 #include "../util/debug.h"
@@ -449,14 +450,15 @@ AIType * Mod::getAIType(string name)
 **/
 AssimpModel * Mod::getAssimpModel(string filename)
 {
-	return this->getAssimpModel(filename, ALF_None);
+	AssimpLoadConfig config = {};
+	return this->getAssimpModel(filename, config);
 }
 
 
 /**
 * Load an assimp model
 **/
-AssimpModel * Mod::getAssimpModel(string filename, AssimpLoadFlags flags)
+AssimpModel * Mod::getAssimpModel(string filename, AssimpLoadConfig& config)
 {
 	map<string, AssimpModel*>::iterator it = this->models.find(filename);
 	if (it != this->models.end()) {
@@ -464,7 +466,7 @@ AssimpModel * Mod::getAssimpModel(string filename, AssimpLoadFlags flags)
 	}
 
 	AssimpModel* am = new AssimpModel(this, filename);
-	bool success = am->load((Render3D*) GEng()->render, false, flags);
+	bool success = am->load((Render3D*) GEng()->render, false, config);
 	if (!success) {
 		delete(am);
 		return NULL;

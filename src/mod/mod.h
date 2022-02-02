@@ -35,6 +35,7 @@ class VehicleType;
 class WallType;
 class WeaponType;
 class WeaponAttachment;
+class AssimpLoadConfig;
 class AssimpModel;
 class Sprite;
 
@@ -123,7 +124,7 @@ class Mod {
 		WeaponAttachment * getWeaponAttachment(string name);
 
 		AssimpModel * getAssimpModel(string filename);
-		AssimpModel * getAssimpModel(string filename, AssimpLoadFlags flags);
+		AssimpModel * getAssimpModel(string filename, AssimpLoadConfig& config);
 
 		AudioPtr getSound(string filename);
 		Sprite* getTexture2D(string filename);

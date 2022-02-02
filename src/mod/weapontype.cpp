@@ -12,6 +12,7 @@
 #include "../weapons/weapons.h"
 #include "../game_engine.h"
 #include "../render/render.h"
+#include "../render_opengl/assimp_load_config.h"
 
 using namespace std;
 
@@ -212,7 +213,8 @@ WeaponType* loadItemWeaponType(cfg_t* cfg_item, Mod* mod)
 	// 3D model for pickups (and maybe also in first-person view one day)
 	tmp = cfg_getstr(cfg_item, "model");
 	if (tmp) {
-		wt->model = mod->getAssimpModel(tmp, ALF_NoRecenter);
+		AssimpLoadConfig config = { .recenter = false };
+		wt->model = mod->getAssimpModel(tmp, config);
 	}
 
 	wt->attach_loc[WPATT_TOP] = cfg_getvec3(cfg_item, "loc-top");

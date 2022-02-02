@@ -90,21 +90,6 @@ enum DialogName {
 	ENVIRONMENT,
 };
 
-/**
-* Different loading types to affect
-* The postprocessing of the model
-**/
-enum AssimpLoadFlags {
-	ALF_None = 0,
-	ALM_FlattenGeometry = 1,
-	ALF_NoRecenter = 2,
-};
-
-inline AssimpLoadFlags operator|(AssimpLoadFlags a, AssimpLoadFlags b)
-{
-	return static_cast<AssimpLoadFlags>(static_cast<int>(a) | static_cast<int>(b));
-}
-
 // Sound pointers
 struct Mix_Chunk;
 typedef Mix_Chunk* AudioPtr;

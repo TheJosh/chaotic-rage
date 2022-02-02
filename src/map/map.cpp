@@ -22,6 +22,8 @@
 #include "../physics/physics_bullet.h"
 #include "../render_opengl/animplay.h"
 #include "../render_opengl/light.h"
+#include "../render_opengl/assimpmodel.h"
+#include "../render_opengl/assimp_load_config.h"
 #include "../render/sprite.h"
 #include "../render/render_3d.h"
 #include "../mod/mod.h"
@@ -477,6 +479,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 
 	// Meshes
 	num_types = cfg_size(cfg, "mesh");
+	AssimpLoadConfig loadConfig = { .flattenGeometry = true, .recenter = false };
 	for (j = 0; j < num_types; j++) {
 		cfg_sub = cfg_getnsec(cfg, "mesh", j);
 
@@ -487,7 +490,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 		if (model == NULL) continue;
 
 		// TODO: Fix for dedicated server (no Render3D)
-		if (! model->load(static_cast<Render3D*>(this->render), true, ALM_FlattenGeometry | ALF_NoRecenter)) {
+		if (! model->load(static_cast<Render3D*>(this->render), true, loadConfig)) {
 			cerr << "Map model " << tmp << " failed to load.\n";
 			cfg_free(cfg);
 			return 0;

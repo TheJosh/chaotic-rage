@@ -23,6 +23,7 @@ using namespace std;
 #define MAX_WEIGHTS 4
 
 
+class AssimpLoadConfig;
 class AssimpAnimation;
 class AssimpAnimKey;
 class AssimpBone;
@@ -195,7 +196,7 @@ class AssimpModel
 
 	public:
 		AssimpModel(Mod* mod, string name);
-		bool load(Render3D* render, bool meshdata, AssimpLoadFlags = ALF_None);
+		bool load(Render3D* render, bool meshdata, AssimpLoadConfig& config);
 		~AssimpModel();
 
 	public:

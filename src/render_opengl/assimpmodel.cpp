@@ -14,8 +14,9 @@
 #include <btBulletDynamicsCommon.h>
 
 #include "gl_debug.h"
-#include "../mod/mod.h"
 #include "render_opengl.h"
+#include "assimp_load_config.h"
+#include "../mod/mod.h"
 #include "../render/sprite.h"
 
 using namespace std;
@@ -52,7 +53,7 @@ AssimpModel::~AssimpModel()
 * Load the model.
 * Return true on success, false on failure.
 **/
-bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadFlags flags)
+bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadConfig& config)
 {
 	Assimp::Importer importer;
 
@@ -74,7 +75,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadFlags flags)
 		| aiProcess_LimitBoneWeights;
 
 	// For map meshes we flatten geometry
-	if (flags & ALM_FlattenGeometry) {
+	if (config.flattenGeometry) {
 		assflags |= aiProcess_PreTransformVertices;
 		assflags |= aiProcess_RemoveRedundantMaterials;
 		assflags |= aiProcess_OptimizeMeshes;
@@ -83,9 +84,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadFlags flags)
 	}
 
 	// Normally models are re-centered; this isn't always deisred.
-	if (flags & ALF_NoRecenter) {
-		this->recenter = false;
-	}
+	this->recenter = config.recenter;
 
 	// Read the file from the mod
 	Sint64 len;
