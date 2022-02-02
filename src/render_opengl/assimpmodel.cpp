@@ -130,6 +130,16 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadFlags flags)
 	this->calcBoundingBox(sc);
 	this->setBoneNodes();
 
+	// TODO: This should be contained within a config file of some description
+	// HACK: This may actually create more problems then it solves
+	if (this->name.compare("mocap-man-walking.fbx") == 0) {
+		this->transform = glm::scale(glm::mat4(), glm::vec3(0.01f, 0.01f, 0.01f));
+	} else if (this->name.compare("war_fence_metal.dae") == 0) {
+		this->transform = glm::scale(glm::mat4(), glm::vec3(5.0f, 5.0f, 5.0f));
+	} else {
+		this->transform = glm::mat4();
+	}
+
 	return true;
 }
 

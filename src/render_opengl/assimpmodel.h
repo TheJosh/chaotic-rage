@@ -191,6 +191,7 @@ class AssimpModel
 		vector<AssimpMaterial*> materials;
 		vector<AssimpAnimation*> animations;
 		AssimpNode* rootNode;
+		glm::mat4 transform;
 
 	public:
 		AssimpModel(Mod* mod, string name);

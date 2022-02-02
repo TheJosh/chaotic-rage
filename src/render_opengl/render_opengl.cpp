@@ -1703,14 +1703,17 @@ void RenderOpenGL::renderAnimPlay(AnimPlay* play, const glm::mat4 &modelMatrix)
 	shader = this->determineAssimpModelShader(am);
 	glUseProgram(shader->p());
 
+	// Combine the incoming position of the entity with the whole-model transform
+	glm::mat4 localTransform = modelMatrix * am->transform;
+
 	if (am->meshes[0]->bones.empty()) {
 		// Static meshes are very easy
-		recursiveRenderAssimpModelStatic(play, am, am->rootNode, shader, modelMatrix);
+		recursiveRenderAssimpModelStatic(play, am, am->rootNode, shader, localTransform);
 
 	} else {
 		// Skinned meshes are a bit trickier
-		glm::mat4 MVP = this->projection * this->view * modelMatrix;
-		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * modelMatrix;
+		glm::mat4 MVP = this->projection * this->view * localTransform;
+		glm::mat4 depthBiasMVP = biasMatrix * this->depthmvp * localTransform;
 
 		// Set uniforms
 		glUniformMatrix4fv(shader->uniform("uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
