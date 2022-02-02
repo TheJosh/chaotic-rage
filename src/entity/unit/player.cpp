@@ -363,9 +363,8 @@ void Player::viewModeFirstPerson()
 		);
 	}
 	
-	// Remove first, in case it's already there
+	// Hide the entity
 	this->st->remAnimPlay(this->anim);
-	this->st->addAnimPlay(this->anim, this);
 }
 
 
