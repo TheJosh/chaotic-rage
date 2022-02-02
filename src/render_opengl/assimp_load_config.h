@@ -4,6 +4,8 @@
 
 using namespace std;
 
+#include <glm/glm.hpp>
+
 
 /**
 * Configuration for the Assimp model loader
@@ -20,4 +22,7 @@ class AssimpLoadConfig
 		// Load mesh data into an array? Needed if wanting to
 		// create a physics mesh from the model
 		bool meshdata = false;
+
+		// Amount to scale the model, 1.0 is no scaling
+		glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
 };

@@ -451,6 +451,16 @@ AIType * Mod::getAIType(string name)
 AssimpModel * Mod::getAssimpModel(string filename)
 {
 	AssimpLoadConfig config = {};
+
+	// HACK: Tweak the config for this specific model, because
+	// the scale is wrong. The correct fix is to specify this
+	// config in a file somewhere. I think this config would be
+	// for the *model* rather than the entity (e.g. unittype) so
+	// that the loading code isn't too insane.
+	if (filename.compare("mocap-man-walking.fbx") == 0) {
+		config.scale = glm::vec3(0.01f, 0.01f, 0.01f);
+	}
+
 	return this->getAssimpModel(filename, config);
 }
 
