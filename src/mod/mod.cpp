@@ -466,7 +466,7 @@ AssimpModel * Mod::getAssimpModel(string filename, AssimpLoadConfig& config)
 	}
 
 	AssimpModel* am = new AssimpModel(this, filename);
-	bool success = am->load((Render3D*) GEng()->render, false, config);
+	bool success = am->load((Render3D*) GEng()->render, config);
 	if (!success) {
 		delete(am);
 		return NULL;

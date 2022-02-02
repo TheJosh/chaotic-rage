@@ -11,6 +11,13 @@ using namespace std;
 class AssimpLoadConfig
 {
 	public:
+		// Flatten and simplify geometry?
 		bool flattenGeometry = false;
+
+		// Adjust model so the centre-point is correct?
 		bool recenter = true;
+
+		// Load mesh data into an array? Needed if wanting to
+		// create a physics mesh from the model
+		bool meshdata = false;
 };

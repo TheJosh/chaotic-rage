@@ -479,7 +479,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 
 	// Meshes
 	num_types = cfg_size(cfg, "mesh");
-	AssimpLoadConfig loadConfig = { .flattenGeometry = true, .recenter = false };
+	AssimpLoadConfig loadConfig = { .flattenGeometry = true, .recenter = false, .meshdata = true };
 	for (j = 0; j < num_types; j++) {
 		cfg_sub = cfg_getnsec(cfg, "mesh", j);
 
@@ -490,7 +490,7 @@ int Map::load(string name, Render *render, Mod* insideof)
 		if (model == NULL) continue;
 
 		// TODO: Fix for dedicated server (no Render3D)
-		if (! model->load(static_cast<Render3D*>(this->render), true, loadConfig)) {
+		if (! model->load(static_cast<Render3D*>(this->render), loadConfig)) {
 			cerr << "Map model " << tmp << " failed to load.\n";
 			cfg_free(cfg);
 			return 0;

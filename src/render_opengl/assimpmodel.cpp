@@ -53,7 +53,7 @@ AssimpModel::~AssimpModel()
 * Load the model.
 * Return true on success, false on failure.
 **/
-bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadConfig& config)
+bool AssimpModel::load(Render3D* render, AssimpLoadConfig& config)
 {
 	Assimp::Importer importer;
 
@@ -120,7 +120,7 @@ bool AssimpModel::load(Render3D* render, bool meshdata, AssimpLoadConfig& config
 		this->loadMeshes(false, sc);
 	}
 
-	if (meshdata) {
+	if (config.meshdata) {
 		this->loadMeshdata(render != NULL, sc);
 	}
 
