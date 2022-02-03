@@ -21,6 +21,8 @@
 #include "../mod/mod_manager.h"
 #include "../render_opengl/hud_label.h"
 #include "../util/ui_update.h"
+#include "../util/debug.h"
+#include "../util/util.h"
 #include "net.h"
 #include "net_gameinfo.h"
 

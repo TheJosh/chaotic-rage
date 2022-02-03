@@ -11,6 +11,7 @@
 #include "../game_engine.h"
 #include "../mod/mod.h"
 #include "../mod/mod_manager.h"
+#include "../util/util.h"
 
 using namespace std;
 

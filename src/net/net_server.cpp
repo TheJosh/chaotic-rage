@@ -10,6 +10,7 @@
 
 #include "net.h"
 #include "../util/serverconfig.h"
+#include "../util/debug.h"
 #include "../game_engine.h"
 #include "../game_state.h"
 #include "../map/map.h"

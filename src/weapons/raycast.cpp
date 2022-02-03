@@ -9,6 +9,8 @@
 #include "../game_state.h"
 #include "../game_engine.h"
 #include "../util/quadratic.h"
+#include "../util/debug.h"
+#include "../util/util.h"
 #include "../fx/effects_manager.h"
 #include "../physics/physics_bullet.h"
 #include "../entity/unit/unit.h"

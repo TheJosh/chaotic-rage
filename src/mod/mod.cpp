@@ -17,6 +17,7 @@
 #include "../render_opengl/assimpmodel.h"
 #include "../util/crc32.h"
 #include "../util/debug.h"
+#include "../util/util.h"
 #include "mod.h"
 #include "confuse_types.h"
 #include "aitype.h"

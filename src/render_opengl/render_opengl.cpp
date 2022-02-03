@@ -20,6 +20,7 @@
 #include "../util/obj.h"
 #include "../util/sdl_util.h"
 #include "../util/windowicon.h"
+#include "../util/debug.h"
 #include "../mod/mod_manager.h"
 #include "../mod/vehicletype.h"
 #include "../mod/weapontype.h"

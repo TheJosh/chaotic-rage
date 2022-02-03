@@ -8,6 +8,7 @@
 #include <cstdarg>
 #include <algorithm>
 #include "../rage.h"
+#include "debug.h"
 
 using namespace std;
 

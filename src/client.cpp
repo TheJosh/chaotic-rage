@@ -8,6 +8,7 @@
 #include "util/ui_update.h"
 #include "util/cmdline.h"
 #include "util/clientconfig.h"
+#include "util/util.h"
 #include "mod/mod_manager.h"
 #include "mod/mod.h"
 #include "game_state.h"

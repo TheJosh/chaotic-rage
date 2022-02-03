@@ -5,6 +5,7 @@
 #include <iostream>
 #include <confuse.h>
 #include "../util/quadratic.h"
+#include "../util/util.h"
 #include "mod.h"
 #include "weapontype.h"
 #include "confuse_types.h"

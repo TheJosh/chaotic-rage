@@ -5,6 +5,7 @@
 #include "gl_debug_drawer.h"
 #include "gl.h"
 #include "../rage.h"
+#include "../util/debug.h"
 
 
 

@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "../rage.h"
+#include "../util/util.h"
 
 extern "C" {
 	#include <lua.h>

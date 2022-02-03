@@ -11,6 +11,7 @@
 #include "../game_engine.h"
 #include "../util/ui_update.h"
 #include "../util/cmdline.h"
+#include "../util/util.h"
 #include "../render_opengl/assimpmodel.h"
 #include "../render/render_3d.h"
 #include "../fx/effects_manager.h"

@@ -10,6 +10,7 @@
 #include "gl_debug.h"
 #include "../map/heightmap.h"
 #include "../game_state.h"
+#include "../util/debug.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

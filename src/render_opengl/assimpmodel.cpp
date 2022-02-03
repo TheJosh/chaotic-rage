@@ -18,6 +18,7 @@
 #include "assimp_load_config.h"
 #include "../mod/mod.h"
 #include "../render/sprite.h"
+#include "../util/debug.h"
 
 using namespace std;
 

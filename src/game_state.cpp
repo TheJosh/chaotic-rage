@@ -37,10 +37,12 @@
 #include "net/net_client.h"
 #include "net/net_server.h"
 #include "util/cmdline.h"
+#include "util/util.h"
 #include "fx/weather.h"
 #include "fx/effects_manager.h"
 #include "spark/SPK.h"
 #include "extcmd/cmd_manager.h"
+#include "util/debug.h"
 
 
 using namespace std;

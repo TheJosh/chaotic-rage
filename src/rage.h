@@ -45,6 +45,3 @@
 #if (BT_BULLET_VERSION == 282)
 inline int btGetInfinityMask() { return btInfinityMask; }
 #endif
-
-#include "util/util.h"
-#include "util/debug.h"

@@ -7,6 +7,7 @@
 #include <string>
 #include <btBulletDynamicsCommon.h>
 #include "../render_opengl/assimpmodel.h"
+#include "../util/util.h"
 #include "mod.h"
 #include "unittype.h"
 

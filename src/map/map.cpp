@@ -36,6 +36,7 @@
 #include "../entity/wall.h"
 #include "../entity/pickup.h"
 #include "../util/sdl_util.h"
+#include "../util/util.h"
 
 
 
