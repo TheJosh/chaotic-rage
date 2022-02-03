@@ -100,7 +100,7 @@ bool mainloop_limit_iter()
 	if (mainloop_limit_enabled) {
 		--mainloop_limit;
 		if (mainloop_limit == 0) {
-			cout << "Main loop iteration limit reached; exiting.\n"; 
+			cout << "Main loop iteration limit reached; exiting.\n";
 			return true;
 		}
 		if (mainloop_limit % 25 == 0) {
