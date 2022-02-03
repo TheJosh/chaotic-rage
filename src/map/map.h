@@ -5,7 +5,8 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <string>
-#include "../rage.h"
+#include <vector>
+#include "../types.h"
 
 using namespace std;
 

@@ -5,7 +5,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <string>
-#include "../rage.h"
+#include <vector>
 
 using namespace std;
 

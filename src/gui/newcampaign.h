@@ -4,7 +4,6 @@
 
 #pragma once
 #include <guichan.hpp>
-#include "../rage.h"
 
 using namespace std;
 

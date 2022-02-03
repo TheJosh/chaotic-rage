@@ -3,7 +3,6 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include "../rage.h"
 
 using namespace std;
 
@@ -40,4 +39,3 @@ class Zone
 		float getRandomX();
 		float getRandomZ();
 };
-

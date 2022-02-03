@@ -3,7 +3,7 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include "../rage.h"
+#include "../types.h"
 #include "../util/quadratic.h"
 #include <confuse.h>
 #include <glm/glm.hpp>

@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "zone.h"
+#include "../util/util.h"
 
 using namespace std;
 

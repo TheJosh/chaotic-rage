@@ -5,7 +5,6 @@
 #pragma once
 #include <guichan.hpp>
 #include <vector>
-#include "../rage.h"
 #include "../i18n/gettext.h"
 #include "dialog.h"
 

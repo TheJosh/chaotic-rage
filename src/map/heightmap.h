@@ -5,7 +5,6 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <string>
-#include "../rage.h"
 #include "../render/sprite.h"
 
 using namespace std;
@@ -182,4 +181,3 @@ class Heightmap {
 		float getScaleY();
 		float getScaleZ();
 };
-

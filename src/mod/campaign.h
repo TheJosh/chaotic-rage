@@ -4,8 +4,9 @@
 
 #pragma once
 #include <list>
+#include <vector>
 #include <confuse.h>
-#include "../rage.h"
+#include "../types.h"
 
 
 using namespace std;

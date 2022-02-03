@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 #include <guichan.hpp>
-#include "../rage.h"
 #include "dialog.h"
 
 
