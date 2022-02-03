@@ -3,7 +3,6 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <iostream>
-#include "../rage.h"
 #include "../game_state.h"
 #include "../map/map.h"
 #include "render_null.h"
@@ -142,5 +141,3 @@ void RenderNull::render()
 
 	cout << "  [" << st->game_time << "]  Num entities: " << st->entities.size() << endl;
 }
-
-

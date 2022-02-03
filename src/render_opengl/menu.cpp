@@ -24,7 +24,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "../i18n/gettext.h"
-#include "../rage.h"
 #include "../render/sprite.h"
 #include "../audio/audio.h"
 #include "../game_state.h"

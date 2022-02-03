@@ -7,7 +7,6 @@
 #include <confuse.h>
 #include <btBulletDynamicsCommon.h>
 #include "pickuptype.h"
-#include "../rage.h"
 #include "../render_opengl/assimpmodel.h"
 #include "../game_state.h"
 #include "../entity/unit/unit.h"

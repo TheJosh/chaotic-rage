@@ -7,7 +7,6 @@
 #include <map>
 #include "gl.h"
 #include "gl_debug.h"
-#include "../rage.h"
 #include "glshader.h"
 #include "../game_engine.h"
 #include "../mod/mod.h"

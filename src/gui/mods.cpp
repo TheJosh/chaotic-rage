@@ -6,7 +6,6 @@
 #include <math.h>
 #include <guichan.hpp>
 
-#include "../rage.h"
 #include "../i18n/gettext.h"
 #include "../http/serverlist.h"
 #include "../render_opengl/guichan_imageloader.h"
@@ -134,4 +133,3 @@ void DialogMods::valueChanged(const gcn::SelectionEvent& selectionEvent)
 	this->icon->setImage(this->img);
 	gcn::Image::setImageLoader(oldloader);
 }
-

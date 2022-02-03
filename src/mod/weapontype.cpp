@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <confuse.h>
-#include "../rage.h"
 #include "../util/quadratic.h"
 #include "mod.h"
 #include "weapontype.h"

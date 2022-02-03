@@ -31,7 +31,6 @@ subject to the following restrictions:
 
 #include "kinematic_character_controller.h"
 #include "physics_bullet.h"
-#include "../rage.h"
 #include "../game_state.h"
 
 

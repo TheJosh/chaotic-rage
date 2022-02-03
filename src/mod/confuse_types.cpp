@@ -6,7 +6,6 @@
 #include <string>
 #include <map>
 #include <confuse.h>
-#include "../rage.h"
 #include "../util/quadratic.h"
 #include "confuse_types.h"
 #include <glm/glm.hpp>

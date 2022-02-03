@@ -5,7 +5,6 @@
 #include <iostream>
 #include <confuse.h>
 #include <btBulletDynamicsCommon.h>
-#include "../rage.h"
 #include "../render_opengl/assimpmodel.h"
 #include "mod.h"
 #include "walltype.h"

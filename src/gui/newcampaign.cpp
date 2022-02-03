@@ -9,7 +9,6 @@
 #include <guichan/opengl.hpp>
 #include <guichan/opengl/openglsdlimageloader.hpp>
 
-#include "../rage.h"
 #include "../i18n/gettext.h"
 #include "../render_opengl/menu.h"
 #include "../game_manager.h"

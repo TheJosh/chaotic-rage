@@ -6,7 +6,6 @@
 #include "gl.h"
 #include "gl_debug.h"
 #include "render_opengl.h"
-#include "../rage.h"
 #include "../mod/mod.h"
 #include "../util/utf8.h"
 #include "../util/util.h"

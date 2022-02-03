@@ -3,7 +3,6 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <iostream>
-#include "../rage.h"
 #include "../game_state.h"
 #include "../map/map.h"
 #include "../map/heightmap.h"
@@ -258,5 +257,3 @@ void RenderDebug::render()
 
 	SDL_RenderPresent(this->renderer);
 }
-
-

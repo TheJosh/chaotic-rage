@@ -3,7 +3,6 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include "entity.h"
-#include "rage.h"
 #include <btBulletDynamicsCommon.h>
 
 

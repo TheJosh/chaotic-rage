@@ -4,7 +4,6 @@
 
 #include <stdio.h>
 #include <math.h>
-#include "../rage.h"
 #include "../entity/unit/unit.h"
 #include "lua_libs.h"
 

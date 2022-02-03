@@ -16,7 +16,6 @@ subject to the following restrictions:
 #include <LinearMath/btTransformUtil.h>
 
 #include "faster_heightfield_shape.h"
-#include "../rage.h"
 
 
 /**

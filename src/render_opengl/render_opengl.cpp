@@ -10,7 +10,6 @@
 #include <SDL_image.h>
 #include <math.h>
 
-#include "../rage.h"
 #include "../physics/physics_bullet.h"
 #include "../game_state.h"
 #include "../game_engine.h"

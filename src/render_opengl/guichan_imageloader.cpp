@@ -3,7 +3,6 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include "../rage.h"
 #include "../mod/mod.h"
 #include "guichan_imageloader.h"
 

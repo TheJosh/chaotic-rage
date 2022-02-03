@@ -5,7 +5,6 @@
 #include "intro.h"
 #include "render_opengl.h"
 #include "gl_debug.h"
-#include "../rage.h"
 #include "../game_state.h"
 #include "../game_engine.h"
 #include "../render/sprite.h"

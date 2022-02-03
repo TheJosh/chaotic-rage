@@ -10,7 +10,6 @@
 
 #include <stdio.h>
 #include <math.h>
-#include "../rage.h"
 
 extern "C" {
 	#include <lua.h>

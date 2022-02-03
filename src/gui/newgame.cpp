@@ -7,7 +7,6 @@
 #include <guichan.hpp>
 #include <guichan/opengl/openglsdlimageloader.hpp>
 
-#include "../rage.h"
 #include "../i18n/gettext.h"
 #include "../render_opengl/menu.h"
 #include "../render_opengl/guichan_imageloader.h"

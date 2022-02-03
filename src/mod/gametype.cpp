@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <confuse.h>
-#include "../rage.h"
 #include "mod.h"
 #include "gametype.h"
 #include "game_engine.h"

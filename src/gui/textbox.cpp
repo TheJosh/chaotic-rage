@@ -7,7 +7,6 @@
 #include <guichan.hpp>
 #include <SDL.h>
 
-#include "../rage.h"
 #include "../game_state.h"
 #include "../game_engine.h"
 #include "textbox.h"
@@ -127,4 +126,3 @@ void DialogTextBox::appendLine(const string &text)
 {
 	this->text->addRow(text);
 }
-

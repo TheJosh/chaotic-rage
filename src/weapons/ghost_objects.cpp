@@ -7,7 +7,6 @@
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 
 #include "../util/quadratic.h"
-#include "../rage.h"
 #include "../game_state.h"
 #include "../entity/entity.h"
 #include "../entity/unit/unit.h"
@@ -84,5 +83,3 @@ bool check_ghost_triggered_units(btGhostObject* ghost)
 
 	return false;
 }
-
-

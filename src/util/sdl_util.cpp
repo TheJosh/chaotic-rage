@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <SDL.h>
-#include "../rage.h"
 
 using namespace std;
 
@@ -134,5 +133,3 @@ void setPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 
 	}
 }
-
-

@@ -68,4 +68,3 @@ void load_random_lib(lua_State *L)
 	LUA_REG(random_float);
 	LUA_REG(random_arg);
 }
-

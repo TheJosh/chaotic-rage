@@ -5,7 +5,6 @@
 #include <iostream>
 #include <SDL.h>
 #include <confuse.h>
-#include "../rage.h"
 #include "mod.h"
 #include "song.h"
 

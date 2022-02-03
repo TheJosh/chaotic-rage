@@ -5,7 +5,6 @@
 #include "effects_manager.h"
 #include "SPK_TextureQuadRenderer.h"
 #include "SPK_ColorQuadRenderer.h"
-#include "../rage.h"
 #include "../game_state.h"
 #include "../game_engine.h"
 #include "../spark/SPK.h"

@@ -123,4 +123,3 @@ void GLDebugDrawer::drawContactPoint(const btVector3& pointOnB,const btVector3& 
 	glVertex3d(to.getX(), to.getY(), to.getZ());
 	glEnd();
 }
-

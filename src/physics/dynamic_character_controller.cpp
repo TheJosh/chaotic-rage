@@ -23,7 +23,6 @@ subject to the following restrictions:
 
 #include "dynamic_character_controller.h"
 #include "physics_bullet.h"
-#include "../rage.h"
 #include "../game_state.h"
 
 

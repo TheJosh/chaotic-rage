@@ -6,7 +6,6 @@
 #include <math.h>
 #include <guichan.hpp>
 
-#include "../rage.h"
 #include "../game_state.h"
 #include "../game_engine.h"
 #include "listprompt.h"
@@ -98,5 +97,3 @@ void DialogListPrompt::action(const gcn::ActionEvent& actionEvent)
 		this->ev->handleSelection(this->list->getSelected());
 	}
 }
-
-

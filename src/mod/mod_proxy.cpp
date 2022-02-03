@@ -5,7 +5,6 @@
 #include <iostream>
 #include <string>
 #include <SDL.h>
-#include "../rage.h"
 #include "mod.h"
 #include "mod_proxy.h"
 
@@ -39,6 +38,3 @@ SDL_RWops * ModProxy::loadRWops(string resname)
 {
 	return this->master->loadRWops(this->directory + resname);
 }
-
-
-

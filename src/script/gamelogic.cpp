@@ -5,7 +5,6 @@
 #include <iostream>
 #include <algorithm>
 #include <SDL.h>
-#include "../rage.h"
 #include "../game_state.h"
 #include "../game_engine.h"
 #include "../map/zone.h"

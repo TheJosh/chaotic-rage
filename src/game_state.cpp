@@ -11,7 +11,6 @@
 #include <guichan.hpp>
 #include <math.h>
 
-#include "rage.h"
 #include "events.h"
 #include "game_engine.h"
 #include "game_settings.h"

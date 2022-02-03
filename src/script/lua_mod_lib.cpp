@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <math.h>
 #include "lua_libs.h"
-#include "../rage.h"
 #include "../game_engine.h"
 #include "../mod/mod_manager.h"
 #include "../mod/weapontype.h"
@@ -47,4 +46,3 @@ void load_mod_lib(lua_State *L)
 
 	.endNamespace();
 }
-

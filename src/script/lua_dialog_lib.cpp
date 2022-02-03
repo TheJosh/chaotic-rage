@@ -7,7 +7,6 @@
 #include <math.h>
 #include <SDL.h>
 #include "gamelogic.h"
-#include "../rage.h"
 #include "../gui/textprompt.h"
 #include "../gui/listprompt.h"
 #include "../gui/textbox.h"

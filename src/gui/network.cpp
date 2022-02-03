@@ -7,7 +7,6 @@
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
 
-#include "../rage.h"
 #include "../game_engine.h"
 #include "../i18n/gettext.h"
 #include "../render_opengl/menu.h"

@@ -6,7 +6,6 @@
 #include <math.h>
 #include <guichan.hpp>
 
-#include "../rage.h"
 #include "../game_state.h"
 #include "../game_engine.h"
 #include "textprompt.h"
@@ -87,5 +86,3 @@ void DialogTextPrompt::action(const gcn::ActionEvent& actionEvent)
 
 	GEng()->remDialog(this);
 }
-
-

@@ -6,7 +6,6 @@
 #include <string>
 #include <algorithm>
 #include <confuse.h>
-#include "../rage.h"
 #include "../game_state.h"
 #include "../game_engine.h"
 #include "../util/ui_update.h"

@@ -6,7 +6,6 @@
 #include <list>
 #include <confuse.h>
 #include "campaign.h"
-#include "../rage.h"
 #include "mod.h"
 
 using namespace std;

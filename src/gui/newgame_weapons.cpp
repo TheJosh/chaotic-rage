@@ -6,7 +6,6 @@
 #include <math.h>
 #include <guichan.hpp>
 
-#include "../rage.h"
 #include "../render_opengl/menu.h"
 #include "../game_manager.h"
 #include "../game_settings.h"
@@ -199,6 +198,3 @@ unsigned int DialogNewGameWeapons::findWeaponType(WeaponType* wt)
 
 	return std::numeric_limits<unsigned int>::max();
 }
-
-
-

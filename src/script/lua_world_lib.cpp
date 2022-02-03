@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <math.h>
 #include "lua_libs.h"
-#include "../rage.h"
 #include "../game_engine.h"
 #include "../game_state.h"
 #include "../game_settings.h"

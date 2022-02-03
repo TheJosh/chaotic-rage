@@ -7,7 +7,6 @@
 #include <math.h>
 #include <guichan.hpp>
 
-#include "../rage.h"
 #include "../render_opengl/menu.h"
 #include "../game_manager.h"
 #include "../game_settings.h"

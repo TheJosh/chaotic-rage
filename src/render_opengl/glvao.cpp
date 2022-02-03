@@ -6,7 +6,6 @@
 #include <algorithm>
 #include <map>
 #include "gl.h"
-#include "../rage.h"
 #include "glvao.h"
 #include "render_opengl.h"
 

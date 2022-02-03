@@ -5,7 +5,6 @@
 #include "weather.h"
 #include "SPK_TextureQuadRenderer.h"
 #include "SPK_ColorQuadRenderer.h"
-#include "../rage.h"
 #include "../game_state.h"
 #include "../util/util.h"
 #include "../game_engine.h"
@@ -187,4 +186,3 @@ void Weather::stopSnow()
 	st->removeParticleGroup(this->snow_group);
 	this->snow_flow = 0;
 }
-
