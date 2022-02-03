@@ -3,8 +3,9 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #include <string>
-#include <SDL.h>
+#include <cstring>
 #include <confuse.h>
+#include "../platform/platform.h"
 #include "serverconfig.h"
 
 

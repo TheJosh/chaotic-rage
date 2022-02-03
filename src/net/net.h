@@ -6,7 +6,7 @@
 #include <ios>
 #include <iomanip>
 #include <SDL.h>
-#include "../rage.h"
+#include "../types.h"
 
 
 class NetServerSeqPred;

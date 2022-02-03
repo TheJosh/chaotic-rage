@@ -15,6 +15,7 @@
 #include "../game_engine.h"
 #include "../game_state.h"
 #include "../render/render.h"
+#include "../rage.h"
 
 
 using namespace std;

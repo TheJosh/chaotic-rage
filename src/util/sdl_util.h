@@ -4,7 +4,7 @@
 
 #pragma once
 #include <SDL.h>
-#include "../rage.h"
+#include "../types.h"
 
 using namespace std;
 

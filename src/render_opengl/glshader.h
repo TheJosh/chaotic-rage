@@ -4,8 +4,9 @@
 
 #pragma once
 #include <map>
+#include <string>
 #include "gl.h"
-#include "../rage.h"
+#include "../types.h"
 
 
 
@@ -87,4 +88,3 @@ class GLShader
 			return this->uniforms_lighting;
 		}
 };
-

@@ -5,7 +5,7 @@
 #pragma once
 #include <map>
 #include <glm/glm.hpp>
-#include "../rage.h"
+#include "../types.h"
 #include "assimpmodel.h"
 
 using namespace std;

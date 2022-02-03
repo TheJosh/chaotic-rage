@@ -3,7 +3,7 @@
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
 #pragma once
-#include "../rage.h"
+#include "../types.h"
 #include "../guichan/guichan.hpp"
 #include "../guichan/font.hpp"
 
@@ -75,4 +75,3 @@ class OpenGLFont : public gcn::Font
 		**/
 		void renderCharacter(Uint32 character, float &x, float &y);
 };
-

@@ -6,8 +6,11 @@
 #include <sstream>
 #include <vector>
 #include <iostream>
+#include <cstring>
 #include "happyhttp.h"
 #include "url.h"
+#include "../types.h"
+#include "../platform/platform.h"
 #include "../util/ui_update.h"
 
 using namespace std;

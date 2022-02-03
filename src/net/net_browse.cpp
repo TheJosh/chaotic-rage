@@ -2,10 +2,11 @@
 //
 // kate: tab-width 4; indent-width 4; space-indent off; word-wrap off;
 
-#include "net_browse.h"
 #include <vector>
 #include <SDL_net.h>
 #include "net.h"
+#include "net_browse.h"
+#include "../platform/platform.h"
 
 
 using namespace std;

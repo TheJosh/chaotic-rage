@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <cstring>
 #include "../entity/unit/unit.h"
 #include "lua_libs.h"
 

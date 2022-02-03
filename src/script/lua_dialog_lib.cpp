@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <SDL.h>
+#include <vector>
+#include <string>
 #include "gamelogic.h"
 #include "../gui/textprompt.h"
 #include "../gui/listprompt.h"

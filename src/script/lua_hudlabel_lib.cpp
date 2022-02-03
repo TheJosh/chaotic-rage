@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <cstring>
 #include "../rage.h"
 #include "../render_opengl/hud_label.h"
 #include "lua_libs.h"

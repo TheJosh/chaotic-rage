@@ -6,7 +6,6 @@
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include "../util/quadratic.h"
-#include "../rage.h"
 #include "../mod/weapontype.h"
 
 

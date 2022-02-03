@@ -7,7 +7,7 @@
 #include <list>
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
-
+#include "../rage.h"
 #include "render/render.h"
 #include "render/render_3d.h"
 #include "audio/audio.h"

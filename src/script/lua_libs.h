@@ -1,6 +1,4 @@
 #pragma once
-#include <SDL.h>
-#include "../rage.h"
 #include "../game_state.h"
 
 extern "C" {
@@ -9,6 +7,10 @@ extern "C" {
 }
 
 using namespace std;
+
+
+class UnitQueryResult;
+class HUDLabel;
 
 
 /**

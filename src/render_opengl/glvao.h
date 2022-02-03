@@ -5,7 +5,7 @@
 #pragma once
 #include <map>
 #include "gl.h"
-#include "../rage.h"
+#include "../types.h"
 
 
 #define UV_CHANNELS 2
@@ -66,4 +66,3 @@ class GLVAO
 		void bind();
 		void unbind();
 };
-
