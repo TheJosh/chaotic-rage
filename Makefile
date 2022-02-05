@@ -3,6 +3,7 @@
 # Build dir and sources dir
 OBJPATH=build
 SRCPATH=src
+LIBPATH=lib
 
 # Verbose vs quiet builds
 ifdef VERBOSE
@@ -67,7 +68,7 @@ CFLAGS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --cflags) \
 	$(shell export PATH=$(PATH) PKG_CONFIG_PATH=$(PKG_CONFIG_PATH);$(PKG_CONFIG) gl glu glew bullet assimp libmicrohttpd SDL2_mixer SDL2_image SDL2_net --cflags) \
 	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --cflags) \
 	$(CFLAGS) \
-	-Itools/include -I$(SRCPATH) -I$(SRCPATH)/guichan -I$(SRCPATH)/confuse -I$(SRCPATH)/spark -I$(SRCPATH)/lua
+	-Itools/include -I$(SRCPATH) -I$(SRCPATH)/guichan -I$(LIBPATH)/confuse -I$(SRCPATH)/spark -I$(SRCPATH)/lua
 
 # libs
 LIBS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --libs) \
@@ -269,8 +270,8 @@ clean:		## Clean, removes generated build files
 	rm -f $(OBJPATH)/linux.o $(OBJPATH)/linux.d
 	rm -f $(OBJPATH)/client.o $(OBJPATH)/client.d
 	rm -f $(OBJPATH)/win32.o $(OBJPATH)/win32.d
-	rm -f $(OBJPATH)/confuse/confuse.o $(OBJPATH)/confuse/confuse.d
-	rm -f $(OBJPATH)/confuse/lexer.o $(OBJPATH)/confuse/lexer.d
+	rm -f $(LIBPATH)/confuse/confuse.o $(OBJPATH)/confuse/confuse.d
+	rm -f $(LIBPATH)/confuse/lexer.o $(OBJPATH)/confuse/lexer.d
 
 cleaner:	## Clean, removes the entire build folder
 	rm -f chaoticrage
@@ -286,7 +287,7 @@ $(OBJPATH)/happyhttp.o: $(SRCPATH)/http/happyhttp.cpp $(SRCPATH)/http/happyhttp.
 	@echo [CXX] $<
 	$(Q)$(CXX) $(CFLAGS) -Wno-error -o $@ -c $<
 
-$(OBJPATH)/confuse/%.o: $(SRCPATH)/confuse/%.c $(SRCPATH)/confuse/confuse.h Makefile
+$(OBJPATH)/confuse/%.o: $(LIBPATH)/confuse/%.c $(LIBPATH)/confuse/confuse.h Makefile
 	@echo [CC] $<
 	$(Q)mkdir -p $(OBJPATH)/confuse
 	$(Q)$(CC) $(CFLAGS) -Wno-error -o $@ -c $<
