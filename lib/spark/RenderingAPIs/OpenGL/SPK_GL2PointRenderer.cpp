@@ -20,43 +20,51 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-#include "RenderingAPIs/OpenGL/SPK_GL2LineRenderer.h"
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include "RenderingAPIs/OpenGL/SPK_GL2PointRenderer.h"
 #include "Core/SPK_Particle.h"
 #include "Core/SPK_Group.h"
-#include "../../../render_opengl/glvao.h"
+#include "glvao.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
-// Used for the OpenGL debug fun
-#include <stdio.h>
 
 
 namespace SPK
 {
 namespace GL
 {
-	GL2LineRenderer::GL2LineRenderer(float length,float width) :
+	GL2PointRenderer::GL2PointRenderer(float size) :
 		GLRenderer(),
-		LineRendererInterface(length, width),
+		PointRendererInterface(POINT_SQUARE,size),
+		textureIndex(0),
+		worldSize(false),
 		vao(NULL),
-		vboPositionColorIndex(0),
+		vboPositionIndex(0),
+		vboColorIndex(0),
 		buffer(NULL),
 		buffer_sz(0)
 	{}
 
-	GL2LineRenderer::~GL2LineRenderer()
+	GL2PointRenderer::~GL2PointRenderer()
 	{
 		free(buffer);
 	}
 
-	void GL2LineRenderer::initGLbuffers()
+	void GL2PointRenderer::initGLbuffers()
 	{
-		vao = new GLVAO();
+		this->vao = new GLVAO();
 
 		// Set up position buffer
-		glGenBuffers(1, &vboPositionColorIndex);
-		glBindBuffer(GL_ARRAY_BUFFER, vboPositionColorIndex);
-		vao->setInterleavedPC34(vboPositionColorIndex);
+		glGenBuffers(1, &vboPositionIndex);
+		glBindBuffer(GL_ARRAY_BUFFER, vboPositionIndex);
+		vao->setPosition(vboPositionIndex);
+
+		// Set up colors buffer
+		glGenBuffers(1, &vboColorIndex);
+		glBindBuffer(GL_ARRAY_BUFFER, vboColorIndex);
+		vao->setColor(vboColorIndex);
 
 		// Create shader
 		shaderIndex = createShaderProgram(
@@ -78,19 +86,20 @@ namespace GL
 		shaderVPIndex = glGetUniformLocation(shaderIndex, "uVP");
 	}
 
-	void GL2LineRenderer::setVP(glm::mat4 viewMatrix, glm::mat4 viewProjectionMatrix)
+	void GL2PointRenderer::setVP(glm::mat4 viewMatrix, glm::mat4 viewProjectionMatrix)
 	{
 		vp_matrix = viewProjectionMatrix;
 	}
 
 	// TODO: This is cloned from Guichan; we should probably have a common function for this!
-	GLuint GL2LineRenderer::createShaderProgram(const char *vs, const char *fs)
+	GLuint GL2PointRenderer::createShaderProgram(const char *vs, const char *fs)
 	{
 		GLuint program, sVS, sFS;
 		GLint success;
 		const char* strings[2];
 		GLint lengths[2];
 
+		// Different header based on GL variant
 		strings[0] = "#version 130\n";
 		lengths[0] = strlen(strings[0]);
 
@@ -110,7 +119,6 @@ namespace GL
 		if (! success) {
 			GLchar infolog[1024];
 			glGetShaderInfoLog(sVS, 1024, NULL, infolog);
-			GL_LOG("Error compiling vertex shader:\n%s", infolog);
 		}
 
 		// Compile fragment shader
@@ -126,7 +134,6 @@ namespace GL
 		if (! success) {
 			GLchar infolog[1024];
 			glGetShaderInfoLog(sFS, 1024, NULL, infolog);
-			GL_LOG("Error compiling fragment shader:\n%s", infolog);
 		}
 
 		glBindAttribLocation(program, ATTRIB_POSITION, "vPosition");
@@ -142,30 +149,30 @@ namespace GL
 		if (! success) {
 			GLchar infolog[1024];
 			glGetProgramInfoLog(program, 1024, NULL, infolog);
-			GL_LOG("Error linking program:\n%s", infolog);
 		}
-
-		CHECK_OPENGL_ERROR;
 
 		return program;
 	}
 
-	void GL2LineRenderer::destroyGLbuffers()
+	void GL2PointRenderer::destroyGLbuffers()
 	{
 		delete vao;
-		glDeleteBuffers(1, &vboPositionColorIndex);
+		glDeleteBuffers(1, &vboPositionIndex);
+		glDeleteBuffers(1, &vboColorIndex);
 		glDeleteProgram(shaderIndex);
 
-		vboPositionColorIndex = 0;
+		vboPositionIndex = 0;
+		vboColorIndex = 0;
 		shaderIndex = 0;
 		shaderVPIndex = 0;
 	}
 
-	void GL2LineRenderer::render(const Group& group)
+	void GL2PointRenderer::render(const Group& group)
 	{
 		size_t num = group.getNbParticles();
 
-		glEnable(GL_LINE_SMOOTH);
+		glEnable(GL_POINT_SMOOTH);
+		glPointSize(2.0f);
 
 		// Resize buffer if not large enough
 		if (num > buffer_sz) {
@@ -174,7 +181,7 @@ namespace GL
 				buffer_sz *= 2;
 			}
 			free(buffer);
-			buffer = (float*) malloc(sizeof(float) * 7 * buffer_sz * 2);
+			buffer = (float*) malloc(sizeof(float) * 3 * buffer_sz);
 		}
 
 		// Copy data into buffer with the correct layout
@@ -186,31 +193,21 @@ namespace GL
 			*ptr++ = particle.position().x;
 			*ptr++ = particle.position().y;
 			*ptr++ = particle.position().z;
-			
-			*ptr++ = particle.getR();
-			*ptr++ = particle.getG();
-			*ptr++ = particle.getB();
-			*ptr++ = particle.getParamCurrentValue(PARAM_ALPHA);
-			
-			*ptr++ = particle.position().x + particle.velocity().x * length;
-			*ptr++ = particle.position().y + particle.velocity().y * length;
-			*ptr++ = particle.position().z + particle.velocity().z * length;
-			
-			*ptr++ = particle.getR();
-			*ptr++ = particle.getG();
-			*ptr++ = particle.getB();
-			*ptr++ = particle.getParamCurrentValue(PARAM_ALPHA);
 		}
 
 		// Set position data
-		glBindBuffer(GL_ARRAY_BUFFER, vboPositionColorIndex);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 7 * num * 2, buffer, GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, vboPositionIndex);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * num, buffer, GL_DYNAMIC_DRAW);
+
+		// Set color data
+		glBindBuffer(GL_ARRAY_BUFFER, vboColorIndex);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * num, group.getParamAddress(PARAM_RED), GL_DYNAMIC_DRAW);
 
 		// Bind VAO and shader, set uniforms, draw
 		vao->bind();
 		glUseProgram(shaderIndex);
 		glUniformMatrix4fv(shaderVPIndex, 1, GL_FALSE, glm::value_ptr(vp_matrix));
-		glDrawArrays(GL_LINES, 0, num * 2);
+		glDrawArrays(GL_POINTS, 0, num);
 		vao->unbind();
 	}
 }}

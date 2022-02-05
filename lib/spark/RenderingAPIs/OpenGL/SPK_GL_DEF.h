@@ -35,14 +35,15 @@
 #ifdef SPK_GL_EXPORT
 #define SPK_GL_PREFIX __declspec(dllexport)
 #elif defined(SPK_IMPORT) || defined(SPK_GL_IMPORT)
-#define SPK_GL_PREFIX __declspec(dllimport) 
+#define SPK_GL_PREFIX __declspec(dllimport)
 #else
 #define SPK_GL_PREFIX
 #endif
 
-// Bring in OpenGL in the same way as we do everywhere else
-#include "../render_opengl/gl.h"
-#include "../render_opengl/gl_debug.h"
+// Bring in OpenGL
+#define OpenGL
+#include <GL/gl.h>
+#include <GL/glu.h>
 
 // Needed for ext handling - OpenGL on Linux only
 #ifdef OpenGL
