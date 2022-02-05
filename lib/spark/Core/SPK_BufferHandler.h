@@ -23,7 +23,7 @@
 #ifndef H_SPK_BUFFERHANDLER
 #define H_SPK_BUFFERHANDLER
 
-#include "Core/SPK_DEF.h"
+#include <Core/SPK_DEF.h>
 
 
 namespace SPK

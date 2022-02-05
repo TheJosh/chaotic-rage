@@ -23,7 +23,7 @@
 #ifndef H_SPK_INTERPOLATOR
 #define H_SPK_INTERPOLATOR
 
-#include "Core/SPK_DEF.h"
+#include <Core/SPK_DEF.h>
 
 namespace SPK
 {

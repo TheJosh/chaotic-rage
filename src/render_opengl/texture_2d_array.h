@@ -5,7 +5,7 @@
 #pragma once
 
 #include <string>
-#include "gl.h"
+#include "./gl.h"
 
 class Mod;
 class SDL_Surface;

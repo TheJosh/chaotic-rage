@@ -4,14 +4,12 @@
 
 
 #include "SPK_TextureQuadRenderer.h"
-#include "../spark/Core/SPK_Particle.h"
-#include "../spark/Core/SPK_Group.h"
-#include "../render_opengl/texture_2d_array.h"
+#include <Core/SPK_Particle.h>
+#include <Core/SPK_Group.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
-// Used for the OpenGL debug fun
-#include <stdio.h>
+#include "../render_opengl/texture_2d_array.h"
+#include "../render_opengl/gl.h"
 
 
 namespace SPK
@@ -192,7 +190,5 @@ namespace GL
 		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, num);
 		glDepthMask(GL_TRUE);
 		glBindVertexArray(0);
-
-		CHECK_OPENGL_ERROR;
 	}
 }}

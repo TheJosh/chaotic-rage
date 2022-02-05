@@ -23,9 +23,9 @@
 #ifndef H_SPK_RENDERER
 #define H_SPK_RENDERER
 
-#include "Core/SPK_DEF.h"
-#include "Core/SPK_Registerable.h"
-#include "Core/SPK_BufferHandler.h"
+#include <Core/SPK_DEF.h>
+#include <Core/SPK_Registerable.h>
+#include <Core/SPK_BufferHandler.h>
 #include <glm/glm.hpp>
 
 

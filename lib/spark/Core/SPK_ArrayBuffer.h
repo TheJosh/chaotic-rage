@@ -23,7 +23,7 @@
 #ifndef H_SPK_ARRAYBUFFER
 #define H_SPK_ARRAYBUFFER
 
-#include "Core/SPK_Buffer.h"
+#include <Core/SPK_Buffer.h>
 
 namespace SPK
 {

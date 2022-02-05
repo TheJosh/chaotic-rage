@@ -23,7 +23,7 @@
 #ifndef H_SPK_POINTRENDERERINTERFACE
 #define H_SPK_POINTRENDERERINTERFACE
 
-#include "Core/SPK_DEF.h"
+#include <Core/SPK_DEF.h>
 
 namespace SPK
 {

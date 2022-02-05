@@ -23,8 +23,8 @@
 #ifndef H_SPK_GL2LINERENDERER
 #define H_SPK_GL2LINERENDERER
 
-#include "RenderingAPIs/OpenGL/SPK_GLRenderer.h"
-#include "Extensions/Renderers/SPK_LineRendererInterface.h"
+#include <RenderingAPIs/OpenGL/SPK_GLRenderer.h>
+#include <Extensions/Renderers/SPK_LineRendererInterface.h>
 #include <glm/glm.hpp>
 
 class GLVAO;

@@ -23,11 +23,11 @@
 #ifndef H_SPK_EMITTER
 #define H_SPK_EMITTER
 
-#include "Core/SPK_DEF.h"
-#include "Core/SPK_Registerable.h"
-#include "Core/SPK_Transformable.h"
-#include "Core/SPK_Zone.h"
-#include "Core/SPK_Particle.h"
+#include <Core/SPK_DEF.h>
+#include <Core/SPK_Registerable.h>
+#include <Core/SPK_Transformable.h>
+#include <Core/SPK_Zone.h>
+#include <Core/SPK_Particle.h>
 
 
 namespace SPK

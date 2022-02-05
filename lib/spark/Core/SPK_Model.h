@@ -23,9 +23,9 @@
 #ifndef H_SPK_MODEL
 #define H_SPK_MODEL
 
-#include "Core/SPK_DEF.h"
-#include "Core/SPK_Registerable.h"
-#include "Core/SPK_Interpolator.h"
+#include <Core/SPK_DEF.h>
+#include <Core/SPK_Registerable.h>
+#include <Core/SPK_Interpolator.h>
 
 
 namespace SPK

@@ -23,12 +23,12 @@
 #ifndef H_SPK_GROUP
 #define H_SPK_GROUP
 
-#include "Core/SPK_DEF.h"
-#include "Core/SPK_Registerable.h"
-#include "Core/SPK_Transformable.h"
-#include "Core/SPK_Vector3D.h"
-#include "Core/SPK_Pool.h"
-#include "Core/SPK_Particle.h"
+#include <Core/SPK_DEF.h>
+#include <Core/SPK_Registerable.h>
+#include <Core/SPK_Transformable.h>
+#include <Core/SPK_Vector3D.h>
+#include <Core/SPK_Pool.h>
+#include <Core/SPK_Particle.h>
 
 
 namespace SPK

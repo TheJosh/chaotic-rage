@@ -23,8 +23,8 @@
 #ifndef H_SPK_FACTORY
 #define H_SPK_FACTORY
 
-#include "Core/SPK_DEF.h"
-#include "Core/SPK_Registerable.h"
+#include <Core/SPK_DEF.h>
+#include <Core/SPK_Registerable.h>
 
 
 /** 

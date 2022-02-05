@@ -23,10 +23,10 @@
 #ifndef H_SPK_PARTICLE
 #define H_SPK_PARTICLE
 
-#include "Core/SPK_DEF.h"
-#include "Core/SPK_Vector3D.h"
-#include "Core/SPK_Pool.h"
-#include "Core/SPK_Model.h"
+#include <Core/SPK_DEF.h>
+#include <Core/SPK_Vector3D.h>
+#include <Core/SPK_Pool.h>
+#include <Core/SPK_Model.h>
 
 
 namespace SPK

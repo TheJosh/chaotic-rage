@@ -4,13 +4,11 @@
 
 
 #include "SPK_ColorQuadRenderer.h"
-#include "../spark/Core/SPK_Particle.h"
-#include "../spark/Core/SPK_Group.h"
+#include <Core/SPK_Particle.h>
+#include <Core/SPK_Group.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
-// Used for the OpenGL debug fun
-#include <stdio.h>
+#include "../render_opengl/gl.h"
 
 
 namespace SPK
@@ -162,7 +160,5 @@ namespace GL
 		glUniformMatrix4fv(uniform_mvp, 1, GL_FALSE, glm::value_ptr(vp_matrix));
 		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, num);
 		glBindVertexArray(0);
-
-		CHECK_OPENGL_ERROR;
 	}
 }}

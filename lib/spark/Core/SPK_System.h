@@ -23,10 +23,10 @@
 #ifndef H_SPK_SYSTEM
 #define H_SPK_SYSTEM
 
-#include "Core/SPK_DEF.h"
-#include "Core/SPK_Registerable.h"
-#include "Core/SPK_Transformable.h"
-#include "Core/SPK_Vector3D.h"
+#include <Core/SPK_DEF.h>
+#include <Core/SPK_Registerable.h>
+#include <Core/SPK_Transformable.h>
+#include <Core/SPK_Vector3D.h>
 
 
 namespace SPK

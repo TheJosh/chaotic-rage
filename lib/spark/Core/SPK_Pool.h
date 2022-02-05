@@ -23,7 +23,7 @@
 #ifndef H_SPK_POOL
 #define H_SPK_POOL
 
-#include "Core/SPK_DEF.h"
+#include <Core/SPK_DEF.h>
 
 
 namespace SPK

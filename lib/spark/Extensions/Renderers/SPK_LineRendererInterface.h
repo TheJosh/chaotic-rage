@@ -23,7 +23,7 @@
 #ifndef H_SPK_LINERENDERERINTERFACE
 #define H_SPK_LINERENDERERINTERFACE
 
-#include "Core/SPK_DEF.h"
+#include <Core/SPK_DEF.h>
 
 namespace SPK
 {

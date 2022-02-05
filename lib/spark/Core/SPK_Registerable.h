@@ -23,8 +23,8 @@
 #ifndef H_SPK_REGISTERABLE
 #define H_SPK_REGISTERABLE
 
-#include "Core/SPK_DEF.h"
-#include "Core/SPK_Vector3D.h"
+#include <Core/SPK_DEF.h>
+#include <Core/SPK_Vector3D.h>
 
 
 // A macro implementing the clone method for Registerable children

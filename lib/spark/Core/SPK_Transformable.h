@@ -23,7 +23,7 @@
 #ifndef H_SPK_TRANSFORMABLE
 #define H_SPK_TRANSFORMABLE
 
-#include "Core/SPK_Vector3D.h"
+#include <Core/SPK_Vector3D.h>
 
 
 namespace SPK

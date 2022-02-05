@@ -23,12 +23,12 @@
 #ifndef H_SPK_MODIFIER
 #define H_SPK_MODIFIER
 
-#include "Core/SPK_DEF.h"
-#include "Core/SPK_Vector3D.h"
-#include "Core/SPK_Registerable.h"
-#include "Core/SPK_BufferHandler.h"
-#include "Core/SPK_Zone.h"
-#include "Core/SPK_Particle.h"
+#include <Core/SPK_DEF.h>
+#include <Core/SPK_Vector3D.h>
+#include <Core/SPK_Registerable.h>
+#include <Core/SPK_BufferHandler.h>
+#include <Core/SPK_Zone.h>
+#include <Core/SPK_Particle.h>
 
 
 namespace SPK

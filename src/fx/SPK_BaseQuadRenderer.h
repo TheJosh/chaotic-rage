@@ -6,7 +6,8 @@
 #ifndef H_SPK_BASEQUADRENDERER
 #define H_SPK_BASEQUADRENDERER
 
-#include "../spark/RenderingAPIs/OpenGL/SPK_GLRenderer.h"
+#include <RenderingAPIs/OpenGL/SPK_GLRenderer.h>
+#include <RenderingAPIs/OpenGL/SPK_GL_DEF.h>
 #include <glm/glm.hpp>
 
 

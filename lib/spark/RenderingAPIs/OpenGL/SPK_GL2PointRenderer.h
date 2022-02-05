@@ -23,8 +23,8 @@
 #ifndef H_SPK_GL2POINTRENDERER
 #define H_SPK_GL2POINTRENDERER
 
-#include "RenderingAPIs/OpenGL/SPK_GLRenderer.h"
-#include "Extensions/Renderers/SPK_PointRendererInterface.h"
+#include <RenderingAPIs/OpenGL/SPK_GLRenderer.h>
+#include <Extensions/Renderers/SPK_PointRendererInterface.h>
 #include <glm/glm.hpp>
 
 class GLVAO;

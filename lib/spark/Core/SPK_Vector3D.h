@@ -23,7 +23,7 @@
 #ifndef H_SPK_VECTOR3D
 #define H_SPK_VECTOR3D
 
-#include "Core/SPK_DEF.h"
+#include <Core/SPK_DEF.h>
 
 
 namespace SPK
