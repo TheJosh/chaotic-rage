@@ -74,6 +74,7 @@ CFLAGS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --cflags) \
 LIBS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --libs) \
 	$(shell export PATH=$(PATH) PKG_CONFIG_PATH=$(PKG_CONFIG_PATH);$(PKG_CONFIG) glew bullet assimp libmicrohttpd SDL2_mixer SDL2_image SDL2_net --libs) \
 	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --libs) \
+	-L$(LIBPATH) -lconfuse \
 	$(LIBS)
 
 
@@ -129,7 +130,7 @@ OBJFILES=$(patsubst $(SRCPATH)/%.cpp,$(OBJPATH)/%.o,$(CPPFILES)) $(patsubst $(SR
 OBJMAINS=$(OBJPATH)/client.o
 
 # Client = everything but the main() method files + some other bits
-OBJFILES_CLIENT=$(OBJPATH)/client.o $(PLATFORM) $(OBJPATH)/confuse/confuse.o $(OBJPATH)/confuse/lexer.o $(filter-out $(OBJMAINS) $(DONT_COMPILE), $(OBJFILES))
+OBJFILES_CLIENT=$(OBJPATH)/client.o $(PLATFORM) $(filter-out $(OBJMAINS) $(DONT_COMPILE), $(OBJFILES))
 
 # Dependencies of the source files
 DEPENDENCIES := $(OBJFILES:.o=.d)
@@ -152,7 +153,7 @@ help:		## This help dialog
 	@fgrep -h "##" Makefile | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
 
-chaoticrage: $(OBJFILES_CLIENT)
+chaoticrage: $(OBJFILES_CLIENT) $(LIBPATH)/libconfuse.a
 	@echo [LINK] $@
 	$(Q)$(CXX) $(CFLAGS) $(LDFLAGS) $(OBJFILES_CLIENT) -o chaoticrage$(POSTFIX) $(LIBS)
 
@@ -270,12 +271,15 @@ clean:		## Clean, removes generated build files
 	rm -f $(OBJPATH)/linux.o $(OBJPATH)/linux.d
 	rm -f $(OBJPATH)/client.o $(OBJPATH)/client.d
 	rm -f $(OBJPATH)/win32.o $(OBJPATH)/win32.d
-	rm -f $(LIBPATH)/confuse/confuse.o $(OBJPATH)/confuse/confuse.d
-	rm -f $(LIBPATH)/confuse/lexer.o $(OBJPATH)/confuse/lexer.d
+	rm -f $(OBJPATH)/confuse/*.o $(OBJPATH)/confuse/*.d
+
+cleanlib:
+	rm -f $(LIBPATH)/lib*.a
 
 cleaner:	## Clean, removes the entire build folder
 	rm -f chaoticrage
 	rm -rf $(OBJPATH)/
+	rm -f $(LIBPATH)/lib*.a
 
 
 $(OBJPATH)/%.o: $(SRCPATH)/%.cpp $(SRCPATH)/rage.h Makefile
@@ -291,6 +295,10 @@ $(OBJPATH)/confuse/%.o: $(LIBPATH)/confuse/%.c $(LIBPATH)/confuse/confuse.h Make
 	@echo [CC] $<
 	$(Q)mkdir -p $(OBJPATH)/confuse
 	$(Q)$(CC) $(CFLAGS) -Wno-error -o $@ -c $<
+
+$(LIBPATH)/libconfuse.a: $(wildcard $(OBJPATH)/confuse/*.o)
+	@echo [LINK] $@
+	$(Q)ar rs $@ $(wildcard $(OBJPATH)/confuse/*.o)
 
 $(OBJPATH)/lua/%.o: $(SRCPATH)/lua/%.c $(SRCPATH)/lua/lua.h Makefile
 	@echo [CC] $<
