@@ -68,13 +68,13 @@ CFLAGS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --cflags) \
 	$(shell export PATH=$(PATH) PKG_CONFIG_PATH=$(PKG_CONFIG_PATH);$(PKG_CONFIG) gl glu glew bullet assimp libmicrohttpd SDL2_mixer SDL2_image SDL2_net --cflags) \
 	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --cflags) \
 	$(CFLAGS) \
-	-Itools/include -I$(SRCPATH) -I$(SRCPATH)/guichan -I$(LIBPATH)/confuse -I$(SRCPATH)/spark -I$(SRCPATH)/lua
+	-Itools/include -I$(SRCPATH) -I$(SRCPATH)/guichan -I$(LIBPATH)/confuse -I$(SRCPATH)/spark -I$(LIBPATH)/lua
 
 # libs
 LIBS := $(shell export PATH=$(PATH);$(SDL2_CONFIG) --libs) \
 	$(shell export PATH=$(PATH) PKG_CONFIG_PATH=$(PKG_CONFIG_PATH);$(PKG_CONFIG) glew bullet assimp libmicrohttpd SDL2_mixer SDL2_image SDL2_net --libs) \
 	$(shell export PATH=$(PATH);$(FREETYPE_CONFIG) --libs) \
-	-L$(LIBPATH) -lconfuse \
+	-L$(LIBPATH) -lconfuse -llua \
 	$(LIBS)
 
 
@@ -153,7 +153,7 @@ help:		## This help dialog
 	@fgrep -h "##" Makefile | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
 
-chaoticrage: $(OBJFILES_CLIENT) $(LIBPATH)/libconfuse.a
+chaoticrage: $(OBJFILES_CLIENT) $(LIBPATH)/libconfuse.a $(LIBPATH)/liblua.a
 	@echo [LINK] $@
 	$(Q)$(CXX) $(CFLAGS) $(LDFLAGS) $(OBJFILES_CLIENT) -o chaoticrage$(POSTFIX) $(LIBS)
 
@@ -273,7 +273,8 @@ clean:		## Clean, removes generated build files
 	rm -f $(OBJPATH)/win32.o $(OBJPATH)/win32.d
 
 cleanlib:
-	rm -f $(LIBPATH)/lib*.a
+	cd lib/confuse ; make clean ; cd ../..
+	cd lib/lua ; make clean ; cd ../..
 
 cleaner:	## Clean, removes the entire build folder
 	rm -f chaoticrage
@@ -294,10 +295,9 @@ $(LIBPATH)/libconfuse.a:
 	@echo [LIB] $@
 	cd lib/confuse ; make all ; cd ../..
 
-$(OBJPATH)/lua/%.o: $(SRCPATH)/lua/%.c $(SRCPATH)/lua/lua.h Makefile
-	@echo [CC] $<
-	$(Q)mkdir -p $(OBJPATH)/lua
-	$(Q)$(CC) $(CFLAGS) $(LUA_CFLAGS) -o $@ -c $<
+$(LIBPATH)/liblua.a:
+	@echo [LIB] $@
+	cd lib/lua ; make all ; cd ../..
 
 $(OBJPATH)/linux.o: $(SRCPATH)/platform/linux.cpp $(SRCPATH)/platform/platform.h Makefile
 	@echo [CXX] $<
