@@ -8,6 +8,7 @@
 #include <SDL_net.h>
 
 #include "../game_state.h"
+#include "../player_state.h"
 #include "../game_engine.h"
 #include "../entity/ammo_round.h"
 #include "../entity/entity.h"

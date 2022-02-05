@@ -9,6 +9,7 @@
 #include "../entity/unit/player.h"
 #include "../game_engine.h"
 #include "../game_state.h"
+#include "../player_state.h"
 #include "../mod/mod.h"
 #include "../mod/mod_manager.h"
 #include "../mod/song.h"

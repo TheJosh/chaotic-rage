@@ -14,6 +14,7 @@
 #include "events.h"
 #include "game_engine.h"
 #include "game_settings.h"
+#include "player_state.h"
 #include "script/gamelogic.h"
 #include "map/map.h"
 #include "physics/physics_bullet.h"
@@ -121,20 +122,6 @@ GameState::~GameState()
 	for (unsigned int i = 0; i < MAX_LOCAL; i++) {
 		delete(this->local_players[i]);
 	}
-}
-
-
-PlayerState::PlayerState(GameState *st)
-{
-	this->st = st;
-	this->p = NULL;
-	this->hud = new HUD(this, reinterpret_cast<RenderOpenGL*>(GEng()->render));
-	this->slot = 0;
-}
-
-PlayerState::~PlayerState()
-{
-	delete(this->hud);
 }
 
 

@@ -7,6 +7,7 @@
 #include <string>
 #include "stats.h"
 #include "../../game_state.h"
+#include "../../player_state.h"
 #include "../../map/map.h"
 #include "../../entity/unit/player.h"
 

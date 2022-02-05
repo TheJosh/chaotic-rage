@@ -8,6 +8,7 @@
 #include "lua_libs.h"
 #include "../game_engine.h"
 #include "../game_settings.h"
+#include "../player_state.h"
 #include "../mod/mod_manager.h"
 #include "../mod/vehicletype.h"
 #include "../mod/objecttype.h"

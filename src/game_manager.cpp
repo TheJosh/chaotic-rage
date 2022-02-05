@@ -4,6 +4,7 @@
 
 #include "game_manager.h"
 #include "game_state.h"
+#include "player_state.h"
 #include "game_engine.h"
 #include "game_settings.h"
 #include "map/map.h"

@@ -14,6 +14,8 @@
 
 using namespace std;
 
+class PlayerState;
+
 
 /**
 * Handles SDL quit events only, no other interaction is suported
@@ -44,5 +46,3 @@ HUD::HUD(PlayerState *ps) {}
 void HUD::addMessage(string text) {}
 void HUD::addMessage(string text1, string text2) {}
 HUDLabel * HUD::addLabel(int x, int y, string data) { return NULL; }
-
-
