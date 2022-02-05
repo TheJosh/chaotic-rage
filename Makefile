@@ -271,7 +271,6 @@ clean:		## Clean, removes generated build files
 	rm -f $(OBJPATH)/linux.o $(OBJPATH)/linux.d
 	rm -f $(OBJPATH)/client.o $(OBJPATH)/client.d
 	rm -f $(OBJPATH)/win32.o $(OBJPATH)/win32.d
-	rm -f $(OBJPATH)/confuse/*.o $(OBJPATH)/confuse/*.d
 
 cleanlib:
 	rm -f $(LIBPATH)/lib*.a
@@ -291,14 +290,9 @@ $(OBJPATH)/happyhttp.o: $(SRCPATH)/http/happyhttp.cpp $(SRCPATH)/http/happyhttp.
 	@echo [CXX] $<
 	$(Q)$(CXX) $(CFLAGS) -Wno-error -o $@ -c $<
 
-$(OBJPATH)/confuse/%.o: $(LIBPATH)/confuse/%.c $(LIBPATH)/confuse/confuse.h Makefile
-	@echo [CC] $<
-	$(Q)mkdir -p $(OBJPATH)/confuse
-	$(Q)$(CC) $(CFLAGS) -Wno-error -o $@ -c $<
-
-$(LIBPATH)/libconfuse.a: $(wildcard $(OBJPATH)/confuse/*.o)
-	@echo [LINK] $@
-	$(Q)ar rs $@ $(wildcard $(OBJPATH)/confuse/*.o)
+$(LIBPATH)/libconfuse.a:
+	@echo [LIB] $@
+	cd lib/confuse ; make all ; cd ../..
 
 $(OBJPATH)/lua/%.o: $(SRCPATH)/lua/%.c $(SRCPATH)/lua/lua.h Makefile
 	@echo [CC] $<
