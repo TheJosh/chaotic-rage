@@ -1,5 +1,4 @@
 #pragma once
-#include "../game_state.h"
 
 extern "C" {
 	#include <lua.h>

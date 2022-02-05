@@ -7,7 +7,6 @@
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 
 #include "../util/quadratic.h"
-#include "../game_state.h"
 #include "../entity/entity.h"
 #include "../entity/unit/unit.h"
 #include "../physics/physics_bullet.h"

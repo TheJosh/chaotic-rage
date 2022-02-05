@@ -6,7 +6,6 @@
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 
-#include "../game_state.h"
 #include "../game_engine.h"
 #include "../fx/effects_manager.h"
 #include "../physics/physics_bullet.h"

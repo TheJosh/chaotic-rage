@@ -17,4 +17,3 @@ extern int mk_down_x[MAX_LOCAL], mk_down_y[MAX_LOCAL];
 * Located in events.cpp
 **/
 void handleEvents(GameState *st);
-

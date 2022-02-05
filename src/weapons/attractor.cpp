@@ -6,7 +6,6 @@
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 
-#include "../game_state.h"
 #include "../util/quadratic.h"
 #include "../util/util.h"
 #include "../entity/ammo_round.h"

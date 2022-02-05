@@ -7,7 +7,6 @@
 #include <math.h>
 #include "lua_libs.h"
 #include "../game_engine.h"
-#include "../game_state.h"
 #include "../entity/vehicle.h"
 #include "../entity/object.h"
 #include "../entity/unit/unit.h"

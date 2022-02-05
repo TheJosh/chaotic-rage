@@ -13,7 +13,6 @@ extern "C" {
 	#include <lualib.h>
 }
 
-#include "../game_state.h"
 #include "../mod/unittype.h"
 #include "../entity/unit/npc.h"
 #include "../entity/unit/unit.h"

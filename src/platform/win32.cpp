@@ -191,4 +191,3 @@ vector<string> * getUserModFilenames()
 
 	return ret;
 }
-

@@ -5,7 +5,6 @@
 #pragma once
 #include <SDL_mixer.h>
 #include "../rage.h"
-#include "../game_state.h"
 
 class Song
 {

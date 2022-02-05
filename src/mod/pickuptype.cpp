@@ -8,7 +8,6 @@
 #include <btBulletDynamicsCommon.h>
 #include "pickuptype.h"
 #include "../render_opengl/assimpmodel.h"
-#include "../game_state.h"
 #include "../entity/unit/unit.h"
 #include "mod.h"
 #include "weapontype.h"
