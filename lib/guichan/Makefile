@@ -20,5 +20,5 @@ all: ../libguichan.a
 	$(CXX) $(CFLAGS) -o $@ -c $<
 
 clean:
-	rm -f *.o
+	rm -f $(OBJFILES)
 	rm -f ../libguichan.a

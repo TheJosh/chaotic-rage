@@ -20,5 +20,5 @@ all: ../liblua.a
 	$(CC) $(CFLAGS) $(LUA_CFLAGS) -o $@ -c $<
 
 clean:
-	rm -f *.o
+	rm -f $(OBJFILES)
 	rm -f ../liblua.a

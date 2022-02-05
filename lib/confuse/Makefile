@@ -15,5 +15,5 @@ all: ../libconfuse.a
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
-	rm -f *.o
+	rm -f $(OBJFILES)
 	rm -f ../libconfuse.a
