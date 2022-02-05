@@ -54,8 +54,9 @@
 
 #include <string.h>
 
-#include "../render_opengl/gl.h"
-#include "../render_opengl/gl_debug.h"
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
 
 #include "guichan/exception.hpp"
 #include "guichan/image.hpp"
@@ -143,7 +144,6 @@ namespace gcn
         if (! success) {
             GLchar infolog[1024];
             glGetShaderInfoLog(sVS, 1024, NULL, infolog);
-            GL_LOG("Error compiling vertex shader:\n%s", infolog);
             assert(0);
         }
 
@@ -159,7 +159,6 @@ namespace gcn
         if (! success) {
             GLchar infolog[1024];
             glGetShaderInfoLog(sFS, 1024, NULL, infolog);
-            GL_LOG("Error compiling fragment shader:\n%s", infolog);
             assert(0);
         }
 
@@ -176,7 +175,6 @@ namespace gcn
         if (! success) {
             GLchar infolog[1024];
             glGetProgramInfoLog(program, 1024, NULL, infolog);
-            GL_LOG("Error linking program:\n%s", infolog);
             assert(0);
         }
 
@@ -215,8 +213,6 @@ namespace gcn
                 "gl_FragColor = uColor;"
             "}"
         );
-        
-        CHECK_OPENGL_ERROR;
     }
     
     void OpenGLGraphics::_beginDraw()
@@ -233,8 +229,6 @@ namespace gcn
              glUseProgram(pimpl_->shader_lines);
              glUniformMatrix4fv(glGetUniformLocation(pimpl_->shader_lines, "uMVP"), 1, GL_FALSE, glm::value_ptr(pimpl_->projection));
              glUniform4f(glGetUniformLocation(pimpl_->shader_lines, "uColor"), 0.0f, 0.0f, 0.0f, 0.0f);
-
-             CHECK_OPENGL_ERROR;
         }
 
         if (pimpl_->vbo == 0)
@@ -252,8 +246,6 @@ namespace gcn
 
         glEnable(GL_SCISSOR_TEST);
         pushClipArea(Rectangle(0, 0, mWidth, mHeight));
-        
-        CHECK_OPENGL_ERROR;
     }
 
     void OpenGLGraphics::_endDraw()
@@ -265,8 +257,6 @@ namespace gcn
 
         popClipArea();
         glDisable(GL_SCISSOR_TEST);
-        
-        CHECK_OPENGL_ERROR;
     }
 
     bool OpenGLGraphics::pushClipArea(Rectangle area)
@@ -363,8 +353,6 @@ namespace gcn
         {
             glDisable(GL_BLEND);
         }
-        
-        CHECK_OPENGL_ERROR;
     }
 
     void OpenGLGraphics::drawPoint(int x, int y)
@@ -387,8 +375,6 @@ namespace gcn
 
         glUseProgram(pimpl_->shader_lines);
         glDrawArrays(GL_POINTS, 0, 1);
-        
-        CHECK_OPENGL_ERROR;
     }
 
     void OpenGLGraphics::drawLine(int x1, int y1, int x2, int y2)
@@ -416,8 +402,6 @@ namespace gcn
 
         glUseProgram(pimpl_->shader_lines);
         glDrawArrays(GL_LINES, 0, 2);
-        
-        CHECK_OPENGL_ERROR;
     }
 
     void OpenGLGraphics::drawRectangle(const Rectangle& rectangle)
@@ -442,8 +426,6 @@ namespace gcn
 
         glUseProgram(pimpl_->shader_lines);
         glDrawArrays(GL_LINE_LOOP, 0, 4);
-        
-        CHECK_OPENGL_ERROR;
     }
 
     void OpenGLGraphics::fillRectangle(const Rectangle& rectangle)
@@ -468,8 +450,6 @@ namespace gcn
         
         glUseProgram(pimpl_->shader_lines);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        
-        CHECK_OPENGL_ERROR;
     }
 
     void OpenGLGraphics::setColor(const Color& color)

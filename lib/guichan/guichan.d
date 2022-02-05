@@ -1,0 +1,1 @@
+guichan.o: guichan.cpp

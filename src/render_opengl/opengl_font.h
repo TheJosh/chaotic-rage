@@ -4,8 +4,8 @@
 
 #pragma once
 #include "../types.h"
-#include "../guichan/guichan.hpp"
-#include "../guichan/font.hpp"
+#include <guichan/guichan.hpp>
+#include <guichan/font.hpp>
 
 
 class OpenGLFont_Implementation;

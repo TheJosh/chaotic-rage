@@ -7,12 +7,12 @@
 #include "../types.h"
 #include "../mod/mod.h"
 
-#include "../guichan/guichan.hpp"
-#include "../guichan/sdl.hpp"
-#include "../guichan/opengl.hpp"
-#include "../guichan/exception.hpp"
-#include "../guichan/sdl/sdlimageloader.hpp"
-#include "../guichan/opengl/openglimage.hpp"
+#include <guichan/guichan.hpp>
+#include <guichan/sdl.hpp>
+#include <guichan/opengl.hpp>
+#include <guichan/exception.hpp>
+#include <guichan/sdl/sdlimageloader.hpp>
+#include <guichan/opengl/openglimage.hpp>
 
 
 namespace gcn
