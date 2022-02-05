@@ -132,7 +132,7 @@ namespace SPK
 
 		/**
 		* @brief Tells the alpha threshold to use when the ALPHA_TEST is enabled
-		* 
+		*
 		* The operation performs by the alpha test is <i>greater or equal to threshold</i>
 		*
 		* @param alphaThreshold : the alpha threshold to use for the alpha test

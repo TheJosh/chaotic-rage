@@ -96,7 +96,7 @@ namespace SPK
 	{
 	friend class Particle;
 
-		SPK_IMPLEMENT_REGISTERABLE(Model)	
+		SPK_IMPLEMENT_REGISTERABLE(Model)
 	
 	public :
 
@@ -112,7 +112,7 @@ namespace SPK
 		* For instance, <i>Model(FLAG_RED | FLAG_GREEN | FLAG_BLUE | FLAG_ALPHA,FLAG_NONE,FLAG_NONE,FLAG_NONE)</i>
 		* constructs a Model that will generate Particles with a defined color that will not change over time.<br>
 		* <br>
-		* Since 1.03.00, PARAM_RED, PARAM_GREEN and PARAM_BLUE are enabled by default. 
+		* Since 1.03.00, PARAM_RED, PARAM_GREEN and PARAM_BLUE are enabled by default.
 		* This is needed to pass the values to the GPU in an optimized way.<br>
 		* Note that even the enable flag passed by the user does not containt those params, they will be enabled anyway.
 		*
@@ -425,7 +425,7 @@ namespace SPK
 
 		// arrays storing the values of parameters for the model following that form :
 		// enable : 1 value -> value
-		// mutable : 2 values -> start value | end value 
+		// mutable : 2 values -> start value | end value
 		// random : 2 values -> min value | max value
 		// mutable and random : 4 values -> start min value | start max value | end min value | end max value
 		// interpolated : 0 value
@@ -448,7 +448,7 @@ namespace SPK
 		size_t nbRandomParams;
 
 		// array of interpolators
-		Interpolator* interpolators[NB_PARAMS]; 
+		Interpolator* interpolators[NB_PARAMS];
 
 		// the flags of the model
 		int enableFlag;

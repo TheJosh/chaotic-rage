@@ -124,7 +124,7 @@ namespace SPK
 
 		/**
 		* @brief Makes this Registerable destroyable or not
-		* 
+		*
 		* A non destroyable Registerable cannot be destroyed internally.
 		*
 		* @param destroyable : true to make this Registerable destroyable, false to make it undestroyable
@@ -198,7 +198,7 @@ namespace SPK
 
 		/**
 		* @brief Gets the name of this registerable
-		* 
+		*
 		* The name is an easy to find registerable in a tree.<br>
 		* See setName(const std::string&) and findByName(const std::string&)
 		*
@@ -263,7 +263,7 @@ namespace SPK
 		/**
 		* @brief Destroys a child of this Registerable
 		*
-		* This method has to be called in the destroyChildren(bool) implementation of a derived class of Registerable.<br> 
+		* This method has to be called in the destroyChildren(bool) implementation of a derived class of Registerable.<br>
 		* It is called to allows the correct destruction (if not destroyable or references exist) of the children Registerable when destroying the Registerable.
 		*
 		* @param child : the child of this Registerable to destroy
@@ -306,7 +306,7 @@ namespace SPK
 		*
 		* @param obj : the registerable object to register
 		* @param registerAll : true to register all its unregistered children and chidren of children and so on, false not to
-		* @since 1.04.00	
+		* @since 1.04.00
 		*/
 		static void registerObject(Registerable* obj,bool registerAll = false);
 

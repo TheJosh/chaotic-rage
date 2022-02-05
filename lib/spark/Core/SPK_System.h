@@ -126,7 +126,7 @@ namespace SPK
 		* For example if the delta time is 1.0 and the constant step is 0.1 then 10 updates of time 0.1 will occur.<br>
 		* <br>
 		* This mode is useful when the update must be constant (accurate collisions...) but be aware it can be very computationnaly intensive.
-		* 
+		*
 		* @param constantStep : the value of the step
 		* @since 1.05.00
 		*/

@@ -68,13 +68,13 @@ namespace GL
 		// Constructors //
 		//////////////////
 
-		/** 
+		/**
 		* @brief Constructor of GL2PointRenderer
 		* @param size : the size of the points
 		*/
 		GL2LineRenderer(float length = 1.0f,float width = 1.0f);
 
-		/** 
+		/**
 		* @brief Destructor of GL2LineRenderer
 		*/
 		virtual ~GL2LineRenderer();

@@ -140,7 +140,7 @@ namespace SPK
 
 		/**
 		* @brief Sets the value used to interpolate
-		* 
+		*
 		* See the class description for more information.<br>
 		* Note that the argument param is only used when the type is INTERPOLATOR_PARAM.
 		*
@@ -400,4 +400,3 @@ namespace SPK
 }
 
 #endif
-

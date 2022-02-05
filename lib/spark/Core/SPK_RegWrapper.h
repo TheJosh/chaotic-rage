@@ -42,7 +42,7 @@ namespace SPK
 	*
 	* @since 1.03.00
 	*/
-	template<class T> 
+	template<class T>
 	class RegWrapper : public Registerable
 	{
 		SPK_IMPLEMENT_REGISTERABLE(RegWrapper<T>)
@@ -53,8 +53,8 @@ namespace SPK
 		// Constructors //
 		//////////////////
 
-		/** 
-		* @brief Default constructor of RegWrapper 
+		/**
+		* @brief Default constructor of RegWrapper
 		* @param object : the inner object
 		*/
 		RegWrapper<T>(const T& object = T());

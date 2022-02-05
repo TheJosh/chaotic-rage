@@ -27,7 +27,7 @@
 #include <Core/SPK_Registerable.h>
 
 
-/** 
+/**
 * @def SPK_Copy(ClassName,arg)
 * @brief Creates a new registered object from an existing one
 *
@@ -38,13 +38,13 @@
 * If the ID does not exist or the object is not registered, NULL is returned.<br>
 * <br>
 * Note that a bad_cast exception can be throw as there is a dynamic_cast call.
-* 
+*
 * @since 1.03.00
 */
 #define SPK_Copy(ClassName,arg) \
 dynamic_cast<ClassName*>(SPK::SPKFactory::getInstance().copy(arg))
 
-/** 
+/**
 * @def SPK_Get(ClassName,ID)
 * @brief Gets a registered object
 *
@@ -60,7 +60,7 @@ dynamic_cast<ClassName*>(SPK::SPKFactory::getInstance().copy(arg))
 #define SPK_Get(ClassName,ID) \
 dynamic_cast<ClassName*>(SPK::SPKFactory::getInstance().get(ID))
 
-/** 
+/**
 * @def SPK_Copy(arg)
 * @brief Destroys a registered object
 * @since 1.03.00
@@ -68,7 +68,7 @@ dynamic_cast<ClassName*>(SPK::SPKFactory::getInstance().get(ID))
 #define SPK_Destroy(arg) \
 SPK::SPKFactory::getInstance().destroy(arg)
 
-/** 
+/**
 * @def SPK_Create(object)
 * @brief Creates a registered object
 * @since 1.03.00
@@ -85,7 +85,7 @@ namespace SPK
 	* A Registerable can either be registered or not. A Registerable created with the SPKFactory becomes registered :
 	* it is given a unique ID and is stored within a map in the SPKFactory.<br>
 	* <br>
-	* the SPKFactory allows the correct copy of a Registerable with all its children Registerable. Children registerable are only copied 
+	* the SPKFactory allows the correct copy of a Registerable with all its children Registerable. Children registerable are only copied
 	* within the given Registerable if they are not shared (see Registerable) else only the reference to the shared Registerable is copied<br>
 	* <br>
 	* Moreover, destruction of Registerable and all children is very easy with the factory. Destroying a Registerable will destroy and all its
@@ -179,7 +179,7 @@ namespace SPK
 		* <br>
 		* The checkNbReferences boolean tells the factory if the number of references of the Registerable to be destroyed
 		* has to be checked.<br>
-		* If set to true, the Registerable will be destroyed only if the number or references within the SPKFactory 
+		* If set to true, the Registerable will be destroyed only if the number or references within the SPKFactory
 		* (ie in all registered object in the SPKFactory) is 0.<br>
 		* If set to false, the Registerable will be destroyed in any case. Meaning that any reference within the SPKFactory
 		* becomes invalid.
@@ -192,7 +192,7 @@ namespace SPK
 
 		/**
 		* @brief Destroys the Registerable and all its destroyable children
-		* 
+		*
 		* If the Registerable is NULL or is not registered, nothing is destroyed and false is returned.<br>
 		* Note that this function call internally <i>destroy(registerable->getSPKID())</i>.<br>
 		* <br>
@@ -208,13 +208,13 @@ namespace SPK
 		void destroyAll();
 
 		/**
-		* @brief Trace information on the Registerable with the given ID 
+		* @brief Trace information on the Registerable with the given ID
 		* @param ID : the ID of the Registerable to trace
 		*/
 		void trace(SPK_ID ID);
 
 		/**
-		* @brief Trace information on the Registerable 
+		* @brief Trace information on the Registerable
 		*
 		* Note that this function call internally <i>trace(registerable->getSPKID())</i>.
 		*
@@ -237,7 +237,7 @@ namespace SPK
 		*/
 		Registerable* findByName(const std::string& name);
 
-	private : 
+	private :
 
 		static SPKFactory* instance;
 		static SPK_ID currentID;
@@ -253,7 +253,7 @@ namespace SPK
 		
 		Registerable* registerObject(Registerable* object);
 		void unregisterObject(std::map<SPK_ID,Registerable*>::iterator& it,bool keepChildren = false);
-		bool unregisterObject(SPK_ID ID,bool keepChildren = false);	
+		bool unregisterObject(SPK_ID ID,bool keepChildren = false);
 
 		// private constructors
 		SPKFactory(){};
