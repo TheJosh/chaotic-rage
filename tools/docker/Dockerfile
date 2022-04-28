@@ -1,13 +1,22 @@
-# Base docker image
-FROM ubuntu:16.04
-MAINTAINER Magnus Espersson <magnusespersson@gmail.com>
+FROM ubuntu:20.04
 
-# Install Chaotic Rage
-RUN apt-get update
-RUN apt-get install -y software-properties-common
-RUN apt-add-repository -y ppa:chaotic-rage/chaoticrage
-RUN apt-get update
-RUN apt-get install -y chaoticrage
+ARG DEBIAN_FRONTEND=noninteractive
 
-# Run Chaotic Rage
-CMD bash -c "/usr/games/chaoticrage --audio null --render ascii --campaign ep1"
+RUN apt update && apt install --yes --no-install-recommends \
+    g++ \
+    libsdl2-dev \
+    libsdl2-image-dev \
+    libsdl2-mixer-dev \
+    libsdl2-net-dev \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
+    libglew-dev \
+    libfreetype6-dev \
+    libbullet-dev \
+    libassimp-dev \
+    libfontconfig-dev \
+    libmicrohttpd-dev \
+    libglm-dev \
+    make \
+    && apt clean \
+    && rm -rf /var/lib/apt/lists/*
