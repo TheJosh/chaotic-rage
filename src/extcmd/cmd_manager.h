@@ -12,6 +12,10 @@ struct MHD_Daemon;
 class GameState;
 class Cmd;
 
+#ifndef MHD_Result
+#define MHD_Result int
+#endif
+
 
 class CmdManager
 {
