@@ -1,7 +1,7 @@
 Compiling Chaotic Rage
 ======================
 
-Chaotic Rage is supported on a number of platforms and through various build environments. In many cases you don't need to compile Chaotic Rage yourself, but can instead use one of the [release builds](http://www.chaoticrage.com/download) or [weekly builds](http://dev1.chaoticrage.com/weekly).
+Chaotic Rage is supported on a number of platforms and through various build environments.
 
 
 Dependencies
@@ -19,18 +19,16 @@ You'll need the following dependencies:
 * Bullet Physics
 * Assimp
 * Fontconfig (Linux only)
-* libmicrohttp
+* libmicrohttpd
 
 
 Compiling on Debian/Ubuntu/Mint
 -------------------------------
 
-This build configuration has been tested on Debian 11
-
 Install the dependencies:
 
 ```.sh
-sudo apt-get install g++ libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libgl1-mesa-dev libglu1-mesa-dev libglew-dev libfreetype6-dev libbullet-dev libassimp-dev libfontconfig-dev libmicrohttp-dev
+sudo apt-get install g++ libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libgl1-mesa-dev libglu1-mesa-dev libglew-dev libfreetype6-dev libbullet-dev libassimp-dev libfontconfig-dev libmicrohttpd-dev libglm-dev make
 ```
 
 Some of these (SDL, Bullet, Assimp) have scripts in the `tools/linux` directory
@@ -59,7 +57,7 @@ Install the dependencies:
 * bullet
 * assimp
 * fontconfig
-* libmicrohttp
+* libmicrohttpd
 
 
 Compiling on Windows using MSVC
