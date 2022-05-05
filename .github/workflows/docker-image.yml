@@ -1,0 +1,14 @@
+name: Docker Image CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Build the Docker image for the Ubuntu toolchain
+      run: docker build . --tag ubuntu_toolchain -f ./tools/docker/Dockerfile
+    - name: Build CR with make
+      run: docker run --rm --interactive --volume $PWD:/cr --workdir /cr ubuntu_toolchain make
