@@ -54,7 +54,7 @@ PhysicsBullet::~PhysicsBullet()
 void PhysicsBullet::init()
 {
 	broadphase = new btDbvtBroadphase();
-	
+
 	collisionConfiguration = new btDefaultCollisionConfiguration();
 	dispatcher = new btCollisionDispatcher(collisionConfiguration);
 
@@ -399,7 +399,10 @@ btVector3 PhysicsBullet::spawnLocation(float x, float z, float height)
 void PhysicsBullet::QuaternionToEulerXYZ(const btQuaternion &quat, btVector3 &euler)
 {
 	float w=quat.getW(); float x=quat.getX(); float y=quat.getY(); float z=quat.getZ();
-	double sqw = w*w; double sqx = x*x; double sqy = y*y; double sqz = z*z;
+	double sqw = static_cast<double>(w*w);
+	double sqx = static_cast<double>(x*x);
+	double sqy = static_cast<double>(y*y);
+	double sqz = static_cast<double>(z*z);
 
 	euler.setZ(static_cast<float>(atan2(2.0 * (x*y + z*w),(sqx - sqy - sqz + sqw))));
 	euler.setX(static_cast<float>(atan2(2.0 * (y*z + x*w),(-sqx - sqy + sqz + sqw))));

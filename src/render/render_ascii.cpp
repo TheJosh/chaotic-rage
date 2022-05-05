@@ -75,8 +75,8 @@ void RenderAscii::setScreenSize(int width, int height, bool fullscreen)
 		this->height = 30;
 	#endif
 
-	this->buffer = (char*)malloc(this->width * this->height);
-	this->color = (Uint8*)malloc(this->width * this->height);
+	this->buffer = (char*)malloc(static_cast<size_t>(this->width * this->height));
+	this->color = (Uint8*)malloc(static_cast<size_t>(this->width * this->height));
 
 	printf("\033[0m\033[2J");
 }
@@ -189,8 +189,8 @@ void RenderAscii::render()
 	float scalex = ((float)st->map->width) / ((float)this->width);
 	float scaley = ((float)st->map->height) / ((float)this->height);
 
-	memset(this->buffer, (int)' ', this->width * this->height);
-	memset(this->color, 7, this->width * this->height);				// white
+	memset(this->buffer, (int)' ', static_cast<size_t>(this->width * this->height));
+	memset(this->color, 7, static_cast<size_t>(this->width * this->height));				// white
 
 	// Entities
 	for (list<Entity*>::iterator it = st->entities.begin(); it != st->entities.end(); ++it) {

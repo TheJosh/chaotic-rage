@@ -179,7 +179,7 @@ long hfzLoadEx(const char* lpFileName, hfzHeader& fh, float **h_pData, LIBHFZ_PR
 	}
 
 	// allocate buffer
-	float* pData = (float*)hfzMalloc(fh.nx * fh.ny * 4);
+	float* pData = (float*)hfzMalloc(static_cast<long>(fh.nx * fh.ny * 4));
 	if(!pData) {
 		hfzHeader_Reset(fh);
 		return LIBHFZ_ERROR_ALLOC_FAILED;

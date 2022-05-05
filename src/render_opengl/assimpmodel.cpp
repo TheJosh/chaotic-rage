@@ -45,8 +45,7 @@ AssimpModel::~AssimpModel()
 {
 	delete this->shape;
 	delete this->rootNode;
-	delete this->boneIds;
-	delete this->boneWeights;
+	freeBones();
 }
 
 
@@ -662,7 +661,7 @@ glm::quat AssimpModel::convQuaternion(aiQuaternion in)
 void AssimpModel::loadBones(const aiMesh* mesh, AssimpMesh* myMesh)
 {
 	unsigned int m;
-	Uint8 n;
+	unsigned int n;
 	unsigned int *idx;
 
 	// Ensure mesh is valid
