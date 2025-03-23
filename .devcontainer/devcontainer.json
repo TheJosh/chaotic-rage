@@ -1,0 +1,20 @@
+{
+  "name": "C++ Development Container",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+        "C_Cpp.default.intelliSenseMode": "gcc-x64",
+        "extensions": [
+          "ms-vscode.cpptools",
+          "ms-vscode.cmake-tools",
+          "ms-vscode.cmake"
+        ],
+        "postCreateCommand": "make"
+      }
+    }
+  }
+}
