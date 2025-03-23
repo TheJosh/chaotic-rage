@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -18,5 +18,6 @@ RUN apt update && apt install --yes --no-install-recommends \
     libmicrohttpd-dev \
     libglm-dev \
     make \
+    git \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
