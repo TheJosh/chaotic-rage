@@ -15,3 +15,5 @@ cov-int
 .*
 !.gitignore
 !.github
+!.dockerignore
+!.devcontainer
