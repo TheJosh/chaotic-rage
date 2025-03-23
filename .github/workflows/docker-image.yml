@@ -1,6 +1,8 @@
 name: Docker Image CI
 
-on: [push]
+on:
+  push:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -8,7 +10,21 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache
+        key: ${{ runner.os }}-build-cache
+        restore-keys: |
+          ${{ runner.os }}-build-cache
+
     - name: Build the Docker image for the Ubuntu toolchain
-      run: docker build . --tag ubuntu_toolchain -f .devcontainer/Dockerfile
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: .devcontainer/Dockerfile
+        tags: ubuntu_toolchain
+
     - name: Build CR with make
       run: docker run --rm --interactive --volume $PWD:/cr --workdir /cr ubuntu_toolchain make
