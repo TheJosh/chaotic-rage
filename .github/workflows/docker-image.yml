@@ -27,4 +27,4 @@ jobs:
         tags: ubuntu_toolchain
 
     - name: Build CR with make
-      run: docker run --rm --interactive --volume $PWD:/cr --workdir /cr ubuntu_toolchain make
+      run: docker run --rm --interactive --volume $PWD:/cr --workdir /cr ubuntu_toolchain make -j$(nproc)
