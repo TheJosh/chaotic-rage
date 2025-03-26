@@ -1,4 +1,4 @@
-Chaotic Rage
+Chaotic Rage -An Amazing Game
 ============
 
 [![Coverity Scan Status](https://scan.coverity.com/projects/2787/badge.svg)](https://scan.coverity.com/projects/thejosh-chaotic-rage)
